@@ -17,7 +17,6 @@ import {
   RegisterDto,
   UpdateStepTwoProfileDto,
   CitiesDto,
-  ProfileDto,
   InnitSettingsDto,
 } from "./auth.interface";
 import { apiCall } from "../common/apicall.helper";
@@ -143,14 +142,14 @@ export class AuthService {
     }
   }
 
-  // static async UploadUsersImage(dto: FormData) {
-  //   try {
-  //     const result = await apiCall<FormData, SetPasswordResponse>("POST", apiRoutes.PROFILE_UPLOAD, dto, "file");
-  //     return result;
-  //   } catch (e) {
-  //     throw e;
-  //   }
-  // }
+  static async UploadUsersImage(dto: { formData: FormData; link: string }) {
+    try {
+      const result = await apiCall<FormData, SetPasswordResponse>("POST", dto.link, dto.formData);
+      return result;
+    } catch (e) {
+      throw e;
+    }
+  }
 
   // static async Logout() {
   //   try {
@@ -192,7 +191,7 @@ export class AuthService {
 
   static async GetProfile() {
     try {
-      const result = await apiCall<unknown, ProfileDto>("GET", apiRoutes.AU4);
+      const result = await apiCall<unknown, GetProfileDto>("GET", apiRoutes.AU4);
       return result;
     } catch (e) {
       throw e;

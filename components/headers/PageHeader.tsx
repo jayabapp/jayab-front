@@ -45,7 +45,7 @@ const PageHeaders = ({
 
   return (
     <div
-      className={` fixed  select-none z-[40]     bg-white w-full transition-all top-0 left-0 h-16 px-6 flex items-center justify-between py-4`}
+      className={` fixed  select-none z-[40]   shadow-md   bg-white w-full transition-all top-0 left-0 h-16 px-6 flex items-center justify-between py-4`}
     >
       <div
         // onClick={() => {

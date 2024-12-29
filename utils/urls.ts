@@ -40,5 +40,7 @@ export const apiRoutes = {
 
   AU14: "/user/forget-password/reset",
 
+  PROFILE_UPLOAD: "/attachments",
+
   CONTENT_BY_KEY: (id: string | number) => `/contents/by-key/${id}`,
 };

@@ -7,8 +7,8 @@ import { Iransans_font } from "./fonts/Iransans_font";
 import LayoutProvider from "./layout-provider";
 
 export const metadata: Metadata = {
-  title: "آرایشگاه",
-  description: "آرایشگاه",
+  title: "جایاب",
+  description: "جایاب",
 };
 
 export default function RootLayout({
@@ -26,12 +26,12 @@ export default function RootLayout({
           name="viewport"
           content="width=device-width, initial-scale=1, minimum-scale=1, maximum-scale=1, user-scalable=no"
         />
-        <title>{"آرایشگاه"}</title>
+        <title>{"جایاب"}</title>
         {/* <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"></meta> */}
         {/* <title>{process.env.NEXT_PUBLIC_NAME}</title> */}
-        <meta name="keywords" content="آرایشگاه" />
+        <meta name="keywords" content="جایاب" />
         {/* <title>تــک رخ</title> */}
-        <meta name="description" content="آرایشگاه" />
+        <meta name="description" content="جایاب" />
         {/* <link href="/favicon-16x16.png" rel="icon" type="image/png" sizes="16x16" />
         <link href="/favicon-32x32.png" rel="icon" type="image/png" sizes="32x32" /> */}
         <link rel="icon" type="image/png" href="/favicon-96x96.png" sizes="96x96" />

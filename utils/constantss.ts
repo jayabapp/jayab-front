@@ -1,1 +1,1 @@
-export const footerWhiteList = ["/", "/auth"];
+export const footerWhiteList = ["/"];

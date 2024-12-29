@@ -87,35 +87,31 @@ function OtpInput({ setValue, refresh = false, timer }: props): JSX.Element {
       {" "}
       <div id="otp" className="flex flex-row justify-between items-center text-center mt-5 directon-ltr ">
         {values?.map((field, index) => (
-          <>
-            {" "}
-            <input
-              key={`input`}
-              autoComplete="one-time-code"
-              autoFocus={index == 0 ? true : false}
-              className={` ${
-                inputs[field] ? "border-primary-700 dark:border-zinc-400  " : " "
-              } ltr  !text-lg border font-medium opacity-50 dark:opacity-80 !bg-white/80  dark:hover:border-zinc-400  dark:focus:border-zinc-400  hover:border-primary-700  focus:border-primary-700 h-14 w-16 text-center form-control rounded-10`}
-              type="tel"
-              id={`${index + 1}`}
-              maxLength={1}
-              value={inputs[field]}
-              onChange={(e) => {
-                if (e.target.value.length <= 1) {
-                  inputs[field] = e.target.value;
-                  setInputs({ ...inputs });
-                }
-              }}
-              onKeyUp={(e) => {
-                if (e?.code == "Backspace" || e?.code == "Delete" || e?.keyCode == 8) {
-                  handleLastInput(e);
-                } else {
-                  handleNextInput(e);
-                }
-              }}
-            />
-            {/* {values?.length == index + 1 ? <></> : <p className="text-gray-400">-</p>} */}
-          </>
+          <input
+            key={`input${index + 10}`}
+            autoComplete="one-time-code"
+            autoFocus={index == 0 ? true : false}
+            className={` ${
+              inputs[field] ? "border-primary-700 dark:border-zinc-400  " : " "
+            } ltr  !text-lg border font-medium opacity-50 dark:opacity-80 !bg-white/80  dark:hover:border-zinc-400  dark:focus:border-zinc-400  hover:border-primary-700  focus:border-primary-700 h-14 w-16 text-center form-control rounded-10`}
+            type="tel"
+            id={`${index + 1}`}
+            maxLength={1}
+            value={inputs[field]}
+            onChange={(e) => {
+              if (e.target.value.length <= 1) {
+                inputs[field] = e.target.value;
+                setInputs({ ...inputs });
+              }
+            }}
+            onKeyUp={(e) => {
+              if (e?.code == "Backspace" || e?.code == "Delete" || e?.keyCode == 8) {
+                handleLastInput(e);
+              } else {
+                handleNextInput(e);
+              }
+            }}
+          />
         ))}
       </div>
       {timer && timer()}

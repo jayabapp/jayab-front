@@ -76,7 +76,7 @@ export const useStoreTheme = create<ThemeStore, any>(
       logo: null,
       off_days: null,
       splash: null,
-      title: "آرایشگاه",
+      title: "جایاب",
     }),
     {
       name: "theme-storage",

@@ -20,8 +20,8 @@ export default {
       },
       colors: {
         primary: {
-          100: "#fff",
-          200: "#fff",
+          100: "#F53E4F",
+          200: "#E8F1FC",
           300: "#fff",
           400: "#fff",
           500: "#fff",
@@ -32,7 +32,7 @@ export default {
         },
         btnColor: {
           primary: "#3886E5",
-          danger: "red",
+          danger: "#F53E4F",
           light: "#dcdcdcbd",
         },
       },
