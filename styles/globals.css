@@ -1,0 +1,443 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+/* ------------------------------------      TITLES FONT      ------------------------------------ */
+
+html,
+body {
+  touch-action: pan-x pan-y;
+  padding: 0;
+  color: #17191c;
+  margin: 0;
+}
+
+a {
+  color: inherit;
+  text-decoration: none;
+}
+
+* {
+  box-sizing: border-box;
+  scrollbar-width: none;
+}
+
+::-webkit-scrollbar {
+  width: 0px;
+  background: transparent; /* make scrollbar transparent */
+  display: none;
+}
+textarea,
+input[type="text"],
+input[type="button"],
+input[type="submit"] {
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  appearance: none;
+  outline: none;
+}
+button:focus {
+  outline: 0;
+}
+
+input:focus {
+  outline: none !important;
+}
+
+.text-en {
+  font-family: sans-serif !important;
+}
+.header-extra-style {
+  height: 65px;
+  z-index: 2;
+}
+
+ul {
+  list-style: disc;
+}
+
+.app-container {
+  @apply h-full bg-white !min-h-screen px-3 md:px-10 lg:px-12 2xl:px-[10%]   pt-24 lg:pt-28 pb-32 lg:pb-48 overflow-x-scroll;
+}
+
+.app-size {
+  @apply w-full md:w-full mx-auto lg:w-full;
+}
+.app-background {
+  @apply bg-white dark:bg-transparent !h-full;
+}
+
+.app-text {
+  @apply text-[#06182D]  font-normal;
+}
+/* ---------------------------------- CARD ---------------------------------- */
+
+/* --------------------------------- HEADER --------------------------------- */
+.header-content-container {
+  @apply fixed top-0   right-0 left-0  z-40;
+}
+.header-container {
+  @apply w-full flex  justify-between items-center px-2  h-full;
+}
+
+/* ---------------------------------- FORM ---------------------------------- */
+.form-control {
+  @apply bg-white     text-base  flex px-3 pt-2 pb-3 focus:outline-none     disabled:bg-neutral-200 dark:disabled:bg-zinc-800;
+}
+
+/* --------------------------------- BUTTON --------------------------------- */
+.btn-primary {
+  @apply text-white   border-2 border-transparent  hover:scale-98 hover:ring-primary-700/50 dark:hover:ring-primary-700/50 cursor-pointer;
+}
+.btn-primary-outlined {
+  @apply bg-transparent  text-primary-700 border-2 border-primary-700  hover:scale-98 hover:ring-primary-700/50 dark:hover:ring-primary-700/50 cursor-pointer;
+}
+.btn-primary-faded {
+  @apply text-btnColor-primary bg-btnColor-light   hover:scale-98 hover:ring-primary-700/50 dark:hover:ring-primary-700/50 cursor-pointer;
+}
+.btn-outlined {
+  @apply bg-white dark:bg-zinc-800  text-black border-2 border-black  hover:ring-1 hover:ring-primary-700/50 dark:hover:ring-primary-700/50 cursor-pointer;
+}
+
+/* ---------------------------------- AUTH ---------------------------------- */
+.auth-container {
+  @apply w-full overflow-x-hidden  max-w-full px-4  mx-auto bg-primary-200      pb-24  pt-20  md:shadow-lg  md:rounded-20;
+}
+.container {
+  @apply h-full bg-transparent mx-auto !max-w-full min-h-[90vh] px-3 md:px-3 lg:px-4 xl:px-[10%]  pt-20 lg:pt-28  pb-32 lg:pb-44 overflow-x-scroll;
+}
+.list-container {
+  @apply w-full md:w-[70%] lg:w-[60%] xl:w-1/2 px-2 md:px-6 max-w-[580px]  overflow-x-hidden h-auto     mx-auto bg-white    dark:bg-zinc-900   pb-24  pt-[4.5rem]   md:rounded-20;
+}
+
+.ltr {
+  direction: ltr;
+}
+
+/* -------------------------------------------------------------------------- */
+/*                        react bottom sheet customize                        */
+/* -------------------------------------------------------------------------- */
+/* @media only screen and (min-width: 1024px) {
+  :root {
+    --rsbs-max-w: calc(100vw * 0.5);
+    --rsbs-ml: calc(100vw * 0.25);
+    --rsbs-mr: calc(100vw * 0.25);
+  }
+}
+[data-rsbs-header] {
+  box-shadow: none !important;
+}
+[data-theme="dark"] {
+  --rsbs-bg: #27272a;
+}
+[data-theme="light"] {
+  --rsbs-bg: #fff;
+} */
+
+/* -------------------------------------------------------------------------- */
+/*                        end react bottom sheet customize                    */
+/* -------------------------------------------------------------------------- */
+
+/* -------------------------------------------------------------------------- */
+/*                                  CALENDAR                                  */
+/* -------------------------------------------------------------------------- */
+
+.Calendar {
+  @apply bg-white  dark:bg-zinc-800  dark:bg-zinc-900;
+  box-shadow: none !important;
+}
+
+.-activeBackground {
+  background: #0da1be !important;
+  color: white !important;
+}
+input::-webkit-outer-spin-button,
+input::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+/* Firefox */
+input[type="number"] {
+  -moz-appearance: textfield;
+}
+
+.directon-ltr {
+  direction: ltr;
+}
+.location-here {
+  z-index: 400;
+}
+/* .fixed-button {
+  @apply flex flex-col  w-full px-4 py-2 fixed bottom-0 items-center md:left-[24%] md:w-[52%] lg:left-[32%] lg:w-[36%];
+}
+.fixed-button-main {
+  @apply flex flex-col  w-full px-4 py-2 fixed bottom-16 left-0 items-center md:left-12.5% md:w-3/4 lg:left-[30%] lg:w-[40%];
+} */
+/* -------------------------------------------------------------------------- */
+/*                                END CALENDAR                                */
+/* -------------------------------------------------------------------------- */
+/* .shadow-card {
+  -webkit-box-shadow: 0px 0px 11px 6px rgba(0, 0, 0, 0.06);
+  -moz-box-shadow: 0px 0px 11px 6px rgba(0, 0, 0, 0.06);
+  box-shadow: 0px 0px 11px 6px rgba(0, 0, 0, 0.06);
+} */
+.custom-header-Shadow {
+  box-shadow: -4px 9px 16px -7px #ccc;
+}
+
+.form-control:disabled {
+  opacity: 50%;
+  --tw-bg-opacity: 40%;
+}
+[data-rsbs-overlay],
+[data-rsbs-backdrop],
+[data-rsbs-root]:after {
+  @apply !z-[500];
+}
+
+[data-rsbs-overlay],
+[data-rsbs-root]:after {
+  @apply w-full md:w-[70%] lg:w-[60%] xl:w-1/2 px-6 md:px-6 max-w-[580px]  mx-auto;
+}
+
+/* 
+
+.alighn-pop > [data-rsbs-overlay],
+[data-rsbs-backdrop],
+[data-rsbs-root]:after {
+  z-index: 10 !important;
+  margin-left: 12% !important;
+  margin-right: auto !important;
+  left: 0rem !important;
+}
+
+[data-rsbs-overlay] {
+  box-shadow: none !important;
+  background: transparent !important;
+}
+[data-rsbs-header] {
+  margin-bottom: -0.5rem !important;
+  background: white !important;
+  @apply rounded-t-lg;
+} */
+
+.checkoutCards {
+  @apply bg-white  border  dark:bg-zinc-800 p-2 md:p-6 rounded-20     dark:shadow-none;
+}
+.app-container-profile {
+  @apply h-full bg-transparent mx-auto min-h-[90vh]  dark:border-zinc-600   mt-4 rounded-20  p-4   px-0  md:px-3 lg:px-4 2xl:px-[5%] pt-12 md:pt-0  pb-32 lg:pb-16 overflow-x-scroll;
+}
+
+.profile-grid-part {
+  @apply lg:grid  lg:mt-20;
+}
+
+.profile-py-28 {
+  @apply py-16;
+}
+.profile-py-28-md {
+  @apply md:py-16;
+}
+
+.centerise > .swiper-wrapper {
+  @apply !flex  !justify-between md:!justify-center;
+}
+.react-transform-wrapper {
+  @apply !w-full;
+}
+.react-transform-component {
+  @apply !w-full;
+}
+
+.map-wrap {
+  position: relative;
+  width: 100%;
+  height: 100%; /* calculate height of the screen minus the heading */
+}
+
+.map {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+}
+
+.rtl {
+  direction: rtl;
+}
+
+.popCard {
+  position: fixed;
+  bottom: 0;
+  height: 0;
+  width: 100%;
+  max-width: 500px;
+  right: 0;
+  z-index: 7000;
+  width: 100%;
+  left: 50%;
+  transform: translateX(-50%);
+}
+
+.card__inner {
+  color: #fff;
+  height: auto;
+  position: absolute;
+  transform: translateY(-100%);
+  width: 100%;
+  box-shadow: rgb(0 0 0 / 5%) 0px -20px 20px, rgb(0 0 0 / 10%) 0px -6px 6px, rgb(0 0 0 / 3%) 0px -30px 30px;
+  background: #343434;
+  border-radius: 10px 10px 0 0;
+  overflow: visible;
+  top: -90px;
+}
+
+.card__inner__scrolling {
+  height: 100%;
+  position: relative;
+  padding: 0 20px;
+}
+
+.card__inner::after {
+  content: " ";
+  background: #343434;
+  width: 100%;
+  height: 100%;
+  top: 99%;
+  position: absolute;
+  left: 0;
+}
+
+.indicatorWrapper {
+  display: flex;
+  justify-content: center;
+  padding: 10px 0 10px;
+  left: 0;
+  top: 0%;
+  width: 100%;
+  z-index: 100;
+  position: absolute;
+
+  min-height: 3px;
+  max-height: 3px;
+}
+
+.indicator {
+  height: 250x;
+  width: 30px;
+  background: #d8d8d8;
+  border-radius: 0.3rem;
+}
+
+.keen-slider__slide {
+  min-height: auto !important;
+  overflow: visible;
+}
+
+.small {
+  box-sizing: border-box;
+  padding-top: 20px;
+  height: 90px;
+}
+
+.medium {
+  height: 90px;
+}
+
+.large {
+  padding-bottom: 20px;
+}
+
+.title {
+  font-weight: bold;
+  font-size: 20px;
+}
+
+.subtitle {
+  font-size: 15px;
+}
+
+.swiper-pagination-bullet {
+  @apply !h-2.5 !w-2.5 transition-all    bg-white/30  !rounded-full;
+}
+.swiper-pagination-bullet-active {
+  @apply !bg-gray-100/90      transition-all px-5;
+}
+.form-title-gradient {
+  background: white;
+  background-repeat: no-repeat;
+  background-size: 100% 50%, 100% 50%;
+  background-position: top, bottom;
+}
+
+strong {
+  @apply font-bold text-xl leading-10;
+}
+p {
+  @apply leading-8 font-normal text-justify;
+}
+
+select {
+  -moz-appearance: none; /* Firefox */
+  -webkit-appearance: none; /* Safari and Chrome */
+  appearance: none;
+}
+
+.maplibregl-ctrl-bottom-right {
+  @apply hidden;
+}
+
+.canvasSize {
+  width: 100vw;
+  height: 100vh;
+  position: fixed;
+  z-index: -1;
+  background: #1e1e1e;
+}
+
+.accardion-class {
+  display: grid;
+  grid-template-rows: 0fr;
+  transition: grid-template-rows 500ms;
+}
+
+.accardion-class > div {
+  overflow: hidden;
+}
+
+.accardion-class.is-opend {
+  grid-template-rows: 1fr;
+}
+
+@media (min-width: 900px) {
+  .product-showcase {
+    position: sticky !important;
+    display: block !important;
+  }
+}
+
+.c-cMIVXY .raychat_sc_launcher {
+  bottom: 2.15rem !important;
+  right: -1rem !important;
+}
+
+.c-cMIVXY .raychat_sc_launcher .sc-closed-icon {
+  width: 14px !important;
+  height: 25px !important;
+}
+
+.noSelect {
+  -webkit-tap-highlight-color: transparent;
+  -webkit-touch-callout: none;
+  -webkit-user-select: none;
+  -khtml-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+}
+.noSelect:focus {
+  outline: none !important;
+}
+
+.custome-shadow-card {
+  box-shadow: 0px 5px 12px -5px #ccc;
+}
