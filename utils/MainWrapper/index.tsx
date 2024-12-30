@@ -41,7 +41,6 @@ const MainWrapper = ({ children }: mainWrapper) => {
   const [accessChecked, setAccessChecked] = useState(false);
   const isAuthScreen = pathname.match("auth");
 
-  const [minHeight, setminHeight] = useState(0);
   const [isLandscape, setIsLandscape] = useState(false);
 
   useEffect(() => {
@@ -57,7 +56,7 @@ const MainWrapper = ({ children }: mainWrapper) => {
         hideSplashscreen();
       }
     } else {
-      router.push("/auth");
+      // router.push("/auth");
       hideSplashscreen();
     }
   }, []);
@@ -143,7 +142,7 @@ const MainWrapper = ({ children }: mainWrapper) => {
     <div className={`app-background  app-text transition-opacity`}>
       {/* <DesktopHeader /> */}
 
-      <div className="app-size relative " style={{ minHeight, background: pathname == "/" && !isDark ? "" : "" }}>
+      <div className="app-size relative " style={{ background: pathname == "/" && !isDark ? "" : "" }}>
         {connecting ? <ConnectingBanner /> : <></>}
         <div className="  mx-auto h-full   w-full   ">
           {/* {!sidenavBlackList?.includes(pathname || "") && <SideNav />} */}

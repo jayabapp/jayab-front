@@ -31,7 +31,7 @@ const EditCreateUserPage = ({
         />
         <FormInput
           item={{ title: _STRINGS.NATIONAL_ID, isMandatory: true, containerClass: "w-full" }}
-          value={values?.name}
+          value={values?.national_code}
           onChangeText={(e) => {
             onChange(e, "national_code");
           }}
@@ -56,14 +56,6 @@ const EditCreateUserPage = ({
           }}
         />{" "}
       </div>
-      <FixedBottomContainer>
-        <Button
-          containerClass="w-full flex items-center justify-center"
-          roundedClass="rounded-full"
-          width=" w-[90%] md:w-1/2"
-          title={_STRINGS.CHECK_CREDENTIOALS}
-        />
-      </FixedBottomContainer>
     </div>
   );
 };

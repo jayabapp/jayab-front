@@ -1,4 +1,5 @@
 import { DESTRUCTION } from "dns";
+import { property } from "lodash";
 
 const _STRINGS = {
   CURRENCY: "تومان",
@@ -70,6 +71,9 @@ const _STRINGS = {
   YOUR_IMAGE: "عکس شما*",
   PROFILE_IMAGE: " تصویر پروفایل",
   CHECK_CREDENTIOALS: "احراز کد ملی و ادامه",
+  REGISTER_PROPERTY: "ثبت ملک",
+  PROPERTY_TYPE: "نوع ملک  ",
+  ROTATE_PHONE: "لطفا گوشی خود را در حالت عمودی قرار دهید",
 };
 
 export default _STRINGS;

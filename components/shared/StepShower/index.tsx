@@ -5,7 +5,7 @@ const StepShower = ({
   steps,
 }: {
   value: string | number;
-  steps: { title: string; description: string; id: number | string }[];
+  steps: { title: string; description?: string; id: number | string }[];
 }) => {
   return (
     <div className="flex items-center w-full  relative justify-between">
@@ -23,21 +23,33 @@ const StepShower = ({
                 {" "}
               </div>
               <div
-                style={{ background: !!isSelected ? color : undefined }}
-                className=" w-4 h-4 !shrink-0 aspect-square bg-gray-300 rounded-full"
+                className={`${
+                  !!isSelected ? "bg-primary-700" : "bg-gray-300"
+                }  w-4 h-4 !shrink-0 aspect-square  rounded-full`}
               >
                 {" "}
               </div>
               <div
-                style={{ background: !!isSelected && e?.id < value ? color : undefined }}
-                className={`  ${index == steps?.length - 1 ? "opacity-0" : ""}  flex  bg-gray-300 h-[5px] w-full`}
+                className={` ${!!isSelected && e?.id < value ? "bg-primary-700 " : "bg-gray-300 "} ${
+                  index == steps?.length - 1 ? "opacity-0" : ""
+                }  flex  h-[5px] w-full`}
               >
                 {" "}
               </div>
             </div>
-            <div className="flex absolute flex-col top-6 items-center justify-center gap-2">
-              <p className={` text-primary-700 text-center font-bold text-xs md:text-base`}>{e?.title}</p>
-              <p className=" text-center  text-[9px] md:text-sm">{e?.description}</p>
+            <div
+              className={`flex absolute flex-col ${
+                (index + 1) % 2 == 0 ? "top-6" : " bottom-6"
+              } items-center justify-center gap-2`}
+            >
+              <p
+                className={`${
+                  !!isSelected ? "text-primary-700" : "  text-gray-300 "
+                }   text-center  text-xs md:text-sm`}
+              >
+                {e?.title}
+              </p>
+              {/* <p className=" text-center  text-[9px] md:text-sm">{e?.description}</p> */}
             </div>
           </div>
         );

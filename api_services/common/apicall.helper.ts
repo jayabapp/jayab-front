@@ -1,6 +1,5 @@
 import Notify from "@/components/shared/Toast";
 import { baseUrl } from "@/utils/urls";
-
 import axios, { AxiosRequestHeaders, AxiosResponse, AxiosRequestConfig } from "axios";
 
 type Methods = "POST" | "PUT" | "DELETE" | "PATCH" | "GET";
@@ -25,17 +24,18 @@ export async function apiCall<T, K>(
   method: Methods,
   url: string,
   body?: T,
-  type?: "file",
-  passedToken?: string
+  isSocketToken?: boolean
 ): Promise<K | undefined> {
   try {
     /**
      * create axios config
      */
+    const IS_FORM_DATA = !!body && body instanceof FormData;
+
     const config: AxiosRequestConfig = {
       method,
       url: baseUrl + url,
-      headers: headerItems(type, passedToken),
+      headers: headerItems(IS_FORM_DATA ? "file" : undefined, isSocketToken),
       data: body,
     };
     if (method == "GET") {
@@ -79,6 +79,7 @@ export async function apiCall<T, K>(
     handleError(error);
     if (error?.response?.status == 401) {
       localStorage?.removeItem("access_token");
+      localStorage.removeItem("socket_token");
       localStorage?.removeItem("isLogin");
       window?.location?.replace("/auth");
     }
@@ -90,8 +91,9 @@ export async function apiCall<T, K>(
  * Create header items
  * @returns
  */
-const headerItems = (type?: "file", passedToken?: string) => {
+const headerItems = (type?: "file", isSocketToken?: boolean) => {
   const token: string = localStorage.getItem("access_token") || "";
+  const socketToken: string = localStorage.getItem("socket_token") || "";
   let headers = {
     Accept: `application/json`,
     "Content-Type": `application/json`,
@@ -100,8 +102,9 @@ const headerItems = (type?: "file", passedToken?: string) => {
   if (type == "file") {
     headers = {};
   }
-
-  if (passedToken || token) headers.authorization = `Bearer ${passedToken || token}`;
+  if (!!isSocketToken && !!socketToken) {
+    headers.authorization = `Bearer ${socketToken}`;
+  } else if (token) headers.authorization = `Bearer ${token}`;
 
   return headers;
 };

@@ -42,5 +42,9 @@ export const apiRoutes = {
 
   PROFILE_UPLOAD: "/attachments",
 
+  REGISTER_OWNER: "/profile/register/owner",
+
+  GET_OWNER_PROFILE: "/profile/owner",
+
   CONTENT_BY_KEY: (id: string | number) => `/contents/by-key/${id}`,
 };

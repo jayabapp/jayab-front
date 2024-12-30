@@ -1,5 +1,4 @@
 import type { Metadata } from "next";
-import "react-spring-bottom-sheet/dist/style.css";
 import "swiper/css";
 import "swiper/css/pagination";
 import "../styles/globals.css";

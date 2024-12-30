@@ -15,9 +15,8 @@ import {
   GetProfileDto,
   UpdateProfileDto,
   RegisterDto,
-  UpdateStepTwoProfileDto,
   CitiesDto,
-  InnitSettingsDto,
+  OwnerProfileDto,
 } from "./auth.interface";
 import { apiCall } from "../common/apicall.helper";
 
@@ -31,6 +30,7 @@ export class AuthService {
   static CITIES_CACHEKEY = "CITIES";
   static AU4_CACHEKEY = "AU4";
   static APP_SETTINGS_CACHEKEY = "APP_SETTINGS";
+  static GET_OWNER_PROFILE_CACHEKEY = "GET_OWNER_PROFILE";
 
   static async SignIn(dto: SignInDTO) {
     try {
@@ -151,15 +151,6 @@ export class AuthService {
     }
   }
 
-  // static async Logout() {
-  //   try {
-  //     const result = await apiCall<unknown, unknown>("POST", apiRoutes.LOGOUT);
-  //     return result;
-  //   } catch (e) {
-  //     throw e;
-  //   }
-  // }
-
   // static async SendZipCodes(dto: { zip_codes: string[] | number[] }) {
   //   try {
   //     const result = await apiCall<{ zip_codes: string[] | number[] }, unknown>("PUT", apiRoutes.USER_ZIP_CODE, {
@@ -197,6 +188,14 @@ export class AuthService {
       throw e;
     }
   }
+  static async GetOwnerProfile() {
+    try {
+      const result = await apiCall<unknown, OwnerProfileDto>("GET", apiRoutes.GET_OWNER_PROFILE);
+      return result;
+    } catch (e) {
+      throw e;
+    }
+  }
 
   // static async GetCities() {
   //   try {
@@ -222,6 +221,19 @@ export class AuthService {
     try {
       const result = await apiCall<UpdateProfileDto, unknown>("PUT", apiRoutes.AU4, {
         full_name: dto?.full_name,
+      });
+      return result;
+    } catch (e) {
+      throw e;
+    }
+  }
+
+  static async RegisterOwner(dto: RegisterDto) {
+    try {
+      const result = await apiCall<RegisterDto, unknown>("PUT", apiRoutes.REGISTER_OWNER, {
+        full_name: dto.full_name,
+        national_code: dto.national_code,
+        selfie_image_id: dto.selfie_image_id,
       });
       return result;
     } catch (e) {

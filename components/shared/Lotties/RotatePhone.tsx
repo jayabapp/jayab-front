@@ -10,7 +10,7 @@ const RotatePhone = ({ margin }: { margin?: string }) => {
       <div className="w-1/2 md:w-1/4">
         <Lottie options={{ animationData: LottieAnimation, loop: true }} />
       </div>
-      <p>{_STRINGS?.A88}</p>
+      <p>{_STRINGS?.ROTATE_PHONE}</p>
     </div>
   );
 };
