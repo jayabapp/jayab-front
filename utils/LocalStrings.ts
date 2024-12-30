@@ -84,6 +84,10 @@ const _STRINGS = {
     CHOOSE_STATE_AND_CITY: "انتخاب استان و شهر",
     SEARCH_FOR_CONSULTANTS: "جستجوی مشاور",
     CODE_OR_CONSULTANT_NAME: "کد یا نام مشاور",
+
+    CONSULTANT_APPROACHES: "نحوه برخورد مشاور",
+    CONSULTANT_RESPONSIBILITY: "مسئولیت پذیری مشاور",
+    FOLLOWUP_SPEED_RESPONSE: "سرعت پیگیری و نحوه پاسخگویی",
 };
 
 export default _STRINGS;
