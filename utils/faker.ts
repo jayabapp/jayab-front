@@ -22,3 +22,13 @@ export const fakeVilla = {
     "/assets/images/fake_villa_image.jpg",
   ],
 };
+
+export const fakeConsultant = {
+    id: Math.floor(Math.random() * 10000), // Dynamic ID
+    name: "محمدرضا محمدی",
+    avatar: "/assets/images/fake_consultant_image.png",
+    code: "202",
+    locations: ["تهران", "کرج", "شهریار"],
+    owners_satisfaction: 90,
+    users_satisfaction: 85,
+};
