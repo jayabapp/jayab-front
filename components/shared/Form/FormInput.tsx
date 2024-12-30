@@ -42,7 +42,7 @@ const FormInput = ({ item, value, onChangeText, errors, errorKey = "" }: props) 
   const inputRef = useRef<HTMLInputElement>(null);
 
   return (
-    <div className={item?.containerClass + " mb-4"}>
+    <div className={item?.containerClass + " mb-4 relative"}>
       {item?.title ? (
         <label
           htmlFor={`input-${item?.id}`}
