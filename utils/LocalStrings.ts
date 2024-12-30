@@ -7,6 +7,8 @@ const _STRINGS = {
   TOMAN: "تومان",
   BUCKS: "دلار",
   ALL: "همه",
+  MINUTES: "دقیقه",
+  HOURS: "ساعت",
   RIAL: "ریال",
   ENTER: "ورود",
   ADAD: "عدد",
