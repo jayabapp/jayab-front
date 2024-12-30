@@ -1,5 +1,4 @@
 "use client";
-import { AuthService } from "@/api_services/auth/auth.service";
 import { PropertyService } from "@/api_services/property/property.service";
 import CreateEditProperty, { CreateProperyStepOne } from "@/components/Adds/CreateEditProperty";
 import PageHeaders from "@/components/headers/PageHeader";
@@ -11,6 +10,7 @@ import { useStoreInit } from "@/store";
 import { createPropertySteps } from "@/utils/constantss";
 import _STRINGS from "@/utils/LocalStrings";
 import { useMutation, useQuery } from "@tanstack/react-query";
+
 import { usePathname, useRouter } from "next/navigation";
 import React, { useEffect, useState } from "react";
 
@@ -58,7 +58,6 @@ const CreateProperty = () => {
 
   useEffect(() => {
     if (!!initPropData) {
-      console.log(initPropData, "initPropDatainitPropData");
       setValues({
         address: initPropData.address,
         building_area: initPropData?.building_area || null,
@@ -85,7 +84,12 @@ const CreateProperty = () => {
     setValues((e) => ({ ...e, [key]: value }));
   };
 
-  const { mutate, isPending } = useMutation({ mutationFn: PropertyService.CreatePropertyStepOne });
+  const { mutate, isPending } = useMutation({
+    mutationFn: PropertyService.CreatePropertyStepOne,
+    onSuccess: () => {
+      router.push("/step-two");
+    },
+  });
   const onSubmit = () => {
     if (!!initPropData?.id) {
       mutate({

@@ -89,6 +89,10 @@ const _STRINGS = {
   EXACT_ADDRESS: "آدرس دقیق ",
   CAN_CHAT_SET: "فعال کردن امکان چت",
   LOC_ACCESS: "نمایش موقعیت مکانی به متقاضیان",
+  SUBMIT_MOVE_ON: "ثبت و ادامه",
+  SELECTED_ADDRESSES: "آدرس های منتخب",
+  SEARCH_PLACE: "جستجوی آدرس...",
+  SEARCH_PLACE_INPUT: "جستجوی آدرس",
 };
 
 export default _STRINGS;

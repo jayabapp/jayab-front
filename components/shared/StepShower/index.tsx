@@ -17,7 +17,7 @@ const StepShower = ({
             <div className="w-full relative flex items-center justify-center">
               <div
                 className={` ${index == 0 ? "opacity-0" : ""} flex ${
-                  !!isSelected ? "text-primary-700" : ""
+                  !!isSelected ? "bg-primary-700" : ""
                 }   bg-gray-300 h-[5px] w-full`}
               >
                 {" "}

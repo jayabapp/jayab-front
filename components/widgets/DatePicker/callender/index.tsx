@@ -1,4 +1,4 @@
-import React, { useState, useMemo, useEffect } from "react";
+import React, { useState, useEffect } from "react";
 import MonthPicker from "../MonthPicker";
 import DaysOfTheWeel from "../DaysOfTheWeel";
 import DayPicker from "../DayPicker";
