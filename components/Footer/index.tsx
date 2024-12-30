@@ -105,7 +105,7 @@ const Footer: React.FC = ({}) => {
         {footerItems?.map((el, i) => {
           return (
             <div
-              className={`${
+              className={` w-[15%] ${
                 !isFocused(el?.route) && el?.title ? " opacity-60 grayscale brightness-90  " : " "
               }   cursor-pointer select-none flex flex-col items-center gap-1 justify-center transition-all duration-1000	ease-in-out  `}
               onClick={() => {

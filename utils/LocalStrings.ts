@@ -15,6 +15,7 @@ const _STRINGS = {
   MINUTE: "دقیقه",
   HOUR: "ساعت",
   EMAIL: "ایمیل ",
+  UNIT: "واحد ",
   PRICE: "قیمت",
   METER: "متر",
   KM: "کیلومتر",
@@ -74,6 +75,20 @@ const _STRINGS = {
   REGISTER_PROPERTY: "ثبت ملک",
   PROPERTY_TYPE: "نوع ملک  ",
   ROTATE_PHONE: "لطفا گوشی خود را در حالت عمودی قرار دهید",
+  ADD_TITLE: "عنوان آگهی",
+  LAND_AREA: "متراژ زمین",
+  PROPERTY_AREA: "متراژ بنا ",
+  FLOOR_COUNT: "تعداد طبقات ",
+  UNITS_IN_FLOOR: "تعداد واحد در طبقات ",
+  FLOOR: "طبقه",
+  OWNERSHIP_TYPE: "نوع مالکیت  ",
+  PROVINCE: "استان",
+  CITY: "شهر",
+  CREATED_AT_YEAR: "سال ساخت ",
+  BUILDING_DIRECTION: "جهت ساختمان  ",
+  EXACT_ADDRESS: "آدرس دقیق ",
+  CAN_CHAT_SET: "فعال کردن امکان چت",
+  LOC_ACCESS: "نمایش موقعیت مکانی به متقاضیان",
 };
 
 export default _STRINGS;

@@ -3,42 +3,198 @@ import _STRINGS from "@/utils/LocalStrings";
 import React from "react";
 import SinglePopUpSelect from "../shared/Form/SingleSelectPopUpSelect";
 import { createPropertySteps } from "@/utils/constantss";
+import { useQuery } from "@tanstack/react-query";
+import { PropertyService } from "@/api_services/property/property.service";
+import FormInputWithExternalUnit from "../shared/Form/FormInputWithExternalUnit";
+import { AuthService } from "@/api_services/auth/auth.service";
+import { isEmpty } from "lodash";
+import MultiLineFormInput from "../shared/Form/MultiLineFormInput";
+import Checkbox from "../shared/Form/Checkbox";
+
+export interface CreateProperyStepOne {
+  title: string | number | null;
+  property_type: string | number | null;
+  floor_count: string | number | null;
+  building_area: string | number | null;
+  land_area: string | number | null;
+  units_in_floor: string | number | null;
+  owenershp_type: string | number | null;
+  floor: string | number | null;
+  province: string | number | null;
+  city: string | number | null;
+  construction_year: string | number | null;
+  direction: string | number | null;
+  address: string | number | null;
+  can_chat: boolean | null;
+  location_access: boolean | null;
+}
 
 const CreateEditProperty = ({
   values,
   onChange,
 }: {
-  values: {
-    name: string;
-    property_type: string;
-    national_code: string;
-  };
-  onChange: (value: string | number | null, key: string) => void;
+  values: CreateProperyStepOne;
+  onChange: (value: string | number | null | boolean, key: string) => void;
 }) => {
-  return (
-    <div className="w-full flex flex-col gap-4   ">
-      <div className=" w-full flex gap-4  flex-col md:flex-row items-center ">
-        <SinglePopUpSelect
-          closeOnSelect
-          item={{ list: createPropertySteps, title: _STRINGS.PROPERTY_TYPE, isMandatory: true }}
-          value={values?.property_type}
-          onSelect={(e) => {
-            onChange(e, "property_type");
-          }}
-        />
+  const { data: propertyTypes } = useQuery({
+    queryFn: () => PropertyService.GetUserPropertyGroup({ group: "PROPERTY_TYPE" }),
+    queryKey: [PropertyService.USER_PROP_OPTIONS_CACHEKEY, "PROPERTY_TYPE"],
+  });
+  const { data: ownershipTypes } = useQuery({
+    queryFn: () => PropertyService.GetUserPropertyGroup({ group: "OWNERSHIP" }),
+    queryKey: [PropertyService.USER_PROP_OPTIONS_CACHEKEY, "OWNERSHIP"],
+  });
+  const { data: buildingDirection } = useQuery({
+    queryFn: () => PropertyService.GetUserPropertyGroup({ group: "BUILDING_DIRECTION" }),
+    queryKey: [PropertyService.USER_PROP_OPTIONS_CACHEKEY, "BUILDING_DIRECTION"],
+  });
 
-        <FormInput
-          item={{ title: _STRINGS.TOTAL_NAME, isMandatory: true, containerClass: "w-full" }}
-          value={values?.name}
-          onChangeText={(e) => {
-            onChange(e, "name");
+  const { data: provinces } = useQuery({
+    queryFn: AuthService.GetProvince,
+    queryKey: [AuthService.CITIES_CACHEKEY],
+  });
+
+  const { data: cities } = useQuery({
+    queryFn: () => {
+      if (!!values?.province) return AuthService.GetCities({ parentId: values?.province });
+      else return [];
+    },
+    queryKey: [AuthService.CITIES_CHILDEREN_CACHEKEY, values?.province],
+  });
+
+  return (
+    <div className=" w-full gap-5  grid grid-cols-1 md:grid-cols-2   items-center ">
+      <SinglePopUpSelect
+        closeOnSelect
+        item={{ list: propertyTypes || [], title: _STRINGS.PROPERTY_TYPE, isMandatory: true }}
+        value={values?.property_type || ""}
+        onSelect={(e) => {
+          onChange(e, "property_type");
+        }}
+      />
+
+      <FormInput
+        item={{ title: _STRINGS.ADD_TITLE, isMandatory: true, containerClass: "w-full" }}
+        value={values?.title || ""}
+        onChangeText={(e) => {
+          onChange(e, "title");
+        }}
+      />
+      <FormInputWithExternalUnit
+        unit={_STRINGS.METER}
+        item={{ title: _STRINGS.LAND_AREA, isMandatory: true, containerClass: "w-full", keyboard: "number" }}
+        value={values?.land_area || ""}
+        onChangeText={(e) => {
+          onChange(e, "land_area");
+        }}
+      />
+      <FormInputWithExternalUnit
+        unit={_STRINGS.METER}
+        item={{ title: _STRINGS.PROPERTY_AREA, isMandatory: true, containerClass: "w-full", keyboard: "number" }}
+        value={values?.building_area || ""}
+        onChangeText={(e) => {
+          onChange(e, "building_area");
+        }}
+      />
+      <FormInputWithExternalUnit
+        unit={_STRINGS.METER}
+        item={{ title: _STRINGS.FLOOR_COUNT, isMandatory: true, containerClass: "w-full", keyboard: "number" }}
+        value={values?.floor_count || ""}
+        onChangeText={(e) => {
+          onChange(e, "floor_count");
+        }}
+      />
+      <FormInputWithExternalUnit
+        unit={_STRINGS.UNIT}
+        item={{ title: _STRINGS.UNITS_IN_FLOOR, isMandatory: true, containerClass: "w-full", keyboard: "number" }}
+        value={values?.units_in_floor || ""}
+        onChangeText={(e) => {
+          onChange(e, "units_in_floor");
+        }}
+      />
+      <FormInput
+        item={{ title: _STRINGS.FLOOR, isMandatory: true, containerClass: "w-full", keyboard: "number" }}
+        value={values?.floor || ""}
+        onChangeText={(e) => {
+          onChange(e, "floor");
+        }}
+      />
+      <SinglePopUpSelect
+        closeOnSelect
+        item={{ list: ownershipTypes || [], title: _STRINGS.OWNERSHIP_TYPE, isMandatory: true }}
+        value={values?.owenershp_type || ""}
+        onSelect={(e) => {
+          onChange(e, "owenershp_type");
+        }}
+      />
+      <SinglePopUpSelect
+        closeOnSelect
+        item={{ list: provinces || [], title: _STRINGS.PROVINCE, isMandatory: true }}
+        value={values?.province || ""}
+        onSelect={(e) => {
+          onChange(e, "province");
+          onChange(null, "city");
+        }}
+      />
+      <SinglePopUpSelect
+        closeOnSelect
+        item={{ list: cities || [], title: _STRINGS.CITY, isMandatory: true, disable: isEmpty(cities) }}
+        value={values?.city || ""}
+        onSelect={(e) => {
+          onChange(e, "city");
+        }}
+      />
+      <FormInput
+        item={{
+          title: _STRINGS.CREATED_AT_YEAR,
+          isMandatory: true,
+          containerClass: "w-full",
+          keyboard: "number",
+          maxLength: 4,
+        }}
+        value={values?.construction_year || ""}
+        onChangeText={(e) => {
+          onChange(e, "construction_year");
+        }}
+      />
+      <SinglePopUpSelect
+        closeOnSelect
+        item={{ list: buildingDirection || [], title: _STRINGS.BUILDING_DIRECTION, isMandatory: true }}
+        value={values?.direction || ""}
+        onSelect={(e) => {
+          onChange(e, "direction");
+        }}
+      />
+      <MultiLineFormInput
+        item={{
+          title: _STRINGS.EXACT_ADDRESS,
+          isMandatory: true,
+          containerClass: "w-full col-span-full",
+
+          rows: 3,
+        }}
+        value={values?.address || ""}
+        onChangeText={(e) => {
+          onChange(e, "address");
+        }}
+      />
+
+      <div className="flex flex-col gap-5 col-span-full">
+        {" "}
+        <Checkbox
+          containerClass="w-full"
+          isChecked={!!values?.can_chat}
+          onSelect={() => {
+            onChange(!values?.can_chat, "can_chat");
           }}
+          title={_STRINGS.CAN_CHAT_SET}
         />
-        <FormInput
-          item={{ title: _STRINGS.NATIONAL_ID, isMandatory: true, containerClass: "w-full" }}
-          value={values?.national_code}
-          onChangeText={(e) => {
-            onChange(e, "national_code");
+        <Checkbox
+          title={_STRINGS.LOC_ACCESS}
+          containerClass="w-full"
+          isChecked={!!values?.location_access}
+          onSelect={() => {
+            onChange(!values?.location_access, "location_access");
           }}
         />
       </div>

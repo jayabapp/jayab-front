@@ -46,5 +46,15 @@ export const apiRoutes = {
 
   GET_OWNER_PROFILE: "/profile/owner",
 
+  USER_PROP_OPTIONS: "/user/property-options",
+
+  CITIES: "/cities",
+
+  OWNER_PROP_INIT: "/owner/properties/init",
+
+  OWNER_PROPERTIES: (propertyId: string | number | null) => `/owner/properties/${propertyId}`,
+
+  CITIES_CHILDEREN: (parentId: string | number) => `/cities/${parentId}`,
+
   CONTENT_BY_KEY: (id: string | number) => `/contents/by-key/${id}`,
 };

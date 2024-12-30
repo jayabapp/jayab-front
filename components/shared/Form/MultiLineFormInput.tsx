@@ -42,8 +42,8 @@ const FormInput = ({ item, value, onChangeText, errors, errorKey = "" }: props) 
       {item?.title ? (
         <label
           htmlFor={`input-${item?.id}`}
-          className={`block  mb-3 ml-1 text-sm dark:text-zinc-100  pr-1 font-normal  ${
-            item?.isMandatory && "after:content-['*'] after:mr-1 after:text-red-500"
+          className={`block  mb-3 ml-1 text-sm   pr-1 font-normal  ${
+            item?.isMandatory && "after:content-['*'] after:mr-1 "
           } ${item?.titleClass || ""}`}
         >
           {item?.title}
@@ -57,7 +57,7 @@ const FormInput = ({ item, value, onChangeText, errors, errorKey = "" }: props) 
         rows={item?.rows || 3}
         className={`${!!item?.iconUrl ? " !pl-10" : ""}  ${!!item?.iconEndUrl ? " !pr-10" : ""} ${
           item?.direction ? item?.direction : "rtl"
-        }  text-right form-control text-base font-normal  bg-white    dark:!bg-zinc-900   border  focus:border-primary-700/30 py-4 px-4 w-full rounded-10 placeholder:text-gray-400 placeholder:text-right   placeholder:font-normal placeholder:text-sm placeholder:opacity-70 dark:placeholder:text-slate-300  ${
+        }  text-right form-control text-base font-normal  bg-white     border  focus:border-primary-700/30 py-4 px-4 w-full rounded-10 placeholder:text-gray-400 placeholder:text-right   placeholder:font-normal placeholder:text-sm placeholder:opacity-70   ${
           item?.inputClass
         } ${
           item?.disableHover
