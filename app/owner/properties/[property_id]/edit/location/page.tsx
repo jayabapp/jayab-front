@@ -11,7 +11,7 @@ import { createPropertySteps } from "@/utils/constantss";
 import _STRINGS from "@/utils/LocalStrings";
 import { useMutation, useQuery } from "@tanstack/react-query";
 import dynamic from "next/dynamic";
-import { usePathname, useRouter } from "next/navigation";
+import { useParams, usePathname, useRouter } from "next/navigation";
 import React, { useEffect, useMemo, useState } from "react";
 
 const CreateProperty = () => {
@@ -32,18 +32,22 @@ const CreateProperty = () => {
   const router = useRouter();
   const pathname = usePathname();
   const { userInfo } = useStoreInit((data) => data);
-
+  const params = useParams();
+  const { property_id } = params;
   /* -------------------------------------------------------------------------- */
-  /*                             INIT PROP  DATA                             */
+  /*                             INIT PROP CREATION                             */
   /* -------------------------------------------------------------------------- */
   const { data: initPropData } = useQuery({
-    queryKey: [PropertyService.OWNER_PROP_INIT_CACHEKEY],
-    queryFn: PropertyService.InitProperty,
+    queryKey: [PropertyService.OWNER_PROP_INIT_CACHEKEY, property_id],
+    queryFn: () => {
+      if (!!property_id) {
+        return PropertyService.InitProperty({ property_id: `${property_id}` });
+      } else return null;
+    },
   });
 
   useEffect(() => {
     if (!!initPropData?.lat) {
-      console.log(initPropData?.lat);
       setCenter([Number(initPropData?.lng), Number(initPropData?.lat)]);
     }
   }, [initPropData]);
@@ -51,7 +55,7 @@ const CreateProperty = () => {
   const { mutate, isPending } = useMutation({
     mutationFn: PropertyService.CreatePropertySetLocation,
     onSuccess: () => {
-      router.push("/properties/step-three");
+      router.push(`/owner/properties/${property_id}/edit/media`);
     },
   });
 

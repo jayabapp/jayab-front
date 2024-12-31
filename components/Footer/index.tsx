@@ -3,7 +3,9 @@ import { useRouter, usePathname } from "next/navigation";
 import { Fragment, JSX, useEffect, useState } from "react";
 import { isIOS } from "react-device-detect";
 import _STRINGS from "../../utils/LocalStrings";
-import { useStoreParams, useStoreTheme } from "@/store";
+import { useStoreInit, useStoreParams, useStoreTheme } from "@/store";
+import { PropertyService } from "@/api_services/property/property.service";
+import { useQuery } from "@tanstack/react-query";
 interface reduxType {
   auth: { [key: string]: string };
 }
@@ -20,11 +22,17 @@ type footerItem = {
 type footerItems = footerItem[];
 
 const Footer: React.FC = ({}) => {
-  const { sideBarStatus } = useStoreParams((state) => state);
-
+  const { userInfo } = useStoreInit((data) => data);
   const router = useRouter();
 
   const route = usePathname();
+
+  const { data: initPropData, refetch } = useQuery({
+    queryKey: [PropertyService.OWNER_PROP_INIT_CACHEKEY],
+    queryFn: () => PropertyService.InitProperty({ property_id: undefined }),
+    enabled: false,
+  });
+
   const footerItems = [
     {
       id: 2,
@@ -43,7 +51,18 @@ const Footer: React.FC = ({}) => {
     {
       id: 14242,
       title: _STRINGS.CREATE_ADD,
-      route: "/properties/step-one",
+      route: "/owner/properties",
+      callBack: () => {
+        if (!!userInfo) {
+          if (!userInfo?.owner_id) {
+            router.push(`/profile/edit`);
+          } else {
+            refetch().then((e) => {
+              if (!!e?.data) router.push(`/owner/properties/${e?.data?.id}/edit/initials`);
+            });
+          }
+        }
+      },
 
       icon: "/assets/icons/navbar/add_footer.svg",
     },
@@ -111,8 +130,12 @@ const Footer: React.FC = ({}) => {
               onClick={() => {
                 if (!isFocused(el?.route)) {
                   useStoreParams.setState({ sideBarStatus: false });
-                  router.push(`${el?.route}`);
-                  setFocused(el);
+                  if (!!el?.callBack) {
+                    el?.callBack();
+                  } else {
+                    router.push(`${el?.route}`);
+                    setFocused(el);
+                  }
                 }
               }}
               key={el?.id}

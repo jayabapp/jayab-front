@@ -11,21 +11,25 @@ import { createPropertySteps } from "@/utils/constantss";
 import _STRINGS from "@/utils/LocalStrings";
 import { useMutation, useQuery } from "@tanstack/react-query";
 
-import { usePathname, useRouter } from "next/navigation";
+import { useParams, usePathname, useRouter } from "next/navigation";
 import React, { useEffect, useState } from "react";
 
 const CreateProperty = () => {
   const router = useRouter();
   const pathname = usePathname();
   const { userInfo } = useStoreInit((data) => data);
-
+  const params = useParams();
+  const { property_id } = params;
   /* -------------------------------------------------------------------------- */
   /*                             INIT PROP CREATION                             */
   /* -------------------------------------------------------------------------- */
-  const { data: initPropData, refetch } = useQuery({
-    queryKey: [PropertyService.OWNER_PROP_INIT_CACHEKEY],
-    queryFn: PropertyService.InitProperty,
-    enabled: false,
+  const { data: initPropData } = useQuery({
+    queryKey: [PropertyService.OWNER_PROP_INIT_CACHEKEY, property_id],
+    queryFn: () => {
+      if (!!property_id) {
+        return PropertyService.InitProperty({ property_id: `${property_id}` });
+      } else return null;
+    },
   });
 
   const [values, setValues] = useState<CreateProperyStepOne>({
@@ -46,15 +50,15 @@ const CreateProperty = () => {
     location_access: false,
   });
 
-  useEffect(() => {
-    if (!!userInfo) {
-      if (!userInfo?.owner_id) {
-        router.push(`/profile/edit?redirect_url=${pathname}`);
-      } else {
-        refetch();
-      }
-    }
-  }, [userInfo]);
+  // useEffect(() => {
+  //   if (!!userInfo) {
+  //     if (!userInfo?.owner_id) {
+  //       router.push(`/profile/edit?redirect_url=${pathname}`);
+  //     } else {
+  //       refetch();
+  //     }
+  //   }
+  // }, [userInfo]);
 
   useEffect(() => {
     if (!!initPropData) {
@@ -87,7 +91,7 @@ const CreateProperty = () => {
   const { mutate, isPending } = useMutation({
     mutationFn: PropertyService.CreatePropertyStepOne,
     onSuccess: () => {
-      router.push("/properties/step-two");
+      router.push(`/owner/properties/${property_id}/edit/location`);
     },
   });
   const onSubmit = () => {

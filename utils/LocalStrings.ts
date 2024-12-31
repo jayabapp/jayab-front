@@ -103,6 +103,12 @@ const _STRINGS = {
   ACCESS_ROUTE: "مسیر دسترسی",
   ACCESS_ROUTE_DESC: "توضیحات بافت و مسیر دسترسی",
   NEIGHBORHOOD_TYPE: "همسایگی اقامتگاه",
+  ROOMS_INFO: "اطلاعات اتاق خواب و رخت خواب",
+  REST_ROOMS: "سرویس بهداشتی",
+  SHOWER: "حمام",
+  POOL_STATUS: "وضعیت استخر",
+  ENTERTAINMENT: "امکانات تفریحی",
+  POOL_TYPE: "نوع استخر",
 };
 
 export default _STRINGS;

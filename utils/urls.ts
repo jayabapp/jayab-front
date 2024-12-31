@@ -50,7 +50,8 @@ export const apiRoutes = {
 
   CITIES: "/cities",
 
-  OWNER_PROP_INIT: "/owner/properties/init",
+  OWNER_PROP_INIT: (propertyId?: string | number | null) =>
+    `/owner/properties/init${!!propertyId ? `?property_id=${propertyId}` : ""}`,
 
   OWNER_PROPERTIES: (propertyId: string | number | null) => `/owner/properties/${propertyId}`,
 
@@ -59,6 +60,10 @@ export const apiRoutes = {
   OWNER_PROPERTIES_MEDIA_UPDATE: (propertyId: string | number | null) => `/owner/properties/${propertyId}/media`,
 
   OWNER_PROPERTIES_ENV_UPDATE: (propertyId: string | number | null) => `/owner/properties/${propertyId}/environment`,
+
+  OWNER_PROPERTIES_ENV_FACILITY: (propertyId: string | number | null) => `/owner/properties/${propertyId}/facility`,
+
+  OWNER_PROPERTIES_ENV_BEDROOM: (propertyId: string | number | null) => `/owner/properties/${propertyId}/bedroom`,
 
   CITIES_CHILDEREN: (parentId: string | number) => `/cities/${parentId}`,
 

@@ -14,7 +14,7 @@ import { createPropertySteps } from "@/utils/constantss";
 import _STRINGS from "@/utils/LocalStrings";
 import { useMutation, useQuery } from "@tanstack/react-query";
 import dynamic from "next/dynamic";
-import { usePathname, useRouter } from "next/navigation";
+import { useParams, usePathname, useRouter } from "next/navigation";
 import React, { useEffect, useMemo, useState } from "react";
 
 const CreatePropertyImages = () => {
@@ -26,19 +26,24 @@ const CreatePropertyImages = () => {
   const [uploaderLoading, setUploaderLoading] = useState(false);
   const [images, setImages] = useState<any[]>([]);
   const [primaryImageId, setPrimaryImageId] = useState<string | number>(0);
-
+  const params = useParams();
+  const { property_id } = params;
   /* -------------------------------------------------------------------------- */
-  /*                             INIT PROP  DATA                             */
+  /*                             INIT PROP CREATION                             */
   /* -------------------------------------------------------------------------- */
   const { data: initPropData } = useQuery({
-    queryKey: [PropertyService.OWNER_PROP_INIT_CACHEKEY],
-    queryFn: PropertyService.InitProperty,
+    queryKey: [PropertyService.OWNER_PROP_INIT_CACHEKEY, property_id],
+    queryFn: () => {
+      if (!!property_id) {
+        return PropertyService.InitProperty({ property_id: `${property_id}` });
+      } else return null;
+    },
   });
 
   const { mutate, isPending } = useMutation({
     mutationFn: PropertyService.CreatePropertySetMdia,
     onSuccess: () => {
-      router.push("/properties/step-four");
+      router.push(`/owner/properties/${property_id}/edit/environment`);
     },
   });
 

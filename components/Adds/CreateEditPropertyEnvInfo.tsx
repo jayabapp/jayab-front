@@ -27,23 +27,23 @@ const CreateEditPropertyEnvInfo = ({
   onChange: (value: string | number | null | boolean, key: string) => void;
 }) => {
   const { data: patterns } = useQuery({
-    queryFn: () => PropertyService.GetUserPropertyGroup({ group: "PATTERN" }),
-    queryKey: [PropertyService.USER_PROP_OPTIONS_CACHEKEY, "PATTERN"],
+    queryFn: () => PropertyService.GetUserPropertyGroup({ group: ["PATTERN", "ACCESS", "NEIGHBORHOOD"] }),
+    queryKey: [PropertyService.USER_PROP_OPTIONS_CACHEKEY, "PATTERN", "ACCESS", "NEIGHBORHOOD"],
   });
-  const { data: accessRoutes } = useQuery({
-    queryFn: () => PropertyService.GetUserPropertyGroup({ group: "ACCESS" }),
-    queryKey: [PropertyService.USER_PROP_OPTIONS_CACHEKEY, "ACCESS"],
-  });
-  const { data: neighborhoods } = useQuery({
-    queryFn: () => PropertyService.GetUserPropertyGroup({ group: "NEIGHBORHOOD" }),
-    queryKey: [PropertyService.USER_PROP_OPTIONS_CACHEKEY, "NEIGHBORHOOD"],
-  });
+  // const { data: accessRoutes } = useQuery({
+  //   queryFn: () => PropertyService.GetUserPropertyGroup({ group: "ACCESS" }),
+  //   queryKey: [PropertyService.USER_PROP_OPTIONS_CACHEKEY, "ACCESS"],
+  // });
+  // const { data: neighborhoods } = useQuery({
+  //   queryFn: () => PropertyService.GetUserPropertyGroup({ group: "NEIGHBORHOOD" }),
+  //   queryKey: [PropertyService.USER_PROP_OPTIONS_CACHEKEY, "NEIGHBORHOOD"],
+  // });
 
   return (
     <div className=" w-full gap-5  grid grid-cols-1 md:grid-cols-2   items-center ">
       <SinglePopUpSelect
         closeOnSelect
-        item={{ list: patterns || [], title: _STRINGS.ENV_PATTERN, isMandatory: true }}
+        item={{ list: patterns?.["PATTERN"] || [], title: _STRINGS.ENV_PATTERN, isMandatory: true }}
         value={values?.pattern || ""}
         onSelect={(e) => {
           onChange(e, "pattern");
@@ -51,7 +51,7 @@ const CreateEditPropertyEnvInfo = ({
       />
       <SinglePopUpSelect
         closeOnSelect
-        item={{ list: accessRoutes || [], title: _STRINGS.ACCESS_ROUTE, isMandatory: true }}
+        item={{ list: patterns?.["ACCESS"] || [], title: _STRINGS.ACCESS_ROUTE, isMandatory: true }}
         value={values?.access || ""}
         onSelect={(e) => {
           onChange(e, "access");
@@ -72,7 +72,7 @@ const CreateEditPropertyEnvInfo = ({
       />
       <SinglePopUpSelect
         closeOnSelect
-        item={{ list: neighborhoods || [], title: _STRINGS.NEIGHBORHOOD_TYPE, isMandatory: true }}
+        item={{ list: patterns?.["NEIGHBORHOOD"] || [], title: _STRINGS.NEIGHBORHOOD_TYPE, isMandatory: true }}
         value={values?.neighborhood || ""}
         onSelect={(e) => {
           onChange(e, "neighborhood");

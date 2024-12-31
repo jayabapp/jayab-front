@@ -37,17 +37,18 @@ const CreateEditProperty = ({
   onChange: (value: string | number | null | boolean, key: string) => void;
 }) => {
   const { data: propertyTypes } = useQuery({
-    queryFn: () => PropertyService.GetUserPropertyGroup({ group: "PROPERTY_TYPE" }),
-    queryKey: [PropertyService.USER_PROP_OPTIONS_CACHEKEY, "PROPERTY_TYPE"],
+    queryFn: () =>
+      PropertyService.GetUserPropertyGroup({ group: ["PROPERTY_TYPE", "OWNERSHIP", "BUILDING_DIRECTION"] }),
+    queryKey: [PropertyService.USER_PROP_OPTIONS_CACHEKEY, "PROPERTY_TYPE", "OWNERSHIP", "BUILDING_DIRECTION"],
   });
-  const { data: ownershipTypes } = useQuery({
-    queryFn: () => PropertyService.GetUserPropertyGroup({ group: "OWNERSHIP" }),
-    queryKey: [PropertyService.USER_PROP_OPTIONS_CACHEKEY, "OWNERSHIP"],
-  });
-  const { data: buildingDirection } = useQuery({
-    queryFn: () => PropertyService.GetUserPropertyGroup({ group: "BUILDING_DIRECTION" }),
-    queryKey: [PropertyService.USER_PROP_OPTIONS_CACHEKEY, "BUILDING_DIRECTION"],
-  });
+  // const { data: ownershipTypes } = useQuery({
+  //   queryFn: () => PropertyService.GetUserPropertyGroup({ group: "OWNERSHIP" }),
+  //   queryKey: [PropertyService.USER_PROP_OPTIONS_CACHEKEY, "OWNERSHIP"],
+  // });
+  // const { data: buildingDirection } = useQuery({
+  //   queryFn: () => PropertyService.GetUserPropertyGroup({ group: "BUILDING_DIRECTION" }),
+  //   queryKey: [PropertyService.USER_PROP_OPTIONS_CACHEKEY, "BUILDING_DIRECTION"],
+  // });
 
   const { data: provinces } = useQuery({
     queryFn: AuthService.GetProvince,
@@ -66,7 +67,7 @@ const CreateEditProperty = ({
     <div className=" w-full gap-5  grid grid-cols-1 md:grid-cols-2   items-center ">
       <SinglePopUpSelect
         closeOnSelect
-        item={{ list: propertyTypes || [], title: _STRINGS.PROPERTY_TYPE, isMandatory: true }}
+        item={{ list: propertyTypes?.["PROPERTY_TYPE"] || [], title: _STRINGS.PROPERTY_TYPE, isMandatory: true }}
         value={values?.property_type || ""}
         onSelect={(e) => {
           onChange(e, "property_type");
@@ -121,7 +122,7 @@ const CreateEditProperty = ({
       />
       <SinglePopUpSelect
         closeOnSelect
-        item={{ list: ownershipTypes || [], title: _STRINGS.OWNERSHIP_TYPE, isMandatory: true }}
+        item={{ list: propertyTypes?.["OWNERSHIP"] || [], title: _STRINGS.OWNERSHIP_TYPE, isMandatory: true }}
         value={values?.owenershp_type || ""}
         onSelect={(e) => {
           onChange(e, "owenershp_type");
@@ -159,7 +160,11 @@ const CreateEditProperty = ({
       />
       <SinglePopUpSelect
         closeOnSelect
-        item={{ list: buildingDirection || [], title: _STRINGS.BUILDING_DIRECTION, isMandatory: true }}
+        item={{
+          list: propertyTypes?.["BUILDING_DIRECTION"] || [],
+          title: _STRINGS.BUILDING_DIRECTION,
+          isMandatory: true,
+        }}
         value={values?.direction || ""}
         onSelect={(e) => {
           onChange(e, "direction");

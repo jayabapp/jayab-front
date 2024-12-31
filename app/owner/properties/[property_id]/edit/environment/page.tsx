@@ -12,7 +12,7 @@ import { createPropertySteps } from "@/utils/constantss";
 import _STRINGS from "@/utils/LocalStrings";
 import { useMutation, useQuery } from "@tanstack/react-query";
 
-import { usePathname, useRouter } from "next/navigation";
+import { useParams, usePathname, useRouter } from "next/navigation";
 import React, { useEffect, useState } from "react";
 
 const CreateProperty = () => {
@@ -20,13 +20,18 @@ const CreateProperty = () => {
   const pathname = usePathname();
   const { userInfo } = useStoreInit((data) => data);
 
+  const params = useParams();
+  const { property_id } = params;
   /* -------------------------------------------------------------------------- */
   /*                             INIT PROP CREATION                             */
   /* -------------------------------------------------------------------------- */
-  const { data: initPropData, refetch } = useQuery({
-    queryKey: [PropertyService.OWNER_PROP_INIT_CACHEKEY],
-    queryFn: PropertyService.InitProperty,
-    enabled: false,
+  const { data: initPropData } = useQuery({
+    queryKey: [PropertyService.OWNER_PROP_INIT_CACHEKEY, property_id],
+    queryFn: () => {
+      if (!!property_id) {
+        return PropertyService.InitProperty({ property_id: `${property_id}` });
+      } else return null;
+    },
   });
 
   const [values, setValues] = useState<CreateProperyStepThree>({
@@ -38,19 +43,15 @@ const CreateProperty = () => {
   });
 
   useEffect(() => {
-    if (!!userInfo) {
-      if (!userInfo?.owner_id) {
-        router.push(`/profile/edit?redirect_url=${pathname}`);
-      } else {
-        refetch();
-      }
-    }
-  }, [userInfo]);
-
-  useEffect(() => {
     if (!!initPropData) {
-      //   setValues({
-      //   });
+      setValues({
+        access: initPropData?.property_options?.find((e) => e?.option?.group == "ACCESS")?.option_id || null,
+        neighborhood:
+          initPropData?.property_options?.find((e) => e?.option?.group == "NEIGHBORHOOD")?.option_id || null,
+        pattern: initPropData?.property_options?.find((e) => e?.option?.group == "PATTERN")?.option_id || null,
+        distance_dscr: initPropData?.description?.distance_dscr,
+        pattern_dscr: initPropData?.description?.pattern_dscr,
+      });
     }
   }, [initPropData]);
 
@@ -61,7 +62,7 @@ const CreateProperty = () => {
   const { mutate, isPending } = useMutation({
     mutationFn: PropertyService.CreatePropertySetEnv,
     onSuccess: () => {
-      router.push("/properties/step-five");
+      router.push(`/owner/properties/${property_id}/edit/bedroom`);
     },
   });
   const onSubmit = () => {
@@ -93,7 +94,7 @@ const CreateProperty = () => {
           containerClass="w-full flex items-center justify-center"
           roundedClass="rounded-full"
           width=" w-[90%] md:w-1/2"
-          title={_STRINGS.CHECK_CREDENTIOALS}
+          title={_STRINGS.SUBMIT_MOVE_ON}
         />
       </FixedBottomContainer>
     </div>

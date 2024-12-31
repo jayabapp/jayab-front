@@ -55,6 +55,8 @@ export interface PropInitDto {
   property_options: PropertyOptionsDto[];
   attachments: ImageDto[];
   feature_image: ImageDto;
+  description: DecriptionsDto;
+  bedrooms: ReturnBedroomsDto;
 }
 
 export interface PropertyOptionsDto {
@@ -73,4 +75,79 @@ export interface Option {
   created_at: Date;
   updated_at: Date;
   deleted_at: null;
+}
+
+export interface DecriptionsDto {
+  id: number;
+  property_id: number;
+  property_dscr: null;
+  pattern_dscr: string;
+  distance_dscr: string;
+  facility_dscr: null;
+  guest_dscr: null;
+  pet_dscr: null;
+  party_dscr: null;
+  doc_dscr: null;
+  other_dscr: null;
+  ad_dscr: null;
+  created_at: Date;
+  updated_at: Date;
+}
+
+export interface RoomInfosDto {
+  bedrooms: number[];
+  additional_bed: number;
+  master_room: number;
+  sofa_bed: number;
+  wc: number;
+  wc_ir: number;
+  bathroom_master: number;
+  bathroom_general: number;
+  bathroom_in_wc: number;
+  bathroom_tub: number;
+}
+
+export interface ReturnBedroomsDto {
+  id: number;
+  property_id: number;
+  bedrooms: number[];
+  additional_bed: number;
+  master_room: number;
+  sofa_bed: number;
+  wc: number;
+  wc_ir: number;
+  bathroom_master: number;
+  bathroom_general: number;
+  bathroom_in_wc: number;
+  bathroom_tub: number;
+  total_bedrooms: number;
+  created_at: Date;
+  updated_at: Date;
+}
+
+export interface FacilitiesValuesDto {
+  cool_heat: (string | number | null)[];
+  welfare: (string | number | null)[];
+  entertainment: (string | number | null)[];
+  kitchen: (string | number | null)[];
+  has_pool: boolean;
+  pool_type: (string | number | null)[];
+  facility_dscr: string | number | null;
+}
+
+export enum PropertyOptionGroup {
+  PROPERTY_TYPE = "PROPERTY_TYPE", //نوع ملک
+  OWNERSHIP = "OWNERSHIP", //نوع مالکیت
+  PATTERN = "PATTERN", //بافت محیط
+  ACCESS = "ACCESS", // مسیر دسترسی
+  NEIGHBORHOOD = "NEIGHBORHOOD", //همسایگی
+  ENTERTAINMENT = "ENTERTAINMENT", //امکانات تفریحی
+  POOL_TYPE = "POOL_TYPE", //نوع استخر
+  KITCHEN = "KITCHEN", //امکانات آشپزخانه
+  COOL_HEAT = "COOL_HEAT", //امکانات سرمایشی و گرمایشی
+  WELFARE = "WELFARE", //رفاهی
+  GUEST_TYPE = "GUEST_TYPE", //نوع مهمان
+  PET = "PET", // شرایط ورود حیوان خانگی
+  PARTY = "PARTY", // شرایط برگزاری مراسم
+  BUILDING_DIRECTION = "BUILDING_DIRECTION", //جهت ساختمان
 }

@@ -1,6 +1,12 @@
 import { apiRoutes } from "@/utils/urls";
 import { apiCall } from "../common/apicall.helper";
-import { CreatePropertyStepOneDto, PropertyTypesDTP, PropInitDto } from "./property.interface";
+import {
+  CreatePropertyStepOneDto,
+  PropertyOptionGroup,
+  PropertyTypesDTP,
+  PropInitDto,
+  RoomInfosDto,
+} from "./property.interface";
 import { YupValidator } from "@/utils/YupValidator";
 import { sendMediaSchema } from "./property.schema";
 
@@ -8,20 +14,24 @@ export class PropertyService {
   static USER_PROP_OPTIONS_CACHEKEY = "USER_PROP_OPTIONS";
   static OWNER_PROP_INIT_CACHEKEY = "OWNER_PROP_INIT";
 
-  static async GetUserPropertyGroup(dto: { group: string }) {
+  static async GetUserPropertyGroup(dto: { group: (keyof typeof PropertyOptionGroup)[] }) {
     try {
-      const result = await apiCall<{ group: string }, PropertyTypesDTP[]>("GET", apiRoutes.USER_PROP_OPTIONS, {
-        group: dto.group,
-      });
+      const result = await apiCall<{ group: string[] }, { [key: string]: PropertyTypesDTP[] }>(
+        "GET",
+        apiRoutes.USER_PROP_OPTIONS,
+        {
+          group: dto.group,
+        }
+      );
       return result;
     } catch (e) {
       throw e;
     }
   }
 
-  static async InitProperty() {
+  static async InitProperty(dto: { property_id?: string | number | null }) {
     try {
-      const result = await apiCall<unknown, PropInitDto>("GET", apiRoutes.OWNER_PROP_INIT);
+      const result = await apiCall<unknown, PropInitDto>("GET", apiRoutes.OWNER_PROP_INIT(dto?.property_id));
       return result;
     } catch (e) {
       throw e;
@@ -96,6 +106,33 @@ export class PropertyService {
         feature_image_id: dto.feature_image_id,
         images: dto?.images,
       });
+      return result;
+    } catch (e) {
+      throw e;
+    }
+  }
+  static async CreatePropertySetBedroom(
+    dto: RoomInfosDto & {
+      propertyId: string | number | null;
+    }
+  ) {
+    try {
+      const result = await apiCall<RoomInfosDto, PropertyTypesDTP[]>(
+        "PATCH",
+        apiRoutes.OWNER_PROPERTIES_ENV_BEDROOM(dto.propertyId),
+        {
+          additional_bed: dto.additional_bed,
+          bathroom_general: dto?.bathroom_general,
+          bathroom_in_wc: dto.bathroom_in_wc,
+          bathroom_master: dto.bathroom_master,
+          bathroom_tub: dto.bathroom_tub,
+          bedrooms: dto.bedrooms,
+          master_room: dto.master_room,
+          sofa_bed: dto.sofa_bed,
+          wc: dto.wc,
+          wc_ir: dto.wc_ir,
+        }
+      );
       return result;
     } catch (e) {
       throw e;
