@@ -6,7 +6,7 @@ import Image from "next/image";
 
 import _STRINGS from "@/utils/LocalStrings";
 import PageHeaders from "@/components/headers/PageHeader";
-import PageFooter from "@/components/Footer/PageFooter";
+import FixedBottomContainer from "@/components/shared/FixedBottomContainer";
 
 
 import Button from "@/components/shared/Button/Button";
@@ -48,7 +48,6 @@ const Page = () => {
                                 />
                             </>
                         }
-                   
                         width="flex items-center justify-center w-full"
                         containerClass="w-full"
                         roundedClass="rounded-full"
@@ -57,7 +56,7 @@ const Page = () => {
                     />
                 </div>
 
-                <div className="flex flex-col gap-6 pt-12">
+                <div className="flex flex-col gap-6 pt-6">
                     <div className="w-full grid grid-cols-2 items-center justify-center gap-6">
                         <div className="mx-auto">
                             <CircularProgress
@@ -86,11 +85,9 @@ const Page = () => {
                     </div>
                 </div>
             </main>
-            <PageFooter>
-                <Link
-                    className="w-full"
-                    href={'/consultants/1/record'}
-                >
+            
+            <FixedBottomContainer>
+                <Link className="w-full" href={"/consultants/1/record"}>
                     <Button
                         width="flex items-center justify-center w-full"
                         containerClass="w-full"
@@ -98,7 +95,7 @@ const Page = () => {
                         title={_STRINGS.RECORD_SCORE}
                     />
                 </Link>
-            </PageFooter>
+            </FixedBottomContainer>
         </div>
     );
 };
