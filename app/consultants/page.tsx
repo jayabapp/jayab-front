@@ -37,18 +37,14 @@ const Page = () => {
         }
     }, [data]);
 
-    const onChange = (value: string | number | null, key: string) => {
-        setValues((e) => ({ ...e, [key]: value }));
-    };
-
     return (
         <div
             id="homeParent"
             className="container  items-center  !bg-transparent transition-all duration-500 ease-in-out flex flex-col gap-6 "
         >
             <PageHeaders title={_STRINGS.CONSULTANT_INFO} />
-            {/* <SearchBox onSubmit={() => {}} onClear={() => {}} /> */}
-            <header className="w-full flex flex-col">
+
+            <header className="w-full flex flex-col"> {/* gap-6 */}
                 <FormInput
                     value={values?.name}
                     onChangeText={(e) => {
@@ -61,6 +57,16 @@ const Page = () => {
                         placeholder: _STRINGS.SEARCH_FOR_CONSULTANTS,
                     }}
                 />
+                {/* <div className="w-full">
+                    <SearchBox
+                        placeholder={_STRINGS.SEARCH_FOR_CONSULTANTS}
+                        onSubmit={(query) =>
+                            console.log("Search submitted:", query)
+                        }
+                        onClear={() => console.log("Search cleared")}
+                        autofocus={true}
+                    />
+                </div> */}
                 <div className="flex items-center justify-between">
                     <span>جستجو در کردان و سه شهر دیگر</span>
                 </div>
@@ -71,11 +77,11 @@ const Page = () => {
                     title={_STRINGS.CHOOSE_STATE_AND_CITY}
                 /> */}
             </header>
-            <div className="grid lg:grid-cols-2 gap-6">
+            <main className="w-full grid lg:grid-cols-2 gap-6">
                 <ConsultantCard />
                 <ConsultantCard />
                 <ConsultantCard />
-            </div>
+            </main>
         </div>
     );
 };

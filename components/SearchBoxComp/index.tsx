@@ -27,7 +27,7 @@ const SearchBox = ({
     autofocus = false,
     initValue,
     onClear,
-    containerClass = "w-[90%] mx-auto",
+    containerClass = "mx-auto",
     item,
     boxId = "SEARCH_BOX",
 }: props) => {
@@ -98,11 +98,11 @@ const SearchBox = ({
     return (
         <div className={containerClass}>
             <div
-                className={`bg-white/50 rounded-20   overflow-hidden dark:bg-slate-800   pr-4 pl-2 py-3 custome-shadow-card flex justify-between items-center  ${item?.bg}`}
+                className={`bg-white/50 rounded-20   overflow-hidden  pr-4 pl-2 py-3 custome-shadow-card flex justify-between items-center  ${item?.bg}`}
             >
                 <div className="mr-2">
                     <img
-                        src="/assets/icons/edit/magnifier.svg"
+                        src="/assets/icons/search/search-icon.svg"
                         width={30}
                         height={30}
                     />
@@ -112,7 +112,7 @@ const SearchBox = ({
                         id={boxId}
                         ref={inputRef}
                         placeholder={placeholder}
-                        className={`bg-transparent dark:bg-slate-800 py-1 pl-0.5 pr-3 outline-none placeholder:text-gray-400 w-full ${item?.bg} `}
+                        className={`bg-transparent py-1 pl-0.5 pr-3 outline-none placeholder:text-gray-400 w-full ${item?.bg} `}
                         onChange={(v) => handleChange(v.target.value)}
                         value={text}
                     />
