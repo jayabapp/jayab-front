@@ -63,6 +63,8 @@ const _STRINGS = {
     SEARCH_ADD: "جستجوی آگهی",
     CALL: "تماس",
     MESSAGE: "پیامک",
+    RECORD_SCORE: "ثبت امتیاز",
+    RECORD_CONSULTANT_SCORE: "ثبت امتیاز مشاور",
 
     TODAYS_PRICE: "قیمت امروز:",
     VERIFIED: "احراز شده",
@@ -88,6 +90,9 @@ const _STRINGS = {
     CONSULTANT_APPROACHES: "نحوه برخورد مشاور",
     CONSULTANT_RESPONSIBILITY: "مسئولیت پذیری مشاور",
     FOLLOWUP_SPEED_RESPONSE: "سرعت پیگیری و نحوه پاسخگویی",
+
+    USERS_SATISFACTION: "رضایت کاربران",
+    OWNERS_SATISFACTION: "رضایت مالکان",
 };
 
 export default _STRINGS;

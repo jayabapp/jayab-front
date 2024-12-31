@@ -4,16 +4,12 @@ import React from "react";
 // import AddCardPricePart from "./AddCardPricePart";
 import Link from "next/link";
 import Image from "next/image";
-
-
-
-import { CircularProgressbar, buildStyles } from "react-circular-progressbar";
-import "react-circular-progressbar/dist/styles.css";
+import CircularProgress from "@/components/shared/CircularProgress/CircularProgress";
 
 const ConsultantCard = () => {
     const data = fakeConsultant;
     return (
-        <div className="w-full shadow-card rounded-2xl p-4 gap-0 md:gap-2">
+        <div className="w-full shadow-card rounded-2xl p-4 gap-0 md:gap-2 text-xs sm:text-base">
             <Link href={`/consultants/${data?.id}`}>
                 <div className="w-full flex items-center justify-between gap-6">
                     <div className="w-2/6">
@@ -42,59 +38,43 @@ const ConsultantCard = () => {
                         </div>
                     </div>
                     <aside className="w-full">
-                        <div className="flex flex-col gap-4">
+                        <div className="flex flex-col gap-3 sm:gap-4">
                             {/* TITLE */}
                             <div className="flex items-center gap-2">
-                                <p className="text-xl font-semibold">
+                                <p className="text-lg sm:text-xl font-semibold">
                                     {data.name}
                                 </p>
                             </div>
                             {/* CIRCULAR BARS */}
-                            <div className="flex items-center gap-4">
-                                <div className="flex flex-col sm:flex-row items-center gap-2 relative text-[#3886E5]">
-                                    <span className="text-nowrap font-semibold">
-                                        رضایت کاربران
-                                    </span>
-                                    <div className="w-12 relative">
-                                        <CircularProgressbar
-                                            value={data?.users_satisfaction}
-                                            text={data?.users_satisfaction.toString()}
-                                            styles={buildStyles({
-                                                textColor: "#3886E5",
-                                                pathColor: "#3886E5",
-                                                textSize: "2.4rem",
-                                            })}
-                                        />
-                                    </div>
+                            <div className="w-full flex items-center justify-between gap-4">
+                                <div>
+                                    <CircularProgress
+                                        size="w-10 sm:w-12"
+                                        value={80}
+                                        color="#0070f3"
+                                        label={_STRINGS.USERS_SATISFACTION}
+                                    />
                                 </div>
-                                <div className="flex flex-col sm:flex-row items-center gap-2 relative text-[#34C759]">
-                                    <span className="text-nowrap font-semibold">
-                                        رضایت کاربران
-                                    </span>
-                                    <div className="w-12 relative">
-                                        <CircularProgressbar
-                                            value={data?.owners_satisfaction}
-                                            text={data?.owners_satisfaction.toString()}
-                                            styles={buildStyles({
-                                                textColor: "#34C759",
-                                                pathColor: "#34C759",
-                                                textSize: "2.4rem",
-                                            })}
-                                        />
-                                    </div>
+                                <div>
+                                    <CircularProgress
+                                        size="w-10 sm:w-12"
+                                        value={data?.owners_satisfaction}
+                                        color="#34C759"
+                                        label={_STRINGS.OWNERS_SATISFACTION}
+                                    />
                                 </div>
                             </div>
                             {/* LOCATION */}
-                            <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between">
-                                <div className="flex items-center">
+                            <div className="w-full flex flex-col sm:flex-row sm:items-center justify-between">
+                                <div className="w-full flex items-center">
                                     <span>حوزه فعالیت:</span>
-                                    <ul className="flex flex-wrap list-none">
+                                    <ul className="flex flex-wrap list-none ps-1">
                                         {data?.locations.map((item, index) => (
                                             <li className="" key={index}>
                                                 {`${item} ${
                                                     index <=
                                                     data.locations.length - 2
-                                                        ? " و "
+                                                        ? " و"
                                                         : ""
                                                 } `}
                                             </li>
