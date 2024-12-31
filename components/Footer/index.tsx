@@ -43,7 +43,7 @@ const Footer: React.FC = ({}) => {
     {
       id: 14242,
       title: _STRINGS.CREATE_ADD,
-      route: "/create-property",
+      route: "/properties/step-one",
 
       icon: "/assets/icons/navbar/add_footer.svg",
     },

@@ -2,16 +2,17 @@
 import { PropertyService } from "@/api_services/property/property.service";
 import PageHeaders from "@/components/headers/PageHeader";
 import SearchPlaceModal from "@/components/Map/SearchPlaceModal";
+import SearchBox from "@/components/SearchBoxComp";
 import Button from "@/components/shared/Button/Button";
 import FixedBottomContainer from "@/components/shared/FixedBottomContainer";
 import StepShower from "@/components/shared/StepShower";
 import { useStoreInit } from "@/store";
 import { createPropertySteps } from "@/utils/constantss";
 import _STRINGS from "@/utils/LocalStrings";
-import { useQuery } from "@tanstack/react-query";
+import { useMutation, useQuery } from "@tanstack/react-query";
 import dynamic from "next/dynamic";
 import { usePathname, useRouter } from "next/navigation";
-import React, { useMemo, useState } from "react";
+import React, { useEffect, useMemo, useState } from "react";
 
 const CreateProperty = () => {
   const Map = useMemo(
@@ -25,6 +26,9 @@ const CreateProperty = () => {
   const [center, setCenter] = useState([51.37, 35.767]);
   const [centerAddressLoading, setCenterAddressLoading] = useState(false);
   const [centerAddress, setCenterAddress] = useState("");
+
+  const [jompTo, setJumpTo] = useState<{ lat: string | number; lng: string | number } | null>(null);
+
   const router = useRouter();
   const pathname = usePathname();
   const { userInfo } = useStoreInit((data) => data);
@@ -32,12 +36,33 @@ const CreateProperty = () => {
   /* -------------------------------------------------------------------------- */
   /*                             INIT PROP  DATA                             */
   /* -------------------------------------------------------------------------- */
-  const { data: initPropData, refetch } = useQuery({
+  const { data: initPropData } = useQuery({
     queryKey: [PropertyService.OWNER_PROP_INIT_CACHEKEY],
     queryFn: PropertyService.InitProperty,
-    enabled: false,
   });
 
+  useEffect(() => {
+    if (!!initPropData?.lat) {
+      console.log(initPropData?.lat);
+      setCenter([Number(initPropData?.lng), Number(initPropData?.lat)]);
+    }
+  }, [initPropData]);
+
+  const { mutate, isPending } = useMutation({
+    mutationFn: PropertyService.CreatePropertySetLocation,
+    onSuccess: () => {
+      router.push("/properties/step-three");
+    },
+  });
+
+  const onSubmit = () => {
+    if (initPropData?.id)
+      mutate({
+        lat: center[1],
+        lng: center[0],
+        propertyId: initPropData?.id,
+      });
+  };
   return (
     <div
       id="homeParent"
@@ -50,16 +75,25 @@ const CreateProperty = () => {
         <StepShower steps={createPropertySteps} value={2} />
       </div>
       <div className="w-full  h-[70dvh] relative">
-        <Button
-          color="primary"
-          variant="solid"
-          containerClass=" z-1 absolute left-4 top-4"
+        <div
           onClick={() => {
             setShowSearch(true);
           }}
-          title={_STRINGS.SEARCH_PLACE}
-        />
+          className="absolute top-2 z-1 left-0 right-0  w-4/5 md:w-1/2 mx-auto "
+        >
+          <SearchBox
+            containerClass="  "
+            boxId={"SEARCH_BOX_Mobile"}
+            placeholder={_STRINGS?.SEARCH_PLACE_INPUT}
+            onSubmit={() => {}}
+            onClear={() => {}}
+            autofocus={false}
+            disableTypeing={true}
+            passedText={centerAddress}
+          />
+        </div>
         <Map
+          jumpToState={jompTo}
           containerClass="  w-full "
           center={center}
           setCenter={setCenter}
@@ -71,9 +105,9 @@ const CreateProperty = () => {
       <FixedBottomContainer>
         <Button
           onClick={() => {
-            // onSubmit();
+            onSubmit();
           }}
-          //   loading={isPending}
+          loading={isPending}
           containerClass="w-full flex items-center justify-center"
           roundedClass="rounded-full"
           width=" w-[90%] md:w-1/2"
@@ -86,6 +120,7 @@ const CreateProperty = () => {
         show={showSearch}
         center={center}
         setShow={setShowSearch}
+        setJumpTo={setJumpTo}
       />
     </div>
   );

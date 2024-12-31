@@ -232,7 +232,7 @@ const AuthUploader = ({
               className=" p-1 bg-white  dark:bg-zinc-700  rounded-lg cursor-pointer absolute bottom-4 left-4 "
               onClick={onDelete}
             >
-              {/* <TrashIcon /> */}
+              <img src="/assets/icons/uploader/TrashIcon.svg" />
             </div>
           </div>
         )}

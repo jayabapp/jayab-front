@@ -54,6 +54,12 @@ export const apiRoutes = {
 
   OWNER_PROPERTIES: (propertyId: string | number | null) => `/owner/properties/${propertyId}`,
 
+  OWNER_PROPERTIES_LOC_UPDATE: (propertyId: string | number | null) => `/owner/properties/${propertyId}/location`,
+
+  OWNER_PROPERTIES_MEDIA_UPDATE: (propertyId: string | number | null) => `/owner/properties/${propertyId}/media`,
+
+  OWNER_PROPERTIES_ENV_UPDATE: (propertyId: string | number | null) => `/owner/properties/${propertyId}/environment`,
+
   CITIES_CHILDEREN: (parentId: string | number) => `/cities/${parentId}`,
 
   CONTENT_BY_KEY: (id: string | number) => `/contents/by-key/${id}`,

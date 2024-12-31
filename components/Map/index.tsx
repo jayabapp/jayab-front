@@ -10,19 +10,19 @@ type mapType = {
   setCenterAddressLoading?: (e: boolean) => void | null;
   setCenterAddress?: (e: string) => void | null;
 
-  refMap?: React.MutableRefObject<any>;
-
   disableCenter?: boolean;
   containerClass?: string;
 
   center: number[];
   setCenter?: (e: number[]) => void | null;
   setMarkers?: (e: (x: any[]) => any[]) => void | null;
+  jumpToState?: {
+    lat: string | number;
+    lng: string | number;
+  } | null;
 };
 
 const Map = ({
-  refMap,
-
   setCenterAddress,
   setCenterAddressLoading,
 
@@ -31,9 +31,10 @@ const Map = ({
   setMarkers,
   disableCenter,
   containerClass,
+  jumpToState,
 }: mapType) => {
   const initialMap = useRef<any>(null);
-  const map = refMap || initialMap;
+  const map = initialMap;
   const mapContainer = useRef<HTMLDivElement>(null);
 
   // const map = useRef<any>(null);
@@ -104,6 +105,12 @@ const Map = ({
       checkTyping();
     });
   }, [API_KEY, zoom, map, mapContainer]);
+
+  useEffect(() => {
+    if (!!jumpToState) {
+      map.current.jumpTo({ center: [jumpToState?.lat, jumpToState?.lng] }, 2000);
+    }
+  }, [jumpToState]);
 
   return (
     <div className="map-wrap relative">

@@ -1,3 +1,5 @@
+import { ImageDto } from "../auth/auth.interface";
+
 export interface PropertyTypesDTP {
   id: number;
   title: string;
@@ -51,6 +53,8 @@ export interface PropInitDto {
   updated_at: Date;
   deleted_at: string | number;
   property_options: PropertyOptionsDto[];
+  attachments: ImageDto[];
+  feature_image: ImageDto;
 }
 
 export interface PropertyOptionsDto {

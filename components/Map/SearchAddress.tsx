@@ -11,7 +11,7 @@ const getAddresses = async ({ search, setSearchedAddress, setSearchedAddressLoad
   await fetch(`https://api.neshan.org/v1/search?term=${search}&lat=${center[1]}&lng=${center[0]}`, {
     method: "GET",
     headers: {
-      "Api-Key": `service.ccf9503665084eea9ee219b2c47b4ec3`,
+      "Api-Key": `service.2134d7ab82b34fd4aa32dfbac4e70528`,
     },
   })
     .then((response) => response.json())

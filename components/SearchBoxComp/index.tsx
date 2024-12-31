@@ -10,7 +10,9 @@ interface props {
   cancelText?: string;
   containerClass?: string;
   autofocus?: boolean;
+  disableTypeing?: boolean;
   boxId?: string;
+  passedText?: string;
 
   onSubmit: (e: string | null) => void | null;
   onClear: () => void | null;
@@ -25,10 +27,12 @@ const SearchBox = ({
   cancelText = "لغو",
   onSubmit,
   autofocus = false,
+  disableTypeing = false,
   initValue,
   onClear,
   containerClass = "w-[90%] mx-auto",
   item,
+  passedText,
   boxId = "SEARCH_BOX",
 }: props) => {
   const searchParam = useSearchParams().get("q");
@@ -98,7 +102,7 @@ const SearchBox = ({
   return (
     <div className={containerClass}>
       <div
-        className={`bg-white/50 rounded-20   overflow-hidden dark:bg-slate-800   pr-4 pl-2 py-3 custome-shadow-card flex justify-between items-center  ${item?.bg}`}
+        className={` rounded-full   overflow-hidden dark:bg-slate-800   pr-4 pl-2 py-2 bg-white  border flex justify-between items-center  ${item?.bg}`}
       >
         <div className="mr-2">
           <img src="/assets/icons/edit/magnifier.svg" width={30} height={30} />
@@ -109,8 +113,10 @@ const SearchBox = ({
             ref={inputRef}
             placeholder={placeholder}
             className={`bg-transparent dark:bg-slate-800 py-1 pl-0.5 pr-3 outline-none placeholder:text-gray-400 w-full ${item?.bg} `}
-            onChange={(v) => handleChange(v.target.value)}
-            value={text}
+            onChange={(v) => {
+              if (!disableTypeing) handleChange(v.target.value);
+            }}
+            value={passedText || text}
           />
         </div>
         <div className="inline-flex w-1/4 justify-end">

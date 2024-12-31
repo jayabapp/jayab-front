@@ -87,7 +87,7 @@ const CreateProperty = () => {
   const { mutate, isPending } = useMutation({
     mutationFn: PropertyService.CreatePropertyStepOne,
     onSuccess: () => {
-      router.push("/step-two");
+      router.push("/properties/step-two");
     },
   });
   const onSubmit = () => {
@@ -120,7 +120,7 @@ const CreateProperty = () => {
     >
       <PageHeaders title={_STRINGS.REGISTER_PROPERTY} />
 
-      <div className="w-full pb-4 pt-8">
+      <div className="w-full pb-4 px-4 pt-8">
         {" "}
         <StepShower steps={createPropertySteps} value={1} />
       </div>

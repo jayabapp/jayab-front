@@ -2,7 +2,12 @@ import React, { useState, useEffect, ReactNode } from "react";
 import { Sheet } from "react-modal-sheet";
 
 type popUpsType = {
-  item?: { containerClass?: string; headerIcon?: string; title?: string };
+  item?: {
+    containerClass?: string;
+    headerIcon?: string;
+    title?: string;
+    popHieghtType?: "content-height" | "full-height";
+  };
   visible: boolean;
   children?: ReactNode;
   setVisible: (e: boolean) => void;
@@ -13,7 +18,12 @@ type popUpsType = {
 const PopUpDown = ({ item, visible, setVisible, children, containerClass }: popUpsType) => {
   return (
     <div className={item?.containerClass + " "}>
-      <Sheet isOpen={visible} onClose={() => setVisible(false)} className={`${containerClass}`} detent="content-height">
+      <Sheet
+        isOpen={visible}
+        onClose={() => setVisible(false)}
+        className={`${containerClass}`}
+        detent={item?.popHieghtType || "content-height"}
+      >
         <Sheet.Backdrop
           onTap={() => {
             setVisible(false);
@@ -39,7 +49,7 @@ const PopUpDown = ({ item, visible, setVisible, children, containerClass }: popU
               <></>
             )}
           </Sheet.Header>
-          <Sheet.Content>{children}</Sheet.Content>
+          <Sheet.Content className=" overflow-y-scroll">{children}</Sheet.Content>
         </Sheet.Container>
       </Sheet>
     </div>

@@ -95,6 +95,14 @@ const _STRINGS = {
   SELECTED_ADDRESSES: "آدرس های منتخب",
   SEARCH_PLACE: "جستجوی آدرس...",
   SEARCH_PLACE_INPUT: "جستجوی آدرس",
+  PROPERTY_LOCATION: "موقعیت مکانی ملک",
+  PROPERTY_MEDIA: "تصاویر و ویدئو ملک",
+  PRIMARY_IMAGE: "عکس اصلی",
+  FEATURE_IMAGE_NEEDED: "لطفا عکس اصلی را انتخاب کنید.",
+  ENV_PATTERN: "بافت محیطی",
+  ACCESS_ROUTE: "مسیر دسترسی",
+  ACCESS_ROUTE_DESC: "توضیحات بافت و مسیر دسترسی",
+  NEIGHBORHOOD_TYPE: "همسایگی اقامتگاه",
 };
 
 export default _STRINGS;

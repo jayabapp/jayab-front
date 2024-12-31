@@ -6,16 +6,16 @@ const SearchedLocItem = ({
   locationClickFunc,
 }: {
   item: SearchedLOCType;
-  locationClickFunc: (lat: number, lng: number) => void;
+  locationClickFunc: (e: SearchedLOCType) => void;
 }) => {
   return (
     <div
       onClick={() => {
-        locationClickFunc(item?.location?.x, item?.location?.y);
+        locationClickFunc(item);
       }}
       className="w-full flex items-start cursor-pointer px-4 pb-4 border-b border-cream-100  gap-4"
     >
-      <img src="/assets/icons/shared/searchedloc.svg" className="mt-2" />
+      <img src="/assets/icons/adds/pin_point_location.svg" className="mt-2" />
       <div className="flex h-full justify-between flex-col gap-1">
         <div className="text-sm">
           {item?.title} ({item?.neighbourhood})

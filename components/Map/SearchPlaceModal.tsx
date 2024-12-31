@@ -33,11 +33,18 @@ const SearchPlaceModal = ({
   setShow,
   title,
   center,
+  setJumpTo,
 }: {
   show: boolean;
   setShow: (e: boolean) => void | null;
   title: string;
   center: number[];
+  setJumpTo: React.Dispatch<
+    React.SetStateAction<{
+      lat: string | number;
+      lng: string | number;
+    } | null>
+  >;
 }) => {
   const [isTyping, setIsTyping] = useState(false);
   const [search, setSearch] = useState("");
@@ -76,12 +83,13 @@ const SearchPlaceModal = ({
   const closeFunc = () => {
     setShow(false);
   };
-  const locationClickFunc = (lat: number, lng: number) => {
-    // map.current.jumpTo({ center: [lat, lng] }, 2000);
+  const locationClickFunc = (e: SearchedLOCType) => {
+    setJumpTo({ lat: e?.location?.x, lng: e?.location?.y });
+    // setSelectedAddress(e?.address);
     closeFunc();
   };
   return (
-    <PopUpDown item={{ title: title }} visible={show} setVisible={closeFunc}>
+    <PopUpDown item={{ title: title, popHieghtType: "full-height" }} visible={show} setVisible={closeFunc}>
       <div className="w-full h-full flex flex-col gap-6 bg-white rounded-xl p-4">
         <FormInput
           value={search}
@@ -113,7 +121,7 @@ const SearchPlaceModal = ({
             </>
           ) : (
             <>
-              <p className="text-base text-start w-full mb-4">{"_STRINGS.MAP_SEARCHED_ITEMS_TITLE"}</p>
+              {/* <p className="text-base text-start w-full mb-4">{"_STRINGS.MAP_SEARCHED_ITEMS_TITLE"}</p> */}
               {searchedAddresses?.map((e: SearchedLOCType, index: number) => (
                 <SearchedLocItem
                   item={e}

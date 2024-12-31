@@ -8,5 +8,6 @@ export const createPropertySteps = [
   { title: "اتاق خواب", id: 5 },
   { title: "امکانات", id: 6 },
   { title: "ظرفیت", id: 7 },
-  { title: "قوانین", id: 8 },
+  { title: "دستیار", id: 8 },
+  { title: "قوانین", id: 6 },
 ];
