@@ -46,37 +46,37 @@ const ConsultantCard = () => {
                                 </p>
                             </div>
                             {/* CIRCULAR BARS */}
-                            <div className="w-full flex items-center justify-between gap-4">
+                            <div className="w-full flex items-center justify-between lg:justify-start gap-4">
                                 <div>
                                     <CircularProgress
-                                        size="w-10 sm:w-12"
+                                        size="w-full max-w-10 sm:max-w-12"
                                         value={80}
                                         color="#0070f3"
                                         label={_STRINGS.USERS_SATISFACTION}
                                         pStyles={{
                                             textColor: "#0070f3",
                                             pathColor: "#0070f3",
-                                            textSize: "360%",
+                                            textSize: "330%",
                                         }}
                                     />
                                 </div>
                                 <div>
                                     <CircularProgress
-                                        size="w-10 sm:w-12"
+                                        size="w-full max-w-10 sm:max-w-12"
                                         value={data?.owners_satisfaction}
                                         color="#34C759"
                                         label={_STRINGS.OWNERS_SATISFACTION}
                                         pStyles={{
                                             textColor: "#34C759",
                                             pathColor: "#34C759",
-                                            textSize: "360%",
+                                            textSize: "330%",
                                         }}
                                     />
                                 </div>
                             </div>
                             {/* LOCATION */}
                             <div className="w-full flex flex-col sm:flex-row sm:items-center justify-between">
-                                <div className="w-full flex items-center">
+                                <div className="flex items-center">
                                     <span>حوزه فعالیت:</span>
                                     <ul className="flex flex-wrap list-none ps-1">
                                         {data?.locations.map((item, index) => (
@@ -94,7 +94,7 @@ const ConsultantCard = () => {
 
                                 <div>
                                     <span>سابقه: </span>
-                                    <span>6 ماه</span>
+                                    <span className="text-nowrap">6 ماه</span>
                                 </div>
                             </div>
                         </div>

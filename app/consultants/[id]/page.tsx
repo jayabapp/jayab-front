@@ -130,6 +130,7 @@ const Page = () => {
                 <FixedBottomContainer>
                     <div className="w-full px-4">
                         <Button
+                            disabled={false} // TODO: Check if contact button clicked correctly then update this value
                             width="flex items-center justify-center w-full"
                             containerClass="w-full"
                             roundedClass="rounded-full"

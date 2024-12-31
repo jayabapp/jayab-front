@@ -30,9 +30,9 @@ const CircularProgress: React.FC<CircularProgressProps> = ({
             className={`w-full flex flex-col items-center gap-2 relative text-xs sm:text-sm md:text-base ${className}`}
             style={{ color: pStyles?.textColor }}
         >
-            <div className="flex items-center justify-center gap-2">
-                {label && <span>{label}</span>}
-                <div className={`relative max-w-full ${size}`}>
+            <div className="flex items-center gap-1">
+                {label && <span className="text-nowrap">{label}</span>}
+                <div className={`relative inline-flex max-w-full ${size}`}>
                     <CircularProgressbar
                         value={value}
                         text={`${value}`}

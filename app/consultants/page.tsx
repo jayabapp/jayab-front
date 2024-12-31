@@ -42,10 +42,10 @@ const Page = () => {
             id="homeParent"
             className="container  items-center  !bg-transparent transition-all duration-500 ease-in-out flex flex-col gap-6 "
         >
-            <PageHeaders title={_STRINGS.CONSULTANT_INFO} />
+            <PageHeaders title={_STRINGS.SEARCH_FOR_CONSULTANTS} />
 
-            <header className="w-full flex flex-col"> {/* gap-6 */}
-                <FormInput
+            <header className="w-full flex flex-col gap-6">
+                {/* <FormInput
                     value={values?.name}
                     onChangeText={(e) => {
                         // onChange(e, "name");
@@ -56,8 +56,8 @@ const Page = () => {
                         containerClass: "w-full",
                         placeholder: _STRINGS.SEARCH_FOR_CONSULTANTS,
                     }}
-                />
-                {/* <div className="w-full">
+                /> */}
+                <div className="w-full">
                     <SearchBox
                         placeholder={_STRINGS.SEARCH_FOR_CONSULTANTS}
                         onSubmit={(query) =>
@@ -66,7 +66,7 @@ const Page = () => {
                         onClear={() => console.log("Search cleared")}
                         autofocus={true}
                     />
-                </div> */}
+                </div>
                 <div className="flex items-center justify-between">
                     <span>جستجو در کردان و سه شهر دیگر</span>
                 </div>
