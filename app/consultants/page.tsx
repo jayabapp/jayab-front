@@ -11,6 +11,7 @@ import { usePathname, useRouter } from "next/navigation";
 import React, { useEffect, useState } from "react";
 import Button from "@/components/shared/Button/Button";
 import FormInput from "@/components/shared/Form/FormInput";
+import SearchBox from "@/components/SearchBoxComp";
 
 const Page = () => {
     const router = useRouter();
@@ -46,6 +47,7 @@ const Page = () => {
             className="container  items-center  !bg-transparent transition-all duration-500 ease-in-out flex flex-col gap-6 "
         >
             <PageHeaders title={_STRINGS.CONSULTANT_INFO} />
+            {/* <SearchBox onSubmit={() => {}} onClear={() => {}} /> */}
             <header className="w-full flex flex-col">
                 <FormInput
                     value={values?.name}

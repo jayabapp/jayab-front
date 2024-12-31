@@ -9,6 +9,11 @@ interface CircularProgressProps {
     label?: string;
     subtitle?: string;
     className?: string;
+    pStyles?: {
+        textColor?: string;
+        pathColor?: string;
+        textSize?: string;
+    };
 }
 
 const CircularProgress: React.FC<CircularProgressProps> = ({
@@ -18,23 +23,20 @@ const CircularProgress: React.FC<CircularProgressProps> = ({
     label,
     subtitle,
     className,
+    pStyles = {}    
 }) => {
     return (
         <div
             className={`w-full flex flex-col sm:flex-row items-center gap-2 relative text-xs sm:text-sm ${className}`}
-            style={{ color }}
+            style={{ color: pStyles?.textColor }}
         >
-            <div className="flex items-center gap-1 sm:gap-2">
+            <div className="flex items-center gap-1">
                 {label && <span className="w-full font-semibold">{label}</span>}
                 <div className={`relative max-w-full ${size}`}>
                     <CircularProgressbar
                         value={value}
                         text={`${value}`}
-                        styles={buildStyles({
-                            textColor: color,
-                            pathColor: color,
-                            textSize: "270%",
-                        })}
+                        styles={buildStyles(pStyles)}
                     />
                 </div>
             </div>

@@ -53,6 +53,11 @@ const ConsultantCard = () => {
                                         value={80}
                                         color="#0070f3"
                                         label={_STRINGS.USERS_SATISFACTION}
+                                        pStyles={{
+                                            textColor: "#0070f3",
+                                            pathColor: "#0070f3",
+                                            textSize: "360%",
+                                        }}
                                     />
                                 </div>
                                 <div>
@@ -61,6 +66,11 @@ const ConsultantCard = () => {
                                         value={data?.owners_satisfaction}
                                         color="#34C759"
                                         label={_STRINGS.OWNERS_SATISFACTION}
+                                        pStyles={{
+                                            textColor: "#34C759",
+                                            pathColor: "#34C759",
+                                            textSize: "360%",
+                                        }}
                                     />
                                 </div>
                             </div>

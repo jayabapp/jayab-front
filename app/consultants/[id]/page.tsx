@@ -64,6 +64,11 @@ const Page = () => {
                                 value={90}
                                 color="#0070f3"
                                 subtitle={_STRINGS.CONSULTANT_APPROACHES}
+                                pStyles={{
+                                    textColor: "#000",
+                                    pathColor: "#34C759",
+                                    textSize: "270%",
+                                }}
                             />
                         </div>
                         <div className="mx-auto">
@@ -72,6 +77,11 @@ const Page = () => {
                                 value={80}
                                 color="#0070f3"
                                 subtitle={_STRINGS.CONSULTANT_RESPONSIBILITY}
+                                pStyles={{
+                                    textColor: "#000",
+                                    pathColor: "#34C759",
+                                    textSize: "270%",
+                                }}
                             />
                         </div>
                     </div>
@@ -81,11 +91,16 @@ const Page = () => {
                             value={75}
                             color="#0070f3"
                             subtitle={_STRINGS.FOLLOWUP_SPEED_RESPONSE}
+                            pStyles={{
+                                textColor: "#000",
+                                pathColor: "#34C759",
+                                textSize: "270%",
+                            }}
                         />
                     </div>
                 </div>
             </main>
-            
+
             <FixedBottomContainer>
                 <Link className="w-full" href={"/consultants/1/record"}>
                     <Button
