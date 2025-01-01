@@ -1,14 +1,19 @@
 import { apiRoutes } from "@/utils/urls";
 import { apiCall } from "../common/apicall.helper";
 import {
+  AssistantSendDto,
   CreatePropertyStepOneDto,
+  FacilitiesValuesDto,
+  PricingPropertySendDto,
   PropertyOptionGroup,
+  PropertyTermsSendDto,
   PropertyTypesDTP,
   PropInitDto,
   RoomInfosDto,
 } from "./property.interface";
 import { YupValidator } from "@/utils/YupValidator";
 import { sendMediaSchema } from "./property.schema";
+import { p2e } from "@/helpers/NumberConverter";
 
 export class PropertyService {
   static USER_PROP_OPTIONS_CACHEKEY = "USER_PROP_OPTIONS";
@@ -28,6 +33,10 @@ export class PropertyService {
       throw e;
     }
   }
+
+  /* -------------------------------------------------------------------------- */
+  /*                            CREATE AND EDIT PROP                            */
+  /* -------------------------------------------------------------------------- */
 
   static async InitProperty(dto: { property_id?: string | number | null }) {
     try {
@@ -131,6 +140,111 @@ export class PropertyService {
           sofa_bed: dto.sofa_bed,
           wc: dto.wc,
           wc_ir: dto.wc_ir,
+        }
+      );
+      return result;
+    } catch (e) {
+      throw e;
+    }
+  }
+
+  static async CreatePropertySetFacility(
+    dto: FacilitiesValuesDto & {
+      propertyId: string | number | null;
+    }
+  ) {
+    try {
+      const result = await apiCall<FacilitiesValuesDto, PropertyTypesDTP[]>(
+        "PATCH",
+        apiRoutes.OWNER_PROPERTIES_ENV_FACILITY(dto.propertyId),
+        {
+          cool_heat: dto.cool_heat,
+          entertainment: dto.entertainment,
+          facility_dscr: dto.facility_dscr,
+          has_pool: dto.has_pool,
+          kitchen: dto.kitchen,
+          pool_type: dto.pool_type,
+          welfare: dto.welfare,
+        }
+      );
+      return result;
+    } catch (e) {
+      throw e;
+    }
+  }
+
+  static async CreatePropertySetPrice(
+    dto: PricingPropertySendDto & {
+      propertyId: string | number | null;
+    }
+  ) {
+    try {
+      const result = await apiCall<PricingPropertySendDto, PropertyTypesDTP[]>(
+        "PATCH",
+        apiRoutes.OWNER_PROPERTIES_ENV_PRICE(dto.propertyId),
+        {
+          additional_person: Number(p2e(dto.additional_person || "")),
+          advisor_commission: Number(p2e(dto.advisor_commission || "")),
+          cleaning: Number(p2e(dto.cleaning || "")),
+          friday: Number(p2e(dto.friday || "")),
+          max_capacity: Number(p2e(dto.max_capacity || "")),
+          normal: Number(p2e(dto.normal || "")),
+          peak: Number(p2e(dto.peak || "")),
+          std_capacity: Number(p2e(dto.std_capacity || "")),
+          thursday: Number(p2e(dto.thursday || "")),
+          wednesday: Number(p2e(dto.wednesday || "")),
+        }
+      );
+      return result;
+    } catch (e) {
+      throw e;
+    }
+  }
+
+  static async CreatePropertySetAssistant(
+    dto: AssistantSendDto & {
+      propertyId: string | number | null;
+    }
+  ) {
+    try {
+      const result = await apiCall<AssistantSendDto, PropertyTypesDTP[]>(
+        "PATCH",
+        apiRoutes.OWNER_PROPERTIES_ENV_ASSISTANT(dto.propertyId),
+        {
+          assistant_full_name: dto.assistant_full_name,
+          assistant_mobile: dto.assistant_mobile,
+          show_mobile_type: dto.show_mobile_type,
+        }
+      );
+      return result;
+    } catch (e) {
+      throw e;
+    }
+  }
+
+  static async CreatePropertySetTerms(
+    dto: PropertyTermsSendDto & {
+      propertyId: string | number | null;
+    }
+  ) {
+    try {
+      const result = await apiCall<PropertyTermsSendDto, PropertyTypesDTP[]>(
+        "PATCH",
+        apiRoutes.OWNER_PROPERTIES_ENV_TERMS(dto.propertyId),
+        {
+          ad_dscr: dto.ad_dscr,
+          canceling_type: dto.canceling_type,
+          check_in_hour: dto.check_in_hour,
+          check_out_hour: dto.check_out_hour,
+          doc_dscr: dto.doc_dscr,
+          guest_dscr: dto.guest_dscr,
+          guest_type: dto.guest_type,
+          other_dscr: dto.other_dscr,
+          party: dto.party,
+          party_dscr: dto.party_dscr,
+          pet: dto.pet,
+          pet_dscr: dto.pet_dscr,
+          property_dscr: dto.property_dscr,
         }
       );
       return result;

@@ -373,10 +373,10 @@ input[type="number"] {
 }
 
 strong {
-  @apply font-bold text-xl leading-10;
+  @apply font-bold text-xl;
 }
 p {
-  @apply leading-8 font-normal text-justify;
+  @apply font-normal text-justify;
 }
 
 select {

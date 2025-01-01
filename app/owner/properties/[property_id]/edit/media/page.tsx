@@ -38,6 +38,8 @@ const CreatePropertyImages = () => {
         return PropertyService.InitProperty({ property_id: `${property_id}` });
       } else return null;
     },
+    gcTime: 0,
+    staleTime: 0,
   });
 
   const { mutate, isPending } = useMutation({

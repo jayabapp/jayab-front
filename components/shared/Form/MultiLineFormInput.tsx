@@ -38,7 +38,7 @@ export interface props {
 }
 const FormInput = ({ item, value, onChangeText, errors, errorKey = "" }: props) => {
   return (
-    <div className={item?.containerClass + " mb-4"}>
+    <div className={item?.containerClass + " "}>
       {item?.title ? (
         <label
           htmlFor={`input-${item?.id}`}

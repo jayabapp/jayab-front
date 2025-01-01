@@ -9,6 +9,7 @@ import Button from "@/components/shared/Button/Button";
 import FixedBottomContainer from "@/components/shared/FixedBottomContainer";
 import Checkbox from "@/components/shared/Form/Checkbox";
 import Counter from "@/components/shared/Form/Counter";
+import MultiLineFormInput from "@/components/shared/Form/MultiLineFormInput";
 import MultyPopUpSelect from "@/components/shared/Form/MultiSelectPopUpSelect";
 import StepShower from "@/components/shared/StepShower";
 import { p2e } from "@/helpers/NumberConverter";
@@ -21,7 +22,7 @@ import { isArray, remove } from "lodash";
 import { useParams, usePathname, useRouter } from "next/navigation";
 import React, { useEffect, useState } from "react";
 
-const CreateProperty = () => {
+const CreatePropertyFacility = () => {
   const router = useRouter();
   const pathname = usePathname();
 
@@ -38,6 +39,8 @@ const CreateProperty = () => {
         return PropertyService.InitProperty({ property_id: `${property_id}` });
       } else return null;
     },
+    gcTime: 0,
+    staleTime: 0,
   });
 
   const [values, setValues] = useState<FacilitiesValuesDto>({
@@ -65,31 +68,38 @@ const CreateProperty = () => {
     ],
   });
 
-  //   useEffect(() => {
-  //     if (!!userInfo) {
-  //       if (!userInfo?.owner_id) {
-  //         router.push(`/profile/edit?redirect_url=${pathname}`);
-  //       } else {
-  //         refetch();
-  //       }
-  //     }
-  //   }, [userInfo]);
-
   useEffect(() => {
     if (!!initPropData) {
-      //   setValues(initPropData?.bedrooms);
+      setValues({
+        welfare:
+          initPropData?.property_options?.filter((e) => e?.option?.group == "WELFARE")?.map((e) => e?.option_id) || [],
+        cool_heat:
+          initPropData?.property_options?.filter((e) => e?.option?.group == "COOL_HEAT")?.map((e) => e?.option_id) ||
+          [],
+        entertainment:
+          initPropData?.property_options
+            ?.filter((e) => e?.option?.group == "ENTERTAINMENT")
+            ?.map((e) => e?.option_id) || [],
+        pool_type:
+          initPropData?.property_options?.filter((e) => e?.option?.group == "POOL_TYPE")?.map((e) => e?.option_id) ||
+          [],
+        kitchen:
+          initPropData?.property_options?.filter((e) => e?.option?.group == "KITCHEN")?.map((e) => e?.option_id) || [],
+        facility_dscr: initPropData?.description?.facility_dscr,
+        has_pool: initPropData?.has_pool,
+      });
     }
   }, [initPropData]);
 
   const { mutate, isPending } = useMutation({
-    mutationFn: PropertyService.CreatePropertySetBedroom,
+    mutationFn: PropertyService.CreatePropertySetFacility,
     onSuccess: () => {
-      router.push("/properties/facility");
+      router.push(`/owner/properties/${property_id}/edit/price`);
     },
   });
   const onSubmit = () => {
     if (!!initPropData?.id) {
-      //   mutate({ ...values, propertyId: initPropData?.id });
+      mutate({ ...values, propertyId: initPropData?.id });
     }
   };
 
@@ -108,7 +118,6 @@ const CreateProperty = () => {
       setValues((e) => ({ ...e, [key]: isArray(values?.[key]) ? [...values?.[key], value] : [] }));
     }
   };
-  console.log(propertyTypes, "propertyTypespropertyTypes");
   return (
     <div
       id="homeParent"
@@ -153,6 +162,7 @@ const CreateProperty = () => {
         <p className="font-bold w-full text-start  text-sm md:text-base text-primary-700  ">{_STRINGS.ENTERTAINMENT}</p>
         {propertyTypes?.["ENTERTAINMENT"]?.map((e) => (
           <Checkbox
+            key={`Emt${e?.id}`}
             rounded="rounded-full"
             onSelect={() => {
               onChangeMulty(e?.id, "entertainment");
@@ -163,10 +173,59 @@ const CreateProperty = () => {
         ))}
       </div>
       <div className=" flex flex-col gap-2  border-b pb-4 w-full">
-        <p className="font-bold w-full text-start  text-sm md:text-base text-primary-700  ">{_STRINGS.REST_ROOMS}</p>
+        <p className="font-bold w-full text-start  text-sm md:text-base text-primary-700  ">{_STRINGS.KITCHEN_ACC}</p>
+        {propertyTypes?.["KITCHEN"]?.map((e) => (
+          <Checkbox
+            key={`KITCHEN${e?.id}`}
+            rounded="rounded-full"
+            onSelect={() => {
+              onChangeMulty(e?.id, "kitchen");
+            }}
+            isChecked={!!values?.kitchen?.includes(e?.id)}
+            title={e?.title}
+          />
+        ))}
+      </div>
+      <MultiLineFormInput
+        item={{
+          title: _STRINGS.OTHER_ACCESSES,
+          isMandatory: true,
+          containerClass: "w-full col-span-full",
+
+          rows: 3,
+        }}
+        value={values?.facility_dscr || ""}
+        onChangeText={(e) => {
+          onChange(e, "facility_dscr");
+        }}
+      />
+      <div className=" flex flex-col gap-2  border-b pb-4 w-full">
+        <p className="font-bold w-full text-start  text-sm md:text-base text-primary-700  ">{_STRINGS.COOL_HEAT}</p>
+        {propertyTypes?.["COOL_HEAT"]?.map((e) => (
+          <Checkbox
+            key={`COOL_HEAT${e?.id}`}
+            rounded="rounded-full"
+            onSelect={() => {
+              onChangeMulty(e?.id, "cool_heat");
+            }}
+            isChecked={!!values?.cool_heat?.includes(e?.id)}
+            title={e?.title}
+          />
+        ))}{" "}
       </div>
       <div className=" flex flex-col gap-2  border-b pb-4 w-full">
-        <p className="font-bold w-full text-start  text-sm md:text-base text-primary-700  ">{_STRINGS.SHOWER}</p>
+        <p className="font-bold w-full text-start  text-sm md:text-base text-primary-700  ">{_STRINGS.WELFARE_TITLE}</p>
+        {propertyTypes?.["WELFARE"]?.map((e) => (
+          <Checkbox
+            key={`WELFARE${e?.id}`}
+            rounded="rounded-full"
+            onSelect={() => {
+              onChangeMulty(e?.id, "welfare");
+            }}
+            isChecked={!!values?.welfare?.includes(e?.id)}
+            title={e?.title}
+          />
+        ))}{" "}
       </div>
       <FixedBottomContainer>
         <Button
@@ -184,4 +243,4 @@ const CreateProperty = () => {
   );
 };
 
-export default CreateProperty;
+export default CreatePropertyFacility;

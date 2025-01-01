@@ -7,7 +7,6 @@ type CheckboxProps = {
   onSelect: () => void;
   containerClass?: string;
   rounded?: string;
-  customeFillImage?: string;
   disabled?: boolean;
 };
 const Checkbox = ({
@@ -16,7 +15,6 @@ const Checkbox = ({
   onSelect,
   containerClass,
   rounded = "rounded-md",
-  customeFillImage,
   disabled,
 }: CheckboxProps): JSX.Element => {
   return (

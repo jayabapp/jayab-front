@@ -30,14 +30,22 @@ export interface PropInitDto {
   owner_id: number;
   title: string | number;
   land_area: string | number;
+  canceling_type: "EASY" | "NORMAL" | "STRICT";
+  contact_type: string | number;
   building_area: string | number;
+  check_out_hour: string | number;
+
+  check_in_hour: string | number;
   floors: string | number;
   building_direction: string | number;
   unit_per_floor: string | number;
+  advisor_commission: string | number;
   floor: string | number;
   construction_year: string | number;
   region_id: string | number;
   province_id: string | number;
+  std_capacity: string | number;
+  max_capacity: string | number;
   city_id: string | number;
   address: string | number;
   lat: string | number;
@@ -47,6 +55,7 @@ export interface PropInitDto {
   property_type: string | number;
   video_id: string | number;
   is_chat_enabled: boolean;
+  has_pool: boolean;
   is_location_visible: boolean;
   status: number;
   created_at: Date;
@@ -57,6 +66,29 @@ export interface PropInitDto {
   feature_image: ImageDto;
   description: DecriptionsDto;
   bedrooms: ReturnBedroomsDto;
+  daily_price: DayliPriceDto;
+  assistants: AssistantsDto[];
+}
+
+export interface AssistantsDto {
+  assistant_full_name: string;
+  assistant_mobile_number: string;
+  owner_mobile_number: null;
+}
+
+export interface DayliPriceDto {
+  id: number;
+  property_id: number;
+  normal: number;
+  wednesday: number;
+  thursday: number;
+  friday: number;
+  peak: number;
+  cleaning: number;
+  additional_person: number;
+  today_offer: null;
+  created_at: Date;
+  updated_at: Date;
 }
 
 export interface PropertyOptionsDto {
@@ -133,6 +165,41 @@ export interface FacilitiesValuesDto {
   has_pool: boolean;
   pool_type: (string | number | null)[];
   facility_dscr: string | number | null;
+}
+
+export interface PricingPropertySendDto {
+  std_capacity: number | string | null;
+  max_capacity: number | string | null;
+  advisor_commission: number | string | null;
+  normal: number | string | null;
+  wednesday: number | string | null;
+  thursday: number | string | null;
+  friday: number | string | null;
+  peak: number | string | null;
+  cleaning: number | string | null;
+  additional_person: number | string | null;
+}
+
+export interface AssistantSendDto {
+  assistant_full_name: string | number | null;
+  assistant_mobile: string | number | null;
+  show_mobile_type: string | number | null;
+}
+
+export interface PropertyTermsSendDto {
+  guest_type: (string | number | null)[];
+  pet: string | number | null;
+  party: string | number | null;
+  canceling_type: "EASY" | "NORMAL" | "STRICT";
+  check_in_hour: string | number | null;
+  check_out_hour: string | number | null;
+  guest_dscr: string | number | null;
+  pet_dscr: string | number | null;
+  party_dscr: string | number | null;
+  doc_dscr: string | number | null;
+  other_dscr: string | number | null;
+  ad_dscr: string | number | null;
+  property_dscr: string | number | null;
 }
 
 export enum PropertyOptionGroup {
