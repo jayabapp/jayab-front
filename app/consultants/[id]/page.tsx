@@ -146,18 +146,19 @@ const Page = () => {
                 onHide={handleHideModal} // Pass the function to hide the modal
                 type="bottom-sheet" // Optional: Can be omitted for default animation
                 options={{
-                    containerClass: "custom-modal-class", // Optional: Add custom styles to the modal container
+                    containerClass:
+                        "mx-auto my-10 w-full max-w-xl rounded-2xl overflow-y-scroll bg-white dark:bg-zinc-900",
                 }}
             >
                 {/* Step 5: Modal content goes here */}
-                <div className="z-50 w-screen h-screen overflow-hidden lg:max-w-2xl mx-auto lg:max-h-[90vh] bg-white lg:shadow-card lg:rounded-2xl">
+                <div className=" bg-white lg:shadow-card lg:rounded-2xl">
                     <header className="flex items-center justify-center sticky select-none z-[40]   shadow-md   bg-white w-full transition-all top-0 h-16 px-6 py-4">
                         <span className="font-semibold">ثبت امتیاز مشاور</span>
                         <button
                             onClick={handleHideModal}
-                            className="text-2xl text-gray-500 absolute right-4 top-4"
+                            className="text-2xl text-gray-500 absolute right-4 top-6"
                         >
-                            x
+                            <img src="/assets/icons/close.svg" alt="" />
                         </button>
                     </header>
                     <LazyLoadedComponent />

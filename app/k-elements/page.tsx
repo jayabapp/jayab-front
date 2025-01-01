@@ -32,7 +32,7 @@ const Page = () => {
     // throw new Error("messagr from me");
 
     // Step 1: Declare a state to control modal visibility
-    const [showModal, setShowModal] = useState(true);
+    const [showModal, setShowModal] = useState(false);
     // const [checkedStates, setCheckedStates] = useState<{
     //     [key: number]: boolean;
     // }>({});
@@ -176,30 +176,32 @@ const Page = () => {
 
             <button onClick={handleModal}>Show Modal</button>
             <Modal
+                options={{
+                    containerClass:
+                        "mx-auto my-10 w-full max-w-xl rounded-2xl overflow-y-scroll bg-white dark:bg-zinc-900",
+                }}
                 show={showModal} // Control visibility via state
                 onHide={handleModal} // Pass the function to hide the modal
-                type="bottom-sheet" // Optional: Can be omitted for default animation
-                options={{
-                    containerClass: "custom-modal-class", // Optional: Add custom styles to the modal container
-                }}
             >
-                {/* Step 5: Modal content goes here */}
-                <div className="z-50 w-screen h-screen overflow-hidden lg:max-w-xl mx-auto lg:max-h-[90vh] bg-white lg:shadow-card lg:rounded-2xl overflow-y-auto">
+                <div className="flex flex-col">
                     <header className="flex items-center justify-center sticky select-none z-[40]   shadow-md   bg-white w-full transition-all top-0 h-16 px-6 py-4">
                         <span className="font-semibold">جستجوی استان</span>
                         {modalEntry === 0 ? (
                             <button
                                 onClick={handleModal}
-                                className="text-2xl text-gray-500 absolute right-4 top-4"
+                                className="text-2xl text-gray-500 absolute right-6 top-6"
                             >
-                                x
+                                <img src="/assets/icons/close.svg" alt="" />
                             </button>
                         ) : (
                             <button
                                 onClick={() => setModalEntry(0)}
-                                className="text-2xl text-gray-500 absolute right-4 top-4"
+                                className="text-2xl text-gray-500 absolute right-6 top-6"
                             >
-                                {`<-`}
+                                <img
+                                    alt=""
+                                    src="/assets/icons/chevron-right.svg"
+                                />
                             </button>
                         )}
                     </header>
@@ -222,7 +224,7 @@ const Page = () => {
                                             />
                                             <div className="flex flex-col gap-2">
                                                 <h3>{item.state.fa}</h3>
-                                                <ul className="flex items-center gap-1 list-none p-0 m-0">
+                                                <ul className="flex items-center gap-1 list-none p-0 m-0 text-xs">
                                                     {item.cities
                                                         ?.slice(0, 6)
                                                         .map((city, index) => (
@@ -232,18 +234,16 @@ const Page = () => {
                                                                     item.cities
                                                                         .length -
                                                                         1 &&
-                                                                    "-"}
+                                                                    " -"}
                                                             </li>
                                                         ))}
                                                 </ul>
                                             </div>
                                         </div>
                                         <button type="button">
-                                            <Image
+                                            <img
                                                 alt=""
                                                 src="/assets/icons/chevron-left.svg"
-                                                width={16}
-                                                height={16}
                                             />
                                         </button>
                                     </li>

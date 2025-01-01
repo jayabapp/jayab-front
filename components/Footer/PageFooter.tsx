@@ -283,9 +283,9 @@ const PageFooter: React.FC<PageFooterProps> = ({
     );
 
     return (
-        <footer className="">
-            <div className="w-full relative before:bg-[#E4E5E7] before:w-full before:h-full before:absolute before:top-20 before:-z-1">
-                <div className="w-full container-lg mx-auto">
+        <footer className="w-full relative z-0">
+            <div className="w-full relative before:bg-[#E4E5E7] before:w-full before:inset-0 before:absolute before:top-20">
+                <div className="w-full container-lg mx-auto relative z-10 pb-28">
                     <FooterCTA />
                     <FooterWidgets />
                     <FooterBottom />
