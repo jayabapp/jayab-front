@@ -156,7 +156,8 @@ const MainWrapper = ({ children }: mainWrapper) => {
         </div>
         {footerWhiteList.includes(pathname || "") && (
           <Suspense>
-            {" "}
+                      {" "}
+            <PageFooter />
             <Footer />
           </Suspense>
         )}

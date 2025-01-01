@@ -25,6 +25,7 @@
     "rc-slider": "^11.1.7",
     "react": "^19.0.0",
     "react-advanced-cropper": "^0.20.0",
+    "react-circular-progressbar": "^2.1.0",
     "react-device-detect": "^2.2.3",
     "react-dom": "^19.0.0",
     "react-lottie": "^1.2.10",

@@ -34,17 +34,17 @@ const Footer: React.FC = ({}) => {
   });
 
   const footerItems = [
-    {
-      id: 2,
-      title: _STRINGS.HOME,
-      route: "/",
+      {
+          id: 2,
+          title: _STRINGS.HOME,
+          route: "/",
 
-      icon: "/assets/icons/navbar/home_nav.svg",
-    },
-    {
-      id: 242,
-      title: _STRINGS.ADD,
-      route: "/adds",
+          icon: "/assets/icons/navbar/home_nav.svg",
+      },
+      {
+          id: 242,
+          title: _STRINGS.ADD,
+          route: "/adds",
 
       icon: "/assets/icons/navbar/adds_footer.svg",
     },
@@ -64,49 +64,49 @@ const Footer: React.FC = ({}) => {
         }
       },
 
-      icon: "/assets/icons/navbar/add_footer.svg",
-    },
-    {
-      id: 142142,
-      title: _STRINGS.CONSULTAMCY,
-      route: "/consultancy",
+          icon: "/assets/icons/navbar/add_footer.svg",
+      },
+      {
+          id: 142142,
+          title: _STRINGS.CONSULTAMCY,
+          route: "/consultants",
 
-      icon: "/assets/icons/navbar/footer_consultancy.svg",
-    },
-    {
-      id: 1442,
-      title: _STRINGS.MY_PROFILE,
-      route: "/profile",
+          icon: "/assets/icons/navbar/footer_consultancy.svg",
+      },
+      {
+          id: 1442,
+          title: _STRINGS.MY_PROFILE,
+          route: "/profile",
 
-      icon: "/assets/icons/navbar/my_jayab.svg",
-    },
-    // {
-    //   id: 51,
-    //   title: _STRINGS.HISTORY,
-    //   route: "/reserve-history",
+          icon: "/assets/icons/navbar/my_jayab.svg",
+      },
+      // {
+      //   id: 51,
+      //   title: _STRINGS.HISTORY,
+      //   route: "/reserve-history",
 
-    //   icon: <ReservesHistoryIcon fill={color} />,
-    // },
-    // {
-    //   id: 3,
-    //   title: _STRINGS.ADD_QUEUE,
-    //   route: "/add-reserve",
+      //   icon: <ReservesHistoryIcon fill={color} />,
+      // },
+      // {
+      //   id: 3,
+      //   title: _STRINGS.ADD_QUEUE,
+      //   route: "/add-reserve",
 
-    //   icon: <RoundCubicalPlusIcon fill={color} />,
-    // },
-    // {
-    //   id: 51,
-    //   title: _STRINGS.FINANCIALS,
-    //   route: "/financials",
+      //   icon: <RoundCubicalPlusIcon fill={color} />,
+      // },
+      // {
+      //   id: 51,
+      //   title: _STRINGS.FINANCIALS,
+      //   route: "/financials",
 
-    //   icon: <CoinSackIcon fill={color} />,
-    // },
-    // {
-    //   id: 1,
-    //   title: _STRINGS.MENU,
-    //   route: "/menu",
-    //   icon: <BurgerMenu fill={color} />,
-    // },
+      //   icon: <CoinSackIcon fill={color} />,
+      // },
+      // {
+      //   id: 1,
+      //   title: _STRINGS.MENU,
+      //   route: "/menu",
+      //   icon: <BurgerMenu fill={color} />,
+      // },
   ];
   const [focused, setFocused] = useState(footerItems?.find((i) => i?.route === route));
 

@@ -8,7 +8,7 @@ enum BtnVariants {
 enum BtnColors {
   "primary" = "bg-btnColor-primary",
   "danger" = "bg-btnColor-danger",
-  // "light" = "bg-btnColor-light",
+  "light" = "bg-btnColor-light",
 }
 
 type ButtonProps = {
@@ -61,7 +61,7 @@ const Button = ({
           </div>
         ) : (
           <>
-            {" "}
+       
             {!!icon && <span className="ml-1">{icon}</span>}
             {title}
             {!!endIcon && <span className="mr-1">{endIcon}</span>}
