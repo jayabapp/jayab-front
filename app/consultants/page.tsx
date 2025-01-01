@@ -77,11 +77,15 @@ const Page = () => {
                     title={_STRINGS.CHOOSE_STATE_AND_CITY}
                 /> */}
             </header>
-            <main className="w-full grid lg:grid-cols-2 gap-6">
-                <ConsultantCard />
-                <ConsultantCard />
-                <ConsultantCard />
-            </main>
+            <div className="flex flex-row-reverse gap-6">
+  
+                <main className="w-full lg:w-10/12 grid lg:grid-cols-2 gap-6">
+                    {/* lg:w-9/12  */}
+                    <ConsultantCard hidden={{ record: true }} />
+                    <ConsultantCard hidden={{ record: true }} />
+                    <ConsultantCard hidden={{ record: true }} />
+                </main>
+            </div>
         </div>
     );
 };

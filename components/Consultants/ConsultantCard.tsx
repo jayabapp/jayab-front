@@ -6,7 +6,13 @@ import Link from "next/link";
 import Image from "next/image";
 import CircularProgress from "@/components/shared/CircularProgress/CircularProgress";
 
-const ConsultantCard = () => {
+interface ConsultantCardProps {
+    hidden: {
+        record: boolean;
+    };
+}
+
+const ConsultantCard: React.FC<ConsultantCardProps> = ({ hidden }) => {
     const data = fakeConsultant;
     return (
         <div className="w-full shadow-card rounded-2xl p-4 gap-0 md:gap-2 text-xs sm:text-base">
@@ -91,11 +97,14 @@ const ConsultantCard = () => {
                                         ))}
                                     </ul>
                                 </div>
-
-                                <div>
-                                    <span>سابقه: </span>
-                                    <span className="text-nowrap">6 ماه</span>
-                                </div>
+                                {hidden?.record || (
+                                    <div>
+                                        <span>سابقه: </span>
+                                        <span className="text-nowrap">
+                                            6 ماه
+                                        </span>
+                                    </div>
+                                )}
                             </div>
                         </div>
                     </aside>
