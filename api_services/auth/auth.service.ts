@@ -22,6 +22,7 @@ import { apiCall } from "../common/apicall.helper";
 
 import { sendOtpSchema } from "./auth.schema";
 import { YupValidator } from "@/utils/YupValidator";
+import { PropertyTypesDTP } from "../property/property.interface";
 
 export class AuthService {
   static ADMIN_EDIT_VALIDATE_CACHEKEY = "HET_PROFILE";
@@ -31,6 +32,7 @@ export class AuthService {
   static AU4_CACHEKEY = "AU4";
   static APP_SETTINGS_CACHEKEY = "APP_SETTINGS";
   static GET_OWNER_PROFILE_CACHEKEY = "GET_OWNER_PROFILE";
+  static CITIES_CHILDEREN_CACHEKEY = "CITIES_CHILDEREN";
 
   static async SignIn(dto: SignInDTO) {
     try {
@@ -197,14 +199,23 @@ export class AuthService {
     }
   }
 
-  // static async GetCities() {
-  //   try {
-  //     const result = await apiCall<{ key: "زنجان" }, CitiesDto[]>("GET", apiRoutes.CITIES, { key: "زنجان" });
-  //     return result;
-  //   } catch (e) {
-  //     throw e;
-  //   }
-  // }
+  static async GetProvince() {
+    try {
+      const result = await apiCall<unknown, PropertyTypesDTP[]>("GET", apiRoutes.CITIES);
+      return result;
+    } catch (e) {
+      throw e;
+    }
+  }
+
+  static async GetCities(dto: { parentId: string | number }) {
+    try {
+      const result = await apiCall<unknown, PropertyTypesDTP[]>("GET", apiRoutes.CITIES_CHILDEREN(dto.parentId));
+      return result;
+    } catch (e) {
+      throw e;
+    }
+  }
 
   // static async RegisterProfile(dto: UpdateProfileDto) {
   //   try {

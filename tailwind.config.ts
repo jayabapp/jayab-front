@@ -8,7 +8,7 @@ export default {
   theme: {
     extend: {
       borderColor: {
-        DEFAULT: "#DCDCDC",
+        DEFAULT: "#E4E5E7",
       },
       scale: {
         102: "1.02",
@@ -22,7 +22,7 @@ export default {
         primary: {
           100: "#F53E4F",
           200: "#E8F1FC",
-          300: "#fff",
+          300: "#F9FAFC",
           400: "#fff",
           500: "#fff",
           600: "#fff",
@@ -53,4 +53,15 @@ export default {
     darkMode: "class",
   },
   plugins: [],
+  transitionProperty: {
+    height: "height",
+    width: "width",
+    spacing: "margin, padding",
+  },
+  darkMode: "class",
+  variants: {
+    extend: {
+      display: ["responsive", "group-hover", "focus-within", "hover", "focus"],
+    },
+  },
 } satisfies Config;

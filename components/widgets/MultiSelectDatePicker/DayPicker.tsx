@@ -1,7 +1,6 @@
 import React, { useEffect, useMemo, useState } from "react";
 import moment from "moment-jalaali";
 import Day from "./Day";
-import SmallLoading from "@/components/shared/Loading/SmallLoading";
 // import { Day as any } from "@/api/admin-shifts/admin-shifts.interface";
 import { useQuery } from "@tanstack/react-query";
 // import { UserShiftsService } from "@/api/user-shifts/user-shifts.service";

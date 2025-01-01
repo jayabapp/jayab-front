@@ -3,7 +3,9 @@ import { useRouter, usePathname } from "next/navigation";
 import { Fragment, JSX, useEffect, useState } from "react";
 import { isIOS } from "react-device-detect";
 import _STRINGS from "../../utils/LocalStrings";
-import { useStoreParams, useStoreTheme } from "@/store";
+import { useStoreInit, useStoreParams, useStoreTheme } from "@/store";
+import { PropertyService } from "@/api_services/property/property.service";
+import { useQuery } from "@tanstack/react-query";
 interface reduxType {
   auth: { [key: string]: string };
 }
@@ -20,11 +22,17 @@ type footerItem = {
 type footerItems = footerItem[];
 
 const Footer: React.FC = ({}) => {
-  const { sideBarStatus } = useStoreParams((state) => state);
-
+  const { userInfo } = useStoreInit((data) => data);
   const router = useRouter();
 
   const route = usePathname();
+
+  const { data: initPropData, refetch } = useQuery({
+    queryKey: [PropertyService.OWNER_PROP_INIT_CACHEKEY],
+    queryFn: () => PropertyService.InitProperty({ property_id: undefined }),
+    enabled: false,
+  });
+
   const footerItems = [
       {
           id: 2,
@@ -38,12 +46,23 @@ const Footer: React.FC = ({}) => {
           title: _STRINGS.ADD,
           route: "/adds",
 
-          icon: "/assets/icons/navbar/adds_footer.svg",
+      icon: "/assets/icons/navbar/adds_footer.svg",
+    },
+    {
+      id: 14242,
+      title: _STRINGS.CREATE_ADD,
+      route: "/owner/properties",
+      callBack: () => {
+        if (!!userInfo) {
+          if (!userInfo?.owner_id) {
+            router.push(`/profile/edit`);
+          } else {
+            refetch().then((e) => {
+              if (!!e?.data) router.push(`/owner/properties/${e?.data?.id}/edit/initials`);
+            });
+          }
+        }
       },
-      {
-          id: 14242,
-          title: _STRINGS.CREATE_ADD,
-          route: "/create-property",
 
           icon: "/assets/icons/navbar/add_footer.svg",
       },
@@ -105,14 +124,18 @@ const Footer: React.FC = ({}) => {
         {footerItems?.map((el, i) => {
           return (
             <div
-              className={`${
+              className={` w-[15%] ${
                 !isFocused(el?.route) && el?.title ? " opacity-60 grayscale brightness-90  " : " "
               }   cursor-pointer select-none flex flex-col items-center gap-1 justify-center transition-all duration-1000	ease-in-out  `}
               onClick={() => {
                 if (!isFocused(el?.route)) {
                   useStoreParams.setState({ sideBarStatus: false });
-                  router.push(`${el?.route}`);
-                  setFocused(el);
+                  if (!!el?.callBack) {
+                    el?.callBack();
+                  } else {
+                    router.push(`${el?.route}`);
+                    setFocused(el);
+                  }
                 }
               }}
               key={el?.id}

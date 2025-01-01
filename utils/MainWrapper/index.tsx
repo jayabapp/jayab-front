@@ -22,7 +22,7 @@ import { footerWhiteList } from "../constantss";
 import RotatePhone from "@/components/shared/Lotties/RotatePhone";
 import Splashscreen from "@/components/SplashScreen";
 import ConnectingBanner from "@/components/headers/ConnectingBanner";
-import PageFooter from '@/components/Footer/PageFooter';
+import { AuthService } from "@/api_services/auth/auth.service";
 
 interface mainWrapper {
   children: ReactNode;
@@ -81,17 +81,22 @@ const MainWrapper = ({ children }: mainWrapper) => {
   //     },
   //   }
   // );
-  // const { data, isLoading } = useQuery(
-  //   [ProfileService?.CUSTOMER_PROFILE_CACHEKEY, isLogin],
-  //   () => {
-  //     if (isLogin) return ProfileService?.GetUserProfile();
-  //   },
-  //   {
-  //     onSuccess: (e) => {
-  //       useStoreInit.setState({ userInfo: e });
-  //     },
-  //   }
-  // );
+
+  const { data: profile } = useQuery({
+    queryKey: [AuthService.AU4_CACHEKEY, isLogin],
+    queryFn: () => {
+      if (!!isLogin) {
+        return AuthService.GetProfile();
+      } else {
+        return null;
+      }
+    },
+  });
+  useEffect(() => {
+    if (!!profile) {
+      useStoreInit.setState({ userInfo: profile });
+    }
+  }, [profile]);
 
   SocketIO();
 

@@ -1,4 +1,3 @@
-import { CheckIcon, XMarkIcon } from "@heroicons/react/24/outline";
 import React from "react";
 
 function IosToggle({
@@ -38,11 +37,11 @@ function IosToggle({
             : "translate-x-0 bg-gray-400 border-gray-300"
         }`}
       >
-        {!!toggle ? (
+        {/* {!!toggle ? (
           <CheckIcon strokeWidth={3} className="w-3 h-4 text-emerald-500" />
         ) : (
           <XMarkIcon className="w-4 h-4 text-white" />
-        )}
+        )} */}
       </label>
       <input
         type="checkbox"
