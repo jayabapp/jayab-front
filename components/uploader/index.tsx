@@ -1,25 +1,16 @@
 "use client";
 import "react-advanced-cropper/dist/style.css";
 import React, { useRef, useState, useCallback, ReactEventHandler, useEffect } from "react";
-import rotate_icon from "../../../public/assets/icons/uploader/rotate_icon.svg";
-import flip_icon from "../../../public/assets/icons/uploader/flip_icon.svg";
+
 import FullscreenImage from "./FullScreenImage";
 import imageCompression from "browser-image-compression";
-
-import BtnLoading from "../Button/BtnLoading";
-// import { useMutation } from "@tanstack/react-query";
-// import { AuthService } from "@/api_services/auth/auth.service";
-import { CheckIcon, PlusIcon, TicketIcon, XCircleIcon } from "@heroicons/react/24/outline";
-
-import Notify from "../Toast";
+import { toast } from "sonner";
 import { useMutation } from "@tanstack/react-query";
-import toast from "react-hot-toast";
-import AnimationlessModal from "../Modal/AnimationlessModal";
-
-import { AuthService } from "@repo/api/modules/auth/auth.service";
-import TrashIcon from "../DynamicIcons/TrashIcon";
 import { Cropper, CropperRef, Coordinates } from "react-advanced-cropper";
 import { useStoreTheme } from "../../store";
+import { AuthService } from "@/api_services/auth/auth.service";
+import BtnLoading from "../shared/Button/BtnLoading";
+import Modal from "../Modal";
 //For Slider
 
 type props = {
@@ -59,7 +50,6 @@ const MainUploader = ({
   title,
   innerClasses,
 }: props) => {
-  const { color } = useStoreTheme((state) => state);
   const cropperRef = useRef<CropperRef>(null);
   const [coordinates, setCoordinates] = useState<Coordinates | null>(null);
   const imagePickerRef = useRef<HTMLDivElement>(null);
@@ -71,7 +61,7 @@ const MainUploader = ({
   const [selectedFile, setselectedFile] = useState<string | null>(null);
   const [isCropping, setisCropping] = useState(false);
 
-  const { mutate } = useMutation(AuthService.UploadUsersImage);
+  const { mutate } = useMutation({ mutationFn: AuthService.UploadUsersImage });
 
   const uploadTemp = (file: Blob) => {
     setLoading(true);
@@ -109,7 +99,7 @@ const MainUploader = ({
     else {
       const compressedBlob = await imageCompression(file as File, {
         maxSizeMB: 1,
-        maxWidthOrHeight: 1400,
+        maxWidthOrHeight: 1240,
         useWebWorker: true,
       });
       const compressedFile = new File([compressedBlob], file.name, {
@@ -183,12 +173,11 @@ const MainUploader = ({
             onClick={() => {
               !disabled ? imagePickerRef?.current?.click() : void null;
             }}
-            style={{ borderColor: color }}
-            className={`cursor-pointer border-dashed flex flex-col items-center  gap-1   border-2   relative transition-all duration-150 ease-in-out  hover:border-gray-600  justify-center dark:bg-transparent rounded-20 aspect-square   ${
-              !!innerClasses?.sizeClass ? innerClasses?.sizeClass : "h-40 w-40"
+            className={`cursor-pointer flex flex-col items-center  gap-1     relative transition-all duration-150 ease-in-out  hover:border-gray-600  justify-center bg-neutral-100 rounded-10 aspect-square   ${
+              !!innerClasses?.sizeClass ? innerClasses?.sizeClass : "h-24 w-24"
             }  `}
           >
-            <PlusIcon color={color} className="  w-16- h-16 aspect-square " />
+            <img src="/assets/images/uploader/uploader_placeholder.png" />
             {title && <p className=" text-sm  opacity-70 ">{title}</p>}
             {loading ? (
               <div className="w-full h-full absolute top-0 left-0 rounded-20 flex items-center justify-center   backdrop-blur-md">
@@ -205,7 +194,7 @@ const MainUploader = ({
         ) : (
           <div
             className={` ${
-              !!innerClasses?.sizeClass ? innerClasses?.sizeClass : "h-40 w-40"
+              !!innerClasses?.sizeClass ? innerClasses?.sizeClass : "h-24 w-24"
             }  rounded-20  overflow-hidden  flex flex-col items-center relative `}
           >
             <div
@@ -222,7 +211,7 @@ const MainUploader = ({
                 );
               }}
               className={`cursor-pointer border   bg-whiteGray-100  dark:bg-zinc-700  rounded-20 aspect-square relative  ${
-                !!innerClasses?.sizeClass ? innerClasses?.sizeClass : "h-40 w-40"
+                !!innerClasses?.sizeClass ? innerClasses?.sizeClass : "h-24 w-24"
               } `}
             >
               <img
@@ -239,11 +228,8 @@ const MainUploader = ({
                 className="object-cover  w-full bg-gradient-to-b rounded-20 aspect-square max-w-max  "
               />
             </div>
-            <div
-              className=" p-2 bg-white  dark:bg-zinc-700  rounded-lg cursor-pointer absolute top-2 left-2 "
-              onClick={onDelete}
-            >
-              <TrashIcon />
+            <div className="   bg-transparent cursor-pointer absolute top-2 left-2 " onClick={onDelete}>
+              <img src="/assets/icons/uploader/faded_x_circle.svg" />
             </div>
           </div>
         )}
@@ -259,7 +245,7 @@ const MainUploader = ({
           }}
         />
       )}
-      <AnimationlessModal
+      <Modal
         show={!!selectedFile ? true : false}
         options={{
           containerClass:
@@ -298,14 +284,14 @@ const MainUploader = ({
             onClick={() => {
               onRotate(-90);
             }}
-            src={rotate_icon.src}
+            src={"/assets/icons/uploader/rotate_icon.svg"}
             className="absolute cursor-pointer left-[30%]  dark:invert-0 "
           />
           <img
             onClick={() => {
               onFlip(true, undefined);
             }}
-            src={flip_icon?.src}
+            src={"/assets/icons/uploader/flip_icon.svg"}
             className="absolute scale-[-1] rotate-90 cursor-pointer left-[15%]  dark:invert-0 "
           />
 
@@ -314,14 +300,14 @@ const MainUploader = ({
               onFlip(undefined, true);
             }}
             className="absolute   cursor-pointer right-[15%]  dark:invert-0 "
-            src={flip_icon?.src}
+            src={"/assets/icons/uploader/flip_icon.svg"}
           />
 
           <img
             onClick={() => {
               onRotate(90);
             }}
-            src={rotate_icon.src}
+            src={"/assets/icons/uploader/rotate_icon.svg"}
             className="absolute  scale-x-[-1] cursor-pointer right-[30%]  dark:invert-0 "
           />
         </div>
@@ -343,7 +329,10 @@ const MainUploader = ({
             ) : (
               <>
                 {" "}
-                <CheckIcon className=" items-center justify-center text-center text-green-600 border-green-600 w-5 dark:text-dark-green" />
+                <img
+                  src="/assets/icons/shared/check_icon.svg"
+                  className=" items-center justify-center text-center text-green-600 border-green-600 w-5 dark:text-dark-green"
+                />
                 <p className="text-green-600 border-green-600  text-lg font-medium dark:text-dark-green">تایید</p>
               </>
             )}{" "}
@@ -356,13 +345,13 @@ const MainUploader = ({
             }}
             className="w-full py-1.5 cursor-pointer gap-3  border rounded-xl border-red-600 dark:border-dark-red flex items-center justify-center"
           >
-            <XCircleIcon className="  text-red-600 w-5 dark:text-dark-red" />
+            <img src="/assets/icons/adds/red_x_mark.svg" className="  text-red-600 w-5 dark:text-dark-red" />
             <p className="text-red-600  text-lg font-medium dark:text-dark-red">بستن</p>
           </div>
         </div>
 
         <div></div>
-      </AnimationlessModal>
+      </Modal>
     </div>
   );
 };

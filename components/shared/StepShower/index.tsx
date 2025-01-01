@@ -8,7 +8,7 @@ const StepShower = ({
   steps: { title: string; description?: string; id: number | string }[];
 }) => {
   return (
-    <div className="flex items-center w-full  relative justify-between">
+    <div className="flex items-center w-full    relative justify-between">
       {/* <div className="w-full absolute  bg-gray-300 h-[5px]"></div> */}
       {steps?.map((e, index) => {
         const isSelected = e?.id <= value;
@@ -17,7 +17,7 @@ const StepShower = ({
             <div className="w-full relative flex items-center justify-center">
               <div
                 className={` ${index == 0 ? "opacity-0" : ""} flex ${
-                  !!isSelected ? "text-primary-700" : ""
+                  !!isSelected ? "bg-primary-700" : ""
                 }   bg-gray-300 h-[5px] w-full`}
               >
                 {" "}
@@ -45,7 +45,7 @@ const StepShower = ({
               <p
                 className={`${
                   !!isSelected ? "text-primary-700" : "  text-gray-300 "
-                }   text-center  text-xs md:text-sm`}
+                }   text-center  text-xxs md:text-xs truncate`}
               >
                 {e?.title}
               </p>

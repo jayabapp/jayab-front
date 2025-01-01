@@ -1,4 +1,3 @@
-import React, { useEffect, useMemo, useState } from "react";
 import moment from "moment-jalaali";
 moment.loadPersian({ dialect: "persian-modern" });
 type props = {

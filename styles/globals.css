@@ -63,7 +63,7 @@ ul {
   @apply min-h-[100dvh] w-full md:w-full mx-auto lg:w-full;
 }
 .app-background {
-  @apply bg-white dark:bg-transparent !h-full;
+  @apply !bg-white dark:bg-transparent !h-full;
 }
 
 .app-text {
@@ -104,6 +104,9 @@ ul {
 }
 .container {
   @apply h-full bg-transparent mx-auto !max-w-full min-h-[100dvh] px-3 md:px-3 lg:px-4 xl:px-[15%]  pt-20 lg:pt-28  pb-32 lg:pb-44 overflow-x-scroll;
+}
+.pop-container {
+  @apply !shadow-card border md:!w-1/2 md:!left-[20%] md:!right-[20%] mx-auto;
 }
 .list-container {
   @apply w-full md:w-[70%] lg:w-[60%] xl:w-1/2 px-2 md:px-6 max-w-[580px]  overflow-x-hidden h-auto     mx-auto bg-white    dark:bg-zinc-900   pb-24  pt-[4.5rem]   md:rounded-20;
@@ -370,10 +373,10 @@ input[type="number"] {
 }
 
 strong {
-  @apply font-bold text-xl leading-10;
+  @apply font-bold text-xl;
 }
 p {
-  @apply leading-8 font-normal text-justify;
+  @apply font-normal text-justify;
 }
 
 select {

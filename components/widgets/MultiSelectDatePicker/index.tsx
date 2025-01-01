@@ -8,7 +8,7 @@ import { useMutation, useQuery } from "@tanstack/react-query";
 // import { AdminShiftsService } from "@/api/admin-shifts/admin-shifts.service";
 import { isEmpty } from "lodash";
 import { useSearchParams } from "next/navigation";
-import LottieLoading from "../../Loading/LottieLoading";
+import LottieLoading from "@/components/shared/Lotties/LottieLoading";
 
 type dates = {
   selectedDate?: any[];

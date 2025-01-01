@@ -46,5 +46,32 @@ export const apiRoutes = {
 
   GET_OWNER_PROFILE: "/profile/owner",
 
+  USER_PROP_OPTIONS: "/user/property-options",
+
+  CITIES: "/cities",
+
+  OWNER_PROP_INIT: (propertyId?: string | number | null) =>
+    `/owner/properties/init${!!propertyId ? `?property_id=${propertyId}` : ""}`,
+
+  OWNER_PROPERTIES: (propertyId: string | number | null) => `/owner/properties/${propertyId}`,
+
+  OWNER_PROPERTIES_LOC_UPDATE: (propertyId: string | number | null) => `/owner/properties/${propertyId}/location`,
+
+  OWNER_PROPERTIES_MEDIA_UPDATE: (propertyId: string | number | null) => `/owner/properties/${propertyId}/media`,
+
+  OWNER_PROPERTIES_ENV_UPDATE: (propertyId: string | number | null) => `/owner/properties/${propertyId}/environment`,
+
+  OWNER_PROPERTIES_ENV_FACILITY: (propertyId: string | number | null) => `/owner/properties/${propertyId}/facility`,
+
+  OWNER_PROPERTIES_ENV_PRICE: (propertyId: string | number | null) => `/owner/properties/${propertyId}/price`,
+
+  OWNER_PROPERTIES_ENV_ASSISTANT: (propertyId: string | number | null) => `/owner/properties/${propertyId}/assistants`,
+
+  OWNER_PROPERTIES_ENV_TERMS: (propertyId: string | number | null) => `/owner/properties/${propertyId}/terms`,
+
+  OWNER_PROPERTIES_ENV_BEDROOM: (propertyId: string | number | null) => `/owner/properties/${propertyId}/bedroom`,
+
+  CITIES_CHILDEREN: (parentId: string | number) => `/cities/${parentId}`,
+
   CONTENT_BY_KEY: (id: string | number) => `/contents/by-key/${id}`,
 };

@@ -1,0 +1,69 @@
+import Slider from "rc-slider";
+import React, { CSSProperties, useEffect } from "react";
+import "rc-slider/assets/index.css";
+
+const RangeWithTitle = ({
+  value,
+  setValue,
+  max,
+  min,
+  marks,
+  className,
+  step,
+}: {
+  max: number;
+  min: number;
+  value: number;
+  marks?: { [key: string]: { label: number | string; style: CSSProperties } };
+  setValue: React.Dispatch<React.SetStateAction<number>>;
+  className?: string;
+  step?: number;
+}) => {
+  return (
+    <Slider
+      marks={marks}
+      startPoint={0}
+      max={max}
+      value={value}
+      min={min}
+      step={step || 1}
+      onChange={(v: number | number[]) => {
+        if (typeof v == "number") {
+          setValue(v);
+        }
+      }}
+      defaultValue={0}
+      className={className}
+      handleStyle={{
+        backgroundColor: "#3886E5",
+        borderWidth: 0,
+        width: 20,
+        height: 20,
+        bottom: -4,
+      }}
+      activeDotStyle={{
+        backgroundColor: "#E7E7E7",
+        borderColor: "#E7E7E7",
+        borderWidth: 1,
+        width: 7,
+        height: 7,
+        aspectRatio: 2,
+        bottom: -20,
+      }}
+      dotStyle={{
+        backgroundColor: "#E7E7E7",
+        borderColor: "#E7E7E7",
+        borderWidth: 1,
+        width: 7,
+        height: 7,
+        aspectRatio: 2,
+        bottom: -20,
+        visibility: "hidden",
+      }}
+      trackStyle={{ backgroundColor: "#3886E5", height: 6.5 }}
+      railStyle={{ backgroundColor: "#E7E7E7", height: 6.5 }}
+    />
+  );
+};
+
+export default RangeWithTitle;

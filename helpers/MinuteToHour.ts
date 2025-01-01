@@ -1,5 +1,5 @@
+import _STRINGS from "@/utils/LocalStrings";
 import React from "react";
-import _STRINGS from "../../../utils/LocalStrings";
 
 const MinuteToHour = (mins: number | undefined) => {
   if (!!mins) {
