@@ -96,6 +96,14 @@ const _STRINGS = {
 
     // footer
     BE_HOST: "میزبان شوید",
+    DISCOVER_ADS: "مشاهده آگهی ها",
+    RECEIVED: "دریفات شده",
+    RECORD_CHANGES: "ثبت تغییرات",
+    AWAITING_APPROVAL: "در انتظار تایید",
+    SUBMIT_REQUEST: "ارسال درخواست",
+    CHANGE_OF_CONSULTANT_COMMISSION: "ارسال درخواست",
+    IMMEDIATE_CHANGE: "تغییر فوری",
+    ALL_CITIES: "همه شهرها",
 };
 
 export default _STRINGS;

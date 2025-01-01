@@ -1,31 +1,26 @@
 import Slider from "rc-slider";
-import React, { useEffect } from "react";
+import React, { CSSProperties, useEffect } from "react";
 import "rc-slider/assets/index.css";
 
-const marks = {
-    // 0: " ",
-    0: " ",
-
-    90: " ",
-    180: " ",
-    270: " ",
-    360: " ",
-};
 const RangeWithTitle = ({
     value,
     setValue,
     max,
     min,
+    marks,
+    className,
 }: {
     max: number;
     min: number;
     value: number;
+    marks?: { [key: string]: { label: number | string; style: CSSProperties } };
     setValue: React.Dispatch<React.SetStateAction<number>>;
+    className?: string;
 }) => {
     return (
         <Slider
-            startPoint={1}
             marks={marks}
+            startPoint={0}
             max={max}
             value={value}
             min={min}
@@ -35,10 +30,10 @@ const RangeWithTitle = ({
                     setValue(v);
                 }
             }}
-            defaultValue={1}
-            className="!w-1/2 "
+            defaultValue={0}
+            className={className}
             handleStyle={{
-                backgroundColor: "#0096C7",
+                backgroundColor: "#3886E5",
                 borderWidth: 0,
                 width: 20,
                 height: 20,
@@ -61,8 +56,9 @@ const RangeWithTitle = ({
                 height: 7,
                 aspectRatio: 2,
                 bottom: -20,
+                visibility: "hidden",
             }}
-            trackStyle={{ backgroundColor: "#0096C7", height: 6.5 }}
+            trackStyle={{ backgroundColor: "#3886E5", height: 6.5 }}
             railStyle={{ backgroundColor: "#E7E7E7", height: 6.5 }}
         />
     );

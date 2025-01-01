@@ -7,7 +7,7 @@ import Image from "next/image";
 import CircularProgress from "@/components/shared/CircularProgress/CircularProgress";
 
 interface ConsultantCardProps {
-    hidden: {
+    hidden?: {
         record: boolean;
     };
 }
