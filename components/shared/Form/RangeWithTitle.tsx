@@ -15,7 +15,7 @@ const RangeWithTitle = ({
   min: number;
   value: number;
   marks?: { [key: string]: { label: number | string; style: CSSProperties } };
-  setValue: React.Dispatch<React.SetStateAction<number>>;
+  setValue: (e: number) => void | null;
   className?: string;
   step?: number;
 }) => {

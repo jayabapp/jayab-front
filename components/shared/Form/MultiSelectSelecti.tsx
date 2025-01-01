@@ -29,7 +29,7 @@ const Selecti = ({ item, value, onSelect, closeOnSelect, setShow }: SelectiType)
           onSelect={() => {
             onSelect(item?.id);
           }}
-          customeFillImage="/assets/icons/products/tick-square.svg"
+          // customeFillImage="/assets/icons/products/tick-square.svg"
           rounded="rounded-md"
         />
         {/* <img
