@@ -22,6 +22,7 @@ import { footerWhiteList } from "../constantss";
 import RotatePhone from "@/components/shared/Lotties/RotatePhone";
 import Splashscreen from "@/components/SplashScreen";
 import ConnectingBanner from "@/components/headers/ConnectingBanner";
+import PageFooter from '@/components/Footer/PageFooter';
 
 interface mainWrapper {
   children: ReactNode;
@@ -150,7 +151,8 @@ const MainWrapper = ({ children }: mainWrapper) => {
         </div>
         {footerWhiteList.includes(pathname || "") && (
           <Suspense>
-            {" "}
+                      {" "}
+            <PageFooter />
             <Footer />
           </Suspense>
         )}

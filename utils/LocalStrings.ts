@@ -93,6 +93,9 @@ const _STRINGS = {
 
     USERS_SATISFACTION: "رضایت کاربران",
     OWNERS_SATISFACTION: "رضایت مالکان",
+
+    // footer
+    BE_HOST: "میزبان شوید",
 };
 
 export default _STRINGS;
