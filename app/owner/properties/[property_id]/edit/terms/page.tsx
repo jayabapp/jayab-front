@@ -5,6 +5,7 @@ import {
   PropertyTermsSendDto,
 } from "@/api_services/property/property.interface";
 import { PropertyService } from "@/api_services/property/property.service";
+import SuccessAddModal from "@/components/Adds/SuccessAddModal";
 import PropTermItem from "@/components/Adds/TermItem";
 import TitleCounter from "@/components/Adds/TitleCounter";
 import PageHeaders from "@/components/headers/PageHeader";
@@ -26,7 +27,7 @@ import React, { useEffect, useState } from "react";
 const CreatePropertyTerms = () => {
   const router = useRouter();
   const pathname = usePathname();
-
+  const [showSucces, setShowSucces] = useState(false);
   const params = useParams();
   const { property_id } = params;
 
@@ -93,7 +94,7 @@ const CreatePropertyTerms = () => {
   const { mutate, isPending } = useMutation({
     mutationFn: PropertyService.CreatePropertySetTerms,
     onSuccess: () => {
-      router.push(`/owner/properties/${property_id}/edit/price`);
+      if (!initPropData?.canceling_type) setShowSucces(true);
     },
   });
   const onSubmit = () => {
@@ -305,9 +306,19 @@ const CreatePropertyTerms = () => {
           containerClass="w-full flex items-center justify-center"
           roundedClass="rounded-full"
           width=" w-[90%] md:w-1/2"
-          title={_STRINGS.SUBMIT_PROPERTY}
+          title={!!initPropData?.canceling_type ? _STRINGS.EDIT : _STRINGS.SUBMIT_PROPERTY}
         />
       </FixedBottomContainer>
+
+      <SuccessAddModal
+        show={showSucces}
+        onHIde={() => {
+          setShowSucces(false);
+        }}
+        callBack={() => {
+          router.push(`/owner/properties/${property_id}/subscription`);
+        }}
+      />
     </div>
   );
 };

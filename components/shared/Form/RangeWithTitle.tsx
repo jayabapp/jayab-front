@@ -9,6 +9,7 @@ const RangeWithTitle = ({
   min,
   marks,
   className,
+  step,
 }: {
   max: number;
   min: number;
@@ -16,6 +17,7 @@ const RangeWithTitle = ({
   marks?: { [key: string]: { label: number | string; style: CSSProperties } };
   setValue: React.Dispatch<React.SetStateAction<number>>;
   className?: string;
+  step?: number;
 }) => {
   return (
     <Slider
@@ -24,7 +26,7 @@ const RangeWithTitle = ({
       max={max}
       value={value}
       min={min}
-      step={1}
+      step={step || 1}
       onChange={(v: number | number[]) => {
         if (typeof v == "number") {
           setValue(v);

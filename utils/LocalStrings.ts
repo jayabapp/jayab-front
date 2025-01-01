@@ -10,9 +10,11 @@ const _STRINGS = {
   MINUTES: "دقیقه",
   HOURS: "ساعت",
   RIAL: "ریال",
+  PAY: "پرداخت",
   ENTER: "ورود",
   ADAD: "عدد",
   NAFAR: "نفر",
+  EDIT: "ویرایش",
   DESTRUCTION: "توضیحات",
   MINUTE: "دقیقه",
   HOUR: "ساعت",
@@ -138,6 +140,8 @@ const _STRINGS = {
   OTHER_DESC: "سایر توضیحات",
   CANCELATIONS_TITLE: "انتخاب نوع قوانین لغو درخواست میهمان (کنسلی)",
   SUBMIT_PROPERTY: "ثبت ملک",
+  UR_PROP_REGISTERED: "اطلاعات ملک شما ثبت شد!",
+  UR_PROP_REGISTERED_DESC: "پس از پرداخت هزینه و بررسی همکاران ما منتشر خواهد شد",
 };
 
 export default _STRINGS;
