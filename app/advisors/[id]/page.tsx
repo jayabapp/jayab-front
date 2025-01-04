@@ -38,10 +38,10 @@ const Page = () => {
 
   return (
     <>
-      <div className="!bg-transparent transition-all duration-500 ease-in-out py-16 container">
+      <div className="!bg-transparent relative transition-all duration-500 ease-in-out py-16 container">
         <PageHeaders title={_STRINGS.CONSULTANT_INFO} />
 
-        <main className="flex flex-col gap-6 max-w-2xl mx-auto">
+        <div className="flex flex-col gap-6 max-w-2xl mx-auto">
           <ConsultantCard
             data={{
               id: 1,
@@ -55,7 +55,7 @@ const Page = () => {
               average_rating: 4.6,
               is_favorite: true,
               owners_satisfaction: 90,
-              locations: ["1", "2", "3", "4"]
+              locations: ["1", "2", "3", "4"],
             }}
           />
 
@@ -138,20 +138,20 @@ const Page = () => {
               />
             </div>
           </div>
-        </main>
+        </div>
 
-        <FixedBottomContainer>
-          <div className="w-full px-4">
+        <div>
+          <div className="w-full  fixed bottom-4 left-0  flex items-center justify-center px-4">
             <Button
               disabled={false} // TODO: Check if contact button clicked correctly then update this value
-              width="flex items-center justify-center w-full"
+              width="flex items-center justify-center w-full max-w-2xl mx-auto"
               containerClass="w-full"
               roundedClass="rounded-full"
               title={_STRINGS.RECORD_SCORE}
               onClick={handleShowModal}
             />
           </div>
-        </FixedBottomContainer>
+        </div>
       </div>
 
       <Modal
@@ -165,7 +165,7 @@ const Page = () => {
       >
         {/* Step 5: Modal content goes here */}
         <div className=" bg-white lg:shadow-card lg:rounded-2xl">
-          <header className="flex items-center justify-center sticky select-none z-[40]   shadow-md   bg-white w-full transition-all top-0 h-16 px-6 py-4">
+          <div className="flex items-center justify-center sticky select-none z-[40]   shadow-md   bg-white w-full transition-all top-0 h-16 px-6 py-4">
             <span className="font-semibold">ثبت امتیاز مشاور</span>
             <button
               onClick={handleHideModal}
@@ -173,7 +173,7 @@ const Page = () => {
             >
               <img src="/assets/icons/close.svg" alt="" />
             </button>
-          </header>
+          </div>
           <LazyLoadedComponent />
         </div>
       </Modal>

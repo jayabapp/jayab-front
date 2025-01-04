@@ -53,7 +53,7 @@ function ConsultantModal() {
 
       {/* <div className="lg:hidden"> */}
       {/* <FixedBottomContainer> */}
-      <div className="w-full px-2">
+      <div className="w-full sticky bottom-4 px-2">
         <Button
           width="flex items-center justify-center w-full"
           containerClass="w-full"

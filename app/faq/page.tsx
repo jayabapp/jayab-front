@@ -546,7 +546,9 @@ function Faqs() {
                       className="w-full h-full aspect-square object-cover"
                     />
                   </div>
-                  <span>ابراتور</span>
+                  <span className="text-primary-700 font-semibold">
+                    ابراتور
+                  </span>
                 </div>
                 <span>1404/04/۲۰</span>
               </div>
