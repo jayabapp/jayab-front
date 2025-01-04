@@ -12,11 +12,11 @@ const Page = () => {
   return (
     <div
       id="homeParent"
-      className="container  items-center  !bg-transparent transition-all duration-500 ease-in-out flex flex-col gap-6 "
+      className="container  items-center !pt-12  !bg-transparent transition-all duration-500 ease-in-out flex flex-col gap-6 "
     >
       <PageHeaders title={_STRINGS.SEARCH_FOR_CONSULTANTS} />
 
-      <header className="w-full flex flex-col gap-6">
+      <div className="w-full flex flex-col gap-6">
         <div className="w-full">
           <SearchBox
             placeholder={_STRINGS.SEARCH_FOR_CONSULTANTS}
@@ -28,13 +28,13 @@ const Page = () => {
         <div className="flex items-center justify-between">
           <span>جستجو در کردان و سه شهر دیگر</span>
         </div>
-      </header>
-      <div className="flex flex-row-reverse gap-6">
-        <main className="w-full lg:w-10/12 grid lg:grid-cols-2 gap-6">
+      </div>
+      <div className="flex">
+        <div className=" md:grid md:grid-cols-2 gap-6">
           {users.map((item, index) => (
             <ConsultantCard data={item} key={index} hidden={{ record: true }} />
           ))}
-        </main>
+        </div>
       </div>
     </div>
   );

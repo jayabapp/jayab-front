@@ -22,13 +22,14 @@ interface ConsultantCardProps {
     average_rating?: number;
     is_favorite?: boolean;
     owners_satisfaction?: number;
+    locations: string[];
   };
 }
 
 const ConsultantCard: React.FC<ConsultantCardProps> = ({ hidden, data }) => {
   return (
     <div className="w-full shadow-card rounded-2xl p-4 gap-0 md:gap-2 text-xs sm:text-base">
-      <Link href={`/consultants/${data?.id}`}>
+      <Link href={`/advisors/${data?.id}`}>
         <div className="w-full flex items-center justify-between gap-6">
           <div className="w-2/6">
             <div className="flex flex-col gap-2">

@@ -69,7 +69,7 @@ const Footer: React.FC = ({}) => {
       {
           id: 142142,
           title: _STRINGS.CONSULTAMCY,
-          route: "/consultants",
+          route: "/advisors",
 
           icon: "/assets/icons/navbar/footer_consultancy.svg",
       },

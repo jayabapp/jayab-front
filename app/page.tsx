@@ -11,6 +11,20 @@ export default function Home() {
       <div className=" md:grid md:grid-cols-6">
         {" "}
         <AddCard />
+        <AddCard />
+        <AddCard />
+        <AddCard />
+        <AddCard />
+        <AddCard />
+        <AddCard />
+        <AddCard />
+        <AddCard />
+        <AddCard />
+        <AddCard />
+        <AddCard />
+        <AddCard />
+        <AddCard />
+        <AddCard />
       </div>
     </div>
   );
