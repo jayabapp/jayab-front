@@ -24,15 +24,16 @@ export const fakeVilla = {
 };
 
 
-export const fakeConsultant = {
-    id: Math.floor(Math.random() * 10000), // Dynamic ID
-    name: "محمدرضا محمدی",
-    avatar: "/assets/images/fake_consultant_image.png",
-    code: "202",
-    locations: ["تهران", "کرج", "شهریار"],
-    owners_satisfaction: 90,
-    users_satisfaction: 85,
-};
+export const fakeConsultants = Array.from({ length: 10 }).map(() => ({
+  id: Math.floor(Math.random() * 10000), // Dynamic ID
+  name: `محمدرضا محمدی ${Math.floor(Math.random() * 100)}`, // Randomized name
+  avatar: "/assets/images/fake_consultant_image.png",
+  code: `${Math.floor(Math.random() * 900) + 100}`, // Random code between 100 and 999
+  locations: ["تهران", "کرج", "شهریار"], // You can add more locations if needed
+  owners_satisfaction: Math.floor(Math.random() * 100), // Random satisfaction score between 0 and 100
+  users_satisfaction: Math.floor(Math.random() * 100), // Random satisfaction score between 0 and 100
+}));
+
 
 export const simpleChartFakeData = [
   {
