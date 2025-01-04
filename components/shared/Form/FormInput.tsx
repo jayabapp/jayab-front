@@ -1,3 +1,5 @@
+"use client";
+
 import { IMAGE_URL } from "@/utils/urls";
 
 import React, { useRef, memo, ReactNode } from "react";
@@ -38,7 +40,13 @@ export interface props {
     onClick?: () => void | null;
   };
 }
-const FormInput = ({ item, value, onChangeText, errors, errorKey = "" }: props) => {
+const FormInput = ({
+  item,
+  value,
+  onChangeText,
+  errors,
+  errorKey = "",
+}: props) => {
   const inputRef = useRef<HTMLInputElement>(null);
 
   return (
@@ -59,11 +67,19 @@ const FormInput = ({ item, value, onChangeText, errors, errorKey = "" }: props) 
 
       <input
         onClick={item?.onClick ? item?.onClick : (e) => null}
-        type={item?.keyboard == "password" ? "password" : item?.keyboard == "number" ? "tel" : "text"}
+        type={
+          item?.keyboard == "password"
+            ? "password"
+            : item?.keyboard == "number"
+            ? "tel"
+            : "text"
+        }
         ref={inputRef}
         inputMode={item?.keyboard == "number" ? "tel" : "text"}
         pattern={item?.keyboard == "number" ? "[0-9]*" : ""}
-        className={`${!!item?.iconUrl ? " !pr-[3rem]" : ""}  ${!!item?.iconEndUrl ? " !pl-10" : ""} ${
+        className={`${!!item?.iconUrl ? " !pr-[3rem]" : ""}  ${
+          !!item?.iconEndUrl ? " !pl-10" : ""
+        } ${
           item?.direction ? item?.direction : "rtl"
         }   bg-gray-50    !text-base   ltr  text-right form-control  font-normal border focus:border-primary-700  py-4 px-4 w-full rounded-10 placeholder:text-gray-400 placeholder:text-right   placeholder:font-normal placeholder:text-sm placeholder:opacity-70   ${
           item?.inputClass
@@ -78,8 +94,14 @@ const FormInput = ({ item, value, onChangeText, errors, errorKey = "" }: props) 
         placeholder={item?.placeholder || item?.title}
         onChange={(v) => {
           if (item?.keyboard != "number") onChangeText(v.target.value);
-          else if (!isNaN(Number(p2e(v.target.value)))) onChangeText(v.target.value);
-          if (inputRef.current && item?.maxLength && v.target.value.length >= item?.maxLength) inputRef.current.blur();
+          else if (!isNaN(Number(p2e(v.target.value))))
+            onChangeText(v.target.value);
+          if (
+            inputRef.current &&
+            item?.maxLength &&
+            v.target.value.length >= item?.maxLength
+          )
+            inputRef.current.blur();
         }}
         maxLength={item?.maxLength || 256}
         disabled={item?.disabled}
@@ -92,9 +114,11 @@ const FormInput = ({ item, value, onChangeText, errors, errorKey = "" }: props) 
 
       {!!item?.iconUrl && (
         <img
-          className={`absolute ${item?.title ? "top-[61%]" : "top-[32%]"} w-4 aspect-square right-4 ${
-            item?.iconUrlClassName
-          } ${item?.iconFunc ? "cursor-pointer" : ""}`}
+          className={`absolute ${
+            item?.title ? "top-[61%]" : "top-[32%]"
+          } w-4 aspect-square right-4 ${item?.iconUrlClassName} ${
+            item?.iconFunc ? "cursor-pointer" : ""
+          }`}
           onClick={() => {
             if (item?.iconFunc) {
               item?.iconFunc();
@@ -105,9 +129,9 @@ const FormInput = ({ item, value, onChangeText, errors, errorKey = "" }: props) 
       )}
       {!!item?.iconEndUrl && (
         <img
-          className={`absolute top-[28%] w-5 aspect-square left-4 ${item?.iconEndUrlClassName} ${
-            item?.iconEndFunc ? "cursor-pointer" : ""
-          }`}
+          className={`absolute top-[28%] w-5 aspect-square left-4 ${
+            item?.iconEndUrlClassName
+          } ${item?.iconEndFunc ? "cursor-pointer" : ""}`}
           onClick={() => {
             if (item?.iconEndFunc) {
               item?.iconEndFunc();
@@ -123,7 +147,10 @@ const FormInput = ({ item, value, onChangeText, errors, errorKey = "" }: props) 
       )}
       {!!item?.extraElement && <span>{item?.extraElement}</span>}
       {!!item?.hint && (
-        <div id={`${item?.id}`} className={`text-xs font-light text-gray-400 mt-1 mr-5 `}>
+        <div
+          id={`${item?.id}`}
+          className={`text-xs font-light text-gray-400 mt-1 mr-5 `}
+        >
           {item?.hint}
         </div>
       )}

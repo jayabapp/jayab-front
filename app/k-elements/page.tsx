@@ -1,7 +1,6 @@
 "use client";
 
 import React, { useEffect, useState } from "react";
-import axios from "axios";
 import _STRINGS from "@/utils/LocalStrings";
 import type { City, State } from "@/api_services/city/city.interface";
 import { CityService } from "@/api_services/city/city.service";
@@ -98,8 +97,8 @@ const Page = () => {
         show={showModal}
         onHide={handleModal}
       >
-        <div className="h-full">
-          <div className="flex flex-col h-full">
+        <div className="h-auto">
+          <div className="flex flex-col h-auto">
             <div className="flex items-center justify-center sticky select-none z-[40]   shadow-md   bg-white w-full transition-all top-0 h-16 px-6 py-4">
               <span className="font-semibold">{_STRINGS.SEARCH_STATES}</span>
               {modalEntry === 0 ? (
@@ -118,7 +117,7 @@ const Page = () => {
                 </button>
               )}
             </div>
-            <section className="h-full">
+            <section className="min-h-full">
               {modalEntry === 0 ? (
                 <ul>
                   {states?.map((item) => (
