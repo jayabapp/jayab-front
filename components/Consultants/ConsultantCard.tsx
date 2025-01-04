@@ -56,7 +56,7 @@ const ConsultantCard: React.FC<ConsultantCardProps> = ({ hidden, data }) => {
               </div>
             </div>
           </div>
-          <aside className="w-full">
+          <div className="w-full">
             <div className="flex flex-col gap-3 sm:gap-4">
               {/* TITLE */}
               <div className="flex items-center gap-2">
@@ -113,7 +113,7 @@ const ConsultantCard: React.FC<ConsultantCardProps> = ({ hidden, data }) => {
                 )}
               </div>
             </div>
-          </aside>
+          </div>
         </div>
       </Link>
     </div>

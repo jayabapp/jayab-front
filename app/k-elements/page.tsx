@@ -191,7 +191,7 @@ const Page = () => {
               )}
             </section>
             {modalEntry !== 0 && (
-              <footer className="flex items-center justify-center p-6 sticky bottom-0 h-20 bg-white">
+              <div className="flex items-center justify-center p-6 sticky bottom-0 h-20 bg-white">
                 <Button
                   width="w-full flex items-center justify-center"
                   containerClass="w-full"
@@ -199,7 +199,7 @@ const Page = () => {
                   title={_STRINGS.DISCOVER_ADS}
                   onClick={() => handleSearchCities("someTitle")}
                 />
-              </footer>
+              </div>
             )}
           </div>
         </div>

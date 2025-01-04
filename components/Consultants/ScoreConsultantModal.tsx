@@ -1,17 +1,8 @@
 "use client";
 
 import React, { useState } from "react";
-import Link from "next/link";
-import Image from "next/image";
-
 import _STRINGS from "@/utils/LocalStrings";
-import PageHeaders from "@/components/headers/PageHeader";
-import FixedBottomContainer from "@/components/shared/FixedBottomContainer";
-
-import Modal from "@/components/Modal";
 import Button from "@/components/shared/Button/Button";
-import ConsultantCard from "@/components/Consultants/ConsultantCard";
-import CircularProgress from "@/components/shared/CircularProgress/CircularProgress";
 import MultiRangeSlider from "@/components/shared/Form/MultiRangeSlider";
 
 function ConsultantModal() {
@@ -36,14 +27,17 @@ function ConsultantModal() {
         />
       </footer> */}
 
-      <main className="max-h-full flex flex-col gap-6 overflow-y-scroll p-8 sm:p-12">
+      <div className="max-h-full flex flex-col gap-6 overflow-y-scroll p-8 sm:p-12">
         {[
           "میزان رضایت شما از سرعت پیگیری و نحوه پاسخگویی مشاور",
           "میزان رضایت شما از مسئولیت پذیری و مشاوره صحیح مشاور در خصوص رزرو اقامتگاه",
           "میزان رضایت شما از برخورد مشاور و پیگیری مراحل تا تحویل اقامتگاه",
         ].map((label, index) => (
           <article key={index} className="w-full h-28 mb-3">
-            <p className="leading-normal tracking-tighter" style={{ wordSpacing: "-0.01em" }}>
+            <p
+              className="leading-normal tracking-tighter"
+              style={{ wordSpacing: "-0.01em" }}
+            >
               <span className="">{index + 1}.</span>
               <span>{label}</span>
             </p>
@@ -55,7 +49,7 @@ function ConsultantModal() {
             />
           </article>
         ))}
-      </main>
+      </div>
 
       {/* <div className="lg:hidden"> */}
       {/* <FixedBottomContainer> */}
