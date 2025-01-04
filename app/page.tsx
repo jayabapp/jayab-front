@@ -9,21 +9,6 @@ export default function Home() {
       className="container  items-center !pt-12  !bg-transparent transition-all duration-500 ease-in-out flex flex-col gap-6 "
     >
       <div className=" md:grid md:grid-cols-6">
-        {" "}
-        <AddCard />
-        <AddCard />
-        <AddCard />
-        <AddCard />
-        <AddCard />
-        <AddCard />
-        <AddCard />
-        <AddCard />
-        <AddCard />
-        <AddCard />
-        <AddCard />
-        <AddCard />
-        <AddCard />
-        <AddCard />
         <AddCard />
       </div>
     </div>

@@ -12,7 +12,7 @@ const Page = () => {
   return (
     <div
       id="homeParent"
-      className="container  items-center !pt-12  !bg-transparent transition-all duration-500 ease-in-out flex flex-col gap-6 "
+      className="container  items-center !pt-20  !bg-transparent transition-all duration-500 ease-in-out flex flex-col gap-6 "
     >
       <PageHeaders title={_STRINGS.SEARCH_FOR_CONSULTANTS} />
 
