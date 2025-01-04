@@ -1,5 +1,11 @@
-const mohmmad = {};
-const kurosh = {};
+const mohmmad = {
+  VIEW_STATS: "آمار بازدید ملک در یک هفته گذشته",
+  PAYABLE_AMOUNT: "هزینه قابل پرداخت",
+  COST: "هزینه",
+};
+const kurosh = {
+  SEARCH_STATES: "جستجوی شهر ها",
+};
 
 const _STRINGS = {
   CURRENCY: "تومان",
