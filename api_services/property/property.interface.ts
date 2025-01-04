@@ -218,3 +218,19 @@ export enum PropertyOptionGroup {
   PARTY = "PARTY", // شرایط برگزاری مراسم
   BUILDING_DIRECTION = "BUILDING_DIRECTION", //جهت ساختمان
 }
+
+export interface PropertySubsDto {
+  id: number;
+  title: string;
+  price: number;
+  price_with_discount: number;
+  is_promote: boolean;
+  description: string;
+}
+
+export interface PayPropertySubSendDto {
+  subscription_id?: number;
+  promote_id?: number;
+  redirect_url: string;
+  gateway: string;
+}

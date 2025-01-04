@@ -27,18 +27,20 @@ const SimpleBarChart = ({ data }: { data: any }) => {
           bottom: 35,
         }}
       >
-        <CartesianGrid strokeDasharray="3 3" />
+        {/* <CartesianGrid strokeDasharray="3 3" /> */}
         <XAxis
           dataKey="date"
           tickFormatter={(value) => moment(value).format("jMM/jDD") || ""}
           tickMargin={10}
-          tick={{ textAnchor: "start", dx: -6 }}
-          angle={-90}
+          // tick={{ textAnchor: "start", dx: -6 }}
+          // angle={-90}
+          stroke="#C8CBD0"
         />
         <YAxis
           tickFormatter={(value) => numberWithCommas(value) || ""}
           type="number"
           tickMargin={35}
+          stroke="#C8CBD0"
           // tick={{ fontSize: 12, color: "red" }}
         />
         {/* <Tooltip /> */}
