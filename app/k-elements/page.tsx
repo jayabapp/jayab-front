@@ -1,40 +1,15 @@
 "use client";
+
 import React, { useEffect, useState } from "react";
-import Image from "next/image";
-import _STRINGS from "@/utils/LocalStrings";
-
-import InstallPromt from "@/components/InstallPrompt";
-import Modal from "@/components/Modal";
-
-import { AuthService } from "@/api_services/auth/auth.service";
-import CreateEditProperty from "@/components/Adds/CreateEditProperty";
-import PageHeaders from "@/components/headers/PageHeader";
-import ConsultantCard from "@/components/Consultants/ConsultantCard";
-import StepShower from "@/components/shared/StepShower";
-import { createPropertySteps } from "@/utils/constantss";
-import { useQuery } from "@tanstack/react-query";
-import { usePathname, useRouter } from "next/navigation";
-import Button from "@/components/shared/Button/Button";
-import FormInput from "@/components/shared/Form/FormInput";
-import PageFooter from "@/components/Footer/PageFooter";
-import Checkbox from "@/components/shared/Form/Checkbox";
-
 import axios from "axios";
+import _STRINGS from "@/utils/LocalStrings";
+import type { City, State } from "@/api_services/city/city.interface";
+import { CityService } from "@/api_services/city/city.service";
 
-import ModalSearchStatesAndCities from "@/components/ui/modals/ModalSearchStateAndCities";
-import { stringify } from "querystring";
-
-interface Child {
-  id: number;
-  title: string;
-}
-
-interface State {
-  id: number;
-  title: string;
-  image?: string | null;
-  child?: Child[];
-}
+import Image from "next/image";
+import Modal from "@/components/Modal";
+import Button from "@/components/shared/Button/Button";
+import Checkbox from "@/components/shared/Form/Checkbox";
 
 const Page = () => {
   const [modalEntry, setModalEntry] = useState<number>(0);
@@ -47,40 +22,24 @@ const Page = () => {
   const [showModal, setShowModal] = useState(true);
   const [ads, setAds] = useState([]);
   const [states, setStates] = useState<State[]>([]);
-  const [cities, setCities] = useState<any[]>([]);
+  const [cities, setCities] = useState<City[]>([]);
 
   useEffect(() => {
-    const url = "http://192.168.1.104:3000/api/v1/cities";
-
     const fetchStates = async () => {
       try {
-        // Axios response type can be inferred here
-        const response = await axios.get<{ data: { data: State[] } }>(url);
-
-        // Setting the states data
-        setStates(response.data.data);
+        const statesData = await CityService.fetchStates();
+        setStates(statesData); // Set the fetched states data
       } catch (error) {
-        console.error("Error fetching data:", error);
+        console.error("Error fetching states:", error);
       }
     };
 
     fetchStates();
   }, []);
 
-  useEffect(() => {
-    // console.log(states);
-  }, [states]);
-
   const handleModal = () => {
     setShowModal(!showModal);
   };
-
-  //   const handleSelect = (cityId: number) => {
-  //     setCheckedStates((prev) => ({
-  //       ...prev,
-  //       [cityId]: !prev[cityId], // Toggle the checked state of the specific checkbox
-  //     }));
-  //   };
 
   const handleSelect = (cityId: number) => {
     setCheckedStates((prev) => ({
@@ -88,27 +47,6 @@ const Page = () => {
       [cityId]: !prev[cityId], // Toggle the checked state of the specific checkbox
     }));
   };
-
-  //   const handleSelectAll = (stateId: number, cities: any[]) => {
-  //     const allSelected = cities.every((city) => checkedStates[city.id]);
-
-  //     // If all cities are selected, deselect all; otherwise, select all
-  //     const newState = cities.reduce((acc, city) => {
-  //       acc[city.id] = !allSelected;
-  //       return acc;
-  //     }, {});
-
-  //     setCheckedStates((prev) => ({
-  //       ...prev,
-  //       ...newState,
-  //     }));
-
-  //     // Update selectAllStates for the current state
-  //     setSelectAllStates((prev) => ({
-  //       ...prev,
-  //       [stateId]: !allSelected,
-  //     }));
-  //   };
 
   const handleSelectAll = (stateId: number, cities: any[]) => {
     const allSelected = cities.every((city) => checkedStates[city.id]);
@@ -133,18 +71,10 @@ const Page = () => {
 
   const fetchCities = async (id: number) => {
     try {
-      // Axios response type can be inferred here
-      const response = await axios.get<{ data: { data: Child[] } }>(
-        `http://192.168.1.104:3000/api/v1/cities/${id}`
-      );
-
-      // Setting the states data
-      setCities(response.data.data);
-
-      console.log("cities");
-      console.log(response.data.data);
+      const data = await CityService.fetchCities(id);
+      setCities(data);
     } catch (error) {
-      console.error("Error fetching data:", error);
+      console.error("Error fetching states:", error);
     }
   };
 
@@ -154,24 +84,10 @@ const Page = () => {
     fetchCities(id);
   };
 
-  const handleSearchCities = async (title: string) => {
-    // try {
-    //   const response = await axios.get<{ data: { data: Child[] } }>(
-    //     `http://192.168.1.104:3000/api/v1/cities/search?q=${title}`
-    //   );
-    //   // Setting the data (assuming you have setAds function to update state)
-    //   setAds(response.data.data);
-    //   console.log("Response received from the backend");
-    //   console.log(JSON.stringify(response.data.data)); // Use JSON.stringify here
-    // } catch (error) {
-    //   console.error("Error fetching data:", error);
-    // }
-  };
+  const handleSearchCities = async (title: string) => {};
 
   return (
     <>
-      {/* <div className="container items-center !bg-transparent transition-all duration-500 ease-in-out flex flex-col gap-6 "></div> */}
-
       <button onClick={handleModal}>Show Modal</button>
 
       <Modal
@@ -205,7 +121,7 @@ const Page = () => {
             <section className="h-full">
               {modalEntry === 0 ? (
                 <ul>
-                  {states.map((item, index) => (
+                  {states?.map((item) => (
                     <li
                       key={item.id}
                       className="flex items-center justify-between h-20 p-5 border cursor-pointer"
@@ -222,12 +138,13 @@ const Page = () => {
                         <div className="flex flex-col gap-2">
                           <h3>{item.title}</h3>
                           <ul className="flex items-center gap-1 list-none p-0 m-0 text-xs">
-                            {item.child?.length > 0 &&
+                            {(item.child?.length ?? 0) > 0 &&
                               item.child?.map(
-                                (city: Child, cityIndex: number) => (
+                                (city: City, cityIndex: number) => (
                                   <li key={city.id}>
                                     {city.title}
-                                    {cityIndex < item.child.length - 1 && " -"}
+                                    {cityIndex <
+                                      (item.child?.length ?? 0) - 1 && " -"}
                                   </li>
                                 )
                               )}
@@ -242,35 +159,35 @@ const Page = () => {
                 </ul>
               ) : (
                 <>
-                    <div className="flex flex-col gap-6">
-                  <div className="flex items-center justify-between p-5 !pb-0 -mb-2">
-                    <span>{_STRINGS.ALL_CITIES}</span>
-                    <Checkbox
-                      isChecked={selectAllStates[modalEntry] || false}
-                      onSelect={() => handleSelectAll(modalEntry, cities)}
-                      containerClass="my-4"
-                      rounded="rounded-lg"
-                    />
+                  <div className="flex flex-col gap-6">
+                    <div className="flex items-center justify-between p-5 !pb-0 -mb-2">
+                      <span>{_STRINGS.ALL_CITIES}</span>
+                      <Checkbox
+                        isChecked={selectAllStates[modalEntry] || false}
+                        onSelect={() => handleSelectAll(modalEntry, cities)}
+                        containerClass="my-4"
+                        rounded="rounded-lg"
+                      />
+                    </div>
+                    <ul>
+                      {cities.length > 0 &&
+                        cities.map((city) => (
+                          <li
+                            key={city.id}
+                            className="flex items-center justify-between h-20 p-5 border cursor-pointer"
+                          >
+                            <span>{city.title}</span>
+                            <Checkbox
+                              isChecked={checkedStates[city.id] || false}
+                              onSelect={() => handleSelect(city.id)}
+                              containerClass="my-4"
+                              rounded="rounded-lg"
+                              disabled={false}
+                            />
+                          </li>
+                        ))}
+                    </ul>
                   </div>
-                  <ul>
-                    {cities.length > 0 &&
-                      cities.map((city) => (
-                        <li
-                          key={city.id}
-                          className="flex items-center justify-between h-20 p-5 border cursor-pointer"
-                        >
-                          <span>{city.title}</span>
-                          <Checkbox
-                            isChecked={checkedStates[city.id] || false}
-                            onSelect={() => handleSelect(city.id)}
-                            containerClass="my-4"
-                            rounded="rounded-lg"
-                            disabled={false}
-                          />
-                        </li>
-                      ))}
-                  </ul>
-                </div>
                 </>
               )}
             </section>
@@ -281,7 +198,7 @@ const Page = () => {
                   containerClass="w-full"
                   roundedClass="rounded-full"
                   title={_STRINGS.DISCOVER_ADS}
-                  onClick={() => handleSearchCities()}
+                  onClick={() => handleSearchCities("someTitle")}
                 />
               </footer>
             )}
