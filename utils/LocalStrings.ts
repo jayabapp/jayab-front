@@ -1,7 +1,5 @@
 const mohmmad = {};
-const kurosh = {
-  SEARCH_STATES: "جستجوی استان",
-};
+const kurosh = {};
 
 const _STRINGS = {
   CURRENCY: "تومان",

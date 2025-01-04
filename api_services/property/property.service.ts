@@ -4,8 +4,10 @@ import {
   AssistantSendDto,
   CreatePropertyStepOneDto,
   FacilitiesValuesDto,
+  PayPropertySubSendDto,
   PricingPropertySendDto,
   PropertyOptionGroup,
+  PropertySubsDto,
   PropertyTermsSendDto,
   PropertyTypesDTP,
   PropInitDto,
@@ -18,6 +20,7 @@ import { p2e } from "@/helpers/NumberConverter";
 export class PropertyService {
   static USER_PROP_OPTIONS_CACHEKEY = "USER_PROP_OPTIONS";
   static OWNER_PROP_INIT_CACHEKEY = "OWNER_PROP_INIT";
+  static USER_SUBSCRIPTION_PLANS_CACHEKEY = "USER_SUBSCRIPTION_PLANS";
 
   static async GetUserPropertyGroup(dto: { group: (keyof typeof PropertyOptionGroup)[] }) {
     try {
@@ -26,6 +29,43 @@ export class PropertyService {
         apiRoutes.USER_PROP_OPTIONS,
         {
           group: dto.group,
+        }
+      );
+      return result;
+    } catch (e) {
+      throw e;
+    }
+  }
+
+  /* -------------------------------------------------------------------------- */
+  /*                              SUBSCRIPTION PART                             */
+  /* -------------------------------------------------------------------------- */
+
+  static async GetPropertySubscriptionPlans(dto?: { type?: "ADVISOR" | "PROPERTY"; property_id?: string | number }) {
+    try {
+      const result = await apiCall<
+        { type?: "ADVISOR" | "PROPERTY"; property_id?: string | number },
+        { list: PropertySubsDto[]; can_promote: boolean }
+      >("GET", apiRoutes.USER_SUBSCRIPTION_PLANS, {
+        type: dto?.type,
+        property_id: dto?.property_id,
+      });
+      return result;
+    } catch (e) {
+      throw e;
+    }
+  }
+
+  static async PayPropetySubscription(dto: PayPropertySubSendDto & { property_id: string | number | null }) {
+    try {
+      const result = await apiCall<PayPropertySubSendDto, string>(
+        "PATCH",
+        apiRoutes.OWNER_PROPERTIES_PAY_SUBS(dto?.property_id),
+        {
+          gateway: dto.gateway,
+          promote_id: dto.promote_id,
+          redirect_url: dto.redirect_url,
+          subscription_id: dto.subscription_id,
         }
       );
       return result;

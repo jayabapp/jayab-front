@@ -50,10 +50,14 @@ export const apiRoutes = {
 
   CITIES: "/cities",
 
+  USER_SUBSCRIPTION_PLANS: "/user/subscription-plans",
+
   OWNER_PROP_INIT: (propertyId?: string | number | null) =>
     `/owner/properties/init${!!propertyId ? `?property_id=${propertyId}` : ""}`,
 
   OWNER_PROPERTIES: (propertyId: string | number | null) => `/owner/properties/${propertyId}`,
+
+  OWNER_PROPERTIES_PAY_SUBS: (propertyId: string | number | null) => `/owner/properties/${propertyId}/pay-subscription`,
 
   OWNER_PROPERTIES_LOC_UPDATE: (propertyId: string | number | null) => `/owner/properties/${propertyId}/location`,
 
