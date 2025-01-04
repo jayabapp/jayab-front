@@ -45,9 +45,6 @@ const Page = () => {
         show={showModal === "modal1"} // Only show Modal 1 if its ID is active
         onHide={() => setShowModal(null)} // Hide modal when closed
         type="bottom-sheet"
-        options={{
-          containerClass: "custom-modal-class",
-        }}
       >
         <SimpleModal
           image="/assets/icons/modal-icon-1.svg"
@@ -76,9 +73,6 @@ const Page = () => {
         show={showModal === "modal4"} // Only show Modal 3 if its ID is active
         onHide={() => setShowModal(null)} // Hide modal when closed
         type="bottom-sheet"
-        options={{
-          containerClass: "custom-modal-class",
-        }}
       >
         <SimpleModal
           image="/assets/icons/modal-icon-3.svg"
@@ -165,9 +159,6 @@ const Page = () => {
         show={showModal === "modal5"} // Only show Modal 3 if its ID is active
         onHide={() => setShowModal(null)} // Hide modal when closed
         type="bottom-sheet"
-        options={{
-          containerClass: "custom-modal-class",
-        }}
       >
         <SimpleModal
           image="/assets/icons/modal-icon-3.svg"

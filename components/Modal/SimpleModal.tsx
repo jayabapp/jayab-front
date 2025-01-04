@@ -31,7 +31,7 @@ function SimpleModal({
                 </div>
                 {title && <span>{title}</span>}
                 <button onClick={onClick}>
-                    <Image alt="" src="/assets/icons/close.svg" width={15} height={15} />
+                    <img src="/assets/icons/close.svg" alt="" />
                 </button>
             </header>
             {children}
