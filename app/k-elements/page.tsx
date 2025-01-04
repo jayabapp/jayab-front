@@ -19,7 +19,7 @@ const Page = () => {
   const [selectAllStates, setSelectAllStates] = useState<{
     [key: number]: boolean;
   }>({});
-  const [showModal, setShowModal] = useState(true);
+  const [showModal, setShowModal] = useState(false);
   const [ads, setAds] = useState([]);
   const [states, setStates] = useState<State[]>([]);
   const [cities, setCities] = useState<City[]>([]);
@@ -93,13 +93,13 @@ const Page = () => {
       <Modal
         options={{
           containerClass:
-            "mx-auto my-10 w-full max-w-xl rounded-2xl overflow-y-scroll bg-white dark:bg-zinc-900",
+            "mx-auto my-10 w-full h-full max-w-xl rounded-2xl overflow-y-scroll bg-white dark:bg-zinc-900",
         }}
         show={showModal}
         onHide={handleModal}
       >
-        <div>
-          <div className="flex flex-col">
+        <div className="h-full">
+          <div className="flex flex-col h-full">
             <div className="flex items-center justify-center sticky select-none z-[40]   shadow-md   bg-white w-full transition-all top-0 h-16 px-6 py-4">
               <span className="font-semibold">{_STRINGS.SEARCH_STATES}</span>
               {modalEntry === 0 ? (
