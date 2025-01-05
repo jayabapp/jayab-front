@@ -389,7 +389,7 @@ function Faqs() {
 
       <section className="w-full relative flex flex-col gap-12">
         <header>
-          <h4 className="text-2xl font-semibold">پرسش و پاسخ</h4>
+          <h4 className="text-2xl font-semibold">{_STRINGS.QUESTIONS_AND_ANSWERS}</h4>
         </header>
         <div className="flex flex-col gap-6">
           <div className="grid lg:grid-cols-2 gap-6">
@@ -397,7 +397,7 @@ function Faqs() {
               <div>
                 <FormInput
                   item={{
-                    title: _STRINGS.ASSISTANT_NAME,
+                    title: _STRINGS.FULL_NAME,
                     isMandatory: true,
                     containerClass: "w-full",
                     placeholder: "امیر علی عباسی فر",
@@ -409,7 +409,7 @@ function Faqs() {
               <div>
                 <FormInput
                   item={{
-                    title: _STRINGS.ASSISTANT_PHONE,
+                    title: _STRINGS.PHONE_NUMBER,
                     isMandatory: true,
                     containerClass: "w-full",
                     placeholder: "+989123456789",
@@ -424,9 +424,9 @@ function Faqs() {
                 item={{
                   rows: 6,
                   containerClass: "!max-h-full",
-                  title: _STRINGS.MESSAGE,
+                  title: _STRINGS.DESTRUCTION,
                   isMandatory: true,
-                  placeholder: "توضیحات",
+                  placeholder: _STRINGS.DESTRUCTION,
                   value: values.message,
                   onChangeText: (value) => onChange(value, "message"),
                 }}
@@ -442,7 +442,7 @@ function Faqs() {
       <section className="w-full relative flex flex-col gap-12">
         <header className="w-full flex items-center justify-between">
           <h4 className="text-md font-semibold">{_STRINGS.USERS_FAQ}</h4>
-          <Link href="#">همه سوالات</Link>
+          <Link href="#">{_STRINGS.ALL_QUESTIONS}</Link>
         </header>
         <div className="flex flex-col gap-6">
           <QuestionCard

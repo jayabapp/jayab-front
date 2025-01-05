@@ -9,6 +9,11 @@ const kurosh = {
   LOADING: "در حال بارگزاری",
   FAQ: "سوالات متداول",
   USERS_FAQ: "پرسش‌های کاربران",
+  ALL_QUESTIONS: "همه سوالات",
+  QUESTIONS_AND_ANSWERS: "پرسش و پاسخ",
+  FULL_NAME: "نام و نام خانوادگی",
+  PHONE_NUMBER: "شماره تلفن",
+  YOUR_MESSAGE: "پیام شما",
 };
 
 const _STRINGS = {
