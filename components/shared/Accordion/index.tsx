@@ -16,7 +16,7 @@ function Accordion({ title = "Default Title", children }: AccordionProps) {
       style={{ boxShadow: "0px 0px 10px 0px rgba(0, 0, 0, 0.15)" }}
     >
       <button
-        className="w-full flex justify-between items-center px-4 py-3"
+        className="w-full flex justify-between items-center px-4 py-3 cursor-pointer"
         onClick={() => setIsOpen(!isOpen)}
       >
         <div className="flex items-center gap-3">
