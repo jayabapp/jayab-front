@@ -101,22 +101,21 @@ const Page = () => {
         <div className="h-auto">
           <div className="flex flex-col h-auto">
             <div className="flex items-center justify-center sticky select-none z-[40]   shadow-md   bg-white w-full transition-all top-0 h-16 px-6 py-4">
+              <button
+                onClick={handleModal}
+                className="text-2xl text-gray-500 absolute left-6 top-6"
+              >
+                <img src="/assets/icons/close.svg" alt="" />
+              </button>
               <span className="font-semibold">{_STRINGS.SEARCH_STATES}</span>
-              {modalEntry === 0 ? (
-                <button
-                  onClick={handleModal}
-                  className="text-2xl text-gray-500 absolute right-6 top-6"
-                >
-                  <img src="/assets/icons/close.svg" alt="" />
-                </button>
-              ) : (
+              {modalEntry !== 0 ? (
                 <button
                   onClick={() => setModalEntry(0)}
                   className="text-2xl text-gray-500 absolute right-6 top-6"
                 >
                   <img alt="" src="/assets/icons/chevron-right.svg" />
                 </button>
-              )}
+              ) : null}
             </div>
             <section className="min-h-full">
               {modalEntry === 0 ? (
