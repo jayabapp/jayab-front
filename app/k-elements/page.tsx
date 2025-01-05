@@ -9,6 +9,7 @@ import Image from "next/image";
 import Modal from "@/components/Modal";
 import Button from "@/components/shared/Button/Button";
 import Checkbox from "@/components/shared/Form/Checkbox";
+import { divide } from "lodash";
 
 const Page = () => {
   const [modalEntry, setModalEntry] = useState<number>(0);
@@ -171,23 +172,29 @@ const Page = () => {
                         rounded="rounded-lg"
                       />
                     </div>
-                    <ul>
-                      {cities.length > 0 &&
+                    <ul className="h-full">
+                      {cities.length > 0 ? (
                         cities.map((city) => (
                           <li
                             key={city.id}
+                            onClick={() => handleSelect(city.id)}
                             className="flex items-center justify-between h-20 p-5 border cursor-pointer"
                           >
                             <span>{city.title}</span>
                             <Checkbox
                               isChecked={checkedStates[city.id] || false}
-                              onSelect={() => handleSelect(city.id)}
+                              onSelect={() => console.log("x")}
                               containerClass="my-4"
                               rounded="rounded-lg"
                               disabled={false}
                             />
                           </li>
-                        ))}
+                        ))
+                      ) : (
+                        <div className="text-center p-10 mb-80">
+                          هیچ اطلاعاتی وارد نشده است
+                        </div>
+                      )}
                     </ul>
                   </div>
                 </>
