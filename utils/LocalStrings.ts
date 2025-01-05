@@ -5,6 +5,10 @@ const mohmmad = {
 };
 const kurosh = {
   SEARCH_STATES: "جستجوی شهر ها",
+  ADVISOR_REGUSTER_SCORE: "ثبت امتیاز مشاور",
+  LOADING: "در حال بارگزاری",
+  FAQ: "سوالات متداول",
+  USERS_FAQ: "پرسش‌های کاربران",
 };
 
 const _STRINGS = {

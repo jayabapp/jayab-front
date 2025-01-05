@@ -92,7 +92,7 @@ const Page = () => {
       <Modal
         options={{
           containerClass:
-            "mx-auto my-10 w-full h-full max-w-xl rounded-2xl overflow-y-scroll bg-white dark:bg-zinc-900",
+            "mx-auto md:my-10 w-full h-screen md:h-full max-w-lg md:rounded-2xl overflow-y-scroll bg-white dark:bg-zinc-900",
         }}
         show={showModal}
         onHide={handleModal}
@@ -134,9 +134,9 @@ const Page = () => {
                           height={40}
                           className="rounded"
                         />
-                        <div className="flex flex-col gap-2">
+                        <div className="flex flex-col gap-1">
                           <h3>{item.title}</h3>
-                          <ul className="flex items-center gap-1 list-none p-0 m-0 text-xs">
+                          <ul className="flex items-center gap-1 list-none p-0 m-0 text-xs text-[#9296A0]">
                             {(item.child?.length ?? 0) > 0 &&
                               item.child?.map(
                                 (city: City, cityIndex: number) => (
@@ -159,8 +159,11 @@ const Page = () => {
               ) : (
                 <>
                   <div className="flex flex-col gap-6">
-                    <div className="flex items-center justify-between p-5 !pb-0 -mb-2">
-                      <span>{_STRINGS.ALL_CITIES}</span>
+                    <div className="flex items-center justify-between p-5 !pb-0 -mb-2 font-semibold text-primary-700">
+                      <div className="flex items-center gap-1">
+                        <img src="/assets/icons/shared/caret-left.svg" alt="" />
+                        <span>{_STRINGS.ALL_CITIES}</span>
+                      </div>
                       <Checkbox
                         isChecked={selectAllStates[modalEntry] || false}
                         onSelect={() => handleSelectAll(modalEntry, cities)}
@@ -191,7 +194,7 @@ const Page = () => {
               )}
             </section>
             {modalEntry !== 0 && (
-              <div className="flex items-center justify-center p-6 sticky bottom-0 h-20 bg-white">
+              <div className="w-full flex items-center justify-center p-6 fixed md:sticky bottom-0 h-20 bg-white shadow-[0px_-1px_6px_0px_#00000026] z-50">
                 <Button
                   width="w-full flex items-center justify-center"
                   containerClass="w-full"

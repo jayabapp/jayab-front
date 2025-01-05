@@ -19,15 +19,15 @@ function Accordion({ title = "Default Title", children }: AccordionProps) {
         className="w-full flex justify-between items-center px-4 py-3 cursor-pointer"
         onClick={() => setIsOpen(!isOpen)}
       >
-        <div className="flex items-center gap-3">
+        <div className="flex items-center gap-3 text-sm sm:text-base">
           <img src="/assets/icons/accordion/Frame.svg" alt="" />
-          {title}
+          <div className="text-start">{title}</div>
         </div>
         <motion.img
           src="/assets/icons/shared/caret-down.svg"
           alt="Toggle"
           className="w-5 h-5 ml-2"
-          animate={{ rotate: isOpen ? 180 : 0 }}
+          animate={{ rotate: isOpen ? 0 : 180 }}
           transition={{ duration: 0.3, ease: "easeInOut" }}
         />
       </button>
@@ -41,8 +41,12 @@ function Accordion({ title = "Default Title", children }: AccordionProps) {
         className="overflow-hidden"
       >
         <div className="flex items-start gap-4 px-6 py-3 text-[#5F636D]">
-          <img src="/assets/icons/accordion/Group.svg" alt="" className="pr-1" />
-          {children}
+          <img
+            src="/assets/icons/accordion/Group.svg"
+            alt=""
+            className="pr-1"
+          />
+          <div className="text-start">{children}</div>
         </div>
       </motion.div>
     </div>

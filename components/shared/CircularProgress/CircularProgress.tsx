@@ -31,7 +31,7 @@ const CircularProgress: React.FC<CircularProgressProps> = ({
             style={{ color: pStyles?.textColor }}
         >
             <div className="flex items-center gap-1">
-                {label && <span className="text-nowrap">{label}</span>}
+                {label && <span className="text-nowrap">{label}: </span>}
                 <div className={`relative inline-flex max-w-full ${size}`}>
                     <CircularProgressbar
                         value={value}

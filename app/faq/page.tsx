@@ -1,13 +1,13 @@
 "use client";
+import Link from "next/link";
 import { useState } from "react";
-import { motion } from "framer-motion";
-
 import _STRINGS from "@/utils/LocalStrings";
 
 import Accordion from "@/components/shared/Accordion";
 import FormInput from "@/components/shared/Form/FormInput";
 import MultiLineFormInput from "@/components/shared/Form/MultiLineFormInput";
 import Button from "@/components/shared/Button/Button";
+import QuestionCard from "@/components/shared/cards/QuestionCard";
 
 interface ContactForm {
   full_name: string;
@@ -318,7 +318,7 @@ function Faqs() {
     <div className="h-auto container relative bg-red-900 !pt-12 flex flex-col items-center gap-20 !bg-transparent transition-all duration-500 ease-in-out">
       <section className="w-full relative flex flex-col gap-12">
         <header>
-          <h4 className="text-2xl font-semibold">سوالات متداول</h4>
+          <h4 className="text-2xl font-semibold">{_STRINGS.FAQ}</h4>
         </header>
 
         <div className="w-full overflow-x-auto">
@@ -346,7 +346,6 @@ function Faqs() {
 
         <div className="relative">
           {faq_data.map((tab, tabIndex) => {
-            // Divide tab.child into two halves
             const half = Math.ceil((tab.child?.length || 0) / 2);
             const firstHalf = tab.child?.slice(0, half) || [];
             const secondHalf = tab.child?.slice(half) || [];
@@ -366,7 +365,7 @@ function Faqs() {
                   <div className="flex flex-col gap-4">
                     {firstHalf.map((faq, faqIndex) => (
                       <Accordion key={faqIndex} title={faq.title}>
-                        <p className="text-[inherit] text-sm">
+                        <p className="text-sm sm:text-base">
                           {faq.description}
                         </p>
                       </Accordion>
@@ -441,49 +440,19 @@ function Faqs() {
       </section>
 
       <section className="w-full relative flex flex-col gap-12">
-        <header>
-          <h4 className="text-md font-semibold">پرسش های کاربران</h4>
+        <header className="w-full flex items-center justify-between">
+          <h4 className="text-md font-semibold">{_STRINGS.USERS_FAQ}</h4>
+          <Link href="#">همه سوالات</Link>
         </header>
         <div className="flex flex-col gap-6">
-          <article
-            className="flex flex-col gap-10 lg:gap-6 p-6 rounded-2xl"
-            style={{ boxShadow: "0px 0px 10px 0px rgba(0, 0, 0, 0.15)" }}
-          >
-            <div className="flex flex-col lg:flex-row lg:items-center gap-2 lg:justify-between">
-              <span>
-                آیا امکان اجاره ویلا برای تعداد افراد بیشتر از ظرفیت اعلام شده
-                وجود دارد؟
-              </span>
-              <div className="flex items-center gap-6">
-                <span>شهاب ساعدی</span>
-                <span>1404/04/04</span>
-              </div>
-            </div>
-
-            <div className="flex flex-col gap-4 pr-6">
-              <div className="flex items-center justify-between pb-5 border-b-2 border-[#E4E5E7]">
-                <div className="flex items-center justify-between gap-3">
-                  <div className="w-10 h-10 rounded-full">
-                    <img
-                      src="/assets/images/avatar.png"
-                      alt=""
-                      className="w-full h-full aspect-square object-cover"
-                    />
-                  </div>
-                  <span className="text-primary-700 font-semibold">
-                    ابراتور
-                  </span>
-                </div>
-                <span>1404/04/۲۰</span>
-              </div>
-              <p>
-                بله، سایت جایاب تلاش می‌کند ویلاهای ثبت‌شده را پیش از انتشار
-                بررسی کند و تضمین می‌دهد تصاویر و توضیحات ارائه‌شده با واقعیت
-                مطابقت داشته باشد. در صورت مغایرت، کاربران می‌توانند موضوع را به
-                پشتیبانی گزارش دهند.
-              </p>
-            </div>
-          </article>
+          <QuestionCard
+            question="آیا امکان اجاره ویلا برای تعداد افراد بیشتر از ظرفیت اعلام شده وجود دارد؟"
+            authorName="شهاب ساعدی"
+            authorAvatar="/assets/images/avatar.png"
+            date="1404/04/04"
+            responseDate="1404/04/20"
+            responseText="بله، سایت جایاب تلاش می‌کند ویلاهای ثبت‌شده را پیش از انتشار بررسی کند و تضمین می‌دهد تصاویر و توضیحات ارائه‌شده با واقعیت مطابقت داشته باشد. در صورت مغایرت، کاربران می‌توانند موضوع را به پشتیبانی گزارش دهند."
+          />
         </div>
       </section>
     </div>

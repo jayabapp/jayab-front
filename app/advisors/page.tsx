@@ -27,7 +27,7 @@ const Page = () => {
         </div>
       </div>
 
-      <div className=" md:grid md:grid-cols-2 gap-6">
+      <div className="grid md:grid-cols-2 gap-6">
         {users.map((item, index) => (
           <ConsultantCard data={item} key={index} hidden={{ record: true }} />
         ))}

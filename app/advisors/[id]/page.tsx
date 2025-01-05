@@ -1,51 +1,37 @@
 "use client";
 
 import React, { useState } from "react";
-import Link from "next/link";
-import Image from "next/image";
 import dynamic from "next/dynamic";
-
-import _STRINGS from "@/utils/LocalStrings";
-
 import Modal from "@/components/Modal";
 import Button from "@/components/shared/Button/Button";
 import ConsultantCard from "@/components/Consultants/ConsultantCard";
 import CircularProgress from "@/components/shared/CircularProgress/CircularProgress";
 import PageHeaders from "@/components/headers/PageHeader";
-import FixedBottomContainer from "@/components/shared/FixedBottomContainer";
 
-const LazyLoadedComponent = dynamic(
+import _STRINGS from "@/utils/LocalStrings";
+
+const LazyScoreToAdvisorModal = dynamic(
   () => import("@/components/Consultants/ScoreConsultantModal"),
   {
-    loading: () => <p>Loading...</p>, // Optional: Show a loading message
-    ssr: false, // Optional: Disable server-side rendering if needed
+    loading: () => <p className="text-center p-10">{_STRINGS.LOADING}...</p>,
+    ssr: false,
   }
 );
 
 const Page = () => {
-  // Step 1: Declare a state to control modal visibility
   const [showModal, setShowModal] = useState(false);
-
-  // Step 2: Define a function to hide the modal
-  const handleHideModal = () => {
-    setShowModal(false);
-  };
-
-  // Step 3: Define a function to show the modal
-  const handleShowModal = () => {
-    setShowModal(true);
-  };
 
   return (
     <>
       <div className="!bg-transparent relative transition-all duration-500 ease-in-out py-16 container">
         <PageHeaders title={_STRINGS.CONSULTANT_INFO} />
 
-        <div className="flex flex-col gap-6 max-w-2xl mx-auto">
+        <div className="flex flex-col gap-5 max-w-2xl mx-auto">
+          {/* Advisor info */}
           <ConsultantCard
             data={{
               id: 1,
-              code: "CONS-001",
+              code: "66",
               name: "Alice Green",
               avatar: "/assets/images/fake_consultant_image.png",
               specialization: "Project Management",
@@ -55,15 +41,15 @@ const Page = () => {
               average_rating: 4.6,
               is_favorite: true,
               owners_satisfaction: 90,
-              locations: ["1", "2", "3", "4"],
+              locations: ["تهران", "تهران", "تهران"],
             }}
           />
 
-          <div className="w-full flex items-center justify-between gap-6">
+          <div className="w-full flex items-center justify-between gap-4">
             <Button
               icon={
                 <>
-                  <Image
+                  <img
                     src={"/assets/icons/shared/call.svg"}
                     width={20}
                     height={20}
@@ -71,7 +57,7 @@ const Page = () => {
                   />
                 </>
               }
-              width="flex items-center justify-center w-full"
+              width="flex items-center justify-center w-full gap-1"
               containerClass="w-full"
               roundedClass="rounded-full"
               title={_STRINGS.CALL}
@@ -79,7 +65,7 @@ const Page = () => {
             <Button
               icon={
                 <>
-                  <Image
+                  <img
                     src={"/assets/icons/shared/message.svg"}
                     width={20}
                     height={20}
@@ -87,7 +73,7 @@ const Page = () => {
                   />
                 </>
               }
-              width="flex items-center justify-center w-full"
+              width="flex items-center justify-center w-full gap-1"
               containerClass="w-full"
               roundedClass="rounded-full"
               title={_STRINGS.MESSAGE}
@@ -140,41 +126,42 @@ const Page = () => {
           </div>
         </div>
 
-        <div>
-          <div className="w-full  fixed bottom-4 left-0  flex items-center justify-center px-4">
-            <Button
-              disabled={false} // TODO: Check if contact button clicked correctly then update this value
-              width="flex items-center justify-center w-full max-w-2xl mx-auto"
-              containerClass="w-full"
-              roundedClass="rounded-full"
-              title={_STRINGS.RECORD_SCORE}
-              onClick={handleShowModal}
-            />
-          </div>
+        <div
+          className="w-full fixed bottom-0 left-0 bg-white flex items-center justify-center px-4 py-4"
+          style={{ boxShadow: "0px -1px 6px 0px #00000026" }}
+        >
+          <Button
+            disabled={false} // TODO: Check if contact button clicked correctly then update this value
+            width="flex items-center justify-center w-full max-w-2xl mx-auto"
+            containerClass="w-full"
+            roundedClass="rounded-full"
+            title={_STRINGS.RECORD_SCORE}
+            onClick={() => setShowModal(!showModal)}
+          />
         </div>
       </div>
 
       <Modal
-        show={showModal} // Control visibility via state
-        onHide={handleHideModal} // Pass the function to hide the modal
-        type="bottom-sheet" // Optional: Can be omitted for default animation
+        show={showModal}
+        onHide={() => setShowModal(!showModal)}
         options={{
           containerClass:
-            "mx-auto my-10 w-full max-w-xl rounded-2xl overflow-y-scroll bg-white dark:bg-zinc-900",
+            "mx-auto md:!my-10 w-full h-full max-w-lg md:h-[inherit] overflow-y-scroll bg-white dark:bg-zinc-900 md:rounded-2xl",
         }}
       >
-        {/* Step 5: Modal content goes here */}
-        <div className=" bg-white lg:shadow-card lg:rounded-2xl">
+        <div className="h-full">
           <div className="flex items-center justify-center sticky select-none z-[40]   shadow-md   bg-white w-full transition-all top-0 h-16 px-6 py-4">
-            <span className="font-semibold">ثبت امتیاز مشاور</span>
+            <span className="font-semibold">
+              {_STRINGS.ADVISOR_REGUSTER_SCORE}
+            </span>
             <button
-              onClick={handleHideModal}
-              className="text-2xl text-gray-500 absolute right-4 top-6"
+              onClick={() => setShowModal(!showModal)}
+              className="text-2xl text-gray-500 absolute right-7 top-7"
             >
               <img src="/assets/icons/close.svg" alt="" />
             </button>
           </div>
-          <LazyLoadedComponent />
+          <LazyScoreToAdvisorModal />
         </div>
       </Modal>
     </>

@@ -45,7 +45,8 @@ const ConsultantCard: React.FC<ConsultantCardProps> = ({ hidden, data }) => {
                     className="w-full h-full aspect-square object-cover object-top"
                   />
                 ) : (
-                  <div className="absolute inset-0">place holder image</div>
+                  <div className="absolute inset-0"></div>
+                  // TODO: add place holder image
                 )}
               </div>
               {/* CODE  - LIKES */}
@@ -60,7 +61,7 @@ const ConsultantCard: React.FC<ConsultantCardProps> = ({ hidden, data }) => {
             <div className="flex flex-col gap-3 sm:gap-4">
               {/* TITLE */}
               <div className="flex items-center gap-2">
-                <p className="text-lg sm:text-xl font-semibold">{data?.name}</p>
+                <p className="text-lg xs:text-lg md:text-xl font-semibold">{data?.name}</p>
               </div>
               {/* CIRCULAR BARS */}
               <div className="w-full flex items-center justify-between lg:justify-start gap-4">

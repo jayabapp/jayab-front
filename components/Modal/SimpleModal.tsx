@@ -17,7 +17,7 @@ function SimpleModal({
     onClick,
 }: SimpleModalProps) {
     return (
-        <div className=" lg:rounded-2xl mx-auto rounded-2xl">
+        <div className="rounded-2xl bg-white dark:bg-zinc-900 mx-2">
             <div className="flex items-start justify-between p-6">
                 <div className="flex flex-col flex-items-start gap-2">
                     {image && (
