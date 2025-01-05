@@ -14,6 +14,7 @@ const kurosh = {
   FULL_NAME: "نام و نام خانوادگی",
   PHONE_NUMBER: "شماره تلفن",
   YOUR_MESSAGE: "پیام شما",
+  SEARCH_IN: "جستجو در",
 };
 
 const _STRINGS = {
