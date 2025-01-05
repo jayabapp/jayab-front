@@ -12,7 +12,8 @@ const Page = () => {
   const [showModal, setShowModal] = useState<string | null>(null); // Store modal ID or null if no modal is shown
   const [sliderPriceValue, setSliderPriceValue] = useState<number>(1); // Use a single value for the slider
   const [sliderCommissionValue, setSliderCommissionValue] = useState<number>(1); // Use a single value for the slider
-  const [sliderTodayCommissionValue, setSliderTodayCommissionValue] = useState<number>(1); // Use a single value for the slider
+  const [sliderTodayCommissionValue, setSliderTodayCommissionValue] =
+    useState<number>(1); // Use a single value for the slider
 
   // Handle the change in slider value
   const handleSliderPriceChange = (value: number) => {
@@ -45,6 +46,10 @@ const Page = () => {
         show={showModal === "modal1"} // Only show Modal 1 if its ID is active
         onHide={() => setShowModal(null)} // Hide modal when closed
         type="bottom-sheet"
+        options={{
+          containerClass:
+            "mx-auto md:!my-10 mx-auto md:w-full h-fit max-w-sm overflow-y-scroll rounded-2xl",
+        }}
       >
         <SimpleModal
           image="/assets/icons/modal-icon-1.svg"
@@ -52,20 +57,21 @@ const Page = () => {
           onClick={() => setShowModal(null)} // Close Modal
         >
           <div className="px-6">
-            <p>
-              لورم ایپسوم دولور سیمی‌ت، ایزی اومنیس ودی ایرودت. نسسیت اتم‌دور تریور، فولوتوت ان سیفلکس، ویدور آت. کیا
-              دسیمپ، ییستیداتی پسولاتی! اپتور لوکوس ویگورن اوپریتستات واریتر، کولیسیا بلانکیتور. توسیتان ریتلات که
-              دیسپوسل ایترسیتی اش. سلیم رتیو لورکاتور، هر پورو پتو.
+            <p className="text-sm md:text-base">
+              لورم ایپسوم دولور سیمی‌ت، ایزی اومنیس ودی ایرودت. نسسیت اتم‌دور
+              تریور، فولوتوت ان سیفلکس، ویدور آت. کیا دسیمپ، ییستیداتی پسولاتی!
+              اپتور لوکوس ویگورن اوپریتستات واریتر، کولیسیا بلانکیتور. توسیتان
+              ریتلات که دیسپوسل ایترسیتی اش. سلیم رتیو لورکاتور، هر پورو پتو.
             </p>
           </div>
-          <footer className="sticky bottom-0 p-4">
+          <div className="sticky bottom-0 p-4">
             <Button
               width="w-full flex items-center justify-center"
               containerClass="w-full"
               roundedClass="rounded-full"
               title={_STRINGS.SUBMIT_REQUEST}
             />
-          </footer>
+          </div>
         </SimpleModal>
       </Modal>
 
@@ -73,6 +79,10 @@ const Page = () => {
         show={showModal === "modal4"} // Only show Modal 3 if its ID is active
         onHide={() => setShowModal(null)} // Hide modal when closed
         type="bottom-sheet"
+        options={{
+          containerClass:
+            "mx-auto md:!my-10 mx-auto md:w-full h-fit max-w-sm overflow-y-scroll rounded-2xl",
+        }}
       >
         <SimpleModal
           image="/assets/icons/modal-icon-3.svg"
@@ -80,11 +90,8 @@ const Page = () => {
           onClick={() => setShowModal(null)} // Close Modal
         >
           <div className="px-6">
-            <p>
-              لورم ایپسوم دولور سیمی‌ت، ایزی اومنیس ودی ایرودت. نسسیت اتم‌دور تریور، فولوتوت ان سیفلکس، ویدور آت. کیا
-              دسیمپ، ییستیداتی پسولاتی! اپتور لوکوس ویگورن اوپریتستات واریتر، کولیسیا بلانکیتور. توسیتان ریتلات که
-              دیسپوسل ایترسیتی اش. سلیم رتیو لورکاتور، هر پورو پتو.
-            </p>
+            <p className="text-sm md:text-base">
+            لورم ایپسوم دولور سیمی‌ت، ایزی اومنیس ودی ایرودت. نسسیت اتم‌دور تریور، فولوتوت ان سیفلکس، ویدور آت. کیا دسیمپ، ییستیداتی پسولاتی! اپتور لوکوس ویگورن اوپریتستات واریتر، کولیسیا بلانکیتور.</p>
             <div className="flex flex-col gap-3 text-primary-700 pt-6 pb-10">
               <div className="flex items-center justify-between">
                 <span>قیمت 14/2/1400</span>
@@ -144,14 +151,14 @@ const Page = () => {
               />
             </div>
           </div>
-          <footer className="sticky bottom-0 p-4">
+          <div className="sticky bottom-0 p-4">
             <Button
               width="w-full flex items-center justify-center"
               containerClass="w-full"
               roundedClass="rounded-full"
               title={_STRINGS.RECORD_CHANGES}
             />
-          </footer>
+          </div>
         </SimpleModal>
       </Modal>
 
@@ -159,6 +166,10 @@ const Page = () => {
         show={showModal === "modal5"} // Only show Modal 3 if its ID is active
         onHide={() => setShowModal(null)} // Hide modal when closed
         type="bottom-sheet"
+        options={{
+          containerClass:
+            "mx-auto md:!my-10 mx-auto md:w-full h-fit max-w-sm overflow-y-scroll rounded-2xl",
+        }}
       >
         <SimpleModal
           image="/assets/icons/modal-icon-3.svg"
@@ -166,14 +177,15 @@ const Page = () => {
           onClick={() => setShowModal(null)} // Close Modal
         >
           <div className="px-6">
-            <p>
-              لورم ایپسوم دولور سیمی‌ت، ایزی اومنیس ودی ایرودت. نسسیت اتم‌دور تریور، فولوتوت ان سیفلکس، ویدور آت. کیا
-              دسیمپ، ییستیداتی پسولاتی! اپتور لوکوس ویگورن اوپریتستات واریتر، کولیسیا بلانکیتور. توسیتان ریتلات که
-              دیسپوسل ایترسیتی اش. سلیم رتیو لورکاتور، هر پورو پتو.
+            <p className="text-sm md:text-base">
+              لورم ایپسوم دولور سیمی‌ت، ایزی اومنیس ودی ایرودت. نسسیت اتم‌دور
+              تریور، فولوتوت ان سیفلکس، ویدور آت. کیا دسیمپ، ییستیداتی پسولاتی!
+              اپتور لوکوس ویگورن اوپریتستات واریتر، کولیسیا بلانکیتور. توسیتان
+              ریتلات که دیسپوسل ایترسیتی اش. سلیم رتیو لورکاتور، هر پورو پتو.
             </p>
             <div className="flex flex-col gap-3 text-primary-700 pt-6 pb-10">
               <div className="flex items-center justify-between">
-                <span>درصد کمیسیون مشاور</span>
+                <span className="font-semibold">درصد کمیسیون مشاور</span>
                 <span>{sliderCommissionValue}%</span>
               </div>
               <RangeWithTitle
@@ -200,14 +212,14 @@ const Page = () => {
               />
             </div>
           </div>
-          <footer className="sticky bottom-0 p-4">
+          <div className="sticky bottom-0 p-4">
             <Button
               width="w-full flex items-center justify-center"
               containerClass="w-full"
               roundedClass="rounded-full"
               title={_STRINGS.RECORD_CHANGES}
             />
-          </footer>
+          </div>
         </SimpleModal>
       </Modal>
     </>

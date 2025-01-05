@@ -17,8 +17,8 @@ function SimpleModal({
     onClick,
 }: SimpleModalProps) {
     return (
-        <div className="w-[375px] bg-white lg:shadow-card lg:rounded-2xl mx-auto rounded-2xl">
-            <header className="flex items-start justify-between p-6">
+        <div className="rounded-2xl bg-white dark:bg-zinc-900 mx-2">
+            <div className="flex items-start justify-between p-6">
                 <div className="flex flex-col flex-items-start gap-2">
                     {image && (
                         <Image alt="" src={image} width={34} height={34} />
@@ -33,7 +33,7 @@ function SimpleModal({
                 <button onClick={onClick}>
                     <img src="/assets/icons/close.svg" alt="" />
                 </button>
-            </header>
+            </div>
             {children}
         </div>
     );
