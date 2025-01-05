@@ -401,7 +401,7 @@ function Faqs() {
                     isMandatory: true,
                     containerClass: "w-full",
                     placeholder: "امیر علی عباسی فر",
-                    value: values.full_name,
+                    value: values.full_name || "",
                   }}
                   onChangeText={(value) => onChange(value, "full_name")} // Pass the onChange function
                 />

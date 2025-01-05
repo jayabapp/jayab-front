@@ -33,19 +33,19 @@ function ModalSearchCities({
   const [selectedCities, setSelectedCities] = useState<City[]>([]); // Local state to track selected cities
   const [errors, setErrors] = useState<String[]>();
 
-  useEffect(() => {
-    console.log(
-      "Cities *****************************************************************"
-    );
-    console.log(cities);
-  }, [cities]);
+  // useEffect(() => {
+  //   console.log(
+  //     "Cities *****************************************************************"
+  //   );
+  //   console.log(cities);
+  // }, [cities]);
 
-  useEffect(() => {
-    console.log(
-      "selectedCities ------------------------------------------------------------"
-    );
-    console.log(selectedCities);
-  }, [selectedCities]);
+  // useEffect(() => {
+  //   console.log(
+  //     "selectedCities ------------------------------------------------------------"
+  //   );
+  //   console.log(selectedCities);
+  // }, [selectedCities]);
 
   useEffect(() => {
     const fetchStates = async () => {
@@ -125,12 +125,12 @@ function ModalSearchCities({
     <Modal
       options={{
         containerClass:
-          "mx-auto md:my-10 w-full h-screen md:h-full max-w-lg md:rounded-2xl overflow-y-scroll bg-white dark:bg-zinc-900",
+          "mx-auto md:my-10 w-full h-screen md:h-full md:max-w-lg md:rounded-2xl overflow-y-scroll bg-white dark:bg-zinc-900",
       }}
       show={showModal}
       onHide={onHide}
     >
-      <div className="h-auto">
+      <div className="h-auto w-full">
         <div className="flex flex-col h-auto">
           <div className="flex items-center justify-center sticky select-none z-[40] shadow-md bg-white w-full transition-all top-0 h-16 px-6 py-4">
             <button
@@ -150,7 +150,7 @@ function ModalSearchCities({
             ) : null}
           </div>
           <section className="min-h-full">
-            {modalEntry === 0 ? (
+            {modalEntry === 0 ? ( // not states selcted
               <ul>
                 {states.length > 0 ? (
                   <>
@@ -191,22 +191,24 @@ function ModalSearchCities({
                     ))}
                   </>
                 ) : (
-                  <div className="p-10 text-center">
-                    هیچ داده ای وجود ندارد.
-                  </div>
+                  <div className="p-10 text-center">{_STRINGS.NO_DATA}</div>
                 )}
               </ul>
             ) : (
+              // states selected
               <>
                 <div className="flex flex-col gap-6">
-                  <div className="flex items-center justify-between p-5 !pb-0 -mb-2 font-semibold text-primary-700">
+                  <div
+                    onClick={() => handleSelectAll(modalEntry, cities)}
+                    className="flex items-center justify-between p-5 !pb-0 -mb-2 font-semibold text-primary-700"
+                  >
                     <div className="flex items-center gap-1">
                       <img src="/assets/icons/shared/caret-left.svg" alt="" />
                       <span>{_STRINGS.ALL_CITIES}</span>
                     </div>
                     <Checkbox
                       isChecked={selectAllStates[modalEntry] || false}
-                      onSelect={() => handleSelectAll(modalEntry, cities)}
+                      onSelect={() => console.log("clicked")}
                       containerClass="my-4"
                       rounded="rounded-lg"
                     />

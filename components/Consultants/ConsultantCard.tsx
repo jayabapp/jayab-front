@@ -1,11 +1,9 @@
 "use client";
 
-import { fakeVilla, fakeConsultants } from "@/utils/faker";
-import _STRINGS from "@/utils/LocalStrings";
 import React from "react";
-// import AddCardPricePart from "./AddCardPricePart";
 import Link from "next/link";
 import Image from "next/image";
+import _STRINGS from "@/utils/LocalStrings";
 import CircularProgress from "@/components/shared/CircularProgress/CircularProgress";
 
 interface ConsultantCardProps {
@@ -108,8 +106,8 @@ const ConsultantCard: React.FC<ConsultantCardProps> = ({ hidden, data }) => {
                 </div>
                 {hidden?.record || (
                   <div>
-                    <span>سابقه: </span>
-                    <span className="text-nowrap">6 ماه</span>
+                    <span>{_STRINGS.WORK_HISTORY}: </span>
+                    <span className="text-nowrap">6 {_STRINGS.MOUNTH}</span>
                   </div>
                 )}
               </div>

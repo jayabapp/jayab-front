@@ -1,4 +1,5 @@
 import React from "react";
+import _STRINGS from "@/utils/LocalStrings";
 
 // Define the interface for the props
 interface QuestionCardProps {
@@ -20,7 +21,7 @@ const QuestionCard: React.FC<QuestionCardProps> = ({
 }) => {
   return (
     <article
-      className="flex flex-col gap-10 lg:gap-6 p-6 rounded-2xl"
+      className="flex flex-col gap-10 lg:gap-6 p-6 rounded-2xl text-sm sm:text-base"
       style={{ boxShadow: "0px 0px 10px 0px rgba(0, 0, 0, 0.15)" }}
     >
       <div className="flex flex-col lg:flex-row lg:items-center gap-2 lg:justify-between">
@@ -41,7 +42,7 @@ const QuestionCard: React.FC<QuestionCardProps> = ({
                 className="w-full h-full aspect-square object-cover"
               />
             </div>
-            <span className="text-primary-700 font-semibold">ابراتور</span>
+            <span className="text-primary-700">{_STRINGS.OPERATOR}</span>
           </div>
           <span>{responseDate}</span>
         </div>

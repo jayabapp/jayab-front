@@ -3,7 +3,7 @@ const mohmmad = {
   PAYABLE_AMOUNT: "هزینه قابل پرداخت",
   COST: "هزینه",
 };
-const kurosh = {
+const kourosh = {
   SEARCH_STATES: "جستجوی شهر ها",
   ADVISOR_REGUSTER_SCORE: "ثبت امتیاز مشاور",
   LOADING: "در حال بارگزاری",
@@ -15,6 +15,10 @@ const kurosh = {
   PHONE_NUMBER: "شماره تلفن",
   YOUR_MESSAGE: "پیام شما",
   SEARCH_IN: "جستجو در",
+  OPERATOR: "اپراتور",
+  WORK_HISTORY: "سابقه کار",
+  MONTH: "ماه",
+  NO_DATA: "هیچ داده ای وجود ندارد.",
 };
 
 const _STRINGS = {
@@ -193,7 +197,7 @@ const _STRINGS = {
   UR_PROP_REGISTERED: "اطلاعات ملک شما ثبت شد!",
   UR_PROP_REGISTERED_DESC:
     "پس از پرداخت هزینه و بررسی همکاران ما منتشر خواهد شد",
-  ...kurosh,
+  ...kourosh,
   ...mohmmad,
 };
 
