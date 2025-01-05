@@ -6,6 +6,7 @@ import {
   FacilitiesValuesDto,
   PayPropertySubSendDto,
   PricingPropertySendDto,
+  PropertyListDto,
   PropertyOptionGroup,
   PropertySubsDto,
   PropertyTermsSendDto,
@@ -20,7 +21,9 @@ import { p2e } from "@/helpers/NumberConverter";
 export class PropertyService {
   static USER_PROP_OPTIONS_CACHEKEY = "USER_PROP_OPTIONS";
   static OWNER_PROP_INIT_CACHEKEY = "OWNER_PROP_INIT";
+  static GET_PROPERTIES_CACHEKEY = "GET_PROPERTIES";
   static USER_SUBSCRIPTION_PLANS_CACHEKEY = "USER_SUBSCRIPTION_PLANS";
+  static GET_SINGLEPROPERTY_SlUG_CACHEKEY = "GET_SINGLEPROPERTY_SlUG";
 
   static async GetUserPropertyGroup(dto: { group: (keyof typeof PropertyOptionGroup)[] }) {
     try {
@@ -318,6 +321,30 @@ export class PropertyService {
         pattern: dto.pattern,
         pattern_dscr: dto.pattern_dscr,
       });
+      return result;
+    } catch (e) {
+      throw e;
+    }
+  }
+
+  /* -------------------------------------------------------------------------- */
+  /*                             GET PROPERTIES PART                            */
+  /* -------------------------------------------------------------------------- */
+
+  static async GetProperties(dto: { cursor: number }) {
+    try {
+      const result = await apiCall<{ cursor: number }, { data: PropertyListDto[] }>("GET", apiRoutes.GET_PROPERTIES, {
+        cursor: dto.cursor,
+      });
+      return result;
+    } catch (e) {
+      throw e;
+    }
+  }
+
+  static async GetSinglePropertyWithSlug(dto: { Property_slug: string }) {
+    try {
+      const result = await apiCall<unknown, unknown>("GET", apiRoutes.GET_SINGLEPROPERTY_SlUG(dto.Property_slug));
       return result;
     } catch (e) {
       throw e;

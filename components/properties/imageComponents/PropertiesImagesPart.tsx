@@ -15,6 +15,7 @@ import SmallLoading from "../../shared/Lotties/SmallLoading";
 import Device from "@/helpers/Device";
 import _, { isEmpty } from "lodash";
 import ProductImage from "./ProductImage";
+import { SinglePropDto } from "@/api_services/property/property.interface";
 // const ProductOptionsContainer = dynamic(() => import("./ProductOptionsContainer"), {
 //   ssr: false,
 // });
@@ -149,8 +150,7 @@ const ImagesSliderModal = ({
                   {true ? (
                     // {i?.type == 1 ? (
                     <div className="swiper-zoom-container !select-none">
-                      <img className="w-full aspect-square  object-contain !select-none" src={i} />
-                      {/* <img className="w-full aspect-square  object-contain !select-none" src={NEW_IMAGE_URL(i)} /> */}
+                      <img className="w-full aspect-square  object-contain !select-none" src={NEW_IMAGE_URL(i)} />
                     </div>
                   ) : (
                     <video
@@ -206,8 +206,7 @@ const ImagesSliderModal = ({
                             <img
                               onClick={() => ref.current.slideTo(index)}
                               // src={i?.type == 1 ? NEW_IMAGE_URL(i) : i?.cover}
-                              // src={i?.type == 1 ? NEW_IMAGE_URL(i) : ""}
-                              src={i}
+                              src={i?.type == 1 ? NEW_IMAGE_URL(i) : ""}
                               className={`  ${
                                 i?.type != 1 ? " blur-sm" : ""
                               } p-1 w-full rounded-10 !aspect-square object-contain `}
@@ -244,8 +243,7 @@ const ImagesSliderModal = ({
                           id={`imgprd${index}`}
                           key={`imgprd${index}`}
                           // src={i?.type == 1 ? NEW_IMAGE_URL(i) : i?.cover}
-                          src={i}
-                          // src={i?.type == 1 ? NEW_IMAGE_URL(i) : ""}
+                          src={i?.type == 1 ? NEW_IMAGE_URL(i) : ""}
                           className={` ${
                             i?.type != 1 ? " blur-sm" : ""
                           } p-1 flex-1 rounded-10 md:flex-none md:shrink-0 w-24 h-24 !aspect-square object-contain `}
@@ -277,7 +275,7 @@ function ProductImagesContainer({
   productImageId,
   attsImagesArray,
 }: {
-  data: any;
+  data: SinglePropDto;
   productImageId: number | null;
   attsImagesArray?: any[] | number[];
 }) {
@@ -287,11 +285,14 @@ function ProductImagesContainer({
     isVisible: false,
     currentIndex: null,
   });
-  const defaultImages = data?.video
-    ? [data?.feature_image, ...data?.images, data?.video]
-    : [data?.feature_image, ...data?.images];
+  const defaultImages =
+    //  data?.video
+    //   ? [data?.feature_image, ...data?.images, data?.video]
+    //   :
+    [data?.feature_image, ...data?.images];
   const [addImages, setAddImages] = useState<(any | undefined)[]>(
-    data?.video ? [data?.feature_image, ...data?.images, data?.video] : [data?.feature_image, ...data?.images]
+    // data?.video ? [data?.feature_image, ...data?.images, data?.video] :
+    [data?.feature_image, ...data?.images]
   );
   const allImagesIds = _.difference(
     defaultImages?.map((e) => e?.id),
@@ -396,8 +397,7 @@ function ProductImagesContainer({
                     {!!i ? (
                       <Image
                         fill
-                        src={i || ""}
-                        // src={NEW_IMAGE_URL(i || "")}
+                        src={NEW_IMAGE_URL(i || "")}
                         className="w-full h-full !p-0 custome-shadow-card !overflow-clip  bg-white  rounded-20  aspect-square !object-cover "
                         alt=""
                       />

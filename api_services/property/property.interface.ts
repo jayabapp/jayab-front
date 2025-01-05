@@ -234,3 +234,73 @@ export interface PayPropertySubSendDto {
   redirect_url: string;
   gateway: string;
 }
+
+export interface PropertyListDto {
+  id: number;
+  code: string;
+  title: string;
+  slug: string;
+  feature_image: ImageDto;
+  attachments_count: number;
+  std_capacity: number;
+  max_capacity: number;
+  total_bedrooms: number;
+  has_pool: boolean;
+  province: string;
+  city: string;
+  advisor_commission: number;
+  options: any[];
+  today_price: number;
+  status: Status;
+}
+
+export interface Status {
+  id: number;
+  title: string;
+  hex: string;
+}
+
+export interface SinglePropDto {
+  id: number;
+  code: string;
+  title: string;
+  slug: string;
+  feature_image: ImageDto;
+  attachments_count: number;
+  images: ImageDto[];
+  std_capacity: number;
+  max_capacity: number;
+  total_bedrooms: number;
+  has_pool: boolean;
+  province: string;
+  city: string;
+  advisor_commission: number;
+  options: Options;
+  today_price: number;
+  latitude: number;
+  longitude: number;
+  status: Status;
+}
+
+export interface Options {
+  building_direction: string;
+  ownership: string;
+  property_type: string;
+  neighborhood: string;
+  access: string;
+  pattern: string;
+  welfare: string[];
+  cool_heat: string[];
+  kitchen: string[];
+  entertainment: string[];
+  pool_type: string[];
+  party: string;
+  pet: string;
+  guest_type: string[];
+}
+
+export interface Status {
+  id: number;
+  title: string;
+  hex: string;
+}

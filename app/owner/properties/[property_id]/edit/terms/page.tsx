@@ -5,9 +5,9 @@ import {
   PropertyTermsSendDto,
 } from "@/api_services/property/property.interface";
 import { PropertyService } from "@/api_services/property/property.service";
-import SuccessAddModal from "@/components/Adds/SuccessAddModal";
-import PropTermItem from "@/components/Adds/TermItem";
-import TitleCounter from "@/components/Adds/TitleCounter";
+import SuccessAddModal from "@/components/properties/SuccessAddModal";
+import PropTermItem from "@/components/properties/TermItem";
+import TitleCounter from "@/components/properties/TitleCounter";
 import PageHeaders from "@/components/headers/PageHeader";
 import Button from "@/components/shared/Button/Button";
 import FixedBottomContainer from "@/components/shared/FixedBottomContainer";

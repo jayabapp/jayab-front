@@ -1,0 +1,42 @@
+import ProductImagesContainer from "@/components/properties/imageComponents/PropertiesImagesPart";
+import SinglePorpertyAccards from "@/components/properties/SinglePropertyAccards";
+import SinglePropertycallender from "@/components/properties/SinglePropertycallender";
+import SinglePropertyIntroduction from "@/components/properties/SinglePropertyIntroduction";
+import SimpleAccordion from "@/components/shared/SimpleAccorion";
+import Callender from "@/components/widgets/DatePicker/callender";
+import serverCall from "@/helpers/serverCall";
+import { fakeVilla } from "@/utils/faker";
+import { apiRoutes, baseUrl } from "@/utils/urls";
+import moment from "moment-jalaali";
+import { Metadata, ResolvingMetadata } from "next";
+import React from "react";
+
+type Props = {
+  params: { property_slug: string };
+  searchParams: { [key: string]: string | string[] | undefined };
+};
+
+export async function generateMetadata({ params }: Props, parent: ResolvingMetadata): Promise<Metadata> {
+  const { data: properyData } = await serverCall(baseUrl + apiRoutes.GET_SINGLEPROPERTY_SlUG(params?.property_slug));
+
+  return {
+    title: properyData?.product?.seo?.metaTitle || properyData?.product?.title,
+    description: properyData?.product?.seo?.metaDescription || properyData?.product?.full_text,
+  };
+}
+
+const SinglePropertyPage = async ({ params }: { params: { property_slug: string } }) => {
+  const { data: properyData } = await serverCall(baseUrl + apiRoutes.GET_SINGLEPROPERTY_SlUG(params?.property_slug));
+
+  return (
+    <div className=" !pb-48 lg:!pb-36   gap-4 justify-start items-start container grid grid-cols-2  !h-auto   !overflow-x-visible">
+      <ProductImagesContainer productImageId={null} data={properyData} />
+      <SinglePropertyIntroduction data={properyData} />
+      <SinglePorpertyAccards data={properyData} />
+
+      <SinglePropertycallender data={properyData} />
+    </div>
+  );
+};
+
+export default SinglePropertyPage;

@@ -1,7 +1,7 @@
 "use client";
 import { PropertyService } from "@/api_services/property/property.service";
-import CreateEditProperty, { CreateProperyStepOne } from "@/components/Adds/CreateEditProperty";
-import CreateEditPropertyEnvInfo, { CreateProperyStepThree } from "@/components/Adds/CreateEditPropertyEnvInfo";
+import CreateEditProperty, { CreateProperyStepOne } from "@/components/properties/CreateEditProperty";
+import CreateEditPropertyEnvInfo, { CreateProperyStepThree } from "@/components/properties/CreateEditPropertyEnvInfo";
 import PageHeaders from "@/components/headers/PageHeader";
 import Button from "@/components/shared/Button/Button";
 import FixedBottomContainer from "@/components/shared/FixedBottomContainer";

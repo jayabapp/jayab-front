@@ -2,7 +2,7 @@
 
 import { Transition } from "@headlessui/react";
 import DOMPurify from "isomorphic-dompurify";
-import React, { useState, useEffect, ReactNode } from "react";
+import React, { useState, ReactNode } from "react";
 type props = {
   title: string;
   isOpenFirst?: boolean;

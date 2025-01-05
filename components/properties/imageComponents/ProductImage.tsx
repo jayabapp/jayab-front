@@ -13,8 +13,8 @@ function ProductImage({ item, moreClass, onClick, id = null }: ProductImageType)
     <>
       <img
         id={id ? `${id}` : "15"}
-        src={item}
-        // src={NEW_IMAGE_URL(item)}
+        // src={item}
+        src={NEW_IMAGE_URL(item)}
         className={`cursor-pointer ${moreClass}`}
         onClick={onClick}
       />

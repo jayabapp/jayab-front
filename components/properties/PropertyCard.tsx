@@ -3,18 +3,16 @@ import _STRINGS from "@/utils/LocalStrings";
 import React from "react";
 import AddCardPricePart from "./AddCardPricePart";
 import Link from "next/link";
+import { PropertyListDto } from "@/api_services/property/property.interface";
+import { NEW_IMAGE_URL } from "@/utils/urls";
 
-const AddCard = () => {
-  const data = fakeVilla;
+const PropertyCard = ({ data }: { data: PropertyListDto }) => {
   return (
-    <div className="w-full shadow-card  rounded-2xl   grid grid-cols-5 p-3 gap-0 md:gap-2  ">
+    <div className="w-full shadow-card  rounded-2xl   grid grid-cols-5 p-3 gap-2   ">
       {/* INFO */}
-      <Link
-        href={`/properties/${data?.id}`}
-        className="col-span-3  order-1 md:order-2 md:col-span-5 flex flex-col gap-1"
-      >
+      <Link href={`/property/${data?.slug}`} prefetch={false} className="col-span-3  order-1  flex flex-col gap-1">
         {/* TITLE */}
-        <div className="flex items-center gap-2">
+        <div className="flex items-start gap-2">
           <img src="/assets/icons/adds/verified_badge.svg" className="w-[1.125rem] h-[1.125rem]" />
           <p className="text-sm font-medium">{data.title}</p>
         </div>
@@ -26,31 +24,35 @@ const AddCard = () => {
           </div>{" "}
           <div className="flex items-center gap-1">
             <img className="w-4 h-4 aspect-square" src="/assets/icons/adds/filled_heart.svg" />
-            <p className="text-xxs  opacity-60">{data?.likes}</p>
+            <p className="text-xxs  opacity-60">{data?.id}</p>
           </div>
         </div>
         {/* PRICING */}
 
-        <div className="w-full flex  flex-row md:flex-col items-start gap-2 justify-start">
+        <div className="w-full flex  flex-row  items-start gap-2 justify-start">
           {" "}
-          <p className="text-xs ">{_STRINGS.TODAYS_PRICE}</p>
+          <p className="text-xs  shrink-0 ">{_STRINGS.TODAYS_PRICE}</p>
           <AddCardPricePart data={data} />
         </div>
         {/* DESCRIPTION */}
         <div className="w-full">
-          <p className="text-xs">{data?.description}</p>
+          <p className="text-xs">
+            {" "}
+            <span>{data?.total_bedrooms} اتاق</span>-<span>تا {data?.max_capacity} نفر</span>{" "}
+            {!!data?.has_pool ? <span className="text-primary-700"> - {_STRINGS.HAS_POOL} </span> : <></>}
+          </p>
         </div>
         {/* LOCATION */}
 
         <div className="flex w-full gap-1">
           <img src="/assets/icons/adds/pin_point_location.svg" className="w-5 h-5 aspect-square" />
-          <p className="text-xs">{data?.location_title}</p>
+          <p className="text-xs">{data?.province}</p>
         </div>
       </Link>{" "}
       {/* IMAGE PART */}
-      <Link href={`/properties/${data?.id}`} className="col-span-2 md:col-span-5  order-2 md:order-1 ">
+      <Link href={`/property/${data?.slug}`} prefetch={false} className="col-span-2  order-2 ">
         <div className=" aspect-square relative">
-          <img src={data?.feature_image} className=" rounded-10  aspect-square" />
+          <img src={NEW_IMAGE_URL(data?.feature_image)} className=" rounded-10  aspect-square" />
           {data?.discount_percantage ? (
             <div className="w-7 gap-0.5 flex-col h-5 rounded-md transition-all  px-1 py-[0.2rem]   bg-primary-100 text-white absolute z-2 right-2 top-2 aspect-square flex items-center justify-center">
               {/* <img className="w-4 h-4" src="/assets/icons/products/discount_tag.svg" /> */}
@@ -60,9 +62,9 @@ const AddCard = () => {
             <></>
           )}
 
-          {data?.images_count ? (
+          {data?.attachments_count ? (
             <div className="w-9 gap-0.5  h-5 rounded-md transition-all  py-[0.2rem]   bg-black/50 text-white absolute z-2 left-2 flex-row top-2 aspect-square flex items-center justify-center">
-              <p className="  text-sm   ">{data.images_count}</p>{" "}
+              <p className="  text-sm   ">{data.attachments_count}</p>{" "}
               <img className="w-3 h-3" src="/assets/icons/adds/simple_camera.svg" />
             </div>
           ) : (
@@ -82,4 +84,4 @@ const AddCard = () => {
   );
 };
 
-export default AddCard;
+export default PropertyCard;
