@@ -52,6 +52,8 @@ export const apiRoutes = {
 
   USER_SUBSCRIPTION_PLANS: "/user/subscription-plans",
 
+  GET_PROPERTIES: "/user/properties",
+
   OWNER_PROP_INIT: (propertyId?: string | number | null) =>
     `/owner/properties/init${!!propertyId ? `?property_id=${propertyId}` : ""}`,
 
@@ -78,4 +80,6 @@ export const apiRoutes = {
   CITIES_CHILDEREN: (parentId: string | number) => `/cities/${parentId}`,
 
   CONTENT_BY_KEY: (id: string | number) => `/contents/by-key/${id}`,
+
+  GET_SINGLEPROPERTY_SlUG: (propertySlug: string | number) => `/user/properties/${propertySlug}`,
 };

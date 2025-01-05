@@ -1,6 +1,6 @@
 "use client";
 import { PropertyService } from "@/api_services/property/property.service";
-import AddCardPricePart from "@/components/Adds/AddCardPricePart";
+import AddCardPricePart from "@/components/properties/AddCardPricePart";
 import Button from "@/components/shared/Button/Button";
 import FixedBottomContainer from "@/components/shared/FixedBottomContainer";
 import CheckboxCardContainer from "@/components/shared/Form/Checkbox/CheckboxCardContainer";

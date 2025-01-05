@@ -3,8 +3,10 @@ import React from "react";
 import AddCardPricePart from "../AddCardPricePart";
 import SinglePropertyPricePart from "../SinglePropertyPricePart";
 import Button from "@/components/shared/Button/Button";
+import { SinglePropDto } from "@/api_services/property/property.interface";
 
-const SinglePropertyIntroduction = ({ data }: { data: any }) => {
+const SinglePropertyIntroduction = ({ data }: { data: SinglePropDto }) => {
+  console.log(data, "ssssssssss");
   return (
     <div className=" w-full flex flex-col relative  gap-4">
       <div className="w-full flex items-center justify-between gap-2">
@@ -27,7 +29,7 @@ const SinglePropertyIntroduction = ({ data }: { data: any }) => {
       <div className="flex items-center gap-4 border-t  py-2 w-full justify-between">
         <p>{_STRINGS.ROOM_COUNTS} :</p>
         <p className="font-bold text-primary-700">
-          {data?.room_count} {_STRINGS.ROOM}
+          {data?.total_bedrooms} {_STRINGS.ROOM}
         </p>
       </div>
       <div className="flex items-center gap-4 border-t  py-2 w-full justify-between">
@@ -41,15 +43,17 @@ const SinglePropertyIntroduction = ({ data }: { data: any }) => {
           <img className="/assets/icons/adds/pin_point_location.svg" src="/assets/icons/adds/pin_point_location.svg" />
           <p>{_STRINGS.PROPERTY_LOC} :</p>
         </div>
-        <p className="">{data?.location_title}</p>
+        <p className="">
+          {data?.city} <span className="opacity-75">({data?.province})</span>
+        </p>
       </div>
+      {/* 
       <div className="flex items-center gap-4 border-t  py-2 w-full justify-between">
-        <div className="flex items-center gap-1">
-          <img className="/assets/icons/adds/pin_point_location.svg" src="/assets/icons/adds/pin_point_location.svg" />
-          <p>{_STRINGS.PROPERTY_LOC} :</p>
-        </div>
-        <p className="">{data?.location_title}</p>
-      </div>
+        <p>{_STRINGS.TODAY_STATUS} :</p>
+        <p className="font-bold text-primary-700">
+          {data?.room_count} 
+        </p>
+      </div> */}
       <div className="flex items-center gap-4 border-t   py-2 w-full justify-between">
         <div className="flex items-center gap-1">
           <p>{_STRINGS.TODAYS_PRICE} </p>

@@ -2,6 +2,10 @@ const mohmmad = {
   VIEW_STATS: "آمار بازدید ملک در یک هفته گذشته",
   PAYABLE_AMOUNT: "هزینه قابل پرداخت",
   COST: "هزینه",
+  FILTERS: "فیلتر ها",
+  EMPTY_LIST: " موردی ثبت نشده است",
+  HAS_POOL: "استخردار",
+  TODAY_STATUS: "وضعیت امروز",
 };
 const kurosh = {
   SEARCH_STATES: "جستجوی شهر ها",
@@ -181,8 +185,7 @@ const _STRINGS = {
   CANCELATIONS_TITLE: "انتخاب نوع قوانین لغو درخواست میهمان (کنسلی)",
   SUBMIT_PROPERTY: "ثبت ملک",
   UR_PROP_REGISTERED: "اطلاعات ملک شما ثبت شد!",
-  UR_PROP_REGISTERED_DESC:
-    "پس از پرداخت هزینه و بررسی همکاران ما منتشر خواهد شد",
+  UR_PROP_REGISTERED_DESC: "پس از پرداخت هزینه و بررسی همکاران ما منتشر خواهد شد",
   ...kurosh,
   ...mohmmad,
 };
