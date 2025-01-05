@@ -263,7 +263,9 @@ export interface Status {
 export interface SinglePropDto {
   id: number;
   code: string;
+  rent_type: "DAILY";
   title: string;
+  property_descriptions: PropertyDescriptionsDto;
   slug: string;
   feature_image: ImageDto;
   attachments_count: number;
@@ -271,15 +273,57 @@ export interface SinglePropDto {
   std_capacity: number;
   max_capacity: number;
   total_bedrooms: number;
+  bedrooms: Bedrooms;
   has_pool: boolean;
   province: string;
   city: string;
   advisor_commission: number;
-  options: Options;
   today_price: number;
+  status: Status;
+  daily_price: DailyPrice;
   latitude: number;
   longitude: number;
-  status: Status;
+  land_area: number;
+  building_area: number;
+  floors: number;
+  unit_per_floor: number;
+  floor: number;
+  construction_year: number;
+  address: string;
+  options: Options;
+}
+
+export interface Bedrooms {
+  id: number;
+  property_id: number;
+  bedrooms: number[];
+  additional_bed: number;
+  master_room: number;
+  sofa_bed: number;
+  wc: number;
+  wc_ir: number;
+  bathroom_master: number;
+  bathroom_general: number;
+  bathroom_in_wc: number;
+  bathroom_tub: number;
+  total_bedrooms: number;
+  created_at: Date;
+  updated_at: Date;
+}
+
+export interface DailyPrice {
+  id: number;
+  property_id: number;
+  normal: number;
+  wednesday: number;
+  thursday: number;
+  friday: number;
+  peak: number;
+  cleaning: number;
+  additional_person: number;
+  today_offer: null;
+  created_at: Date;
+  updated_at: Date;
 }
 
 export interface Options {
@@ -303,4 +347,21 @@ export interface Status {
   id: number;
   title: string;
   hex: string;
+}
+
+export interface PropertyDescriptionsDto {
+  id: number;
+  property_id: number;
+  property_dscr: string;
+  pattern_dscr: string;
+  distance_dscr: string;
+  facility_dscr: string;
+  guest_dscr: string;
+  pet_dscr: string;
+  party_dscr: string;
+  doc_dscr: string;
+  other_dscr: string;
+  ad_dscr: string;
+  created_at: Date;
+  updated_at: Date;
 }

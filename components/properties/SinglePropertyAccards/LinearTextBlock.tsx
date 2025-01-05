@@ -5,7 +5,7 @@ const LinearTextBlock = ({ title, value, unit }: { title: string; value: string 
     <div className="flex items-center justify-between w-full ">
       <p className="text-sm font-light">{title}</p>
 
-      <p className="font-medium">
+      <p className="font-semibold">
         {value} <span className="font-light">{unit}</span>
       </p>
     </div>

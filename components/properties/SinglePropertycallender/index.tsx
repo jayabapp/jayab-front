@@ -4,12 +4,10 @@ import moment from "moment-jalaali";
 import React, { useState } from "react";
 
 const SinglePropertycallender = ({ data }: { data: any }) => {
-  console.log(data, "properyDataproperyData");
-
   const [callenderselectedDate, setCallenderSelectedDate] = useState<string>(moment().format("jYYYY/jMM/jD"));
   const [callenderselectedSpan, setCallenderSelectedSpan] = useState<string>(moment().format("jYYYY/jMM/jD"));
   return (
-    <div>
+    <div className=" order-3 md:order-4 ">
       {" "}
       <Callender
         setChosenDateState={setCallenderSelectedSpan}

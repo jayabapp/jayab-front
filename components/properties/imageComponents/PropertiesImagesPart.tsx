@@ -318,7 +318,7 @@ function ProductImagesContainer({
   if (!data) return null;
   return (
     <div className={`flex flex-row w-full gap-2 overflow-visible`}>
-      <div className="relative w-1/5 ">
+      <div className="relative  hidden md:flex  md:w-1/5 ">
         <div
           className={`relative h-[100%] justify-between gap-2 flex flex-col md:p-0.5 mt-2 md:mt-0
             `}
@@ -371,7 +371,7 @@ function ProductImagesContainer({
       {/* ${!data?.cheapest_price ? "grayscale" : ""}  */}
       <div
         className={`relative 
-         w-4/5 h-fit `}
+  w-full       md:w-4/5 h-fit `}
       >
         <div className="block  relative rounded-10 !aspect-square p-0 md:p-0.5 ">
           <SwiperWithNavigation

@@ -19,27 +19,18 @@ type props = {
   };
 };
 
-const SimpleAccordion = ({
-  title,
-  children,
-  ExtraElement,
-  item,
-  isOpenFirst,
-  titleIcon,
-}: props) => {
+const SimpleAccordion = ({ title, children, ExtraElement, item, isOpenFirst, titleIcon }: props) => {
   const [isOpen, setIsOpen] = useState(isOpenFirst || false);
   return (
     <div
       className={`${isOpen ? "" : ""}  h-fit ${
         item?.parenClass
-      } transition-all duration-100 ease-in-out  overflow-clip  px-2 py-2.5 `}
+      } transition-all duration-100 ease-in-out  overflow-clip  px-4 py-2.5 `}
     >
       <div
-        className={` flex justify-between items-center gap-3  ${
-          item?.headClass
-        } ${item?.noBorder ? "" : "border"}    transition-all cursor-pointer ${
-          isOpen ? "rounded-t-md border-b-0  pb-4 " : "rounded-md "
-        }`}
+        className={` flex justify-between items-center gap-3  ${item?.headClass} ${
+          item?.noBorder ? "" : ""
+        }    transition-all cursor-pointer ${isOpen ? " border-b  pb-2 " : "rounded-md "}`}
         onClick={() => setIsOpen((e) => !e)}
       >
         <div className="flex items-center gap-4">
@@ -63,17 +54,15 @@ const SimpleAccordion = ({
           )}{" "}
           <img
             src="/assets/icons/shared/chevron.svg"
-            className={` object-contain transition-all   w-4 aspect-square ${
-              isOpen ? "rotate-180" : ""
-            } ${item?.invertIconDark ? "dark:invert" : ""}`}
+            className={` object-contain transition-all   w-4 aspect-square ${isOpen ? "rotate-180" : ""} ${
+              item?.invertIconDark ? "dark:invert" : ""
+            }`}
           />
         </div>
       </div>
 
       <div
-        className={`${item?.parentClass}  ${
-          isOpen ? "is-opend " : ""
-        } accardion-class    ${
+        className={`${item?.parentClass}  ${isOpen ? "is-opend  pt-2 " : ""} accardion-class    ${
           item?.noBorder ? "opacity-100" : "opacity-0"
         }  rounded-b-md transition-all `}
       >

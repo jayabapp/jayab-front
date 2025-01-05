@@ -62,7 +62,7 @@ export class PropertyService {
   static async PayPropetySubscription(dto: PayPropertySubSendDto & { property_id: string | number | null }) {
     try {
       const result = await apiCall<PayPropertySubSendDto, string>(
-        "PATCH",
+        "PUT",
         apiRoutes.OWNER_PROPERTIES_PAY_SUBS(dto?.property_id),
         {
           gateway: dto.gateway,
@@ -127,7 +127,7 @@ export class PropertyService {
   }) {
     try {
       const result = await apiCall<{ lng: string | number | null; lat: string | number | null }, PropertyTypesDTP[]>(
-        "PATCH",
+        "PUT",
         apiRoutes.OWNER_PROPERTIES_LOC_UPDATE(dto.propertyId),
         {
           lat: dto.lat,
@@ -154,7 +154,7 @@ export class PropertyService {
       const result = await apiCall<
         { images: (string | number | null)[]; feature_image_id: string | number | null },
         PropertyTypesDTP[]
-      >("PATCH", apiRoutes.OWNER_PROPERTIES_MEDIA_UPDATE(dto.propertyId), {
+      >("PUT", apiRoutes.OWNER_PROPERTIES_MEDIA_UPDATE(dto.propertyId), {
         feature_image_id: dto.feature_image_id,
         images: dto?.images,
       });
@@ -170,7 +170,7 @@ export class PropertyService {
   ) {
     try {
       const result = await apiCall<RoomInfosDto, PropertyTypesDTP[]>(
-        "PATCH",
+        "PUT",
         apiRoutes.OWNER_PROPERTIES_ENV_BEDROOM(dto.propertyId),
         {
           additional_bed: dto.additional_bed,
@@ -198,7 +198,7 @@ export class PropertyService {
   ) {
     try {
       const result = await apiCall<FacilitiesValuesDto, PropertyTypesDTP[]>(
-        "PATCH",
+        "PUT",
         apiRoutes.OWNER_PROPERTIES_ENV_FACILITY(dto.propertyId),
         {
           cool_heat: dto.cool_heat,
@@ -223,7 +223,7 @@ export class PropertyService {
   ) {
     try {
       const result = await apiCall<PricingPropertySendDto, PropertyTypesDTP[]>(
-        "PATCH",
+        "PUT",
         apiRoutes.OWNER_PROPERTIES_ENV_PRICE(dto.propertyId),
         {
           additional_person: Number(p2e(dto.additional_person || "")),
@@ -251,7 +251,7 @@ export class PropertyService {
   ) {
     try {
       const result = await apiCall<AssistantSendDto, PropertyTypesDTP[]>(
-        "PATCH",
+        "PUT",
         apiRoutes.OWNER_PROPERTIES_ENV_ASSISTANT(dto.propertyId),
         {
           assistant_full_name: dto.assistant_full_name,
@@ -272,7 +272,7 @@ export class PropertyService {
   ) {
     try {
       const result = await apiCall<PropertyTermsSendDto, PropertyTypesDTP[]>(
-        "PATCH",
+        "PUT",
         apiRoutes.OWNER_PROPERTIES_ENV_TERMS(dto.propertyId),
         {
           ad_dscr: dto.ad_dscr,
@@ -314,7 +314,7 @@ export class PropertyService {
           pattern: string | number | null;
         },
         PropertyTypesDTP[]
-      >("PATCH", apiRoutes.OWNER_PROPERTIES_ENV_UPDATE(dto.propertyId), {
+      >("PUT", apiRoutes.OWNER_PROPERTIES_ENV_UPDATE(dto.propertyId), {
         access: dto.access,
         distance_dscr: dto.distance_dscr,
         neighborhood: dto.neighborhood,

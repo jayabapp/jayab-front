@@ -2,6 +2,7 @@ import ProductImagesContainer from "@/components/properties/imageComponents/Prop
 import SinglePorpertyAccards from "@/components/properties/SinglePropertyAccards";
 import SinglePropertycallender from "@/components/properties/SinglePropertycallender";
 import SinglePropertyIntroduction from "@/components/properties/SinglePropertyIntroduction";
+import SingleMobilePropertyIntroductions from "@/components/properties/SinglePropertyIntroduction/SingleMobilePropertyIntroductions";
 import SimpleAccordion from "@/components/shared/SimpleAccorion";
 import Callender from "@/components/widgets/DatePicker/callender";
 import serverCall from "@/helpers/serverCall";
@@ -29,9 +30,10 @@ const SinglePropertyPage = async ({ params }: { params: { property_slug: string 
   const { data: properyData } = await serverCall(baseUrl + apiRoutes.GET_SINGLEPROPERTY_SlUG(params?.property_slug));
 
   return (
-    <div className=" !pb-48 lg:!pb-36   gap-4 justify-start items-start container grid grid-cols-2  !h-auto   !overflow-x-visible">
+    <div className=" !pb-48 lg:!pb-36   gap-4 justify-start items-start container grid grid-cols-1  md:grid-cols-2  !h-auto   !overflow-x-visible">
       <ProductImagesContainer productImageId={null} data={properyData} />
       <SinglePropertyIntroduction data={properyData} />
+      <SingleMobilePropertyIntroductions data={properyData} />
       <SinglePorpertyAccards data={properyData} />
 
       <SinglePropertycallender data={properyData} />
