@@ -9,6 +9,7 @@ enum BtnColors {
   "primary" = "bg-btnColor-primary",
   "danger" = "bg-btnColor-danger",
   "light" = "bg-btnColor-light",
+  "themeLight" = "bg-btnColor-themeLight",
 }
 
 type ButtonProps = {
@@ -48,7 +49,7 @@ const Button = ({
         ref={passRef ? passRef : null}
         disabled={disabled || loading}
         type="button"
-        className={` relative  transition-all font-medium text-base ${
+        className={`  flex items-center justify-center relative  transition-all font-medium text-base ${
           !disabled ? ` ${BtnVariants[variant]} ${BtnColors[color]}` : ""
         } ${"px-7 disabled:bg-gray-300 py-2.5"}  ${roundedClass} ${width} ${
           (disabled || loading) && "bg-neutral-200 dark:bg-zinc-400 border-gray-400 hover:ring-0"
@@ -61,7 +62,6 @@ const Button = ({
           </div>
         ) : (
           <>
-       
             {!!icon && <span className="ml-1">{icon}</span>}
             {title}
             {!!endIcon && <span className="mr-1">{endIcon}</span>}

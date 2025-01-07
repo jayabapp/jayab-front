@@ -163,60 +163,62 @@ const OtpPageSignInComponent = ({
   return (
     <div className="auth-container bg-cover !rounded-none   min-h-screen h-fit flex flex-col gap-8 items-center  md:!pb-8   relative">
       <AuthHeader title={_STRINGS.ENTER} customeBackRoute="/auth" />
-      <div className="w-full items-center justify-center flex flex-col gap-4  ">
-        {" "}
-        <div className="flex relative z-1  w-28 flex-col items-center  gap-2 h-fit aspect-square">
-          <Image
-            alt="logo"
-            fill
-            src={"/assets/icons/logo/logo.svg"}
-            className=" 
+      <div className="w-full gap-6 flex flex-col items-center md:w-3/4 mx-auto relative lg:w-[35%]   dark:bg-zinc-900  rounded-2xl pt-8 pb-8 mt-8 ">
+        <div className="w-full items-center justify-center flex flex-col gap-4  ">
+          {" "}
+          <div className="flex relative z-1  w-28 flex-col items-center  gap-2 h-fit aspect-square">
+            <Image
+              alt="logo"
+              fill
+              src={"/assets/icons/logo/logo.svg"}
+              className=" 
         w-full
    aspect-square
 rounded-md
 object-contain
 "
-          />
+            />
+          </div>
         </div>
-      </div>
-      <div className="z-1 w-full gap-8 flex flex-col px-4 items-center md:w-full mx-auto relative lg:w-3/5  rounded-2xl pt-4 pb-4 ">
-        <div className="w-full flex flex-col gap-8">
-          <div className="px-1 lg:px-4 2xl:px-8 flex  items-start justify-center  flex-col gap-1">
-            <div
-              className="flex items-center gap-2"
-              onClick={() => {
-                router.back();
-              }}
-            >
-              <p className="text-base font-medium">{mobile_number} </p>
+        <div className="z-1 w-full gap-8 flex flex-col px-4 items-center md:w-full mx-auto relative  rounded-2xl pt-4 pb-4 ">
+          <div className="w-full flex flex-col gap-8">
+            <div className="px-1 lg:px-4 2xl:px-8 flex  items-start justify-center  flex-col gap-1">
+              <div
+                className="flex items-center gap-2"
+                onClick={() => {
+                  router.back();
+                }}
+              >
+                <p className="text-base font-medium">{mobile_number} </p>
+              </div>
+              <p className=" text-xs">{_STRINGS?.ENTER_FOUR_DIGITS}</p>
+              <OtpInput setValue={setOtp} refresh={reset} />
             </div>
-            <p className=" text-xs">{_STRINGS?.ENTER_FOUR_DIGITS}</p>
-            <OtpInput setValue={setOtp} refresh={reset} />
-          </div>
-          <div className="flex items-center justify-between">
-            <div
-              onClick={() => {
-                router.back();
-              }}
-              className=" cursor-pointer flex items-center gap-1 "
-            >
-              <img src="/assets/icons/edit/blue_edit_pen.svg" className="w-4 h-4 aspect-square" />
-              <p className="text-sm  text-primary-700 ">{_STRINGS.EDIT_NUMBER}</p>
+            <div className="flex items-center justify-between">
+              <div
+                onClick={() => {
+                  router.back();
+                }}
+                className=" cursor-pointer flex items-center gap-1 "
+              >
+                <img src="/assets/icons/edit/blue_edit_pen.svg" className="w-4 h-4 aspect-square" />
+                <p className="text-sm  text-primary-700 ">{_STRINGS.EDIT_NUMBER}</p>
+              </div>
+              {_renderCountdown()}
             </div>
-            {_renderCountdown()}
+            <Button
+              containerClass="w-full mt-16 "
+              width="w-full"
+              roundedClass="rounded-full"
+              disabled={disable}
+              loading={isPending}
+              onClick={() => {
+                validOtp();
+              }}
+              title={_STRINGS?.ENTER_AND_MOVE_ON}
+              passRef={ref}
+            />
           </div>
-          <Button
-            containerClass="w-full mt-16 "
-            width="w-full"
-            roundedClass="rounded-full"
-            disabled={disable}
-            loading={isPending}
-            onClick={() => {
-              validOtp();
-            }}
-            title={_STRINGS?.ENTER_AND_MOVE_ON}
-            passRef={ref}
-          />
         </div>
       </div>
     </div>

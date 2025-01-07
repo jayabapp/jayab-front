@@ -18,12 +18,17 @@ import { SocketIO } from "../../components/SocketIo";
 // import ConnectingBanner from "@/components/Headers/ConnectingBanner";
 import { useAuthStore, useStoreInit, useStoreParams, useStoreSocket, useStoreTheme } from "@/store";
 
-import { footerWhiteList } from "../constantss";
+import { footerBlacklist, mobileFooterWhiteList } from "../constantss";
 import RotatePhone from "@/components/shared/Lotties/RotatePhone";
 import Splashscreen from "@/components/SplashScreen";
 import ConnectingBanner from "@/components/headers/ConnectingBanner";
 import { AuthService } from "@/api_services/auth/auth.service";
-import PageFooter from "@/components/Footer/PageFooter";
+import Headers from "@/components/headers";
+import MobileFooter from "../../components/Footer/MobileFooter";
+
+function FallBack() {
+  return <></>;
+}
 
 interface mainWrapper {
   children: ReactNode;
@@ -148,20 +153,19 @@ const MainWrapper = ({ children }: mainWrapper) => {
   return (
     <div className={`app-background  app-text transition-opacity`}>
       {/* <DesktopHeader /> */}
-
+      {!footerBlacklist.includes(pathname) && (
+        <Suspense fallback={<FallBack />}>
+          <Headers />
+        </Suspense>
+      )}
       <div className="app-size relative " style={{ background: pathname == "/" && !isDark ? "" : "" }}>
         {connecting ? <ConnectingBanner /> : <></>}
         <div className="  mx-auto h-full   w-full   ">
           {/* {!sidenavBlackList?.includes(pathname || "") && <SideNav />} */}
           {children}
         </div>
-        {footerWhiteList.includes(pathname || "") && (
-          <Suspense>
-            {" "}
-            <PageFooter />
-            <Footer />
-          </Suspense>
-        )}
+        {!footerBlacklist.includes(pathname) && <Footer />}
+        {mobileFooterWhiteList.includes(pathname) && <MobileFooter />}
       </div>
       <Toaster />
     </div>

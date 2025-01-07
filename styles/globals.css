@@ -60,7 +60,7 @@ ul {
 }
 
 .app-size {
-  @apply min-h-[100dvh] w-full md:w-full mx-auto lg:w-full;
+  @apply w-full md:w-full mx-auto lg:w-full;
 }
 .app-background {
   @apply !bg-white dark:bg-transparent !h-full;
@@ -291,8 +291,7 @@ input[type="number"] {
   position: absolute;
   transform: translateY(-100%);
   width: 100%;
-  box-shadow: rgb(0 0 0 / 5%) 0px -20px 20px, rgb(0 0 0 / 10%) 0px -6px 6px,
-    rgb(0 0 0 / 3%) 0px -30px 30px;
+  box-shadow: rgb(0 0 0 / 5%) 0px -20px 20px, rgb(0 0 0 / 10%) 0px -6px 6px, rgb(0 0 0 / 3%) 0px -30px 30px;
   background: #343434;
   border-radius: 10px 10px 0 0;
   overflow: visible;

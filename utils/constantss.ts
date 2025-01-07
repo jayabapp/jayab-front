@@ -1,4 +1,32 @@
-export const footerWhiteList = ["/"];
+export const footerBlacklist = [
+  "/auth",
+  "/new-post",
+  "/auth/sign-in",
+  "/auth/sign-in/forgot-password",
+  "/auth/sign-up",
+  "/auth/sign-up/otp",
+  "/auth/sign-in/otp",
+  "/auth/sign-in/change-password",
+  "/auth/verify",
+
+  "/post/[id]",
+  "/auth/otp",
+  "/products/[parentId]",
+  "/profile/notifications",
+
+  "/PagesByGroup",
+
+  "/chat/[id]",
+
+  "/chat",
+
+  "/auth/register",
+  "/auth/register/upload-documents",
+  "/auth/register/terms",
+  "/auth/register/success",
+];
+
+export const mobileFooterWhiteList = ["/"];
 
 export const createPropertySteps = [
   { title: "اطلاعات عمومی", id: 1 },
@@ -59,3 +87,29 @@ export const allRoutes: { [key: string]: string } = {
   comments: "دیدگاه‌ها",
   brands: "برند ها",
 };
+
+export const profileDropDownItems = [
+  { id: 15, title: "آگهی های من", route: "/profile/orders", imgSrc: "/assets/icons/header/header_my_adds.svg" },
+  { id: 21, title: "پیام های من", route: "/profile/edit", imgSrc: "/assets/icons/header/header_my_messages.svg" },
+  { id: 421, title: "پرداخت های من", route: "/profile/edit", imgSrc: "/assets/icons/header/header_my_turnovers.svg" },
+  { id: 123, title: "آگهی های ذخیره شده", route: "/profile/edit", imgSrc: "/assets/icons/header/header_my_saves.svg" },
+  { id: 23, title: "دعوت از دوستان", route: "/profile/edit", imgSrc: "/assets/icons/header/header_share.svg" },
+  { id: 253, title: "پشتیبانی", route: "/profile/edit", imgSrc: "/assets/icons/header/header_support.svg" },
+];
+export const menuDropDownItems = [
+  { id: 115, title: "درباره ما", route: "/about-us", imgSrc: "/assets/icons/header/header_menu_about_us.svg" },
+  { id: 230, title: "قوانین و مقررات", route: "/terms", imgSrc: "/assets/icons/header/header_menu_terms.svg" },
+  { id: 251, title: "اخبار و مقالات", route: "/blog", imgSrc: "/assets/icons/header/header_menu_blog.svg" },
+  { id: 1238, title: "سوالات متداول", route: "/faq", imgSrc: "/assets/icons/header/header_menu_faq.svg" },
+  { id: 4261, title: "تماس با ما", route: "/contact-us", imgSrc: "/assets/icons/header/header_menu_call.svg" },
+];
+
+export const footerLinks = [
+  { id: 241, title: "مقالات ", route: "/blog" },
+
+  { id: 521, title: "سوالات متداول", route: "/faq" },
+  { id: 246, title: "درباره ما", route: "/about-us" },
+  { id: 227, title: "قوانین و مقررات", route: "/terms" },
+
+  { id: 218, title: "تماس با ما", route: "/contact-us" },
+];

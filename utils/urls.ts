@@ -54,6 +54,10 @@ export const apiRoutes = {
 
   GET_PROPERTIES: "/user/properties",
 
+  SEARCH_SUGGS: `/products/search-suggestions`,
+
+  CONTENTS: `/contents`,
+
   OWNER_PROP_INIT: (propertyId?: string | number | null) =>
     `/owner/properties/init${!!propertyId ? `?property_id=${propertyId}` : ""}`,
 

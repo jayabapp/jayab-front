@@ -8,7 +8,7 @@ export default {
   theme: {
     extend: {
       borderColor: {
-        DEFAULT: "#E4E5E7",
+        DEFAULT: "#ADB1B8",
       },
       scale: {
         102: "1.02",
@@ -21,7 +21,7 @@ export default {
       colors: {
         primary: {
           100: "#E8F1FC",
-          200: "#E8F1FC",
+          200: "#E4E5E7",
           300: "#F9FAFC",
           400: "#fff",
           500: "#fff",
@@ -34,6 +34,7 @@ export default {
           primary: "#3886E5",
           danger: "#F53E4F",
           light: "#dcdcdcbd",
+          themeLight: "#E8F1FC",
         },
       },
       borderRadius: {

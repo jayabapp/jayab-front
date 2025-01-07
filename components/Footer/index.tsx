@@ -1,169 +1,244 @@
 "use client";
-import { useRouter, usePathname } from "next/navigation";
-import { Fragment, JSX, useEffect, useState } from "react";
-import { isIOS } from "react-device-detect";
+
+import React, { useEffect, useState } from "react";
 import _STRINGS from "../../utils/LocalStrings";
-import { useStoreInit, useStoreParams, useStoreTheme } from "@/store";
-import { PropertyService } from "@/api_services/property/property.service";
-import { useQuery } from "@tanstack/react-query";
-interface reduxType {
-  auth: { [key: string]: string };
-}
+import { apiRoutes, imageUrlBase } from "../../utils/urls";
+import SocialList from "./SocialList";
 
-type footerItem = {
-  id: number;
-  title?: string;
-  route: string;
-  onClick?: () => void | null;
-
-  icon: string;
+import FormInput from "../shared/Form/FormInput";
+import Button from "../shared/Button/Button";
+import { useMutation, useQuery } from "@tanstack/react-query";
+import { AuthService } from "@/api_services/auth/auth.service";
+import Link from "next/link";
+import { HomeService } from "@/api_services/home/home.service";
+import CallBox from "./CallBox";
+import { footerLinks } from "@/utils/constantss";
+import ContactuUItem from "../contactus/ContactuUItem";
+type contactUsDataTypes = {
+  id: number | string;
+  image_location: string;
+  description: string;
+  small_text: string;
+  full_text: string;
 };
+type aboutUsData = { title: string; fullText: string };
 
-type footerItems = footerItem[];
+const Footer = () => {
+  const [aboutUsData, setaboutUsData] = useState<aboutUsData | null>(null);
+  const [isOpen, setIsOpen] = useState(false);
+  const [email, setEmail] = useState("");
 
-const Footer: React.FC = ({}) => {
-  const { userInfo } = useStoreInit((data) => data);
-  const router = useRouter();
+  const [contactUsData, setContactUsData] = useState<contactUsDataTypes[]>([]);
 
-  const route = usePathname();
+  useEffect(() => {
+    // getContent();
+    // getDownloadContents();
+    // getSocials();
+    // getAboutUs();
+  }, []);
+  /* --------------------------- SUMMARY DESCRIPTION -------------------------- */
+  // const getContent = () => {
+  //   ApiCall(
+  //     "GET",
+  //     apiRoutes.BASE_CONTENT("footer"),
+  //     null,
+  //     "get footer",
+  //     ({ data }) => {
+  //       if (!data || isEmpty(data.content)) return;
+  //       const safeHTMLFullText = DOMPurify.sanitize(data.content[0]?.full_text);
+  //       const safeHTMLSmallText = DOMPurify.sanitize(data.content[0]?.small_text);
+  //       setSummaryDescription({ fullText: safeHTMLFullText, smallText: safeHTMLSmallText });
+  //     },
+  //     null,
+  //     ONE_HOUR_CACHE_DURATION
+  //   );
+  // };
+  /* --------------------------- ABOUT US -------------------------- */
+  const getAboutUs = () => {
+    // ApiCall(
+    //   "GET",
+    //   apiRoutes.SITE_CONTENT("website-about-us", `1`),
+    //   null,
+    //   "get about us",
+    //   ({ data }) => {
+    //     const temp = data?.find((i: { description: string }) => i?.description == "bottom");
+    //     const safeHTMLFullText = DOMPurify.sanitize(temp?.text_short);
+    //     const safeHTMLSmallText = DOMPurify.sanitize(temp?.title_tag);
+    //     setaboutUsData({ fullText: safeHTMLFullText, title: safeHTMLSmallText });
+    //   },
+    //   () => {}
+    // );
+  };
 
-  const { data: initPropData, refetch } = useQuery({
-    queryKey: [PropertyService.OWNER_PROP_INIT_CACHEKEY],
-    queryFn: () => PropertyService.InitProperty({ property_id: undefined }),
-    enabled: false,
+  /* ----------------------------- DOWNLOAD LINKS ----------------------------- */
+  // const getDownloadContents = () => {
+  //   ApiCall(
+  //     "GET",
+  //     apiRoutes.BASE_CONTENT("download_section"),
+  //     null,
+  //     "get footer",
+  //     ({ data }) => {
+  //       if (!data || isEmpty(data.content)) return;
+  //       setDownloadData(data);
+  //     },
+  //     null,
+  //     ONE_HOUR_CACHE_DURATION
+  //   );
+  // };
+
+  const _findAction = (key: string, value: string, action: string) => {
+    if (!key) return;
+    if (action) window.open(`${action}${value}`, "_self");
+    else window.open(value, "_self");
+  };
+  /* ----------------------------- DOWNLOAD LINKS ----------------------------- */
+  const getSocials = () => {
+    // ApiCall(
+    //   "GET",
+    //   apiRoutes.BASE_CONTENT("contact-us"),
+    //   null,
+    //   "get social footer",
+    //   ({ data }) => {
+    //     if (!data || isEmpty(data.content)) return;
+    //     const so = data?.content?.filter((e: { description: string }) => e.description == "social") || [];
+    //     const cu =
+    //       data?.content?.filter(
+    //         (e: { description: string }) => e.description != "social" && e.description != "location"
+    //       ) || [];
+    //     setSocials(so);
+    //     setContactUsData(cu);
+    //   },
+    //   () => {}
+    // );
+  };
+
+  // const { data: aboutUs } = useQuery([HomeService?.CONTENTS_CACHEKEY, "aboutUs", 1], () => {
+  //   return HomeService.GetContent({ key: "aboutUs", page: 1 });
+  // });
+  const { data: aboutUs, isLoading } = useQuery({
+    queryKey: [HomeService?.CONTENT_BY_KEY_CACHEKEY, "aboutUs_footer", 1],
+    queryFn: () => {
+      return HomeService.GetContentByKey({ key: "aboutUs" });
+    },
   });
 
-  const footerItems = [
-      {
-          id: 2,
-          title: _STRINGS.HOME,
-          route: "/",
-
-          icon: "/assets/icons/navbar/home_nav.svg",
-      },
-      {
-          id: 242,
-          title: _STRINGS.ADD,
-          route: "/adds",
-
-      icon: "/assets/icons/navbar/adds_footer.svg",
+  const { data } = useQuery({
+    queryKey: [HomeService?.CONTENTS_CACHEKEY, "contactUs", 1],
+    queryFn: () => {
+      return HomeService.GetContent({ key: "contactUs", page: 1 });
     },
-    {
-      id: 14242,
-      title: _STRINGS.CREATE_ADD,
-      route: "/owner/properties",
-      callBack: () => {
-        if (!!userInfo) {
-          if (!userInfo?.owner_id) {
-            router.push(`/profile/edit`);
-          } else {
-            refetch().then((e) => {
-              if (!!e?.data) router.push(`/owner/properties/${e?.data?.id}/edit/initials`);
-            });
-          }
-        }
-      },
-
-          icon: "/assets/icons/navbar/add_footer.svg",
-      },
-      {
-          id: 142142,
-          title: _STRINGS.CONSULTAMCY,
-          route: "/advisors",
-
-          icon: "/assets/icons/navbar/footer_consultancy.svg",
-      },
-      {
-          id: 1442,
-          title: _STRINGS.MY_PROFILE,
-          route: "/profile",
-
-          icon: "/assets/icons/navbar/my_jayab.svg",
-      },
-      // {
-      //   id: 51,
-      //   title: _STRINGS.HISTORY,
-      //   route: "/reserve-history",
-
-      //   icon: <ReservesHistoryIcon fill={color} />,
-      // },
-      // {
-      //   id: 3,
-      //   title: _STRINGS.ADD_QUEUE,
-      //   route: "/add-reserve",
-
-      //   icon: <RoundCubicalPlusIcon fill={color} />,
-      // },
-      // {
-      //   id: 51,
-      //   title: _STRINGS.FINANCIALS,
-      //   route: "/financials",
-
-      //   icon: <CoinSackIcon fill={color} />,
-      // },
-      // {
-      //   id: 1,
-      //   title: _STRINGS.MENU,
-      //   route: "/menu",
-      //   icon: <BurgerMenu fill={color} />,
-      // },
-  ];
-  const [focused, setFocused] = useState(footerItems?.find((i) => i?.route === route));
-
-  const isFocused = (key: string) => {
-    return route === `${key}`;
-  };
+  });
+  const socials = data?.data?.filter((e: any) => e?.fields?.key == "social");
+  const others = data?.data?.filter((e) => e?.fields?.key !== "social");
   return (
-    <div
-      // style={{ maxWidth: "900px", right: 0 }}
-      className={`z-1  flex   max-w-[800px]  ${
-        isIOS ? "pb-8" : "pb-5"
-      }  pt-3 md:py-3   justify-between  md:rounded-md  left-0  right-0     mx-auto   shadow-card transition-all duration-1000	ease-in-out  items-center fixed bottom-0 w-full   bg-white  `}
-    >
-      <div className="flex w-full items-center   justify-around px-4     md:gap-6">
-        {footerItems?.map((el, i) => {
-          return (
-            <div
-              className={` w-[15%] ${
-                !isFocused(el?.route) && el?.title ? " opacity-60 grayscale brightness-90  " : " "
-              }   cursor-pointer select-none flex flex-col items-center gap-1 justify-center transition-all duration-1000	ease-in-out  `}
-              onClick={() => {
-                if (!isFocused(el?.route)) {
-                  useStoreParams.setState({ sideBarStatus: false });
-                  if (!!el?.callBack) {
-                    el?.callBack();
-                  } else {
-                    router.push(`${el?.route}`);
-                    setFocused(el);
-                  }
-                }
-              }}
-              key={el?.id}
+    <div className="w-full  pb-6 bg-primary-200 hidden  lg:flex flex-col items-center justify-center bg-dark-500  bg-no-repeat bg-cover  relative pt-[6rem] ">
+      <CallBox />
+      <div className="w-12/12 lg:w-11/12 mx-auto px-3 lg:px-4   2xl:px-[6%] py-4 grid grid-cols-4 lg:grid-cols-6 gap-5">
+        {/* ABOUT US */}
+        <div
+          key={`footers`}
+          className={`col-span-4 lg:col-span-2  flex w-full flex-col justify-between gap-6 h-fit order-2 lg:order-1 `}
+        >
+          <div className=" flex items-center gap-4 justify-start">
+            <img src="/assets/icons/logo/header_logo.svg" alt={"footer_logo"} className="w-fit " />
+            {/* <div className=" font-bold text-primary-700 text-3xl ">{aboutUs ? aboutUs?.title : _STRINGS?.LOGO}</div> */}
+          </div>
+
+          <p className=" break-words font-light text-sm dark:text-zinc-100 leading-6 opacity-100  line-clamp-4">
+            {!!aboutUs ? aboutUs?.small_text || aboutUs?.full_text : ""}
+          </p>
+          <div className=" hidden md:flex justify-center md:justify-start mt-3 gap-2 mb-4">
+            {socials && socials?.length > 0 ? (
+              socials?.map((e) => <ContactuUItem e={e} key={`${e?.id}SocialcONT`} disableText={true} />)
+            ) : (
+              <></>
+            )}
+          </div>
+        </div>
+        <div className=" col-span-1 order-2 lg:order-1"></div>
+        <div
+          key={`footerasfs`}
+          className={`col-span-3 lg:col-span-1  gap-2 flex w-full flex-col justify-between h-fit order-2 lg:order-1 `}
+        >
+          {/* <div className="font-semibold text-lg mb-4  dark:text-zinc-100  pb-2">{_STRINGS?.A5}</div> */}
+          {footerLinks?.map((e, index) => (
+            <Link
+              prefetch={false}
+              key={`FOOTER@${e.id}${index}`}
+              href={e.route || "#"}
+              style={{ textDecoration: "none" }}
+              className="flex items-center gap-2 mb-2"
             >
               <img
-                alt={`${el?.id}footerItem`}
-                src={el?.icon}
-                className={` w-5 h-5 aspect-square object-contain ${isFocused(el?.route) && el?.title ? "" : " "}`}
+                src="/assets/icons/footer/footer_bullet.svg"
+                alt={`${e?.title}dot`}
+                className="w-4 aspect-square h-4 "
               />
+              <p className=" text-sm  cursor-pointer  opacity-100 hover:text-primary-700">{e?.title}</p>
+            </Link>
+          ))}
+        </div>
 
-              {el?.title ? (
-                <p
-                  className={`  ${
-                    !isFocused(el?.route) && el?.title ? " !font-light  " : "!font-medium     "
-                  }   truncate text-sm  md:text-base  text-primary-700 select-none
-            
-                `}
-                >
-                  {el?.title}
-                </p>
-              ) : (
-                <></>
-              )}
+        {/* <div
+          key={`footerasfs`}
+          className={`col-span-2 lg:col-span-1  flex w-full flex-col justify-between h-fit order-2 lg:order-1 `}
+        >
+          <div className=" rounded-xl w-20 h-20 mx-auto flex justify-center ">
+            <a
+              referrerPolicy="origin"
+              target="_blank"
+              href="https://trustseal.enamad.ir/?id=540238&Code=hkPC83wVDvvLptmphvrDvCOTt6ZQGaU7"
+            >
+              <img
+                referrerPolicy="origin"
+                src="https://trustseal.enamad.ir/logo.aspx?id=540238&Code=hkPC83wVDvvLptmphvrDvCOTt6ZQGaU7"
+                alt=""
+                style={{ cursor: "pointer" }}
+                id="hkPC83wVDvvLptmphvrDvCOTt6ZQGaU7"
+              />
+            </a>
+          </div>
+        </div> */}
 
-              {/* <div className={`absolute `} /> */}
-            </div>
-          );
-        })}
+        {/* CONTACT US */}
+        <div
+          key={`foossters`}
+          className={`col-span-4 lg:col-span-2  flex w-full flex-col justify-between h-fit order-2 lg:order-1 `}
+        >
+          <div className="flex justify-center flex-col gap-4  mt-3 mb-4">
+            {others && others?.length > 0 ? (
+              others?.map((e) => <ContactuUItem e={e} textClass=" !font-normal " key={`${e?.id}SocialcONT`} />)
+            ) : (
+              <></>
+            )}
+          </div>
+        </div>
+
+        {/* SOCIALS */}
+      </div>
+      {/* SOCIAL IN MOBILE */}
+      <div className="md:hidden flex flex-col gap-2 items-center justify-center">
+        <div className=" flex justify-center md:justify-start mt-3 mb-4 gap-2">
+          {socials && socials?.length > 0 ? (
+            socials?.map((e) => <ContactuUItem e={e} key={`${e?.id}SocialcONT`} disableText={true} />)
+          ) : (
+            <></>
+          )}
+        </div>
+      </div>
+      {/* SECTION 4 */}
+
+      <div className="bg-white   rounded-20 w-9/10  mx-auto px-4 shadow-md   lg:w-3/4 h-14  md:h-20 flex items-center justify-between  ">
+        <div className="  hidden md:flex    items-center gap-4">
+          <div className="w-full   dark:text-zinc-100  text-center text-sm  ">
+            تمامی حقوق مادی و معنوی این وبسایت متعلق به شرکت .
+            <a className="text-blue-500 underline underline-offset-2" href="">
+              &nbsp; جایاب &nbsp;
+            </a>
+            دیزاین میباشد
+          </div>
+        </div>
+        <div className="flex  justify-center  md:justify-start mt-3 gap-2 mb-4"></div>
       </div>
     </div>
   );

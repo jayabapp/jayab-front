@@ -37,12 +37,10 @@ export const useStoreParams = create<ParamStore>(() => ({
 /* -------------------------------------------------------------------------- */
 export type InitStore = {
   userInfo: any;
-  managerInfo: any;
 };
 
 export const useStoreInit = create<InitStore>(() => ({
   userInfo: null,
-  managerInfo: null,
 }));
 
 /* -------------------------------------------------------------------------- */
