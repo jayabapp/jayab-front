@@ -1,0 +1,156 @@
+"use client";
+
+import { GetProfileDto } from "@/api_services/auth/auth.interface";
+import { AuthService } from "@/api_services/auth/auth.service";
+import ConfirmModal from "@/components/Modal/ConfirmModal";
+import ProfileItem from "@/components/profile/ProfileItem";
+
+import BtnLoading from "@/components/shared/Button/BtnLoading";
+import Button from "@/components/shared/Button/Button";
+import { useAuthStore, useStoreInit } from "@/store";
+import { profileItems } from "@/utils/constantss";
+
+import _STRINGS from "@/utils/LocalStrings";
+import { NEW_IMAGE_URL } from "@/utils/urls";
+
+import { useMutation, useQuery } from "@tanstack/react-query";
+import { isEmpty } from "lodash";
+import { useRouter } from "next/navigation";
+import React, { useEffect, useState } from "react";
+import { isMobile } from "react-device-detect";
+
+const Profile = () => {
+  // RedirectProfile();
+  const router = useRouter();
+  const [showLogout, setShowLogout] = useState(false);
+  const { isLogin } = useAuthStore((state) => state);
+
+  // const GetProfile = useSelector((state: { init: { userInfo: GetProfileDto } }) => state.init.userInfo);
+  const { data, isLoading } = useQuery({
+    queryKey: [AuthService?.GET_PROFILE_CACHEKEY, "profile_page", isLogin],
+    queryFn: () => {
+      if (isLogin) return AuthService?.GetProfile();
+      else {
+        return null;
+      }
+    },
+  });
+
+  useEffect(() => {
+    if (!!data) {
+      useStoreInit.setState({ userInfo: data });
+    }
+  }, [data]);
+
+  const logoutProcess = () => {
+    localStorage.removeItem("access_token");
+
+    localStorage.removeItem("isLogin");
+    localStorage.removeItem("is_registered");
+
+    useAuthStore.setState({ isLogin: false });
+    useStoreInit.setState({ userInfo: null });
+    router.push("/auth");
+  };
+
+  const _logout = () => {
+    logoutProcess();
+  };
+
+  const goToLogin = () => {
+    router.push("/auth");
+  };
+
+  const platformProfileList = isMobile ? profileItems : profileItems?.filter((e) => !e?.isMobile);
+  const PersonalProfileItems = isLogin ? platformProfileList?.filter((e) => !!e?.guard) : [];
+  const SharedProfileItems = platformProfileList?.filter((e) => !e?.guard);
+
+  return (
+    <div id="homeParent" className="  profile-container  flex flex-col gap-4  transition-all duration-500 ease-in-out ">
+      {!isMobile ? (
+        <div className="w-full flex gap-4 items-center justify-center flex-col pt-8 opacity-40">
+          <img src="/assets/icons/logo/logo.svg" className="w-1/5" />
+          <p className="text-sm font-medium">{_STRINGS.PLZ_SELECT_A_PAGE}</p>
+        </div>
+      ) : (
+        <div className="flex flex-col mt-4 ">
+          {!!data ? (
+            <div
+              className="
+          flex items-center gap-2"
+            >
+              {data?.profile_image ? (
+                <img className="w-14 h-14 rounded-full aspect-square " src={NEW_IMAGE_URL(data?.profile_image)} />
+              ) : (
+                <></>
+              )}
+
+              <div className="flex flex-col gap-3">
+                <p className="font-bold">{data?.full_name}</p>
+                <p className="text-sm">{data?.mobile_number}</p>
+              </div>
+            </div>
+          ) : (
+            <></>
+          )}
+          <div className="  p-2 rounded-10  mt-4">
+            {!isEmpty(PersonalProfileItems) && !!data?.owner_id ? (
+              <ProfileItem
+                item={{
+                  id: 1214,
+                  imgSrc: "/assets/icons/header/header_my_adds.svg",
+                  route: "/profile/owner/properties",
+                  title: "آگهی های من",
+                }}
+                key={`profileItemowner`}
+              />
+            ) : (
+              <></>
+            )}
+            {!isEmpty(PersonalProfileItems) ? (
+              PersonalProfileItems?.map((e) => <ProfileItem item={e} key={`profileItem${e?.id}`} />)
+            ) : (
+              <></>
+            )}{" "}
+            {SharedProfileItems?.map((e) => (
+              <ProfileItem item={e} key={`profileItem${e?.id}`} />
+            ))}
+            {!isLogin ? (
+              <Button
+                containerClass="   mt-8 w-full"
+                width="w-full"
+                title={_STRINGS?.LOGIN_TO_UR_ACCOUNT}
+                onClick={() => {
+                  goToLogin();
+                }}
+              />
+            ) : (
+              <div
+                onClick={() => {
+                  setShowLogout(true);
+                }}
+                className="py-5 flex   items-center w-full gap-3 md:gap-6 cursor-pointer hover:scale-102 transition-all"
+              >
+                <img src="/assets/icons/header/header_logout.svg" className="w-6 h-6  aspect-square " />{" "}
+                <p className="text-base md:text-xl font-medium "> {_STRINGS?.LOGOUT_TITLE}</p>
+              </div>
+            )}
+          </div>{" "}
+        </div>
+      )}{" "}
+      {/* {isLoading ? <BtnLoading /> : <ProfileInfo item={data} />} */}
+      <ConfirmModal
+        text={_STRINGS.LOG_OUT_MESSAGE}
+        isVisible={showLogout}
+        isLoading={false}
+        title={_STRINGS.LOGGING_OUT}
+        onHide={() => setShowLogout(false)}
+        confirmText={_STRINGS.YES}
+        hideText={_STRINGS.NO}
+        onConfirm={_logout}
+      />
+    </div>
+  );
+};
+
+export default Profile;

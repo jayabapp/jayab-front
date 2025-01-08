@@ -162,7 +162,7 @@ transition-all  ease-in-out duration-1000 header-content-container app-size cust
                   className="cursor-pointer w-12 h-6      "
                   // src="/assets/icons/addresses/garbage.svg"
                 />
-                <p className="font-bold text-lg">{HeaderTitle()}</p>
+                <p className="font-bold text-base text-center">{HeaderTitle()}</p>
                 <div className="  w-12 h-10   flex items-center justify-center">
                   {" "}
                   <div className="cursor-pointer  absolute left-4     ">

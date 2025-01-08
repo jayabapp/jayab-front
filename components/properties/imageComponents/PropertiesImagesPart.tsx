@@ -15,7 +15,7 @@ import SmallLoading from "../../shared/Lotties/SmallLoading";
 import Device from "@/helpers/Device";
 import _, { isEmpty } from "lodash";
 import ProductImage from "./ProductImage";
-import { SinglePropDto } from "@/api_services/property/property.interface";
+import { SingleOwnerPropertyDto, SinglePropDto } from "@/api_services/property/property.interface";
 // const ProductOptionsContainer = dynamic(() => import("./ProductOptionsContainer"), {
 //   ssr: false,
 // });
@@ -130,8 +130,8 @@ const ImagesSliderModal = ({
                 clickable: true,
               }}
               dataLength={1}
-              activeIndex={modalProps?.currentIndex}
-              setActiveIndex={setActiveIndex}
+              // activeIndex={modalProps?.currentIndex}
+              // setActiveIndex={setActiveIndex}
               spaceBetween={10}
               slidesPerView={1}
               reference={ref}
@@ -275,7 +275,7 @@ function ProductImagesContainer({
   productImageId,
   attsImagesArray,
 }: {
-  data: SinglePropDto;
+  data: SinglePropDto | SingleOwnerPropertyDto;
   productImageId: number | null;
   attsImagesArray?: any[] | number[];
 }) {

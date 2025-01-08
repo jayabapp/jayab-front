@@ -37,14 +37,14 @@ const MobileFooter: React.FC = ({}) => {
     {
       id: 14242,
       title: _STRINGS.CREATE_ADD,
-      route: "/owner/properties",
+      route: "/profile/owner/properties",
       callBack: () => {
         if (!!userInfo) {
           if (!userInfo?.owner_id) {
             router.push(`/profile/edit`);
           } else {
             refetch().then((e) => {
-              if (!!e?.data) router.push(`/owner/properties/${e?.data?.id}/edit/initials`);
+              if (!!e?.data) router.push(`/profile/owner/properties/${e?.data?.id}/edit/initials`);
             });
           }
         }

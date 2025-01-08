@@ -5,11 +5,12 @@ import DayPicker from "../DayPicker";
 import moment from "moment-jalaali";
 import YearPicker from "../YearPicker";
 import { useStoreTheme } from "../../../../store";
+import { OwnerCallendarItemDto } from "@/api_services/property/property.interface";
 
 type dates = {
   selectedDate?: string | number;
   active_days?: number[] | undefined;
-  callenderData?: any[] | undefined;
+  callenderData?: OwnerCallendarItemDto[] | undefined;
   prefix?: string;
   setSelectedDay?: (e: any | null) => void | null;
   setChosenDateState?: (e: any | null) => void | null;
@@ -24,7 +25,6 @@ const Callender = ({
   active_days,
   options = { valueType: "persian" },
 }: dates) => {
-  const { color } = useStoreTheme((state) => state);
   const [chosenDate, setChosenDate] = useState<string | number>(
     !!selectedDate ? moment(selectedDate, "jYYYY/jMM/jDD").format("jYYYY/jMM/jDD") : moment().format("jYYYY/jMM/jDD")
   );
@@ -97,15 +97,18 @@ const Callender = ({
 
         setPrevX(e.pageX);
       }}
-      className="flex transition-all duration-500 ease-in-out  w-full  rounded-2xl p-4 md:p-12  gap-4 flex-col"
+      className="flex transition-all duration-500 ease-in-out  w-full  rounded-2xl   gap-4 flex-col"
       draggable
     >
-      <div className="flex flex-col gap-1 items-start">
-        <p style={{ color: color }}>{moment(selectedDate, "jYYYY/jMM/jDD").format("jYYYY")}</p>
-        <p className=" text-2xl " style={{ color: color }}>
-          {moment(selectedDate, "jYYYY/jMM/jDD").format("   ddd jDD jMMMM")}
-        </p>
+      <div
+        className={`flex text-primary-700 flex-col gap-1 items-start   transition-all ${
+          !!selectedDate ? "" : " opacity-0"
+        }`}
+      >
+        <p>{moment(selectedDate, "jYYYY/jMM/jDD").format("jYYYY")}</p>
+        <p className=" text-2xl ">{moment(selectedDate, "jYYYY/jMM/jDD").format("   ddd jDD jMMMM")}</p>
       </div>
+
       <div className="flex items-center gap-4">
         {" "}
         <YearPicker prefix={prefix} date={`${chosenDate}`} setDate={setChosenDate} month={month} year={year} />

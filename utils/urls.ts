@@ -58,10 +58,18 @@ export const apiRoutes = {
 
   CONTENTS: `/contents`,
 
+  OWNER_PROPERTIES_LIST: "/owner/properties",
+
   OWNER_PROP_INIT: (propertyId?: string | number | null) =>
     `/owner/properties/init${!!propertyId ? `?property_id=${propertyId}` : ""}`,
 
   OWNER_PROPERTIES: (propertyId: string | number | null) => `/owner/properties/${propertyId}`,
+
+  OWNER_PROPERTIES_STATUS_UPDATE: (propertyId: string | number | null) =>
+    `/owner/properties/${propertyId}/calendar/reserves`,
+
+  OWNER_PROPERTIES_SINGLE_CALLENDAR: (propertyId: string | number | null) =>
+    `/owner/properties/${propertyId}/month-calendar`,
 
   OWNER_PROPERTIES_PAY_SUBS: (propertyId: string | number | null) => `/owner/properties/${propertyId}/pay-subscription`,
 

@@ -18,6 +18,8 @@ const kourosh = {
 
 const _STRINGS = {
   CURRENCY: "تومان",
+  EMPTY: "خالی",
+  OCCUPIED: "پر",
   NO_PRICE: "توافقی",
   TOMAN: "تومان",
   BUCKS: "دلار",
@@ -236,7 +238,7 @@ const _STRINGS = {
   UR_SEARCH_HISTORY: "آخرین جستجوهای شما",
   REGISTER: "ثبت نام",
 
-  LOGOUT_TITLE: '"خروج از حساب کاربری"',
+  LOGOUT_TITLE: "خروج از حساب کاربری",
 
   LOG_OUT_MESSAGE: "آیا مطمئنید که می‌خواهید از حساب کاربری خود خارج شوید؟",
 
@@ -244,7 +246,22 @@ const _STRINGS = {
   ADDS: "آگهی ها",
   CONSULTANTS: "مشاوران",
   ADD_ADD: "ثبت آگهی",
-
+  PLZ_SELECT_A_PAGE: "لطفا صفحه مورد نظر خود را از منوی سمت راست انتخاب کنید .",
+  LOGIN_TO_UR_ACCOUNT: "ورود به حساب کاربری",
+  ADD_DURATION: "مدت اعتبار آگهی",
+  EXTEND_SUBS: "تمدید اعتبار",
+  UPGRADE_ADD_DESC: "ارتقای آگهی افزایش بازدید ",
+  PROP_CARD_C_DETAILS: "مشاهده جزئیات و ویرایش تقویم",
+  SUB_STATUS: "وضعیت اشتراک",
+  RESERVED_DAYS: "روز های رزرو شده",
+  EMPTY_DAYS: "روز های خالی",
+  PEAK_DAYS: "روز های پیک",
+  MEMO_DAYS: "روز های دارای یادداشت",
+  SELECT_DAY_TO_GO_ON: "برای تغییر موارد ذیل روز مورد نظر را از روی تقویم انتخاب کنید.",
+  EMPTY_FULL: "پر / خالی",
+  CHANGE_PRICE: "تغییر قیمت",
+  COMMISTION: "کمیسیون مشاور",
+  MEMO: "یادداشت",
   ...kourosh,
 };
 

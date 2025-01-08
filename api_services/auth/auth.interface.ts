@@ -165,7 +165,7 @@ export interface GetProfileDto {
   id: number;
   mobile_number: string;
   full_name: string;
-  profile_image: string;
+  profile_image: ImageDto;
   owner_id: string;
   advisor_id: string;
   created_at: Date;

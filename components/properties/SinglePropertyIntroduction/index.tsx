@@ -7,7 +7,6 @@ import Button from "@/components/shared/Button/Button";
 import { SinglePropDto } from "@/api_services/property/property.interface";
 
 const SinglePropertyIntroduction = ({ data }: { data: SinglePropDto }) => {
-  console.log(data, "datadatadata");
   return (
     <div className=" hidden md:flex w-full  flex-col relative  gap-4">
       <div className="w-full flex items-start md:items-center justify-between gap-2">

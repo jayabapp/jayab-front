@@ -1,3 +1,5 @@
+import _STRINGS from "./LocalStrings";
+
 export const footerBlacklist = [
   "/auth",
   "/new-post",
@@ -49,9 +51,21 @@ export const SORT_TYPES = [
 
 export const allRoutes: { [key: string]: string } = {
   questions: "پرسش ها",
+  properties: "املاک",
+  owner: "مالک",
   blog: "بلاگ",
   blogs: "بلاگ",
   orders: "سفارشات",
+  assistants: "افزودن دستیار مالک",
+  initials: _STRINGS.REGISTER_PROPERTY,
+  location: _STRINGS.SUBMIT_PROPERTY,
+  media: _STRINGS.PROPERTY_MEDIA,
+  facility: "امکانات ملک",
+  subscription: "ارتقا آگهی و افزایش بازدید",
+  price: _STRINGS.CAPS_N_PRICES,
+  environment: "اطلاعات محیطی ملک",
+  bedroom: "اطلاعات اتاق خواب، سرویس و حمام",
+
   lawyers: "وکیل ها",
   podcasts: "پادکست ها",
   videos: "ویدیوها",
@@ -89,12 +103,22 @@ export const allRoutes: { [key: string]: string } = {
 };
 
 export const profileDropDownItems = [
-  { id: 15, title: "آگهی های من", route: "/profile/orders", imgSrc: "/assets/icons/header/header_my_adds.svg" },
-  { id: 21, title: "پیام های من", route: "/profile/edit", imgSrc: "/assets/icons/header/header_my_messages.svg" },
-  { id: 421, title: "پرداخت های من", route: "/profile/edit", imgSrc: "/assets/icons/header/header_my_turnovers.svg" },
-  { id: 123, title: "آگهی های ذخیره شده", route: "/profile/edit", imgSrc: "/assets/icons/header/header_my_saves.svg" },
+  {
+    id: 15,
+    title: "آگهی های من",
+    route: "/profile/owner/properties",
+    imgSrc: "/assets/icons/header/header_my_adds.svg",
+  },
+  { id: 21, title: "پیام های من", route: "/profile/chat", imgSrc: "/assets/icons/header/header_my_messages.svg" },
+  {
+    id: 421,
+    title: "پرداخت های من",
+    route: "/profile/turnovers",
+    imgSrc: "/assets/icons/header/header_my_turnovers.svg",
+  },
+  { id: 123, title: "آگهی های ذخیره شده", route: "/profile/saves", imgSrc: "/assets/icons/header/header_my_saves.svg" },
   { id: 23, title: "دعوت از دوستان", route: "/profile/edit", imgSrc: "/assets/icons/header/header_share.svg" },
-  { id: 253, title: "پشتیبانی", route: "/profile/edit", imgSrc: "/assets/icons/header/header_support.svg" },
+  { id: 253, title: "پشتیبانی", route: "/profile/support", imgSrc: "/assets/icons/header/header_support.svg" },
 ];
 export const menuDropDownItems = [
   { id: 115, title: "درباره ما", route: "/about-us", imgSrc: "/assets/icons/header/header_menu_about_us.svg" },
@@ -112,4 +136,88 @@ export const footerLinks = [
   { id: 227, title: "قوانین و مقررات", route: "/terms" },
 
   { id: 218, title: "تماس با ما", route: "/contact-us" },
+];
+
+export const profileItems = [
+  {
+    id: 14124,
+    title: "پیام های من",
+    route: "/profile/chat",
+    imgSrc: "/assets/icons/header/header_my_messages.svg",
+    guard: true,
+    isMobile: false,
+  },
+
+  {
+    id: 5232,
+    title: "پرداخت های من",
+    route: "/profile/turnovers",
+    imgSrc: "/assets/icons/header/header_my_turnovers.svg",
+    guard: true,
+    isMobile: false,
+  },
+  {
+    id: 769,
+    title: "آگهی های ذخیره شده",
+    route: "/profile/saves",
+    imgSrc: "/assets/icons/header/header_my_saves.svg",
+    guard: true,
+    isMobile: false,
+  },
+
+  {
+    id: 42311124,
+    title: "دعوت از دوستان",
+    route: "/profile/invite",
+    imgSrc: "/assets/icons/header/header_share.svg",
+    guard: true,
+    isMobile: false,
+  },
+
+  {
+    id: 42324,
+    title: "پشتیبانی",
+    route: "/profile/support",
+    imgSrc: "/assets/icons/header/header_support.svg",
+    guard: true,
+    isMobile: false,
+  },
+  {
+    id: 2125232,
+    title: "اخبار و مقالات",
+    route: "/blogs",
+    imgSrc: "/assets/icons/header/header_menu_blog.svg",
+    isMobile: true,
+  },
+  {
+    id: 212565232,
+    title: "قوانین و مقررات",
+    route: "/terms",
+    imgSrc: "/assets/icons/header/header_menu_terms.svg",
+    isMobile: true,
+  },
+  {
+    id: 21232,
+    title: "سوالات متداول",
+    route: "/faq",
+    guard: false,
+    imgSrc: "/assets/icons/header/header_menu_faq.svg",
+    isMobile: true,
+  },
+  {
+    id: 2152625632,
+    title: "درباره ما",
+    route: "/about-us",
+    imgSrc: "/assets/icons/header/header_menu_about_us.svg",
+    guard: false,
+    isMobile: true,
+  },
+  {
+    id: 2531232,
+    title: "تماس با ما",
+    route: "/contact-us",
+    imgSrc: "/assets/icons/header/header_menu_call.svg",
+    guard: false,
+    isMobile: true,
+  },
 ];

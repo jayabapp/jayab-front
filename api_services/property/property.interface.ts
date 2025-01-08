@@ -235,31 +235,6 @@ export interface PayPropertySubSendDto {
   gateway: string;
 }
 
-export interface PropertyListDto {
-  id: number;
-  code: string;
-  title: string;
-  slug: string;
-  feature_image: ImageDto;
-  attachments_count: number;
-  std_capacity: number;
-  max_capacity: number;
-  total_bedrooms: number;
-  has_pool: boolean;
-  province: string;
-  city: string;
-  advisor_commission: number;
-  options: any[];
-  today_price: number;
-  status: Status;
-}
-
-export interface Status {
-  id: number;
-  title: string;
-  hex: string;
-}
-
 export interface SinglePropDto {
   id: number;
   code: string;
@@ -278,7 +253,7 @@ export interface SinglePropDto {
   province: string;
   city: string;
   advisor_commission: number;
-  today_price: number;
+  today_price: TodayPrice;
   status: Status;
   daily_price: DailyPrice;
   latitude: number;
@@ -364,4 +339,112 @@ export interface PropertyDescriptionsDto {
   ad_dscr: string;
   created_at: Date;
   updated_at: Date;
+}
+
+export interface PropertyListDto {
+  id: number;
+  code: string;
+  title: string;
+  slug: string;
+  feature_image: ImageDto;
+  attachments_count: number;
+  images: any[];
+  std_capacity: number;
+  max_capacity: number;
+  total_bedrooms: number;
+  bedrooms: Bedrooms;
+  has_pool: boolean;
+  province: string;
+  city: string;
+  advisor_commission: number;
+  today_price: TodayPrice;
+  is_today_reserved: boolean;
+  is_authorized: boolean;
+  has_blue_tick: boolean;
+  status: Status;
+  remaining_days: null;
+}
+
+export interface Bedrooms {
+  total_bedrooms: number;
+}
+
+export interface Status {
+  id: number;
+  title: string;
+  hex: string;
+}
+
+export interface TodayPrice {
+  price: number;
+  discounted_price: number;
+  discount_percantage: number;
+}
+
+export interface SingleOwnerPropertyDto {
+  id: number;
+  code: string;
+  title: string;
+  slug: string;
+  feature_image: ImageDto;
+  attachments_count: number;
+  images: ImageDto[];
+  std_capacity: number;
+  max_capacity: number;
+  total_bedrooms: number;
+  has_pool: boolean;
+  province: string;
+  city: string;
+  advisor_commission: number;
+  today_price: TodayPrice;
+  is_today_reserved: boolean;
+  is_authorized: boolean;
+  has_blue_tick: boolean;
+  status: Status;
+  remaining_days: null;
+  authorize_status: boolean;
+  blue_tick_status: null;
+  daily_price: DailyPrice;
+  latitude: number;
+  longitude: number;
+  land_area: number;
+  building_area: number;
+  floors: number;
+  unit_per_floor: number;
+  floor: number;
+  construction_year: number;
+  address: string;
+  rent_type: string;
+}
+
+export interface DailyPrice {
+  id: number;
+  property_id: number;
+  normal: number;
+  wednesday: number;
+  thursday: number;
+  friday: number;
+  peak: number;
+  cleaning: number;
+  additional_person: number;
+  today_offer: null;
+  created_at: Date;
+  updated_at: Date;
+}
+
+export interface Status {
+  id: number;
+  title: string;
+  hex: string;
+}
+
+export interface OwnerCallendarItemDto {
+  date: Date;
+  day: number;
+  month: number;
+  year: number;
+  price: number;
+  discounted_price: null;
+  note: null;
+  is_reserved: boolean;
 }

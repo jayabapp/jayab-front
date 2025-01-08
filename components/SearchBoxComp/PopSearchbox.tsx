@@ -51,7 +51,11 @@ const PopSearchbox = ({
   const { data: suggsData, isLoading } = useQuery({
     queryKey: [HomeService.SEARCH_SUGGS_CACHEKEY, element?.value, isTyping],
     queryFn: () => {
-      if (!isTyping) if (!!element?.value) return HomeService.GetSearchSuggs({ q: element.value });
+      if (!isTyping) {
+        if (!!element?.value) {
+          return HomeService.GetSearchSuggs({ q: element.value });
+        } else return null;
+      } else return null;
     },
   });
 

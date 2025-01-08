@@ -105,6 +105,9 @@ ul {
 .container {
   @apply h-full bg-transparent mx-auto !max-w-full min-h-[100dvh] px-3 md:px-3 lg:px-4 xl:px-[15%]  pt-20 lg:pt-28  pb-32 lg:pb-44 overflow-x-scroll;
 }
+.profile-container {
+  @apply h-full bg-transparent mx-auto !max-w-full min-h-[100dvh]   pb-32 lg:pb-44 overflow-x-scroll;
+}
 
 .container-lg {
   @apply h-full bg-transparent mx-auto !max-w-full min-h-[100dvh] px-3 md:px-3 lg:px-4 xl:px-[8%];
@@ -236,14 +239,14 @@ input[type="number"] {
 }
 
 .profile-grid-part {
-  @apply lg:grid  lg:mt-20;
+  @apply lg:grid  mt-24 lg:mt-20;
 }
 
 .profile-py-28 {
-  @apply py-16;
+  @apply pb-16;
 }
 .profile-py-28-md {
-  @apply md:py-16;
+  @apply md:pb-16;
 }
 
 .centerise > .swiper-wrapper {
@@ -459,12 +462,16 @@ select {
   background-color: #fff !important;
 }
 
-/* -------------------------------------------------------------------------- */
-/*                                START M_FIXES                                */
-/* -------------------------------------------------------------------------- */
 button {
   cursor: pointer;
 }
-/* -------------------------------------------------------------------------- */
-/*                                END M_FIXES                                  */
-/* -------------------------------------------------------------------------- */
+
+.striped {
+  background: repeating-linear-gradient(
+    -45deg,
+    transparent,
+    transparent 4px,
+    hsla(0, 0%, 84%, 0.8) 6px,
+    hsla(0, 0%, 84%, 0.8) 0
+  );
+}

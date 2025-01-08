@@ -1,4 +1,5 @@
 import type { Config } from "tailwindcss";
+import defaultTheme from "tailwindcss/defaultTheme";
 export default {
   content: [
     "./pages/**/*.{js,ts,jsx,tsx,mdx}",
@@ -6,6 +7,7 @@ export default {
     "./app/**/*.{js,ts,jsx,tsx,mdx}", // single component styles
   ],
   theme: {
+    screens: { ...defaultTheme.screens },
     extend: {
       borderColor: {
         DEFAULT: "#ADB1B8",
@@ -20,15 +22,16 @@ export default {
       },
       colors: {
         primary: {
+          50: "#F3F7FF",
           100: "#E8F1FC",
           200: "#E4E5E7",
           300: "#F9FAFC",
-          400: "#fff",
+          400: "#D2E4F9",
           500: "#fff",
           600: "#fff",
           700: "#3886E5",
-          800: "#fff",
-          900: "#fff",
+          800: "#858A95",
+          900: "#F53E4F",
         },
         btnColor: {
           primary: "#3886E5",

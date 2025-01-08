@@ -1,7 +1,7 @@
 type MoreClassType = { moreClass?: string };
 
 export const Divider = ({ moreClass }: MoreClassType) => {
-  return <hr className={`border-t border-gray-300 dark:border-zinc-700 ${moreClass}`} />;
+  return <hr className={`border-t border-primary-200 dark:border-zinc-700 ${moreClass}`} />;
 };
 export const DivDivider = ({ moreClass }: MoreClassType) => {
   return <div className={` ${moreClass}`} />;

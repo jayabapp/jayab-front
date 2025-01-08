@@ -1,9 +1,10 @@
 import React, { useEffect, useState } from "react";
 import moment from "moment-jalaali";
 import Day from "./Day";
+import { OwnerCallendarItemDto } from "@/api_services/property/property.interface";
 moment.loadPersian({ dialect: "persian-modern" });
 type props = {
-  callenderData?: any[] | undefined;
+  callenderData?: OwnerCallendarItemDto[] | undefined;
   month: string;
   year: string;
   active_days?: number[] | undefined;
@@ -58,7 +59,9 @@ const DayPicker = ({
             id: i + 1,
             month: month,
             year: year,
-            is_off_day: callenderData?.find((e) => e?.day == i + 1)?.is_off_day,
+            price: callenderData?.find((e) => e?.day == i + 1)?.price,
+            is_reserved: callenderData?.find((e) => e?.day == i + 1)?.is_reserved,
+            discounted_price: callenderData?.find((e) => e?.day == i + 1)?.discounted_price,
             has_memo: !!callenderData?.find((e) => e?.day == i + 1)?.note,
             isActive: !!active_days.includes(moment(`${year}/${month}/${i + 1}`, `jYYYY/jMM/jD`).day()),
           };

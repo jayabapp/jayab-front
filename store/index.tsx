@@ -1,3 +1,4 @@
+import { GetProfileDto } from "@/api_services/auth/auth.interface";
 import { Moment } from "moment-jalaali";
 import { create } from "zustand";
 import { persist, createJSONStorage } from "zustand/middleware";
@@ -36,7 +37,7 @@ export const useStoreParams = create<ParamStore>(() => ({
 /* INIT */
 /* -------------------------------------------------------------------------- */
 export type InitStore = {
-  userInfo: any;
+  userInfo: GetProfileDto | null;
 };
 
 export const useStoreInit = create<InitStore>(() => ({

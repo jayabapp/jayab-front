@@ -4,6 +4,7 @@ import {
   AssistantSendDto,
   CreatePropertyStepOneDto,
   FacilitiesValuesDto,
+  OwnerCallendarItemDto,
   PayPropertySubSendDto,
   PricingPropertySendDto,
   PropertyListDto,
@@ -13,6 +14,7 @@ import {
   PropertyTypesDTP,
   PropInitDto,
   RoomInfosDto,
+  SingleOwnerPropertyDto,
 } from "./property.interface";
 import { YupValidator } from "@/utils/YupValidator";
 import { sendMediaSchema } from "./property.schema";
@@ -20,10 +22,12 @@ import { p2e } from "@/helpers/NumberConverter";
 
 export class PropertyService {
   static USER_PROP_OPTIONS_CACHEKEY = "USER_PROP_OPTIONS";
+  static OWNER_PROPERTIES_LIST_CACHEKEY = "OWNER_PROPERTIES_LIST";
   static OWNER_PROP_INIT_CACHEKEY = "OWNER_PROP_INIT";
   static GET_PROPERTIES_CACHEKEY = "GET_PROPERTIES";
   static USER_SUBSCRIPTION_PLANS_CACHEKEY = "USER_SUBSCRIPTION_PLANS";
   static GET_SINGLEPROPERTY_SlUG_CACHEKEY = "GET_SINGLEPROPERTY_SlUG";
+  static OWNER_PROPERTIES_CACHEKEY = "OWNER_PROPERTIES";
 
   static async GetUserPropertyGroup(dto: { group: (keyof typeof PropertyOptionGroup)[] }) {
     try {
@@ -71,6 +75,66 @@ export class PropertyService {
           subscription_id: dto.subscription_id,
         }
       );
+      return result;
+    } catch (e) {
+      throw e;
+    }
+  }
+
+  /* -------------------------------------------------------------------------- */
+  /*                          GET OWNER SINGLE PROPERTY                         */
+  /* -------------------------------------------------------------------------- */
+
+  static async GetSingleOwnerProperty(dto: { property_id: string | number | null }) {
+    try {
+      const result = await apiCall<unknown, SingleOwnerPropertyDto>(
+        "GET",
+        apiRoutes.OWNER_PROPERTIES(dto?.property_id)
+      );
+      return result;
+    } catch (e) {
+      throw e;
+    }
+  }
+
+  static async GetSingleOwnerPropertyCallendar(dto: {
+    property_id: string | number | null;
+    year: string | number | null;
+    month: string | number | null;
+  }) {
+    try {
+      const result = await apiCall<
+        { year: string | number | null; month: string | number | null },
+        OwnerCallendarItemDto[]
+      >("GET", apiRoutes.OWNER_PROPERTIES_SINGLE_CALLENDAR(dto?.property_id), {
+        month: dto.month,
+        year: dto.year,
+      });
+      return result;
+    } catch (e) {
+      throw e;
+    }
+  }
+
+  /* -------------------------------------------------------------------------- */
+  /*                        OWNER PROPERTY UPDATE STATUSES                        */
+  /* -------------------------------------------------------------------------- */
+
+  static async UpdatePropertyStatus(dto: {
+    property_id: string | number | null;
+    year: string | number | null;
+    month: string | number | null;
+    day: string | number | null;
+  }) {
+    try {
+      const result = await apiCall<
+        { year: string | number | null; month: string | number | null; day: string | number | null },
+        SingleOwnerPropertyDto
+      >("POST", apiRoutes.OWNER_PROPERTIES_STATUS_UPDATE(dto?.property_id), {
+        day: dto.day,
+        month: dto.month,
+        year: dto.year,
+      });
       return result;
     } catch (e) {
       throw e;
@@ -345,6 +409,19 @@ export class PropertyService {
   static async GetSinglePropertyWithSlug(dto: { Property_slug: string }) {
     try {
       const result = await apiCall<unknown, unknown>("GET", apiRoutes.GET_SINGLEPROPERTY_SlUG(dto.Property_slug));
+      return result;
+    } catch (e) {
+      throw e;
+    }
+  }
+
+  /* -------------------------------------------------------------------------- */
+  /*                            GET OWNER PORPERTIES                            */
+  /* -------------------------------------------------------------------------- */
+
+  static async GetOwnerPropertiesList() {
+    try {
+      const result = await apiCall<unknown, PropertyListDto[]>("GET", apiRoutes.OWNER_PROPERTIES_LIST);
       return result;
     } catch (e) {
       throw e;
