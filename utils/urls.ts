@@ -68,6 +68,15 @@ export const apiRoutes = {
   OWNER_PROPERTIES_STATUS_UPDATE: (propertyId: string | number | null) =>
     `/owner/properties/${propertyId}/calendar/reserves`,
 
+  OWNER_PROPERTIES_PRICE_UPDATE: (propertyId: string | number | null) =>
+    `/owner/properties/${propertyId}/calendar/price`,
+
+  OWNER_PROPERTIES_COMMISSION_UPDATE: (propertyId: string | number | null) =>
+    `/owner/properties/${propertyId}/calendar/commission`,
+
+  OWNER_PROPERTIES_CALLENDARE_NOTE_UPDATE: (propertyId: string | number | null) =>
+    `/owner/properties/${propertyId}/calendar/notes`,
+
   OWNER_PROPERTIES_SINGLE_CALLENDAR: (propertyId: string | number | null) =>
     `/owner/properties/${propertyId}/month-calendar`,
 

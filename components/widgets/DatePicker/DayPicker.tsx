@@ -63,6 +63,7 @@ const DayPicker = ({
             is_reserved: callenderData?.find((e) => e?.day == i + 1)?.is_reserved,
             discounted_price: callenderData?.find((e) => e?.day == i + 1)?.discounted_price,
             has_memo: !!callenderData?.find((e) => e?.day == i + 1)?.note,
+            is_peak: !!callenderData?.find((e) => e?.day == i + 1)?.is_peak,
             isActive: !!active_days.includes(moment(`${year}/${month}/${i + 1}`, `jYYYY/jMM/jD`).day()),
           };
         })
@@ -120,7 +121,7 @@ const DayPicker = ({
   // },[])
 
   return (
-    <div className="grid grid-cols-7  grid-rows-6  transition-all duration-500 ease-in-out gap-4 items-center">
+    <div className="grid grid-cols-7  grid-rows-6  transition-all duration-500 ease-in-out gap-2 md:gap-3 items-center">
       {" "}
       {lastDaysData?.map((e, i) => (
         <Day data={e} key={i} />

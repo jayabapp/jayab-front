@@ -9,6 +9,9 @@ import OwnerCallemdarGuide from "./OwnerCallemdarGuide";
 import _STRINGS from "@/utils/LocalStrings";
 import Button from "@/components/shared/Button/Button";
 import ChangeDayStatusComp from "./ChangeDayStatusComp";
+import ChangePriceComp from "./ChangePriceComp";
+import ChangeCunsultatCommission from "./ChangeCunsultatCommission";
+import ChangeCallendarNote from "./ChangeCallendarNote";
 
 const SingleOwnerPropertycallender = ({ data }: { data: SingleOwnerPropertyDto }) => {
   /* -------------------------------------------------------------------------- */
@@ -87,19 +90,24 @@ const SingleOwnerPropertycallender = ({ data }: { data: SingleOwnerPropertyDto }
           data={data}
           callenderselectedDate={callenderselectedDate}
         />
-        <Button
-          containerClass="w-full"
-          width="w-full !py-1.5"
-          roundedClass="rounded-full"
-          title={_STRINGS.CHANGE_PRICE}
+        <ChangePriceComp
+          selectedDateData={selectedDateData}
+          setCallendarDataState={setCallendarDataState}
+          data={data}
+          callenderselectedDate={callenderselectedDate}
         />
-        <Button
-          containerClass="w-full"
-          width="w-full !py-1.5"
-          roundedClass="rounded-full"
-          title={_STRINGS.COMMISTION}
+        <ChangeCunsultatCommission
+          selectedDateData={selectedDateData}
+          setCallendarDataState={setCallendarDataState}
+          data={data}
+          callenderselectedDate={callenderselectedDate}
         />
-        <Button containerClass="w-full" width="w-full !py-1.5" roundedClass="rounded-full" title={_STRINGS.MEMO} />
+        <ChangeCallendarNote
+          selectedDateData={selectedDateData}
+          setCallendarDataState={setCallendarDataState}
+          data={data}
+          callenderselectedDate={callenderselectedDate}
+        />
       </div>
     </div>
   );

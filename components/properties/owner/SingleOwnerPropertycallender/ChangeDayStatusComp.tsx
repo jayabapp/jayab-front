@@ -67,7 +67,7 @@ const ChangeDayStatusComp = ({
         containerClass="w-full"
         width="w-full !py-1.5"
         roundedClass="rounded-full"
-        title={!!selectedDateData?.is_reserved ? _STRINGS.EMPTY_FULL : _STRINGS.EMPTY_FULL}
+        title={_STRINGS.EMPTY_FULL}
       />
       <ConfirmModal
         isLoading={isPending}

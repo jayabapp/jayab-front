@@ -260,8 +260,9 @@ const _STRINGS = {
   SELECT_DAY_TO_GO_ON: "برای تغییر موارد ذیل روز مورد نظر را از روی تقویم انتخاب کنید.",
   EMPTY_FULL: "پر / خالی",
   CHANGE_PRICE: "تغییر قیمت",
-  COMMISTION: "کمیسیون مشاور",
+  COMMISSION: "کمیسیون مشاور",
   MEMO: "یادداشت",
+  CHANGE_ADVISOR_COMMISSION: "تغییر کمیسیون مشاور",
   ...kourosh,
 };
 

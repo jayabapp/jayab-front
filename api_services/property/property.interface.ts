@@ -441,10 +441,12 @@ export interface Status {
 export interface OwnerCallendarItemDto {
   date: Date;
   day: number;
+  advisor_commission: number;
   month: number;
   year: number;
   price: number;
-  discounted_price: null;
-  note: null;
+  discounted_price: number;
+  note: string;
   is_reserved: boolean;
+  is_peak: boolean;
 }

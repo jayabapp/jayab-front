@@ -141,6 +141,93 @@ export class PropertyService {
     }
   }
 
+  static async UpdatePropertyPrice(dto: {
+    property_id: string | number | null;
+    year: string | number | null;
+    month: string | number | null;
+    day: string | number | null;
+    price: string | number | null;
+    discounted_price: string | number | null;
+  }) {
+    try {
+      const result = await apiCall<
+        {
+          year: string | number | null;
+          month: string | number | null;
+          day: string | number | null;
+          price: string | number | null;
+          discounted_price: string | number | null;
+        },
+        SingleOwnerPropertyDto
+      >("POST", apiRoutes.OWNER_PROPERTIES_PRICE_UPDATE(dto?.property_id), {
+        day: dto.day,
+        month: dto.month,
+        year: dto.year,
+        discounted_price: dto.discounted_price,
+        price: dto.price,
+      });
+      return result;
+    } catch (e) {
+      throw e;
+    }
+  }
+
+  static async UpdateAdvisorCommission(dto: {
+    property_id: string | number | null;
+    year: string | number | null;
+    month: string | number | null;
+    day: string | number | null;
+    advisor_commission: string | number | null;
+  }) {
+    try {
+      const result = await apiCall<
+        {
+          year: string | number | null;
+          month: string | number | null;
+          day: string | number | null;
+          advisor_commission: string | number | null;
+        },
+        SingleOwnerPropertyDto
+      >("POST", apiRoutes.OWNER_PROPERTIES_COMMISSION_UPDATE(dto?.property_id), {
+        day: dto.day,
+        month: dto.month,
+        year: dto.year,
+        advisor_commission: dto.advisor_commission,
+      });
+      return result;
+    } catch (e) {
+      throw e;
+    }
+  }
+
+  static async UpdateCallendarNote(dto: {
+    property_id: string | number | null;
+    year: string | number | null;
+    month: string | number | null;
+    day: string | number | null;
+    note: string | number | null;
+  }) {
+    try {
+      const result = await apiCall<
+        {
+          year: string | number | null;
+          month: string | number | null;
+          day: string | number | null;
+          note: string | number | null;
+        },
+        SingleOwnerPropertyDto
+      >("POST", apiRoutes.OWNER_PROPERTIES_CALLENDARE_NOTE_UPDATE(dto?.property_id), {
+        day: dto.day,
+        month: dto.month,
+        year: dto.year,
+        note: dto.note,
+      });
+      return result;
+    } catch (e) {
+      throw e;
+    }
+  }
+
   /* -------------------------------------------------------------------------- */
   /*                            CREATE AND EDIT PROP                            */
   /* -------------------------------------------------------------------------- */

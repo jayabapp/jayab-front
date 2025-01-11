@@ -28,6 +28,7 @@ const Day = ({ onSelect, data, selectedDayId, month, year, showTimeOfTheDay, tod
   const isBefore = moment(moment(`${year}/${month}/${data?.id}`, "jYYYY/jMM/jD")).isBefore();
   const isToday = today?.day == data?.id && today?.month == month && today?.year == year;
   const isSelected = selectedDayId?.day == data?.id && selectedDayId?.month == month && selectedDayId?.year == year;
+
   return (
     <div
       className={`aspect-square   ${!!data?.year && (!isBefore || !!isToday) ? "" : "opacity-30"} ${
@@ -45,11 +46,18 @@ const Day = ({ onSelect, data, selectedDayId, month, year, showTimeOfTheDay, tod
         className={`text-center flex flex-col gap-2 ${data?.is_reserved ? "striped" : ""}   ${
           isToday ? "  rounded-md bg-gray-200 border " : ""
         }  relative  flex items-center justify-center aspect-square  ${
-          !!data?.is_peak ? " border-b-2  border-red-800" : !!data?.isActive ? "border-b-2  border-primary-700" : ""
+          !!data?.isActive ? "border-b-2  border-primary-700" : ""
         }  ${isSelected ? "!bg-primary-700  rounded-md text-white" : ""}`}
       >
         {!!data?.has_memo ? (
-          <div className="absolute left-0 top-0  w-2 h-2 aspect-square bg-red-800 !rounded-full"> </div>
+          <div className="absolute left-1 top-1  w-1 h-1 aspect-square bg-primary-900 !rounded-full"> </div>
+        ) : (
+          <></>
+        )}
+        {!!data?.is_peak ? (
+          <div className="absolute left-0 right-0 mx-auto  bottom-0.5   h-1  w-1/2  bg-primary-900 !rounded-full">
+            {" "}
+          </div>
         ) : (
           <></>
         )}
