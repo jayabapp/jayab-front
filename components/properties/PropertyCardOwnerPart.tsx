@@ -4,8 +4,9 @@ import React from "react";
 import AuthorizationStatus from "./AuthorizationStatus";
 import { Divider } from "../shared/Divider";
 import Button from "../shared/Button/Button";
+import Link from "next/link";
 
-const PropertyCardOwnerPart = ({ data }: { data: PropertyListDto }) => {
+const PropertyCardOwnerPart = ({ data, goToLink }: { goToLink: string; data: PropertyListDto }) => {
   return (
     <div className="w-full flex flex-col ">
       <Divider moreClass="my-1" />
@@ -41,18 +42,21 @@ const PropertyCardOwnerPart = ({ data }: { data: PropertyListDto }) => {
         <AuthorizationStatus isAuthorized={data?.is_authorized} />
       </div>
 
-      <Button
-        title={_STRINGS.PROP_CARD_C_DETAILS}
-        roundedClass="rounded-full"
-        containerClass="w-full relative mt-2"
-        width="w-full"
-        icon={
-          <img
-            className="w-5 h-5 absolute left-4  top-0 bottom-0 my-auto"
-            src="/assets/icons/property/white_arrow_left.svg"
-          />
-        }
-      />
+      <Link href={goToLink} className="w-full" prefetch={false}>
+        {" "}
+        <Button
+          title={_STRINGS.PROP_CARD_C_DETAILS}
+          roundedClass="rounded-full"
+          containerClass="w-full relative mt-2"
+          width="w-full"
+          icon={
+            <img
+              className="w-5 h-5 absolute left-4  top-0 bottom-0 my-auto"
+              src="/assets/icons/property/white_arrow_left.svg"
+            />
+          }
+        />
+      </Link>
     </div>
   );
 };

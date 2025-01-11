@@ -17,11 +17,12 @@ type props = {
   type?: string;
 
   item: any;
-  onDelete: () => void | null;
+  onDelete?: () => void | null;
   onSelect: (e: any) => void | null;
   containerClass?: string;
 
   disabled?: boolean;
+  activeFull?: boolean;
   link: string;
   title?: string;
   setTotalLength?: React.Dispatch<React.SetStateAction<number>>;
@@ -50,6 +51,7 @@ const MultiUploader = ({
   setTotalLength,
   setUploaderLoading,
   setUploadedImages,
+  activeFull,
 }: props) => {
   const imagePickerRef = useRef<HTMLDivElement>(null);
   const [loading, setLoading] = useState(false);
@@ -164,16 +166,18 @@ const MultiUploader = ({
           >
             <div
               onClick={() => {
-                // setShow(true);
-                setShowImage(
-                  typeof item == "string"
-                    ? "imageUrl" + item
-                    : item?.file_location
-                    ? "imageUrl" + item?.file_location
-                    : item?.name
-                    ? `https://${item?.bucket}.${item?.end_point}/${item?.path}/${item?.name}`
-                    : item
-                );
+                if (!!activeFull) {
+                  setShow(true);
+                  setShowImage(
+                    typeof item == "string"
+                      ? "imageUrl" + item
+                      : item?.file_location
+                      ? "imageUrl" + item?.file_location
+                      : item?.name
+                      ? `https://${item?.bucket}.${item?.end_point}/${item?.path}/${item?.name}`
+                      : item
+                  );
+                }
               }}
               className={`cursor-pointer border   bg-whiteGray-100  dark:bg-zinc-700  rounded-10 aspect-square relative  ${
                 !!innerClasses?.sizeClass ? innerClasses?.sizeClass : "h-24 w-24"
@@ -193,9 +197,13 @@ const MultiUploader = ({
                 className="object-cover  w-full bg-gradient-to-b rounded-10 aspect-square max-w-max  "
               />
             </div>
-            <div className="   bg-transparent cursor-pointer absolute top-2 left-2 " onClick={onDelete}>
-              <img src="/assets/icons/uploader/faded_x_circle.svg" />
-            </div>
+            {!!onDelete ? (
+              <div className="   bg-transparent cursor-pointer absolute top-2 left-2 " onClick={onDelete}>
+                <img src="/assets/icons/uploader/faded_x_circle.svg" />
+              </div>
+            ) : (
+              <></>
+            )}
           </div>
         )}
       </div>
@@ -204,10 +212,14 @@ const MultiUploader = ({
           setShow={setShow}
           show={show}
           src={showImage}
-          onDelete={() => {
-            onDelete();
-            setShow(false);
-          }}
+          onDelete={
+            !!onDelete
+              ? () => {
+                  onDelete();
+                  setShow(false);
+                }
+              : undefined
+          }
         />
       )}
     </div>

@@ -17,7 +17,7 @@ type props = {
   type?: string;
 
   item: any;
-  onDelete: () => void | null;
+  onDelete?: () => void | null;
   onSelect: (e: any) => void | null;
   containerClass?: string;
 
@@ -228,9 +228,13 @@ const MainUploader = ({
                 className="object-cover  w-full bg-gradient-to-b rounded-20 aspect-square max-w-max  "
               />
             </div>
-            <div className="   bg-transparent cursor-pointer absolute top-2 left-2 " onClick={onDelete}>
-              <img src="/assets/icons/uploader/faded_x_circle.svg" />
-            </div>
+            {!!onDelete ? (
+              <div className="   bg-transparent cursor-pointer absolute top-2 left-2 " onClick={onDelete}>
+                <img src="/assets/icons/uploader/faded_x_circle.svg" />
+              </div>
+            ) : (
+              <></>
+            )}
           </div>
         )}
       </div>
@@ -239,10 +243,14 @@ const MainUploader = ({
           setShow={setShow}
           show={show}
           src={showImage}
-          onDelete={() => {
-            onDelete();
-            setShow(false);
-          }}
+          onDelete={
+            !!onDelete
+              ? () => {
+                  onDelete();
+                  setShow(false);
+                }
+              : undefined
+          }
         />
       )}
       <Modal

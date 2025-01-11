@@ -4,6 +4,7 @@ import { PropertyService } from "@/api_services/property/property.service";
 import ProductImagesContainer from "@/components/properties/imageComponents/PropertiesImagesPart";
 import SingleOwnerPropertycallender from "@/components/properties/owner/SingleOwnerPropertycallender";
 import SingleOwnerPropertyIntroduction from "@/components/properties/owner/SingleOwnerPropertyIntroduction";
+import SingleOwnerPropertyOptons from "@/components/properties/owner/SingleOwnerPropertyOptons.tsx";
 
 import LottieLoading from "@/components/shared/Lotties/LottieLoading";
 import { useQuery } from "@tanstack/react-query";
@@ -31,6 +32,7 @@ const OwnerSingleProperty = () => {
           <ProductImagesContainer productImageId={null} data={data} />
           <SingleOwnerPropertyIntroduction data={data} />
           <SingleOwnerPropertycallender data={data} />
+          <SingleOwnerPropertyOptons data={data} />
         </>
       ) : (
         <></>

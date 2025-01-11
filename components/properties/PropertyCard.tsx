@@ -36,7 +36,9 @@ const PropertyCard = ({ data, isOwner }: { data: PropertyListDto; isOwner?: bool
           <div className="w-full flex  flex-row  items-start gap-2 justify-start">
             {" "}
             <p className="text-xs  shrink-0 ">{_STRINGS.TODAYS_PRICE}</p>
-            <AddCardPricePart data={data} />
+            <AddCardPricePart
+              data={{ discounted_price: data?.today_price?.discount_percantage, price: data?.today_price?.price }}
+            />
           </div>
 
           {/*  TODAY STATUS */}
@@ -101,7 +103,7 @@ const PropertyCard = ({ data, isOwner }: { data: PropertyListDto; isOwner?: bool
           </div>
         </Link>
       </div>
-      {isOwner ? <PropertyCardOwnerPart data={data} /> : <></>}
+      {isOwner ? <PropertyCardOwnerPart goToLink={goToLink} data={data} /> : <></>}
     </div>
   );
 };

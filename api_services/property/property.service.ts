@@ -4,7 +4,9 @@ import {
   AssistantSendDto,
   CreatePropertyStepOneDto,
   FacilitiesValuesDto,
+  GetPropBadgeDto,
   OwnerCallendarItemDto,
+  OwnerSinglePropertyAuthdata,
   PayPropertySubSendDto,
   PricingPropertySendDto,
   PropertyListDto,
@@ -28,6 +30,8 @@ export class PropertyService {
   static USER_SUBSCRIPTION_PLANS_CACHEKEY = "USER_SUBSCRIPTION_PLANS";
   static GET_SINGLEPROPERTY_SlUG_CACHEKEY = "GET_SINGLEPROPERTY_SlUG";
   static OWNER_PROPERTIES_CACHEKEY = "OWNER_PROPERTIES";
+  static OWNER_PROPERTIES_SINGLE_BADGE_CACHEKEY = "OWNER_PROPERTIES_SINGLE_BADGE";
+  static OWNER_PROPERTIES_SINGLE_AUTH_CACHEKEY = "OWNER_PROPERTIES_SINGLE_AUTH";
 
   static async GetUserPropertyGroup(dto: { group: (keyof typeof PropertyOptionGroup)[] }) {
     try {
@@ -221,6 +225,92 @@ export class PropertyService {
         month: dto.month,
         year: dto.year,
         note: dto.note,
+      });
+      return result;
+    } catch (e) {
+      throw e;
+    }
+  }
+
+  /* -------------------------------------------------------------------------- */
+  /*                            OWNER PROPERTY BADGE                            */
+  /* -------------------------------------------------------------------------- */
+
+  static async GetSingleOwnerPropertyBadgeStatus(dto: { property_id: string | number | null }) {
+    try {
+      const result = await apiCall<unknown, GetPropBadgeDto>(
+        "GET",
+        apiRoutes.OWNER_PROPERTIES_SINGLE_BADGE(dto?.property_id)
+      );
+      return result;
+    } catch (e) {
+      throw e;
+    }
+  }
+
+  static async RequestSingleOwnerPropertyBadge(dto: { property_id: string | number | null }) {
+    try {
+      const result = await apiCall<unknown, unknown>("POST", apiRoutes.OWNER_PROPERTIES_SINGLE_BADGE(dto?.property_id));
+      return result;
+    } catch (e) {
+      throw e;
+    }
+  }
+  /* -------------------------------------------------------------------------- */
+  /*                            OWNER PROPERTY AUTHORIZATION                              */
+  /* -------------------------------------------------------------------------- */
+
+  static async GetSingleOwnerPropertyAuthStatus(dto: { property_id: string | number | null }) {
+    try {
+      const result = await apiCall<unknown, OwnerSinglePropertyAuthdata>(
+        "GET",
+        apiRoutes.OWNER_PROPERTIES_SINGLE_AUTH(dto?.property_id)
+      );
+      return result;
+    } catch (e) {
+      throw e;
+    }
+  }
+
+  static async RequestSingleOwnerPropertyAuth(dto: {
+    property_id: string | number | null;
+    nc_image_id: string | number | null;
+    docs: (string | number | null)[];
+  }) {
+    try {
+      const result = await apiCall<
+        {
+          property_id: string | number | null;
+          nc_image_id: string | number | null;
+          docs: (string | number | null)[];
+        },
+        unknown
+      >("POST", apiRoutes.OWNER_PROPERTIES_AUTHORIZE, {
+        docs: dto.docs,
+        nc_image_id: dto.nc_image_id,
+        property_id: dto.property_id,
+      });
+      return result;
+    } catch (e) {
+      throw e;
+    }
+  }
+
+  static async EditRequestSingleOwnerPropertyAuth(dto: {
+    property_id: string | number | null;
+    nc_image_id: string | number | null;
+    docs: (string | number | null)[];
+  }) {
+    try {
+      const result = await apiCall<
+        {
+          nc_image_id: string | number | null;
+          docs: (string | number | null)[];
+        },
+        unknown
+      >("PUT", apiRoutes.OWNER_PROPERTIES_SINGLE_AUTH(dto?.property_id), {
+        docs: dto.docs,
+        nc_image_id: dto.nc_image_id,
       });
       return result;
     } catch (e) {

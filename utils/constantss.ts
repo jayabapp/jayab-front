@@ -51,6 +51,7 @@ export const SORT_TYPES = [
 
 export const allRoutes: { [key: string]: string } = {
   questions: "پرسش ها",
+  authorize: "احراز  ملک",
   properties: "املاک",
   owner: "مالک",
   blog: "بلاگ",
@@ -66,7 +67,7 @@ export const allRoutes: { [key: string]: string } = {
   environment: "اطلاعات محیطی ملک",
   bedroom: "اطلاعات اتاق خواب، سرویس و حمام",
 
-  lawyers: "وکیل ها",
+  license: "احراز ملک",
   podcasts: "پادکست ها",
   videos: "ویدیوها",
   "about-us": "درباره ما",

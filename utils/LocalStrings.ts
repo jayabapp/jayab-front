@@ -18,6 +18,7 @@ const kourosh = {
 
 const _STRINGS = {
   CURRENCY: "تومان",
+  IMAGE: "تصویر",
   EMPTY: "خالی",
   OCCUPIED: "پر",
   NO_PRICE: "توافقی",
@@ -263,6 +264,12 @@ const _STRINGS = {
   COMMISSION: "کمیسیون مشاور",
   MEMO: "یادداشت",
   CHANGE_ADVISOR_COMMISSION: "تغییر کمیسیون مشاور",
+  PROP_STATS: "آمار بازدید و ارتقا آگهی",
+  REQUEST_FOR_BADGE: "دریافت نشان ممتاز",
+  AUTHORiZIATION_REQUEST: "احراز  ملک",
+  NATIONAL_CARD_IMAGE: "تصویر کارت ملی",
+  DOCS_IMAGES: "تصاویر مدارک (سند, فولنامه و ...)",
+  EDIT_INFO: "ویرایش اطلاعات",
   ...kourosh,
 };
 

@@ -450,3 +450,34 @@ export interface OwnerCallendarItemDto {
   is_reserved: boolean;
   is_peak: boolean;
 }
+
+export interface GetPropBadgeDto {
+  id: number;
+  property_id: number;
+  status: Status;
+  changelog: any[];
+  created_at: Date;
+  updated_at: Date;
+}
+
+export interface Status {
+  id: number;
+  title: string;
+  hex: string;
+}
+
+export interface OwnerSinglePropertyAuthdata {
+  id: number;
+  property_id: number;
+  nc_image_id: number;
+  status: Status;
+  created_at: Date;
+  updated_at: Date;
+  property: Property;
+  nc_image: ImageDto;
+  docs: ImageDto[];
+}
+
+export interface Property {
+  owner_id: number;
+}

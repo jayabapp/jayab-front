@@ -5,6 +5,7 @@ import Button from "@/components/shared/Button/Button";
 import { SingleOwnerPropertyDto } from "@/api_services/property/property.interface";
 import SinglePropertyPricePart from "../../SinglePropertyPricePart";
 import AuthorizationStatus from "../../AuthorizationStatus";
+import StatusShower from "@/components/shared/StatusShower";
 
 const SingleOwnerPropertyIntroduction = ({ data }: { data: SingleOwnerPropertyDto }) => {
   return (
@@ -12,7 +13,7 @@ const SingleOwnerPropertyIntroduction = ({ data }: { data: SingleOwnerPropertyDt
       <div className="w-full flex items-start md:items-center justify-between gap-2">
         {" "}
         <p className=" font-medium text-lg w-3/5 md:w-full md:text-2xl ">{data?.title}</p>
-        <AuthorizationStatus isAuthorized={data?.authorize_status} />
+        <AuthorizationStatus isAuthorized={data?.is_authorized} />
       </div>
       <div className="flex items-center gap-4">
         <div className="bg-primary-700 rounded-md text-base  px-2 py-1 text-white flex items-center justify-center">
@@ -55,6 +56,7 @@ const SingleOwnerPropertyIntroduction = ({ data }: { data: SingleOwnerPropertyDt
           </div>
         </div>
       </div>
+      <StatusShower data={data?.status} />
     </div>
   );
 };

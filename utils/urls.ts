@@ -60,6 +60,8 @@ export const apiRoutes = {
 
   OWNER_PROPERTIES_LIST: "/owner/properties",
 
+  OWNER_PROPERTIES_AUTHORIZE: "/owner/property-authorize",
+
   OWNER_PROP_INIT: (propertyId?: string | number | null) =>
     `/owner/properties/init${!!propertyId ? `?property_id=${propertyId}` : ""}`,
 
@@ -79,6 +81,11 @@ export const apiRoutes = {
 
   OWNER_PROPERTIES_SINGLE_CALLENDAR: (propertyId: string | number | null) =>
     `/owner/properties/${propertyId}/month-calendar`,
+
+  OWNER_PROPERTIES_SINGLE_BADGE: (propertyId: string | number | null) =>
+    `/owner/properties/${propertyId}/property-badges`,
+
+  OWNER_PROPERTIES_SINGLE_AUTH: (propertyId: string | number | null) => `/owner/property-authorize/${propertyId}`,
 
   OWNER_PROPERTIES_PAY_SUBS: (propertyId: string | number | null) => `/owner/properties/${propertyId}/pay-subscription`,
 
