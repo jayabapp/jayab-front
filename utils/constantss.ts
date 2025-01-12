@@ -137,7 +137,7 @@ export const profileDropDownItems = [
     route: "/profile/owner/properties",
     imgSrc: "/assets/icons/header/header_my_adds.svg",
   },
-  { id: 21, title: "پیام های من", route: "/profile/chat", imgSrc: "/assets/icons/header/header_my_messages.svg" },
+  // { id: 21, title: "پیام های من", route: "/profile/chat", imgSrc: "/assets/icons/header/header_my_messages.svg" },
   {
     id: 421,
     title: "پرداخت های من",
@@ -167,14 +167,14 @@ export const footerLinks = [
 ];
 
 export const profileItems = [
-  {
-    id: 14124,
-    title: "پیام های من",
-    route: "/profile/chat",
-    imgSrc: "/assets/icons/header/header_my_messages.svg",
-    guard: true,
-    isMobile: false,
-  },
+  // {
+  //   id: 14124,
+  //   title: "پیام های من",
+  //   route: "/profile/chat",
+  //   imgSrc: "/assets/icons/header/header_my_messages.svg",
+  //   guard: true,
+  //   isMobile: false,
+  // },
 
   {
     id: 5232,

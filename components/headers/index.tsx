@@ -28,7 +28,7 @@ const TextIcon = ({ item }: textIconType) => (
   <Link
     prefetch={false}
     href={item?.route}
-    className={`flex items-center transition-all  brightness-125 hover:brightness-100 hover:grayscale-0  grayscale justify-center col-span-1 gap-2 flex-wrap ml-6`}
+    className={`flex items-center transition-all  brightness-125 hover:brightness-100 hover:grayscale-0  grayscale justify-center col-span-1 gap-2 flex-wrap ml-4 `}
   >
     <img src={item?.icon} className="dark:invert" />
     <p className="text-primary-700">{item?.title}</p>
@@ -128,16 +128,19 @@ transition-all  ease-in-out duration-1000 header-content-container app-size cust
                 </div> */}
 
                 {isLogin ? (
-                  <div className="flex items-center p-4 gap-4">
-                    <Link prefetch={false} href={"/chat"} className="relative">
-                      <AbsoluteBadge count={1} />
-                      <img src="/assets/icons/header/blue_chat.svg" className="w-6 h-6 aspect-square" />
-                    </Link>
-                    <div className="relative">
-                      <AbsoluteBadge count={1} />
-                      <img src="/assets/icons/header/blue_bell.svg" className="w-6 h-6 aspect-square" />
+                  <>
+                    {" "}
+                    <div className="flex items-center p-4 gap-4">
+                      <Link prefetch={false} href={"/chat"} className="relative">
+                        <AbsoluteBadge count={1} />
+                        <img src="/assets/icons/header/blue_chat.svg" className="w-6 h-6 aspect-square" />
+                      </Link>
+                      <div className="relative">
+                        <AbsoluteBadge count={1} />
+                        <img src="/assets/icons/header/blue_bell.svg" className="w-6 h-6 aspect-square" />
+                      </div>
                     </div>
-                  </div>
+                  </>
                 ) : (
                   <Button
                     title={`${_STRINGS.ENTER}/${_STRINGS.REGISTER}`}
@@ -218,6 +221,9 @@ transition-all  ease-in-out duration-1000 header-content-container app-size cust
           <div
             className={` text-xs gap-2  lg:text-md  justify-between font-medium flex-row hidden lg:flex w-1/2 transition-all ease-in-out duration-1000 items-center `}
           >
+            <TextIcon
+              item={{ icon: "/assets/icons/header/messages_geader_icon.svg", title: _STRINGS.MESSAGES, route: "/chat" }}
+            />
             <TextIcon item={{ icon: "/assets/icons/header/adds_header_icon.svg", title: _STRINGS.ADDS, route: "/p" }} />
             <TextIcon
               item={{ icon: "/assets/icons/header/consultant_header.svg", title: _STRINGS.CONSULTANTS, route: "/p" }}

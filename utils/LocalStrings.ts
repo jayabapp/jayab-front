@@ -261,6 +261,7 @@ const _STRINGS = {
   CHAT_IN_JAYAB: "چت در جایاب",
   CONTACT_INFO: "اطلاعات تماس",
   ARE_U_SURE_DELETE_MESSAGE: "آیا از حذف پیام مطمئنید",
+  MESSAGES: "پیام ها",
 };
 
 export default _STRINGS;

@@ -21,7 +21,7 @@ const ChatListPage = () => {
       ) : (
         <>
           {chats?.map((e) => (
-            <ChatListItem item={e} />
+            <ChatListItem item={e} key={`chatItem${e?.id}`} />
           ))}
         </>
       )}
