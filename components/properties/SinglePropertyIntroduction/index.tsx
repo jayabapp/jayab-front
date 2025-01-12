@@ -5,8 +5,16 @@ import AddCardPricePart from "../AddCardPricePart";
 import SinglePropertyPricePart from "../SinglePropertyPricePart";
 import Button from "@/components/shared/Button/Button";
 import { SinglePropDto } from "@/api_services/property/property.interface";
+import { useMutation } from "@tanstack/react-query";
+import { ChatService } from "@/api_services/chat/chat.service";
 
 const SinglePropertyIntroduction = ({ data }: { data: SinglePropDto }) => {
+  const { mutate: createFindChat, isPending } = useMutation({ mutationFn: ChatService.StartOrFindChat });
+
+  const onCreateChat = () => {
+    createFindChat({ property_id: data?.id });
+  };
+
   return (
     <div className=" hidden md:flex w-full  flex-col relative  gap-4">
       <div className="w-full flex items-start md:items-center justify-between gap-2">
@@ -60,7 +68,17 @@ const SinglePropertyIntroduction = ({ data }: { data: SinglePropDto }) => {
         </div>
         <SinglePropertyPricePart data={data} />
       </div>
-      <Button width="w-full" containerClass="w-full" roundedClass="rounded-full" title={_STRINGS.ONLINE_RESERVE} />
+      <div className="w-full flex items-center justify-between gap-4 ">
+        <Button width="w-full" containerClass="w-full" roundedClass="rounded-full" title={_STRINGS.CONTACT_INFO} />
+        <Button
+          width="w-full"
+          containerClass="w-full"
+          roundedClass="rounded-full"
+          title={_STRINGS.CHAT_IN_JAYAB}
+          onClick={onCreateChat}
+          loading={isPending}
+        />
+      </div>
     </div>
   );
 };

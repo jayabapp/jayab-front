@@ -10,7 +10,7 @@ export default {
     screens: { ...defaultTheme.screens },
     extend: {
       borderColor: {
-        DEFAULT: "#ADB1B8",
+        DEFAULT: "#E4E5E7",
       },
       scale: {
         102: "1.02",

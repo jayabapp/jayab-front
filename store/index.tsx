@@ -107,3 +107,23 @@ export type QueryStore = {
 export const useStoreQuery = create<QueryStore>(() => ({
   client: null,
 }));
+
+export type ChatStore = {
+  isTyping: any;
+  chatReply: any;
+  chatDelete: any;
+  usersStatus: any;
+  deletedMessage: any;
+  chatNotification: any;
+  chatProduct: any;
+};
+
+export const useChatStore = create<ChatStore>(() => ({
+  isTyping: null,
+  chatReply: null,
+  chatDelete: null,
+  deletedMessage: null,
+  usersStatus: null,
+  chatNotification: null,
+  chatProduct: null,
+}));

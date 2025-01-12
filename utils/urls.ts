@@ -62,6 +62,10 @@ export const apiRoutes = {
 
   OWNER_PROPERTIES_AUTHORIZE: "/owner/property-authorize",
 
+  CHAT: "/chat",
+
+  NOTIFS: `/user/notifications`,
+
   OWNER_PROP_INIT: (propertyId?: string | number | null) =>
     `/owner/properties/init${!!propertyId ? `?property_id=${propertyId}` : ""}`,
 
@@ -110,4 +114,20 @@ export const apiRoutes = {
   CONTENT_BY_KEY: (id: string | number) => `/contents/by-key/${id}`,
 
   GET_SINGLEPROPERTY_SlUG: (propertySlug: string | number) => `/user/properties/${propertySlug}`,
+
+  /* -------------------------------------------------------------------------- */
+  /*                                    CHAT                                    */
+  /* -------------------------------------------------------------------------- */
+
+  SEND_MESSAGE: (chatroomId: number | string) => `/chat/${chatroomId}/send-message`,
+
+  READ_MESSAGE: (chatroomId: number | string) => `/chat/${chatroomId}/read-at`,
+
+  DELETE_MESSAGE: (chatroomId: number | string, messageId: number | string) =>
+    `/chat/${chatroomId}/messages/${messageId}`,
+
+  GET_SNGLE_CHAT_MESSAGES: (chatroomId: number | string, cursor: number | string) =>
+    `/chat/${chatroomId}/messages?cursor=${cursor}`,
+
+  GET_SNGLE_CHAT: (chatroomId: number | string) => `/chat/${chatroomId}`,
 };

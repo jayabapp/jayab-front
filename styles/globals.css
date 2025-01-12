@@ -119,6 +119,9 @@ ul {
   @apply w-full md:w-[70%] lg:w-[60%] xl:w-1/2 px-2 md:px-6 max-w-[580px]  overflow-x-hidden h-auto     mx-auto bg-white    dark:bg-zinc-900   pb-24  pt-[4.5rem]   md:rounded-20;
 }
 
+.chat-container {
+  @apply w-full   md:w-[100%]  col-span-5 xl:col-span-3 max-w-screen-2xl overflow-x-hidden      mx-auto bg-white;
+}
 .ltr {
   direction: ltr;
 }

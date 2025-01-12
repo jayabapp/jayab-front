@@ -18,7 +18,7 @@ import { SocketIO } from "../../components/SocketIo";
 // import ConnectingBanner from "@/components/Headers/ConnectingBanner";
 import { useAuthStore, useStoreInit, useStoreParams, useStoreSocket, useStoreTheme } from "@/store";
 
-import { footerBlacklist, mobileFooterWhiteList } from "../constantss";
+import { footerBlacklist, headerBlackList, mobileFooterWhiteList } from "../constantss";
 import RotatePhone from "@/components/shared/Lotties/RotatePhone";
 import Splashscreen from "@/components/SplashScreen";
 import ConnectingBanner from "@/components/headers/ConnectingBanner";
@@ -153,7 +153,7 @@ const MainWrapper = ({ children }: mainWrapper) => {
   return (
     <div className={`app-background  app-text transition-opacity`}>
       {/* <DesktopHeader /> */}
-      {!footerBlacklist.includes(pathname) && (
+      {!headerBlackList.includes(pathname) && (
         <Suspense fallback={<FallBack />}>
           <Headers />
         </Suspense>
@@ -164,7 +164,7 @@ const MainWrapper = ({ children }: mainWrapper) => {
           {/* {!sidenavBlackList?.includes(pathname || "") && <SideNav />} */}
           {children}
         </div>
-        {!footerBlacklist.includes(pathname) && <Footer />}
+        {mobileFooterWhiteList.includes(pathname) && <Footer />}
         {mobileFooterWhiteList.includes(pathname) && <MobileFooter />}
       </div>
       <Toaster />

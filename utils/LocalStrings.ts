@@ -1,21 +1,3 @@
-const kourosh = {
-  SEARCH_STATES: "جستجوی شهر ها",
-  ADVISOR_REGUSTER_SCORE: "ثبت امتیاز مشاور",
-  LOADING: "در حال بارگزاری",
-  FAQ: "سوالات متداول",
-  USERS_FAQ: "پرسش‌های کاربران",
-  ALL_QUESTIONS: "همه سوالات",
-  QUESTIONS_AND_ANSWERS: "پرسش و پاسخ",
-  FULL_NAME: "نام و نام خانوادگی",
-  PHONE_NUMBER: "شماره تلفن",
-  YOUR_MESSAGE: "پیام شما",
-  SEARCH_IN: "جستجو در",
-  OPERATOR: "اپراتور",
-  WORK_HISTORY: "سابقه کار",
-  MONTH: "ماه",
-  NO_DATA: "هیچ داده ای وجود ندارد.",
-};
-
 const _STRINGS = {
   CURRENCY: "تومان",
   IMAGE: "تصویر",
@@ -270,7 +252,15 @@ const _STRINGS = {
   NATIONAL_CARD_IMAGE: "تصویر کارت ملی",
   DOCS_IMAGES: "تصاویر مدارک (سند, فولنامه و ...)",
   EDIT_INFO: "ویرایش اطلاعات",
-  ...kourosh,
+  MESSAGE_TEXT: "متن پیام",
+  CHAT: "چت",
+  CHAT_INPUT_PLACEHOLDER: "پیام خود را بنویسید ...",
+  COPY_SUCCESS: "رونوشت پیام انجام شد",
+  COPY: "رونوشت ",
+  DELETED_MESSAGE: "پیام حذف شده",
+  CHAT_IN_JAYAB: "چت در جایاب",
+  CONTACT_INFO: "اطلاعات تماس",
+  ARE_U_SURE_DELETE_MESSAGE: "آیا از حذف پیام مطمئنید",
 };
 
 export default _STRINGS;

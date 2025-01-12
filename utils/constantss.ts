@@ -26,7 +26,33 @@ export const footerBlacklist = [
   "/auth/register/upload-documents",
   "/auth/register/terms",
   "/auth/register/success",
+  "/profile",
 ];
+export const headerBlackList = [
+  "/auth",
+  "/new-post",
+  "/auth/sign-in",
+  "/auth/sign-in/forgot-password",
+  "/auth/sign-up",
+  "/auth/sign-up/otp",
+  "/auth/sign-in/otp",
+  "/auth/sign-in/change-password",
+  "/auth/verify",
+
+  "/post/[id]",
+  "/auth/otp",
+  "/products/[parentId]",
+  "/profile/notifications",
+
+  "/PagesByGroup",
+
+  "/auth/register",
+  "/auth/register/upload-documents",
+  "/auth/register/terms",
+  "/auth/register/success",
+  "/profile",
+];
+export const headerMobileBlackList = ["/chat"];
 
 export const mobileFooterWhiteList = ["/"];
 
@@ -53,6 +79,7 @@ export const allRoutes: { [key: string]: string } = {
   questions: "پرسش ها",
   authorize: "احراز  ملک",
   properties: "املاک",
+  chat: "چت",
   owner: "مالک",
   blog: "بلاگ",
   blogs: "بلاگ",
