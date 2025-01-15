@@ -13,10 +13,12 @@ import StepShower from "@/components/shared/StepShower";
 import { createPropertySteps } from "@/utils/constantss";
 import _STRINGS from "@/utils/LocalStrings";
 import { useMutation, useQuery } from "@tanstack/react-query";
-import { useParams, usePathname, useRouter } from "next/navigation";
+import { useParams, usePathname, useRouter, useSearchParams } from "next/navigation";
 import React, { useEffect, useState } from "react";
 
 const CreatePropertyAssistance = () => {
+  const searchParams = useSearchParams();
+  const edit_mode = searchParams.get("edit_mode");
   const router = useRouter();
   const pathname = usePathname();
 
@@ -59,7 +61,11 @@ const CreatePropertyAssistance = () => {
   const { mutate, isPending } = useMutation({
     mutationFn: PropertyService.CreatePropertySetAssistant,
     onSuccess: () => {
-      router.push(`/profile/owner/properties/${property_id}/edit/terms`);
+      if (!!edit_mode) {
+        router.replace(`/profile/owner/properties/${property_id}/edit`);
+      } else {
+        router.push(`/profile/owner/properties/${property_id}/edit/terms`);
+      }
     },
   });
   const onSubmit = () => {
@@ -76,7 +82,7 @@ const CreatePropertyAssistance = () => {
       {/* <PageHeaders title={_STRINGS.CAPS_N_PRICES} /> */}
       <div className="w-full px-4 md:px-0 pb-4 pt-8">
         {" "}
-        <StepShower steps={createPropertySteps} value={8} />
+        <StepShower steps={createPropertySteps(initPropData?.id)} value={8} />
       </div>
 
       <div className="flex flex-col gap-2 w-full">

@@ -391,6 +391,7 @@ export interface SingleOwnerPropertyDto {
   attachments_count: number;
   images: ImageDto[];
   std_capacity: number;
+  favorites_count: number;
   max_capacity: number;
   total_bedrooms: number;
   has_pool: boolean;

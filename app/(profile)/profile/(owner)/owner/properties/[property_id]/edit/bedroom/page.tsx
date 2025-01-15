@@ -16,10 +16,12 @@ import _STRINGS from "@/utils/LocalStrings";
 import { useMutation, useQuery } from "@tanstack/react-query";
 import { remove } from "lodash";
 
-import { useParams, usePathname, useRouter } from "next/navigation";
+import { useParams, usePathname, useRouter, useSearchParams } from "next/navigation";
 import React, { useEffect, useState } from "react";
 
 const CreateProperty = () => {
+  const searchParams = useSearchParams();
+  const edit_mode = searchParams.get("edit_mode");
   const router = useRouter();
   const pathname = usePathname();
   const { userInfo } = useStoreInit((data) => data);
@@ -75,7 +77,11 @@ const CreateProperty = () => {
   const { mutate, isPending } = useMutation({
     mutationFn: PropertyService.CreatePropertySetBedroom,
     onSuccess: () => {
-      router.push(`/profile/owner/properties/${property_id}/edit/facility`);
+      if (!!edit_mode) {
+        router.replace(`/profile/owner/properties/${property_id}/edit`);
+      } else {
+        router.push(`/profile/owner/properties/${property_id}/edit/facility`);
+      }
     },
   });
   const onSubmit = () => {
@@ -115,7 +121,7 @@ const CreateProperty = () => {
       className="profile-container md:px-[5%]  items-center  !bg-transparent transition-all duration-500 ease-in-out flex flex-col gap-6 "
     >
       <div className="w-full pb-4 px-4 pt-8">
-        <StepShower steps={createPropertySteps} value={5} />
+        <StepShower steps={createPropertySteps(initPropData?.id)} value={5} />
       </div>
       <p className="font-bold w-full text-start  text-sm md:text-base text-primary-700  ">{_STRINGS.ROOMS_INFO}</p>
 

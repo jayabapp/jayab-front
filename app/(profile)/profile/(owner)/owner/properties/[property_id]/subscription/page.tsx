@@ -29,6 +29,20 @@ const Subscription = () => {
   });
 
   /* -------------------------------------------------------------------------- */
+  /*                               PROP STATS DATA                              */
+  /* -------------------------------------------------------------------------- */
+
+  const { data: statsData } = useQuery({
+    queryKey: [PropertyService.SINGLE_OWNER_PROPERTY_STATS_CACHEKEY, property_id],
+
+    queryFn: () => {
+      if (!!property_id) {
+        return PropertyService.getPropertyStatistics({ propertyId: `${property_id}` });
+      }
+    },
+  });
+
+  /* -------------------------------------------------------------------------- */
   /*                                PAYMENT POST                                */
   /* -------------------------------------------------------------------------- */
 
@@ -72,6 +86,9 @@ const Subscription = () => {
       promote_id: promotId,
     });
   };
+
+  console.log(statsData, "statsDatastatsDatastatsData");
+
   return (
     <div
       id="homeParent"

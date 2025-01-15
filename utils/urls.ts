@@ -83,6 +83,9 @@ export const apiRoutes = {
   OWNER_PROPERTIES_PRICE_UPDATE: (propertyId: string | number | null) =>
     `/owner/properties/${propertyId}/calendar/price`,
 
+  OWNER_PROPERTIES_ALL_DAYS_COMMISSION_UPDATE: (propertyId: string | number | null) =>
+    `/owner/properties/${propertyId}/commission`,
+
   OWNER_PROPERTIES_COMMISSION_UPDATE: (propertyId: string | number | null) =>
     `/owner/properties/${propertyId}/calendar/commission`,
 
@@ -114,6 +117,10 @@ export const apiRoutes = {
   OWNER_PROPERTIES_ENV_TERMS: (propertyId: string | number | null) => `/owner/properties/${propertyId}/terms`,
 
   OWNER_PROPERTIES_ENV_BEDROOM: (propertyId: string | number | null) => `/owner/properties/${propertyId}/bedroom`,
+
+  SINGLE_OWNER_PROPERTY: (propertyId: string | number | null) => `/owner/properties/${propertyId}`,
+
+  SINGLE_OWNER_PROPERTY_STATS: (propertyId: string | number | null) => `/owner/properties/${propertyId}/statistics`,
 
   CITIES_CHILDEREN: (parentId: string | number) => `/cities/${parentId}`,
 

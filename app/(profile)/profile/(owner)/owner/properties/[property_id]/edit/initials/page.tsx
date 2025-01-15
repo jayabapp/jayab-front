@@ -11,11 +11,13 @@ import { createPropertySteps } from "@/utils/constantss";
 import _STRINGS from "@/utils/LocalStrings";
 import { useMutation, useQuery } from "@tanstack/react-query";
 
-import { useParams, usePathname, useRouter } from "next/navigation";
+import { useParams, usePathname, useRouter, useSearchParams } from "next/navigation";
 import React, { useEffect, useState } from "react";
 
 const CreateProperty = () => {
   const router = useRouter();
+  const searchParams = useSearchParams();
+  const edit_mode = searchParams.get("edit_mode");
   const pathname = usePathname();
   const { userInfo } = useStoreInit((data) => data);
   const params = useParams();
@@ -93,7 +95,11 @@ const CreateProperty = () => {
   const { mutate, isPending } = useMutation({
     mutationFn: PropertyService.CreatePropertyStepOne,
     onSuccess: () => {
-      router.push(`/profile/owner/properties/${property_id}/edit/location`);
+      if (!!edit_mode) {
+        router.replace(`/profile/owner/properties/${property_id}/edit`);
+      } else {
+        router.push(`/profile/owner/properties/${property_id}/edit/location`);
+      }
     },
   });
   const onSubmit = () => {
@@ -126,7 +132,7 @@ const CreateProperty = () => {
     >
       <div className="w-full pb-4 px-4 pt-8">
         {" "}
-        <StepShower steps={createPropertySteps} value={1} />
+        <StepShower steps={createPropertySteps(initPropData?.id) || []} value={1} />
       </div>
 
       <CreateEditProperty onChange={onChange} values={values} />

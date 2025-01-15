@@ -33,6 +33,7 @@ export class PropertyService {
   static OWNER_PROPERTIES_SINGLE_BADGE_CACHEKEY = "OWNER_PROPERTIES_SINGLE_BADGE";
   static OWNER_PROPERTIES_SINGLE_AUTH_CACHEKEY = "OWNER_PROPERTIES_SINGLE_AUTH";
   static BOOKMARKS_CACHEKEY = "BOOKMARKS";
+  static SINGLE_OWNER_PROPERTY_STATS_CACHEKEY = "SINGLE_OWNER_PROPERTY_STATS";
 
   static async GetUserPropertyGroup(dto: { group: (keyof typeof PropertyOptionGroup)[] }) {
     try {
@@ -197,6 +198,26 @@ export class PropertyService {
         day: dto.day,
         month: dto.month,
         year: dto.year,
+        advisor_commission: dto.advisor_commission,
+      });
+      return result;
+    } catch (e) {
+      throw e;
+    }
+  }
+
+  static async UpdatePropertyAllDaysAdvisorCommission(dto: {
+    property_id: string | number | null;
+
+    advisor_commission: string | number | null;
+  }) {
+    try {
+      const result = await apiCall<
+        {
+          advisor_commission: string | number | null;
+        },
+        number
+      >("PUT", apiRoutes.OWNER_PROPERTIES_ALL_DAYS_COMMISSION_UPDATE(dto?.property_id), {
         advisor_commission: dto.advisor_commission,
       });
       return result;
@@ -645,6 +666,37 @@ export class PropertyService {
       >("POST", apiRoutes.BOOKMARKS, {
         property_id: dto.property_id,
       });
+      return result;
+    } catch (e) {
+      throw e;
+    }
+  }
+
+  /* -------------------------------------------------------------------------- */
+  /*                               DELETE PROPERTY                              */
+  /* -------------------------------------------------------------------------- */
+  static async deleteProperty(dto: { propertyId: string | number | null }) {
+    try {
+      const result = await apiCall<{ lng: string | number | null; lat: string | number | null }, PropertyTypesDTP[]>(
+        "DELETE",
+        apiRoutes.SINGLE_OWNER_PROPERTY(dto.propertyId)
+      );
+      return result;
+    } catch (e) {
+      throw e;
+    }
+  }
+
+  /* -------------------------------------------------------------------------- */
+  /*                               GET PROPERTY STATISTICS                               */
+  /* -------------------------------------------------------------------------- */
+
+  static async getPropertyStatistics(dto: { propertyId: string | number | null }) {
+    try {
+      const result = await apiCall<{ lng: string | number | null; lat: string | number | null }, PropertyTypesDTP[]>(
+        "GET",
+        apiRoutes.SINGLE_OWNER_PROPERTY_STATS(dto.propertyId)
+      );
       return result;
     } catch (e) {
       throw e;

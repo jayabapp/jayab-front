@@ -118,7 +118,7 @@ const CreatePropertyTerms = () => {
     >
       <div className="w-full px-4 md:px-0 pb-4 pt-8">
         {" "}
-        <StepShower steps={createPropertySteps} value={9} />
+        <StepShower steps={createPropertySteps(initPropData?.id)} value={9} />
       </div>
 
       <div className=" flex flex-col gap-2 w-full">

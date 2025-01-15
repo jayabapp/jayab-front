@@ -19,13 +19,14 @@ import _STRINGS from "@/utils/LocalStrings";
 import { useMutation, useQuery } from "@tanstack/react-query";
 import { isArray, remove } from "lodash";
 
-import { useParams, usePathname, useRouter } from "next/navigation";
+import { useParams, usePathname, useRouter, useSearchParams } from "next/navigation";
 import React, { useEffect, useState } from "react";
 
 const CreatePropertyFacility = () => {
   const router = useRouter();
+  const searchParams = useSearchParams();
   const pathname = usePathname();
-
+  const edit_mode = searchParams.get("edit_mode");
   const params = useParams();
   const { property_id } = params;
 
@@ -94,7 +95,11 @@ const CreatePropertyFacility = () => {
   const { mutate, isPending } = useMutation({
     mutationFn: PropertyService.CreatePropertySetFacility,
     onSuccess: () => {
-      router.push(`/profile/owner/properties/${property_id}/edit/price`);
+      if (!!edit_mode) {
+        router.replace(`/profile/owner/properties/${property_id}/edit`);
+      } else {
+        router.push(`/profile/owner/properties/${property_id}/edit/price`);
+      }
     },
   });
   const onSubmit = () => {
@@ -124,7 +129,7 @@ const CreatePropertyFacility = () => {
       className=" profile-container md:px-[5%]  items-center  !bg-transparent transition-all duration-500 ease-in-out flex flex-col gap-6 "
     >
       <div className="w-full pb-4 px-4 pt-8">
-        <StepShower steps={createPropertySteps} value={6} />
+        <StepShower steps={createPropertySteps(initPropData?.id)} value={6} />
       </div>
 
       <div className=" flex flex-col gap-2   pb-4 w-full">

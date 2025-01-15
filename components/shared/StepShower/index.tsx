@@ -1,3 +1,6 @@
+"use client";
+
+import { useRouter, useSearchParams } from "next/navigation";
 import React from "react";
 
 const StepShower = ({
@@ -5,8 +8,20 @@ const StepShower = ({
   steps,
 }: {
   value: string | number;
-  steps: { title: string; description?: string; id: number | string }[];
+  steps: { title: string; description?: string; id: number | string; link?: string }[];
 }) => {
+  const router = useRouter();
+  const searchParams = useSearchParams();
+
+  const edit_mode = searchParams.get("edit_mode");
+
+  const onClick = (step: { title: string; description?: string; id: number | string; link?: string }) => {
+    console.log(edit_mode, step?.link, "sssssssssss");
+    if (!!edit_mode && !!step?.link) {
+      router.push(step?.link);
+    }
+  };
+
   return (
     <div className="flex items-center w-full    relative justify-between">
       {/* <div className="w-full absolute  bg-gray-300 h-[5px]"></div> */}
@@ -23,6 +38,7 @@ const StepShower = ({
                 {" "}
               </div>
               <div
+                onClick={() => onClick(e)}
                 className={`${
                   !!isSelected ? "bg-primary-700" : "bg-gray-300"
                 }  w-4 h-4 !shrink-0 aspect-square  rounded-full`}

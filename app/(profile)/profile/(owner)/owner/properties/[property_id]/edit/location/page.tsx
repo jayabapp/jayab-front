@@ -11,7 +11,7 @@ import { createPropertySteps } from "@/utils/constantss";
 import _STRINGS from "@/utils/LocalStrings";
 import { useMutation, useQuery } from "@tanstack/react-query";
 import dynamic from "next/dynamic";
-import { useParams, usePathname, useRouter } from "next/navigation";
+import { useParams, usePathname, useRouter, useSearchParams } from "next/navigation";
 import React, { useEffect, useMemo, useState } from "react";
 
 const CreateProperty = () => {
@@ -22,6 +22,8 @@ const CreateProperty = () => {
       }),
     []
   );
+  const searchParams = useSearchParams();
+  const edit_mode = searchParams.get("edit_mode");
   const [showSearch, setShowSearch] = useState(false);
   const [center, setCenter] = useState([51.37, 35.767]);
   const [centerAddressLoading, setCenterAddressLoading] = useState(false);
@@ -57,7 +59,11 @@ const CreateProperty = () => {
   const { mutate, isPending } = useMutation({
     mutationFn: PropertyService.CreatePropertySetLocation,
     onSuccess: () => {
-      router.push(`/profile/owner/properties/${property_id}/edit/media`);
+      if (!!!!edit_mode) {
+        router.replace(`/profile/owner/properties/${property_id}/edit`);
+      } else {
+        router.push(`/profile/owner/properties/${property_id}/edit/media`);
+      }
     },
   });
 
@@ -76,7 +82,7 @@ const CreateProperty = () => {
     >
       <div className="w-full px-4 md:px-0 pb-4 pt-8">
         {" "}
-        <StepShower steps={createPropertySteps} value={2} />
+        <StepShower steps={createPropertySteps(initPropData?.id) || []} value={2} />
       </div>
       <div className="w-full  h-[70dvh] relative">
         <div

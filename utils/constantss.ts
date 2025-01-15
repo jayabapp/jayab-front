@@ -50,22 +50,66 @@ export const headerBlackList = [
   "/auth/register/upload-documents",
   "/auth/register/terms",
   "/auth/register/success",
-  "/profile",
 ];
 export const headerMobileBlackList = ["/chat"];
 
 export const mobileFooterWhiteList = ["/"];
 
-export const createPropertySteps = [
-  { title: "اطلاعات عمومی", id: 1 },
-  { title: "موقعیت مکانی", id: 2 },
-  { title: "تصاویر", id: 3 },
-  { title: "اطلاعات محیطی", id: 4 },
-  { title: "اتاق خواب", id: 5 },
-  { title: "امکانات", id: 6 },
-  { title: "ظرفیت", id: 7 },
-  { title: "دستیار", id: 8 },
-  { title: "قوانین", id: 9 },
+export const createPropertySteps = (id?: null | number) => [
+  {
+    full_title: "اطلاعات اصلی ملک",
+    title: "اطلاعات عمومی",
+    id: 1,
+    link: `/profile/owner/properties/${id}/edit/initials?edit_mode=true`,
+  },
+  {
+    full_title: "موقعیت مکانی ملک",
+    title: "موقعیت مکانی",
+    id: 2,
+    link: `/profile/owner/properties/${id}/edit/location?edit_mode=true`,
+  },
+  {
+    full_title: "تصاویر و ویدئو ملک",
+    title: "تصاویر",
+    id: 3,
+    link: `/profile/owner/properties/${id}/edit/media?edit_mode=true`,
+  },
+  {
+    full_title: "اطلاعات محیطی",
+    title: "اطلاعات محیطی",
+    id: 4,
+    link: `/profile/owner/properties/${id}/edit/environment?edit_mode=true`,
+  },
+  {
+    full_title: "اطلاعات اتاق و رخت خواب",
+    title: "اتاق خواب",
+    id: 5,
+    link: `/profile/owner/properties/${id}/edit/bedroom?edit_mode=true`,
+  },
+  {
+    full_title: "امکانات ملک",
+    title: "امکانات",
+    id: 6,
+    link: `/profile/owner/properties/${id}/edit/facility?edit_mode=true`,
+  },
+  {
+    full_title: "تعداد نفرات و قیمت ها",
+    title: "ظرفیت",
+    id: 7,
+    link: `/profile/owner/properties/${id}/edit/price?edit_mode=true`,
+  },
+  {
+    full_title: "اطلاعات دستیار مالک",
+    title: "دستیار",
+    id: 8,
+    link: `/profile/owner/properties/${id}/edit/assistants?edit_mode=true`,
+  },
+  {
+    full_title: "قوانین اقامتگاه",
+    title: "قوانین",
+    id: 9,
+    link: `/profile/owner/properties/${id}/edit/terms?edit_mode=true`,
+  },
 ];
 
 export const SORT_TYPES = [
@@ -77,6 +121,7 @@ export const SORT_TYPES = [
 
 export const allRoutes: { [key: string]: string } = {
   questions: "پرسش ها",
+  inquery: "استعلام هفتگی",
   authorize: "احراز  ملک",
   properties: "املاک",
   chat: "چت",
@@ -253,4 +298,14 @@ export const profileItems = [
     guard: false,
     isMobile: true,
   },
+];
+
+export const WeekDays = [
+  { title: "شنبه", id: 6 },
+  { title: "یکشنبه", id: 0 },
+  { title: "دوشنبه", id: 1 },
+  { title: "سه شنبه", id: 2 },
+  { title: "چهارشنبه", id: 3 },
+  { title: "پنجشنبه", id: 4 },
+  { title: "جمعه", id: 5 },
 ];

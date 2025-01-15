@@ -21,7 +21,7 @@ const SingleOwnerPropertyIntroduction = ({ data }: { data: SingleOwnerPropertyDt
         </div>{" "}
         <div className="flex items-center gap-1">
           <img className="w-5 h-5 aspect-square" src="/assets/icons/adds/filled_heart.svg" />
-          <p className="text-base  opacity-60">{data?.likes}</p>
+          <p className="text-base  opacity-60">{data?.favorites_count}</p>
         </div>
       </div>
 

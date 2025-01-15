@@ -8,7 +8,7 @@ import Link from "next/link";
 
 import _STRINGS from "@/utils/LocalStrings";
 
-import { useAuthStore } from "@/store";
+import { useAuthStore, useStoreInit } from "@/store";
 import HeaderTitle from "./HeaderTitle";
 import DrawerMenu from "../shared/DrawerMenu";
 import ProfileDropdown from "./ProfileDropdown";
@@ -16,6 +16,8 @@ import MenuDropDown from "./MenuDropDown";
 import Button from "../shared/Button/Button";
 import AbsoluteBadge from "./AbsoluteBadge";
 import { headerBlackList, headerMobileBlackList } from "@/utils/constantss";
+import { PropertyService } from "@/api_services/property/property.service";
+import { useQuery } from "@tanstack/react-query";
 const PopSearchbox = dynamic(() => import("../SearchBoxComp/PopSearchbox"), {
   ssr: false,
 });
@@ -36,6 +38,7 @@ const TextIcon = ({ item }: textIconType) => (
 );
 
 const Header = ({ scroll }: { scroll?: number }) => {
+  const { userInfo } = useStoreInit((data) => data);
   const router = useRouter();
   const pathname = usePathname();
   const params: any = useSearchParams();
@@ -89,12 +92,32 @@ const Header = ({ scroll }: { scroll?: number }) => {
   const isInProfile = pathnameArray?.includes("profile");
 
   const isInProducts = pathname.includes("/products/");
+
+  ////////////////////////////
+
+  const { data: initPropData, refetch } = useQuery({
+    queryKey: [PropertyService.OWNER_PROP_INIT_CACHEKEY],
+    queryFn: () => PropertyService.InitProperty({ property_id: undefined }),
+    enabled: false,
+  });
+
+  const onCreateAddClick = () => {
+    if (!!userInfo) {
+      if (!userInfo?.owner_id) {
+        router.push(`/profile/edit`);
+      } else {
+        refetch().then((e) => {
+          if (!!e?.data) router.push(`/profile/owner/properties/${e?.data?.id}/edit/initials`);
+        });
+      }
+    }
+  };
   return (
     <div className="relative">
       <div
         id="headerContainer"
         className={`
-      ${!headerMobileBlackList.includes(pathname) && " hidden md:block"}
+      ${headerMobileBlackList.includes(pathname) && " hidden md:block"}
 
 transition-all  ease-in-out duration-1000 header-content-container app-size custome-shadow-card  backdrop-blur-md  bg-white/80 dark:bg-dark-900   pt-2 pb-2   border-b dark:border-zinc-500 border-gray-100 `}
       >
@@ -246,6 +269,7 @@ transition-all  ease-in-out duration-1000 header-content-container app-size cust
             <MenuDropDown />
 
             <Button
+              onClick={onCreateAddClick}
               title={_STRINGS.ADD_ADD}
               containerClass="w-fit shrink-0 "
               width="w-full shrink-0"

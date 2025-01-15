@@ -7,7 +7,9 @@ const HeaderTitle = () => {
   const pathname = usePathname();
   let pathArray = pathname?.split("/");
   let lastPart = pathArray[pathArray?.length - 1];
-  if (allRoutes.hasOwnProperty(lastPart)) {
+  if (pathname?.includes("/profile/owner/properties/") && pathname?.includes("/edit")) {
+    return "ویرایش اطلاعات ملک";
+  } else if (allRoutes.hasOwnProperty(lastPart)) {
     return allRoutes[lastPart];
   } else if (pathname?.includes("/products/")) {
     return "صفحه محصول";

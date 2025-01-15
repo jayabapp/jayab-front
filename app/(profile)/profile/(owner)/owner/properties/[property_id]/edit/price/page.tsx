@@ -11,13 +11,14 @@ import StepShower from "@/components/shared/StepShower";
 import { createPropertySteps } from "@/utils/constantss";
 import _STRINGS from "@/utils/LocalStrings";
 import { useMutation, useQuery } from "@tanstack/react-query";
-import { useParams, usePathname, useRouter } from "next/navigation";
+import { useParams, usePathname, useRouter, useSearchParams } from "next/navigation";
 import React, { useEffect, useState } from "react";
 
 const CreatePropertyPricing = () => {
   const router = useRouter();
   const pathname = usePathname();
-
+  const searchParams = useSearchParams();
+  const edit_mode = searchParams.get("edit_mode");
   const params = useParams();
   const { property_id } = params;
 
@@ -73,7 +74,11 @@ const CreatePropertyPricing = () => {
   const { mutate, isPending } = useMutation({
     mutationFn: PropertyService.CreatePropertySetPrice,
     onSuccess: () => {
-      router.push(`/profile/owner/properties/${property_id}/edit/assistants`);
+      if (!!!!edit_mode) {
+        router.replace(`/profile/owner/properties/${property_id}/edit`);
+      } else {
+        router.push(`/profile/owner/properties/${property_id}/edit/assistants`);
+      }
     },
   });
   const onSubmit = () => {
@@ -89,7 +94,7 @@ const CreatePropertyPricing = () => {
     >
       <div className="w-full px-4 md:px-0 pb-4 pt-8">
         {" "}
-        <StepShower steps={createPropertySteps} value={7} />
+        <StepShower steps={createPropertySteps(initPropData?.id)} value={7} />
       </div>
 
       <div className=" flex flex-col gap-2 border-b   pb-4 w-full">

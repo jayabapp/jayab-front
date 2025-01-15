@@ -14,12 +14,14 @@ import { createPropertySteps } from "@/utils/constantss";
 import _STRINGS from "@/utils/LocalStrings";
 import { useMutation, useQuery } from "@tanstack/react-query";
 import dynamic from "next/dynamic";
-import { useParams, usePathname, useRouter } from "next/navigation";
+import { useParams, usePathname, useRouter, useSearchParams } from "next/navigation";
 import React, { useEffect, useMemo, useState } from "react";
 
 const CreatePropertyImages = () => {
   const router = useRouter();
   const pathname = usePathname();
+  const searchParams = useSearchParams();
+  const edit_mode = searchParams.get("edit_mode");
   const { userInfo } = useStoreInit((data) => data);
   const [totalLength, setTotalLength] = useState(0);
   const [uploadedImages, setUploadedImages] = useState(0);
@@ -45,7 +47,11 @@ const CreatePropertyImages = () => {
   const { mutate, isPending } = useMutation({
     mutationFn: PropertyService.CreatePropertySetMdia,
     onSuccess: () => {
-      router.push(`/profile/owner/properties/${property_id}/edit/environment`);
+      if (!!!!edit_mode) {
+        router.replace(`/profile/owner/properties/${property_id}/edit`);
+      } else {
+        router.push(`/profile/owner/properties/${property_id}/edit/environment`);
+      }
     },
   });
 
@@ -72,7 +78,7 @@ const CreatePropertyImages = () => {
     >
       <div className="w-full px-4 md:px-0 pb-4 pt-8">
         {" "}
-        <StepShower steps={createPropertySteps} value={3} />
+        <StepShower steps={createPropertySteps(initPropData?.id) || []} value={3} />
       </div>
 
       <div className=" flex items-start w-full flex-wrap gap-4">
