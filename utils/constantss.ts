@@ -124,6 +124,7 @@ export const allRoutes: { [key: string]: string } = {
   inquery: "استعلام هفتگی",
   authorize: "احراز  ملک",
   properties: "املاک",
+  panel: "پنل مشاور",
   chat: "چت",
   owner: "مالک",
   blog: "بلاگ",

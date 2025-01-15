@@ -72,6 +72,8 @@ export const apiRoutes = {
 
   BOOKMARKS: `/user/bookmarks`,
 
+  USER_ADVISORS: `/user/advisors`,
+
   OWNER_PROP_INIT: (propertyId?: string | number | null) =>
     `/owner/properties/init${!!propertyId ? `?property_id=${propertyId}` : ""}`,
 

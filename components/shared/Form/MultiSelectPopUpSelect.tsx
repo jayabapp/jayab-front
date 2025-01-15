@@ -10,10 +10,10 @@ export interface ItemType {
 }
 
 type MultyPopUpSelectType = {
-  item?: { disableHover?: boolean; placeholder?: string; list: ItemType[]; disable?: boolean };
-  value: (number | string | null)[];
+  item?: { disableHover?: boolean; placeholder?: string; list: ItemType[]; disable?: boolean; full_item?: boolean };
+  value: (number | string | null | any)[];
   closeOnSelect?: boolean;
-  onSelect: (e: number | string | null) => void | null;
+  onSelect: (e: number | string | null | any) => void | null;
   title?: string;
 };
 
@@ -51,10 +51,10 @@ const MultyPopUpSelect = ({
             {value.length > 0
               ? value.map((val, index) => (
                   <div
-                    key={`selectedItems${val}`}
+                    key={`selectedItems${val?.id || val}`}
                     className="rounded-full gap-4 py-1 px-1 flex items-center justify-center border border-primary-700  bg-primary-700/5 text-primary-700  text-xs "
                   >
-                    <p className="text-xs pr-2">{item?.list?.find((e) => e?.id == val)?.title || ""} </p>
+                    <p className="text-xs pr-2">{item?.list?.find((e) => e?.id == val)?.title || val?.title || ""} </p>
                     <div
                       onClick={() => {
                         onSelect(val);
@@ -74,14 +74,15 @@ const MultyPopUpSelect = ({
       <PopUpDown setVisible={setShow} visible={show}>
         <div className="flex flex-col   px-6 py-4">
           {" "}
-          {item?.list?.map((item) => (
+          {item?.list?.map((listItem) => (
             <Selecti
-              key={item?.id}
-              item={item}
+              key={listItem?.id}
+              item={listItem}
               value={value}
               onSelect={onSelect}
               closeOnSelect={closeOnSelect}
               setShow={setShow}
+              full_item={item?.full_item}
             />
           ))}
         </div>

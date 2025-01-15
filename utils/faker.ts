@@ -23,7 +23,6 @@ export const fakeVilla = {
   ],
 };
 
-
 export const fakeConsultants = Array.from({ length: 10 }).map(() => ({
   id: Math.floor(Math.random() * 10000), // Dynamic ID
   name: `محمدرضا محمدی ${Math.floor(Math.random() * 100)}`, // Randomized name
@@ -33,7 +32,6 @@ export const fakeConsultants = Array.from({ length: 10 }).map(() => ({
   owners_satisfaction: Math.floor(Math.random() * 100), // Random satisfaction score between 0 and 100
   users_satisfaction: Math.floor(Math.random() * 100), // Random satisfaction score between 0 and 100
 }));
-
 
 export const simpleChartFakeData = [
   {
@@ -73,3 +71,11 @@ export const simpleChartFakeData = [
   },
 ];
 
+export const fakeAdvisorPlans = [
+  {
+    id: 12,
+    title: "مشاور عادی",
+    desc: "با پرداخت هزینه ماهانه 1,000,000 ریال امکانات زیر برای شما فعال میگردد:",
+    pros: ["مشاهده درصد کمیسیون مالکین"],
+  },
+];

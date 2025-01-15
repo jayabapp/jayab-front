@@ -276,6 +276,9 @@ const _STRINGS = {
   LOGIN_SUBMIT_YES: "ورود به حساب",
   NOW_NOW: "فعلا نه",
   MODAL_IMAGE_ZOOM: "برای مشاهده تصویر بزرگتر دو بار بر روی آن بزنید ",
+  CONTINUE: "ادامه",
+  SELECT_ACTIVE_CITIES: "انتخاب شهرهای حوزه فعالیت",
+  NATIONAL_CODE: "کدملی",
 };
 
 export default _STRINGS;

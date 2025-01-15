@@ -5,17 +5,22 @@ import Checkbox from "./Checkbox";
 
 type SelectiType = {
   item: ItemType;
-  value: (number | string | null)[];
-  onSelect: (e: number | string | null) => void | null;
+  value: (number | string | null | any)[];
+  onSelect: (e: number | string | null | any) => void | null;
   closeOnSelect?: boolean;
   setShow?: (e: boolean) => void | null;
+  full_item?: boolean;
 };
 
-const Selecti = ({ item, value, onSelect, closeOnSelect, setShow }: SelectiType) => {
+const Selecti = ({ item, value, onSelect, closeOnSelect, setShow, full_item }: SelectiType) => {
   return (
     <div
       onClick={() => {
-        onSelect(item?.id);
+        if (!!full_item) {
+          onSelect(item);
+        } else {
+          onSelect(item?.id);
+        }
 
         if (closeOnSelect && setShow) {
           setShow(false);
@@ -25,9 +30,13 @@ const Selecti = ({ item, value, onSelect, closeOnSelect, setShow }: SelectiType)
     >
       <div className="transition-all duration-700 ease-in-out">
         <Checkbox
-          isChecked={item?.id ? (value?.find((val) => val == item?.id) ? true : false) : false}
+          isChecked={item?.id ? (value?.find((val) => val == item?.id || val?.id == item?.id) ? true : false) : false}
           onSelect={() => {
-            onSelect(item?.id);
+            if (!!full_item) {
+              onSelect(item);
+            } else {
+              onSelect(item?.id);
+            }
           }}
           // customeFillImage="/assets/icons/products/tick-square.svg"
           rounded="rounded-md"
