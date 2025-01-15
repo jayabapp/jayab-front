@@ -247,6 +247,7 @@ export interface SinglePropDto {
   images: ImageDto[];
   std_capacity: number;
   max_capacity: number;
+  favorites_count: number;
   total_bedrooms: number;
   bedrooms: Bedrooms;
   has_pool: boolean;

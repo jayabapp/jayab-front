@@ -98,6 +98,27 @@ const MainWrapper = ({ children }: mainWrapper) => {
       }
     },
   });
+
+  /* -------------------------------------------------------------------------- */
+  /*                              SAVES LIKES DATA                              */
+  /* -------------------------------------------------------------------------- */
+  const { data: initData } = useQuery({
+    queryKey: [AuthService.AUTH_INIT_CACHEKEY, isLogin],
+    queryFn: () => {
+      if (!!isLogin) {
+        return AuthService.initCall();
+      } else {
+        return null;
+      }
+    },
+  });
+
+  useEffect(() => {
+    if (!!initData) {
+      useStoreParams.setState({ bookmarks: initData?.bookmarks || [], likes: initData?.favorites || [] });
+    }
+  }, [initData]);
+
   useEffect(() => {
     if (!!profile) {
       useStoreInit.setState({ userInfo: profile });

@@ -32,6 +32,7 @@ export class PropertyService {
   static OWNER_PROPERTIES_CACHEKEY = "OWNER_PROPERTIES";
   static OWNER_PROPERTIES_SINGLE_BADGE_CACHEKEY = "OWNER_PROPERTIES_SINGLE_BADGE";
   static OWNER_PROPERTIES_SINGLE_AUTH_CACHEKEY = "OWNER_PROPERTIES_SINGLE_AUTH";
+  static BOOKMARKS_CACHEKEY = "BOOKMARKS";
 
   static async GetUserPropertyGroup(dto: { group: (keyof typeof PropertyOptionGroup)[] }) {
     try {
@@ -599,6 +600,51 @@ export class PropertyService {
   static async GetOwnerPropertiesList() {
     try {
       const result = await apiCall<unknown, PropertyListDto[]>("GET", apiRoutes.OWNER_PROPERTIES_LIST);
+      return result;
+    } catch (e) {
+      throw e;
+    }
+  }
+
+  /* -------------------------------------------------------------------------- */
+  /*                             SAVE LIKE PROPERTY                             */
+  /* -------------------------------------------------------------------------- */
+
+  static async LikeProperty(dto: { property_id: string | number | null }) {
+    try {
+      const result = await apiCall<
+        {
+          property_id: string | number | null;
+        },
+        { favorites: number[] }
+      >("POST", apiRoutes.FAVS, {
+        property_id: dto.property_id,
+      });
+      return result;
+    } catch (e) {
+      throw e;
+    }
+  }
+
+  static async getBookMarks() {
+    try {
+      const result = await apiCall<unknown, PropertyListDto[]>("GET", apiRoutes.BOOKMARKS);
+      return result;
+    } catch (e) {
+      throw e;
+    }
+  }
+
+  static async BookmarkProperty(dto: { property_id: string | number | null }) {
+    try {
+      const result = await apiCall<
+        {
+          property_id: string | number | null;
+        },
+        { bookmarks: number[] }
+      >("POST", apiRoutes.BOOKMARKS, {
+        property_id: dto.property_id,
+      });
       return result;
     } catch (e) {
       throw e;

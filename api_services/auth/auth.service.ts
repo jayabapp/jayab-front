@@ -17,6 +17,7 @@ import {
   RegisterDto,
   CitiesDto,
   OwnerProfileDto,
+  InitDto,
 } from "./auth.interface";
 import { apiCall } from "../common/apicall.helper";
 
@@ -33,6 +34,7 @@ export class AuthService {
   static APP_SETTINGS_CACHEKEY = "APP_SETTINGS";
   static GET_OWNER_PROFILE_CACHEKEY = "GET_OWNER_PROFILE";
   static CITIES_CHILDEREN_CACHEKEY = "CITIES_CHILDEREN";
+  static AUTH_INIT_CACHEKEY = "AUTH_INIT";
 
   static async SignIn(dto: SignInDTO) {
     try {
@@ -251,21 +253,14 @@ export class AuthService {
       throw e;
     }
   }
-  // static async AdminLogin(dto: { accessKey: string }) {
-  //   try {
-  //     const result = await apiCall<any, { can_edit: boolean }>(
-  //       "GET",
-  //       apiRoutes.ADMIN_EDIT_VALIDATE,
-  //       undefined,
-  //       undefined,
-
-  //       dto?.accessKey
-  //     );
-  //     return result;
-  //   } catch (e) {
-  //     throw e;
-  //   }
-  // }
+  static async initCall() {
+    try {
+      const result = await apiCall<unknown, InitDto>("GET", apiRoutes.AUTH_INIT);
+      return result;
+    } catch (e) {
+      throw e;
+    }
+  }
   // static async UpdateProfile(dto: UpdateProfileDto) {
   //   try {
   //     const result = await apiCall<UpdateProfileDto, unknown>("PUT", apiRoutes.UPDATE_PROFILE, {

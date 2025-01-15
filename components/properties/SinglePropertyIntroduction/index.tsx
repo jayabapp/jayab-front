@@ -7,6 +7,8 @@ import Button from "@/components/shared/Button/Button";
 import { SinglePropDto } from "@/api_services/property/property.interface";
 import { useMutation } from "@tanstack/react-query";
 import { ChatService } from "@/api_services/chat/chat.service";
+import FavButton from "../FavButton";
+import BookMarkButton from "../BookMarkButton";
 
 const SinglePropertyIntroduction = ({ data }: { data: SinglePropDto }) => {
   const { mutate: createFindChat, isPending } = useMutation({ mutationFn: ChatService.StartOrFindChat });
@@ -14,7 +16,6 @@ const SinglePropertyIntroduction = ({ data }: { data: SinglePropDto }) => {
   const onCreateChat = () => {
     createFindChat({ property_id: data?.id });
   };
-
   return (
     <div className=" hidden md:flex w-full  flex-col relative  gap-4">
       <div className="w-full flex items-start md:items-center justify-between gap-2">
@@ -30,8 +31,11 @@ const SinglePropertyIntroduction = ({ data }: { data: SinglePropDto }) => {
           کد {data.code}
         </div>{" "}
         <div className="flex items-center gap-1">
-          <img className="w-5 h-5 aspect-square" src="/assets/icons/adds/filled_heart.svg" />
-          <p className="text-base  opacity-60">{data?.likes}</p>
+          <BookMarkButton data={data} />
+        </div>
+        <div className="flex items-center gap-1">
+          <FavButton data={data} />
+          <p className="text-base  opacity-60   ">{data?.favorites_count}</p>
         </div>
       </div>
       <div className="flex items-center gap-4   py-2 w-full justify-between">

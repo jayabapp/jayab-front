@@ -7,8 +7,11 @@ import { PropertyListDto } from "@/api_services/property/property.interface";
 import { NEW_IMAGE_URL } from "@/utils/urls";
 import StatusShower from "../shared/StatusShower";
 import PropertyCardOwnerPart from "./PropertyCardOwnerPart";
+import { useStoreParams } from "@/store";
 
 const PropertyCard = ({ data, isOwner }: { data: PropertyListDto; isOwner?: boolean }) => {
+  const { bookmarks, likes } = useStoreParams((state) => state);
+
   const goToLink = !!isOwner ? `/profile/owner/properties/${data?.id}` : `/property/${data?.slug}`;
   return (
     <div className="w-full shadow-card  rounded-2xl   flex flex-col  p-3   gap-2  ">
@@ -27,7 +30,14 @@ const PropertyCard = ({ data, isOwner }: { data: PropertyListDto; isOwner?: bool
               کد {data.code}
             </div>{" "}
             <div className="flex items-center gap-1">
-              <img className="w-4 h-4 aspect-square" src="/assets/icons/adds/filled_heart.svg" />
+              <img
+                className="w-4 h-4 aspect-square"
+                src={
+                  likes?.includes(data?.id)
+                    ? "/assets/icons/adds/filled_heart.svg"
+                    : "/assets/icons/adds/empty_heart.svg"
+                }
+              />
               <p className="text-xxs  opacity-60">{data?.id}</p>
             </div>
           </div>
@@ -74,16 +84,23 @@ const PropertyCard = ({ data, isOwner }: { data: PropertyListDto; isOwner?: bool
         {/* IMAGE PART */}
         <Link href={`${goToLink}`} prefetch={false} className="col-span-2  order-2 ">
           <div className=" aspect-square relative">
-            <img src={NEW_IMAGE_URL(data?.feature_image)} className=" rounded-10  object-cover aspect-square" />
-            {data?.today_price?.discount_percantage ? (
-              <div className="w-7 gap-0.5 flex-col h-5 rounded-md transition-all  px-1 py-[0.2rem]   bg-primary-100 text-white absolute z-2 right-2 top-2 aspect-square flex items-center justify-center">
-                {/* <img className="w-4 h-4" src="/assets/icons/products/discount_tag.svg" /> */}
-                <p className="  text-sm   ">%{data.today_price?.discount_percantage}</p>{" "}
-              </div>
-            ) : (
-              <></>
-            )}
-
+            <img src={NEW_IMAGE_URL(data?.feature_image)} className=" w-full rounded-10  object-cover aspect-square" />
+            <div className="absolute z-2 right-2 top-2 flex flex-col gap-1 w-7">
+              {" "}
+              {data?.today_price?.discount_percantage ? (
+                <div className="w-7 gap-0.5 flex-col h-5 rounded-md transition-all  px-1 py-[0.2rem]   bg-primary-100 text-white  aspect-square flex items-center justify-center">
+                  {/* <img className="w-4 h-4" src="/assets/icons/products/discount_tag.svg" /> */}
+                  <p className="  text-sm   ">%{data.today_price?.discount_percantage}</p>{" "}
+                </div>
+              ) : (
+                <></>
+              )}
+              {bookmarks?.includes(data?.id) ? (
+                <img src="/assets/icons/adds/List_bookmark_icon.svg" className="w-5 h-5 aspect-square" />
+              ) : (
+                <></>
+              )}
+            </div>
             {data?.attachments_count ? (
               <div className="w-9 gap-0.5  h-5 rounded-md transition-all  py-[0.2rem]   bg-black/50 text-white absolute z-2 left-2 flex-row top-2 aspect-square flex items-center justify-center">
                 <p className="  text-sm   ">{data.attachments_count}</p>{" "}

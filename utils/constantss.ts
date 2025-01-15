@@ -144,7 +144,12 @@ export const profileDropDownItems = [
     route: "/profile/turnovers",
     imgSrc: "/assets/icons/header/header_my_turnovers.svg",
   },
-  { id: 123, title: "آگهی های ذخیره شده", route: "/profile/saves", imgSrc: "/assets/icons/header/header_my_saves.svg" },
+  {
+    id: 123,
+    title: "آگهی های ذخیره شده",
+    route: "/profile/bookmarks",
+    imgSrc: "/assets/icons/header/header_my_saves.svg",
+  },
   { id: 23, title: "دعوت از دوستان", route: "/profile/edit", imgSrc: "/assets/icons/header/header_share.svg" },
   { id: 253, title: "پشتیبانی", route: "/profile/support", imgSrc: "/assets/icons/header/header_support.svg" },
 ];
@@ -187,7 +192,7 @@ export const profileItems = [
   {
     id: 769,
     title: "آگهی های ذخیره شده",
-    route: "/profile/saves",
+    route: "/profile/bookmarks",
     imgSrc: "/assets/icons/header/header_my_saves.svg",
     guard: true,
     isMobile: false,

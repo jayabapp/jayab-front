@@ -40,6 +40,8 @@ export const apiRoutes = {
 
   AU14: "/user/forget-password/reset",
 
+  AUTH_INIT: "/auth/init-settings",
+
   PROFILE_UPLOAD: "/attachments",
 
   REGISTER_OWNER: "/profile/register/owner",
@@ -65,6 +67,10 @@ export const apiRoutes = {
   CHAT: "/chat",
 
   NOTIFS: `/user/notifications`,
+
+  FAVS: `/user/favorites`,
+
+  BOOKMARKS: `/user/bookmarks`,
 
   OWNER_PROP_INIT: (propertyId?: string | number | null) =>
     `/owner/properties/init${!!propertyId ? `?property_id=${propertyId}` : ""}`,

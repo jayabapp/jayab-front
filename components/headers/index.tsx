@@ -226,7 +226,11 @@ transition-all  ease-in-out duration-1000 header-content-container app-size cust
             />
             <TextIcon item={{ icon: "/assets/icons/header/adds_header_icon.svg", title: _STRINGS.ADDS, route: "/p" }} />
             <TextIcon
-              item={{ icon: "/assets/icons/header/consultant_header.svg", title: _STRINGS.CONSULTANTS, route: "/p" }}
+              item={{
+                icon: "/assets/icons/header/consultant_header.svg",
+                title: _STRINGS.CONSULTANTS,
+                route: "/advisors",
+              }}
             />
             {isLogin ? (
               <>

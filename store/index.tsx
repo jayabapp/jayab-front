@@ -24,6 +24,8 @@ export type ParamStore = {
   installPrompt: any | null;
   showInstallPrompt: boolean;
   sideBarStatus: boolean;
+  likes: number[];
+  bookmarks: number[];
 };
 
 export const useStoreParams = create<ParamStore>(() => ({
@@ -31,6 +33,8 @@ export const useStoreParams = create<ParamStore>(() => ({
   showInstallPrompt: false,
   installPrompt: null,
   sideBarStatus: false,
+  likes: [],
+  bookmarks: [],
 }));
 
 /* -------------------------------------------------------------------------- */

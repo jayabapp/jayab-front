@@ -180,3 +180,8 @@ export interface OwnerProfileDto {
   created_at: Date;
   user: { full_name: string };
 }
+
+export interface InitDto {
+  bookmarks: number[];
+  favorites: number[];
+}
