@@ -1,12 +1,12 @@
 import { SinglePropDto } from "@/api_services/property/property.interface";
 import { PropertyService } from "@/api_services/property/property.service";
-import { useStoreParams } from "@/store";
+import { useAuthStore, useStoreParams } from "@/store";
 import { useMutation } from "@tanstack/react-query";
 import React, { useState } from "react";
 
 const FavButton = ({ data }: { data: SinglePropDto }) => {
   const { likes } = useStoreParams((state) => state);
-
+  const { isLogin } = useAuthStore((state) => state);
   const { mutate, isPending } = useMutation({
     mutationFn: PropertyService.LikeProperty,
     onSuccess: (e) => {
@@ -15,7 +15,11 @@ const FavButton = ({ data }: { data: SinglePropDto }) => {
   });
 
   const onLike = () => {
-    mutate({ property_id: data?.id });
+    if (!!isLogin) {
+      mutate({ property_id: data?.id });
+    } else {
+      useStoreParams.setState({ loginModal: true });
+    }
   };
 
   return (

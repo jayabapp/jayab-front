@@ -26,6 +26,8 @@ import { AuthService } from "@/api_services/auth/auth.service";
 import Headers from "@/components/headers";
 import MobileFooter from "../../components/Footer/MobileFooter";
 
+import FingerprintJS from "@fingerprintjs/fingerprintjs";
+import LoginModal from "@/components/Modal/LoginModal";
 function FallBack() {
   return <></>;
 }
@@ -166,6 +168,20 @@ const MainWrapper = ({ children }: mainWrapper) => {
       }, 1500);
   };
 
+  useEffect(() => {
+    const myVisitor_id = localStorage.getItem("visitor_id");
+    if (!myVisitor_id) {
+      const setFp = async () => {
+        const fp = await FingerprintJS.load();
+
+        const { visitorId } = await fp.get();
+        localStorage.setItem("visitor_id", visitorId);
+      };
+
+      setFp();
+    }
+  }, []);
+
   if (isLandscape) {
     return <RotatePhone />;
   }
@@ -189,6 +205,7 @@ const MainWrapper = ({ children }: mainWrapper) => {
         {mobileFooterWhiteList.includes(pathname) && <MobileFooter />}
       </div>
       <Toaster />
+      <LoginModal />
     </div>
   );
 };

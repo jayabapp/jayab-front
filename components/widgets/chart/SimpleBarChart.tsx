@@ -9,7 +9,7 @@ const SimpleBarChart = ({ data }: { data: any }) => {
       return (
         <div className="custom-tooltip shadow transition-all bg-white rounded-lg p-2">
           <p className="label">{`${moment(label).format("jYYYY/jMM/jDD")} `}</p>
-          <p className="intro"> مقدار : {numberWithCommas(payload[0].value)} </p>
+          <p className="intro"> نمایش : {numberWithCommas(payload[0].value)} </p>
         </div>
       );
     }
@@ -49,7 +49,7 @@ const SimpleBarChart = ({ data }: { data: any }) => {
         <Tooltip
           content={(e) => <CustomTooltip active={e?.active} label={e?.label} payload={e?.payload} key={e?.label} />}
         />
-        <Line dataKey="value" type={"monotone"} fill="#3886E5" />
+        <Line dataKey="value" type={"monotone"} fill="#3886E5" strokeWidth={"3px"} />
       </LineChart>
     </ResponsiveContainer>
   );

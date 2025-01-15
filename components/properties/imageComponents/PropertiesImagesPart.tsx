@@ -112,8 +112,10 @@ const ImagesSliderModal = ({
         <div className="flex fixed md:sticky   rounded-t-0 md:rounded-t-20 w-full z-[60] bg-white dark:bg-zinc-800 justify-between items-center h-12   top-0 col-span-5 px-4 border-b border-b-neutral-300 dark:border-b-zinc-600 ">
           <div className="flex items-center gap-2">
             {" "}
-            <h2 className="text-md dark:text-neutral-300">{"_STRINGS.A89"}</h2>
-            <div className="text-red-700  rounded-10 z-1  dark:text-red-400 text-xs ">* {"_STRINGS.B52"}</div>
+            <h2 className="text-md dark:text-neutral-300">{_STRINGS.IMAGES}</h2>
+            <div className="text-red-700  rounded-10 z-1  dark:text-red-400 text-xs ">
+              * {_STRINGS.MODAL_IMAGE_ZOOM}
+            </div>
           </div>
           <div className="flex items-center ">
             <img

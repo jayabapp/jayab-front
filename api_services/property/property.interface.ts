@@ -251,6 +251,7 @@ export interface SinglePropDto {
   total_bedrooms: number;
   bedrooms: Bedrooms;
   has_pool: boolean;
+  is_authorized: boolean;
   province: string;
   city: string;
   advisor_commission: number;
@@ -482,4 +483,14 @@ export interface OwnerSinglePropertyAuthdata {
 
 export interface Property {
   owner_id: number;
+}
+
+export interface PropertyStatsDto {
+  statistics: Statistic[];
+}
+
+export interface Statistic {
+  id: number;
+  date: Date;
+  view_count: number;
 }

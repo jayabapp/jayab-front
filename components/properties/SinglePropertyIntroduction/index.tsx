@@ -1,30 +1,38 @@
 "use client";
 import _STRINGS from "@/utils/LocalStrings";
-import React from "react";
-import AddCardPricePart from "../AddCardPricePart";
+import React, { useEffect } from "react";
 import SinglePropertyPricePart from "../SinglePropertyPricePart";
 import Button from "@/components/shared/Button/Button";
 import { SinglePropDto } from "@/api_services/property/property.interface";
-import { useMutation } from "@tanstack/react-query";
+import { useMutation, useQuery } from "@tanstack/react-query";
 import { ChatService } from "@/api_services/chat/chat.service";
 import FavButton from "../FavButton";
 import BookMarkButton from "../BookMarkButton";
+import { PropertyService } from "@/api_services/property/property.service";
+import AuthorizationStatus from "../AuthorizationStatus";
 
 const SinglePropertyIntroduction = ({ data }: { data: SinglePropDto }) => {
   const { mutate: createFindChat, isPending } = useMutation({ mutationFn: ChatService.StartOrFindChat });
 
+  useQuery({
+    queryFn: () => {
+      const fingerprint = localStorage.getItem("visitor_id");
+      if (!!fingerprint) return PropertyService.updatePropertyView({ fingerprint: fingerprint, propertyId: data?.id });
+      else return null;
+    },
+    queryKey: [PropertyService.SINGLE_PROPERTY_UPDATE_VIEW_CACHEKEY, data?.id],
+  });
+
   const onCreateChat = () => {
     createFindChat({ property_id: data?.id });
   };
+
   return (
     <div className=" hidden md:flex w-full  flex-col relative  gap-4">
       <div className="w-full flex items-start md:items-center justify-between gap-2">
         {" "}
         <p className=" font-medium text-lg w-3/5 md:w-full md:text-2xl ">{data?.title}</p>
-        <div className="  w-fit   shrink-0   p-1  rounded-full flex items-center gap-2 bg-black/10   bottom-1">
-          <img src="/assets/icons/adds/green_circular_tick.svg" />
-          <p className="text-sm text-gray-400 ">{_STRINGS.VERIFIED}</p>
-        </div>
+        <AuthorizationStatus isAuthorized={data?.is_authorized} />
       </div>
       <div className="flex items-center gap-4">
         <div className="bg-primary-700 rounded-md text-base  px-2 py-1 text-white flex items-center justify-center">

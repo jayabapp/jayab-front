@@ -11,6 +11,7 @@ import {
   PricingPropertySendDto,
   PropertyListDto,
   PropertyOptionGroup,
+  PropertyStatsDto,
   PropertySubsDto,
   PropertyTermsSendDto,
   PropertyTypesDTP,
@@ -34,6 +35,7 @@ export class PropertyService {
   static OWNER_PROPERTIES_SINGLE_AUTH_CACHEKEY = "OWNER_PROPERTIES_SINGLE_AUTH";
   static BOOKMARKS_CACHEKEY = "BOOKMARKS";
   static SINGLE_OWNER_PROPERTY_STATS_CACHEKEY = "SINGLE_OWNER_PROPERTY_STATS";
+  static SINGLE_PROPERTY_UPDATE_VIEW_CACHEKEY = "SINGLE_PROPERTY_UPDATE_VIEW";
 
   static async GetUserPropertyGroup(dto: { group: (keyof typeof PropertyOptionGroup)[] }) {
     try {
@@ -693,9 +695,24 @@ export class PropertyService {
 
   static async getPropertyStatistics(dto: { propertyId: string | number | null }) {
     try {
-      const result = await apiCall<{ lng: string | number | null; lat: string | number | null }, PropertyTypesDTP[]>(
+      const result = await apiCall<unknown, PropertyStatsDto>(
         "GET",
         apiRoutes.SINGLE_OWNER_PROPERTY_STATS(dto.propertyId)
+      );
+      return result;
+    } catch (e) {
+      throw e;
+    }
+  }
+
+  static async updatePropertyView(dto: { propertyId: string | number | null; fingerprint: string | number | null }) {
+    try {
+      const result = await apiCall<{ fingerprint: string | number | null }, unknown>(
+        "PUT",
+        apiRoutes.SINGLE_PROPERTY_UPDATE_VIEW(dto.propertyId),
+        {
+          fingerprint: dto.fingerprint,
+        }
       );
       return result;
     } catch (e) {

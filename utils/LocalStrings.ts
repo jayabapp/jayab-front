@@ -256,6 +256,7 @@ const _STRINGS = {
   DOCS_IMAGES: "تصاویر مدارک (سند, فولنامه و ...)",
   EDIT_INFO: "ویرایش اطلاعات",
   MESSAGE_TEXT: "متن پیام",
+  IMAGES: "تصاویر",
   CHAT: "چت",
   CHAT_INPUT_PLACEHOLDER: "پیام خود را بنویسید ...",
   COPY_SUCCESS: "رونوشت پیام انجام شد",
@@ -270,6 +271,11 @@ const _STRINGS = {
   ARE_U_SURE_DELETE_PROPERTY_TITLE: "حذف آگهی",
   SHARE_PROP_MESSAGE:
     "     توجه فرمایید تصویر انتخابی شما از بین تصاویر و توضیحات وارد شده، در فایل اشتراک گذاری نمایش داده می شود.",
+  LOGIN_MODAL_TITLE: "ورود به حساب",
+  LOGIN_MODAL_DESC: "برای ادامه نیاز است وارد حساب کاربری خود شوید",
+  LOGIN_SUBMIT_YES: "ورود به حساب",
+  NOW_NOW: "فعلا نه",
+  MODAL_IMAGE_ZOOM: "برای مشاهده تصویر بزرگتر دو بار بر روی آن بزنید ",
 };
 
 export default _STRINGS;

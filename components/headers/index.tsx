@@ -42,7 +42,7 @@ const Header = ({ scroll }: { scroll?: number }) => {
   const router = useRouter();
   const pathname = usePathname();
   const params: any = useSearchParams();
-  const isLogin = useAuthStore((state: any) => state);
+  const { isLogin } = useAuthStore((state: any) => state);
   const searchTextInparam = params.get("q");
 
   const [visibleTopHeader, setVisibleTopHeader] = useState(true);
@@ -112,6 +112,7 @@ const Header = ({ scroll }: { scroll?: number }) => {
       }
     }
   };
+
   return (
     <div className="relative">
       <div
@@ -255,13 +256,13 @@ transition-all  ease-in-out duration-1000 header-content-container app-size cust
                 route: "/advisors",
               }}
             />
-            {isLogin ? (
+            {!!isLogin ? (
               <>
                 <ProfileDropdown />
               </>
             ) : (
-              <div className="lg:flex hidden items-center gap-2">
-                <Link prefetch={false} href={"/auth"} className="transition-all hover:text-primary-700">
+              <div className="lg:flex shrink-0 hidden items-center gap-2">
+                <Link prefetch={false} href={"/auth"} className="shrink-0 transition-all hover:text-primary-700">
                   {_STRINGS?.ENTER} / {_STRINGS?.REGISTER}
                 </Link>
               </div>

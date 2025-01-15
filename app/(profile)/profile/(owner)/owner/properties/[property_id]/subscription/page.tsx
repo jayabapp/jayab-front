@@ -4,6 +4,7 @@ import AddCardPricePart from "@/components/properties/AddCardPricePart";
 import Button from "@/components/shared/Button/Button";
 import FixedBottomContainer from "@/components/shared/FixedBottomContainer";
 import CheckboxCardContainer from "@/components/shared/Form/Checkbox/CheckboxCardContainer";
+import LottieLoading from "@/components/shared/Lotties/LottieLoading";
 import SimpleBarChart from "@/components/widgets/chart/SimpleBarChart";
 import numberWithCommas from "@/helpers/numberWithCommas";
 import { simpleChartFakeData } from "@/utils/faker";
@@ -32,7 +33,7 @@ const Subscription = () => {
   /*                               PROP STATS DATA                              */
   /* -------------------------------------------------------------------------- */
 
-  const { data: statsData } = useQuery({
+  const { data: statsData, isLoading: statsLoading } = useQuery({
     queryKey: [PropertyService.SINGLE_OWNER_PROPERTY_STATS_CACHEKEY, property_id],
 
     queryFn: () => {
@@ -87,8 +88,6 @@ const Subscription = () => {
     });
   };
 
-  console.log(statsData, "statsDatastatsDatastatsData");
-
   return (
     <div
       id="homeParent"
@@ -96,7 +95,13 @@ const Subscription = () => {
     >
       <p className=" font-bold  w-full text-start">{_STRINGS.VIEW_STATS}</p>
       <div className="w-full h-96 relative ">
-        <SimpleBarChart data={simpleChartFakeData} />{" "}
+        {statsLoading ? (
+          <LottieLoading />
+        ) : (
+          <SimpleBarChart
+            data={statsData?.statistics?.map((e) => ({ date: e?.date, value: e?.view_count, name: e?.date }))}
+          />
+        )}
       </div>
 
       <div className=" grid grid-cols-1 md:grid-cols-2  w-full gap-4">

@@ -122,6 +122,8 @@ export const apiRoutes = {
 
   SINGLE_OWNER_PROPERTY_STATS: (propertyId: string | number | null) => `/owner/properties/${propertyId}/statistics`,
 
+  SINGLE_PROPERTY_UPDATE_VIEW: (propertyId: string | number | null) => `/user/properties/${propertyId}/view`,
+
   CITIES_CHILDEREN: (parentId: string | number) => `/cities/${parentId}`,
 
   CONTENT_BY_KEY: (id: string | number) => `/contents/by-key/${id}`,
