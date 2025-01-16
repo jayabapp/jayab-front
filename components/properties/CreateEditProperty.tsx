@@ -10,6 +10,7 @@ import { AuthService } from "@/api_services/auth/auth.service";
 import { isEmpty } from "lodash";
 import MultiLineFormInput from "../shared/Form/MultiLineFormInput";
 import Checkbox from "../shared/Form/Checkbox";
+import { CityService } from "@/api_services/city/city.service";
 
 export interface CreateProperyStepOne {
   title: string | number | null;
@@ -51,16 +52,16 @@ const CreateEditProperty = ({
   // });
 
   const { data: provinces } = useQuery({
-    queryFn: AuthService.GetProvince,
-    queryKey: [AuthService.CITIES_CACHEKEY],
+    queryFn: CityService.GetProvince,
+    queryKey: [CityService.CITIES_CACHEKEY],
   });
 
   const { data: cities } = useQuery({
     queryFn: () => {
-      if (!!values?.province) return AuthService.GetCities({ parentId: values?.province });
+      if (!!values?.province) return CityService.GetCities({ parentId: values?.province });
       else return [];
     },
-    queryKey: [AuthService.CITIES_CHILDEREN_CACHEKEY, values?.province],
+    queryKey: [CityService.CITIES_CHILDEREN_CACHEKEY, values?.province],
   });
 
   return (

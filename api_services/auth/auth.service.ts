@@ -201,23 +201,23 @@ export class AuthService {
     }
   }
 
-  static async GetProvince() {
-    try {
-      const result = await apiCall<unknown, PropertyTypesDTP[]>("GET", apiRoutes.CITIES);
-      return result;
-    } catch (e) {
-      throw e;
-    }
-  }
+  // static async GetProvince() {
+  //   try {
+  //     const result = await apiCall<unknown, PropertyTypesDTP[]>("GET", apiRoutes.CITIES);
+  //     return result;
+  //   } catch (e) {
+  //     throw e;
+  //   }
+  // }
 
-  static async GetCities(dto: { parentId: string | number }) {
-    try {
-      const result = await apiCall<unknown, PropertyTypesDTP[]>("GET", apiRoutes.CITIES_CHILDEREN(dto.parentId));
-      return result;
-    } catch (e) {
-      throw e;
-    }
-  }
+  // static async GetCities(dto: { parentId: string | number }) {
+  //   try {
+  //     const result = await apiCall<unknown, PropertyTypesDTP[]>("GET", apiRoutes.CITIES_CHILDEREN(dto.parentId));
+  //     return result;
+  //   } catch (e) {
+  //     throw e;
+  //   }
+  // }
 
   // static async RegisterProfile(dto: UpdateProfileDto) {
   //   try {

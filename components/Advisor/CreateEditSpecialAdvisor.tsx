@@ -12,6 +12,7 @@ import MultiLineFormInput from "../shared/Form/MultiLineFormInput";
 import MainUploader from "../uploader";
 import FixedBottomContainer from "../shared/FixedBottomContainer";
 import Button from "../shared/Button/Button";
+import { CityService } from "@/api_services/city/city.service";
 
 const CreateEditSpecialAdvisor = ({
   values,
@@ -37,16 +38,16 @@ const CreateEditSpecialAdvisor = ({
   >;
 }) => {
   const { data: provinces } = useQuery({
-    queryFn: AuthService.GetProvince,
-    queryKey: [AuthService.CITIES_CACHEKEY],
+    queryFn: CityService.GetProvince,
+    queryKey: [CityService.CITIES_CACHEKEY],
   });
 
   const { data: cities } = useQuery({
     queryFn: () => {
-      if (!!values?.province) return AuthService.GetCities({ parentId: values?.province });
+      if (!!values?.province) return CityService.GetCities({ parentId: values?.province });
       else return [];
     },
-    queryKey: [AuthService.CITIES_CHILDEREN_CACHEKEY, values?.province],
+    queryKey: [CityService.CITIES_CHILDEREN_CACHEKEY, values?.province],
   });
 
   const onChangeMulty = (value: { id: string | number }, key: keyof CreateAdvisorDto) => {
