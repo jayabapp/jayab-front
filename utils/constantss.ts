@@ -130,6 +130,9 @@ export const allRoutes: { [key: string]: string } = {
   blog: "بلاگ",
   blogs: "بلاگ",
   orders: "سفارشات",
+
+  advisor: "مشاور",
+  "is-especial": "مشاور ویژه",
   assistants: "افزودن دستیار مالک",
   initials: _STRINGS.REGISTER_PROPERTY,
   location: _STRINGS.SUBMIT_PROPERTY,

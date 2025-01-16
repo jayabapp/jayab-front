@@ -225,6 +225,7 @@ export interface PropertySubsDto {
   price: number;
   price_with_discount: number;
   is_promote: boolean;
+  is_special: boolean;
   description: string;
 }
 

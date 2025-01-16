@@ -72,6 +72,10 @@ export const apiRoutes = {
 
   BOOKMARKS: `/user/bookmarks`,
 
+  BANNERS: "/banners",
+
+  PROFILE_REGISTER_ADVISORS: `/profile/register/advisor`,
+
   USER_ADVISORS: `/user/advisors`,
 
   OWNER_PROP_INIT: (propertyId?: string | number | null) =>

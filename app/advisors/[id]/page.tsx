@@ -5,18 +5,15 @@ import dynamic from "next/dynamic";
 import Modal from "@/components/Modal";
 import Button from "@/components/shared/Button/Button";
 import ConsultantCard from "@/components/Consultants/ConsultantCard";
-import CircularProgress from "@/components/shared/CircularProgress/CircularProgress";
+import CircularProgress from "@/components/Advisor/AdvisorCircularProgressPart/AdvisorCircularProgresCard";
 import PageHeaders from "@/components/headers/PageHeader";
 
 import _STRINGS from "@/utils/LocalStrings";
 
-const LazyScoreToAdvisorModal = dynamic(
-  () => import("@/components/Consultants/ScoreConsultantModal"),
-  {
-    loading: () => <p className="text-center p-10">{_STRINGS.LOADING}...</p>,
-    ssr: false,
-  }
-);
+const LazyScoreToAdvisorModal = dynamic(() => import("@/components/Consultants/ScoreConsultantModal"), {
+  loading: () => <p className="text-center p-10">{_STRINGS.LOADING}...</p>,
+  ssr: false,
+});
 
 const Page = () => {
   const [showModal, setShowModal] = useState(false);
@@ -49,12 +46,7 @@ const Page = () => {
             <Button
               icon={
                 <>
-                  <img
-                    src={"/assets/icons/shared/call.svg"}
-                    width={20}
-                    height={20}
-                    alt="call icon"
-                  />
+                  <img src={"/assets/icons/shared/call.svg"} width={20} height={20} alt="call icon" />
                 </>
               }
               width="flex items-center justify-center w-full gap-1"
@@ -65,12 +57,7 @@ const Page = () => {
             <Button
               icon={
                 <>
-                  <img
-                    src={"/assets/icons/shared/message.svg"}
-                    width={20}
-                    height={20}
-                    alt="call icon"
-                  />
+                  <img src={"/assets/icons/shared/message.svg"} width={20} height={20} alt="call icon" />
                 </>
               }
               width="flex items-center justify-center w-full gap-1"
@@ -151,13 +138,8 @@ const Page = () => {
       >
         <div className="h-full">
           <div className="flex items-center justify-center sticky select-none z-[40]   shadow-md   bg-white w-full transition-all top-0 h-16 px-6 py-4">
-            <span className="font-semibold">
-              {_STRINGS.ADVISOR_REGUSTER_SCORE}
-            </span>
-            <button
-              onClick={() => setShowModal(!showModal)}
-              className="text-2xl text-gray-500 absolute right-7 top-7"
-            >
+            <span className="font-semibold">{_STRINGS.ADVISOR_REGUSTER_SCORE}</span>
+            <button onClick={() => setShowModal(!showModal)} className="text-2xl text-gray-500 absolute right-7 top-7">
               <img src="/assets/icons/close.svg" alt="" />
             </button>
           </div>

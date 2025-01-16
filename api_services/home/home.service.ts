@@ -4,7 +4,7 @@ import { apiCall } from "../common/apicall.helper";
 
 export class HomeService {
   // static FORGOT_PASSWORD_LIST_CACHEKEY = "FORGOT_PASSWORD_LIST";
-  // static BANNERS_RANDOM_CACHEKEY = "BANNERS_RANDOM";
+  static BANNERS_RANDOM_CACHEKEY = "BANNERS_RANDOM";
   static CONTENTS_CACHEKEY = "CONTENTS";
   // static SETTINGS_CACHEKEY = "SETTINGS";
   // static GET_SINGLE_CONTENT_CACHEKEY = "GET_SINGLE_CONTENT";
@@ -12,16 +12,16 @@ export class HomeService {
   static CONTENT_BY_KEY_CACHEKEY = "CONTENT_BY_KEY";
   static SEARCH_SUGGS_CACHEKEY = "SEARCH_SUGGS";
 
-  // static async GetBanners(dto: { position: "MAIN" | "MAIN_MIDDLE" }) {
-  //   try {
-  //     const result = await apiCall<{ position: "MAIN" | "MAIN_MIDDLE" }, RandomBannersDto[]>("GET", apiRoutes.BANNERS, {
-  //       position: dto?.position,
-  //     });
-  //     return result;
-  //   } catch (e) {
-  //     throw e;
-  //   }
-  // }
+  static async GetBanners(dto: { position: "MAIN" | "MAIN_MIDDLE" }) {
+    try {
+      const result = await apiCall<{ position: "MAIN" | "MAIN_MIDDLE" }, unknown[]>("GET", apiRoutes.BANNERS, {
+        position: dto?.position,
+      });
+      return result;
+    } catch (e) {
+      throw e;
+    }
+  }
 
   // static async GetHomeSettings() {
   //   try {
