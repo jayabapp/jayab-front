@@ -76,7 +76,11 @@ export const apiRoutes = {
 
   PROFILE_REGISTER_ADVISORS: `/profile/register/advisor`,
 
+  PAY_ADVISOR_PLAN: `/profile/pay-plan`,
+
   USER_ADVISORS: `/user/advisors`,
+
+  USER_ADVISORS_PROFILE: `/profile/advisor`,
 
   OWNER_PROP_INIT: (propertyId?: string | number | null) =>
     `/owner/properties/init${!!propertyId ? `?property_id=${propertyId}` : ""}`,

@@ -98,13 +98,13 @@ const CreateEditSpecialAdvisor = ({
           item={{
             title: _STRINGS.TELEPHONE_NUMBER,
             isMandatory: true,
-            containerClass: "w-full",
+            containerClass: " w-full md:w-1/2",
             direction: "ltr",
             inputClass: "ltr text-left",
-            maxLength: 8,
+            maxLength: 11,
           }}
         />
-        <FormInput
+        {/* <FormInput
           value={values?.area_code || ""}
           onChangeText={(e) => {
             onChange(e, "area_code");
@@ -117,7 +117,7 @@ const CreateEditSpecialAdvisor = ({
             inputClass: "ltr text-left",
             maxLength: 3,
           }}
-        />
+        /> */}
       </div>
       <div className="w-full flex flex-col gap-3 items-start">
         {" "}

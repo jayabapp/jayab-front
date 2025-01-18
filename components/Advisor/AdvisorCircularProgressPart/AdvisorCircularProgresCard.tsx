@@ -9,7 +9,7 @@ const AdvisorCircularProgresCard = ({
   pStyles,
 }: {
   data: { value: number };
-  item: { linear_title_class?: string; linear_title?: string };
+  item: { linear_title_class?: string; linear_title?: string; title?: string; title_class?: string };
   pStyles?: {
     textColor?: string;
     pathColor?: string;
@@ -25,13 +25,20 @@ const AdvisorCircularProgresCard = ({
       ) : (
         <></>
       )}
-      <CircularProgressbar
-        className=" md:p-2 !pr-0"
-        value={data?.value}
-        text={`${data?.value}`}
-        strokeWidth={10}
-        styles={!!pStyles ? buildStyles(pStyles) : {}}
-      />
+      <div className="w-full flex  items-center gap-4 flex-col">
+        <CircularProgressbar
+          className=" max-w-20 md:p-2 !pr-0"
+          value={data?.value}
+          text={`${data?.value}`}
+          strokeWidth={10}
+          styles={!!pStyles ? buildStyles(pStyles) : {}}
+        />
+        {item?.title ? (
+          <p className={` text-xxs shrink-0 md:text-sm w-fit  ${item?.title_class}`}>{item?.title}</p>
+        ) : (
+          <></>
+        )}
+      </div>
     </div>
   );
 };

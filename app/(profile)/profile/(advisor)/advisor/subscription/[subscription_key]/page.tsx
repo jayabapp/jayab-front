@@ -7,10 +7,11 @@ import Button from "@/components/shared/Button/Button";
 import FixedBottomContainer from "@/components/shared/FixedBottomContainer";
 import _STRINGS from "@/utils/LocalStrings";
 import { useMutation } from "@tanstack/react-query";
-import { useParams } from "next/navigation";
+import { useParams, useRouter } from "next/navigation";
 import React, { useState } from "react";
 
 const CreateYourAdvisor = () => {
+  const router = useRouter();
   const params = useParams();
   const { subscription_key } = params;
   const [values, setValues] = useState<
@@ -23,7 +24,7 @@ const CreateYourAdvisor = () => {
     }
   >({
     address: "",
-    area_code: "",
+    // area_code: "",
     cityIds: [],
     document_image: null,
     full_name: "",
@@ -36,16 +37,21 @@ const CreateYourAdvisor = () => {
     refral_code: "",
   });
 
-  const { mutate, isPending } = useMutation({ mutationFn: AdvisorService.createAdvisor });
+  const { mutate, isPending } = useMutation({
+    mutationFn: AdvisorService.createAdvisor,
+    onSuccess: () => {
+      router.back();
+    },
+  });
   const onSubmit = () => {
     mutate({
       address: values?.address || "",
-      area_code: values?.area_code,
+      // area_code: values?.area_code,
       cityIds: values?.cityIds?.map((e) => e?.id) || [],
       full_name: values?.full_name,
-      is_special: subscription_key == "is_especial" ? true : false,
+      is_special: subscription_key == "is-especial" ? true : false,
       national_code: values?.national_code,
-      tel: Number(values?.tel),
+      tel: values?.tel,
       document_image_id: values?.document_image?.id,
       national_card_image_id: values?.national_card_image?.id,
       profile_image_id: values?.profile_image?.id,

@@ -339,7 +339,7 @@ const MainUploader = ({
                 {" "}
                 <img
                   src="/assets/icons/shared/check_icon.svg"
-                  className=" items-center justify-center text-center text-green-600 border-green-600 w-5 dark:text-dark-green"
+                  className=" items-center justify-center text-center text-green-600 border-green-600 w-4 dark:text-dark-green"
                 />
                 <p className="text-green-600 border-green-600  text-lg font-medium dark:text-dark-green">تایید</p>
               </>
@@ -353,7 +353,7 @@ const MainUploader = ({
             }}
             className="w-full py-1.5 cursor-pointer gap-3  border rounded-xl border-red-600 dark:border-dark-red flex items-center justify-center"
           >
-            <img src="/assets/icons/adds/red_x_mark.svg" className="  text-red-600 w-5 dark:text-dark-red" />
+            <img src="/assets/icons/adds/red_x_mark.svg" className="  text-red-600 w-4 dark:text-dark-red" />
             <p className="text-red-600  text-lg font-medium dark:text-dark-red">بستن</p>
           </div>
         </div>

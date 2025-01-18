@@ -1,16 +1,42 @@
 import React from "react";
 import Button from "../shared/Button/Button";
 import _STRINGS from "@/utils/LocalStrings";
-import Link from "next/link";
 import { PropertySubsDto } from "@/api_services/property/property.interface";
 import numberWithCommas from "@/helpers/numberWithCommas";
+import { useRouter } from "next/navigation";
+import { useMutation } from "@tanstack/react-query";
+import { AdvisorService } from "@/api_services/advisor/advisor.propery";
 
-const AdvisorPlansCard = ({ data }: { data: PropertySubsDto }) => {
+const AdvisorPlansCard = ({
+  data,
+  subscriptionType,
+}: {
+  data: PropertySubsDto;
+  subscriptionType: "is-especial" | "normal" | null;
+}) => {
+  const router = useRouter();
+
+  const { mutate, isPending } = useMutation({
+    mutationFn: AdvisorService.payAdvisorPlan,
+    onSuccess: (e) => {
+      if (!!e) router.push(e);
+    },
+  });
+  const onClick = () => {
+    if (!subscriptionType) {
+      router.push(`/profile/advisor/subscription/${!!data?.is_special ? "is-especial" : "is-not-especial"}`);
+    } else if (!!subscriptionType)
+      [
+        mutate({
+          gateway: "SANDBOX",
+          plan_id: data?.id,
+          redirect_url: `${window.origin}/profile/advisor/subscription`,
+        }),
+      ];
+  };
+
   return (
-    <Link
-      href={`/profile/advisor/subscription/${!!data?.is_special ? "is-especial" : "is-not-especial"}`}
-      className="bg-primary-100 flex  py-2 px-3 flex-col gap-2 rounded-20 w-full "
-    >
+    <div className="bg-primary-100 flex  py-2 px-3 flex-col gap-2 rounded-20 w-full ">
       <p className="font-medium text-sm md:text-base  w-full text-center ">{data?.title}</p>
 
       <div className="flex flex-col  gap-2 pt-2 w-full items-start ">
@@ -25,8 +51,15 @@ const AdvisorPlansCard = ({ data }: { data: PropertySubsDto }) => {
           </p>
         ))} */}
       </div>
-      <Button title={_STRINGS.CONTINUE} containerClass="w-full pt-4" width="w-full !py-1" roundedClass="rounded-full" />
-    </Link>
+      <Button
+        loading={isPending}
+        onClick={onClick}
+        title={!!subscriptionType ? _STRINGS.PAY : _STRINGS.CONTINUE}
+        containerClass="w-full pt-4"
+        width="w-full !py-1"
+        roundedClass="rounded-full"
+      />
+    </div>
   );
 };
 

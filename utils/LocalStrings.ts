@@ -296,6 +296,7 @@ const _STRINGS = {
   CITY_LISTS: "لیست شهرهای استان",
   SEARCH_DESTINY: "جستجوی مقصد",
   SELECTED_CITIES: "شهر های انتخاب شده",
+  REGISTER_ADVISOR: "ثبت نام مشاور",
 };
 
 export default _STRINGS;

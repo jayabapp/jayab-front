@@ -4,6 +4,7 @@ import AdvisorCircularProgresCard from "./AdvisorCircularProgressPart/AdvisorCir
 
 const AdvisorCard = ({
   data,
+  callback,
 }: {
   data: {
     id: number;
@@ -14,9 +15,10 @@ const AdvisorCard = ({
     owners_satisfaction: number;
     users_satisfaction: number;
   };
+  callback?: () => void | null;
 }) => {
   return (
-    <div className=" rounded-2xl gap-2   shadow-card  p-4  w-full  flex items-center ">
+    <div onClick={callback} className=" rounded-2xl gap-2   shadow-card  p-4  w-full  flex items-center ">
       {/* IMAGE PART    */}
       <div className=" flex flex-col gap-2 h-full justify-between  w-1/5">
         <div className="relative w-full  aspect-square ">
