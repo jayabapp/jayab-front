@@ -23,7 +23,7 @@ import { apiCall } from "../common/apicall.helper";
 
 import { sendOtpSchema } from "./auth.schema";
 import { YupValidator } from "@/utils/YupValidator";
-import { PropertyTypesDTP } from "../property/property.interface";
+import { ProvienceTypesDto } from "../property/property.interface";
 
 export class AuthService {
   static ADMIN_EDIT_VALIDATE_CACHEKEY = "HET_PROFILE";
@@ -203,7 +203,7 @@ export class AuthService {
 
   // static async GetProvince() {
   //   try {
-  //     const result = await apiCall<unknown, PropertyTypesDTP[]>("GET", apiRoutes.CITIES);
+  //     const result = await apiCall<unknown, ProvienceTypesDto[]>("GET", apiRoutes.CITIES);
   //     return result;
   //   } catch (e) {
   //     throw e;
@@ -212,7 +212,7 @@ export class AuthService {
 
   // static async GetCities(dto: { parentId: string | number }) {
   //   try {
-  //     const result = await apiCall<unknown, PropertyTypesDTP[]>("GET", apiRoutes.CITIES_CHILDEREN(dto.parentId));
+  //     const result = await apiCall<unknown, ProvienceTypesDto[]>("GET", apiRoutes.CITIES_CHILDEREN(dto.parentId));
   //     return result;
   //   } catch (e) {
   //     throw e;

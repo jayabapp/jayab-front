@@ -1,6 +1,7 @@
 const _STRINGS = {
   CURRENCY: "تومان",
   IMAGE: "تصویر",
+  RETURN: "بازگشت",
   EMPTY: "خالی",
   OCCUPIED: "پر",
   NO_PRICE: "توافقی",
@@ -289,6 +290,12 @@ const _STRINGS = {
 
   REFRAL_CODE: "کد معرف",
   ACTIVITY_FIELD: "حوزه فعالیت",
+  SELECT_PROVE: "انتخاب استان",
+  SELECT_CITY: "انتخاب شهر",
+  PROV_LISTS: "لیست استان ها",
+  CITY_LISTS: "لیست شهرهای استان",
+  SEARCH_DESTINY: "جستجوی مقصد",
+  SELECTED_CITIES: "شهر های انتخاب شده",
 };
 
 export default _STRINGS;

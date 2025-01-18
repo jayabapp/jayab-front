@@ -169,11 +169,7 @@ const Filterpage = () => {
                 <img src="/assets/icons/products/filters_icons.svg" />
                 <p className="font-medium  text-lg">{_STRINGS.FILTERS}</p>
               </div>
-              <SimpleAccordion
-                item={{ noBorder: true, parenClass: "  pb-4  border-b w-full p-2" }}
-                title={"_STRINGS?.B14"}
-                isOpenFirst
-              >
+              <SimpleAccordion item={{ parenClass: "  pb-4  border-b w-full p-2" }} title={"_STRINGS?.B14"} isOpenFirst>
                 s{/* <ProductModels queryKey={"parent_category"} list={parentCatsData} query={queries} /> */}
               </SimpleAccordion>
               {/* {!isEmpty(catsData) ? (
@@ -201,7 +197,7 @@ const Filterpage = () => {
               {/* <SimpleAccordion item={{ noBorder: true, parenClass: " p-2 w-full" }} title={_STRINGS?.A21}>
                 <ColorFilter query={queries} />
                 </SimpleAccordion> */}
-              <SimpleAccordion item={{ noBorder: true, parenClass: " pb-4  p-2 w-full" }} title={"_STRINGS?.A22"}>
+              <SimpleAccordion item={{ parenClass: " pb-4  p-2 w-full" }} title={"_STRINGS?.A22"}>
                 r
                 {/* <PriceRange
                   query={queries}
@@ -296,7 +292,7 @@ const Filterpage = () => {
             {/* <SearchInResults /> */}
             {/* <TopSwitchs query={queries} setMobileFilters={setSpecs} mobileFilters={specs} /> */}
             <SimpleAccordion
-              item={{ noBorder: true, parenClass: " border-b w-full p-2", invertIconDark: true }}
+              item={{ parenClass: " border-b w-full p-2", invertIconDark: true }}
               title={"_STRINGS?.B14"}
               isOpenFirst
             >

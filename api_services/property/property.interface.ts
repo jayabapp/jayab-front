@@ -1,8 +1,10 @@
 import { ImageDto } from "../auth/auth.interface";
 
-export interface PropertyTypesDTP {
+export interface ProvienceTypesDto {
   id: number;
   title: string;
+  image: ImageDto;
+  child: { id: number; title: string }[];
 }
 
 export interface CreatePropertyStepOneDto {

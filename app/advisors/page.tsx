@@ -2,11 +2,15 @@
 import { AdvisorService } from "@/api_services/advisor/advisor.propery";
 import { HomeService } from "@/api_services/home/home.service";
 import AdvisorCard from "@/components/Advisor/AdvisorCard";
+import CityModal from "@/components/CityModal";
 import BannersContainer from "@/components/Home/BannersContainer";
 import BtnLoading from "@/components/shared/Button/BtnLoading";
+import Button from "@/components/shared/Button/Button";
 import EmptyList from "@/components/shared/Lotties/EmptyList";
 import LottieLoading from "@/components/shared/Lotties/LottieLoading";
+import SimpleAccordion from "@/components/shared/SimpleAccorion";
 import { fakeConsultants } from "@/utils/faker";
+import _STRINGS from "@/utils/LocalStrings";
 import { useQuery } from "@tanstack/react-query";
 import { last } from "lodash";
 import { usePathname, useRouter } from "next/navigation";
@@ -16,6 +20,8 @@ import InfiniteScroll from "react-infinite-scroll-component";
 const AdvisorsListPage = () => {
   const router = useRouter();
   const pathname = usePathname();
+  const [showCityModal, setShowCiyModal] = useState(false);
+
   const [refetcherBoolean, setRefetcherBoolean] = useState(false);
   const [cursor, setCursor] = useState(0);
   const [data, setData] = useState<any[]>([]);
@@ -55,10 +61,23 @@ const AdvisorsListPage = () => {
   useEffect(() => {
     refetch();
   }, [cursor, refetcherBoolean]);
+
+  const hideCityModal = () => {
+    setShowCiyModal(false);
+  };
+  const showCityModalFunc = () => {
+    setShowCiyModal(true);
+  };
+
   return (
     <div className=" w-full container flex flex-col">
       <BannersContainer />
-
+      <Button
+        width=" w-full md:w-fit"
+        containerClass="w-full flex items-center justify-center"
+        onClick={showCityModalFunc}
+        title={_STRINGS.CHOOSE_STATE_AND_CITY}
+      />
       {isLoading && data?.length == 0 ? (
         <LottieLoading />
       ) : data && data?.length > 0 ? (
@@ -84,6 +103,8 @@ const AdvisorsListPage = () => {
           <EmptyList />
         </div>
       )}
+
+      <CityModal show={showCityModal} onHide={hideCityModal} />
     </div>
   );
 };

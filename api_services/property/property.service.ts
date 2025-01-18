@@ -14,7 +14,7 @@ import {
   PropertyStatsDto,
   PropertySubsDto,
   PropertyTermsSendDto,
-  PropertyTypesDTP,
+  ProvienceTypesDto,
   PropInitDto,
   RoomInfosDto,
   SingleOwnerPropertyDto,
@@ -39,7 +39,7 @@ export class PropertyService {
 
   static async GetUserPropertyGroup(dto: { group: (keyof typeof PropertyOptionGroup)[] }) {
     try {
-      const result = await apiCall<{ group: string[] }, { [key: string]: PropertyTypesDTP[] }>(
+      const result = await apiCall<{ group: string[] }, { [key: string]: ProvienceTypesDto[] }>(
         "GET",
         apiRoutes.USER_PROP_OPTIONS,
         {
@@ -357,7 +357,7 @@ export class PropertyService {
 
   static async CreatePropertyStepOne(dto: CreatePropertyStepOneDto & { propertyId: string | number | null }) {
     try {
-      const result = await apiCall<CreatePropertyStepOneDto, PropertyTypesDTP[]>(
+      const result = await apiCall<CreatePropertyStepOneDto, ProvienceTypesDto[]>(
         "PUT",
         apiRoutes.OWNER_PROPERTIES(dto.propertyId),
         {
@@ -391,7 +391,7 @@ export class PropertyService {
     lat: string | number | null;
   }) {
     try {
-      const result = await apiCall<{ lng: string | number | null; lat: string | number | null }, PropertyTypesDTP[]>(
+      const result = await apiCall<{ lng: string | number | null; lat: string | number | null }, ProvienceTypesDto[]>(
         "PUT",
         apiRoutes.OWNER_PROPERTIES_LOC_UPDATE(dto.propertyId),
         {
@@ -418,7 +418,7 @@ export class PropertyService {
 
       const result = await apiCall<
         { images: (string | number | null)[]; feature_image_id: string | number | null },
-        PropertyTypesDTP[]
+        ProvienceTypesDto[]
       >("PUT", apiRoutes.OWNER_PROPERTIES_MEDIA_UPDATE(dto.propertyId), {
         feature_image_id: dto.feature_image_id,
         images: dto?.images,
@@ -434,7 +434,7 @@ export class PropertyService {
     }
   ) {
     try {
-      const result = await apiCall<RoomInfosDto, PropertyTypesDTP[]>(
+      const result = await apiCall<RoomInfosDto, ProvienceTypesDto[]>(
         "PUT",
         apiRoutes.OWNER_PROPERTIES_ENV_BEDROOM(dto.propertyId),
         {
@@ -462,7 +462,7 @@ export class PropertyService {
     }
   ) {
     try {
-      const result = await apiCall<FacilitiesValuesDto, PropertyTypesDTP[]>(
+      const result = await apiCall<FacilitiesValuesDto, ProvienceTypesDto[]>(
         "PUT",
         apiRoutes.OWNER_PROPERTIES_ENV_FACILITY(dto.propertyId),
         {
@@ -487,7 +487,7 @@ export class PropertyService {
     }
   ) {
     try {
-      const result = await apiCall<PricingPropertySendDto, PropertyTypesDTP[]>(
+      const result = await apiCall<PricingPropertySendDto, ProvienceTypesDto[]>(
         "PUT",
         apiRoutes.OWNER_PROPERTIES_ENV_PRICE(dto.propertyId),
         {
@@ -515,7 +515,7 @@ export class PropertyService {
     }
   ) {
     try {
-      const result = await apiCall<AssistantSendDto, PropertyTypesDTP[]>(
+      const result = await apiCall<AssistantSendDto, ProvienceTypesDto[]>(
         "PUT",
         apiRoutes.OWNER_PROPERTIES_ENV_ASSISTANT(dto.propertyId),
         {
@@ -536,7 +536,7 @@ export class PropertyService {
     }
   ) {
     try {
-      const result = await apiCall<PropertyTermsSendDto, PropertyTypesDTP[]>(
+      const result = await apiCall<PropertyTermsSendDto, ProvienceTypesDto[]>(
         "PUT",
         apiRoutes.OWNER_PROPERTIES_ENV_TERMS(dto.propertyId),
         {
@@ -578,7 +578,7 @@ export class PropertyService {
           access: string | number | null;
           pattern: string | number | null;
         },
-        PropertyTypesDTP[]
+        ProvienceTypesDto[]
       >("PUT", apiRoutes.OWNER_PROPERTIES_ENV_UPDATE(dto.propertyId), {
         access: dto.access,
         distance_dscr: dto.distance_dscr,
@@ -679,7 +679,7 @@ export class PropertyService {
   /* -------------------------------------------------------------------------- */
   static async deleteProperty(dto: { propertyId: string | number | null }) {
     try {
-      const result = await apiCall<{ lng: string | number | null; lat: string | number | null }, PropertyTypesDTP[]>(
+      const result = await apiCall<{ lng: string | number | null; lat: string | number | null }, ProvienceTypesDto[]>(
         "DELETE",
         apiRoutes.SINGLE_OWNER_PROPERTY(dto.propertyId)
       );
