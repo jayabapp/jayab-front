@@ -85,6 +85,8 @@ export const apiRoutes = {
   OWNER_PROP_INIT: (propertyId?: string | number | null) =>
     `/owner/properties/init${!!propertyId ? `?property_id=${propertyId}` : ""}`,
 
+  SINGLE_ADVISOR: (advisorId?: string | number | null) => `/user/advisors/${advisorId}`,
+
   OWNER_PROPERTIES: (propertyId: string | number | null) => `/owner/properties/${propertyId}`,
 
   OWNER_PROPERTIES_STATUS_UPDATE: (propertyId: string | number | null) =>

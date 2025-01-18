@@ -1,7 +1,7 @@
 "use client";
 
 import React, { Fragment, JSX, ReactNode, useEffect, useRef } from "react";
-import { Dialog, Transition } from "@headlessui/react";
+import { Dialog, Transition, TransitionChild } from "@headlessui/react";
 import { useRouter } from "next/router";
 type ModalProps = {
   children?: ReactNode;
@@ -49,14 +49,16 @@ const Modal = ({ children, show, onHide, options, onScroll, type }: ModalProps):
     <Transition show={show}>
       <div className="fixed inset-0">
         <Dialog as="div" className="relative" style={{ zIndex: 1000 }} onClose={onHide}>
-          <Transition.Child as={Fragment} {..._findAnimationClass}>
+          <TransitionChild as={Fragment} {..._findAnimationClass}>
             <div className="fixed inset-0 bg-black bg-opacity-70 		" />
-          </Transition.Child>
+          </TransitionChild>
 
           <div
-            className={` ${options?.parentClass || ""} fixed inset-y-0 w-screen h-screen flex flex-col justify-center `}
+            className={` ${
+              options?.parentClass || ""
+            } fixed inset-y-0 w-[100dvw] h-[100dvh] flex flex-col justify-center `}
           >
-            <Transition.Child
+            <TransitionChild
               as={Fragment}
               enter="ease-out duration-300"
               enterFrom="opacity-0 scale-95"
@@ -80,7 +82,7 @@ const Modal = ({ children, show, onHide, options, onScroll, type }: ModalProps):
               >
                 {children}
               </Dialog.Panel>
-            </Transition.Child>
+            </TransitionChild>
           </div>
         </Dialog>
       </div>

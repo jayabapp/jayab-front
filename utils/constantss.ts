@@ -314,3 +314,10 @@ export const WeekDays = [
   { title: "پنجشنبه", id: 4 },
   { title: "جمعه", id: 5 },
 ];
+
+export const easyRatingItems = {
+  100: { label: "عالی", style: { color: "#3886E5", bottom: "2rem" } },
+  75: { label: "خوب", style: { color: "#3886E5", bottom: "2rem" } },
+  50: { label: "متوسط", style: { color: "#3886E5", bottom: "2rem" } },
+  25: { label: "ضعیف", style: { color: "#3886E5", bottom: "2rem" } },
+};

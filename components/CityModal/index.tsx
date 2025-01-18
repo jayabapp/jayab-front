@@ -50,6 +50,7 @@ const CityModal = ({
 
   const removeSelectedProve = () => {
     setSelectedProv(null);
+    setSearch("");
   };
 
   const onCityClick = (item: ProvienceTypesDto) => {
@@ -85,14 +86,14 @@ const CityModal = ({
     <Modal
       options={{
         containerClass:
-          "mx-auto my-20 w-11/12 md:w-1/2 xl:w-1/3 2xl:w-1/4  pb-4 rounded-2xl overflow-y-scroll bg-white dark:bg-zinc-900  relative min-h-[80dvh]",
+          "mx-auto my-0 md:my-20 w-full md:w-1/2 xl:w-1/3 2xl:w-1/4  rounded-2xl overflow-y-scroll bg-white dark:bg-zinc-900  relative min-h-[100dvh]  min:min-h-[80dvh] ",
       }}
       onHide={onHide}
       show={!!show}
     >
       <CityModalHeaderPart selectedProv={selectedProv} onHide={onHide} removeSelectedProve={removeSelectedProve} />
 
-      <div className=" w-full flex flex-col gap-4  p-3">
+      <div className=" w-full flex flex-col gap-4  p-3  h-auto min-h-full">
         <CityModalSearchPart search={search} setSearch={setSearch} />
 
         <CityModalSelectedAccardiom selectedCities={selectedCities} onCityClick={onCityClick} />
@@ -131,41 +132,40 @@ const CityModal = ({
         ) : isEmpty(cities) ? (
           <EmptyList />
         ) : (
-          cities?.map((e) => (
-            <CityCard
-              isChecked={selectedCities?.includes(e)}
-              callback={() => {
-                onCityClick(e);
-              }}
-              item={e}
-              key={`prov${e?.title}`}
-            />
-          ))
+          cities
+            ?.filter((e) => e?.title.includes(search))
+            ?.map((e) => (
+              <CityCard
+                isChecked={selectedCities?.includes(e)}
+                callback={() => {
+                  onCityClick(e);
+                }}
+                item={e}
+                key={`prov${e?.title}`}
+              />
+            ))
         )}
       </div>
-      {!isEmpty(selectedCities) ? (
-        <div className=" w-full flex items-center sticky gap-4 px-[10%] bottom-0  ">
-          {!!selectedProv ? (
-            <Button
-              onClick={removeSelectedProve}
-              width="w-full "
-              variant="outline"
-              containerClass="flex w-full  items-center justify-center "
-              title={_STRINGS.RETURN}
-            />
-          ) : (
-            <></>
-          )}
+
+      <div className=" bg-white shadow-card w-full py-4 flex items-center sticky gap-4 px-[10%] bottom-0  ">
+        {!!selectedProv ? (
           <Button
-            onClick={onSubmitClick}
+            onClick={removeSelectedProve}
             width="w-full "
-            containerClass="flex w-full   items-center justify-center "
-            title={item?.submitTitle || _STRINGS.SEARCH}
+            variant="outline"
+            containerClass="flex w-full  items-center justify-center "
+            title={_STRINGS.RETURN}
           />
-        </div>
-      ) : (
-        <></>
-      )}
+        ) : (
+          <></>
+        )}
+        <Button
+          onClick={onSubmitClick}
+          width="w-full "
+          containerClass="flex w-full   items-center justify-center "
+          title={item?.submitTitle || _STRINGS.SEARCH}
+        />
+      </div>
     </Modal>
   );
 };

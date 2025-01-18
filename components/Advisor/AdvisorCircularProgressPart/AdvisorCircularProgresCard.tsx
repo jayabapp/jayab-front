@@ -19,9 +19,7 @@ const AdvisorCircularProgresCard = ({
   return (
     <div className="w-full  flex items-center  gap-2">
       {item?.linear_title ? (
-        <p className={`text-xxs shrink-0 md:text-sm text-primary-700 ${item?.linear_title_class} `}>
-          {item?.linear_title} :
-        </p>
+        <p className={`text-xxs shrink-0 md:text-sm  ${item?.linear_title_class} `}>{item?.linear_title} :</p>
       ) : (
         <></>
       )}

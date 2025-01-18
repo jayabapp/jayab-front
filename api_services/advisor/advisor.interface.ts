@@ -1,3 +1,4 @@
+import { ImageDto } from "../auth/auth.interface";
 import { Status } from "../property/property.interface";
 
 export interface CreateAdvisorDto {
@@ -49,4 +50,22 @@ export interface AdvisorListDto {
   document_image_id: number;
   created_at: Date;
   updated_at: Date;
+}
+
+export interface AdvisorPageListDto {
+  id: number;
+  created_at: Date;
+  cities: string[];
+  user: User;
+  work_history_in_month: number;
+}
+
+export interface City {
+  title: string;
+}
+
+export interface User {
+  full_name: string;
+  referral_code: string;
+  profile_image: ImageDto;
 }

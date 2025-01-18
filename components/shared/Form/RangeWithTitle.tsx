@@ -10,6 +10,7 @@ const RangeWithTitle = ({
   marks,
   className,
   step,
+  item = { pathColor: "#E7E7E7", visibleDot: false },
 }: {
   max: number;
   min: number;
@@ -18,11 +19,13 @@ const RangeWithTitle = ({
   setValue: (e: number) => void | null;
   className?: string;
   step?: number;
+  item?: { pathColor?: string; visibleDot?: boolean; reverse?: boolean };
 }) => {
   return (
     <Slider
+      reverse={item?.reverse}
       marks={marks}
-      startPoint={0}
+      startPoint={min || 0}
       max={max}
       value={value}
       min={min}
@@ -42,8 +45,8 @@ const RangeWithTitle = ({
         bottom: -4,
       }}
       activeDotStyle={{
-        backgroundColor: "#E7E7E7",
-        borderColor: "#E7E7E7",
+        backgroundColor: item?.pathColor,
+        borderColor: item?.pathColor,
         borderWidth: 1,
         width: 7,
         height: 7,
@@ -51,17 +54,17 @@ const RangeWithTitle = ({
         bottom: -20,
       }}
       dotStyle={{
-        backgroundColor: "#E7E7E7",
-        borderColor: "#E7E7E7",
+        backgroundColor: item?.pathColor,
+        borderColor: item?.pathColor,
         borderWidth: 1,
         width: 7,
         height: 7,
         aspectRatio: 2,
         bottom: -20,
-        visibility: "hidden",
+        visibility: item?.visibleDot ? "visible" : "hidden",
       }}
       trackStyle={{ backgroundColor: "#3886E5", height: 6.5 }}
-      railStyle={{ backgroundColor: "#E7E7E7", height: 6.5 }}
+      railStyle={{ backgroundColor: item?.pathColor, height: 6.5 }}
     />
   );
 };

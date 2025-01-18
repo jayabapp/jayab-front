@@ -98,7 +98,6 @@ const SearchBox = ({
       onClear();
     }
   };
-
   return (
     <div className={containerClass}>
       <div

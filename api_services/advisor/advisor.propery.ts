@@ -1,6 +1,12 @@
 import { apiRoutes } from "@/utils/urls";
 import { apiCall } from "../common/apicall.helper";
-import { AdvisorProfileDto, CreateAdvisorDto, PayAdvisorPlanDto } from "./advisor.interface";
+import {
+  AdvisorListDto,
+  AdvisorPageListDto,
+  AdvisorProfileDto,
+  CreateAdvisorDto,
+  PayAdvisorPlanDto,
+} from "./advisor.interface";
 
 export class AdvisorService {
   static USER_ADVISORS_CACHEKEY = "USER_ADVISORS";
@@ -23,16 +29,17 @@ export class AdvisorService {
     }
   }
 
-  static async userAdvisorsList(dto: { per_page: number; cursor: number }) {
+  static async userAdvisorsList(dto: { per_page: number; cursor: number; q?: string; cities?: (number | string)[] }) {
     try {
-      const result = await apiCall<{ per_page: number; cursor: number }, { data: unknown[] }>(
-        "GET",
-        apiRoutes.USER_ADVISORS,
-        {
-          cursor: dto.cursor,
-          per_page: dto.per_page,
-        }
-      );
+      const result = await apiCall<
+        { per_page: number; cursor: number; q?: string; cities?: (number | string)[] },
+        AdvisorPageListDto[]
+      >("GET", apiRoutes.USER_ADVISORS, {
+        cursor: dto.cursor,
+        per_page: dto.per_page,
+        q: dto.q,
+        cities: dto.cities,
+      });
       return result;
     } catch (e) {
       throw e;
@@ -42,6 +49,15 @@ export class AdvisorService {
   static async userAdvisorsProfile() {
     try {
       const result = await apiCall<unknown, AdvisorProfileDto | null>("GET", apiRoutes.USER_ADVISORS_PROFILE);
+      return result;
+    } catch (e) {
+      throw e;
+    }
+  }
+
+  static async singleAdvisor(dto: { advisorId: string | number }) {
+    try {
+      const result = await apiCall<unknown, AdvisorProfileDto | null>("GET", apiRoutes.SINGLE_ADVISOR(dto.advisorId));
       return result;
     } catch (e) {
       throw e;
