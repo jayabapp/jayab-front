@@ -23,6 +23,8 @@ const AdvisorRegister = () => {
     queryFn: () => {
       return AdvisorService.userAdvisorsProfile();
     },
+    staleTime: 0,
+    gcTime: 0,
   });
   return (
     <div className=" profile-container  flex flex-col gap-4 ">

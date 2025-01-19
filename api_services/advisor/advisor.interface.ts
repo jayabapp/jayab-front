@@ -53,11 +53,13 @@ export interface AdvisorListDto {
 }
 
 export interface AdvisorPageListDto {
-  id: number;
-  created_at: Date;
+  id: number | null;
+  created_at: Date | string;
   cities: string[];
-  user: User;
+  user: User | null;
   work_history_in_month: number;
+  owners_satisfaction: number;
+  users_satisfaction: number;
 }
 
 export interface City {
@@ -68,4 +70,44 @@ export interface User {
   full_name: string;
   referral_code: string;
   profile_image: ImageDto;
+}
+
+export interface MyUserRateDto {
+  id: number;
+  user_id: number;
+  advisor_id: number;
+  advisor_behavior: number;
+  advisor_responsibility: number;
+  response_speed_and_followup: number;
+  created_at: Date;
+  updated_at: Date;
+}
+
+export interface SingleAdvisorDto {
+  id: number;
+  created_at: Date;
+  users_satisfaction: null;
+  owners_satisfaction: null;
+  response_speed_and_followup: null;
+  advisor_behavior: null;
+  advisor_responsibility: null;
+  cities: string[];
+  user: User;
+  work_history_in_month: number;
+  can_user_add_rate: boolean;
+  user_rate: MyUserRateDto;
+}
+
+export interface User {
+  id: number;
+  full_name: string;
+  mobile_number: string;
+  referral_code: string;
+  profile_image: ImageDto;
+}
+
+export interface AddRateDto {
+  advisor_behavior: number | string | null;
+  advisor_responsibility: number | string | null;
+  response_speed_and_followup: number | string | null;
 }

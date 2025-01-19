@@ -6,6 +6,9 @@ import AdvisorCard from "../AdvisorCard";
 import Button from "@/components/shared/Button/Button";
 import AdvisorCircularProgresCard from "../AdvisorCircularProgressPart/AdvisorCircularProgresCard";
 import RatePop from "./RatePop";
+import { useMutation, useQuery } from "@tanstack/react-query";
+import { AdvisorService } from "@/api_services/advisor/advisor.propery";
+import LottieLoading from "@/components/shared/Lotties/LottieLoading";
 
 const SingleAdvisorModal = ({
   show,
@@ -16,19 +19,16 @@ const SingleAdvisorModal = ({
   onHide: () => void | null;
   selectedAdvisor: any;
 }) => {
-  const [data, setData] = useState<any>(null);
   const [showRate, setShowRate] = useState(false);
-  useEffect(() => {
-    if (!!selectedAdvisor) {
-      setData(selectedAdvisor);
-    } else {
-      setData(null);
-    }
-  }, [selectedAdvisor]);
+  const [refresher, setRefresher] = useState(false);
 
-  const onActionButtinsClick = (type: "tel" | "sms") => {
-    window.open(`${type}:${selectedAdvisor?.phone}`, "_blank", "noopener,noreferrer");
-  };
+  // useEffect(() => {
+  //   if (!!selectedAdvisor) {
+  //     setData(selectedAdvisor);
+  //   } else {
+  //     setData(null);
+  //   }
+  // }, [selectedAdvisor]);
 
   const onHideRate = () => {
     setShowRate(false);
@@ -36,6 +36,36 @@ const SingleAdvisorModal = ({
   const onShowRate = () => {
     setShowRate(true);
   };
+
+  const { data, isPending } = useQuery({
+    queryKey: [AdvisorService.SINGLE_ADVISOR_CACHEKEY, selectedAdvisor?.id, refresher],
+    queryFn: () => {
+      if (selectedAdvisor?.id) {
+        return AdvisorService.singleAdvisor({ advisorId: selectedAdvisor?.id });
+      } else return null;
+    },
+    staleTime: 0,
+    gcTime: 0,
+  });
+
+  /* -------------------------------------------------------------------------- */
+  /*                                INIT CONTACT                                */
+  /* -------------------------------------------------------------------------- */
+
+  const { mutate, isPending: contactLoading } = useMutation({ mutationFn: AdvisorService.singleAdvisorInitContact });
+
+  const onActionButtinsClick = (type: "tel" | "sms") => {
+    mutate(
+      { advisorId: data?.id || selectedAdvisor?.id },
+      {
+        onSuccess: () => {
+          setRefresher((e) => !e);
+          window.open(`${type}:${data?.user?.mobile_number}`, "_blank", "noopener,noreferrer");
+        },
+      }
+    );
+  };
+
   return (
     <>
       <Modal
@@ -47,62 +77,88 @@ const SingleAdvisorModal = ({
         onHide={onHide}
       >
         <ModalHeaderPart onHide={onHide} title={_STRINGS.CONSULTANT_INFO} />
-        <div className=" w-full p-4 rounded-10 bg-white flex flex-col gap-4 ">
-          <AdvisorCard isSingle data={data} />
-
-          <div className=" w-full  gap-4 flex items-center justify-between">
-            <Button
-              onClick={() => {
-                onActionButtinsClick("tel");
+        {isPending ? (
+          <LottieLoading />
+        ) : (
+          <div className=" w-full p-4 rounded-10 bg-white flex flex-col gap-4 ">
+            <AdvisorCard
+              key="singleCard"
+              isSingle
+              data={{
+                cities: data?.cities || [],
+                created_at: data?.created_at || "",
+                id: data?.id || null,
+                owners_satisfaction: data?.owners_satisfaction || 100,
+                user: data?.user || null,
+                users_satisfaction: data?.users_satisfaction || 100,
+                work_history_in_month: data?.work_history_in_month || 100,
               }}
+            />
+
+            <div className=" w-full  gap-4 flex items-center justify-between">
+              <Button
+                loading={contactLoading}
+                onClick={() => {
+                  onActionButtinsClick("tel");
+                }}
+                containerClass="w-full"
+                width="w-full"
+                title={_STRINGS.CALL}
+                roundedClass="rounded-full"
+                icon={<img className="w-4 h-4 ml-2 aspect-square" src="/assets/icons/advisor/white_phone.svg" />}
+              />
+              <Button
+                loading={contactLoading}
+                onClick={() => {
+                  onActionButtinsClick("sms");
+                }}
+                containerClass="w-full"
+                width="w-full"
+                variant="outline"
+                title={_STRINGS.MESSAGE}
+                roundedClass="rounded-full"
+                icon={<img className="w-4 h-4 ml-2 aspect-square" src="/assets/icons/advisor/blue_message.svg" />}
+              />
+            </div>
+            <div className="flex items-center justify-between">
+              <AdvisorCircularProgresCard
+                pStyles={{ pathColor: "#34C759", textColor: "#000", textSize: "1.3rem" }}
+                data={{ value: data?.advisor_behavior || 100 }}
+                item={{ title: _STRINGS.CONSULTANT_APPROACHES, title_class: " !text-sm" }}
+              />
+              <AdvisorCircularProgresCard
+                pStyles={{ pathColor: "#34C759", textColor: "#000", textSize: "1.3rem" }}
+                data={{ value: data?.advisor_responsibility || 100 }}
+                item={{ title: _STRINGS.CONSULTANT_RESPONSIBILITY, title_class: " !text-sm" }}
+              />
+            </div>
+            <div className="flex items-center justify-between">
+              <AdvisorCircularProgresCard
+                pStyles={{ pathColor: "#34C759", textColor: "#000", textSize: "1.3rem" }}
+                data={{ value: data?.response_speed_and_followup || 100 }}
+                item={{ title: _STRINGS.FOLLOWUP_SPEED_RESPONSE, title_class: " !text-sm" }}
+              />
+            </div>
+
+            <Button
+              disabled={!data?.can_user_add_rate}
+              onClick={onShowRate}
+              title={_STRINGS.RECORD_SCORE}
+              roundedClass="rounded-full"
               containerClass="w-full"
               width="w-full"
-              title={_STRINGS.CALL}
-              roundedClass="rounded-full"
-              icon={<img className="w-4 h-4 ml-2 aspect-square" src="/assets/icons/advisor/white_phone.svg" />}
-            />
-            <Button
-              onClick={() => {
-                onActionButtinsClick("sms");
-              }}
-              containerClass="w-full"
-              width="w-full"
-              variant="outline"
-              title={_STRINGS.MESSAGE}
-              roundedClass="rounded-full"
-              icon={<img className="w-4 h-4 ml-2 aspect-square" src="/assets/icons/advisor/blue_message.svg" />}
             />
           </div>
-          <div className="flex items-center justify-between">
-            <AdvisorCircularProgresCard
-              pStyles={{ pathColor: "#34C759", textColor: "#000", textSize: "1.3rem" }}
-              data={{ value: data?.owners_satisfaction || 50 }}
-              item={{ title: _STRINGS.CONSULTANT_APPROACHES, title_class: " !text-sm" }}
-            />
-            <AdvisorCircularProgresCard
-              pStyles={{ pathColor: "#34C759", textColor: "#000", textSize: "1.3rem" }}
-              data={{ value: data?.owners_satisfaction || 50 }}
-              item={{ title: _STRINGS.CONSULTANT_RESPONSIBILITY, title_class: " !text-sm" }}
-            />
-          </div>
-          <div className="flex items-center justify-between">
-            <AdvisorCircularProgresCard
-              pStyles={{ pathColor: "#34C759", textColor: "#000", textSize: "1.3rem" }}
-              data={{ value: data?.owners_satisfaction || 50 }}
-              item={{ title: _STRINGS.FOLLOWUP_SPEED_RESPONSE, title_class: " !text-sm" }}
-            />
-          </div>
-
-          <Button
-            onClick={onShowRate}
-            title={_STRINGS.RECORD_SCORE}
-            roundedClass="rounded-full"
-            containerClass="w-full"
-            width="w-full"
-          />
-        </div>
+        )}
       </Modal>
-      <RatePop show={!!showRate} onHide={onHideRate} selectedAdvisor={selectedAdvisor} />
+      <RatePop
+        show={!!showRate}
+        onHide={onHideRate}
+        data={data}
+        onSuccessCb={() => {
+          setRefresher((e) => !e);
+        }}
+      />
     </>
   );
 };

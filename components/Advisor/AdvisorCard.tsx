@@ -33,12 +33,12 @@ const AdvisorCard = ({
           <div className="w-full flex md:flex-cow  items-center justify-between gap-2">
             <AdvisorCircularProgresCard
               pStyles={{ pathColor: "#3886E5", textColor: "#3886E5", textSize: "1.2rem" }}
-              data={{ value: 40 }}
+              data={{ value: data?.users_satisfaction || 100 }}
               item={{ linear_title: _STRINGS.USERS_SATISFACTION, linear_title_class: "text-primary-700" }}
             />
             <AdvisorCircularProgresCard
               pStyles={{ pathColor: "#34C759", textColor: "#34C759", textSize: "1.2rem" }}
-              data={{ value: 50 }}
+              data={{ value: data?.owners_satisfaction || 100 }}
               item={{ linear_title: _STRINGS.OWNERS_SATISFACTION, linear_title_class: "text-primary-600" }}
             />
           </div>

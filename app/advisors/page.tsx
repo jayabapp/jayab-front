@@ -36,7 +36,7 @@ const AdvisorsListPage = () => {
   const { data: banners } = useQuery({
     queryKey: [HomeService.BANNERS_RANDOM_CACHEKEY, "MAIN"],
     queryFn: () => {
-      HomeService.GetBanners({ position: "MAIN" });
+      return HomeService.GetBanners({ position: "MAIN" });
     },
   });
 

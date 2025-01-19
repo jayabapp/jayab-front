@@ -1,19 +1,24 @@
+import { SingleAdvisorDto } from "@/api_services/advisor/advisor.interface";
+import { AdvisorService } from "@/api_services/advisor/advisor.propery";
 import ModalBottomSheet from "@/components/Modal/ModalBottomSheet";
 import PopUpDown from "@/components/PopUpDown";
 import Button from "@/components/shared/Button/Button";
 import RangeWithTitle from "@/components/shared/Form/RangeWithTitle";
 import { easyRatingItems } from "@/utils/constantss";
 import _STRINGS from "@/utils/LocalStrings";
-import React, { useState } from "react";
+import { useMutation } from "@tanstack/react-query";
+import React, { useEffect, useState } from "react";
 
 const RatePop = ({
   show,
   onHide,
-  selectedAdvisor,
+  data,
+  onSuccessCb,
 }: {
   show: boolean;
   onHide: () => void | null;
-  selectedAdvisor: any;
+  onSuccessCb: () => void | null;
+  data: SingleAdvisorDto | null | undefined;
 }) => {
   const [values, setValues] = useState<{ [key: string]: any }>({
     response_speed_and_followup: 50,
@@ -24,6 +29,34 @@ const RatePop = ({
   const onChange = (value: string | number | null | number[], key: string) => {
     setValues((e) => ({ ...e, [key]: value }));
   };
+
+  const { mutate: rateFunc, isPending: rateLoading } = useMutation({
+    mutationFn: AdvisorService.singleAdvisorRate,
+    onSuccess: () => {
+      onSuccessCb();
+      onHide();
+    },
+  });
+
+  const onSubmit = () => {
+    if (data?.id)
+      rateFunc({
+        advisorId: data?.id,
+        advisor_behavior: values?.advisor_behavior,
+        advisor_responsibility: values?.advisor_responsibility,
+        response_speed_and_followup: values?.response_speed_and_followup,
+      });
+  };
+
+  useEffect(() => {
+    if (!!data?.user_rate) {
+      setValues({
+        response_speed_and_followup: data?.user_rate?.response_speed_and_followup || 50,
+        advisor_behavior: data?.user_rate?.advisor_behavior || 50,
+        advisor_responsibility: data?.user_rate?.advisor_responsibility || 50,
+      });
+    }
+  }, [data]);
 
   return (
     <ModalBottomSheet
@@ -92,7 +125,14 @@ const RatePop = ({
             value={Number(values?.advisor_responsibility) || 0}
           />
         </div>
-        <Button title={_STRINGS.RECORD_SCORE} width="w-full" containerClass="w-full pt-6" roundedClass="rounded-full" />
+        <Button
+          loading={rateLoading}
+          onClick={onSubmit}
+          title={_STRINGS.RECORD_SCORE}
+          width="w-full"
+          containerClass="w-full pt-6"
+          roundedClass="rounded-full"
+        />
       </div>
     </ModalBottomSheet>
   );

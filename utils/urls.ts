@@ -87,6 +87,10 @@ export const apiRoutes = {
 
   SINGLE_ADVISOR: (advisorId?: string | number | null) => `/user/advisors/${advisorId}`,
 
+  SINGLE_ADVISOR_INIT_RATE: (advisorId?: string | number | null) => `/user/advisors/${advisorId}/rate/init`,
+
+  SINGLE_ADVISOR_RATE: (advisorId?: string | number | null) => `/user/advisors/${advisorId}/rate/add`,
+
   OWNER_PROPERTIES: (propertyId: string | number | null) => `/owner/properties/${propertyId}`,
 
   OWNER_PROPERTIES_STATUS_UPDATE: (propertyId: string | number | null) =>

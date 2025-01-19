@@ -1,16 +1,19 @@
 import { apiRoutes } from "@/utils/urls";
 import { apiCall } from "../common/apicall.helper";
 import {
+  AddRateDto,
   AdvisorListDto,
   AdvisorPageListDto,
   AdvisorProfileDto,
   CreateAdvisorDto,
   PayAdvisorPlanDto,
+  SingleAdvisorDto,
 } from "./advisor.interface";
 
 export class AdvisorService {
   static USER_ADVISORS_CACHEKEY = "USER_ADVISORS";
   static USER_ADVISORS_PROFILE_CACHEKEY = "USER_ADVISORS_PROFILE";
+  static SINGLE_ADVISOR_CACHEKEY = "SINGLE_ADVISOR";
 
   static async createAdvisor(dto: CreateAdvisorDto) {
     try {
@@ -57,7 +60,29 @@ export class AdvisorService {
 
   static async singleAdvisor(dto: { advisorId: string | number }) {
     try {
-      const result = await apiCall<unknown, AdvisorProfileDto | null>("GET", apiRoutes.SINGLE_ADVISOR(dto.advisorId));
+      const result = await apiCall<unknown, SingleAdvisorDto | null>("GET", apiRoutes.SINGLE_ADVISOR(dto.advisorId));
+      return result;
+    } catch (e) {
+      throw e;
+    }
+  }
+
+  static async singleAdvisorInitContact(dto: { advisorId: string | number | null }) {
+    try {
+      const result = await apiCall<unknown, unknown | null>("POST", apiRoutes.SINGLE_ADVISOR_INIT_RATE(dto.advisorId));
+      return result;
+    } catch (e) {
+      throw e;
+    }
+  }
+
+  static async singleAdvisorRate(dto: AddRateDto & { advisorId: string | number | null }) {
+    try {
+      const result = await apiCall<AddRateDto, unknown | null>("POST", apiRoutes.SINGLE_ADVISOR_RATE(dto.advisorId), {
+        advisor_behavior: dto.advisor_behavior,
+        advisor_responsibility: dto.advisor_responsibility,
+        response_speed_and_followup: dto.response_speed_and_followup,
+      });
       return result;
     } catch (e) {
       throw e;
