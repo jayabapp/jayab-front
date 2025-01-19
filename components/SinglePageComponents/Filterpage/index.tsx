@@ -136,28 +136,28 @@ const Filterpage = () => {
   };
 
   return (
-    <div className="app-container z-2 ">
+    <div className="app-container !pt-32  lg:!pt-28  md: z-2 ">
       <div className=" hidden  z-1 w-full md:flex flex-col md:flex-row items-center justify-between ">
         {/* <Breadcrumbs /> */}
         <SingleProductBreadCrumb dataArray={breadCrumbs} />
       </div>
-      <div className="w-full hidden md:flex">
+      <div className="w-full hidden md:flex  pb-4">
         {" "}
         <FiltersSelectedFiltersShowcase query={queries} propertyTypes={propertyTypes || {}} />
       </div>
-      <div className="flex fixed border-b h-10  items-center justify-center   z-10 md:z-1  top-[4.5rem] md:top-auto left-0 md:left-auto bg-white md:bg-transparent md:relative flex-col w-full md:gap-2  ">
+      <div className="flex fixed border-b  md:hidden h-10 right-0  items-center justify-center   z-10 md:z-1  top-[4.5rem] md:top-auto left-0 md:left-auto bg-white md:bg-transparent md:relative flex-col w-full md:gap-2  ">
         {" "}
-        <div className=" flex  order-1  md:hidden  w-full">
-          <div className="flex z-1   w-full items-center gap-4 justify-between  ">
+        <div className=" flex  order-1  md:hidden  relative w-full">
+          <div className="grid grid-cols-10 z-1  relative  w-full items-center gap-0 justify-center  ">
             <img
               onClick={() => setFilterModalShow(true)}
               src="/assets/icons/property/filter_icon.svg"
-              className="  cursor-pointer w-12 h-5 shrink-0"
+              className=" col-span-1  cursor-pointer w-12 h-5 shrink-0"
             />
-            <div className="w-full  overflow-visible flex md:hidden">
+            <div className=" !col-span-9 ">
               {" "}
               <FiltersSelectedFiltersShowcase query={queries} propertyTypes={propertyTypes || {}} />
-            </div>
+            </div>{" "}
             {/* <SortMenu query={queries} /> */}
           </div>
         </div>

@@ -122,6 +122,7 @@ export const SORT_TYPES = [
 
 export const allRoutes: { [key: string]: string } = {
   questions: "پرسش ها",
+  s: "آگهی ها",
   advisors: "مشاوران",
   inquery: "استعلام هفتگی",
   authorize: "احراز  ملک",
