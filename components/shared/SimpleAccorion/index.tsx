@@ -16,6 +16,7 @@ type props = {
     titleClass?: string;
     parentClass?: string;
     invertIconDark?: boolean;
+    disableBorderB?: boolean;
   };
 };
 
@@ -29,7 +30,7 @@ const SimpleAccordion = ({ title, children, ExtraElement, item, isOpenFirst, tit
     >
       <div
         className={` flex justify-between items-center gap-3  ${item?.headClass}    transition-all cursor-pointer ${
-          isOpen ? " border-b  pb-2 " : "rounded-md "
+          isOpen ? ` ${item?.disableBorderB ? "" : "border-b"}   pb-2 ` : "rounded-md "
         }`}
         onClick={() => setIsOpen((e) => !e)}
       >

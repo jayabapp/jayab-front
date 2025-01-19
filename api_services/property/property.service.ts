@@ -18,6 +18,7 @@ import {
   PropInitDto,
   RoomInfosDto,
   SingleOwnerPropertyDto,
+  GetPropertiesPlusFilters,
 } from "./property.interface";
 import { YupValidator } from "@/utils/YupValidator";
 import { sendMediaSchema } from "./property.schema";
@@ -596,11 +597,13 @@ export class PropertyService {
   /*                             GET PROPERTIES PART                            */
   /* -------------------------------------------------------------------------- */
 
-  static async GetProperties(dto: { cursor: number }) {
+  static async GetProperties(dto: GetPropertiesPlusFilters) {
     try {
-      const result = await apiCall<{ cursor: number }, { data: PropertyListDto[] }>("GET", apiRoutes.GET_PROPERTIES, {
-        cursor: dto.cursor,
-      });
+      const result = await apiCall<GetPropertiesPlusFilters, { data: PropertyListDto[] }>(
+        "GET",
+        apiRoutes.GET_PROPERTIES,
+        dto
+      );
       return result;
     } catch (e) {
       throw e;

@@ -11,12 +11,18 @@ import _STRINGS from "@/utils/LocalStrings";
 
 import queryBuilder from "@/helpers/queryBuilder";
 import useQueryGet from "@/helpers/queryGet";
-import { SORT_TYPES } from "@/utils/constantss";
+import { poolFilterTypes, SORT_TYPES } from "@/utils/constantss";
 import SingleProductBreadCrumb from "@/components/BreadCrumbs/SingleProductBreadCrumb";
 import SortMenu from "@/components/Filters/SortMenu";
 import FilterdProperties from "@/components/Filters/FilterdProperties";
 import Modal from "@/components/Modal";
 import { ParsedUrlQuery } from "querystring";
+import { PropertyService } from "@/api_services/property/property.service";
+import ProductModels from "@/components/Filters/ProductModelx";
+import Button from "@/components/shared/Button/Button";
+import FilterCounter from "@/components/Filters/FilterCounter";
+import FiltersPart from "./FiltersPart";
+import FiltersSelectedFiltersShowcase from "@/components/Filters/FiltersSelectedFiltersShowcase";
 
 interface OtpQuery extends ParsedUrlQuery {
   id: string;
@@ -30,23 +36,22 @@ type sortTypeType = { id?: string; title?: string };
 const Filterpage = () => {
   const [defaultMobileFilters, setDefaultMobileFilters] = useState<any>({});
   const pathname = usePathname();
-
+  const [filters, setFilters] = useState({});
   const router = useRouter();
   const searchParams = useSearchParams();
-  const [specs, setSpecs] = useState({});
   const [breadCrumbs, setBreadCrumbs] = useState<{ title: string; link: string }[]>([
     { title: "خانه", link: "/" },
-    { title: "دسته بندی", link: "/products" },
+    { title: "دسته بندی", link: "/s" },
   ]);
   const queriesParams = useQueryGet<any>();
 
   const [queries, setQueries] = useState(queriesParams);
 
   useEffect(() => {
-    if (pathname.includes("/products")) {
+    if (pathname.includes("/s")) {
       setQueries(queriesParams);
       setDefaultMobileFilters(queriesParams);
-      setSpecs(queriesParams);
+      setFilters(queriesParams);
     }
   }, [searchParams]);
 
@@ -115,6 +120,11 @@ const Filterpage = () => {
   //   }
   // }, [catsData, queries?.parent_category, queries?.category]);
 
+  const { data: propertyTypes } = useQuery({
+    queryFn: () => PropertyService.GetUserPropertyGroup({ group: ["PROPERTY_TYPE", "ENTERTAINMENT", "POOL_TYPE"] }),
+    queryKey: [PropertyService.USER_PROP_OPTIONS_CACHEKEY, "PROPERTY_TYPE", "ENTERTAINMENT", "POOL_TYPE"],
+  });
+
   const queryMaker = (items: any) => {
     const body = {
       ...items,
@@ -131,30 +141,24 @@ const Filterpage = () => {
         {/* <Breadcrumbs /> */}
         <SingleProductBreadCrumb dataArray={breadCrumbs} />
       </div>
-
-      <div className="flex fixed   z-10 md:z-1  top-[4.5rem] md:top-auto left-0 md:left-auto bg-white md:bg-transparent md:relative flex-col w-full md:gap-2  ">
+      <div className="w-full hidden md:flex">
+        {" "}
+        <FiltersSelectedFiltersShowcase query={queries} propertyTypes={propertyTypes || {}} />
+      </div>
+      <div className="flex fixed border-b h-10  items-center justify-center   z-10 md:z-1  top-[4.5rem] md:top-auto left-0 md:left-auto bg-white md:bg-transparent md:relative flex-col w-full md:gap-2  ">
         {" "}
         <div className=" flex  order-1  md:hidden  w-full">
-          <div className="flex z-1  w-full items-center gap-4 justify-between  ">
+          <div className="flex z-1   w-full items-center gap-4 justify-between  ">
             <img
               onClick={() => setFilterModalShow(true)}
-              src="/assets/icons/products/filters_icons.svg"
-              className="  cursor-pointer w-12 h-4 shrink-0"
+              src="/assets/icons/property/filter_icon.svg"
+              className="  cursor-pointer w-12 h-5 shrink-0"
             />
-            {/* <Button
-              width="!px-4 md:custome-shadow-card !w-full !gap-2"
-              icon={
-                <img
-                  src="/assets/icons/products/setting_slider.svg"
-                  className="cursor-pointer w-4 h-4 shrink-0  ml-2"
-                />
-              }
-              onClick={() => setFilterModalShow(true)}
-              variant="white"
-              title={_STRINGS.FILTERS}
-            /> */}
-
-            <SortMenu query={queries} />
+            <div className="w-full  overflow-visible flex md:hidden">
+              {" "}
+              <FiltersSelectedFiltersShowcase query={queries} propertyTypes={propertyTypes || {}} />
+            </div>
+            {/* <SortMenu query={queries} /> */}
           </div>
         </div>
       </div>
@@ -163,84 +167,17 @@ const Filterpage = () => {
         {/* SIDEBAR */}
         <div className="grid grid-cols-12  col-span-12 ">
           <div className="hidden gap-4 lg:flex h-fit flex-col items-center rounded-10  border col-span-3 ">
-            {/* <SearchInResults /> */}
-            <div className="  z-2 h-fit flex-col items-center p-3  bg-white dark:bg-zinc-800 rounded-xl w-full ">
-              <div className="flex items-center gap-2 mb-4 ">
-                <img src="/assets/icons/products/filters_icons.svg" />
-                <p className="font-medium  text-lg">{_STRINGS.FILTERS}</p>
-              </div>
-              <SimpleAccordion item={{ parenClass: "  pb-4  border-b w-full p-2" }} title={"_STRINGS?.B14"} isOpenFirst>
-                s{/* <ProductModels queryKey={"parent_category"} list={parentCatsData} query={queries} /> */}
-              </SimpleAccordion>
-              {/* {!isEmpty(catsData) ? (
-                <SimpleAccordion
-                item={{ noBorder: true, parenClass: " p-2 w-full" }}
-                title={_STRINGS?.B47}
-                isOpenFirst={queries?.parent_category ? true : false}
-                >
-                  <ProductModels list={catsData} queryKey={"categories"} query={queries} />
-                </SimpleAccordion>
-                ) : (
-                  <></>
-                  )} */}
-              {/* {!!brands?.data && !isEmpty(brands?.data) ? (
-                <SimpleAccordion
-                  item={{ noBorder: true, parenClass: "  border-b pb-4  p-2 w-full" }}
-                  isOpenFirst={queries?.brands ? true : false}
-                  title={_STRINGS?.BRANDS}
-                >
-                  <ProductModels isMulty list={brands?.data} queryKey={"brands"} query={queries} />
-                </SimpleAccordion>
-              ) : (
-                <></>
-              )} */}
-              {/* <SimpleAccordion item={{ noBorder: true, parenClass: " p-2 w-full" }} title={_STRINGS?.A21}>
-                <ColorFilter query={queries} />
-                </SimpleAccordion> */}
-              <SimpleAccordion item={{ parenClass: " pb-4  p-2 w-full" }} title={"_STRINGS?.A22"}>
-                r
-                {/* <PriceRange
-                  query={queries}
-                  lowLimit={catsCategories?.price_range?.min_price}
-                  upLimit={catsCategories?.price_range?.max_price}
-                /> */}
-              </SimpleAccordion>
-              {/* <TopSwitchs query={queries} /> */}
-            </div>
-            {/* {!isEmpty(catsCategories?.specifications) ? (
-              <div className="  h-fit flex-col w-full items-center   p-3  bg-white dark:bg-zinc-800 rounded-xl ">
-                {catsCategories?.specifications?.map((e) => (
-                  <SimpleAccordion
-                    key={`specif${e?.id}`}
-                    item={{ noBorder: true, parenClass: " p-2 w-full" }}
-                    title={e?.title}
-                  >
-                    <DynamicCategoriesItems
-                      setSpecs={setSpecs}
-                      list={e?.options}
-                      unit={e?.unit}
-                      queryKey={"specifications"}
-                      isMulty={true}
-                      query={specs}
-                      dynamicKey={e?.id}
-                    />
-                  </SimpleAccordion>
-                ))}
-                <Button
-                  variant="primary"
-                  title={_STRINGS?.A25}
-                  size={"sm"}
-                  onClick={() => {
-                    router.replace(`${pathname}?${queryBuilder(specs)}`);
-                    setFilterModalShow(false);
-                  }}
-                  width="w-full"
-                  containerClass="w-full flex items-center flex-col ml-2"
-                />
-              </div>
-            ) : (
-              <></>
-            )} */}
+            <FiltersPart propertyTypes={propertyTypes} filters={filters} setFilters={setFilters} queries={queries} />
+            <Button
+              title={_STRINGS?.DO_THE_FILTERING}
+              onClick={() => {
+                queryMaker(filters);
+                // router.replace(`${pathname}?${queryBuilder(specs)}`);
+                setFilterModalShow(false);
+              }}
+              width="w-full"
+              containerClass="w-full flex items-center flex-col px-2 pb-2 pt-6"
+            />
           </div>
 
           {/* LEFT SIDE */}
@@ -262,19 +199,19 @@ const Filterpage = () => {
         }}
         show={filterModalShow}
         onHide={() => {
-          setSpecs(defaultMobileFilters);
+          setFilters(defaultMobileFilters);
           setFilterModalShow(false);
         }}
       >
         {/* HEADER */}
         <div className="flex sticky  pb-4 pt-4   w-full z-[60] bg-white dark:bg-zinc-600 justify-between items-center    top-0  border-b border-b-neutral-300 dark:border-b-zinc-600 ">
           <img
-            src="/assets/icons/profile/close-icon.svg"
+            src="/assets/icons/shared/close.svg"
             width={20}
             height={20}
             className={"dark:invert mr-4"}
             onClick={() => {
-              setSpecs(defaultMobileFilters);
+              setFilters(defaultMobileFilters);
               setFilterModalShow(false);
             }}
           />
@@ -285,105 +222,20 @@ const Filterpage = () => {
         {/* BODY */}
         <div className="w-[90%] mx-auto">
           <div className=" w-full  pt-4 pb-8  ">
-            <div className="flex items-center gap-2 mb-4 ">
-              <img src="/assets/icons/products/filters_icons.svg" />
-              <p className="font-medium  text-lg">{_STRINGS.FILTERS}</p>
-            </div>
-            {/* <SearchInResults /> */}
-            {/* <TopSwitchs query={queries} setMobileFilters={setSpecs} mobileFilters={specs} /> */}
-            <SimpleAccordion
-              item={{ parenClass: " border-b w-full p-2", invertIconDark: true }}
-              title={"_STRINGS?.B14"}
-              isOpenFirst
-            >
-              {/* <ProductModels
-                setMobileFilters={setSpecs}
-                mobileFilters={specs}
-                list={parentCatsData}
-                queryKey={"parent_category"}
-                query={queries}
-              /> */}{" "}
-              sf
-            </SimpleAccordion>
-            {/* {catsData && catsData?.length > 0 ? (
-              <SimpleAccordion
-                item={{ noBorder: true, parenClass: " p-2 w-full", invertIconDark: true }}
-                title={_STRINGS?.B47}
-              >
-                <ProductModels list={catsData} queryKey={"categories"} query={queries} />
-              </SimpleAccordion>
-            ) : (
-              <></>
-            )} */}
-            {/* <SimpleAccordion item={{ noBorder: true, parenClass: " p-2 w-full" }} title={_STRINGS?.A21}>
-              <ColorFilter query={queries} />
-            </SimpleAccordion> */}
-            {/* {!!brands?.data && !isEmpty(brands?.data) ? (
-              <SimpleAccordion
-                item={{ noBorder: true, parenClass: "  border-b p-2 w-full" }}
-                isOpenFirst={queries?.brands ? true : false}
-                title={_STRINGS?.BRANDS}
-              >
-                <ProductModels
-                  setMobileFilters={setSpecs}
-                  mobileFilters={specs}
-                  isMulty
-                  list={brands?.data}
-                  queryKey={"brands"}
-                  query={queries}
-                />
-              </SimpleAccordion>
-            ) : (
-              <></>
-            )} */}
-            {/* <SimpleAccordion
-              item={{ noBorder: true, parenClass: " p-2 w-full", invertIconDark: true }}
-              title={_STRINGS?.A22}
-            >
-              <PriceRange
-                query={queries}
-                lowLimit={catsCategories?.price_range?.min_price}
-                upLimit={catsCategories?.price_range?.max_price}
-              />
-            </SimpleAccordion> */}
+            <FiltersPart propertyTypes={propertyTypes} filters={filters} setFilters={setFilters} queries={queries} />
           </div>
           <div className=" w-full  pb-16  ">
             {" "}
-            {/* {catsCategories && catsCategories?.specifications?.length > 0 ? (
-              <div className=" h-fit flex-col w-full items-center  p-3  bg-gray-100 dark:bg-zinc-600 rounded-xl ">
-                {catsCategories?.specifications?.map((e) => (
-                  <SimpleAccordion
-                    key={`specif${e?.id}`}
-                    item={{ noBorder: true, parenClass: " p-2 w-full", invertIconDark: true }}
-                    title={e?.title}
-                  >
-                    <DynamicCategoriesItems
-                      setSpecs={setSpecs}
-                      list={e?.options}
-                      unit={e?.unit}
-                      queryKey={"specifications"}
-                      isMulty={true}
-                      query={specs}
-                      dynamicKey={e?.id}
-                    />
-                  </SimpleAccordion>
-                ))}
-              </div>
-            ) : (
-              <></>
-            )} */}
-            {/* <Button
-              variant="primary"
+            <Button
               title={_STRINGS?.DO_THE_FILTERING}
-              size={"sm"}
               onClick={() => {
-                queryMaker(specs);
+                queryMaker(filters);
                 // router.replace(`${pathname}?${queryBuilder(specs)}`);
                 setFilterModalShow(false);
               }}
               width="w-full"
-              containerClass="w-full flex items-center flex-col ml-2 pt-6"
-            /> */}
+              containerClass="w-full flex items-center flex-col px-2 pb-2 pt-6"
+            />{" "}
           </div>
         </div>
       </Modal>

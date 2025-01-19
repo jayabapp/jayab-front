@@ -14,22 +14,23 @@ import EmptyList from "../shared/Lotties/EmptyList";
 import { PropertyListDto } from "@/api_services/property/property.interface";
 
 export interface catQueryTypes {
-  categories: string | null | undefined;
-  parent_category: string | null | undefined;
-  sort_type: string | null | undefined;
-  // cursor: string | null | undefined;
   max_price: string | null | undefined;
   min_price: string | null | undefined;
-  is_offer: string | null | undefined;
-  is_new: string | null | undefined;
-  is_top_sell: string | null | undefined;
-  q: string | null | undefined;
-  tag_ids: string | null | undefined;
-  is_discounted: string | null | undefined;
-  is_daily_offer: string | null | undefined;
-  is_special_offer: string | null | undefined;
-  specifications: string | undefined;
-  brands: string | null | undefined;
+  sort_type: string | null | undefined;
+  cities: string | null | undefined;
+  code: string | null | undefined;
+  entertainment: string | null | undefined;
+  has_pool: string | null | undefined;
+  total_guests: string | null | undefined;
+  is_premium: string | null | undefined;
+  start_day: string | null | undefined;
+  num_days: string | null | undefined;
+  total_bedrooms: string | null | undefined;
+  property_type: string | null | undefined;
+  pool_type: string | null | undefined;
+  title: string | null | undefined;
+  province_id: string | null | undefined;
+  has_discount: string | null | undefined;
 }
 
 type FilterdPropertiesType = {
@@ -60,21 +61,17 @@ function FilterdProperties({ sortType, setSortType, query }: FilterdPropertiesTy
     );
   }, [
     sortType,
-    query.q,
-    query.categories,
-    query.is_discounted,
-    query.is_daily_offer,
-    query.is_new,
-    query.is_offer,
-    query.is_special_offer,
-    query.is_top_sell,
     query.max_price,
     query.min_price,
-    query.parent_category,
     query.sort_type,
-    query.specifications,
-    query.tag_ids,
-    query.brands,
+    query?.property_type,
+    query?.pool_type,
+    query?.has_pool,
+    query?.total_bedrooms,
+    query?.total_guests,
+    query?.entertainment,
+    query?.has_discount,
+    query?.is_premium,
   ]);
 
   const {
@@ -82,25 +79,37 @@ function FilterdProperties({ sortType, setSortType, query }: FilterdPropertiesTy
     refetch,
     data: propQueryData,
   } = useQuery({
-    queryKey: [PropertyService?.GET_PROPERTIES_CACHEKEY],
+    queryKey: [
+      PropertyService?.GET_PROPERTIES_CACHEKEY,
+      query?.property_type,
+      query?.pool_type,
+      query?.has_pool,
+      query?.total_bedrooms,
+      query?.total_guests,
+      query?.entertainment,
+      query?.has_discount,
+      query?.is_premium,
+    ],
     queryFn: () => {
       return PropertyService?.GetProperties({
         cursor: Number(cursor),
-        //   is_daily_offer: Number(query?.is_daily_offer || 0),
-        //   is_discounted: Number(query?.is_discounted || 0),
-        //   is_special_offer: Number(query?.is_special_offer || 0),
-        //   sort_cheapest: query?.sort_type == "cheapest" ? 1 : 0,
-        //   sort_most_sold: query?.sort_type == "best_sellers" ? 1 : 0,
-        //   is_top_sell: query?.is_top_sell == "1" ? 1 : 0,
-        //   is_new: query?.is_new == "1" ? 1 : 0,
-        //   sort_most_expensive: query?.sort_type == "expensive" ? 1 : 0,
-        //   sort_newest: query?.sort_type == "new" ? 1 : 0,
-        //   specifications: query.specifications,
-        //   brand_ids: query.brands || undefined,
-        //   min_price: Number(query.min_price) || undefined,
-        //   max_price: Number(query.max_price) || undefined,
-        //   category_id: query?.categories || query?.parent_category || undefined,
-        //   q: query?.q || undefined,
+        min_price: Number(query.min_price) || undefined,
+        max_price: Number(query.max_price) || undefined,
+        per_page: 20,
+        cities: query?.cities || undefined,
+        code: query?.code || undefined,
+        entertainment: query?.entertainment || undefined,
+        has_pool: query?.has_pool || undefined,
+        is_premium: query?.is_premium || undefined,
+        total_guests: query?.total_guests || undefined,
+        start_day: query?.start_day || undefined,
+        num_days: query?.num_days || undefined,
+        total_bedrooms: query?.total_bedrooms || undefined,
+        property_type: query?.property_type || undefined,
+        pool_type: query?.pool_type || undefined,
+        has_discount: query?.has_discount || undefined,
+        province_id: query?.province_id || undefined,
+        title: query?.title || undefined,
       });
     },
     gcTime: 0,
@@ -139,7 +148,7 @@ function FilterdProperties({ sortType, setSortType, query }: FilterdPropertiesTy
                 <BtnLoading />
               </div>
             }
-            className="grid   pb-8 pt-4 !overflow-hidden  grid-cols-2 gap-2 md:gap-4  lg:grid-cols-3 "
+            className="grid   pb-8 pt-4 md:pt-2 px-1  !overflow-hidden  grid-cols-1 gap-2 md:gap-4  md:grid-cols-2 xl:grid-cols-3 "
           >
             {data?.map((i) => (
               <PropertyCard data={i} key={`PRODUCT${i?.id}`} />

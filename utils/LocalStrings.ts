@@ -299,6 +299,11 @@ const _STRINGS = {
   SELECTED_CITIES: "شهر های انتخاب شده",
   REGISTER_ADVISOR: "ثبت نام مشاور",
   ADD_REVIEW_ADVISOR: "ثبت امتیاز مشاور",
+  DO_THE_FILTERING: "اعمال فیلتر ها",
+  ROOM_COUNT: "تعداد خواب",
+  PPL_COUNT: "تعداد نفرات",
+  HAS_DISCOUNT: "تخفیف دار",
+  PERMIUM_PROPS: "ملک های ویژه",
 };
 
 export default _STRINGS;

@@ -497,3 +497,25 @@ export interface Statistic {
   date: Date;
   view_count: number;
 }
+
+export interface GetPropertiesPlusFilters {
+  cities?: string | null | number;
+  code?: string | null | number;
+  entertainment?: string | null | number;
+  has_discount?: string | null | number;
+  has_pool?: string | null | number;
+  is_premium?: string | null | number;
+  max_price?: string | null | number;
+  min_price?: string | null | number;
+  num_days?: string | null | number;
+  pool_type?: string | null | number;
+  property_type?: string | null | number;
+  province_id?: string | null | number;
+  regions?: (string | null | number)[];
+  start_day?: string | null | number;
+  title?: string | null | number;
+  total_bedrooms?: string | null | number;
+  total_guests?: string | null | number;
+  cursor: string | null | number;
+  per_page: string | null | number;
+}

@@ -147,7 +147,7 @@ const DrawerContent = ({ onSelect, isOpen, setIsOpen }: drawerMenuContentType) =
         onClick={() => {
           setIsOpen(false);
         }}
-        src="/assets/icons/profile/close-icon.svg"
+        src="/assets/icons/shared/close.svg"
         className="left-5 top-[1.58rem] w-6 h-6 absolute"
       />
 

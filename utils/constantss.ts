@@ -1,3 +1,4 @@
+import { title } from "process";
 import _STRINGS from "./LocalStrings";
 
 export const footerBlacklist = [
@@ -321,3 +322,8 @@ export const easyRatingItems = {
   50: { label: "متوسط", style: { color: "#3886E5", bottom: "2rem" } },
   25: { label: "ضعیف", style: { color: "#3886E5", bottom: "2rem" } },
 };
+
+export const poolFilterTypes = [
+  { title: "فقط ملک‌های استخردار", id: 1 },
+  { title: "فقط ملک‌های بدون استخر", id: 0 },
+];
