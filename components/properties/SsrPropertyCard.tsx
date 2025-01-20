@@ -1,3 +1,4 @@
+"use client";
 import { fakeVilla } from "@/utils/faker";
 import _STRINGS from "@/utils/LocalStrings";
 import React from "react";
@@ -10,7 +11,7 @@ import PropertyCardOwnerPart from "./PropertyCardOwnerPart";
 import { useStoreParams } from "@/store";
 import DaysOfTheWeekStatus from "./DaysOfTheWeekStatus";
 
-const PropertyCard = ({ data, isOwner }: { data: PropertyListDto; isOwner?: boolean }) => {
+const SsrPropertyCard = ({ data, isOwner }: { data: PropertyListDto; isOwner?: boolean }) => {
   const { bookmarks, likes } = useStoreParams((state) => state);
 
   const goToLink = !!isOwner ? `/profile/owner/properties/${data?.id}` : `/property/${data?.slug}`;
@@ -128,4 +129,4 @@ const PropertyCard = ({ data, isOwner }: { data: PropertyListDto; isOwner?: bool
   );
 };
 
-export default PropertyCard;
+export default SsrPropertyCard;

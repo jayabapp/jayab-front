@@ -24,7 +24,7 @@ const Breadcrumbs = () => {
 
     let pathArray = pathname?.split("/");
     pathArray = pathArray.filter((e) => isNaN(Number(e)));
-    let crumbsArray = [{ title: "خانه", route: "", icon: "/assets/icons/shared/breadcrumb_home.svg" }];
+    let crumbsArray = [{ title: "خانه", route: "", icon: "" }];
     pathArray.map((e) => {
       if (allRoutes.hasOwnProperty(e)) crumbsArray.push({ title: allRoutes[e], route: e, icon: "" });
       else crumbsArray.push({ title: decodeURIComponent(e)?.replace(/-/g, " ") || "", route: e, icon: "" });

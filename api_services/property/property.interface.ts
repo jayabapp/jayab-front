@@ -368,6 +368,12 @@ export interface PropertyListDto {
   has_blue_tick: boolean;
   status: Status;
   remaining_days: null;
+  reserve_days: ReserveDaysDto[];
+}
+
+export interface ReserveDaysDto {
+  day_number: number;
+  is_reserved: boolean;
 }
 
 export interface Bedrooms {
@@ -518,4 +524,68 @@ export interface GetPropertiesPlusFilters {
   total_guests?: string | null | number;
   cursor: string | null | number;
   per_page: string | null | number;
+}
+
+export interface SingleLandingDto {
+  query: Query;
+  content: Content;
+  related_landings: RelatedLandings;
+  cities: City[];
+}
+
+export interface City {
+  id: number;
+  title: string;
+  slug: string;
+}
+
+export interface Content {
+  id: number;
+  title: string;
+  slug: string;
+  key: null;
+  small_text: null;
+  full_text: null;
+  feature_image_id: null;
+  is_active: boolean;
+  category_id: number;
+  order: null;
+  html: string;
+  view_count: number;
+  link: null;
+  video_id: null;
+  show_in_sitemap: boolean;
+  fields: Fields;
+  seo: SEO;
+  form_id: null;
+  created_at: Date;
+  updated_at: Date;
+  questions: Question[];
+}
+
+export interface Fields {}
+
+export interface Question {
+  question: string;
+  answer: string;
+  updated_at: Date;
+}
+
+export interface SEO {
+  metaTitle: string;
+  metaDescription: string;
+}
+
+export interface Query {
+  with_pool: number;
+  has_discount: number;
+  is_premium: number;
+  cities: number[];
+  property_type: number[];
+  [key: string]: any;
+}
+
+export interface RelatedLandings {
+  title: string;
+  url: string;
 }

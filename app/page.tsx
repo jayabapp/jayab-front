@@ -1,15 +1,32 @@
-"use client";
+import BannersContainer from "@/components/Home/BannersContainer";
+import MainFiltersContainer from "@/components/Home/MainFiltersContainer";
+import LottieLoading from "@/components/shared/Lotties/LottieLoading";
+import serverCall from "@/helpers/serverCall";
+import _STRINGS from "@/utils/LocalStrings";
+import { apiRoutes, baseUrl } from "@/utils/urls";
+import { Suspense } from "react";
 
-import AddCard from "@/components/properties/PropertyCard";
-import { fakeVilla } from "@/utils/faker";
-
-export default function Home() {
+const Home = async () => {
+  const { data: banners } = await serverCall(baseUrl + apiRoutes.BANNERS + `?position=MAIN_MIDDLE`);
+  const { data: landings } = await serverCall(baseUrl + apiRoutes.USER_LANDING_PAGES);
   return (
-    <div
-      id="homeParent"
-      className="container  items-center !pt-12  !bg-transparent transition-all duration-500 ease-in-out flex flex-col gap-6 "
-    >
-      <div className=" md:grid md:grid-cols-6"> {/* <AddCard data={fakeVilla} /> */}</div>
+    <div id="homeParent" className="home-container  !px-0   flex flex-col gap-10 ">
+      {!banners ? (
+        <LottieLoading />
+      ) : (
+        <div className=" !px-0  w-full flex flex-col">
+          <BannersContainer banners={banners || []} />
+        </div>
+      )}
+      {!landings ? (
+        <LottieLoading />
+      ) : (
+        <Suspense fallback={<></>}>
+          <MainFiltersContainer title={`${_STRINGS.FAST_SEARCH}`} data={landings || []} />{" "}
+        </Suspense>
+      )}
     </div>
   );
-}
+};
+
+export default Home;

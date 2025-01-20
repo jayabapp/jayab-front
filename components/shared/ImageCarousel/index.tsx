@@ -19,7 +19,7 @@ const ImageCarousel = ({ list, item }: ImageCarouselTypes) => {
     e.target.src = "/assets/images/home/image_placeholder.png";
   };
   return (
-    <div className="h-full  col-span-3 px-0 py-0">
+    <div className="h-full  col-span-full  px-4 md:pl-0 md:pr-4  py-0">
       <Swiper
         modules={[Pagination, Autoplay]}
         autoplay={{
@@ -28,6 +28,30 @@ const ImageCarousel = ({ list, item }: ImageCarouselTypes) => {
         }}
         loop
         slidesPerView={item?.showCount ? item?.showCount : 1}
+        breakpoints={{
+          // when window width is >= 640px
+          320: {
+            slidesPerView: 1,
+            spaceBetween: 5,
+          },
+          640: {
+            slidesPerView: 2,
+            spaceBetween: 10,
+          },
+          // when window width is >= 768px
+          768: {
+            slidesPerView: 2,
+            spaceBetween: 10,
+          },
+          1024: {
+            slidesPerView: 2.5,
+            spaceBetween: 10,
+          },
+          1600: {
+            slidesPerView: 2.5,
+            spaceBetween: 15,
+          },
+        }}
         spaceBetween={10}
         centeredSlides={true}
         zoom={true}
@@ -57,9 +81,7 @@ const ImageCarousel = ({ list, item }: ImageCarouselTypes) => {
                 }}
                 // // href={e?.link ? e?.link : undefined}
                 // target={e?.link ? "_blank" : ""}
-                className={`${
-                  isActive ? "opacity-100 h-full" : " scale-y-90 opacity-50   "
-                } focus:outline-none w-full px-0  aspect-[2]    ${
+                className={` focus:outline-none w-full px-0  aspect-[2]  md:aspect-[2.5]   ${
                   e?.link || e?.category || e?.product || e?.brand_id ? "cursor-pointer" : ""
                 } transition-all duration-300 ease-in-out   relative`}
               >
@@ -69,7 +91,7 @@ const ImageCarousel = ({ list, item }: ImageCarouselTypes) => {
                   alt={e?.image?.alt}
                   // src={true ? "saf" : IMAGE_URL(e?.image_location)}
                   src={NEW_IMAGE_URL(e?.image)}
-                  className={`w-full object-cover rounded-20 hidden  md:flex aspect-[2]   align-middle  ${
+                  className={`w-full object-cover rounded-20 hidden  md:flex aspect-[2] md:aspect-[2.5]   align-middle  ${
                     item?.imageClasses ? item?.imageClasses : ""
                   }   `}
                 />

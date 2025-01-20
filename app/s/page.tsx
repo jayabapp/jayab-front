@@ -9,11 +9,9 @@ function Fallback() {
 export default function PropertiesPage() {
   return (
     <>
-      <nav>
-        <Suspense fallback={<Fallback />}>
-          <Filterpage />
-        </Suspense>
-      </nav>
+      <Suspense fallback={<Fallback />}>
+        <Filterpage />
+      </Suspense>
     </>
   );
 }

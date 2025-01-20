@@ -186,7 +186,7 @@ const MainWrapper = ({ children }: mainWrapper) => {
     return <RotatePhone />;
   }
 
-  if (!accessChecked) return <Splashscreen />;
+  // if (!accessChecked) return <Splashscreen />;
   return (
     <div className={`app-background  app-text transition-opacity`}>
       {/* <DesktopHeader /> */}

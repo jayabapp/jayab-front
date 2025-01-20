@@ -69,3 +69,9 @@ export interface Category {
   parent: null;
   image: ImageDto;
 }
+
+export interface HomeLandingDto {
+  url: string;
+  title: string;
+  image: ImageDto | null;
+}

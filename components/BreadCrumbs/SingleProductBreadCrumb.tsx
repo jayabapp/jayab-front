@@ -27,7 +27,8 @@ const SingleProductBreadCrumb = ({ dataArray }: { dataArray: { title: string; li
               } justify-center  cursor-pointer gap-2 flex py-1 px-2  rounded-md  bg-primary-500 text-black`}
             >
               {e?.link == "/" ? (
-                <img src={"/assets/icons/shared/breadcrumb_home.svg"} className="w-4 opacity-60 aspect-square h-4" />
+                // <img src={"/assets/icons/shared/breadcrumb_home.svg"} className="w-4 opacity-60 aspect-square h-4" />
+                <></>
               ) : (
                 <></>
               )}{" "}

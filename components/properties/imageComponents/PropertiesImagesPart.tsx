@@ -322,8 +322,8 @@ function ProductImagesContainer({
     <div className={`flex flex-row w-full gap-2 overflow-visible`}>
       <div className="relative  hidden md:flex  md:w-1/5 ">
         <div
-          className={`relative h-[100%] justify-between gap-2 flex flex-col md:p-0.5 mt-2 md:mt-0
-            `}
+          className={`relative h-[100%]  gap-2 flex flex-col md:p-0.5 mt-2 md:mt-0
+        ${addImages?.length >= 4 ? "justify-between" : ""}    `}
         >
           {/* ${
          !data?.cheapest_price ? "grayscale" : ""

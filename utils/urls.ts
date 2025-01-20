@@ -74,6 +74,8 @@ export const apiRoutes = {
 
   BANNERS: "/banners",
 
+  USER_LANDING_PAGES: "/user/landing-pages",
+
   PROFILE_REGISTER_ADVISORS: `/profile/register/advisor`,
 
   PAY_ADVISOR_PLAN: `/profile/pay-plan`,
@@ -81,6 +83,8 @@ export const apiRoutes = {
   USER_ADVISORS: `/user/advisors`,
 
   USER_ADVISORS_PROFILE: `/profile/advisor`,
+
+  SINGLE_USER_LANDING_PAGE: (landingPageUrl: string | number) => `/user/landing-pages/${landingPageUrl}`,
 
   OWNER_PROP_INIT: (propertyId?: string | number | null) =>
     `/owner/properties/init${!!propertyId ? `?property_id=${propertyId}` : ""}`,

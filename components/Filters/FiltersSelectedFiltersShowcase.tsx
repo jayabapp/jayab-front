@@ -34,7 +34,6 @@ const FiltersSelectedFiltersShowcase = ({
       for (let index = 0; index < objectKeys.length; index++) {
         const element = objectKeys[index];
         if (!!query?.[element]) {
-          console.log(query?.[element]?.split(","), "query?.[element]query?.[element]");
           data.push(
             query?.[element]?.split(",")?.map((x: any) => propertyTypes[element.toUpperCase()]?.find((z) => z?.id == x))
           );

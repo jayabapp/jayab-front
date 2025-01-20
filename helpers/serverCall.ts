@@ -1,6 +1,7 @@
 import MinMaxRandom from "./MinMaxRandom";
+import queryBuilder from "./queryBuilder";
 
-async function serverCall(url: string, revalidate?: number) {
+async function serverCall(url: string, params?: any) {
   try {
     let headers: {
       Accept: string;
@@ -16,7 +17,7 @@ async function serverCall(url: string, revalidate?: number) {
 
       headers: headers,
     };
-    const response = await fetch(url, {
+    const response = await fetch(`${url}${!!params ? `?${queryBuilder(params)}` : ""}`, {
       // next: { revalidate: revalidate ? revalidate : 300 },
       next: { revalidate: MinMaxRandom() },
       ...config1,
@@ -28,7 +29,6 @@ async function serverCall(url: string, revalidate?: number) {
     }
 
     const data = await response?.json();
-
     return data || null;
   } catch (error) {
     console.log("----------------------------------");

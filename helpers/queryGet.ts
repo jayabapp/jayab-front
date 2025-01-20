@@ -16,3 +16,8 @@ export const useQueryGet = <T>() => {
   return queries as T;
 };
 export default useQueryGet;
+
+export const useQueryGetPassParam = <T>(search: any) => {
+  const queries: KeyValue = useMemo(() => paramsToObject(Array.from(search)), [search]);
+  return queries as T;
+};
