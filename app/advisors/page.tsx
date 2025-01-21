@@ -34,9 +34,9 @@ const AdvisorsListPage = () => {
   const [cursor, setCursor] = useState(0);
   const [data, setData] = useState<AdvisorPageListDto[]>([]);
   const { data: banners } = useQuery({
-    queryKey: [HomeService.BANNERS_RANDOM_CACHEKEY, "MAIN"],
+    queryKey: [HomeService.BANNERS_RANDOM_CACHEKEY, "advisor"],
     queryFn: () => {
-      return HomeService.GetBanners({ position: "MAIN" });
+      return HomeService.GetBanners({ position: "advisor" });
     },
   });
 
@@ -124,7 +124,7 @@ const AdvisorsListPage = () => {
 
   return (
     <div className=" w-full container flex flex-col">
-      <BannersContainer />
+      <BannersContainer banners={banners} />
 
       <SearchBox
         boxId="ADVISOR_SEARCH"

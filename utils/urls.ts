@@ -168,4 +168,6 @@ export const apiRoutes = {
     `/chat/${chatroomId}/messages?cursor=${cursor}`,
 
   GET_SNGLE_CHAT: (chatroomId: number | string) => `/chat/${chatroomId}`,
+
+  SINGLE_CONTENT_WITH_SLUG: (slug: number | string) => `/contents/by-slug/${slug}`,
 };

@@ -1,0 +1,55 @@
+import { ContentDto } from "@/api_services/home/home.interface";
+import Button from "@/components/shared/Button/Button";
+import _STRINGS from "@/utils/LocalStrings";
+import { NEW_IMAGE_URL } from "@/utils/urls";
+import moment from "moment-jalaali";
+import Image from "next/image";
+import Link from "next/link";
+import React from "react";
+import Editable from "../Editable";
+
+moment.loadPersian();
+const LatestBlogCard = ({ item }: { item: ContentDto }) => {
+  return (
+    <Editable
+      contentId={item?.id}
+      containerClass={"h-full"}
+      className={`  !h-full  overflow-clip aspect-auto   justify-between  hover:scale-102   bg-white   relative cursor-pointer transition-all duration-200 ease-in-out group    flex items-center  flex-col gap-1   rounded-md `}
+    >
+      <Link href={`/blog/${item?.slug}`} className="flex flex-col w-full">
+        {" "}
+        <div className="  w-full   aspect-[1.5] relative">
+          <Image
+            src={NEW_IMAGE_URL(item?.feature_image, "medium")}
+            fill
+            className=" object-cover  aspect-[1.5] "
+            alt={item?.feature_image?.alt || item?.title}
+          />
+        </div>
+      </Link>
+      <Link href={`/blog/${item?.slug}`} className=" gap-2 flex p-3 flex-col items-start w-full justify-center ">
+        <div className="w-full    font-normal  z-1 ">{moment(item?.created_at).format("jYYYY/jMM/jDD")}</div>
+        <p className=" font-bold line-clamp-1 ">{item?.title}</p>
+        <p className="line-clamp-2  whitespace-pre-wrap flex-1 min-h-[2.5rem] text-base">
+          {item?.small_text || item?.full_text || ""}
+        </p>
+      </Link>
+      {/* <div className="w-full  pb-4">
+        {" "}
+        <Link href={`/blog/${item?.slug}`} className=" ">
+          {" "}
+          <Button
+            title={_STRINGS?.WATCH}
+            roundedClass="rounded-10 "
+            containerClass="mb-1 flex  items-center justify-center !w-full  !text-sm "
+            size="md"
+            // variant="white"
+            width="!px-8 !py-2 !min-w-[40%]  !font-bold "
+          />
+        </Link>
+      </div> */}
+    </Editable>
+  );
+};
+
+export default LatestBlogCard;

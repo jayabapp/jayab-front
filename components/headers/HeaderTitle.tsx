@@ -13,7 +13,7 @@ const HeaderTitle = () => {
     return allRoutes[lastPart];
   } else if (pathname?.includes("/products/")) {
     return "صفحه محصول";
-  } else if (pathname?.includes("/property/")) {
+  } else if (pathname?.includes("/rooms/")) {
     return "جزئیات ملک";
   } else if (pathname?.includes("/blog/")) {
     return "صفحه بلاگ";

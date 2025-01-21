@@ -3,7 +3,7 @@ import React, { useEffect, Fragment, useState } from "react";
 
 import Button from "../shared/Button/Button";
 
-import { Menu, MenuButton, Transition } from "@headlessui/react";
+import { Menu, MenuButton, MenuItem, MenuItems, Transition } from "@headlessui/react";
 import queryBuilder from "@/helpers/queryBuilder";
 import { useQuery } from "@tanstack/react-query";
 import { SORT_TYPES } from "@/utils/constantss";
@@ -48,20 +48,12 @@ const SortMenu = ({ query }: SortMenuType) => {
     <div className="w-fit flex lg:flex-row  gap-3 items-center justify-between rounded-10 dark:border-zinc-600 ">
       <Menu as="div" className="relative inline-block text-left mr-1">
         <div>
-          <MenuButton className=" h-auto md:h-11 rounded-lg cursor-pointer flex justify-between items-center">
-            <Button
-              endIcon={
-                <img src="/assets/icons/forms/chevron-down.svg" alt={"arrow_head"} className=" w-3 h-3 aspect-square" />
-              }
-              width="!px-4 !text-sm md:!text-base md:custome-shadow-card !w-full !gap-2"
-              title={SORT_TYPES?.find((e) => e?.id == query?.sort_type)?.title}
-            />
-            {/* <div className="flex bg-white border py-2 px-4 rounded-md items-center gap-2">
-              <p className="text-primary-700 font-medium text-sm">
-                {SORT_TYPES?.find((e) => e?.id == query?.sort_type)?.title}
-              </p>
-     
-            </div> */}
+          <MenuButton className=" h-auto md:h-11  rounded-lg cursor-pointer flex justify-between items-center">
+            <div className="  gap-2  h-auto py-1 px-2  rounded-full bg-primary-400  flex items-center justify-center  ">
+              {" "}
+              <p>{SORT_TYPES?.find((e) => e?.id == query?.sort_type)?.title}</p>{" "}
+              <img className="w-3 h-3 aspect-square" src="/assets/icons/shared/chevron.svg" />
+            </div>
           </MenuButton>
         </div>
         <Transition
@@ -73,11 +65,11 @@ const SortMenu = ({ query }: SortMenuType) => {
           leaveFrom="transform opacity-100 scale-100"
           leaveTo="transform opacity-0 scale-95"
         >
-          <Menu.Items className="absolute top-0 md:top-auto left-0 z-20  mt-2 w-40 origin-top-center  rounded-xl bg-white dark:bg-zinc-800 custom-shadow ring-1 ring-black ring-opacity-5 focus:outline-none  overflow-scroll">
+          <MenuItems className="absolute top-0 md:top-auto left-0 z-20  mt-2 w-40 origin-top-center  rounded-xl bg-white dark:bg-zinc-800 custom-shadow ring-1 ring-black ring-opacity-5 focus:outline-none  overflow-scroll">
             <div className="flex gap-2 items-center flex-col px-1 py-2 border-b border-gray-275 dark:border-zinc-500 ">
               {" "}
               {SORT_TYPES.map((e) => (
-                <Menu.Item key={e.id}>
+                <MenuItem key={e.id}>
                   <div
                     className={`w-full pl-8  cursor-pointer relative`}
                     onClick={() => {
@@ -87,16 +79,16 @@ const SortMenu = ({ query }: SortMenuType) => {
                     }}
                   >
                     {query?.sort_type == e?.id ? (
-                      <img className="absolute left-2 w- top-1/4" src="/assets/icons/shared/tick.svg" />
+                      <img className="absolute left-2 w- top-1/4" src="/assets/icons/property/green_circled_tick.svg" />
                     ) : (
                       <></>
                     )}
                     <p className="text-sm text-black dark:text-zinc-300 opacity-70"> {e?.title}</p>
                   </div>
-                </Menu.Item>
+                </MenuItem>
               ))}
             </div>
-          </Menu.Items>
+          </MenuItems>
         </Transition>
       </Menu>
     </div>

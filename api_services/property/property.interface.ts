@@ -508,6 +508,7 @@ export interface Statistic {
 
 export interface GetPropertiesPlusFilters {
   cities?: string | null | number;
+  sort_type?: string | null | number;
   code?: string | null | number;
   entertainment?: string | null | number;
   has_discount?: string | null | number;

@@ -12,9 +12,9 @@ export class HomeService {
   static CONTENT_BY_KEY_CACHEKEY = "CONTENT_BY_KEY";
   static SEARCH_SUGGS_CACHEKEY = "SEARCH_SUGGS";
 
-  static async GetBanners(dto: { position: "MAIN" | "MAIN_MIDDLE" }) {
+  static async GetBanners(dto: { position: "main_sidebar" | "advisor" }) {
     try {
-      const result = await apiCall<{ position: "MAIN" | "MAIN_MIDDLE" }, unknown[]>("GET", apiRoutes.BANNERS, {
+      const result = await apiCall<{ position: "main_sidebar" | "advisor" }, unknown[]>("GET", apiRoutes.BANNERS, {
         position: dto?.position,
       });
       return result;

@@ -114,12 +114,11 @@ export const createPropertySteps = (id?: null | number) => [
 ];
 
 export const SORT_TYPES = [
-  { id: "new", title: "جدیدترین" },
-  { id: "cheapest", title: "ارزان ترین" },
-  { id: "expensive", title: "گران ترین" },
-  { id: "best_sellers", title: "پرفروش ترین" },
+  { id: "newset", title: "جدیدترین" },
+  { id: "price_asc", title: "ارزان ترین" },
+  { id: "price_desc", title: "گران ترین" },
+  { id: "popular", title: "محبوب ترین" },
 ];
-
 export const allRoutes: { [key: string]: string } = {
   questions: "پرسش ها",
   s: "آگهی ها",
@@ -327,4 +326,26 @@ export const easyRatingItems = {
 export const poolFilterTypes = [
   { title: "فقط ملک‌های استخردار", id: 1 },
   { title: "فقط ملک‌های بدون استخر", id: 0 },
+];
+export const shareLinks = [
+  {
+    id: 0,
+    icon: "/assets/icons/share/telegram.svg",
+    link: (address: string) => `https://t.me/share/url?url=${address}&text=${address}`,
+  },
+  {
+    id: 1,
+    icon: "/assets/icons/share/whatsapp.svg",
+    link: (address: string) => `https://api.whatsapp.com/send?text=${address}`,
+  },
+  {
+    id: 2,
+    icon: "/assets/icons/share/twitter.svg",
+    link: (address: string) => `https://twitter.com/intent/tweet?text=${address}&hashtags=digihagh`,
+  },
+  {
+    id: 3,
+    icon: "/assets/icons/share/linkdin.svg",
+    link: (address: string) => `https://www.linkedin.com/shareArticle?mini=true&title=دیجی حق&url=${address}`,
+  },
 ];

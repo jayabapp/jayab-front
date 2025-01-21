@@ -111,6 +111,7 @@ function SsrClinetPartFilterProperties({ sortType, query, setCursor, cursor }: S
         has_discount: query?.has_discount || undefined,
         province_id: query?.province_id || undefined,
         title: query?.title || undefined,
+        sort_type: query?.sort_type || undefined,
       });
     },
     gcTime: 0,

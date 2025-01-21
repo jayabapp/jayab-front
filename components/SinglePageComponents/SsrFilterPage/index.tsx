@@ -127,12 +127,12 @@ const SsrFilterPage = ({ landings, firstData }: { firstData: { data: any[] }; la
               {" "}
               <FiltersSelectedFiltersShowcase query={queries} propertyTypes={propertyTypes || {}} />
             </div>{" "}
-            {/* <SortMenu query={queries} /> */}
           </div>
         </div>
       </div>
-      <div className="w-full pb-3">
+      <div className="w-full pb-3 flex flex-row   justify-between">
         <FilterPageCitiesTitle title={cityButtonTItle} cb={showCityModalFunc} />
+        <SortMenu query={queries} />
       </div>
       <div className="grid grid-cols-12 ">
         {/* SIDEBAR */}

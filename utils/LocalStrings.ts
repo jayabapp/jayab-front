@@ -314,6 +314,11 @@ const _STRINGS = {
   PROP_TERMS_PROLUGE: "قوانین و شرایطی که میهمان ها باید بپذیرند و در طول اقامتشان آنها را رعایت کنند",
   CANCENLATION_DESC: "قوانین لغو درخواست میهمان (کنسلی)",
   OTHER_TERMS: "سایر قوانین لازم جهت اقامت",
+  CONTACT_US: "تماس با ما",
+  CONTACT_WAYS: "راه های ارتباطی",
+  SEE_ALL: "مشاهده همه",
+
+  OTHER_ARTICLS: "مقالات دیگر",
 };
 
 export default _STRINGS;

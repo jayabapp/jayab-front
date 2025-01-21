@@ -2,8 +2,10 @@
 
 import { ChatService } from "@/api_services/chat/chat.service";
 import ChatListItem from "@/components/chat/ChatListItem";
+import EmptyList from "@/components/shared/Lotties/EmptyList";
 import LottieLoading from "@/components/shared/Lotties/LottieLoading";
 import { useQuery } from "@tanstack/react-query";
+import { isEmpty } from "lodash";
 import React from "react";
 
 const ChatListPage = () => {
@@ -18,6 +20,8 @@ const ChatListPage = () => {
     >
       {isLoading ? (
         <LottieLoading />
+      ) : isEmpty(chats) ? (
+        <EmptyList />
       ) : (
         <>
           {chats?.map((e) => (

@@ -1,3 +1,4 @@
+"use client";
 import { fakeVilla } from "@/utils/faker";
 import _STRINGS from "@/utils/LocalStrings";
 import React from "react";

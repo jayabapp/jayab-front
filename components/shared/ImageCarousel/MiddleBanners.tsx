@@ -1,0 +1,100 @@
+"use client";
+import Image from "next/image";
+
+import { useRouter } from "next/navigation";
+import React, { useRef } from "react";
+
+import { Swiper, SwiperSlide } from "swiper/react";
+import { IMAGE_URL, NEW_IMAGE_URL } from "../../../utils/urls";
+import { Autoplay } from "swiper/modules";
+import { isMobile } from "react-device-detect";
+import Editable from "@/components/Editable";
+
+const MiddleBanners = ({
+  list,
+  cols = 2,
+  containerClass,
+}: {
+  list?: any[];
+  cols?: number;
+  containerClass?: string;
+}) => {
+  const router = useRouter();
+  const ref = useRef(null) as any;
+
+  return (
+    <div className={`w-full   overflow-hidden px-0 py-0  relative ${containerClass} `}>
+      <Swiper
+        spaceBetween={10}
+        navigation
+        slidesPerView={"auto"}
+        onBeforeInit={(swiper) => {
+          ref.current = swiper;
+        }}
+        breakpoints={{
+          320: {
+            slidesPerView: 1.2,
+          },
+          // when window width is >= 640px
+          640: {
+            slidesPerView: 1.2,
+          },
+          // when window width is >= 768px
+          768: {
+            slidesPerView: list?.length == 1 ? 1 : cols,
+            spaceBetween: 15,
+          },
+          1024: {
+            slidesPerView: list?.length == 1 ? 1 : cols,
+            spaceBetween: 20,
+          },
+          1600: {
+            slidesPerView: list?.length == 1 ? 1 : cols,
+            spaceBetween: 20,
+          },
+        }}
+        modules={[Autoplay]}
+        watchSlidesProgress
+      >
+        {list?.map((e, i) => (
+          <SwiperSlide key={e.id}>
+            <Editable
+              isBanner
+              contentId={e?.id}
+              className={`group ${
+                cols > 1 && cols <= 2 ? "aspect-[2] " : cols == 3 ? "aspect-[1.4] " : "aspect-[3] "
+              } focus:outline-none w-full px-0 relative overflow-hidden rounded-md   ${
+                e?.brand_id || e?.link || e?.category || e?.product ? "cursor-pointer" : ""
+              } `}
+              onClick={() => {
+                if (e?.brand_id) {
+                  router.push(`/products?brands=${e?.brand_id}&sort_type=new`);
+                } else if (e?.product?.slug) {
+                  router.push(`/products/${e?.product?.slug}`);
+                } else if (e?.category) {
+                  if (e?.category?.parent?.id) {
+                    router.push(`/products?parent_category=${e?.category?.parent?.id}&categories=${e?.category?.id}`);
+                  } else if (e?.category?.id) {
+                    router.push(`/products?parent_category=${e?.category?.id}`);
+                  }
+                } else if (e?.link) router.push(e?.link);
+              }}
+            >
+              <div className="invisible">sd</div>
+              <div className="w-full h-full rounded-20 object-cover overflow-hidden align-middle">
+                <Image
+                  src={NEW_IMAGE_URL(isMobile && e?.image_sm ? e?.image_sm : e?.image)}
+                  fill
+                  alt={`${e?.id}`}
+                  className="w-full h-full rounded-20 !object-cover overflow-hidden align-middle img-dark"
+                />
+              </div>
+            </Editable>
+          </SwiperSlide>
+        ))}
+      </Swiper>
+    </div>
+  );
+};
+
+export default MiddleBanners;
