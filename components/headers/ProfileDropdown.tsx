@@ -27,7 +27,7 @@ const ProfileDropdown = ({}) => {
     useAuthStore.setState({ isLogin: false });
     useStoreInit.setState({ userInfo: null });
 
-    // router.push("/auth");
+    router.push("/");
   };
 
   const _logout = () => {
@@ -111,7 +111,7 @@ const ProfileDropdown = ({}) => {
               <MenuItem>
                 <button
                   className={` text-red-500
-                     group flex w-full justify-between items-center rounded-md px-2 py-2 text-sm font-light`}
+                     group flex w-full px-2   items-center rounded-md  gap-2 py-2 text-sm font-light`}
                   onClick={() => setisVisible(true)}
                 >
                   <img

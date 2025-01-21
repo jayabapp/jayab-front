@@ -13,7 +13,7 @@ const LandingContentFaq = ({ data }: { data: Question[] }) => {
         {faqChunckedData?.map((item, index) => (
           <div key={`chunlk${index}`} className="grid gap-3 h-fit">
             {item?.map((e) => (
-              <Editable key={e?.id} contentId={e?.id}>
+              <Editable key={`${e?.id}faqs`} contentId={e?.id}>
                 {" "}
                 <SimpleAccordion
                   titleIcon={

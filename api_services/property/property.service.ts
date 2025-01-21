@@ -19,6 +19,7 @@ import {
   RoomInfosDto,
   SingleOwnerPropertyDto,
   GetPropertiesPlusFilters,
+  PropertyContactIInfDto,
 } from "./property.interface";
 import { YupValidator } from "@/utils/YupValidator";
 import { sendMediaSchema } from "./property.schema";
@@ -37,6 +38,7 @@ export class PropertyService {
   static BOOKMARKS_CACHEKEY = "BOOKMARKS";
   static SINGLE_OWNER_PROPERTY_STATS_CACHEKEY = "SINGLE_OWNER_PROPERTY_STATS";
   static SINGLE_PROPERTY_UPDATE_VIEW_CACHEKEY = "SINGLE_PROPERTY_UPDATE_VIEW";
+  static SINGLE_PROPERTY_CONTACT_INFO_CACHEKEY = "SINGLE_PROPERTY_CONTACT_INFO";
 
   static async GetUserPropertyGroup(dto: { group: (keyof typeof PropertyOptionGroup)[] }) {
     try {
@@ -46,6 +48,22 @@ export class PropertyService {
         {
           group: dto.group,
         }
+      );
+      return result;
+    } catch (e) {
+      throw e;
+    }
+  }
+
+  /* -------------------------------------------------------------------------- */
+  /*                            PROPERTY CONTACT INFO                           */
+  /* -------------------------------------------------------------------------- */
+
+  static async getSinglePropertyContactInfo(dto: { propertySlug: string | number | null }) {
+    try {
+      const result = await apiCall<unknown, PropertyContactIInfDto[]>(
+        "GET",
+        apiRoutes.SINGLE_PROPERTY_CONTACT_INFO(dto.propertySlug)
       );
       return result;
     } catch (e) {
@@ -717,7 +735,7 @@ export class PropertyService {
           fingerprint: dto.fingerprint,
         }
       );
-      return result;
+      return result || null;
     } catch (e) {
       throw e;
     }

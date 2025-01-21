@@ -348,6 +348,7 @@ export interface PropertyDescriptionsDto {
 
 export interface PropertyListDto {
   id: number;
+  favorite_count: number;
   code: string;
   title: string;
   slug: string;
@@ -389,7 +390,7 @@ export interface Status {
 export interface TodayPrice {
   price: number;
   discounted_price: number;
-  discount_percantage: number;
+  discount_percentage: number;
 }
 
 export interface SingleOwnerPropertyDto {
@@ -588,4 +589,10 @@ export interface Query {
 export interface RelatedLandings {
   title: string;
   url: string;
+}
+
+export interface PropertyContactIInfDto {
+  assistant_full_name: string;
+  assistant_mobile_number: string;
+  is_owner: boolean;
 }

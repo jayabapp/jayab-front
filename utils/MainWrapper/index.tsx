@@ -18,7 +18,7 @@ import { SocketIO } from "../../components/SocketIo";
 // import ConnectingBanner from "@/components/Headers/ConnectingBanner";
 import { useAuthStore, useStoreInit, useStoreParams, useStoreSocket, useStoreTheme } from "@/store";
 
-import { footerBlacklist, headerBlackList, mobileFooterWhiteList } from "../constantss";
+import { footerBlacklist, headerBlackList, mobileFooterBlackList } from "../constantss";
 import RotatePhone from "@/components/shared/Lotties/RotatePhone";
 import Splashscreen from "@/components/SplashScreen";
 import ConnectingBanner from "@/components/headers/ConnectingBanner";
@@ -99,6 +99,8 @@ const MainWrapper = ({ children }: mainWrapper) => {
         return null;
       }
     },
+    staleTime: 0,
+    gcTime: 0,
   });
 
   /* -------------------------------------------------------------------------- */
@@ -201,8 +203,8 @@ const MainWrapper = ({ children }: mainWrapper) => {
           {/* {!sidenavBlackList?.includes(pathname || "") && <SideNav />} */}
           {children}
         </div>
-        {mobileFooterWhiteList.includes(pathname) && <Footer />}
-        {mobileFooterWhiteList.includes(pathname) && <MobileFooter />}
+        {!mobileFooterBlackList.includes(pathname) && <Footer />}
+        {!mobileFooterBlackList.includes(pathname) && <MobileFooter />}
       </div>
       <Toaster />
       <LoginModal />

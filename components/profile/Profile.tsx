@@ -24,6 +24,7 @@ const Profile = ({}) => {
     localStorage.removeItem("is_registered");
     useAuthStore.setState({ isLogin: false });
     useStoreInit.setState({ userInfo: null });
+    router.push("/");
   };
 
   const _logout = () => {

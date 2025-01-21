@@ -18,7 +18,7 @@ const RulesPopPart = ({ data }: { data: SinglePropDto }) => {
     <>
       <div
         onClick={onShowMap}
-        className="  border border-gray-300 rounded-10  px-4 py-2.5 flex items-center justify-between"
+        className="  cursor-pointer border border-gray-300 rounded-10  px-4 py-2.5 flex items-center justify-between"
       >
         <p className="font-bold bg-white  text-xs  md:text-sm !mt-0  rounded-10 w-full ">{_STRINGS.PROP_TERMS}</p>
         <img

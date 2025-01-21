@@ -53,7 +53,7 @@ const SingleOwnerPropertyOptons = ({ data }: { data: SingleOwnerPropertyDto }) =
     setShowDelete(true);
   };
   const hideDelete = () => {
-    setShowCommiss(false);
+    setShowDelete(false);
   };
   return (
     <div className=" w-full md:mt-[3.75rem] flex order-5   flex-col gap-4 ">
@@ -123,7 +123,7 @@ const SingleOwnerPropertyOptons = ({ data }: { data: SingleOwnerPropertyDto }) =
         className=" cursor-pointer  w-full border-primary-150/50  flex items-center justify-between  px-4 py-3 rounded-10 border"
       >
         <div className="flex items-center gap-2">
-          <p className=" text-primary-150  text-sm font-bold ">{_STRINGS.WEEKLY_INQUERY}</p>
+          <p className=" text-primary-150  text-sm font-bold ">{_STRINGS.ARE_U_SURE_DELETE_PROPERTY_TITLE}</p>
         </div>
         <img className=" w-5 h-5 aspect-square " src="/assets/icons/uploader/red_trash_icon.svg" />
       </div>

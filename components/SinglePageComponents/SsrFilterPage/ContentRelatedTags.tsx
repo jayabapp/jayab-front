@@ -8,6 +8,7 @@ const ContentRelatedTags = ({ data }: { data: RelatedLandings[] }) => {
       <div className=" flex flex-wrap gap-2 w-full">
         {data?.map((e) => (
           <Link
+            key={`${e?.title}relatedContent`}
             prefetch={false}
             href={e?.url}
             className="w-fit border-primary-250 py-1.5 px-2.5 border-2 rounded-full flex items-center gap-2  "

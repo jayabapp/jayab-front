@@ -84,6 +84,9 @@ export const apiRoutes = {
 
   USER_ADVISORS_PROFILE: `/profile/advisor`,
 
+  SINGLE_PROPERTY_CONTACT_INFO: (propertySlug: string | number | null) =>
+    `/user/properties/${propertySlug}/contact-info`,
+
   SINGLE_USER_LANDING_PAGE: (landingPageUrl: string | number) => `/user/landing-pages/${landingPageUrl}`,
 
   OWNER_PROP_INIT: (propertyId?: string | number | null) =>

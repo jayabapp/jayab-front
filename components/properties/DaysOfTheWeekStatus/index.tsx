@@ -7,7 +7,7 @@ const DaysOfTheWeekStatus = ({ isCard, data }: { isCard?: boolean; data: Reserve
   return (
     <div className={`w-full flex  justify-between gap-1  ${isCard ? "" : "md:gap-3"}  items-center `}>
       {WeekDays.map((e) => (
-        <div className="flex w-full items-center justify-center flex-col gap-2">
+        <div key={`days${e?.id}${e?.title}`} className="flex w-full items-center justify-center flex-col gap-2">
           <p className={`text-xxs  ${isCard ? "" : "md:text-sm"}  font-light text-primary-250`}>{e?.title}</p>
 
           <div

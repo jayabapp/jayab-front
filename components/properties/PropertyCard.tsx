@@ -9,6 +9,7 @@ import StatusShower from "../shared/StatusShower";
 import PropertyCardOwnerPart from "./PropertyCardOwnerPart";
 import { useStoreParams } from "@/store";
 import DaysOfTheWeekStatus from "./DaysOfTheWeekStatus";
+import Image from "next/image";
 
 const PropertyCard = ({ data, isOwner }: { data: PropertyListDto; isOwner?: boolean }) => {
   const { bookmarks, likes } = useStoreParams((state) => state);
@@ -44,7 +45,7 @@ const PropertyCard = ({ data, isOwner }: { data: PropertyListDto; isOwner?: bool
                     : "/assets/icons/adds/empty_heart.svg"
                 }
               />
-              <p className="text-xxs  opacity-60">{data?.id}</p>
+              <p className="text-xxs  opacity-60">{data?.favorite_count}</p>
             </div>
           </div>
           {/* PRICING */}
@@ -53,7 +54,7 @@ const PropertyCard = ({ data, isOwner }: { data: PropertyListDto; isOwner?: bool
             {" "}
             <p className="text-xs  shrink-0 ">{_STRINGS.TODAYS_PRICE}</p>
             <AddCardPricePart
-              data={{ discounted_price: data?.today_price?.discount_percantage, price: data?.today_price?.price }}
+              data={{ discounted_price: data?.today_price?.discount_percentage, price: data?.today_price?.price }}
             />
           </div>
 
@@ -90,13 +91,18 @@ const PropertyCard = ({ data, isOwner }: { data: PropertyListDto; isOwner?: bool
         {/* IMAGE PART */}
         <Link href={`${goToLink}`} prefetch={false} className="col-span-2  order-2 ">
           <div className=" aspect-square relative">
-            <img src={NEW_IMAGE_URL(data?.feature_image)} className=" w-full rounded-10  object-cover aspect-square" />
+            <Image
+              fill
+              alt={data?.feature_image?.alt || ""}
+              src={NEW_IMAGE_URL(data?.feature_image, "medium")}
+              className=" w-full rounded-10  object-cover aspect-square"
+            />
             <div className="absolute z-2 right-2 top-2 flex flex-col gap-1 w-7">
               {" "}
-              {data?.today_price?.discount_percantage ? (
-                <div className="w-7 gap-0.5 flex-col h-5 rounded-md transition-all  px-1 py-[0.2rem]   bg-primary-100 text-white  aspect-square flex items-center justify-center">
+              {data?.today_price?.discount_percentage ? (
+                <div className="w-7 gap-0.5 flex-col h-5 rounded-md transition-all  px-1 py-[0.2rem]   bg-primary-150 text-white  aspect-square flex items-center justify-center">
                   {/* <img className="w-4 h-4" src="/assets/icons/products/discount_tag.svg" /> */}
-                  <p className="  text-sm   ">%{data.today_price?.discount_percantage}</p>{" "}
+                  <p className="  text-sm   ">%{data.today_price?.discount_percentage}</p>{" "}
                 </div>
               ) : (
                 <></>

@@ -1,6 +1,6 @@
 "use client";
 import _STRINGS from "@/utils/LocalStrings";
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import SinglePropertyPricePart from "../SinglePropertyPricePart";
 import Button from "@/components/shared/Button/Button";
 import { SinglePropDto } from "@/api_services/property/property.interface";
@@ -11,8 +11,10 @@ import BookMarkButton from "../BookMarkButton";
 import { PropertyService } from "@/api_services/property/property.service";
 import AuthorizationStatus from "../AuthorizationStatus";
 import FixedBottomContainer from "@/components/shared/FixedBottomContainer";
+import SinglePropContactIfoPop from "./SinglePropContactInfoPop";
 
 const SinglePropertyIntroduction = ({ data }: { data: SinglePropDto }) => {
+  const [showContact, setShowContact] = useState(false);
   const { mutate: createFindChat, isPending } = useMutation({ mutationFn: ChatService.StartOrFindChat });
 
   useQuery({
@@ -27,6 +29,13 @@ const SinglePropertyIntroduction = ({ data }: { data: SinglePropDto }) => {
 
   const onCreateChat = () => {
     createFindChat({ property_id: data?.id });
+  };
+
+  const onContactClick = () => {
+    setShowContact(true);
+  };
+  const onContactClose = () => {
+    setShowContact(false);
   };
 
   return (
@@ -83,7 +92,13 @@ const SinglePropertyIntroduction = ({ data }: { data: SinglePropDto }) => {
         </p>
       </div> */}
       <div className="w-full  hidden md:flex  items-center justify-between gap-4 ">
-        <Button width="w-full" containerClass="w-full" roundedClass="rounded-full" title={_STRINGS.CONTACT_INFO} />
+        <Button
+          onClick={onContactClick}
+          width="w-full"
+          containerClass="w-full"
+          roundedClass="rounded-full"
+          title={_STRINGS.CONTACT_INFO}
+        />
         <Button
           width="w-full"
           containerClass="w-full"
@@ -97,7 +112,13 @@ const SinglePropertyIntroduction = ({ data }: { data: SinglePropDto }) => {
         <FixedBottomContainer>
           {" "}
           <div className="w-full  px-4  flex items-center justify-between gap-4 ">
-            <Button width="w-full" containerClass="w-full" roundedClass="rounded-full" title={_STRINGS.CONTACT_INFO} />
+            <Button
+              onClick={onContactClick}
+              width="w-full"
+              containerClass="w-full"
+              roundedClass="rounded-full"
+              title={_STRINGS.CONTACT_INFO}
+            />
             <Button
               width="w-full"
               containerClass="w-full"
@@ -109,6 +130,7 @@ const SinglePropertyIntroduction = ({ data }: { data: SinglePropDto }) => {
           </div>
         </FixedBottomContainer>
       </div>
+      <SinglePropContactIfoPop show={!!showContact} data={data} onHide={onContactClose} />
     </div>
   );
 };

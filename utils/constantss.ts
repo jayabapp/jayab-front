@@ -54,7 +54,7 @@ export const headerBlackList = [
 ];
 export const headerMobileBlackList = ["/chat"];
 
-export const mobileFooterWhiteList = ["/"];
+export const mobileFooterBlackList = ["/auth", "/auth/otp", "/auth/register"];
 
 export const createPropertySteps = (id?: null | number) => [
   {
