@@ -45,14 +45,14 @@ const Filterpage = () => {
   const searchParams = useSearchParams();
   const [breadCrumbs, setBreadCrumbs] = useState<{ title: string; link: string }[]>([
     { title: "خانه", link: "/" },
-    { title: "دسته بندی", link: "/s" },
+    { title: "دسته بندی", link: "/rooms" },
   ]);
   const queriesParams = useQueryGet<any>();
 
   const [queries, setQueries] = useState(queriesParams);
 
   useEffect(() => {
-    if (pathname.includes("/s")) {
+    if (pathname.includes("/rooms")) {
       setQueries(queriesParams);
       setDefaultMobileFilters(queriesParams);
       setFilters(queriesParams);

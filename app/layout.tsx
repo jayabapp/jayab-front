@@ -13,9 +13,11 @@ export const metadata: Metadata = {
 export default function RootLayout({
   children,
   params,
+  modal,
 }: Readonly<{
   children: React.ReactNode;
   params: { [key: string]: string };
+  modal: React.ReactNode;
 }>) {
   return (
     <html lang="fa" dir={"rtl"}>
@@ -43,7 +45,9 @@ export default function RootLayout({
         {/* <link rel="apple-touch-icon" sizes="180x180" href="/assets/icons/app/apple-touch-icon.png" /> */}
       </head>
       <body className={`${Iransans_font.className} `}>
-        <LayoutProvider params={params}>{children}</LayoutProvider>
+        <LayoutProvider modal={modal} params={params}>
+          {children}
+        </LayoutProvider>
       </body>
     </html>
   );

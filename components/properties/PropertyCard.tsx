@@ -14,7 +14,7 @@ import Image from "next/image";
 const PropertyCard = ({ data, isOwner }: { data: PropertyListDto; isOwner?: boolean }) => {
   const { bookmarks, likes } = useStoreParams((state) => state);
 
-  const goToLink = !!isOwner ? `/profile/owner/properties/${data?.id}` : `/property/${data?.slug}`;
+  const goToLink = !!isOwner ? `/profile/owner/properties/${data?.id}` : `/rooms/${data?.slug}`;
 
   return (
     <div className="w-full shadow-card  rounded-2xl   flex flex-col  p-3   gap-2  ">

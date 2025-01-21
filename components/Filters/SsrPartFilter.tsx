@@ -1,6 +1,6 @@
 import LottieLoading from "../shared/Lotties/LottieLoading";
 import EmptyList from "../shared/Lotties/EmptyList";
-import SsrPropertyCard from "../properties/SsrPropertyCard";
+import PropertyCard from "../properties/PropertyCard";
 
 type SsrPartFilterType = {
   firstData: any;
@@ -17,7 +17,7 @@ function SsrPartFilter({ firstData }: SsrPartFilterType) {
         ) : firstData?.length > 0 ? (
           <div className="grid   pb-8 pt-4 md:pt-2 px-1  !overflow-hidden  grid-cols-1 gap-2 md:gap-4  md:grid-cols-2 xl:grid-cols-3 ">
             {firstData?.map((i: any) => (
-              <SsrPropertyCard data={i} key={`PRODUCT${i?.id}`} />
+              <PropertyCard data={i} key={`PRODUCT${i?.id}`} />
             ))}
           </div>
         ) : (

@@ -260,7 +260,9 @@ transition-all  ease-in-out duration-1000 header-content-container app-size cust
                 </Link>
               </div>
             )}
-            <TextIcon item={{ icon: "/assets/icons/header/adds_header_icon.svg", title: _STRINGS.ADDS, route: "/s" }} />
+            <TextIcon
+              item={{ icon: "/assets/icons/header/adds_header_icon.svg", title: _STRINGS.ADDS, route: "/rooms" }}
+            />
             <TextIcon
               item={{
                 icon: "/assets/icons/header/consultant_header.svg",

@@ -51,7 +51,7 @@ const SsrFilterPage = ({ landings, firstData }: { firstData: { data: any[] }; la
   const [cityButtonTItle, setCityTitleButton] = useState("");
   const [breadCrumbs, setBreadCrumbs] = useState<{ title: string; link: string }[]>([
     { title: "خانه", link: "/" },
-    { title: "دسته بندی", link: "/s" },
+    { title: "دسته بندی", link: "/rooms" },
   ]);
   const queriesParams = useQueryGet<any>();
   const [queries, setQueries] = useState(queriesParams);
@@ -71,7 +71,7 @@ const SsrFilterPage = ({ landings, firstData }: { firstData: { data: any[] }; la
   }, [landings?.query]);
 
   useEffect(() => {
-    if (pathname.includes("/s")) {
+    if (pathname.includes("/rooms")) {
       setQueries(queriesParams);
       setDefaultMobileFilters(queriesParams);
       setFilters(queriesParams);

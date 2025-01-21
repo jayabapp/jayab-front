@@ -20,6 +20,7 @@ import {
   SingleOwnerPropertyDto,
   GetPropertiesPlusFilters,
   PropertyContactIInfDto,
+  SinglePropDto,
 } from "./property.interface";
 import { YupValidator } from "@/utils/YupValidator";
 import { sendMediaSchema } from "./property.schema";
@@ -630,7 +631,7 @@ export class PropertyService {
 
   static async GetSinglePropertyWithSlug(dto: { Property_slug: string }) {
     try {
-      const result = await apiCall<unknown, unknown>("GET", apiRoutes.GET_SINGLEPROPERTY_SlUG(dto.Property_slug));
+      const result = await apiCall<unknown, SinglePropDto>("GET", apiRoutes.GET_SINGLEPROPERTY_SlUG(dto.Property_slug));
       return result;
     } catch (e) {
       throw e;

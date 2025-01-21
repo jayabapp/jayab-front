@@ -6,6 +6,7 @@ import MainWrapper from "../utils/MainWrapper";
 import { useStoreQuery } from "@/store";
 interface Layout {
   children: ReactNode;
+  modal: ReactNode;
   params: { [key: string]: string };
 }
 
@@ -26,7 +27,9 @@ const LayoutProvider = (props: Layout) => {
       <QueryClientProvider client={client}>
         <MainWrapper>
           {" "}
-          <Suspense fallback={<></>}>{props?.children}</Suspense>
+          <Suspense fallback={<></>}>
+            {props?.children} {props?.modal}
+          </Suspense>
         </MainWrapper>
       </QueryClientProvider>
     </AnimatePresence>
