@@ -1,3 +1,4 @@
+import { NewCitiesListDto } from "@/api_services/city/city.interface";
 import { ProvienceTypesDto } from "@/api_services/property/property.interface";
 import _STRINGS from "@/utils/LocalStrings";
 import React from "react";
@@ -9,7 +10,7 @@ const CityModalHeaderPart = ({
 }: {
   onHide: () => void | null;
   removeSelectedProve: () => void | null;
-  selectedProv: ProvienceTypesDto | null;
+  selectedProv: NewCitiesListDto | null;
 }) => {
   return (
     <div className="app-text flex justify-between border-b items-center py-3 px-4 sticky top-0 bg-white dark:bg-zinc-800 z-10">

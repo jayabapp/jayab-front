@@ -25,8 +25,11 @@ import FiltersPart from "./FiltersPart";
 import FiltersSelectedFiltersShowcase from "@/components/Filters/FiltersSelectedFiltersShowcase";
 import SsrClinetPartFilterProperties from "@/components/Filters/SsrClinetPartFilterProperties";
 import { SingleLandingDto } from "@/api_services/property/property.interface";
-import { isArray } from "lodash";
+import { isArray, isEmpty, last } from "lodash";
 import SsrPartFilter from "@/components/Filters/SsrPartFilter";
+import CityModal from "@/components/CityModal";
+import FilterPageCitiesTitle from "@/components/CityModal/FilterPageCitiesTitle";
+import SsrFilterPageContents from "./SsrFilterPageContents";
 
 interface OtpQuery extends ParsedUrlQuery {
   id: string;
@@ -37,14 +40,15 @@ export interface PostPageQuery {
 }
 type sortTypeType = { id?: string; title?: string };
 
-const SsrFilterPage = ({ landings, firstData }: { firstData: any; landings: SingleLandingDto }) => {
+const SsrFilterPage = ({ landings, firstData }: { firstData: { data: any[] }; landings: SingleLandingDto }) => {
   const [cursor, setCursor] = useState(0);
-
+  const [showCityModal, setShowCiyModal] = useState(false);
   const [defaultMobileFilters, setDefaultMobileFilters] = useState<any>({});
   const pathname = usePathname();
   const [filters, setFilters] = useState({});
   const router = useRouter();
   const searchParams = useSearchParams();
+  const [cityButtonTItle, setCityTitleButton] = useState("");
   const [breadCrumbs, setBreadCrumbs] = useState<{ title: string; link: string }[]>([
     { title: "خانه", link: "/" },
     { title: "دسته بندی", link: "/s" },
@@ -74,70 +78,10 @@ const SsrFilterPage = ({ landings, firstData }: { firstData: any; landings: Sing
     }
   }, [searchParams]);
 
-  // useEffect(() => {
-  //   setSpecs({ ...queries });
-  // }, [queries?.parent_category]);
-
   const [sortType, setSortType] = useState<sortTypeType | undefined>(
     queries?.sort_type ? SORT_TYPES?.find((i) => i?.id == queries?.sort_type) : SORT_TYPES[0]
   );
   const [filterModalShow, setFilterModalShow] = useState(false);
-
-  // const { data: parentCatsData, isLoading: parentCatsLoading } = useQuery(
-  //   [PropertyService?.CATEGORIES_PARENTS_CACHEKEY],
-  //   PropertyService?.GetCategoriesParents,
-  //   {
-  //     cacheTime: 0,
-  //     staleTime: 0,
-  //   }
-  // );
-
-  // const { data: catsData, isLoading: catsLoading } = useQuery(
-  //   [PropertyService?.CATEGORIES_CACHEKEY, queries?.parent_category, queries.brands],
-  //   () => {
-  //     if (!!queries?.parent_category) return PropertyService?.GetCategories({ parent_id: queries?.parent_category });
-  //   },
-  //   {
-  //     cacheTime: 0,
-  //     staleTime: 0,
-  //   }
-  // );
-
-  // const { data: catsCategories, isLoading: catsCategoriesLoading } = useQuery(
-  //   [ProductService?.GET_SINGLE_CATEGORY_CACHEKEY, queries?.parent_category],
-  //   () => {
-  //     if (queries?.parent_category) return ProductService?.GetCategorieSpecifications({ id: queries?.parent_category });
-  //   },
-  //   {
-  //     cacheTime: 0,
-  //     staleTime: 0,
-  //   }
-  // );
-  // const { data: brands } = useQuery([HomeService.GET_BRANDS_CACHEKEY], HomeService.GetBrands);
-
-  // useEffect(() => {
-  //   if (!isEmpty(catsData?.breadcrumb)) {
-  //     const params = catsData?.breadcrumb?.map((e, index, arr) => {
-  //       if (index == 0) {
-  //         return { title: e?.title, link: `/products?parent_category=${e?.id}&sort_type=new` };
-  //       } else {
-  //         return {
-  //           title: e?.title,
-  //           link: `/products?parent_category=${arr?.[0]?.id}&sort_type=new&categories=${e?.id}`,
-  //         };
-  //       }
-  //     });
-
-  //     if (!!params) {
-  //       setBreadCrumbs([{ title: "خانه", link: "/" }, ...params]);
-  //     }
-  //   } else {
-  //     setBreadCrumbs([
-  //       { title: "خانه", link: "/" },
-  //       { title: "دسته بندی", link: "/products" },
-  //     ]);
-  //   }
-  // }, [catsData, queries?.parent_category, queries?.category]);
 
   const { data: propertyTypes } = useQuery({
     queryFn: () => PropertyService.GetUserPropertyGroup({ group: ["PROPERTY_TYPE", "ENTERTAINMENT", "POOL_TYPE"] }),
@@ -154,16 +98,22 @@ const SsrFilterPage = ({ landings, firstData }: { firstData: any; landings: Sing
     router.replace(`${pathname}?${queryBuilder(body)}`);
   };
 
+  const hideCityModal = () => {
+    setShowCiyModal(false);
+  };
+  const showCityModalFunc = () => {
+    setShowCiyModal(true);
+  };
   return (
     <div className="app-container !pt-32  lg:!pt-28  md: z-2 ">
       <div className=" hidden  z-1 w-full md:flex flex-col md:flex-row items-center justify-between ">
-        {/* <Breadcrumbs /> */}
         <SingleProductBreadCrumb dataArray={breadCrumbs} />
       </div>
       <div className="w-full hidden md:flex  pb-4">
         {" "}
         <FiltersSelectedFiltersShowcase query={queries} propertyTypes={propertyTypes || {}} />
       </div>
+
       <div className="flex fixed border-b  md:hidden h-10 right-0  items-center justify-center   z-10 md:z-1  top-[4.5rem] md:top-auto left-0 md:left-auto bg-white md:bg-transparent md:relative flex-col w-full md:gap-2  ">
         {" "}
         <div className=" flex  order-1  md:hidden  relative w-full">
@@ -181,7 +131,9 @@ const SsrFilterPage = ({ landings, firstData }: { firstData: any; landings: Sing
           </div>
         </div>
       </div>
-
+      <div className="w-full pb-3">
+        <FilterPageCitiesTitle title={cityButtonTItle} cb={showCityModalFunc} />
+      </div>
       <div className="grid grid-cols-12 ">
         {/* SIDEBAR */}
         <div className="grid grid-cols-12  col-span-12 ">
@@ -207,11 +159,24 @@ const SsrFilterPage = ({ landings, firstData }: { firstData: any; landings: Sing
               md:mt-0 `}
           >
             <SsrPartFilter firstData={firstData?.data} />
-
+            {cursor == 0 && !isEmpty(firstData?.data) && firstData?.data?.length % 50 == 0 ? (
+              <Button
+                onClick={() => {
+                  setCursor(last(firstData?.data)?.id || 0);
+                }}
+                title={_STRINGS.SHOW_MORE}
+                containerClass="w-full flex items-center justify-center"
+              />
+            ) : (
+              <></>
+            )}
             <SsrClinetPartFilterProperties cursor={cursor} setCursor={setCursor} sortType={sortType} query={queries} />
           </div>
         </div>
       </div>
+      {/*  CONTENT PART */}
+
+      <SsrFilterPageContents data={landings} />
       {/* <=======================================================================MODALS ================================================================> */}
       <Modal
         options={{
@@ -260,6 +225,8 @@ const SsrFilterPage = ({ landings, firstData }: { firstData: any; landings: Sing
           </div>
         </div>
       </Modal>
+
+      <CityModal show={showCityModal} onHide={hideCityModal} setTitle={setCityTitleButton} />
     </div>
   );
 };

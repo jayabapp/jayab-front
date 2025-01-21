@@ -22,7 +22,7 @@ export default async function PropertiesPage({
 
   const { data: firstData } = await serverCall(baseUrl + apiRoutes.GET_PROPERTIES, {
     cursor: 0,
-    per_page: 20,
+    per_page: 50,
     ...searchParamsData,
   });
 

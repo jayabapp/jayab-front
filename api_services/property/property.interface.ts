@@ -529,7 +529,7 @@ export interface GetPropertiesPlusFilters {
 export interface SingleLandingDto {
   query: Query;
   content: Content;
-  related_landings: RelatedLandings;
+  related_landings: RelatedLandings[];
   cities: City[];
 }
 

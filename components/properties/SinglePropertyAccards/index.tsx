@@ -6,6 +6,8 @@ import EnvAccard from "./EnvAccard";
 import RoomAccard from "./RoomAccard";
 import FeatAccard from "./FeatAccard";
 import GeneralFeatAccard from "./GeneralFeatAccard";
+import MapPopupPart from "./MapPopupPart";
+import RulesPopPart from "./RulesPopPart";
 
 const SinglePorpertyAccards = ({ data }: { data: SinglePropDto }) => {
   return (
@@ -16,6 +18,8 @@ const SinglePorpertyAccards = ({ data }: { data: SinglePropDto }) => {
       <RoomAccard data={data} />
       <FeatAccard data={data} />
       <GeneralFeatAccard data={data} />
+      <MapPopupPart data={data} />
+      <RulesPopPart data={data} />
     </div>
   );
 };

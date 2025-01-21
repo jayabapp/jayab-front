@@ -22,7 +22,11 @@ const PropertyCard = ({ data, isOwner }: { data: PropertyListDto; isOwner?: bool
         <Link href={`${goToLink}`} prefetch={false} className="col-span-3  order-1  flex flex-col gap-1">
           {/* TITLE */}
           <div className="flex items-start gap-2">
-            <img src="/assets/icons/adds/verified_badge.svg" className="w-[1.125rem] h-[1.125rem]" />
+            {!!data?.has_blue_tick ? (
+              <img src="/assets/icons/adds/verified_badge.svg" className="w-[1.125rem] h-[1.125rem]" />
+            ) : (
+              <></>
+            )}
             <p className="text-sm font-medium">{data.title}</p>
           </div>
 

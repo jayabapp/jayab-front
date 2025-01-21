@@ -3,15 +3,16 @@ import Checkbox from "../shared/Form/Checkbox";
 import _STRINGS from "@/utils/LocalStrings";
 import { ProvienceTypesDto } from "@/api_services/property/property.interface";
 import { isEmpty } from "lodash";
+import { ChildCities } from "@/api_services/city/city.interface";
 
 const CityModalAllCitiesButton = ({
   cities,
   selectedCities,
   setSelectedCities,
 }: {
-  cities: ProvienceTypesDto[] | undefined;
+  cities: ChildCities[] | undefined;
   setSelectedCities: React.Dispatch<React.SetStateAction<any[]>>;
-  selectedCities: ProvienceTypesDto[];
+  selectedCities: ChildCities[];
 }) => {
   const onSelectAllClick = () => {
     const missingCities = cities?.filter((e) => !selectedCities?.find((x) => x?.id == e?.id));
@@ -21,7 +22,6 @@ const CityModalAllCitiesButton = ({
       setSelectedCities((e) => [...e, ...missingCities]);
     }
   };
-
   return (
     <div className="flex items-start justify-start gap-2">
       <Checkbox

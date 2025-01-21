@@ -245,9 +245,21 @@ transition-all  ease-in-out duration-1000 header-content-container app-size cust
           <div
             className={` text-xs gap-2  lg:text-md  justify-between font-medium flex-row hidden lg:flex w-1/2 transition-all ease-in-out duration-1000 items-center `}
           >
-            <TextIcon
-              item={{ icon: "/assets/icons/header/messages_geader_icon.svg", title: _STRINGS.MESSAGES, route: "/chat" }}
-            />
+            {!!isLogin ? (
+              <TextIcon
+                item={{
+                  icon: "/assets/icons/header/messages_geader_icon.svg",
+                  title: _STRINGS.MESSAGES,
+                  route: "/chat",
+                }}
+              />
+            ) : (
+              <div className="lg:flex shrink-0 hidden items-center gap-2">
+                <Link prefetch={false} href={"/auth"} className="shrink-0 transition-all hover:text-primary-700">
+                  {_STRINGS?.ENTER} / {_STRINGS?.REGISTER}
+                </Link>
+              </div>
+            )}
             <TextIcon item={{ icon: "/assets/icons/header/adds_header_icon.svg", title: _STRINGS.ADDS, route: "/s" }} />
             <TextIcon
               item={{
@@ -261,11 +273,7 @@ transition-all  ease-in-out duration-1000 header-content-container app-size cust
                 <ProfileDropdown />
               </>
             ) : (
-              <div className="lg:flex shrink-0 hidden items-center gap-2">
-                <Link prefetch={false} href={"/auth"} className="shrink-0 transition-all hover:text-primary-700">
-                  {_STRINGS?.ENTER} / {_STRINGS?.REGISTER}
-                </Link>
-              </div>
+              <></>
             )}
             <MenuDropDown />
 

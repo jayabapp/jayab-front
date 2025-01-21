@@ -18,7 +18,10 @@ type Props = {
 };
 
 export async function generateMetadata({ params }: Props, parent: ResolvingMetadata): Promise<Metadata> {
-  const { data: properyData } = await serverCall(baseUrl + apiRoutes.GET_SINGLEPROPERTY_SlUG(params?.property_slug));
+  const pageParams = await params;
+  const { data: properyData } = await serverCall(
+    baseUrl + apiRoutes.GET_SINGLEPROPERTY_SlUG(pageParams?.property_slug)
+  );
 
   return {
     title: properyData?.product?.seo?.metaTitle || properyData?.product?.title,
@@ -27,7 +30,11 @@ export async function generateMetadata({ params }: Props, parent: ResolvingMetad
 }
 
 const SinglePropertyPage = async ({ params }: { params: { property_slug: string } }) => {
-  const { data: properyData } = await serverCall(baseUrl + apiRoutes.GET_SINGLEPROPERTY_SlUG(params?.property_slug));
+  const pageParams = await params;
+
+  const { data: properyData } = await serverCall(
+    baseUrl + apiRoutes.GET_SINGLEPROPERTY_SlUG(pageParams?.property_slug)
+  );
 
   return (
     <div className=" !pb-48 lg:!pb-36   gap-4 justify-start items-start container grid grid-cols-1  md:grid-cols-2  !h-auto   !overflow-x-visible">

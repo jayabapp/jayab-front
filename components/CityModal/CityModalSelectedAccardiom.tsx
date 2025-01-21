@@ -3,13 +3,14 @@ import React from "react";
 import SimpleAccordion from "../shared/SimpleAccorion";
 import _STRINGS from "@/utils/LocalStrings";
 import { isEmpty } from "lodash";
+import { NewCitiesListDto } from "@/api_services/city/city.interface";
 
 const CityModalSelectedAccardiom = ({
   selectedCities,
   onCityClick,
 }: {
   selectedCities: any[];
-  onCityClick: (item: ProvienceTypesDto) => void;
+  onCityClick: (item: NewCitiesListDto) => void;
 }) => {
   return (
     <SimpleAccordion

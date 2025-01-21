@@ -3,13 +3,14 @@ import { NEW_IMAGE_URL } from "@/utils/urls";
 import Image from "next/image";
 import React from "react";
 import Checkbox from "../shared/Form/Checkbox";
+import { ChildCities } from "@/api_services/city/city.interface";
 
 const CityCard = ({
   item,
   callback,
   isChecked,
 }: {
-  item: ProvienceTypesDto;
+  item: ChildCities;
   callback: () => void | null;
   isChecked: boolean;
 }) => {

@@ -305,6 +305,13 @@ const _STRINGS = {
   HAS_DISCOUNT: "تخفیف دار",
   PERMIUM_PROPS: "ملک های ویژه",
   FAST_SEARCH: "جستجوی سریع",
+
+  SHOW_MORE: "نمایش بیشتر",
+  COORDINATES: "موقعیت مکانی",
+  PROP_TERMS: "قوانین اقامتگاه",
+  PROP_TERMS_PROLUGE: "قوانین و شرایطی که میهمان ها باید بپذیرند و در طول اقامتشان آنها را رعایت کنند",
+  CANCENLATION_DESC: "قوانین لغو درخواست میهمان (کنسلی)",
+  OTHER_TERMS: "سایر قوانین لازم جهت اقامت",
 };
 
 export default _STRINGS;

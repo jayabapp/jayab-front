@@ -18,42 +18,57 @@ import Button from "../shared/Button/Button";
 import useQueryGet from "@/helpers/queryGet";
 import { usePathname, useRouter } from "next/navigation";
 import queryBuilder from "@/helpers/queryBuilder";
+import { ChildCities, NewCitiesListDto } from "@/api_services/city/city.interface";
 
 const CityModal = ({
   show,
   onHide,
   item,
+  setTitle,
 }: {
   show: boolean;
   onHide: () => void | null;
+  setTitle?: (e: string) => void | null;
   item?: { submitTitle?: string };
 }) => {
   const router = useRouter();
   const pathname = usePathname();
   const queriesParams = useQueryGet<any>();
-  const [selectedProv, setSelectedProv] = useState<ProvienceTypesDto | null>(null);
-  const [selectedCities, setSelectedCities] = useState<ProvienceTypesDto[]>([]);
+  const [selectedProv, setSelectedProv] = useState<NewCitiesListDto | null>(null);
+  const [selectedCities, setSelectedCities] = useState<ChildCities[]>([]);
   const [search, setSearch] = useState("");
 
   const { data: provinces, isLoading: provLoading } = useQuery({
-    queryFn: CityService.GetProvince,
-    queryKey: [CityService.CITIES_CACHEKEY],
+    queryFn: () => CityService.GetAllCities(),
+    queryKey: [CityService.GET_ALL_CITIES_CACHEKEY],
   });
 
-  const { data: cities, isLoading: citiesLoading } = useQuery({
+  const { data: defaultCitiesData } = useQuery({
     queryFn: () => {
-      if (!!selectedProv?.id) return CityService.GetCities({ parentId: selectedProv?.id });
-      else return [];
+      if (!!queriesParams?.cities) return CityService.GetAllCities({ cities: queriesParams?.cities });
+      else return null;
     },
-    queryKey: [CityService.CITIES_CHILDEREN_CACHEKEY, selectedProv?.id],
+    queryKey: [CityService.GET_ALL_CITIES_CACHEKEY, queriesParams?.cities],
   });
+
+  useEffect(() => {
+    if (!!defaultCitiesData) {
+      setSelectedCities(defaultCitiesData);
+      if (!!setTitle)
+        setTitle(
+          `جستجو در  ${defaultCitiesData?.[0]?.title} ${
+            defaultCitiesData?.length > 1 ? ` و ${defaultCitiesData?.length - 1} شهر دیگر` : ``
+          }`
+        );
+    }
+  }, [defaultCitiesData]);
 
   const removeSelectedProve = () => {
     setSelectedProv(null);
     setSearch("");
   };
 
-  const onCityClick = (item: ProvienceTypesDto) => {
+  const onCityClick = (item: ChildCities) => {
     if (selectedCities?.includes(item)) {
       setSelectedCities(selectedCities?.filter((e) => e?.id != item?.id));
     } else {
@@ -65,14 +80,6 @@ const CityModal = ({
   /*                            SETTING DEFAULT VALS                            */
   /* -------------------------------------------------------------------------- */
 
-  // useEffect(() => {
-  //   // if (!!show && !!queriesParams) {
-  //   if (!!queriesParams) {
-  //     const defaultSelectedCities = [JSON.parse(queriesParams?.cities)];
-  //     console.log(defaultSelectedCities, "defaultSelectedCitiesdefaultSelectedCities");
-  //   }
-  // }, [show, queriesParams]);
-
   const onSubmitClick = () => {
     const body = {
       ...queriesParams,
@@ -82,6 +89,7 @@ const CityModal = ({
     router.replace(`${pathname}?${queryBuilder(body)}`);
     onHide();
   };
+
   return (
     <Modal
       options={{
@@ -102,7 +110,7 @@ const CityModal = ({
         {/*  SELECT ALL CHECK */}
         {!!selectedProv ? (
           <CityModalAllCitiesButton
-            cities={cities}
+            cities={selectedProv?.child}
             setSelectedCities={setSelectedCities}
             selectedCities={selectedCities}
           />
@@ -110,7 +118,7 @@ const CityModal = ({
           <></>
         )}
 
-        {provLoading || citiesLoading ? (
+        {provLoading ? (
           <LottieLoading />
         ) : !selectedProv ? (
           isEmpty(provinces) ? (
@@ -125,23 +133,23 @@ const CityModal = ({
                     setSearch("");
                   }}
                   item={e}
-                  key={`prov${e?.title}`}
+                  key={`prov${e?.id}`}
                 />
               ))
           )
-        ) : isEmpty(cities) ? (
+        ) : isEmpty(selectedProv?.child) ? (
           <EmptyList />
         ) : (
-          cities
+          selectedProv?.child
             ?.filter((e) => e?.title.includes(search))
             ?.map((e) => (
               <CityCard
-                isChecked={selectedCities?.includes(e)}
+                isChecked={selectedCities?.map((x) => x?.id)?.includes(e?.id)}
                 callback={() => {
                   onCityClick(e);
                 }}
                 item={e}
-                key={`prov${e?.title}`}
+                key={`cities${e?.title}`}
               />
             ))
         )}
