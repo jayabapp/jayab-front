@@ -13,8 +13,8 @@ import { Metadata, ResolvingMetadata } from "next";
 import React from "react";
 
 type Props = {
-  params: { property_slug: string };
-  searchParams: { [key: string]: string | string[] | undefined };
+  params: Promise<{ property_slug: string }>;
+  searchParams: Promise<{ [key: string]: string | string[] | undefined }>;
 };
 
 export async function generateMetadata({ params }: Props, parent: ResolvingMetadata): Promise<Metadata> {
@@ -29,7 +29,7 @@ export async function generateMetadata({ params }: Props, parent: ResolvingMetad
   };
 }
 
-const SinglePropertyPage = async ({ params }: { params: { property_slug: string } }) => {
+const SinglePropertyPage = async ({ params }: { params: Promise<{ property_slug: string }> }) => {
   const pageParams = await params;
 
   const { data: properyData } = await serverCall(

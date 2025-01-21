@@ -401,6 +401,7 @@ export interface SingleOwnerPropertyDto {
   feature_image: ImageDto;
   attachments_count: number;
   images: ImageDto[];
+  reserve_days: ReserveDaysDto[];
   std_capacity: number;
   favorites_count: number;
   max_capacity: number;

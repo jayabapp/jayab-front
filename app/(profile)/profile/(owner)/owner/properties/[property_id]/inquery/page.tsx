@@ -62,7 +62,7 @@ const PropertyInquery = () => {
                 </p>
               </div>
             </div>
-            <DaysOfTheWeekStatus />
+            <DaysOfTheWeekStatus data={data?.reserve_days} />
 
             <MultiLineFormInput
               onChangeText={(e) => {
