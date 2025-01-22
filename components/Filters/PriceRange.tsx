@@ -1,7 +1,7 @@
 import { useRouter, usePathname } from "next/navigation";
 import Slider from "rc-slider";
 import "rc-slider/assets/index.css";
-import React, { useEffect, useState } from "react";
+import React, { Dispatch, useEffect, useState } from "react";
 import Button from "../shared/Button/Button";
 import _STRINGS from "@/utils/LocalStrings";
 
@@ -13,21 +13,21 @@ type PriceRangeType = {
   query?: any;
   lowLimit?: number;
   upLimit?: number;
-  setMobileFilters?: Dispatch<any>;
-  mobileFilters?: any;
+  setFilters?: Dispatch<any>;
+  filters?: any;
 };
 
-const PriceRange = ({ query, lowLimit, upLimit }: PriceRangeType) => {
+const PriceRange = ({ filters, setFilters, query, lowLimit, upLimit }: PriceRangeType) => {
   const pathname = usePathname();
   const { min_price, max_price, tag_ids, categories } = query || {};
   const router = useRouter();
   const [lowerBound, SetlowerBound] = useState(lowLimit || 0);
   const [upperBound, SetupperBound] = useState(upLimit || 100000000);
   const [marks, setMarks] = useState<{ [key: number]: { style: {}; label: number } }>([]);
-  const [value, setValue] = useState([
-    Number(min_price) || Number(lowerBound),
-    Number(max_price) || Number(upperBound),
-  ]);
+  // const [value, setValue] = useState([
+  //   Number(min_price) || Number(lowerBound),
+  //   Number(max_price) || Number(upperBound),
+  // ]);
 
   useEffect(() => {
     if (upLimit) {
@@ -38,9 +38,9 @@ const PriceRange = ({ query, lowLimit, upLimit }: PriceRangeType) => {
     }
   }, [lowLimit, upLimit]);
 
-  useEffect(() => {
-    setValue([Number(lowerBound), Number(upperBound)]);
-  }, [lowerBound, upperBound]);
+  // useEffect(() => {
+  //   setValue([Number(lowerBound), Number(upperBound)]);
+  // }, [lowerBound, upperBound]);
 
   // useQuery(
   //   [ProductsServices?.PRODUCT_PRICE_RANGE_CACHEKEY, businessId, categories, tag_ids],
@@ -92,9 +92,9 @@ const PriceRange = ({ query, lowLimit, upLimit }: PriceRangeType) => {
             backgroundColor: "#0088CC",
             direction: "ltr",
           }}
-          value={value}
+          value={[filters?.min_price, filters?.max_price]}
           onChange={(e) => {
-            if (typeof e === "object") setValue(e);
+            // if (typeof e === "object") setValue(x=>);
           }}
           defaultValue={[lowerBound, upperBound]}
         />
@@ -106,7 +106,7 @@ const PriceRange = ({ query, lowLimit, upLimit }: PriceRangeType) => {
 
           <div className="w-full flex  items-center justify-start border rounded-full px-4 py-0.5 border-gray-1150  dark:border-zinc-400">
             <input
-              value={`${numberWithCommas(Number(value[0]))}`}
+              // value={`${numberWithCommas(Number(value[0]))}`}
               onChange={(e) => {
                 let pureVal = e?.target?.value
                   ?.replaceAll(",", "")
@@ -114,7 +114,7 @@ const PriceRange = ({ query, lowLimit, upLimit }: PriceRangeType) => {
 
                   .replaceAll(" ", "");
 
-                if (!isNaN(pureVal)) setValue([Number(pureVal), value[1]]);
+                // if (!isNaN(pureVal)) setValue([Number(pureVal), value[1]]);
               }}
               className="text-xl font-bold  w-full bg-transparent dark:text-white py-2"
             />
@@ -135,60 +135,17 @@ const PriceRange = ({ query, lowLimit, upLimit }: PriceRangeType) => {
               value={numberWithCommas(Number(value[1]))}
             /> */}
             <input
-              value={`${numberWithCommas(Number(value[1]))}`}
+              // value={`${numberWithCommas(Number(value[1]))}`}
               onChange={(e) => {
                 let pureVal = e?.target?.value?.replaceAll(",", "").replaceAll(".", "");
 
-                if (!isNaN(pureVal)) setValue([value[0], Number(pureVal)]);
+                // if (!isNaN(pureVal)) setValue([filters?.min_price, Number(pureVal)]);
               }}
               className="text-xl font-bold  w-full bg-transparent dark:text-white py-2"
             />{" "}
             {_STRINGS?.TOMAN}
           </div>
         </div>
-      </div>
-
-      <div className="my-3 gap-4 flex">
-        <Button
-          variant="solid"
-          title={"_STRINGS?.A25"}
-          onClick={() => {
-            let temp = { ...query };
-            router.replace(
-              `${pathname}?${queryBuilder({
-                ...temp,
-                min_price: value[0],
-                max_price: value[1],
-              })}`
-            );
-            // if (typeof callback === "function") {
-            //   callback();
-            // }
-          }}
-          width="w-full"
-          containerClass="w-full flex items-center flex-col ml-2"
-        />
-        <Button
-          title={"_STRINGS?.A26"}
-          width="w-full"
-          variant={"outline"}
-          containerClass="w-full flex items-center flex-col"
-          onClick={() => {
-            let temp = { ...query };
-
-            delete temp.min_price;
-            delete temp.max_price;
-            router.replace(
-              `${pathname}?${queryBuilder({
-                ...temp,
-              })}`
-            );
-            setValue([lowerBound, upperBound]);
-            // if (typeof callback === "function") {
-            //   callback();
-            // }
-          }}
-        />
       </div>
     </div>
   );

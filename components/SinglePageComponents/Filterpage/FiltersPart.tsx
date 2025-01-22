@@ -104,7 +104,7 @@ const FiltersPart = ({ queries, setFilters, filters, propertyTypes }: any) => {
         queryKey={"is_premium"}
         query={queries}
       />
-      <PriceRange filters={filters} setFilters={setFilters} query={queries} lowLimit={100000} upLimit={1000000000} />
+      {/* <PriceRange filters={filters} setFilters={setFilters} query={queries} lowLimit={100000} upLimit={1000000000} /> */}
     </div>
   );
 };
