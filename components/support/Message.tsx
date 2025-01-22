@@ -15,7 +15,7 @@ const Message: React.FC<MessageProps> = ({ item }) => {
           : "bg-zinc-200   dark:bg-zinc-800  !text-zinc-500 dark:text-zinc-200"
       } `}
     >
-      {item?.by_admin ? <p className="text-sm text-gray-300 pb-2">{_STRINGS.B46}</p> : <></>}
+      {item?.by_admin ? <p className="text-sm text-gray-300 pb-2">{_STRINGS.ADMIN_RESPOND}</p> : <></>}
       <div className="flex items-center gap-2">
         <p className={` ${item?.by_admin ? " " : "text-zinc-500 dark:text-zinc-200"} font-light text-sm`}>
           {moment(item?.created_at).format(" HH:mm  ")}

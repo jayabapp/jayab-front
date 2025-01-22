@@ -9,9 +9,15 @@ import queryBuilder from "@/helpers/queryBuilder";
 import { isNaN } from "lodash";
 import numberWithCommas from "@/helpers/numberWithCommas";
 
-type PriceRangeType = { callback?: () => void | null; query?: any; lowLimit?: number; upLimit?: number };
+type PriceRangeType = {
+  query?: any;
+  lowLimit?: number;
+  upLimit?: number;
+  setMobileFilters?: Dispatch<any>;
+  mobileFilters?: any;
+};
 
-const PriceRange = ({ query, callback, lowLimit, upLimit }: PriceRangeType) => {
+const PriceRange = ({ query, lowLimit, upLimit }: PriceRangeType) => {
   const pathname = usePathname();
   const { min_price, max_price, tag_ids, categories } = query || {};
   const router = useRouter();
@@ -155,9 +161,9 @@ const PriceRange = ({ query, callback, lowLimit, upLimit }: PriceRangeType) => {
                 max_price: value[1],
               })}`
             );
-            if (typeof callback === "function") {
-              callback();
-            }
+            // if (typeof callback === "function") {
+            //   callback();
+            // }
           }}
           width="w-full"
           containerClass="w-full flex items-center flex-col ml-2"
@@ -178,9 +184,9 @@ const PriceRange = ({ query, callback, lowLimit, upLimit }: PriceRangeType) => {
               })}`
             );
             setValue([lowerBound, upperBound]);
-            if (typeof callback === "function") {
-              callback();
-            }
+            // if (typeof callback === "function") {
+            //   callback();
+            // }
           }}
         />
       </div>

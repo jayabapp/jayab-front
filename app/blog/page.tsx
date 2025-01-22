@@ -1,5 +1,5 @@
-import LottieLoading from "@/components/shared/Loading/LottieLoading";
-import Blogs from "@/components/singlePageCpmponents/Blogs";
+import LottieLoading from "@/components/shared/Lotties/LottieLoading";
+import Blogs from "@/components/SinglePageComponents/Blogs";
 import { Suspense } from "react";
 
 // This component passed as fallback to the Suspense boundary

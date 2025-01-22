@@ -334,6 +334,7 @@ const _STRINGS = {
   TICKET_TEXT: "متن تیکت",
   SELECT_TIME_WINDOW: "انتخاب بازه زمانی",
   SEND_INFO: "ارسال اطلاعات",
+  ADMIN_RESPOND: "پاسخ ادمین :",
 };
 
 export default _STRINGS;

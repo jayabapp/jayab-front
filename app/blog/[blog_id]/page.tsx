@@ -12,12 +12,12 @@ import Image from "next/image";
 import React from "react";
 
 type Props = {
-  params: { id: string; blog_id: string };
-  searchParams: { [key: string]: string | string[] | undefined };
+  params: Promise<{ id: string; blog_id: string }>;
+  searchParams: Promise<{ [key: string]: string | string[] | undefined }>;
 };
 
 export async function generateMetadata({ params, searchParams }: Props, parent: ResolvingMetadata): Promise<Metadata> {
-  const { blog_id } = params;
+  const { blog_id } = await params;
 
   const { data: blogData } = await serverCall(baseUrl + apiRoutes.SINGLE_CONTENT_WITH_SLUG(blog_id));
 
@@ -28,7 +28,7 @@ export async function generateMetadata({ params, searchParams }: Props, parent: 
 }
 
 const SingleBlogPage = async ({ params }: Props) => {
-  const { blog_id } = params;
+  const { blog_id } = await params;
 
   const { data } = await serverCall(baseUrl + apiRoutes.SINGLE_CONTENT_WITH_SLUG(blog_id));
   const { data: blogs } = await serverCall(baseUrl + apiRoutes.CONTENTS + `?key=blog&page=1`);

@@ -9,11 +9,10 @@ import { NEW_IMAGE_URL } from "../../../utils/urls";
 import Image from "next/image";
 import _STRINGS from "@/utils/LocalStrings";
 import { ImageDto } from "@/api_services/auth/auth.interface";
-import Modal from "../../Modal";
+
 import SwiperWithNavigation from "../../SwiperWithNavigation";
-import SmallLoading from "../../shared/Lotties/SmallLoading";
-import Device from "@/helpers/Device";
-import _, { isEmpty } from "lodash";
+
+import { difference, isEmpty } from "lodash";
 import ProductImage from "./ProductImage";
 import { SingleOwnerPropertyDto, SinglePropDto } from "@/api_services/property/property.interface";
 import RoomImageModalPart from "./RoomImageModalPart";
@@ -87,7 +86,7 @@ function ProductImagesContainer({
     // data?.video ? [data?.feature_image, ...data?.images, data?.video] :
     [data?.feature_image, ...data?.images]
   );
-  const allImagesIds = _.difference(
+  const allImagesIds = difference(
     defaultImages?.map((e) => e?.id),
     attsImagesArray || []
   );

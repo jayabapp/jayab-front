@@ -1,6 +1,7 @@
 import { PropertyService } from "@/api_services/property/property.service";
 import FilterCheck from "@/components/Filters/FilterCheck";
 import FilterCounter from "@/components/Filters/FilterCounter";
+import PriceRange from "@/components/Filters/PriceRange";
 import ProductModels from "@/components/Filters/ProductModelx";
 import SimpleAccordion from "@/components/shared/SimpleAccorion";
 import { poolFilterTypes } from "@/utils/constantss";
@@ -103,6 +104,7 @@ const FiltersPart = ({ queries, setFilters, filters, propertyTypes }: any) => {
         queryKey={"is_premium"}
         query={queries}
       />
+      <PriceRange filters={filters} setFilters={setFilters} query={queries} lowLimit={100000} upLimit={1000000000} />
     </div>
   );
 };

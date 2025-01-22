@@ -30,7 +30,10 @@ function HomePropertiesSsrPart({ data, middleBanners }: HomePropertiesSsrPartTyp
                 <>
                   <PropertyCard data={i} key={`PRODUCT${i?.id}`} />
                   {(index + 1) % 8 == 0 && !!bannerItem ? (
-                    <div className="w-full  py-2 col-span-full gap-4  grid  grid-cols-1 grid-rows-2 md:grid-rows-1 md:grid-cols-2 ">
+                    <div
+                      key={`banenr${i?.id}`}
+                      className="w-full  py-2 col-span-full gap-4  grid  grid-cols-1 grid-rows-2 md:grid-rows-1 md:grid-cols-2 "
+                    >
                       <HomeProductsBannerItems bannerItem={bannerItem?.[0]} />
                       <HomeProductsBannerItems bannerItem={bannerItem?.[1]} />
                     </div>

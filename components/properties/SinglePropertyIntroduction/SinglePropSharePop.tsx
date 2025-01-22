@@ -50,7 +50,11 @@ const SinglePropSharePop = ({
           <SinglePropSharePopItem data={e} cb={() => onItemSelect(e?.id)} isChecked={selected?.includes(e?.id)} />
         ))}
       </div>
-      <Button title={_STRINGS.SEND} width="w-full" containerClass="w-full  px-8" />
+      <Button
+        title={_STRINGS.SEND}
+        width="w-full md:w-1/2 "
+        containerClass="w-full flex items-center justify-center   py-4 px-8"
+      />
     </PopUpDown>
   );
 };

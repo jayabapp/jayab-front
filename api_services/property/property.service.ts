@@ -40,6 +40,7 @@ export class PropertyService {
   static SINGLE_OWNER_PROPERTY_STATS_CACHEKEY = "SINGLE_OWNER_PROPERTY_STATS";
   static SINGLE_PROPERTY_UPDATE_VIEW_CACHEKEY = "SINGLE_PROPERTY_UPDATE_VIEW";
   static SINGLE_PROPERTY_CONTACT_INFO_CACHEKEY = "SINGLE_PROPERTY_CONTACT_INFO";
+  static GET_SINGLEPROPERTY_CALLENDER_CACHEKEY = "GET_SINGLEPROPERTY_CALLENDER";
 
   static async GetUserPropertyGroup(dto: { group: (keyof typeof PropertyOptionGroup)[] }) {
     try {
@@ -737,6 +738,25 @@ export class PropertyService {
         }
       );
       return result || null;
+    } catch (e) {
+      throw e;
+    }
+  }
+
+  static async GetSingleUserPropertyCallendar(dto: {
+    property_id: string | number | null;
+    year: string | number | null;
+    month: string | number | null;
+  }) {
+    try {
+      const result = await apiCall<
+        { year: string | number | null; month: string | number | null },
+        OwnerCallendarItemDto[]
+      >("GET", apiRoutes.GET_SINGLEPROPERTY_CALLENDER(dto?.property_id), {
+        month: dto.month,
+        year: dto.year,
+      });
+      return result;
     } catch (e) {
       throw e;
     }
