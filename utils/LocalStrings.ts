@@ -333,6 +333,7 @@ const _STRINGS = {
   SEND_TICKET: "ارسال تیکت",
   TICKET_TEXT: "متن تیکت",
   SELECT_TIME_WINDOW: "انتخاب بازه زمانی",
+  SEND_INFO: "ارسال اطلاعات",
 };
 
 export default _STRINGS;

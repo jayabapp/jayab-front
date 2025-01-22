@@ -349,3 +349,9 @@ export const shareLinks = [
   //   link: (address: string) => `https://www.linkedin.com/shareArticle?mini=true&title=دیجی حق&url=${address}`,
   // },
 ];
+
+export const shareButtonItems = [
+  { title: "اشتراک گذاری تصاویر", icon: "/assets/icons/share/blue_pic.svg", id: "image" },
+  { title: "اشتراک گذاری اطلاعات", icon: "/assets/icons/share/blue_exclemation.svg", id: "info" },
+  { title: "اشتراک گذاری موقعیت مکانی", icon: "/assets/icons/adds/blue_pinpoint_location.svg", id: "location" },
+];

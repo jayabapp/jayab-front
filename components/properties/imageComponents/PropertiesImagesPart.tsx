@@ -16,6 +16,7 @@ import Device from "@/helpers/Device";
 import _, { isEmpty } from "lodash";
 import ProductImage from "./ProductImage";
 import { SingleOwnerPropertyDto, SinglePropDto } from "@/api_services/property/property.interface";
+import RoomImageModalPart from "./RoomImageModalPart";
 // const ProductOptionsContainer = dynamic(() => import("./ProductOptionsContainer"), {
 //   ssr: false,
 // });
@@ -55,221 +56,11 @@ export type ProductDataType = {
     id: number;
   };
 };
-type ImageSlideType = {
+export type ImageSlideType = {
   currentIndex?: number | null;
   isVisible?: boolean;
   data?: any;
   currentImage?: any;
-};
-
-const ImagesSliderModal = ({
-  modalProps,
-  setModalProps,
-  addImages,
-}: {
-  addImages?: (any | undefined)[];
-  modalProps?: ImageSlideType;
-  setModalProps: (e?: ImageSlideType | null | any) => void | null | undefined;
-}) => {
-  const [isVisible, setisVisible] = useState(false);
-  const [activeIndex, setActiveIndex] = useState(modalProps?.currentIndex);
-
-  const mobileSwiper = useRef(null) as any;
-  const ref = useRef(null) as any;
-
-  useEffect(() => {
-    if (modalProps?.isVisible) {
-      setTimeout(() => {
-        setisVisible(true);
-      }, 200);
-    } else {
-      setisVisible(false);
-    }
-    setActiveIndex(modalProps?.currentIndex);
-  }, [modalProps]);
-  useEffect(() => {
-    if (activeIndex != null && mobileSwiper?.current) {
-      mobileSwiper?.current?.slideTo(activeIndex);
-    }
-  }, [activeIndex, mobileSwiper.current]);
-
-  const media =
-    modalProps?.data?.video && !!addImages
-      ? [...addImages, modalProps?.data?.video]
-      : !!addImages
-      ? [...addImages]
-      : [];
-
-  return (
-    <Modal
-      show={modalProps?.isVisible}
-      options={{
-        containerClass: `  app-size  pb-[4rem] md:pb-0  !mt-0  overflow-y-scroll   mx-auto   lg:!my-16  w-11/12 md:w-2/3 xl:w-2/3 2xl:w-2/3 rounded-0 md:rounded-20 overflow-y-scroll  bg-white dark:bg-zinc-900`,
-      }}
-      onHide={() => setModalProps({ ...modalProps, isVisible: false })}
-    >
-      <div className="  w-full h-screen md:h-fit grid grid-cols-5 gap-x-10 relative">
-        <div className="flex fixed md:sticky   rounded-t-0 md:rounded-t-20 w-full z-[60] bg-white dark:bg-zinc-800 justify-between items-center h-12   top-0 col-span-5 px-4 border-b border-b-neutral-300 dark:border-b-zinc-600 ">
-          <div className="flex items-center gap-2">
-            {" "}
-            <h2 className="text-md dark:text-neutral-300">{_STRINGS.IMAGES}</h2>
-            <div className="text-red-700  rounded-10 z-1  dark:text-red-400 text-xs ">
-              * {_STRINGS.MODAL_IMAGE_ZOOM}
-            </div>
-          </div>
-          <div className="flex items-center ">
-            <img
-              src="/assets/icons/adds/x_mark.svg"
-              className={"w-4   h-auto mx-1 cursor-pointer dark:invert"}
-              onClick={() => setModalProps({ ...modalProps, isVisible: false })}
-            />
-          </div>
-        </div>
-        <div className="col-span-5 md:col-span-3  mt-5 md:mt-0 relative border-l border-l-gray-300 dark:border-l-zinc-600  pt-12 lg:pt-0 ">
-          {isVisible ? (
-            <SwiperWithNavigation
-              pagination={{
-                clickable: true,
-              }}
-              dataLength={1}
-              // activeIndex={modalProps?.currentIndex}
-              // setActiveIndex={setActiveIndex}
-              spaceBetween={10}
-              slidesPerView={1}
-              reference={ref}
-              onBeforeInit={(swiper: SwiperCore) => {
-                ref.current = swiper;
-              }}
-              onActiveIndexChange={(swiper: SwiperCore) => {
-                // setzoomEnabled(false);
-                return setActiveIndex((index) => swiper.activeIndex);
-              }}
-              initialSlide={activeIndex}
-              className="!select-none"
-            >
-              {addImages?.map((i, index) => (
-                <SwiperSlide key={`index${index}`} id={`${index}`} className={`w-full  cursor-pointer !select-none `}>
-                  {true ? (
-                    // {i?.type == 1 ? (
-                    <div className="swiper-zoom-container !select-none">
-                      <img className="w-full aspect-square  object-contain !select-none" src={NEW_IMAGE_URL(i)} />
-                    </div>
-                  ) : (
-                    <video
-                      controls
-                      width="100%"
-                      height="100%"
-                      onClick={(e) => {
-                        // if (refer?.current?.paused) {
-                        //   // refer?.current?.play();
-                        //   setShowPlay(false);
-                        // } else {
-                        //   // refer?.current?.pause();
-                        // }
-                      }}
-                      // poster={}
-                      id="myVideo"
-                      className="relative bg-black w-full aspect-square object-contain"
-                    >
-                      <source src={i?.name} type="video/mp4" />
-                      <source src={i?.name} type="video/ogg" />
-                    </video>
-                  )}
-                </SwiperSlide>
-              ))}
-            </SwiperWithNavigation>
-          ) : (
-            <SmallLoading />
-          )}
-        </div>
-        <div className="col-span-5 md:col-span-2  flex flex-col justify-start px-2 md:px-0 pt-6  ">
-          <p className="font-bold text-right ml-4 text-base dark:text-neutral-300">{modalProps?.data?.title}</p>
-          <Device>
-            {({ isMobile }) => {
-              if (isMobile) {
-                if (isVisible)
-                  return (
-                    <Swiper
-                      slidesPerView={4}
-                      spaceBetween={10}
-                      className={"w-full px-0"}
-                      onBeforeInit={(swiper) => (mobileSwiper.current = swiper)}
-                    >
-                      {addImages?.map((i, index) => (
-                        <SwiperSlide key={`imgprd${index}`} id={`imgprd${index}`}>
-                          <div
-                            className={` relative flex-1 md:flex-none w-full !aspect-square  overflow-clip rounded-10 border cursor-pointer transition-all ease-in-out duration-300 ${
-                              activeIndex == index
-                                ? "border-primary-700  dark:border-zinc-200 "
-                                : "border-gray-300 opacity-60 dark:border-zinc-600"
-                            } `}
-                            onClick={() => ref.current.slideTo(index)}
-                          >
-                            <img
-                              onClick={() => ref.current.slideTo(index)}
-                              // src={i?.type == 1 ? NEW_IMAGE_URL(i) : i?.cover}
-                              src={i?.type == 1 ? NEW_IMAGE_URL(i) : ""}
-                              className={`  ${
-                                i?.type != 1 ? " blur-sm" : ""
-                              } p-1 w-full rounded-10 !aspect-square object-contain `}
-                            />
-                            {/* {i?.type != 1 ? (
-                              <img
-                                src="/assets/icons/products/play-cricle.svg"
-                                className="left-1/2 top-1/2 rounded-10 absolute "
-                                style={{ transform: "translate(-50%,-50%)" }}
-                              />
-                            ) : (
-                              <></>
-                            )} */}
-                          </div>
-                        </SwiperSlide>
-                      ))}
-                    </Swiper>
-                  );
-              } else {
-                return (
-                  <div className="flex !overflow-x-scroll shrink-0 flex-nowrap  md:flex-wrap  z-50  ">
-                    {media?.map((i, index) => (
-                      <div
-                        key={`imgprd${index}`}
-                        className={` relative flex-1 md:flex-none overflow-clip md:shrink-0 w-24 h-24 !aspect-square object-contain rounded-10 border cursor-pointer mx-2 my-2 transition-all ease-in-out duration-300 ${
-                          activeIndex == index
-                            ? "border-primary-700  dark:border-zinc-200 "
-                            : "border-gray-300 dark:border-zinc-600"
-                        } `}
-                        onClick={() => ref.current.slideTo(index)}
-                      >
-                        {" "}
-                        <img
-                          id={`imgprd${index}`}
-                          key={`imgprd${index}`}
-                          // src={i?.type == 1 ? NEW_IMAGE_URL(i) : i?.cover}
-                          src={i?.type == 1 ? NEW_IMAGE_URL(i) : ""}
-                          className={` ${
-                            i?.type != 1 ? " blur-sm" : ""
-                          } p-1 flex-1 rounded-10 md:flex-none md:shrink-0 w-24 h-24 !aspect-square object-contain `}
-                        />
-                        {/* {i?.type != 1 ? (
-                          <img
-                            src="/assets/icons/products/play-cricle.svg"
-                            className="left-1/2 top-1/2 absolute "
-                            style={{ transform: "translate(-50%,-50%)" }}
-                          />
-                        ) : (
-                          <></>
-                        )} */}
-                      </div>
-                    ))}
-                  </div>
-                );
-              }
-            }}
-          </Device>
-        </div>
-      </div>
-    </Modal>
-  );
 };
 
 function ProductImagesContainer({
@@ -368,7 +159,7 @@ function ProductImagesContainer({
         </div>
       </div>
       {modalProps.isVisible && (
-        <ImagesSliderModal addImages={addImages} modalProps={modalProps} setModalProps={setModalProps} />
+        <RoomImageModalPart addImages={addImages} modalProps={modalProps} setModalProps={setModalProps} />
       )}
       {/* ${!data?.cheapest_price ? "grayscale" : ""}  */}
       <div

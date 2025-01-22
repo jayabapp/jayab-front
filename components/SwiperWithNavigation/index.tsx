@@ -13,22 +13,22 @@ function SwiperWithNavigation({ dataLength, children, reference, ...props }: any
   const [slidesPerView, setslidesPerView] = useState<number | string>(2);
 
   return (
-    <div className={`w-full rounded-20 !select-none `}>
-      {/* {!isEnd && dataLength > slidesPerView ? (
+    <div className={`w-full rounded-20  !select-none `}>
+      {!isEnd && dataLength > slidesPerView ? (
         <div
           onClick={() => {
             reference.current?.slideNext();
             setisStart(false);
           }}
-          className="  custome-shadow-card flex bottom-2 items-center justify-center hover:scale-110 group hover:bg-primary-700 dark:hover:bg-primary-700 transition-all lg:flex md:flex-col absolute z-10 bg-white/40 dark:bg-zinc-800  shadow-lg rounded-full cursor-pointer h-10 w-10 left-4 top-auto   right-auto  bg-gray-250  "
+          className=" my-auto  custome-shadow-card flex bottom-0 top-0  items-center justify-center hover:scale-110 group hover:bg-primary-700 dark:hover:bg-primary-700 transition-all lg:flex md:flex-col absolute z-10 bg-white/40 dark:bg-zinc-800  shadow-lg rounded-full cursor-pointer h-10 w-10 left-4   right-auto  bg-gray-250  "
         >
-          <ChevronArrow
-            src="/assets/icons/shared/chevron-left.svg"
+          <img
+            src="/assets/icons/shared/chevron.svg"
             className="w-6 h-6  rotate-90 dark:opacity-50 dark:invert select-none group-hover:invert"
-            alt=""
+            alt="chvronSwiper"
           />
         </div>
-      ) : null} */}
+      ) : null}
 
       <Swiper
         zoom={true}
@@ -59,21 +59,21 @@ function SwiperWithNavigation({ dataLength, children, reference, ...props }: any
         {children}
       </Swiper>
 
-      {/* {!isStart && dataLength > slidesPerView ? (
+      {!isStart && dataLength > slidesPerView ? (
         <div
           onClick={() => {
             reference.current?.slidePrev();
             setIsEnd(false);
           }}
-          className=" flex  custome-shadow-card hover:scale-110 transition-all group hover:bg-primary-700 dark:hover:bg-primary-700  lg:flex md:flex-col absolute z-10 bg-white/40 dark:bg-zinc-800 shadow-lg rounded-full cursor-pointer h-10 w-10 right-4 top-auto bottom-2  left-auto  bg-gray-250  justify-center items-center"
+          className=" flex  custome-shadow-card bottom-0 top-0  my-auto hover:scale-110 transition-all group hover:bg-primary-700 dark:hover:bg-primary-700  lg:flex md:flex-col absolute z-10 bg-white/40 dark:bg-zinc-800 shadow-lg rounded-full cursor-pointer h-10 w-10 right-4  left-auto  bg-gray-250  justify-center items-center"
         >
-          <ChevronArrow
-            src="/assets/icons/shared/chevron-left.svg"
+          <img
+            src="/assets/icons/shared/chevron.svg"
             className="w-6 -rotate-90 h-6 dark:opacity-50 dark:invert  select-none hover:invert"
-            alt="right"
+            alt="chvronSwiper"
           />
         </div>
-      ) : null} */}
+      ) : null}
     </div>
   );
 }

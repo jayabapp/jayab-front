@@ -4,6 +4,7 @@ enum BtnVariants {
   "solid" = "btn-primary",
   "outline" = "btn-primary-outlined",
   "Faded" = "btn-primary-faded",
+  "flat" = "btn-primary-flat",
 }
 enum BtnColors {
   "primary" = "bg-btnColor-primary",

@@ -13,9 +13,11 @@ import AuthorizationStatus from "../AuthorizationStatus";
 import FixedBottomContainer from "@/components/shared/FixedBottomContainer";
 import SinglePropContactIfoPop from "./SinglePropContactInfoPop";
 import ShareLink from "@/components/shared/shareComponent/BrowserShare";
+import SinglePropSharePop from "./SinglePropSharePop";
 
 const SinglePropertyIntroduction = ({ data }: { data: SinglePropDto }) => {
   const [showContact, setShowContact] = useState(false);
+  const [showShare, setShowShare] = useState(false);
   const { mutate: createFindChat, isPending } = useMutation({ mutationFn: ChatService.StartOrFindChat });
 
   useQuery({
@@ -39,6 +41,16 @@ const SinglePropertyIntroduction = ({ data }: { data: SinglePropDto }) => {
     setShowContact(false);
   };
 
+  /* -------------------------------------------------------------------------- */
+  /*                                  SHARE POP                                 */
+  /* -------------------------------------------------------------------------- */
+
+  const onShareClick = () => {
+    setShowShare(true);
+  };
+  const onShareClose = () => {
+    setShowShare(false);
+  };
   return (
     <div className=" flex w-full  flex-col relative  gap-4">
       <div className="w-full flex items-start md:items-center justify-between gap-2">
@@ -58,25 +70,38 @@ const SinglePropertyIntroduction = ({ data }: { data: SinglePropDto }) => {
           <p className="text-base  opacity-60   ">{data?.favorites_count}</p>
         </div>
         <ShareLink />
-      </div>
+      </div>{" "}
+      <Button
+        onClick={onShareClick}
+        title={_STRINGS.SEND_INFO}
+        width=" text-xs !px-4 !py-1.5 "
+        variant="flat"
+        roundedClass="rounded-md"
+        color="themeLight"
+        icon={<img className=" ml-1" src="/assets/icons/property/share_icon.svg" />}
+      />
+      {/*                          */}
       <div className="flex items-center gap-4    py-2 w-full md:justify-between">
         <div className="flex items-center gap-1">
           <p>{_STRINGS.TODAYS_PRICE} </p>
         </div>
         <SinglePropertyPricePart data={data} />
-      </div>
+      </div>{" "}
+      {/*                          */}
       <div className="flex items-center gap-4   py-2 w-full md:justify-between">
         <p>{_STRINGS.ROOM_COUNTS} :</p>
         <p className="font-bold text-primary-700">
           {data?.total_bedrooms} {_STRINGS.ROOM}
         </p>
-      </div>
+      </div>{" "}
+      {/*                          */}
       <div className="flex items-center gap-4   py-2 w-full md:justify-between">
         <p>{_STRINGS.ROOM_SIZE} :</p>
         <p className="font-bold text-primary-700">
           {data?.building_area} {_STRINGS.METER}
         </p>
       </div>
+      {/*                          */}
       <div className="flex items-center gap-4   py-2 w-full md:justify-between">
         <div className="flex items-center gap-1">
           <img className="" src="/assets/icons/adds/pin_point_location.svg" />
@@ -133,6 +158,7 @@ const SinglePropertyIntroduction = ({ data }: { data: SinglePropDto }) => {
         </FixedBottomContainer>
       </div>
       <SinglePropContactIfoPop show={!!showContact} data={data} onHide={onContactClose} />
+      <SinglePropSharePop show={!!showShare} data={data} onHide={onShareClose} />
     </div>
   );
 };

@@ -94,6 +94,9 @@ ul {
 .btn-primary-faded {
   @apply text-btnColor-primary bg-btnColor-light   hover:scale-98 hover:ring-primary-700/50 dark:hover:ring-primary-700/50 cursor-pointer;
 }
+.btn-primary-flat {
+  @apply text-btnColor-primary bg-primary-400/50   hover:scale-98 hover:ring-primary-700/50 dark:hover:ring-primary-700/50 cursor-pointer;
+}
 .btn-outlined {
   @apply bg-white dark:bg-zinc-800  text-black border-2 border-black  hover:ring-1 hover:ring-primary-700/50 dark:hover:ring-primary-700/50 cursor-pointer;
 }
