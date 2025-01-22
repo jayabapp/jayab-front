@@ -48,6 +48,17 @@ const ShareLink = ({
 
   return (
     <div className={`flex ${containerClass} items-center`} onClick={onShare}>
+      {" "}
+      <div
+        className={`flex items-center  rounded-md   justify-center    cursor-pointer     transition-all dark:bg-opacity-40 ${
+          hasTitle && "bg-opacity-60"
+        }`}
+      >
+        <img
+          src="/assets/icons/property/share_icon.svg"
+          className="cursor-pointer w-5 h-5 grayscale   hover:scale-110 transition-all"
+        />
+      </div>
       <Transition show={visibleSocials}>
         <div className={` ${itemsClass}`}>
           {shareLinks.map((e, i) => (
@@ -85,13 +96,6 @@ const ShareLink = ({
           </TransitionChild>
         </div>
       </Transition>
-      <div
-        className={`flex items-center bg-primary-800/30 rounded-md  w-9 h-9  justify-center    cursor-pointer   pr-2 pl-1 py-1  transition-all dark:bg-opacity-40 ${
-          hasTitle && "bg-opacity-60"
-        }`}
-      >
-        {/* <ShareNetwork className="cursor-pointer w-6 h-6 text-white hover:scale-110 transition-all" /> */}
-      </div>
     </div>
   );
 };

@@ -15,15 +15,15 @@ import { usePathname } from "next/navigation";
 
 import React, { useState, use } from "react";
 
-export default function SingleDeceasedPage({ params }: { params: Promise<{ property_slug: string }> }) {
+export default function SingleDeceasedPage({ params }: { params: Promise<{ room_slug: string }> }) {
   const incomingParams = use(params);
   const pathname = usePathname();
 
   const { data: properyData, isPending } = useQuery({
-    queryKey: [PropertyService?.GET_SINGLEPROPERTY_SlUG_CACHEKEY, incomingParams?.property_slug],
+    queryKey: [PropertyService?.GET_SINGLEPROPERTY_SlUG_CACHEKEY, incomingParams?.room_slug],
     queryFn: () => {
-      if (incomingParams?.property_slug)
-        return PropertyService?.GetSinglePropertyWithSlug({ Property_slug: incomingParams?.property_slug });
+      if (incomingParams?.room_slug)
+        return PropertyService?.GetSinglePropertyWithSlug({ Property_slug: incomingParams?.room_slug });
       else {
         return null;
       }

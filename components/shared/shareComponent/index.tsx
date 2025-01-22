@@ -1,7 +1,6 @@
 "use client";
 import React from "react";
 import Notify from "../Toast";
-import { ShareIcon } from "@heroicons/react/24/outline";
 
 const ShareButton = () => {
   const shareCode = async () => {
@@ -27,7 +26,8 @@ const ShareButton = () => {
   };
 
   return (
-    <ShareIcon
+    <img
+      src="/assets/icons/property/share_icon.svg"
       onClick={() => {
         shareCode();
       }}

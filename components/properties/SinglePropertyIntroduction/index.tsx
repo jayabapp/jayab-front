@@ -12,6 +12,7 @@ import { PropertyService } from "@/api_services/property/property.service";
 import AuthorizationStatus from "../AuthorizationStatus";
 import FixedBottomContainer from "@/components/shared/FixedBottomContainer";
 import SinglePropContactIfoPop from "./SinglePropContactInfoPop";
+import ShareLink from "@/components/shared/shareComponent/BrowserShare";
 
 const SinglePropertyIntroduction = ({ data }: { data: SinglePropDto }) => {
   const [showContact, setShowContact] = useState(false);
@@ -56,6 +57,7 @@ const SinglePropertyIntroduction = ({ data }: { data: SinglePropDto }) => {
           <FavButton data={data} />
           <p className="text-base  opacity-60   ">{data?.favorites_count}</p>
         </div>
+        <ShareLink />
       </div>
       <div className="flex items-center gap-4    py-2 w-full md:justify-between">
         <div className="flex items-center gap-1">

@@ -338,14 +338,14 @@ export const shareLinks = [
     icon: "/assets/icons/share/whatsapp.svg",
     link: (address: string) => `https://api.whatsapp.com/send?text=${address}`,
   },
-  {
-    id: 2,
-    icon: "/assets/icons/share/twitter.svg",
-    link: (address: string) => `https://twitter.com/intent/tweet?text=${address}&hashtags=digihagh`,
-  },
-  {
-    id: 3,
-    icon: "/assets/icons/share/linkdin.svg",
-    link: (address: string) => `https://www.linkedin.com/shareArticle?mini=true&title=دیجی حق&url=${address}`,
-  },
+  // {
+  //   id: 2,
+  //   icon: "/assets/icons/share/twitter.svg",
+  //   link: (address: string) => `https://twitter.com/intent/tweet?text=${address}&hashtags=digihagh`,
+  // },
+  // {
+  //   id: 3,
+  //   icon: "/assets/icons/share/linkdin.svg",
+  //   link: (address: string) => `https://www.linkedin.com/shareArticle?mini=true&title=دیجی حق&url=${address}`,
+  // },
 ];

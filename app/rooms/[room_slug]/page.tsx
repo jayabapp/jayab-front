@@ -13,15 +13,13 @@ import { Metadata, ResolvingMetadata } from "next";
 import React from "react";
 
 type Props = {
-  params: Promise<{ property_slug: string }>;
+  params: Promise<{ room_slug: string }>;
   searchParams: Promise<{ [key: string]: string | string[] | undefined }>;
 };
 
 export async function generateMetadata({ params }: Props, parent: ResolvingMetadata): Promise<Metadata> {
   const pageParams = await params;
-  const { data: properyData } = await serverCall(
-    baseUrl + apiRoutes.GET_SINGLEPROPERTY_SlUG(pageParams?.property_slug)
-  );
+  const { data: properyData } = await serverCall(baseUrl + apiRoutes.GET_SINGLEPROPERTY_SlUG(pageParams?.room_slug));
 
   return {
     title: properyData?.product?.seo?.metaTitle || properyData?.product?.title,
@@ -29,12 +27,10 @@ export async function generateMetadata({ params }: Props, parent: ResolvingMetad
   };
 }
 
-const SinglePropertyPage = async ({ params }: { params: Promise<{ property_slug: string }> }) => {
+const SinglePropertyPage = async ({ params }: { params: Promise<{ room_slug: string }> }) => {
   const pageParams = await params;
 
-  const { data: properyData } = await serverCall(
-    baseUrl + apiRoutes.GET_SINGLEPROPERTY_SlUG(pageParams?.property_slug)
-  );
+  const { data: properyData } = await serverCall(baseUrl + apiRoutes.GET_SINGLEPROPERTY_SlUG(pageParams?.room_slug));
 
   return (
     <div className=" !pb-48 lg:!pb-36   gap-4 justify-start items-start container grid grid-cols-1  md:grid-cols-2  !h-auto   !overflow-x-visible">
