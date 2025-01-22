@@ -107,6 +107,32 @@ const Profile = () => {
             ) : (
               <></>
             )}
+            {!!data?.advisor_id ? (
+              <ProfileItem
+                item={{
+                  id: 1214,
+                  imgSrc: "/assets/icons/header/header_my_sub.svg",
+                  route: "/profile//advisor/subscription",
+                  title: "مشاور ویژه",
+                }}
+                key={`profileItemSub`}
+              />
+            ) : (
+              <></>
+            )}
+            {!!data?.advisor_id || !!data?.owner_id ? (
+              <ProfileItem
+                item={{
+                  id: 1526,
+                  imgSrc: "/assets/icons/header/header_my_turnovers.svg",
+                  route: "/profile/my-payments",
+                  title: "پرداخت های من",
+                }}
+                key={`myPayments`}
+              />
+            ) : (
+              <></>
+            )}
             {!isEmpty(PersonalProfileItems) ? (
               PersonalProfileItems?.map((e) => <ProfileItem item={e} key={`profileItem${e?.id}`} />)
             ) : (

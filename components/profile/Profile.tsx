@@ -84,6 +84,34 @@ const Profile = ({}) => {
         ) : (
           <></>
         )}
+        {!!userInfo?.advisor_id ? (
+          <ProfileItem
+            disableArrow
+            item={{
+              id: 24124,
+              imgSrc: "/assets/icons/header/header_my_sub.svg",
+              route: "/profile/advisor/subscription",
+              title: "مشاور ویژه",
+            }}
+            key={`profileIt124emowner`}
+          />
+        ) : (
+          <></>
+        )}
+        {!!userInfo?.advisor_id || !!userInfo?.owner_id ? (
+          <ProfileItem
+            disableArrow
+            item={{
+              id: 1526,
+              imgSrc: "/assets/icons/header/header_my_turnovers.svg",
+              route: "/profile/my-payments",
+              title: "پرداخت های من",
+            }}
+            key={`myPayments`}
+          />
+        ) : (
+          <></>
+        )}
         {platformProfileList?.map((i) => (
           <ProfileItem disableArrow key={`${i?.id}PROFILECOMPONENT`} item={i} />
         ))}

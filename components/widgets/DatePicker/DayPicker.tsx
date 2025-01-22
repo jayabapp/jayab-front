@@ -13,6 +13,7 @@ type props = {
   selectedDate?: string | number;
   setSelectedDay?: (e: any | null) => void | null;
   options?: { valueType: "persian" | "global"; showTimeOfTheDay?: boolean };
+  freeDaysOfMonth?: boolean;
 };
 
 const daysOfOurLives = ["شنبه", "یک‌شنبه", "دوشنبه", "سه‌شنبه", "چهارشنبه", "پنج‌شنبه", "جمعه"];
@@ -20,7 +21,7 @@ const DayPicker = ({
   month,
   year,
   date,
-  Loading,
+  freeDaysOfMonth,
   selectedDate,
   setSelectedDay,
   options,
@@ -128,6 +129,7 @@ const DayPicker = ({
       ))}
       {daysData?.map((e, i) => (
         <Day
+          freeDaysOfMonth={freeDaysOfMonth}
           today={today}
           data={e}
           key={i}

@@ -25,11 +25,13 @@ const CityModal = ({
   onHide,
   item,
   setTitle,
+  passedUrl,
 }: {
   show: boolean;
   onHide: () => void | null;
   setTitle?: (e: string) => void | null;
   item?: { submitTitle?: string };
+  passedUrl?: string;
 }) => {
   const router = useRouter();
   const pathname = usePathname();
@@ -86,7 +88,7 @@ const CityModal = ({
     };
     body.cities = selectedCities?.map((e) => e?.id);
 
-    router.replace(`${pathname}?${queryBuilder(body)}`);
+    router.replace(`${passedUrl || pathname}?${queryBuilder(body)}`);
     onHide();
   };
 
@@ -133,7 +135,7 @@ const CityModal = ({
                     setSearch("");
                   }}
                   item={e}
-                  key={`prov${e?.id}`}
+                  key={`prov${e?.id}${e?.title}`}
                 />
               ))
           )

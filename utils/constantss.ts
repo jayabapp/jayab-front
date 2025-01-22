@@ -192,7 +192,7 @@ export const profileDropDownItems = [
   {
     id: 421,
     title: "پرداخت های من",
-    route: "/profile/turnovers",
+    route: "/profile/my-payments",
     imgSrc: "/assets/icons/header/header_my_turnovers.svg",
   },
   {
@@ -232,14 +232,14 @@ export const profileItems = [
   //   isMobile: false,
   // },
 
-  {
-    id: 5232,
-    title: "پرداخت های من",
-    route: "/profile/turnovers",
-    imgSrc: "/assets/icons/header/header_my_turnovers.svg",
-    guard: true,
-    isMobile: false,
-  },
+  // {
+  //   id: 5232,
+  //   title: "پرداخت های من",
+  //   route: "/profile/my-payments",
+  //   imgSrc: "/assets/icons/header/header_my_turnovers.svg",
+  //   guard: true,
+  //   isMobile: false,
+  // },
   {
     id: 769,
     title: "آگهی های ذخیره شده",

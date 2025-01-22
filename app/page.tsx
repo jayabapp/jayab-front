@@ -1,3 +1,4 @@
+import HomeCityFilterContainer from "@/components/Home/HomeCityFilterContainer";
 import HomePropertiesList from "@/components/Home/HomePropertiesList";
 import MainFiltersContainer from "@/components/Home/MainFiltersContainer";
 import LottieLoading from "@/components/shared/Lotties/LottieLoading";
@@ -32,7 +33,7 @@ const Home = async () => {
   const { data: landings } = await serverCall(baseUrl + apiRoutes.USER_LANDING_PAGES);
   const { data: propertyData } = await serverCall(baseUrl + apiRoutes.GET_PROPERTIES, {
     cursor: 0,
-    per_page: 27,
+    per_page: 24,
   });
   return (
     <div id="homeParent" className="home-container  !px-0   flex flex-col gap-10 ">
@@ -43,23 +44,32 @@ const Home = async () => {
           <BannersContainer banners={banners || []} />
         </div>
       )}
-      {!!middleBanners ? (
+      {/* {!!middleBanners ? (
         <MiddleBanners cols={2} containerClass="  pr-2 md:pr-0 py-4" list={middleBanners || []} />
       ) : (
         <></>
-      )}
-      {!landings ? (
-        <LottieLoading />
-      ) : (
-        <Suspense fallback={<></>}>
-          <MainFiltersContainer title={`${_STRINGS.FAST_SEARCH}`} data={landings || []} />{" "}
-        </Suspense>
-      )}
+      )} */}
+      <div className="px-3 select-none md:px-3 lg:px-4 2xl:px-[10%]  pt-0 md:py-0 w-full">
+        {!landings ? (
+          <LottieLoading />
+        ) : (
+          <Suspense fallback={<></>}>
+            <HomeCityFilterContainer title={`${_STRINGS.MOST_VISITED_CITIES}`} data={landings?.popular_city || []} />{" "}
+          </Suspense>
+        )}
+        {!landings ? (
+          <LottieLoading />
+        ) : (
+          <Suspense fallback={<></>}>
+            <MainFiltersContainer title={`${_STRINGS.FAST_SEARCH}`} data={landings?.quick_search || []} />{" "}
+          </Suspense>
+        )}
+      </div>
       {!propertyData?.data ? (
         <LottieLoading />
       ) : (
         <Suspense fallback={<></>}>
-          <HomePropertiesList data={propertyData?.data || []} />{" "}
+          <HomePropertiesList middleBanners={middleBanners} data={propertyData?.data || []} />{" "}
         </Suspense>
       )}
     </div>

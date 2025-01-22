@@ -61,7 +61,7 @@ const DatePickerqueryFilter = ({ query }: any) => {
                   e.stopPropagation();
                   setDate("");
                 }}
-                className="  w-5 h-5 aspect-square  text-red-800"
+                className="  w-4 h-4 aspect-square  text-red-800"
               />
             ) : (
               // <CallenderTimeShiftIcon className="mix-blend-multiply" />

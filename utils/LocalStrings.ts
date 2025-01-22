@@ -307,6 +307,7 @@ const _STRINGS = {
   HAS_DISCOUNT: "تخفیف دار",
   PERMIUM_PROPS: "ملک های ویژه",
   FAST_SEARCH: "جستجوی سریع",
+  MOST_VISITED_CITIES: "شهر های پربازدید",
 
   SHOW_MORE: "نمایش بیشتر",
   COORDINATES: "موقعیت مکانی",
@@ -319,6 +320,19 @@ const _STRINGS = {
   SEE_ALL: "مشاهده همه",
 
   OTHER_ARTICLS: "مقالات دیگر",
+
+  SEE_CITIES: "مشاهده شهرها",
+
+  SEND_NEW_TICKET: "ارسال تیکت  جدید",
+  CLOSED: "بسته شده",
+  WAITING_TO_RESPOND: "در انتظار پاسخ",
+  RESPONDED: "پاسخ داده شده",
+  JUST_MESSAGE: "پیام",
+  SEND: "ارسال",
+  TICKET_TITLE: "عنوان تیکت",
+  SEND_TICKET: "ارسال تیکت",
+  TICKET_TEXT: "متن تیکت",
+  SELECT_TIME_WINDOW: "انتخاب بازه زمانی",
 };
 
 export default _STRINGS;

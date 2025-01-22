@@ -22,10 +22,13 @@ type dataTypes = {
   year?: string;
 
   showTimeOfTheDay?: boolean;
+  freeDaysOfMonth?: boolean;
 };
 
-const Day = ({ onSelect, data, selectedDayId, month, year, showTimeOfTheDay, today }: dataTypes) => {
-  const isBefore = moment(moment(`${year}/${month}/${data?.id}`, "jYYYY/jMM/jD")).isBefore();
+const Day = ({ onSelect, data, selectedDayId, month, year, freeDaysOfMonth, today }: dataTypes) => {
+  const isBefore = !!freeDaysOfMonth
+    ? false
+    : moment(moment(`${year}/${month}/${data?.id}`, "jYYYY/jMM/jD")).isBefore();
   const isToday = today?.day == data?.id && today?.month == month && today?.year == year;
   const isSelected = selectedDayId?.day == data?.id && selectedDayId?.month == month && selectedDayId?.year == year;
 
