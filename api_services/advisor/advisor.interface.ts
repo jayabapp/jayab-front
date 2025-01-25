@@ -20,7 +20,7 @@ export interface AdvisorProfileDto {
   status: Status;
   admin_descriptions: any[];
   is_special: boolean;
-  subscription_expired_at: null;
+  subscription_expired_at: Date;
   national_code: null;
   created_at: Date;
 }

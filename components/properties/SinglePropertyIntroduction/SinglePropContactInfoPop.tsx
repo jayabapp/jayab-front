@@ -31,7 +31,7 @@ const SinglePropContactInfoPop = ({
 
   return (
     <PopUpDown setVisible={onHide} visible={show}>
-      <ModalHeaderPart title={_STRINGS.CONTACT_INFO} onHide={() => {}} />
+      <ModalHeaderPart hideArrow title={_STRINGS.CONTACT_INFO} onHide={onHide} />
 
       <div className="w-full p-4 flex flex-col gap-2">
         {isPending ? (

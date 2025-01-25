@@ -107,12 +107,22 @@ const Header = ({ scroll }: { scroll?: number }) => {
   /*                                 NOTIF BADGE                                */
   /* -------------------------------------------------------------------------- */
   const { data: notifBadge } = useQuery({
-    queryKey: [UserService.NOTIFS_BADGE_CACHEKEY],
-    queryFn: UserService.userNotifBadge,
+    queryKey: [UserService.NOTIFS_BADGE_CACHEKEY, isLogin],
+    queryFn: () => {
+      if (!!isLogin) {
+        return UserService.userNotifBadge();
+      } else {
+        return null;
+      }
+    },
   });
   const { data: chaNotifBadge } = useQuery({
-    queryKey: [ChatService.UNREAD_CHAT_COUNT_CACHEKEY],
-    queryFn: ChatService.getUnreadChatCount,
+    queryKey: [ChatService.UNREAD_CHAT_COUNT_CACHEKEY, isLogin],
+    queryFn: () => {
+      if (!!isLogin) {
+        return ChatService.getUnreadChatCount();
+      } else return null;
+    },
   });
 
   const onCreateAddClick = () => {
@@ -165,7 +175,7 @@ transition-all  ease-in-out duration-1000 header-content-container app-size cust
                     {" "}
                     <div className="flex items-center p-4 gap-4">
                       <Link prefetch={false} href={"/chat"} className="relative">
-                        <AbsoluteBadge count={chaNotifBadge || 0} />
+                        <AbsoluteBadge count={chaNotifBadge?.unread_count || 0} />
                         <img src="/assets/icons/header/blue_chat.svg" className="w-6 h-6 aspect-square" />
                       </Link>
                       <div className="relative">
@@ -292,7 +302,7 @@ transition-all  ease-in-out duration-1000 header-content-container app-size cust
             />
             {!!isLogin ? (
               <>
-                <ProfileDropdown notifBadge={notifBadge} />
+                <ProfileDropdown notifBadge={notifBadge || 0} />
               </>
             ) : (
               <></>

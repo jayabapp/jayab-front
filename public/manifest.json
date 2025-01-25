@@ -1,10 +1,10 @@
 {
-  "name": " پخش خیام ",
-  "short_name": " پخش خیام",
+  "name": " Jayab ",
+  "short_name": " Jayab",
   "theme_color": "#ffffff",
   "background_color": "#ffffff",
   "display": "standalone",
-  "description": " پخش خیام ",
+  "description": " Jayab ",
   "start_url": "/",
 
   "orientation": "portrait",

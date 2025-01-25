@@ -50,7 +50,7 @@ const SinglePropSharePop = ({
 
   return (
     <PopUpDown setVisible={onHide} visible={show}>
-      <ModalHeaderPart title={_STRINGS.SEND_INFO} onHide={() => {}} />
+      <ModalHeaderPart hideArrow title={_STRINGS.SEND_INFO} onHide={() => {}} />
 
       <div className="w-full p-4 flex flex-col gap-2">
         {shareButtonItems?.map((e) => (

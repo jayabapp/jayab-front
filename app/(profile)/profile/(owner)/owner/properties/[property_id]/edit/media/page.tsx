@@ -13,6 +13,7 @@ import { useStoreInit } from "@/store";
 import { createPropertySteps } from "@/utils/constantss";
 import _STRINGS from "@/utils/LocalStrings";
 import { useMutation, useQuery } from "@tanstack/react-query";
+import { isEmpty } from "lodash";
 import dynamic from "next/dynamic";
 import { useParams, usePathname, useRouter, useSearchParams } from "next/navigation";
 import React, { useEffect, useMemo, useState } from "react";
@@ -82,6 +83,10 @@ const CreatePropertyImages = () => {
       </div>
 
       <div className=" flex items-start w-full flex-wrap gap-4">
+        <p className="text-xs text-primary-150">
+          {" "}
+          {!isEmpty(images) ? "*عکس اصلی خود را با ضربه زدن روی عکس انتخاب کنید." : ""}{" "}
+        </p>
         <div className=" w-full  min-h-8">
           {!!totalLength && !!uploaderLoading && totalLength > 1 ? (
             <div className="flex flex-col gap-2 w-full">

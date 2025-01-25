@@ -19,7 +19,7 @@ import { HomeLandingDto } from "@/api_services/home/home.interface";
 function MainFiltersContainer({ data, title }: { data: HomeLandingDto[]; title: string }) {
   const ref = useRef<Swiper>(null);
   return (
-    <div className={` w-full noSelect   select-none   relative rounded-20 flex flex-col items-center`}>
+    <div className={` w-full noSelect   select-none   relative rounded-20 flex gap-4 flex-col items-center`}>
       <p className=" font-medium  w-full text-center md:text-start text-lg md:text-2xl">{title}</p>
       {
         // isLoading ? (

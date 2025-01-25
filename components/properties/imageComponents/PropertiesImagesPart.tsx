@@ -191,7 +191,7 @@ function ProductImagesContainer({
                         fill
                         src={NEW_IMAGE_URL(i || "")}
                         className="w-full h-full !p-0 custome-shadow-card !overflow-clip  bg-white  rounded-20  aspect-square !object-cover "
-                        alt=""
+                        alt={`${i?.alt || ""}`}
                       />
                     ) : (
                       <></>

@@ -338,6 +338,9 @@ const _STRINGS = {
   PRICE_RANGE: "بازه قیمت",
   MY_NOTIFS: "اعلان های من",
   DISCOUNT_BIGGER_THAN_PRICE: " قیمت با تخفیف بیشتر از مبلغ پایه میباشد .",
+  REGISTER_AS_SPECIAL_AD: "ثبت نام مشاور ویژه",
+  EXPIRES_IN: "اشتراک شما رو به اتمام است",
+  EXPIRED: "اشتراک شما  به اتمام رسیده است",
 };
 
 export default _STRINGS;

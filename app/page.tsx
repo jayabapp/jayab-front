@@ -1,3 +1,4 @@
+import HomeAdvisorSub from "@/components/Home/HomeAdvisorSub";
 import HomeCityFilterContainer from "@/components/Home/HomeCityFilterContainer";
 import HomePropertiesList from "@/components/Home/HomePropertiesList";
 import MainFiltersContainer from "@/components/Home/MainFiltersContainer";
@@ -36,7 +37,7 @@ const Home = async () => {
     per_page: 24,
   });
   return (
-    <div id="homeParent" className="home-container  !px-0   flex flex-col gap-10 ">
+    <div id="homeParent" className="home-container  !px-0   flex flex-col gap-5 ">
       {!banners ? (
         <LottieLoading />
       ) : (
@@ -50,6 +51,9 @@ const Home = async () => {
         <></>
       )} */}
       <div className="px-3 select-none md:px-3 lg:px-4 2xl:px-[10%]  pt-0 md:py-0 w-full">
+        <Suspense>
+          <HomeAdvisorSub />
+        </Suspense>
         {!landings ? (
           <LottieLoading />
         ) : (
@@ -69,7 +73,7 @@ const Home = async () => {
         <LottieLoading />
       ) : (
         <Suspense fallback={<></>}>
-          <HomePropertiesList middleBanners={middleBanners} data={propertyData?.data || []} />{" "}
+          <HomePropertiesList middleBanners={middleBanners || []} data={propertyData?.data || []} />{" "}
         </Suspense>
       )}
     </div>

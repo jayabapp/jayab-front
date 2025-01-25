@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import Button from "../shared/Button/Button";
 import _STRINGS from "@/utils/LocalStrings";
 import { PropertySubsDto } from "@/api_services/property/property.interface";
@@ -6,13 +6,16 @@ import numberWithCommas from "@/helpers/numberWithCommas";
 import { useRouter } from "next/navigation";
 import { useMutation } from "@tanstack/react-query";
 import { AdvisorService } from "@/api_services/advisor/advisor.propery";
+import ConfirmModal from "../Modal/ConfirmModal";
 
 const AdvisorPlansCard = ({
   data,
   subscriptionType,
+  setShowConfirm,
 }: {
   data: PropertySubsDto;
   subscriptionType: "is-especial" | "normal" | null;
+  setShowConfirm: (e: boolean) => void | null;
 }) => {
   const router = useRouter();
 
@@ -26,13 +29,17 @@ const AdvisorPlansCard = ({
     if (!subscriptionType) {
       router.push(`/profile/advisor/subscription/${!!data?.is_special ? "is-especial" : "is-not-especial"}`);
     } else if (!!subscriptionType)
-      [
-        mutate({
-          gateway: "SANDBOX",
-          plan_id: data?.id,
-          redirect_url: `${window.origin}/profile/advisor/subscription`,
-        }),
-      ];
+      if (subscriptionType == "normal" && !!data?.is_special) {
+        setShowConfirm(true);
+      } else {
+        [
+          mutate({
+            gateway: "SANDBOX",
+            plan_id: data?.id,
+            redirect_url: `${window.origin}/profile/advisor/subscription`,
+          }),
+        ];
+      }
   };
 
   return (

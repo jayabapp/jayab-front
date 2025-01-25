@@ -2,15 +2,27 @@ import { ProvienceTypesDto } from "@/api_services/property/property.interface";
 import _STRINGS from "@/utils/LocalStrings";
 import React from "react";
 
-const ModalHeaderPart = ({ onHide, title }: { onHide: () => void | null; title: string }) => {
+const ModalHeaderPart = ({
+  onHide,
+  title,
+  hideArrow,
+}: {
+  onHide: () => void | null;
+  title: string;
+  hideArrow?: boolean;
+}) => {
   return (
     <div className="app-text flex     border-b items-center justify-center md:justify-between py-3 px-4 sticky top-0 bg-white dark:bg-zinc-800 z-10">
-      <img
-        src="/assets/icons/shared/chevron.svg"
-        className="w-4 absolute top-4 right-2  -rotate-90 md:hidden block h-4 dark:invert"
-        alt=""
-        onClick={onHide}
-      />
+      {!!hideArrow ? (
+        <></>
+      ) : (
+        <img
+          src="/assets/icons/shared/chevron.svg"
+          className="w-4 absolute top-4 right-2  -rotate-90 md:hidden block h-4 dark:invert"
+          alt=""
+          onClick={onHide}
+        />
+      )}
       <div className="flex flex-row gap-2">
         {" "}
         <h3 className=" text-base font-semibold">{title}</h3>

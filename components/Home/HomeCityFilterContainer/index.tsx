@@ -31,7 +31,7 @@ function HomeCityFilterContainer({ data, title }: { data: HomeLandingDto[]; titl
   };
 
   return (
-    <div className={` w-full noSelect   select-none   relative rounded-20 flex flex-col items-center`}>
+    <div className={` w-full noSelect   select-none   gap-4 relative rounded-20 flex flex-col items-center`}>
       <div className="w-full flex items-center justify-between ">
         <p className=" font-medium   shrink-0 text-center md:text-start text-lg md:text-2xl">{title}</p>
 

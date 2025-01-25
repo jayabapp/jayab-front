@@ -14,7 +14,7 @@ const HomePropertiesList = ({ data, middleBanners }: { data: any[]; middleBanner
   }, [middleBanners]);
   return (
     <div className="w-full px-3  md:px-3 lg:px-4 2xl:px-[10%] ">
-      <HomePropertiesSsrPart middleBanners={bannerGroup} data={data} />
+      <HomePropertiesSsrPart middleBanners={bannerGroup || []} data={data} />
       {cursor == 0 && !isEmpty(data) && data?.length % 24 == 0 ? (
         <Button
           onClick={() => {

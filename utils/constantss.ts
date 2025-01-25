@@ -52,7 +52,7 @@ export const headerBlackList = [
   "/auth/register/terms",
   "/auth/register/success",
 ];
-export const headerMobileBlackList = ["/chat"];
+export const headerMobileBlackList = ["/chat/"];
 
 export const mobileFooterBlackList = ["/auth", "/auth/otp", "/auth/register", "/profile/owner/properties"];
 
@@ -122,10 +122,12 @@ export const SORT_TYPES = [
 export const allRoutes: { [key: string]: string } = {
   questions: "پرسش ها",
   rooms: "آگهی ها",
+  "my-payments": "پرداخت های من",
   advisors: "مشاوران",
   inquery: "استعلام هفتگی",
   authorize: "احراز  ملک",
   properties: "املاک",
+  bookmarks: "آگهی های ذخیره شده",
   panel: "پنل مشاور",
   chat: "چت",
   owner: "مالک",

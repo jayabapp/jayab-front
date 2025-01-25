@@ -37,7 +37,7 @@ export class ChatService {
 
   static async getUnreadChatCount() {
     try {
-      const result = await apiCall<unknown, number>("GET", apiRoutes.UNREAD_CHAT_COUNT);
+      const result = await apiCall<unknown, { unread_count: number }>("GET", apiRoutes.UNREAD_CHAT_COUNT);
       return result;
     } catch (e) {
       throw e;

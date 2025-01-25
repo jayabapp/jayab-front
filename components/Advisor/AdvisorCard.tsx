@@ -22,7 +22,11 @@ const AdvisorCard = ({
           <div className="relative w-full  aspect-square ">
             {" "}
             <img
-              src={NEW_IMAGE_URL(data?.user?.profile_image)}
+              src={
+                !!data?.user?.profile_image
+                  ? NEW_IMAGE_URL(data?.user?.profile_image)
+                  : "/assets/icons/shared/image_placeholder.svg"
+              }
               alt={data?.user?.profile_image?.alt || ""}
               className="rounded-full aspect-square w-full h-full"
             />

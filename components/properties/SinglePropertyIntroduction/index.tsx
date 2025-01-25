@@ -163,8 +163,11 @@ const SinglePropertyIntroduction = ({ data }: { data: SinglePropDto }) => {
           </div>
         </FixedBottomContainer>
       </div>
-      <SinglePropContactIfoPop show={!!showContact} data={data} onHide={onContactClose} />
-      <SinglePropSharePop show={!!showShare} data={data} onHide={onShareClose} />
+      <div className="absolute">
+        {" "}
+        <SinglePropContactIfoPop show={!!showContact} data={data} onHide={onContactClose} />
+        <SinglePropSharePop show={!!showShare} data={data} onHide={onShareClose} />
+      </div>
     </div>
   );
 };
