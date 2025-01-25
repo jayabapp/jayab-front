@@ -601,3 +601,9 @@ export interface PropertyContactIInfDto {
   assistant_mobile_number: string;
   is_owner: boolean;
 }
+
+export interface OwnerPropsRangeDto {
+  max_price: number;
+  min_price: number;
+  step: number;
+}

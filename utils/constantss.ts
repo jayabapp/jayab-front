@@ -54,7 +54,7 @@ export const headerBlackList = [
 ];
 export const headerMobileBlackList = ["/chat"];
 
-export const mobileFooterBlackList = ["/auth", "/auth/otp", "/auth/register"];
+export const mobileFooterBlackList = ["/auth", "/auth/otp", "/auth/register", "/profile/owner/properties"];
 
 export const createPropertySteps = (id?: null | number) => [
   {
@@ -121,7 +121,7 @@ export const SORT_TYPES = [
 ];
 export const allRoutes: { [key: string]: string } = {
   questions: "پرسش ها",
-  s: "آگهی ها",
+  rooms: "آگهی ها",
   advisors: "مشاوران",
   inquery: "استعلام هفتگی",
   authorize: "احراز  ملک",
@@ -201,7 +201,7 @@ export const profileDropDownItems = [
     route: "/profile/bookmarks",
     imgSrc: "/assets/icons/header/header_my_saves.svg",
   },
-  { id: 23, title: "دعوت از دوستان", route: "/profile/edit", imgSrc: "/assets/icons/header/header_share.svg" },
+  // { id: 23, title: "دعوت از دوستان", route: "/profile/edit", imgSrc: "/assets/icons/header/header_share.svg" },
   { id: 253, title: "پشتیبانی", route: "/profile/support", imgSrc: "/assets/icons/header/header_support.svg" },
 ];
 export const menuDropDownItems = [
@@ -249,14 +249,14 @@ export const profileItems = [
     isMobile: false,
   },
 
-  {
-    id: 42311124,
-    title: "دعوت از دوستان",
-    route: "/profile/invite",
-    imgSrc: "/assets/icons/header/header_share.svg",
-    guard: true,
-    isMobile: false,
-  },
+  // {
+  //   id: 42311124,
+  //   title: "دعوت از دوستان",
+  //   route: "/profile/invite",
+  //   imgSrc: "/assets/icons/header/header_share.svg",
+  //   guard: true,
+  //   isMobile: false,
+  // },
 
   {
     id: 42324,
@@ -351,7 +351,7 @@ export const shareLinks = [
 ];
 
 export const shareButtonItems = [
-  { title: "اشتراک گذاری تصاویر", icon: "/assets/icons/share/blue_pic.svg", id: "image" },
-  { title: "اشتراک گذاری اطلاعات", icon: "/assets/icons/share/blue_exclemation.svg", id: "info" },
-  { title: "اشتراک گذاری موقعیت مکانی", icon: "/assets/icons/adds/blue_pinpoint_location.svg", id: "location" },
+  { title: "اشتراک گذاری تصاویر", icon: "/assets/icons/share/blue_pic.svg", id: "1" },
+  { title: "اشتراک گذاری اطلاعات", icon: "/assets/icons/share/blue_exclemation.svg", id: "2" },
+  { title: "اشتراک گذاری موقعیت مکانی", icon: "/assets/icons/adds/blue_pinpoint_location.svg", id: "3" },
 ];

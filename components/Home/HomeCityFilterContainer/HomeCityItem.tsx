@@ -34,7 +34,7 @@ const HomeCityItem = ({ item }: { item: HomeLandingDto }) => {
         {" "}
         <Image
           // src={imageError ? DefaultIcon : IMAGE_URL(data?.cover_location)}
-          src={item?.image ? NEW_IMAGE_URL(item?.image) : "/assets/icons/logo/mobile_header_logo.svg"}
+          src={item?.image ? NEW_IMAGE_URL(item?.image) : "/assets/icons/shared/image_placeholder.svg"}
           alt={`icatImages${item?.title}`}
           fill
           className={`mix-blend-multiply z-2  rounded-10 dark:mix-blend-normal    w-full transition-all duration-500 aspect-square !object-cover

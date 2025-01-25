@@ -24,10 +24,20 @@ export class ChatService {
   static NOTIFS_BADGE_CACHEKEY = "NOTIFS_BADGE";
   static CONTENTS_CACHEKEY = "CONTENTS";
   static GET_SNGLE_CHAT_MESSAGES_CACHEKEY = "GET_SNGLE_CHAT_MESSAGES";
+  static UNREAD_CHAT_COUNT_CACHEKEY = "UNREAD_CHAT_COUNT";
 
   static async GetChatList() {
     try {
       const result = await apiCall<unknown, ChatListDto[]>("GET", apiRoutes.CHAT);
+      return result;
+    } catch (e) {
+      throw e;
+    }
+  }
+
+  static async getUnreadChatCount() {
+    try {
+      const result = await apiCall<unknown, number>("GET", apiRoutes.UNREAD_CHAT_COUNT);
       return result;
     } catch (e) {
       throw e;

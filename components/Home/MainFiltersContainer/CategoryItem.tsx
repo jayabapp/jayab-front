@@ -34,17 +34,19 @@ const CategoryItem = ({ item }: { item: HomeLandingDto }) => {
         {" "}
         <Image
           // src={imageError ? DefaultIcon : IMAGE_URL(data?.cover_location)}
-          src={item?.image ? NEW_IMAGE_URL(item?.image) : "/assets/icons/logo/mobile_header_logo.svg"}
+          src={item?.image ? NEW_IMAGE_URL(item?.image) : "/assets/icons/shared/image_placeholder.svg"}
           alt={`icatImages${item?.title}`}
           fill
-          className={`mix-blend-multiply z-2  rounded-10 dark:mix-blend-normal    w-full transition-all duration-500 aspect-[0.85] !object-cover
+          className={`mix-blend-multiply z-2  rounded-10 dark:mix-blend-normal    w-full transition-all duration-500 aspect-[0.85]  ${
+            !!item?.image ? "!object-cover" : "!object-contain opacity-50 bg-primary-200  md:px-8"
+          }
 
    
           `}
         />
       </div>
 
-      <p className={`font-medium text-sm text-center md:text-lg`}>{item?.title}</p>
+      <p className={`font-medium text-sm text-center  line-clamp-2 md:text-lg`}>{item?.title}</p>
     </button>
   );
 };

@@ -9,7 +9,7 @@ import { shareButtonItems } from "@/utils/constantss";
 import _STRINGS from "@/utils/LocalStrings";
 import { useQuery } from "@tanstack/react-query";
 import { isEmpty } from "lodash";
-import React, { useState } from "react";
+import React, { use, useEffect, useState } from "react";
 import SinglePropSharePopItem from "./SinglePropSharePopItem";
 import Button from "@/components/shared/Button/Button";
 
@@ -24,13 +24,14 @@ const SinglePropSharePop = ({
 }) => {
   const [selected, setSelected] = useState<any[]>([]);
 
-  const { data: contactInfo, isPending } = useQuery({
-    queryKey: [PropertyService.SINGLE_PROPERTY_CONTACT_INFO_CACHEKEY, data?.slug, show],
+  const { data: shareData, refetch } = useQuery({
+    queryKey: [PropertyService.SINGLE_PROPERTY_ADVISOR_SHARE_CACHEKEY, data?.id, selected],
     queryFn: () => {
-      if (!!data?.slug && !!show) {
-        return PropertyService.getSinglePropertyContactInfo({ propertySlug: data?.slug });
+      if (!!data?.id && !!selected) {
+        return PropertyService.getSingleAdvisorShare({ propertyId: data?.id, elements: `${selected?.map((e) => e)}` });
       } else return null;
     },
+    enabled: false,
   });
 
   const onItemSelect = (id: string) => {
@@ -40,6 +41,12 @@ const SinglePropSharePop = ({
       setSelected((e) => [...e, id]);
     }
   };
+
+  useEffect(() => {
+    if (!!shareData) {
+      window.open(shareData, "_blank", "noopener,noreferrer");
+    }
+  }, [shareData]);
 
   return (
     <PopUpDown setVisible={onHide} visible={show}>
@@ -52,6 +59,7 @@ const SinglePropSharePop = ({
       </div>
       <Button
         title={_STRINGS.SEND}
+        onClick={() => refetch()}
         width="w-full md:w-1/2 "
         containerClass="w-full flex items-center justify-center   py-4 px-8"
       />

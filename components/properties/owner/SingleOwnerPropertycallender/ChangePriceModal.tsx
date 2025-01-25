@@ -4,10 +4,12 @@ import { PropertyService } from "@/api_services/property/property.service";
 import Modal from "@/components/Modal";
 import Button from "@/components/shared/Button/Button";
 import { Divider } from "@/components/shared/Divider";
+import Checkbox from "@/components/shared/Form/Checkbox";
 import RangeWithTitle from "@/components/shared/Form/RangeWithTitle";
+import Notify from "@/components/shared/Toast";
 import numberWithCommas from "@/helpers/numberWithCommas";
 import _STRINGS from "@/utils/LocalStrings";
-import { useMutation } from "@tanstack/react-query";
+import { useMutation, useQuery } from "@tanstack/react-query";
 import { produce } from "immer";
 import moment from "moment-jalaali";
 import React, { useEffect, useState } from "react";
@@ -25,16 +27,85 @@ const ChangePriceModal = ({
   setCallendarDataState: React.Dispatch<React.SetStateAction<OwnerCallendarItemDto[]>>;
   data: SingleOwnerPropertyDto;
 }) => {
+  const [hasDiscount, setHasDiscount] = useState(false);
   const [price, setPrice] = useState(0);
   const [discontPrice, setdiscontPrice] = useState(0);
+  const [marks, setMarks] = useState<{ [key: string]: any }>({
+    0: {
+      label: "0",
+      style: {
+        color: "#888",
+        paddingTop: 15,
+      },
+    },
+    20000000: {
+      label: "20000000",
+      style: {
+        color: "#888",
+        paddingTop: 15,
+        paddingRight: 20,
+      },
+    },
+  });
 
+  /* -------------------------------------------------------------------------- */
+  /*                             RANGE PRICE LIMITS                             */
+  /* -------------------------------------------------------------------------- */
+  const { data: priceLimits } = useQuery({
+    queryKey: [
+      PropertyService.OWNER_PROPERTIES_PRICE_RANGE_UPDATE_CACHEKEY,
+      data?.id,
+      selectedDateData?.day,
+      selectedDateData?.month,
+      selectedDateData?.year,
+    ],
+    queryFn: () => {
+      if (!!data?.id && !!selectedDateData?.month) {
+        return PropertyService.ownerPropertyPriceRangeLimits({
+          property_id: data?.id,
+
+          day: selectedDateData?.day,
+          month: selectedDateData?.month,
+          year: selectedDateData?.year,
+        });
+      } else {
+        return null;
+      }
+    },
+  });
+
+  useEffect(() => {
+    if (!!priceLimits?.max_price) {
+      let marksdata: any = {};
+      marksdata[priceLimits?.min_price] = {
+        label: priceLimits?.min_price,
+        style: {
+          color: "#888",
+          paddingTop: 15,
+          paddingLeft: 20,
+        },
+      };
+      marksdata[priceLimits?.max_price] = {
+        label: priceLimits?.max_price,
+        style: {
+          color: "#888",
+          paddingTop: 15,
+          paddingRight: 20,
+        },
+      };
+
+      setMarks(marksdata);
+    }
+  }, [priceLimits]);
+
+  ////////////////////////////
   const { mutate, isPending } = useMutation({
     mutationFn: PropertyService.UpdatePropertyPrice,
     onSuccess: () => {
       setCallendarDataState((e) => {
         const next = produce(e, (draft) => {
           const index = e.findIndex((i) => i.month == selectedDateData?.month && i.day === selectedDateData?.day);
-          const x = { ...draft[index], price: price, discounted_price: discontPrice };
+          const x = { ...draft[index], price: price, discounted_price: !!hasDiscount ? discontPrice : 0 };
           draft[index] = x;
         });
 
@@ -47,6 +118,7 @@ const ChangePriceModal = ({
   useEffect(() => {
     if (!!selectedDateData) {
       setPrice(selectedDateData?.price || 0);
+      setHasDiscount(!!selectedDateData?.discounted_price ? true : false);
       setdiscontPrice(selectedDateData?.discounted_price || 0);
     }
 
@@ -57,14 +129,18 @@ const ChangePriceModal = ({
   }, [selectedDateData]);
 
   const onSubmit = () => {
-    mutate({
-      property_id: data?.id,
-      month: Number(selectedDateData?.month),
-      year: Number(selectedDateData?.year),
-      day: Number(selectedDateData?.day),
-      discounted_price: discontPrice,
-      price: price,
-    });
+    if (discontPrice > price) {
+      Notify({ body: _STRINGS.DISCOUNT_BIGGER_THAN_PRICE, type: "warn" });
+    } else {
+      mutate({
+        property_id: data?.id,
+        month: Number(selectedDateData?.month),
+        year: Number(selectedDateData?.year),
+        day: Number(selectedDateData?.day),
+        discounted_price: !!hasDiscount ? discontPrice : undefined,
+        price: price,
+      });
+    }
   };
   return (
     <Modal show={show} onHide={onHide}>
@@ -83,62 +159,41 @@ const ChangePriceModal = ({
           <RangeWithTitle
             value={price}
             setValue={setPrice}
-            max={20000000}
-            min={0}
-            step={100000}
-            marks={{
-              0: {
-                label: "0",
-                style: {
-                  color: "#888",
-                  paddingTop: 15,
-                },
-              },
-              20000000: {
-                label: "20000000",
-                style: {
-                  color: "#888",
-                  paddingTop: 15,
-                  paddingRight: 20,
-                },
-              },
-            }}
+            max={priceLimits?.max_price || 20000000}
+            min={priceLimits?.min_price || 0}
+            step={priceLimits?.step || 100000}
+            marks={marks}
           />
         </div>
 
         <Divider moreClass="w-full " />
-        <div className="flex flex-col gap-3 text-primary-700 pt-6 pb-10">
-          <div className="flex items-center justify-between">
-            <span>
-              قیمت با تخفیف {selectedDateData?.day}/{selectedDateData?.month}/{selectedDateData?.year}
-            </span>
-            <span>{numberWithCommas(discontPrice)}</span>
+        <Checkbox
+          title="تخفیف دار"
+          isChecked={hasDiscount}
+          onSelect={() => {
+            setHasDiscount((e) => !e);
+          }}
+        />
+        {!!hasDiscount ? (
+          <div className="flex flex-col gap-3 text-primary-700 pt-6 pb-10">
+            <div className="flex items-center justify-between">
+              <span>
+                قیمت با تخفیف {selectedDateData?.day}/{selectedDateData?.month}/{selectedDateData?.year}
+              </span>
+              <span>{numberWithCommas(discontPrice)}</span>
+            </div>
+            <RangeWithTitle
+              value={discontPrice}
+              setValue={setdiscontPrice}
+              max={priceLimits?.max_price || 20000000}
+              min={priceLimits?.min_price || 0}
+              step={priceLimits?.step || 100000}
+              marks={marks}
+            />
           </div>
-          <RangeWithTitle
-            value={discontPrice}
-            setValue={setdiscontPrice}
-            max={20000000}
-            min={0}
-            step={100000}
-            marks={{
-              0: {
-                label: "0",
-                style: {
-                  color: "#888",
-                  paddingTop: 15,
-                },
-              },
-              20000000: {
-                label: "20000000",
-                style: {
-                  color: "#888",
-                  paddingTop: 15,
-                  paddingRight: 20,
-                },
-              },
-            }}
-          />
-        </div>
+        ) : (
+          <></>
+        )}
         <Divider moreClass="w-full " />
         <Button
           onClick={onSubmit}

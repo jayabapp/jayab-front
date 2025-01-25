@@ -98,7 +98,7 @@ const Filterpage = () => {
         {" "}
         <FiltersSelectedFiltersShowcase query={queries} propertyTypes={propertyTypes || {}} />
       </div>
-      <div className="flex fixed border-b  md:hidden h-10 right-0  items-center justify-center   z-10 md:z-1  top-[4.5rem] md:top-auto left-0 md:left-auto bg-white md:bg-transparent md:relative flex-col w-full md:gap-2  ">
+      <div className="flex fixed border-b  md:hidden h-10 right-0  items-center justify-center   z-10 md:z-1  top-[4rem] md:top-auto left-0 md:left-auto bg-white md:bg-transparent md:relative flex-col w-full md:gap-2  ">
         {" "}
         <div className=" flex  order-1  md:hidden  relative w-full">
           <div className="grid grid-cols-10 z-1  relative  w-full items-center gap-0 justify-center  ">

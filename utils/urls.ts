@@ -66,6 +66,8 @@ export const apiRoutes = {
 
   CHAT: "/chat",
 
+  UNREAD_CHAT_COUNT: "/chat/unread/count",
+
   NOTIFS: `/user/notifications`,
 
   NOTIFS_BADGE: `/user/notifications/badge`,
@@ -95,6 +97,9 @@ export const apiRoutes = {
   SINGLE_PROPERTY_CONTACT_INFO: (propertySlug: string | number | null) =>
     `/user/properties/${propertySlug}/contact-info`,
 
+  SINGLE_PROPERTY_ADVISOR_SHARE: (propertyId: string | number | null) =>
+    `/user/properties/${propertyId}/advisor-share/link`,
+
   SINGLE_USER_LANDING_PAGE: (landingPageUrl: string | number) => `/user/landing-pages/${landingPageUrl}`,
 
   OWNER_PROP_INIT: (propertyId?: string | number | null) =>
@@ -110,6 +115,9 @@ export const apiRoutes = {
 
   OWNER_PROPERTIES_STATUS_UPDATE: (propertyId: string | number | null) =>
     `/owner/properties/${propertyId}/calendar/reserves`,
+
+  OWNER_PROPERTIES_PRICE_RANGE_UPDATE: (propertyId: string | number | null) =>
+    `/owner/properties/${propertyId}/calendar/price`,
 
   OWNER_PROPERTIES_PRICE_UPDATE: (propertyId: string | number | null) =>
     `/owner/properties/${propertyId}/calendar/price`,

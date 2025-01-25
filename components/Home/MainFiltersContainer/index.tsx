@@ -42,7 +42,8 @@ function MainFiltersContainer({ data, title }: { data: HomeLandingDto[]; title: 
             reference={ref}
             className="!w-full  !pb-2  "
             onBeforeInit={(swiper: Swiper) => (ref.current = swiper)}
-            dataLength={isMobile ? Number(data?.length) * 3 : Number(data?.length) * 2}
+            // dataLength={isMobile ? Number(data?.length) * 3 : Number(data?.length) * 2}
+            dataLength={1}
             // slidesPerView={2}
             grid={{ fill: "row", rows: 1 }}
             breakpoints={{

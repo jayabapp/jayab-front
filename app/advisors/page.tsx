@@ -32,6 +32,7 @@ const AdvisorsListPage = () => {
   const [selectedAdvisor, setSelectedAdvisor] = useState<any>(null);
   const [refetcherBoolean, setRefetcherBoolean] = useState(false);
   const [cursor, setCursor] = useState(0);
+  const [cityTitle, setCityTitle] = useState("");
   const [data, setData] = useState<AdvisorPageListDto[]>([]);
   const { data: banners } = useQuery({
     queryKey: [HomeService.BANNERS_RANDOM_CACHEKEY, "advisor"],
@@ -123,37 +124,40 @@ const AdvisorsListPage = () => {
   };
 
   return (
-    <div className=" w-full container flex flex-col">
+    <div className=" w-full container flex flex-col gap-4 md:gap-8">
       <BannersContainer banners={banners} />
 
-      <SearchBox
-        boxId="ADVISOR_SEARCH"
-        containerClass=" w-full"
-        onClear={() => {
-          doTheFiltering("", "q");
-        }}
-        onSubmit={(e) => {
-          doTheFiltering(e || "", "q");
-        }}
-        placeholder="کد یا نام مشاور ..."
-      />
-      <div className=" w-full flex  mt-4 gap-4 items-center justify-between">
+      <div className="w-full flex flex-col gap-4">
         {" "}
-        <Button
-          roundedClass="rounded-full"
-          width=" w-full md:w-fit"
-          containerClass="w-full md:w-fit flex items-center justify-center"
-          onClick={showCityModalFunc}
-          title={_STRINGS.SELECT_CITY}
+        <SearchBox
+          boxId="ADVISOR_SEARCH"
+          containerClass=" w-full"
+          onClear={() => {
+            doTheFiltering("", "q");
+          }}
+          onSubmit={(e) => {
+            doTheFiltering(e || "", "q");
+          }}
+          placeholder="کد یا نام مشاور ..."
         />
-        <Button
-          variant="outline"
-          roundedClass="rounded-full"
-          width=" w-full md:w-fit"
-          containerClass="w-full md:w-fit flex items-center justify-center"
-          onClick={registerAdvisor}
-          title={_STRINGS.REGISTER_ADVISOR}
-        />
+        <div className=" w-full flex  flex-col md:flex-row  gap-2 md:gap-4 items-center justify-between">
+          {" "}
+          <Button
+            roundedClass="rounded-full"
+            width=" w-full md:w-fit"
+            containerClass="w-full md:w-fit flex items-center justify-center"
+            onClick={showCityModalFunc}
+            title={cityTitle || _STRINGS.SELECT_CITY}
+          />
+          <Button
+            variant="outline"
+            roundedClass="rounded-full"
+            width=" w-full md:w-fit"
+            containerClass="w-full  hidden md:flex  md:w-fit  items-center justify-center"
+            onClick={registerAdvisor}
+            title={_STRINGS.REGISTER_ADVISOR}
+          />
+        </div>
       </div>
       {isLoading && data?.length == 0 ? (
         <LottieLoading />
@@ -187,7 +191,7 @@ const AdvisorsListPage = () => {
         </div>
       )}
 
-      <CityModal show={showCityModal} onHide={hideCityModal} />
+      <CityModal setTitle={setCityTitle} show={showCityModal} onHide={hideCityModal} />
       <SingleAdvisorModal
         selectedAdvisor={selectedAdvisor}
         show={!!selectedAdvisor}

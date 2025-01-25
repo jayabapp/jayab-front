@@ -337,6 +337,7 @@ const _STRINGS = {
   ADMIN_RESPOND: "پاسخ ادمین :",
   PRICE_RANGE: "بازه قیمت",
   MY_NOTIFS: "اعلان های من",
+  DISCOUNT_BIGGER_THAN_PRICE: " قیمت با تخفیف بیشتر از مبلغ پایه میباشد .",
 };
 
 export default _STRINGS;

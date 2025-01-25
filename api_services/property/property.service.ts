@@ -21,6 +21,7 @@ import {
   GetPropertiesPlusFilters,
   PropertyContactIInfDto,
   SinglePropDto,
+  OwnerPropsRangeDto,
 } from "./property.interface";
 import { YupValidator } from "@/utils/YupValidator";
 import { sendMediaSchema } from "./property.schema";
@@ -41,6 +42,8 @@ export class PropertyService {
   static SINGLE_PROPERTY_UPDATE_VIEW_CACHEKEY = "SINGLE_PROPERTY_UPDATE_VIEW";
   static SINGLE_PROPERTY_CONTACT_INFO_CACHEKEY = "SINGLE_PROPERTY_CONTACT_INFO";
   static GET_SINGLEPROPERTY_CALLENDER_CACHEKEY = "GET_SINGLEPROPERTY_CALLENDER";
+  static SINGLE_PROPERTY_ADVISOR_SHARE_CACHEKEY = "SINGLE_PROPERTY_ADVISOR_SHARE";
+  static OWNER_PROPERTIES_PRICE_RANGE_UPDATE_CACHEKEY = "OWNER_PROPERTIES_PRICE_RANGE_UPDATE";
 
   static async GetUserPropertyGroup(dto: { group: (keyof typeof PropertyOptionGroup)[] }) {
     try {
@@ -66,6 +69,19 @@ export class PropertyService {
       const result = await apiCall<unknown, PropertyContactIInfDto[]>(
         "GET",
         apiRoutes.SINGLE_PROPERTY_CONTACT_INFO(dto.propertySlug)
+      );
+      return result;
+    } catch (e) {
+      throw e;
+    }
+  }
+
+  static async getSingleAdvisorShare(dto: { propertyId: string | number | null; elements: string }) {
+    try {
+      const result = await apiCall<{ elements: string }, string>(
+        "GET",
+        apiRoutes.SINGLE_PROPERTY_ADVISOR_SHARE(dto.propertyId),
+        { elements: dto?.elements }
       );
       return result;
     } catch (e) {
@@ -170,13 +186,34 @@ export class PropertyService {
     }
   }
 
+  static async ownerPropertyPriceRangeLimits(dto: {
+    property_id: string | number | null;
+    year: string | number | null;
+    month: string | number | null;
+    day: string | number | null;
+  }) {
+    try {
+      const result = await apiCall<
+        { year: string | number | null; month: string | number | null; day: string | number | null },
+        OwnerPropsRangeDto
+      >("GET", apiRoutes.OWNER_PROPERTIES_PRICE_RANGE_UPDATE(dto?.property_id), {
+        year: dto.year,
+        month: dto.month,
+        day: dto.day,
+      });
+      return result;
+    } catch (e) {
+      throw e;
+    }
+  }
+
   static async UpdatePropertyPrice(dto: {
     property_id: string | number | null;
     year: string | number | null;
     month: string | number | null;
     day: string | number | null;
     price: string | number | null;
-    discounted_price: string | number | null;
+    discounted_price?: string | number | null;
   }) {
     try {
       const result = await apiCall<
@@ -185,7 +222,7 @@ export class PropertyService {
           month: string | number | null;
           day: string | number | null;
           price: string | number | null;
-          discounted_price: string | number | null;
+          discounted_price?: string | number | null;
         },
         SingleOwnerPropertyDto
       >("POST", apiRoutes.OWNER_PROPERTIES_PRICE_UPDATE(dto?.property_id), {

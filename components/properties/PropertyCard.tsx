@@ -34,7 +34,7 @@ const PropertyCard = ({ data, isOwner }: { data: PropertyListDto; isOwner?: bool
 
           {/* CODE  - LIKES */}
           <div className="flex items-center gap-4">
-            <div className="bg-primary-700 rounded-md text-xs  px-2 py-1 text-white flex items-center justify-center">
+            <div className="bg-primary-700 rounded-md text-xs  pt-[0.35rem] px-2 py-1 text-white flex items-center justify-center">
               کد {data.code}
             </div>{" "}
             <div className="flex items-center gap-1">
@@ -95,10 +95,14 @@ const PropertyCard = ({ data, isOwner }: { data: PropertyListDto; isOwner?: bool
             <Image
               fill
               alt={data?.feature_image?.alt || ""}
-              src={NEW_IMAGE_URL(data?.feature_image, "medium")}
+              src={
+                !!data?.feature_image
+                  ? NEW_IMAGE_URL(data?.feature_image, "medium")
+                  : "/assets/icons/shared/image_placeholder.svg"
+              }
               className=" w-full rounded-10  object-cover aspect-square"
             />
-            <div className="absolute z-2 right-2 top-2 flex flex-col gap-1 w-7">
+            <div className="absolute z-1 right-2 top-2 flex flex-col gap-1 w-7">
               {" "}
               {data?.today_price?.discount_percentage ? (
                 <div className="w-7 gap-0.5 flex-col h-5 rounded-md transition-all  px-1 py-[0.2rem]   bg-primary-150 text-white  aspect-square flex items-center justify-center">
@@ -115,7 +119,7 @@ const PropertyCard = ({ data, isOwner }: { data: PropertyListDto; isOwner?: bool
               )}
             </div>
             {data?.attachments_count ? (
-              <div className="w-9 gap-0.5  h-5 rounded-md transition-all  py-[0.2rem]   bg-black/50 text-white absolute z-2 left-2 flex-row top-2 aspect-square flex items-center justify-center">
+              <div className="w-9 gap-0.5  h-5 rounded-md transition-all  py-[0.2rem]   bg-black/50 text-white absolute z-1 left-2 flex-row top-2 aspect-square flex items-center justify-center">
                 <p className="  text-sm   ">{data.attachments_count}</p>{" "}
                 <img className="w-3 h-3" src="/assets/icons/adds/simple_camera.svg" />
               </div>

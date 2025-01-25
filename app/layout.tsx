@@ -44,7 +44,7 @@ export default function RootLayout({
         <link rel="manifest" href="/manifest.json" />
         {/* <link rel="apple-touch-icon" sizes="180x180" href="/assets/icons/app/apple-touch-icon.png" /> */}
       </head>
-      <body className={`${Iransans_font.className} `}>
+      <body content="noindex,nofollow" className={`${Iransans_font.className} `}>
         <LayoutProvider modal={modal} params={params}>
           {children}
         </LayoutProvider>

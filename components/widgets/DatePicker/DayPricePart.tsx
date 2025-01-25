@@ -4,7 +4,7 @@ import React from "react";
 
 const DayPricePart = ({ data }: { data: { price?: number; discounted_price?: number } }) => {
   return (
-    <div className="flex flex-col relative w-fit gap-0 md:gap-2 ">
+    <div className="flex flex-col relative w-full items-center justify-center gap-0 md:gap-2 ">
       {!!data?.discounted_price ? (
         <p className=" text-[0.565rem] md:text-sm line-through  absolute -top-3  opacity-60">
           {numberWithCommas(data?.price)}

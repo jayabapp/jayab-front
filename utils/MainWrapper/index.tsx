@@ -203,8 +203,8 @@ const MainWrapper = ({ children }: mainWrapper) => {
           {/* {!sidenavBlackList?.includes(pathname || "") && <SideNav />} */}
           {children}
         </div>
-        {!mobileFooterBlackList.includes(pathname) && <Footer />}
-        {!mobileFooterBlackList.includes(pathname) && <MobileFooter />}
+        {!mobileFooterBlackList.find((e) => pathname?.includes(e)) && <Footer />}
+        {!mobileFooterBlackList.find((e) => pathname?.includes(e)) && <MobileFooter />}
       </div>
       <Toaster />
       <LoginModal />

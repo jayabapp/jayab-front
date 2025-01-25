@@ -8,7 +8,7 @@ import Link from "next/link";
 
 import _STRINGS from "@/utils/LocalStrings";
 
-import { useAuthStore, useStoreInit } from "@/store";
+import { useAuthStore, useStoreInit, useStoreParams } from "@/store";
 import HeaderTitle from "./HeaderTitle";
 import DrawerMenu from "../shared/DrawerMenu";
 import ProfileDropdown from "./ProfileDropdown";
@@ -19,6 +19,7 @@ import { headerBlackList, headerMobileBlackList } from "@/utils/constantss";
 import { PropertyService } from "@/api_services/property/property.service";
 import { useQuery } from "@tanstack/react-query";
 import { UserService } from "@/api_services/user/user.service";
+import { ChatService } from "@/api_services/chat/chat.service";
 const PopSearchbox = dynamic(() => import("../SearchBoxComp/PopSearchbox"), {
   ssr: false,
 });
@@ -109,6 +110,10 @@ const Header = ({ scroll }: { scroll?: number }) => {
     queryKey: [UserService.NOTIFS_BADGE_CACHEKEY],
     queryFn: UserService.userNotifBadge,
   });
+  const { data: chaNotifBadge } = useQuery({
+    queryKey: [ChatService.UNREAD_CHAT_COUNT_CACHEKEY],
+    queryFn: ChatService.getUnreadChatCount,
+  });
 
   const onCreateAddClick = () => {
     if (!!userInfo) {
@@ -119,6 +124,14 @@ const Header = ({ scroll }: { scroll?: number }) => {
           if (!!e?.data) router.push(`/profile/owner/properties/${e?.data?.id}/edit/initials`);
         });
       }
+    }
+  };
+
+  const registerAdvisor = () => {
+    if (isLogin) {
+      router.push("/profile/advisor/subscription");
+    } else {
+      useStoreParams.setState({ loginModal: true });
     }
   };
 
@@ -147,25 +160,12 @@ transition-all  ease-in-out duration-1000 header-content-container app-size cust
                   </Link>
                 </div>
 
-                {/* <div className={`flex items-center gap-3   w-[70%] ${isInProfile ? "hidden" : ""}  `}>
-                  <PopSearchbox
-                    boxId={scroll ? "SEARCH_BOX_Mobile_Modal" : "SEARCH_BOX_Mobile"}
-                    placeholder={_STRINGS?.SEARCH}
-                    onSubmit={(text) => setsearchText(text)}
-                    onClear={() => {
-                      setsearchText("");
-                    }}
-                    item={{ bg: "!bg-primary-200" }}
-                    autofocus={isInSearch}
-                  />
-                </div> */}
-
                 {isLogin ? (
                   <>
                     {" "}
                     <div className="flex items-center p-4 gap-4">
                       <Link prefetch={false} href={"/chat"} className="relative">
-                        <AbsoluteBadge count={1} />
+                        <AbsoluteBadge count={chaNotifBadge || 0} />
                         <img src="/assets/icons/header/blue_chat.svg" className="w-6 h-6 aspect-square" />
                       </Link>
                       <div className="relative">
@@ -203,18 +203,29 @@ transition-all  ease-in-out duration-1000 header-content-container app-size cust
                 <div className="  w-12 h-10   flex items-center justify-center">
                   {" "}
                   <div className="cursor-pointer  absolute left-4     ">
-                    {" "}
-                    <PopSearchbox
-                      justIcon
-                      boxId={scroll ? "SEARCH_BOX_Mobile_Modal" : "SEARCH_BOX_Mobile"}
-                      placeholder={_STRINGS?.SEARCH}
-                      onSubmit={(text) => setsearchText(text)}
-                      onClear={() => {
-                        setsearchText("");
-                      }}
-                      item={{ bg: "" }}
-                      autofocus={isInSearch}
-                    />
+                    {/**************     IN ADVISORS PAGE  WE NEED ADVISOR CREATE BUTTON  ***************/}
+
+                    {pathname == "/advisors" ? (
+                      <Button
+                        roundedClass="rounded-full"
+                        width=" !px-3  !text-sm !py-1 w-fit "
+                        containerClass="w-fit !px-0.5  items-center justify-center"
+                        onClick={registerAdvisor}
+                        title={_STRINGS.REGISTER_ADVISOR}
+                      />
+                    ) : (
+                      <PopSearchbox
+                        justIcon
+                        boxId={scroll ? "SEARCH_BOX_Mobile_Modal" : "SEARCH_BOX_Mobile"}
+                        placeholder={_STRINGS?.SEARCH}
+                        onSubmit={(text) => setsearchText(text)}
+                        onClear={() => {
+                          setsearchText("");
+                        }}
+                        item={{ bg: "" }}
+                        autofocus={isInSearch}
+                      />
+                    )}
                   </div>
                 </div>
               </div>

@@ -21,7 +21,11 @@ const AdvisorCard = ({
         <div className=" flex flex-col gap-2 h-full justify-between w-1/4  md:w-1/5 2xl:w-1/4">
           <div className="relative w-full  aspect-square ">
             {" "}
-            <img src={NEW_IMAGE_URL(data?.user?.profile_image)} className="rounded-full aspect-square w-full h-full" />
+            <img
+              src={NEW_IMAGE_URL(data?.user?.profile_image)}
+              alt={data?.user?.profile_image?.alt || ""}
+              className="rounded-full aspect-square w-full h-full"
+            />
           </div>
           <div className=" shrink-0 text-xs md:text-sm flex items-center justify-center px-2 py-1 rounded-md  bg-primary-700 text-white ">
             {_STRINGS.CODE} {data?.user?.referral_code}
