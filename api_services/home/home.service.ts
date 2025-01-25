@@ -1,5 +1,5 @@
 import { apiRoutes } from "@/utils/urls";
-import { ContentByKeyDto, ContentDto } from "./home.interface";
+import { ContentByKeyDto, ContentDto, SearchSuggDto } from "./home.interface";
 import { apiCall } from "../common/apicall.helper";
 
 export class HomeService {
@@ -75,7 +75,7 @@ export class HomeService {
 
   static async GetSearchSuggs(dto: { q?: string }) {
     try {
-      const result = await apiCall<{ q?: string }, unknown>("GET", apiRoutes.SEARCH_SUGGS, {
+      const result = await apiCall<{ q?: string }, SearchSuggDto>("GET", apiRoutes.SEARCH_SUGGS, {
         q: dto?.q,
       });
       return result;

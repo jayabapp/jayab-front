@@ -341,6 +341,9 @@ const _STRINGS = {
   REGISTER_AS_SPECIAL_AD: "ثبت نام مشاور ویژه",
   EXPIRES_IN: "اشتراک شما رو به اتمام است",
   EXPIRED: "اشتراک شما  به اتمام رسیده است",
+  CITIES: "شهرها",
+  RELATED_RESULTS: "جستجوهای مرتبط",
+  DESTINATIONS: "مقاصد",
 };
 
 export default _STRINGS;

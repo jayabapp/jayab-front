@@ -32,6 +32,7 @@ export interface catQueryTypes {
   pool_type: string | null | undefined;
   title: string | null | undefined;
   province_id: string | null | undefined;
+  q: string | null | undefined;
   has_discount: string | null | undefined;
 }
 
@@ -78,6 +79,7 @@ function FilterdProperties({ sortType, setSortType, query }: FilterdPropertiesTy
     query?.min_price,
     query?.max_building_area,
     query?.min_building_area,
+    query?.q,
   ]);
 
   const {
@@ -100,6 +102,7 @@ function FilterdProperties({ sortType, setSortType, query }: FilterdPropertiesTy
       query?.min_price,
       query?.max_building_area,
       query?.min_building_area,
+      query?.q,
     ],
     queryFn: () => {
       return PropertyService?.GetProperties({
@@ -124,6 +127,7 @@ function FilterdProperties({ sortType, setSortType, query }: FilterdPropertiesTy
         province_id: query?.province_id || undefined,
         title: query?.title || undefined,
         sort_type: query?.sort_type || undefined,
+        q: query?.q || undefined,
       });
     },
     gcTime: 0,

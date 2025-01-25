@@ -15,9 +15,9 @@ type ImageCarouselTypes = {
 
 const ImageCarousel = ({ list, item }: ImageCarouselTypes) => {
   const router = useRouter();
-  const onImageError = (e: any) => {
-    e.target.src = "/assets/images/home/image_placeholder.png";
-  };
+  // const onImageError = (e: any) => {
+  //   e.target.src = "/assets/images/home/image_placeholder.png";
+  // };
   return (
     <div className="h-full  col-span-full  px-4 md:pl-0 md:pr-4  py-0">
       <Swiper
@@ -87,7 +87,7 @@ const ImageCarousel = ({ list, item }: ImageCarouselTypes) => {
               >
                 <Image
                   fill
-                  onError={onImageError}
+                  // onError={onImageError}
                   alt={e?.image?.alt}
                   // src={true ? "saf" : IMAGE_URL(e?.image_location)}
                   src={NEW_IMAGE_URL(e?.image)}
@@ -97,7 +97,7 @@ const ImageCarousel = ({ list, item }: ImageCarouselTypes) => {
                 />
                 <Image
                   fill
-                  onError={onImageError}
+                  // onError={onImageError}
                   alt={e?.image?.alt}
                   // src={true ? "saf" : IMAGE_URL(e?.image_location)}
                   src={NEW_IMAGE_URL(e?.image_sm ? e?.image_sm : e?.image)}

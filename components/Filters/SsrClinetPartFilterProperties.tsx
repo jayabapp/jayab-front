@@ -33,6 +33,7 @@ export interface catQueryTypes {
   has_discount: string | null | undefined;
   max_building_area: string | null | undefined;
   min_building_area: string | null | undefined;
+  q: string | null | undefined;
 }
 
 type SsrClinetPartFilterPropertiesType = {
@@ -75,7 +76,8 @@ function SsrClinetPartFilterProperties({ sortType, query, setCursor, cursor }: S
     query?.has_discount,
     query?.is_premium,
     query?.max_building_area,
-    query?.min_building_area,
+    query?.max_building_area,
+    query?.q,
   ]);
 
   const {
@@ -98,6 +100,7 @@ function SsrClinetPartFilterProperties({ sortType, query, setCursor, cursor }: S
       query?.min_building_area,
       query.max_price,
       query.min_price,
+      query?.q,
     ],
     queryFn: () => {
       return PropertyService?.GetProperties({
@@ -122,6 +125,7 @@ function SsrClinetPartFilterProperties({ sortType, query, setCursor, cursor }: S
         province_id: query?.province_id || undefined,
         title: query?.title || undefined,
         sort_type: query?.sort_type || undefined,
+        q: query?.q || undefined,
       });
     },
     gcTime: 0,

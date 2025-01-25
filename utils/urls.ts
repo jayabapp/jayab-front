@@ -56,7 +56,7 @@ export const apiRoutes = {
 
   GET_PROPERTIES: "/user/properties",
 
-  SEARCH_SUGGS: `/products/search-suggestions`,
+  SEARCH_SUGGS: `/user/properties/search/suggestions`,
 
   CONTENTS: `/contents`,
 

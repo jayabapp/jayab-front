@@ -102,6 +102,7 @@ const CreateEditSpecialAdvisor = ({
             direction: "ltr",
             inputClass: "ltr text-left",
             maxLength: 11,
+            keyboard: "number",
           }}
         />
         {/* <FormInput

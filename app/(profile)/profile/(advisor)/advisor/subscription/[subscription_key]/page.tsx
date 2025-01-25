@@ -59,7 +59,7 @@ const CreateYourAdvisor = () => {
   };
 
   return (
-    <div className="w-full">
+    <div className="profile-container w-full">
       {subscription_key == "is-especial" ? (
         <CreateEditSpecialAdvisor setValues={setValues} values={values} />
       ) : (

@@ -185,13 +185,16 @@ transition-all  ease-in-out duration-1000 header-content-container app-size cust
                     </div>
                   </>
                 ) : (
-                  <Button
-                    title={`${_STRINGS.ENTER}/${_STRINGS.REGISTER}`}
-                    containerClass="w-fit"
-                    width="w-full"
-                    roundedClass="rounded-full"
-                    icon={<img className="ml-2" src="/assets/icons/shared/circular_plus.svg" />}
-                  />
+                  <Link prefetch={false} href={"/auth"} className="relative">
+                    {" "}
+                    <Button
+                      title={`${_STRINGS.ENTER}/${_STRINGS.REGISTER}`}
+                      containerClass="w-fit"
+                      width="w-full"
+                      roundedClass="rounded-full"
+                      icon={<img className="ml-2" src="/assets/icons/shared/circular_plus.svg" />}
+                    />
+                  </Link>
                 )}
               </div>
             ) : (

@@ -75,3 +75,27 @@ export interface HomeLandingDto {
   title: string;
   image: ImageDto | null;
 }
+
+export interface SearchSuggDto {
+  properties: SearchPropDto[];
+  cities: City[];
+  landings: LandingsDto[];
+}
+
+export interface City {
+  id: number;
+  title: string;
+  slug: string;
+}
+
+export interface SearchPropDto {
+  id: number;
+  title: string;
+  slug: string;
+}
+
+export interface LandingsDto {
+  id: number;
+  title: string;
+  url: string;
+}

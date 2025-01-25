@@ -1,7 +1,9 @@
 import HomeAdvisorSub from "@/components/Home/HomeAdvisorSub";
 import HomeCityFilterContainer from "@/components/Home/HomeCityFilterContainer";
 import HomePropertiesList from "@/components/Home/HomePropertiesList";
+import HomeSearchPart from "@/components/Home/HomeSearchPart";
 import MainFiltersContainer from "@/components/Home/MainFiltersContainer";
+import PopSearchbox from "@/components/SearchBoxComp/PopSearchbox";
 import LottieLoading from "@/components/shared/Lotties/LottieLoading";
 import serverCall from "@/helpers/serverCall";
 import _STRINGS from "@/utils/LocalStrings";
@@ -50,6 +52,10 @@ const Home = async () => {
       ) : (
         <></>
       )} */}
+
+      <Suspense>
+        <HomeSearchPart />
+      </Suspense>
       <div className="px-3 select-none md:px-3 lg:px-4 2xl:px-[10%]  pt-0 md:py-0 w-full">
         <Suspense>
           <HomeAdvisorSub />
