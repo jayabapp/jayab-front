@@ -1,8 +1,10 @@
 import { PropertyService } from "@/api_services/property/property.service";
 import FilterCheck from "@/components/Filters/FilterCheck";
 import FilterCounter from "@/components/Filters/FilterCounter";
+import PriceRange from "@/components/Filters/PriceRange";
 import ProductModels from "@/components/Filters/ProductModelx";
 import SimpleAccordion from "@/components/shared/SimpleAccorion";
+import numberWithCommas from "@/helpers/numberWithCommas";
 import { poolFilterTypes } from "@/utils/constantss";
 import _STRINGS from "@/utils/LocalStrings";
 import { useQuery } from "@tanstack/react-query";
@@ -103,6 +105,52 @@ const FiltersPart = ({ queries, setFilters, filters, propertyTypes }: any) => {
         queryKey={"is_premium"}
         query={queries}
       />
+      <div className="flex text-xs  mt-4 md:text-sm w-full flex-col gap-4 px-4 ">
+        <div className="w-full flex items-center justify-between">
+          <p className="text-sm">{_STRINGS.PRICE_RANGE}</p>
+          {!!filters.max_price || filters.min_price ? (
+            <p className="text-xs">
+              {filters?.min_price ? ` از  ${numberWithCommas(filters?.min_price)}` : ""}{" "}
+              {!!filters.max_price ? ` تا ${numberWithCommas(filters.max_price)}` : ""} تومان
+            </p>
+          ) : (
+            <></>
+          )}
+        </div>
+        <PriceRange
+          lowerKey="min_price"
+          higherKey="max_price"
+          steps={100000}
+          filters={filters}
+          setFilters={setFilters}
+          query={queries}
+          lowLimit={10000}
+          upLimit={100000000}
+        />
+      </div>
+      <div className="flex text-xs  mt-10 md:text-sm w-full flex-col gap-4 px-4 ">
+        <div className="w-full flex items-center justify-between">
+          <p className="text-sm">{_STRINGS.ROOM_SIZE}</p>
+          {!!filters.min_building_area || filters.max_building_area ? (
+            <p className="text-xs">
+              {filters?.min_building_area ? ` از  ${numberWithCommas(filters?.min_building_area)}` : ""}{" "}
+              {!!filters.max_building_area ? ` تا ${numberWithCommas(filters.max_building_area)}` : ""} متر مربع
+            </p>
+          ) : (
+            <></>
+          )}
+        </div>
+        <PriceRange
+          lowerKey="min_building_area"
+          higherKey="max_building_area"
+          steps={10}
+          filters={filters}
+          setFilters={setFilters}
+          query={queries}
+          lowLimit={10}
+          upLimit={1000}
+        />
+      </div>
     </div>
   );
 };

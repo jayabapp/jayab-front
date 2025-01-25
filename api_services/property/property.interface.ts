@@ -527,6 +527,9 @@ export interface GetPropertiesPlusFilters {
   total_guests?: string | null | number;
   cursor: string | null | number;
   per_page: string | null | number;
+
+  max_building_area?: string | null | number;
+  min_building_area?: string | null | number;
 }
 
 export interface SingleLandingDto {

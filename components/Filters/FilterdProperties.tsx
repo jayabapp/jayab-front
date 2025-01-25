@@ -16,6 +16,8 @@ import { PropertyListDto } from "@/api_services/property/property.interface";
 export interface catQueryTypes {
   max_price: string | null | undefined;
   min_price: string | null | undefined;
+  max_building_area: string | null | undefined;
+  min_building_area: string | null | undefined;
   sort_type: string | null | undefined;
   cities: string | null | undefined;
   code: string | null | undefined;
@@ -72,6 +74,10 @@ function FilterdProperties({ sortType, setSortType, query }: FilterdPropertiesTy
     query?.entertainment,
     query?.has_discount,
     query?.is_premium,
+    query?.max_price,
+    query?.min_price,
+    query?.max_building_area,
+    query?.min_building_area,
   ]);
 
   const {
@@ -90,12 +96,18 @@ function FilterdProperties({ sortType, setSortType, query }: FilterdPropertiesTy
       query?.has_discount,
       query?.is_premium,
       query?.sort_type,
+      query?.max_price,
+      query?.min_price,
+      query?.max_building_area,
+      query?.min_building_area,
     ],
     queryFn: () => {
       return PropertyService?.GetProperties({
         cursor: Number(cursor),
         min_price: Number(query.min_price) || undefined,
         max_price: Number(query.max_price) || undefined,
+        max_building_area: Number(query.max_building_area) || undefined,
+        min_building_area: Number(query.min_building_area) || undefined,
         per_page: 20,
         cities: query?.cities || undefined,
         code: query?.code || undefined,

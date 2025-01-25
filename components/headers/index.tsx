@@ -18,6 +18,7 @@ import AbsoluteBadge from "./AbsoluteBadge";
 import { headerBlackList, headerMobileBlackList } from "@/utils/constantss";
 import { PropertyService } from "@/api_services/property/property.service";
 import { useQuery } from "@tanstack/react-query";
+import { UserService } from "@/api_services/user/user.service";
 const PopSearchbox = dynamic(() => import("../SearchBoxComp/PopSearchbox"), {
   ssr: false,
 });
@@ -101,6 +102,14 @@ const Header = ({ scroll }: { scroll?: number }) => {
     enabled: false,
   });
 
+  /* -------------------------------------------------------------------------- */
+  /*                                 NOTIF BADGE                                */
+  /* -------------------------------------------------------------------------- */
+  const { data: notifBadge } = useQuery({
+    queryKey: [UserService.NOTIFS_BADGE_CACHEKEY],
+    queryFn: UserService.userNotifBadge,
+  });
+
   const onCreateAddClick = () => {
     if (!!userInfo) {
       if (!userInfo?.owner_id) {
@@ -160,7 +169,7 @@ transition-all  ease-in-out duration-1000 header-content-container app-size cust
                         <img src="/assets/icons/header/blue_chat.svg" className="w-6 h-6 aspect-square" />
                       </Link>
                       <div className="relative">
-                        <AbsoluteBadge count={1} />
+                        <AbsoluteBadge count={notifBadge || 0} />
                         <img src="/assets/icons/header/blue_bell.svg" className="w-6 h-6 aspect-square" />
                       </div>
                     </div>
@@ -272,7 +281,7 @@ transition-all  ease-in-out duration-1000 header-content-container app-size cust
             />
             {!!isLogin ? (
               <>
-                <ProfileDropdown />
+                <ProfileDropdown notifBadge={notifBadge} />
               </>
             ) : (
               <></>

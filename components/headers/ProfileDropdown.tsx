@@ -12,8 +12,9 @@ import _STRINGS from "@/utils/LocalStrings";
 
 import { useAuthStore, useStoreInit } from "@/store";
 import { profileDropDownItems } from "@/utils/constantss";
+import AbsoluteBadge from "./AbsoluteBadge";
 
-const ProfileDropdown = ({}) => {
+const ProfileDropdown = ({ notifBadge }: { notifBadge?: number | string }) => {
   const asPath = usePathname();
   const ref = useRef<HTMLButtonElement>(null);
   const [isVisible, setisVisible] = useState(false);
@@ -93,6 +94,23 @@ const ProfileDropdown = ({}) => {
         >
           <MenuItems className="absolute left-0  z-20  mt-2 w-48 origin-top-center  rounded-xl bg-white dark:bg-zinc-800 shadow-xl ring-1 ring-black ring-opacity-5 focus:outline-none  overflow-scroll">
             <div className="px-1 py-2 ">
+              <MenuItem key={`safasfsafq`}>
+                <Link className="" prefetch={false} href={`/notifications`}>
+                  <div
+                    className={` relative hover:bg-primary-700/80 dark:hover:bg-zinc-600  cursor-pointer hover:text-white text-gray-600 dark:text-gray-300 group flex w-full gap-2 items-center rounded-md px-2 py-2 text-sm font-light no-underline`}
+                  >
+                    <div className="relative">
+                      {" "}
+                      <AbsoluteBadge count={Number(notifBadge) || 0} />
+                      <img
+                        src={`/assets/icons/header/prof_dropdownn_bell.svg`}
+                        className={`w-6 h-6 aspect-square ${asPath.includes("notifications") ? " " : ""} dark:invert `}
+                      />
+                    </div>
+                    <p> {_STRINGS.MY_NOTIFS}</p>
+                  </div>
+                </Link>
+              </MenuItem>
               {profileDropDownItems.map((e) => (
                 <MenuItem key={e.id}>
                   <Link prefetch={false} href={e?.route}>

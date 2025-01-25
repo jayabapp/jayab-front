@@ -68,6 +68,8 @@ export const apiRoutes = {
 
   NOTIFS: `/user/notifications`,
 
+  NOTIFS_BADGE: `/user/notifications/badge`,
+
   FAVS: `/user/favorites`,
 
   BOOKMARKS: `/user/bookmarks`,

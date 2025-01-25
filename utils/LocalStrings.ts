@@ -335,6 +335,8 @@ const _STRINGS = {
   SELECT_TIME_WINDOW: "انتخاب بازه زمانی",
   SEND_INFO: "ارسال اطلاعات",
   ADMIN_RESPOND: "پاسخ ادمین :",
+  PRICE_RANGE: "بازه قیمت",
+  MY_NOTIFS: "اعلان های من",
 };
 
 export default _STRINGS;
