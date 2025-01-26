@@ -46,7 +46,7 @@ const CategoryItem = ({ item }: { item: HomeLandingDto }) => {
         />
       </div>
 
-      <p className={`font-medium text-sm text-center  line-clamp-2 md:text-lg`}>{item?.title}</p>
+      <p className={`font-medium opacity-80 text-sm text-center  line-clamp-2 md:text-sm`}>{item?.title}</p>
     </button>
   );
 };

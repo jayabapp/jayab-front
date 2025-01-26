@@ -20,7 +20,7 @@ function MainFiltersContainer({ data, title }: { data: HomeLandingDto[]; title: 
   const ref = useRef<Swiper>(null);
   return (
     <div className={` w-full noSelect   select-none   relative rounded-20 flex gap-4 flex-col items-center`}>
-      <p className=" font-medium  w-full text-center md:text-start text-lg md:text-2xl">{title}</p>
+      <p className=" font-medium  w-full text-center md:text-start text-lg md:text-xl">{title}</p>
       {
         // isLoading ? (
         //   <div className=" min-h-[30dvh] w-full flex items-center justify-center">
@@ -61,17 +61,17 @@ function MainFiltersContainer({ data, title }: { data: HomeLandingDto[]; title: 
               // when window width is >= 768px
               768: {
                 slidesPerView: 5,
-                spaceBetween: 0,
+                spaceBetween: 10,
                 grid: { fill: "row", rows: 1 },
               },
               1024: {
                 slidesPerView: 7.5,
-                spaceBetween: 0,
+                spaceBetween: 15,
                 grid: { fill: "row", rows: 1 },
               },
               1600: {
-                slidesPerView: 7.5,
-                spaceBetween: 0,
+                slidesPerView: 8.5,
+                spaceBetween: 15,
                 grid: { fill: "row", rows: 1 },
               },
             }}

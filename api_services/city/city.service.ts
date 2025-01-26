@@ -28,7 +28,7 @@ export class CityService {
   static async GetAllCities(dto?: {
     cities?: string | null | number;
     depth?: string | null | number;
-    is_parent?: boolean;
+    is_parent?: string | null | number;
     q?: string | null | number;
   }) {
     try {
@@ -36,7 +36,7 @@ export class CityService {
         {
           cities?: string | null | number;
           depth?: string | null | number;
-          is_parent?: boolean;
+          is_parent?: string | null | number;
           q?: string | null | number;
         },
         NewCitiesListDto[]

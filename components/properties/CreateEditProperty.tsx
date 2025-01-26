@@ -52,8 +52,8 @@ const CreateEditProperty = ({
   // });
 
   const { data: provinces } = useQuery({
-    queryFn: CityService.GetProvince,
-    queryKey: [CityService.CITIES_CACHEKEY],
+    queryFn: () => CityService.GetAllCities({ is_parent: "1" }),
+    queryKey: [CityService.CITIES_CHILDEREN_CACHEKEY, "is_parent"],
   });
 
   const { data: cities } = useQuery({

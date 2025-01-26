@@ -57,7 +57,7 @@ const FormInput = ({ item, value, onChangeText, errors, errorKey = "" }: props) 
         rows={item?.rows || 3}
         className={`${!!item?.iconUrl ? " !pl-10" : ""}  ${!!item?.iconEndUrl ? " !pr-10" : ""} ${
           item?.direction ? item?.direction : "rtl"
-        }  text-right form-control text-base font-normal  bg-white     border  focus:border-primary-700/30 py-4 px-4 w-full rounded-10 placeholder:text-gray-400 placeholder:text-right   placeholder:font-normal placeholder:text-sm placeholder:opacity-70   ${
+        }  text-right form-control !transform-none text-base font-normal  bg-white     border  focus:border-primary-700/30 py-4 px-4 w-full rounded-10 placeholder:text-gray-400 placeholder:text-right   placeholder:font-normal placeholder:text-sm placeholder:opacity-70   ${
           item?.inputClass
         } ${
           item?.disableHover

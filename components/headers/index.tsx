@@ -289,11 +289,12 @@ transition-all  ease-in-out duration-1000 header-content-container app-size cust
                 }}
               />
             ) : (
-              <div className="lg:flex shrink-0 hidden items-center gap-2">
-                <Link prefetch={false} href={"/auth"} className="shrink-0 transition-all hover:text-primary-700">
-                  {_STRINGS?.ENTER} / {_STRINGS?.REGISTER}
-                </Link>
-              </div>
+              // <div className="lg:flex shrink-0 hidden items-center gap-2">
+              //   <Link prefetch={false} href={"/auth"} className="shrink-0 transition-all hover:text-primary-700">
+              //     {_STRINGS?.ENTER} / {_STRINGS?.REGISTER}
+              //   </Link>
+              // </div>
+              <></>
             )}
             <TextIcon
               item={{ icon: "/assets/icons/header/adds_header_icon.svg", title: _STRINGS.ADDS, route: "/rooms" }}
@@ -313,6 +314,23 @@ transition-all  ease-in-out duration-1000 header-content-container app-size cust
               <></>
             )}
             <MenuDropDown />
+
+            {!!isLogin ? (
+              <></>
+            ) : (
+              <div className="lg:flex shrink-0 hidden items-center gap-2">
+                <Link prefetch={false} href={"/auth"} className="shrink-0 transition-all hover:text-primary-700">
+                  <Button
+                    onClick={() => {}}
+                    title={`${_STRINGS?.ENTER} / ${_STRINGS?.REGISTER}`}
+                    containerClass="w-fit shrink-0 "
+                    width="w-full shrink-0"
+                    roundedClass="rounded-full"
+                    variant="outline"
+                  />
+                </Link>
+              </div>
+            )}
 
             <Button
               onClick={onCreateAddClick}

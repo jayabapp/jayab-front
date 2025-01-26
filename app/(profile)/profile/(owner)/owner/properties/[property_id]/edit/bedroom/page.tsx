@@ -23,8 +23,6 @@ const CreateProperty = () => {
   const searchParams = useSearchParams();
   const edit_mode = searchParams.get("edit_mode");
   const router = useRouter();
-  const pathname = usePathname();
-  const { userInfo } = useStoreInit((data) => data);
 
   const params = useParams();
   const { property_id } = params;

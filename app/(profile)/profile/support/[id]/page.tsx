@@ -37,7 +37,7 @@ const TicketsPage = () => {
       id="homeParent"
       className=" profile-container flex flex-col gap-4   !pb-80 transition-all duration-500 ease-in-out "
     >
-      <Breadcrumbs />
+      {/* <Breadcrumbs /> */}
 
       {data?.status == 2 && (
         <div className=" w-full my-10 pb-6 border-b   p-4   flex flex-col items-center  ">

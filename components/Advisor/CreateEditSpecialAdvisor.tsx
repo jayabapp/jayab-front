@@ -38,8 +38,8 @@ const CreateEditSpecialAdvisor = ({
   >;
 }) => {
   const { data: provinces } = useQuery({
-    queryFn: CityService.GetProvince,
-    queryKey: [CityService.CITIES_CACHEKEY],
+    queryFn: () => CityService.GetAllCities({ is_parent: "1" }),
+    queryKey: [CityService.CITIES_CHILDEREN_CACHEKEY, "is_parent"],
   });
 
   const { data: cities } = useQuery({
@@ -80,6 +80,7 @@ const CreateEditSpecialAdvisor = ({
             isMandatory: true,
             containerClass: "w-full",
             direction: "ltr",
+            keyboard: "number",
             inputClass: "ltr text-left",
             maxLength: 10,
           }}

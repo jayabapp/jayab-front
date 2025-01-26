@@ -37,7 +37,7 @@ const CreateEditSimpleAdvisor = ({
     <div className="flex flex-col w-full gap-3">
       <div className="w-full flex items-center  flex-col gap-3  md:gap-4 md:flex-row">
         <FormInput
-          item={{ title: _STRINGS.ADD_TITLE, isMandatory: true, containerClass: "w-full" }}
+          item={{ title: _STRINGS.FULL_NAME, isMandatory: true, containerClass: "w-full" }}
           value={values?.full_name || ""}
           onChangeText={(e) => {
             onChange(e, "full_name");

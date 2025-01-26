@@ -248,7 +248,7 @@ input[type="number"] {
 }
 
 .profile-grid-part {
-  @apply lg:grid  mt-24 lg:mt-20;
+  @apply lg:grid  gap-8 mt-24 lg:mt-32;
 }
 
 .profile-py-28 {

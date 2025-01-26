@@ -15,6 +15,7 @@ import { profileDropDownItems } from "@/utils/constantss";
 import AbsoluteBadge from "./AbsoluteBadge";
 
 const ProfileDropdown = ({ notifBadge }: { notifBadge?: number | string }) => {
+  const { userInfo } = useStoreInit((data) => data);
   const asPath = usePathname();
   const ref = useRef<HTMLButtonElement>(null);
   const [isVisible, setisVisible] = useState(false);
@@ -111,6 +112,29 @@ const ProfileDropdown = ({ notifBadge }: { notifBadge?: number | string }) => {
                   </div>
                 </Link>
               </MenuItem>
+
+              {!!userInfo?.advisor_id ? (
+                <MenuItem key={`myAdds`}>
+                  <Link className="" prefetch={false} href={`/profile/owner/properties`}>
+                    <div
+                      className={` relative hover:bg-primary-700/80 dark:hover:bg-zinc-600  cursor-pointer hover:text-white text-gray-600 dark:text-gray-300 group flex w-full gap-2 items-center rounded-md px-2 py-2 text-sm font-light no-underline`}
+                    >
+                      <div className="relative">
+                        {" "}
+                        <img
+                          src={`/assets/icons/header/header_my_adds.svg`}
+                          className={`w-6 h-6 aspect-square ${
+                            asPath.includes("notifications") ? " " : ""
+                          } dark:invert `}
+                        />
+                      </div>
+                      <p> {"آگهی های من"}</p>
+                    </div>
+                  </Link>
+                </MenuItem>
+              ) : (
+                <></>
+              )}
               {profileDropDownItems.map((e) => (
                 <MenuItem key={e.id}>
                   <Link prefetch={false} href={e?.route}>

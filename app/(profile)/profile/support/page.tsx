@@ -41,7 +41,7 @@ const Support = () => {
 
   return (
     <div id="homeParent" className=" profile-container flex flex-col gap-4   transition-all duration-500 ease-in-out ">
-      <Breadcrumbs />
+      {/* <Breadcrumbs /> */}
       {isLoading && isEmpty(tickets) ? (
         <LottieLoading />
       ) : tickets?.length == 0 ? (
@@ -51,9 +51,9 @@ const Support = () => {
           dataLength={tickets?.length} //This is important field to render the next data
           next={() => setPage((e) => e + 1)}
           hasMore={page !== meta?.lastPage ? true : false}
-          className="flex flex-col gap-4  p-4"
+          className="grid  grid-cols-1 md:grid-cols-2  gap-4  p-4"
           loader={
-            <div className="w-full mt-8 flex items-center justify-center md:p-4">
+            <div className="w-full mt-8   flex items-center justify-center md:p-4">
               <BtnLoading />
             </div>
           }

@@ -7,6 +7,10 @@ const nextConfig: NextConfig = {
         protocol: "https",
         hostname: "kian-dev-bucket.storage.iran.liara.space",
       },
+      {
+        protocol: "https",
+        hostname: "kian-cdn1.s3.ir-thr-at1.arvanstorage.ir",
+      },
     ],
   },
   eslint: {

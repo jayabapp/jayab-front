@@ -191,12 +191,6 @@ export const allRoutes: { [key: string]: string } = {
 };
 
 export const profileDropDownItems = [
-  {
-    id: 15,
-    title: "آگهی های من",
-    route: "/profile/owner/properties",
-    imgSrc: "/assets/icons/header/header_my_adds.svg",
-  },
   // { id: 21, title: "پیام های من", route: "/profile/chat", imgSrc: "/assets/icons/header/header_my_messages.svg" },
   {
     id: 421,
