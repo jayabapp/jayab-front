@@ -17,7 +17,6 @@ const CategoryItem = ({ item }: { item: HomeLandingDto }) => {
 
     pusher(link);
   };
-
   return (
     <button
       id={item?.title}

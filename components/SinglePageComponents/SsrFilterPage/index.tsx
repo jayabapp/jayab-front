@@ -44,7 +44,7 @@ const SsrFilterPage = ({ landings, firstData }: { firstData: { data: any[] }; la
   const [cityButtonTItle, setCityTitleButton] = useState("");
   const [breadCrumbs, setBreadCrumbs] = useState<{ title: string; link: string }[]>([
     { title: "خانه", link: "/" },
-    { title: "آگهی ها", link: "/rooms" },
+    { title: landings?.content?.title || "آگهی ها", link: "" },
   ]);
   const queriesParams = useQueryGet<any>();
   const [queries, setQueries] = useState(queriesParams);

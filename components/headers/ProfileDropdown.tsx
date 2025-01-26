@@ -10,12 +10,13 @@ import { AuthService } from "@/api_services/auth/auth.service";
 import Link from "next/link";
 import _STRINGS from "@/utils/LocalStrings";
 
-import { useAuthStore, useStoreInit } from "@/store";
+import { useAuthStore, useStoreInit, useStoreParams } from "@/store";
 import { profileDropDownItems } from "@/utils/constantss";
 import AbsoluteBadge from "./AbsoluteBadge";
 
 const ProfileDropdown = ({ notifBadge }: { notifBadge?: number | string }) => {
   const { userInfo } = useStoreInit((data) => data);
+  const { isAdvisor } = useStoreParams((data) => data);
   const asPath = usePathname();
   const ref = useRef<HTMLButtonElement>(null);
   const [isVisible, setisVisible] = useState(false);
@@ -113,7 +114,7 @@ const ProfileDropdown = ({ notifBadge }: { notifBadge?: number | string }) => {
                 </Link>
               </MenuItem>
 
-              {!!userInfo?.advisor_id ? (
+              {!!userInfo?.owner_id ? (
                 <MenuItem key={`myAdds`}>
                   <Link className="" prefetch={false} href={`/profile/owner/properties`}>
                     <div

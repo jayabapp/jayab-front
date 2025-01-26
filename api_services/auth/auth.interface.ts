@@ -184,4 +184,5 @@ export interface OwnerProfileDto {
 export interface InitDto {
   bookmarks: number[];
   favorites: number[];
+  isValidAdvisor: { isAdvisor: boolean };
 }

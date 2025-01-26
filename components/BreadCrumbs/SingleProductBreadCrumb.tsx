@@ -13,12 +13,13 @@ const SingleProductBreadCrumb = ({ dataArray }: { dataArray: { title: string; li
     <div className="pr-4 z-5 mt-5 mb-3 w-[90vw]  hidden md:flex  ">
       <div className="flex w-11/12 flex-wrap">
         {dataArray?.map((e, index, arr) => (
-          <div
+          <a
             key={e?.link}
             className="flex flex-row items-center my-1"
-            onClick={() => {
-              if (index + 1 !== arr?.length) _createRoute(e?.link);
-            }}
+            href={e?.link}
+            // onClick={() => {
+            //   if (index + 1 !== arr?.length) _createRoute(e?.link);
+            // }}
           >
             {" "}
             <div
@@ -55,7 +56,7 @@ const SingleProductBreadCrumb = ({ dataArray }: { dataArray: { title: string; li
                 />
               </svg>
             )}
-          </div>
+          </a>
         ))}
       </div>
     </div>

@@ -41,11 +41,10 @@ export default async function PropertiesPage({
     per_page: 50,
     ...searchParamsData,
   });
-
   return (
     <>
       <Suspense fallback={<Fallback />}>
-        <SsrFilterPage firstData={firstData} landings={landings} />
+        <SsrFilterPage firstData={searchParamsData?.has_pool ? firstData : []} landings={landings} />
       </Suspense>
     </>
   );

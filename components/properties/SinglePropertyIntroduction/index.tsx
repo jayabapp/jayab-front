@@ -14,12 +14,13 @@ import FixedBottomContainer from "@/components/shared/FixedBottomContainer";
 import SinglePropContactIfoPop from "./SinglePropContactInfoPop";
 import ShareLink from "@/components/shared/shareComponent/BrowserShare";
 import SinglePropSharePop from "./SinglePropSharePop";
-import { useStoreInit } from "@/store";
+import { useStoreInit, useStoreParams } from "@/store";
 import { useRouter } from "next/navigation";
 
 const SinglePropertyIntroduction = ({ data }: { data: SinglePropDto }) => {
   const router = useRouter();
   const { userInfo } = useStoreInit((data) => data);
+  const { isAdvisor } = useStoreParams((data) => data);
   const [showContact, setShowContact] = useState(false);
   const [showShare, setShowShare] = useState(false);
   const { mutate: createFindChat, isPending } = useMutation({
@@ -61,7 +62,6 @@ const SinglePropertyIntroduction = ({ data }: { data: SinglePropDto }) => {
     setShowShare(false);
   };
 
-  console.log(data, "asfasf");
   return (
     <div className=" flex w-full  flex-col relative  gap-4">
       <div className="w-full flex items-start md:items-center justify-between gap-2">
@@ -82,7 +82,7 @@ const SinglePropertyIntroduction = ({ data }: { data: SinglePropDto }) => {
         </div>
         <ShareLink />
       </div>{" "}
-      {!!userInfo?.advisor_id ? (
+      {!!isAdvisor ? (
         <Button
           onClick={onShareClick}
           title={_STRINGS.SEND_INFO}

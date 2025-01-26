@@ -31,22 +31,26 @@ const Breadcrumbs = () => {
     });
     setCrumbs(crumbsArray);
   };
-  const _createRoute = (item: { title: string; route: string }) => {
+  // const _createRoute = (item: { title: string; route: string }) => {
+  //   let pathArray = pathname.split("/");
+  //   const index = pathArray.indexOf(item.route);
+  //   const finalPath = pathArray.slice(0, index + 1).join("/");
+  //   router.push(finalPath || "/");
+  // };
+  const _createRouteATag = (item: { title: string; route: string }) => {
     let pathArray = pathname.split("/");
     const index = pathArray.indexOf(item.route);
     const finalPath = pathArray.slice(0, index + 1).join("/");
-    router.push(finalPath || "/");
+    return finalPath || "/";
   };
   return (
     <div className="pr-4 mt-10 mb-3 w-full  hidden md:flex ">
       <div className="flex w-11/12 flex-wrap">
         {crumbs?.map((e, i, arr) => (
-          <div
+          <a
+            href={i + 1 !== arr?.length ? _createRouteATag(e) : ""}
             key={i}
             className={`  flex flex-row items-center my-1 `}
-            onClick={() => {
-              if (i + 1 !== arr?.length) _createRoute(e);
-            }}
           >
             <div
               className={`${
@@ -78,7 +82,7 @@ const Breadcrumbs = () => {
                 />
               </svg>
             )}
-          </div>
+          </a>
         ))}
       </div>
     </div>

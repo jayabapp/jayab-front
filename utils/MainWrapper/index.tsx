@@ -119,7 +119,11 @@ const MainWrapper = ({ children }: mainWrapper) => {
 
   useEffect(() => {
     if (!!initData) {
-      useStoreParams.setState({ bookmarks: initData?.bookmarks || [], likes: initData?.favorites || [] });
+      useStoreParams.setState({
+        bookmarks: initData?.bookmarks || [],
+        likes: initData?.favorites || [],
+        isAdvisor: initData?.isValidAdvisor?.isAdvisor || false,
+      });
     }
   }, [initData]);
 

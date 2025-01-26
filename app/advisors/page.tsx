@@ -4,6 +4,7 @@ import { AdvisorService } from "@/api_services/advisor/advisor.propery";
 import { HomeService } from "@/api_services/home/home.service";
 import AdvisorCard from "@/components/Advisor/AdvisorCard";
 import SingleAdvisorModal from "@/components/Advisor/SingleAdvisorModal";
+import Breadcrumbs from "@/components/BreadCrumbs";
 import CityModal from "@/components/CityModal";
 import BannersContainer from "@/components/Home/BannersContainer";
 import SearchBox from "@/components/SearchBoxComp";
@@ -125,6 +126,7 @@ const AdvisorsListPage = () => {
 
   return (
     <div className=" w-full container flex flex-col gap-4 md:gap-8">
+      <Breadcrumbs />
       <BannersContainer banners={banners} />
 
       <div className="w-full flex flex-col gap-4">
