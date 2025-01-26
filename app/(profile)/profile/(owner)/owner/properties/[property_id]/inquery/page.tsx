@@ -14,6 +14,7 @@ import { WeekDays } from "@/utils/constantss";
 import _STRINGS from "@/utils/LocalStrings";
 import { NEW_IMAGE_URL } from "@/utils/urls";
 import { useQuery } from "@tanstack/react-query";
+import Image from "next/image";
 import { useParams } from "next/navigation";
 import React, { useState } from "react";
 
@@ -35,10 +36,11 @@ const PropertyInquery = () => {
         <LottieLoading />
       ) : !!data ? (
         <>
-          {" "}
           <ElementToImage className=" p-4 rounded-2xl gap-3 bg-primary-500  w-full flex flex-col ">
             <div className="w-full  aspect-square relative ">
-              <img
+              <Image
+                fill
+                alt={data?.feature_image?.alt || ""}
                 className=" rounded-2xl  w-full object-cover aspect-square"
                 src={NEW_IMAGE_URL(data?.feature_image)}
               />
@@ -56,9 +58,9 @@ const PropertyInquery = () => {
                   {!!data?.is_today_reserved ? _STRINGS.OCCUPIED : _STRINGS.EMPTY}{" "}
                 </p>
               </div>
-              <div className="flex  gap-1">
+              <div className="flex  items-start gap-1">
                 <img src="/assets/icons/adds/pin_point_location.svg" className="w-5 h-5 aspect-square" />
-                <p className="text-xs">
+                <p className="text-xs leading-[19px]">
                   {data?.city} <span className=" font-light  text-xs">({data?.province})</span>
                 </p>
               </div>

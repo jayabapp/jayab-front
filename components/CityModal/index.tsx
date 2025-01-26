@@ -53,6 +53,14 @@ const CityModal = ({
     queryKey: [CityService.GET_ALL_CITIES_CACHEKEY, queriesParams?.cities],
   });
 
+  const { data: cities, isLoading: citiesLoading } = useQuery({
+    queryFn: () => {
+      if (!!selectedProv?.id) return CityService.GetCities({ parentId: selectedProv?.id });
+      else return [];
+    },
+    queryKey: [CityService.CITIES_CHILDEREN_CACHEKEY, selectedProv?.id],
+  });
+
   useEffect(() => {
     if (!!defaultCitiesData) {
       setSelectedCities(defaultCitiesData);
@@ -88,7 +96,11 @@ const CityModal = ({
     };
     body.cities = selectedCities?.map((e) => e?.id);
 
-    router.replace(`${passedUrl || pathname}?${queryBuilder(body)}`);
+    if (!!passedUrl) {
+      router.push(`${passedUrl}?${queryBuilder(body)}`);
+    } else {
+      router.replace(`${pathname}?${queryBuilder(body)}`);
+    }
     onHide();
   };
 
@@ -96,7 +108,7 @@ const CityModal = ({
     <Modal
       options={{
         containerClass:
-          "mx-auto my-0 md:my-20 w-full md:w-1/2 xl:w-1/3 2xl:w-1/4  rounded-2xl overflow-y-scroll bg-white dark:bg-zinc-900  relative min-h-[100dvh]  min:min-h-[80dvh] ",
+          "mx-auto my-0 md:my-20 w-full md:w-1/2 xl:w-1/3 2xl:w-1/4  rounded-0 md:rounded-2xl overflow-y-scroll bg-white dark:bg-zinc-900  relative min-h-[100dvh]  min:min-h-[80dvh] ",
       }}
       onHide={onHide}
       show={!!show}
@@ -112,7 +124,7 @@ const CityModal = ({
         {/*  SELECT ALL CHECK */}
         {!!selectedProv ? (
           <CityModalAllCitiesButton
-            cities={selectedProv?.child}
+            cities={cities}
             setSelectedCities={setSelectedCities}
             selectedCities={selectedCities}
           />
@@ -139,10 +151,10 @@ const CityModal = ({
                 />
               ))
           )
-        ) : isEmpty(selectedProv?.child) ? (
+        ) : isEmpty(cities) ? (
           <EmptyList />
         ) : (
-          selectedProv?.child
+          cities
             ?.filter((e) => e?.title.includes(search))
             ?.map((e) => (
               <CityCard

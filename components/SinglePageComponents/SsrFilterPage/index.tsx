@@ -129,7 +129,7 @@ const SsrFilterPage = ({ landings, firstData }: { firstData: { data: any[] }; la
         <FilterPageCitiesTitle title={cityButtonTItle} cb={showCityModalFunc} />
         <SortMenu query={queries} />
       </div>
-      <div className="grid grid-cols-12 ">
+      <div className="grid grid-cols-12  min-h-[80dvh] mb-8 md:mb-4">
         {/* SIDEBAR */}
         <div className="grid grid-cols-12  col-span-12 ">
           <div className="hidden gap-4 lg:flex h-fit flex-col items-center rounded-10  border col-span-3 ">

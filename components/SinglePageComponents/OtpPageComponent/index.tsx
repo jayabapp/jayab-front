@@ -162,8 +162,8 @@ const OtpPageSignInComponent = ({
 
   return (
     <div className="auth-container bg-cover !rounded-none   min-h-screen h-fit flex flex-col gap-8 items-center  md:!pb-8   relative">
-      <AuthHeader title={_STRINGS.ENTER} customeBackRoute="/auth" />
-      <div className="w-full gap-6 flex flex-col items-center md:w-3/4 mx-auto relative lg:w-[35%]   dark:bg-zinc-900  rounded-2xl pt-8 pb-8 mt-8 ">
+      <AuthHeader title={_STRINGS.CONFIRM_CODE} customeBackRoute="/auth" />
+      <div className="w-full md:shadow-lg md:border   gap-6 flex flex-col items-center md:w-3/4 mx-auto relative lg:w-[35%]   dark:bg-zinc-900  rounded-2xl pt-0 md:pt-8 pb-8 mt-8 ">
         <div className="w-full items-center justify-center flex flex-col gap-4  ">
           {" "}
           <div className="flex relative z-1  w-28 flex-col items-center  gap-2 h-fit aspect-square">

@@ -154,7 +154,7 @@ const Header = ({ scroll }: { scroll?: number }) => {
         className={`
       ${headerMobileBlackList.includes(pathname) && " hidden md:block"}
 
-transition-all  ease-in-out duration-1000 header-content-container app-size custome-shadow-card  backdrop-blur-md  bg-white/80 dark:bg-dark-900   pt-2 pb-2   border-b dark:border-zinc-500 border-gray-100 `}
+transition-all  ease-in-out duration-1000 header-content-container app-size custome-shadow-card  backdrop-blur-md  bg-white dark:bg-dark-900   pt-2 pb-2   border-b dark:border-zinc-500 border-gray-100 `}
       >
         {/* ROW 1 */}
         <div className="flex justify-between  items-center  xl:gap-[20%]  py-1.5  px-2 md:px-10  2xl:px-[9%]  ">

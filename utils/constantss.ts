@@ -1,6 +1,7 @@
 import { title } from "process";
 import _STRINGS from "./LocalStrings";
 
+export const connectingWhiteList = ["/chat"];
 export const footerBlacklist = [
   "/auth",
   "/new-post",

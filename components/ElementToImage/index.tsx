@@ -8,7 +8,7 @@ const ElementToImage = ({ children, ...props }: any) => {
   const ref = useRef<HTMLDivElement>(null);
 
   const onShare = async (shareData: any) => {
-    const title = "افغان دیجیتال";
+    const title = "jayab";
 
     const response = await fetch(shareData);
     const blob = await response.blob();
@@ -32,12 +32,14 @@ const ElementToImage = ({ children, ...props }: any) => {
 
     const newEl = ref.current;
     if (!!newEl) {
+      console.log(newEl, "newElnewEl");
       toJpeg(newEl, { cacheBust: true, includeQueryParams: true })
         .then((dataUrl) => {
           // const link = document.createElement("a");
           // link.download = "my-image-name.png";
           // link.href = dataUrl;
           // link.click();
+
           onShare(dataUrl);
         })
         .catch((err) => {

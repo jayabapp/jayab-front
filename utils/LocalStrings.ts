@@ -345,6 +345,7 @@ const _STRINGS = {
   RELATED_RESULTS: "جستجوهای مرتبط",
   DESTINATIONS: "مقاصد",
   SEARCH_CITY_OR_ADD: "جستجوی شهر یا آگهی",
+  CONFIRM_CODE: "تایید موبایل",
 };
 
 export default _STRINGS;

@@ -103,7 +103,7 @@ ul {
 
 /* ---------------------------------- AUTH ---------------------------------- */
 .auth-container {
-  @apply w-full overflow-x-hidden  max-w-full px-4  mx-auto bg-primary-200      pb-24  pt-20  md:shadow-lg  md:rounded-20;
+  @apply w-full overflow-x-hidden  max-w-full px-4  mx-auto     pb-24  pt-20  md:shadow-lg  md:rounded-20;
 }
 .home-container {
   @apply h-full bg-transparent mx-auto !max-w-full min-h-[100dvh] px-3 md:px-3 lg:px-4 xl:px-[15%]  pt-32 lg:pt-28  pb-32 lg:pb-44 overflow-x-scroll;
@@ -376,7 +376,7 @@ input[type="number"] {
 }
 
 .swiper-pagination-bullet {
-  @apply !h-2.5 !w-2.5 transition-all    bg-white/30  !rounded-full;
+  @apply !h-2.5 !w-2.5 transition-all    bg-white/80  !rounded-full;
 }
 .swiper-pagination-bullet-active {
   @apply !bg-gray-100/90      transition-all px-5;

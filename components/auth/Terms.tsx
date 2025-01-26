@@ -20,7 +20,7 @@ const Terms = ({ visibleTermsModal, setvisibleTermsModal, termsLoading, termsCon
         <div className="app-text flex justify-between items-center py-3 px-4 sticky top-0 bg-white dark:bg-zinc-800 z-10">
           <h3 className="mr-2 font-medium">{_STRINGS.TERMS}</h3>
           <img
-            src="/assets/icons/shared/cancel-icon.svg"
+            src="/assets/icons/shared/close.svg"
             className="w-4 h-4 dark:invert"
             alt=""
             onClick={() => setvisibleTermsModal(false)}

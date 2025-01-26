@@ -71,7 +71,7 @@ const SingleAdvisorModal = ({
       <Modal
         options={{
           containerClass:
-            "mx-auto !my-0 h-[100dvh] md:h-auto md:my-10 w-full md:w-1/2 xl:w-1/3 2xl:w-1/4 rounded-2xl overflow-y-scroll bg-white dark:bg-zinc-900",
+            "mx-auto !my-0 h-[100dvh] md:h-auto md:my-10 w-full md:w-1/2 xl:w-1/3 2xl:w-1/4  rounded-0  md:rounded-2xl overflow-y-scroll bg-white dark:bg-zinc-900",
         }}
         show={show}
         onHide={onHide}

@@ -32,7 +32,7 @@ const AuthHeader = ({
         className="w-fit   cursor-pointer justify-center gap-2 flex items-center"
       ></div> */}
       {disableBack ? (
-        <></>
+        <p className="opacity-0 w-6"></p>
       ) : (
         <svg
           className="mt-0.5 cursor-pointer"
@@ -43,7 +43,7 @@ const AuthHeader = ({
               router.back();
             }
           }}
-          width="18"
+          width="24"
           height="24"
           viewBox="0 0 18 24"
           fill="none"

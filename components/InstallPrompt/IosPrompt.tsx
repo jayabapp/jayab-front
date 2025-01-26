@@ -1,12 +1,9 @@
 "use client";
 
 import React from "react";
-import { useStoreTheme } from "../../store";
 import Button from "../shared/Button/Button";
-import { NEW_IMAGE_URL } from "@/utils/urls";
 
 const IosPrompt = ({ callBack }: { callBack: () => void | null }) => {
-  const { logo } = useStoreTheme((state) => state);
   return (
     <div
       onClick={(e) => {
@@ -25,18 +22,18 @@ const IosPrompt = ({ callBack }: { callBack: () => void | null }) => {
         >
           {" "}
           <div className="flex flex-col items-center justify-center gap-8">
-            <img src={NEW_IMAGE_URL(logo)} className="w-32 aspect-square" />
+            <img src={"/assets/icons/logo/logo.svg"} className="w-32 aspect-square" />
             {/* <p className="text-center px-6 ">{_STRINGS?.LOGO}</p> */}
           </div>
           <div className="py-8 px-4 border-t font-light  flex flex-col gap-5">
             <div className="flex items-start gap-4">
-              <img src="/assets/icons/home/share.svg" />{" "}
+              <img src="/assets/icons/install_prompt/share.svg" />{" "}
               <p>
                 1- در نوار پایین روی دکمه <strong className="font-medium">Share</strong> بزنید.
               </p>
             </div>
             <div className="flex items-start gap-4">
-              <img src="/assets/icons/shared/blue_add.svg" className="w-6 h-6" />{" "}
+              <img src="/assets/icons/install_prompt/blue_add.svg" className="w-6 h-6" />{" "}
               <p>
                 2- در منوی باز شده و در قسمت پایین , گزینه <strong className="font-medium">Add to Home Screen</strong>{" "}
                 را انتخاب کنید.

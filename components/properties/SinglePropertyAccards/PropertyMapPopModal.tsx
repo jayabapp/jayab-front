@@ -18,7 +18,7 @@ const PropertyMapPopModal = ({ data, show, onHide }: { data: any; show: boolean;
     <Modal
       options={{
         containerClass:
-          "mx-auto  my-0 mx-auto h-full md:h-auto  md:my-20 w-full md:w-1/2 xl:w-1/3 2xl:w-1/4 rounded-2xl overflow-y-scroll bg-white dark:bg-zinc-900",
+          "mx-auto  my-0 mx-auto h-full md:h-auto  md:my-20 w-full md:w-1/2 xl:w-1/3 2xl:w-1/4   rounded-0 md:rounded-2xl overflow-y-scroll bg-white dark:bg-zinc-900",
       }}
       onHide={onHide}
       show={show}
