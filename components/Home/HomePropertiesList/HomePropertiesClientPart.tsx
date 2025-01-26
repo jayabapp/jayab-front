@@ -10,6 +10,8 @@ import LottieLoading from "@/components/shared/Lotties/LottieLoading";
 import BtnLoading from "@/components/shared/Button/BtnLoading";
 import PropertyCard from "@/components/properties/PropertyCard";
 import EmptyList from "@/components/shared/Lotties/EmptyList";
+import moment from "moment-jalaali";
+import { WeekDays } from "@/utils/constantss";
 
 export interface catQueryTypes {
   code: string | null | undefined;
@@ -23,9 +25,26 @@ type HomePropertiesClientPartType = {
 function HomePropertiesClientPart({ setCursor, cursor }: HomePropertiesClientPartType) {
   const router = useRouter();
   const pathname = usePathname();
+  const [week, setWeek] = useState<any[]>([]);
   const [refetcherBoolean, setRefetcherBoolean] = useState(false);
 
   const [data, setData] = useState<PropertyListDto[]>([]);
+
+  useEffect(() => {
+    const dayOfWeek = moment().day();
+    const weeks = [];
+    for (let index = 0; index < WeekDays.length; index++) {
+      const item = WeekDays?.find((e) => e?.id == index);
+      if (!!item) {
+        if (item?.id > dayOfWeek) weeks.push(item);
+        else {
+          weeks.unshift(item);
+        }
+      }
+    }
+
+    setWeek(weeks);
+  }, []);
 
   const {
     isLoading,
@@ -80,7 +99,7 @@ function HomePropertiesClientPart({ setCursor, cursor }: HomePropertiesClientPar
               className="grid   pb-8 pt-4 md:pt-2 px-1  !overflow-hidden  grid-cols-1 gap-2 md:gap-4  md:grid-cols-2 xl:grid-cols-3 "
             >
               {data?.map((i) => (
-                <PropertyCard data={i} key={`PRODUCT${i?.id}`} />
+                <PropertyCard week={week} data={i} key={`PRODUCT${i?.id}`} />
               ))}
             </InfiniteScroll>
           ) : (

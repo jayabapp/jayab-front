@@ -3,10 +3,26 @@ import Filterpage from "@/components/SinglePageComponents/Filterpage";
 import SsrFilterPage from "@/components/SinglePageComponents/SsrFilterPage";
 import serverCall from "@/helpers/serverCall";
 import { apiRoutes, baseUrl } from "@/utils/urls";
+import { Metadata, ResolvingMetadata } from "next";
 import { Suspense } from "react";
 
 function Fallback() {
   return <LottieLoading />;
+}
+
+type Props = {
+  params: Promise<{ slug: string }>;
+  searchParams: Promise<{ [key: string]: string | string[] | undefined }>;
+};
+
+export async function generateMetadata({ params }: Props, parent: ResolvingMetadata): Promise<Metadata> {
+  const paramData = await params;
+  const { data: landings } = await serverCall(baseUrl + apiRoutes.SINGLE_USER_LANDING_PAGE(paramData?.slug));
+
+  return {
+    title: landings?.content?.seo?.metaTitle || landings?.content?.title,
+    description: landings?.content?.seo?.metaDescription || landings?.content?.slug,
+  };
 }
 
 export default async function PropertiesPage({

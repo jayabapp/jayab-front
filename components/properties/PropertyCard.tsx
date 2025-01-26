@@ -1,7 +1,7 @@
 "use client";
 import { fakeVilla } from "@/utils/faker";
 import _STRINGS from "@/utils/LocalStrings";
-import React from "react";
+import React, { useEffect } from "react";
 import AddCardPricePart from "./AddCardPricePart";
 import Link from "next/link";
 import { PropertyListDto } from "@/api_services/property/property.interface";
@@ -11,8 +11,11 @@ import PropertyCardOwnerPart from "./PropertyCardOwnerPart";
 import { useStoreParams } from "@/store";
 import DaysOfTheWeekStatus from "./DaysOfTheWeekStatus";
 import Image from "next/image";
+import { isEmpty } from "lodash";
+import moment from "moment-jalaali";
+import { simpleWeekDays } from "@/utils/constantss";
 
-const PropertyCard = ({ data, isOwner }: { data: PropertyListDto; isOwner?: boolean }) => {
+const PropertyCard = ({ data, isOwner, week }: { data: PropertyListDto; isOwner?: boolean; week?: string[] }) => {
   const { bookmarks, likes } = useStoreParams((state) => state);
 
   const goToLink = !!isOwner ? `/profile/owner/properties/${data?.id}` : `/rooms/${data?.slug}`;
@@ -138,7 +141,11 @@ const PropertyCard = ({ data, isOwner }: { data: PropertyListDto; isOwner?: bool
         </Link>
       </div>
       {isOwner ? <PropertyCardOwnerPart goToLink={goToLink} data={data} /> : <></>}
-      {!!data?.reserve_days ? <DaysOfTheWeekStatus isCard={true} data={data?.reserve_days} /> : <></>}
+      {!!data?.reserve_days && !isEmpty(data?.reserve_days) ? (
+        <DaysOfTheWeekStatus week={week || []} isCard={true} data={data?.reserve_days} />
+      ) : (
+        <></>
+      )}
     </div>
   );
 };

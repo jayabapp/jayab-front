@@ -1,13 +1,16 @@
 import _STRINGS from "@/utils/LocalStrings";
 import { isEmpty } from "lodash";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 type SuggsType = { title: string; id: string };
 
 const HistorySuggPart = ({ handleChange }: { handleChange: (e: string) => void | null }) => {
-  const [historySuggs, setHistorySuggs] = useState<SuggsType[]>(
-    localStorage?.getItem("search_history") ? JSON.parse(localStorage?.getItem("search_history") || "[]") : []
-  );
+  const [historySuggs, setHistorySuggs] = useState<SuggsType[]>([]);
 
+  useEffect(() => {
+    setHistorySuggs(
+      localStorage?.getItem("search_history") ? JSON.parse(localStorage?.getItem("search_history") || "[]") : []
+    );
+  }, []);
   const filterSugges = (id: string) => {
     const newSuggArr = historySuggs?.filter((e) => e?.id !== id);
 

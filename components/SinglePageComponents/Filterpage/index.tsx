@@ -45,7 +45,7 @@ const Filterpage = () => {
   const searchParams = useSearchParams();
   const [breadCrumbs, setBreadCrumbs] = useState<{ title: string; link: string }[]>([
     { title: "خانه", link: "/" },
-    { title: "دسته بندی", link: "/rooms" },
+    { title: "آگهی ها", link: "/rooms" },
   ]);
   const queriesParams = useQueryGet<any>();
 

@@ -47,6 +47,8 @@ const MobileFooter: React.FC = ({}) => {
               if (!!e?.data) router.push(`/profile/owner/properties/${e?.data?.id}/edit/initials`);
             });
           }
+        } else {
+          useStoreParams.setState({ loginModal: true });
         }
       },
 

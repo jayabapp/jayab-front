@@ -324,6 +324,7 @@ export const WeekDays = [
   { title: "پنجشنبه", id: 4 },
   { title: "جمعه", id: 5 },
 ];
+export const simpleWeekDays = ["یکشنبه", "دوشنبه", "سه شنبه", "چهارشنبه", "پنجشنبه", "جمعه", "شنبه"];
 
 export const easyRatingItems = {
   100: { label: "عالی", style: { color: "#3886E5", bottom: "2rem" } },

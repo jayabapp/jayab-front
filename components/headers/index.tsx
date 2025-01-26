@@ -134,6 +134,8 @@ const Header = ({ scroll }: { scroll?: number }) => {
           if (!!e?.data) router.push(`/profile/owner/properties/${e?.data?.id}/edit/initials`);
         });
       }
+    } else {
+      useStoreParams.setState({ loginModal: true });
     }
   };
 
@@ -230,7 +232,7 @@ transition-all  ease-in-out duration-1000 header-content-container app-size cust
                       <PopSearchbox
                         justIcon
                         boxId={scroll ? "SEARCH_BOX_Mobile_Modal" : "SEARCH_BOX_Mobile"}
-                        placeholder={_STRINGS?.SEARCH}
+                        placeholder={_STRINGS?.SEARCH_CITY_OR_ADD}
                         onSubmit={(text) => setsearchText(text)}
                         onClear={() => {
                           setsearchText("");
@@ -264,7 +266,7 @@ transition-all  ease-in-out duration-1000 header-content-container app-size cust
             <div className="w-3/4">
               <PopSearchbox
                 boxId={scroll ? "SEARCH_BOX_Modal" : "SEARCH_BOX"}
-                placeholder={_STRINGS?.SEARCH}
+                placeholder={_STRINGS?.SEARCH_CITY_OR_ADD}
                 onSubmit={(text) => setsearchText(text)}
                 onClear={() => {
                   setsearchText("");

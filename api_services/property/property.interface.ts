@@ -255,6 +255,7 @@ export interface SinglePropDto {
   bedrooms: Bedrooms;
   has_pool: boolean;
   is_authorized: boolean;
+  is_chat_enabled: boolean;
   province: string;
   city: string;
   advisor_commission: number;

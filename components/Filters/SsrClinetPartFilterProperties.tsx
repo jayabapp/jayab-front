@@ -12,6 +12,8 @@ import { PropertyService } from "@/api_services/property/property.service";
 import LottieLoading from "../shared/Lotties/LottieLoading";
 import EmptyList from "../shared/Lotties/EmptyList";
 import { PropertyListDto } from "@/api_services/property/property.interface";
+import moment from "moment-jalaali";
+import { WeekDays } from "@/utils/constantss";
 
 export interface catQueryTypes {
   max_price: string | null | undefined;
@@ -47,7 +49,7 @@ function SsrClinetPartFilterProperties({ sortType, query, setCursor, cursor }: S
   const router = useRouter();
   const pathname = usePathname();
   const [refetcherBoolean, setRefetcherBoolean] = useState(false);
-
+  const [week, setWeek] = useState<any[]>([]);
   const [data, setData] = useState<PropertyListDto[]>([]);
 
   useEffect(() => {
@@ -145,6 +147,22 @@ function SsrClinetPartFilterProperties({ sortType, query, setCursor, cursor }: S
     if (cursor != 0) refetch();
   }, [cursor, refetcherBoolean]);
 
+  useEffect(() => {
+    const dayOfWeek = moment().day();
+    const weeks = [];
+    for (let index = 0; index < WeekDays.length; index++) {
+      const item = WeekDays?.find((e) => e?.id == index);
+      if (!!item) {
+        if (item?.id > dayOfWeek) weeks.push(item);
+        else {
+          weeks.unshift(item);
+        }
+      }
+    }
+
+    setWeek(weeks);
+  }, []);
+
   return (
     <div className="w-full px-0  self-center">
       {cursor != 0 ? (
@@ -168,7 +186,7 @@ function SsrClinetPartFilterProperties({ sortType, query, setCursor, cursor }: S
               className="grid   pb-8 pt-4 md:pt-2 px-1  !overflow-hidden  grid-cols-1 gap-2 md:gap-4  md:grid-cols-2 xl:grid-cols-3 "
             >
               {data?.map((i) => (
-                <PropertyCard data={i} key={`PRODUCT${i?.id}`} />
+                <PropertyCard week={week} data={i} key={`PRODUCT${i?.id}`} />
               ))}
             </InfiniteScroll>
           ) : (

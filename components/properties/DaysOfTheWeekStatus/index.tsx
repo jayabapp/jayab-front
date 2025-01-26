@@ -1,12 +1,12 @@
 import { ReserveDaysDto } from "@/api_services/property/property.interface";
-import { WeekDays } from "@/utils/constantss";
+
 import _STRINGS from "@/utils/LocalStrings";
 import React from "react";
 
-const DaysOfTheWeekStatus = ({ isCard, data }: { isCard?: boolean; data: ReserveDaysDto[] }) => {
+const DaysOfTheWeekStatus = ({ isCard, data, week }: { week: any[]; isCard?: boolean; data: ReserveDaysDto[] }) => {
   return (
     <div className={`w-full flex  justify-between gap-1  ${isCard ? "" : "md:gap-1"}  items-center `}>
-      {WeekDays.map((e) => (
+      {week.map((e) => (
         <div key={`days${e?.id}${e?.title}`} className="flex w-full items-center justify-center flex-col gap-2">
           <p className={`text-xxs  ${isCard ? "" : "md:text-sm"}  font-light text-primary-250`}>{e?.title}</p>
 

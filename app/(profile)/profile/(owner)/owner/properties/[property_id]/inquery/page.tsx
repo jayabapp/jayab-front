@@ -10,6 +10,7 @@ import SingleOwnerPropertyOptons from "@/components/properties/owner/SingleOwner
 import MultiLineFormInput from "@/components/shared/Form/MultiLineFormInput";
 
 import LottieLoading from "@/components/shared/Lotties/LottieLoading";
+import { WeekDays } from "@/utils/constantss";
 import _STRINGS from "@/utils/LocalStrings";
 import { NEW_IMAGE_URL } from "@/utils/urls";
 import { useQuery } from "@tanstack/react-query";
@@ -62,7 +63,7 @@ const PropertyInquery = () => {
                 </p>
               </div>
             </div>
-            <DaysOfTheWeekStatus data={data?.reserve_days} />
+            <DaysOfTheWeekStatus week={WeekDays} data={data?.reserve_days} />
 
             <MultiLineFormInput
               onChangeText={(e) => {

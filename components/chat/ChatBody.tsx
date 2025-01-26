@@ -35,10 +35,21 @@ const ChatBody = ({
   return (
     <div className="flex pb-4 md:mb-0   overflow-y-hidden  items-end w-full  px-4">
       <div className="grid h-fit max-h-[90dvh] gap-6 pt-24 md:pt-36 pb-4  w-full overflow-y-scroll  items-end justify-center grid-cols-3">
+        <div id="getNext" className="w-full  "></div>
         {data?.map((e, index) => {
           if (singleChatData?.self?.participant_id == e?.participant_id) {
-            return <MyMessageItem data={e} index={index} length={length} key={`${e?.text}${e?.id}`} />;
-          } else return <PrivateOthersMessage data={e} index={index} length={length} key={`${e?.text}${e?.id}`} />;
+            return (
+              <MyMessageItem data={e} index={index} length={length} key={`${e?.text}${e?.id}${e?.participant_id}`} />
+            );
+          } else
+            return (
+              <PrivateOthersMessage
+                data={e}
+                index={index}
+                length={length}
+                key={`${e?.text}${e?.id}${e?.participant_id}`}
+              />
+            );
         })}
         {isTyping?.chatroom_id == singleChatData?.id && isTyping?.is_typing ? (
           <div className="col-span-4 w-[100%]  relative  flex justify-end">

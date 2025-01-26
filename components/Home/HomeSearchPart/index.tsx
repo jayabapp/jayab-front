@@ -8,7 +8,7 @@ const HomeSearchPart = () => {
     <div className="w-full px-4 flex md:hidden">
       <PopSearchbox
         boxId={"HOME_SEARCH_BOX"}
-        placeholder={_STRINGS?.SEARCH}
+        placeholder={_STRINGS?.SEARCH_CITY_OR_ADD}
         onSubmit={() => {}}
         onClear={() => {
           // setsearchText("");

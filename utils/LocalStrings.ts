@@ -344,6 +344,7 @@ const _STRINGS = {
   CITIES: "شهرها",
   RELATED_RESULTS: "جستجوهای مرتبط",
   DESTINATIONS: "مقاصد",
+  SEARCH_CITY_OR_ADD: "جستجوی شهر یا آگهی",
 };
 
 export default _STRINGS;

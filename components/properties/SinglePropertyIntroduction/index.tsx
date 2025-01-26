@@ -15,12 +15,19 @@ import SinglePropContactIfoPop from "./SinglePropContactInfoPop";
 import ShareLink from "@/components/shared/shareComponent/BrowserShare";
 import SinglePropSharePop from "./SinglePropSharePop";
 import { useStoreInit } from "@/store";
+import { useRouter } from "next/navigation";
 
 const SinglePropertyIntroduction = ({ data }: { data: SinglePropDto }) => {
+  const router = useRouter();
   const { userInfo } = useStoreInit((data) => data);
   const [showContact, setShowContact] = useState(false);
   const [showShare, setShowShare] = useState(false);
-  const { mutate: createFindChat, isPending } = useMutation({ mutationFn: ChatService.StartOrFindChat });
+  const { mutate: createFindChat, isPending } = useMutation({
+    mutationFn: ChatService.StartOrFindChat,
+    onSuccess: (e) => {
+      router.push(`/chat/${e?.chatroom_id}`);
+    },
+  });
 
   useQuery({
     queryKey: [PropertyService.SINGLE_PROPERTY_UPDATE_VIEW_CACHEKEY, data?.id],
@@ -53,6 +60,8 @@ const SinglePropertyIntroduction = ({ data }: { data: SinglePropDto }) => {
   const onShareClose = () => {
     setShowShare(false);
   };
+
+  console.log(data, "asfasf");
   return (
     <div className=" flex w-full  flex-col relative  gap-4">
       <div className="w-full flex items-start md:items-center justify-between gap-2">
@@ -132,14 +141,18 @@ const SinglePropertyIntroduction = ({ data }: { data: SinglePropDto }) => {
           roundedClass="rounded-full"
           title={_STRINGS.CONTACT_INFO}
         />
-        <Button
-          width="w-full"
-          containerClass="w-full"
-          roundedClass="rounded-full"
-          title={_STRINGS.CHAT_IN_JAYAB}
-          onClick={onCreateChat}
-          loading={isPending}
-        />
+        {data?.is_chat_enabled ? (
+          <Button
+            width="w-full"
+            containerClass="w-full"
+            roundedClass="rounded-full"
+            title={_STRINGS.CHAT_IN_JAYAB}
+            onClick={onCreateChat}
+            loading={isPending}
+          />
+        ) : (
+          <></>
+        )}
       </div>
       <div className="z-50 flex md:hidden">
         <FixedBottomContainer>

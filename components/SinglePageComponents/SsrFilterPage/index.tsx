@@ -1,26 +1,19 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { usePathname, useRouter, useSearchParams } from "next/navigation";
-
+import { notFound, usePathname, useRouter, useSearchParams } from "next/navigation";
 import { Divider } from "@/components/shared/Divider";
-import SimpleAccordion from "@/components/shared/SimpleAccorion";
-
 import { useQuery } from "@tanstack/react-query";
 import _STRINGS from "@/utils/LocalStrings";
-
 import queryBuilder from "@/helpers/queryBuilder";
 import useQueryGet from "@/helpers/queryGet";
 import { poolFilterTypes, SORT_TYPES } from "@/utils/constantss";
 import SingleProductBreadCrumb from "@/components/BreadCrumbs/SingleProductBreadCrumb";
 import SortMenu from "@/components/Filters/SortMenu";
-import FilterdProperties from "@/components/Filters/FilterdProperties";
 import Modal from "@/components/Modal";
 import { ParsedUrlQuery } from "querystring";
 import { PropertyService } from "@/api_services/property/property.service";
-import ProductModels from "@/components/Filters/ProductModelx";
 import Button from "@/components/shared/Button/Button";
-import FilterCounter from "@/components/Filters/FilterCounter";
 import FiltersPart from "./FiltersPart";
 import FiltersSelectedFiltersShowcase from "@/components/Filters/FiltersSelectedFiltersShowcase";
 import SsrClinetPartFilterProperties from "@/components/Filters/SsrClinetPartFilterProperties";
@@ -51,10 +44,11 @@ const SsrFilterPage = ({ landings, firstData }: { firstData: { data: any[] }; la
   const [cityButtonTItle, setCityTitleButton] = useState("");
   const [breadCrumbs, setBreadCrumbs] = useState<{ title: string; link: string }[]>([
     { title: "خانه", link: "/" },
-    { title: "دسته بندی", link: "/rooms" },
+    { title: "آگهی ها", link: "/rooms" },
   ]);
   const queriesParams = useQueryGet<any>();
   const [queries, setQueries] = useState(queriesParams);
+
   useEffect(() => {
     let defaults: any = {};
     if (!!landings?.query) {
@@ -104,6 +98,7 @@ const SsrFilterPage = ({ landings, firstData }: { firstData: { data: any[] }; la
   const showCityModalFunc = () => {
     setShowCiyModal(true);
   };
+
   return (
     <div className="app-container !pt-32  lg:!pt-28  md: z-2 ">
       <div className=" hidden  z-1 w-full md:flex flex-col md:flex-row items-center justify-between ">

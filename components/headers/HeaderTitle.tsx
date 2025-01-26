@@ -1,13 +1,16 @@
 "use client";
 import { allRoutes } from "@/utils/constantss";
-import { usePathname } from "next/navigation";
+import { useParams, usePathname } from "next/navigation";
 import React from "react";
 
 const HeaderTitle = () => {
   const pathname = usePathname();
+  const params = useParams();
   let pathArray = pathname?.split("/");
   let lastPart = pathArray[pathArray?.length - 1];
-  if (pathname?.includes("/profile/owner/properties/") && pathname?.includes("/edit")) {
+  if (!!params?.slug) {
+    return "آگهی ها";
+  } else if (pathname?.includes("/profile/owner/properties/") && pathname?.includes("/edit")) {
     return "ویرایش اطلاعات ملک";
   } else if (allRoutes.hasOwnProperty(lastPart)) {
     return allRoutes[lastPart];

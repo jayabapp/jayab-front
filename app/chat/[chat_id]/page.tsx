@@ -94,7 +94,8 @@ const Chat = () => {
       if (cursor == 0) {
         setData(chatDataMessage?.data?.reverse());
       } else {
-        setData((x) => [...chatDataMessage?.data?.reverse(), ...x]);
+        const reversedData = chatDataMessage?.data?.reverse();
+        setData((x) => [...reversedData, ...x]);
       }
     }
   }, [chatDataMessage]);
