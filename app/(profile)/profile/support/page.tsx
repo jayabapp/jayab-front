@@ -11,7 +11,7 @@ import BtnLoading from "@/components/shared/Button/BtnLoading";
 
 import Button from "@/components/shared/Button/Button";
 import { SupportService } from "@/api_services/support/support.service";
-import { TicketDatum } from "@/api_services/support/support.interface";
+import { MetaDto, TicketDatum, TicketsDto } from "@/api_services/support/support.interface";
 import { Meta } from "@/api_services/chat/chat.interface";
 import Breadcrumbs from "@/components/BreadCrumbs";
 import { isEmpty } from "lodash";
@@ -23,11 +23,11 @@ const Support = () => {
   const router = useRouter();
   const [page, setPage] = useState(1);
   const [tickets, setTickets] = useState<TicketDatum[]>([]);
-  const [meta, setMeta] = useState<Meta>();
+  const [meta, setMeta] = useState<MetaDto>();
 
   const { data: solidData, isLoading } = useQuery({
     queryKey: [SupportService?.TICKETS_CACHEKEY, page],
-    queryFn: () => SupportService?.GetTickets({ page: page }),
+    queryFn: () => SupportService?.GetTickets({ page: page, type: "TICKET" }),
     gcTime: 0,
     staleTime: 0,
   });
@@ -67,7 +67,7 @@ const Support = () => {
       <Button
         variant="outline"
         width="!font-bold !bg-white"
-        containerClass="flex items-center justify-start"
+        containerClass="flex items-center  justify-center md:justify-start"
         title={_STRINGS?.SEND_NEW_TICKET}
         onClick={() => {
           router?.push("/profile/support/new-ticket");

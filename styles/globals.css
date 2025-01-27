@@ -259,9 +259,9 @@ input[type="number"] {
   @apply md:pb-16;
 }
 
-.centerise > .swiper-wrapper {
+/* .centerise > .swiper-wrapper {
   @apply !flex  !justify-between md:!justify-center;
-}
+} */
 .react-transform-wrapper {
   @apply !w-full;
 }

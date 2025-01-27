@@ -70,7 +70,7 @@ const DatePickerQueryWithDynamicKeyFilter = ({
                   e.stopPropagation();
                   setDate("");
                 }}
-                className="  w-4 h-4 aspect-square  text-red-800"
+                className="  w-3 h-3 aspect-square  text-red-800"
               />
             ) : (
               // <CallenderTimeShiftIcon className="mix-blend-multiply" />

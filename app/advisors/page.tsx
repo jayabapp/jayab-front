@@ -51,12 +51,12 @@ const AdvisorsListPage = () => {
     refetch,
     data: propQueryData,
   } = useQuery({
-    queryKey: [AdvisorService?.USER_ADVISORS_CACHEKEY, queriesParams?.cities, queriesParams.q],
+    queryKey: [AdvisorService?.USER_ADVISORS_CACHEKEY, queriesParams?.cities, queriesParams.search],
     queryFn: () => {
       return AdvisorService?.userAdvisorsList({
         cursor: Number(cursor),
         per_page: 20,
-        q: queriesParams.q,
+        q: queriesParams.search,
         cities: !!queriesParams?.cities ? queriesParams.cities : undefined,
       });
     },
@@ -81,7 +81,7 @@ const AdvisorsListPage = () => {
     setCursor(0);
     setData([]);
     setRefetcherBoolean(!refetcherBoolean);
-  }, [queriesParams.q, queriesParams?.cities]);
+  }, [queriesParams.search, queriesParams?.cities]);
 
   /////////////////////////
 
@@ -125,82 +125,85 @@ const AdvisorsListPage = () => {
   };
 
   return (
-    <div className=" w-full container flex flex-col gap-4 md:gap-8">
+    <div className=" w-full container ">
       <Breadcrumbs />
-      <BannersContainer banners={banners} />
+      <div className="w-full flex flex-col gap-4 md:gap-8">
+        <BannersContainer banners={banners} />
 
-      <div className="w-full flex flex-col gap-4">
-        {" "}
-        <SearchBox
-          boxId="ADVISOR_SEARCH"
-          containerClass=" w-full"
-          onClear={() => {
-            doTheFiltering("", "q");
-          }}
-          onSubmit={(e) => {
-            doTheFiltering(e || "", "q");
-          }}
-          placeholder="کد یا نام مشاور ..."
-        />
-        <div className=" w-full flex  flex-col md:flex-row  gap-2 md:gap-4 items-center justify-between">
+        <div className="w-full flex flex-col gap-4">
           {" "}
-          <Button
-            roundedClass="rounded-full"
-            width=" w-full md:w-fit"
-            containerClass="w-full md:w-fit flex items-center justify-center"
-            onClick={showCityModalFunc}
-            title={cityTitle || _STRINGS.SELECT_CITY}
+          <SearchBox
+            passedQuerykey="search"
+            boxId="ADVISOR_SEARCH"
+            containerClass=" w-full"
+            onClear={() => {
+              doTheFiltering("", "search");
+            }}
+            onSubmit={(e) => {
+              doTheFiltering(e || "", "search");
+            }}
+            placeholder="کد یا نام مشاور ..."
           />
-          <Button
-            variant="outline"
-            roundedClass="rounded-full"
-            width=" w-full md:w-fit"
-            containerClass="w-full  hidden md:flex  md:w-fit  items-center justify-center"
-            onClick={registerAdvisor}
-            title={_STRINGS.REGISTER_ADVISOR}
-          />
-        </div>
-      </div>
-      {isLoading && data?.length == 0 ? (
-        <LottieLoading />
-      ) : data && data?.length > 0 ? (
-        <InfiniteScroll
-          dataLength={data?.length} //This is important field to render the next data
-          next={() => {
-            setCursor(last(data)?.id || 0);
-          }}
-          hasMore={propQueryData?.length != 0 ? true : false}
-          loader={
-            <div className="w-full mt-8 flex items-center justify-center">
-              <BtnLoading />
-            </div>
-          }
-          className="grid px-1   pb-8 pt-4 !overflow-hidden  grid-cols-1 gap-2 md:gap-4  lg:grid-cols-2 2xl:grid-cols-3 "
-        >
-          {data?.map((i) => (
-            <AdvisorCard
-              callback={() => {
-                onAdvisorCardClick(i);
-              }}
-              data={i}
-              key={`PRODUCT${i?.id}`}
+          <div className=" w-full flex  flex-col md:flex-row  gap-2 md:gap-4 items-center justify-between">
+            {" "}
+            <Button
+              roundedClass="rounded-full"
+              width=" w-full md:w-fit"
+              containerClass="w-full md:w-fit flex items-center justify-center"
+              onClick={showCityModalFunc}
+              title={cityTitle || _STRINGS.SELECT_CITY}
             />
-          ))}
-        </InfiniteScroll>
-      ) : (
-        <div className="col-span-4">
-          <EmptyList />
+            <Button
+              variant="outline"
+              roundedClass="rounded-full"
+              width=" w-full md:w-fit"
+              containerClass="w-full  hidden md:flex  md:w-fit  items-center justify-center"
+              onClick={registerAdvisor}
+              title={_STRINGS.REGISTER_ADVISOR}
+            />
+          </div>
         </div>
-      )}
+        {isLoading && data?.length == 0 ? (
+          <LottieLoading />
+        ) : data && data?.length > 0 ? (
+          <InfiniteScroll
+            dataLength={data?.length} //This is important field to render the next data
+            next={() => {
+              setCursor(last(data)?.id || 0);
+            }}
+            hasMore={propQueryData?.length != 0 ? true : false}
+            loader={
+              <div className="w-full mt-8 flex items-center justify-center">
+                <BtnLoading />
+              </div>
+            }
+            className="grid px-1   pb-8 pt-4 !overflow-hidden  grid-cols-1 gap-2 md:gap-4  lg:grid-cols-2 2xl:grid-cols-3 "
+          >
+            {data?.map((i) => (
+              <AdvisorCard
+                callback={() => {
+                  onAdvisorCardClick(i);
+                }}
+                data={i}
+                key={`PRODUCT${i?.id}`}
+              />
+            ))}
+          </InfiniteScroll>
+        ) : (
+          <div className="col-span-4">
+            <EmptyList />
+          </div>
+        )}
 
-      <CityModal setTitle={setCityTitle} show={showCityModal} onHide={hideCityModal} />
-      <SingleAdvisorModal
-        selectedAdvisor={selectedAdvisor}
-        show={!!selectedAdvisor}
-        onHide={() => {
-          setSelectedAdvisor(null);
-        }}
-      />
+        <CityModal setTitle={setCityTitle} show={showCityModal} onHide={hideCityModal} />
+        <SingleAdvisorModal
+          selectedAdvisor={selectedAdvisor}
+          show={!!selectedAdvisor}
+          onHide={() => {
+            setSelectedAdvisor(null);
+          }}
+        />
+      </div>
     </div>
   );
 };

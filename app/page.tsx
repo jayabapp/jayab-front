@@ -38,6 +38,7 @@ const Home = async () => {
     cursor: 0,
     per_page: 24,
   });
+
   return (
     <div id="homeParent" className="home-container  !px-0   flex flex-col gap-5 ">
       {!banners ? (

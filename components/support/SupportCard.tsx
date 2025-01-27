@@ -1,9 +1,9 @@
-import { TicketDatum } from "@/api_services/support/support.interface";
 import _STRINGS from "@/utils/LocalStrings";
 import moment from "moment-jalaali";
 import Link from "next/link";
 import React from "react";
 import StatusShower from "../shared/StatusShower";
+import { TicketDatum, TicketsDto } from "@/api_services/support/support.interface";
 
 const SupportCard = ({ item, type }: { item: TicketDatum; type?: "complain" }) => {
   return (

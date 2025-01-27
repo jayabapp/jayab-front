@@ -1,4 +1,5 @@
 import { Meta } from "../chat/chat.interface";
+import { Status } from "../property/property.interface";
 
 export interface TicketsDto {
   data: TicketDatum[];
@@ -9,7 +10,7 @@ export interface TicketDatum {
   id: number;
   title: string;
   message: string;
-  status: number;
+  status: Status;
   created_at: string;
 }
 
@@ -29,4 +30,19 @@ export interface Reply {
   message: string;
   admin: boolean;
   created_at: string;
+}
+
+export interface MetaDto {
+  total: number;
+  lastPage: number;
+  currentPage: number;
+  perPage: number;
+  prev: number;
+  next: number;
+}
+
+export interface AddTicket {
+  title: string;
+  message: string;
+  type: "TICKET" | "SUGGESTION";
 }

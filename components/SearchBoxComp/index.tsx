@@ -9,6 +9,7 @@ interface props {
   placeholder?: string;
   cancelText?: string;
   containerClass?: string;
+  passedQuerykey?: string;
   autofocus?: boolean;
   disableTypeing?: boolean;
   boxId?: string;
@@ -34,8 +35,9 @@ const SearchBox = ({
   item,
   passedText,
   boxId = "SEARCH_BOX",
+  passedQuerykey = "q",
 }: props) => {
-  const searchParam = useSearchParams().get("q");
+  const searchParam = useSearchParams().get(passedQuerykey);
 
   const inputRef = useRef<HTMLInputElement>(null);
 

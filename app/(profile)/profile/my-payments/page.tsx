@@ -29,7 +29,7 @@ const Income = () => {
     queryKey: [UserService.USER_SUBSCRIPTIONS_CACHEKEY, queriesParams?.from, queriesParams?.to],
     queryFn: () =>
       UserService.getUserSubscriptions({
-        form: !!queriesParams?.from ? moment(queriesParams?.from, "jYYYY/jMM/jDD").toDate() : undefined,
+        from: !!queriesParams?.from ? moment(queriesParams?.from, "jYYYY/jMM/jDD").toDate() : undefined,
         to: !!queriesParams?.to ? moment(queriesParams?.to, "jYYYY/jMM/jDD").toDate() : undefined,
         cursor: cursor,
       }),
@@ -47,11 +47,11 @@ const Income = () => {
   }, [solidData]);
 
   useEffect(() => {
-    if (queriesParams?.from || queriesParams?.to) {
-      setData([]);
-      setCursor(0);
-      setRefetcherBoolean((e) => !e);
-    }
+    // if (queriesParams?.from || queriesParams?.to) {
+    setData([]);
+    setCursor(0);
+    setRefetcherBoolean((e) => !e);
+    // }
   }, [queriesParams?.from, queriesParams?.to]);
 
   useEffect(() => {

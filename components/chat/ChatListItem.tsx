@@ -16,7 +16,7 @@ const ChatListItem = ({ item }: { item: ChatListDto }) => {
     >
       <img
         className="w-12 aspect-square h-12 rounded-10 "
-        src={NEW_IMAGE_URL(item?.property_image)}
+        src={NEW_IMAGE_URL(item?.property_image, "medium")}
         alt={`${item?.property_title}`}
       />
 
@@ -29,6 +29,13 @@ const ChatListItem = ({ item }: { item: ChatListDto }) => {
         </div>
         <p className="text-xs line-clamp-1">{item?.last_message?.text}</p>
       </div>
+      {!!item?.unread_count && item?.unread_count != "0" ? (
+        <div className="rounded-full  flex items-center justify-center w-5 h-5 aspect-square text-sm bg-primary-700 text-white transition-all duration-200 ease-in-out">
+          {item?.unread_count}
+        </div>
+      ) : (
+        <></>
+      )}
     </Link>
   );
 };

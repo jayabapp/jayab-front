@@ -20,6 +20,7 @@ import { PropertyService } from "@/api_services/property/property.service";
 import { useQuery } from "@tanstack/react-query";
 import { UserService } from "@/api_services/user/user.service";
 import { ChatService } from "@/api_services/chat/chat.service";
+import { NEW_IMAGE_URL } from "@/utils/urls";
 const PopSearchbox = dynamic(() => import("../SearchBoxComp/PopSearchbox"), {
   ssr: false,
 });
@@ -164,16 +165,22 @@ transition-all  ease-in-out duration-1000 header-content-container app-size cust
                 <div className="flex items-center gap-4">
                   <div className=" flex items-center justify-center gap-1">
                     {" "}
-                    <Link prefetch={false} href={"/"} className="w-12  !outline-none ">
+                    <Link prefetch={false} href={"/profile"} className="w-12  !outline-none ">
                       <img
-                        src="/assets/icons/logo/mobile_header_logo.svg"
+                        src={
+                          userInfo?.profile_image
+                            ? NEW_IMAGE_URL(userInfo?.profile_image)
+                            : "/assets/icons/logo/mobile_header_logo.svg"
+                        }
                         alt="jayab"
-                        className="w-12 h-auto object-contain !outline-none cursor-pointer "
+                        className="w-12 rounded-full   h-auto object-contain !outline-none cursor-pointer "
                         // onClick={() => pusher("/")}
                       />
                     </Link>
                     <div className="flex flex-col gap-1">
-                      <p className="font-bold text-lg  text-primary-700 ">{_STRINGS.LOGO}</p>
+                      <p className="font-bold text-lg  text-primary-700 ">
+                        {userInfo?.full_name ? userInfo?.full_name : _STRINGS.LOGO}
+                      </p>
                       <p className="text-xs opacity-70">{userInfo?.mobile_number}</p>
                     </div>
                   </div>

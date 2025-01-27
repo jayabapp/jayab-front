@@ -12,6 +12,8 @@ const HeaderTitle = () => {
     return "آگهی ها";
   } else if (pathname?.includes("/profile/owner/properties/") && pathname?.includes("/edit")) {
     return "ویرایش اطلاعات ملک";
+  } else if (pathname == "/profile/advisor/subscription") {
+    return "بخش مشاور";
   } else if (allRoutes.hasOwnProperty(lastPart)) {
     return allRoutes[lastPart];
   } else if (pathname?.includes("/products/")) {

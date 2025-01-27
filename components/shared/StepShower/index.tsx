@@ -16,9 +16,8 @@ const StepShower = ({
   const edit_mode = searchParams.get("edit_mode");
 
   const onClick = (step: { title: string; description?: string; id: number | string; link?: string }) => {
-    console.log(edit_mode, step?.link, "sssssssssss");
     if (!!edit_mode && !!step?.link) {
-      router.push(step?.link);
+      router.replace(step?.link);
     }
   };
 

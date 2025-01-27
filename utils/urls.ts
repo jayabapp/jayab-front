@@ -88,11 +88,13 @@ export const apiRoutes = {
 
   USER_ADVISORS_PROFILE: `/profile/advisor`,
 
-  TICKETS: `/tickets`,
+  TICKETS: `/user/tickets`,
 
   USER_SUBSCRIPTIONS: `/user/subscriptions`,
 
-  SINGLE_TICKET_GET: (id: string | number) => `/tickets/${id}`,
+  UPDATE_FCM: "/profile/update-fcm",
+
+  SINGLE_TICKET_GET: (id: string | number) => `/user/tickets/${id}`,
 
   SINGLE_PROPERTY_CONTACT_INFO: (propertySlug: string | number | null) =>
     `/user/properties/${propertySlug}/contact-info`,

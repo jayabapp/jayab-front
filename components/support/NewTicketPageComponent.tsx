@@ -70,7 +70,7 @@ const NewTicketPageComponent = ({ dataKey }: { dataKey: "SUGGESTION" | "TICKET" 
           containerClass="w-full flex items-center justify-end"
           loading={isPending}
           onClick={() => {
-            mutate({ message, title });
+            mutate({ message, title, type: "TICKET" });
           }}
           title={_STRINGS?.SEND_TICKET}
         />

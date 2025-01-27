@@ -9,7 +9,9 @@ import { Divider } from "../shared/Divider";
 const MyPaymentCards = ({ data }: { data: SubPaymentsDto }) => {
   return (
     <div className=" shadow-card  flex flex-col rounded-10 p-4 gap-4">
-      <LinearData disableDash title="نوع سرویس" value={`${data?.title} `} containerClassName="      " />
+      <LinearData disableDash title="عنوان" value={`${data?.title} `} containerClassName="      " />
+      <Divider />
+      <LinearData disableDash title="نوع سرویس" value={`${data?.type} `} containerClassName="      " />
       <Divider />
       <LinearData
         disableDash
@@ -26,6 +28,14 @@ const MyPaymentCards = ({ data }: { data: SubPaymentsDto }) => {
       />
       <Divider />
       <LinearData disableDash title="وضعیت" value={`${data?.status?.title} `} containerClassName="      " />
+      {!!data?.description ? (
+        <>
+          <Divider />
+          <p className="  text-sm"> {data?.description}</p>
+        </>
+      ) : (
+        <></>
+      )}
     </div>
   );
 };

@@ -69,32 +69,34 @@ const SinglePropertyIntroduction = ({ data }: { data: SinglePropDto }) => {
         <p className=" font-medium text-lg w-3/5 md:w-full md:text-2xl ">{data?.title}</p>
         {!!data?.is_authorized ? <AuthorizationStatus isAuthorized={data?.is_authorized} /> : <></>}
       </div>
-      <div className="flex items-center gap-4">
-        <div className="bg-primary-700 rounded-md text-base  px-2 py-1 text-white flex items-center justify-center">
-          کد {data.code}
+      <div className=" flex items-center w-full justify-between">
+        <div className="flex items-center gap-4">
+          <div className="bg-primary-700 rounded-md text-base  px-2 py-1 text-white flex items-center justify-center">
+            کد {data.code}
+          </div>{" "}
+          <div className="flex items-center gap-1">
+            <BookMarkButton data={data} />
+          </div>
+          <div className="flex items-center gap-1">
+            <FavButton data={data} />
+            <p className="text-base opacity-70   ">{data?.favorite_count}</p>
+          </div>
+          <ShareLink />
         </div>{" "}
-        <div className="flex items-center gap-1">
-          <BookMarkButton data={data} />
-        </div>
-        <div className="flex items-center gap-1">
-          <FavButton data={data} />
-          <p className="text-base opacity-70   ">{data?.favorite_count}</p>
-        </div>
-        <ShareLink />
+        {!!isAdvisor ? (
+          <Button
+            onClick={onShareClick}
+            title={_STRINGS.SEND_INFO}
+            width=" text-xs !px-4 !py-1.5 "
+            variant="flat"
+            roundedClass="rounded-md"
+            color="themeLight"
+            icon={<img className=" ml-1" src="/assets/icons/property/share_icon.svg" />}
+          />
+        ) : (
+          <></>
+        )}
       </div>{" "}
-      {!!isAdvisor ? (
-        <Button
-          onClick={onShareClick}
-          title={_STRINGS.SEND_INFO}
-          width=" text-xs !px-4 !py-1.5 "
-          variant="flat"
-          roundedClass="rounded-md"
-          color="themeLight"
-          icon={<img className=" ml-1" src="/assets/icons/property/share_icon.svg" />}
-        />
-      ) : (
-        <></>
-      )}
       {/*                          */}
       <div className="flex items-center gap-4    py-2 w-full md:justify-between">
         <div className="flex items-center gap-1">

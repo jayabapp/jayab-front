@@ -2,6 +2,7 @@
 
 import { ParsedUrlQuery } from "querystring";
 import { ImageDto } from "../auth/auth.interface";
+import { Status } from "../property/property.interface";
 
 export interface CreateFndChatDto {
   id: number;
@@ -170,6 +171,7 @@ export interface Profile {
 export interface TicketsDto {
   id: number;
   user_id: number;
+  status: Status;
   title: string;
   message: string;
   reply: null;

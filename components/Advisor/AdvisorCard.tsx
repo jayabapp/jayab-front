@@ -31,7 +31,7 @@ const AdvisorCard = ({
               className="rounded-full aspect-square w-full h-full"
             />
           </div>
-          <div className=" shrink-0 text-xs md:text-sm flex items-center justify-center px-2 py-1 rounded-md  bg-primary-700 text-white ">
+          <div className=" shrink-0 text-xs md:text-sm flex items-center justify-center px-1 md:px-2 py-1 rounded-md  bg-primary-700 text-white ">
             {_STRINGS.CODE} {data?.user?.referral_code}
           </div>
         </div>
@@ -40,12 +40,12 @@ const AdvisorCard = ({
           {/* CIRCULAR PROGRESS PARTS  */}
           <div className="w-full flex md:flex-cow  items-center justify-between gap-2">
             <AdvisorCircularProgresCard
-              pStyles={{ pathColor: "#3886E5", textColor: "#3886E5", textSize: "1.2rem" }}
+              pStyles={{ pathColor: "#3886E5", textColor: "#3886E5", textSize: "2rem" }}
               data={{ value: data?.users_satisfaction || 100 }}
               item={{ linear_title: _STRINGS.USERS_SATISFACTION, linear_title_class: "text-primary-700" }}
             />
             <AdvisorCircularProgresCard
-              pStyles={{ pathColor: "#34C759", textColor: "#34C759", textSize: "1.2rem" }}
+              pStyles={{ pathColor: "#34C759", textColor: "#34C759", textSize: "2rem" }}
               data={{ value: data?.owners_satisfaction || 100 }}
               item={{ linear_title: _STRINGS.OWNERS_SATISFACTION, linear_title_class: "text-primary-600" }}
             />

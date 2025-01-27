@@ -53,7 +53,6 @@ export const SocketIO = () => {
     });
 
     socket.on("chat:new-message", (e) => {
-      console.log(e, "eeeeeeeeeeeeee");
       useChatStore.setState({ chatNotification: e });
 
       if (!window.location?.href?.includes("/chat"))

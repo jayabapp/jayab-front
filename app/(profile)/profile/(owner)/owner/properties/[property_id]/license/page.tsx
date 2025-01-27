@@ -8,10 +8,11 @@ import MainUploader from "@/components/uploader";
 import MultiUploader from "@/components/uploader/MultiUploader";
 import _STRINGS from "@/utils/LocalStrings";
 import { useMutation, useQuery } from "@tanstack/react-query";
-import { useParams } from "next/navigation";
+import { useParams, useRouter } from "next/navigation";
 import React, { useEffect, useState } from "react";
 
 const Authorize = () => {
+  const router = useRouter();
   const params = useParams();
   const { property_id } = params;
   const [nationalImage, setNationalImage] = useState<any>(null);
@@ -32,6 +33,9 @@ const Authorize = () => {
   const { mutate, isPending } = useMutation({ mutationFn: PropertyService.RequestSingleOwnerPropertyAuth });
   const { mutate: editMutate, isPending: editPendin } = useMutation({
     mutationFn: PropertyService.EditRequestSingleOwnerPropertyAuth,
+    onSuccess: () => {
+      router.back();
+    },
   });
 
   const onSubmit = () => {
@@ -49,7 +53,7 @@ const Authorize = () => {
   useEffect(() => {
     if (!!data) {
       setNationalImage(data?.nc_image);
-      setImages(data?.docs);
+      setImages(data?.docs || []);
     }
   }, [data]);
 
@@ -75,7 +79,7 @@ const Authorize = () => {
           // isLogo
           link="/attachments?type=OWNER_PROPERTY_DOCS"
           key={`uploader`}
-          containerClass={"my-3  w-full flex items-center justify-center "}
+          containerClass={"my-3  w-full flex items-start justify-start "}
           item={nationalImage}
           onSelect={(file) => {
             setNationalImage(file);
@@ -115,7 +119,7 @@ const Authorize = () => {
         </div>
 
         {data?.status?.id != 100 ? (
-          <MultiUploader
+          <MainUploader
             innerClasses={{ sizeClass: " w-24 aspect-square h-24", secontParentClass: "w-24" }}
             title={"افزودن عکس"}
             link="/attachments?type=OWNER_PROPERTY_DOCS"
@@ -126,16 +130,12 @@ const Authorize = () => {
               setImages((e) => [...e, file]);
             }}
             onDelete={() => {}}
-            setTotalLength={setTotalLength}
-            setUploadedImages={setUploadedImages}
-            setUploaderLoading={setUploaderLoading}
           />
         ) : (
           <></>
         )}
         {images?.map((e) => (
-          <MultiUploader
-            activeFull
+          <MainUploader
             innerClasses={{ sizeClass: " w-24 aspect-square h-24", secontParentClass: "w-24" }}
             title={"افزودن عکس"}
             link="/attachments?type=OWNER_PROPERTY_DOCS"

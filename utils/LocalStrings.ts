@@ -352,6 +352,9 @@ const _STRINGS = {
   ENTER_HOUR: "ساعت ورود",
   END_HOUR: "ساعت خروج",
   IS_RESERVED: "رزرو شده",
+  ANSWER_MESSAGE: "پاسخ به پیام",
+  WRITE_MESSAGE_TEXT: "متن پیام را بنویسید",
+  TICKET_CLOSED: "تیکت بسته شده است",
 };
 
 export default _STRINGS;

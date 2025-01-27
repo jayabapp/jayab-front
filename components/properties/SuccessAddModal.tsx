@@ -24,7 +24,7 @@ const SuccessAddModal = ({
           <p className="text-primary-700 font-bold ">{_STRINGS.UR_PROP_REGISTERED}</p>
           <p className="text-sm text-center">{_STRINGS.UR_PROP_REGISTERED_DESC}</p>
         </div>
-        <div className="w-full flex items-center justify-center ggap-4">
+        <div className="w-full flex items-center justify-center gap-4">
           {" "}
           <Button containerClass="w-full" width="w-full" title={_STRINGS.PAY} onClick={callBack} />
           <Button

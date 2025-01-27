@@ -136,6 +136,29 @@ const ProfileDropdown = ({ notifBadge }: { notifBadge?: number | string }) => {
               ) : (
                 <></>
               )}
+
+              {!!userInfo?.advisor_id ? (
+                <MenuItem key={`myAdds`}>
+                  <Link className="" prefetch={false} href={`/profile/advisor/subscription`}>
+                    <div
+                      className={` relative hover:bg-primary-700/80 dark:hover:bg-zinc-600  cursor-pointer hover:text-white text-gray-600 dark:text-gray-300 group flex w-full gap-2 items-center rounded-md px-2 py-2 text-sm font-light no-underline`}
+                    >
+                      <div className="relative">
+                        {" "}
+                        <img
+                          src={`/assets/icons/header/header_my_sub.svg`}
+                          className={`w-6 h-6 aspect-square ${
+                            asPath.includes("/profile/advisor/subscription") ? " " : ""
+                          } dark:invert `}
+                        />
+                      </div>
+                      <p> {"بخش مشاور"}</p>
+                    </div>
+                  </Link>
+                </MenuItem>
+              ) : (
+                <></>
+              )}
               {profileDropDownItems.map((e) => (
                 <MenuItem key={e.id}>
                   <Link prefetch={false} href={e?.route}>

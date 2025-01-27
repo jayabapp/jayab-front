@@ -124,7 +124,11 @@ function ProductImagesContainer({
               key={index}
               className={` relative over   p-0.5 rounded-20   w-full  first:mr-0 last:ml-0  flex flex-col items-center justify-center  cursor-pointer select-none aspect-square`}
             >
-              {index == 3 ? <div className="absolute font-extrabold text-3xl  z-10 text-zinc-900 "> ...</div> : null}
+              {index == 3 ? (
+                <div className="absolute font-extrabold text-xl  z-10  text-white ">
+                  {addImages?.slice(3)?.length} +
+                </div>
+              ) : null}
               {/* {e?.type == 1 ? ( */}
               {true ? (
                 <div className={` rounded-10 overflow-clip  ${index == 3 ? " blur-sm " : " "}`}>

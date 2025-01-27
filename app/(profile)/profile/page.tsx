@@ -44,13 +44,14 @@ const Profile = () => {
 
   const logoutProcess = () => {
     localStorage.removeItem("access_token");
+    localStorage.removeItem("socket_token");
 
     localStorage.removeItem("isLogin");
     localStorage.removeItem("is_registered");
 
     useAuthStore.setState({ isLogin: false });
     useStoreInit.setState({ userInfo: null });
-    router.push("/auth");
+    router.push("/");
   };
 
   const _logout = () => {
@@ -113,7 +114,7 @@ const Profile = () => {
                   id: 1214,
                   imgSrc: "/assets/icons/header/header_my_sub.svg",
                   route: "/profile//advisor/subscription",
-                  title: "مشاور ویژه",
+                  title: "بخش مشاور",
                 }}
                 key={`profileItemSub`}
               />

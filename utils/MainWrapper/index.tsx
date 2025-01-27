@@ -1,7 +1,7 @@
 "use client";
 
 import { usePathname, useRouter, useSelectedLayoutSegment } from "next/navigation";
-import { ReactNode, useEffect, useState } from "react";
+import { ReactNode, use, useEffect, useState } from "react";
 import { Toaster } from "sonner";
 import { isMobile } from "react-device-detect";
 import { Suspense } from "react";
@@ -28,6 +28,7 @@ import MobileFooter from "../../components/Footer/MobileFooter";
 
 import FingerprintJS from "@fingerprintjs/fingerprintjs";
 import LoginModal from "@/components/Modal/LoginModal";
+import FCM from "../FCM";
 function FallBack() {
   return <></>;
 }
@@ -132,6 +133,10 @@ const MainWrapper = ({ children }: mainWrapper) => {
       useStoreInit.setState({ userInfo: profile });
     }
   }, [profile]);
+
+  useEffect(() => {
+    if (isLogin) FCM.init();
+  }, [isLogin]);
 
   SocketIO();
 

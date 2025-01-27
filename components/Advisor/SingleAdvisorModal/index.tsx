@@ -60,7 +60,19 @@ const SingleAdvisorModal = ({
       {
         onSuccess: () => {
           setRefresher((e) => !e);
-          window.open(`${type}:${data?.user?.mobile_number}`, "_blank", "noopener,noreferrer");
+          /* -------------------------------------------------------------------------- */
+          /*                           CREATE LINK AND OPEN IT                          */
+          /* -------------------------------------------------------------------------- */
+          var linkElement = document.createElement("a");
+          linkElement.id = "link";
+          window.document.body.appendChild(linkElement);
+          var menuAddress = `${type}:${data?.user?.mobile_number}`;
+
+          var link = document.getElementById("link");
+          if (!!link) {
+            link.setAttribute("href", menuAddress);
+            link.click();
+          }
         },
       }
     );

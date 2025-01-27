@@ -8,17 +8,17 @@ export class UserService {
   static NOTIFS_BADGE_CACHEKEY = "NOTIFS_BADGE";
 
   static async getUserSubscriptions(dto: {
-    form?: string | number | Date;
+    from?: string | number | Date;
     to?: string | number | Date;
     cursor: string | number;
   }) {
     try {
       const result = await apiCall<
-        { form?: string | number | Date; to?: string | number | Date; cursor: string | number },
+        { from?: string | number | Date; to?: string | number | Date; cursor: string | number },
         { data: SubPaymentsDto[] }
       >("GET", apiRoutes.USER_SUBSCRIPTIONS, {
         cursor: dto.cursor,
-        form: dto.form,
+        from: dto.from,
         to: dto.to,
       });
       return result;

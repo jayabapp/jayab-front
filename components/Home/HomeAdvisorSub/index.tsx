@@ -23,7 +23,7 @@ const HomeAdvisorSub = () => {
     gcTime: 0,
   });
   const isActive = moment().isBefore(advisorProfile?.subscription_expired_at);
-  const remainingDays = moment().diff(advisorProfile?.subscription_expired_at, "days");
+  const remainingDays = moment(advisorProfile?.subscription_expired_at).diff(moment(), "days");
   return (
     <div
       className="w-full items-center justify-center pt-2 pb-4 flex flex-col md:flex-row gap-2  

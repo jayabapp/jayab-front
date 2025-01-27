@@ -91,7 +91,7 @@ const Profile = ({}) => {
               id: 24124,
               imgSrc: "/assets/icons/header/header_my_sub.svg",
               route: "/profile/advisor/subscription",
-              title: "مشاور ویژه",
+              title: "بخش مشاور",
             }}
             key={`profileIt124emowner`}
           />

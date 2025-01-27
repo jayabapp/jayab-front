@@ -48,10 +48,10 @@ const SingleOwnerPropertyIntroduction = ({ data }: { data: SingleOwnerPropertyDt
         <p className="text-xs">{_STRINGS.SUB_STATUS} :</p>
 
         <div className=" flex items-center  gap-2">
-          <div className=" rounded-full text-xxs text-primary-700 bg-primary-400 flex  items-center justify-center h-5 w-20 ">
-            {data?.remaining_days || 0} روز اعتبار
+          <div className=" rounded-full text-sm text-primary-700 bg-primary-400 flex  items-center justify-center h-7 w-24 ">
+            {data?.remaining_days ? `${data?.remaining_days} روز اعتبار` : `اعتبار ندارد`}
           </div>
-          <div className=" rounded-full text-xxs text-white bg-primary-700 flex  items-center justify-center h-5 w-20 ">
+          <div className=" rounded-full text-sm text-white bg-primary-700 flex  items-center justify-center h-7 w-24 ">
             {_STRINGS.EXTEND_SUBS}
           </div>
         </div>

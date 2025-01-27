@@ -12,6 +12,7 @@ import { isEmpty } from "lodash";
 import React, { use, useEffect, useState } from "react";
 import SinglePropSharePopItem from "./SinglePropSharePopItem";
 import Button from "@/components/shared/Button/Button";
+import { isMobile } from "react-device-detect";
 
 const SinglePropSharePop = ({
   data,
@@ -23,6 +24,16 @@ const SinglePropSharePop = ({
   onHide: () => void | null;
 }) => {
   const [selected, setSelected] = useState<any[]>([]);
+
+  const onShare = async (url: string, title: string) => {
+    const text = "";
+    const shareDetails = { url, title, text };
+    if (navigator.share) {
+      try {
+        await navigator.share(shareDetails).then(() => console.log("Your content was shared"));
+      } catch (error) {}
+    }
+  };
 
   const { data: shareData, refetch } = useQuery({
     queryKey: [PropertyService.SINGLE_PROPERTY_ADVISOR_SHARE_CACHEKEY, data?.id, selected],
@@ -44,7 +55,7 @@ const SinglePropSharePop = ({
 
   useEffect(() => {
     if (!!shareData) {
-      window.open(shareData, "_blank", "noopener,noreferrer");
+      onShare(shareData, data?.title);
     }
   }, [shareData]);
 
