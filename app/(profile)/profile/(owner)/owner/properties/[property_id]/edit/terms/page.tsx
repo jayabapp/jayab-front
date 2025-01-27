@@ -161,7 +161,7 @@ const CreatePropertyTerms = () => {
         {propertyTypes?.["GUEST_TYPE"]?.map((e) => (
           <Checkbox
             key={`KITCHEN${e?.id}`}
-            rounded="rounded-full"
+            rounded="rounded-md"
             onSelect={() => {
               onChangeMulty(e?.id, "guest_type");
             }}
@@ -239,9 +239,9 @@ const CreatePropertyTerms = () => {
 
       <div className="flex w-full items-center gap-4 ">
         <div className="flex items-center gap-2 ">
-          <p className="shrink-0">{_STRINGS.FROM} :</p>
+          <p className="shrink-0">{_STRINGS.ENTER_HOUR} :</p>
           <FormInput
-            item={{ keyboard: "number", maxLength: 2, direction: "ltr", inputClass: "text-start" }}
+            item={{}}
             value={values?.check_in_hour || ""}
             onChangeText={(e) => {
               onChange(e, "check_in_hour");
@@ -249,9 +249,9 @@ const CreatePropertyTerms = () => {
           />
         </div>
         <div className="flex items-center gap-2 ">
-          <p className="shrink-0">{_STRINGS.TO} :</p>
+          <p className="shrink-0">{_STRINGS.END_HOUR} :</p>
           <FormInput
-            item={{ keyboard: "number", maxLength: 2, direction: "ltr", inputClass: "text-start" }}
+            item={{}}
             value={values?.check_out_hour || ""}
             onChangeText={(e) => {
               onChange(e, "check_out_hour");
@@ -311,9 +311,7 @@ const CreatePropertyTerms = () => {
 
       <SuccessAddModal
         show={showSucces}
-        onHIde={() => {
-          setShowSucces(false);
-        }}
+        onHIde={() => {}}
         callBack={() => {
           router.push(`/profile/owner/properties/${property_id}/subscription`);
         }}

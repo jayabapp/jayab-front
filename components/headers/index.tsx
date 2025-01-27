@@ -152,7 +152,7 @@ const Header = ({ scroll }: { scroll?: number }) => {
       <div
         id="headerContainer"
         className={`
-      ${headerMobileBlackList.includes(pathname) && " hidden md:block"}
+      ${headerMobileBlackList.find((e) => pathname.includes(e)) && " hidden md:block"}
 
 transition-all  ease-in-out duration-1000 header-content-container app-size custome-shadow-card  backdrop-blur-md  bg-white dark:bg-dark-900   pt-2 pb-2   border-b dark:border-zinc-500 border-gray-100 `}
       >
@@ -160,16 +160,23 @@ transition-all  ease-in-out duration-1000 header-content-container app-size cust
         <div className="flex justify-between  items-center  xl:gap-[20%]  py-1.5  px-2 md:px-10  2xl:px-[9%]  ">
           <div className=" lg:hidden flex w-full  ">
             {pathname == "/" ? (
-              <div className="w-full flex items-center  bg-primary-100  p-2  rounded-full justify-between px-2 gap-2">
+              <div className="w-full flex items-center  bg-primary-100  py-1  rounded-full justify-between px-2 gap-2">
                 <div className="flex items-center gap-4">
-                  <Link prefetch={false} href={"/"} className="w-20  !outline-none ">
-                    <img
-                      src="/assets/icons/logo/mobile_header_logo.svg"
-                      alt="jayab"
-                      className="w-12 h-auto object-contain !outline-none cursor-pointer "
-                      // onClick={() => pusher("/")}
-                    />
-                  </Link>
+                  <div className=" flex items-center justify-center gap-1">
+                    {" "}
+                    <Link prefetch={false} href={"/"} className="w-12  !outline-none ">
+                      <img
+                        src="/assets/icons/logo/mobile_header_logo.svg"
+                        alt="jayab"
+                        className="w-12 h-auto object-contain !outline-none cursor-pointer "
+                        // onClick={() => pusher("/")}
+                      />
+                    </Link>
+                    <div className="flex flex-col gap-1">
+                      <p className="font-bold text-lg  text-primary-700 ">{_STRINGS.LOGO}</p>
+                      <p className="text-xs opacity-70">{userInfo?.mobile_number}</p>
+                    </div>
+                  </div>
                 </div>
 
                 {isLogin ? (
@@ -180,10 +187,10 @@ transition-all  ease-in-out duration-1000 header-content-container app-size cust
                         <AbsoluteBadge count={chaNotifBadge?.unread_count || 0} />
                         <img src="/assets/icons/header/blue_chat.svg" className="w-6 h-6 aspect-square" />
                       </Link>
-                      <div className="relative">
+                      <Link prefetch={false} href={"/notifications"} className="relative">
                         <AbsoluteBadge count={notifBadge || 0} />
                         <img src="/assets/icons/header/blue_bell.svg" className="w-6 h-6 aspect-square" />
-                      </div>
+                      </Link>
                     </div>
                   </>
                 ) : (
@@ -228,6 +235,13 @@ transition-all  ease-in-out duration-1000 header-content-container app-size cust
                         onClick={registerAdvisor}
                         title={_STRINGS.REGISTER_ADVISOR}
                       />
+                    ) : pathname.includes("/profile") ? (
+                      <Link href={"/"}>
+                        <img
+                          src="/assets/icons/navbar/home_nav.svg"
+                          className="transition-all grayscale opacity-50  hover:opacity-100 hover:grayscale-0"
+                        />
+                      </Link>
                     ) : (
                       <PopSearchbox
                         justIcon

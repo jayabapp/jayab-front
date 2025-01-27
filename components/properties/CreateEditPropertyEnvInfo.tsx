@@ -60,7 +60,7 @@ const CreateEditPropertyEnvInfo = ({
       <MultiLineFormInput
         item={{
           title: _STRINGS.ACCESS_ROUTE_DESC,
-          isMandatory: true,
+          // isMandatory: true,
           containerClass: "w-full col-span-full",
 
           rows: 3,

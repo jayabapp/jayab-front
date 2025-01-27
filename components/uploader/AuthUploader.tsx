@@ -172,7 +172,7 @@ const AuthUploader = ({
             }}
             className="cursor-pointer bg-neutral-100 flex flex-col items-center  gap-1      relative transition-all duration-150 ease-in-out  hover:border-primary-700  justify-center rounded-10  aspect-square  h-24 w-24"
           >
-            <img src="/assets/images/uploader/uploader_placeholder.png" />
+            <img className="w-8 opacity-70" src="/assets/images/uploader/uploader_placeholder.png" />
 
             {title && <p className=" text-sm  opacity-70 ">{title}</p>}
             {loading ? (

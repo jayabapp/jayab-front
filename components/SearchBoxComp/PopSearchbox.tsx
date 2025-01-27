@@ -95,14 +95,14 @@ const PopSearchbox = ({
       setLoading(true);
       setTimeout(() => {
         setLoading(false);
-      }, 1400);
+      }, 1000);
     }
   }, [isTyping]);
 
   const checkTyping = useCallback(
     debounce(() => {
       setisTyping(false);
-    }, 1400),
+    }, 1000),
     []
   );
   useEffect(() => {

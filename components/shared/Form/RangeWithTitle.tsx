@@ -24,7 +24,7 @@ const RangeWithTitle = ({
   return (
     <Slider
       reverse={item?.reverse}
-      marks={marks}
+      // marks={marks}
       startPoint={min || 0}
       max={max}
       value={value}

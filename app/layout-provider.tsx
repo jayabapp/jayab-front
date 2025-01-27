@@ -11,7 +11,7 @@ interface Layout {
 }
 
 const client = new QueryClient({
-  defaultOptions: { queries: { staleTime: 100000, refetchOnWindowFocus: false, retry: false } },
+  defaultOptions: { queries: { gcTime: 0, staleTime: 0, refetchOnWindowFocus: false, retry: false } },
 });
 
 const LayoutProvider = (props: Layout) => {

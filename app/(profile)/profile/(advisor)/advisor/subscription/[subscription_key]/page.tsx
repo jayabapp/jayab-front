@@ -7,6 +7,7 @@ import Button from "@/components/shared/Button/Button";
 import FixedBottomContainer from "@/components/shared/FixedBottomContainer";
 import _STRINGS from "@/utils/LocalStrings";
 import { useMutation } from "@tanstack/react-query";
+import { isEmpty } from "lodash";
 import { useParams, useRouter } from "next/navigation";
 import React, { useState } from "react";
 
@@ -47,14 +48,14 @@ const CreateYourAdvisor = () => {
     mutate({
       address: values?.address || "",
       // area_code: values?.area_code,
-      cityIds: values?.cityIds?.map((e) => e?.id) || [],
+      cityIds: !isEmpty(values?.cityIds) ? values?.cityIds?.map((e) => e?.id) : undefined,
       full_name: values?.full_name,
       is_special: subscription_key == "is-especial" ? true : false,
-      national_code: values?.national_code,
-      tel: values?.tel,
-      document_image_id: values?.document_image?.id,
-      national_card_image_id: values?.national_card_image?.id,
-      profile_image_id: values?.profile_image?.id,
+      national_code: values?.national_code || undefined,
+      tel: values?.tel || undefined,
+      document_image_id: values?.document_image?.id || undefined,
+      national_card_image_id: values?.national_card_image?.id || undefined,
+      profile_image_id: values?.profile_image?.id || undefined,
     });
   };
 

@@ -13,16 +13,16 @@ const AddCardPricePart = ({
   return (
     <div className={`${containerClass || " flex flex-col  w-full gap-0 md:gap-2"} `}>
       {!!data?.discounted_price ? (
-        <p className=" text-xs md:texxt-sm  line-through  opacity-65">
+        <p className=" text-sm md:texxt-base  line-through  opacity-65">
           {numberWithCommas(data?.price)} <span>{_STRINGS.TOMAN}</span>
         </p>
       ) : (
         <></>
       )}
 
-      <p className="font-bold text-sm">
+      <p className="font-bold text-base">
         {numberWithCommas(!!data?.discounted_price ? data?.discounted_price : data?.price)}{" "}
-        <span className="text-xxs">{_STRINGS.TOMAN}</span>
+        <span className="text-sm">{_STRINGS.TOMAN}</span>
       </p>
     </div>
   );

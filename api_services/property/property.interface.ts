@@ -183,9 +183,9 @@ export interface PricingPropertySendDto {
 }
 
 export interface AssistantSendDto {
-  assistant_full_name: string | number | null;
-  assistant_mobile: string | number | null;
-  show_mobile_type: string | number | null;
+  assistant_full_name?: string | number | null;
+  assistant_mobile?: string | number | null;
+  show_mobile_type?: string | number | null;
 }
 
 export interface PropertyTermsSendDto {
@@ -250,7 +250,7 @@ export interface SinglePropDto {
   images: ImageDto[];
   std_capacity: number;
   max_capacity: number;
-  favorites_count: number;
+  favorite_count: number;
   total_bedrooms: number;
   bedrooms: Bedrooms;
   has_pool: boolean;

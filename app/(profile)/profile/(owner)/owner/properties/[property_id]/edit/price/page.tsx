@@ -151,6 +151,7 @@ const CreatePropertyPricing = () => {
             containerClass: "w-full",
             keyboard: "number",
             convertToText: true,
+            direction: "ltr",
           }}
           value={values?.normal || ""}
           onChangeText={(e) => {
@@ -165,6 +166,7 @@ const CreatePropertyPricing = () => {
             containerClass: "w-full",
             keyboard: "number",
             convertToText: true,
+            direction: "ltr",
           }}
           value={values?.wednesday || ""}
           onChangeText={(e) => {
@@ -179,6 +181,7 @@ const CreatePropertyPricing = () => {
             containerClass: "w-full",
             keyboard: "number",
             convertToText: true,
+            direction: "ltr",
           }}
           value={values?.thursday || ""}
           onChangeText={(e) => {
@@ -193,6 +196,7 @@ const CreatePropertyPricing = () => {
             containerClass: "w-full",
             keyboard: "number",
             convertToText: true,
+            direction: "ltr",
           }}
           value={values?.friday || ""}
           onChangeText={(e) => {
@@ -207,6 +211,7 @@ const CreatePropertyPricing = () => {
             containerClass: "w-full",
             keyboard: "number",
             convertToText: true,
+            direction: "ltr",
           }}
           value={values?.peak || ""}
           onChangeText={(e) => {
@@ -221,6 +226,7 @@ const CreatePropertyPricing = () => {
             containerClass: "w-full",
             keyboard: "number",
             convertToText: true,
+            direction: "ltr",
           }}
           value={values?.cleaning || ""}
           onChangeText={(e) => {
@@ -235,6 +241,7 @@ const CreatePropertyPricing = () => {
             containerClass: "w-full",
             keyboard: "number",
             convertToText: true,
+            direction: "ltr",
           }}
           value={values?.additional_person || ""}
           onChangeText={(e) => {

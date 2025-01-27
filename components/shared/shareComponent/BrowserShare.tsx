@@ -22,7 +22,7 @@ const ShareLink = ({
     setUrl(url);
   }, []);
   const onShare = async () => {
-    const title = "آلفا آبجکتس";
+    const title = "جایاب";
     const text = "";
     if (isMobile) {
       const shareDetails = { url, title, text };

@@ -72,6 +72,12 @@ const CreatePropertyImages = () => {
       });
     }
   };
+
+  useEffect(() => {
+    if (!primaryImageId && !isEmpty(images)) {
+      setPrimaryImageId(images?.[0]?.id);
+    }
+  }, [images]);
   return (
     <div
       id="homeParent"
@@ -85,7 +91,7 @@ const CreatePropertyImages = () => {
       <div className=" flex items-start w-full flex-wrap gap-4">
         <p className="text-xs text-primary-150">
           {" "}
-          {!isEmpty(images) ? "*عکس اصلی خود را با ضربه زدن روی عکس انتخاب کنید." : ""}{" "}
+          {!isEmpty(images) ? "*عکس اصلی خود را با ضربه زدن روی عکس مورد نظر انتخاب کنید." : ""}{" "}
         </p>
         <div className=" w-full  min-h-8">
           {!!totalLength && !!uploaderLoading && totalLength > 1 ? (

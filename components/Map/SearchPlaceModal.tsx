@@ -84,7 +84,7 @@ const SearchPlaceModal = ({
     setShow(false);
   };
   const locationClickFunc = (e: SearchedLOCType) => {
-    setJumpTo({ lat: e?.location?.x, lng: e?.location?.y });
+    setJumpTo({ lat: e?.location?.y, lng: e?.location?.x });
     // setSelectedAddress(e?.address);
     closeFunc();
   };

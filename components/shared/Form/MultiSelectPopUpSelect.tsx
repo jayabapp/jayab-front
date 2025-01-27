@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import Selecti from "./MultiSelectSelecti";
 import _STRINGS from "../../../utils/LocalStrings";
 import PopUpDown from "@/components/PopUpDown";
+import Button from "../Button/Button";
 
 export interface ItemType {
   id: number;
@@ -86,6 +87,18 @@ const MultyPopUpSelect = ({
             />
           ))}
         </div>
+        {!item?.disable ? (
+          <Button
+            onClick={() => {
+              setShow(false);
+            }}
+            title={_STRINGS.SUBMIT}
+            containerClass="w-full flex items-center justify-center px-[10%] pb-6 "
+            width="w-full "
+          />
+        ) : (
+          <></>
+        )}
       </PopUpDown>
     </div>
   );

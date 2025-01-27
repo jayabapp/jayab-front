@@ -140,7 +140,7 @@ const CreateEditSpecialAdvisor = ({
           onSelect={(e) => {
             onChangeMulty(e, "cityIds");
           }}
-          value={values?.cityIds}
+          value={values?.cityIds || []}
           title={_STRINGS.SELECT_ACTIVE_CITIES}
           item={{ list: cities || [], full_item: true }}
         />
@@ -231,7 +231,6 @@ const CreateEditSpecialAdvisor = ({
       <FormInput
         item={{
           title: _STRINGS.REFRAL_CODE,
-          isMandatory: true,
           containerClass: "w-full  md:w-1/2",
           direction: "ltr",
           inputClass: "ltr text-left",

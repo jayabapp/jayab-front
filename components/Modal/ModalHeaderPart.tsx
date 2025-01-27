@@ -1,15 +1,17 @@
 import { ProvienceTypesDto } from "@/api_services/property/property.interface";
 import _STRINGS from "@/utils/LocalStrings";
-import React from "react";
+import React, { ReactNode } from "react";
 
 const ModalHeaderPart = ({
   onHide,
   title,
   hideArrow,
+  children,
 }: {
   onHide: () => void | null;
   title: string;
   hideArrow?: boolean;
+  children?: ReactNode;
 }) => {
   return (
     <div className="app-text flex     border-b items-center justify-center md:justify-between py-3 px-4 sticky top-0 bg-white dark:bg-zinc-800 z-10">
@@ -33,6 +35,7 @@ const ModalHeaderPart = ({
         alt=""
         onClick={onHide}
       />
+      {children}
     </div>
   );
 };

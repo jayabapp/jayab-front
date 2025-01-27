@@ -17,11 +17,11 @@ type popUpsType = {
 
 const PopUpDown = ({ item, visible, setVisible, children, containerClass }: popUpsType) => {
   return (
-    <div className={item?.containerClass + " "}>
+    <div className={item?.containerClass + "   "}>
       <Sheet
         isOpen={visible}
         onClose={() => setVisible(false)}
-        className={`${containerClass}`}
+        className={`${containerClass}  !fixed bg-transparent bottom-0 `}
         detent={item?.popHieghtType || "content-height"}
       >
         <Sheet.Backdrop
@@ -29,7 +29,7 @@ const PopUpDown = ({ item, visible, setVisible, children, containerClass }: popU
             setVisible(false);
           }}
         ></Sheet.Backdrop>
-        <Sheet.Container className=" pop-container ">
+        <Sheet.Container className=" pop-container !fixed bg-transparent bottom-0 ">
           <Sheet.Header className="pb-0 px-4 pt-6 relative">
             <div className=" w-8 h-1 absolute left-0 mx-auto top-2 right-0 rounded-full bg-gray-300 "></div>
             {item?.title ? (
@@ -49,7 +49,10 @@ const PopUpDown = ({ item, visible, setVisible, children, containerClass }: popU
               <></>
             )}
           </Sheet.Header>
-          <Sheet.Content className=" overflow-y-scroll">{children}</Sheet.Content>
+          <Sheet.Content className=" overflow-y-scroll bottom-0">
+            {" "}
+            <div className="h-full overflow-y-scroll">{children}</div>
+          </Sheet.Content>
         </Sheet.Container>
       </Sheet>
     </div>

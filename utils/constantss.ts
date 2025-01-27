@@ -62,6 +62,7 @@ export const mobileFooterBlackList = [
   "/profile/owner/properties",
   "/chat/",
   "/profile/advisor",
+  "/profile/",
 ];
 
 export const createPropertySteps = (id?: null | number) => [
@@ -129,6 +130,7 @@ export const SORT_TYPES = [
 ];
 export const allRoutes: { [key: string]: string } = {
   questions: "پرسش ها",
+  notifications: "اعلان ها",
   rooms: "آگهی ها",
   "my-payments": "پرداخت های من",
   advisors: "مشاوران",

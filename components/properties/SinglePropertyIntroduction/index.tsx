@@ -67,7 +67,7 @@ const SinglePropertyIntroduction = ({ data }: { data: SinglePropDto }) => {
       <div className="w-full flex items-start md:items-center justify-between gap-2">
         {" "}
         <p className=" font-medium text-lg w-3/5 md:w-full md:text-2xl ">{data?.title}</p>
-        <AuthorizationStatus isAuthorized={data?.is_authorized} />
+        {!!data?.is_authorized ? <AuthorizationStatus isAuthorized={data?.is_authorized} /> : <></>}
       </div>
       <div className="flex items-center gap-4">
         <div className="bg-primary-700 rounded-md text-base  px-2 py-1 text-white flex items-center justify-center">
@@ -78,7 +78,7 @@ const SinglePropertyIntroduction = ({ data }: { data: SinglePropDto }) => {
         </div>
         <div className="flex items-center gap-1">
           <FavButton data={data} />
-          <p className="text-base  opacity-60   ">{data?.favorites_count}</p>
+          <p className="text-base opacity-70   ">{data?.favorite_count}</p>
         </div>
         <ShareLink />
       </div>{" "}

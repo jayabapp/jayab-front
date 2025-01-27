@@ -23,6 +23,7 @@ import SsrPartFilter from "@/components/Filters/SsrPartFilter";
 import CityModal from "@/components/CityModal";
 import FilterPageCitiesTitle from "@/components/CityModal/FilterPageCitiesTitle";
 import SsrFilterPageContents from "./SsrFilterPageContents";
+import ModalHeaderPart from "@/components/Modal/ModalHeaderPart";
 
 interface OtpQuery extends ParsedUrlQuery {
   id: string;
@@ -99,6 +100,20 @@ const SsrFilterPage = ({ landings, firstData }: { firstData: { data: any[] }; la
     setShowCiyModal(true);
   };
 
+  /* -------------------------------------------------------------------------- */
+  /*                               FILTER REMOVAL                               */
+  /* -------------------------------------------------------------------------- */
+
+  const removeExtraFilters = () => {
+    const body = {
+      sort_type: queries?.sort_type,
+      cities: queries.cities,
+      q: queries?.q,
+    };
+
+    setFilterModalShow(false);
+    router.replace(`${pathname}?${queryBuilder(body)}`);
+  };
   return (
     <div className="app-container !pt-32  lg:!pt-28  md: z-2 ">
       <div className=" hidden  z-1 w-full md:flex flex-col md:flex-row items-center justify-between ">
@@ -109,15 +124,17 @@ const SsrFilterPage = ({ landings, firstData }: { firstData: { data: any[] }; la
         <FiltersSelectedFiltersShowcase query={queries} propertyTypes={propertyTypes || {}} />
       </div>
 
-      <div className="flex fixed border-b  pt-1 md:hidden h-10 right-0  items-center justify-center   z-10 md:z-1  top-[4rem] md:top-auto left-0 md:left-auto bg-white md:bg-transparent md:relative flex-col w-full md:gap-2  ">
+      <div className="flex fixed border-b  pt-1 md:hidden h-12 right-0  items-center justify-center   z-10 md:z-1  top-[4rem] md:top-auto left-0 md:left-auto bg-white md:bg-transparent md:relative flex-col w-full md:gap-2  ">
         {" "}
         <div className=" flex  order-1  md:hidden  relative w-full">
-          <div className="grid grid-cols-10 z-1  relative  w-full items-center gap-0 justify-center  ">
-            <img
+          <div className="grid grid-cols-12 z-1  pr-2  relative  w-full items-center gap-1 justify-between  ">
+            <div
               onClick={() => setFilterModalShow(true)}
-              src="/assets/icons/property/filter_icon.svg"
-              className=" col-span-1  cursor-pointer w-12 h-5 shrink-0"
-            />
+              className=" col-span-3 flex   w-fit px-3  h-[26px]  rounded-full   bg-primary-700 items-center gap-2 "
+            >
+              <img src="/assets/icons/property/white_filter_icon.svg" className="   cursor-pointer w-3 h-3 shrink-0" />
+              <p className="text-white  text-xs">{_STRINGS.FILTERS}</p>
+            </div>
             <div className=" !col-span-9 ">
               {" "}
               <FiltersSelectedFiltersShowcase query={queries} propertyTypes={propertyTypes || {}} />
@@ -185,27 +202,20 @@ const SsrFilterPage = ({ landings, firstData }: { firstData: { data: any[] }; la
         }}
       >
         {/* HEADER */}
-        <div className="flex sticky  pb-4 pt-4   w-full z-[60] bg-white dark:bg-zinc-600 justify-between items-center    top-0  border-b border-b-neutral-300 dark:border-b-zinc-600 ">
-          <img
-            src="/assets/icons/shared/close.svg"
-            width={20}
-            height={20}
-            className={"dark:invert mr-4"}
-            onClick={() => {
-              setFilters(defaultMobileFilters);
-              setFilterModalShow(false);
-            }}
-          />
-        </div>
-        <div>
-          <Divider />
-        </div>
+        <ModalHeaderPart
+          title={_STRINGS.FILTERS}
+          onHide={() => {
+            setFilters(defaultMobileFilters);
+            setFilterModalShow(false);
+          }}
+        />
+
         {/* BODY */}
         <div className="w-[90%] mx-auto">
           <div className=" w-full  pt-4 pb-8  ">
             <FiltersPart propertyTypes={propertyTypes} filters={filters} setFilters={setFilters} queries={queries} />
           </div>
-          <div className=" w-full  pb-16  ">
+          <div className=" w-full   pb-6 fixed bottom-0 right-0 bg-white z-1 border-t  ">
             {" "}
             <Button
               title={_STRINGS?.DO_THE_FILTERING}

@@ -10,6 +10,7 @@ import numberWithCommas from "@/helpers/numberWithCommas";
 import { simpleChartFakeData } from "@/utils/faker";
 import _STRINGS from "@/utils/LocalStrings";
 import { useMutation, useQuery } from "@tanstack/react-query";
+import { isEmpty } from "lodash";
 import { useParams, useRouter } from "next/navigation";
 import React, { useEffect, useState } from "react";
 
@@ -93,16 +94,24 @@ const Subscription = () => {
       id="homeParent"
       className="profile-container   items-center   transition-all duration-500 ease-in-out flex flex-col gap-6 "
     >
-      <p className=" font-bold  w-full text-start">{_STRINGS.VIEW_STATS}</p>
-      <div className="w-full h-96 relative ">
-        {statsLoading ? (
-          <LottieLoading />
-        ) : (
-          <SimpleBarChart
-            data={statsData?.statistics?.map((e) => ({ date: e?.date, value: e?.view_count, name: e?.date }))}
-          />
-        )}
-      </div>
+      {statsLoading ? (
+        <>
+          <p className=" font-bold  w-full text-start">{_STRINGS.VIEW_STATS}</p>
+          <div className="w-full h-96 relative ">
+            <LottieLoading />{" "}
+          </div>
+        </>
+      ) : !isEmpty(statsData?.statistics) ? (
+        <>
+          <div className="w-full h-96 relative ">
+            <SimpleBarChart
+              data={statsData?.statistics?.map((e) => ({ date: e?.date, value: e?.view_count, name: e?.date }))}
+            />
+          </div>
+        </>
+      ) : (
+        <></>
+      )}
 
       <div className=" grid grid-cols-1 md:grid-cols-2  w-full gap-4">
         {subscriptionPlans?.list?.map((e) => (

@@ -10,7 +10,7 @@ const SinglePropertycallender = ({ data }: { data: any }) => {
   /* -------------------------------------------------------------------------- */
   /*                             SELECTED DATE STATE                            */
   /* -------------------------------------------------------------------------- */
-  const [callenderselectedDate, setCallenderSelectedDate] = useState<string>("");
+  const [callenderselectedDate, setCallenderSelectedDate] = useState<string>(moment().format("jYYYY/jMM/jD"));
   /* -------------------------------------------------------------------------- */
   /*                             SELECTED TIME SPAN                             */
   /* -------------------------------------------------------------------------- */

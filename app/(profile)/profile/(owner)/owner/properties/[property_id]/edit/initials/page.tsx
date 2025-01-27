@@ -146,7 +146,7 @@ const CreateProperty = () => {
           containerClass="w-full flex items-center justify-center"
           roundedClass="rounded-full"
           width=" w-[90%] md:w-1/2"
-          title={_STRINGS.CHECK_CREDENTIOALS}
+          title={_STRINGS.ENTER_AND_MOVE_ON}
         />
       </FixedBottomContainer>
     </div>

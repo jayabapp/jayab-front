@@ -37,7 +37,7 @@ const ChangeCunsultatCommission = ({
         disabled={!selectedDateData}
         // loading={isPending}
         containerClass="w-full"
-        width="w-full !py-1.5"
+        width="w-full  !text-base !px-0 md:!px-auto md:!text-base  !py-1.5"
         roundedClass="rounded-full"
         title={_STRINGS.COMMISSION}
       />

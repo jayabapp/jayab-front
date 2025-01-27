@@ -29,6 +29,7 @@ const Day = ({ onSelect, data, selectedDayId, month, year, freeDaysOfMonth, toda
   const isBefore = !!freeDaysOfMonth
     ? false
     : moment(moment(`${year}/${month}/${data?.id}`, "jYYYY/jMM/jD")).isBefore();
+  const isFriday = moment(moment(`${year}/${month}/${data?.id}`, "jYYYY/jMM/jD")).day() == 5;
   const isToday = today?.day == data?.id && today?.month == month && today?.year == year;
   const isSelected = selectedDayId?.day == data?.id && selectedDayId?.month == month && selectedDayId?.year == year;
 
@@ -65,7 +66,7 @@ const Day = ({ onSelect, data, selectedDayId, month, year, freeDaysOfMonth, toda
           <></>
         )}
 
-        <p className="z-1"> {data?.id}</p>
+        <p className={`z-1 ${!!isFriday ? "text-red-700" : ""} `}> {data?.id}</p>
         {!!data?.price ? <DayPricePart data={data} /> : <></>}
       </div>
     </div>

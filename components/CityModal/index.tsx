@@ -70,6 +70,8 @@ const CityModal = ({
             defaultCitiesData?.length > 1 ? ` و ${defaultCitiesData?.length - 1} شهر دیگر` : ``
           }`
         );
+    } else {
+      if (!!setTitle) setTitle("");
     }
   }, [defaultCitiesData]);
 

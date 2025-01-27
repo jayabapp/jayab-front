@@ -3,6 +3,7 @@ import SinglePorpertyAccards from "@/components/properties/SinglePropertyAccards
 import SinglePropertycallender from "@/components/properties/SinglePropertycallender";
 import SinglePropertyIntroduction from "@/components/properties/SinglePropertyIntroduction";
 import SingleMobilePropertyIntroductions from "@/components/properties/SinglePropertyIntroduction/SingleMobilePropertyIntroductions";
+import LottieLoading from "@/components/shared/Lotties/LottieLoading";
 import SimpleAccordion from "@/components/shared/SimpleAccorion";
 import Callender from "@/components/widgets/DatePicker/callender";
 import serverCall from "@/helpers/serverCall";
@@ -34,12 +35,20 @@ const SinglePropertyPage = async ({ params }: { params: Promise<{ room_slug: str
 
   return (
     <div className=" !pb-48 lg:!pb-36   gap-4 justify-start items-start container grid grid-cols-1  md:grid-cols-2  !h-auto   !overflow-x-visible">
-      <ProductImagesContainer productImageId={null} data={properyData} />
-      <SinglePropertyIntroduction data={properyData} />
-      {/* <SingleMobilePropertyIntroductions data={properyData} /> */}
-      <SinglePorpertyAccards data={properyData} />
+      {properyData ? (
+        <>
+          <ProductImagesContainer productImageId={null} data={properyData} />
+          <SinglePropertyIntroduction data={properyData} />
+          {/* <SingleMobilePropertyIntroductions data={properyData} /> */}
+          <SinglePorpertyAccards data={properyData} />
 
-      <SinglePropertycallender data={properyData} />
+          <SinglePropertycallender data={properyData} />
+        </>
+      ) : (
+        <div className=" col-span-full ">
+          <LottieLoading />
+        </div>
+      )}{" "}
     </div>
   );
 };

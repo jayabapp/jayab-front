@@ -103,7 +103,7 @@ const SearchBox = ({
       <div
         className={` rounded-full   overflow-hidden dark:bg-slate-800   pr-4 pl-2 py-2 bg-white  border flex justify-between items-center  ${item?.bg}`}
       >
-        <div className="mr-2">
+        <div className={` md:mr-2  `}>
           <img src="/assets/icons/edit/magnifier.svg" width={30} height={30} />
         </div>{" "}
         <div className="flex items-center w-full">

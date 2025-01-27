@@ -4,7 +4,7 @@ import Notify from "../Toast";
 
 const ShareButton = () => {
   const shareCode = async () => {
-    const title = "آلفا آبجکتس";
+    const title = "جایاب";
     const text = `
      فروشگاه ${title}:
     🔵 code: ${window?.location?.href}

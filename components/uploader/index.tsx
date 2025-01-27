@@ -177,7 +177,7 @@ const MainUploader = ({
               !!innerClasses?.sizeClass ? innerClasses?.sizeClass : "h-24 w-24"
             }  `}
           >
-            <img src="/assets/images/uploader/uploader_placeholder.png" />
+            <img className="w-8 opacity-70" src="/assets/images/uploader/uploader_placeholder.png" />
             {title && <p className=" text-sm  opacity-70 ">{title}</p>}
             {loading ? (
               <div className="w-full h-full absolute top-0 left-0 rounded-20 flex items-center justify-center   backdrop-blur-md">

@@ -51,7 +51,10 @@ const SortMenu = ({ query }: SortMenuType) => {
           <MenuButton className=" h-auto md:h-11  rounded-lg cursor-pointer flex justify-between items-center">
             <div className="  gap-2  h-auto py-1 px-2  rounded-full bg-primary-400  flex items-center justify-center  ">
               {" "}
-              <p>{SORT_TYPES?.find((e) => e?.id == query?.sort_type)?.title}</p>{" "}
+              <p className="  text-xs md:text-base">
+                {" "}
+                {SORT_TYPES?.find((e) => e?.id == query?.sort_type)?.title}
+              </p>{" "}
               <img className="w-3 h-3 aspect-square" src="/assets/icons/shared/chevron.svg" />
             </div>
           </MenuButton>
@@ -66,7 +69,7 @@ const SortMenu = ({ query }: SortMenuType) => {
           leaveTo="transform opacity-0 scale-95"
         >
           <MenuItems className="absolute top-0 md:top-auto left-0 z-20  mt-2 w-40 origin-top-center  rounded-xl bg-white dark:bg-zinc-800 custom-shadow ring-1 ring-black ring-opacity-5 focus:outline-none  overflow-scroll">
-            <div className="flex gap-2 items-center flex-col px-1 py-2 border-b border-gray-275 dark:border-zinc-500 ">
+            <div className="flex gap-2 px-3 items-center flex-col  py-2 border-b border-gray-275 dark:border-zinc-500 ">
               {" "}
               {SORT_TYPES.map((e) => (
                 <MenuItem key={e.id}>

@@ -151,14 +151,18 @@ const CreatePropertyFacility = () => {
           title={"استخر ندارد"}
         />
 
-        <MultyPopUpSelect
-          onSelect={(e) => {
-            onChangeMulty(e, "pool_type");
-          }}
-          value={values?.pool_type}
-          title={_STRINGS.POOL_TYPE}
-          item={{ list: propertyTypes?.["POOL_TYPE"] || [] }}
-        />
+        {!!values?.has_pool ? (
+          <MultyPopUpSelect
+            onSelect={(e) => {
+              onChangeMulty(e, "pool_type");
+            }}
+            value={values?.pool_type}
+            title={_STRINGS.POOL_TYPE}
+            item={{ list: propertyTypes?.["POOL_TYPE"] || [] }}
+          />
+        ) : (
+          <></>
+        )}
       </div>
       <div className=" flex flex-col gap-2  border-b pb-4 w-full">
         {" "}
@@ -166,7 +170,7 @@ const CreatePropertyFacility = () => {
         {propertyTypes?.["ENTERTAINMENT"]?.map((e) => (
           <Checkbox
             key={`Emt${e?.id}`}
-            rounded="rounded-full"
+            rounded="rounded-md"
             onSelect={() => {
               onChangeMulty(e?.id, "entertainment");
             }}
@@ -180,7 +184,7 @@ const CreatePropertyFacility = () => {
         {propertyTypes?.["KITCHEN"]?.map((e) => (
           <Checkbox
             key={`KITCHEN${e?.id}`}
-            rounded="rounded-full"
+            rounded="rounded-md"
             onSelect={() => {
               onChangeMulty(e?.id, "kitchen");
             }}
@@ -207,7 +211,7 @@ const CreatePropertyFacility = () => {
         {propertyTypes?.["COOL_HEAT"]?.map((e) => (
           <Checkbox
             key={`COOL_HEAT${e?.id}`}
-            rounded="rounded-full"
+            rounded="rounded-md"
             onSelect={() => {
               onChangeMulty(e?.id, "cool_heat");
             }}
@@ -221,7 +225,7 @@ const CreatePropertyFacility = () => {
         {propertyTypes?.["WELFARE"]?.map((e) => (
           <Checkbox
             key={`WELFARE${e?.id}`}
-            rounded="rounded-full"
+            rounded="rounded-md"
             onSelect={() => {
               onChangeMulty(e?.id, "welfare");
             }}

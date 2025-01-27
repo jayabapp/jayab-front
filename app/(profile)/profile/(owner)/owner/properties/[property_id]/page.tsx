@@ -25,7 +25,10 @@ const OwnerSingleProperty = () => {
   return (
     <div className=" profile-container  !pb-48 lg:!pb-36   gap-4 justify-start items-start  grid grid-cols-1  md:grid-cols-2  !h-auto    ">
       {!!isLoading ? (
-        <LottieLoading />
+        <div className=" col-span-full ">
+          {" "}
+          <LottieLoading />
+        </div>
       ) : !!data ? (
         <>
           {" "}

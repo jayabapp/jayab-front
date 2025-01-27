@@ -9,6 +9,7 @@ body {
   padding: 0;
   color: #17191c;
   margin: 0;
+  background: white !important;
 }
 
 a {
@@ -112,7 +113,7 @@ ul {
   @apply h-full bg-transparent mx-auto !max-w-full min-h-[100dvh] px-3 md:px-3 lg:px-4 xl:px-[15%]  pt-20 lg:pt-28  pb-32 lg:pb-44 overflow-x-scroll;
 }
 .profile-container {
-  @apply h-full bg-transparent mx-auto !max-w-full min-h-[100dvh]   pb-32 lg:pb-44 overflow-x-scroll;
+  @apply h-full px-1 md:px-4 bg-transparent mx-auto !max-w-full min-h-[100dvh]   pb-32 lg:pb-44 overflow-x-scroll;
 }
 
 .container-lg {
@@ -483,4 +484,8 @@ button {
     hsla(0, 0%, 84%, 0.8) 6px,
     hsla(0, 0%, 84%, 0.8) 0
   );
+}
+
+.swiper > .swiper-wrapper {
+  @apply flex items-center;
 }

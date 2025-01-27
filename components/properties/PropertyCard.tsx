@@ -37,7 +37,7 @@ const PropertyCard = ({ data, isOwner, week }: { data: PropertyListDto; isOwner?
 
           {/* CODE  - LIKES */}
           <div className="flex items-center gap-4">
-            <div className="bg-primary-700 rounded-md text-xs  pt-[0.35rem] px-2 py-1 text-white flex items-center justify-center">
+            <div className="bg-primary-700 rounded-md text-sm  pt-[0.35rem] px-2 py-1 text-white flex items-center justify-center">
               کد {data.code}
             </div>{" "}
             <div className="flex items-center gap-1">
@@ -56,7 +56,7 @@ const PropertyCard = ({ data, isOwner, week }: { data: PropertyListDto; isOwner?
 
           <div className="w-full flex  flex-row  items-start gap-2 justify-start">
             {" "}
-            <p className="text-xs  shrink-0 ">{_STRINGS.TODAYS_PRICE}</p>
+            <p className="text-sm  shrink-0 ">{_STRINGS.TODAYS_PRICE}</p>
             <AddCardPricePart
               data={{ discounted_price: data?.today_price?.discount_percentage, price: data?.today_price?.price }}
             />
@@ -66,9 +66,11 @@ const PropertyCard = ({ data, isOwner, week }: { data: PropertyListDto; isOwner?
           {!!isOwner ? (
             <div className="w-full flex  flex-row  items-start gap-2 justify-start">
               {" "}
-              <p className="text-xs  shrink-0 ">{_STRINGS.TODAY_STATUS}</p>
-              <p className={` font-bold ${!!data?.is_today_reserved ? " text-red-500 " : " text-primary-700 "} `}>
-                {!!data?.is_today_reserved ? _STRINGS.OCCUPIED : _STRINGS.EMPTY}{" "}
+              <p className="text-sm  shrink-0 ">{_STRINGS.TODAY_STATUS} :</p>
+              <p
+                className={` text-sm font-bold ${!!data?.is_today_reserved ? " text-red-500 " : " text-primary-700 "} `}
+              >
+                {!!data?.is_today_reserved ? _STRINGS.IS_RESERVED : _STRINGS.EMPTY}{" "}
               </p>
             </div>
           ) : (
@@ -76,15 +78,15 @@ const PropertyCard = ({ data, isOwner, week }: { data: PropertyListDto; isOwner?
               {" "}
               {/* DESCRIPTION */}
               <div className="w-full">
-                <p className="text-xs">
+                <p className="text-sm">
                   {" "}
                   <span>{data?.total_bedrooms} اتاق</span>-<span>تا {data?.max_capacity} نفر</span>{" "}
                   {!!data?.has_pool ? <span className="text-primary-700"> - {_STRINGS.HAS_POOL} </span> : <></>}
                 </p>
               </div>
               {/* LOCATION */}
-              <div className="flex w-full gap-1">
-                <img src="/assets/icons/adds/pin_point_location.svg" className="w-5 h-5 aspect-square" />
+              <div className="flex w-full  items-start gap-1">
+                <img src="/assets/icons/adds/pin_point_location.svg" className="w-4 h-4 aspect-square" />
                 <p className="text-xs">{data?.province}</p>
               </div>
             </>
@@ -93,8 +95,12 @@ const PropertyCard = ({ data, isOwner, week }: { data: PropertyListDto; isOwner?
           {!!isOwner ? <StatusShower data={data?.status} /> : <></>}
         </Link>{" "}
         {/* IMAGE PART */}
-        <Link href={`${goToLink}`} prefetch={false} className="col-span-2  order-2 ">
-          <div className=" aspect-square relative">
+        <Link
+          href={`${goToLink}`}
+          prefetch={false}
+          className=" flex items-center justify-center h-full col-span-2  order-2 "
+        >
+          <div className=" aspect-square w-full h-full relative">
             <Image
               fill
               alt={data?.feature_image?.alt || ""}
@@ -103,7 +109,7 @@ const PropertyCard = ({ data, isOwner, week }: { data: PropertyListDto; isOwner?
                   ? NEW_IMAGE_URL(data?.feature_image, "medium")
                   : "/assets/icons/shared/image_placeholder.svg"
               }
-              className=" w-full rounded-10  object-cover aspect-square"
+              className=" w-full rounded-10  h-full  object-cover aspect-square"
             />
             <div className="absolute z-1 right-2 top-2 flex flex-col gap-1 w-7">
               {" "}

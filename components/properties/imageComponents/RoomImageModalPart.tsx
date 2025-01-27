@@ -56,7 +56,7 @@ const RoomImageModalPart = ({
         setModalProps({ ...modalProps, isVisible: false });
       }}
     >
-      <div className=" bg-white/90  md:py-[10%] gap-2 px-3  items-center justify-center md:px-3 lg:px-4 2xl:px-[10%]   w-full flex flex-col   h-full    relative">
+      <div className=" bg-white  md:py-[10%] gap-2 px-3  items-center justify-center md:px-3 lg:px-4 2xl:px-[10%]   w-full flex flex-col   h-full    relative">
         <div className="flex fixed md:sticky   rounded-t-0 md:rounded-t-20 w-full z-[60]  dark:bg-zinc-800  gap-4 items-center h-12   top-4  col-span-5 px-4  ">
           <div className="flex border bg-white p-2 rounded-10 justify-center aspect-square items-center ">
             <img
@@ -90,7 +90,7 @@ const RoomImageModalPart = ({
                 return setActiveIndex((index) => swiper.activeIndex);
               }}
               initialSlide={activeIndex}
-              className="!select-none  "
+              className="!select-none centerise  flex !items-center "
             >
               {addImages?.map((i, index) => (
                 <SwiperSlide

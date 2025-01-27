@@ -51,7 +51,7 @@ const Notifications = () => {
             setCursor(last(notifs)?.id || 0);
           }}
           hasMore={!isEmpty(solidData?.data) ? true : false}
-          className=" grid grid-cols-2 gap-4 pb-4  md:p-4"
+          className=" grid  grid-cols-1 md:grid-cols-2 gap-4 pb-4  md:p-4"
           loader={
             <div className="flex  col-span-2 flex-col gap-4 p-4">
               <BtnLoading />

@@ -108,7 +108,7 @@ const Map = ({
 
   useEffect(() => {
     if (!!jumpToState) {
-      map.current.jumpTo({ center: [jumpToState?.lat, jumpToState?.lng] }, 2000);
+      map.current.jumpTo({ center: [jumpToState?.lng, jumpToState?.lat] }, 2000);
     }
   }, [jumpToState]);
 

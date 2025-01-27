@@ -1,6 +1,5 @@
 "use client";
 import { PropertyService } from "@/api_services/property/property.service";
-import PageHeaders from "@/components/headers/PageHeader";
 import SearchPlaceModal from "@/components/Map/SearchPlaceModal";
 import SearchBox from "@/components/SearchBoxComp";
 import Button from "@/components/shared/Button/Button";
@@ -52,7 +51,7 @@ const CreateProperty = () => {
 
   useEffect(() => {
     if (!!initPropData?.lat) {
-      setCenter([Number(initPropData?.lng), Number(initPropData?.lat)]);
+      setJumpTo({ lat: Number(initPropData?.lat), lng: Number(initPropData?.lng) });
     }
   }, [initPropData]);
 
@@ -89,7 +88,7 @@ const CreateProperty = () => {
           onClick={() => {
             setShowSearch(true);
           }}
-          className="absolute top-2 z-1 left-0 right-0  w-4/5 md:w-1/2 mx-auto "
+          className="absolute top-2 z-1 left-0 right-0  w-[70%] md:w-1/2 mx-auto "
         >
           <SearchBox
             containerClass="  "

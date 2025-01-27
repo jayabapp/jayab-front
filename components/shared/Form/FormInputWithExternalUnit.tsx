@@ -138,7 +138,7 @@ const FormInputWithExternalUnit = ({ item, unit, value, onChangeText, errors, er
         </div>{" "}
       </div>{" "}
       {!!item?.convertToText && !!value && (
-        <div id={`${item?.id}`} className="text-sm  opacity-80  mt-1">
+        <div id={`${item?.id}`} className="text-sm  text-primary-150  opacity-60   mt-1">
           {Num2persian(value)} {_STRINGS?.TOMAN}
         </div>
       )}

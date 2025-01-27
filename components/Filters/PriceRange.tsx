@@ -94,7 +94,7 @@ const PriceRange = ({ filters, setFilters, query, lowLimit, upLimit, steps, high
         min={lowerBound}
         max={upperBound}
         step={steps || 100000}
-        marks={marks}
+        // marks={marks}
         railStyle={{ backgroundColor: "#d1d5db", height: 4 }}
         // reverse
         trackStyle={{ backgroundColor: "#0088CC", height: 4 }}

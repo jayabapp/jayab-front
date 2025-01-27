@@ -14,12 +14,16 @@ const PropertyCardOwnerPart = ({ data, goToLink }: { goToLink: string; data: Pro
         <p className="text-xs">{_STRINGS.ADD_DURATION} :</p>
 
         <div className=" flex items-center  gap-2">
-          <div className=" rounded-full text-xxs text-primary-700 bg-primary-400 flex  items-center justify-center h-5 w-20 ">
-            {data?.remaining_days || 0} روز اعتبار
+          <div className=" rounded-full text-sm text-primary-700 bg-primary-400 flex  items-center justify-center h-7 w-24 ">
+            {!data?.remaining_days ? "بدون اعتبار" : `${data?.remaining_days} روز اعتبار`}
           </div>
-          <div className=" rounded-full text-xxs text-white bg-primary-700 flex  items-center justify-center h-5 w-20 ">
+          <Link
+            prefetch={false}
+            href={`/profile/owner/properties/${data?.id}/subscription`}
+            className=" rounded-full text-sm text-white bg-primary-700 flex  items-center justify-center h-7 w-24 "
+          >
             {_STRINGS.EXTEND_SUBS}
-          </div>
+          </Link>
         </div>
       </div>
       <Divider moreClass="my-1" />
@@ -32,10 +36,10 @@ const PropertyCardOwnerPart = ({ data, goToLink }: { goToLink: string; data: Pro
       </div>
       <Divider moreClass="my-1" />
       <div className="w-full flex  py-2  border-primary-200 items-center justify-between ">
-        <div className="flex w-full gap-1">
+        <div className="flex w-full items-start gap-1">
           <img src="/assets/icons/adds/pin_point_location.svg" className="w-5 h-5 aspect-square" />
-          <p className="text-xs">
-            {data?.city} <span className=" font-light  text-xs">({data?.province})</span>
+          <p className="text-sm">
+            {data?.city} <span className=" font-light  text-sm">({data?.province})</span>
           </p>
         </div>
         <Divider moreClass="my-1" />
@@ -48,7 +52,7 @@ const PropertyCardOwnerPart = ({ data, goToLink }: { goToLink: string; data: Pro
           title={_STRINGS.PROP_CARD_C_DETAILS}
           roundedClass="rounded-full"
           containerClass="w-full relative mt-2"
-          width="w-full"
+          width="w-full   !text-sm md:!text-base"
           icon={
             <img
               className="w-5 h-5 absolute left-4  top-0 bottom-0 my-auto"

@@ -4,7 +4,7 @@ import { PropertyService } from "@/api_services/property/property.service";
 import AdvisorPlansCard from "@/components/Advisor/AdvisorPlansCard";
 import ConfirmModal from "@/components/Modal/ConfirmModal";
 import StatusShower from "@/components/shared/StatusShower";
-import { fakeAdvisorPlans } from "@/utils/faker";
+import _STRINGS from "@/utils/LocalStrings";
 import { useQuery } from "@tanstack/react-query";
 import moment from "moment-jalaali";
 import { useRouter } from "next/navigation";
@@ -60,12 +60,20 @@ const AdvisorRegister = () => {
               </p>
             )}
           </div>
+
           <StatusShower data={advisorProfile?.status} />
         </div>
       ) : (
         <></>
       )}
 
+      {!!advisorProfile?.admin_description ? (
+        <div className=" w-full flex items-center justify-center  ">
+          <p className="text-sm text-primary-150">توضیحات ادمین : {advisorProfile?.admin_description} </p>
+        </div>
+      ) : (
+        <></>
+      )}
       <div className="  w-full  grid  gird-cols-1 md:grid-cols-2 gap-3">
         {subscriptionPlans?.list?.map((e) => (
           <AdvisorPlansCard

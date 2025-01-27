@@ -83,7 +83,12 @@ const ProductModels = ({ query, queryKey, list, isMulty, setMobileFilters, mobil
             queryMaker(temp);
           }}
         >
-          <Checkbox onSelect={() => {}} isChecked={checkifSelected(i)} containerClass="w-fit" rounded="rounded-md" />
+          <Checkbox
+            onSelect={() => {}}
+            isChecked={checkifSelected(i)}
+            containerClass="w-fit"
+            rounded={isMulty ? "rounded-md" : "rounded-full"}
+          />
 
           <p className="dark:text-neutral-200 text-sm">{i?.title}</p>
         </div>

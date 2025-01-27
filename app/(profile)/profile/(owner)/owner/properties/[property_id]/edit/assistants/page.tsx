@@ -70,7 +70,12 @@ const CreatePropertyAssistance = () => {
   });
   const onSubmit = () => {
     if (!!initPropData?.id) {
-      mutate({ ...values, propertyId: initPropData?.id });
+      mutate({
+        assistant_full_name: values?.assistant_full_name || undefined,
+        assistant_mobile: values?.assistant_mobile || undefined,
+        propertyId: initPropData?.id,
+        show_mobile_type: values?.show_mobile_type || undefined,
+      });
     }
   };
 
@@ -114,26 +119,33 @@ const CreatePropertyAssistance = () => {
 
       {/* {values?.show_mobile_type == 3 || values?.show_mobile_type == 2 ? (
         <> */}
-      <FormInput
-        item={{ title: _STRINGS.ASSISTANT_NAME, isMandatory: true, containerClass: "w-full" }}
-        value={values?.assistant_full_name || ""}
-        onChangeText={(e) => {
-          onChange(e, "assistant_full_name");
-        }}
-      />
-      <FormInput
-        item={{
-          title: _STRINGS.ASSISTANT_PHONE,
-          isMandatory: true,
-          containerClass: "w-full",
-          keyboard: "number",
-          maxLength: 11,
-        }}
-        value={values?.assistant_mobile || ""}
-        onChangeText={(e) => {
-          onChange(e, "assistant_mobile");
-        }}
-      />
+      {values?.show_mobile_type != 1 ? (
+        <>
+          {" "}
+          <FormInput
+            item={{ title: _STRINGS.ASSISTANT_NAME, isMandatory: true, containerClass: "w-full" }}
+            value={values?.assistant_full_name || ""}
+            onChangeText={(e) => {
+              onChange(e, "assistant_full_name");
+            }}
+          />
+          <FormInput
+            item={{
+              title: _STRINGS.ASSISTANT_PHONE,
+              isMandatory: true,
+              containerClass: "w-full",
+              keyboard: "number",
+              maxLength: 11,
+            }}
+            value={values?.assistant_mobile || ""}
+            onChangeText={(e) => {
+              onChange(e, "assistant_mobile");
+            }}
+          />
+        </>
+      ) : (
+        <></>
+      )}
       {/* </>
       ) : (
         <></>

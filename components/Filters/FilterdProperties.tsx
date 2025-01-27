@@ -83,6 +83,7 @@ function FilterdProperties({ sortType, setSortType, query }: FilterdPropertiesTy
     query?.max_building_area,
     query?.min_building_area,
     query?.q,
+    query?.cities,
   ]);
 
   const {
@@ -106,6 +107,7 @@ function FilterdProperties({ sortType, setSortType, query }: FilterdPropertiesTy
       query?.max_building_area,
       query?.min_building_area,
       query?.q,
+      query?.cities,
     ],
     queryFn: () => {
       return PropertyService?.GetProperties({
