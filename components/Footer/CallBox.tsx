@@ -43,14 +43,14 @@ const CallBox = () => {
             {" "}
             <Editable
               contentId={footerCallUs?.id}
-              className="  flex flex-row justify-between  gap-3 py-4  md:pr-[15rem] "
+              className="  flex flex-row justify-between  items-center gap-3 py-4  md:pr-[15rem] "
             >
-              <div className="flex flex-col ">
+              <div className="flex flex-col gap-4 ">
                 {" "}
-                <p className=" font-bold text-primary-700 text-base md:text-xl "> {footerCallUs?.title} </p>
-                <p className="  text-sm font-bold "> {footerCallUs?.small_text} </p>
+                <p className=" font-bold text-white  text-base md:text-xl "> {footerCallUs?.title} </p>
+                <p className="  text-sm  text-white "> {footerCallUs?.small_text} </p>
               </div>
-              <Link href={footerCallUs?.link || ""} target="_blank" referrerPolicy="no-referrer">
+              <Link href={footerCallUs?.link || ""} className="shrink-0" target="_blank" referrerPolicy="no-referrer">
                 {" "}
                 <Button
                   color="themeLight"

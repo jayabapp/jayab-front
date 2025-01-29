@@ -20,7 +20,7 @@ const ModalHeaderPart = ({
       ) : (
         <img
           src="/assets/icons/shared/chevron.svg"
-          className="w-4 absolute top-4 right-2  -rotate-90 md:hidden block h-4 dark:invert"
+          className="w-4 cursor-pointer absolute top-4 right-2  -rotate-90 md:hidden block h-4 dark:invert"
           alt=""
           onClick={onHide}
         />
@@ -31,7 +31,7 @@ const ModalHeaderPart = ({
       </div>{" "}
       <img
         src="/assets/icons/adds/x_mark.svg"
-        className="w-3  hidden md:block h-3 dark:invert"
+        className="w-3   cursor-pointer hidden md:block h-3 dark:invert"
         alt=""
         onClick={onHide}
       />

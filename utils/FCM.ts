@@ -26,16 +26,13 @@ class FCM {
       });
 
       let meesaging = onMessage(messaging, (payload) => {
-        console.log("incoming transmition");
-        if (!window.location.pathname.includes("chat")) {
-          Notify({ body: payload?.notification?.body, title: payload?.notification?.title });
-        }
+        console.log("incoming transmition", payload?.notification?.body);
+        // if (!window.location.pathname.includes("chat")) {
+        //   Notify({ body: payload?.notification?.body, title: payload?.notification?.title });
+        // }
       });
-      // useEffect(() => {
-      //   return () => {
-      //     meesaging();
-      //   };
-      // }, []);
+
+      // meesaging();
 
       console.log(token, "tokentokentokentokentoken");
       if (token) {

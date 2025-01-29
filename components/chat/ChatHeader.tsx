@@ -22,6 +22,7 @@ type chatHeaderType = {
 const ChatHeader = ({ image, description, name, offSetTop, is_recipient_online, data }: chatHeaderType) => {
   const router = useRouter();
   const [showBlock, setShowBlock] = useState(false);
+  const [isBlocked, setIsBlocked] = useState(false);
 
   const showBlockFunc = () => {
     setShowBlock(true);
@@ -33,14 +34,22 @@ const ChatHeader = ({ image, description, name, offSetTop, is_recipient_online, 
   const { mutate, isPending } = useMutation({
     mutationFn: ChatService.blockUserChat,
     onSuccess: () => {
-      router.push("/chat");
+      setShowBlock(false);
+      setIsBlocked((e) => !e);
     },
   });
 
   const blockuser = () => {
-    mutate({ action: !!data?.is_blocked ? 0 : 1, chatId: data?.id, target_user_id: data?.recipient?.user_id });
+    mutate({ action: !!isBlocked ? 0 : 1, chatId: data?.id, target_user_id: data?.recipient?.user_id });
   };
 
+  useEffect(() => {
+    if (data?.is_blocked) {
+      setIsBlocked(true);
+    } else {
+      setIsBlocked(false);
+    }
+  }, [data]);
   return (
     <div
       style={
@@ -52,7 +61,7 @@ const ChatHeader = ({ image, description, name, offSetTop, is_recipient_online, 
       }
       className="flex fixed  justify-between pr-2 z-30 bg-white  dark:bg-dark-900 w-full left-0  md:left-[10%] md:right-[10%] mx-auto lg:top-0 md:w-[50%]    top-0 xl:top-[4.5rem] pt-4 items-center gap-2 pb-3 shadow-md "
     >
-      <div className="flex items-center gap-2">
+      <div className="flex items-center w-full gap-2">
         {" "}
         <img
           src="/assets/icons/shared/chevron.svg"
@@ -61,14 +70,14 @@ const ChatHeader = ({ image, description, name, offSetTop, is_recipient_online, 
           }}
           className=" dark:invert h-4 aspect-square w-4 -rotate-90  justify-start  "
         />
-        <div className="grid grid-cols-4  gap-2">
+        <div className="flex items-center   w-full gap-2">
           {image ? (
-            <div className="w-8 relative flex items-center aspect-square">
-              <div
+            <div className="w-8 shrink-0 relative flex items-center aspect-square">
+              {/* <div
                 className={` z-2 w-2 h-2  aspect-square rounded-full absolute left-0 bottom-0 animate-pulse ${
                   is_recipient_online ? "bg-emerald-400" : "bg-red-400"
                 } `}
-              ></div>
+              ></div> */}
 
               <img
                 src={image ? NEW_IMAGE_URL(image) : "/assets/icons/logo/logo.svg"}
@@ -87,13 +96,13 @@ const ChatHeader = ({ image, description, name, offSetTop, is_recipient_online, 
       <img
         onClick={showBlockFunc}
         className={`w-6 h-6 cursor-pointer aspect-square ${
-          data?.is_blocked ? "" : "grayscale"
+          isBlocked ? "" : "grayscale"
         }   transition-all ml-4 opacity-65 hover:opacity-100 hover:grayscale-0 `}
         src="/assets/icons/chat/chat_block.svg"
       />
 
       <ConfirmModal
-        text={!!data?.is_blocked ? "آیا از آنبلاک کردن یوزر مطمئنید ؟" : "آیا از بلاک کردن یوزر مطمئنید ؟"}
+        text={!!isBlocked ? "آیا از آنبلاک کردن کاربر مطمئنید ؟" : "آیا از بلاک کردن کاربر مطمئنید ؟"}
         isLoading={isPending}
         onConfirm={blockuser}
         isVisible={showBlock}

@@ -4,10 +4,11 @@ import { PropertyService } from "@/api_services/property/property.service";
 import ConfirmModal from "@/components/Modal/ConfirmModal";
 import Button from "@/components/shared/Button/Button";
 import _STRINGS from "@/utils/LocalStrings";
-import { useMutation } from "@tanstack/react-query";
+import { useMutation, useQuery } from "@tanstack/react-query";
 import moment from "moment-jalaali";
 import React, { useState } from "react";
 import ChangePriceModal from "./ChangePriceModal";
+import { HomeService } from "@/api_services/home/home.service";
 
 const ChangePriceComp = ({
   data,

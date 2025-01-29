@@ -220,20 +220,20 @@ const ChatFooter = ({
           value={text}
         />
 
-        <div className="flex items-center gap-1">
+        <div className="flex shrink-0 items-center gap-1">
           {showEmojiPicker ? (
             <img
               src="/assets/icons/chat/smily_face.svg"
               alt="XMarkIcon"
               onClick={() => setShowEmojiPicker(false)}
-              className="w-4 text-gray-500 h-4 md:!w-6 md:!h-6 "
+              className="w-5 text-gray-500 h-5 md:!w-6 md:!h-6 "
             />
           ) : (
             <img
               src="/assets/icons/chat/smily_face.svg"
               alt="FaceSmileIcon"
               onClick={() => setShowEmojiPicker(true)}
-              className="w-4 text-gray-500 h-4  md:!w-6 md:!h-6 "
+              className="w-5 text-gray-500 h-5  md:!w-6 md:!h-6 "
             />
           )}
           <ChatUploader

@@ -1,7 +1,7 @@
 import { SingleOwnerPropertyDto } from "@/api_services/property/property.interface";
 import { PropertyService } from "@/api_services/property/property.service";
 import _STRINGS from "@/utils/LocalStrings";
-import { useMutation, useQuery } from "@tanstack/react-query";
+import { QueryObserverResult, RefetchOptions, useMutation, useQuery } from "@tanstack/react-query";
 import Link from "next/link";
 import React, { useState } from "react";
 import BadgeRequestModal from "./BadgeRequestModal";
@@ -9,7 +9,13 @@ import ChangePropertyAllDaysCommissionModal from "./ChangePropertyAllDaysCommiss
 import ConfirmModal from "@/components/Modal/ConfirmModal";
 import { useRouter } from "next/navigation";
 
-const SingleOwnerPropertyOptons = ({ data }: { data: SingleOwnerPropertyDto }) => {
+const SingleOwnerPropertyOptons = ({
+  data,
+  setRefresh,
+}: {
+  data: SingleOwnerPropertyDto;
+  setRefresh: React.Dispatch<React.SetStateAction<boolean>>;
+}) => {
   const router = useRouter();
 
   const [showBadgeReq, setShowBadgeReq] = useState(false);
@@ -129,7 +135,13 @@ const SingleOwnerPropertyOptons = ({ data }: { data: SingleOwnerPropertyDto }) =
       </div>
 
       <ChangePropertyAllDaysCommissionModal data={data} onHide={hideCommiss} show={showCommiss} />
-      <BadgeRequestModal badgeData={badgeData} data={data} onHide={hideBadgeReq} show={showBadgeReq} />
+      <BadgeRequestModal
+        setRefresh={setRefresh}
+        badgeData={badgeData}
+        data={data}
+        onHide={hideBadgeReq}
+        show={showBadgeReq}
+      />
 
       <ConfirmModal
         isVisible={!!showDelete}

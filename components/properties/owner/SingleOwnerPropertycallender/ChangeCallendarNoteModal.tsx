@@ -69,7 +69,6 @@ const ChangeCommissionModal = ({
         <p className="text-sm font-bold text-primary-700">
           {_STRINGS.EDIT} {_STRINGS.MEMO}
         </p>
-        <p className="text-xs">{_STRINGS.LOREM}</p>
 
         <MultiLineFormInput
           value={note}

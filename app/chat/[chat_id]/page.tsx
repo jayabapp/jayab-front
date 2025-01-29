@@ -129,7 +129,7 @@ const Chat = () => {
   }, [chat_id, cursor, refresher]);
 
   useEffect(() => {
-    if (!!chatNotification) {
+    if (!!chatNotification && !firstTime) {
       if (chatNotification?.chatroom_id == chat_id) {
         // refetch();
         setData((e) => [...e, chatNotification?.message]);

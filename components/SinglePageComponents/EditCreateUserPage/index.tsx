@@ -1,8 +1,11 @@
+import { HomeService } from "@/api_services/home/home.service";
+import BtnLoading from "@/components/shared/Button/BtnLoading";
 import Button from "@/components/shared/Button/Button";
 import FixedBottomContainer from "@/components/shared/FixedBottomContainer";
 import FormInput from "@/components/shared/Form/FormInput";
 import AuthUploader from "@/components/uploader/AuthUploader";
 import _STRINGS from "@/utils/LocalStrings";
+import { useQuery } from "@tanstack/react-query";
 import React from "react";
 
 const EditCreateUserPage = ({
@@ -16,9 +19,18 @@ const EditCreateUserPage = ({
   };
   onChange: (value: string | number | null, key: string) => void;
 }) => {
+  const { data: ownerCreateContent, isLoading } = useQuery({
+    queryKey: [HomeService?.CONTENT_BY_KEY_CACHEKEY, "ownerCreateContent", 1],
+    queryFn: () => {
+      return HomeService.GetContentByKey({ key: "ownerCreateContent" });
+    },
+  });
+
   return (
     <div className="w-full flex flex-col gap-4   ">
-      <div className="p-4  rounded-10 bg-primary-200  text-justify">{_STRINGS.LOREM}</div>
+      <div className="p-4  rounded-10 bg-primary-100 items-center justify-center  text-justify">
+        {isLoading ? <BtnLoading /> : ownerCreateContent?.small_text || ""}
+      </div>
 
       <div className=" w-full flex gap-4  flex-col md:flex-row items-center ">
         {" "}

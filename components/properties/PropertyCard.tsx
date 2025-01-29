@@ -32,12 +32,12 @@ const PropertyCard = ({ data, isOwner, week }: { data: PropertyListDto; isOwner?
             ) : (
               <></>
             )}
-            <p className="text-sm font-medium">{data.title}</p>
+            <p className="text-sm line-clamp-1 font-medium">{data.title}</p>
           </div>
 
           {/* CODE  - LIKES */}
           <div className="flex items-center gap-4">
-            <div className="bg-primary-700 rounded-md text-sm  pt-[0.35rem] px-2 py-1 text-white flex items-center justify-center">
+            <div className="bg-primary-700 rounded-md text-xs 2xl:text-sm  px-2 py-0.5 leading-4 text-white flex items-center justify-center">
               کد {data.code}
             </div>{" "}
             <div className="flex items-center gap-1">
@@ -54,9 +54,9 @@ const PropertyCard = ({ data, isOwner, week }: { data: PropertyListDto; isOwner?
           </div>
           {/* PRICING */}
 
-          <div className="w-full flex  flex-row  items-start gap-2 justify-start">
+          <div className="w-full flex  flex-row  items-center gap-2 justify-start">
             {" "}
-            <p className="text-sm  shrink-0 ">{_STRINGS.TODAYS_PRICE}</p>
+            <p className=" text-xxs 2xl:text-sm  shrink-0 ">{_STRINGS.TODAYS_PRICE}</p>
             <AddCardPricePart
               data={{ discounted_price: data?.today_price?.discount_percentage, price: data?.today_price?.price }}
             />
@@ -78,7 +78,7 @@ const PropertyCard = ({ data, isOwner, week }: { data: PropertyListDto; isOwner?
               {" "}
               {/* DESCRIPTION */}
               <div className="w-full">
-                <p className="text-sm">
+                <p className="text-xs">
                   {" "}
                   <span>{data?.total_bedrooms} اتاق</span>-<span>تا {data?.max_capacity} نفر</span>{" "}
                   {!!data?.has_pool ? <span className="text-primary-700"> - {_STRINGS.HAS_POOL} </span> : <></>}
@@ -98,7 +98,7 @@ const PropertyCard = ({ data, isOwner, week }: { data: PropertyListDto; isOwner?
         <Link
           href={`${goToLink}`}
           prefetch={false}
-          className=" flex items-center justify-center h-full col-span-2  order-2 "
+          className=" flex h-fit items-start  justify-start w-full col-span-2  order-2 "
         >
           <div className=" aspect-square w-full h-full relative">
             <Image

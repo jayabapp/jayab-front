@@ -82,7 +82,7 @@ const Subscription = () => {
 
     mutate({
       gateway: "SANDBOX",
-      redirect_url: window.origin,
+      redirect_url: window.origin + "/profile/owner/properties",
       property_id: `${property_id}`,
       subscription_id: subId,
       promote_id: promotId,

@@ -23,6 +23,8 @@ import { useMutation, useQuery } from "@tanstack/react-query";
 import { isArray } from "lodash";
 import { useParams, usePathname, useRouter } from "next/navigation";
 import React, { useEffect, useState } from "react";
+import { HomeService } from "@/api_services/home/home.service";
+import LottieLoading from "@/components/shared/Lotties/LottieLoading";
 
 const CreatePropertyTerms = () => {
   const router = useRouter();
@@ -30,6 +32,13 @@ const CreatePropertyTerms = () => {
   const [showSucces, setShowSucces] = useState(false);
   const params = useParams();
   const { property_id } = params;
+
+  const { data: propertyRules, isLoading: rulesLoading } = useQuery({
+    queryKey: [HomeService?.CONTENTS_CACHEKEY, "propertyRules", 1],
+    queryFn: () => {
+      return HomeService.GetContent({ key: "propertyRules", page: 1 });
+    },
+  });
 
   /* -------------------------------------------------------------------------- */
   /*                             INIT PROP CREATION                             */
@@ -111,6 +120,10 @@ const CreatePropertyTerms = () => {
     }
   };
 
+  const strictData = propertyRules?.data?.find((e) => e?.key == "STRICT");
+  const normaltData = propertyRules?.data?.find((e) => e?.key == "NORMAL");
+  const easyData = propertyRules?.data?.find((e) => e?.key == "EASY");
+
   return (
     <div
       id="homeParent"
@@ -121,39 +134,43 @@ const CreatePropertyTerms = () => {
         <StepShower steps={createPropertySteps(initPropData?.id)} value={9} />
       </div>
 
-      <div className=" flex flex-col gap-2 w-full">
-        <p className="font-bold w-full text-start  text-sm md:text-base text-primary-700  ">
-          {_STRINGS.CANCELATIONS_TITLE}
-        </p>
-        <p className="text-xs md:text-sm">{_STRINGS.LOREM}</p>
+      {rulesLoading ? (
+        <LottieLoading />
+      ) : (
+        <div className=" flex flex-col gap-2 w-full">
+          <p className="font-bold w-full text-start  text-sm md:text-base text-primary-700  ">
+            {propertyRules?.data?.[0]?.category?.title || _STRINGS.CANCELATIONS_TITLE}
+          </p>
+          <p className="text-xs md:text-sm">{propertyRules?.data?.[0]?.category?.description || _STRINGS.LOREM}</p>
 
-        <div className="flex flex-col my-2 gap-3">
-          <PropTermItem
-            onSelect={() => {
-              onChange("STRICT", "canceling_type");
-            }}
-            title={_STRINGS.STRICT_RULER}
-            desc={_STRINGS.LOREM}
-            isChecked={values?.canceling_type == "STRICT"}
-          />
-          <PropTermItem
-            onSelect={() => {
-              onChange("NORMAL", "canceling_type");
-            }}
-            title={_STRINGS.NORMAL_RULER}
-            desc={_STRINGS.LOREM}
-            isChecked={values?.canceling_type == "NORMAL"}
-          />
-          <PropTermItem
-            onSelect={() => {
-              onChange("EASY", "canceling_type");
-            }}
-            title={_STRINGS.EASY_RULER}
-            desc={_STRINGS.LOREM}
-            isChecked={values?.canceling_type == "EASY"}
-          />
+          <div className="flex flex-col my-2 gap-3">
+            <PropTermItem
+              onSelect={() => {
+                onChange("STRICT", "canceling_type");
+              }}
+              title={strictData?.title || _STRINGS.STRICT_RULER}
+              desc={strictData?.small_text || ""}
+              isChecked={values?.canceling_type == "STRICT"}
+            />
+            <PropTermItem
+              onSelect={() => {
+                onChange("NORMAL", "canceling_type");
+              }}
+              title={normaltData?.title || _STRINGS.NORMAL_RULER}
+              desc={normaltData?.small_text || ""}
+              isChecked={values?.canceling_type == "NORMAL"}
+            />
+            <PropTermItem
+              onSelect={() => {
+                onChange("EASY", "canceling_type");
+              }}
+              title={easyData?.title || _STRINGS.EASY_RULER}
+              desc={easyData?.small_text || ""}
+              isChecked={values?.canceling_type == "EASY"}
+            />
+          </div>
         </div>
-      </div>
+      )}
       <div className=" flex flex-col gap-2   w-full">
         <p className="font-bold w-full text-start  text-sm md:text-base text-primary-700  ">
           {_STRINGS.GUEST_TYPE_STATUS}

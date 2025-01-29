@@ -1,4 +1,5 @@
 "use client";
+import { HomeService } from "@/api_services/home/home.service";
 import { OwnerCallendarItemDto, SingleOwnerPropertyDto } from "@/api_services/property/property.interface";
 import { PropertyService } from "@/api_services/property/property.service";
 import Modal from "@/components/Modal";
@@ -6,6 +7,7 @@ import Button from "@/components/shared/Button/Button";
 import { Divider } from "@/components/shared/Divider";
 import Checkbox from "@/components/shared/Form/Checkbox";
 import RangeWithTitle from "@/components/shared/Form/RangeWithTitle";
+import SmallLoading from "@/components/shared/Lotties/SmallLoading";
 import Notify from "@/components/shared/Toast";
 import numberWithCommas from "@/helpers/numberWithCommas";
 import _STRINGS from "@/utils/LocalStrings";
@@ -142,12 +144,24 @@ const ChangePriceModal = ({
       });
     }
   };
+
+  /* -------------------------------------------------------------------------- */
+  /*                                   CONTENT                                  */
+  /* -------------------------------------------------------------------------- */
+  const { data: fastPriceChangeMessage, isLoading } = useQuery({
+    queryKey: [HomeService?.CONTENT_BY_KEY_CACHEKEY, "fastPriceChangeMessage", 1, show],
+    queryFn: () => {
+      if (show) return HomeService.GetContentByKey({ key: "fastPriceChangeMessage" });
+      else return null;
+    },
+  });
+
   return (
     <Modal show={show} onHide={onHide}>
       <div className="flex flex-col gap-4 p-4 bg-white rounded-20 ">
         <img className="w-9 h-9 aspect-square" src="/assets/icons/property/price_label.svg" />
         <p className="text-sm font-bold text-primary-700">{_STRINGS.IMMEDIATE_CHANGE}</p>
-        <p className="text-xs">{_STRINGS.LOREM}</p>
+        <p className="text-xs">{isLoading ? <SmallLoading /> : fastPriceChangeMessage?.small_text || ""}</p>
 
         <div className="flex flex-col gap-3 text-primary-700 pt-6 pb-10">
           <div className="flex items-center justify-between">

@@ -13,6 +13,7 @@ import React, { use, useEffect, useState } from "react";
 import SinglePropSharePopItem from "./SinglePropSharePopItem";
 import Button from "@/components/shared/Button/Button";
 import { isMobile } from "react-device-detect";
+import Notify from "@/components/shared/Toast";
 
 const SinglePropSharePop = ({
   data,
@@ -31,7 +32,13 @@ const SinglePropSharePop = ({
     if (navigator.share) {
       try {
         await navigator.share(shareDetails).then(() => console.log("Your content was shared"));
-      } catch (error) {}
+      } catch (error) {
+        navigator.clipboard.writeText(url);
+        Notify({
+          type: "success",
+          body: "لینک شیر  کپی شد",
+        });
+      }
     }
   };
 
@@ -61,7 +68,7 @@ const SinglePropSharePop = ({
 
   return (
     <PopUpDown setVisible={onHide} visible={show}>
-      <ModalHeaderPart hideArrow title={_STRINGS.SEND_INFO} onHide={() => {}} />
+      <ModalHeaderPart hideArrow title={_STRINGS.SEND_INFO} onHide={onHide} />
 
       <div className="w-full p-4 flex flex-col gap-2">
         {shareButtonItems?.map((e) => (

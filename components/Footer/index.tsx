@@ -2,7 +2,7 @@
 
 import React, { useEffect, useState } from "react";
 import _STRINGS from "../../utils/LocalStrings";
-import { apiRoutes, imageUrlBase } from "../../utils/urls";
+import { apiRoutes, imageUrlBase, NEW_IMAGE_URL } from "../../utils/urls";
 import SocialList from "./SocialList";
 
 import FormInput from "../shared/Form/FormInput";
@@ -14,77 +14,18 @@ import { HomeService } from "@/api_services/home/home.service";
 import CallBox from "./CallBox";
 import { footerLinks } from "@/utils/constantss";
 import ContactuUItem from "../contactus/ContactuUItem";
-type contactUsDataTypes = {
-  id: number | string;
-  image_location: string;
-  description: string;
-  small_text: string;
-  full_text: string;
-};
-type aboutUsData = { title: string; fullText: string };
 
 const Footer = () => {
-  const [aboutUsData, setaboutUsData] = useState<aboutUsData | null>(null);
-  const [isOpen, setIsOpen] = useState(false);
-  const [email, setEmail] = useState("");
-
-  const [contactUsData, setContactUsData] = useState<contactUsDataTypes[]>([]);
-
-  useEffect(() => {
-    // getContent();
-    // getDownloadContents();
-    // getSocials();
-    // getAboutUs();
-  }, []);
   /* --------------------------- SUMMARY DESCRIPTION -------------------------- */
-  // const getContent = () => {
-  //   ApiCall(
-  //     "GET",
-  //     apiRoutes.BASE_CONTENT("footer"),
-  //     null,
-  //     "get footer",
-  //     ({ data }) => {
-  //       if (!data || isEmpty(data.content)) return;
-  //       const safeHTMLFullText = DOMPurify.sanitize(data.content[0]?.full_text);
-  //       const safeHTMLSmallText = DOMPurify.sanitize(data.content[0]?.small_text);
-  //       setSummaryDescription({ fullText: safeHTMLFullText, smallText: safeHTMLSmallText });
-  //     },
-  //     null,
-  //     ONE_HOUR_CACHE_DURATION
-  //   );
-  // };
-  /* --------------------------- ABOUT US -------------------------- */
-  const getAboutUs = () => {
-    // ApiCall(
-    //   "GET",
-    //   apiRoutes.SITE_CONTENT("website-about-us", `1`),
-    //   null,
-    //   "get about us",
-    //   ({ data }) => {
-    //     const temp = data?.find((i: { description: string }) => i?.description == "bottom");
-    //     const safeHTMLFullText = DOMPurify.sanitize(temp?.text_short);
-    //     const safeHTMLSmallText = DOMPurify.sanitize(temp?.title_tag);
-    //     setaboutUsData({ fullText: safeHTMLFullText, title: safeHTMLSmallText });
-    //   },
-    //   () => {}
-    // );
-  };
 
-  /* ----------------------------- DOWNLOAD LINKS ----------------------------- */
-  // const getDownloadContents = () => {
-  //   ApiCall(
-  //     "GET",
-  //     apiRoutes.BASE_CONTENT("download_section"),
-  //     null,
-  //     "get footer",
-  //     ({ data }) => {
-  //       if (!data || isEmpty(data.content)) return;
-  //       setDownloadData(data);
-  //     },
-  //     null,
-  //     ONE_HOUR_CACHE_DURATION
-  //   );
-  // };
+  /* --------------------------- ABOUT US -------------------------- */
+
+  const { data: aboutUs, isLoading } = useQuery({
+    queryKey: [HomeService?.CONTENT_BY_KEY_CACHEKEY, "aboutUs_footer", 1],
+    queryFn: () => {
+      return HomeService.GetContentByKey({ key: "aboutUs" });
+    },
+  });
 
   const _findAction = (key: string, value: string, action: string) => {
     if (!key) return;
@@ -92,33 +33,11 @@ const Footer = () => {
     else window.open(value, "_self");
   };
   /* ----------------------------- DOWNLOAD LINKS ----------------------------- */
-  const getSocials = () => {
-    // ApiCall(
-    //   "GET",
-    //   apiRoutes.BASE_CONTENT("contact-us"),
-    //   null,
-    //   "get social footer",
-    //   ({ data }) => {
-    //     if (!data || isEmpty(data.content)) return;
-    //     const so = data?.content?.filter((e: { description: string }) => e.description == "social") || [];
-    //     const cu =
-    //       data?.content?.filter(
-    //         (e: { description: string }) => e.description != "social" && e.description != "location"
-    //       ) || [];
-    //     setSocials(so);
-    //     setContactUsData(cu);
-    //   },
-    //   () => {}
-    // );
-  };
 
-  // const { data: aboutUs } = useQuery([HomeService?.CONTENTS_CACHEKEY, "aboutUs", 1], () => {
-  //   return HomeService.GetContent({ key: "aboutUs", page: 1 });
-  // });
-  const { data: aboutUs, isLoading } = useQuery({
-    queryKey: [HomeService?.CONTENT_BY_KEY_CACHEKEY, "aboutUs_footer", 1],
+  const { data: downloadLink } = useQuery({
+    queryKey: [HomeService?.CONTENTS_CACHEKEY, "downloadLinks", 1],
     queryFn: () => {
-      return HomeService.GetContentByKey({ key: "aboutUs" });
+      return HomeService.GetContent({ key: "downloadLinks", page: 1 });
     },
   });
 
@@ -160,7 +79,6 @@ const Footer = () => {
           key={`footerasfs`}
           className={`col-span-3 lg:col-span-1  gap-2 flex w-full flex-col justify-between h-fit order-2 lg:order-1 `}
         >
-          {/* <div className="font-semibold text-lg mb-4  dark:text-zinc-100  pb-2">{_STRINGS?.A5}</div> */}
           {footerLinks?.map((e, index) => (
             <Link
               prefetch={false}
@@ -178,27 +96,6 @@ const Footer = () => {
             </Link>
           ))}
         </div>
-
-        {/* <div
-          key={`footerasfs`}
-          className={`col-span-2 lg:col-span-1  flex w-full flex-col justify-between h-fit order-2 lg:order-1 `}
-        >
-          <div className=" rounded-xl w-20 h-20 mx-auto flex justify-center ">
-            <a
-              referrerPolicy="origin"
-              target="_blank"
-              href="https://trustseal.enamad.ir/?id=540238&Code=hkPC83wVDvvLptmphvrDvCOTt6ZQGaU7"
-            >
-              <img
-                referrerPolicy="origin"
-                src="https://trustseal.enamad.ir/logo.aspx?id=540238&Code=hkPC83wVDvvLptmphvrDvCOTt6ZQGaU7"
-                alt=""
-                style={{ cursor: "pointer" }}
-                id="hkPC83wVDvvLptmphvrDvCOTt6ZQGaU7"
-              />
-            </a>
-          </div>
-        </div> */}
 
         {/* CONTACT US */}
         <div
@@ -238,7 +135,19 @@ const Footer = () => {
             دیزاین میباشد
           </div>
         </div>
-        <div className="flex  justify-center  md:justify-start mt-3 gap-2 mb-4"></div>
+        <div className="flex gap-2  items-center">
+          {downloadLink?.data?.map((e) => (
+            <Link
+              target="_blank"
+              href={e?.link || ""}
+              className="aspect-[3] max-w-[120px] "
+              referrerPolicy="no-referrer"
+              prefetch={false}
+            >
+              <img src={NEW_IMAGE_URL(e?.feature_image)} className="aspect-[3] max-w-[120px] " />
+            </Link>
+          ))}
+        </div>
       </div>
     </div>
   );

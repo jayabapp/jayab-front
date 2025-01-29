@@ -1,14 +1,7 @@
-import { produce } from "immer";
 import { OwnerCallendarItemDto, SingleOwnerPropertyDto } from "@/api_services/property/property.interface";
-import { PropertyService } from "@/api_services/property/property.service";
-import ConfirmModal from "@/components/Modal/ConfirmModal";
 import Button from "@/components/shared/Button/Button";
 import _STRINGS from "@/utils/LocalStrings";
-import { useMutation } from "@tanstack/react-query";
-import moment from "moment-jalaali";
 import React, { useState } from "react";
-import ChangePriceModal from "./ChangePriceModal";
-import ChangeCommissionModal from "./ChangeCommissionModal";
 import ChangeCallendarNoteModal from "./ChangeCallendarNoteModal";
 
 const ChangeCallendarNote = ({

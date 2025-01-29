@@ -1,10 +1,12 @@
+import { HomeService } from "@/api_services/home/home.service";
 import { GetPropBadgeDto, SingleOwnerPropertyDto } from "@/api_services/property/property.interface";
 import { PropertyService } from "@/api_services/property/property.service";
 import Modal from "@/components/Modal";
 import Button from "@/components/shared/Button/Button";
+import SmallLoading from "@/components/shared/Lotties/SmallLoading";
 import StatusShower from "@/components/shared/StatusShower";
 import _STRINGS from "@/utils/LocalStrings";
-import { useMutation } from "@tanstack/react-query";
+import { QueryObserverResult, RefetchOptions, useMutation, useQuery } from "@tanstack/react-query";
 import React from "react";
 
 const BadgeRequestModal = ({
@@ -12,15 +14,20 @@ const BadgeRequestModal = ({
   onHide,
   data,
   badgeData,
+  setRefresh,
 }: {
   data: SingleOwnerPropertyDto;
   show: boolean;
   onHide: () => void | null;
   badgeData: GetPropBadgeDto | null | undefined;
+  setRefresh: React.Dispatch<React.SetStateAction<boolean>>;
 }) => {
   const { mutate, isPending } = useMutation({
     mutationFn: PropertyService.RequestSingleOwnerPropertyBadge,
     onSuccess: () => {
+      if (!!setRefresh) {
+        setRefresh((e) => !e);
+      }
       onHide();
     },
   });
@@ -29,12 +36,20 @@ const BadgeRequestModal = ({
     if (data?.id) mutate({ property_id: data?.id });
   };
 
+  const { data: badgeContent, isLoading } = useQuery({
+    queryKey: [HomeService?.CONTENT_BY_KEY_CACHEKEY, "badgeContent", 1, show],
+    queryFn: () => {
+      if (show) return HomeService.GetContentByKey({ key: "badgeContent" });
+      else return null;
+    },
+  });
+
   return (
     <Modal onHide={onHide} show={show}>
       <div className=" flex flex-col gap-4 p-4 w-full bg-white rounded-20">
         <img className="w-9 h-9 aspect-square" src="/assets/icons/property/request_badge.svg" />
         <p className="text-sm text-primary-700 font-bold">{_STRINGS.REQUEST_FOR_BADGE}</p>
-        <p className="text-xs">{_STRINGS.LOREM}</p>
+        {isLoading ? <SmallLoading /> : <p className="text-xs">{badgeContent?.small_text || ""}</p>}
 
         {!!badgeData?.status ? (
           <StatusShower

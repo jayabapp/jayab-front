@@ -187,14 +187,17 @@ const ChatUploader = ({
               <BtnLoading />{" "}
             </div>
           ) : (
-            <img
-              src="/assets/icons/chat/chat_clip.svg"
-              alt="PaperClipIcon"
-              className="w-4  md:w-6 text-gray-500 h-4  md:h-6"
-              onClick={() => {
-                !disabled ? imagePickerRef?.current?.click() : void null;
-              }}
-            />
+            <div className="  aspect-square shrink-0 md:w-6  items-center justify-center flex  text-gray-500   h-5 w-5 md:h-6">
+              {" "}
+              <img
+                src="/assets/icons/chat/chat_clip.svg"
+                alt="PaperClipIcon"
+                className="  aspect-square shrink-0 md:w-6 text-gray-500   h-5 w-5 md:h-6"
+                onClick={() => {
+                  !disabled ? imagePickerRef?.current?.click() : void null;
+                }}
+              />{" "}
+            </div>
           ))}
       </div>
 

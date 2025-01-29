@@ -69,7 +69,7 @@ const MultyPopUpSelect = ({
               : item?.placeholder}
           </div>
 
-          <img src={"/assets/icons/chevron-down-thick.svg"} className="h-2 w-4 dark:invert" aria-hidden="true" />
+          {/* <img src={"/assets/icons/chevron-down-thick.svg"} className="h-2 w-4 dark:invert" aria-hidden="true" /> */}
         </div>
       </div>
       <PopUpDown setVisible={setShow} visible={show}>

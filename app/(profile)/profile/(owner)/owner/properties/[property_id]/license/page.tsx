@@ -30,7 +30,12 @@ const Authorize = () => {
     },
   });
 
-  const { mutate, isPending } = useMutation({ mutationFn: PropertyService.RequestSingleOwnerPropertyAuth });
+  const { mutate, isPending } = useMutation({
+    mutationFn: PropertyService.RequestSingleOwnerPropertyAuth,
+    onSuccess: () => {
+      router.back();
+    },
+  });
   const { mutate: editMutate, isPending: editPendin } = useMutation({
     mutationFn: PropertyService.EditRequestSingleOwnerPropertyAuth,
     onSuccess: () => {
