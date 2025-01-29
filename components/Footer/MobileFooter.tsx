@@ -74,10 +74,20 @@ const MobileFooter: React.FC = ({}) => {
   const isFocused = (key: string) => {
     return route === `${key}`;
   };
+
+  function getPWADisplayMode(): "twa" | "standalone" | "browser" {
+    const isStandalone = window.matchMedia("(display-mode: standalone)").matches;
+    if (document.referrer.startsWith("android-app://")) {
+      return "twa";
+    } else if (isStandalone) {
+      return "standalone";
+    }
+    return "browser";
+  }
   return (
     <div
       className={`z-1    flex   max-w-[800px]  ${
-        isIOS ? "pb-8" : "pb-5"
+        isIOS && getPWADisplayMode() == "standalone" ? "pb-8" : "pb-5"
       }  pt-3 md:py-3  flex md:hidden  justify-between  md:rounded-md  left-0  right-0     mx-auto   shadow-card transition-all duration-1000	ease-in-out  items-center fixed bottom-0 w-full   bg-white  `}
     >
       <div className="flex w-full items-center   justify-around px-4     md:gap-6">

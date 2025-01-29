@@ -4,6 +4,7 @@ import { PropertyService } from "@/api_services/property/property.service";
 import Headers from "@/components/headers";
 import Modal from "@/components/Modal";
 import ProductImagesContainer from "@/components/properties/imageComponents/PropertiesImagesPart";
+import ProductSkeleton from "@/components/properties/ProductSkeleton";
 import SinglePorpertyAccards from "@/components/properties/SinglePropertyAccards";
 import SinglePropertycallender from "@/components/properties/SinglePropertycallender";
 import SinglePropertyIntroduction from "@/components/properties/SinglePropertyIntroduction";
@@ -43,7 +44,7 @@ export default function SingleDeceasedPage({ params }: { params: Promise<{ room_
       <Headers />
       <div className=" !pb-48 lg:!pb-36   gap-4 justify-start items-start container grid grid-cols-1  md:grid-cols-2  !h-auto   !overflow-x-visible">
         {!!isPending ? (
-          <LottieLoading />
+          <ProductSkeleton />
         ) : !!properyData ? (
           <>
             <ProductImagesContainer productImageId={null} data={properyData} />

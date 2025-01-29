@@ -1,4 +1,5 @@
 import ProductImagesContainer from "@/components/properties/imageComponents/PropertiesImagesPart";
+import ProductSkeleton from "@/components/properties/ProductSkeleton";
 import SinglePorpertyAccards from "@/components/properties/SinglePropertyAccards";
 import SinglePropertycallender from "@/components/properties/SinglePropertycallender";
 import SinglePropertyIntroduction from "@/components/properties/SinglePropertyIntroduction";
@@ -35,7 +36,7 @@ const SinglePropertyPage = async ({ params }: { params: Promise<{ room_slug: str
 
   return (
     <div className=" !pb-48 lg:!pb-36   gap-4 justify-start items-start container grid grid-cols-1  md:grid-cols-2  !h-auto   !overflow-x-visible">
-      {properyData ? (
+      {!!properyData ? (
         <>
           <ProductImagesContainer productImageId={null} data={properyData} />
           <SinglePropertyIntroduction data={properyData} />
@@ -45,9 +46,7 @@ const SinglePropertyPage = async ({ params }: { params: Promise<{ room_slug: str
           <SinglePropertycallender data={properyData} />
         </>
       ) : (
-        <div className=" col-span-full ">
-          <LottieLoading />
-        </div>
+        <ProductSkeleton />
       )}{" "}
     </div>
   );
