@@ -184,7 +184,9 @@ const RoomImageModalPart = ({
                         onClick={() => ref.current.slideTo(index)}
                         // src={i?.type == 1 ? NEW_IMAGE_URL(i) : i?.cover}
                         src={i?.type == 1 ? NEW_IMAGE_URL(i, "thumbnail") : ""}
-                        className={`  ${i?.type != 1 ? " blur-sm" : ""}  object-cover p-1 w-full rounded-10 h-full  `}
+                        className={`  ${
+                          i?.type != 1 ? " blur-sm" : ""
+                        }  aspect-square  object-cover p-1 w-full rounded-10 h-full  `}
                       />
                       {/* {i?.type != 1 ? (
                                 <img
