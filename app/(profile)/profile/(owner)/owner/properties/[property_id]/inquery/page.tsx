@@ -3,10 +3,7 @@
 import { PropertyService } from "@/api_services/property/property.service";
 import ElementToImage from "@/components/ElementToImage";
 import DaysOfTheWeekStatus from "@/components/properties/DaysOfTheWeekStatus";
-import ProductImagesContainer from "@/components/properties/imageComponents/PropertiesImagesPart";
-import SingleOwnerPropertycallender from "@/components/properties/owner/SingleOwnerPropertycallender";
-import SingleOwnerPropertyIntroduction from "@/components/properties/owner/SingleOwnerPropertyIntroduction";
-import SingleOwnerPropertyOptons from "@/components/properties/owner/SingleOwnerPropertyOptons.tsx";
+
 import MultiLineFormInput from "@/components/shared/Form/MultiLineFormInput";
 
 import LottieLoading from "@/components/shared/Lotties/LottieLoading";
@@ -14,11 +11,13 @@ import { WeekDays } from "@/utils/constantss";
 import _STRINGS from "@/utils/LocalStrings";
 import { NEW_IMAGE_URL } from "@/utils/urls";
 import { useQuery } from "@tanstack/react-query";
+import moment from "moment-jalaali";
 import Image from "next/image";
 import { useParams } from "next/navigation";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 
 const PropertyInquery = () => {
+  const [week, setWeek] = useState<any[]>([]);
   const [desc, setDesc] = useState("");
   const params = useParams();
   const { property_id } = params;
@@ -30,6 +29,47 @@ const PropertyInquery = () => {
       } else return null;
     },
   });
+
+  // const { data: callendarData, isLoading: callendarLoading } = useQuery({
+  //   queryKey: [
+  //     PropertyService.OWNER_PROPERTIES_CACHEKEY,
+  //     Number(moment().format("jMM")),
+  //     Number(moment().format("jYYYY")),
+  //     ,
+  //     data?.id,
+  //   ],
+  //   queryFn: () => {
+  //     if (!!data?.id) {
+  //       return PropertyService.GetSingleOwnerPropertyCallendar({
+  //         property_id: `${data?.id}`,
+  //         month: Number(moment().format("jMM")),
+  //         year: Number(moment().format("jYYYY")),
+  //       });
+  //     } else return null;
+  //   },
+  // });
+  useEffect(() => {
+    const dayOfWeek = moment().day();
+
+    const weeks = [];
+    for (let index = dayOfWeek; index < dayOfWeek + 7; index++) {
+      const item = WeekDays?.find((e) => {
+        if (index >= 7) {
+          return e?.id == index - 7;
+        } else {
+          return e?.id == index;
+        }
+      });
+      if (index < 7) {
+        weeks.push(item);
+      } else {
+        weeks.push(item);
+      }
+    }
+
+    setWeek(weeks);
+  }, []);
+
   return (
     <div className=" profile-container  !pb-48 lg:!pb-36  md:px-[30%]  gap-4   flex flex-col items-center justify-center !h-auto    ">
       {!!isLoading ? (
@@ -65,7 +105,7 @@ const PropertyInquery = () => {
                 </p>
               </div>
             </div>
-            <DaysOfTheWeekStatus week={WeekDays} data={data?.reserve_days} />
+            <DaysOfTheWeekStatus week={week} data={data?.reserve_days} />
 
             <MultiLineFormInput
               onChangeText={(e) => {

@@ -149,20 +149,25 @@ function SsrClinetPartFilterProperties({ sortType, query, setCursor, cursor }: S
 
   useEffect(() => {
     const dayOfWeek = moment().day();
+
     const weeks = [];
-    for (let index = 0; index < WeekDays.length; index++) {
-      const item = WeekDays?.find((e) => e?.id == index);
-      if (!!item) {
-        if (item?.id > dayOfWeek) weeks.push(item);
-        else {
-          weeks.unshift(item);
+    for (let index = dayOfWeek; index < dayOfWeek + 7; index++) {
+      const item = WeekDays?.find((e) => {
+        if (index >= 7) {
+          return e?.id == index - 7;
+        } else {
+          return e?.id == index;
         }
+      });
+      if (index < 7) {
+        weeks.push(item);
+      } else {
+        weeks.push(item);
       }
     }
 
     setWeek(weeks);
   }, []);
-
   return (
     <div className="w-full px-0  self-center">
       {cursor != 0 ? (

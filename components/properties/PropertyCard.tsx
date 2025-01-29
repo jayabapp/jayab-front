@@ -54,11 +54,11 @@ const PropertyCard = ({ data, isOwner, week }: { data: PropertyListDto; isOwner?
           </div>
           {/* PRICING */}
 
-          <div className="w-full flex  flex-row  items-center gap-2 justify-start">
+          <div className="w-full flex  flex-row  items-start gap-2 justify-start">
             {" "}
-            <p className=" text-xxs 2xl:text-sm  shrink-0 ">{_STRINGS.TODAYS_PRICE}</p>
+            <p className=" text-xxs 2xl:text-sm mt-0.5  shrink-0 ">{_STRINGS.TODAYS_PRICE}</p>
             <AddCardPricePart
-              data={{ discounted_price: data?.today_price?.discount_percentage, price: data?.today_price?.price }}
+              data={{ discounted_price: data?.today_price?.discounted_price, price: data?.today_price?.price }}
             />
           </div>
 
@@ -87,7 +87,9 @@ const PropertyCard = ({ data, isOwner, week }: { data: PropertyListDto; isOwner?
               {/* LOCATION */}
               <div className="flex w-full  items-start gap-1">
                 <img src="/assets/icons/adds/pin_point_location.svg" className="w-4 h-4 aspect-square" />
-                <p className="text-xs">{data?.province}</p>
+                <p className="text-xs">
+                  {data?.city} {data?.province ? `(${data?.province})` : ``}
+                </p>
               </div>
             </>
           )}
