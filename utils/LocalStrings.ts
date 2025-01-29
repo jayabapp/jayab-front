@@ -3,7 +3,7 @@ const _STRINGS = {
   IMAGE: "تصویر",
   RETURN: "بازگشت",
   EMPTY: "خالی",
-  OCCUPIED: "پر",
+  OCCUPIED: "رزرو",
   NO_PRICE: "توافقی",
   TOMAN: "تومان",
   BUCKS: "دلار",

@@ -76,7 +76,7 @@ const ChangeDayStatusComp = ({
           onSubmit();
         }}
         text={`آیا از ${
-          selectedDateData?.is_reserved ? "خالی" : "پر"
+          selectedDateData?.is_reserved ? "خالی" : "رزرو"
         } کردن روز ${callenderselectedDate} اطمینان دارید؟`}
         onHide={onHide}
       />
