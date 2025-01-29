@@ -1,18 +1,44 @@
 "use client";
 
+import { ChatListDto } from "@/api_services/chat/chat.interface";
 import { ChatService } from "@/api_services/chat/chat.service";
 import ChatListItem from "@/components/chat/ChatListItem";
 import EmptyList from "@/components/shared/Lotties/EmptyList";
 import LottieLoading from "@/components/shared/Lotties/LottieLoading";
+import { useChatStore } from "@/store";
 import { useQuery } from "@tanstack/react-query";
 import { isEmpty } from "lodash";
-import React from "react";
+import React, { useEffect, useState } from "react";
 
 const ChatListPage = () => {
-  const { data: chats, isLoading } = useQuery({
+  const { chatNotification } = useChatStore((state) => state);
+  const [chats, setChats] = useState<ChatListDto[]>([]);
+  const { data, isLoading, refetch } = useQuery({
     queryKey: [ChatService.CHAT_CACHEKEY],
     queryFn: ChatService.GetChatList,
   });
+
+  useEffect(() => {
+    if (!!data) {
+      setChats(data);
+    }
+  }, [data]);
+
+  useEffect(() => {
+    if (!!chatNotification?.chatroom_id && chats) {
+      if (chats?.find((e) => e?.uuid == chatNotification?.chatroom_id)) {
+        const comingChatMessage = chats?.find((e) => e?.uuid == chatNotification?.chatroom_id);
+        const newChats = chats?.filter((e) => e?.uuid != chatNotification?.chatroom_id);
+        if (!!comingChatMessage) {
+          comingChatMessage.unread_count = `${Number(comingChatMessage?.unread_count) + 1} `;
+          setChats([comingChatMessage, ...newChats]);
+        }
+      } else {
+        refetch();
+      }
+    }
+  }, [chatNotification]);
+
   return (
     <div
       id="homeParent"

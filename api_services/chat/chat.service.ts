@@ -167,4 +167,17 @@ export class ChatService {
       throw e;
     }
   }
+
+  static async blockUserChat(dto: { chatId?: number | string; action: number; target_user_id?: number | string }) {
+    try {
+      const result = await apiCall<{ action: number; target_user_id?: number | string }, unknown>(
+        "POST",
+        apiRoutes.BLOCK_CHAT(dto?.chatId),
+        { action: dto.action, target_user_id: dto.target_user_id }
+      );
+      return result;
+    } catch (e) {
+      throw e;
+    }
+  }
 }

@@ -239,6 +239,7 @@ const Chat = () => {
       <ChatHeader
         is_recipient_online={isParticipentOnine}
         name={singleChatData?.property?.title}
+        data={singleChatData}
         image={singleChatData?.property?.feature_image}
         offSetTop={offSetTop}
       />

@@ -274,6 +274,7 @@ export interface SingleChatDetailsDto {
   self: Recipient;
   recipient: Recipient;
   is_recipient_online: boolean;
+  is_blocked: boolean;
 }
 
 export interface Recipient {

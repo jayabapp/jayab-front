@@ -181,6 +181,8 @@ export const apiRoutes = {
 
   READ_MESSAGE: (chatroomId: number | string) => `/chat/${chatroomId}/read-at`,
 
+  BLOCK_CHAT: (chatroomId?: number | string) => `/chat/${chatroomId}/blacklist`,
+
   DELETE_MESSAGE: (chatroomId: number | string, messageId: number | string) =>
     `/chat/${chatroomId}/messages/${messageId}`,
 
