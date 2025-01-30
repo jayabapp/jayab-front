@@ -129,8 +129,8 @@ const PropertyCard = ({ data, isOwner, week }: { data: PropertyListDto; isOwner?
               )}
             </div>
             {data?.advisor_commission || data?.advisor_commission == 0 ? (
-              <div className="w-20 gap-0.5  h-5 rounded-md transition-all  py-[0.2rem]   bg-black/50 text-white absolute z-1 left-2 flex-row top-2 aspect-square flex items-center justify-center">
-                <p className="  text-xs   "> کمیسیون: {data.attachments_count}%</p>{" "}
+              <div className="w-16 gap-0.5  h-5 rounded-md transition-all  py-[0.2rem]   bg-black/50 text-white absolute z-1 left-2 flex-row top-2 aspect-square flex items-center justify-center">
+                <p className="  text-xxs   "> کمیسیون: {data.attachments_count}%</p>{" "}
               </div>
             ) : data?.attachments_count ? (
               <div className="w-9 gap-0.5  h-5 rounded-md transition-all  py-[0.2rem]   bg-black/50 text-white absolute z-1 left-2 flex-row top-2 aspect-square flex items-center justify-center">
