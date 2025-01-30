@@ -11,9 +11,9 @@ const ContentRelatedTags = ({ data }: { data: RelatedLandings[] }) => {
             key={`${e?.title}relatedContent`}
             prefetch={false}
             href={e?.url}
-            className="w-fit border-primary-250 py-1.5 px-2.5 border-2 rounded-full flex items-center gap-2  "
+            className="w-fit border-primary-250 py-1 px-1.5 border-2 rounded-full flex items-center gap-2  "
           >
-            <p className="text-primary-250 ">{e?.title}</p>
+            <p className="text-primary-250 text-sm ">{e?.title}</p>
             <div className="w-4 h-4 aspect-square flex items-center justify-center">
               <img src="/assets/icons/shared/upper_left_arrow.svg" className="w-3 h-3" />
             </div>

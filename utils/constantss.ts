@@ -275,7 +275,7 @@ export const profileItems = [
   {
     id: 2125232,
     title: "اخبار و مقالات",
-    route: "/blogs",
+    route: "/blog",
     imgSrc: "/assets/icons/header/header_menu_blog.svg",
     isMobile: true,
   },

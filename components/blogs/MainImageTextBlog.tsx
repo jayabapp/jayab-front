@@ -37,20 +37,20 @@ const MainImageTextBlock = ({ data, children }: ImageTextDTO) => {
         <img
           // src={IMAGE_URL(item?.image)}
           src={NEW_IMAGE_URL(item?.image)}
-          className="w-full   md:aspect-[1.5/1] lg:w-full h-auto mx-auto object-cover rounded-lg img-dark"
+          className="w-full   md:aspect-[1.5/1] lg:w-full h-auto mx-auto object-cover rounded-20 img-dark"
           alt={item.title}
         />
       </div>
       <div className="w-full  rounded-md  pt-4 pb-6   md:w-[60%]   flex rtl flex-col justify-between px-4">
         <div className="flex flex-col gap-2 text-xl">
-          <p> {moment(data?.created_at).format("jYYYY/jMM/jDD")}</p>
-          <h1 className="text-3xl  leading-8 mb-3"> {item?.title}</h1>
+          <p className="text-primary-700 text-xl font-light "> {moment(data?.created_at).format("jYYYY/jMM/jDD")}</p>
+          <h1 className="text-3xl  text-primary-700 font-bold leading-8 mb-3"> {item?.title}</h1>
           {/* <Divider moreClass="w-20 border-primary-700 dark:border-primary-700 mt-2 mb-5 h-1 bg-primary-700 rounded-full" /> */}
           {/* <div className=" z-2 flex gap-2  justify-center md:justify-start items-center">
             <p className="  text-2xl md:text-4xl font-bold text-white">{title}</p>
           </div> */}
           <div
-            className=" rounded-md p-4 !text-justify border  !text-base  !leading-4 md:!leading-6 opacity-80"
+            className=" rounded-2xl py-2 px-0 md:p-4 !text-justify md:border  !text-base  !leading-6 md:!leading-6 opacity-80"
             dangerouslySetInnerHTML={{ __html: item.body || _STRINGS.LOREM }}
           />
           <div>

@@ -123,7 +123,7 @@ function CategoryBlogs({ queryPage }: CategoryBlogsType) {
         {isLoading ? (
           <LottieLoading />
         ) : blogs && blogs?.length > 0 ? (
-          <div className="grid grid-cols-2 gap-1 lg:gap-6 lg:grid-cols-3 !pb-8 !overflow-hidden">
+          <div className="grid grid-cols-1 gap-1 lg:gap-6 lg:grid-cols-3 !pb-8 p-2 !overflow-hidden">
             {blogs?.map((i) => (
               <BlogCard item={i} key={`PRODUCT${i?.id}`} />
             ))}

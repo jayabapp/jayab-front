@@ -12,7 +12,7 @@ const SsrFilterPageContents = ({ data }: { data: SingleLandingDto }) => {
       {!!data?.related_landings ? <ContentRelatedTags data={data?.related_landings} /> : <></>}{" "}
       {data?.content?.html ? (
         <div
-          className={`text-[12px] lg:text-sm line-clamp-2    text-justify `}
+          className={`text-[12px] lg:text-sm     text-justify `}
           dangerouslySetInnerHTML={{
             __html: DOMPurify.sanitize(data?.content?.html, { FORBID_ATTR: ["style"] }),
           }}

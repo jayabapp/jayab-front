@@ -14,15 +14,15 @@ const LatestBlogCard = ({ item }: { item: ContentDto }) => {
     <Editable
       contentId={item?.id}
       containerClass={"h-full"}
-      className={`  !h-full  overflow-clip aspect-auto   justify-between  hover:scale-102   bg-white   relative cursor-pointer transition-all duration-200 ease-in-out group    flex items-center  flex-col gap-1   rounded-md `}
+      className={`  !h-full  overflow-clip aspect-auto  rounded-20 shadow-card  justify-between  hover:scale-102   bg-white   relative cursor-pointer transition-all duration-200 ease-in-out group    flex items-center  flex-col gap-1   `}
     >
       <Link href={`/blog/${item?.slug}`} className="flex flex-col w-full">
         {" "}
-        <div className="  w-full   aspect-[1.5] relative">
+        <div className="  w-full   aspect-[2] relative">
           <Image
             src={NEW_IMAGE_URL(item?.feature_image, "medium")}
             fill
-            className=" object-cover  aspect-[1.5] "
+            className=" object-cover  aspect-[2] "
             alt={item?.feature_image?.alt || item?.title}
           />
         </div>
@@ -34,20 +34,19 @@ const LatestBlogCard = ({ item }: { item: ContentDto }) => {
           {item?.small_text || item?.full_text || ""}
         </p>
       </Link>
-      {/* <div className="w-full  pb-4">
+      <div className="w-full  pb-4">
         {" "}
         <Link href={`/blog/${item?.slug}`} className=" ">
           {" "}
           <Button
             title={_STRINGS?.WATCH}
-            roundedClass="rounded-10 "
-            containerClass="mb-1 flex  items-center justify-center !w-full  !text-sm "
-            size="md"
+            roundedClass="rounded-full "
+            containerClass="mb-1 flex  items-center  justify-center !w-full  !text-sm "
             // variant="white"
-            width="!px-8 !py-2 !min-w-[40%]  !font-bold "
+            width="!px-8 !py-1 !min-w-[40%]    !font-normal "
           />
         </Link>
-      </div> */}
+      </div>
     </Editable>
   );
 };

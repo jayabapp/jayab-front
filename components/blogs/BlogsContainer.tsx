@@ -59,9 +59,9 @@ function BlogsContainer({
 
   return (
     <div className={` w-full    relative rounded-20 flex flex-col items-center`}>
-      <div className="  px-5   border-b  md:px-0 flex   w-full mb-4 pb-4 justify-center items-center">
+      <div className="  px-5    md:px-0 flex   w-full mb-4 pb-4 justify-start items-start">
         {" "}
-        <p className="text-xl  w-fit text-center    ">{title}</p>{" "}
+        <p className="text-xl  w-fit text-start  font-medium   ">{title}</p>{" "}
       </div>
 
       {!tempData ? (
@@ -119,9 +119,10 @@ function BlogsContainer({
           prefetch={false}
           href={viewAllUrl}
           style={{ textDecoration: "none" }}
-          className="  border  rounded-md  px-3 py-1  w-fit bg-transparent  self-end"
+          className="   flex  gap-2  px-3 py-1  w-fit bg-transparent  self-end"
         >
-          <p className="no-underline  text-base    ">{_STRINGS?.SEE_ALL}</p>
+          <p className="no-underline text-primary-700  text-base    ">{_STRINGS?.SEE_ALL}</p>{" "}
+          <img src="/assets/icons/shared/blue_chevron_left.svg" />
         </Link>
       </div>
     </div>

@@ -80,7 +80,7 @@ const SingleBlogPage = async ({ params }: Props) => {
                 />
               </div>
             )} */}
-            <div className="flexflex-col mt-6 gap-8">
+            <div className="flexflex-col mt-6 mb-8 gap-8">
               {/* {data ? <Article data={data} key={`artivle`} /> : <></>} */}
 
               {data ? (
@@ -93,18 +93,16 @@ const SingleBlogPage = async ({ params }: Props) => {
                 <></>
               )}
             </div>
-            <div className=" mt-8 px-3 md:px-10 lg:px-12 2xl:px-[10%] w-full">
-              {" "}
-              {!!blogs?.data && !!data ? (
-                <BlogsContainer
-                  data={blogs?.data?.filter((e: { id: string }) => e?.id !== data?.id) || []}
-                  viewAllUrl="/blog"
-                  title={_STRINGS?.OTHER_ARTICLS}
-                />
-              ) : (
-                <></>
-              )}
-            </div>{" "}
+
+            {!!blogs?.data && !!data ? (
+              <BlogsContainer
+                data={blogs?.data?.filter((e: { id: string }) => e?.id !== data?.id) || []}
+                viewAllUrl="/blog"
+                title={_STRINGS?.OTHER_ARTICLS}
+              />
+            ) : (
+              <></>
+            )}
           </div>
         )}
       </div>

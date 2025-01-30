@@ -355,6 +355,7 @@ const _STRINGS = {
   ANSWER_MESSAGE: "پاسخ به پیام",
   WRITE_MESSAGE_TEXT: "متن پیام را بنویسید",
   TICKET_CLOSED: "تیکت بسته شده است",
+  WATCH: "مشاهده",
 };
 
 export default _STRINGS;
