@@ -19,7 +19,6 @@ const PropertyCard = ({ data, isOwner, week }: { data: PropertyListDto; isOwner?
   const { bookmarks, likes } = useStoreParams((state) => state);
 
   const goToLink = !!isOwner ? `/profile/owner/properties/${data?.id}` : `/rooms/${data?.slug}`;
-
   return (
     <div className="w-full shadow-card  rounded-2xl   flex flex-col  p-3   gap-2  ">
       <div className="w-full  grid grid-cols-5 gap-2   ">
@@ -129,7 +128,11 @@ const PropertyCard = ({ data, isOwner, week }: { data: PropertyListDto; isOwner?
                 <></>
               )}
             </div>
-            {data?.attachments_count ? (
+            {data?.advisor_commission || data?.advisor_commission == 0 ? (
+              <div className="w-20 gap-0.5  h-5 rounded-md transition-all  py-[0.2rem]   bg-black/50 text-white absolute z-1 left-2 flex-row top-2 aspect-square flex items-center justify-center">
+                <p className="  text-xs   "> کمیسیون: {data.attachments_count}%</p>{" "}
+              </div>
+            ) : data?.attachments_count ? (
               <div className="w-9 gap-0.5  h-5 rounded-md transition-all  py-[0.2rem]   bg-black/50 text-white absolute z-1 left-2 flex-row top-2 aspect-square flex items-center justify-center">
                 <p className="  text-sm   ">{data.attachments_count}</p>{" "}
                 <img className="w-3 h-3" src="/assets/icons/adds/simple_camera.svg" />
