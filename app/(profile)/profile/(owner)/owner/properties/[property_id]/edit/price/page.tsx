@@ -98,7 +98,7 @@ const CreatePropertyPricing = () => {
       </div>
 
       <div className=" flex flex-col gap-2 border-b   pb-4 w-full">
-        <p className="font-bold w-full text-start  text-sm md:text-base text-primary-700  ">{_STRINGS.POOL_STATUS}</p>
+        <p className="font-bold w-full text-start  text-sm md:text-base text-primary-700  ">{_STRINGS.GUEST_CAP}</p>
         <TitleCounter
           disableInput={true}
           value={values?.std_capacity}
@@ -131,6 +131,7 @@ const CreatePropertyPricing = () => {
             marks={{ 0: { label: "0", style: { color: "#3886E5" } }, 50: { label: "50", style: { color: "#3886E5" } } }}
             max={50}
             min={0}
+            step={5}
             setValue={(e: any) => {
               onChange(e, "advisor_commission");
             }}

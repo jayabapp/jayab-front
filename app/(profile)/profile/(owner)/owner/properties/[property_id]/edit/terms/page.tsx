@@ -21,13 +21,15 @@ import { createPropertySteps } from "@/utils/constantss";
 import _STRINGS from "@/utils/LocalStrings";
 import { useMutation, useQuery } from "@tanstack/react-query";
 import { isArray } from "lodash";
-import { useParams, usePathname, useRouter } from "next/navigation";
+import { useParams, usePathname, useRouter, useSearchParams } from "next/navigation";
 import React, { useEffect, useState } from "react";
 import { HomeService } from "@/api_services/home/home.service";
 import LottieLoading from "@/components/shared/Lotties/LottieLoading";
 
 const CreatePropertyTerms = () => {
   const router = useRouter();
+  const searchParams = useSearchParams();
+  const edit_mode = searchParams.get("edit_mode");
   const pathname = usePathname();
   const [showSucces, setShowSucces] = useState(false);
   const params = useParams();
@@ -103,7 +105,9 @@ const CreatePropertyTerms = () => {
   const { mutate, isPending } = useMutation({
     mutationFn: PropertyService.CreatePropertySetTerms,
     onSuccess: () => {
-      if (!initPropData?.canceling_type) setShowSucces(true);
+      if (!!edit_mode) {
+        router.replace(`/profile/owner/properties/${property_id}/edit`);
+      } else if (!initPropData?.canceling_type) setShowSucces(true);
     },
   });
   const onSubmit = () => {

@@ -153,7 +153,10 @@ const PropertyCard = ({ data, isOwner, week }: { data: PropertyListDto; isOwner?
       </div>
       {isOwner ? <PropertyCardOwnerPart goToLink={goToLink} data={data} /> : <></>}
       {!!data?.reserve_days && !isEmpty(data?.reserve_days) ? (
-        <DaysOfTheWeekStatus week={week || []} isCard={true} data={data?.reserve_days} />
+        <div className="w-full pt-1 border-t">
+          {" "}
+          <DaysOfTheWeekStatus week={week || []} isCard={true} data={data?.reserve_days} />
+        </div>
       ) : (
         <></>
       )}

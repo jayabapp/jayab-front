@@ -103,7 +103,7 @@ const Subscription = () => {
         </>
       ) : !isEmpty(statsData?.statistics) ? (
         <>
-          <div className="w-full h-96 relative ">
+          <div className="w-full h-96 p-1 relative ">
             <SimpleBarChart
               data={statsData?.statistics?.map((e) => ({ date: e?.date, value: e?.view_count, name: e?.date }))}
             />

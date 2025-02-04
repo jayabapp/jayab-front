@@ -8,6 +8,7 @@ import { ImageDto } from "@/api_services/auth/auth.interface";
 import Link from "next/link";
 
 const ChatListItem = ({ item }: { item: ChatListDto }) => {
+  moment.locale("fa", { useGregorianParser: true });
   return (
     <Link
       prefetch={false}
@@ -25,6 +26,7 @@ const ChatListItem = ({ item }: { item: ChatListDto }) => {
           <p className=" font-medium  text-sm "> {item?.property_title}</p>
           <p className="text-xs opacity-50  ">
             {moment(item?.last_message?.updated_at).format("hh:mm - jYYYY/jMM/jDD")}
+            {/* {moment().format("hh:mm - jYYYY/jMM/jDD")} */}
           </p>
         </div>
         <p className="text-xs line-clamp-1">{item?.last_message?.text}</p>

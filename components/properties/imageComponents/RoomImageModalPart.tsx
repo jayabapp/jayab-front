@@ -100,8 +100,11 @@ const RoomImageModalPart = ({
                 >
                   {true ? (
                     // {i?.type == 1 ? (
-                    <div className="swiper-zoom-container h-full  p-1 rounded-md border-2 !select-none">
-                      <img className="w-fit  object-contain  h-full rounded-md   !select-none" src={NEW_IMAGE_URL(i)} />
+                    <div className="swiper-zoom-container h-full  p-1 rounded-md !select-none">
+                      <img
+                        className="w-fit  object-contain  h-full rounded-md  !max-h-[60dvh]  !select-none"
+                        src={NEW_IMAGE_URL(i)}
+                      />
                     </div>
                   ) : (
                     <video

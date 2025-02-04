@@ -15,11 +15,13 @@ const ChangePriceComp = ({
   callenderselectedDate,
   setCallendarDataState,
   selectedDateData,
+  setRefresh,
 }: {
   callenderselectedDate: string;
   selectedDateData?: OwnerCallendarItemDto;
   data: SingleOwnerPropertyDto;
   setCallendarDataState: React.Dispatch<React.SetStateAction<OwnerCallendarItemDto[]>>;
+  setRefresh: React.Dispatch<React.SetStateAction<boolean>>;
 }) => {
   const [showPriceRange, setShowPricerange] = useState(false);
 
@@ -43,6 +45,7 @@ const ChangePriceComp = ({
       />
       <ChangePriceModal
         data={data}
+        setRefresh={setRefresh}
         setCallendarDataState={setCallendarDataState}
         selectedDateData={selectedDateData}
         onHide={onHide}

@@ -93,7 +93,7 @@ const ChangeCommissionModal = ({
             setValue={setCommission}
             max={50}
             min={0}
-            step={1}
+            step={5}
             marks={{
               0: {
                 label: "0",

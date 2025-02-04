@@ -196,7 +196,6 @@ const CreatePropertyFacility = () => {
       <MultiLineFormInput
         item={{
           title: _STRINGS.OTHER_ACCESSES,
-          isMandatory: true,
           containerClass: "w-full col-span-full",
 
           rows: 3,

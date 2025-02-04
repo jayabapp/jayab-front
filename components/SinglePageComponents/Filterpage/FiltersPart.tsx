@@ -120,11 +120,11 @@ const FiltersPart = ({ queries, setFilters, filters, propertyTypes }: any) => {
         <PriceRange
           lowerKey="min_price"
           higherKey="max_price"
-          steps={100000}
+          steps={500000}
           filters={filters}
           setFilters={setFilters}
           query={queries}
-          lowLimit={10000}
+          lowLimit={500000}
           upLimit={100000000}
         />
       </div>
@@ -143,7 +143,7 @@ const FiltersPart = ({ queries, setFilters, filters, propertyTypes }: any) => {
         <PriceRange
           lowerKey="min_building_area"
           higherKey="max_building_area"
-          steps={10}
+          steps={50}
           filters={filters}
           setFilters={setFilters}
           query={queries}

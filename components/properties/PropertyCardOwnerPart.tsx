@@ -27,13 +27,17 @@ const PropertyCardOwnerPart = ({ data, goToLink }: { goToLink: string; data: Pro
         </div>
       </div>
       <Divider moreClass="my-1" />
-      <div className="w-full flex  py-2  border-primary-200 items-center justify-between ">
+      <Link
+        href={`/profile/owner/properties/${data?.id}/subscription`}
+        prefetch={false}
+        className="w-full flex  py-2  border-primary-200 items-center justify-between "
+      >
         <p className="text-xs">{_STRINGS.UPGRADE_ADD_DESC} </p>
 
         <div className=" flex items-center  gap-2">
           <img src="/assets/icons/shared/chevron-left.svg" />
         </div>
-      </div>
+      </Link>
       <Divider moreClass="my-1" />
       <div className="w-full flex  py-2  border-primary-200 items-center justify-between ">
         <div className="flex w-full items-start gap-1">

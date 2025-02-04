@@ -102,7 +102,7 @@ function HomePropertiesClientPart({ setCursor, cursor }: HomePropertiesClientPar
                   <BtnLoading />
                 </div>
               }
-              className="grid   pb-8 pt-4 md:pt-2 px-1  !overflow-hidden  grid-cols-1 gap-2 md:gap-4  md:grid-cols-2 xl:grid-cols-3 "
+              className="grid   pb-8 pt-4 md:pt-2 px-1  !overflow-hidden  grid-cols-1 gap-2 md:gap-4  md:grid-cols-2 xl:grid-cols-4 "
             >
               {data?.map((i) => (
                 <PropertyCard week={week} data={i} key={`PRODUCT${i?.id}`} />

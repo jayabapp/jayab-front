@@ -33,7 +33,7 @@ const OwnerSingleProperty = () => {
           {" "}
           <ProductImagesContainer productImageId={null} data={data} />
           <SingleOwnerPropertyIntroduction data={data} />
-          <SingleOwnerPropertycallender data={data} />
+          <SingleOwnerPropertycallender data={data} setRefresh={setRefresh} />
           <SingleOwnerPropertyOptons data={data} setRefresh={setRefresh} />
         </>
       ) : (

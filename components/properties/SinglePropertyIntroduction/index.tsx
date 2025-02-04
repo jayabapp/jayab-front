@@ -156,7 +156,7 @@ const SinglePropertyIntroduction = ({ data }: { data: SinglePropDto }) => {
           <></>
         )}
       </div>
-      <div className="z-50 flex md:hidden">
+      <div className="z-20 flex md:hidden">
         <FixedBottomContainer>
           {" "}
           <div className="w-full  px-4  flex items-center justify-between gap-4 ">

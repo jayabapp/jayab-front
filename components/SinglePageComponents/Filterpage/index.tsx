@@ -26,6 +26,7 @@ import FiltersSelectedFiltersShowcase from "@/components/Filters/FiltersSelected
 import FilterPageCitiesTitle from "@/components/CityModal/FilterPageCitiesTitle";
 import CityModal from "@/components/CityModal";
 import ModalHeaderPart from "@/components/Modal/ModalHeaderPart";
+import PropertiesFilterList from "./PropertiesFilterList";
 
 interface OtpQuery extends ParsedUrlQuery {
   id: string;
@@ -106,7 +107,7 @@ const Filterpage = () => {
   };
 
   return (
-    <div className="app-container !pt-32  lg:!pt-28  md: z-2 ">
+    <div className="app-container !px-0 md:!px-10 lg:!px-12 2xl:!px-[10%] !pt-32  lg:!pt-28  md: z-2 ">
       <div className=" hidden  z-1 w-full md:flex flex-col md:flex-row items-center justify-between ">
         {/* <Breadcrumbs /> */}
         <SingleProductBreadCrumb dataArray={breadCrumbs} />
@@ -132,7 +133,11 @@ const Filterpage = () => {
           </div>
         </div>
       </div>
-      <div className="w-full pb-3 flex flex-row   justify-between">
+
+      <div className="  w-full flex md:hidden">
+        <PropertiesFilterList propertyKey={"property_type"} data={propertyTypes?.PROPERTY_TYPE} query={queries} />
+      </div>
+      <div className="w-full pb-3 flex flex-row  px-3 md:px-0  justify-between">
         <FilterPageCitiesTitle title={cityButtonTItle} cb={showCityModalFunc} />
         <SortMenu query={queries} />
       </div>
@@ -156,7 +161,7 @@ const Filterpage = () => {
           {/* LEFT SIDE */}
 
           <div
-            className={`col-span-12  md:col-span-12 lg:col-span-9 px-0 md:px-4 
+            className={`col-span-12  md:col-span-12 lg:col-span-9 px-3 md:px-4 
    
               md:mt-0 `}
           >

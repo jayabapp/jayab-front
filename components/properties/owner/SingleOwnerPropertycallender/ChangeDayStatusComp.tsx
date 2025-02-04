@@ -13,11 +13,13 @@ const ChangeDayStatusComp = ({
   callenderselectedDate,
   setCallendarDataState,
   selectedDateData,
+  setRefresh,
 }: {
   callenderselectedDate: string;
   selectedDateData?: OwnerCallendarItemDto;
   data: SingleOwnerPropertyDto;
   setCallendarDataState: React.Dispatch<React.SetStateAction<OwnerCallendarItemDto[]>>;
+  setRefresh: React.Dispatch<React.SetStateAction<boolean>>;
 }) => {
   const [showConfirm, setShowConfirm] = useState(false);
   const { mutate, isPending } = useMutation({
@@ -39,6 +41,17 @@ const ChangeDayStatusComp = ({
 
         return next;
       });
+
+      /* -------------------------------- IF TODAY -------------------------------- */
+
+      const selectedTime = moment(
+        `${selectedDateData?.year}/${selectedDateData?.month}/${selectedDateData?.day}`,
+        "jYYYY/jMM/jD"
+      ).format("YYYY/MM/DD");
+
+      if (selectedDateData && moment().isSame(selectedTime, "day")) {
+        setRefresh((e) => !e);
+      }
       onHide();
     },
   });

@@ -13,7 +13,13 @@ import ChangePriceComp from "./ChangePriceComp";
 import ChangeCunsultatCommission from "./ChangeCunsultatCommission";
 import ChangeCallendarNote from "./ChangeCallendarNote";
 
-const SingleOwnerPropertycallender = ({ data }: { data: SingleOwnerPropertyDto }) => {
+const SingleOwnerPropertycallender = ({
+  data,
+  setRefresh,
+}: {
+  data: SingleOwnerPropertyDto;
+  setRefresh: React.Dispatch<React.SetStateAction<boolean>>;
+}) => {
   /* -------------------------------------------------------------------------- */
   /*                             SELECTED DATE STATE                            */
   /* -------------------------------------------------------------------------- */
@@ -85,12 +91,14 @@ const SingleOwnerPropertycallender = ({ data }: { data: SingleOwnerPropertyDto }
       <p className="text-xs">{_STRINGS.SELECT_DAY_TO_GO_ON}</p>
       <div className="w-full grid gap-2 grid-cols-2">
         <ChangeDayStatusComp
+          setRefresh={setRefresh}
           selectedDateData={selectedDateData}
           setCallendarDataState={setCallendarDataState}
           data={data}
           callenderselectedDate={callenderselectedDate}
         />
         <ChangePriceComp
+          setRefresh={setRefresh}
           selectedDateData={selectedDateData}
           setCallendarDataState={setCallendarDataState}
           data={data}

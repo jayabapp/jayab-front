@@ -25,8 +25,8 @@ const SingleOwnerPropertyIntroduction = ({ data }: { data: SingleOwnerPropertyDt
         </div>
       </div>
 
-      <div className="flex items-center gap-4    py-2 w-full ">
-        <div className="flex items-center gap-1">
+      <div className="flex items-start gap-4    py-2 w-full ">
+        <div className="flex  items-center gap-1">
           <p>{_STRINGS.TODAYS_PRICE} </p>
         </div>
         <SinglePropertyPricePart data={data} />

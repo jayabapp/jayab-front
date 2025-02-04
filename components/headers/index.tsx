@@ -165,7 +165,7 @@ transition-all  ease-in-out duration-1000 header-content-container app-size cust
                 <div className="flex items-center gap-4">
                   <div className=" flex items-center justify-center gap-1">
                     {" "}
-                    <Link prefetch={false} href={"/profile"} className="w-12  !outline-none ">
+                    <Link prefetch={false} href={"/profile"} className="w-12   aspect-square h-12 !outline-none ">
                       <img
                         src={
                           userInfo?.profile_image
@@ -173,7 +173,7 @@ transition-all  ease-in-out duration-1000 header-content-container app-size cust
                             : "/assets/icons/logo/mobile_header_logo.svg"
                         }
                         alt="jayab"
-                        className="w-12 rounded-full   h-auto object-contain !outline-none cursor-pointer "
+                        className=" w-12   aspect-square h-12 rounded-full  object-cover !outline-none cursor-pointer "
                         // onClick={() => pusher("/")}
                       />
                     </Link>

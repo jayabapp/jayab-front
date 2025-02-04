@@ -48,7 +48,7 @@ const CreatePropertyImages = () => {
   const { mutate, isPending } = useMutation({
     mutationFn: PropertyService.CreatePropertySetMdia,
     onSuccess: () => {
-      if (!!!!edit_mode) {
+      if (!!edit_mode) {
         router.replace(`/profile/owner/properties/${property_id}/edit`);
       } else {
         router.push(`/profile/owner/properties/${property_id}/edit/environment`);

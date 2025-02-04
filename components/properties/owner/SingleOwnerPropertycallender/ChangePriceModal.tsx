@@ -22,12 +22,14 @@ const ChangePriceModal = ({
   selectedDateData,
   setCallendarDataState,
   data,
+  setRefresh,
 }: {
   show: boolean;
   onHide: () => void | null;
   selectedDateData?: OwnerCallendarItemDto;
   setCallendarDataState: React.Dispatch<React.SetStateAction<OwnerCallendarItemDto[]>>;
   data: SingleOwnerPropertyDto;
+  setRefresh: React.Dispatch<React.SetStateAction<boolean>>;
 }) => {
   const [hasDiscount, setHasDiscount] = useState(false);
   const [price, setPrice] = useState(0);
@@ -113,6 +115,18 @@ const ChangePriceModal = ({
 
         return next;
       });
+
+      /* -------------------------------- IF TODAY -------------------------------- */
+
+      const selectedTime = moment(
+        `${selectedDateData?.year}/${selectedDateData?.month}/${selectedDateData?.day}`,
+        "jYYYY/jMM/jD"
+      ).format("YYYY/MM/DD");
+
+      if (selectedDateData && moment().isSame(selectedTime, "day")) {
+        setRefresh((e) => !e);
+      }
+
       onHide();
     },
   });

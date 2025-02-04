@@ -102,7 +102,7 @@ const Callender = ({
     >
       <div
         className={`flex text-primary-700 flex-col gap-1 items-start   transition-all ${
-          !!selectedDate ? "" : " opacity-0"
+          !!selectedDate ? " h-[3.75rem]" : " opacity-0 h-0"
         }`}
       >
         <p>{moment(selectedDate, "jYYYY/jMM/jDD").format("jYYYY")}</p>
