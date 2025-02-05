@@ -24,9 +24,11 @@ const ImageCarousel = ({ list, item }: ImageCarouselTypes) => {
   return (
     <div className="h-full  col-span-full  px-4 md:pl-0 md:pr-4  py-0">
       <Swiper
+        pagination
+        autoplay
         spacing="0.5rem"
         slidesWidth={{ def: "100%", md: "40%" }}
-        options={{ align: "start", direction: "rtl", dragFree: false, loop: true }}
+        options={{ align: "center", direction: "rtl", dragFree: false, loop: true }}
       >
         {" "}
         {list?.map((e, i) => (

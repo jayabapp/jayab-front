@@ -7,6 +7,7 @@ import { Menu, MenuButton, MenuItem, MenuItems, Transition } from "@headlessui/r
 import queryBuilder from "@/helpers/queryBuilder";
 import { useQuery } from "@tanstack/react-query";
 import { SORT_TYPES } from "@/utils/constantss";
+import { useStoreInit } from "@/store";
 
 type sortTypeType = { id?: string; title?: string };
 export interface SortMenuType {
@@ -16,14 +17,24 @@ export interface SortMenuType {
 const SortMenu = ({ query }: SortMenuType) => {
   const router = useRouter();
   const pathname = usePathname();
+  const { userInfo } = useStoreInit((state) => state);
+  const [sortTypes, setSortTypes] = useState(SORT_TYPES);
 
-  const [selectedCat, setSelectedCat] = useState<{ title: string; id: number } | null>(null);
+  useEffect(() => {
+    if (!userInfo?.advisor_id) {
+      setSortTypes(SORT_TYPES?.filter((e) => e?.id != "commission"));
+    } else {
+      setSortTypes(SORT_TYPES);
+    }
+  }, [userInfo]);
+
+  // const [selectedCat, setSelectedCat] = useState<{ title: string; id: number } | null>(null);
 
   // const { data: storeData } = useQuery([BusinessServices.SINGLE_BUSINESSES_CACHEKEY, storeId], () =>
   //   BusinessServices.GetSingleBusiness({ id: storeId })
   // );
 
-  const setTag = (id: string | number | null) => {
+  const setTag = (id: string | number | null | undefined) => {
     let temp = { ...query };
 
     if (id == null) {
@@ -51,10 +62,7 @@ const SortMenu = ({ query }: SortMenuType) => {
           <MenuButton className=" h-auto md:h-11  rounded-lg cursor-pointer flex justify-between items-center">
             <div className="  gap-2  h-auto py-1 px-2  rounded-full bg-primary-400  flex items-center justify-center  ">
               {" "}
-              <p className="  text-xs md:text-base">
-                {" "}
-                {SORT_TYPES?.find((e) => e?.id == query?.sort_type)?.title}
-              </p>{" "}
+              <p className="  text-xs md:text-base"> {sortTypes?.find((e) => e?.id == query?.sort_type)?.title}</p>{" "}
               <img className="w-3 h-3 aspect-square" src="/assets/icons/shared/chevron.svg" />
             </div>
           </MenuButton>
@@ -68,13 +76,13 @@ const SortMenu = ({ query }: SortMenuType) => {
           leaveFrom="transform opacity-100 scale-100"
           leaveTo="transform opacity-0 scale-95"
         >
-          <MenuItems className="absolute top-0 md:top-auto left-0 z-20  mt-2 w-40 origin-top-center  rounded-xl bg-white dark:bg-zinc-800 custom-shadow ring-1 ring-black ring-opacity-5 focus:outline-none  overflow-scroll">
+          <MenuItems className="absolute top-0 md:top-auto left-0 z-20  mt-2 w-48 origin-top-center  rounded-xl bg-white dark:bg-zinc-800 custom-shadow ring-1 ring-black ring-opacity-5 focus:outline-none  overflow-scroll">
             <div className="flex gap-2 px-3 items-center flex-col  py-2 border-b border-gray-275 dark:border-zinc-500 ">
               {" "}
-              {SORT_TYPES.map((e) => (
+              {sortTypes.map((e) => (
                 <MenuItem key={e.id}>
                   <div
-                    className={`w-full pl-8  cursor-pointer relative`}
+                    className={`w-full pl-8  border-t first:border-t-0 pt-2 gap-2 flex items-center cursor-pointer relative`}
                     onClick={() => {
                       if (query?.sort_type == e?.id) {
                         // setTag(null);
@@ -86,6 +94,7 @@ const SortMenu = ({ query }: SortMenuType) => {
                     ) : (
                       <></>
                     )}
+                    <img src={e?.icon} className=" w-4 h-4 aspect-square" />
                     <p className="text-sm text-black dark:text-zinc-300 opacity-70"> {e?.title}</p>
                   </div>
                 </MenuItem>

@@ -100,14 +100,14 @@ const Callender = ({
       className="flex transition-all duration-500 ease-in-out  w-full  rounded-2xl   gap-4 flex-col"
       draggable
     >
-      <div
+      {/* <div
         className={`flex text-primary-700 flex-col gap-1 items-start   transition-all ${
           !!selectedDate ? " h-[3.75rem]" : " opacity-0 h-0"
         }`}
       >
         <p>{moment(selectedDate, "jYYYY/jMM/jDD").format("jYYYY")}</p>
-        <p className=" text-2xl ">{moment(selectedDate, "jYYYY/jMM/jDD").format("   ddd jDD jMMMM")}</p>
-      </div>
+        <p className=" text-base md:text-2xl ">{moment(selectedDate, "jYYYY/jMM/jDD").format("   ddd jDD jMMMM")}</p>
+      </div> */}
 
       <div className="flex items-center gap-4">
         {" "}

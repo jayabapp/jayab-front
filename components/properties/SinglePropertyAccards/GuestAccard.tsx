@@ -10,7 +10,6 @@ const GuestAccard = ({ data }: { data: SinglePropDto }) => {
     <SimpleAccordion
       item={{
         parenClass: " bg-white border border-gray-300 !mt-0  rounded-10 w-full",
-        titleClass: "font-bold",
       }}
       title="تعداد نفرات و قیمت ها"
     >

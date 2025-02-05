@@ -37,7 +37,7 @@ const SimpleAccordion = ({ title, children, ExtraElement, item, isOpenFirst, tit
         <div className="flex items-center gap-4">
           {titleIcon ? <div>{titleIcon}</div> : <></>}{" "}
           <div
-            className={`text-[12px] lg:text-sm line-clamp-2    text-justify ${item?.titleClass}`}
+            className={`text-sm lg:text-base font-medium line-clamp-2    text-justify ${item?.titleClass}`}
             dangerouslySetInnerHTML={{
               __html: DOMPurify.sanitize(title, { FORBID_ATTR: ["style"] }),
             }}

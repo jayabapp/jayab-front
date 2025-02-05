@@ -212,8 +212,11 @@ const MainWrapper = ({ children }: mainWrapper) => {
           {/* {!sidenavBlackList?.includes(pathname || "") && <SideNav />} */}
           {children}
         </div>
-        {!mobileFooterBlackList.find((e) => pathname?.includes(e)) && <Footer />}
-        {!mobileFooterBlackList.find((e) => pathname?.includes(e)) && <MobileFooter />}
+        <Suspense fallback={<FallBack />}>
+          {" "}
+          {!mobileFooterBlackList.find((e) => pathname?.includes(e)) && <Footer />}
+          {!mobileFooterBlackList.find((e) => pathname?.includes(e)) && <MobileFooter />}
+        </Suspense>{" "}
       </div>
       <Toaster />
       <LoginModal />

@@ -19,8 +19,8 @@ import dynamic from "next/dynamic";
 function MainFiltersContainer({ data, title }: { data: HomeLandingDto[]; title: string }) {
   // const ref = useRef<Swiper>(null);
   return (
-    <div className={` w-full noSelect   select-none   relative rounded-20 flex gap-4 flex-col items-center`}>
-      <p className=" font-medium  w-full text-start md:text-start text-lg md:text-xl">{title}</p>
+    <div className={` w-full noSelect   select-none   relative mt-2 rounded-20 flex gap-4 flex-col items-center`}>
+      <p className=" font-medium  w-full text-start md:text-start text-sm md:text-base ">{title}</p>
       {
         // isLoading ? (
         //   <div className=" min-h-[30dvh] w-full flex items-center justify-center">

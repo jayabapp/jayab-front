@@ -35,7 +35,7 @@ function HomeCityFilterContainer({ data, title }: { data: HomeLandingDto[]; titl
   return (
     <div className={` w-full noSelect   select-none   gap-4 relative rounded-20 flex flex-col items-center`}>
       <div className="w-full flex items-center justify-between ">
-        <p className=" font-medium   shrink-0 text-center md:text-start text-lg md:text-xl">{title}</p>
+        <p className=" font-medium   shrink-0 text-center md:text-start text-sm md:text-base">{title}</p>
 
         <div onClick={onShowCities} className="flex  cursor-pointer items-center shrink-0 gap-2">
           <p className="font-bold text-sm  shrink-0 text-primary-700 ">{_STRINGS.SEE_CITIES}</p>

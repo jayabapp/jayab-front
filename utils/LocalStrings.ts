@@ -79,7 +79,7 @@ const _STRINGS = {
 
   TODAYS_PRICE: "قیمت امروز:",
   VERIFIED: "احراز شده",
-  ROOM_COUNTS: "تعداد اتاق:",
+  ROOM_COUNTS: "تعداد اتاق",
   ROOM: "اتاق",
   ROOM_SIZE: "متراژ بنا",
   PROPERTY_LOC: "لوکیشن بنا",
@@ -356,6 +356,7 @@ const _STRINGS = {
   WRITE_MESSAGE_TEXT: "متن پیام را بنویسید",
   TICKET_CLOSED: "تیکت بسته شده است",
   WATCH: "مشاهده",
+  COMMIS_JUST_PERC: "درصد کمیسیون",
 };
 
 export default _STRINGS;

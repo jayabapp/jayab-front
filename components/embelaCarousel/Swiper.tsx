@@ -1,20 +1,19 @@
 "use client";
 import React, { ReactNode, useEffect, useState } from "react";
-import { EmblaOptionsType } from "embla-carousel";
+import { EmblaOptionsType, EmblaPluginType } from "embla-carousel";
 import useEmblaCarousel from "embla-carousel-react";
-import dynamic from "next/dynamic";
-import { useRouter } from "next/navigation";
+import { DotButton, useDotButton } from "./EmblaCarouselDotButton";
 import { useMediaQuery } from "react-responsive";
-const MediaQuery = dynamic(() => import("react-responsive"), {
-  ssr: false,
-});
-
+import { useAutoplay } from "./EmblaCarouselAutoplay";
+import Autoplay from "embla-carousel-autoplay";
 type PropType = {
   options?: EmblaOptionsType;
   children: ReactNode;
   slidesWidth?: { def: string; md: string };
   dir?: "rtl" | "ltr";
   spacing?: string;
+  autoplay?: boolean;
+  pagination?: boolean;
 };
 
 const Swiper: React.FC<PropType> = (props) => {
@@ -22,10 +21,32 @@ const Swiper: React.FC<PropType> = (props) => {
     query: "(min-width: 768px)",
   });
   const [slideWidth, setSlideWidth] = useState("20%");
+  const {
+    options = { align: "start", direction: "rtl" },
+    children,
+    dir = "rtl",
+    slidesWidth,
+    spacing,
+    autoplay = false,
+    pagination,
+  } = props;
 
-  const { options = { align: "start", direction: "rtl" }, children, dir = "rtl", slidesWidth, spacing } = props;
-  const [emblaRef, emblaApi] = useEmblaCarousel(options);
-  const router = useRouter();
+  /* -------------------------------------------------------------------------- */
+  /*                           SETTING EXTRA OPTIONS                          */
+  /* -------------------------------------------------------------------------- */
+  const [extraOptions, setExtraOptions] = useState<EmblaPluginType[]>([]);
+  useEffect(() => {
+    const extraoptionsVar = [];
+    if (autoplay) {
+      extraoptionsVar.push(Autoplay({ playOnInit: true, delay: 3000 }));
+    }
+    setExtraOptions(extraoptionsVar);
+  }, [autoplay]);
+
+  /* -------------------------------------------------------------------------- */
+  /*                             CREATING  CAROUSEL                             */
+  /* -------------------------------------------------------------------------- */
+  const [emblaRef, emblaApi] = useEmblaCarousel(options, [...extraOptions]);
 
   useEffect(() => {
     if (!!isDesktopOrLaptop) {
@@ -40,17 +61,42 @@ const Swiper: React.FC<PropType> = (props) => {
     "--slide-size": slideWidth,
   };
 
+  /* -------------------------------------------------------------------------- */
+  /*                              AUTOPLAY OPTIONS                              */
+  /* -------------------------------------------------------------------------- */
+
+  const { autoplayIsPlaying, toggleAutoplay, onAutoplayButtonClick } = useAutoplay(emblaApi);
+
+  /* -------------------------------------------------------------------------- */
+  /*                                 PAGINATION                                 */
+  /* -------------------------------------------------------------------------- */
+
+  const { selectedIndex, scrollSnaps, onDotButtonClick } = useDotButton(emblaApi);
+
   return (
     <section
       style={{
         ...sizeStyle,
       }}
-      className="embla"
+      className="embla relative"
       dir={dir}
     >
       <div className="embla__viewport" ref={emblaRef}>
         <div className="embla__container">{children}</div>
       </div>
+      {pagination ? (
+        <div className="embla__dots">
+          {scrollSnaps.map((_, index) => (
+            <DotButton
+              key={index}
+              onClick={() => onDotButtonClick(index)}
+              className={"embla__dot".concat(index === selectedIndex ? " embla__dot--selected" : "")}
+            />
+          ))}
+        </div>
+      ) : (
+        <></>
+      )}
     </section>
   );
 };

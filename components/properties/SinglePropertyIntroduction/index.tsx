@@ -63,7 +63,7 @@ const SinglePropertyIntroduction = ({ data }: { data: SinglePropDto }) => {
   };
 
   return (
-    <div className=" flex w-full  flex-col relative  gap-4">
+    <div className=" flex w-full  flex-col relative  gap-2 md:gap-3">
       <div className="w-full flex items-start md:items-center justify-between gap-2">
         {" "}
         <p className=" font-medium text-lg w-3/5 md:w-full md:text-2xl ">{data?.title}</p>
@@ -71,7 +71,7 @@ const SinglePropertyIntroduction = ({ data }: { data: SinglePropDto }) => {
       </div>
       <div className=" flex items-center w-full justify-between">
         <div className="flex items-center gap-4">
-          <div className="bg-primary-700 rounded-md text-base  px-2 py-1 text-white flex items-center justify-center">
+          <div className="bg-primary-700 rounded-md text-xs md:text-sm  px-2 py-1 text-white flex items-center justify-center">
             کد {data.code}
           </div>{" "}
           <div className="flex items-center gap-1">
@@ -98,43 +98,44 @@ const SinglePropertyIntroduction = ({ data }: { data: SinglePropDto }) => {
         )}
       </div>{" "}
       {/*                          */}
-      <div className="flex items-center gap-4    py-2 w-full md:justify-between">
+      <div className="flex items-center gap-4  relative   py-0.5 w-full md:justify-between">
         <div className="flex items-center gap-1">
-          <p>{_STRINGS.TODAYS_PRICE} </p>
+          <p className="w-20 md:text-sm text-xs ">{_STRINGS.TODAYS_PRICE} </p>
         </div>
         <SinglePropertyPricePart data={data} />
       </div>{" "}
       {/*                          */}
-      <div className="flex items-center gap-4   py-2 w-full md:justify-between">
-        <p>{_STRINGS.ROOM_COUNTS} :</p>
-        <p className="font-bold text-primary-700">
+      <div className="flex items-center gap-4   py-0.5 w-full md:justify-between">
+        <p className="w-20 md:text-sm text-xs ">{_STRINGS.ROOM_COUNTS} :</p>
+        <p className="font-bold text-sm md:text-base text-primary-700">
           {data?.total_bedrooms} {_STRINGS.ROOM}
         </p>
       </div>{" "}
       {/*                          */}
-      <div className="flex items-center gap-4   py-2 w-full md:justify-between">
-        <p>{_STRINGS.ROOM_SIZE} :</p>
-        <p className="font-bold text-primary-700">
+      <div className="flex items-center gap-4   py-0.5 w-full md:justify-between">
+        <p className="w-20 md:text-sm text-xs ">{_STRINGS.ROOM_SIZE} :</p>
+        <p className="font-bold text-sm md:text-base text-primary-700">
           {data?.building_area} {_STRINGS.METER}
         </p>
       </div>
       {/*                          */}
-      <div className="flex items-center gap-4   py-2 w-full md:justify-between">
+      {!!userInfo?.advisor_id ? (
+        <div className="flex items-center gap-2   py-0.5 w-full md:justify-between">
+          <p className="w-[5.5rem] md:text-sm text-xs ">{_STRINGS.COMMIS_JUST_PERC} :</p>
+          <p className="font-bold text-sm md:text-base text-primary-700">{data?.advisor_commission}%</p>
+        </div>
+      ) : (
+        <></>
+      )}
+      <div className="flex items-center gap-2   py-0.5 w-full md:justify-between">
         <div className="flex items-center gap-1">
           <img className="" src="/assets/icons/adds/pin_point_location.svg" />
           <p className=" hidden md:flex">{_STRINGS.PROPERTY_LOC} :</p>
         </div>
-        <p className="">
+        <p className=" text-xs md:text-sm">
           {data?.city} <span className="opacity-75">({data?.province})</span>
         </p>
       </div>
-      {/* 
-      <div className="flex items-center gap-4   py-2 w-full justify-between">
-        <p>{_STRINGS.TODAY_STATUS} :</p>
-        <p className="font-bold text-primary-700">
-          {data?.room_count} 
-        </p>
-      </div> */}
       <div className="w-full  hidden md:flex  items-center justify-between gap-4 ">
         <Button
           onClick={onContactClick}
@@ -162,14 +163,14 @@ const SinglePropertyIntroduction = ({ data }: { data: SinglePropDto }) => {
           <div className="w-full  px-4  flex items-center justify-between gap-4 ">
             <Button
               onClick={onContactClick}
-              width="w-full"
+              width="w-full  !py-1.5   !text-sm "
               containerClass="w-full"
               roundedClass="rounded-full"
               title={_STRINGS.CONTACT_INFO}
             />
             <Button
-              width="w-full"
-              containerClass="w-full"
+              width="w-full !py-1.5  !text-sm "
+              containerClass="w-full  "
               roundedClass="rounded-full"
               title={_STRINGS.CHAT_IN_JAYAB}
               onClick={onCreateChat}
