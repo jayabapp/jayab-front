@@ -108,25 +108,25 @@ const FiltersPart = ({ queries, setFilters, filters, propertyTypes }: any) => {
       <div className="flex text-xs  mt-4 md:text-sm w-full flex-col gap-4 px-4 ">
         <div className="w-full flex items-center justify-between">
           <p className="text-sm">{_STRINGS.PRICE_RANGE}</p>
-          {!!filters.max_price || filters.min_price ? (
-            <p className="text-xs">
-              {filters?.min_price ? ` از  ${numberWithCommas(filters?.min_price)}` : ""}{" "}
-              {!!filters.max_price ? ` تا ${numberWithCommas(filters.max_price)}` : ""} تومان
-            </p>
-          ) : (
-            <></>
-          )}
         </div>
         <PriceRange
           lowerKey="min_price"
           higherKey="max_price"
-          steps={100000}
+          steps={500000}
           filters={filters}
           setFilters={setFilters}
           query={queries}
-          lowLimit={10000}
-          upLimit={100000000}
+          lowLimit={500000}
+          upLimit={40000000}
         />
+        <div className={` ${!!filters.max_price || !!filters.min_price ? " h-8" : "h-0 opacity-0"}  transition-all `}>
+          <p className="text-sm opacity-70">
+            {filters?.min_price ? ` از  ${numberWithCommas(filters?.min_price)} تومان` : ""}{" "}
+          </p>
+          <p className="text-sm opacity-70">
+            {!!filters.max_price ? ` تا ${numberWithCommas(filters.max_price)} تومان` : ""}{" "}
+          </p>
+        </div>
       </div>
       <div className="flex text-xs  mt-10 md:text-sm w-full flex-col gap-4 px-4 ">
         <div className="w-full flex items-center justify-between">

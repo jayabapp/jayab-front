@@ -52,7 +52,7 @@ const Footer = () => {
   return (
     <div className="w-full  pb-6 bg-primary-200 hidden  lg:flex flex-col items-center justify-center bg-dark-500  bg-no-repeat bg-cover  relative pt-[6rem] ">
       <CallBox />
-      <div className="w-12/12 lg:w-11/12 mx-auto px-3 lg:px-4   2xl:px-[6%] py-4 grid grid-cols-4 lg:grid-cols-6 gap-5">
+      <div className="w-12/12 lg:w-[90%] mx-auto  py-4 grid grid-cols-4 lg:grid-cols-6 gap-5">
         {/* ABOUT US */}
         <div
           key={`footers`}
@@ -125,7 +125,7 @@ const Footer = () => {
       </div>
       {/* SECTION 4 */}
 
-      <div className="bg-white   rounded-20 w-9/10  mx-auto px-4 shadow-md   lg:w-3/4 h-14  md:h-20 flex items-center justify-between  ">
+      <div className="bg-white   rounded-20 w-9/10  mx-auto px-4 shadow-md   lg:w-[90%] h-14  md:h-20 flex items-center justify-between  ">
         <div className="  hidden md:flex    items-center gap-4">
           <div className="w-full   dark:text-zinc-100  text-center text-sm  ">
             تمامی حقوق مادی و معنوی این وبسایت متعلق به شرکت .

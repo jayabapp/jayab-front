@@ -3,20 +3,20 @@ import { toJpeg } from "html-to-image";
 import _STRINGS from "@/utils/LocalStrings";
 import Button from "../shared/Button/Button";
 import FixedBottomContainer from "../shared/FixedBottomContainer";
-
+import html2canvas from "html2canvas";
 const ElementToImage = ({ children, ...props }: any) => {
   const ref = useRef<HTMLDivElement>(null);
 
-  const onShare = async (shareData: any) => {
+  const onShare = async (files: any) => {
     const title = "jayab";
 
-    const response = await fetch(shareData);
-    const blob = await response.blob();
-    const files = [
-      new File([blob], "file.jpeg", {
-        type: blob.type,
-      }),
-    ];
+    // const response = await fetch(shareData);
+    // const blob = await response.blob();
+    // const files = [
+    //   new File([blob], "file.jpeg", {
+    //     type: blob.type,
+    //   }),
+    // ];
 
     const shareDetails = { title, files };
     if (navigator.share) {
@@ -50,6 +50,19 @@ const ElementToImage = ({ children, ...props }: any) => {
     }
   }, [ref]);
 
+  ///////
+  const onButtonClickCanvas = async () => {
+    if (ref.current === null) {
+      alert("wtf");
+      return;
+    }
+
+    const canvas = await html2canvas(ref.current);
+    canvas.toBlob(async (blob: any) => {
+      const files = [new File([blob], "image.jpg", { type: blob.type })];
+      onShare(files);
+    });
+  };
   return (
     <>
       <div ref={ref} {...props}>
@@ -61,7 +74,7 @@ const ElementToImage = ({ children, ...props }: any) => {
           roundedClass="rounded-full"
           width=" w-[90%] md:w-1/2"
           title={_STRINGS.SHARE}
-          onClick={onButtonClick}
+          onClick={onButtonClickCanvas}
         />
       </FixedBottomContainer>
     </>

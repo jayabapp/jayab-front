@@ -20,7 +20,7 @@ const PropertyCard = ({ data, isOwner, week }: { data: PropertyListDto; isOwner?
 
   const goToLink = !!isOwner ? `/profile/owner/properties/${data?.id}` : `/rooms/${data?.slug}`;
   return (
-    <div className="w-full shadow-card  rounded-2xl   flex flex-col  p-3   gap-2  ">
+    <div className="w-full shadow-card  rounded-2xl    justify-between flex flex-col  p-3   gap-2  ">
       <div className="w-full  grid grid-cols-5 gap-2   ">
         {/* INFO */}
         <Link href={`${goToLink}`} prefetch={false} className="col-span-3  order-1  flex flex-col gap-1">
@@ -122,11 +122,11 @@ const PropertyCard = ({ data, isOwner, week }: { data: PropertyListDto; isOwner?
               ) : (
                 <></>
               )}
-              {bookmarks?.includes(data?.id) ? (
+              {/* {bookmarks?.includes(data?.id) ? (
                 <img src="/assets/icons/adds/List_bookmark_icon.svg" className="w-5 h-5 aspect-square" />
               ) : (
                 <></>
-              )}
+              )} */}
             </div>
             {data?.advisor_commission || data?.advisor_commission == 0 ? (
               <div className="w-16 gap-0.5  h-5 rounded-md transition-all  py-[0.2rem]   bg-black/50 text-white absolute z-1 left-2 flex-row top-2 aspect-square flex items-center justify-center">
@@ -152,14 +152,14 @@ const PropertyCard = ({ data, isOwner, week }: { data: PropertyListDto; isOwner?
         </Link>
       </div>
       {isOwner ? <PropertyCardOwnerPart goToLink={goToLink} data={data} /> : <></>}
-      {!!data?.reserve_days && !isEmpty(data?.reserve_days) ? (
+      {/* {!!data?.reserve_days && !isEmpty(data?.reserve_days) ? (
         <div className="w-full pt-1 border-t">
           {" "}
           <DaysOfTheWeekStatus week={week || []} isCard={true} data={data?.reserve_days} />
         </div>
       ) : (
         <></>
-      )}
+      )} */}
     </div>
   );
 };

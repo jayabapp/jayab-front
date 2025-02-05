@@ -29,7 +29,7 @@ const MobileFooter: React.FC = ({}) => {
     },
     {
       id: 242,
-      title: _STRINGS.ADD,
+      title: _STRINGS.ADDS,
       route: "/rooms",
 
       icon: "/assets/icons/navbar/adds_footer.svg",
