@@ -5,7 +5,7 @@ import successIcon from "@/public/assets/lotties/notif/Success.json";
 import warningIcon from "@/public/assets/lotties/notif/Warning.json";
 import infoIcon from "@/public/assets/lotties/notif/Info.json";
 import Lottie from "react-lottie";
-import { Iransans_font } from "@/app/fonts/Iransans_font";
+import { x_Iransans } from "@/app/fonts/x_iran/x_Iransans";
 interface props {
   type?: "success" | "error" | "warn" | "info";
   title?: string;
@@ -48,7 +48,7 @@ const Notify = (props: props) => {
         <div className="w-14 h-14">
           <Lottie options={{ animationData: _findTypeData().icon, loop: true }} />
         </div>
-        <div className={`mr-3   app-text  ${Iransans_font.className}  `}>
+        <div className={`mr-3   app-text  ${x_Iransans.className}  `}>
           {/* <h1 className="font-bold text-sm mx-2">{title}</h1> */}
           <p className="font-light w-full text-[13px]  text-white  md:font-normal md:text-sm mx-2">{body}</p>
           {children}

@@ -47,7 +47,6 @@ export default function SingleDeceasedPage({ params }: { params: Promise<{ room_
           <ProductSkeleton />
         ) : !!properyData ? (
           <>
-            sssssssssssssssssssssssssss
             <ProductImagesContainer productImageId={null} data={properyData} />
             <SinglePropertyIntroduction data={properyData} />
             {/* <SingleMobilePropertyIntroductions data={properyData} /> */}

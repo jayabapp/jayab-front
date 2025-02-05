@@ -1,35 +1,35 @@
 import localFont from "next/font/local";
 
-export const Iransans_font = localFont({
+export const x_Iransans = localFont({
   src: [
     {
-      path: "./IRANSans(FaNum)_Light.ttf",
+      path: "./IRANSansX-Light.ttf",
       weight: "200",
       style: "normal",
     },
     {
-      path: "./IRANSans(FaNum)_Light.ttf",
+      path: "./IRANSansX-Thin.ttf",
       weight: "300",
       style: "normal",
     },
     {
-      path: "./IRANSans(FaNum).ttf",
+      path: "./IRANSansX-Regular.ttf",
       weight: "400",
       style: "normal",
     },
     {
-      path: "./IRANSans(FaNum)_Medium.ttf",
+      path: "./IRANSansX-Medium.ttf",
       weight: "500",
       style: "normal",
     },
     {
-      path: "./IRANSans(FaNum)_Bold.ttf",
+      path: "./IRANSansX-DemiBold.ttf",
       weight: "600",
       style: "normal",
     },
 
     {
-      path: "./IRANSans(FaNum)_Bold.ttf",
+      path: "./IRANSansX-Bold.ttf",
       weight: "700",
       style: "normal",
     },

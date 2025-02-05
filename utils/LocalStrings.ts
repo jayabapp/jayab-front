@@ -5,7 +5,7 @@ const _STRINGS = {
   EMPTY: "خالی",
   OCCUPIED: "رزرو",
   NO_PRICE: "توافقی",
-  TOMAN: "تومان",
+  TOMAN: "تومانءء",
   BUCKS: "دلار",
   ALL: "همه",
   RIAL: "ریال",

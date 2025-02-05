@@ -51,7 +51,7 @@ const SingleOwnerPropertyIntroduction = ({ data }: { data: SingleOwnerPropertyDt
           <div className=" rounded-full text-sm text-primary-700 bg-primary-400 flex  items-center justify-center h-7 w-24 ">
             {data?.remaining_days ? `${data?.remaining_days} روز اعتبار` : `اعتبار ندارد`}
           </div>
-          <div className=" rounded-full text-sm text-white bg-primary-700 flex  items-center justify-center h-7 w-24 ">
+          <div className=" rounded-full text-xs text-white bg-primary-700 flex  items-center justify-center h-7 w-24 ">
             {_STRINGS.EXTEND_SUBS}
           </div>
         </div>

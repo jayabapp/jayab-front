@@ -53,7 +53,11 @@ const PropertyCard = ({ data, isOwner, week }: { data: PropertyListDto; isOwner?
           </div>
           {/* PRICING */}
 
-          <div className="w-full flex  flex-row  items-start gap-2 justify-start">
+          <div
+            className={`w-full flex  flex-row ${
+              data?.today_price?.discounted_price ? "items-start" : "items-center"
+            }   gap-2 justify-start`}
+          >
             {" "}
             <p className=" text-xxs 2xl:text-sm mt-0.5  shrink-0 ">{_STRINGS.TODAYS_PRICE}</p>
             <AddCardPricePart
@@ -143,7 +147,7 @@ const PropertyCard = ({ data, isOwner, week }: { data: PropertyListDto; isOwner?
             {data?.is_authorized ? (
               <div className=" left-0 right-0 w-fit   absolute   p-1  rounded-full flex items-center gap-2 bg-black/60  mx-auto bottom-1">
                 <img src="/assets/icons/adds/green_circular_tick.svg" />
-                <p className="text-sm text-white">{_STRINGS.VERIFIED}</p>
+                <p className="text-xs text-white">{_STRINGS.VERIFIED}</p>
               </div>
             ) : (
               <></>

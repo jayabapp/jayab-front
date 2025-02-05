@@ -22,8 +22,8 @@ const CallBox = () => {
   };
 
   return (
-    <div className=" w-full  -top-24 md:absolute">
-      <div className=" w-full min-h-[10rem] md:w-[90%] px-6  py-6 md:py-0  gap-6  mx-auto bg-primary-700 rounded-20  relative flex flex-col md:flex-row items-center justify-between">
+    <div className=" w-full  md:px-[10%]  -top-24 md:absolute">
+      <div className=" w-full min-h-[10rem] md:w-full px-6  py-6 md:py-0  gap-6  mx-auto bg-primary-700 rounded-20  relative flex flex-col md:flex-row items-center justify-between">
         <img
           onError={onImageError}
           src={

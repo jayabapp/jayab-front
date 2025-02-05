@@ -1,6 +1,6 @@
 "use client";
 import { initializeApp } from "firebase/app";
-import { getMessaging, getToken, onMessage } from "firebase/messaging";
+import { getMessaging, getToken, Messaging, onMessage } from "firebase/messaging";
 import { apiRoutes } from "@/utils/urls";
 import { apiCall } from "@/api_services/common/apicall.helper";
 import Notify from "@/components/shared/Toast";
@@ -8,6 +8,8 @@ import { useEffect } from "react";
 import firebaseConfig from "./firebase.config";
 
 class FCM {
+  static messagingInstance: Messaging;
+
   static async init() {
     /**
      * Check and request permission
@@ -16,29 +18,31 @@ class FCM {
       const granted = await this.requestPermission();
       if (!granted) return;
 
-      const app = initializeApp(firebaseConfig);
-      // Initialize Firebase Cloud Messaging and get a reference to the service
-      const messaging = getMessaging(app);
+      if (!this.messagingInstance) {
+        const app = initializeApp(firebaseConfig);
+        // Initialize Firebase Cloud Messaging and get a reference to the service
+        this.messagingInstance = getMessaging(app);
 
-      // Add the public key generated from the console here.
-      const token = await getToken(messaging, {
-        vapidKey: "BPRAmYzDUfXAtV_qBO7LVT0Z_NXdqNShQoYFTgmzOOX6y31HE1O0G2GIpctidLffF79gd7X6ViHXEVcj4peaZzE",
-      });
+        // Add the public key generated from the console here.
+        const token = await getToken(this.messagingInstance, {
+          vapidKey: "BPRAmYzDUfXAtV_qBO7LVT0Z_NXdqNShQoYFTgmzOOX6y31HE1O0G2GIpctidLffF79gd7X6ViHXEVcj4peaZzE",
+        });
 
-      let meesaging = onMessage(messaging, (payload) => {
-        console.log("incoming transmition", payload?.notification?.body);
-        // if (!window.location.pathname.includes("chat")) {
-        //   Notify({ body: payload?.notification?.body, title: payload?.notification?.title });
-        // }
-      });
+        onMessage(this.messagingInstance, (payload) => {
+          console.log("incoming transmition", payload?.notification?.body);
+          // if (!window.location.pathname.includes("chat")) {
+          // Notify({ body: payload?.notification?.body, title: payload?.notification?.title });
+          // }
+        });
 
-      // meesaging();
+        // meesaging();
 
-      console.log(token, "tokentokentokentokentoken");
-      if (token) {
-        this.updateFcm(token);
-      } else {
-        await this.requestPermission();
+        console.log(token, "tokentokentokentokentoken");
+        if (token) {
+          this.updateFcm(token);
+        } else {
+          await this.requestPermission();
+        }
       }
     }
   }

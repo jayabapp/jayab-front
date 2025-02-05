@@ -54,7 +54,7 @@ const Filterpage = () => {
   const [queries, setQueries] = useState(queriesParams);
 
   useEffect(() => {
-    if (pathname.includes("/rooms")) {
+    if (pathname == "/rooms") {
       setQueries(queriesParams);
       setDefaultMobileFilters(queriesParams);
       setFilters(queriesParams);

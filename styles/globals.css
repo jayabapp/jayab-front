@@ -10,6 +10,7 @@ body {
   color: #17191c;
   margin: 0;
   background: white !important;
+  font-feature-settings: "ss01";
 }
 
 a {
@@ -54,6 +55,10 @@ input:focus {
 
 ul {
   list-style: disc;
+}
+
+.space-font {
+  font-feature-settings: "ss03";
 }
 
 .app-container {

@@ -2,8 +2,9 @@ import type { Metadata } from "next";
 import "swiper/css";
 import "swiper/css/pagination";
 import "../styles/globals.css";
-import { Iransans_font } from "./fonts/Iransans_font";
+
 import LayoutProvider from "./layout-provider";
+import { x_Iransans } from "./fonts/x_iran/x_Iransans";
 
 export const metadata: Metadata = {
   title: "جایاب",
@@ -44,7 +45,7 @@ export default function RootLayout({
         <link rel="manifest" href="/manifest.json" />
         {/* <link rel="apple-touch-icon" sizes="180x180" href="/assets/icons/app/apple-touch-icon.png" /> */}
       </head>
-      <body content="noindex,nofollow" className={`${Iransans_font.className} `}>
+      <body content="noindex,nofollow" className={`${x_Iransans.className} `}>
         <LayoutProvider modal={modal} params={params}>
           {children}
         </LayoutProvider>

@@ -65,13 +65,13 @@ const SsrFilterPage = ({ landings, firstData }: { firstData: { data: any[] }; la
     setFilters({ ...defaults, ...queriesParams });
   }, [landings?.query]);
 
-  useEffect(() => {
-    if (pathname.includes("/rooms")) {
-      setQueries(queriesParams);
-      setDefaultMobileFilters(queriesParams);
-      setFilters(queriesParams);
-    }
-  }, [searchParams]);
+  // useEffect(() => {
+  //   if (pathname.includes("/rooms")) {
+  //     setQueries(queriesParams);
+  //     setDefaultMobileFilters(queriesParams);
+  //     setFilters(queriesParams);
+  //   }
+  // }, [searchParams]);
 
   const [sortType, setSortType] = useState<sortTypeType | undefined>(
     queries?.sort_type ? SORT_TYPES?.find((i) => i?.id == queries?.sort_type) : SORT_TYPES[0]
