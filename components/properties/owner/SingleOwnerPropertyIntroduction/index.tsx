@@ -33,8 +33,8 @@ const SingleOwnerPropertyIntroduction = ({ data }: { data: SingleOwnerPropertyDt
       </div>
       <div className="w-full flex  flex-row  items-center gap-2 justify-start">
         {" "}
-        <p className="text-xs  shrink-0 ">{_STRINGS.TODAY_STATUS} :</p>
-        <p className={` font-bold ${!!data?.is_today_reserved ? " text-red-500 " : " text-primary-700 "} `}>
+        <p className="text-sm  shrink-0 ">{_STRINGS.TODAY_STATUS} :</p>
+        <p className={` text-sm font-bold ${!!data?.is_today_reserved ? " text-red-500 " : " text-primary-700 "} `}>
           {!!data?.is_today_reserved ? _STRINGS.OCCUPIED : _STRINGS.EMPTY}{" "}
         </p>
       </div>

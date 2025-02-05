@@ -4,7 +4,7 @@ import _, { isEmpty } from "lodash";
 
 import { useEffect, useRef, useState } from "react";
 import type { Swiper } from "swiper";
-import { SwiperSlide } from "swiper/react";
+// import { SwiperSlide } from "swiper/react";
 
 import Link from "next/link";
 
@@ -12,11 +12,13 @@ import _STRINGS from "@/utils/LocalStrings";
 
 import { isMobile } from "react-device-detect";
 import EmptyList from "@/components/shared/Lotties/EmptyList";
-import SwiperWithNavigation from "@/components/SwiperWithNavigation";
+const SwiperEm = dynamic(() => import("@/components/embelaCarousel/Swiper"), { ssr: false });
+const SwiperSlide = dynamic(() => import("@/components/embelaCarousel/SwiperSlide"), { ssr: false });
 import CategoryItem from "./HomeCityItem";
 import { HomeLandingDto } from "@/api_services/home/home.interface";
 import HomeCityItem from "./HomeCityItem";
 import CityModal from "@/components/CityModal";
+import dynamic from "next/dynamic";
 
 function HomeCityFilterContainer({ data, title }: { data: HomeLandingDto[]; title: string }) {
   const [showCities, setShowCities] = useState(false);
@@ -46,53 +48,17 @@ function HomeCityFilterContainer({ data, title }: { data: HomeLandingDto[]; titl
           <EmptyList />
         </div>
       ) : (
-        <SwiperWithNavigation
-          pagination={{
-            clickable: true,
-            enabled: true,
-          }}
-          reference={ref}
-          className="!w-full  !pb-2  "
-          onBeforeInit={(swiper: Swiper) => (ref.current = swiper)}
-          dataLength={isMobile ? Number(data?.length) * 3 : Number(data?.length) * 2}
-          // slidesPerView={2}
-          grid={{ fill: "row", rows: 1 }}
-          breakpoints={{
-            // when window width is >= 640px
-            320: {
-              slidesPerView: 4,
-              spaceBetween: 2,
-              grid: { fill: "row", rows: 1 },
-            },
-            640: {
-              slidesPerView: 5,
-              spaceBetween: 2,
-              grid: { fill: "row", rows: 1 },
-            },
-            // when window width is >= 768px
-            768: {
-              slidesPerView: 7,
-              spaceBetween: 0,
-              grid: { fill: "row", rows: 1 },
-            },
-            1024: {
-              slidesPerView: 10,
-              spaceBetween: 0,
-              grid: { fill: "row", rows: 1 },
-            },
-            1600: {
-              slidesPerView: 12,
-              spaceBetween: 0,
-              grid: { fill: "row", rows: 1 },
-            },
-          }}
+        <SwiperEm
+          slidesWidth={{ def: "25%", md: "10%" }}
+          spacing="0.5rem"
+          options={{ align: "start", direction: "rtl", dragFree: false, loop: true }}
         >
           {data?.map((i, index: number) => (
             <SwiperSlide key={index} className={`w-full  !h-auto   p-0 md:py-2 cursor-pointer select-none md:px-2`}>
               <HomeCityItem item={i} key={`${i?.title}${index}cat`} />
             </SwiperSlide>
           ))}
-        </SwiperWithNavigation>
+        </SwiperEm>
       )}
       <CityModal onHide={onHideCities} show={showCities} passedUrl={"/rooms"} />
     </div>

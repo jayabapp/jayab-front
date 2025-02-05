@@ -83,7 +83,7 @@ const PropertyCard = ({ data, isOwner, week }: { data: PropertyListDto; isOwner?
               <div className="w-full">
                 <p className="text-xs">
                   {" "}
-                  <span>{data?.total_bedrooms} اتاق</span>-<span>تا {data?.max_capacity} نفر</span>{" "}
+                  <span>{data?.total_bedrooms} اتاق</span> - <span>تا {data?.max_capacity} نفر</span>{" "}
                   {!!data?.has_pool ? <span className="text-primary-700"> - {_STRINGS.HAS_POOL} </span> : <></>}
                 </p>
               </div>

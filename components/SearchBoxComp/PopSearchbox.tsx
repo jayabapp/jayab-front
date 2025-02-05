@@ -9,6 +9,7 @@ import SuggestedPart from "./SuggestedPart";
 import { isMobile } from "react-device-detect";
 import SmallLoading from "../shared/Lotties/SmallLoading";
 import { HomeService } from "@/api_services/home/home.service";
+import _STRINGS from "@/utils/LocalStrings";
 
 interface props {
   initValue?: string | undefined;
@@ -240,6 +241,15 @@ const PopSearchbox = ({
             // onSubmit(e);
           }}
         />
+        {!suggsData ? (
+          <div className="w-full  mt-16 opacity-20  flex-col flex items-center justify-center">
+            {" "}
+            <img className="w-1/3  aspect-auto" src="/assets/icons/edit/magnifier.svg" />
+            {/* <p className="text-base font-bold">{_STRINGS.SEARCH}</p> */}
+          </div>
+        ) : (
+          <></>
+        )}
       </div>
 
       {!!isMobile ? (
