@@ -42,7 +42,7 @@ const Home = async () => {
   });
 
   return (
-    <div style={{ minHeight: "100dvh" }} id="homeParent" className="home-container  !px-0   flex flex-col gap-5 ">
+    <div style={{ minHeight: "100dvh" }} id="homeParent" className="home-container  !px-0   flex flex-col gap-3 ">
       <Suspense
         fallback={
           <div className=" min-h-[30dvh] flex items-center justify-center  w-full   ">

@@ -23,7 +23,7 @@ function HomePropertiesSsrPart({ data, middleBanners }: HomePropertiesSsrPartTyp
         {!data ? (
           <LottieLoading />
         ) : data?.length > 0 ? (
-          <div className="grid   pb-8 pt-4 md:pt-2 px-1  !overflow-hidden  grid-cols-1 gap-2 md:gap-4  md:grid-cols-2 xl:grid-cols-4 ">
+          <div className="grid   pb-8 pt-2 md:pt-2 px-1  !overflow-hidden  grid-cols-1 gap-2 md:gap-4  md:grid-cols-2 xl:grid-cols-4 ">
             {data?.map((i: any, index: number) => {
               const bannerItem = !isEmpty(middleBanners) ? middleBanners[Math.floor(index / 8)] : [];
               return (

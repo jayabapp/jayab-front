@@ -5,7 +5,7 @@ import React from "react";
 
 const HomeSearchPart = () => {
   return (
-    <div className="w-full px-4 flex md:hidden">
+    <div className="w-full px-4 py-1 flex md:hidden">
       <PopSearchbox
         boxId={"HOME_SEARCH_BOX"}
         placeholder={_STRINGS?.SEARCH_CITY_OR_ADD}

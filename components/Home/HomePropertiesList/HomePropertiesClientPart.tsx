@@ -62,7 +62,7 @@ function HomePropertiesClientPart({ setCursor, cursor }: HomePropertiesClientPar
       return PropertyService?.GetProperties({
         cursor: Number(cursor),
 
-        per_page: 20,
+        per_page: 30,
       });
     },
     gcTime: 0,
@@ -92,11 +92,12 @@ function HomePropertiesClientPart({ setCursor, cursor }: HomePropertiesClientPar
             <LottieLoading />
           ) : data && data?.length > 0 ? (
             <InfiniteScroll
+              scrollThreshold={0.5}
               dataLength={data?.length} //This is important field to render the next data
               next={() => {
                 setCursor(last(data)?.id || 0);
               }}
-              hasMore={data?.length % 20 == 0 ? true : false}
+              hasMore={data?.length % 30 == 0 ? true : false}
               loader={
                 <div className="w-full mt-8 flex items-center justify-center">
                   <BtnLoading />

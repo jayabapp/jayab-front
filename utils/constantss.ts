@@ -127,7 +127,7 @@ export const SORT_TYPES = [
   { id: "price_asc", title: "ارزان ترین", icon: "/assets/icons/sort/sort_piggy_banl.svg" },
   { id: "price_desc", title: "گران ترین", icon: "/assets/icons/sort/sort_expensive.svg" },
   { id: "popular", title: "محبوب ترین", icon: "/assets/icons/sort/sort_star.svg" },
-  { id: "commission", title: "بیشترین کمیسیون", icon: "/assets/icons/sort/sort_most_comision.svg" },
+  { id: "commission_desc", title: "بیشترین کمیسیون", icon: "/assets/icons/sort/sort_most_comision.svg" },
 ];
 export const allRoutes: { [key: string]: string } = {
   questions: "پرسش ها",

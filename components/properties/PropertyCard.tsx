@@ -55,7 +55,7 @@ const PropertyCard = ({ data, isOwner, week }: { data: PropertyListDto; isOwner?
 
           <div className={`w-full flex  flex-row ${"items-start"}  h-8  gap-2 justify-start`}>
             {" "}
-            <p className=" text-xs 2xl:text-sm  shrink-0 ">{_STRINGS.TODAYS_PRICE}</p>
+            <p className=" leading-5 text-xs 2xl:text-sm  shrink-0 ">{_STRINGS.TODAYS_PRICE}</p>
             <AddCardPricePart
               data={{ discounted_price: data?.today_price?.discounted_price, price: data?.today_price?.price }}
             />
@@ -116,10 +116,11 @@ const PropertyCard = ({ data, isOwner, week }: { data: PropertyListDto; isOwner?
             <div className="absolute z-1 right-2 top-2 flex flex-col gap-1 w-7">
               {" "}
               {data?.today_price?.discount_percentage ? (
-                <div className="w-7 gap-0.5 flex-col h-5 rounded-md transition-all  px-1 py-[0.2rem]   bg-primary-150 text-white  aspect-square flex items-center justify-center">
-                  {/* <img className="w-4 h-4" src="/assets/icons/products/discount_tag.svg" /> */}
-                  <p className="  text-xxs   ">%{data.today_price?.discount_percentage}</p>{" "}
-                </div>
+                // <div className="w-7 gap-0.5 flex-col h-5 rounded-md transition-all  px-1 py-[0.2rem]   bg-primary-150 text-white  aspect-square flex items-center justify-center">
+                //   {/* <img className="w-4 h-4" src="/assets/icons/products/discount_tag.svg" /> */}
+                //   <p className="  text-xxs   ">%{data.today_price?.discount_percentage}</p>{" "}
+                // </div>
+                <></>
               ) : (
                 <></>
               )}

@@ -44,7 +44,7 @@ const HomeCityItem = ({ item }: { item: HomeLandingDto }) => {
         />
       </div>
 
-      <p className={`font-medium text-sm text-center md:text-lg`}>{item?.title}</p>
+      <p className={` text-xs text-center md:text-base`}>{item?.title}</p>
     </button>
   );
 };

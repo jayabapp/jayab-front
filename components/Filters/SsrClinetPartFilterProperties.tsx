@@ -111,7 +111,7 @@ function SsrClinetPartFilterProperties({ sortType, query, setCursor, cursor }: S
         max_price: Number(query.max_price) || undefined,
         max_building_area: Number(query.max_building_area) || undefined,
         min_building_area: Number(query.min_building_area) || undefined,
-        per_page: 20,
+        per_page: 30,
         cities: query?.cities || undefined,
         code: query?.code || undefined,
         entertainment: query?.entertainment || undefined,
@@ -178,11 +178,12 @@ function SsrClinetPartFilterProperties({ sortType, query, setCursor, cursor }: S
             <LottieLoading />
           ) : data && data?.length > 0 ? (
             <InfiniteScroll
+              scrollThreshold={0.5}
               dataLength={data?.length} //This is important field to render the next data
               next={() => {
                 setCursor(last(data)?.id || 0);
               }}
-              hasMore={data?.length % 20 == 0 ? true : false}
+              hasMore={data?.length % 30 == 0 ? true : false}
               loader={
                 <div className="w-full mt-8 flex items-center justify-center">
                   <BtnLoading />

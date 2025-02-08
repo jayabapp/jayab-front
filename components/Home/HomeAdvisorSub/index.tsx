@@ -25,47 +25,54 @@ const HomeAdvisorSub = () => {
   const isActive = moment().isBefore(advisorProfile?.subscription_expired_at);
   const remainingDays = moment(advisorProfile?.subscription_expired_at).diff(moment(), "days");
   return (
-    <div
-      className="w-full items-center justify-center pt-2 pb-4 flex flex-col md:flex-row gap-2  
-  
-  "
-    >
-      {advisorProfile?.status?.id == 20 && !advisorProfile?.is_special && !!isActive ? (
-        <Link
-          href={`/profile/advisor/subscription/is-especial`}
-          className="w-full  md:w-[30%] rounded-full flex items-center justify-center gap-4 h-10 bg-primary-600 "
+    <>
+      {" "}
+      {advisorProfile ? (
+        <div
+          className="w-full items-center justify-center  pb-4 flex flex-col md:flex-row gap-2  
+
+"
         >
-          <img className="w-5 h-5 aspect-square" src="/assets/icons/home/white_star_tick.svg" />
-          <p className="text-white">{_STRINGS.REGISTER_AS_SPECIAL_AD}</p>
-        </Link>
+          {advisorProfile?.status?.id == 20 && !advisorProfile?.is_special && !!isActive ? (
+            <Link
+              href={`/profile/advisor/subscription/is-especial`}
+              className="w-full  md:w-[30%] rounded-full flex items-center justify-center gap-4 h-10 bg-primary-600 "
+            >
+              <img className="w-5 h-5 aspect-square" src="/assets/icons/home/white_star_tick.svg" />
+              <p className="text-white">{_STRINGS.REGISTER_AS_SPECIAL_AD}</p>
+            </Link>
+          ) : (
+            <></>
+          )}
+          {advisorProfile?.status?.id == 20 && !!isActive && remainingDays <= 3 ? (
+            <Link
+              href={`/profile/advisor/subscription`}
+              className="w-full md:w-[30%] rounded-full flex items-center justify-center gap-4 h-10 bg-primary-350 "
+            >
+              <img className="w-5 h-5 aspect-square" src="/assets/icons/home/white_alarm.svg" />
+              <p className="text-white">
+                {_STRINGS.EXPIRES_IN} : {timeLeft(advisorProfile?.subscription_expired_at)}
+              </p>
+            </Link>
+          ) : (
+            <></>
+          )}
+          {advisorProfile?.status?.id == 20 && !isActive ? (
+            <Link
+              href={`/profile/advisor/subscription`}
+              className="w-full md:w-[30%] rounded-full flex items-center justify-center gap-4 h-10 bg-primary-150 "
+            >
+              <img className="w-5 h-5 aspect-square" src="/assets/icons/home/white_alarm.svg" />
+              <p className="text-white">{_STRINGS.EXPIRED}</p>
+            </Link>
+          ) : (
+            <></>
+          )}
+        </div>
       ) : (
-        <></>
-      )}
-      {advisorProfile?.status?.id == 20 && !!isActive && remainingDays <= 3 ? (
-        <Link
-          href={`/profile/advisor/subscription`}
-          className="w-full md:w-[30%] rounded-full flex items-center justify-center gap-4 h-10 bg-primary-350 "
-        >
-          <img className="w-5 h-5 aspect-square" src="/assets/icons/home/white_alarm.svg" />
-          <p className="text-white">
-            {_STRINGS.EXPIRES_IN} : {timeLeft(advisorProfile?.subscription_expired_at)}
-          </p>
-        </Link>
-      ) : (
-        <></>
-      )}
-      {advisorProfile?.status?.id == 20 && !isActive ? (
-        <Link
-          href={`/profile/advisor/subscription`}
-          className="w-full md:w-[30%] rounded-full flex items-center justify-center gap-4 h-10 bg-primary-150 "
-        >
-          <img className="w-5 h-5 aspect-square" src="/assets/icons/home/white_alarm.svg" />
-          <p className="text-white">{_STRINGS.EXPIRED}</p>
-        </Link>
-      ) : (
-        <></>
-      )}
-    </div>
+        <> </>
+      )}{" "}
+    </>
   );
 };
 

@@ -26,7 +26,7 @@ const SimpleAccordion = ({ title, children, ExtraElement, item, isOpenFirst, tit
     <div
       className={`${isOpen ? "" : ""}  h-fit ${
         item?.parenClass
-      } transition-all duration-100 ease-in-out  overflow-clip  px-4 py-2.5 `}
+      } transition-all duration-100 ease-in-out  overflow-clip  px-4 py-3 `}
     >
       <div
         className={` flex justify-between items-center gap-3  ${item?.headClass}    transition-all cursor-pointer ${

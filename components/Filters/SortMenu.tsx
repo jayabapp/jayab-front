@@ -95,7 +95,7 @@ const SortMenu = ({ query }: SortMenuType) => {
                       <></>
                     )}
                     <img src={e?.icon} className=" w-4 h-4 aspect-square" />
-                    <p className="text-sm text-black dark:text-zinc-300 opacity-70"> {e?.title}</p>
+                    <p className="text-xs text-black dark:text-zinc-300 opacity-70"> {e?.title}</p>
                   </div>
                 </MenuItem>
               ))}

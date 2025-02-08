@@ -11,7 +11,7 @@ import RulesPopPart from "./RulesPopPart";
 
 const SinglePorpertyAccards = ({ data }: { data: SinglePropDto }) => {
   return (
-    <div className="w-full order-4 md:order-4 flex gap-2 flex-col">
+    <div className="w-full order-4 md:order-3 flex gap-2 flex-col">
       <PrimaryAccard data={data} />
       <GuestAccard data={data} />
       <EnvAccard data={data} />

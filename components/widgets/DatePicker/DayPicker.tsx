@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useMemo, useState } from "react";
 import moment from "moment-jalaali";
 import Day from "./Day";
 import { OwnerCallendarItemDto } from "@/api_services/property/property.interface";
@@ -78,34 +78,61 @@ const DayPicker = ({
     setStartOfMonth(moment(date, "jYYYY/jMM/jDD").startOf("jMonth").format("dddd"));
   }, [month, year, date]);
 
-  useEffect(() => {
+  // useEffect(() => {
+  //   const lengthOfBefore = daysOfOurLives?.findIndex((e) => e == startOfMonth);
+  //   let lasts = numberOfDaysLast + 1;
+  //   setLastDaysData(
+  //     Array.from({ length: lengthOfBefore }, (e, i) => {
+  //       lasts = lasts - 1;
+  //       return { id: lasts };
+  //     }).reverse()
+  //   );
+  // }, [startOfMonth]);
+
+  const lastDaysMemos = useMemo(() => {
     const lengthOfBefore = daysOfOurLives?.findIndex((e) => e == startOfMonth);
     let lasts = numberOfDaysLast + 1;
-    setLastDaysData(
-      Array.from({ length: lengthOfBefore }, (e, i) => {
-        lasts = lasts - 1;
-        return { id: lasts };
-      }).reverse()
-    );
-  }, [startOfMonth]);
-  useEffect(() => {
+    return Array.from({ length: lengthOfBefore }, (e, i) => {
+      lasts = lasts - 1;
+      return { id: lasts };
+    }).reverse();
+  }, [startOfMonth, daysOfOurLives]);
+
+  const nextDaysMemo = useMemo(() => {
     const lengthOfBefore = daysOfOurLives?.findIndex((e) => e == startOfMonth);
-    setNextDaysData(
-      Array.from(
-        {
-          length:
-            lengthOfBefore == -1
-              ? 35 - daysData?.length
-              : lengthOfBefore > 4
-              ? 42 - (lengthOfBefore + daysData?.length)
-              : 35 - (lengthOfBefore + daysData?.length),
-        },
-        (e, i) => {
-          return { id: i + 1 };
-        }
-      )
+    return Array.from(
+      {
+        length:
+          lengthOfBefore == -1
+            ? 35 - daysData?.length
+            : lengthOfBefore > 4
+            ? 42 - (lengthOfBefore + daysData?.length)
+            : 35 - (lengthOfBefore + daysData?.length),
+      },
+      (e, i) => {
+        return { id: i + 1 };
+      }
     );
-  }, [lastDaysData]);
+  }, [lastDaysData, daysOfOurLives, daysData]);
+
+  // useEffect(() => {
+  //   const lengthOfBefore = daysOfOurLives?.findIndex((e) => e == startOfMonth);
+  //   setNextDaysData(
+  //     Array.from(
+  //       {
+  //         length:
+  //           lengthOfBefore == -1
+  //             ? 35 - daysData?.length
+  //             : lengthOfBefore > 4
+  //             ? 42 - (lengthOfBefore + daysData?.length)
+  //             : 35 - (lengthOfBefore + daysData?.length),
+  //       },
+  //       (e, i) => {
+  //         return { id: i + 1 };
+  //       }
+  //     )
+  //   );
+  // }, [lastDaysData]);
 
   const selectADate = (e: { id?: number | string; reserved?: number | string }) => {
     if (setSelectedDay && options?.valueType == "persian") {
@@ -122,9 +149,9 @@ const DayPicker = ({
   // },[])
 
   return (
-    <div className="grid grid-cols-7  grid-rows-6  transition-all duration-500 ease-in-out gap-1 md:gap-2 items-center">
+    <div className="grid grid-cols-7   transition-all duration-500 ease-in-out gap-1 md:gap-2 items-center">
       {" "}
-      {lastDaysData?.map((e, i) => (
+      {lastDaysMemos?.map((e, i) => (
         <Day data={e} key={i} />
       ))}
       {daysData?.map((e, i) => (
@@ -140,7 +167,7 @@ const DayPicker = ({
           showTimeOfTheDay={options?.showTimeOfTheDay}
         />
       ))}
-      {nextDaysData?.map((e, i) => (
+      {nextDaysMemo?.map((e, i) => (
         <Day data={e} key={i} />
       ))}
     </div>

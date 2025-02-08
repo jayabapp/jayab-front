@@ -33,13 +33,17 @@ function HomeCityFilterContainer({ data, title }: { data: HomeLandingDto[]; titl
   };
 
   return (
-    <div className={` w-full noSelect   select-none   gap-4 relative rounded-20 flex flex-col items-center`}>
+    <div className={` w-full noSelect   select-none   gap-2 relative rounded-20 flex flex-col items-center`}>
       <div className="w-full flex items-center justify-between ">
-        <p className=" font-medium   shrink-0 text-center md:text-start text-sm md:text-base">{title}</p>
+        <p className=" font-medium   shrink-0 text-center md:text-start text-sm md:text-xl">{title}</p>
 
-        <div onClick={onShowCities} className="flex  cursor-pointer items-center shrink-0 gap-2">
-          <p className="font-bold text-sm  shrink-0 text-primary-700 ">{_STRINGS.SEE_CITIES}</p>
-          <img className="w-3 h-3 aspect-square" src="/assets/icons/shared/blue_chevron_left.svg" />
+        <div onClick={onShowCities} className=" flex cursor-pointer items-center shrink-0 gap-2">
+          <p className=" font-normal md:font-bold text-sm  shrink-0 text-primary-700 ">{_STRINGS.SEE_CITIES}</p>
+          <img className="w-3 h-3 hidden md:flex aspect-square" src="/assets/icons/shared/blue_chevron_left.svg" />
+          <img
+            className="w-3 h-3  flex  md:hidden aspect-square"
+            src="/assets/icons/shared/skiny_blue_chevron_left.svg"
+          />
         </div>
       </div>{" "}
       {isEmpty(data) ? (

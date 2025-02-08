@@ -124,7 +124,7 @@ const DayPicker = ({ month, year, date, selectedDayId, setSelectedDayId, options
   // });
 
   return (
-    <div className="grid grid-cols-7  grid-rows-6  transition-all duration-500 ease-in-out gap-1.5 md:gap-4 items-center">
+    <div className="grid grid-cols-7    transition-all duration-500 ease-in-out gap-1.5 md:gap-4 items-center">
       {" "}
       {lastDaysData?.map((e, i) => (
         <Day data={e} key={i} />

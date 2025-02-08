@@ -27,7 +27,7 @@ const CategoryItem = ({ item }: { item: HomeLandingDto }) => {
           onSuggClick(item?.url);
         }
       }}
-      className="flex flex-col gap-4 items-center p-2 w-full group  select-none transition-all duration-500 "
+      className="flex flex-col gap-2 items-center p-2 w-full group  select-none transition-all duration-500 "
     >
       <div id={`${item?.title || "fake"}CatImage`} className="w-full relative rounded-10  aspect-[0.85] z-30">
         {" "}
@@ -45,7 +45,7 @@ const CategoryItem = ({ item }: { item: HomeLandingDto }) => {
         />
       </div>
 
-      <p className={`font-medium opacity-80 text-sm text-center  line-clamp-2 h-10 md:text-sm`}>{item?.title}</p>
+      <p className={` opacity-80 text-sm text-center  line-clamp-2 h-10 md:text-xl`}>{item?.title}</p>
     </button>
   );
 };

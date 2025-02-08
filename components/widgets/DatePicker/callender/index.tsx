@@ -97,17 +97,17 @@ const Callender = ({
 
         setPrevX(e.pageX);
       }}
-      className="flex transition-all duration-500 ease-in-out  w-full  rounded-2xl   gap-4 flex-col"
+      className="flex transition-all duration-500 ease-in-out  w-full  rounded-20 md:p-4   md:bg-primary-450 gap-2 flex-col"
       draggable
     >
-      {/* <div
-        className={`flex text-primary-700 flex-col gap-1 items-start   transition-all ${
+      <div
+        className={` hidden  text-primary-700 flex-col gap-1 items-start   transition-all ${
           !!selectedDate ? " h-[3.75rem]" : " opacity-0 h-0"
         }`}
       >
         <p>{moment(selectedDate, "jYYYY/jMM/jDD").format("jYYYY")}</p>
         <p className=" text-base md:text-2xl ">{moment(selectedDate, "jYYYY/jMM/jDD").format("   ddd jDD jMMMM")}</p>
-      </div> */}
+      </div>
 
       <div className="flex items-center gap-4">
         {" "}

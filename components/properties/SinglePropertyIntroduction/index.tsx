@@ -129,7 +129,7 @@ const SinglePropertyIntroduction = ({ data }: { data: SinglePropDto }) => {
       )}
       <div className="flex items-center gap-2   py-0.5 w-full md:justify-between">
         <div className="flex items-center gap-1">
-          <img className="" src="/assets/icons/adds/pin_point_location.svg" />
+          <img className=" h-6" src="/assets/icons/adds/pin_point_location.svg" />
           <p className=" hidden md:flex">{_STRINGS.PROPERTY_LOC} :</p>
         </div>
         <p className=" text-xs md:text-sm">
