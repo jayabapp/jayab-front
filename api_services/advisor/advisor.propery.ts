@@ -88,4 +88,17 @@ export class AdvisorService {
       throw e;
     }
   }
+
+  /* -------------------------------------------------------------------------- */
+  /*                                 DELETE SUB                                 */
+  /* -------------------------------------------------------------------------- */
+
+  static async deleteAdvisorSub() {
+    try {
+      const result = await apiCall<unknown, any>("DELETE", apiRoutes.PAY_ADVISOR_PLAN);
+      return result;
+    } catch (e) {
+      throw e;
+    }
+  }
 }

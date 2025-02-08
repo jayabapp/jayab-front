@@ -133,7 +133,7 @@ const Profile = ({}) => {
             className="py-5 flex   items-center w-full gap-3 md:gap-4 cursor-pointer hover:scale-102 transition-all"
           >
             <img src="/assets/icons/header/header_logout.svg" className="w-6 h-6  aspect-square " />{" "}
-            <p className="text-base font-medium "> {_STRINGS?.LOGOUT_TITLE}</p>
+            <p className="text-base font-medium text-primary-150 "> {_STRINGS?.LOGOUT_TITLE}</p>
           </div>
         )}
       </div>

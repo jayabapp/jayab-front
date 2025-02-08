@@ -36,6 +36,8 @@ export interface catQueryTypes {
   province_id: string | null | undefined;
   q: string | null | undefined;
   has_discount: string | null | undefined;
+  max_commission: string | null | undefined;
+  min_commission: string | null | undefined;
 }
 
 type FilterdPropertiesType = {
@@ -68,7 +70,7 @@ function FilterdProperties({ sortType, setSortType, query }: FilterdPropertiesTy
   }, [
     sortType,
     query.max_price,
-    query.min_price,
+
     query.sort_type,
     query?.property_type,
     query?.pool_type,
@@ -84,6 +86,8 @@ function FilterdProperties({ sortType, setSortType, query }: FilterdPropertiesTy
     query?.min_building_area,
     query?.q,
     query?.cities,
+    query?.min_commission,
+    query?.max_commission,
   ]);
 
   const {
@@ -106,6 +110,8 @@ function FilterdProperties({ sortType, setSortType, query }: FilterdPropertiesTy
       query?.min_price,
       query?.max_building_area,
       query?.min_building_area,
+      query?.min_commission,
+      query?.max_commission,
       query?.q,
       query?.cities,
     ],
@@ -116,6 +122,8 @@ function FilterdProperties({ sortType, setSortType, query }: FilterdPropertiesTy
         max_price: Number(query.max_price) || undefined,
         max_building_area: Number(query.max_building_area) || undefined,
         min_building_area: Number(query.min_building_area) || undefined,
+        min_commission: Number(query.min_commission) || undefined,
+        max_commission: Number(query.max_commission) || undefined,
         per_page: 30,
         cities: query?.cities || undefined,
         code: query?.code || undefined,

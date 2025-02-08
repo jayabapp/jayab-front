@@ -169,6 +169,7 @@ export interface GetProfileDto {
   owner_id: string;
   advisor_id: string;
   created_at: Date;
+  advisor: { is_special: boolean };
 }
 
 export interface OwnerProfileDto {

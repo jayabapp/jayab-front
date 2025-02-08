@@ -1,15 +1,17 @@
 "use client";
 import { AdvisorService } from "@/api_services/advisor/advisor.propery";
+import { AuthService } from "@/api_services/auth/auth.service";
 import { PropertyService } from "@/api_services/property/property.service";
 import AdvisorPlansCard from "@/components/Advisor/AdvisorPlansCard";
 import ConfirmModal from "@/components/Modal/ConfirmModal";
 import Button from "@/components/shared/Button/Button";
 import StatusShower from "@/components/shared/StatusShower";
+import { useStoreInit } from "@/store";
 import _STRINGS from "@/utils/LocalStrings";
-import { useQuery } from "@tanstack/react-query";
+import { useMutation, useQuery } from "@tanstack/react-query";
 import moment from "moment-jalaali";
 import { useRouter } from "next/navigation";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 
 const AdvisorRegister = () => {
   const router = useRouter();
@@ -23,7 +25,7 @@ const AdvisorRegister = () => {
     },
   });
 
-  const { data: advisorProfile } = useQuery({
+  const { data: advisorProfile, refetch: refetchAdvvisorProfile } = useQuery({
     queryKey: [AdvisorService.USER_ADVISORS_PROFILE_CACHEKEY],
 
     queryFn: () => {
@@ -43,6 +45,39 @@ const AdvisorRegister = () => {
 
   const hideEndSub = () => {
     setShowEndSub(false);
+  };
+
+  /* -------------------------------------------------------------------------- */
+  /*                                 DELETE SUB                                 */
+  /* -------------------------------------------------------------------------- */
+
+  const { data: profile, refetch } = useQuery({
+    queryKey: [AuthService.AU4_CACHEKEY],
+    queryFn: () => {
+      return AuthService.GetProfile();
+    },
+    staleTime: 0,
+    gcTime: 0,
+    enabled: false,
+  });
+
+  useEffect(() => {
+    if (!!profile) {
+      useStoreInit.setState({ userInfo: profile });
+    }
+  }, [profile]);
+
+  const { mutate, isPending } = useMutation({
+    mutationFn: AdvisorService.deleteAdvisorSub,
+    onSuccess: (e) => {
+      refetch();
+      refetchAdvvisorProfile();
+      hideEndSub();
+    },
+  });
+
+  const onDelete = () => {
+    mutate();
   };
 
   return (
@@ -70,7 +105,7 @@ const AdvisorRegister = () => {
           <div className="flex flex-col justify-between items-end gap-2">
             {" "}
             <StatusShower data={advisorProfile?.status} />
-            {!!advisorProfile?.subscription_expired_at ? (
+            {!!advisorProfile?.is_special ? (
               <Button
                 onClick={() => {
                   setShowEndSub(true);
@@ -124,8 +159,11 @@ const AdvisorRegister = () => {
         headerImage={"/assets/images/shared/red_crossed_sheet.png"}
         isVisible={showEndSub}
         onHide={hideEndSub}
-        text={`آیا میخواهید اشتراک مشاور ویژه را لغو کنید؟`}
-        onConfirm={() => {}}
+        text={`آیا میخواهید اشتراک مشاور خود را لغو کنید؟`}
+        isLoading={isPending}
+        onConfirm={() => {
+          onDelete();
+        }}
       />
     </div>
   );

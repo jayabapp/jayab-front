@@ -1,16 +1,17 @@
-import { PropertyService } from "@/api_services/property/property.service";
+"use client";
 import FilterCheck from "@/components/Filters/FilterCheck";
 import FilterCounter from "@/components/Filters/FilterCounter";
 import PriceRange from "@/components/Filters/PriceRange";
 import ProductModels from "@/components/Filters/ProductModelx";
 import SimpleAccordion from "@/components/shared/SimpleAccorion";
 import numberWithCommas from "@/helpers/numberWithCommas";
-import { easyRatingItems, poolFilterTypes } from "@/utils/constantss";
+import { useStoreInit } from "@/store";
+import { poolFilterTypes } from "@/utils/constantss";
 import _STRINGS from "@/utils/LocalStrings";
-import { useQuery } from "@tanstack/react-query";
 import React from "react";
 
 const FiltersPart = ({ queries, setFilters, filters, propertyTypes }: any) => {
+  const { userInfo } = useStoreInit((data) => data);
   return (
     <div className="  z-2 h-fit flex-col items-center p-3  bg-white dark:bg-zinc-800 rounded-xl w-full ">
       <div className=" hidden md:flex   items-center gap-2 mb-4 ">
@@ -105,6 +106,37 @@ const FiltersPart = ({ queries, setFilters, filters, propertyTypes }: any) => {
         queryKey={"is_premium"}
         query={queries}
       />
+      {/* COMMISION RANGE  */}
+
+      {!!userInfo?.advisor_id ? (
+        <div className="flex text-xs  mt-4 md:text-sm w-full flex-col gap-4 px-4 ">
+          <div className="w-full flex items-center justify-between">
+            <p className="text-sm">{_STRINGS.COMIISH_RANGE_PERC}</p>
+          </div>
+          <PriceRange
+            lowerKey="min_commission"
+            higherKey="max_commission"
+            steps={1}
+            filters={filters}
+            setFilters={setFilters}
+            query={queries}
+            lowLimit={0}
+            upLimit={50}
+          />
+          <div
+            className={` ${
+              !!filters.max_commission || !!filters.min_commission ? " h-8" : "h-0 opacity-0"
+            }  transition-all `}
+          >
+            <p className="text-sm opacity-70">{filters?.min_commission ? ` از   ${filters?.min_commission} %` : ""} </p>
+            <p className="text-sm opacity-70">{!!filters.max_commission ? ` تا  ${filters.max_commission} %` : ""} </p>
+          </div>
+        </div>
+      ) : (
+        <></>
+      )}
+
+      {/*  PRICE RANGE */}
       <div className="flex text-xs  mt-4 md:text-sm w-full flex-col gap-4 px-4 ">
         <div className="w-full flex items-center justify-between">
           <p className="text-sm">{_STRINGS.PRICE_RANGE}</p>

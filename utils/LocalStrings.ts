@@ -359,6 +359,7 @@ const _STRINGS = {
   COMMIS_JUST_PERC: "درصد کمیسیون",
   END_CONSULT_SUB: "لغو اشتراک",
   SELECT_YOUR_IMAGE: "انتخاب تصویر مورد نظر",
+  COMIISH_RANGE_PERC: "بازه درصد کمیسیون",
 };
 
 export default _STRINGS;

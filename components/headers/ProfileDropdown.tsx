@@ -177,7 +177,7 @@ const ProfileDropdown = ({ notifBadge }: { notifBadge?: number | string }) => {
               <MenuItem>
                 <button
                   className={` text-red-500
-                     group flex w-full px-2   items-center rounded-md  gap-2 py-2 text-sm font-light`}
+                     group flex w-full px-2   items-center rounded-md  gap-2 py-2 text-sm font-medium`}
                   onClick={() => setisVisible(true)}
                 >
                   <img

@@ -22,9 +22,7 @@ const ProfileItem = ({
     <Link
       href={item?.route}
       className={`   ${
-        selected
-          ? " bg-gradient-to-b border-b-transparent  pr-2 rounded-10   from-primary-700/5    to-primary-700/20 dark:border-r-green-600  bg-opacity-20"
-          : "border-r-transparent "
+        selected ? "text-primary-700 " : "border-r-transparent "
       }  py-3 md:py-5 flex border-b  last:border-b-0 border-primary-200 items-center w-full justify-between cursor-pointer hover:scale-102 transition-all`}
     >
       <div className="flex items-center gap-3 md:gap-4 ">

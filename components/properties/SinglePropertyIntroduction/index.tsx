@@ -18,6 +18,7 @@ import { useStoreInit, useStoreParams } from "@/store";
 import { useRouter } from "next/navigation";
 
 const SinglePropertyIntroduction = ({ data }: { data: SinglePropDto }) => {
+  const [favCount, setFavCount] = useState(0);
   const router = useRouter();
   const { userInfo } = useStoreInit((data) => data);
   const { isAdvisor } = useStoreParams((data) => data);
@@ -62,6 +63,16 @@ const SinglePropertyIntroduction = ({ data }: { data: SinglePropDto }) => {
     setShowShare(false);
   };
 
+  /* -------------------------------------------------------------------------- */
+  /*                                  FAV COUNT                                 */
+  /* -------------------------------------------------------------------------- */
+
+  useEffect(() => {
+    if (!!data?.favorite_count) {
+      setFavCount(data?.favorite_count || 0);
+    }
+  }, [data]);
+
   return (
     <div className=" flex w-full  flex-col relative  gap-2 md:gap-3">
       <div className="w-full flex items-start md:items-center justify-between gap-2">
@@ -78,12 +89,12 @@ const SinglePropertyIntroduction = ({ data }: { data: SinglePropDto }) => {
             <BookMarkButton data={data} />
           </div>
           <div className="flex items-center gap-1">
-            <FavButton data={data} />
-            <p className="text-base opacity-70   ">{data?.favorite_count}</p>
+            <FavButton setFavCount={setFavCount} data={data} />
+            <p className="text-base opacity-70   ">{favCount}</p>
           </div>
           <ShareLink />
         </div>{" "}
-        {!!isAdvisor ? (
+        {!!isAdvisor && !!userInfo?.advisor?.is_special ? (
           <Button
             onClick={onShareClick}
             title={_STRINGS.SEND_INFO}
@@ -121,7 +132,7 @@ const SinglePropertyIntroduction = ({ data }: { data: SinglePropDto }) => {
       {/*                          */}
       {!!userInfo?.advisor_id && data?.advisor_commission ? (
         <div className="flex items-center gap-2   py-0.5 w-full md:justify-between">
-          <p className="w-[5.5rem] md:text-sm text-xs ">{_STRINGS.COMMIS_JUST_PERC} :</p>
+          <p className="min-w-[5.5rem] md:text-sm text-xs ">{_STRINGS.COMMIS_JUST_PERC} :</p>
           <p className="font-bold text-sm md:text-base text-primary-700">{data?.advisor_commission}%</p>
         </div>
       ) : (

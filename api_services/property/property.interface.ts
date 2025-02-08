@@ -517,6 +517,8 @@ export interface GetPropertiesPlusFilters {
   has_pool?: string | null | number;
   is_premium?: string | null | number;
   max_price?: string | null | number;
+  max_commission?: string | null | number;
+  min_commission?: string | null | number;
   min_price?: string | null | number;
   num_days?: string | null | number;
   pool_type?: string | null | number;
