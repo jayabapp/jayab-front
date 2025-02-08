@@ -242,9 +242,8 @@ const PopSearchbox = ({
           }}
         />
         {!suggsData ? (
-          <div className="w-full  mt-16 opacity-20  flex-col flex items-center justify-center">
-            {" "}
-            <img className="w-1/3  aspect-auto" src="/assets/icons/edit/magnifier.svg" />
+          <div className="w-full  mt-10 opacity-20  flex-col flex items-center justify-center">
+            <img className="w-20  aspect-auto opacity-50" src="/assets/icons/edit/magnifier.svg" />
             {/* <p className="text-base font-bold">{_STRINGS.SEARCH}</p> */}
           </div>
         ) : (
