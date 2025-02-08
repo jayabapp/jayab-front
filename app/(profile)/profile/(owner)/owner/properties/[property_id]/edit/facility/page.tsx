@@ -17,7 +17,7 @@ import { useStoreInit } from "@/store";
 import { createPropertySteps } from "@/utils/constantss";
 import _STRINGS from "@/utils/LocalStrings";
 import { useMutation, useQuery } from "@tanstack/react-query";
-import { isArray, remove } from "lodash";
+import _, { isArray, remove } from "lodash";
 
 import { useParams, usePathname, useRouter, useSearchParams } from "next/navigation";
 import React, { useEffect, useState } from "react";
@@ -164,27 +164,35 @@ const CreatePropertyFacility = () => {
           <></>
         )}
       </div>
-      <div className=" flex flex-col gap-2  border-b pb-4 w-full">
+      <div className="  grid   grid-cols-3 gap-2  border-b pb-4 w-full">
         {" "}
-        <p className="font-bold w-full text-start  text-sm md:text-base text-primary-700  ">{_STRINGS.ENTERTAINMENT}</p>
-        {propertyTypes?.["ENTERTAINMENT"]?.map((e) => (
+        <p className="font-bold mb-2  col-span-full w-full text-start  text-sm md:text-base text-primary-700  ">
+          {_STRINGS.ENTERTAINMENT}
+        </p>
+        {propertyTypes?.["ENTERTAINMENT"]?.map((e, index) => (
           <Checkbox
             key={`Emt${e?.id}`}
             rounded="rounded-md"
             onSelect={() => {
               onChangeMulty(e?.id, "entertainment");
             }}
+            titleClass="  !text-xs  "
+            containerClass={` ${(index + 1) % 2 == 0 ? "col-span-2" : "col-span-1"}`}
             isChecked={!!values?.entertainment?.includes(e?.id)}
             title={e?.title}
           />
         ))}
       </div>
-      <div className=" flex flex-col gap-2  border-b pb-4 w-full">
-        <p className="font-bold w-full text-start  text-sm md:text-base text-primary-700  ">{_STRINGS.KITCHEN_ACC}</p>
-        {propertyTypes?.["KITCHEN"]?.map((e) => (
+      <div className=" grid   grid-cols-3  gap-2  border-b pb-4 w-full">
+        <p className="font-bold mb-2 col-span-full w-full text-start  text-sm md:text-base text-primary-700  ">
+          {_STRINGS.KITCHEN_ACC}
+        </p>
+        {propertyTypes?.["KITCHEN"]?.map((e, index) => (
           <Checkbox
             key={`KITCHEN${e?.id}`}
             rounded="rounded-md"
+            titleClass="  !text-xs  "
+            containerClass={` ${(index + 1) % 2 == 0 ? "col-span-2" : "col-span-1"}`}
             onSelect={() => {
               onChangeMulty(e?.id, "kitchen");
             }}
@@ -205,10 +213,14 @@ const CreatePropertyFacility = () => {
           onChange(e, "facility_dscr");
         }}
       />
-      <div className=" flex flex-col gap-2  border-b pb-4 w-full">
-        <p className="font-bold w-full text-start  text-sm md:text-base text-primary-700  ">{_STRINGS.COOL_HEAT}</p>
-        {propertyTypes?.["COOL_HEAT"]?.map((e) => (
+      <div className="  grid   grid-cols-3   gap-2  border-b pb-4 w-full">
+        <p className="font-bold  w-full mb-2 col-span-full  text-start  text-sm md:text-base text-primary-700  ">
+          {_STRINGS.COOL_HEAT}
+        </p>
+        {propertyTypes?.["COOL_HEAT"]?.map((e, index) => (
           <Checkbox
+            titleClass="  !text-xs  "
+            containerClass={` ${(index + 1) % 2 == 0 ? "col-span-2" : "col-span-1"}`}
             key={`COOL_HEAT${e?.id}`}
             rounded="rounded-md"
             onSelect={() => {
@@ -219,10 +231,14 @@ const CreatePropertyFacility = () => {
           />
         ))}{" "}
       </div>
-      <div className=" flex flex-col gap-2  border-b pb-4 w-full">
-        <p className="font-bold w-full text-start  text-sm md:text-base text-primary-700  ">{_STRINGS.WELFARE_TITLE}</p>
-        {propertyTypes?.["WELFARE"]?.map((e) => (
+      <div className=" grid   grid-cols-3  gap-2  border-b pb-4 w-full">
+        <p className="font-bold col-span-full w-full mb-2 text-start  text-sm md:text-base text-primary-700  ">
+          {_STRINGS.WELFARE_TITLE}
+        </p>
+        {propertyTypes?.["WELFARE"]?.map((e, index) => (
           <Checkbox
+            titleClass="  !text-xs  "
+            containerClass={` ${(index + 1) % 2 == 0 ? "col-span-2" : "col-span-1"}`}
             key={`WELFARE${e?.id}`}
             rounded="rounded-md"
             onSelect={() => {

@@ -13,12 +13,13 @@ const ShareLink = ({
   hasTitle = false,
   itemsClass = "flex items-center ",
   itemChildClass = "",
+  passedHref = "",
 }) => {
   const [visibleSocials, setvisibleSocials] = useState(false);
   const [url, setUrl] = useState("");
 
   useEffect(() => {
-    const url = window.location.href;
+    const url = !!passedHref ? passedHref : window.location.href;
     setUrl(url);
   }, []);
   const onShare = async () => {

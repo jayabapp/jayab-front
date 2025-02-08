@@ -8,7 +8,7 @@ enum BtnVariants {
 }
 enum BtnColors {
   "primary" = "bg-btnColor-primary",
-  "danger" = "bg-btnColor-danger",
+  "danger" = "bg-btnColor-danger !text-btnColor-danger !border-btnColor-danger ",
   "light" = "bg-btnColor-light",
   "themeLight" = "bg-btnColor-themeLight",
 }
@@ -18,7 +18,6 @@ type ButtonProps = {
   variant?: keyof typeof BtnVariants;
   color?: keyof typeof BtnColors;
   containerClass?: string;
-  titleClass?: string;
   roundedClass?: string;
   width?: string;
   icon?: ReactNode;

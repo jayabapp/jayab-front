@@ -66,7 +66,7 @@ const SinglePropertyIntroduction = ({ data }: { data: SinglePropDto }) => {
     <div className=" flex w-full  flex-col relative  gap-2 md:gap-3">
       <div className="w-full flex items-start md:items-center justify-between gap-2">
         {" "}
-        <p className=" font-medium text-lg w-3/5 md:w-full md:text-2xl ">{data?.title}</p>
+        <p className=" font-medium text-xl w-3/5 md:w-full md:text-2xl ">{data?.title}</p>
         {!!data?.is_authorized ? <AuthorizationStatus isAuthorized={data?.is_authorized} /> : <></>}
       </div>
       <div className=" flex items-center w-full justify-between">
@@ -119,7 +119,7 @@ const SinglePropertyIntroduction = ({ data }: { data: SinglePropDto }) => {
         </p>
       </div>
       {/*                          */}
-      {!!userInfo?.advisor_id ? (
+      {!!userInfo?.advisor_id && data?.advisor_commission ? (
         <div className="flex items-center gap-2   py-0.5 w-full md:justify-between">
           <p className="w-[5.5rem] md:text-sm text-xs ">{_STRINGS.COMMIS_JUST_PERC} :</p>
           <p className="font-bold text-sm md:text-base text-primary-700">{data?.advisor_commission}%</p>
@@ -133,7 +133,7 @@ const SinglePropertyIntroduction = ({ data }: { data: SinglePropDto }) => {
           <p className=" hidden md:flex">{_STRINGS.PROPERTY_LOC} :</p>
         </div>
         <p className=" text-xs md:text-sm">
-          {data?.city} <span className="opacity-75">({data?.province})</span>
+          {data?.city} <span className=" font-light">({data?.province})</span>
         </p>
       </div>
       <div className="w-full  hidden md:flex  items-center justify-between gap-4 ">

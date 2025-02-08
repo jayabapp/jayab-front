@@ -36,7 +36,7 @@ const PropertyCard = ({ data, isOwner, week }: { data: PropertyListDto; isOwner?
 
           {/* CODE  - LIKES */}
           <div className="flex items-center gap-4">
-            <div className="bg-primary-700 font-normal rounded-md text-xs 2xl:text-sm  px-2 py-0.5 leading-4 text-white flex items-center justify-center">
+            <div className="bg-primary-700 font-normal rounded-md text-xs   px-2 py-1  leading-4 text-white flex items-center justify-center">
               کد {data.code}
             </div>{" "}
             <div className="flex items-center gap-1">
@@ -53,13 +53,9 @@ const PropertyCard = ({ data, isOwner, week }: { data: PropertyListDto; isOwner?
           </div>
           {/* PRICING */}
 
-          <div
-            className={`w-full flex  flex-row ${
-              data?.today_price?.discounted_price ? "items-start" : "items-center"
-            }   gap-2 justify-start`}
-          >
+          <div className={`w-full flex  flex-row ${"items-start"}  h-8  gap-2 justify-start`}>
             {" "}
-            <p className=" text-xxs 2xl:text-sm mt-0.5  shrink-0 ">{_STRINGS.TODAYS_PRICE}</p>
+            <p className=" text-xs 2xl:text-sm  shrink-0 ">{_STRINGS.TODAYS_PRICE}</p>
             <AddCardPricePart
               data={{ discounted_price: data?.today_price?.discounted_price, price: data?.today_price?.price }}
             />
@@ -88,10 +84,11 @@ const PropertyCard = ({ data, isOwner, week }: { data: PropertyListDto; isOwner?
                 </p>
               </div>
               {/* LOCATION */}
-              <div className="flex w-full  items-start gap-1">
-                <img src="/assets/icons/adds/pin_point_location.svg" className="w-4 h-4 aspect-square" />
-                <p className="text-xs">
-                  {data?.city} {data?.province ? `(${data?.province})` : ``}
+              <div className="flex w-full  items-center gap-1">
+                <img src="/assets/icons/adds/pin_point_location.svg" className="w-5 h-5 aspect-square" />
+                <p className="text-xs text-center">
+                  {data?.city}{" "}
+                  <span className="text-xxs font-light">{data?.province ? `(${data?.province})` : ``}</span>
                 </p>
               </div>
             </>
@@ -119,8 +116,8 @@ const PropertyCard = ({ data, isOwner, week }: { data: PropertyListDto; isOwner?
             {/* <div className="absolute z-1 right-2 top-2 flex flex-col gap-1 w-7">
               {data?.today_price?.discount_percentage ? (
                 <div className="w-7 gap-0.5 flex-col h-5 rounded-md transition-all  px-1 py-[0.2rem]   bg-primary-150 text-white  aspect-square flex items-center justify-center">
-                  <img className="w-4 h-4" src="/assets/icons/products/discount_tag.svg" />
-                  <p className="  text-sm   ">%{data.today_price?.discount_percentage}</p>{" "}
+                  {/* <img className="w-4 h-4" src="/assets/icons/products/discount_tag.svg" /> */}
+                  <p className="  text-xxs   ">%{data.today_price?.discount_percentage}</p>{" "}
                 </div>
               ) : (
                 <></>
@@ -136,9 +133,9 @@ const PropertyCard = ({ data, isOwner, week }: { data: PropertyListDto; isOwner?
                 <p className="  text-xxs   "> کمیسیون: {data.advisor_commission}%</p>{" "}
               </div>
             ) : data?.attachments_count ? (
-              <div className="w-9 gap-0.5  h-5 rounded-md transition-all  py-[0.2rem]   bg-black/50 text-white absolute z-1 left-2 flex-row top-2 aspect-square flex items-center justify-center">
-                <p className="  text-sm   ">{data.attachments_count}</p>{" "}
-                <img className="w-3 h-3" src="/assets/icons/adds/simple_camera.svg" />
+              <div className="w-[2.125rem] gap-1  h-5 rounded-md transition-all  py-[0.2rem]   bg-black/50 text-white absolute z-1 left-2 flex-row top-2 aspect-square flex items-center justify-center">
+                <p className="  text-xxs   ">{data.attachments_count}</p>{" "}
+                <img className="w-2 h-2 " src="/assets/icons/adds/simple_camera.svg" />
               </div>
             ) : (
               <></>
