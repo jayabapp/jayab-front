@@ -3,6 +3,7 @@ import { AdvisorService } from "@/api_services/advisor/advisor.propery";
 import { PropertyService } from "@/api_services/property/property.service";
 import AdvisorPlansCard from "@/components/Advisor/AdvisorPlansCard";
 import ConfirmModal from "@/components/Modal/ConfirmModal";
+import Button from "@/components/shared/Button/Button";
 import StatusShower from "@/components/shared/StatusShower";
 import _STRINGS from "@/utils/LocalStrings";
 import { useQuery } from "@tanstack/react-query";
@@ -12,6 +13,7 @@ import React, { useState } from "react";
 
 const AdvisorRegister = () => {
   const router = useRouter();
+  const [showEndSub, setShowEndSub] = useState(false);
   const [showConfirmRegister, setShowConfirmRegister] = useState(false);
   const { data: subscriptionPlans } = useQuery({
     queryKey: [PropertyService.USER_SUBSCRIPTION_PLANS_CACHEKEY],
@@ -39,6 +41,10 @@ const AdvisorRegister = () => {
     router.push(link);
   };
 
+  const hideEndSub = () => {
+    setShowEndSub(false);
+  };
+
   return (
     <div className=" profile-container  flex flex-col gap-4 ">
       {!!advisorProfile ? (
@@ -61,7 +67,24 @@ const AdvisorRegister = () => {
             )}
           </div>
 
-          <StatusShower data={advisorProfile?.status} />
+          <div className="flex flex-col justify-between items-end gap-2">
+            {" "}
+            <StatusShower data={advisorProfile?.status} />
+            {!!advisorProfile?.subscription_expired_at ? (
+              <Button
+                onClick={() => {
+                  setShowEndSub(true);
+                }}
+                containerClass="w-fit "
+                width=" !py-1 !px-3  !text-xs "
+                variant="outline"
+                color="danger"
+                title={_STRINGS.END_CONSULT_SUB}
+              />
+            ) : (
+              <></>
+            )}
+          </div>
         </div>
       ) : (
         <></>
@@ -94,6 +117,15 @@ const AdvisorRegister = () => {
         }}
         confirmText={"ادامه"}
         hideText="برگشت"
+      />
+      <ConfirmModal
+        confirmTextClassName=" !bg-primary-900 text-white !rounded-full "
+        hideTextClassName=" !border-primary-900 border !bg-white !text-primary-900 !rounded-full "
+        headerImage={"/assets/images/shared/red_crossed_sheet.png"}
+        isVisible={showEndSub}
+        onHide={hideEndSub}
+        text={`آیا میخواهید اشتراک مشاور ویژه را لغو کنید؟`}
+        onConfirm={() => {}}
       />
     </div>
   );

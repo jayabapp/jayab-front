@@ -7,6 +7,7 @@ type CheckboxProps = {
   onSelect: () => void;
   containerClass?: string;
   rounded?: string;
+  titleClass?: string;
   disabled?: boolean;
 };
 const Checkbox = ({
@@ -14,6 +15,7 @@ const Checkbox = ({
   isChecked,
   onSelect,
   containerClass,
+  titleClass,
   rounded = "rounded-md",
   disabled,
 }: CheckboxProps): JSX.Element => {
@@ -39,7 +41,11 @@ const Checkbox = ({
             <path d="M4 9.4L0 5.4L1.4 4L4 6.6L10.6 0L12 1.4L4 9.4Z" fill="white" />
           </svg>
         </div>
-        {title ? <p className={`mx-2 transition-all text-sm ${isChecked ? "font-medium" : ""} `}>{title}</p> : ""}
+        {title ? (
+          <p className={`mx-2 transition-all text-sm ${isChecked ? "font-medium" : ""} ${titleClass} `}>{title}</p>
+        ) : (
+          ""
+        )}
       </div>
     </div>
   );

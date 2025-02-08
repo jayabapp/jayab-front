@@ -357,6 +357,8 @@ const _STRINGS = {
   TICKET_CLOSED: "تیکت بسته شده است",
   WATCH: "مشاهده",
   COMMIS_JUST_PERC: "درصد کمیسیون",
+  END_CONSULT_SUB: "لغو اشتراک",
+  SELECT_YOUR_IMAGE: "انتخاب تصویر مورد نظر",
 };
 
 export default _STRINGS;

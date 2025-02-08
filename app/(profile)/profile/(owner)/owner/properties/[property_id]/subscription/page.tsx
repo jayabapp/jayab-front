@@ -25,7 +25,7 @@ const Subscription = () => {
 
     queryFn: () => {
       if (!!property_id) {
-        return PropertyService.GetPropertySubscriptionPlans({ type: "PROPERTY" });
+        return PropertyService.GetPropertySubscriptionPlans({ type: "PROPERTY", property_id: `${property_id}` });
       }
     },
   });
@@ -82,7 +82,7 @@ const Subscription = () => {
 
     mutate({
       gateway: "SANDBOX",
-      redirect_url: window.origin + "/profile/owner/properties",
+      redirect_url: window.origin + `/profile/owner/properties/${property_id}`,
       property_id: `${property_id}`,
       subscription_id: subId,
       promote_id: promotId,

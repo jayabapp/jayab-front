@@ -158,14 +158,18 @@ const Header = ({ scroll }: { scroll?: number }) => {
 transition-all  ease-in-out duration-1000 header-content-container w-full mx-auto custome-shadow-card  backdrop-blur-md  bg-white dark:bg-dark-900   pt-2 pb-2   border-b dark:border-zinc-500 border-gray-100 `}
       >
         {/* ROW 1 */}
-        <div className="flex justify-between  items-center  xl:gap-[20%]  py-1.5  px-2 md:px-10  2xl:px-[9%]  ">
+        <div className="flex justify-between  items-center  xl:gap-[20%]  py-1  px-2 md:px-10  2xl:px-[9%]  ">
           <div className=" lg:hidden flex w-full  ">
             {pathname == "/" ? (
               <div className="w-full flex items-center  bg-primary-100  py-1  rounded-full justify-between px-2 gap-2">
                 <div className="flex items-center gap-4">
                   <div className=" flex items-center justify-center gap-1">
                     {" "}
-                    <Link prefetch={false} href={"/profile"} className="w-12   aspect-square h-12 !outline-none ">
+                    <Link
+                      prefetch={false}
+                      href={"/profile"}
+                      className="w-[2.875rem]   aspect-square h-[2.875rem] !outline-none "
+                    >
                       <img
                         src={
                           userInfo?.profile_image
@@ -173,7 +177,7 @@ transition-all  ease-in-out duration-1000 header-content-container w-full mx-aut
                             : "/assets/icons/logo/mobile_header_logo.svg"
                         }
                         alt="jayab"
-                        className=" w-12   aspect-square h-12 rounded-full  object-cover !outline-none cursor-pointer "
+                        className=" w-[2.875rem]   aspect-square h-[2.875rem] rounded-full  object-cover !outline-none cursor-pointer "
                         // onClick={() => pusher("/")}
                       />
                     </Link>
@@ -189,7 +193,7 @@ transition-all  ease-in-out duration-1000 header-content-container w-full mx-aut
                 {isLogin ? (
                   <>
                     {" "}
-                    <div className="flex items-center p-4 gap-4">
+                    <div className="flex items-center py-2 px-4 gap-4">
                       <Link prefetch={false} href={"/chat"} className="relative">
                         <AbsoluteBadge count={chaNotifBadge?.unread_count || 0} />
                         <img src="/assets/icons/header/blue_chat.svg" className="w-6 h-6 aspect-square" />
@@ -250,17 +254,29 @@ transition-all  ease-in-out duration-1000 header-content-container w-full mx-aut
                         />
                       </Link>
                     ) : (
-                      <PopSearchbox
-                        justIcon
-                        boxId={scroll ? "SEARCH_BOX_Mobile_Modal" : "SEARCH_BOX_Mobile"}
-                        placeholder={_STRINGS?.SEARCH_CITY_OR_ADD}
-                        onSubmit={(text) => setsearchText(text)}
-                        onClear={() => {
-                          setsearchText("");
-                        }}
-                        item={{ bg: "" }}
-                        autofocus={isInSearch}
-                      />
+                      <div className="flex gap-2 items-center">
+                        <PopSearchbox
+                          justIcon
+                          boxId={scroll ? "SEARCH_BOX_Mobile_Modal" : "SEARCH_BOX_Mobile"}
+                          placeholder={_STRINGS?.SEARCH_CITY_OR_ADD}
+                          onSubmit={(text) => setsearchText(text)}
+                          onClear={() => {
+                            setsearchText("");
+                          }}
+                          item={{ bg: "" }}
+                          autofocus={isInSearch}
+                        />{" "}
+                        {pathname.includes("/rooms/") ? (
+                          <Link className="w-5 h-5 aspect-square" href={"/"}>
+                            <img
+                              src="/assets/icons/navbar/home_nav_black.svg"
+                              className="transition-all grayscale opacity-60  hover:opacity-100 hover:grayscale-0"
+                            />
+                          </Link>
+                        ) : (
+                          <></>
+                        )}
+                      </div>
                     )}
                   </div>
                 </div>

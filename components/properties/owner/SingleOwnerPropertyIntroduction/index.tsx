@@ -6,6 +6,7 @@ import { SingleOwnerPropertyDto } from "@/api_services/property/property.interfa
 import SinglePropertyPricePart from "../../SinglePropertyPricePart";
 import AuthorizationStatus from "../../AuthorizationStatus";
 import StatusShower from "@/components/shared/StatusShower";
+import ShareLink from "@/components/shared/shareComponent/BrowserShare";
 
 const SingleOwnerPropertyIntroduction = ({ data }: { data: SingleOwnerPropertyDto }) => {
   return (
@@ -21,8 +22,9 @@ const SingleOwnerPropertyIntroduction = ({ data }: { data: SingleOwnerPropertyDt
         </div>{" "}
         <div className="flex items-center gap-1">
           <img className="w-5 h-5 aspect-square" src="/assets/icons/adds/filled_heart.svg" />
-          <p className="text-base  opacity-60">{data?.favorites_count}</p>
+          <p className="text-base  opacity-60">{data?.favorites_count || 0}</p>
         </div>
+        <ShareLink passedHref={window.origin + `/rooms/${data?.slug}`} />
       </div>
 
       <div className="flex items-start gap-4    py-2 w-full ">
