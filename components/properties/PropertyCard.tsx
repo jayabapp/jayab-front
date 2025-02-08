@@ -113,8 +113,7 @@ const PropertyCard = ({ data, isOwner, week }: { data: PropertyListDto; isOwner?
               }
               className=" w-full rounded-10  h-full  object-cover aspect-square"
             />
-            <div className="absolute z-1 right-2 top-2 flex flex-col gap-1 w-7">
-              {" "}
+            {/* <div className="absolute z-1 right-2 top-2 flex flex-col gap-1 w-7">
               {data?.today_price?.discount_percentage ? (
                 <div className="w-7 gap-0.5 flex-col h-5 rounded-md transition-all  px-1 py-[0.2rem]   bg-primary-150 text-white  aspect-square flex items-center justify-center">
                   {/* <img className="w-4 h-4" src="/assets/icons/products/discount_tag.svg" /> */}
@@ -123,13 +122,13 @@ const PropertyCard = ({ data, isOwner, week }: { data: PropertyListDto; isOwner?
               ) : (
                 <></>
               )}
-              {/* {bookmarks?.includes(data?.id) ? (
+              {bookmarks?.includes(data?.id) ? (
                 <img src="/assets/icons/adds/List_bookmark_icon.svg" className="w-5 h-5 aspect-square" />
               ) : (
                 <></>
-              )} */}
-            </div>
-            {data?.advisor_commission || data?.advisor_commission == 0 ? (
+              )}
+            </div> */}
+            {data?.advisor_commission > 0 ? (
               <div className="w-16 gap-0.5  h-5 rounded-md transition-all  py-[0.2rem]   bg-black/50 text-white absolute z-1 left-2 flex-row top-2 aspect-square flex items-center justify-center">
                 <p className="  text-xxs   "> کمیسیون: {data.advisor_commission}%</p>{" "}
               </div>
