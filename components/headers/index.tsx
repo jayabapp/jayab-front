@@ -33,10 +33,10 @@ const TextIcon = ({ item }: textIconType) => (
   <Link
     prefetch={false}
     href={item?.route}
-    className={`flex items-center transition-all  brightness-125 hover:brightness-100 hover:grayscale-0  grayscale justify-center col-span-1 gap-2 flex-wrap ml-4 `}
+    className={`flex items-center transition-all  brightness-125 hover:brightness-100 hover:grayscale-0  grayscale justify-center col-span-1 gap-2 flex-row ml-4 `}
   >
     <img src={item?.icon} className="dark:invert" />
-    <p className="text-primary-700">{item?.title}</p>
+    <p className="text-primary-700 shrink-0">{item?.title}</p>
   </Link>
 );
 
@@ -158,7 +158,7 @@ const Header = ({ scroll }: { scroll?: number }) => {
 transition-all  ease-in-out duration-1000 header-content-container w-full mx-auto custome-shadow-card  backdrop-blur-md  bg-white dark:bg-dark-900   pt-2 pb-2   border-b dark:border-zinc-500 border-gray-100 `}
       >
         {/* ROW 1 */}
-        <div className="flex justify-between  items-center  xl:gap-[20%]  py-1  px-3 md:px-10  2xl:px-[9%]  ">
+        <div className="flex justify-between  items-center  xl:gap-[10%]  py-1  px-3 md:px-10  2xl:px-[9%]  ">
           <div className=" lg:hidden flex w-full  ">
             {pathname == "/" ? (
               <div className="w-full flex items-center  bg-primary-100  py-1  rounded-full justify-between pl-2 pr-1.5 gap-2">
@@ -315,7 +315,7 @@ transition-all  ease-in-out duration-1000 header-content-container w-full mx-aut
             </div>
           </div>
           <div
-            className={` text-xs gap-2  lg:text-md  justify-between font-medium flex-row hidden lg:flex w-1/2 transition-all ease-in-out duration-1000 items-center `}
+            className={` text-xs gap-2  lg:text-md  justify-between font-medium flex-row hidden lg:flex w-[60%] transition-all ease-in-out duration-1000 items-center `}
           >
             {!!isLogin ? (
               <TextIcon

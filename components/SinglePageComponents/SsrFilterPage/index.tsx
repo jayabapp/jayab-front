@@ -121,23 +121,24 @@ const SsrFilterPage = ({ landings, firstData }: { firstData: { data: any[] }; la
       </div>
       <div className="w-full hidden md:flex  pb-4">
         {" "}
-        <FiltersSelectedFiltersShowcase query={queries} propertyTypes={propertyTypes || {}} />
+        <FiltersSelectedFiltersShowcase
+          setFilterModalShow={setFilterModalShow}
+          query={queries}
+          propertyTypes={propertyTypes || {}}
+        />
       </div>
 
       <div className="flex fixed border-b  pt-1 md:hidden h-12 right-0  items-center justify-center   z-10 md:z-1  top-[4rem] md:top-auto left-0 md:left-auto bg-white md:bg-transparent md:relative flex-col w-full md:gap-2  ">
         {" "}
         <div className=" flex  order-1  md:hidden  relative w-full">
-          <div className="grid grid-cols-12 z-1  pr-2  relative  w-full items-center gap-1 justify-between  ">
-            <div
-              onClick={() => setFilterModalShow(true)}
-              className=" col-span-3 flex   w-fit px-3  h-[26px]  rounded-full   bg-primary-700 items-center gap-2 "
-            >
-              <img src="/assets/icons/property/white_filter_icon.svg" className="   cursor-pointer w-3 h-3 shrink-0" />
-              <p className="text-white  text-xs">{_STRINGS.FILTERS}</p>
-            </div>
+          <div className=" z-1  pr-2  relative  w-full items-center gap-1 justify-between  ">
             <div className=" !col-span-9 ">
               {" "}
-              <FiltersSelectedFiltersShowcase query={queries} propertyTypes={propertyTypes || {}} />
+              <FiltersSelectedFiltersShowcase
+                setFilterModalShow={setFilterModalShow}
+                query={queries}
+                propertyTypes={propertyTypes || {}}
+              />
             </div>{" "}
           </div>
         </div>

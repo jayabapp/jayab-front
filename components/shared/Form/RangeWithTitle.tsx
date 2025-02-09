@@ -11,8 +11,10 @@ const RangeWithTitle = ({
   className,
   step,
   item = { pathColor: "#E7E7E7", visibleDot: false },
+  showMark,
 }: {
   max: number;
+  showMark?: boolean;
   min: number;
   value: number;
   marks?: { [key: string]: { label: number | string; style: CSSProperties } };
@@ -24,7 +26,7 @@ const RangeWithTitle = ({
   return (
     <Slider
       reverse={item?.reverse}
-      // marks={marks}
+      marks={showMark ? marks : {}}
       startPoint={min || 0}
       max={max}
       value={value}

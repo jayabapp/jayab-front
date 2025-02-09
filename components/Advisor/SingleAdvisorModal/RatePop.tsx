@@ -80,6 +80,7 @@ const RatePop = ({
             item={{ visibleDot: true, reverse: true }}
             className=" w-full  rtl"
             marks={easyRatingItems}
+            showMark
             step={25}
             max={100}
             min={25}
@@ -95,6 +96,7 @@ const RatePop = ({
             در خصوص رزرو اقامتگاه
           </p>
           <RangeWithTitle
+            showMark
             item={{ visibleDot: true, reverse: true }}
             className=" w-full   "
             marks={easyRatingItems}
@@ -113,6 +115,7 @@ const RatePop = ({
             تحویل اقامتگاه
           </p>
           <RangeWithTitle
+            showMark
             className=" w-full "
             marks={easyRatingItems}
             item={{ visibleDot: true, reverse: true }}

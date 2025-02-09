@@ -7,6 +7,7 @@ import { useMediaQuery } from "react-responsive";
 import { useAutoplay } from "./EmblaCarouselAutoplay";
 import Autoplay from "embla-carousel-autoplay";
 import { NEW_IMAGE_URL } from "@/utils/urls";
+import { NextButton, PrevButton, usePrevNextButtons } from "./EmblaCarouselArrowButtons";
 type PropType = {
   options?: EmblaOptionsType;
   children: ReactNode;
@@ -101,6 +102,12 @@ const SwiperWithThumnails: React.FC<PropType> = (props) => {
 
     emblaMainApi.on("select", onSelect).on("reInit", onSelect);
   }, [emblaMainApi, onSelect]);
+
+  /* -------------------------------------------------------------------------- */
+  /*                                   ARROWS                                   */
+  /* -------------------------------------------------------------------------- */
+
+  const { prevBtnDisabled, nextBtnDisabled, onPrevButtonClick, onNextButtonClick } = usePrevNextButtons(emblaMainApi);
   return (
     <section
       style={{
@@ -109,9 +116,14 @@ const SwiperWithThumnails: React.FC<PropType> = (props) => {
       className="embla relative"
       dir={dir}
     >
-      <div className="embla__viewport flex" ref={emblaRef}>
+      <div className="embla__viewport relative flex" ref={emblaRef}>
         <div className="embla__container">{children}</div>
+        <div className="  embla__buttons">
+          <PrevButton onClick={onPrevButtonClick} disabled={prevBtnDisabled} />
+          <NextButton onClick={onNextButtonClick} disabled={nextBtnDisabled} />
+        </div>
       </div>
+
       <div className="embla-thumbs">
         <div className="embla-thumbs__viewport" ref={emblaThumbsRef}>
           <div className="embla-thumbs__container">

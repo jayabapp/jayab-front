@@ -49,7 +49,7 @@ const ProfileDropdown = ({ notifBadge }: { notifBadge?: number | string }) => {
   };
 
   return (
-    <div className="text-right">
+    <div className="text-right mt-1">
       {isVisible && (
         <ConfirmModal
           text={_STRINGS.LOG_OUT_MESSAGE}
@@ -79,10 +79,10 @@ const ProfileDropdown = ({ notifBadge }: { notifBadge?: number | string }) => {
         <div>
           <MenuButton
             ref={ref}
-            className={`flex items-center transition-all  brightness-125 hover:brightness-100 hover:grayscale-0  grayscale justify-center col-span-1 gap-2 flex-wrap ml-6`}
+            className={`flex items-center transition-all  brightness-125 hover:brightness-100 hover:grayscale-0  grayscale justify-center col-span-1 gap-2 flex-row ml-6`}
           >
             <img src="/assets/icons/navbar/my_jayab.svg" className="dark:invert" />
-            <p className="text-primary-700">{_STRINGS.MY_PROFILE}</p>
+            <p className="text-primary-700 shrink-0">{_STRINGS.MY_PROFILE}</p>
           </MenuButton>
         </div>
         <Transition
@@ -115,7 +115,7 @@ const ProfileDropdown = ({ notifBadge }: { notifBadge?: number | string }) => {
               </MenuItem>
 
               {!!userInfo?.owner_id ? (
-                <MenuItem key={`myAdds`}>
+                <MenuItem key={`myAdd2s`}>
                   <Link className="" prefetch={false} href={`/profile/owner/properties`}>
                     <div
                       className={` relative hover:bg-primary-700/80 dark:hover:bg-zinc-600  cursor-pointer hover:text-white text-gray-600 dark:text-gray-300 group flex w-full gap-2 items-center rounded-md px-2 py-2 text-sm font-light no-underline`}
@@ -138,7 +138,7 @@ const ProfileDropdown = ({ notifBadge }: { notifBadge?: number | string }) => {
               )}
 
               {!!userInfo?.advisor_id ? (
-                <MenuItem key={`myAdds`}>
+                <MenuItem key={`myAdds52`}>
                   <Link className="" prefetch={false} href={`/profile/advisor/subscription`}>
                     <div
                       className={` relative hover:bg-primary-700/80 dark:hover:bg-zinc-600  cursor-pointer hover:text-white text-gray-600 dark:text-gray-300 group flex w-full gap-2 items-center rounded-md px-2 py-2 text-sm font-light no-underline`}

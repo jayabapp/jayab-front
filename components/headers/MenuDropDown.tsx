@@ -13,7 +13,7 @@ const MenuDropDown = ({}) => {
   const asPath = usePathname();
 
   return (
-    <div className="text-right">
+    <div className="text-right mt-1">
       <Menu
         onMouseEnter={() => {
           if (ref?.current) {
@@ -31,10 +31,10 @@ const MenuDropDown = ({}) => {
         <div>
           <MenuButton
             ref={ref}
-            className={`flex items-center transition-all  brightness-125 hover:brightness-100 hover:grayscale-0  grayscale justify-center col-span-1 gap-2 flex-wrap ml-6`}
+            className={`flex items-center transition-all  brightness-125 hover:brightness-100 hover:grayscale-0  grayscale justify-center col-span-1 gap-2 flex-row ml-6`}
           >
             <img src="/assets/icons/header/menu_header.svg" className="dark:invert" />
-            <p className="text-primary-700">{_STRINGS.MENU}</p>
+            <p className="text-primary-700 shrink-0 ">{_STRINGS.MENU}</p>
           </MenuButton>
         </div>
         <Transition

@@ -72,7 +72,12 @@ const SinglePropSharePop = ({
 
       <div className="w-full p-4 flex flex-col gap-2">
         {shareButtonItems?.map((e) => (
-          <SinglePropSharePopItem data={e} cb={() => onItemSelect(e?.id)} isChecked={selected?.includes(e?.id)} />
+          <SinglePropSharePopItem
+            key={`share${e?.id}`}
+            data={e}
+            cb={() => onItemSelect(e?.id)}
+            isChecked={selected?.includes(e?.id)}
+          />
         ))}
       </div>
       <Button

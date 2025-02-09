@@ -40,18 +40,20 @@ const AdvisorCard = ({
           {/* CIRCULAR PROGRESS PARTS  */}
           <div className="w-full flex md:flex-cow  items-center justify-between gap-2">
             <AdvisorCircularProgresCard
+              containerClass=" w-[35%]"
               pStyles={{ pathColor: "#3886E5", textColor: "#3886E5", textSize: "2rem" }}
               data={{ value: data?.users_satisfaction || 100 }}
               item={{ linear_title: _STRINGS.USERS_SATISFACTION, linear_title_class: "text-primary-700" }}
             />
             <AdvisorCircularProgresCard
+              containerClass=" w-[35%]"
               pStyles={{ pathColor: "#34C759", textColor: "#34C759", textSize: "2rem" }}
               data={{ value: data?.owners_satisfaction || 100 }}
               item={{ linear_title: _STRINGS.OWNERS_SATISFACTION, linear_title_class: "text-primary-600" }}
             />
           </div>
           <p className=" text-sm ">
-            {_STRINGS.XP} : {timeLeft(data?.created_at)}
+            {_STRINGS.XP} : {timeLeft(data?.created_at).replace("پیش", "")}
           </p>
         </div>
       </div>

@@ -14,7 +14,7 @@ const CityModalSelectedAccardiom = ({
 }) => {
   return (
     <SimpleAccordion
-      item={{ parenClass: ` transition-all ` }}
+      item={{ parenClass: ` transition-all !px-0 ` }}
       title={`${_STRINGS.SELECTED_CITIES}  ${!isEmpty(selectedCities) ? `(${selectedCities?.length} شهر)` : ""} `}
     >
       <div className={` gap-2 w-full flex flex-wrap`}>

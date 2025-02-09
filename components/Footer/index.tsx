@@ -138,6 +138,7 @@ const Footer = () => {
         <div className="flex gap-2  items-center">
           {downloadLink?.data?.map((e) => (
             <Link
+              key={`downloadLink${e?.id}`}
               target="_blank"
               href={e?.link || ""}
               className="aspect-[3] max-w-[120px] "

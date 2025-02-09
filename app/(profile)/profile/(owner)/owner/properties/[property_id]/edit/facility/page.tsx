@@ -164,7 +164,7 @@ const CreatePropertyFacility = () => {
           <></>
         )}
       </div>
-      <div className="  grid   grid-cols-3 gap-2  border-b pb-4 w-full">
+      <div className="  grid   grid-cols-2 md:grid-cols-3 gap-2  border-b pb-4 w-full">
         {" "}
         <p className="font-bold mb-2  col-span-full w-full text-start  text-sm md:text-base text-primary-700  ">
           {_STRINGS.ENTERTAINMENT}
@@ -177,13 +177,13 @@ const CreatePropertyFacility = () => {
               onChangeMulty(e?.id, "entertainment");
             }}
             titleClass="  !text-xs  "
-            containerClass={` ${(index + 1) % 2 == 0 ? "col-span-2" : "col-span-1"}`}
+            containerClass={` ${(index + 1) % 2 == 0 ? "col-span-1" : "col-span-1"}`}
             isChecked={!!values?.entertainment?.includes(e?.id)}
             title={e?.title}
           />
         ))}
       </div>
-      <div className=" grid   grid-cols-3  gap-2  border-b pb-4 w-full">
+      <div className=" grid   grid-cols-2 md:grid-cols-3  gap-2  border-b pb-4 w-full">
         <p className="font-bold mb-2 col-span-full w-full text-start  text-sm md:text-base text-primary-700  ">
           {_STRINGS.KITCHEN_ACC}
         </p>
@@ -192,7 +192,7 @@ const CreatePropertyFacility = () => {
             key={`KITCHEN${e?.id}`}
             rounded="rounded-md"
             titleClass="  !text-xs  "
-            containerClass={` ${(index + 1) % 2 == 0 ? "col-span-2" : "col-span-1"}`}
+            containerClass={` ${(index + 1) % 2 == 0 ? "col-span-1" : "col-span-1"}`}
             onSelect={() => {
               onChangeMulty(e?.id, "kitchen");
             }}
@@ -213,14 +213,14 @@ const CreatePropertyFacility = () => {
           onChange(e, "facility_dscr");
         }}
       />
-      <div className="  grid   grid-cols-3   gap-2  border-b pb-4 w-full">
+      <div className="  grid   grid-cols-2 md:grid-cols-3   gap-2  border-b pb-4 w-full">
         <p className="font-bold  w-full mb-2 col-span-full  text-start  text-sm md:text-base text-primary-700  ">
           {_STRINGS.COOL_HEAT}
         </p>
         {propertyTypes?.["COOL_HEAT"]?.map((e, index) => (
           <Checkbox
             titleClass="  !text-xs  "
-            containerClass={` ${(index + 1) % 2 == 0 ? "col-span-2" : "col-span-1"}`}
+            containerClass={` ${(index + 1) % 2 == 0 ? "col-span-1" : "col-span-1"}`}
             key={`COOL_HEAT${e?.id}`}
             rounded="rounded-md"
             onSelect={() => {
@@ -231,14 +231,14 @@ const CreatePropertyFacility = () => {
           />
         ))}{" "}
       </div>
-      <div className=" grid   grid-cols-3  gap-2  border-b pb-4 w-full">
+      <div className=" grid   grid-cols-2 md:grid-cols-3  gap-2  border-b pb-4 w-full">
         <p className="font-bold col-span-full w-full mb-2 text-start  text-sm md:text-base text-primary-700  ">
           {_STRINGS.WELFARE_TITLE}
         </p>
         {propertyTypes?.["WELFARE"]?.map((e, index) => (
           <Checkbox
             titleClass="  !text-xs  "
-            containerClass={` ${(index + 1) % 2 == 0 ? "col-span-2" : "col-span-1"}`}
+            containerClass={` ${(index + 1) % 2 == 0 ? "col-span-1" : "col-span-1"}`}
             key={`WELFARE${e?.id}`}
             rounded="rounded-md"
             onSelect={() => {

@@ -6,9 +6,10 @@ import React from "react";
 
 const ProvienceCard = ({ item, callback }: { item: NewCitiesListDto; callback: () => void | null }) => {
   return (
-    <div onClick={callback} className="flex cursor-pointer flex-row items-center justify-start gap-2 ">
-      <div className=" relative   w-10 h-10 aspect-square rounded-md ">
+    <div onClick={callback} className="flex cursor-pointer flex-row items-center justify-start gap-4 ">
+      <div className=" relative     w-10 h-10 aspect-square rounded-md ">
         <Image
+          className=" rounded-md"
           fill
           src={!!item?.image ? NEW_IMAGE_URL(item?.image) : "/assets/icons/logo/mobile_header_logo.svg"}
           alt={item?.title}

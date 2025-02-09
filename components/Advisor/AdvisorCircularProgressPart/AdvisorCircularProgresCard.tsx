@@ -7,6 +7,7 @@ const AdvisorCircularProgresCard = ({
   data,
   item,
   pStyles,
+  containerClass,
 }: {
   data: { value: number };
   item: { linear_title_class?: string; linear_title?: string; title?: string; title_class?: string };
@@ -15,6 +16,7 @@ const AdvisorCircularProgresCard = ({
     pathColor?: string;
     textSize?: string;
   };
+  containerClass?: string;
 }) => {
   return (
     <div className="w-full  flex items-center  gap-1 md:gap-2">
@@ -23,7 +25,7 @@ const AdvisorCircularProgresCard = ({
       ) : (
         <></>
       )}
-      <div className="w-full flex  items-center gap-4 flex-col">
+      <div className={` ${containerClass} flex  items-center gap-4 flex-col`}>
         <CircularProgressbar
           className=" max-w-20 md:p-2 !pr-0"
           value={data?.value}

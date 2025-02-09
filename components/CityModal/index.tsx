@@ -117,7 +117,7 @@ const CityModal = ({
     >
       <CityModalHeaderPart selectedProv={selectedProv} onHide={onHide} removeSelectedProve={removeSelectedProve} />
 
-      <div className=" w-full flex flex-col gap-4  p-3  h-auto min-h-full">
+      <div className=" w-full flex flex-col gap-4  mt-4 p-3  h-auto min-h-full">
         <CityModalSearchPart search={search} setSearch={setSearch} />
 
         <CityModalSelectedAccardiom selectedCities={selectedCities} onCityClick={onCityClick} />

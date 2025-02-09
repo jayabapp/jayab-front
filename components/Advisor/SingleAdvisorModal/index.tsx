@@ -134,11 +134,13 @@ const SingleAdvisorModal = ({
             </div>
             <div className="flex items-center justify-between">
               <AdvisorCircularProgresCard
+                containerClass=" w-full "
                 pStyles={{ pathColor: "#34C759", textColor: "#000", textSize: "1.3rem" }}
                 data={{ value: data?.advisor_behavior || 100 }}
                 item={{ title: _STRINGS.CONSULTANT_APPROACHES, title_class: " !text-sm" }}
               />
               <AdvisorCircularProgresCard
+                containerClass=" w-full "
                 pStyles={{ pathColor: "#34C759", textColor: "#000", textSize: "1.3rem" }}
                 data={{ value: data?.advisor_responsibility || 100 }}
                 item={{ title: _STRINGS.CONSULTANT_RESPONSIBILITY, title_class: " !text-sm" }}
@@ -146,6 +148,7 @@ const SingleAdvisorModal = ({
             </div>
             <div className="flex items-center justify-between">
               <AdvisorCircularProgresCard
+                containerClass=" w-full "
                 pStyles={{ pathColor: "#34C759", textColor: "#000", textSize: "1.3rem" }}
                 data={{ value: data?.response_speed_and_followup || 100 }}
                 item={{ title: _STRINGS.FOLLOWUP_SPEED_RESPONSE, title_class: " !text-sm" }}

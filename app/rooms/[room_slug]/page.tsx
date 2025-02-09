@@ -3,14 +3,9 @@ import ProductSkeleton from "@/components/properties/ProductSkeleton";
 import SinglePorpertyAccards from "@/components/properties/SinglePropertyAccards";
 import SinglePropertycallender from "@/components/properties/SinglePropertycallender";
 import SinglePropertyIntroduction from "@/components/properties/SinglePropertyIntroduction";
-import SingleMobilePropertyIntroductions from "@/components/properties/SinglePropertyIntroduction/SingleMobilePropertyIntroductions";
-import LottieLoading from "@/components/shared/Lotties/LottieLoading";
-import SimpleAccordion from "@/components/shared/SimpleAccorion";
-import Callender from "@/components/widgets/DatePicker/callender";
+
 import serverCall from "@/helpers/serverCall";
-import { fakeVilla } from "@/utils/faker";
 import { apiRoutes, baseUrl } from "@/utils/urls";
-import moment from "moment-jalaali";
 import { Metadata, ResolvingMetadata } from "next";
 import React from "react";
 
