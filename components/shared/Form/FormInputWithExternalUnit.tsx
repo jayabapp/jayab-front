@@ -82,7 +82,7 @@ const FormInputWithExternalUnit = ({ item, unit, value, onChangeText, errors, er
             placeholder={item?.placeholder || item?.title}
             onChange={(v) => {
               if (item?.keyboard != "number") onChangeText(v.target.value);
-              else if (!isNaN(Number(p2e(v.target.value)))) onChangeText(v.target.value);
+              else if (!isNaN(Number(v.target.value)) || item?.convertToText) onChangeText(v.target.value);
               if (inputRef.current && item?.maxLength && v.target.value.length >= item?.maxLength)
                 inputRef.current.blur();
             }}

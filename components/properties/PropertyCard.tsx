@@ -57,7 +57,11 @@ const PropertyCard = ({ data, isOwner, week }: { data: PropertyListDto; isOwner?
             {" "}
             <p className=" leading-5 text-xs 2xl:text-sm  shrink-0 ">{_STRINGS.TODAYS_PRICE}</p>
             <AddCardPricePart
-              data={{ discounted_price: data?.today_price?.discounted_price, price: data?.today_price?.price }}
+              data={{
+                discounted_price: data?.today_price?.discounted_price,
+                price: data?.today_price?.price,
+                discount_percentage: data.today_price?.discount_percentage,
+              }}
             />
           </div>
 

@@ -13,6 +13,7 @@ import _STRINGS from "@/utils/LocalStrings";
 import { useMutation, useQuery } from "@tanstack/react-query";
 import { useParams, usePathname, useRouter, useSearchParams } from "next/navigation";
 import React, { useEffect, useState } from "react";
+import numberWithCommas from "@/helpers/numberWithCommas";
 
 const CreatePropertyPricing = () => {
   const router = useRouter();
@@ -154,9 +155,11 @@ const CreatePropertyPricing = () => {
             convertToText: true,
             direction: "ltr",
           }}
-          value={values?.normal || ""}
+          value={numberWithCommas(values?.normal || "") || ""}
           onChangeText={(e) => {
-            onChange(e, "normal");
+            let pureVal = e?.replaceAll(",", "").replaceAll(",", "").replaceAll(" ", "");
+
+            if (!isNaN(pureVal)) onChange(pureVal, "normal");
           }}
         />
         <FormInputWithExternalUnit
@@ -169,9 +172,10 @@ const CreatePropertyPricing = () => {
             convertToText: true,
             direction: "ltr",
           }}
-          value={values?.wednesday || ""}
+          value={numberWithCommas(values?.wednesday || "")}
           onChangeText={(e) => {
-            onChange(e, "wednesday");
+            let pureVal = e?.replaceAll(",", "").replaceAll(",", "").replaceAll(" ", "");
+            if (!isNaN(pureVal)) onChange(pureVal, "wednesday");
           }}
         />
         <FormInputWithExternalUnit
@@ -184,9 +188,10 @@ const CreatePropertyPricing = () => {
             convertToText: true,
             direction: "ltr",
           }}
-          value={values?.thursday || ""}
+          value={numberWithCommas(values?.thursday || "")}
           onChangeText={(e) => {
-            onChange(e, "thursday");
+            let pureVal = e?.replaceAll(",", "").replaceAll(",", "").replaceAll(" ", "");
+            if (!isNaN(pureVal)) onChange(pureVal, "thursday");
           }}
         />
         <FormInputWithExternalUnit
@@ -199,9 +204,11 @@ const CreatePropertyPricing = () => {
             convertToText: true,
             direction: "ltr",
           }}
-          value={values?.friday || ""}
+          value={numberWithCommas(values?.friday || "")}
           onChangeText={(e) => {
-            onChange(e, "friday");
+            let pureVal = e?.replaceAll(",", "").replaceAll(",", "").replaceAll(" ", "");
+
+            if (!isNaN(pureVal)) onChange(pureVal, "friday");
           }}
         />
         <FormInputWithExternalUnit
@@ -214,9 +221,10 @@ const CreatePropertyPricing = () => {
             convertToText: true,
             direction: "ltr",
           }}
-          value={values?.peak || ""}
+          value={numberWithCommas(values?.peak || "")}
           onChangeText={(e) => {
-            onChange(e, "peak");
+            let pureVal = e?.replaceAll(",", "").replaceAll(",", "").replaceAll(" ", "");
+            if (!isNaN(pureVal)) onChange(pureVal, "peak");
           }}
         />
         <FormInputWithExternalUnit
@@ -229,9 +237,10 @@ const CreatePropertyPricing = () => {
             convertToText: true,
             direction: "ltr",
           }}
-          value={values?.cleaning || ""}
+          value={numberWithCommas(values?.cleaning || "")}
           onChangeText={(e) => {
-            onChange(e, "cleaning");
+            let pureVal = e?.replaceAll(",", "").replaceAll(",", "").replaceAll(" ", "");
+            if (!isNaN(pureVal)) onChange(pureVal, "cleaning");
           }}
         />
         <FormInputWithExternalUnit
@@ -244,9 +253,10 @@ const CreatePropertyPricing = () => {
             convertToText: true,
             direction: "ltr",
           }}
-          value={values?.additional_person || ""}
+          value={numberWithCommas(values?.additional_person || "")}
           onChangeText={(e) => {
-            onChange(e, "additional_person");
+            let pureVal = e?.replaceAll(",", "").replaceAll(",", "").replaceAll(" ", "");
+            if (!isNaN(pureVal)) onChange(pureVal, "additional_person");
           }}
         />
       </div>

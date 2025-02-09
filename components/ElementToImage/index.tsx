@@ -8,8 +8,6 @@ const ElementToImage = ({ children, ...props }: any) => {
   const ref = useRef<HTMLDivElement>(null);
 
   const onShare = async (files: any) => {
-    const title = "jayab";
-
     // const response = await fetch(shareData);
     // const blob = await response.blob();
     // const files = [
@@ -18,7 +16,7 @@ const ElementToImage = ({ children, ...props }: any) => {
     //   }),
     // ];
 
-    const shareDetails = { title, files };
+    const shareDetails = { files };
     if (navigator.share) {
       try {
         await navigator.share(shareDetails).then(() => console.log("Your content was shared"));
@@ -32,7 +30,6 @@ const ElementToImage = ({ children, ...props }: any) => {
 
     const newEl = ref.current;
     if (!!newEl) {
-      console.log(newEl, "newElnewEl");
       toJpeg(newEl, { cacheBust: true, includeQueryParams: true })
         .then((dataUrl) => {
           // const link = document.createElement("a");

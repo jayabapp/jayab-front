@@ -15,11 +15,11 @@ type Props = {
 };
 
 export async function generateMetadata({ params }: Props, parent: ResolvingMetadata): Promise<Metadata> {
-  const room_slug = (await params).room_slug;
-  const { data: properyData } = await serverCall(baseUrl + apiRoutes.GET_SINGLEPROPERTY_SlUG(room_slug));
+  const paramData = await params;
+  const { data: properyData } = await serverCall(baseUrl + apiRoutes.GET_SINGLEPROPERTY_SlUG(paramData?.room_slug));
 
   return {
-    title: properyData?.title,
+    title: properyData?.title || "آگهی",
     description: properyData?.title,
   };
 }

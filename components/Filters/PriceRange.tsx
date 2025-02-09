@@ -90,6 +90,7 @@ const PriceRange = ({ filters, setFilters, query, lowLimit, upLimit, steps, high
   return (
     <div className="mx-2">
       <Slider
+        reverse
         range
         min={lowerBound}
         max={upperBound}

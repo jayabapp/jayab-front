@@ -133,6 +133,7 @@ export const allRoutes: { [key: string]: string } = {
   questions: "پرسش ها",
   notifications: "اعلان ها",
   rooms: "آگهی ها",
+  invite: "دعوت از دوستان",
   "my-payments": "پرداخت های من",
   advisors: "مشاوران",
   inquery: "استعلام هفتگی",
@@ -256,14 +257,14 @@ export const profileItems = [
     isMobile: false,
   },
 
-  // {
-  //   id: 42311124,
-  //   title: "دعوت از دوستان",
-  //   route: "/profile/invite",
-  //   imgSrc: "/assets/icons/header/header_share.svg",
-  //   guard: true,
-  //   isMobile: false,
-  // },
+  {
+    id: 42311124,
+    title: "دعوت از دوستان",
+    route: "/profile/invite",
+    imgSrc: "/assets/icons/header/header_share.svg",
+    guard: true,
+    isMobile: false,
+  },
 
   {
     id: 42324,
