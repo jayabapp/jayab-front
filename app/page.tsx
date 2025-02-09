@@ -70,7 +70,7 @@ const Home = async () => {
       <Suspense>
         <HomeSearchPart />
       </Suspense>
-      <div className="px-3 min-h-[50dvh] select-none md:px-3 lg:px-4 2xl:px-[10%]  pt-0 md:py-0 w-full">
+      <div className="px-3 min-h-[30dvh] md:min-h-[50dvh] select-none md:px-3 lg:px-4 2xl:px-[10%]  pt-0 md:py-0 w-full">
         <Suspense>
           <HomeAdvisorSub />
         </Suspense>

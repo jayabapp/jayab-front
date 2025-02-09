@@ -77,23 +77,23 @@ const SinglePropertyIntroduction = ({ data }: { data: SinglePropDto }) => {
     <div className=" flex w-full  flex-col relative  gap-2 md:gap-3">
       <div className="w-full flex items-start md:items-center justify-between gap-2">
         {" "}
-        <p className=" font-medium text-xl w-3/5 md:w-full md:text-2xl ">{data?.title}</p>
+        <h1 className=" font-medium text-xl w-3/5 md:w-full md:text-2xl ">{data?.title}</h1>
         {!!data?.is_authorized ? <AuthorizationStatus isAuthorized={data?.is_authorized} /> : <></>}
       </div>
       <div className=" flex items-center w-full justify-between">
-        <div className="flex items-center gap-4">
+        <div className="flex items-center gap-3 md:gap-4">
           <div className="bg-primary-700 rounded-md text-xs md:text-sm  px-2 py-1 text-white flex items-center justify-center">
             کد {data.code}
           </div>{" "}
+          <ShareLink />
           <div className="flex items-center gap-1">
             <BookMarkButton data={data} />
           </div>
           <div className="flex items-center gap-1">
             <FavButton setFavCount={setFavCount} data={data} />
-            <p className="text-base opacity-70   ">{favCount}</p>
+            <p className="text-xs  md:text-sm font-light   ">{favCount}</p>
           </div>
-          <ShareLink />
-        </div>{" "}
+        </div>
         {!!isAdvisor && !!userInfo?.advisor?.is_special ? (
           <Button
             onClick={onShareClick}
@@ -174,13 +174,13 @@ const SinglePropertyIntroduction = ({ data }: { data: SinglePropDto }) => {
           <div className="w-full  px-4  flex items-center justify-between gap-4 ">
             <Button
               onClick={onContactClick}
-              width="w-full  !py-1.5   !text-sm "
+              width="w-full  !py-2  !font-bold  !text-sm "
               containerClass="w-full"
               roundedClass="rounded-full"
               title={_STRINGS.CONTACT_INFO}
             />
             <Button
-              width="w-full !py-1.5  !text-sm "
+              width="w-full !py-2  !font-bold !text-sm "
               containerClass="w-full  "
               roundedClass="rounded-full"
               title={_STRINGS.CHAT_IN_JAYAB}

@@ -1,7 +1,6 @@
 "use client";
 import React, { useEffect, useRef, useState } from "react";
 
-import { Swiper, SwiperSlide } from "swiper/react";
 import SwiperCore, { Swiper as SwiperTyype } from "swiper";
 import { NEW_IMAGE_URL } from "../../../utils/urls";
 // import Modal from "../shared/Modal";
@@ -16,6 +15,8 @@ import { difference, isEmpty } from "lodash";
 import ProductImage from "./ProductImage";
 import { SingleOwnerPropertyDto, SinglePropDto } from "@/api_services/property/property.interface";
 import RoomImageModalPart from "./RoomImageModalPart";
+import Swiper from "@/components/embelaCarousel/Swiper";
+import SwiperSlide from "@/components/embelaCarousel/SwiperSlide";
 // const ProductOptionsContainer = dynamic(() => import("./ProductOptionsContainer"), {
 //   ssr: false,
 // });
@@ -112,7 +113,7 @@ function ProductImagesContainer({
     <div className={`flex flex-row w-full gap-2 overflow-visible`}>
       <div className="relative  hidden md:flex  md:w-1/5 ">
         <div
-          className={`relative h-[100%]  gap-2 flex flex-col md:p-0.5 mt-2 md:mt-0
+          className={`relative h-[100%]   flex flex-col md:p-0.5 mt-2 md:mt-0
         ${addImages?.length >= 4 ? "justify-between" : ""}    `}
         >
           {/* ${
@@ -170,6 +171,35 @@ function ProductImagesContainer({
   w-full       md:w-4/5 h-fit `}
       >
         <div className="block  relative rounded-10 !aspect-square p-0 md:p-0.5 ">
+          <Swiper
+            pagination
+            slidesWidth={{ def: "100%", md: "100%" }}
+            spacing="0rem"
+            options={{ align: "center", direction: "rtl", dragFree: false }}
+          >
+            {addImages?.map((i, index: number) => (
+              <SwiperSlide key={index} className={`w-full  !h-auto    cursor-pointer select-none `}>
+                <div
+                  onClick={() => setModalProps({ isVisible: true, data: data, currentIndex: index })}
+                  className={`w-full    h-full  aspect-square relative  rounded-20 `}
+                >
+                  {" "}
+                  {!!i ? (
+                    <Image
+                      fill
+                      src={NEW_IMAGE_URL(i || "")}
+                      className="w-full h-full !p-0 custome-shadow-card !overflow-clip  bg-white  rounded-20  aspect-square !object-cover "
+                      alt={`${i?.alt || ""}`}
+                    />
+                  ) : (
+                    <></>
+                  )}
+                </div>
+              </SwiperSlide>
+            ))}
+          </Swiper>
+        </div>
+        {/* <div className="block  relative rounded-10 !aspect-square p-0 md:p-0.5 ">
           <SwiperWithNavigation
             pagination={{
               clickable: true,
@@ -204,7 +234,7 @@ function ProductImagesContainer({
                 </SwiperSlide>
               ))}
           </SwiperWithNavigation>
-        </div>
+        </div> */}
       </div>
     </div>
   );

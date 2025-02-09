@@ -31,7 +31,7 @@ const PropertyCard = ({ data, isOwner, week }: { data: PropertyListDto; isOwner?
             ) : (
               <></>
             )}
-            <p className="text-sm line-clamp-1 font-medium">{data.title}</p>
+            <p className="text-sm line-clamp-1 font-semibold">{data.title}</p>
           </div>
 
           {/* CODE  - LIKES */}
@@ -86,9 +86,8 @@ const PropertyCard = ({ data, isOwner, week }: { data: PropertyListDto; isOwner?
               {/* LOCATION */}
               <div className="flex w-full  items-center gap-1">
                 <img src="/assets/icons/adds/pin_point_location.svg" className="w-5 h-5 aspect-square" />
-                <p className="text-xs text-center">
-                  {data?.city}{" "}
-                  <span className="text-xxs font-light">{data?.province ? `(${data?.province})` : ``}</span>
+                <p className="text-xs text-center mt-0.5">
+                  {data?.city} <span className="text-xs ">{data?.province ? `(${data?.province})` : ``}</span>
                 </p>
               </div>
             </>

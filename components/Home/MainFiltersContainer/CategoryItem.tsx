@@ -20,8 +20,8 @@ const CategoryItem = ({ item }: { item: HomeLandingDto }) => {
   return (
     <button
       id={item?.title}
-      data-umami-event-id={item?.title}
-      data-umami-event={"Category Select"}
+      // data-umami-event-id={item?.title}
+      // data-umami-event={"Category Select"}
       onClick={() => {
         if (!!item?.title) {
           onSuggClick(item?.url);
@@ -45,7 +45,7 @@ const CategoryItem = ({ item }: { item: HomeLandingDto }) => {
         />
       </div>
 
-      <p className={` opacity-80 text-sm text-center  line-clamp-2 h-10 md:text-xl`}>{item?.title}</p>
+      <h2 className={` opacity-80 text-xs text-center  line-clamp-2 h-8 md:h-12 md:text-base `}>{item?.title}</h2>
     </button>
   );
 };

@@ -21,14 +21,14 @@ const HomeCityItem = ({ item }: { item: HomeLandingDto }) => {
   return (
     <button
       id={item?.title}
-      data-umami-event-id={item?.title}
-      data-umami-event={"Category Select"}
+      // data-umami-event-id={item?.title}
+      // data-umami-event={"Category Select"}
       onClick={() => {
         if (!!item?.title) {
           onSuggClick(item?.url);
         }
       }}
-      className="flex flex-col gap-4 items-center p-2 w-full group  select-none transition-all duration-500 "
+      className="flex flex-col gap-2 items-center p-2 w-full group  select-none transition-all duration-500 "
     >
       <div id={`${item?.title || "fake"}CatImage`} className="w-full relative rounded-10  aspect-square z-30">
         {" "}
@@ -44,7 +44,7 @@ const HomeCityItem = ({ item }: { item: HomeLandingDto }) => {
         />
       </div>
 
-      <p className={` text-xs text-center md:text-base`}>{item?.title}</p>
+      <h2 className={` text-xs text-center md:text-base`}>{item?.title}</h2>
     </button>
   );
 };

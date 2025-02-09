@@ -3,11 +3,12 @@ import { useEffect, useRef, useState } from "react";
 import { ImageSlideType } from "./PropertiesImagesPart";
 import Modal from "@/components/Modal";
 import _STRINGS from "@/utils/LocalStrings";
-import SwiperWithNavigation from "@/components/SwiperWithNavigation";
-import SwiperCore, { Swiper as SwiperTyype } from "swiper";
-import { Swiper, SwiperSlide } from "swiper/react";
+
 import SmallLoading from "@/components/shared/Lotties/SmallLoading";
 import { NEW_IMAGE_URL } from "@/utils/urls";
+import Swiper from "@/components/embelaCarousel/Swiper";
+import SwiperSlide from "@/components/embelaCarousel/SwiperSlide";
+import SwiperWithThumnails from "@/components/embelaCarousel/SwiperWithThumnails";
 const RoomImageModalPart = ({
   modalProps,
   setModalProps,
@@ -56,7 +57,7 @@ const RoomImageModalPart = ({
         setModalProps({ ...modalProps, isVisible: false });
       }}
     >
-      <div className=" bg-white  md:py-[10%] gap-2 px-3  items-center justify-center md:px-3 lg:px-4 2xl:px-[10%]   w-full flex flex-col   h-full    relative">
+      <div className=" bg-white  md:py-[5%] gap-2 px-3  items-center justify-center md:px-3 lg:px-4 2xl:px-[10%]   w-full flex flex-col   h-full    relative">
         <div className="flex fixed md:sticky   rounded-t-0 md:rounded-t-20 w-full z-[60]  dark:bg-zinc-800  gap-4 items-center h-12   top-4  col-span-5 px-4  ">
           <div
             onClick={() => setModalProps({ ...modalProps, isVisible: false })}
@@ -71,35 +72,17 @@ const RoomImageModalPart = ({
         </div>
         <div className="w-full   md:h-full  relative  md:px-[25%] ">
           {isVisible ? (
-            <SwiperWithNavigation
-              pagination={{
-                clickable: true,
-              }}
-              dataLength={addImages?.length}
-              // activeIndex={modalProps?.currentIndex}
-              // setActiveIndex={setActiveIndex}
-              spaceBetween={10}
-              slidesPerView={1}
-              reference={ref}
-              onBeforeInit={(swiper: SwiperCore) => {
-                ref.current = swiper;
-              }}
-              onActiveIndexChange={(swiper: SwiperCore) => {
-                // setzoomEnabled(false);
-                return setActiveIndex((index) => swiper.activeIndex);
-              }}
-              initialSlide={activeIndex}
-              className="!select-none centerise  flex !items-center "
+            <SwiperWithThumnails
+              slides={addImages || []}
+              slidesWidth={{ def: "100%", md: "100%" }}
+              spacing="0.5rem"
+              options={{ align: "center", direction: "rtl", dragFree: false }}
             >
               {addImages?.map((i, index) => (
-                <SwiperSlide
-                  key={`index${index}`}
-                  id={`${index}`}
-                  className={`w-full   h-full    cursor-pointer !select-none `}
-                >
+                <SwiperSlide key={`index${index}`} className={`w-full   h-full    cursor-pointer !select-none `}>
                   {true ? (
                     // {i?.type == 1 ? (
-                    <div className="swiper-zoom-container h-full  p-1 rounded-md !select-none">
+                    <div className=" flex items-center  justify-center w-full h-full  p-1 rounded-md !select-none">
                       <img
                         className="w-fit  object-contain  h-full rounded-md  !max-h-[60dvh]  !select-none"
                         src={NEW_IMAGE_URL(i)}
@@ -128,85 +111,10 @@ const RoomImageModalPart = ({
                   )}
                 </SwiperSlide>
               ))}
-            </SwiperWithNavigation>
+            </SwiperWithThumnails>
           ) : (
             <SmallLoading />
           )}
-        </div>
-
-        <div className=" w-full flex  flex-col gap-2 fixed bottom-12 md:bottom-auto px-4 md:!relative ">
-          <div className="w-full pt-4 flex items-start justify-start">
-            {" "}
-            <p className="font-medium text-lg">
-              {" "}
-              {(activeIndex || 0) + 1}/{addImages?.length}
-            </p>
-          </div>
-          <div className="w-full flex  ">
-            {isVisible ? (
-              <Swiper
-                slidesPerView={4}
-                breakpoints={{
-                  320: {
-                    slidesPerView: 4,
-                  },
-                  // when window width is >= 640px
-                  640: {
-                    slidesPerView: 4,
-                  },
-                  // when window width is >= 768px
-                  768: {
-                    slidesPerView: 7.5,
-                    spaceBetween: 15,
-                  },
-                  1024: {
-                    slidesPerView: 8,
-                    spaceBetween: 20,
-                  },
-                  1600: {
-                    slidesPerView: 8.5,
-                    spaceBetween: 20,
-                  },
-                }}
-                spaceBetween={10}
-                className={"w-full px-0"}
-                onBeforeInit={(swiper) => (mobileSwiper.current = swiper)}
-              >
-                {addImages?.map((i, index) => (
-                  <SwiperSlide key={`imgprd${index}`} id={`imgprd${index}`}>
-                    <div
-                      className={` relative flex-1 md:flex-none w-full h-full  overflow-clip rounded-10 border cursor-pointer transition-all ease-in-out duration-300 ${
-                        activeIndex == index
-                          ? "border-primary-700  dark:border-zinc-200 "
-                          : "border-gray-300 opacity-60 dark:border-zinc-600"
-                      } `}
-                      onClick={() => ref.current.slideTo(index)}
-                    >
-                      <img
-                        onClick={() => ref.current.slideTo(index)}
-                        // src={i?.type == 1 ? NEW_IMAGE_URL(i) : i?.cover}
-                        src={i?.type == 1 ? NEW_IMAGE_URL(i, "thumbnail") : ""}
-                        className={`  ${
-                          i?.type != 1 ? " blur-sm" : ""
-                        }  aspect-square  object-cover p-1 w-full rounded-10 h-full  `}
-                      />
-                      {/* {i?.type != 1 ? (
-                                <img
-                                  src="/assets/icons/products/play-cricle.svg"
-                                  className="left-1/2 top-1/2 rounded-10 absolute "
-                                  style={{ transform: "translate(-50%,-50%)" }}
-                                />
-                              ) : (
-                                <></>
-                              )} */}
-                    </div>
-                  </SwiperSlide>
-                ))}
-              </Swiper>
-            ) : (
-              <></>
-            )}
-          </div>
         </div>
       </div>
     </Modal>

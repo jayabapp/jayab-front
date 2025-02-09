@@ -20,12 +20,12 @@ type Props = {
 };
 
 export async function generateMetadata({ params }: Props, parent: ResolvingMetadata): Promise<Metadata> {
-  const pageParams = await params;
-  const { data: properyData } = await serverCall(baseUrl + apiRoutes.GET_SINGLEPROPERTY_SlUG(pageParams?.room_slug));
+  const room_slug = (await params).room_slug;
+  const { data: properyData } = await serverCall(baseUrl + apiRoutes.GET_SINGLEPROPERTY_SlUG(room_slug));
 
   return {
-    title: properyData?.product?.seo?.metaTitle || properyData?.product?.title,
-    description: properyData?.product?.seo?.metaDescription || properyData?.product?.full_text,
+    title: properyData?.title,
+    description: properyData?.title,
   };
 }
 

@@ -40,7 +40,7 @@ const SuggestedPart = ({
   };
 
   return (
-    <div className=" flex items-start flex-col py-4 justify-start gap-4">
+    <div className=" flex items-start flex-col py-4 justify-start px-4 gap-4">
       {isLoading ? (
         <BtnLoading />
       ) : !!data && isEmpty(data?.cities) && isEmpty(data?.cities) && isEmpty(data?.properties) ? (

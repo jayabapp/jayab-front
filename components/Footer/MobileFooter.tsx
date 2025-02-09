@@ -119,8 +119,8 @@ const MobileFooter: React.FC = ({}) => {
               {el?.title ? (
                 <p
                   className={`  ${
-                    !isFocused(el?.route) && el?.title ? " !font-light  " : "!font-medium     "
-                  }   truncate text-sm  md:text-base  text-primary-700 select-none
+                    !isFocused(el?.route) && el?.title ? "  " : "     "
+                  }   truncate text-xs  md:text-base  text-primary-700 select-none
             
                 `}
                 >

@@ -57,7 +57,7 @@ const ShareLink = ({
       >
         <img
           src="/assets/icons/property/share_icon.svg"
-          className="cursor-pointer w-5 h-5 grayscale   hover:scale-110 transition-all"
+          className="cursor-pointer w-4 h-4  md:w-5 md:h-5 grayscale   hover:scale-110 transition-all"
         />
       </div>
       <Transition show={visibleSocials}>

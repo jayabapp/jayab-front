@@ -2,9 +2,13 @@ import React from "react";
 
 const AuthorizationStatus = ({ isAuthorized }: { isAuthorized: boolean }) => {
   return (
-    <div className={` bg-black/5  px-2 py-1 shrink-0 flex items-center  rounded-full gap-2 custome-shadow-card `}>
+    <div
+      className={` bg-black/5  pl-2 pr-1 py-1 shrink-0 flex items-center  rounded-full gap-2 ${
+        isAuthorized ? "" : " custome-shadow-card "
+      }  `}
+    >
       <img
-        className=" rounded-full w-3.5 h-3.5 "
+        className=" rounded-full w-4 h-4 "
         src={
           isAuthorized ? "/assets/icons/property/green_circled_tick.svg" : "/assets/icons/property/red_exclmation.svg"
         }

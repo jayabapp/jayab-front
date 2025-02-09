@@ -158,12 +158,12 @@ const Header = ({ scroll }: { scroll?: number }) => {
 transition-all  ease-in-out duration-1000 header-content-container w-full mx-auto custome-shadow-card  backdrop-blur-md  bg-white dark:bg-dark-900   pt-2 pb-2   border-b dark:border-zinc-500 border-gray-100 `}
       >
         {/* ROW 1 */}
-        <div className="flex justify-between  items-center  xl:gap-[20%]  py-1  px-2 md:px-10  2xl:px-[9%]  ">
+        <div className="flex justify-between  items-center  xl:gap-[20%]  py-1  px-3 md:px-10  2xl:px-[9%]  ">
           <div className=" lg:hidden flex w-full  ">
             {pathname == "/" ? (
-              <div className="w-full flex items-center  bg-primary-100  py-1  rounded-full justify-between px-2 gap-2">
+              <div className="w-full flex items-center  bg-primary-100  py-1  rounded-full justify-between pl-2 pr-1.5 gap-2">
                 <div className="flex items-center gap-4">
-                  <div className=" flex items-center justify-center gap-1">
+                  <div className=" flex items-center justify-center gap-2">
                     {" "}
                     <Link
                       prefetch={false}
@@ -181,11 +181,11 @@ transition-all  ease-in-out duration-1000 header-content-container w-full mx-aut
                         // onClick={() => pusher("/")}
                       />
                     </Link>
-                    <div className="flex flex-col gap-1">
+                    <div className="flex flex-col gap-0">
                       <p className="font-bold text-lg  text-primary-700 ">
                         {userInfo?.full_name ? userInfo?.full_name : _STRINGS.LOGO}
                       </p>
-                      <p className="text-xs opacity-70">{userInfo?.mobile_number}</p>
+                      <p className="text-xs text-primary-800 ">{userInfo?.mobile_number}</p>
                     </div>
                   </div>
                 </div>
@@ -193,7 +193,7 @@ transition-all  ease-in-out duration-1000 header-content-container w-full mx-aut
                 {isLogin ? (
                   <>
                     {" "}
-                    <div className="flex items-center py-2 px-4 gap-4">
+                    <div className="flex items-center py-2 px-4 gap-6">
                       <Link prefetch={false} href={"/chat"} className="relative">
                         <AbsoluteBadge count={chaNotifBadge?.unread_count || 0} />
                         <img src="/assets/icons/header/blue_chat.svg" className="w-6 h-6 aspect-square" />

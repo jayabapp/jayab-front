@@ -33,7 +33,7 @@ const SinglePropContactInfoPop = ({
     <PopUpDown setVisible={onHide} visible={show}>
       <ModalHeaderPart hideArrow title={_STRINGS.CONTACT_INFO} onHide={onHide} />
 
-      <div className="w-full p-4 flex flex-col gap-2">
+      <div className="w-full p-4 flex flex-col">
         {isPending ? (
           <LottieLoading />
         ) : isEmpty(contactInfo) ? (

@@ -38,7 +38,7 @@ function MainFiltersContainer({ data, title }: { data: HomeLandingDto[]; title: 
         ) : (
           <Swiper
             slidesWidth={{ def: "25%", md: "12.5%" }}
-            spacing="0.5rem"
+            spacing="0"
             options={{ align: "start", direction: "rtl", dragFree: true }}
           >
             {data?.map((i, index: number) => (

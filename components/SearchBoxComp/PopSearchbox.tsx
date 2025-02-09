@@ -10,6 +10,7 @@ import { isMobile } from "react-device-detect";
 import SmallLoading from "../shared/Lotties/SmallLoading";
 import { HomeService } from "@/api_services/home/home.service";
 import _STRINGS from "@/utils/LocalStrings";
+import ModalHeaderPart from "../Modal/ModalHeaderPart";
 
 interface props {
   initValue?: string | undefined;
@@ -156,7 +157,7 @@ const PopSearchbox = ({
           className={`bg-transparent border rounded-20  px-4 py-1.5  overflow-hidden dark:bg-zinc-600  flex justify-between items-center  ${item?.bg}`}
         >
           {" "}
-          <div className="flex items-center w-full">
+          <div className="flex items-center gap-1 w-full">
             <div className="">
               <img src="/assets/icons/edit/magnifier.svg" width={20} className="dark:invert" height={20} />
             </div>
@@ -203,30 +204,28 @@ const PopSearchbox = ({
           showPop
             ? `   w-full  top-0  h-[100dvh]   md:h-auto  md:absolute  opacity-100  min-h-[25dvh] `
             : ` top-[200dvh]  md:top-0  -z-50  md:hidden  h-0 md:opacity-0`
-        } transition-all  fixed p-4  overflow-hidden    rounded-10  border  left-0 w-full -top-2  duration-500 z-50  bg-white `}
+        } transition-all   fixed  overflow-hidden    rounded-10  border  left-0 w-full -top-2  duration-500 z-50  bg-white `}
       >
-        <div className="flex items-center w-full gap-2 flex-row ">
-          {isMobile ? (
-            <img
-              src="/assets/icons/adds/x_mark.svg"
-              onClick={() => {
-                setShowPop(false);
-              }}
-              className="w-4 h-4"
+        <ModalHeaderPart
+          title={_STRINGS.SEARCH}
+          onHide={() => {
+            setShowPop(false);
+          }}
+        />
+        <div className="flex px-4  pt-4 items-center relative w-full gap-2 flex-row ">
+          <div className=" relative flex items-center rounded-full border-primary-200 dark:bg-transparent  py-3   gap-1 px-3   w-full  border-2 ">
+            {" "}
+            <img src="/assets/icons/edit/magnifier.svg" className="w-5 opacity-60 h-5 aspect-square   " />
+            <input
+              id={`${boxId}prime`}
+              ref={primeInputRef}
+              placeholder={placeholder}
+              className={`bg-transparent `}
+              onChange={(v) => handleChange(v.target.value)}
+              value={text}
             />
-          ) : (
-            <></>
-          )}
-          <input
-            id={`${boxId}prime`}
-            ref={primeInputRef}
-            placeholder={placeholder}
-            className={`bg-transparent border-b border-primary-700 dark:bg-transparent pt-1 pb-4 pl-3 pr-0.5  w-full  `}
-            onChange={(v) => handleChange(v.target.value)}
-            value={text}
-          />
+          </div>
         </div>
-
         <SuggestedPart
           setShowPop={setShowPop}
           searchedText={element?.value || ""}
@@ -242,7 +241,7 @@ const PopSearchbox = ({
           }}
         />
         {!suggsData ? (
-          <div className="w-full  mt-10 opacity-20  flex-col flex items-center justify-center">
+          <div className="w-full  my-10 opacity-20  flex-col flex items-center justify-center">
             <img className="w-20  aspect-auto opacity-50" src="/assets/icons/edit/magnifier.svg" />
             {/* <p className="text-base font-bold">{_STRINGS.SEARCH}</p> */}
           </div>
@@ -250,7 +249,6 @@ const PopSearchbox = ({
           <></>
         )}
       </div>
-
       {!!isMobile ? (
         <></>
       ) : (

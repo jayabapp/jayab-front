@@ -9,7 +9,7 @@ const PropertyContactInfoItem = ({ data }: { data: PropertyContactIInfDto }) => 
   };
 
   return (
-    <div className="w-full flex flex-row items-center justify-between  ">
+    <div className="w-full py-3 border-t first:border-t-0   flex flex-row items-center justify-between  ">
       <div className="flex flex-col gap-2 ">
         <p className=" text-sm ">
           {!!data?.is_owner ? _STRINGS.OWNER : _STRINGS.OWNER_ASSIST} : {data?.assistant_full_name}
@@ -32,7 +32,7 @@ const PropertyContactInfoItem = ({ data }: { data: PropertyContactIInfDto }) => 
             onActionButtinsClick("sms");
           }}
           containerClass="w-full"
-          width="w-full !px-2 md:!px-3 !py-0.5"
+          width="w-full  !border !px-2 md:!px-3 !py-0.5"
           variant="outline"
           title={_STRINGS.MESSAGE}
           roundedClass="rounded-full"

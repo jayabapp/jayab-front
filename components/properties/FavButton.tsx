@@ -53,7 +53,7 @@ const FavButton = ({
       onClick={() => {
         onClick();
       }}
-      className="w-5 cursor-pointer h-5 aspect-square"
+      className="  w-4 md:w-5 cursor-pointer h-4 md:h-5 aspect-square"
       src={like ? "/assets/icons/adds/filled_heart.svg" : "/assets/icons/adds/empty_heart.svg"}
     />
   );
