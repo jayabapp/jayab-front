@@ -1,4 +1,5 @@
 "use client";
+import DateFilter from "@/components/Filters/DateFilter";
 import FilterCheck from "@/components/Filters/FilterCheck";
 import FilterCounter from "@/components/Filters/FilterCounter";
 import PriceRange from "@/components/Filters/PriceRange";
@@ -91,6 +92,8 @@ const FiltersPart = ({ queries, setFilters, filters, propertyTypes }: any) => {
         />
       </SimpleAccordion>
 
+      {!!userInfo?.advisor_id ? <DateFilter filters={filters} setFilters={setFilters} /> : <></>}
+
       <FilterCheck
         title={_STRINGS.HAS_DISCOUNT}
         mobileFilters={filters}
@@ -106,6 +109,7 @@ const FiltersPart = ({ queries, setFilters, filters, propertyTypes }: any) => {
         queryKey={"is_premium"}
         query={queries}
       />
+
       {/* COMMISION RANGE  */}
 
       {!!userInfo?.advisor_id ? (

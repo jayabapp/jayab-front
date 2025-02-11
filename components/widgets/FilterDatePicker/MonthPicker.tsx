@@ -1,4 +1,6 @@
+import React, { useEffect, useMemo, useState } from "react";
 import moment from "moment-jalaali";
+
 moment.loadPersian({ dialect: "persian-modern" });
 type props = {
   date: string;
@@ -10,29 +12,32 @@ type props = {
 
 const MonthPicker = ({ date, setDate, month, year, prefix }: props) => {
   const nextMonth = () => {
-    setDate(moment(Number(date)).add(1, "months").format("x"));
+    setDate(moment(date, "jYYYY/jMM/jDD").add(1, "month").format("jYYYY/jMM/jDD"));
   };
   const lastMonth = () => {
-    setDate(moment(Number(date)).subtract(1, "months").format("x"));
+    setDate(moment(date, "jYYYY/jMM/jDD").subtract(1, "month").format("jYYYY/jMM/jDD"));
   };
 
   return (
-    <div className="flex snap-x justify-between items-center">
+    <div className="flex snap-x w-full justify-between items-center">
       <img
         alt="`"
         className="cursor-pointer -rotate-90"
         src={"/assets/icons/shared/chevron.svg"}
         onClick={() => {
-          nextMonth();
+          lastMonth();
         }}
       />
       <p>
-        {prefix} {month} {year}
+        {prefix}
+
+        {month}
+        {/* {year} */}
       </p>
       <img
         alt="`"
         onClick={() => {
-          lastMonth();
+          nextMonth();
         }}
         className="cursor-pointer rotate-90"
         src={"/assets/icons/shared/chevron.svg"}

@@ -361,6 +361,8 @@ const _STRINGS = {
   SELECT_YOUR_IMAGE: "انتخاب تصویر مورد نظر",
   COMIISH_RANGE_PERC: "بازه درصد کمیسیون",
   INVITE_TEXT: "جایاب را به دوستان و آشنایان خود معرفی کنید تا آنها نیز در تجربه شما شریک باشند",
+  EXIT: "خروج",
+  ERASE: "پاک کردن",
 };
 
 export default _STRINGS;

@@ -5,6 +5,7 @@ import SearchPlaceModal from "@/components/Map/SearchPlaceModal";
 import SearchBox from "@/components/SearchBoxComp";
 import Button from "@/components/shared/Button/Button";
 import FixedBottomContainer from "@/components/shared/FixedBottomContainer";
+import LottieLoading from "@/components/shared/Lotties/LottieLoading";
 import ProgressBar from "@/components/shared/progressbar";
 import StepShower from "@/components/shared/StepShower";
 import MainUploader from "@/components/uploader";
@@ -34,7 +35,7 @@ const CreatePropertyImages = () => {
   /* -------------------------------------------------------------------------- */
   /*                             INIT PROP CREATION                             */
   /* -------------------------------------------------------------------------- */
-  const { data: initPropData } = useQuery({
+  const { data: initPropData, isLoading } = useQuery({
     queryKey: [PropertyService.OWNER_PROP_INIT_CACHEKEY, property_id],
     queryFn: () => {
       if (!!property_id) {
@@ -115,50 +116,59 @@ const CreatePropertyImages = () => {
           )}
         </div>
 
-        <MultiUploader
-          innerClasses={{ sizeClass: " w-24 aspect-square h-24", secontParentClass: "w-24" }}
-          title={"افزودن عکس"}
-          link="/attachments?type=OWNER_PROPERTY_IMAGE"
-          key={`uploader`}
-          containerClass={" w-24  "}
-          item={null}
-          onSelect={(file) => {
-            setImages((e) => [...e, file]);
-          }}
-          onDelete={() => {}}
-          setTotalLength={setTotalLength}
-          setUploadedImages={setUploadedImages}
-          setUploaderLoading={setUploaderLoading}
-        />
-        {images?.map((e) => (
-          <div
-            onClick={() => {
-              setPrimaryImageId(e?.id);
-            }}
-            className=" relative rounded-10"
-            key={`uploader${e?.id}`}
-          >
+        {isLoading ? (
+          <div className="w-full flex items-center justify-center">
+            {" "}
+            <LottieLoading margin="w-full" />
+          </div>
+        ) : (
+          <>
             <MultiUploader
               innerClasses={{ sizeClass: " w-24 aspect-square h-24", secontParentClass: "w-24" }}
               title={"افزودن عکس"}
               link="/attachments?type=OWNER_PROPERTY_IMAGE"
-              key={`uploader${e?.id}`}
+              key={`uploader`}
               containerClass={" w-24  "}
-              item={e}
-              onSelect={(file) => {}}
-              onDelete={() => {
-                setImages(images?.filter((i) => e?.id !== i?.id));
+              item={null}
+              onSelect={(file) => {
+                setImages((e) => [...e, file]);
               }}
+              onDelete={() => {}}
+              setTotalLength={setTotalLength}
+              setUploadedImages={setUploadedImages}
+              setUploaderLoading={setUploaderLoading}
             />
-            <div
-              className={` ${
-                primaryImageId == e?.id ? "opacity-100" : "opacity-0"
-              } transition-all absolute text-xxs h-7 bottom-0 w-full flex items-center justify-center bg-white/60  text-gray-700`}
-            >
-              {_STRINGS.PRIMARY_IMAGE}{" "}
-            </div>
-          </div>
-        ))}
+            {images?.map((e) => (
+              <div
+                onClick={() => {
+                  setPrimaryImageId(e?.id);
+                }}
+                className=" relative rounded-10"
+                key={`uploader${e?.id}`}
+              >
+                <MultiUploader
+                  innerClasses={{ sizeClass: " w-24 aspect-square h-24", secontParentClass: "w-24" }}
+                  title={"افزودن عکس"}
+                  link="/attachments?type=OWNER_PROPERTY_IMAGE"
+                  key={`uploader${e?.id}`}
+                  containerClass={" w-24  "}
+                  item={e}
+                  onSelect={(file) => {}}
+                  onDelete={() => {
+                    setImages(images?.filter((i) => e?.id !== i?.id));
+                  }}
+                />
+                <div
+                  className={` ${
+                    primaryImageId == e?.id ? "opacity-100" : "opacity-0"
+                  } transition-all absolute text-xxs h-7 bottom-0 w-full flex items-center justify-center bg-white/60  text-gray-700`}
+                >
+                  {_STRINGS.PRIMARY_IMAGE}{" "}
+                </div>
+              </div>
+            ))}
+          </>
+        )}
       </div>
 
       <FixedBottomContainer>

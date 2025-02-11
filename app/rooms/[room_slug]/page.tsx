@@ -8,7 +8,6 @@ import serverCall from "@/helpers/serverCall";
 import { apiRoutes, baseUrl } from "@/utils/urls";
 import { Metadata, ResolvingMetadata } from "next";
 import React from "react";
-import { headers } from "next/headers";
 
 type Props = {
   params: Promise<{ room_slug: string }>;
