@@ -82,7 +82,7 @@ const SinglePropertyIntroduction = ({ data }: { data: SinglePropDto }) => {
       </div>
       <div className=" flex items-center w-full justify-between">
         <div className="flex items-center gap-4 md:gap-4">
-          <div className="bg-primary-700 rounded-md text-xs md:text-sm  px-2 py-1 text-white flex items-center justify-center">
+          <div className="bg-black/10 rounded-md text-xs md:text-sm  px-2 py-1  flex items-center justify-center">
             کد {data.code}
           </div>{" "}
           <ShareLink />

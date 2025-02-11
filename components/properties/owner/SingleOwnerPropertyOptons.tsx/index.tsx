@@ -144,12 +144,16 @@ const SingleOwnerPropertyOptons = ({
       />
 
       <ConfirmModal
+        messageClass=" !text-black !text-base"
+        confirmTextClassName=" !bg-primary-900 text-white !rounded-full "
+        hideTextClassName=" border !bg-white !rounded-full "
+        headerImage={"/assets/images/shared/red_crossed_sheet.png"}
         isVisible={!!showDelete}
         isLoading={isPending}
         onConfirm={onDeleteConfirm}
         onHide={hideDelete}
         text={_STRINGS.ARE_U_SURE_DELETE_PROPERTY}
-        title={_STRINGS.ARE_U_SURE_DELETE_PROPERTY_TITLE}
+        // title={_STRINGS.ARE_U_SURE_DELETE_PROPERTY_TITLE}
       />
     </div>
   );

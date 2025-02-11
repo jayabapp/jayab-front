@@ -94,6 +94,8 @@ export const apiRoutes = {
 
   UPDATE_FCM: "/profile/update-fcm",
 
+  UPDATE_PROFILE_IMAGE: "/profile/profile-image",
+
   SINGLE_TICKET_GET: (id: string | number) => `/user/tickets/${id}`,
 
   SINGLE_PROPERTY_CONTACT_INFO: (propertySlug: string | number | null) =>

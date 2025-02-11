@@ -17,6 +17,7 @@ type ModalProps = {
   hideTextClassName?: string;
   title?: string;
   headerImage?: string;
+  messageClass?: string;
 };
 interface op {
   containerClass: string;
@@ -32,6 +33,7 @@ const ConfirmModal = ({
   title,
   headerImage,
   confirmTextClassName,
+  messageClass,
   hideTextClassName,
 }: ModalProps) => {
   const router = useRouter();
@@ -53,7 +55,7 @@ const ConfirmModal = ({
         ) : (
           ""
         )}
-        <p className="font-light text-center text-sm dark:text-neutral-200 my-5">{text}</p>
+        <p className={`font-light text-center text-sm dark:text-neutral-200 my-5  ${messageClass}`}>{text}</p>
         <div className="flex flex-row w-full px-4  gap-4 justify-evenly mx-auto mb-4">
           <div
             className={`bg-primary-700 dark:bg-primary-600 w-full hover:opacity-80 transition-all duration-200 ease-in-out text-white mx-2 text-center py-2.5 rounded-md cursor-pointer flex justify-center items-center ${confirmTextClassName} `}

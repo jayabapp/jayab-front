@@ -2,11 +2,13 @@
 
 import { GetProfileDto } from "@/api_services/auth/auth.interface";
 import { AuthService } from "@/api_services/auth/auth.service";
+import { UserService } from "@/api_services/user/user.service";
 import ConfirmModal from "@/components/Modal/ConfirmModal";
 import ProfileItem from "@/components/profile/ProfileItem";
 
 import BtnLoading from "@/components/shared/Button/BtnLoading";
 import Button from "@/components/shared/Button/Button";
+import MainUploader from "@/components/uploader";
 import { useAuthStore, useStoreInit } from "@/store";
 import { profileItems } from "@/utils/constantss";
 
@@ -20,7 +22,8 @@ import React, { useEffect, useState } from "react";
 import { isMobile } from "react-device-detect";
 
 const Profile = () => {
-  // RedirectProfile();
+  const [profileImage, setProfileImage] = useState<any>(null);
+
   const router = useRouter();
   const [showLogout, setShowLogout] = useState(false);
   const { isLogin } = useAuthStore((state) => state);
@@ -39,6 +42,7 @@ const Profile = () => {
   useEffect(() => {
     if (!!data) {
       useStoreInit.setState({ userInfo: data });
+      setProfileImage(data?.profile_image);
     }
   }, [data]);
 
@@ -66,6 +70,13 @@ const Profile = () => {
   const PersonalProfileItems = isLogin ? platformProfileList?.filter((e) => !!e?.guard) : [];
   const SharedProfileItems = platformProfileList?.filter((e) => !e?.guard);
 
+  const { mutate } = useMutation({
+    mutationFn: UserService.updateProfileImage,
+    onSuccess: (e) => {
+      if (!!e) useStoreInit.setState({ userInfo: e });
+    },
+  });
+
   return (
     <div id="homeParent" className="  profile-container  flex flex-col gap-4  transition-all duration-500 ease-in-out ">
       {!isMobile ? (
@@ -80,12 +91,28 @@ const Profile = () => {
               className="
           flex items-center gap-2"
             >
-              {data?.profile_image ? (
-                <img className="w-14 h-14 rounded-full aspect-square " src={NEW_IMAGE_URL(data?.profile_image)} />
-              ) : (
-                <></>
-              )}
-
+              <MainUploader
+                innerClasses={{
+                  secontParentClass: "!rounded-full   !aspect-auto ",
+                  sizeClass: " !rounded-full !w-20 !h-20",
+                  imageClass: " !rounded-full ",
+                }}
+                title={_STRINGS.IMAGE}
+                withCrop
+                // isLogo
+                link="/attachments?type=PROFILE"
+                key={`uploader`}
+                containerClass={"my-3  w-fit flex items-start justify-start "}
+                item={profileImage}
+                onSelect={(file) => {
+                  mutate({ profile_image_id: file?.id });
+                  setProfileImage(file);
+                }}
+                showCamera
+                // onDelete={() => {
+                //   setProfileImage(null);
+                // }}
+              />
               <div className="flex flex-col gap-3">
                 <p className="font-bold">{data?.full_name}</p>
                 <p className="text-sm">{data?.mobile_number}</p>

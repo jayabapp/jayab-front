@@ -14,7 +14,7 @@ const HomeSearchPart = () => {
           // setsearchText("");
           // router.replace(pathname);
         }}
-        item={{ bg: `!bg-white/70 !border-2  !py-2.5 !border-primary-200  !rounded-full ` }}
+        item={{ bg: `!bg-white/70 !border-2  !py-1.5 !border-primary-200  !rounded-full ` }}
         // autofocus={isInSearch}
       />
     </div>

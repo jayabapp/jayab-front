@@ -17,7 +17,7 @@ const SingleOwnerPropertyIntroduction = ({ data }: { data: SingleOwnerPropertyDt
         <AuthorizationStatus isAuthorized={data?.is_authorized} />
       </div>
       <div className="flex items-center gap-4">
-        <div className="bg-primary-700 rounded-md text-base  px-2 py-1 text-white flex items-center justify-center">
+        <div className="bg-black/10 rounded-md text-base  px-2 py-1  flex items-center justify-center">
           کد {data.code}
         </div>{" "}
         {/* <div className="flex items-center gap-1">

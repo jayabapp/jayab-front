@@ -152,7 +152,8 @@ const DayPicker = ({
     <div className="grid grid-cols-7   transition-all duration-500 ease-in-out gap-1 md:gap-2 items-center">
       {" "}
       {lastDaysMemos?.map((e, i) => (
-        <Day data={e} key={i} />
+        // <Day data={e} key={i} />
+        <div key={`${i}start`}> </div>
       ))}
       {daysData?.map((e, i) => (
         <Day
@@ -168,7 +169,8 @@ const DayPicker = ({
         />
       ))}
       {nextDaysMemo?.map((e, i) => (
-        <Day data={e} key={i} />
+        // <Day data={e} key={i} />
+        <div key={`${i}end`}> </div>
       ))}
     </div>
   );

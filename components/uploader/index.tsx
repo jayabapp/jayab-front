@@ -23,11 +23,12 @@ type props = {
 
   disabled?: boolean;
   withCrop?: boolean;
+  showCamera?: boolean;
   cropRatio?: number;
   link: string;
   title?: string;
 
-  innerClasses?: { sizeClass?: string; secontParentClass?: string };
+  innerClasses?: { sizeClass?: string; secontParentClass?: string; imageClass?: string };
 };
 interface RefObject<T> {
   readonly current: T | null;
@@ -49,6 +50,7 @@ const MainUploader = ({
   link,
   title,
   innerClasses,
+  showCamera,
 }: props) => {
   const cropperRef = useRef<CropperRef>(null);
   const [coordinates, setCoordinates] = useState<Coordinates | null>(null);
@@ -151,8 +153,20 @@ const MainUploader = ({
   };
 
   return (
-    <div className={`flex w-fit  ${containerClass}`} style={{ zIndex: "4 !important" }}>
+    <div className={`flex w-fit  ${containerClass} ${showCamera ? "relative" : ""}`} style={{ zIndex: "4 !important" }}>
       {/* <div id="myVIdeo"></div> */}
+      {!!showCamera ? (
+        <div
+          onClick={() => {
+            !disabled ? imagePickerRef?.current?.click() : void null;
+          }}
+          className="  z-2  bg-transparent cursor-pointer absolute bottom-1  w-5 h-5 aspect-square right-1 "
+        >
+          <img src="/assets/icons/uploader/uploader_camera.svg" />
+        </div>
+      ) : (
+        <></>
+      )}
       <div
         className={`flex  w-fit  flex-col     items-center justify-start   rounded-20 ${innerClasses?.secontParentClass}`}
         // style={{ overflowX: "scroll" }}
@@ -225,11 +239,14 @@ const MainUploader = ({
                     ? `https://${item?.bucket}.${item?.end_point}/${item?.path}/${item?.name}`
                     : item
                 }
-                className="object-cover  w-full bg-gradient-to-b rounded-20 aspect-square max-w-max  "
+                className={`object-cover  w-full bg-gradient-to-b rounded-20 aspect-square max-w-max 
+                  
+                   ${!!innerClasses?.imageClass ? innerClasses?.imageClass : "h-24 w-24"}
+                  `}
               />
             </div>
             {!!onDelete ? (
-              <div className="   bg-transparent cursor-pointer absolute top-2 left-2 " onClick={onDelete}>
+              <div className="   bg-transparent cursor-pointer absolute top-2 left-2 shadow-2xl " onClick={onDelete}>
                 <img src="/assets/icons/uploader/faded_x_circle.svg" />
               </div>
             ) : (
@@ -238,6 +255,7 @@ const MainUploader = ({
           </div>
         )}
       </div>
+
       {show && (
         <FullscreenImage
           setShow={setShow}

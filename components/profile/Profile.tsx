@@ -1,5 +1,5 @@
 import { useRouter } from "next/navigation";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 
 import _STRINGS from "@/utils/LocalStrings";
 import { isMobile } from "react-device-detect";
@@ -10,8 +10,12 @@ import ProfileItem from "./ProfileItem";
 import Button from "../shared/Button/Button";
 import { NEW_IMAGE_URL } from "@/utils/urls";
 import { isEmpty } from "lodash";
+import MainUploader from "../uploader";
+import { useMutation } from "@tanstack/react-query";
+import { UserService } from "@/api_services/user/user.service";
 
 const Profile = ({}) => {
+  const [profileImage, setProfileImage] = useState<any>(null);
   const router = useRouter();
   const { isLogin } = useAuthStore((state) => state);
   const [isVisible, setisVisible] = useState(false);
@@ -37,6 +41,19 @@ const Profile = ({}) => {
     router.push("/auth");
   };
 
+  useEffect(() => {
+    if (!!userInfo) {
+      setProfileImage(userInfo?.profile_image);
+    }
+  }, [userInfo]);
+
+  const { mutate } = useMutation({
+    mutationFn: UserService.updateProfileImage,
+    onSuccess: (e) => {
+      if (!!e) useStoreInit.setState({ userInfo: e });
+    },
+  });
+
   return (
     <div className="  z-5 w-full">
       {isVisible && (
@@ -51,16 +68,32 @@ const Profile = ({}) => {
           onConfirm={_logout}
         />
       )}
-      <div className=" bg-white    rounded-20  flex flex-col gap-2 pb-10 overflow-scroll   dark:border dark:border-zinc-600 dark:shadow-none ">
+      <div className=" bg-white    rounded-20  flex flex-col gap-2 pb-10 overflow-scroll    dark:border dark:border-zinc-600 dark:shadow-none ">
         <div className="flex items-center px-2 py-2   dark:border-zinc-500 ">
-          <img
-            src={
-              userInfo?.profile_image
-                ? NEW_IMAGE_URL(userInfo?.profile_image)
-                : "/assets/icons/profile/profile_holder.svg"
-            }
-            className="w-14 h-14  rounded-full overflow-hidden dark:invert"
+          <MainUploader
+            innerClasses={{
+              secontParentClass: "!rounded-full   !aspect-auto ",
+              sizeClass: " !rounded-full !w-20 !h-20",
+              imageClass: " !rounded-full ",
+            }}
+            title={_STRINGS.IMAGE}
+            withCrop
+            // isLogo
+            link="/attachments?type=PROFILE"
+            key={`uploader`}
+            containerClass={"my-3  relative w-fit flex items-start justify-start "}
+            item={profileImage}
+            onSelect={(file) => {
+              mutate({ profile_image_id: file?.id });
+              setProfileImage(file);
+            }}
+            // onDelete={() => {
+            //   setProfileImage(null);
+            // }}
+
+            showCamera={true}
           />
+
           <div className="flex flex-col justify-evenly">
             <h1 className="text-left w-fit text-[14px] font-bold py-1 px-2  text-truncate">
               {userInfo?.full_name ? `${userInfo?.full_name}` : ""}

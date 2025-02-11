@@ -1,6 +1,7 @@
 import { apiRoutes } from "@/utils/urls";
 import { apiCall } from "../common/apicall.helper";
 import { SubPaymentsDto } from "./user.interface";
+import { GetProfileDto } from "../auth/auth.interface";
 
 export class UserService {
   static USER_SUBSCRIPTIONS_CACHEKEY = "USER_SUBSCRIPTIONS";
@@ -41,6 +42,21 @@ export class UserService {
       const result = await apiCall<{ cursor: number }, { data: any[] }>("GET", apiRoutes.NOTIFS, {
         cursor: dto.cursor,
       });
+      return result;
+    } catch (e) {
+      throw e;
+    }
+  }
+
+  static async updateProfileImage(dto: { profile_image_id: number | string }) {
+    try {
+      const result = await apiCall<{ profile_image_id: number | string }, GetProfileDto>(
+        "PATCH",
+        apiRoutes.UPDATE_PROFILE_IMAGE,
+        {
+          profile_image_id: dto.profile_image_id,
+        }
+      );
       return result;
     } catch (e) {
       throw e;
