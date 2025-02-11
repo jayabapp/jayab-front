@@ -6,6 +6,7 @@ import warningIcon from "@/public/assets/lotties/notif/Warning.json";
 import infoIcon from "@/public/assets/lotties/notif/Info.json";
 import Lottie from "react-lottie";
 import { x_Iransans } from "@/app/fonts/x_iran/x_Iransans";
+import { isMobile } from "react-device-detect";
 interface props {
   type?: "success" | "error" | "warn" | "info";
   title?: string;
@@ -35,7 +36,7 @@ const Notify = (props: props) => {
   toast.custom(
     (t) => (
       <div
-        className={`flex   md:w-96  justify-start relative right-0 left-0 items-center bg-slate-900 z-10   dark:bg-slate-700   rounded-lg px-3 py-2 text-black mx-auto    dark:border-0 
+        className={`flex   md:w-96  justify-start relative right-0 left-0   items-center bg-white z-10   dark:bg-slate-700   rounded-lg px-3 py-2 text-black mx-auto    dark:border-0 
         border-r-8 dark:border-r-8 ${_findTypeData().border} shadow-lg
         transform-gpu translate-y-0 hover:translate-y-1  relative transition-all duration-500 ease-in-out 
         `}
@@ -50,13 +51,13 @@ const Notify = (props: props) => {
         </div>
         <div className={`mr-3   app-text  ${x_Iransans.className}  `}>
           {/* <h1 className="font-bold text-sm mx-2">{title}</h1> */}
-          <p className="font-light w-full text-[13px]  text-white  md:font-normal md:text-sm mx-2">{body}</p>
+          <p className="font-light w-full text-[13px]  app-text  md:font-normal md:text-sm mx-2">{body}</p>
           {children}
         </div>
         {/* <div className="absolute left-3 ">{closeIcon}</div> */}
       </div>
     ),
-    { id: type, position: "bottom-center", duration: 5000 }
+    { id: type, position: isMobile ? "top-center" : "bottom-left", duration: 50000, className: " left-0  md:left-4" }
   );
 };
 

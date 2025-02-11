@@ -20,10 +20,10 @@ const SingleOwnerPropertyIntroduction = ({ data }: { data: SingleOwnerPropertyDt
         <div className="bg-primary-700 rounded-md text-base  px-2 py-1 text-white flex items-center justify-center">
           کد {data.code}
         </div>{" "}
-        <div className="flex items-center gap-1">
+        {/* <div className="flex items-center gap-1">
           <img className="w-5 h-5 aspect-square" src="/assets/icons/adds/filled_heart.svg" />
           <p className="text-base  opacity-60">{data?.favorites_count || 0}</p>
-        </div>
+        </div> */}
         <ShareLink passedHref={window.origin + `/rooms/${data?.slug}`} />
       </div>
 

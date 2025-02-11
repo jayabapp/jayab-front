@@ -17,6 +17,7 @@ import { SingleOwnerPropertyDto, SinglePropDto } from "@/api_services/property/p
 import RoomImageModalPart from "./RoomImageModalPart";
 import Swiper from "@/components/embelaCarousel/Swiper";
 import SwiperSlide from "@/components/embelaCarousel/SwiperSlide";
+import { useStoreInit } from "@/store";
 // const ProductOptionsContainer = dynamic(() => import("./ProductOptionsContainer"), {
 //   ssr: false,
 // });
@@ -72,6 +73,7 @@ function ProductImagesContainer({
   productImageId: number | null;
   attsImagesArray?: any[] | number[];
 }) {
+  const { userInfo } = useStoreInit((data) => data);
   const ref = useRef<SwiperTyype>(null);
   const [modalProps, setModalProps] = useState<ImageSlideType>({
     data: data,
@@ -171,6 +173,13 @@ function ProductImagesContainer({
   w-full       md:w-4/5 h-fit `}
       >
         <div className="block  relative rounded-10 !aspect-square p-0 md:p-0.5 ">
+          {!!userInfo?.advisor_id && data?.advisor_commission ? (
+            <div className="w-24 gap-0.5  h-7 rounded-md transition-all  py-[0.2rem]   bg-black/50 text-white absolute z-1 left-2 flex-row top-2 aspect-square flex items-center justify-center">
+              <p className="  text-sm   "> کمیسیون: {data.advisor_commission}%</p>{" "}
+            </div>
+          ) : (
+            <></>
+          )}
           <Swiper
             pagination
             slidesWidth={{ def: "100%", md: "100%" }}

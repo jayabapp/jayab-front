@@ -27,7 +27,7 @@ const BookMarkButton = ({ data }: { data: SinglePropDto }) => {
       onClick={() => {
         if (!isPending) onSave();
       }}
-      className=" w-4 md:w-5 cursor-pointer h-4 md:h-5 aspect-square"
+      className=" w-5 cursor-pointer h-5 aspect-square"
       src={
         bookmarks?.includes(data?.id)
           ? "/assets/icons/adds/filled_bookmark.svg"

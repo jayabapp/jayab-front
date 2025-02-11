@@ -22,15 +22,14 @@ import { Suspense } from "react";
 //     );
 //   },
 // });
-// const MiddleBanners = dynamic(() => import("@/components/shared/ImageCarousel/MiddleBanners"), {
+//4const MiddleBanners = dynamic(() => import("@/components/shared/ImageCarousel/MiddleBanners"), {
 //   ssr: true,
 //   loading: () => {
 //     return (
 //       <div className=" min-h-[30dvh]  w-full   ">
 //         <LottieLoading margin="w-full" />
 //       </div>
-//     );
-//   },
+//     );4//   },
 // });
 const Home = async () => {
   const { data: banners } = await serverCall(baseUrl + apiRoutes.BANNERS + `?position=main_1`);
@@ -45,14 +44,14 @@ const Home = async () => {
     <div style={{ minHeight: "100dvh" }} id="homeParent" className="home-container  !px-0   flex flex-col gap-3 ">
       <Suspense
         fallback={
-          <div className=" min-h-[30dvh] flex items-center justify-center  w-full   ">
+          <div className=" min-h-[25dvh] flex items-center justify-center  w-full   ">
             <HomeSkeleton />
           </div>
         }
       >
         {" "}
         {!banners ? (
-          <div className=" min-h-[30dvh]  w-full   ">
+          <div className=" min-h-[25dvh]  w-full   ">
             <HomeSkeleton />
           </div>
         ) : (
@@ -70,7 +69,7 @@ const Home = async () => {
       <Suspense>
         <HomeSearchPart />
       </Suspense>
-      <div className="px-3 min-h-[30dvh] md:min-h-[50dvh] select-none md:px-3 lg:px-4 2xl:px-[10%]  pt-0 md:py-0 w-full">
+      <div className="px-3 min-h-[30dvh] md:min-h-[40dvh] select-none md:px-3 lg:px-4 2xl:px-[10%]  pt-0 md:py-0 w-full">
         <Suspense>
           <HomeAdvisorSub />
         </Suspense>

@@ -47,6 +47,7 @@ const Header = ({ scroll }: { scroll?: number }) => {
   const params: any = useSearchParams();
   const { isLogin } = useAuthStore((state: any) => state);
   const searchTextInparam = params.get("q");
+  const utm_source = params.get("utm_source");
 
   const [visibleTopHeader, setVisibleTopHeader] = useState(true);
   const [theme, setTheme] = useState("dark");
@@ -223,7 +224,9 @@ transition-all  ease-in-out duration-1000 header-content-container w-full mx-aut
                 <img
                   src="/assets/icons/shared/chevron-right.svg"
                   onClick={(e) => {
-                    if (pathname == "/profile/orders") {
+                    if (utm_source == "true") {
+                      router.push("/");
+                    } else if (pathname == "/profile/orders") {
                       router.push("/");
                     } else {
                       router.back();
@@ -238,13 +241,17 @@ transition-all  ease-in-out duration-1000 header-content-container w-full mx-aut
                   <div className="cursor-pointer  absolute left-4     ">
                     {/**************     IN ADVISORS PAGE  WE NEED ADVISOR CREATE BUTTON  ***************/}
 
-                    {pathname == "/advisors" ? (
+                    {pathname == "/advisors" && !userInfo?.advisor?.is_special ? (
                       <Button
                         roundedClass="rounded-full"
                         width=" !px-3  !text-sm !py-1 w-fit "
                         containerClass="w-fit !px-0.5  items-center justify-center"
                         onClick={registerAdvisor}
-                        title={_STRINGS.REGISTER_ADVISOR}
+                        title={
+                          userInfo?.advisor_id && !userInfo?.advisor?.is_special
+                            ? _STRINGS.REGISTER_ADVISOR + ` ویژه`
+                            : _STRINGS.REGISTER_ADVISOR
+                        }
                       />
                     ) : pathname.includes("/profile") ? (
                       <Link href={"/"}>
@@ -255,17 +262,6 @@ transition-all  ease-in-out duration-1000 header-content-container w-full mx-aut
                       </Link>
                     ) : (
                       <div className="flex gap-2 items-center">
-                        <PopSearchbox
-                          justIcon
-                          boxId={scroll ? "SEARCH_BOX_Mobile_Modal" : "SEARCH_BOX_Mobile"}
-                          placeholder={_STRINGS?.SEARCH_CITY_OR_ADD}
-                          onSubmit={(text) => setsearchText(text)}
-                          onClear={() => {
-                            setsearchText("");
-                          }}
-                          item={{ bg: "" }}
-                          autofocus={isInSearch}
-                        />{" "}
                         {pathname.includes("/rooms/") ? (
                           <Link className="w-5 h-5 aspect-square" href={"/"}>
                             <img
@@ -274,7 +270,17 @@ transition-all  ease-in-out duration-1000 header-content-container w-full mx-aut
                             />
                           </Link>
                         ) : (
-                          <></>
+                          <PopSearchbox
+                            justIcon
+                            boxId={scroll ? "SEARCH_BOX_Mobile_Modal" : "SEARCH_BOX_Mobile"}
+                            placeholder={_STRINGS?.SEARCH_CITY_OR_ADD}
+                            onSubmit={(text) => setsearchText(text)}
+                            onClear={() => {
+                              setsearchText("");
+                            }}
+                            item={{ bg: "" }}
+                            autofocus={isInSearch}
+                          />
                         )}
                       </div>
                     )}

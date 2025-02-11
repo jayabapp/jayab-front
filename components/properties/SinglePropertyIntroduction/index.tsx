@@ -81,7 +81,7 @@ const SinglePropertyIntroduction = ({ data }: { data: SinglePropDto }) => {
         {!!data?.is_authorized ? <AuthorizationStatus isAuthorized={data?.is_authorized} /> : <></>}
       </div>
       <div className=" flex items-center w-full justify-between">
-        <div className="flex items-center gap-3 md:gap-4">
+        <div className="flex items-center gap-4 md:gap-4">
           <div className="bg-primary-700 rounded-md text-xs md:text-sm  px-2 py-1 text-white flex items-center justify-center">
             کد {data.code}
           </div>{" "}
@@ -130,14 +130,14 @@ const SinglePropertyIntroduction = ({ data }: { data: SinglePropDto }) => {
         </p>
       </div>
       {/*                          */}
-      {!!userInfo?.advisor_id && data?.advisor_commission ? (
+      {/* {!!userInfo?.advisor_id && data?.advisor_commission ? (
         <div className="flex items-center gap-2   py-0.5 w-full md:justify-between">
           <p className="min-w-[5.5rem] md:text-sm text-xs ">{_STRINGS.COMMIS_JUST_PERC} :</p>
           <p className="font-bold text-sm md:text-base text-primary-700">{data?.advisor_commission}%</p>
         </div>
       ) : (
         <></>
-      )}
+      )} */}
       <div className="flex items-center gap-2   py-0.5 w-full md:justify-between">
         <div className="flex items-center gap-1">
           <img className=" h-6" src="/assets/icons/adds/pin_point_location.svg" />

@@ -76,13 +76,13 @@ const SortMenu = ({ query }: SortMenuType) => {
           leaveFrom="transform opacity-100 scale-100"
           leaveTo="transform opacity-0 scale-95"
         >
-          <MenuItems className="absolute top-0 md:top-auto left-0 z-20  mt-2 w-48 origin-top-center  rounded-xl bg-white dark:bg-zinc-800 custom-shadow ring-1 ring-black ring-opacity-5 focus:outline-none  overflow-scroll">
+          <MenuItems className="absolute top-0 md:top-auto left-0 z-20  mt-2 w-48 origin-top-center  rounded-20 bg-white dark:bg-zinc-800 custom-shadow ring-1 ring-black ring-opacity-5 focus:outline-none  overflow-scroll">
             <div className="flex gap-2 px-3 items-center flex-col  py-2 border-b border-gray-275 dark:border-zinc-500 ">
               {" "}
               {sortTypes.map((e) => (
                 <MenuItem key={e.id}>
                   <div
-                    className={`w-full pl-8  border-t first:border-t-0 pt-2 gap-2 flex items-center cursor-pointer relative`}
+                    className={`w-full pl-8  py-2 border-t first:border-t-0 pt-2 gap-2 flex items-center cursor-pointer relative`}
                     onClick={() => {
                       if (query?.sort_type == e?.id) {
                         // setTag(null);
@@ -90,7 +90,7 @@ const SortMenu = ({ query }: SortMenuType) => {
                     }}
                   >
                     {query?.sort_type == e?.id ? (
-                      <img className="absolute left-2 w- top-1/4" src="/assets/icons/property/green_circled_tick.svg" />
+                      <img className="absolute left-2 " src="/assets/icons/adds/blue_tick.svg" />
                     ) : (
                       <></>
                     )}

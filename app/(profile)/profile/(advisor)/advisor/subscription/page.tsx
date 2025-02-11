@@ -6,6 +6,7 @@ import AdvisorPlansCard from "@/components/Advisor/AdvisorPlansCard";
 import ConfirmModal from "@/components/Modal/ConfirmModal";
 import Button from "@/components/shared/Button/Button";
 import StatusShower from "@/components/shared/StatusShower";
+import timeLeft from "@/helpers/timeLeft";
 import { useStoreInit } from "@/store";
 import _STRINGS from "@/utils/LocalStrings";
 import { useMutation, useQuery } from "@tanstack/react-query";
@@ -15,6 +16,7 @@ import React, { useEffect, useState } from "react";
 
 const AdvisorRegister = () => {
   const router = useRouter();
+  const { userInfo } = useStoreInit((data) => data);
   const [showEndSub, setShowEndSub] = useState(false);
   const [showConfirmRegister, setShowConfirmRegister] = useState(false);
   const { data: subscriptionPlans } = useQuery({
@@ -95,10 +97,16 @@ const AdvisorRegister = () => {
 
             {!advisorProfile?.subscription_expired_at || !isActive ? (
               <p className="text-primary-150 text-sm">(شما اشتراک فعال ندارید)</p>
-            ) : (
+            ) : moment().isBefore(advisorProfile?.subscription_expired_at) ? (
               <p className=" text-sm ">
-                انقضا : {moment(advisorProfile?.subscription_expired_at)?.format("jYYYY/jMM/jDD")}
+                {/* انقضا : {moment(advisorProfile?.subscription_expired_at)?.format("jYYYY/jMM/jDD")} */}
+                انقضا :
+                <span className="text-primary-700 mr-0.5">
+                  {timeLeft(advisorProfile?.subscription_expired_at, false)} دیگر
+                </span>
               </p>
+            ) : (
+              <></>
             )}
           </div>
 

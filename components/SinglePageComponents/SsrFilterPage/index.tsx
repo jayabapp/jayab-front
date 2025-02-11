@@ -128,7 +128,7 @@ const SsrFilterPage = ({ landings, firstData }: { firstData: { data: any[] }; la
         />
       </div>
 
-      <div className="flex fixed border-b  pt-1 md:hidden h-12 right-0  items-center justify-center   z-10 md:z-1  top-[4rem] md:top-auto left-0 md:left-auto bg-white md:bg-transparent md:relative flex-col w-full md:gap-2  ">
+      <div className="flex fixed  pt-1 md:hidden h-16 right-0  items-center justify-center   z-10 md:z-1  top-[4rem] md:top-auto left-0 md:left-auto bg-white md:bg-transparent md:relative flex-col w-full md:gap-2  ">
         {" "}
         <div className=" flex  order-1  md:hidden  relative w-full">
           <div className=" z-1  pr-2  relative  w-full items-center gap-1 justify-between  ">

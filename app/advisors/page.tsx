@@ -15,7 +15,7 @@ import LottieLoading from "@/components/shared/Lotties/LottieLoading";
 import SimpleAccordion from "@/components/shared/SimpleAccorion";
 import queryBuilder from "@/helpers/queryBuilder";
 import useQueryGet from "@/helpers/queryGet";
-import { useAuthStore, useStoreParams } from "@/store";
+import { useAuthStore, useStoreInit, useStoreParams } from "@/store";
 import { fakeConsultants } from "@/utils/faker";
 import _STRINGS from "@/utils/LocalStrings";
 import { useQuery } from "@tanstack/react-query";
@@ -28,6 +28,7 @@ const AdvisorsListPage = () => {
   const router = useRouter();
   const queriesParams = useQueryGet<any>();
   const pathname = usePathname();
+  const { userInfo } = useStoreInit((data) => data);
   const { isLogin } = useAuthStore((state) => state);
   const [showCityModal, setShowCiyModal] = useState(false);
   const [selectedAdvisor, setSelectedAdvisor] = useState<any>(null);
@@ -131,7 +132,6 @@ const AdvisorsListPage = () => {
         <BannersContainer banners={banners} />
 
         <div className="w-full flex flex-col gap-4">
-          {" "}
           <SearchBox
             passedQuerykey="search"
             boxId="ADVISOR_SEARCH"
@@ -145,7 +145,6 @@ const AdvisorsListPage = () => {
             placeholder="کد یا نام مشاور ..."
           />
           <div className=" w-full flex  flex-col md:flex-row  gap-2 md:gap-4 items-center justify-between">
-            {" "}
             <Button
               roundedClass="rounded-full"
               width=" w-full md:w-fit"
@@ -153,14 +152,22 @@ const AdvisorsListPage = () => {
               onClick={showCityModalFunc}
               title={cityTitle || _STRINGS.SELECT_CITY}
             />
-            <Button
-              variant="outline"
-              roundedClass="rounded-full"
-              width=" w-full md:w-fit"
-              containerClass="w-full  hidden md:flex  md:w-fit  items-center justify-center"
-              onClick={registerAdvisor}
-              title={_STRINGS.REGISTER_ADVISOR}
-            />
+            {!userInfo?.advisor?.is_special ? (
+              <Button
+                variant="outline"
+                roundedClass="rounded-full"
+                width=" w-full md:w-fit"
+                containerClass="w-full  hidden md:flex  md:w-fit  items-center justify-center"
+                onClick={registerAdvisor}
+                title={
+                  userInfo?.advisor_id && !userInfo?.advisor?.is_special
+                    ? _STRINGS.REGISTER_ADVISOR + ` ویژه`
+                    : _STRINGS.REGISTER_ADVISOR
+                }
+              />
+            ) : (
+              <></>
+            )}
           </div>
         </div>
         {isLoading && data?.length == 0 ? (
