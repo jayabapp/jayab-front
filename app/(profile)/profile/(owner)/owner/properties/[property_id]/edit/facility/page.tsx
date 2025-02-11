@@ -21,6 +21,7 @@ import _, { isArray, remove } from "lodash";
 
 import { useParams, usePathname, useRouter, useSearchParams } from "next/navigation";
 import React, { useEffect, useState } from "react";
+import LottieLoading from "@/components/shared/Lotties/LottieLoading";
 
 const CreatePropertyFacility = () => {
   const router = useRouter();
@@ -33,7 +34,7 @@ const CreatePropertyFacility = () => {
   /* -------------------------------------------------------------------------- */
   /*                             INIT PROP CREATION                             */
   /* -------------------------------------------------------------------------- */
-  const { data: initPropData } = useQuery({
+  const { data: initPropData, isLoading } = useQuery({
     queryKey: [PropertyService.OWNER_PROP_INIT_CACHEKEY, property_id],
     queryFn: () => {
       if (!!property_id) {
@@ -132,123 +133,132 @@ const CreatePropertyFacility = () => {
         <StepShower steps={createPropertySteps(initPropData?.id)} value={6} />
       </div>
 
-      <div className=" flex flex-col gap-2   pb-4 w-full">
-        <p className="font-bold w-full text-start  text-sm md:text-base text-primary-700  ">{_STRINGS.POOL_STATUS}</p>
-        <Checkbox
-          rounded="rounded-full"
-          onSelect={() => {
-            onChange(true, "has_pool");
-          }}
-          isChecked={values?.has_pool}
-          title={"استخر دارد"}
-        />
-        <Checkbox
-          rounded="rounded-full"
-          onSelect={() => {
-            onChange(false, "has_pool");
-          }}
-          isChecked={!values?.has_pool}
-          title={"استخر ندارد"}
-        />
+      {isLoading ? (
+        <LottieLoading />
+      ) : (
+        <>
+          {" "}
+          <div className=" flex flex-col gap-2   pb-4 w-full">
+            <p className="font-bold w-full text-start  text-sm md:text-base text-primary-700  ">
+              {_STRINGS.POOL_STATUS}
+            </p>
+            <Checkbox
+              rounded="rounded-full"
+              onSelect={() => {
+                onChange(true, "has_pool");
+              }}
+              isChecked={values?.has_pool}
+              title={"استخر دارد"}
+            />
+            <Checkbox
+              rounded="rounded-full"
+              onSelect={() => {
+                onChange(false, "has_pool");
+              }}
+              isChecked={!values?.has_pool}
+              title={"استخر ندارد"}
+            />
 
-        {!!values?.has_pool ? (
-          <MultyPopUpSelect
-            onSelect={(e) => {
-              onChangeMulty(e, "pool_type");
-            }}
-            value={values?.pool_type}
-            title={_STRINGS.POOL_TYPE}
-            item={{ list: propertyTypes?.["POOL_TYPE"] || [] }}
-          />
-        ) : (
-          <></>
-        )}
-      </div>
-      <div className="  grid   grid-cols-2 md:grid-cols-3 gap-2  border-b pb-4 w-full">
-        {" "}
-        <p className="font-bold mb-2  col-span-full w-full text-start  text-sm md:text-base text-primary-700  ">
-          {_STRINGS.ENTERTAINMENT}
-        </p>
-        {propertyTypes?.["ENTERTAINMENT"]?.map((e, index) => (
-          <Checkbox
-            key={`Emt${e?.id}`}
-            rounded="rounded-md"
-            onSelect={() => {
-              onChangeMulty(e?.id, "entertainment");
-            }}
-            titleClass="  !text-xs  "
-            containerClass={` ${(index + 1) % 2 == 0 ? "col-span-1" : "col-span-1"}`}
-            isChecked={!!values?.entertainment?.includes(e?.id)}
-            title={e?.title}
-          />
-        ))}
-      </div>
-      <div className=" grid   grid-cols-2 md:grid-cols-3  gap-2  border-b pb-4 w-full">
-        <p className="font-bold mb-2 col-span-full w-full text-start  text-sm md:text-base text-primary-700  ">
-          {_STRINGS.KITCHEN_ACC}
-        </p>
-        {propertyTypes?.["KITCHEN"]?.map((e, index) => (
-          <Checkbox
-            key={`KITCHEN${e?.id}`}
-            rounded="rounded-md"
-            titleClass="  !text-xs  "
-            containerClass={` ${(index + 1) % 2 == 0 ? "col-span-1" : "col-span-1"}`}
-            onSelect={() => {
-              onChangeMulty(e?.id, "kitchen");
-            }}
-            isChecked={!!values?.kitchen?.includes(e?.id)}
-            title={e?.title}
-          />
-        ))}
-      </div>
-      <MultiLineFormInput
-        item={{
-          title: _STRINGS.OTHER_ACCESSES,
-          containerClass: "w-full col-span-full",
+            {!!values?.has_pool ? (
+              <MultyPopUpSelect
+                onSelect={(e) => {
+                  onChangeMulty(e, "pool_type");
+                }}
+                value={values?.pool_type}
+                title={_STRINGS.POOL_TYPE}
+                item={{ list: propertyTypes?.["POOL_TYPE"] || [] }}
+              />
+            ) : (
+              <></>
+            )}
+          </div>
+          <div className="  grid   grid-cols-2 md:grid-cols-3 gap-2  border-b pb-4 w-full">
+            {" "}
+            <p className="font-bold mb-2  col-span-full w-full text-start  text-sm md:text-base text-primary-700  ">
+              {_STRINGS.ENTERTAINMENT}
+            </p>
+            {propertyTypes?.["ENTERTAINMENT"]?.map((e, index) => (
+              <Checkbox
+                key={`Emt${e?.id}`}
+                rounded="rounded-md"
+                onSelect={() => {
+                  onChangeMulty(e?.id, "entertainment");
+                }}
+                titleClass="  !text-xs  "
+                containerClass={` ${(index + 1) % 2 == 0 ? "col-span-1" : "col-span-1"}`}
+                isChecked={!!values?.entertainment?.includes(e?.id)}
+                title={e?.title}
+              />
+            ))}
+          </div>
+          <div className=" grid   grid-cols-2 md:grid-cols-3  gap-2  border-b pb-4 w-full">
+            <p className="font-bold mb-2 col-span-full w-full text-start  text-sm md:text-base text-primary-700  ">
+              {_STRINGS.KITCHEN_ACC}
+            </p>
+            {propertyTypes?.["KITCHEN"]?.map((e, index) => (
+              <Checkbox
+                key={`KITCHEN${e?.id}`}
+                rounded="rounded-md"
+                titleClass="  !text-xs  "
+                containerClass={` ${(index + 1) % 2 == 0 ? "col-span-1" : "col-span-1"}`}
+                onSelect={() => {
+                  onChangeMulty(e?.id, "kitchen");
+                }}
+                isChecked={!!values?.kitchen?.includes(e?.id)}
+                title={e?.title}
+              />
+            ))}
+          </div>
+          <MultiLineFormInput
+            item={{
+              title: _STRINGS.OTHER_ACCESSES,
+              containerClass: "w-full col-span-full",
 
-          rows: 3,
-        }}
-        value={values?.facility_dscr || ""}
-        onChangeText={(e) => {
-          onChange(e, "facility_dscr");
-        }}
-      />
-      <div className="  grid   grid-cols-2 md:grid-cols-3   gap-2  border-b pb-4 w-full">
-        <p className="font-bold  w-full mb-2 col-span-full  text-start  text-sm md:text-base text-primary-700  ">
-          {_STRINGS.COOL_HEAT}
-        </p>
-        {propertyTypes?.["COOL_HEAT"]?.map((e, index) => (
-          <Checkbox
-            titleClass="  !text-xs  "
-            containerClass={` ${(index + 1) % 2 == 0 ? "col-span-1" : "col-span-1"}`}
-            key={`COOL_HEAT${e?.id}`}
-            rounded="rounded-md"
-            onSelect={() => {
-              onChangeMulty(e?.id, "cool_heat");
+              rows: 3,
             }}
-            isChecked={!!values?.cool_heat?.includes(e?.id)}
-            title={e?.title}
-          />
-        ))}{" "}
-      </div>
-      <div className=" grid   grid-cols-2 md:grid-cols-3  gap-2  border-b pb-4 w-full">
-        <p className="font-bold col-span-full w-full mb-2 text-start  text-sm md:text-base text-primary-700  ">
-          {_STRINGS.WELFARE_TITLE}
-        </p>
-        {propertyTypes?.["WELFARE"]?.map((e, index) => (
-          <Checkbox
-            titleClass="  !text-xs  "
-            containerClass={` ${(index + 1) % 2 == 0 ? "col-span-1" : "col-span-1"}`}
-            key={`WELFARE${e?.id}`}
-            rounded="rounded-md"
-            onSelect={() => {
-              onChangeMulty(e?.id, "welfare");
+            value={values?.facility_dscr || ""}
+            onChangeText={(e) => {
+              onChange(e, "facility_dscr");
             }}
-            isChecked={!!values?.welfare?.includes(e?.id)}
-            title={e?.title}
           />
-        ))}{" "}
-      </div>
+          <div className="  grid   grid-cols-2 md:grid-cols-3   gap-2  border-b pb-4 w-full">
+            <p className="font-bold  w-full mb-2 col-span-full  text-start  text-sm md:text-base text-primary-700  ">
+              {_STRINGS.COOL_HEAT}
+            </p>
+            {propertyTypes?.["COOL_HEAT"]?.map((e, index) => (
+              <Checkbox
+                titleClass="  !text-xs  "
+                containerClass={` ${(index + 1) % 2 == 0 ? "col-span-1" : "col-span-1"}`}
+                key={`COOL_HEAT${e?.id}`}
+                rounded="rounded-md"
+                onSelect={() => {
+                  onChangeMulty(e?.id, "cool_heat");
+                }}
+                isChecked={!!values?.cool_heat?.includes(e?.id)}
+                title={e?.title}
+              />
+            ))}{" "}
+          </div>
+          <div className=" grid   grid-cols-2 md:grid-cols-3  gap-2  border-b pb-4 w-full">
+            <p className="font-bold col-span-full w-full mb-2 text-start  text-sm md:text-base text-primary-700  ">
+              {_STRINGS.WELFARE_TITLE}
+            </p>
+            {propertyTypes?.["WELFARE"]?.map((e, index) => (
+              <Checkbox
+                titleClass="  !text-xs  "
+                containerClass={` ${(index + 1) % 2 == 0 ? "col-span-1" : "col-span-1"}`}
+                key={`WELFARE${e?.id}`}
+                rounded="rounded-md"
+                onSelect={() => {
+                  onChangeMulty(e?.id, "welfare");
+                }}
+                isChecked={!!values?.welfare?.includes(e?.id)}
+                title={e?.title}
+              />
+            ))}{" "}
+          </div>
+        </>
+      )}
       <FixedBottomContainer>
         <Button
           onClick={() => {

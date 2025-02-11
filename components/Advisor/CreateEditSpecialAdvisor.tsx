@@ -19,8 +19,7 @@ const CreateEditSpecialAdvisor = ({
   setValues,
 }: {
   values: CreateAdvisorDto & {
-    province: string | number | null;
-    refral_code: string | number | null;
+    province?: string | number | null;
     profile_image: any;
     national_card_image: any;
     document_image: any;
@@ -28,8 +27,7 @@ const CreateEditSpecialAdvisor = ({
   setValues: React.Dispatch<
     React.SetStateAction<
       CreateAdvisorDto & {
-        province: string | number | null;
-        refral_code: string | number | null;
+        province?: string | number | null;
         profile_image: any;
         national_card_image: any;
         document_image: any;
@@ -228,7 +226,7 @@ const CreateEditSpecialAdvisor = ({
         />
       </div>
 
-      <FormInput
+      {/* <FormInput
         item={{
           title: _STRINGS.REFRAL_CODE,
           containerClass: "w-full  md:w-1/2",
@@ -240,7 +238,7 @@ const CreateEditSpecialAdvisor = ({
         onChangeText={(e) => {
           onChange(e, "refral_code");
         }}
-      />
+      /> */}
     </div>
   );
 };

@@ -241,18 +241,18 @@ transition-all  ease-in-out duration-1000 header-content-container w-full mx-aut
                   <div className="cursor-pointer  absolute left-4     ">
                     {/**************     IN ADVISORS PAGE  WE NEED ADVISOR CREATE BUTTON  ***************/}
 
-                    {pathname == "/advisors" && !userInfo?.advisor?.is_special ? (
-                      <Button
-                        roundedClass="rounded-full"
-                        width=" !px-3  !text-sm !py-1 w-fit "
-                        containerClass="w-fit !px-0.5  items-center justify-center"
-                        onClick={registerAdvisor}
-                        title={
-                          userInfo?.advisor_id && !userInfo?.advisor?.is_special
-                            ? _STRINGS.REGISTER_ADVISOR + ` ویژه`
-                            : _STRINGS.REGISTER_ADVISOR
-                        }
-                      />
+                    {pathname == "/advisors" ? (
+                      !userInfo?.advisor_id ? (
+                        <Button
+                          roundedClass="rounded-full"
+                          width=" !px-3  !text-sm !py-1 w-fit "
+                          containerClass="w-fit !px-0.5  items-center justify-center"
+                          onClick={registerAdvisor}
+                          title={_STRINGS.REGISTER_ADVISOR}
+                        />
+                      ) : (
+                        <></>
+                      )
                     ) : pathname.includes("/profile") ? (
                       <Link href={"/"}>
                         <img

@@ -14,6 +14,7 @@ import { useMutation, useQuery } from "@tanstack/react-query";
 
 import { useParams, usePathname, useRouter, useSearchParams } from "next/navigation";
 import React, { useEffect, useState } from "react";
+import LottieLoading from "@/components/shared/Lotties/LottieLoading";
 
 const CreateProperty = () => {
   const router = useRouter();
@@ -26,7 +27,7 @@ const CreateProperty = () => {
   /* -------------------------------------------------------------------------- */
   /*                             INIT PROP CREATION                             */
   /* -------------------------------------------------------------------------- */
-  const { data: initPropData } = useQuery({
+  const { data: initPropData, isLoading } = useQuery({
     queryKey: [PropertyService.OWNER_PROP_INIT_CACHEKEY, property_id],
     queryFn: () => {
       if (!!property_id) {
@@ -88,7 +89,7 @@ const CreateProperty = () => {
         <StepShower steps={createPropertySteps(initPropData?.id)} value={4} />
       </div>
 
-      <CreateEditPropertyEnvInfo onChange={onChange} values={values} />
+      {isLoading ? <LottieLoading /> : <CreateEditPropertyEnvInfo onChange={onChange} values={values} />}
 
       <FixedBottomContainer>
         <Button

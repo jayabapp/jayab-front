@@ -33,7 +33,7 @@ const HomeAdvisorSub = () => {
 
 "
         >
-          {advisorProfile?.status?.id == 20 && !advisorProfile?.is_special && !!isActive ? (
+          {/* {advisorProfile?.status?.id == 20 && !advisorProfile?.is_special && !!isActive ? (
             <Link
               href={`/profile/advisor/subscription/is-especial`}
               className="w-full  md:w-[30%] rounded-full flex items-center justify-center gap-4 h-10 bg-primary-600 "
@@ -43,7 +43,7 @@ const HomeAdvisorSub = () => {
             </Link>
           ) : (
             <></>
-          )}
+          )} */}
           {advisorProfile?.status?.id == 20 && !!isActive && remainingDays <= 3 ? (
             <Link
               href={`/profile/advisor/subscription`}

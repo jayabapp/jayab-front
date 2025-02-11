@@ -20,6 +20,7 @@ import { fakeConsultants } from "@/utils/faker";
 import _STRINGS from "@/utils/LocalStrings";
 import { useQuery } from "@tanstack/react-query";
 import { last } from "lodash";
+import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
 import React, { useEffect, useState } from "react";
 import InfiniteScroll from "react-infinite-scroll-component";
@@ -131,7 +132,7 @@ const AdvisorsListPage = () => {
       <div className="w-full flex flex-col gap-4 md:gap-8">
         <BannersContainer banners={banners} />
 
-        <div className="w-full flex flex-col gap-4">
+        <div className="w-full flex flex-col  md:flex-row gap-4">
           <SearchBox
             passedQuerykey="search"
             boxId="ADVISOR_SEARCH"
@@ -144,27 +145,31 @@ const AdvisorsListPage = () => {
             }}
             placeholder="کد یا نام مشاور ..."
           />
-          <div className=" w-full flex  flex-col md:flex-row  gap-2 md:gap-4 items-center justify-between">
+          <div className=" w-full flex  md:grid md:grid-cols-6  flex-col md:flex-row  gap-2 md:gap-4 items-center ">
             <Button
               roundedClass="rounded-full"
               width=" w-full md:w-fit"
-              containerClass="w-full md:w-fit flex items-center justify-center"
+              containerClass="w-full md:w-fit flex items-center justify-center  md:col-span-2"
               onClick={showCityModalFunc}
               title={cityTitle || _STRINGS.SELECT_CITY}
             />
-            {!userInfo?.advisor?.is_special ? (
+            {!userInfo?.advisor_id ? (
               <Button
                 variant="outline"
                 roundedClass="rounded-full"
                 width=" w-full md:w-fit"
-                containerClass="w-full  hidden md:flex  md:w-fit  items-center justify-center"
+                containerClass="w-full  md:col-span-4 hidden md:flex  md:w-fit  items-center justify-center"
                 onClick={registerAdvisor}
-                title={
-                  userInfo?.advisor_id && !userInfo?.advisor?.is_special
-                    ? _STRINGS.REGISTER_ADVISOR + ` ویژه`
-                    : _STRINGS.REGISTER_ADVISOR
-                }
+                title={_STRINGS.REGISTER_ADVISOR}
               />
+            ) : userInfo?.advisor_id && !userInfo?.advisor?.is_special ? (
+              <Link
+                href={`/profile/advisor/subscription/is-especial`}
+                className="w-full  md:col-span-4  rounded-full flex items-center justify-center gap-4 h-12 bg-primary-600 "
+              >
+                <img className="w-5 h-5 aspect-square" src="/assets/icons/home/white_star_tick.svg" />
+                <p className="text-white">{_STRINGS.REGISTER_AS_SPECIAL_AD}</p>
+              </Link>
             ) : (
               <></>
             )}

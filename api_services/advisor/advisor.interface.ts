@@ -16,14 +16,67 @@ export interface CreateAdvisorDto {
 
 export interface AdvisorProfileDto {
   id: number;
-  user: User;
-  status: Status;
-  admin_descriptions: any[];
+  national_code: string;
+  tel: string;
+  area_code: null;
+  address: string;
   is_special: boolean;
+  status: Status;
+  sort_order: null;
   subscription_expired_at: Date;
-  national_code: null;
-  admin_description: string;
+  users_satisfaction: number;
+  owners_satisfaction: null;
+  advisor_behavior: number;
+  advisor_responsibility: number;
+  response_speed_and_followup: number;
+  national_card_image_id: number;
+  document_image_id: number;
   created_at: Date;
+  updated_at: Date;
+  user: User;
+  document_image: Image;
+  national_card_image: Image;
+  cities: City[];
+  admin_description: string;
+}
+
+export interface City {
+  id: number;
+  title: string;
+  parent_id: number;
+  sort_order: null;
+  slug: string;
+  slug_fa: null;
+  tel_prefix: null;
+  image_id: null;
+  created_at: Date;
+  updated_at: Date;
+  deleted_at: null;
+  advisorId: number;
+}
+
+export interface Image {
+  id: number;
+  user_id: number;
+  admin_id: null;
+  user_role: null;
+  name: string;
+  meta: null;
+  thumbnail: string;
+  type: number;
+  path: string;
+  bucket: string;
+  region: null;
+  end_point: string;
+  medium: string;
+  alt: null;
+  created_at: Date;
+  updated_at: Date;
+  deleted_at: null;
+}
+
+export interface User {
+  full_name: string;
 }
 
 export interface User {

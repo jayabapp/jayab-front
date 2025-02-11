@@ -82,6 +82,16 @@ const AdvisorRegister = () => {
     mutate();
   };
 
+  const goToEdit = () => {
+    let link = "";
+    if (advisorProfile?.is_special) {
+      link = "/profile/advisor/subscription/is-especial";
+    } else {
+      link = "/profile/advisor/subscription/normal";
+    }
+    pusher(link);
+  };
+
   return (
     <div className=" profile-container  flex flex-col gap-4 ">
       {!!advisorProfile ? (
@@ -112,7 +122,22 @@ const AdvisorRegister = () => {
 
           <div className="flex flex-col justify-between items-end gap-2">
             {" "}
-            <StatusShower data={advisorProfile?.status} />
+            <div className="flex items-center gap-2">
+              {" "}
+              {advisorProfile?.status?.id == 10 ? (
+                <Button
+                  onClick={goToEdit}
+                  containerClass="w-fit "
+                  width=" !py-1 !px-3  !text-xs "
+                  variant="outline"
+                  color="light"
+                  title={_STRINGS.EDIT_INFO}
+                />
+              ) : (
+                <></>
+              )}
+              <StatusShower data={advisorProfile?.status} />
+            </div>
             {!!advisorProfile?.is_special ? (
               <Button
                 onClick={() => {

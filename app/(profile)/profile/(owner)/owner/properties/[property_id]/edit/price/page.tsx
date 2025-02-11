@@ -14,6 +14,7 @@ import { useMutation, useQuery } from "@tanstack/react-query";
 import { useParams, usePathname, useRouter, useSearchParams } from "next/navigation";
 import React, { useEffect, useState } from "react";
 import numberWithCommas from "@/helpers/numberWithCommas";
+import LottieLoading from "@/components/shared/Lotties/LottieLoading";
 
 const CreatePropertyPricing = () => {
   const router = useRouter();
@@ -26,7 +27,7 @@ const CreatePropertyPricing = () => {
   /* -------------------------------------------------------------------------- */
   /*                             INIT PROP CREATION                             */
   /* -------------------------------------------------------------------------- */
-  const { data: initPropData } = useQuery({
+  const { data: initPropData, isLoading } = useQuery({
     queryKey: [PropertyService.OWNER_PROP_INIT_CACHEKEY, property_id],
     queryFn: () => {
       if (!!property_id) {
@@ -97,169 +98,178 @@ const CreatePropertyPricing = () => {
         {" "}
         <StepShower steps={createPropertySteps(initPropData?.id)} value={7} />
       </div>
-
-      <div className=" flex flex-col gap-2 border-b   pb-4 w-full">
-        <p className="font-bold w-full text-start  text-sm md:text-base text-primary-700  ">{_STRINGS.GUEST_CAP}</p>
-        <TitleCounter
-          disableInput={true}
-          value={values?.std_capacity}
-          onChange={(e) => {
-            onChange(e, "std_capacity");
-          }}
-          title="ظرفیت استاندارد میهمان"
-        />
-        <TitleCounter
-          disableInput={true}
-          value={values?.max_capacity}
-          onChange={(e) => {
-            onChange(e, "max_capacity");
-          }}
-          title="حداکثر ظرفیت میهمان"
-        />
-      </div>
-      <div className=" flex flex-col gap-2 border-b   pb-8 w-full">
-        <div className="w-full flex items-center justify-between ">
+      {isLoading ? (
+        <LottieLoading />
+      ) : (
+        <>
           {" "}
-          <p className="font-bold w-fit text-start  text-sm md:text-base text-primary-700  ">
-            {_STRINGS.COMITION_PERC}
-          </p>
-          <p className="text-primary-700 text-sm">{` % ${values?.advisor_commission} `}</p>
-        </div>
-        <div className="flex px-4 items-center justify-center">
-          {" "}
-          <RangeWithTitle
-            className=" w-full md:w-1/2 "
-            marks={{ 0: { label: "0", style: { color: "#3886E5" } }, 50: { label: "50", style: { color: "#3886E5" } } }}
-            max={50}
-            min={0}
-            step={5}
-            setValue={(e: any) => {
-              onChange(e, "advisor_commission");
-            }}
-            value={Number(values?.advisor_commission) || 0}
-          />
-        </div>
-      </div>
+          <div className=" flex flex-col gap-2 border-b   pb-4 w-full">
+            <p className="font-bold w-full text-start  text-sm md:text-base text-primary-700  ">{_STRINGS.GUEST_CAP}</p>
+            <TitleCounter
+              disableInput={true}
+              value={values?.std_capacity}
+              onChange={(e) => {
+                onChange(e, "std_capacity");
+              }}
+              title="ظرفیت استاندارد میهمان"
+            />
+            <TitleCounter
+              disableInput={true}
+              value={values?.max_capacity}
+              onChange={(e) => {
+                onChange(e, "max_capacity");
+              }}
+              title="حداکثر ظرفیت میهمان"
+            />
+          </div>
+          <div className=" flex flex-col gap-2 border-b   pb-8 w-full">
+            <div className="w-full flex items-center justify-between ">
+              {" "}
+              <p className="font-bold w-fit text-start  text-sm md:text-base text-primary-700  ">
+                {_STRINGS.COMITION_PERC}
+              </p>
+              <p className="text-primary-700 text-sm">{` % ${values?.advisor_commission} `}</p>
+            </div>
+            <div className="flex px-4 items-center justify-center">
+              {" "}
+              <RangeWithTitle
+                className=" w-full md:w-1/2 "
+                marks={{
+                  0: { label: "0", style: { color: "#3886E5" } },
+                  50: { label: "50", style: { color: "#3886E5" } },
+                }}
+                max={50}
+                min={0}
+                step={5}
+                setValue={(e: any) => {
+                  onChange(e, "advisor_commission");
+                }}
+                value={Number(values?.advisor_commission) || 0}
+              />
+            </div>
+          </div>
+          <div className=" flex flex-col gap-2    pb-4 w-full">
+            <p className="font-bold w-full text-start  text-sm md:text-base text-primary-700  ">
+              {_STRINGS.REND_DAYLI_PRICE}
+            </p>{" "}
+            <FormInputWithExternalUnit
+              unit={_STRINGS.TOMAN}
+              item={{
+                title: "قیمت شنبه تا سه شنبه",
+                isMandatory: false,
+                containerClass: "w-full",
+                keyboard: "number",
+                convertToText: true,
+                direction: "ltr",
+              }}
+              value={numberWithCommas(values?.normal || "") || ""}
+              onChangeText={(e) => {
+                let pureVal = e?.replaceAll(",", "").replaceAll(",", "").replaceAll(" ", "");
 
-      <div className=" flex flex-col gap-2    pb-4 w-full">
-        <p className="font-bold w-full text-start  text-sm md:text-base text-primary-700  ">
-          {_STRINGS.REND_DAYLI_PRICE}
-        </p>{" "}
-        <FormInputWithExternalUnit
-          unit={_STRINGS.TOMAN}
-          item={{
-            title: "قیمت شنبه تا سه شنبه",
-            isMandatory: false,
-            containerClass: "w-full",
-            keyboard: "number",
-            convertToText: true,
-            direction: "ltr",
-          }}
-          value={numberWithCommas(values?.normal || "") || ""}
-          onChangeText={(e) => {
-            let pureVal = e?.replaceAll(",", "").replaceAll(",", "").replaceAll(" ", "");
+                if (!isNaN(pureVal)) onChange(pureVal, "normal");
+              }}
+            />
+            <FormInputWithExternalUnit
+              unit={_STRINGS.TOMAN}
+              item={{
+                title: "قیمت چهارشنبه",
+                isMandatory: false,
+                containerClass: "w-full",
+                keyboard: "number",
+                convertToText: true,
+                direction: "ltr",
+              }}
+              value={numberWithCommas(values?.wednesday || "")}
+              onChangeText={(e) => {
+                let pureVal = e?.replaceAll(",", "").replaceAll(",", "").replaceAll(" ", "");
+                if (!isNaN(pureVal)) onChange(pureVal, "wednesday");
+              }}
+            />
+            <FormInputWithExternalUnit
+              unit={_STRINGS.TOMAN}
+              item={{
+                title: "قیمت پنجشنبه",
+                isMandatory: false,
+                containerClass: "w-full",
+                keyboard: "number",
+                convertToText: true,
+                direction: "ltr",
+              }}
+              value={numberWithCommas(values?.thursday || "")}
+              onChangeText={(e) => {
+                let pureVal = e?.replaceAll(",", "").replaceAll(",", "").replaceAll(" ", "");
+                if (!isNaN(pureVal)) onChange(pureVal, "thursday");
+              }}
+            />
+            <FormInputWithExternalUnit
+              unit={_STRINGS.TOMAN}
+              item={{
+                title: "قیمت جمعه",
+                isMandatory: false,
+                containerClass: "w-full",
+                keyboard: "number",
+                convertToText: true,
+                direction: "ltr",
+              }}
+              value={numberWithCommas(values?.friday || "")}
+              onChangeText={(e) => {
+                let pureVal = e?.replaceAll(",", "").replaceAll(",", "").replaceAll(" ", "");
 
-            if (!isNaN(pureVal)) onChange(pureVal, "normal");
-          }}
-        />
-        <FormInputWithExternalUnit
-          unit={_STRINGS.TOMAN}
-          item={{
-            title: "قیمت چهارشنبه",
-            isMandatory: false,
-            containerClass: "w-full",
-            keyboard: "number",
-            convertToText: true,
-            direction: "ltr",
-          }}
-          value={numberWithCommas(values?.wednesday || "")}
-          onChangeText={(e) => {
-            let pureVal = e?.replaceAll(",", "").replaceAll(",", "").replaceAll(" ", "");
-            if (!isNaN(pureVal)) onChange(pureVal, "wednesday");
-          }}
-        />
-        <FormInputWithExternalUnit
-          unit={_STRINGS.TOMAN}
-          item={{
-            title: "قیمت پنجشنبه",
-            isMandatory: false,
-            containerClass: "w-full",
-            keyboard: "number",
-            convertToText: true,
-            direction: "ltr",
-          }}
-          value={numberWithCommas(values?.thursday || "")}
-          onChangeText={(e) => {
-            let pureVal = e?.replaceAll(",", "").replaceAll(",", "").replaceAll(" ", "");
-            if (!isNaN(pureVal)) onChange(pureVal, "thursday");
-          }}
-        />
-        <FormInputWithExternalUnit
-          unit={_STRINGS.TOMAN}
-          item={{
-            title: "قیمت جمعه",
-            isMandatory: false,
-            containerClass: "w-full",
-            keyboard: "number",
-            convertToText: true,
-            direction: "ltr",
-          }}
-          value={numberWithCommas(values?.friday || "")}
-          onChangeText={(e) => {
-            let pureVal = e?.replaceAll(",", "").replaceAll(",", "").replaceAll(" ", "");
+                if (!isNaN(pureVal)) onChange(pureVal, "friday");
+              }}
+            />
+            <FormInputWithExternalUnit
+              unit={_STRINGS.TOMAN}
+              item={{
+                title: "قیمت ایام پیک",
+                isMandatory: false,
+                containerClass: "w-full",
+                keyboard: "number",
+                convertToText: true,
+                direction: "ltr",
+              }}
+              value={numberWithCommas(values?.peak || "")}
+              onChangeText={(e) => {
+                let pureVal = e?.replaceAll(",", "").replaceAll(",", "").replaceAll(" ", "");
+                if (!isNaN(pureVal)) onChange(pureVal, "peak");
+              }}
+            />
+            <FormInputWithExternalUnit
+              unit={_STRINGS.TOMAN}
+              item={{
+                title: "هزینه نظافت",
+                isMandatory: false,
+                containerClass: "w-full",
+                keyboard: "number",
+                convertToText: true,
+                direction: "ltr",
+              }}
+              value={numberWithCommas(values?.cleaning || "")}
+              onChangeText={(e) => {
+                let pureVal = e?.replaceAll(",", "").replaceAll(",", "").replaceAll(" ", "");
+                if (!isNaN(pureVal)) onChange(pureVal, "cleaning");
+              }}
+            />
+            <FormInputWithExternalUnit
+              unit={_STRINGS.TOMAN}
+              item={{
+                title: "قیمت نفر اضافه و سه سال به بالا",
+                isMandatory: false,
+                containerClass: "w-full",
+                keyboard: "number",
+                convertToText: true,
+                direction: "ltr",
+              }}
+              value={numberWithCommas(values?.additional_person || "")}
+              onChangeText={(e) => {
+                let pureVal = e?.replaceAll(",", "").replaceAll(",", "").replaceAll(" ", "");
+                if (!isNaN(pureVal)) onChange(pureVal, "additional_person");
+              }}
+            />
+          </div>
+        </>
+      )}
 
-            if (!isNaN(pureVal)) onChange(pureVal, "friday");
-          }}
-        />
-        <FormInputWithExternalUnit
-          unit={_STRINGS.TOMAN}
-          item={{
-            title: "قیمت ایام پیک",
-            isMandatory: false,
-            containerClass: "w-full",
-            keyboard: "number",
-            convertToText: true,
-            direction: "ltr",
-          }}
-          value={numberWithCommas(values?.peak || "")}
-          onChangeText={(e) => {
-            let pureVal = e?.replaceAll(",", "").replaceAll(",", "").replaceAll(" ", "");
-            if (!isNaN(pureVal)) onChange(pureVal, "peak");
-          }}
-        />
-        <FormInputWithExternalUnit
-          unit={_STRINGS.TOMAN}
-          item={{
-            title: "هزینه نظافت",
-            isMandatory: false,
-            containerClass: "w-full",
-            keyboard: "number",
-            convertToText: true,
-            direction: "ltr",
-          }}
-          value={numberWithCommas(values?.cleaning || "")}
-          onChangeText={(e) => {
-            let pureVal = e?.replaceAll(",", "").replaceAll(",", "").replaceAll(" ", "");
-            if (!isNaN(pureVal)) onChange(pureVal, "cleaning");
-          }}
-        />
-        <FormInputWithExternalUnit
-          unit={_STRINGS.TOMAN}
-          item={{
-            title: "قیمت نفر اضافه و سه سال به بالا",
-            isMandatory: false,
-            containerClass: "w-full",
-            keyboard: "number",
-            convertToText: true,
-            direction: "ltr",
-          }}
-          value={numberWithCommas(values?.additional_person || "")}
-          onChangeText={(e) => {
-            let pureVal = e?.replaceAll(",", "").replaceAll(",", "").replaceAll(" ", "");
-            if (!isNaN(pureVal)) onChange(pureVal, "additional_person");
-          }}
-        />
-      </div>
       <FixedBottomContainer>
         <Button
           onClick={() => {

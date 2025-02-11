@@ -209,7 +209,7 @@ export const profileDropDownItems = [
     route: "/profile/bookmarks",
     imgSrc: "/assets/icons/header/header_my_saves.svg",
   },
-  // { id: 23, title: "دعوت از دوستان", route: "/profile/edit", imgSrc: "/assets/icons/header/header_share.svg" },
+  { id: 23, title: "دعوت از دوستان", route: "/profile/invite", imgSrc: "/assets/icons/header/header_share.svg" },
   { id: 253, title: "پشتیبانی", route: "/profile/support", imgSrc: "/assets/icons/header/header_support.svg" },
 ];
 export const menuDropDownItems = [

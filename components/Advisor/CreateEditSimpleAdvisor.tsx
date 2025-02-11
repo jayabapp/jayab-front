@@ -12,8 +12,7 @@ const CreateEditSimpleAdvisor = ({
   setValues,
 }: {
   values: CreateAdvisorDto & {
-    province: string | number | null;
-    refral_code: string | number | null;
+    province?: string | number | null;
     profile_image: any;
     national_card_image: any;
     document_image: any;
@@ -21,8 +20,7 @@ const CreateEditSimpleAdvisor = ({
   setValues: React.Dispatch<
     React.SetStateAction<
       CreateAdvisorDto & {
-        province: string | number | null;
-        refral_code: string | number | null;
+        province?: string | number | null;
         profile_image: any;
         national_card_image: any;
         document_image: any;

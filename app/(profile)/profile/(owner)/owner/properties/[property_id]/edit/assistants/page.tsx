@@ -15,6 +15,7 @@ import _STRINGS from "@/utils/LocalStrings";
 import { useMutation, useQuery } from "@tanstack/react-query";
 import { useParams, usePathname, useRouter, useSearchParams } from "next/navigation";
 import React, { useEffect, useState } from "react";
+import LottieLoading from "@/components/shared/Lotties/LottieLoading";
 
 const CreatePropertyAssistance = () => {
   const searchParams = useSearchParams();
@@ -28,7 +29,7 @@ const CreatePropertyAssistance = () => {
   /* -------------------------------------------------------------------------- */
   /*                             INIT PROP CREATION                             */
   /* -------------------------------------------------------------------------- */
-  const { data: initPropData } = useQuery({
+  const { data: initPropData, isLoading } = useQuery({
     queryKey: [PropertyService.OWNER_PROP_INIT_CACHEKEY, property_id],
     queryFn: () => {
       if (!!property_id) {
@@ -89,63 +90,69 @@ const CreatePropertyAssistance = () => {
         {" "}
         <StepShower steps={createPropertySteps(initPropData?.id)} value={8} />
       </div>
-
-      <div className="flex flex-col gap-2 w-full">
-        <Checkbox
-          rounded="rounded-full"
-          isChecked={values?.show_mobile_type == 1}
-          onSelect={() => {
-            onChange(1, "show_mobile_type");
-          }}
-          title={_STRINGS.SHOW_OWNERS_PHONE}
-        />
-        <Checkbox
-          rounded="rounded-full"
-          isChecked={values?.show_mobile_type == 2}
-          onSelect={() => {
-            onChange(2, "show_mobile_type");
-          }}
-          title={_STRINGS.SHOW_ASSISTANT_PHONE}
-        />
-        <Checkbox
-          rounded="rounded-full"
-          isChecked={values?.show_mobile_type == 3}
-          onSelect={() => {
-            onChange(3, "show_mobile_type");
-          }}
-          title={_STRINGS.SHOW_BOTH_PHONE}
-        />
-      </div>
-
-      {/* {values?.show_mobile_type == 3 || values?.show_mobile_type == 2 ? (
-        <> */}
-      {values?.show_mobile_type != 1 ? (
+      {isLoading ? (
+        <LottieLoading />
+      ) : (
         <>
           {" "}
-          <FormInput
-            item={{ title: _STRINGS.ASSISTANT_NAME, isMandatory: true, containerClass: "w-full" }}
-            value={values?.assistant_full_name || ""}
-            onChangeText={(e) => {
-              onChange(e, "assistant_full_name");
-            }}
-          />
-          <FormInput
-            item={{
-              title: _STRINGS.ASSISTANT_PHONE,
-              isMandatory: true,
-              containerClass: "w-full",
-              keyboard: "number",
-              maxLength: 11,
-            }}
-            value={values?.assistant_mobile || ""}
-            onChangeText={(e) => {
-              onChange(e, "assistant_mobile");
-            }}
-          />
+          <div className="flex flex-col gap-2 w-full">
+            <Checkbox
+              rounded="rounded-full"
+              isChecked={values?.show_mobile_type == 1}
+              onSelect={() => {
+                onChange(1, "show_mobile_type");
+              }}
+              title={_STRINGS.SHOW_OWNERS_PHONE}
+            />
+            <Checkbox
+              rounded="rounded-full"
+              isChecked={values?.show_mobile_type == 2}
+              onSelect={() => {
+                onChange(2, "show_mobile_type");
+              }}
+              title={_STRINGS.SHOW_ASSISTANT_PHONE}
+            />
+            <Checkbox
+              rounded="rounded-full"
+              isChecked={values?.show_mobile_type == 3}
+              onSelect={() => {
+                onChange(3, "show_mobile_type");
+              }}
+              title={_STRINGS.SHOW_BOTH_PHONE}
+            />
+          </div>
+          {/* {values?.show_mobile_type == 3 || values?.show_mobile_type == 2 ? (
+        <> */}
+          {values?.show_mobile_type != 1 ? (
+            <>
+              {" "}
+              <FormInput
+                item={{ title: _STRINGS.ASSISTANT_NAME, isMandatory: true, containerClass: "w-full" }}
+                value={values?.assistant_full_name || ""}
+                onChangeText={(e) => {
+                  onChange(e, "assistant_full_name");
+                }}
+              />
+              <FormInput
+                item={{
+                  title: _STRINGS.ASSISTANT_PHONE,
+                  isMandatory: true,
+                  containerClass: "w-full",
+                  keyboard: "number",
+                  maxLength: 11,
+                }}
+                value={values?.assistant_mobile || ""}
+                onChangeText={(e) => {
+                  onChange(e, "assistant_mobile");
+                }}
+              />
+            </>
+          ) : (
+            <></>
+          )}
         </>
-      ) : (
-        <></>
       )}
+
       {/* </>
       ) : (
         <></>

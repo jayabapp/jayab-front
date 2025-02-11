@@ -9,6 +9,7 @@ import {
   PayAdvisorPlanDto,
   SingleAdvisorDto,
 } from "./advisor.interface";
+import { GetProfileDto } from "../auth/auth.interface";
 
 export class AdvisorService {
   static USER_ADVISORS_CACHEKEY = "USER_ADVISORS";
@@ -17,7 +18,7 @@ export class AdvisorService {
 
   static async createAdvisor(dto: CreateAdvisorDto) {
     try {
-      const result = await apiCall<CreateAdvisorDto, unknown>("PUT", apiRoutes.PROFILE_REGISTER_ADVISORS, dto);
+      const result = await apiCall<CreateAdvisorDto, GetProfileDto>("PUT", apiRoutes.PROFILE_REGISTER_ADVISORS, dto);
       return result;
     } catch (e) {
       throw e;

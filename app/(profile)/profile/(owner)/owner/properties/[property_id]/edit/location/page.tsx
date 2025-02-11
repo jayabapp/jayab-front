@@ -4,6 +4,7 @@ import SearchPlaceModal from "@/components/Map/SearchPlaceModal";
 import SearchBox from "@/components/SearchBoxComp";
 import Button from "@/components/shared/Button/Button";
 import FixedBottomContainer from "@/components/shared/FixedBottomContainer";
+import LottieLoading from "@/components/shared/Lotties/LottieLoading";
 import StepShower from "@/components/shared/StepShower";
 import { useStoreInit } from "@/store";
 import { createPropertySteps } from "@/utils/constantss";
@@ -38,7 +39,7 @@ const CreateProperty = () => {
   /* -------------------------------------------------------------------------- */
   /*                             INIT PROP CREATION                             */
   /* -------------------------------------------------------------------------- */
-  const { data: initPropData } = useQuery({
+  const { data: initPropData, isLoading } = useQuery({
     queryKey: [PropertyService.OWNER_PROP_INIT_CACHEKEY, property_id],
     queryFn: () => {
       if (!!property_id) {
@@ -83,34 +84,37 @@ const CreateProperty = () => {
         {" "}
         <StepShower steps={createPropertySteps(initPropData?.id) || []} value={2} />
       </div>
-      <div className="w-full  h-[70dvh] relative">
-        <div
-          onClick={() => {
-            setShowSearch(true);
-          }}
-          className="absolute top-2 z-1 left-0 right-0  w-[70%] md:w-1/2 mx-auto "
-        >
-          <SearchBox
-            containerClass="  "
-            boxId={"SEARCH_BOX_Mobile"}
-            placeholder={_STRINGS?.SEARCH_PLACE_INPUT}
-            onSubmit={() => {}}
-            onClear={() => {}}
-            autofocus={false}
-            disableTypeing={true}
-            passedText={centerAddress}
+      {isLoading ? (
+        <LottieLoading />
+      ) : (
+        <div className="w-full  h-[70dvh] relative">
+          <div
+            onClick={() => {
+              setShowSearch(true);
+            }}
+            className="absolute top-2 z-1 left-0 right-0  w-[70%] md:w-1/2 mx-auto "
+          >
+            <SearchBox
+              containerClass="  "
+              boxId={"SEARCH_BOX_Mobile"}
+              placeholder={_STRINGS?.SEARCH_PLACE_INPUT}
+              onSubmit={() => {}}
+              onClear={() => {}}
+              autofocus={false}
+              disableTypeing={true}
+              passedText={centerAddress}
+            />
+          </div>
+          <Map
+            jumpToState={jompTo}
+            containerClass="  w-full "
+            center={center}
+            setCenter={setCenter}
+            setCenterAddress={setCenterAddress}
+            setCenterAddressLoading={setCenterAddressLoading}
           />
         </div>
-        <Map
-          jumpToState={jompTo}
-          containerClass="  w-full "
-          center={center}
-          setCenter={setCenter}
-          setCenterAddress={setCenterAddress}
-          setCenterAddressLoading={setCenterAddressLoading}
-        />
-      </div>
-
+      )}
       <FixedBottomContainer>
         <Button
           onClick={() => {

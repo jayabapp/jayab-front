@@ -5,11 +5,12 @@ import CreateEditSimpleAdvisor from "@/components/Advisor/CreateEditSimpleAdviso
 import CreateEditSpecialAdvisor from "@/components/Advisor/CreateEditSpecialAdvisor";
 import Button from "@/components/shared/Button/Button";
 import FixedBottomContainer from "@/components/shared/FixedBottomContainer";
+import { useStoreInit } from "@/store";
 import _STRINGS from "@/utils/LocalStrings";
-import { useMutation } from "@tanstack/react-query";
+import { useMutation, useQuery } from "@tanstack/react-query";
 import { isEmpty } from "lodash";
 import { useParams, useRouter } from "next/navigation";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 
 const CreateYourAdvisor = () => {
   const router = useRouter();
@@ -17,8 +18,7 @@ const CreateYourAdvisor = () => {
   const { subscription_key } = params;
   const [values, setValues] = useState<
     CreateAdvisorDto & {
-      province: string | number | null;
-      refral_code: string | number | null;
+      province?: string | number | null;
       profile_image: any;
       national_card_image: any;
       document_image: any;
@@ -35,12 +35,14 @@ const CreateYourAdvisor = () => {
     profile_image: null,
     tel: "",
     province: "",
-    refral_code: "",
   });
 
   const { mutate, isPending } = useMutation({
     mutationFn: AdvisorService.createAdvisor,
-    onSuccess: () => {
+    onSuccess: (e) => {
+      if (!!e) {
+        useStoreInit.setState({ userInfo: e });
+      }
       router.back();
     },
   });
@@ -58,6 +60,32 @@ const CreateYourAdvisor = () => {
       profile_image_id: values?.profile_image?.id || undefined,
     });
   };
+
+  const { data: advisorProfile } = useQuery({
+    queryKey: [AdvisorService.USER_ADVISORS_PROFILE_CACHEKEY],
+
+    queryFn: () => {
+      return AdvisorService.userAdvisorsProfile();
+    },
+    staleTime: 0,
+    gcTime: 0,
+  });
+
+  useEffect(() => {
+    if (!!advisorProfile) {
+      setValues({
+        document_image: advisorProfile.document_image,
+        full_name: advisorProfile?.user?.full_name,
+        tel: advisorProfile?.tel,
+        profile_image: advisorProfile?.user?.profile_image,
+        national_code: advisorProfile?.national_code,
+        national_card_image: advisorProfile?.national_card_image,
+        cityIds: advisorProfile?.cities,
+        address: advisorProfile?.address,
+        is_special: subscription_key == "is-especial" ? true : false,
+      });
+    }
+  }, [advisorProfile]);
 
   return (
     <div className="profile-container w-full">

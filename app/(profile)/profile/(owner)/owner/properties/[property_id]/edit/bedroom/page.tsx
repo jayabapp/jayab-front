@@ -18,6 +18,7 @@ import { remove } from "lodash";
 
 import { useParams, usePathname, useRouter, useSearchParams } from "next/navigation";
 import React, { useEffect, useState } from "react";
+import LottieLoading from "@/components/shared/Lotties/LottieLoading";
 
 const CreateProperty = () => {
   const searchParams = useSearchParams();
@@ -29,7 +30,7 @@ const CreateProperty = () => {
   /* -------------------------------------------------------------------------- */
   /*                             INIT PROP CREATION                             */
   /* -------------------------------------------------------------------------- */
-  const { data: initPropData } = useQuery({
+  const { data: initPropData, isLoading } = useQuery({
     queryKey: [PropertyService.OWNER_PROP_INIT_CACHEKEY, property_id],
     queryFn: () => {
       if (!!property_id) {
@@ -121,109 +122,117 @@ const CreateProperty = () => {
       <div className="w-full pb-4 px-4 pt-8">
         <StepShower steps={createPropertySteps(initPropData?.id)} value={5} />
       </div>
-      <p className="font-bold w-full text-start  text-sm md:text-base text-primary-700  ">{_STRINGS.ROOMS_INFO}</p>
-
-      <div className=" flex flex-col gap-2  border-b pb-4 w-full">
-        {" "}
-        <TitleCounter
-          disableInput={true}
-          value={values?.bedrooms?.length}
-          onChange={(e) => {
-            addRemoveRoom(e);
-          }}
-          title="تعداد اتاق"
-        />
-        {values?.bedrooms?.map((e, index) => (
-          <TitleCounter
-            key={`${index + 1}room`}
-            value={e}
-            onChange={(e) => {
-              updateRoom(e, index);
-            }}
-            title={`تعداد تخت اتاق ${index + 1}`}
-          />
-        ))}
-      </div>
-      <div className=" flex flex-col gap-2  border-b pb-4 w-full">
-        <TitleCounter
-          disableInput={true}
-          value={values?.additional_bed}
-          onChange={(e) => {
-            onChange(e, "additional_bed");
-          }}
-          title="رخت خواب اضافه"
-        />
-        <TitleCounter
-          disableInput={true}
-          value={values?.master_room}
-          onChange={(e) => {
-            onChange(e, "master_room");
-          }}
-          title="اتاق خواب مستر"
-        />
-        <TitleCounter
-          disableInput={true}
-          value={values?.sofa_bed}
-          onChange={(e) => {
-            onChange(e, "sofa_bed");
-          }}
-          title="مبل تخت خواب شو"
-        />
-      </div>
-      <div className=" flex flex-col gap-2  border-b pb-4 w-full">
-        <p className="font-bold w-full text-start  text-sm md:text-base text-primary-700  ">{_STRINGS.REST_ROOMS}</p>
-        <TitleCounter
-          disableInput={true}
-          value={values?.wc}
-          onChange={(e) => {
-            onChange(e, "wc");
-          }}
-          title="سرویس بهداشتی فرنگی"
-        />
-        <TitleCounter
-          disableInput={true}
-          value={values?.wc_ir}
-          onChange={(e) => {
-            onChange(e, "wc_ir");
-          }}
-          title="سرویس بهداشتی ایرانی"
-        />
-      </div>
-      <div className=" flex flex-col gap-2  border-b pb-4 w-full">
-        <p className="font-bold w-full text-start  text-sm md:text-base text-primary-700  ">{_STRINGS.SHOWER}</p>
-        <TitleCounter
-          disableInput={true}
-          value={values?.bathroom_master}
-          onChange={(e) => {
-            onChange(e, "bathroom_master");
-          }}
-          title="حمام شخصی داخل اتاق"
-        />
-        <TitleCounter
-          disableInput={true}
-          value={values?.bathroom_general}
-          onChange={(e) => {
-            onChange(e, "bathroom_general");
-          }}
-          title="حمام مشترک"
-        />
-        <TitleCounter
-          disableInput={true}
-          value={values?.bathroom_in_wc}
-          onChange={(e) => {
-            onChange(e, "bathroom_in_wc");
-          }}
-          title="حمام در سرویس"
-        />
-        <TitleCounter
-          disableInput={true}
-          value={values?.bathroom_tub}
-          onChange={(e) => {
-            onChange(e, "bathroom_tub");
-          }}
-          title="حمام وان دار"
-        />
-      </div>
+      {isLoading ? (
+        <LottieLoading />
+      ) : (
+        <>
+          {" "}
+          <p className="font-bold w-full text-start  text-sm md:text-base text-primary-700  ">{_STRINGS.ROOMS_INFO}</p>
+          <div className=" flex flex-col gap-2  border-b pb-4 w-full">
+            {" "}
+            <TitleCounter
+              disableInput={true}
+              value={values?.bedrooms?.length}
+              onChange={(e) => {
+                addRemoveRoom(e);
+              }}
+              title="تعداد اتاق"
+            />
+            {values?.bedrooms?.map((e, index) => (
+              <TitleCounter
+                key={`${index + 1}room`}
+                value={e}
+                onChange={(e) => {
+                  updateRoom(e, index);
+                }}
+                title={`تعداد تخت اتاق ${index + 1}`}
+              />
+            ))}
+          </div>
+          <div className=" flex flex-col gap-2  border-b pb-4 w-full">
+            <TitleCounter
+              disableInput={true}
+              value={values?.additional_bed}
+              onChange={(e) => {
+                onChange(e, "additional_bed");
+              }}
+              title="رخت خواب اضافه"
+            />
+            <TitleCounter
+              disableInput={true}
+              value={values?.master_room}
+              onChange={(e) => {
+                onChange(e, "master_room");
+              }}
+              title="اتاق خواب مستر"
+            />
+            <TitleCounter
+              disableInput={true}
+              value={values?.sofa_bed}
+              onChange={(e) => {
+                onChange(e, "sofa_bed");
+              }}
+              title="مبل تخت خواب شو"
+            />
+          </div>
+          <div className=" flex flex-col gap-2  border-b pb-4 w-full">
+            <p className="font-bold w-full text-start  text-sm md:text-base text-primary-700  ">
+              {_STRINGS.REST_ROOMS}
+            </p>
+            <TitleCounter
+              disableInput={true}
+              value={values?.wc}
+              onChange={(e) => {
+                onChange(e, "wc");
+              }}
+              title="سرویس بهداشتی فرنگی"
+            />
+            <TitleCounter
+              disableInput={true}
+              value={values?.wc_ir}
+              onChange={(e) => {
+                onChange(e, "wc_ir");
+              }}
+              title="سرویس بهداشتی ایرانی"
+            />
+          </div>
+          <div className=" flex flex-col gap-2  border-b pb-4 w-full">
+            <p className="font-bold w-full text-start  text-sm md:text-base text-primary-700  ">{_STRINGS.SHOWER}</p>
+            <TitleCounter
+              disableInput={true}
+              value={values?.bathroom_master}
+              onChange={(e) => {
+                onChange(e, "bathroom_master");
+              }}
+              title="حمام شخصی داخل اتاق"
+            />
+            <TitleCounter
+              disableInput={true}
+              value={values?.bathroom_general}
+              onChange={(e) => {
+                onChange(e, "bathroom_general");
+              }}
+              title="حمام مشترک"
+            />
+            <TitleCounter
+              disableInput={true}
+              value={values?.bathroom_in_wc}
+              onChange={(e) => {
+                onChange(e, "bathroom_in_wc");
+              }}
+              title="حمام در سرویس"
+            />
+            <TitleCounter
+              disableInput={true}
+              value={values?.bathroom_tub}
+              onChange={(e) => {
+                onChange(e, "bathroom_tub");
+              }}
+              title="حمام وان دار"
+            />
+          </div>
+        </>
+      )}
       <FixedBottomContainer>
         <Button
           onClick={() => {
