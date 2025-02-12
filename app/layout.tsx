@@ -40,7 +40,7 @@ export default function RootLayout({
         <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
         {/* <link rel="shortcut icon" href="/favicon.ico" /> */}
         <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png" />
-        <meta name="apple-mobile-web-app-title" content="شهر دپو" />
+        <meta name="apple-mobile-web-app-title" content="جایاب" />
         {/* <link rel="manifest" href="/site.webmanifest" /> */}
         <link rel="manifest" href="/manifest.json" />
         {/* <link rel="apple-touch-icon" sizes="180x180" href="/assets/icons/app/apple-touch-icon.png" /> */}

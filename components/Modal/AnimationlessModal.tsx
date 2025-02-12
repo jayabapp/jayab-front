@@ -1,0 +1,51 @@
+"use client";
+
+import React, { Fragment, JSX, ReactNode } from "react";
+import { Dialog, Transition } from "@headlessui/react";
+
+type ModalProps = {
+  children?: ReactNode;
+  onHide: () => void;
+  show?: boolean;
+  options?: op;
+};
+interface op {
+  containerClass?: string;
+  parentClass?: string;
+  zIndex?: number;
+}
+const AnimationlessModal = ({ children, show, onHide, options }: ModalProps): JSX.Element => {
+  // useModalBack(show, onHide);
+  return (
+    <Transition show={show}>
+      <div className="fixed inset-0">
+        <Dialog
+          as="div"
+          className="relative"
+          style={{ zIndex: options?.zIndex ? options?.zIndex : 1000 }}
+          onClose={onHide}
+        >
+          <div className="fixed inset-0 bg-black bg-opacity-70 	" onClick={onHide} />
+
+          <div
+            className={` ${
+              options?.parentClass ? options?.parentClass : ""
+            } fixed inset-y-0 w-screen h-[100dvh] flex flex-col justify-center `}
+          >
+            <div
+              className={
+                options?.containerClass
+                  ? options?.containerClass
+                  : "mx-auto my-20   w-11/12 md:w-1/2 xl:w-1/3 2xl:w-1/4 rounded-2xl overflow-y-scroll  bg-white   dark:bg-slate-800"
+              }
+            >
+              {children}
+            </div>
+          </div>
+        </Dialog>
+      </div>
+    </Transition>
+  );
+};
+
+export default AnimationlessModal;
