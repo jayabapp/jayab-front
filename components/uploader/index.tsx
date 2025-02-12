@@ -160,9 +160,9 @@ const MainUploader = ({
           onClick={() => {
             !disabled ? imagePickerRef?.current?.click() : void null;
           }}
-          className="  z-2  bg-transparent cursor-pointer absolute bottom-1  w-6 h-6 aspect-square right-1 "
+          className="  z-2  bg-transparent cursor-pointer absolute bottom-0  w-6 h-6 aspect-square right-0 "
         >
-          <img src="/assets/icons/uploader/uploader_camera.svg" />
+          <img src="/assets/icons/uploader/uploader_camera.svg" className=" w-6 h-6 " />
         </div>
       ) : (
         <></>

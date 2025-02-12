@@ -116,15 +116,13 @@ const FiltersPart = ({ queries, setFilters, filters, propertyTypes }: any) => {
         <div className="flex text-xs  mt-4 md:text-sm w-full flex-col gap-4 px-4 ">
           <div className="w-full flex items-center justify-between">
             <p className="text-sm">{_STRINGS.COMIISH_RANGE_PERC}</p>
-            {!!filters.min_commission || filters.max_commission ? (
-              <p className="text-xs">
-                {filters?.min_commission ? ` از  ${numberWithCommas(filters?.min_commission || 0)}%` : ""}
-
-                {!!filters.max_commission ? ` تا ${numberWithCommas(filters.max_commission || 0)}%` : ""}
-              </p>
-            ) : (
+            {/* {!!filters.min_commission || filters.max_commission ? ( */}
+            <p className="text-xs">
+              از {numberWithCommas(filters?.min_commission || 0)}% تا {numberWithCommas(filters.max_commission || 50)}%
+            </p>
+            {/* ) : (
               <></>
-            )}
+            )} */}
           </div>
 
           <PriceRange
@@ -154,14 +152,9 @@ const FiltersPart = ({ queries, setFilters, filters, propertyTypes }: any) => {
       <div className="flex text-xs  mt-4 md:text-sm w-full flex-col gap-4 px-4 ">
         <div className="w-full flex items-center justify-between">
           <p className="text-sm">{_STRINGS.PRICE_RANGE}</p>
-          {!!filters.max_price || filters.min_price ? (
-            <p className="text-xs">
-              {filters?.min_price ? ` از  ${numberWithCommas(filters?.min_price)}` : ""}{" "}
-              {!!filters.max_price ? ` تا ${numberWithCommas(filters.max_price)}` : ""} تومان
-            </p>
-          ) : (
-            <></>
-          )}
+          <p className="text-xs">
+            از {numberWithCommas(filters?.min_price)} تا {numberWithCommas(filters.max_price || 40000000)} تومان
+          </p>
         </div>
 
         <PriceRange
@@ -171,7 +164,7 @@ const FiltersPart = ({ queries, setFilters, filters, propertyTypes }: any) => {
           filters={filters}
           setFilters={setFilters}
           query={queries}
-          lowLimit={500000}
+          lowLimit={0}
           upLimit={40000000}
         />
         {/* <div className={` ${!!filters.max_price || !!filters.min_price ? " h-8" : "h-0 opacity-0"}  transition-all `}>
@@ -186,14 +179,10 @@ const FiltersPart = ({ queries, setFilters, filters, propertyTypes }: any) => {
       <div className="flex text-xs  mt-4 md:text-sm w-full flex-col gap-4 px-4 ">
         <div className="w-full flex items-center justify-between">
           <p className="text-sm">{_STRINGS.ROOM_SIZE}</p>
-          {!!filters.min_building_area || filters.max_building_area ? (
-            <p className="text-xs">
-              {filters?.min_building_area ? ` از  ${numberWithCommas(filters?.min_building_area)}` : ""}{" "}
-              {!!filters.max_building_area ? ` تا ${numberWithCommas(filters.max_building_area)}` : ""} متر مربع
-            </p>
-          ) : (
-            <></>
-          )}
+          <p className="text-xs">
+            از {numberWithCommas(filters?.min_building_area)} تا {numberWithCommas(filters.max_building_area || 1000)}{" "}
+            متر مربع
+          </p>
         </div>
         <PriceRange
           lowerKey="min_building_area"
@@ -202,7 +191,7 @@ const FiltersPart = ({ queries, setFilters, filters, propertyTypes }: any) => {
           filters={filters}
           setFilters={setFilters}
           query={queries}
-          lowLimit={50}
+          lowLimit={0}
           upLimit={1000}
         />
       </div>

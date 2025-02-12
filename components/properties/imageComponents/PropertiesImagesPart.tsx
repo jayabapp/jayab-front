@@ -174,7 +174,7 @@ function ProductImagesContainer({
       >
         <div className="block  relative rounded-10 !aspect-square p-0 md:p-0.5 ">
           {!!userInfo?.advisor_id && data?.advisor_commission ? (
-            <div className="w-24 gap-0.5  h-7 rounded-md transition-all  py-[0.2rem]   bg-black/50 text-white absolute z-1 left-2 flex-row top-2 aspect-square flex items-center justify-center">
+            <div className="w-24 gap-0.5  h-7 rounded-20 transition-all  py-[0.2rem]   bg-black/50 text-white absolute z-1 left-2 flex-row top-2 aspect-square flex items-center justify-center">
               <p className="  text-sm   "> کمیسیون: {data.advisor_commission}%</p>{" "}
             </div>
           ) : (
