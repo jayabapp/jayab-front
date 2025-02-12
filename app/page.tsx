@@ -42,59 +42,19 @@ const Home = async () => {
 
   return (
     <div style={{ minHeight: "100dvh" }} id="homeParent" className="home-container  !px-0   flex flex-col gap-3 ">
-      <Suspense
-        fallback={
-          <div className=" min-h-[25dvh] flex items-center justify-center  w-full   ">
-            <HomeSkeleton />
-          </div>
-        }
-      >
-        {" "}
-        {!banners ? (
-          <div className=" min-h-[25dvh]  w-full   ">
-            <HomeSkeleton />
-          </div>
-        ) : (
-          <div className=" !px-0  w-full flex flex-col">
-            <BannersContainer banners={banners || []} />
-          </div>
-        )}
-      </Suspense>
+      <BannersContainer banners={banners || []} />
       {/* {!!middleBanners ? (
         <MiddleBanners cols={2} containerClass="  pr-2 md:pr-0 py-4" list={middleBanners || []} />
       ) : (
         <></>
       )} */}
-
-      <Suspense>
-        <HomeSearchPart />
-      </Suspense>
-      <div className="px-3 min-h-[30dvh] md:min-h-[40dvh] select-none md:px-3 lg:px-4 2xl:px-[10%]  pt-0 md:py-0 w-full">
-        <Suspense>
-          <HomeAdvisorSub />
-        </Suspense>
-        {!landings ? (
-          <LottieLoading />
-        ) : (
-          <Suspense fallback={<></>}>
-            <HomeCityFilterContainer title={`${_STRINGS.MOST_VISITED_CITIES}`} data={landings?.popular_city || []} />{" "}
-          </Suspense>
-        )}
-        {!landings ? (
-          <LottieLoading />
-        ) : (
-          <Suspense fallback={<></>}>
-            <MainFiltersContainer title={`${_STRINGS.FAST_SEARCH}`} data={landings?.quick_search || []} />{" "}
-          </Suspense>
-        )}
+      <HomeSearchPart />
+      <div className="px-3 aspect-[1.5]  md:aspect-[3.2]  select-none md:px-3 lg:px-4 2xl:px-[10%]  pt-0 md:py-0 w-full">
+        <HomeAdvisorSub />
+        <HomeCityFilterContainer title={`${_STRINGS.MOST_VISITED_CITIES}`} data={landings?.popular_city || []} />{" "}
+        <MainFiltersContainer title={`${_STRINGS.FAST_SEARCH}`} data={landings?.quick_search || []} />{" "}
       </div>
-      {!propertyData?.data ? (
-        <LottieLoading />
-      ) : (
-        <Suspense fallback={<></>}>
-          <HomePropertiesList middleBanners={middleBanners || []} data={propertyData?.data || []} />{" "}
-        </Suspense>
-      )}
+      <HomePropertiesList middleBanners={middleBanners || []} data={propertyData?.data || []} />{" "}
     </div>
   );
 };
