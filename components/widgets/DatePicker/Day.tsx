@@ -66,7 +66,7 @@ const Day = ({ onSelect, data, selectedDayId, month, year, freeDaysOfMonth, toda
           <></>
         )}
 
-        <p className={`z-1 ${!!isFriday ? "text-red-700" : ""} `}> {data?.id}</p>
+        <p className={`z-1 font-bold ${!!isFriday ? "text-red-700" : ""} `}> {data?.id}</p>
         {!!data?.price ? <DayPricePart data={data} /> : <></>}
       </div>
     </div>
