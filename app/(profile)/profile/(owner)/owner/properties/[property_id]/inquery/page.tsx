@@ -96,6 +96,7 @@ const PropertyInquery = () => {
                   className=" rounded-2xl  w-full object-cover aspect-square"
                   src={NEW_IMAGE_URL(selectedImage)}
                 />
+                <div className="text-xs  absolute right-3 top-3 text-white">{moment().format("jYYYY/jMM/jDD")}</div>
               </div>
               <div className="w-full flex items-start md:items-center justify-between gap-2">
                 {" "}

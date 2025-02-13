@@ -81,6 +81,7 @@ const DatePickerQueryWithDynamicKeyFilter = ({
       </div>
       <Modal onHide={onHide} show={show}>
         <DatePicker
+          smallerDateFonts
           freeDaysOfMonth
           setSelectedDay={(e) => {
             setDate(e);

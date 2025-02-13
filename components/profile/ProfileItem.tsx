@@ -27,7 +27,7 @@ const ProfileItem = ({
     >
       <div className="flex items-center gap-3 md:gap-4 ">
         <img src={item?.imgSrc} className="dark:invert w-7 h-7 aspect-square" />
-        <p className=" text-base  font-medium ">{item?.title}</p>
+        <p className=" text-sm md:text-base  font-medium ">{item?.title}</p>
       </div>{" "}
       {!!disableArrow ? <></> : <img src="/assets/icons/shared/chevron.svg" className="rotate-90" />}
     </Link>

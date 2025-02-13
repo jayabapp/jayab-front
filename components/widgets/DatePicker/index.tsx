@@ -8,6 +8,7 @@ import YearPicker from "./YearPicker";
 type dates = {
   selectedDate?: string | number;
   freeDaysOfMonth?: boolean;
+  smallerDateFonts?: boolean;
   prefix?: string;
   color?: string;
   setSelectedDay?: (e: any | null) => void | null;
@@ -19,6 +20,7 @@ const SingleDatePicker = ({
   prefix,
   color,
   freeDaysOfMonth,
+  smallerDateFonts,
   options = { valueType: "persian" },
 }: dates) => {
   const [chosenDate, setChosenDate] = useState<string | number>(
@@ -117,6 +119,7 @@ const SingleDatePicker = ({
       </div>
       <DaysOfTheWeel />
       <DayPicker
+        smallerDateFonts={smallerDateFonts}
         freeDaysOfMonth={freeDaysOfMonth}
         date={chosenDate}
         month={numbericMonth}

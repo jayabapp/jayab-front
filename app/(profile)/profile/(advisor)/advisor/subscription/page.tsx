@@ -95,34 +95,34 @@ const AdvisorRegister = () => {
   return (
     <div className=" profile-container  flex flex-col gap-4 ">
       {!!advisorProfile ? (
-        <div className="w-full flex items-start justify-between">
-          <div className="flex items-start flex-col gap-4">
-            <p>
+        <div className="w-full flex flex-col items-start justify-between  gap-2">
+          <div className="flex items-start flex-row justify-between w-full gap-4">
+            <p className="text-sm ">
               {" "}
               پلن شما :{" "}
               {!!advisorProfile?.is_special
                 ? subscriptionPlans?.list?.find((e) => !!e?.is_special)?.title
                 : subscriptionPlans?.list?.find((e) => !e?.is_special)?.title}
             </p>
-
-            {!advisorProfile?.subscription_expired_at || !isActive ? (
-              <p className="text-primary-150 text-sm">(شما اشتراک فعال ندارید)</p>
-            ) : moment().isBefore(advisorProfile?.subscription_expired_at) ? (
-              <div className="flex items-center gap-2  flex-col md:flex-row">
-                {/* انقضا : {moment(advisorProfile?.subscription_expired_at)?.format("jYYYY/jMM/jDD")} */}
-                <p className=" text-sm"> تعداد روز باقیمانده از اعتبار :</p>
-                <div className=" rounded-full text-sm text-primary-700 bg-primary-400 flex  items-center justify-center h-7 w-24 ">
-                  {advisorProfile?.subscription_expired_at && moment(advisorProfile?.subscription_expired_at).isAfter()
-                    ? `${moment(advisorProfile?.subscription_expired_at).diff(moment(), "days")} روز `
-                    : `اعتبار ندارد`}
-                </div>
-              </div>
-            ) : (
-              <></>
-            )}
+            <StatusShower data={advisorProfile?.status} />
           </div>
 
-          <div className="flex flex-col justify-between items-end gap-2">
+          {!advisorProfile?.subscription_expired_at || !isActive ? (
+            <p className="text-primary-150 text-sm">(شما اشتراک فعال ندارید)</p>
+          ) : moment().isBefore(advisorProfile?.subscription_expired_at) ? (
+            <div className="flex items-center gap-2  justify-between  w-full  flex-row">
+              {/* انقضا : {moment(advisorProfile?.subscription_expired_at)?.format("jYYYY/jMM/jDD")} */}
+              <p className=" text-sm"> تعداد روز باقیمانده از اعتبار :</p>
+              <div className=" rounded-full text-xs md:text-sm text-primary-700 bg-primary-400 flex  items-center justify-center h-5 md:h-6 w-16 md:w-20 ">
+                {advisorProfile?.subscription_expired_at && moment(advisorProfile?.subscription_expired_at).isAfter()
+                  ? `${moment(advisorProfile?.subscription_expired_at).diff(moment(), "days")} روز `
+                  : `اعتبار ندارد`}
+              </div>
+            </div>
+          ) : (
+            <></>
+          )}
+          <div className="flex flex-row w-full  items-center  gap-2">
             {" "}
             <div className="flex items-center gap-2">
               {" "}
@@ -138,15 +138,14 @@ const AdvisorRegister = () => {
               ) : (
                 <></>
               )}
-              <StatusShower data={advisorProfile?.status} />
             </div>
             {!!advisorProfile?.is_special ? (
               <Button
                 onClick={() => {
                   setShowEndSub(true);
                 }}
-                containerClass="w-fit "
-                width=" !py-1 !px-3  !text-xs "
+                containerClass=" mt-4 w-fit "
+                width="  !py-0.5 md:!py-1 !px-2 md:!px-3  !text-xs "
                 variant="outline"
                 color="danger"
                 title={_STRINGS.END_CONSULT_SUB}

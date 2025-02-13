@@ -10,6 +10,7 @@ type props = {
   active_days?: number[] | undefined;
   date: number | string;
   Loading: boolean;
+  smallerDateFonts?: boolean;
   selectedDate?: string | number;
   setSelectedDay?: (e: any | null) => void | null;
   options?: { valueType: "persian" | "global"; showTimeOfTheDay?: boolean };
@@ -27,6 +28,7 @@ const DayPicker = ({
   options,
   callenderData,
   active_days,
+  smallerDateFonts,
 }: props) => {
   const today = { day: Number(moment().format("jD")), month: moment().format("jMM"), year: moment().format("jYYYY") };
 
@@ -157,6 +159,7 @@ const DayPicker = ({
       ))}
       {daysData?.map((e, i) => (
         <Day
+          smallerDateFonts={smallerDateFonts}
           freeDaysOfMonth={freeDaysOfMonth}
           today={today}
           data={e}

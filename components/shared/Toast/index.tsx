@@ -57,7 +57,7 @@ const Notify = (props: props) => {
         {/* <div className="absolute left-3 ">{closeIcon}</div> */}
       </div>
     ),
-    { id: type, position: isMobile ? "top-center" : "bottom-left", duration: 50000, className: " left-0  md:left-4" }
+    { id: type, position: isMobile ? "top-center" : "bottom-left", duration: 5000, className: " left-0  md:left-4" }
   );
 };
 

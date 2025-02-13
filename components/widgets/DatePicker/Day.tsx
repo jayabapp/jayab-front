@@ -23,9 +23,10 @@ type dataTypes = {
 
   showTimeOfTheDay?: boolean;
   freeDaysOfMonth?: boolean;
+  smallerDateFonts?: boolean;
 };
 
-const Day = ({ onSelect, data, selectedDayId, month, year, freeDaysOfMonth, today }: dataTypes) => {
+const Day = ({ onSelect, data, selectedDayId, month, year, freeDaysOfMonth, today, smallerDateFonts }: dataTypes) => {
   const isBefore = !!freeDaysOfMonth
     ? false
     : moment(moment(`${year}/${month}/${data?.id}`, "jYYYY/jMM/jD")).isBefore();
@@ -66,7 +67,10 @@ const Day = ({ onSelect, data, selectedDayId, month, year, freeDaysOfMonth, toda
           <></>
         )}
 
-        <p className={`z-1 font-bold ${!!isFriday ? "text-red-700" : ""} `}> {data?.id}</p>
+        <p className={`z-1 ${smallerDateFonts ? "font-medium" : "font-bold"}  ${!!isFriday ? "text-red-700" : ""} `}>
+          {" "}
+          {data?.id}
+        </p>
         {!!data?.price ? <DayPricePart data={data} /> : <></>}
       </div>
     </div>
