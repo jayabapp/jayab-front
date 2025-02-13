@@ -25,7 +25,7 @@ const ChatListItem = ({ item }: { item: ChatListDto }) => {
         <div className=" w-full flex items-center justify-between">
           <p className=" font-medium  text-sm "> {item?.property_title}</p>
           <p className="text-xs opacity-50  ">
-            {moment(`${item?.last_message?.updated_at}Z`).format("hh:mm - jYYYY/jMM/jDD")}
+            {moment(item?.last_message?.updated_at).utc(true).local().format("hh:mm - jYYYY/jMM/jDD")}
             {/* {moment().format("hh:mm - jYYYY/jMM/jDD")} */}
           </p>
         </div>

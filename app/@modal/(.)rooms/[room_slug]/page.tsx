@@ -3,6 +3,7 @@
 import { PropertyService } from "@/api_services/property/property.service";
 import Headers from "@/components/headers";
 import Modal from "@/components/Modal";
+import AnimationlessModal from "@/components/Modal/AnimationlessModal";
 import ProductImagesContainer from "@/components/properties/imageComponents/PropertiesImagesPart";
 import ProductSkeleton from "@/components/properties/ProductSkeleton";
 import SinglePorpertyAccards from "@/components/properties/SinglePropertyAccards";
@@ -32,7 +33,7 @@ export default function SingleDeceasedPage({ params }: { params: Promise<{ room_
   });
 
   return (
-    <Modal
+    <AnimationlessModal
       onHide={() => {}}
       show={pathname.includes("rooms/") ? true : false}
       options={{
@@ -57,7 +58,7 @@ export default function SingleDeceasedPage({ params }: { params: Promise<{ room_
           <></>
         )}
       </div>
-    </Modal>
+    </AnimationlessModal>
   );
 }
 

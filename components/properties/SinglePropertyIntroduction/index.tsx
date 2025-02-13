@@ -94,7 +94,7 @@ const SinglePropertyIntroduction = ({ data }: { data: SinglePropDto }) => {
             <p className="text-xs  md:text-sm font-light   ">{favCount}</p>
           </div>
         </div>
-        {!!isAdvisor && !!userInfo?.advisor?.is_special ? (
+        {!!isAdvisor && !!userInfo?.advisor_id ? (
           <Button
             onClick={onShareClick}
             title={_STRINGS.SEND_INFO}

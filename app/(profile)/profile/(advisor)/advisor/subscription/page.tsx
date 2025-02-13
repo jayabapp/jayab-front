@@ -108,7 +108,7 @@ const AdvisorRegister = () => {
             {!advisorProfile?.subscription_expired_at || !isActive ? (
               <p className="text-primary-150 text-sm">(شما اشتراک فعال ندارید)</p>
             ) : moment().isBefore(advisorProfile?.subscription_expired_at) ? (
-              <div className="flex items-center gap-2 ">
+              <div className="flex items-center gap-2  flex-col md:flex-row">
                 {/* انقضا : {moment(advisorProfile?.subscription_expired_at)?.format("jYYYY/jMM/jDD")} */}
                 <p className=" text-sm"> تعداد روز باقیمانده از اعتبار :</p>
                 <div className=" rounded-full text-sm text-primary-700 bg-primary-400 flex  items-center justify-center h-7 w-24 ">

@@ -5,8 +5,11 @@ import Callender from "@/components/widgets/DatePicker/callender";
 import { useQuery } from "@tanstack/react-query";
 import moment from "moment-jalaali";
 import React, { useEffect, useState } from "react";
+import OwnerCallemdarGuide from "../owner/SingleOwnerPropertycallender/OwnerCallemdarGuide";
+import { useStoreInit } from "@/store";
 
 const SinglePropertycallender = ({ data }: { data: any }) => {
+  const { userInfo } = useStoreInit((data) => data);
   /* -------------------------------------------------------------------------- */
   /*                             SELECTED DATE STATE                            */
   /* -------------------------------------------------------------------------- */
@@ -74,6 +77,7 @@ const SinglePropertycallender = ({ data }: { data: any }) => {
         }}
         selectedDate={callenderselectedDate}
       />
+      {userInfo?.advisor_id ? <OwnerCallemdarGuide isAdvisor /> : <></>}
     </div>
   );
 };

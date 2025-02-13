@@ -1,14 +1,48 @@
 "use client";
 import _STRINGS from "@/utils/LocalStrings";
-import React from "react";
+import React, { useEffect, useState } from "react";
 import Button from "@/components/shared/Button/Button";
 import { SingleOwnerPropertyDto } from "@/api_services/property/property.interface";
 import SinglePropertyPricePart from "../../SinglePropertyPricePart";
 import AuthorizationStatus from "../../AuthorizationStatus";
 import StatusShower from "@/components/shared/StatusShower";
 import ShareLink from "@/components/shared/shareComponent/BrowserShare";
+import VerifyPropertyModal from "../../VerifyPropertyModal";
+import { useRouter } from "next/navigation";
 
 const SingleOwnerPropertyIntroduction = ({ data }: { data: SingleOwnerPropertyDto }) => {
+  const router = useRouter();
+  const [showVerify, setShowVerify] = useState(false);
+  const [propShownList, setPropShownList] = useState([]);
+  const pusher = (url: string) => {
+    router.push(url);
+  };
+
+  useEffect(() => {
+    const alreadyShownModal = localStorage?.getItem("VERIFY_MODAL_LIST")
+      ? JSON.parse(localStorage?.getItem("VERIFY_MODAL_LIST") || "[]")
+      : [];
+    setPropShownList(alreadyShownModal);
+    if (!data?.is_authorized && !alreadyShownModal.includes(data?.id)) {
+      setShowVerify(true);
+    }
+  }, [data]);
+
+  const onHideVVerify = () => {
+    const newArray = [...propShownList, data?.id];
+
+    localStorage.setItem("VERIFY_MODAL_LIST", JSON.stringify(newArray));
+    setShowVerify(false);
+  };
+
+  const verifyCallBack = () => {
+    const newArray = [...propShownList, data?.id];
+    newArray?.shift();
+
+    localStorage.setItem("VERIFY_MODAL_LIST", JSON.stringify(newArray));
+    pusher(`/profile/owner/properties/${data?.id}/license`);
+  };
+
   return (
     <div className=" flex w-full  flex-col relative  gap-2">
       <div className="w-full flex items-start md:items-center justify-between gap-2">
@@ -59,6 +93,7 @@ const SingleOwnerPropertyIntroduction = ({ data }: { data: SingleOwnerPropertyDt
         </div>
       </div>
       <StatusShower data={data?.status} />
+      <VerifyPropertyModal callBack={verifyCallBack} show={showVerify} onHIde={onHideVVerify} />
     </div>
   );
 };

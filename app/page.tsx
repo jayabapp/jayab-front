@@ -5,6 +5,7 @@ import HomePropertiesList from "@/components/Home/HomePropertiesList";
 import HomeSearchPart from "@/components/Home/HomeSearchPart";
 import HomeSkeleton from "@/components/Home/HomeSkeleton/BannerSkeleton";
 import MainFiltersContainer from "@/components/Home/MainFiltersContainer";
+import TheInstallPrompt from "@/components/InstallPrompt/TheInstallPrompt";
 import PopSearchbox from "@/components/SearchBoxComp/PopSearchbox";
 import LottieLoading from "@/components/shared/Lotties/LottieLoading";
 import serverCall from "@/helpers/serverCall";
@@ -54,7 +55,7 @@ const Home = async () => {
         <HomeCityFilterContainer title={`${_STRINGS.MOST_VISITED_CITIES}`} data={landings?.popular_city || []} />{" "}
         <MainFiltersContainer title={`${_STRINGS.FAST_SEARCH}`} data={landings?.quick_search || []} />{" "}
       </div>
-      <HomePropertiesList middleBanners={middleBanners || []} data={propertyData?.data || []} />{" "}
+      <HomePropertiesList middleBanners={middleBanners || []} data={propertyData?.data || []} /> <TheInstallPrompt />
     </div>
   );
 };
