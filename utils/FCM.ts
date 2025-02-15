@@ -37,7 +37,6 @@ class FCM {
 
         // meesaging();
 
-        console.log(token, "tokentokentokentokentoken");
         if (token) {
           this.updateFcm(token);
         } else {

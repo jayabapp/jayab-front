@@ -16,7 +16,7 @@ const TheInstallPrompt = () => {
   }, []);
 
   const { installPrompt, showInstallPrompt } = useStoreParams((state) => state);
-  console.log(showInstallPrompt, "showInstallPrompt", installPrompt);
+
   const [disabledInstallPrompt, setDisabledInstallPrompt] = useState(false);
 
   const disableInstallPrompt = () => {

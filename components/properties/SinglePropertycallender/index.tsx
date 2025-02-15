@@ -66,7 +66,7 @@ const SinglePropertycallender = ({ data }: { data: any }) => {
   });
 
   return (
-    <div className=" order-3 md:order-4 ">
+    <div className=" order-3  flex flex-col gap-4 md:order-4 ">
       {" "}
       <Callender
         setChosenDateState={setCallenderSelectedSpan}
