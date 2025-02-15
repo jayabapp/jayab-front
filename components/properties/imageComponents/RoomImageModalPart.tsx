@@ -1,5 +1,5 @@
 "use client";
-import { useEffect, useRef, useState } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 import { ImageSlideType } from "./PropertiesImagesPart";
 import Modal from "@/components/Modal";
 import _STRINGS from "@/utils/LocalStrings";
@@ -9,6 +9,7 @@ import { NEW_IMAGE_URL } from "@/utils/urls";
 import Swiper from "@/components/embelaCarousel/Swiper";
 import SwiperSlide from "@/components/embelaCarousel/SwiperSlide";
 import SwiperWithThumnails from "@/components/embelaCarousel/SwiperWithThumnails";
+import { TransformWrapper, TransformComponent } from "react-zoom-pan-pinch";
 const RoomImageModalPart = ({
   modalProps,
   setModalProps,
@@ -22,7 +23,6 @@ const RoomImageModalPart = ({
   const [activeIndex, setActiveIndex] = useState(modalProps?.currentIndex);
 
   const mobileSwiper = useRef(null) as any;
-  const ref = useRef(null) as any;
 
   useEffect(() => {
     if (modalProps?.isVisible) {
@@ -57,6 +57,7 @@ const RoomImageModalPart = ({
         setModalProps({ ...modalProps, isVisible: false });
       }}
     >
+      {" "}
       <div className=" bg-white  md:py-[5%] gap-2 px-3  items-center justify-center md:px-3 lg:px-4 2xl:px-[10%]   w-full flex flex-col   h-full    relative">
         <div className="flex fixed md:sticky   rounded-t-0 md:rounded-t-20 w-full z-[60]  dark:bg-zinc-800  gap-4 items-center h-12   top-4  col-span-5 px-4  ">
           <div
@@ -79,37 +80,16 @@ const RoomImageModalPart = ({
               options={{ align: "center", direction: "rtl", dragFree: false }}
             >
               {addImages?.map((i, index) => (
-                <SwiperSlide key={`index${index}`} className={`w-full   h-full    cursor-pointer !select-none `}>
-                  {true ? (
-                    // {i?.type == 1 ? (
-                    <div className=" flex items-center  justify-center w-full h-full  p-1 rounded-md !select-none">
+                <div className="  flex items-center embla__slide  justify-center w-full h-full  p-1 rounded-md ">
+                  <TransformWrapper panning={{ disabled: true }} disablePadding limitToBounds>
+                    <TransformComponent>
                       <img
-                        className="w-fit  object-contain  h-full rounded-md  !max-h-[60dvh]  !select-none"
+                        className="w-fit  embla__slide  object-contain  h-full rounded-md  !max-h-[60dvh]  "
                         src={NEW_IMAGE_URL(i)}
                       />
-                    </div>
-                  ) : (
-                    <video
-                      controls
-                      width="100%"
-                      height="100%"
-                      onClick={(e) => {
-                        // if (refer?.current?.paused) {
-                        //   // refer?.current?.play();
-                        //   setShowPlay(false);
-                        // } else {
-                        //   // refer?.current?.pause();
-                        // }
-                      }}
-                      // poster={}
-                      id="myVideo"
-                      className="relative bg-black w-full aspect-square object-contain"
-                    >
-                      <source src={i?.name} type="video/mp4" />
-                      <source src={i?.name} type="video/ogg" />
-                    </video>
-                  )}
-                </SwiperSlide>
+                    </TransformComponent>
+                  </TransformWrapper>
+                </div>
               ))}
             </SwiperWithThumnails>
           ) : (

@@ -41,6 +41,7 @@ const PropertyCard = ({ data, isOwner, week }: { data: PropertyListDto; isOwner?
             </div>{" "}
             <div className="flex items-center gap-1">
               <img
+                alt={`heart${data?.id}`}
                 className="w-4 h-4 aspect-square"
                 src={
                   likes?.includes(data?.id)
@@ -89,7 +90,11 @@ const PropertyCard = ({ data, isOwner, week }: { data: PropertyListDto; isOwner?
               </div>
               {/* LOCATION */}
               <div className="flex w-full  items-center gap-1">
-                <img src="/assets/icons/adds/pin_point_location.svg" className="w-5 h-5 aspect-square" />
+                <img
+                  src="/assets/icons/adds/pin_point_location.svg"
+                  alt={`location${data?.id}`}
+                  className="w-5 h-5 aspect-square"
+                />
                 <p className="text-xs text-center mt-0.5">
                   {data?.city} <span className="text-xs ">{data?.province ? `(${data?.province})` : ``}</span>
                 </p>
@@ -140,14 +145,14 @@ const PropertyCard = ({ data, isOwner, week }: { data: PropertyListDto; isOwner?
             ) : data?.attachments_count ? (
               <div className="w-[2.125rem] gap-1  h-5 rounded-md transition-all  py-[0.2rem]   bg-black/50 text-white absolute z-1 left-2 flex-row top-2 aspect-square flex items-center justify-center">
                 <p className="  text-xxs   ">{data.attachments_count}</p>{" "}
-                <img className="w-2 h-2 " src="/assets/icons/adds/simple_camera.svg" />
+                <img className="w-2 h-2 " alt={`camera${data?.id}`} src="/assets/icons/adds/simple_camera.svg" />
               </div>
             ) : (
               <></>
             )}
             {data?.is_authorized ? (
               <div className=" left-0 right-0 w-fit   absolute   p-1  rounded-full flex items-center gap-2 bg-black/60  mx-auto bottom-1">
-                <img src="/assets/icons/adds/green_circular_tick.svg" />
+                <img alt={`tick${data?.id}`} src="/assets/icons/adds/green_circular_tick.svg" />
                 <p className="text-xs text-white">{_STRINGS.VERIFIED}</p>
               </div>
             ) : (

@@ -527,7 +527,7 @@ export class PropertyService {
           cool_heat: dto.cool_heat,
           entertainment: dto.entertainment,
           facility_dscr: dto.facility_dscr,
-          has_pool: dto.has_pool,
+          has_pool: dto.has_pool || false,
           kitchen: dto.kitchen,
           pool_type: dto.pool_type,
           welfare: dto.welfare,

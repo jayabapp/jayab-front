@@ -119,8 +119,8 @@ const SwiperWithThumnails: React.FC<PropType> = (props) => {
       <div className="embla__viewport relative flex" ref={emblaRef}>
         <div className="embla__container">{children}</div>
         <div className="  embla__buttons">
-          <PrevButton onClick={onPrevButtonClick} disabled={prevBtnDisabled} />
-          <NextButton onClick={onNextButtonClick} disabled={nextBtnDisabled} />
+          <PrevButton onClick={onNextButtonClick} disabled={nextBtnDisabled} />
+          <NextButton onClick={onPrevButtonClick} disabled={prevBtnDisabled} />
         </div>
       </div>
 

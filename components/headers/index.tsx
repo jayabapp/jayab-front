@@ -197,11 +197,15 @@ transition-all  ease-in-out duration-1000 header-content-container w-full mx-aut
                     <div className="flex items-center py-2 px-4 gap-6">
                       <Link prefetch={false} href={"/chat"} className="relative">
                         <AbsoluteBadge count={chaNotifBadge?.unread_count || 0} />
-                        <img src="/assets/icons/header/blue_chat.svg" className="w-6 h-6 aspect-square" />
+                        <img alt="chat" src="/assets/icons/header/blue_chat.svg" className="w-6 h-6 aspect-square" />
                       </Link>
                       <Link prefetch={false} href={"/notifications"} className="relative">
                         <AbsoluteBadge count={notifBadge || 0} />
-                        <img src="/assets/icons/header/blue_bell.svg" className="w-6 h-6 aspect-square" />
+                        <img
+                          alt="notificatons"
+                          src="/assets/icons/header/blue_bell.svg"
+                          className="w-6 h-6 aspect-square"
+                        />
                       </Link>
                     </div>
                   </>

@@ -151,7 +151,6 @@ object-contain
           termsContent={terms ? terms : { full_text: "", html: "" }}
         />
 
-        <TheInstallPrompt />
       </div>
     </div>
   );
