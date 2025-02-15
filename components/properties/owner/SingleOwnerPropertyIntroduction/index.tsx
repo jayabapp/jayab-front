@@ -48,7 +48,7 @@ const SingleOwnerPropertyIntroduction = ({ data }: { data: SingleOwnerPropertyDt
       <div className="w-full flex items-start md:items-center justify-between gap-2">
         {" "}
         <p className=" font-medium text-lg w-3/5 md:w-full md:text-2xl ">{data?.title}</p>
-        <AuthorizationStatus isAuthorized={data?.is_authorized} />
+        <AuthorizationStatus isAuthorized={data?.is_authorized} data={data} />
       </div>
       <div className="flex items-center gap-4">
         <div className="bg-black/10 rounded-md text-base  px-2 py-1  flex items-center justify-center">

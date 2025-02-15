@@ -47,7 +47,7 @@ const PropertyCardOwnerPart = ({ data, goToLink }: { goToLink: string; data: Pro
           </p>
         </div>
         <Divider moreClass="my-1" />
-        <AuthorizationStatus isAuthorized={data?.is_authorized} />
+        <AuthorizationStatus isAuthorized={data?.is_authorized} data={data} />
       </div>
 
       <Link href={goToLink} className="w-full" prefetch={false}>

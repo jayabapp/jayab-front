@@ -272,6 +272,13 @@ export interface SinglePropDto {
   construction_year: number;
   address: string;
   options: Options;
+  canceling_type: CancelationType;
+}
+
+export interface CancelationType {
+  id: string;
+  title: string;
+  hex: string;
 }
 
 export interface Bedrooms {

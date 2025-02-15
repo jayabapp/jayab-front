@@ -80,7 +80,7 @@ const CreateEditPropertyEnvInfo = ({
       />
       <MultiLineFormInput
         item={{
-          title: _STRINGS.EXACT_ADDRESS,
+          title: _STRINGS.DISTANCETO_POINT,
           isMandatory: true,
           containerClass: "w-full col-span-full",
 

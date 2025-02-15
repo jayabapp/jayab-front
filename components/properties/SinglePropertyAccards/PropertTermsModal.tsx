@@ -1,9 +1,11 @@
 "use client";
+import { HomeService } from "@/api_services/home/home.service";
 import { SinglePropDto } from "@/api_services/property/property.interface";
 import Modal from "@/components/Modal";
 import ModalHeaderPart from "@/components/Modal/ModalHeaderPart";
 import Checkbox from "@/components/shared/Form/Checkbox";
 import _STRINGS from "@/utils/LocalStrings";
+import { useQuery } from "@tanstack/react-query";
 import React from "react";
 
 const PropertTermsModal = ({
@@ -15,6 +17,19 @@ const PropertTermsModal = ({
   show: boolean;
   onHide: () => void | null;
 }) => {
+  const { data: propertyRules, isLoading: rulesLoading } = useQuery({
+    queryKey: [HomeService?.CONTENTS_CACHEKEY, "propertyRules", 1, show],
+    queryFn: () => {
+      if (show) return HomeService.GetContent({ key: "propertyRules", page: 1 });
+      else return null;
+    },
+    gcTime: 1000,
+    staleTime: 1000,
+  });
+  console.log(data, "datadata");
+
+  const selectedRule = propertyRules?.data?.find((e) => e?.key == data?.canceling_type?.id);
+
   return (
     <Modal
       options={{
@@ -29,7 +44,7 @@ const PropertTermsModal = ({
         <p className=" text-sm font-light">{_STRINGS.PROP_TERMS_PROLUGE}</p>
         <div className="flex flex-col gap-2">
           <p className=" text-sm font-bold">{_STRINGS.CANCENLATION_DESC}</p>
-          {/* <p className="text-sm">{data?.property_descriptions?.ca}</p> */}
+          <p className="text-sm">{selectedRule?.small_text}</p>
         </div>
         <div className="flex flex-col gap-2">
           <p className=" text-sm font-bold">{_STRINGS.GUEST_TYPE_STATUS}</p>
