@@ -103,15 +103,14 @@ const OtpPageSignInComponent = ({
         const link = redirectUrl ? `/auth/register?redirect_url=${redirectUrl}` : `/auth/register`;
         setTimeout(() => {
           router.replace(link);
-        }, 1000);
+        }, 2000);
       } else {
         localStorage.setItem("isLogin", "true");
 
-        authUserStore.setState({ isLogin: true });
-
         setTimeout(() => {
           router.replace(redirectUrl ? redirectUrl : `/`);
-        }, 1000);
+          authUserStore.setState({ isLogin: true });
+        }, 2000);
       }
     },
     onError: () => {
