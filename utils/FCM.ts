@@ -28,12 +28,12 @@ class FCM {
           vapidKey: "BPRAmYzDUfXAtV_qBO7LVT0Z_NXdqNShQoYFTgmzOOX6y31HE1O0G2GIpctidLffF79gd7X6ViHXEVcj4peaZzE",
         });
 
-        onMessage(this.messagingInstance, (payload) => {
-          console.log("incoming transmition", payload?.notification?.body);
-          // if (!window.location.pathname.includes("chat")) {
-          // Notify({ body: payload?.notification?.body, title: payload?.notification?.title });
-          // }
-        });
+        // onMessage(this.messagingInstance, (payload) => {
+        //   console.log("incoming transmition", payload?.notification?.body);
+        //   // if (!window.location.pathname.includes("chat")) {
+        //   // Notify({ body: payload?.notification?.body, title: payload?.notification?.title });
+        //   // }
+        // });
 
         // meesaging();
 
