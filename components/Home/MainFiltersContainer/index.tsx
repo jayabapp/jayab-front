@@ -1,17 +1,10 @@
-"use client";
-
 import _, { isEmpty } from "lodash";
-
-import { useEffect, useRef, useState } from "react";
-
-import Link from "next/link";
 
 import _STRINGS from "@/utils/LocalStrings";
 
-import { isMobile } from "react-device-detect";
 import EmptyList from "@/components/shared/Lotties/EmptyList";
-const Swiper = dynamic(() => import("@/components/embelaCarousel/Swiper"), { ssr: false });
-const SwiperSlide = dynamic(() => import("@/components/embelaCarousel/SwiperSlide"), { ssr: false });
+const Swiper = dynamic(() => import("@/components/embelaCarousel/Swiper"), { ssr: true });
+const SwiperSlide = dynamic(() => import("@/components/embelaCarousel/SwiperSlide"), { ssr: true });
 import CategoryItem from "./CategoryItem";
 import { HomeLandingDto } from "@/api_services/home/home.interface";
 import dynamic from "next/dynamic";

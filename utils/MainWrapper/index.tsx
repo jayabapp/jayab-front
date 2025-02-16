@@ -208,7 +208,7 @@ const MainWrapper = ({ children }: mainWrapper) => {
       )}
       <div className="app-size relative " style={{ background: pathname == "/" && !isDark ? "" : "" }}>
         {connecting && pathname.includes("/chat") ? <ConnectingBanner /> : <></>}
-        <div className="  mx-auto h-full   w-full   ">
+        <div style={{ minHeight: "100dvh" }} className="  mx-auto h-full   w-full   ">
           {/* {!sidenavBlackList?.includes(pathname || "") && <SideNav />} */}
           {children}
         </div>

@@ -50,11 +50,20 @@ const Home = async () => {
         <></>
       )} */}
       <HomeSearchPart />
-      <div className="px-3 aspect-[1.5]  md:aspect-[3.2]  select-none md:px-3 lg:px-4 2xl:px-[10%]  pt-0 md:py-0 w-full">
-        <HomeAdvisorSub />
-        <HomeCityFilterContainer title={`${_STRINGS.MOST_VISITED_CITIES}`} data={landings?.popular_city || []} />{" "}
-        <MainFiltersContainer title={`${_STRINGS.FAST_SEARCH}`} data={landings?.quick_search || []} />{" "}
-      </div>
+      <Suspense fallback={<LottieLoading />}>
+        {" "}
+        <section
+          style={{ minHeight: "30dvh" }}
+          className="px-3   relative  select-none md:px-3 lg:px-4 2xl:px-[10%]  pt-0 md:py-0 w-full"
+        >
+          <HomeAdvisorSub />
+          <HomeCityFilterContainer
+            title={`${_STRINGS.MOST_VISITED_CITIES}`}
+            data={landings?.popular_city || [1, 2, 3, 4, 5, 6]}
+          />{" "}
+          <MainFiltersContainer title={`${_STRINGS.FAST_SEARCH}`} data={landings?.quick_search || [1, 2, 3, 4, 5, 6]} />{" "}
+        </section>
+      </Suspense>
       <HomePropertiesList middleBanners={middleBanners || []} data={propertyData?.data || []} /> <TheInstallPrompt />
     </div>
   );

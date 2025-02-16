@@ -10,13 +10,13 @@ const DaysOfTheWeekStatus = ({ isCard, data, week }: { week: any[]; isCard?: boo
     >
       {week.map((e) => (
         <div key={`days${e?.id}${e?.title}`} className="flex w-full items-center justify-center flex-col gap-1 ">
-          <p className={`text-xxs !shrink-0  ${isCard ? "" : "md:text-xs"}  font-light text-primary-250`}>{e?.title}</p>
+          <p className={`text-xxs !shrink-0  ${isCard ? "" : "md:text-xs"}   text-gray-400 `}>{e?.title}</p>
 
           <div
             className={`  ${
               data?.find((x) => x?.day_number == e?.id)?.is_reserved
                 ? " bg-primary-700 border-primary-700  text-white "
-                : "  bg-white  border-primary-250 text-primary-250"
+                : "  bg-white  border-primary-250 text-gray-400"
             } text-xxs  border-2  min-w-9 rounded-full h-5   ${
               isCard ? "" : "md:h-7 md:text-sm  "
             } w-full   flex items-center justify-center `}
