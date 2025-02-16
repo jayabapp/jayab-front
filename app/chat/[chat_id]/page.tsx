@@ -261,7 +261,7 @@ const Chat = () => {
           setData={setData}
           singleChatData={singleChatData}
           callback={() => {
-            // setHeight(`60dvh`);
+            setHeight(`100dvh`);
           }}
           scrollToBottom={scrollToBottom}
           showProduct={product == "true" ? true : false}

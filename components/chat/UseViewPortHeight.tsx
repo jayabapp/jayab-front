@@ -11,6 +11,8 @@ const useViewportHeightFix = (
         const resizeHandler = () => {};
 
         window.visualViewport.addEventListener("resize", resizeHandler);
+
+        console.log(window.visualViewport?.height, "window.visualViewport?.heightwindow.visualViewport?.height");
         setHeight(window.visualViewport?.height);
         setOffSetTop(window.visualViewport?.offsetTop);
       }

@@ -73,6 +73,10 @@ const ChatFooter = ({
       if (product && cancleButton) {
         cancleButton();
       }
+
+      if (!!callback) {
+        callback();
+      }
     },
   });
 
