@@ -342,6 +342,7 @@ export interface Meta {
 export interface ChatListDto {
   id: number;
   uuid: string;
+  last_update: string;
   last_message: LastMessageDto;
   property_id: number;
   property_title: string;

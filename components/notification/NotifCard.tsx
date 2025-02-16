@@ -28,7 +28,7 @@ const NotifCard = ({ item }: { item: any }) => {
       onClick={onClick}
       className={`  ${
         !!item?.data?.event_id ? "cursor-pointer" : ""
-      } py-2 px-3 bg-white/60 rounded-20 custome-shadow-card w-full flex items-center justify-between `}
+      } py-2 px-3 bg-white/60 rounded-20 custome-shadow-card w-full flex flex-col  items-start justify-between `}
     >
       <div className="flex items-center gap-2 ">
         <img src="/assets/icons/header/blue_bell.svg" className=" w-4 h-4 md:h-5 md:w-5 aspect-square shrink-0" />
@@ -37,9 +37,9 @@ const NotifCard = ({ item }: { item: any }) => {
           <p className=" text-sm">{item?.body}</p>
         </div>
       </div>
-      <div className="flex flex-col text-primary-700 gap-1">
-        <p className="text-xs"> {moment(item?.created_at).format("jYYYY/jMM/jDD")} </p>
-        <p className="text-xs text-end w-full"> {moment(item?.created_at).format("HH:mm")}</p>
+      <div className="flex flex-row w-full justify-end text-primary-700 gap-1">
+        <p className="text-xxs md:text-xs text-end w-full"> {moment(item?.created_at).format("HH:mm")}</p>
+        <p className="text-xxs  md:text-xs"> {moment(item?.created_at).format("jYYYY/jMM/jDD")} </p>
       </div>
     </div>
   );
