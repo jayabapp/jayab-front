@@ -1,5 +1,3 @@
-"use client";
-
 import React from "react";
 import ImageCarousel from "../../shared/ImageCarousel";
 import _STRINGS from "@/utils/LocalStrings";
@@ -12,7 +10,7 @@ const BannersContainer = ({ banners, fixed_banners }: ImageCarouselTypes) => {
   return (
     <div
       className={`
-    aspect-[2]     md:aspect-[6.5] 
+  
     
        w-full h-full  md:gap-3 lg:grid-cols-3  px-0  `}
     >
