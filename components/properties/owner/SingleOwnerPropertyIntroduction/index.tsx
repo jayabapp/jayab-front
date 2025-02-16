@@ -9,6 +9,7 @@ import StatusShower from "@/components/shared/StatusShower";
 import ShareLink from "@/components/shared/shareComponent/BrowserShare";
 import VerifyPropertyModal from "../../VerifyPropertyModal";
 import { useRouter } from "next/navigation";
+import Link from "next/link";
 
 const SingleOwnerPropertyIntroduction = ({ data }: { data: SingleOwnerPropertyDto }) => {
   const router = useRouter();
@@ -87,9 +88,13 @@ const SingleOwnerPropertyIntroduction = ({ data }: { data: SingleOwnerPropertyDt
           <div className=" rounded-full text-sm text-primary-700 bg-primary-400 flex  items-center justify-center h-7 w-24 ">
             {data?.remaining_days ? `${data?.remaining_days} روز اعتبار` : `اعتبار ندارد`}
           </div>
-          <div className=" rounded-full text-xs text-white bg-primary-700 flex  items-center justify-center h-7 w-24 ">
+          <Link
+            prefetch={false}
+            href={`/profile/owner/properties/${data?.id}/subscription`}
+            className=" rounded-full text-xs text-white bg-primary-700 flex  items-center justify-center h-7 w-24 "
+          >
             {_STRINGS.EXTEND_SUBS}
-          </div>
+          </Link>
         </div>
       </div>
       <StatusShower data={data?.status} />

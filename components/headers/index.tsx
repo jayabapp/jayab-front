@@ -109,9 +109,9 @@ const Header = ({ scroll }: { scroll?: number }) => {
   /*                                 NOTIF BADGE                                */
   /* -------------------------------------------------------------------------- */
   const { data: notifBadge } = useQuery({
-    queryKey: [UserService.NOTIFS_BADGE_CACHEKEY, isLogin],
+    queryKey: [UserService.NOTIFS_BADGE_CACHEKEY, isLogin, pathname],
     queryFn: () => {
-      if (!!isLogin) {
+      if (!!isLogin && notifBadge) {
         return UserService.userNotifBadge();
       } else {
         return null;
@@ -119,9 +119,9 @@ const Header = ({ scroll }: { scroll?: number }) => {
     },
   });
   const { data: chaNotifBadge } = useQuery({
-    queryKey: [ChatService.UNREAD_CHAT_COUNT_CACHEKEY, isLogin],
+    queryKey: [ChatService.UNREAD_CHAT_COUNT_CACHEKEY, isLogin, pathname],
     queryFn: () => {
-      if (!!isLogin) {
+      if (!!isLogin && pathname == "/") {
         return ChatService.getUnreadChatCount();
       } else return null;
     },

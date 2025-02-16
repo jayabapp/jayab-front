@@ -62,7 +62,7 @@ const SingleOwnerPropertyOptons = ({
     setShowDelete(false);
   };
   return (
-    <div className=" w-full md:mt-[3.75rem] flex order-5   flex-col gap-4 ">
+    <div className=" w-full  flex order-5   flex-col gap-4 ">
       <Link
         href={`/profile/owner/properties/${data?.id}/subscription`}
         className="w-full border-primary-200  flex items-center justify-between  px-4 py-3 rounded-10 border"

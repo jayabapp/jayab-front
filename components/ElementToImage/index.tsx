@@ -56,7 +56,7 @@ const ElementToImage = ({ children, ...props }: any) => {
 
     const canvas = await html2canvas(ref.current);
     canvas.toBlob(async (blob: any) => {
-      const files = [new File([blob], "image.jpg", { type: blob.type })];
+      const files = await [new File([blob], "image.jpg", { type: blob.type })];
       onShare(files);
     });
   };

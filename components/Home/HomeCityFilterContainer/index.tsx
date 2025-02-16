@@ -55,7 +55,7 @@ function HomeCityFilterContainer({ data, title }: { data: HomeLandingDto[]; titl
         <SwiperEm
           slidesWidth={{ def: "25%", md: "10%" }}
           spacing="0.5rem"
-          options={{ align: "start", direction: "rtl", dragFree: false, loop: true }}
+          options={{ align: "start", direction: "rtl", dragFree: true, loop: false }}
         >
           {data?.map((i, index: number) => (
             <SwiperSlide key={index} className={`w-full  !h-auto   p-0 md:py-2 cursor-pointer select-none md:px-2`}>
