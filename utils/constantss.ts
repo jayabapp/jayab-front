@@ -141,7 +141,7 @@ export const allRoutes: { [key: string]: string } = {
   properties: "املاک",
   bookmarks: "آگهی های ذخیره شده",
   panel: "پنل مشاور",
-  chat: "چت",
+  chat: "پیام ها",
   owner: "مالک",
   blog: "بلاگ",
   blogs: "بلاگ",

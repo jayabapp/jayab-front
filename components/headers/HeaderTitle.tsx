@@ -29,7 +29,7 @@ const HeaderTitle = () => {
   } else if (pathname?.includes("/support/")) {
     return "تیکت ";
   } else if (pathname?.includes("/chat/")) {
-    return "چت ";
+    return "پیام ";
   } else if (pathname?.includes("/owner/properties/")) {
     return "اطلاعات ملک ";
   } else {
