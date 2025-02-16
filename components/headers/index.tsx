@@ -111,7 +111,7 @@ const Header = ({ scroll }: { scroll?: number }) => {
   const { data: notifBadge } = useQuery({
     queryKey: [UserService.NOTIFS_BADGE_CACHEKEY, isLogin, pathname],
     queryFn: () => {
-      if (!!isLogin && notifBadge) {
+      if (!!isLogin && pathname == "/") {
         return UserService.userNotifBadge();
       } else {
         return null;

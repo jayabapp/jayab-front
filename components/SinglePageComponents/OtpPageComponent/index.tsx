@@ -101,12 +101,17 @@ const OtpPageSignInComponent = ({
       localStorage.setItem("socket_token", data?.socket_token || "");
       if (data?.auth_token) {
         const link = redirectUrl ? `/auth/register?redirect_url=${redirectUrl}` : `/auth/register`;
-        router.replace(link);
+        setTimeout(() => {
+          router.replace(link);
+        }, 1000);
       } else {
         localStorage.setItem("isLogin", "true");
 
         authUserStore.setState({ isLogin: true });
-        router.replace(redirectUrl ? redirectUrl : `/`);
+
+        setTimeout(() => {
+          router.replace(redirectUrl ? redirectUrl : `/`);
+        }, 1000);
       }
     },
     onError: () => {

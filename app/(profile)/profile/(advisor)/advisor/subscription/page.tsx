@@ -144,7 +144,7 @@ const AdvisorRegister = () => {
                 onClick={() => {
                   setShowEndSub(true);
                 }}
-                containerClass=" mt-4 w-fit "
+                containerClass="  w-fit "
                 width="  !py-0.5 md:!py-1 !px-2 md:!px-3  !text-xs "
                 variant="outline"
                 color="danger"
