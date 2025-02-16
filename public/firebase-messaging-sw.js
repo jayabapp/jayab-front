@@ -29,9 +29,9 @@ messaging.onBackgroundMessage(function (payload) {
     body: payload.notification.body,
   };
 
-  navigator.serviceWorker.ready.then(function (registration) {
-    registration.showNotification(notificationTitle, notificationOptions);
-  });
+  // navigator.serviceWorker.ready.then(function (registration) {
+  //   registration.showNotification(notificationTitle, notificationOptions);
+  // });
 
-  // self.registration.showNotification(notificationTitle, notificationOptions);
+  self.registration.showNotification(notificationTitle, notificationOptions);
 });
