@@ -26,32 +26,51 @@ const CityModal = ({
   item,
   setTitle,
   passedUrl,
+  onSubmitCustomeCB,
+  customeValues,
 }: {
   show: boolean;
   onHide: () => void | null;
   setTitle?: (e: string) => void | null;
   item?: { submitTitle?: string };
   passedUrl?: string;
+  onSubmitCustomeCB?: (e: any) => void | null;
+  customeValues?: any;
 }) => {
   const router = useRouter();
   const pathname = usePathname();
   const queriesParams = useQueryGet<any>();
+  const [queries, setQueries] = useState<{ [key: string]: any }>({});
   const [selectedProv, setSelectedProv] = useState<NewCitiesListDto | null>(null);
   const [selectedCities, setSelectedCities] = useState<ChildCities[]>([]);
   const [search, setSearch] = useState("");
+
+  useEffect(() => {
+    if (!!customeValues) {
+      setQueries(customeValues);
+    } else setQueries(queriesParams);
+  }, [customeValues, queriesParams?.cities]);
 
   const { data: provinces, isLoading: provLoading } = useQuery({
     queryFn: () => CityService.GetAllCities({ is_parent: 1 }),
     queryKey: [CityService.GET_ALL_CITIES_CACHEKEY],
   });
 
+  /* -------------------------------------------------------------------------- */
+  /*                        GETTING SELECTED CITIES TITLS                       */
+  /* -------------------------------------------------------------------------- */
+
   const { data: defaultCitiesData } = useQuery({
     queryFn: () => {
-      if (!!queriesParams?.cities) return CityService.GetAllCities({ cities: queriesParams?.cities });
+      if (!!queries?.cities) return CityService.GetAllCities({ cities: JSON.stringify(queries?.cities) });
       else return null;
     },
-    queryKey: [CityService.GET_ALL_CITIES_CACHEKEY, queriesParams?.cities],
+    queryKey: [CityService.GET_ALL_CITIES_CACHEKEY, queries?.cities],
   });
+
+  /* -------------------------------------------------------------------------- */
+  /*                             GETTING ALL CITIES                             */
+  /* -------------------------------------------------------------------------- */
 
   const { data: cities, isLoading: citiesLoading } = useQuery({
     queryFn: () => {
@@ -73,15 +92,19 @@ const CityModal = ({
     } else {
       if (!!setTitle) setTitle("");
     }
-  }, [defaultCitiesData]);
+  }, [defaultCitiesData, queries]);
+
+  /////////////////
 
   const removeSelectedProve = () => {
     setSelectedProv(null);
     setSearch("");
   };
 
+  //////////////////
+
   const onCityClick = (item: ChildCities) => {
-    if (selectedCities?.includes(item)) {
+    if (!!selectedCities?.find((e) => e?.id == item?.id)) {
       setSelectedCities(selectedCities?.filter((e) => e?.id != item?.id));
     } else {
       setSelectedCities((e) => [...e, item]);
@@ -93,15 +116,19 @@ const CityModal = ({
   /* -------------------------------------------------------------------------- */
 
   const onSubmitClick = () => {
-    const body = {
-      ...queriesParams,
-    };
-    body.cities = selectedCities?.map((e) => e?.id);
-
-    if (!!passedUrl) {
-      router.push(`${passedUrl}?${queryBuilder(body)}`);
+    if (!!onSubmitCustomeCB) {
+      onSubmitCustomeCB((e: any) => ({ ...e, cities: selectedCities?.map((e) => e?.id) }));
     } else {
-      router.replace(`${pathname}?${queryBuilder(body)}`);
+      const body = {
+        ...queries,
+      };
+      body.cities = selectedCities?.map((e) => e?.id);
+
+      if (!!passedUrl) {
+        router.push(`${passedUrl}?${queryBuilder(body)}`);
+      } else {
+        router.replace(`${pathname}?${queryBuilder(body)}`);
+      }
     }
     onHide();
   };

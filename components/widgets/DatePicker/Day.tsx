@@ -55,7 +55,13 @@ const Day = ({ onSelect, data, selectedDayId, month, year, freeDaysOfMonth, toda
         }  ${isSelected ? "!bg-primary-700  rounded-md text-white" : ""}`}
       >
         {!!data?.has_memo ? (
-          <div className="absolute left-1 top-1  w-1 h-1 aspect-square bg-primary-900 !rounded-full"> </div>
+          <div
+            className={` absolute left-1 top-1  w-1 h-1 aspect-square  ${
+              isSelected ? "bg-primary-900" : "bg-primary-700 "
+            }  !rounded-full`}
+          >
+            {" "}
+          </div>
         ) : (
           <></>
         )}
