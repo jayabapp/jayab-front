@@ -365,6 +365,8 @@ const _STRINGS = {
   ERASE: "پاک کردن",
   VERIFY_PROP: "احراز ملک",
   VERIFY_PROP_MODAL_TEXT: "به منظور عملکرد بهتر و افزایش بازدید، لطفا در اسرع وقت ملک خود احراز کنید.",
+  NEXT_MONTH: "ماه بعد",
+  LAST_MONTH: "ماه قبل",
 };
 
 export default _STRINGS;

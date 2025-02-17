@@ -7,6 +7,8 @@ import Swiper from "swiper";
 import { SwiperSlide } from "swiper/react";
 import _STRINGS from "@/utils/LocalStrings";
 import { isMobile } from "react-device-detect";
+import numberWithCommas from "@/helpers/numberWithCommas";
+import moment from "moment-jalaali";
 
 const FiltersSelectedFiltersShowcase = ({
   query,
@@ -71,6 +73,19 @@ const FiltersSelectedFiltersShowcase = ({
 
     queryMaker(temp, i?.group.toLowerCase());
   };
+
+  const removeFiltersKeys = (array: string[]) => {
+    let temp = { ...query };
+
+    for (let index = 0; index < array.length; index++) {
+      const element = array[index];
+      delete temp[element];
+    }
+    const body = {
+      ...temp,
+    };
+    router.replace(`${pathname}?${queryBuilder(body)}`);
+  };
   return (
     <SwiperWithNavigation
       reference={ref}
@@ -98,6 +113,190 @@ const FiltersSelectedFiltersShowcase = ({
       ) : (
         <></>
       )}
+      {/* START END DATE */}
+      {!!query?.checkout && !!query?.checkin ? (
+        <SwiperSlide key={`selecDATE`} className="!w-auto    ">
+          <div className="rounded-full !w-auto   gap-4 py-2 h-8 px-1 flex items-center justify-center border border-primary-700  bg-primary-700/5 text-primary-700  text-xs ">
+            <p className="text-xs pr-2">
+              {_STRINGS.FROM} {moment(query?.checkin).format("jDD/jMMMM/jYYYY")} {_STRINGS.TO}{" "}
+              {moment(query?.checkout).format("jDD/jMMMM/jYYYY")}
+            </p>
+            <div
+              onClick={() => {
+                removeFiltersKeys(["checkout", "checkin"]);
+              }}
+              className=" cursor-pointer w-4 h-4 aspect-square rounded-full border border-primary-700 flex items-center justify-center"
+            >
+              <img src="/assets/icons/adds/blue_plus.svg" className="w-2 h-2 rotate-45 aspect-square " />
+            </div>
+          </div>
+        </SwiperSlide>
+      ) : (
+        <></>
+      )}
+      {/* COMMISION FILTER */}
+      {!!query?.max_commission && !!query?.min_commission ? (
+        <SwiperSlide key={`selecCommiss`} className="!w-auto    ">
+          <div className="rounded-full !w-auto   gap-4 py-2 h-8 px-1 flex items-center justify-center border border-primary-700  bg-primary-700/5 text-primary-700  text-xs ">
+            <p className="text-xs pr-2">
+              {_STRINGS.COMMIS_JUST_PERC} {_STRINGS.FROM} {numberWithCommas(query?.min_commission)}% {_STRINGS.TO}{" "}
+              {numberWithCommas(query?.max_commission)}%
+            </p>
+            <div
+              onClick={() => {
+                removeFiltersKeys(["max_commission", "min_commission"]);
+              }}
+              className=" cursor-pointer w-4 h-4 aspect-square rounded-full border border-primary-700 flex items-center justify-center"
+            >
+              <img src="/assets/icons/adds/blue_plus.svg" className="w-2 h-2 rotate-45 aspect-square " />
+            </div>
+          </div>
+        </SwiperSlide>
+      ) : (
+        <></>
+      )}
+      {/* PRICE FILTER */}
+      {!!query?.max_price && !!query?.min_price ? (
+        <SwiperSlide key={`selecPRICE`} className="!w-auto    ">
+          <div className="rounded-full !w-auto   gap-4 py-2 h-8 px-1 flex items-center justify-center border border-primary-700  bg-primary-700/5 text-primary-700  text-xs ">
+            <p className="text-xs pr-2">
+              {_STRINGS.PRICE} {_STRINGS.FROM} {numberWithCommas(query?.min_price)} {_STRINGS.TO}{" "}
+              {numberWithCommas(query?.max_price)} {_STRINGS.TOMAN}
+            </p>
+            <div
+              onClick={() => {
+                removeFiltersKeys(["max_price", "min_price"]);
+              }}
+              className=" cursor-pointer w-4 h-4 aspect-square rounded-full border border-primary-700 flex items-center justify-center"
+            >
+              <img src="/assets/icons/adds/blue_plus.svg" className="w-2 h-2 rotate-45 aspect-square " />
+            </div>
+          </div>
+        </SwiperSlide>
+      ) : (
+        <></>
+      )}
+      {/*  AREA */}
+      {!!query?.max_building_area && !!query?.min_building_area ? (
+        <SwiperSlide key={`selecAREA`} className="!w-auto    ">
+          <div className="rounded-full !w-auto   gap-4 py-2 h-8 px-1 flex items-center justify-center border border-primary-700  bg-primary-700/5 text-primary-700  text-xs ">
+            <p className="text-xs pr-2">
+              {_STRINGS.ROOM_SIZE} {_STRINGS.FROM} {query?.min_building_area} {_STRINGS.TO} {query?.max_building_area}{" "}
+              {_STRINGS.METER}
+            </p>
+            <div
+              onClick={() => {
+                removeFiltersKeys(["max_building_area", "min_building_area"]);
+              }}
+              className=" cursor-pointer w-4 h-4 aspect-square rounded-full border border-primary-700 flex items-center justify-center"
+            >
+              <img src="/assets/icons/adds/blue_plus.svg" className="w-2 h-2 rotate-45 aspect-square " />
+            </div>
+          </div>
+        </SwiperSlide>
+      ) : (
+        <></>
+      )}
+      {/*  HAS DISCOUNT */}
+      {!!query?.has_discount && query?.has_discount == "1" ? (
+        <SwiperSlide key={`selecDiscount`} className="!w-auto    ">
+          <div className="rounded-full !w-auto   gap-4 py-2 h-8 px-1 flex items-center justify-center border border-primary-700  bg-primary-700/5 text-primary-700  text-xs ">
+            <p className="text-xs pr-2">{_STRINGS.HAS_DISCOUNT}</p>
+            <div
+              onClick={() => {
+                removeFiltersKeys(["has_discount"]);
+              }}
+              className=" cursor-pointer w-4 h-4 aspect-square rounded-full border border-primary-700 flex items-center justify-center"
+            >
+              <img src="/assets/icons/adds/blue_plus.svg" className="w-2 h-2 rotate-45 aspect-square " />
+            </div>
+          </div>
+        </SwiperSlide>
+      ) : (
+        <></>
+      )}
+
+      {/*  HAS DISCOUNT */}
+      {!!query?.is_premium && query?.is_premium == "1" ? (
+        <SwiperSlide key={`selecPermium`} className="!w-auto    ">
+          <div className="rounded-full !w-auto   gap-4 py-2 h-8 px-1 flex items-center justify-center border border-primary-700  bg-primary-700/5 text-primary-700  text-xs ">
+            <p className="text-xs pr-2">{_STRINGS.PERMIUM_PROPS}</p>
+            <div
+              onClick={() => {
+                removeFiltersKeys(["is_premium"]);
+              }}
+              className=" cursor-pointer w-4 h-4 aspect-square rounded-full border border-primary-700 flex items-center justify-center"
+            >
+              <img src="/assets/icons/adds/blue_plus.svg" className="w-2 h-2 rotate-45 aspect-square " />
+            </div>
+          </div>
+        </SwiperSlide>
+      ) : (
+        <></>
+      )}
+      {/*  BEDROOMS */}
+      {!!query?.total_bedrooms ? (
+        <SwiperSlide key={`selecRooms`} className="!w-auto    ">
+          <div className="rounded-full !w-auto   gap-4 py-2 h-8 px-1 flex items-center justify-center border border-primary-700  bg-primary-700/5 text-primary-700  text-xs ">
+            <p className="text-xs pr-2">
+              {_STRINGS.ROOM_COUNT} : {query?.total_bedrooms}
+            </p>
+            <div
+              onClick={() => {
+                removeFiltersKeys(["total_bedrooms"]);
+              }}
+              className=" cursor-pointer w-4 h-4 aspect-square rounded-full border border-primary-700 flex items-center justify-center"
+            >
+              <img src="/assets/icons/adds/blue_plus.svg" className="w-2 h-2 rotate-45 aspect-square " />
+            </div>
+          </div>
+        </SwiperSlide>
+      ) : (
+        <></>
+      )}
+      {/*  GUESTS */}
+      {!!query?.total_guests ? (
+        <SwiperSlide key={`selecGuests`} className="!w-auto    ">
+          <div className="rounded-full !w-auto   gap-4 py-2 h-8 px-1 flex items-center justify-center border border-primary-700  bg-primary-700/5 text-primary-700  text-xs ">
+            <p className="text-xs pr-2">
+              {_STRINGS.PPL_COUNT} : {query?.total_guests}
+            </p>
+            <div
+              onClick={() => {
+                removeFiltersKeys(["total_guests"]);
+              }}
+              className=" cursor-pointer w-4 h-4 aspect-square rounded-full border border-primary-700 flex items-center justify-center"
+            >
+              <img src="/assets/icons/adds/blue_plus.svg" className="w-2 h-2 rotate-45 aspect-square " />
+            </div>
+          </div>
+        </SwiperSlide>
+      ) : (
+        <></>
+      )}
+
+      {/*  HAS POOL */}
+      {!!query?.has_pool ? (
+        <SwiperSlide key={`hasPool`} className="!w-auto    ">
+          <div className="rounded-full !w-auto   gap-4 py-2 h-8 px-1 flex items-center justify-center border border-primary-700  bg-primary-700/5 text-primary-700  text-xs ">
+            <p className="text-xs pr-2">
+              {_STRINGS.POOL_STATUS} : {query?.has_pool == "0" ? "بدون استخر" : "  استخردار"}
+            </p>
+            <div
+              onClick={() => {
+                removeFiltersKeys(["has_pool"]);
+              }}
+              className=" cursor-pointer w-4 h-4 aspect-square rounded-full border border-primary-700 flex items-center justify-center"
+            >
+              <img src="/assets/icons/adds/blue_plus.svg" className="w-2 h-2 rotate-45 aspect-square " />
+            </div>
+          </div>
+        </SwiperSlide>
+      ) : (
+        <></>
+      )}
+
+      {/* DYNAMIC FILTERS */}
       {finallizedSelectedOptions?.map((oneRow) => {
         return oneRow?.map((e: any, index: number) => (
           <SwiperSlide key={`selectedItems${e?.id}`} className="!w-auto    ">

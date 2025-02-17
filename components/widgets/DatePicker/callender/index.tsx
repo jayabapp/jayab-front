@@ -6,6 +6,7 @@ import moment from "moment-jalaali";
 import YearPicker from "../YearPicker";
 import { useStoreTheme } from "../../../../store";
 import { OwnerCallendarItemDto } from "@/api_services/property/property.interface";
+import YearMonthPicker from "../YearMonthPicker";
 
 type dates = {
   selectedDate?: string | number;
@@ -97,7 +98,7 @@ const Callender = ({
 
         setPrevX(e.pageX);
       }}
-      className="flex transition-all duration-500 ease-in-out  w-full  rounded-20 md:p-4   md:bg-primary-450 gap-2 flex-col"
+      className="flex transition-all duration-500 ease-in-out  w-full  rounded-20 md:p-4    gap-2 flex-col"
       draggable
     >
       <div
@@ -111,8 +112,9 @@ const Callender = ({
 
       <div className="flex items-center gap-4">
         {" "}
-        <YearPicker prefix={prefix} date={`${chosenDate}`} setDate={setChosenDate} month={month} year={year} />
-        <MonthPicker prefix={prefix} date={`${chosenDate}`} setDate={setChosenDate} month={month} year={year} />
+        {/* <YearPicker prefix={prefix} date={`${chosenDate}`} setDate={setChosenDate} month={month} year={year} />
+        <MonthPicker prefix={prefix} date={`${chosenDate}`} setDate={setChosenDate} month={month} year={year} /> */}
+        <YearMonthPicker prefix={prefix} date={`${chosenDate}`} setDate={setChosenDate} month={month} year={year} />
       </div>
       <DaysOfTheWeel />
       <DayPicker

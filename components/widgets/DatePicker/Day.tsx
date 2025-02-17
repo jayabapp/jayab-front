@@ -36,7 +36,7 @@ const Day = ({ onSelect, data, selectedDayId, month, year, freeDaysOfMonth, toda
 
   return (
     <div
-      className={`aspect-square   ${!!data?.year && (!isBefore || !!isToday) ? "" : "opacity-30"} ${
+      className={`aspect-square   ${!!data?.year && (!isBefore || !!isToday) ? "bg-primary-450" : " opacity-50 "} ${
         onSelect ? "cursor-pointer" : ""
       } `}
       onClick={() => {
@@ -48,7 +48,7 @@ const Day = ({ onSelect, data, selectedDayId, month, year, freeDaysOfMonth, toda
       {" "}
       <div
         key={data?.id}
-        className={`text-center flex flex-col gap-2 ${data?.is_reserved ? "striped" : ""}   ${
+        className={`text-center flex flex-col gap-2 ${data?.is_reserved ? "striped" : " "}   ${
           isToday ? "  rounded-md bg-gray-200 border " : ""
         }  relative  flex items-center justify-center aspect-square  ${
           !!data?.isActive ? "border-b-2  border-primary-700" : ""

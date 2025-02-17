@@ -151,7 +151,7 @@ const DayPicker = ({
   // },[])
 
   return (
-    <div className="grid grid-cols-7   transition-all duration-500 ease-in-out gap-1 md:gap-2 items-center">
+    <div className="grid grid-cols-7   transition-all duration-500 ease-in-out gap-y-1 md:gap-y-2 items-center">
       {" "}
       {lastDaysMemos?.map((e, i) => (
         // <Day data={e} key={i} />
