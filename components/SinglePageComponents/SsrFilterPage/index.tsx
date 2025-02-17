@@ -214,6 +214,7 @@ const SsrFilterPage = ({ landings, firstData }: { firstData: { data: any[] }; la
         {/* BODY */}
         <div className="w-[90%] mx-auto">
           <div className=" w-full  pt-4 pb-8  ">
+            <FilterPageCitiesTitle title={cityButtonTItle} cb={showCityModalFunc} />
             <FiltersPart propertyTypes={propertyTypes} filters={filters} setFilters={setFilters} queries={queries} />
           </div>
           <div className=" w-full   pb-6 fixed bottom-0 right-0 bg-white z-1 border-t  ">
@@ -232,7 +233,13 @@ const SsrFilterPage = ({ landings, firstData }: { firstData: { data: any[] }; la
         </div>
       </Modal>
 
-      <CityModal show={showCityModal} onHide={hideCityModal} setTitle={setCityTitleButton} />
+      <CityModal
+        onSubmitCustomeCB={!!filterModalShow ? setFilters : undefined}
+        customeValues={!!filterModalShow ? filters : false}
+        show={showCityModal}
+        onHide={hideCityModal}
+        setTitle={setCityTitleButton}
+      />
     </div>
   );
 };

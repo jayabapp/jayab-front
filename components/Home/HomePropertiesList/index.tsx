@@ -13,7 +13,7 @@ const HomePropertiesList = ({ data, middleBanners }: { data: any[]; middleBanner
     if (!!middleBanners) return chunk(middleBanners, 2);
   }, [middleBanners]);
   return (
-    <div className="w-full px-3  md:px-3 lg:px-4 2xl:px-[10%] ">
+    <div className="w-full px-3  md:px-3 lg:px-4 2xl:px-[5%] ">
       <HomePropertiesSsrPart middleBanners={bannerGroup || []} data={data} />
       {cursor == 0 && !isEmpty(data) && data?.length % 24 == 0 ? (
         <Button

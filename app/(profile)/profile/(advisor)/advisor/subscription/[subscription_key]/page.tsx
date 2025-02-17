@@ -58,6 +58,7 @@ const CreateYourAdvisor = () => {
       document_image_id: values?.document_image?.id || undefined,
       national_card_image_id: values?.national_card_image?.id || undefined,
       profile_image_id: values?.profile_image?.id || undefined,
+      referrer_code: values?.referrer_code || undefined,
     });
   };
 
@@ -78,6 +79,7 @@ const CreateYourAdvisor = () => {
         full_name: advisorProfile?.user?.full_name,
         tel: advisorProfile?.tel,
         profile_image: advisorProfile?.user?.profile_image,
+        referrer_code: advisorProfile?.user?.referrer_code,
         national_code: advisorProfile?.national_code,
         national_card_image: advisorProfile?.national_card_image,
         cityIds: advisorProfile?.cities,

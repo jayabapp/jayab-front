@@ -32,6 +32,23 @@ const FiltersSelectedFiltersShowcase = ({
   //   query?.[e]?.split(",")?.map((x) => propertyTypes[e.toUpperCase()]?.find((z) => z?.id == x))
   // );
 
+  // const finallizedSelectedOptions = useMemo(() => {
+  //   let data:any = {};
+  //   if (!!propertyTypes && query) {
+  //     let objectKeys = Object.keys(propertyTypes)?.map((e) => e?.toLowerCase());
+
+  //     for (let index = 0; index < objectKeys.length; index++) {
+  //       const element = objectKeys[index];
+  //       if (!!query?.[element]) {
+  //         data[element]=(
+  //           query?.[element]?.split(",")?.map((x: any) => propertyTypes[element.toUpperCase()]?.find((z) => z?.id == x))
+  //         );
+  //       }
+  //     }
+  //   }
+
+  //   return data;
+  // }, [propertyTypes, query]);
   const finallizedSelectedOptions = useMemo(() => {
     let data = [];
     if (!!propertyTypes && query) {
@@ -46,6 +63,7 @@ const FiltersSelectedFiltersShowcase = ({
         }
       }
     }
+
     return data;
   }, [propertyTypes, query]);
 
@@ -86,12 +104,15 @@ const FiltersSelectedFiltersShowcase = ({
     };
     router.replace(`${pathname}?${queryBuilder(body)}`);
   };
+
+  console.log(finallizedSelectedOptions, "finallizedSelectedOptionsfinallizedSelectedOptions");
+
   return (
     <SwiperWithNavigation
       reference={ref}
       className=" !max-w-full flex items-center"
       onBeforeInit={(swiper: Swiper) => (ref.current = swiper)}
-      dataLength={finallizedSelectedOptions?.flatMap((e) => e)?.length}
+      dataLength={50}
       // grid={{
       //   rows: 2,
       //   fill: "row",
@@ -113,6 +134,41 @@ const FiltersSelectedFiltersShowcase = ({
       ) : (
         <></>
       )}
+      {/* DYNAMIC FILTERS */}
+      {/* {finallizedSelectedOptions?.map((oneRow) => {
+        return oneRow?.map((e: any, index: number) => (
+          <SwiperSlide key={`selectedItems${e?.id}`} className="!w-auto    ">
+            <div className="rounded-full !w-auto   gap-4 py-2 h-8 px-1 flex items-center justify-center border border-primary-700  bg-primary-700/5 text-primary-700  text-xs ">
+              <p className="text-xs pr-2">{e?.title} </p>
+              <div
+                onClick={() => {
+                  onFilterClick(e, oneRow);
+                }}
+                className=" cursor-pointer w-4 h-4 aspect-square rounded-full border border-primary-700 flex items-center justify-center"
+              >
+                <img src="/assets/icons/adds/blue_plus.svg" className="w-2 h-2 rotate-45 aspect-square " />
+              </div>
+            </div>
+          </SwiperSlide>
+        ));
+      })} */}
+      {finallizedSelectedOptions?.map((oneRow) => {
+        return oneRow?.map((e: any, index: number) => (
+          <SwiperSlide key={`selectedItems${e?.id}`} className="!w-auto    ">
+            <div className="rounded-full !w-auto   gap-4 py-2 h-8 px-1 flex items-center justify-center border border-primary-700  bg-primary-700/5 text-primary-700  text-xs ">
+              <p className="text-xs pr-2">{e?.title} </p>
+              <div
+                onClick={() => {
+                  onFilterClick(e, oneRow);
+                }}
+                className=" cursor-pointer w-4 h-4 aspect-square rounded-full border border-primary-700 flex items-center justify-center"
+              >
+                <img src="/assets/icons/adds/blue_plus.svg" className="w-2 h-2 rotate-45 aspect-square " />
+              </div>
+            </div>
+          </SwiperSlide>
+        ));
+      })}
       {/* START END DATE */}
       {!!query?.checkout && !!query?.checkin ? (
         <SwiperSlide key={`selecDATE`} className="!w-auto    ">
@@ -295,25 +351,6 @@ const FiltersSelectedFiltersShowcase = ({
       ) : (
         <></>
       )}
-
-      {/* DYNAMIC FILTERS */}
-      {finallizedSelectedOptions?.map((oneRow) => {
-        return oneRow?.map((e: any, index: number) => (
-          <SwiperSlide key={`selectedItems${e?.id}`} className="!w-auto    ">
-            <div className="rounded-full !w-auto   gap-4 py-2 h-8 px-1 flex items-center justify-center border border-primary-700  bg-primary-700/5 text-primary-700  text-xs ">
-              <p className="text-xs pr-2">{e?.title} </p>
-              <div
-                onClick={() => {
-                  onFilterClick(e, oneRow);
-                }}
-                className=" cursor-pointer w-4 h-4 aspect-square rounded-full border border-primary-700 flex items-center justify-center"
-              >
-                <img src="/assets/icons/adds/blue_plus.svg" className="w-2 h-2 rotate-45 aspect-square " />
-              </div>
-            </div>
-          </SwiperSlide>
-        ));
-      })}
     </SwiperWithNavigation>
   );
 };

@@ -3,6 +3,7 @@ import { Status } from "../property/property.interface";
 
 export interface CreateAdvisorDto {
   full_name: number | string | null;
+  referrer_code?: number | string | null;
   address?: number | string | null;
   national_code?: number | string | null;
   tel?: number | string | null;
@@ -77,10 +78,8 @@ export interface Image {
 
 export interface User {
   full_name: string;
-}
-
-export interface User {
-  full_name: string;
+  referrer_code: string;
+  referral_code: string;
 }
 
 export interface PayAdvisorPlanDto {

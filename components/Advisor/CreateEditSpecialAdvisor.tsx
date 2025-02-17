@@ -226,7 +226,7 @@ const CreateEditSpecialAdvisor = ({
         />
       </div>
 
-      {/* <FormInput
+      <FormInput
         item={{
           title: _STRINGS.REFRAL_CODE,
           containerClass: "w-full  md:w-1/2",
@@ -234,11 +234,11 @@ const CreateEditSpecialAdvisor = ({
           inputClass: "ltr text-left",
           maxLength: 10,
         }}
-        value={values?.refral_code || ""}
+        value={values?.referrer_code || ""}
         onChangeText={(e) => {
-          onChange(e, "refral_code");
+          onChange(e, "referrer_code");
         }}
-      /> */}
+      />
     </div>
   );
 };

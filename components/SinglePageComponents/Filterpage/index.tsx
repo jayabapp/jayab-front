@@ -107,7 +107,7 @@ const Filterpage = () => {
   };
 
   return (
-    <div className="app-container !px-0 md:!px-10 lg:!px-12 2xl:!px-[10%] !pt-32  lg:!pt-28  md: z-2 ">
+    <div className="app-container !px-0 md:!px-10 lg:!px-12 2xl:!px-[5%] !pt-32  lg:!pt-28  md: z-2 ">
       <div className=" hidden  z-1 w-full md:flex flex-col md:flex-row items-center justify-between ">
         {/* <Breadcrumbs /> */}
         <SingleProductBreadCrumb dataArray={breadCrumbs} />

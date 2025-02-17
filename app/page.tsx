@@ -54,7 +54,7 @@ const Home = async () => {
         {" "}
         <section
           style={{ minHeight: "30dvh" }}
-          className="px-3   relative  select-none md:px-3 lg:px-4 2xl:px-[10%]  pt-0 md:py-0 w-full"
+          className="px-3   relative  select-none md:px-3 lg:px-4 2xl:px-[5%]  pt-0 md:py-0 w-full"
         >
           <HomeAdvisorSub />
           <HomeCityFilterContainer

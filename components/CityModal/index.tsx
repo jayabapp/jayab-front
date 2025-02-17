@@ -214,7 +214,7 @@ const CityModal = ({
           onClick={onSubmitClick}
           width="w-full "
           containerClass="flex w-full   items-center justify-center "
-          title={item?.submitTitle || _STRINGS.SEARCH}
+          title={item?.submitTitle || (!!onSubmitCustomeCB ? _STRINGS.SUBMIT : _STRINGS.SEARCH)}
         />
       </div>
     </Modal>

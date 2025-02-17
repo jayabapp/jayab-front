@@ -73,7 +73,7 @@ const MultyPopUpSelect = ({
         </div>
       </div>
       <PopUpDown setVisible={setShow} visible={show}>
-        <div className="flex flex-col   px-6 py-4">
+        <div className="flex flex-col   px-6  !pb-24 pt-4">
           {" "}
           {item?.list?.map((listItem) => (
             <Selecti
@@ -93,7 +93,7 @@ const MultyPopUpSelect = ({
               setShow(false);
             }}
             title={_STRINGS.SUBMIT}
-            containerClass="w-full flex items-center justify-center px-[10%] pb-6 "
+            containerClass="w-full absolute bottom-0  flex items-center justify-center px-[10%] pb-6 "
             width="w-full "
           />
         ) : (
