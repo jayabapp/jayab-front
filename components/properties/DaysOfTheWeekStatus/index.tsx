@@ -21,7 +21,12 @@ const DaysOfTheWeekStatus = ({ isCard, data, week }: { week: any[]; isCard?: boo
           key={`days${e?.id}${e?.title}`}
           className=" "
         >
-          <p className={`text-xxs !shrink-0  ${isCard ? "" : "md:text-xs"}   text-gray-400 `}>{e?.title}</p>
+          <p
+            style={{ textAlign: "center" }}
+            className={`text-xxs   !shrink-0  ${isCard ? "" : "md:text-xs"}   text-gray-400 `}
+          >
+            {e?.title}
+          </p>
 
           <div
             className={`  ${

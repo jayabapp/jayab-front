@@ -97,10 +97,15 @@ const PropertyInquery = () => {
                   src={NEW_IMAGE_URL(selectedImage)}
                 />
               </div>
-              <div className="w-full flex items-start md:items-center justify-between gap-2">
+              <div className="w-full flex flex-col items-center gap-1 justify-center ">
                 {" "}
-                <p className=" font-medium text-lg w-3/5 md:w-4/5 md:text-2xl ">{data?.title}</p>{" "}
-                <div className="text-xs   shrink-0 w-fit">{moment().format("jDD / jMM / jYYYY  ")}</div>
+                <div className="text-xs   items-center justify-center text-center  w-full">
+                  {moment().format("jDD / jMM / jYYYY  ")}
+                </div>
+                <div className="w-full flex items-start md:items-center justify-between gap-2">
+                  {" "}
+                  <p className=" font-medium text-lg w-3/5 md:w-4/5 md:text-2xl ">{data?.title}</p>{" "}
+                </div>
               </div>
 
               <div className="w-full flex items-center gap-5">
