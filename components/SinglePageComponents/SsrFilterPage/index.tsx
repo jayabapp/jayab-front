@@ -90,7 +90,8 @@ const SsrFilterPage = ({ landings, firstData }: { firstData: { data: any[] }; la
     delete body.categories;
 
     setDefaultMobileFilters(body);
-    router.replace(`${pathname}?${queryBuilder(body)}`);
+    // router.replace(`${pathname}?${queryBuilder(body)}`);
+    router.replace(`rooms?${queryBuilder(body)}`);
   };
 
   const hideCityModal = () => {
@@ -115,10 +116,11 @@ const SsrFilterPage = ({ landings, firstData }: { firstData: { data: any[] }; la
     router.replace(`${pathname}?${queryBuilder(body)}`);
   };
   return (
-    <div className="app-container !pt-32  lg:!pt-28  md: z-2 ">
+    <div className="app-container !pt-32  lg:!pt-20  md: z-2 ">
       <div className=" hidden  z-1 w-full md:flex flex-col md:flex-row items-center justify-between ">
         <SingleProductBreadCrumb dataArray={breadCrumbs} />
       </div>
+      <h1 className="mb-3 text-lg font-medium">{landings?.content?.title}</h1>
       <div className="w-full hidden md:flex  pb-4">
         {" "}
         <FiltersSelectedFiltersShowcase
@@ -234,6 +236,7 @@ const SsrFilterPage = ({ landings, firstData }: { firstData: { data: any[] }; la
       </Modal>
 
       <CityModal
+        passedUrl="/rooms"
         onSubmitCustomeCB={!!filterModalShow ? setFilters : undefined}
         customeValues={!!filterModalShow ? filters : false}
         show={showCityModal}

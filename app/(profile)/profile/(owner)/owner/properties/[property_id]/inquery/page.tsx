@@ -96,11 +96,11 @@ const PropertyInquery = () => {
                   className=" rounded-2xl  w-full object-cover aspect-square"
                   src={NEW_IMAGE_URL(selectedImage)}
                 />
-                <div className="text-xs  absolute right-3 top-3 text-white">{moment().format("jYYYY/jMM/jDD")}</div>
               </div>
               <div className="w-full flex items-start md:items-center justify-between gap-2">
                 {" "}
-                <p className=" font-medium text-lg w-3/5 md:w-full md:text-2xl ">{data?.title}</p>{" "}
+                <p className=" font-medium text-lg w-3/5 md:w-4/5 md:text-2xl ">{data?.title}</p>{" "}
+                <div className="text-xs   shrink-0 w-fit">{moment().format("jDD / jMM / jYYYY  ")}</div>
               </div>
 
               <div className="w-full flex items-center gap-5">
@@ -140,13 +140,13 @@ const PropertyInquery = () => {
           </div>{" "}
           <div className=" grid grid-cols-4  w-full order-1 md:order-2 gap-2 border-b pb-4 md:border-0 ">
             <div className="w-full col-span-full mb-2 ">{_STRINGS.SELECT_YOUR_IMAGE} :</div>
-            <ShareImageItems
+            {/* <ShareImageItems
               image={data?.feature_image}
               cb={() => {
                 setSelectedImage(data?.feature_image);
               }}
               isSelected={selectedImage?.id == data?.feature_image?.id}
-            />
+            /> */}
 
             {data?.images?.map((e) => (
               <ShareImageItems

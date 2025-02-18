@@ -84,10 +84,10 @@ function ProductImagesContainer({
     //  data?.video
     //   ? [data?.feature_image, ...data?.images, data?.video]
     //   :
-    [data?.feature_image, ...data?.images];
+    [...data?.images];
   const [addImages, setAddImages] = useState<(any | undefined)[]>(
     // data?.video ? [data?.feature_image, ...data?.images, data?.video] :
-    [data?.feature_image, ...data?.images]
+    [...data?.images]
   );
   const allImagesIds = difference(
     defaultImages?.map((e) => e?.id),
