@@ -108,6 +108,7 @@ const PropertyInquery = () => {
                 </div>
               </div>
 
+              <DaysOfTheWeekStatus week={week} data={data?.reserve_days} />
               <div className="w-full flex items-center gap-5">
                 <div className=" flex  flex-row  items-center gap-2 justify-start">
                   {" "}
@@ -123,7 +124,6 @@ const PropertyInquery = () => {
                   </p>
                 </div>
               </div>
-              <DaysOfTheWeekStatus week={week} data={data?.reserve_days} />
 
               <MultiLineFormInput
                 onChangeText={(e) => {
