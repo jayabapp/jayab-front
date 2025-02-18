@@ -6,7 +6,7 @@ const DayPricePart = ({ data }: { data: { price?: number; discounted_price?: num
   return (
     <div className="flex  flex-col relative w-full items-center justify-center gap-0 md:gap-2 ">
       {!!data?.discounted_price ? (
-        <p className=" text-xs md:text-sm line-through  absolute -top-3  opacity-60">
+        <p className=" text-xxs md:text-sm line-through  absolute -top-2  opacity-60">
           {numberWithCommas((data?.price || 1) / 1000)}
         </p>
       ) : (

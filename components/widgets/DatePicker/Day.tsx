@@ -48,9 +48,9 @@ const Day = ({ onSelect, data, selectedDayId, month, year, freeDaysOfMonth, toda
       {" "}
       <div
         key={data?.id}
-        className={`text-center flex flex-col gap-2 ${data?.is_reserved ? "striped" : " "}   ${
+        className={`text-center flex flex-col gap-0.5 ${data?.is_reserved ? "striped" : " "}   ${
           isToday ? "  rounded-md bg-gray-200 border " : ""
-        }  relative  flex items-center justify-center aspect-square  ${
+        }  relative  flex items-center justify-start aspect-square  ${
           !!data?.isActive ? "border-b-2  border-primary-700" : ""
         }  ${isSelected ? "!bg-primary-700  rounded-md text-white" : ""}`}
       >
