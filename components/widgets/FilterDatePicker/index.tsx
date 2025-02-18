@@ -4,6 +4,7 @@ import DaysOfTheWeel from "./DaysOfTheWeel";
 import DayPicker from "./DayPicker";
 import moment from "moment-jalaali";
 import YearPicker from "./YearPicker";
+import YearMonthPicker from "../DatePicker/YearMonthPicker";
 
 type dates = {
   selectedDates?: {
@@ -110,8 +111,7 @@ const FilterDatePicker = ({
     >
       <div className="flex items-center gap-4">
         {" "}
-        <YearPicker prefix={prefix} date={`${chosenDate}`} setDate={setChosenDate} month={month} year={year} />
-        <MonthPicker prefix={prefix} date={`${chosenDate}`} setDate={setChosenDate} month={month} year={year} />
+        <YearMonthPicker prefix={prefix} date={`${chosenDate}`} setDate={setChosenDate} month={month} year={year} />
       </div>
       <DaysOfTheWeel />
       <DayPicker

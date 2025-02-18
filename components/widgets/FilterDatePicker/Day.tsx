@@ -68,7 +68,7 @@ const Day = ({ onSelect, data, selectedDayIds, month, year, freeDaysOfMonth, tod
 
   return (
     <div
-      className={`aspect-square   ${!!data?.year && (!isBefore || !!isToday) ? "" : "opacity-30"} ${
+      className={`aspect-square   ${!!data?.year && (!isBefore || !!isToday) ? " bg-primary-450 " : "opacity-50"} ${
         onSelect ? "cursor-pointer" : ""
       } `}
       onClick={() => {
