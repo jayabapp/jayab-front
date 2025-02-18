@@ -9,7 +9,18 @@ const DaysOfTheWeekStatus = ({ isCard, data, week }: { week: any[]; isCard?: boo
       className={`w-full flex  justify-between gap-1  ${isCard ? "!gap-0.5 2xl:!gap-0.5" : "md:gap-1"}  items-center `}
     >
       {week.map((e) => (
-        <div key={`days${e?.id}${e?.title}`} className="flex w-full items-center justify-center flex-col gap-1 ">
+        <div
+          style={{
+            gap: "0.25rem",
+            display: "flex",
+            justifyItems: "center",
+            justifyContent: "center",
+            flexDirection: "column",
+            width: "100%",
+          }}
+          key={`days${e?.id}${e?.title}`}
+          className=" "
+        >
           <p className={`text-xxs !shrink-0  ${isCard ? "" : "md:text-xs"}   text-gray-400 `}>{e?.title}</p>
 
           <div
