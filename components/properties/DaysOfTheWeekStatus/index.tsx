@@ -21,12 +21,12 @@ const DaysOfTheWeekStatus = ({ isCard, data, week }: { week: any[]; isCard?: boo
           key={`days${e?.id}${e?.title}`}
           className=" "
         >
-          {/* <p
+          <p
             style={{ textAlign: "center" }}
             className={`text-xxs   !shrink-0  ${isCard ? "" : "md:text-xs"}   text-gray-400 `}
           >
             {e?.title}
-          </p> */}
+          </p>
 
           <div
             className={`  ${
@@ -35,9 +35,9 @@ const DaysOfTheWeekStatus = ({ isCard, data, week }: { week: any[]; isCard?: boo
                 : "  bg-white  border-primary-250 text-gray-400"
             } text-xxs  border-2  min-w-9 rounded-full h-5   ${
               isCard ? "" : "md:h-7 md:text-sm  "
-            } w-full   flex items-center justify-center `}
+            } w-full  relative  flex items-center justify-center `}
           >
-            <p className="text-center flex items-center  h-5  justify-center">
+            <p className="text-center flex items-center  h-5  absolute  m-auto justify-center">
               {" "}
               {data?.find((x) => x?.day_number == e?.id)?.is_reserved ? "رزرو" : "خالی"}
             </p>
