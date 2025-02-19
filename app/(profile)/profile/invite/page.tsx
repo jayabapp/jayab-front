@@ -7,12 +7,13 @@ import { useQuery } from "@tanstack/react-query";
 import React from "react";
 
 const InviePage = () => {
-  const onShare = async (files: any) => {
+  const onShare = async (data: any) => {
     const title = "جایاب";
-    const text = "شما را به جایاب دعوت میکنم";
-    const url = window.origin;
+    const text = `شما را به جایاب دعوت میکنم
+    ${data?.is_special ? `کد دعوت: ${data?.user?.referral_code}` : ""}
+    ✅${window.origin}`;
 
-    const shareDetails = { title, text, url };
+    const shareDetails = { title, text };
     if (navigator.share) {
       try {
         await navigator.share(shareDetails).then(() => console.log("Your content was shared"));
@@ -50,7 +51,7 @@ const InviePage = () => {
           <></>
         )}
 
-        <Button onClick={onShare} containerClass="w-full" width="w-full" title={_STRINGS.SHARE} />
+        <Button onClick={() => onShare(advisorProfile)} containerClass="w-full" width="w-full" title={_STRINGS.SHARE} />
       </div>
     </div>
   );
