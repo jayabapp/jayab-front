@@ -34,7 +34,7 @@ const MenuDropDown = ({}) => {
             className={`flex items-center transition-all  brightness-125 hover:brightness-100 hover:grayscale-0  grayscale justify-center col-span-1 gap-2 flex-row ml-6`}
           >
             <img src="/assets/icons/header/menu_header.svg" className="dark:invert" />
-            <p className="text-primary-700 shrink-0 ">{_STRINGS.MENU}</p>
+            <p className="text-primary-700 shrink-0 text-sm  ">{_STRINGS.MENU}</p>
           </MenuButton>
         </div>
         <Transition
@@ -58,7 +58,7 @@ const MenuDropDown = ({}) => {
                         src={e?.imgSrc}
                         className={`w-6 h-6 aspect-square ${asPath.includes(e?.route) ? " " : ""} dark:invert `}
                       />
-                      <p> {e?.title}</p>
+                      <p className="text-sm"> {e?.title}</p>
                     </div>
                   </Link>
                 </MenuItem>

@@ -33,9 +33,9 @@ const AddCardPricePart = ({
         <></>
       )}
 
-      <p className="font-bold text-sm">
+      <p className="font-bold text-xs">
         {numberWithCommas(!!data?.discounted_price ? data?.discounted_price : data?.price)}{" "}
-        <span className="text-xs">{_STRINGS.TOMAN}</span>
+        <span className="text-xxs">{_STRINGS.TOMAN}</span>
       </p>
     </div>
   );

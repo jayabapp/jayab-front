@@ -95,7 +95,7 @@ const PropertyCard = ({ data, isOwner, week }: { data: PropertyListDto; isOwner?
                   alt={`location${data?.id}`}
                   className="w-5 h-5 aspect-square"
                 />
-                <p className="text-xs text-center mt-0.5">
+                <p className="text-xs line-clamp-1 text-center mt-0.5">
                   {data?.city} <span className="text-xs ">{data?.province ? `(${data?.province})` : ``}</span>
                 </p>
               </div>

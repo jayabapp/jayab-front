@@ -4,6 +4,7 @@ import DaysOfTheWeel from "./DaysOfTheWeel";
 import DayPicker from "./DayPicker";
 import moment from "moment-jalaali";
 import YearPicker from "./YearPicker";
+import YearMonthPicker from "./YearMonthPicker";
 
 type dates = {
   selectedDate?: string | number;
@@ -106,16 +107,15 @@ const SingleDatePicker = ({
       className="flex transition-all duration-500 ease-in-out bg-neutral-100 rounded-2xl p-4 md:p-12  gap-2 flex-col"
       draggable
     >
-      <div className="flex flex-col gap-1 items-start">
+      {/* <div className="flex flex-col gap-1 items-start">
         <p style={{ color: color }}>{moment(selectedDate, "jYYYY/jMM/jDD").format("jYYYY")}</p>
         <p className=" text-2xl " style={{ color: color }}>
           {moment(selectedDate, "jYYYY/jMM/jDD").format("   ddd jDD jMMMM")}
         </p>
-      </div>
+      </div> */}
       <div className="flex items-center gap-4">
         {" "}
-        <YearPicker prefix={prefix} date={`${chosenDate}`} setDate={setChosenDate} month={month} year={year} />
-        <MonthPicker prefix={prefix} date={`${chosenDate}`} setDate={setChosenDate} month={month} year={year} />
+        <YearMonthPicker prefix={prefix} date={`${chosenDate}`} setDate={setChosenDate} month={month} year={year} />
       </div>
       <DaysOfTheWeel />
       <DayPicker

@@ -36,7 +36,7 @@ const TextIcon = ({ item }: textIconType) => (
     className={`flex items-center transition-all  brightness-125 hover:brightness-100 hover:grayscale-0  grayscale justify-center col-span-1 gap-2 flex-row ml-4 `}
   >
     <img src={item?.icon} className="dark:invert" />
-    <p className="text-primary-700 shrink-0">{item?.title}</p>
+    <p className="text-primary-700 shrink-0  ">{item?.title}</p>
   </Link>
 );
 

@@ -36,7 +36,7 @@ const GeneralFeatAccard = ({ data }: { data: SinglePropDto }) => {
         {!!data?.options?.cool_heat ? (
           <div className="flex w-full flex-col  gap-3">
             <p className="text-primary-700 font-bold">{_STRINGS.COOL_HEAT}</p>
-            <div className="w-full flex flex-wrap">
+            <div className="w-full gap-3 flex flex-wrap">
               {" "}
               {data?.options?.cool_heat?.map((e) => (
                 <PropertySelectedOptions title={e} key={`${e}poolType`} />
@@ -49,7 +49,7 @@ const GeneralFeatAccard = ({ data }: { data: SinglePropDto }) => {
         {!!data?.options?.welfare ? (
           <div className="flex w-full flex-wrap  gap-3">
             <p className="text-primary-700 font-bold">{_STRINGS.WELFARE_TITLE}</p>
-            <div className="w-full flex flex-wrap">
+            <div className="w-full gap-3 flex flex-wrap">
               {" "}
               {data?.options?.welfare?.map((e) => (
                 <PropertySelectedOptions title={e} key={`${e}poolType`} />

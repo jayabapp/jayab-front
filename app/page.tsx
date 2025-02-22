@@ -11,6 +11,7 @@ import LottieLoading from "@/components/shared/Lotties/LottieLoading";
 import serverCall from "@/helpers/serverCall";
 import _STRINGS from "@/utils/LocalStrings";
 import { apiRoutes, baseUrl } from "@/utils/urls";
+import { isEmpty } from "lodash";
 import dynamic from "next/dynamic";
 import { Suspense } from "react";
 // const BannersContainer = dynamic(() => import("@/components/Home/BannersContainer"), {
@@ -43,7 +44,7 @@ const Home = async () => {
 
   return (
     <div style={{ minHeight: "100dvh" }} id="homeParent" className="home-container  !px-0   flex flex-col gap-3 ">
-      <BannersContainer banners={banners || []} />
+      {!!banners && !isEmpty(banners) ? <BannersContainer banners={banners || []} /> : <></>}
       {/* {!!middleBanners ? (
         <MiddleBanners cols={2} containerClass="  pr-2 md:pr-0 py-4" list={middleBanners || []} />
       ) : (
@@ -53,15 +54,28 @@ const Home = async () => {
       <Suspense fallback={<LottieLoading />}>
         {" "}
         <section
-          style={{ minHeight: "30dvh" }}
+          style={{
+            minHeight:
+              !!landings?.popular_city &&
+              !isEmpty(landings?.popular_city) &&
+              !!landings?.quick_search &&
+              !isEmpty(landings?.quick_search)
+                ? "30dvh"
+                : "0",
+          }}
           className="px-3   relative  select-none md:px-3 lg:px-4 2xl:px-[5%]  pt-0 md:py-0 w-full"
         >
           <HomeAdvisorSub />
-          <HomeCityFilterContainer
-            title={`${_STRINGS.MOST_VISITED_CITIES}`}
-            data={landings?.popular_city || [1, 2, 3, 4, 5, 6]}
-          />{" "}
-          <MainFiltersContainer title={`${_STRINGS.FAST_SEARCH}`} data={landings?.quick_search || [1, 2, 3, 4, 5, 6]} />{" "}
+          {!!landings?.popular_city && !isEmpty(landings?.popular_city) ? (
+            <HomeCityFilterContainer title={`${_STRINGS.MOST_VISITED_CITIES}`} data={landings?.popular_city || []} />
+          ) : (
+            <></>
+          )}{" "}
+          {!!landings?.quick_search && !isEmpty(landings?.quick_search) ? (
+            <MainFiltersContainer title={`${_STRINGS.FAST_SEARCH}`} data={landings?.quick_search || []} />
+          ) : (
+            <></>
+          )}{" "}
         </section>
       </Suspense>
       <HomePropertiesList middleBanners={middleBanners || []} data={propertyData?.data || []} /> <TheInstallPrompt />

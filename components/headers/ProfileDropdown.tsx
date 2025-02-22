@@ -82,7 +82,7 @@ const ProfileDropdown = ({ notifBadge }: { notifBadge?: number | string }) => {
             className={`flex items-center transition-all  brightness-125 hover:brightness-100 hover:grayscale-0  grayscale justify-center col-span-1 gap-2 flex-row ml-6`}
           >
             <img src="/assets/icons/navbar/my_jayab.svg" className="dark:invert" />
-            <p className="text-primary-700 shrink-0">{_STRINGS.MY_PROFILE}</p>
+            <p className="text-primary-700 shrink-0  text-sm ">{_STRINGS.MY_PROFILE}</p>
           </MenuButton>
         </div>
         <Transition
@@ -109,7 +109,7 @@ const ProfileDropdown = ({ notifBadge }: { notifBadge?: number | string }) => {
                         className={`w-6 h-6 aspect-square ${asPath.includes("notifications") ? " " : ""} dark:invert `}
                       />
                     </div>
-                    <p> {_STRINGS.MY_NOTIFS}</p>
+                    <p className="text-sm"> {_STRINGS.MY_NOTIFS}</p>
                   </div>
                 </Link>
               </MenuItem>
@@ -129,7 +129,7 @@ const ProfileDropdown = ({ notifBadge }: { notifBadge?: number | string }) => {
                           } dark:invert `}
                         />
                       </div>
-                      <p> {"آگهی های من"}</p>
+                      <p className="text-sm"> {"آگهی های من"}</p>
                     </div>
                   </Link>
                 </MenuItem>
@@ -152,7 +152,7 @@ const ProfileDropdown = ({ notifBadge }: { notifBadge?: number | string }) => {
                           } dark:invert `}
                         />
                       </div>
-                      <p> {"بخش مشاور"}</p>
+                      <p className="text-sm"> {"بخش مشاور"}</p>
                     </div>
                   </Link>
                 </MenuItem>
@@ -169,7 +169,7 @@ const ProfileDropdown = ({ notifBadge }: { notifBadge?: number | string }) => {
                         src={e?.imgSrc}
                         className={`w-6 h-6 aspect-square ${asPath.includes(e?.route) ? " " : ""} dark:invert `}
                       />
-                      <p> {e?.title}</p>
+                      <p className="text-sm"> {e?.title}</p>
                     </div>
                   </Link>
                 </MenuItem>
@@ -177,7 +177,7 @@ const ProfileDropdown = ({ notifBadge }: { notifBadge?: number | string }) => {
               <MenuItem>
                 <button
                   className={` text-red-500
-                     group flex w-full px-2   items-center rounded-md  gap-2 py-2 text-sm font-medium`}
+                     group flex w-full px-2    items-center rounded-md  gap-2 py-2 text-sm font-medium`}
                   onClick={() => setisVisible(true)}
                 >
                   <img

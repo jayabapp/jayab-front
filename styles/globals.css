@@ -524,9 +524,10 @@ button {
 
 .embla__dots {
   display: flex;
+
   position: absolute;
-  left: 0;
-  right: 0;
+  left: 1rem;
+  right: 1rem;
   flex-wrap: wrap;
   justify-content: center;
   align-items: center;
