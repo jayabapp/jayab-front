@@ -81,7 +81,7 @@ const Subscription = () => {
     let promotId = subscriptionPlans?.list?.find((e) => !!e?.is_promote && values?.includes(e?.id))?.id;
 
     mutate({
-      gateway: "SANDBOX",
+      gateway: "ZARINPAL",
       redirect_url: window.origin + `/profile/owner/properties/${property_id}`,
       property_id: `${property_id}`,
       subscription_id: subId,

@@ -7,10 +7,10 @@ enum BtnVariants {
   "flat" = "btn-primary-flat",
 }
 enum BtnColors {
-  "primary" = "bg-btnColor-primary",
-  "danger" = "bg-btnColor-danger !text-btnColor-danger !border-btnColor-danger ",
-  "light" = "bg-btnColor-light",
-  "themeLight" = "bg-btnColor-themeLight",
+  "primary" = "bg-btnColor-primary  !ring-btnColor-primary/50",
+  "danger" = "bg-btnColor-danger  !ring-btnColor-danger/50 !text-btnColor-danger !border-btnColor-danger ",
+  "light" = "bg-btnColor-light !ring-btnColor-light/50 ",
+  "themeLight" = "bg-btnColor-themeLight  !ring-btnColor-themeLight/50 ",
 }
 
 type ButtonProps = {
@@ -49,7 +49,7 @@ const Button = ({
         ref={passRef ? passRef : null}
         disabled={disabled || loading}
         type="button"
-        className={`  flex items-center justify-center relative  transition-all font-medium text-base ${
+        className={` active:ring-4  flex items-center justify-center relative  transition-all font-medium text-base ${
           !disabled ? ` ${BtnVariants[variant]} ${BtnColors[color]}` : ""
         } ${"px-7 disabled:bg-gray-300 py-2.5"}  ${roundedClass} ${width} ${
           (disabled || loading) && "bg-neutral-200 dark:bg-zinc-400 border-gray-400 hover:ring-0"

@@ -34,7 +34,7 @@ const AdvisorPlansCard = ({
       } else {
         [
           mutate({
-            gateway: "SANDBOX",
+            gateway: "ZARINPAL",
             plan_id: data?.id,
             redirect_url: `${window.origin}/profile/advisor/subscription`,
           }),
