@@ -34,10 +34,10 @@ const DaysOfTheWeekStatus = ({ isCard, data, week }: { week: any[]; isCard?: boo
                 ? " bg-primary-700 border-primary-700  text-white "
                 : "  bg-white  border-primary-250 text-gray-400"
             } text-xxs  border-2  min-w-9 rounded-full h-5   ${
-              isCard ? "" : "md:h-7 md:text-sm  "
+              isCard ? "" : " !h-8 md:text-sm  "
             } w-full  relative  flex items-center justify-center `}
           >
-            <p className="text-center flex items-center  h-5  absolute  m-auto justify-center">
+            <p className="text-center leading-4 flex items-center    m-auto justify-center">
               {" "}
               {data?.find((x) => x?.day_number == e?.id)?.is_reserved ? "رزرو" : "خالی"}
             </p>
