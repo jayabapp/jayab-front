@@ -28,20 +28,30 @@ const DaysOfTheWeekStatus = ({ isCard, data, week }: { week: any[]; isCard?: boo
             {e?.title}
           </p>
 
-          <div
-            className={`  ${
-              data?.find((x) => x?.day_number == e?.id)?.is_reserved
-                ? " bg-primary-700 border-primary-700  text-white "
-                : "  bg-white  border-primary-250 text-gray-400"
-            } text-xxs  border-2  min-w-9 rounded-full h-5   ${
-              isCard ? "" : " !h-8 md:text-sm  "
-            } w-full  relative  flex items-center justify-center `}
-          >
-            <p className="text-center leading-4 flex items-center    m-auto justify-center">
-              {" "}
-              {data?.find((x) => x?.day_number == e?.id)?.is_reserved ? "رزرو" : "خالی"}
-            </p>
-          </div>
+          {isCard ? (
+            <div
+              className={`  ${
+                data?.find((x) => x?.day_number == e?.id)?.is_reserved
+                  ? " bg-primary-700 border-primary-700  text-white "
+                  : "  bg-white  border-primary-250 text-gray-400"
+              } text-xxs  border-2  min-w-9 rounded-full h-5   ${
+                isCard ? "" : " !h-6 md:text-sm  "
+              } w-full  relative  flex items-center justify-center `}
+            >
+              <p className="text-center leading-4 flex items-center    m-auto justify-center">
+                {" "}
+                {data?.find((x) => x?.day_number == e?.id)?.is_reserved ? "رزرو" : "خالی"}
+              </p>
+            </div>
+          ) : (
+            <>
+              {data?.find((x) => x?.day_number == e?.id)?.is_reserved ? (
+                <img src="/assets/images/shared/reserved.png" />
+              ) : (
+                <img src="/assets/images/shared/empty.png" />
+              )}
+            </>
+          )}
         </div>
       ))}
     </div>
