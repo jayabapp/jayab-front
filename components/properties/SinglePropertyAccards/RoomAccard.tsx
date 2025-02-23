@@ -17,7 +17,12 @@ const RoomAccard = ({ data }: { data: SinglePropDto }) => {
         <LinearTextBlock title={_STRINGS.ROOM_COUNTS} value={data?.bedrooms?.total_bedrooms} unit={_STRINGS.ROOM} />
 
         {data?.bedrooms?.bedrooms?.map((e, index) => (
-          <LinearTextBlock key={`${e}bedroom`} title={`تعداد تخت اتاق ${index + 1}`} value={e} unit={_STRINGS.ADAD} />
+          <LinearTextBlock
+            key={`${e}${index}bedroom`}
+            title={`تعداد تخت اتاق ${index + 1}`}
+            value={e}
+            unit={_STRINGS.ADAD}
+          />
         ))}
         <LinearTextBlock title={_STRINGS.EXTRA_BED} value={data?.bedrooms?.additional_bed} unit={_STRINGS.ADAD} />
         <LinearTextBlock

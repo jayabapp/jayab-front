@@ -19,6 +19,7 @@ const ImageCarousel = ({ list, item }: ImageCarouselTypes) => {
   // const onImageError = (e: any) => {
   //   e.target.src = "/assets/images/home/image_placeholder.png";
   // };
+
   return (
     <div className="h-full  col-span-full  px-4 md:pl-0 md:pr-4  py-0">
       <Swiper
@@ -31,24 +32,7 @@ const ImageCarousel = ({ list, item }: ImageCarouselTypes) => {
         {" "}
         {list?.map((e, i) => (
           <SwiperSlide key={`${e.id}banners`}>
-            <Link
-              href={
-                e?.brand_id
-                  ? `/products?brands=${e?.brand_id}&sort_type=new`
-                  : e?.product?.slug
-                  ? `/products/${e?.product?.slug}`
-                  : e?.category
-                  ? e?.category?.parent?.id
-                    ? `/products?parent_category=${e?.category?.parent?.id}&categories=${e?.category?.id}`
-                    : e?.category?.id
-                    ? `/products?parent_category=${e?.category?.id}`
-                    : ""
-                  : e?.link
-                  ? e?.link
-                  : ""
-              }
-              prefetch={false}
-            >
+            <Link href={e?.property?.slug ? `/rooms/${e?.property?.slug}` : e?.link ? e?.link : ""} prefetch={false}>
               {" "}
               <Editable
                 editIconClass=" !top-auto  !bottom-0"

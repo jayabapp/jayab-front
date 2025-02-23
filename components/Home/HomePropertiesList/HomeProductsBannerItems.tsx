@@ -11,7 +11,6 @@ const HomeProductsBannerItems = ({ bannerItem }: { bannerItem: any }) => {
   const pusher = (link: string) => {
     router.push(link);
   };
-
   return (
     <Editable
       isBanner
@@ -20,18 +19,8 @@ const HomeProductsBannerItems = ({ bannerItem }: { bannerItem: any }) => {
         bannerItem?.brand_id || bannerItem?.link || bannerItem?.category || bannerItem?.product ? "cursor-pointer" : ""
       } `}
       onClick={() => {
-        if (bannerItem?.brand_id) {
-          pusher(`/products?brands=${bannerItem?.brand_id}&sort_type=new`);
-        } else if (bannerItem?.product?.slug) {
-          pusher(`/products/${bannerItem?.product?.slug}`);
-        } else if (bannerItem?.category) {
-          if (bannerItem?.category?.parent?.id) {
-            pusher(
-              `/products?parent_category=${bannerItem?.category?.parent?.id}&categories=${bannerItem?.category?.id}`
-            );
-          } else if (bannerItem?.category?.id) {
-            pusher(`/products?parent_category=${bannerItem?.category?.id}`);
-          }
+        if (bannerItem?.property?.slug) {
+          pusher(`/rooms/${bannerItem?.property?.slug}`);
         } else if (bannerItem?.link) pusher(bannerItem?.link);
       }}
     >
