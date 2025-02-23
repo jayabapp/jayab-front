@@ -100,7 +100,7 @@ const PropertyInquery = () => {
               <div className="w-full flex flex-col items-center gap-1 justify-center ">
                 {" "}
                 <div className="text-xs   items-center justify-center text-center  w-full">
-                  {moment().format("jDD / jMM / jYYYY  ")}
+                  {moment().format("jDD / jMMMM / jYYYY  ")}
                 </div>
                 <div className="w-full flex items-start md:items-center justify-between gap-2">
                   {" "}

@@ -27,7 +27,7 @@ const DaysOfTheWeekStatus = ({ isCard, data, week }: { week: any[]; isCard?: boo
           >
             {e?.title}
           </p>
-          {isCard ? <></> : <div className="w-2 h-4"> </div>}
+          {isCard ? <></> : <div className="w-2 h-1"> </div>}
           {isCard ? (
             <div
               className={`  ${
