@@ -17,7 +17,7 @@ import moment from "moment-jalaali";
 import Image from "next/image";
 import { useParams } from "next/navigation";
 import React, { useEffect, useState } from "react";
-
+moment.loadPersian();
 const PropertyInquery = () => {
   const [week, setWeek] = useState<any[]>([]);
   const [desc, setDesc] = useState("");
