@@ -8,11 +8,13 @@ import { persist, createJSONStorage } from "zustand/middleware";
 
 export type AuthStore = {
   isLogin: boolean;
+  isAdminSso: boolean;
   authCodeExpire: Moment | string | number | null;
 };
 
 export const useAuthStore = create<AuthStore>(() => ({
   isLogin: false,
+  isAdminSso: false,
   authCodeExpire: null,
 }));
 
