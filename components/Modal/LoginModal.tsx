@@ -11,7 +11,11 @@ type LoginModalType = {
 
 const LoginModal = () => {
   const router = useRouter();
-  const { loginModal } = useStoreParams((state) => state);
+  const replacer = (url: string) => {
+    router.replace(url);
+  };
+
+  const { loginModal, loginModalCancelRoute } = useStoreParams((state) => state);
   const closeDispatch = () => {
     useStoreParams.setState({ loginModal: false });
   };
@@ -25,6 +29,9 @@ const LoginModal = () => {
     <Modal
       show={loginModal}
       onHide={() => {
+        if (!!loginModalCancelRoute) {
+          replacer(loginModalCancelRoute);
+        }
         closeDispatch();
       }}
     >
@@ -45,6 +52,9 @@ const LoginModal = () => {
           <button
             className="bg-gray-300 dark:bg-gray-500  w-full hover:ring-4 hover:ring-gray-600/50 px-2 py-3 rounded-lg text-gray-600 dark:text-gray-200"
             onClick={() => {
+              if (!!loginModalCancelRoute) {
+                replacer(loginModalCancelRoute);
+              }
               closeDispatch();
             }}
           >

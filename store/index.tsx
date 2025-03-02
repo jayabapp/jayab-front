@@ -24,6 +24,7 @@ export const useAuthStore = create<AuthStore>(() => ({
 export type ParamStore = {
   isDark: boolean;
   isAdvisor: boolean;
+  loginModalCancelRoute: string;
   installPrompt: any | null;
   showInstallPrompt: boolean;
   sideBarStatus: boolean;
@@ -38,6 +39,7 @@ export const useStoreParams = create<ParamStore>(() => ({
   installPrompt: null,
   sideBarStatus: false,
   loginModal: false,
+  loginModalCancelRoute: "",
   isAdvisor: false,
   likes: [],
   bookmarks: [],

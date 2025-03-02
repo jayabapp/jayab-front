@@ -13,11 +13,9 @@ function Fallback() {
 export default function BlogsPage() {
   return (
     <>
-      <nav>
-        <Suspense fallback={<Fallback />}>
-          <Blogs />
-        </Suspense>
-      </nav>
+      <Suspense fallback={<Fallback />}>
+        <Blogs />
+      </Suspense>
     </>
   );
 }
