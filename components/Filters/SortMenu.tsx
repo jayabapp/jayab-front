@@ -22,7 +22,7 @@ const SortMenu = ({ query }: SortMenuType) => {
 
   useEffect(() => {
     if (!userInfo?.advisor_id) {
-      setSortTypes(SORT_TYPES?.filter((e) => e?.id != "commission"));
+      setSortTypes(SORT_TYPES?.filter((e) => e?.id != "commission_desc"));
     } else {
       setSortTypes(SORT_TYPES);
     }

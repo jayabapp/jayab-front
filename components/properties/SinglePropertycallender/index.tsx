@@ -77,7 +77,7 @@ const SinglePropertycallender = ({ data }: { data: any }) => {
         }}
         selectedDate={callenderselectedDate}
       />
-      {userInfo?.advisor_id ? <OwnerCallemdarGuide isAdvisor /> : <></>}
+      <OwnerCallemdarGuide isAdvisor={!!userInfo?.advisor_id} isCustomer={!!userInfo?.advisor_id ? false : true} />
     </div>
   );
 };
