@@ -25,12 +25,12 @@ const LayoutProvider = (props: Layout) => {
     <AnimatePresence mode="wait" initial={false} onExitComplete={() => window.scrollTo(0, 0)}>
       {" "}
       <QueryClientProvider client={client}>
-        <MainWrapper>
-          {" "}
-          <Suspense fallback={<></>}>
+        <Suspense fallback={<></>}>
+          <MainWrapper>
+            {" "}
             {props?.children} {props?.modal}
-          </Suspense>
-        </MainWrapper>
+          </MainWrapper>
+        </Suspense>
       </QueryClientProvider>
     </AnimatePresence>
   );
