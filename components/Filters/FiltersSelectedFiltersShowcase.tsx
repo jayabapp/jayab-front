@@ -158,7 +158,7 @@ const FiltersSelectedFiltersShowcase = ({
         </SwiperSlide>
       ))}
       {/*  HAS POOL */}
-      {!!query?.has_pool ? (
+      {!!query?.has_pool && query?.has_pool != "2" ? (
         <SwiperSlide key={`hasPool`} className="!w-auto    ">
           <div className="rounded-full !w-auto   gap-4 py-2 h-8 px-1 flex items-center justify-center border border-primary-700  bg-primary-700/5 text-primary-700  text-xs ">
             <p className="text-xs pr-2">
