@@ -1,6 +1,6 @@
 "use client";
 
-import { usePathname, useRouter, useSelectedLayoutSegment } from "next/navigation";
+import { usePathname, useRouter, useSearchParams, useSelectedLayoutSegment } from "next/navigation";
 import { ReactNode, use, useEffect, useState } from "react";
 import { Toaster } from "sonner";
 import { isMobile } from "react-device-detect";
@@ -40,23 +40,36 @@ const Footer = dynamic(() => import("../../components/Footer"), {
   ssr: false,
 });
 const MainWrapper = ({ children }: mainWrapper) => {
-  const { connecting } = useStoreSocket((state) => state);
-
   const router = useRouter();
-  // const isDark = useSelector((state: any) => state.params.isDark) || false;
-  const { isDark } = useStoreParams((state) => state);
-  const { isLogin } = useAuthStore((state) => state);
-  // const { connecting } = useSelector((state: { sockets: { connecting: boolean } }) => state.sockets);
   const pathname = usePathname();
+  const searchParams = useSearchParams();
+
+  const { connecting } = useStoreSocket((state) => state);
+  const { isDark } = useStoreParams((state) => state);
+  const { isLogin, isAdminSso } = useAuthStore((state) => state);
+
   const [accessChecked, setAccessChecked] = useState(false);
   const isAuthScreen = pathname.match("auth");
 
   const [isLandscape, setIsLandscape] = useState(false);
 
   useEffect(() => {
-    // useStoreTheme.setState({ logo: fakeLogo });
     const isLogin = localStorage.getItem("isLogin");
-    if (isLogin) {
+    /**
+     * admin panel sso
+     */
+    const ssoToken = searchParams.get("sso_token");
+    const redirectUrl = searchParams.get("__next")?.replaceAll("|", "/");
+    console.log({ ssoToken, redirectUrl });
+
+    //if the url has sso_token query param
+    if (ssoToken) {
+      useAuthStore.setState({ isLogin: true });
+      useAuthStore.setState({ isAdminSso: true });
+      localStorage.setItem("isLogin", "true");
+      localStorage.setItem("access_token", ssoToken);
+      redirectUrl && router.push(redirectUrl);
+    } else if (isLogin) {
       useAuthStore.setState({ isLogin: true });
       // dispatch({ type: "IS_LOGIN", payload: true });
       if (isAuthScreen) {
@@ -135,7 +148,7 @@ const MainWrapper = ({ children }: mainWrapper) => {
   }, [profile]);
 
   useEffect(() => {
-    if (isLogin) FCM.init();
+    if (isLogin && !isAdminSso) FCM.init();
   }, [isLogin]);
 
   SocketIO();
