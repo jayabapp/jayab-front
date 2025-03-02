@@ -60,10 +60,33 @@ const PropertTermsModal = ({
           <p className=" text-sm font-bold">{_STRINGS.PARTY_RULES}</p>
           <p className="text-sm">{data?.options?.party}</p>
         </div>
-        <div className="flex flex-col gap-2">
-          <p className=" text-sm font-bold">{_STRINGS.OTHER_TERMS}</p>
-          <p className="text-sm">{data?.property_descriptions?.other_dscr}</p>
+        <div className="w-full flex items-center  gap-8">
+          {" "}
+          <div className="flex flex-row gap-2">
+            <p className=" text-sm font-bold">{_STRINGS.ENTER_HOUR} :</p>
+            <p className="text-sm">{data?.check_in_hour}</p>
+          </div>
+          <div className="flex flex-row gap-2">
+            <p className=" text-sm font-bold">{_STRINGS.END_HOUR} :</p>
+            <p className="text-sm">{data?.check_out_hour}</p>
+          </div>
         </div>
+        <div className="flex flex-col gap-2">
+          <p className=" text-sm font-bold">{_STRINGS.REQUIRED_DOCS}</p>
+          <p className="text-sm">{data?.property_descriptions?.doc_dscr}</p>
+        </div>
+        <div className="flex flex-col gap-2">
+          <p className=" text-sm font-bold">{_STRINGS.PROP_DESC}</p>
+          <p className="text-sm">{data?.property_descriptions?.property_dscr}</p>
+        </div>
+        {!!data?.property_descriptions?.other_dscr ? (
+          <div className="flex flex-col gap-2">
+            <p className=" text-sm font-bold">{_STRINGS.OTHER_TERMS}</p>
+            <p className="text-sm">{data?.property_descriptions?.other_dscr}</p>
+          </div>
+        ) : (
+          <></>
+        )}
       </div>
     </Modal>
   );

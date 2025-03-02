@@ -178,7 +178,7 @@ const _STRINGS = {
   ANIMAL_RULES: "شرایط ورود حیوان خانگی",
 
   PARTY_RULES: "شرایط برگزاری مراسم",
-  REQUIRED_DOCS: "مدارک مورد نیاز جهت پذیرش (اختیاری)",
+  REQUIRED_DOCS: "مدارک مورد نیاز جهت پذیرش ",
 
   PROP_DESC: "توضیحات ملک",
   OTHER_DESC: "سایر توضیحات",

@@ -251,6 +251,8 @@ export interface SinglePropDto {
   std_capacity: number;
   max_capacity: number;
   favorite_count: number;
+  check_in_hour: number;
+  check_out_hour: number;
   total_bedrooms: number;
   bedrooms: Bedrooms;
   has_pool: boolean;
