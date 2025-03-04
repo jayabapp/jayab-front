@@ -1,10 +1,10 @@
 {
-  "name": " Jayab ",
-  "short_name": " جایاب",
+  "name": "Jayab",
+  "short_name": "جایاب",
   "theme_color": "#ffffff",
   "background_color": "#ffffff",
   "display": "standalone",
-  "description": " جایاب ",
+  "description": "جایاب",
   "start_url": "/",
 
   "orientation": "portrait",
