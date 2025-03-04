@@ -78,21 +78,21 @@ const Callender = ({
       onTouchEnd={(e) => {
         // alert(e.changedTouches[0]?.pageX);
         if (start > e.changedTouches[0].pageX && doTheMath(start, e.changedTouches[0].pageX) && !preventer) {
-          nextMonth();
+          lastMonth();
           setPreventer(true);
         } else if (start < e.changedTouches[0].pageX && doTheMath(start, e.changedTouches[0].pageX) && !preventer) {
           // dragged right
-          lastMonth();
+          nextMonth();
           setPreventer(true);
         }
       }}
       onDragOver={(e) => {
         if (prevX > e.pageX && doTheMath(start, e.pageX) && !preventer) {
-          nextMonth();
+          lastMonth();
           setPreventer(true);
         } else if (prevX < e.pageX && doTheMath(start, e.pageX) && !preventer) {
           // dragged right
-          lastMonth();
+          nextMonth();
           setPreventer(true);
         }
 

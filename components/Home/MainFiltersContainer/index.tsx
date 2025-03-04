@@ -30,6 +30,7 @@ function MainFiltersContainer({ data, title }: { data: HomeLandingDto[]; title: 
           </div>
         ) : (
           <Swiper
+            withArrows
             slidesWidth={{ def: "25%", md: "12.5%" }}
             spacing="0"
             options={{ align: "start", direction: "rtl", dragFree: true }}

@@ -88,7 +88,7 @@ const MobileFooter: React.FC = ({}) => {
     <div
       className={`z-1    flex   max-w-[800px]  ${
         isIOS && getPWADisplayMode() == "standalone" ? "pb-8" : "pb-5"
-      }  flex md:hidden  pt-3 justify-between  md:rounded-md  left-0  right-0     mx-auto   shadow-card transition-all duration-1000	ease-in-out  items-center fixed bottom-0 w-full   bg-white  `}
+      }  flex lg:hidden  pt-3 justify-between  md:rounded-md  left-0  right-0     mx-auto   shadow-card transition-all duration-1000	ease-in-out  items-center fixed bottom-0 w-full   bg-white  `}
     >
       <div className="flex w-full items-center   justify-around px-4     md:gap-6">
         {footerItems?.map((el, i) => {

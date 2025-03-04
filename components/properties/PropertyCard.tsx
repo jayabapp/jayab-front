@@ -23,7 +23,7 @@ const PropertyCard = ({ data, isOwner, week }: { data: PropertyListDto; isOwner?
     <div className="w-full shadow-card  rounded-2xl    justify-between flex flex-col  p-3   gap-2  ">
       <div className="w-full  grid grid-cols-5 gap-2   ">
         {/* INFO */}
-        <Link href={`${goToLink}`} prefetch={false} className="col-span-3  order-1  flex flex-col gap-1">
+        <Link href={`${goToLink}`} prefetch={false} className="col-span-3  !outline-none order-1  flex flex-col gap-1">
           {/* TITLE */}
           <div className="flex items-start gap-2">
             {!!data?.has_blue_tick ? (
@@ -108,7 +108,7 @@ const PropertyCard = ({ data, isOwner, week }: { data: PropertyListDto; isOwner?
         <Link
           href={`${goToLink}`}
           prefetch={false}
-          className=" flex h-fit items-start  justify-start w-full col-span-2  order-2 "
+          className=" flex h-fit !outline-none items-start  justify-start w-full col-span-2  order-2 "
         >
           <div className=" aspect-square w-full h-full relative">
             <Image

@@ -26,6 +26,7 @@ function HomeCityFilterContainer({ data, title }: { data: HomeLandingDto[]; titl
         </div>
       ) : (
         <SwiperEm
+          withArrows
           slidesWidth={{ def: "25%", md: "10%" }}
           spacing="0.5rem"
           options={{ align: "start", direction: "rtl", dragFree: true, loop: false }}

@@ -27,6 +27,8 @@ const SinglePropContactInfoPop = ({
         return PropertyService.getSinglePropertyContactInfo({ propertySlug: data?.slug });
       } else return null;
     },
+    staleTime: 300,
+    gcTime: 300,
   });
 
   return (
@@ -39,7 +41,9 @@ const SinglePropContactInfoPop = ({
         ) : isEmpty(contactInfo) ? (
           <EmptyList />
         ) : (
-          contactInfo?.map((e) => <PropertyContactInfoItem key={`contactItem${e?.assistant_full_name}`} data={e} />)
+          contactInfo?.map((e) => (
+            <PropertyContactInfoItem onHide={onHide} key={`contactItem${e?.assistant_full_name}`} data={e} />
+          ))
         )}
       </div>
     </PopUpDown>

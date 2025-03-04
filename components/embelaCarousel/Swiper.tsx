@@ -6,6 +6,7 @@ import { DotButton, useDotButton } from "./EmblaCarouselDotButton";
 import { useMediaQuery } from "react-responsive";
 import { useAutoplay } from "./EmblaCarouselAutoplay";
 import Autoplay from "embla-carousel-autoplay";
+import { NextButton, PrevButton, usePrevNextButtons } from "./EmblaCarouselArrowButtons";
 type PropType = {
   options?: EmblaOptionsType;
   children: ReactNode;
@@ -14,6 +15,7 @@ type PropType = {
   spacing?: string;
   autoplay?: boolean;
   pagination?: boolean;
+  withArrows?: boolean;
 };
 
 const Swiper: React.FC<PropType> = (props) => {
@@ -29,6 +31,7 @@ const Swiper: React.FC<PropType> = (props) => {
     spacing,
     autoplay = false,
     pagination,
+    withArrows,
   } = props;
 
   /* -------------------------------------------------------------------------- */
@@ -72,7 +75,7 @@ const Swiper: React.FC<PropType> = (props) => {
   /* -------------------------------------------------------------------------- */
 
   const { selectedIndex, scrollSnaps, onDotButtonClick } = useDotButton(emblaApi);
-
+  const { prevBtnDisabled, nextBtnDisabled, onPrevButtonClick, onNextButtonClick } = usePrevNextButtons(emblaApi);
   return (
     <section
       style={{
@@ -83,6 +86,22 @@ const Swiper: React.FC<PropType> = (props) => {
     >
       <div className="embla__viewport" ref={emblaRef}>
         <div className="embla__container">{children}</div>
+        {!!withArrows ? (
+          <div className="  embla__buttons ">
+            <PrevButton
+              className=" !-top-[10%] !left-0 scale-75 hover:scale-[0.8]  md:hover:scale-102   md:scale-100"
+              onClick={onNextButtonClick}
+              disabled={nextBtnDisabled}
+            />
+            <NextButton
+              className="!right-0 !-top-[10%] scale-75  hover:scale-[0.8]  md:hover:scale-102  md:scale-100"
+              onClick={onPrevButtonClick}
+              disabled={prevBtnDisabled}
+            />
+          </div>
+        ) : (
+          <></>
+        )}
       </div>
       {pagination ? (
         <div className="embla__dots">
