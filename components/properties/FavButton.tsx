@@ -42,9 +42,13 @@ const FavButton = ({
   }, [likes, data]);
 
   const onClick = () => {
-    if (!isPending) {
-      setLike((e) => !e);
-      onLike();
+    if (!!isLogin) {
+      if (!isPending) {
+        setLike((e) => !e);
+        onLike();
+      }
+    } else {
+      useStoreParams.setState({ loginModal: true });
     }
   };
 

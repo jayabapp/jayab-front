@@ -8,14 +8,6 @@ const ElementToImage = ({ children, ...props }: any) => {
   const ref = useRef<HTMLDivElement>(null);
 
   const onShare = async (files: any) => {
-    // const response = await fetch(shareData);
-    // const blob = await response.blob();
-    // const files = [
-    //   new File([blob], "file.jpeg", {
-    //     type: blob.type,
-    //   }),
-    // ];
-
     const shareDetails = { files };
     if (navigator.share) {
       try {
