@@ -11,6 +11,8 @@ body {
   margin: 0;
   background: white !important;
   font-feature-settings: "ss01";
+  -moz-font-feature-settings: "ss01";
+  -webkit-font-feature-settings: "ss01";
 }
 
 a {
@@ -398,7 +400,7 @@ strong {
   @apply font-bold text-xl;
 }
 p {
-  @apply font-normal text-justify;
+  @apply font-normal text-start;
 }
 
 select {
