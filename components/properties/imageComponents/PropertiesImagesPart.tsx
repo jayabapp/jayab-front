@@ -194,8 +194,7 @@ function ProductImagesContainer({
                 >
                   {" "}
                   {!!i ? (
-                    <Image
-                      fill
+                    <img
                       src={NEW_IMAGE_URL(i || "")}
                       className="w-full h-full !p-0  !overflow-clip  bg-white  rounded-20  aspect-square !object-cover "
                       alt={`${i?.alt || ""}`}
