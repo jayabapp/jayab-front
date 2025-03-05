@@ -135,6 +135,7 @@ const CityModal = ({
 
   return (
     <Modal
+      zIndex={40000000}
       options={{
         containerClass:
           "mx-auto my-0 md:my-20 w-full md:w-1/2 xl:w-1/3 2xl:w-1/4  rounded-0 md:rounded-2xl overflow-y-scroll bg-white dark:bg-zinc-900  relative min-h-[100dvh]  min:min-h-[80dvh] ",

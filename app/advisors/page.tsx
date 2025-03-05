@@ -1,5 +1,5 @@
 "use client";
-import { AdvisorListDto, AdvisorPageListDto } from "@/api_services/advisor/advisor.interface";
+import { AdvisorPageListDto } from "@/api_services/advisor/advisor.interface";
 import { AdvisorService } from "@/api_services/advisor/advisor.propery";
 import { HomeService } from "@/api_services/home/home.service";
 import AdvisorCard from "@/components/Advisor/AdvisorCard";
@@ -145,11 +145,11 @@ const AdvisorsListPage = () => {
             }}
             placeholder="کد یا نام مشاور ..."
           />
-          <div className=" w-full flex  md:grid md:grid-cols-6  flex-col md:flex-row  gap-2 md:gap-4 items-center ">
+          <div className=" w-full flex   md:flex-wrap flex-col md:flex-row  gap-2 md:gap-4 items-center ">
             <Button
               roundedClass="rounded-full"
               width=" w-full md:w-fit"
-              containerClass="w-full md:w-fit flex items-center justify-center  md:col-span-2"
+              containerClass="w-full md:w-fit flex items-center justify-center  md:col-span-3"
               onClick={showCityModalFunc}
               title={cityTitle || _STRINGS.SELECT_CITY}
             />
@@ -158,7 +158,7 @@ const AdvisorsListPage = () => {
                 variant="outline"
                 roundedClass="rounded-full"
                 width=" w-full md:w-fit"
-                containerClass="w-full  md:col-span-4 hidden md:flex  md:w-fit  items-center justify-center"
+                containerClass="w-full  md:col-span-3 hidden md:flex  md:w-fit  items-center justify-center"
                 onClick={registerAdvisor}
                 title={_STRINGS.REGISTER_ADVISOR}
               />

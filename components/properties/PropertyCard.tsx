@@ -31,7 +31,7 @@ const PropertyCard = ({ data, isOwner, week }: { data: PropertyListDto; isOwner?
             ) : (
               <></>
             )}
-            <p className="text-sm line-clamp-1 font-semibold">{data.title}</p>
+            <p className="text-sm line-clamp-1  text-right font-semibold">{data.title}</p>
           </div>
 
           {/* CODE  - LIKES */}

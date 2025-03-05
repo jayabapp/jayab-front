@@ -176,7 +176,7 @@ const Filterpage = () => {
           containerClass:
             "mx-auto  my-0 md:my-10  h-full   w-full md:w-1/2 xl:w-1/3 2xl:w-1/4 rounded-0 overflow-y-scroll  bg-white pb-32  dark:bg-zinc-800",
         }}
-        show={filterModalShow}
+        show={filterModalShow && !showCityModal}
         onHide={() => {
           setFilters(defaultMobileFilters);
           setFilterModalShow(false);

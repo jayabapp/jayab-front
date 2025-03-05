@@ -10,12 +10,13 @@ type ModalProps = {
   show?: boolean;
   type?: "bottom-sheet";
   options?: op;
+  zIndex?: number;
 };
 interface op {
   containerClass?: string;
   parentClass?: string;
 }
-const Modal = ({ children, show, onHide, options, onScroll, type }: ModalProps): JSX.Element => {
+const Modal = ({ children, show, onHide, options, onScroll, type, zIndex }: ModalProps): JSX.Element => {
   const ref = useRef<HTMLDivElement>(null);
   useEffect(() => {
     setTimeout(() => {
@@ -48,7 +49,7 @@ const Modal = ({ children, show, onHide, options, onScroll, type }: ModalProps):
   return (
     <Transition show={show}>
       <div className="fixed inset-0">
-        <Dialog as="div" className="relative" style={{ zIndex: 1000 }} onClose={onHide}>
+        <Dialog as="div" className="relative" style={{ zIndex: zIndex || 1000 }} onClose={onHide}>
           <TransitionChild as={Fragment} {..._findAnimationClass}>
             <div className="fixed inset-0 bg-black bg-opacity-70 		" />
           </TransitionChild>
