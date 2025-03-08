@@ -4,7 +4,7 @@ import { PropertyService } from "@/api_services/property/property.service";
 import Callender from "@/components/widgets/DatePicker/callender";
 import { useQuery } from "@tanstack/react-query";
 import moment from "moment-jalaali";
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useMemo, useState } from "react";
 import OwnerCallemdarGuide from "./OwnerCallemdarGuide";
 import _STRINGS from "@/utils/LocalStrings";
 import Button from "@/components/shared/Button/Button";
@@ -67,13 +67,15 @@ const SingleOwnerPropertycallender = ({
   /*                       FINDING THE SELECTED DATE DATA                       */
   /* -------------------------------------------------------------------------- */
 
-  const selectedDateData = callendarDataState?.find((e) => {
-    return (
-      `${e?.day}` == moment(callenderselectedDate, "jYYYY/jMM/jD").format("jD") &&
-      `${e?.month}` == moment(callenderselectedDate, "jYYYY/jMM/jD").format("jM") &&
-      `${e?.year}` == moment(callenderselectedDate, "jYYYY/jMM/jD").format("jYYYY")
-    );
-  });
+  const selectedDateData = useMemo(() => {
+    return callendarDataState?.find((e) => {
+      return (
+        `${e?.day}` == moment(callenderselectedDate, "jYYYY/jMM/jD").format("jD") &&
+        `${e?.month}` == moment(callenderselectedDate, "jYYYY/jMM/jD").format("jM") &&
+        `${e?.year}` == moment(callenderselectedDate, "jYYYY/jMM/jD").format("jYYYY")
+      );
+    });
+  }, [callenderselectedDate, callendarDataState]);
 
   return (
     <div className=" order-3 md:order-4 flex flex-col gap-4 ">
