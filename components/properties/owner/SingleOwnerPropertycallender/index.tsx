@@ -70,7 +70,7 @@ const SingleOwnerPropertycallender = ({
   const selectedDateData = callendarDataState?.find((e) => {
     return (
       `${e?.day}` == moment(callenderselectedDate, "jYYYY/jMM/jD").format("jD") &&
-      `${e?.month}` == moment(callenderselectedDate, "jYYYY/jMM/jD").format("jMM") &&
+      `${e?.month}` == moment(callenderselectedDate, "jYYYY/jMM/jD").format("jM") &&
       `${e?.year}` == moment(callenderselectedDate, "jYYYY/jMM/jD").format("jYYYY")
     );
   });
