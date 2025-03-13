@@ -5,8 +5,10 @@ import React from "react";
 
 const PropertyContactInfoItem = ({ data, onHide }: { onHide: () => void | null; data: PropertyContactIInfDto }) => {
   const onActionButtinsClick = (type: "tel" | "sms") => {
-    window.open(`${type}:${data?.assistant_mobile_number}`, "_blank", "noopener,noreferrer");
     onHide();
+    setTimeout(() => {
+      window.open(`${type}:${data?.assistant_mobile_number}`, "_blank", "noopener,noreferrer");
+    }, 500);
   };
 
   return (
