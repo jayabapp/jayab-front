@@ -44,9 +44,7 @@ const SinglePropContactInfoModal = ({
       <ModalHeaderPart hideArrow title={_STRINGS.CONTACT_INFO} onHide={onHide} />
 
       <div className="w-full p-4 flex flex-col">
-        {isPending ? (
-          <LottieLoading />
-        ) : isEmpty(state) ? (
+        {isEmpty(state) ? (
           <EmptyList />
         ) : (
           state?.map((e) => (
