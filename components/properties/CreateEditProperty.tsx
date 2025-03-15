@@ -99,7 +99,7 @@ const CreateEditProperty = ({
         }}
       />
       <FormInputWithExternalUnit
-        unit={_STRINGS.METER}
+        unit={_STRINGS.FLOOR}
         item={{ title: _STRINGS.FLOOR_COUNT, isMandatory: true, containerClass: "w-full", keyboard: "number" }}
         value={values?.floor_count || ""}
         onChangeText={(e) => {

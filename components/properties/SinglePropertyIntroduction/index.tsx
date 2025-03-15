@@ -16,6 +16,7 @@ import ShareLink from "@/components/shared/shareComponent/BrowserShare";
 import SinglePropSharePop from "./SinglePropSharePop";
 import { useStoreInit, useStoreParams } from "@/store";
 import { useRouter } from "next/navigation";
+import SinglePropContactInfoModal from "./SinglePropContactInfoModal";
 
 const SinglePropertyIntroduction = ({ data }: { data: SinglePropDto }) => {
   const [favCount, setFavCount] = useState(0);
@@ -192,7 +193,8 @@ const SinglePropertyIntroduction = ({ data }: { data: SinglePropDto }) => {
       </div>
       <div className="absolute">
         {" "}
-        <SinglePropContactIfoPop show={!!showContact} data={data} onHide={onContactClose} />
+        {/* <SinglePropContactIfoPop show={!!showContact} data={data} onHide={onContactClose} /> */}
+        <SinglePropContactInfoModal show={!!showContact} data={data} onHide={onContactClose} />
         <SinglePropSharePop show={!!showShare} data={data} onHide={onShareClose} />
       </div>
     </div>
