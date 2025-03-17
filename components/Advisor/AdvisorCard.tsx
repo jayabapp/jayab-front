@@ -1,5 +1,6 @@
+"use client";
 import _STRINGS from "@/utils/LocalStrings";
-import React from "react";
+import React, { useEffect, useState } from "react";
 import AdvisorCircularProgresCard from "./AdvisorCircularProgressPart/AdvisorCircularProgresCard";
 import { AdvisorListDto, AdvisorPageListDto } from "@/api_services/advisor/advisor.interface";
 import { NEW_IMAGE_URL } from "@/utils/urls";
@@ -14,6 +15,16 @@ const AdvisorCard = ({
   callback?: () => void | null;
   isSingle?: boolean;
 }) => {
+  const [cities, setCities] = useState<string[]>([]);
+
+  useEffect(() => {
+    if (!isSingle) {
+      setCities([...data?.cities]?.splice(0, 4));
+    } else {
+      setCities(data?.cities);
+    }
+  }, [isSingle, data]);
+
   return (
     <div onClick={callback} className=" rounded-2xl gap-2   shadow-card  p-4  w-full  flex flex-col items-center ">
       <div className="w-full flex items-center gap-2">
@@ -31,7 +42,7 @@ const AdvisorCard = ({
               className="rounded-full aspect-square w-full h-full"
             />
           </div>
-          <div className=" shrink-0 text-xs md:text-sm flex items-center justify-center px-1 md:px-2 py-1 rounded-md  bg-primary-700 text-white ">
+          <div className=" shrink-0 text-xs md:text-xs flex items-center justify-center px-1 md:px-2 py-1 rounded-md  bg-primary-700 text-white ">
             {_STRINGS.CODE} {data?.user?.referral_code}
           </div>
         </div>
@@ -58,12 +69,16 @@ const AdvisorCard = ({
         </div>
       </div>
 
-      <div className={`flex  ${isSingle ? "" : "line-clamp-1"}  text-sm items-center gap-2 w-full`}>
+      <div className={`flex  ${isSingle ? "" : "line-clamp-1"}  text-sm items-start gap-2 w-full`}>
         <p className="shrink-0">{_STRINGS.ACTIVITY_FIELD} :</p>
-        <div className="flex gap-1  items-center ">
-          {data?.cities?.map((e, index) => (
-            <p className="text-xs">{`${index != 0 ? "," : ""}${e}`} </p>
+        <div className={`  flex gap-1 flex-wrap ${isSingle ? "" : "line-clamp-1"}   items-center `}>
+          {cities?.map((e, index) => (
+            <p key={`${data?.id}${e}${index}`} className="text-xs">
+              {`${index != 0 ? "," : ""}${e}`}{" "}
+            </p>
           ))}
+
+          {!isSingle && cities?.length < data?.cities?.length ? "..." : ""}
         </div>
       </div>
     </div>
