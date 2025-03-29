@@ -11,6 +11,7 @@ import { useStoreTheme } from "../../store";
 import { AuthService } from "@/api_services/auth/auth.service";
 import BtnLoading from "../shared/Button/BtnLoading";
 import Modal from "../Modal";
+import Notify from "../shared/Toast";
 //For Slider
 
 type props = {
@@ -96,6 +97,11 @@ const MultiUploader = ({
     const files = target?.files ? target?.files : null;
 
     if (!files) return;
+
+    if (files?.length > 10) {
+      return Notify({ type: "error", body: "در هر تلاش بیشتر از 10 عدد عکس انتخاب نکنید ." });
+    }
+
     if (!!setTotalLength) {
       setTotalLength(files?.length);
     }
@@ -145,7 +151,7 @@ const MultiUploader = ({
             }  `}
           >
             <img className="w-8 opacity-70" src="/assets/images/uploader/uploader_placeholder.png" />
-            {title && <p className=" text-sm  opacity-70 ">{title}</p>}
+            {title && <p className=" text-xs  opacity-70 ">{title}</p>}
             {loading ? (
               <div className="w-full h-full absolute top-0 left-0 rounded-10 flex items-center justify-center   backdrop-blur-md">
                 <BtnLoading />{" "}

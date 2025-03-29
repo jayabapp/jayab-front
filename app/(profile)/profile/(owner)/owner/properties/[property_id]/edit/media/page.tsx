@@ -90,10 +90,13 @@ const CreatePropertyImages = () => {
       </div>
 
       <div className=" flex items-start w-full flex-wrap gap-4">
-        <p className="text-xs text-primary-150">
-          {" "}
-          {!isEmpty(images) ? "*عکس اصلی خود را با ضربه زدن روی عکس مورد نظر انتخاب کنید." : ""}{" "}
-        </p>
+        <div className=" bg-primary-350/5 border p-3 rounded-10 border-primary-350  flex flex-col gap-3">
+          <p className="text-xs text-primary-350"> {"1- حداکثر تعداد آپلود همزمان عکس 10 عدد میباشد."} </p>
+          <p className="text-xs text-primary-350">
+            {" "}
+            {!isEmpty(images) ? "2- عکس اصلی خود را با ضربه زدن روی عکس مورد نظر انتخاب کنید." : ""}{" "}
+          </p>
+        </div>{" "}
         <div className=" w-full  min-h-8">
           {!!totalLength && !!uploaderLoading && totalLength > 1 ? (
             <div className="flex flex-col gap-2 w-full">
@@ -115,7 +118,6 @@ const CreatePropertyImages = () => {
             <></>
           )}
         </div>
-
         {isLoading ? (
           <div className="w-full flex items-center justify-center">
             {" "}
