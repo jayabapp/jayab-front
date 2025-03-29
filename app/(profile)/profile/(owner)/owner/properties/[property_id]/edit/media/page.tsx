@@ -90,7 +90,7 @@ const CreatePropertyImages = () => {
       </div>
 
       <div className=" flex items-start w-full flex-wrap gap-4">
-        <div className=" bg-primary-350/5 border p-3 rounded-10 border-primary-350  flex flex-col gap-3">
+        <div className=" bg-primary-350/5 border p-3  w-full  rounded-10 border-primary-350  flex flex-col gap-3">
           <p className="text-xs text-primary-350"> {"1- حداکثر تعداد آپلود همزمان عکس 10 عدد میباشد."} </p>
           <p className="text-xs text-primary-350">
             {" "}
