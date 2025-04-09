@@ -118,9 +118,6 @@ function ProductImagesContainer({
           className={`relative h-[100%]   flex flex-col md:p-0.5 mt-2 md:mt-0
         ${addImages?.length >= 4 ? "justify-between" : ""}    `}
         >
-          {/* ${
-         !data?.cheapest_price ? "grayscale" : ""
-       } */}
           {addImages?.slice(0, 4)?.map((e, index) => (
             <div
               onClick={() => setModalProps({ isVisible: true, data: data, currentIndex: index })}
@@ -132,7 +129,6 @@ function ProductImagesContainer({
                   {addImages?.slice(3)?.length} +
                 </div>
               ) : null}
-              {/* {e?.type == 1 ? ( */}
               {true ? (
                 <div className={` rounded-10 overflow-clip  ${index == 3 ? " blur-sm " : " "}`}>
                   <ProductImage
@@ -152,12 +148,6 @@ function ProductImagesContainer({
                       e?.type != 1 ? " blur-sm" : ""
                     } w-full !aspect-square object-contain     rounded-20  `}
                   />
-
-                  {/* <img
-                    src="/assets/icons/products/play-cricle.svg"
-                    className="left-1/2 top-1/2 absolute "
-                    style={{ transform: "translate(-50%,-50%)" }}
-                  /> */}
                 </div>
               )}
             </div>
@@ -207,73 +197,9 @@ function ProductImagesContainer({
             ))}
           </Swiper>
         </div>
-        {/* <div className="block  relative rounded-10 !aspect-square p-0 md:p-0.5 ">
-          <SwiperWithNavigation
-            pagination={{
-              clickable: true,
-            }}
-            reference={ref}
-            onBeforeInit={(swiper: SwiperTyype) => (ref.current = swiper)}
-            dataLength={0}
-            slidesPerView={1}
-            spaceBetween={10}
-            className={"w-full  overflow-clip   rounded-20  px-0"}
-          >
-            {addImages
-              // ?.filter((e) => e?.type == 1)
-              ?.map((i, index) => (
-                <SwiperSlide key={`imgprd${index}`} id={`imgprd${index}`}>
-                  <div
-                    onClick={() => setModalProps({ isVisible: true, data: data, currentIndex: index })}
-                    className={`w-full    h-full  aspect-square relative  rounded-20 `}
-                  >
-                    {" "}
-                    {!!i ? (
-                      <Image
-                        fill
-                        src={NEW_IMAGE_URL(i || "")}
-                        className="w-full h-full !p-0 custome-shadow-card !overflow-clip  bg-white  rounded-20  aspect-square !object-cover "
-                        alt={`${i?.alt || ""}`}
-                      />
-                    ) : (
-                      <></>
-                    )}
-                  </div>
-                </SwiperSlide>
-              ))}
-          </SwiperWithNavigation>
-        </div> */}
       </div>
     </div>
   );
 }
 
 export default ProductImagesContainer;
-
-// {/* <div className={`md:hidden `}>
-// <SwiperWithNavigation
-//   reference={ref}
-//   onBeforeInit={(swiper: SwiperTyype) => (ref.current = swiper)}
-//   dataLength={addImages?.length}
-//   slidesPerView={1}
-//   spaceBetween={10}
-//   className={"w-full px-0"}
-// >
-//   {addImages
-//     ?.filter((e) => e?.type == 1)
-//     ?.map((i, index) => (
-//       <SwiperSlide key={`imgprd${index}`} id={`imgprd${index}`}>
-//         <div className={`w-full h-full mb-2 aspect-square relative `}>
-//           {" "}
-//           <Image
-//             fill
-//             src={NEW_IMAGE_URL(i || "")}
-//             className="w-full h-full !p-1 aspect-square !object-contain"
-//             alt=""
-//           />
-//         </div>
-//       </SwiperSlide>
-//     ))}
-// </SwiperWithNavigation>
-// {/* )} */}
-// </div> */}
