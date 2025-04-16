@@ -74,6 +74,7 @@ const RoomImageModalPart = ({
         <div className="w-full   md:h-full  relative  md:px-[25%] ">
           {isVisible ? (
             <SwiperWithThumnails
+              defaultSelectedIndex={modalProps?.currentIndex ? Number(modalProps?.currentIndex) : undefined}
               slides={addImages || []}
               slidesWidth={{ def: "100%", md: "100%" }}
               spacing="0.5rem"

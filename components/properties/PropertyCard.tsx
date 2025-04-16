@@ -16,8 +16,7 @@ import moment from "moment-jalaali";
 import { simpleWeekDays } from "@/utils/constantss";
 
 const PropertyCard = ({ data, isOwner, week }: { data: PropertyListDto; isOwner?: boolean; week?: string[] }) => {
-  const { bookmarks, likes } = useStoreParams((state) => state);
-
+  const { likes, ssrLikedProducts } = useStoreParams((state) => state);
   const goToLink = !!isOwner ? `/profile/owner/properties/${data?.id}` : `/rooms/${data?.slug}`;
   return (
     <div className="w-full shadow-card  rounded-2xl    justify-between flex flex-col  p-3   gap-2  ">
@@ -49,7 +48,7 @@ const PropertyCard = ({ data, isOwner, week }: { data: PropertyListDto; isOwner?
                     : "/assets/icons/adds/empty_heart.svg"
                 }
               />
-              <p className="text-xxs  opacity-60">{data?.favorite_count}</p>
+              <p className="text-xxs  opacity-60">{ssrLikedProducts?.[data?.id] || data?.favorite_count}</p>
             </div>
           </div>
           {/* PRICING */}

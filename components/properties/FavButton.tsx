@@ -11,14 +11,19 @@ const FavButton = ({
   data: SinglePropDto;
   setFavCount: React.Dispatch<React.SetStateAction<number>>;
 }) => {
-  const { likes } = useStoreParams((state) => state);
+  const { likes, ssrLikedProducts, setSsrLikedProducts } = useStoreParams((state) => state);
   const { isLogin } = useAuthStore((state) => state);
   const [like, setLike] = useState(false);
   const { mutate, isPending } = useMutation({
     mutationFn: PropertyService.LikeProperty,
     onSuccess: (e) => {
       if (!!setFavCount) {
-        setFavCount((e) => (!!like ? e + 1 : e - 1));
+        setFavCount((e) => {
+          setSsrLikedProducts({ ...ssrLikedProducts, [data?.id]: !!like ? e + 1 : e - 1 });
+          // useStoreParams.setState({ ssrLikedProducts: { ...ssrLikedProducts, [data?.id]: !!like ? e + 1 : e - 1 } });
+
+          return !!like ? e + 1 : e - 1;
+        });
       }
       useStoreParams.setState({ likes: e?.favorites });
     },

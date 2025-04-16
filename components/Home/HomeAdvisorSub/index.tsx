@@ -51,7 +51,7 @@ const HomeAdvisorSub = () => {
             >
               <img className="w-5 h-5 aspect-square" src="/assets/icons/home/white_alarm.svg" />
               <p className="text-white">
-                {_STRINGS.EXPIRES_IN} : {timeLeft(advisorProfile?.subscription_expired_at)}
+                {_STRINGS.EXPIRES_IN} : {timeLeft(advisorProfile?.subscription_expired_at, false)}
               </p>
             </Link>
           ) : (

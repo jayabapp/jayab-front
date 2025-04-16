@@ -31,9 +31,11 @@ export type ParamStore = {
   loginModal: boolean;
   likes: number[];
   bookmarks: number[];
+  ssrLikedProducts?: { [key: string]: number | string };
+  setSsrLikedProducts: (s: { [key: string]: number | string }) => void;
 };
 
-export const useStoreParams = create<ParamStore>(() => ({
+export const useStoreParams = create<ParamStore>((set) => ({
   isDark: false,
   showInstallPrompt: false,
   installPrompt: null,
@@ -43,6 +45,8 @@ export const useStoreParams = create<ParamStore>(() => ({
   isAdvisor: false,
   likes: [],
   bookmarks: [],
+  ssrLikedProducts: {},
+  setSsrLikedProducts: (obj) => set(() => ({ ssrLikedProducts: obj })),
 }));
 
 /* -------------------------------------------------------------------------- */

@@ -17,6 +17,7 @@ import { p2e } from "@/helpers/NumberConverter";
 import _STRINGS from "@/utils/LocalStrings";
 import AuthHeader from "../headers/AuthHeader";
 const AuthPageComponent = () => {
+  const { isLogin } = useAuthStore((state) => state);
   const router = useRouter();
   const searchParams = useSearchParams();
   const redirectUrl = searchParams.get("redirect_url");
@@ -80,6 +81,11 @@ const AuthPageComponent = () => {
     }
   }
 
+  useEffect(() => {
+    if (!!isLogin) {
+      router.replace("/");
+    }
+  }, [isLogin]);
   return (
     <div className="auth-container bg-cover    min-h-screen h-fit flex flex-col gap-8 items-center  md:!pb-8   relative">
       <AuthHeader title={_STRINGS.ENTER} disableBack />
@@ -150,7 +156,6 @@ object-contain
           visibleTermsModal={visibleTermsModal}
           termsContent={terms ? terms : { full_text: "", html: "" }}
         />
-
       </div>
     </div>
   );

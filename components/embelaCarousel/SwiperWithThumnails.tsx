@@ -17,6 +17,7 @@ type PropType = {
   autoplay?: boolean;
   pagination?: boolean;
   slides: any[];
+  defaultSelectedIndex?: number;
 };
 
 const SwiperWithThumnails: React.FC<PropType> = (props) => {
@@ -34,6 +35,7 @@ const SwiperWithThumnails: React.FC<PropType> = (props) => {
     autoplay = false,
     pagination,
     slides,
+    defaultSelectedIndex,
   } = props;
 
   /* -------------------------------------------------------------------------- */
@@ -77,6 +79,14 @@ const SwiperWithThumnails: React.FC<PropType> = (props) => {
   /* -------------------------------------------------------------------------- */
 
   const { autoplayIsPlaying, toggleAutoplay, onAutoplayButtonClick } = useAutoplay(emblaMainApi);
+  /* -------------------------------------------------------------------------- */
+  /*                            DEFAULT INDEX SELECT                            */
+  /* -------------------------------------------------------------------------- */
+
+  useEffect(() => {
+    if (!emblaMainApi || !emblaThumbsApi || !defaultSelectedIndex) return;
+    emblaMainApi.scrollTo(defaultSelectedIndex);
+  }, [defaultSelectedIndex, emblaThumbsApi, emblaMainApi]);
 
   /* -------------------------------------------------------------------------- */
   /*                                 PAGINATION                                 */

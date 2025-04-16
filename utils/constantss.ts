@@ -62,7 +62,7 @@ export const mobileFooterBlackList = [
   "/profile/owner/properties",
   "/chat/",
   "/profile/advisor",
-  "/profile/",
+  // "/profile/",
 ];
 
 export const createPropertySteps = (id?: null | number) => [

@@ -1,6 +1,7 @@
 "use client";
-import Breadcrumbs from "@/components/BreadCrumbs";
+
 import Profile from "@/components/profile/Profile";
+
 import React, { ReactNode } from "react";
 
 interface layOut {

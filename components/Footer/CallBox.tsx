@@ -22,7 +22,7 @@ const CallBox = () => {
   };
 
   return (
-    <div className=" w-full  md:px-[10%]  -top-24 md:absolute">
+    <div className=" w-full   p-4 md:px-[10%]  -top-24 md:absolute">
       <div className=" w-full min-h-[10rem] md:w-full px-6  py-6 md:py-0  gap-6  mx-auto bg-primary-700 rounded-20  relative flex flex-col md:flex-row items-center justify-between">
         <img
           onError={onImageError}
@@ -43,7 +43,7 @@ const CallBox = () => {
             {" "}
             <Editable
               contentId={footerCallUs?.id}
-              className="  flex flex-row justify-between  items-center gap-3 py-4  md:pr-[15rem] "
+              className="  flex flex-col md:flex-row justify-between  items-center gap-3 py-4  md:pr-[15rem] "
             >
               <div className="flex flex-col gap-4 ">
                 {" "}
