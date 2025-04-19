@@ -7,7 +7,7 @@ import { NEW_IMAGE_URL } from "@/utils/urls";
 import { chunk, isEmpty } from "lodash";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
-import { useEffect, useState } from "react";
+import { Fragment, useEffect, useState } from "react";
 import { isMobile } from "react-device-detect";
 import HomeProductsBannerItems from "./HomeProductsBannerItems";
 
@@ -27,7 +27,7 @@ function HomePropertiesSsrPart({ data, middleBanners }: HomePropertiesSsrPartTyp
             {data?.map((i: any, index: number) => {
               const bannerItem = !isEmpty(middleBanners) ? middleBanners[Math.floor(index / 8)] : [];
               return (
-                <>
+                <Fragment key={`PRODUCT${i?.id}`}>
                   <PropertyCard data={i} key={`PRODUCT${i?.id}`} />
                   {(index + 1) % 8 == 0 && !!bannerItem?.[0] && !!bannerItem?.[1] ? (
                     <div
@@ -40,7 +40,7 @@ function HomePropertiesSsrPart({ data, middleBanners }: HomePropertiesSsrPartTyp
                   ) : (
                     <></>
                   )}
-                </>
+                </Fragment>
               );
             })}
           </div>

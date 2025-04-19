@@ -43,7 +43,7 @@ const AdvisorPlansCard = ({
   };
 
   return (
-    <div className="bg-primary-100 flex  py-2 px-3 flex-col gap-2 rounded-20 w-full ">
+    <div className="bg-primary-100 flex  justify-between py-2 px-3 flex-col gap-2 rounded-20 w-full ">
       <p className="font-medium text-sm md:text-base  w-full text-center ">{data?.title}</p>
 
       <div className="flex flex-col  gap-2 pt-2 w-full items-start ">

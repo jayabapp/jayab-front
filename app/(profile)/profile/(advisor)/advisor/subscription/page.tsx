@@ -140,6 +140,7 @@ const AdvisorRegister = () => {
               )}
             </div>
             {!!advisorProfile?.is_special ? (
+              // {!!advisorProfile?.is_special && advisorProfile?.subscription_expired_at && isActive ? (
               <Button
                 onClick={() => {
                   setShowEndSub(true);

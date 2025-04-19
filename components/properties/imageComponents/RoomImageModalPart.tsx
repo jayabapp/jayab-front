@@ -81,7 +81,10 @@ const RoomImageModalPart = ({
               options={{ align: "center", direction: "rtl", dragFree: false }}
             >
               {addImages?.map((i, index) => (
-                <div className="  flex items-center embla__slide  justify-center w-full h-full  p-1 rounded-md ">
+                <div
+                  key={`addImage${i?.id}`}
+                  className="  flex items-center embla__slide  justify-center w-full h-full  p-1 rounded-md "
+                >
                   <TransformWrapper panning={{ disabled: true }} disablePadding limitToBounds>
                     <TransformComponent>
                       <img

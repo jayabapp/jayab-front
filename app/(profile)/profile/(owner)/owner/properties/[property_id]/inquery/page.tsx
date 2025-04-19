@@ -125,19 +125,27 @@ const PropertyInquery = () => {
                 </div>
               </div>
 
-              <MultiLineFormInput
-                onChangeText={(e) => {
-                  setDesc(e);
-                }}
-                item={{
-                  containerClass: "w-full",
-                  inputClass: "w-full",
-                  title: _STRINGS.DESCRIPTION,
-                  placeholder: _STRINGS.YOUR_TEXT,
-                }}
-                value={desc}
-              />
+              {desc ? (
+                <div className="w-full flex flex-col  gap-2">
+                  <p className=""> {_STRINGS.DESCRIPTION} :</p>
+                  <p className=" w-full whitespace-pre-wrap break-all">{desc}</p>
+                </div>
+              ) : (
+                <></>
+              )}
             </ElementToImage>
+            <MultiLineFormInput
+              onChangeText={(e) => {
+                setDesc(e);
+              }}
+              item={{
+                containerClass: "w-full",
+                inputClass: "w-full",
+                title: _STRINGS.DESCRIPTION,
+                placeholder: _STRINGS.YOUR_TEXT,
+              }}
+              value={desc}
+            />
             <div className="w-full flex items-start gap-2">
               <img className="w-5 h-5 aspect-square " src="/assets/icons/property/alert_icon.svg" />
               <p>{_STRINGS.SHARE_PROP_MESSAGE}</p>
