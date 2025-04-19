@@ -13,7 +13,7 @@ const DayPricePart = ({ data }: { data: { price?: number; discounted_price?: num
         <></>
       )}
 
-      <p className=" text-xs md:text-sm opacity-80 ">
+      <p className=" text-xs md:text-sm opacity-80 mt-1 ">
         {numberWithCommas(!!data?.discounted_price ? data?.discounted_price / 1000 : (data?.price || 1) / 1000)}{" "}
       </p>
     </div>

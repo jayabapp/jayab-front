@@ -59,7 +59,7 @@ const SingleOwnerPropertyIntroduction = ({ data }: { data: SingleOwnerPropertyDt
           <img className="w-5 h-5 aspect-square" src="/assets/icons/adds/filled_heart.svg" />
           <p className="text-base  opacity-60">{data?.favorites_count || 0}</p>
         </div> */}
-        <ShareLink passedHref={window.origin + `/rooms/${data?.slug}`} />
+        <ShareLink passedHref={process.env.NEXT_PUBLIC_WEBSITE_URL + `/rooms/${data?.code}`} />
       </div>
 
       <div className="flex items-start gap-4    py-2 w-full ">
