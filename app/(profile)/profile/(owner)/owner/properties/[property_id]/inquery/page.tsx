@@ -128,7 +128,7 @@ const PropertyInquery = () => {
               {desc ? (
                 <div className="w-full flex flex-col  gap-2">
                   <p className=""> {_STRINGS.DESCRIPTION} :</p>
-                  <p className=" w-full whitespace-pre-wrap break-all">{desc}</p>
+                  <p className=" w-full whitespace-pre-wrap break-words ">{desc}</p>
                 </div>
               ) : (
                 <></>

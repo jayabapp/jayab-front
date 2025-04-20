@@ -35,6 +35,7 @@ export interface catQueryTypes {
   title: string | null | undefined;
   province_id: string | null | undefined;
   q: string | null | undefined;
+  party: string | null | undefined;
   has_discount: string | null | undefined;
   max_commission: string | null | undefined;
   min_commission: string | null | undefined;
@@ -92,6 +93,7 @@ function FilterdProperties({ sortType, setSortType, query }: FilterdPropertiesTy
     query?.max_commission,
     query?.checkout,
     query?.checkin,
+    query?.party,
   ]);
 
   const {
@@ -120,6 +122,7 @@ function FilterdProperties({ sortType, setSortType, query }: FilterdPropertiesTy
       query?.cities,
       query?.checkout,
       query?.checkin,
+      query?.party,
     ],
     queryFn: () => {
       return PropertyService?.GetProperties({
@@ -149,6 +152,7 @@ function FilterdProperties({ sortType, setSortType, query }: FilterdPropertiesTy
         checkout: query?.checkout || undefined,
         checkin: query?.checkin || undefined,
         q: query?.q || undefined,
+        party: query?.party || undefined,
       });
     },
     gcTime: 0,

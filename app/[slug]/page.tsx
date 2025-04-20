@@ -9,7 +9,9 @@ import { Suspense } from "react";
 function Fallback() {
   return <LottieLoading />;
 }
-
+function isEmpty(value: any) {
+  return Boolean(value && typeof value === "object") && !Object.keys(value).length;
+}
 type Props = {
   params: Promise<{ slug: string }>;
   searchParams: Promise<{ [key: string]: string | string[] | undefined }>;
@@ -35,16 +37,18 @@ export default async function PropertiesPage({
   const paramData = await params;
   const searchParamsData = await searchParams;
   const { data: landings } = await serverCall(baseUrl + apiRoutes.SINGLE_USER_LANDING_PAGE(paramData?.slug));
+  const data = (await !isEmpty(searchParamsData))
+    ? await serverCall(baseUrl + apiRoutes.GET_PROPERTIES, {
+        cursor: 0,
+        per_page: 50,
+        ...searchParamsData,
+      })
+    : null;
 
-  const { data: firstData } = await serverCall(baseUrl + apiRoutes.GET_PROPERTIES, {
-    cursor: 0,
-    per_page: 50,
-    ...searchParamsData,
-  });
   return (
     <>
       <Suspense fallback={<Fallback />}>
-        <SsrFilterPage firstData={searchParamsData?.has_pool ? firstData : []} landings={landings} />
+        <SsrFilterPage firstData={searchParamsData?.has_pool && data?.data ? data?.data : []} landings={landings} />
       </Suspense>
     </>
   );

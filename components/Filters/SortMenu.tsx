@@ -62,7 +62,10 @@ const SortMenu = ({ query }: SortMenuType) => {
           <MenuButton className=" h-auto md:h-11  rounded-lg cursor-pointer flex justify-between items-center">
             <div className="  gap-2  h-auto py-1 px-2  rounded-full bg-primary-400  flex items-center justify-center  ">
               {" "}
-              <p className="  text-xs md:text-base"> {sortTypes?.find((e) => e?.id == query?.sort_type)?.title}</p>{" "}
+              <p className="  text-xs md:text-base">
+                {" "}
+                {sortTypes?.find((e) => e?.id == query?.sort_type)?.title || SORT_TYPES?.[0]?.title}
+              </p>{" "}
               <img className="w-3 h-3 aspect-square" src="/assets/icons/shared/chevron.svg" />
             </div>
           </MenuButton>

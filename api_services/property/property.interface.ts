@@ -522,6 +522,7 @@ export interface GetPropertiesPlusFilters {
   code?: string | null | number;
   q?: string | null | number;
   entertainment?: string | null | number;
+  party?: string | null | number;
   has_discount?: string | null | number;
   has_pool?: string | null | number;
   is_premium?: string | null | number;

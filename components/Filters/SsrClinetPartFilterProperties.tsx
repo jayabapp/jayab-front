@@ -37,6 +37,7 @@ export interface catQueryTypes {
   min_building_area: string | null | undefined;
   max_commission: string | null | undefined;
   min_commission: string | null | undefined;
+  party: string | null | undefined;
   q: string | null | undefined;
 }
 
@@ -63,7 +64,7 @@ function SsrClinetPartFilterProperties({ sortType, query, setCursor, cursor }: S
       `${pathname}?${queryBuilder({
         ...temp,
 
-        sort_type: query.sort_type ? query.sort_type : sortType?.id,
+        // sort_type: query.sort_type ? query.sort_type : sortType?.id,
       })}`
     );
   }, [
@@ -83,6 +84,7 @@ function SsrClinetPartFilterProperties({ sortType, query, setCursor, cursor }: S
     query?.max_building_area,
     query?.min_commission,
     query?.max_commission,
+    query?.party,
     query?.q,
   ]);
 
@@ -108,6 +110,7 @@ function SsrClinetPartFilterProperties({ sortType, query, setCursor, cursor }: S
       query.min_price,
       query.min_commission,
       query.max_commission,
+      query.party,
       query?.q,
     ],
     queryFn: () => {
@@ -136,6 +139,7 @@ function SsrClinetPartFilterProperties({ sortType, query, setCursor, cursor }: S
         title: query?.title || undefined,
         sort_type: query?.sort_type || undefined,
         q: query?.q || undefined,
+        party: query?.party || undefined,
       });
     },
     gcTime: 0,
