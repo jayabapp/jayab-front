@@ -1,23 +1,25 @@
 "use client";
+import { PropertySubsDto } from "@/api_services/property/property.interface";
 import { PropertyService } from "@/api_services/property/property.service";
 import AddCardPricePart from "@/components/properties/AddCardPricePart";
 import Button from "@/components/shared/Button/Button";
 import FixedBottomContainer from "@/components/shared/FixedBottomContainer";
 import CheckboxCardContainer from "@/components/shared/Form/Checkbox/CheckboxCardContainer";
 import LottieLoading from "@/components/shared/Lotties/LottieLoading";
+import Notify from "@/components/shared/Toast";
 import SimpleBarChart from "@/components/widgets/chart/SimpleBarChart";
 import numberWithCommas from "@/helpers/numberWithCommas";
 import { simpleChartFakeData } from "@/utils/faker";
 import _STRINGS from "@/utils/LocalStrings";
 import { useMutation, useQuery } from "@tanstack/react-query";
-import { isEmpty } from "lodash";
+import { isEmpty, sumBy } from "lodash";
 import { useParams, useRouter } from "next/navigation";
 import React, { useEffect, useState } from "react";
 
 const Subscription = () => {
   const router = useRouter();
   const params = useParams();
-  const [values, setValues] = useState<(number | string)[]>([]);
+  const [selectedPlans, setSelectedPlans] = useState<PropertySubsDto[]>([]);
   const [price, setPrice] = useState(0);
   const { property_id } = params;
   const { data: subscriptionPlans } = useQuery({
@@ -55,12 +57,23 @@ const Subscription = () => {
     },
   });
 
-  const onSelect = (e: number | string) => {
-    if (!!values?.includes(e)) {
-      setValues((v) => v?.filter((x) => x != e));
-    } else {
-      setValues((v) => [...v, e]);
+  /**
+   * دو نوع انتخاب داریم: اشتراک و نردبان
+   * از هر نوع اشتراک تنها یک انتخاب میتونیم داشته باشیم
+   * @param plan
+   */
+  const onSelect = (plan: PropertySubsDto) => {
+    const isPromote = plan.is_promote;
+    let arr = [...selectedPlans];
+
+    if (selectedPlans?.findIndex((_) => _.id === plan.id) > -1) {
+      arr = arr?.filter((e) => e.id != plan.id);
+    } else if (isPromote) arr = arr?.filter((e) => !e.is_promote).concat(plan);
+    else {
+      arr = arr.filter((e) => e.is_promote).concat(plan);
     }
+
+    setSelectedPlans(arr);
   };
 
   /* -------------------------------------------------------------------------- */
@@ -68,20 +81,18 @@ const Subscription = () => {
   /* -------------------------------------------------------------------------- */
 
   useEffect(() => {
-    let price = 0;
-    for (let index = 0; index < values.length; index++) {
-      const item = subscriptionPlans?.list?.find((e) => e?.id == values[index]);
-      price = price + (item?.price_with_discount || item?.price || 0);
-    }
+    let price = selectedPlans.reduce((acc, cur) => acc + (cur.price_with_discount || cur.price), 0);
     setPrice(price);
-  }, [values]);
+  }, [selectedPlans]);
 
   const onSubmit = () => {
-    let subId = subscriptionPlans?.list?.find((e) => !e?.is_promote && values?.includes(e?.id))?.id;
-    let promotId = subscriptionPlans?.list?.find((e) => !!e?.is_promote && values?.includes(e?.id))?.id;
+    const subId = selectedPlans.find((e) => !e.is_promote)?.id;
+    const promotId = selectedPlans.find((e) => e.is_promote)?.id;
 
+    if (!subId && !promotId) return Notify({ type: "warn", body: "لطفا پلن مورد نظر را انتخاب کنید" });
     mutate({
       gateway: "ZARINPAL",
+      // gateway: "SANDBOX",
       redirect_url: window.origin + `/profile/owner/properties/${property_id}`,
       property_id: `${property_id}`,
       subscription_id: subId,
@@ -117,10 +128,11 @@ const Subscription = () => {
         {subscriptionPlans?.list?.map((e) => (
           <CheckboxCardContainer
             key={`${e?.id}subs`}
-            item={!subscriptionPlans?.can_promote ? { disabled: e?.is_promote } : {}}
-            isChecked={!!values?.includes(e?.id)}
+            // item={!subscriptionPlans?.can_promote ? { disabled: e?.is_promote } : {}}
+            item={{}} //موقتا اشتراک و نردبان همزمان قابل خرید باشد
+            isChecked={selectedPlans?.findIndex((_) => _.id === e.id) !== -1}
             onSelect={() => {
-              onSelect(e?.id);
+              onSelect(e);
             }}
             title={e?.title}
             description={e?.description}

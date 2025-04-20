@@ -81,7 +81,7 @@ export async function apiCall<T, K>(
       localStorage?.removeItem("access_token");
       localStorage.removeItem("socket_token");
       localStorage?.removeItem("isLogin");
-      window?.location?.replace("/auth");
+      window?.location?.replace("/");
     }
     throw error?.response?.data || "Failed";
   }
