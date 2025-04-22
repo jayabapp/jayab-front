@@ -114,11 +114,11 @@ const MultiUploader = ({
         return toast.error("لطفا از فایل تصویر درست استفاده نمایید");
       else {
         setTimeout(() => {
-          const compressedFile = new File([file], file.name, {
-            type: file.type,
-            lastModified: file.lastModified,
-          });
-          uploadTemp(compressedFile, index + 1 == files?.length);
+          // const compressedFile = new File([file], file.name, {
+          //   type: file.type,
+          //   lastModified: file.lastModified,
+          // });
+          uploadTemp(file, index + 1 == files?.length);
         }, 1000 * (index + 1));
       }
     }

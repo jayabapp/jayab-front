@@ -132,7 +132,7 @@ const Footer = () => {
             <a className="text-blue-500 underline underline-offset-2" href="">
               &nbsp; جایاب &nbsp;
             </a>
-            دیزاین میباشد
+            میباشد
           </div>
         </div>
         <div className="flex gap-2  items-center">

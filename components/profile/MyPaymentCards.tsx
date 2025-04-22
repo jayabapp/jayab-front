@@ -23,7 +23,7 @@ const MyPaymentCards = ({ data }: { data: SubPaymentsDto }) => {
       <LinearData
         disableDash
         title="زمان پرداخت"
-        value={`${moment(data?.created_at).format(" jD jMMMM  jYYYY  -  hh:mm")} `}
+        value={`${moment(data?.created_at).format(" jD jMMMM  jYYYY  -  HH:mm")} `}
         containerClassName="      "
       />
       <Divider />
