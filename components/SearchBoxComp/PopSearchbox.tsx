@@ -202,8 +202,8 @@ const PopSearchbox = ({
       <div
         className={` ${
           showPop
-            ? `   w-full  top-0  h-[100dvh]   md:h-auto  md:absolute  opacity-100  min-h-[25dvh] `
-            : ` top-[200dvh]  md:top-0  -z-50  md:hidden  h-0 md:opacity-0`
+            ? `   w-full  top-0  h-[100dvh]   xl:h-auto  xl:absolute  opacity-100  min-h-[25dvh] `
+            : ` top-[200dvh]  xl:top-0  -z-50  xl:hidden  h-0 xl:opacity-0`
         } transition-all   fixed  overflow-hidden    rounded-10  border  left-0 w-full -top-2  duration-500 z-50  bg-white `}
       >
         <ModalHeaderPart

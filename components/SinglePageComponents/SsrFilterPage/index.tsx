@@ -116,12 +116,12 @@ const SsrFilterPage = ({ landings, firstData }: { firstData: { data: any[] }; la
     router.replace(`${pathname}?${queryBuilder(body)}`);
   };
   return (
-    <div className="app-container !pt-32  lg:!pt-20  md: z-2 ">
-      <div className=" hidden  z-1 w-full md:flex flex-col md:flex-row items-center justify-between ">
+    <div className="app-container !pt-32  lg:!pt-20  xl: z-2 ">
+      <div className=" hidden  z-1 w-full xl:flex flex-col xl:flex-row items-center justify-between ">
         <SingleProductBreadCrumb dataArray={breadCrumbs} />
       </div>
       <h1 className="mb-3 text-lg font-medium">{landings?.content?.title}</h1>
-      <div className="w-full hidden md:flex  pb-4">
+      <div className="w-full hidden xl:flex  pb-4">
         {" "}
         <FiltersSelectedFiltersShowcase
           setFilterModalShow={setFilterModalShow}
@@ -130,9 +130,9 @@ const SsrFilterPage = ({ landings, firstData }: { firstData: { data: any[] }; la
         />
       </div>
 
-      <div className="flex fixed  pt-1 md:hidden h-16 right-0  items-center justify-center   z-10 md:z-1  top-[4rem] md:top-auto left-0 md:left-auto bg-white md:bg-transparent md:relative flex-col w-full md:gap-2  ">
+      <div className="flex fixed  pt-1 xl:hidden h-16 right-0  items-center justify-center   z-10 xl:z-1  top-[4rem] xl:top-auto left-0 xl:left-auto bg-white xl:bg-transparent xl:relative flex-col w-full xl:gap-2  ">
         {" "}
-        <div className=" flex  order-1  md:hidden  relative w-full">
+        <div className=" flex  order-1  xl:hidden  relative w-full">
           <div className=" z-1  pr-2  relative  w-full items-center gap-1 justify-between  ">
             <div className=" !col-span-9 ">
               {" "}
@@ -149,7 +149,7 @@ const SsrFilterPage = ({ landings, firstData }: { firstData: { data: any[] }; la
         <FilterPageCitiesTitle title={cityButtonTItle} cb={showCityModalFunc} />
         <SortMenu query={queries} />
       </div>
-      <div className="grid grid-cols-12  min-h-[80dvh] mb-8 md:mb-4">
+      <div className="grid grid-cols-12  min-h-[80dvh] mb-8 xl:mb-4">
         {/* SIDEBAR */}
         <div className="grid grid-cols-12  col-span-12 ">
           <div className="hidden gap-4 lg:flex h-fit flex-col items-center rounded-10  border col-span-3 ">
@@ -169,9 +169,9 @@ const SsrFilterPage = ({ landings, firstData }: { firstData: { data: any[] }; la
           {/* LEFT SIDE */}
 
           <div
-            className={`col-span-12  md:col-span-12 lg:col-span-9 px-0 md:px-4 
+            className={`col-span-12  xl:col-span-12 lg:col-span-9 px-0 xl:px-4 
    
-              md:mt-0 `}
+              xl:mt-0 `}
           >
             <SsrPartFilter firstData={firstData?.data} />
             {cursor == 0 && !isEmpty(firstData?.data) && firstData?.data?.length % 50 == 0 ? (
@@ -196,7 +196,7 @@ const SsrFilterPage = ({ landings, firstData }: { firstData: { data: any[] }; la
       <Modal
         options={{
           containerClass:
-            "mx-auto  my-0 md:my-10  h-full   w-full md:w-1/2 xl:w-1/3 2xl:w-1/4 rounded-0 overflow-y-scroll  bg-white pb-32  dark:bg-zinc-800",
+            "mx-auto  my-0 xl:my-10  h-full   w-full xl:w-1/2 xl:w-1/3 2xl:w-1/4 rounded-0 overflow-y-scroll  bg-white pb-32  dark:bg-zinc-800",
         }}
         show={filterModalShow && !showCityModal}
         onHide={() => {

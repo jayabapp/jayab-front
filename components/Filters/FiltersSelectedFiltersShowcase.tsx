@@ -117,7 +117,7 @@ const FiltersSelectedFiltersShowcase = ({
   return (
     <SwiperWithNavigation
       reference={ref}
-      className=" !max-w-full flex items-center"
+      className=" !max-w-full md:pb-3 flex items-center"
       onBeforeInit={(swiper: Swiper) => (ref.current = swiper)}
       dataLength={50}
       // grid={{

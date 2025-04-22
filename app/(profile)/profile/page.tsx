@@ -19,7 +19,7 @@ import { useMutation, useQuery } from "@tanstack/react-query";
 import { isEmpty } from "lodash";
 import { useRouter } from "next/navigation";
 import React, { useEffect, useState } from "react";
-import { isMobile } from "react-device-detect";
+import { isMobile, isTablet } from "react-device-detect";
 
 const Profile = () => {
   const [profileImage, setProfileImage] = useState<any>(null);
@@ -66,7 +66,7 @@ const Profile = () => {
     router.push("/auth");
   };
 
-  const platformProfileList = isMobile ? profileItems : profileItems?.filter((e) => !e?.isMobile);
+  const platformProfileList = isMobile || isTablet ? profileItems : profileItems?.filter((e) => !e?.isMobile);
   const PersonalProfileItems = isLogin ? platformProfileList?.filter((e) => !!e?.guard) : [];
   const SharedProfileItems = platformProfileList?.filter((e) => !e?.guard);
 
@@ -79,7 +79,7 @@ const Profile = () => {
 
   return (
     <div id="homeParent" className="  profile-container  flex flex-col gap-4  transition-all duration-500 ease-in-out ">
-      {!isMobile ? (
+      {!isMobile && !isTablet ? (
         <div className="w-full flex gap-4 items-center justify-center flex-col pt-8 opacity-40">
           <img src="/assets/icons/logo/logo.svg" className="w-1/5" />
           <p className="text-sm font-medium">{_STRINGS.PLZ_SELECT_A_PAGE}</p>
@@ -183,10 +183,10 @@ const Profile = () => {
                 onClick={() => {
                   setShowLogout(true);
                 }}
-                className="py-5 flex   items-center w-full gap-3 md:gap-6 cursor-pointer hover:scale-102 transition-all"
+                className="py-5 flex   items-center w-full gap-3 xl:gap-6 cursor-pointer hover:scale-102 transition-all"
               >
                 <img src="/assets/icons/header/header_logout.svg" className="w-6 h-6  aspect-square " />{" "}
-                <p className=" text-sm md:text-base  font-medium text-primary-150 "> {_STRINGS?.LOGOUT_TITLE}</p>
+                <p className=" text-sm xl:text-base  font-medium text-primary-150 "> {_STRINGS?.LOGOUT_TITLE}</p>
               </div>
             )}
           </div>{" "}

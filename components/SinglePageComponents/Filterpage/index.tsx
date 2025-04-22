@@ -107,12 +107,12 @@ const Filterpage = () => {
   };
 
   return (
-    <div className="app-container !px-0 md:!px-10 lg:!px-12 2xl:!px-[5%] !pt-32  lg:!pt-28  md: z-2 ">
-      <div className=" hidden  z-1 w-full md:flex flex-col md:flex-row items-center justify-between ">
+    <div className="app-container !px-0 xl:!px-10 lg:!px-12 2xl:!px-[5%] !pt-32  lg:!pt-28  xl: z-2 ">
+      <div className=" hidden  z-1 w-full xl:flex flex-col xl:flex-row items-center justify-between ">
         {/* <Breadcrumbs /> */}
         <SingleProductBreadCrumb dataArray={breadCrumbs} />
       </div>
-      <div className="w-full hidden md:flex  pb-4">
+      <div className="w-full hidden xl:flex  pb-4">
         {" "}
         <FiltersSelectedFiltersShowcase
           setFilterModalShow={setFilterModalShow}
@@ -120,8 +120,8 @@ const Filterpage = () => {
           propertyTypes={propertyTypes || {}}
         />
       </div>
-      <div className="flex fixed pt-1 md:hidden h-16 right-0  items-center justify-center   z-10 md:z-1  top-[4rem] md:top-auto left-0 md:left-auto bg-white md:bg-transparent md:relative flex-col w-full md:gap-2  ">
-        <div className=" flex  order-1  md:hidden  relative w-full">
+      <div className="flex fixed pt-1 xl:hidden h-16 right-0  items-center justify-center   z-10 xl:z-1  top-[4rem] xl:top-auto left-0 xl:left-auto bg-white xl:bg-transparent xl:relative flex-col w-full xl:gap-2  ">
+        <div className=" flex  order-1  xl:hidden  relative w-full">
           <div className=" z-1  px-2  relative  w-full items-center gap-1 justify-between  ">
             <div className=" !col-span-9 ">
               <FiltersSelectedFiltersShowcase
@@ -135,10 +135,10 @@ const Filterpage = () => {
         </div>
       </div>
 
-      <div className="  w-full flex md:hidden">
+      <div className="  w-full flex xl:hidden">
         <PropertiesFilterList propertyKey={"property_type"} data={propertyTypes?.PROPERTY_TYPE} query={queries} />
       </div>
-      <div className="w-full pb-3 flex flex-row  px-3 md:px-0  justify-between">
+      <div className="w-full pb-3 flex flex-row  px-3 xl:px-0  justify-between">
         <FilterPageCitiesTitle title={cityButtonTItle} cb={showCityModalFunc} />
         <SortMenu query={queries} />
       </div>
@@ -162,9 +162,9 @@ const Filterpage = () => {
           {/* LEFT SIDE */}
 
           <div
-            className={`col-span-12  md:col-span-12 lg:col-span-9 px-3 md:px-4 
+            className={`col-span-12  xl:col-span-12 lg:col-span-9 px-3 xl:px-4 
    
-              md:mt-0 `}
+              xl:mt-0 `}
           >
             <FilterdProperties sortType={sortType} setSortType={setSortType} query={queries} />
           </div>
@@ -174,7 +174,7 @@ const Filterpage = () => {
       <Modal
         options={{
           containerClass:
-            "mx-auto  my-0 md:my-10  h-full   w-full md:w-1/2 xl:w-1/3 2xl:w-1/4 rounded-0 overflow-y-scroll  bg-white pb-32  dark:bg-zinc-800",
+            "mx-auto  my-0 xl:my-10  h-full   w-full xl:w-1/2 xl:w-1/3 2xl:w-1/4 rounded-0 overflow-y-scroll  bg-white pb-32  dark:bg-zinc-800",
         }}
         show={filterModalShow && !showCityModal}
         onHide={() => {
