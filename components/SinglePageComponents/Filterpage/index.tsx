@@ -162,9 +162,9 @@ const Filterpage = () => {
           {/* LEFT SIDE */}
 
           <div
-            className={`col-span-12  xl:col-span-12 lg:col-span-9 px-3 xl:px-4 
+            className={`col-span-12  md:col-span-12 lg:col-span-9 px-3 md:px-4 
    
-              xl:mt-0 `}
+            md:mt-0 `}
           >
             <FilterdProperties sortType={sortType} setSortType={setSortType} query={queries} />
           </div>

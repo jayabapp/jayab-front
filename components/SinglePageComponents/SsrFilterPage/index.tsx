@@ -169,9 +169,9 @@ const SsrFilterPage = ({ landings, firstData }: { firstData: { data: any[] }; la
           {/* LEFT SIDE */}
 
           <div
-            className={`col-span-12  xl:col-span-12 lg:col-span-9 px-0 xl:px-4 
+            className={`col-span-12  md:col-span-12 lg:col-span-9 px-3 md:px-4 
    
-              xl:mt-0 `}
+            md:mt-0 `}
           >
             <SsrPartFilter firstData={firstData?.data} />
             {cursor == 0 && !isEmpty(firstData?.data) && firstData?.data?.length % 50 == 0 ? (
