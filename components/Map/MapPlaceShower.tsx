@@ -22,7 +22,7 @@ type mapType = {
   jumpToGivenPlace?: { lat?: number | string; lng?: number | string };
 };
 
-const API_KEY = "web.61b0b695499f4469bec2afe62cf7e6a8";
+const API_KEY = "web.4c0887bbd32f4ab2ba1adcc36243b6a2";
 
 const MapPlaceShower = ({
   center,

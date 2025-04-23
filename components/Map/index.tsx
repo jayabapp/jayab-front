@@ -41,7 +41,7 @@ const Map = ({
 
   const [isMoving, setIsMoving] = useState(false);
   const [zoom] = useState(15);
-  const [API_KEY] = useState("web.61b0b695499f4469bec2afe62cf7e6a8");
+  const [API_KEY] = useState("web.4c0887bbd32f4ab2ba1adcc36243b6a2");
   const [refExists, setRefExists] = useState(false);
   // const [center, setCenter] = useState([lng, lat]);
 
