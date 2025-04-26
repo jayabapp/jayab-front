@@ -14,11 +14,12 @@ import FixedBottomContainer from "@/components/shared/FixedBottomContainer";
 import SinglePropContactIfoPop from "./SinglePropContactInfoPop";
 import ShareLink from "@/components/shared/shareComponent/BrowserShare";
 import SinglePropSharePop from "./SinglePropSharePop";
-import { useStoreInit, useStoreParams } from "@/store";
+import { useAuthStore, useStoreInit, useStoreParams } from "@/store";
 import { useRouter } from "next/navigation";
 import SinglePropContactInfoModal from "./SinglePropContactInfoModal";
 
 const SinglePropertyIntroduction = ({ data }: { data: SinglePropDto }) => {
+  const { isLogin } = useAuthStore((state) => state);
   const [favCount, setFavCount] = useState(0);
   const router = useRouter();
   const { userInfo } = useStoreInit((data) => data);
@@ -31,6 +32,10 @@ const SinglePropertyIntroduction = ({ data }: { data: SinglePropDto }) => {
       router.push(`/chat/${e?.chatroom_id}`);
     },
   });
+
+  const showLogin = () => {
+    useStoreParams.setState({ loginModal: true });
+  };
 
   useQuery({
     queryKey: [PropertyService.SINGLE_PROPERTY_UPDATE_VIEW_CACHEKEY, data?.id],
@@ -47,7 +52,11 @@ const SinglePropertyIntroduction = ({ data }: { data: SinglePropDto }) => {
   };
 
   const onContactClick = () => {
-    setShowContact(true);
+    if (!!isLogin) {
+      setShowContact(true);
+    } else {
+      showLogin();
+    }
   };
   const onContactClose = () => {
     setShowContact(false);
