@@ -56,6 +56,10 @@ export const apiRoutes = {
 
   GET_PROPERTIES: "/user/properties",
 
+  SETTING_SITEMAP: `/settings/sitemap`,
+
+  SETTING_ROBOTS: `/settings/robots`,
+
   SEARCH_SUGGS: `/user/properties/search/suggestions`,
 
   CONTENTS: `/contents`,
