@@ -1,4 +1,5 @@
 "use client";
+import { ImageDto } from "@/api_services/auth/auth.interface";
 import { PropertyService } from "@/api_services/property/property.service";
 import PageHeaders from "@/components/headers/PageHeader";
 import SearchPlaceModal from "@/components/Map/SearchPlaceModal";
@@ -9,10 +10,13 @@ import LottieLoading from "@/components/shared/Lotties/LottieLoading";
 import ProgressBar from "@/components/shared/progressbar";
 import StepShower from "@/components/shared/StepShower";
 import MainUploader from "@/components/uploader";
+import FullscreenImage from "@/components/uploader/FullScreenImage";
 import MultiUploader from "@/components/uploader/MultiUploader";
+import UploadedItemShowCase from "@/components/uploader/UploadedItemShowCase";
 import { useStoreInit } from "@/store";
 import { createPropertySteps } from "@/utils/constantss";
 import _STRINGS from "@/utils/LocalStrings";
+import { NEW_IMAGE_URL } from "@/utils/urls";
 import { useMutation, useQuery } from "@tanstack/react-query";
 import { isEmpty } from "lodash";
 import dynamic from "next/dynamic";
@@ -20,6 +24,10 @@ import { useParams, usePathname, useRouter, useSearchParams } from "next/navigat
 import React, { useEffect, useMemo, useState } from "react";
 
 const CreatePropertyImages = () => {
+  const [loading, setLoading] = useState(false);
+
+  const [show, setShow] = useState(false);
+  const [selectedFullScreen, setSelectedFullScreen] = useState<ImageDto | null>(null);
   const router = useRouter();
   const pathname = usePathname();
   const searchParams = useSearchParams();
@@ -126,6 +134,8 @@ const CreatePropertyImages = () => {
         ) : (
           <>
             <MultiUploader
+              setLoading={setLoading}
+              loading={loading}
               innerClasses={{ sizeClass: " w-24 aspect-square h-24", secontParentClass: "w-24" }}
               title={"افزودن عکس"}
               link="/attachments?type=OWNER_PROPERTY_IMAGE"
@@ -148,14 +158,15 @@ const CreatePropertyImages = () => {
                 className=" relative rounded-10"
                 key={`uploader${e?.id}`}
               >
-                <MultiUploader
+                <UploadedItemShowCase
+                  cb={() => {
+                    // setSelectedFullScreen(e);
+                    // setShow(true);
+                  }}
                   innerClasses={{ sizeClass: " w-24 aspect-square h-24", secontParentClass: "w-24" }}
-                  title={"افزودن عکس"}
-                  link="/attachments?type=OWNER_PROPERTY_IMAGE"
                   key={`uploader${e?.id}`}
                   containerClass={" w-24  "}
                   item={e}
-                  onSelect={(file) => {}}
                   onDelete={() => {
                     setImages(images?.filter((i) => e?.id !== i?.id));
                   }}
@@ -179,12 +190,31 @@ const CreatePropertyImages = () => {
             onSubmit();
           }}
           loading={isPending}
+          disabled={loading}
           containerClass="w-full flex items-center justify-center"
           roundedClass="rounded-full"
           width=" w-[90%] md:w-1/2"
           title={_STRINGS.SUBMIT_MOVE_ON}
         />
       </FixedBottomContainer>
+
+      {show && (
+        <FullscreenImage
+          setShow={() => {
+            setShow(false);
+            setTimeout(() => {
+              setSelectedFullScreen(null);
+            }, 1);
+          }}
+          show={show}
+          src={NEW_IMAGE_URL(selectedFullScreen)}
+          onDelete={() => {
+            setImages(images?.filter((i) => selectedFullScreen?.id !== i?.id));
+
+            setShow(false);
+          }}
+        />
+      )}
     </div>
   );
 };

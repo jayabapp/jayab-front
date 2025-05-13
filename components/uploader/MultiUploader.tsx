@@ -24,8 +24,10 @@ type props = {
 
   disabled?: boolean;
   activeFull?: boolean;
+  loading?: boolean;
   link: string;
   title?: string;
+  setLoading: React.Dispatch<React.SetStateAction<boolean>>;
   setTotalLength?: React.Dispatch<React.SetStateAction<number>>;
   setUploadedImages?: React.Dispatch<React.SetStateAction<number>>;
   innerClasses?: { sizeClass?: string; secontParentClass?: string };
@@ -53,9 +55,10 @@ const MultiUploader = ({
   setUploaderLoading,
   setUploadedImages,
   activeFull,
+  loading,
+  setLoading,
 }: props) => {
   const imagePickerRef = useRef<HTMLDivElement>(null);
-  const [loading, setLoading] = useState(false);
   const [show, setShow] = useState(false);
   const [showImage, setShowImage] = useState<any>("");
 
