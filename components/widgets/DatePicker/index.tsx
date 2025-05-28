@@ -1,6 +1,6 @@
 import React, { useState, useMemo, useEffect } from "react";
 import MonthPicker from "./MonthPicker";
-import DaysOfTheWeel from "./DaysOfTheWeel";
+import DaysOfTheWeel from "./DaysOfTheWeek";
 import DayPicker from "./DayPicker";
 import moment from "moment-jalaali";
 import YearPicker from "./YearPicker";
