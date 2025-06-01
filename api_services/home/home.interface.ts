@@ -99,3 +99,10 @@ export interface LandingsDto {
   title: string;
   url: string;
 }
+
+export interface InnitSettingsDto {
+  isMarketplace: boolean;
+  googleTagManagerId: string;
+  activeGoogleIndex: string;
+  hasProductAttribute: boolean;
+}

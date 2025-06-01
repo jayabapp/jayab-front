@@ -40,7 +40,9 @@ export const apiRoutes = {
 
   AU14: "/user/forget-password/reset",
 
-  AUTH_INIT: "/auth/init-settings",
+  AUTH_INIT: "/auth/init-user",
+
+  APP_SETTINGS: "/auth/init-settings",
 
   PROFILE_UPLOAD: "/attachments",
 

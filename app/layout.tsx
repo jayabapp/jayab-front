@@ -5,6 +5,9 @@ import "../styles/globals.css";
 
 import LayoutProvider from "./layout-provider";
 import { x_Iransans } from "./fonts/x_iran/x_Iransans";
+import { InnitSettingsDto } from "@/api_services/home/home.interface";
+import serverCall from "@/helpers/serverCall";
+import { apiRoutes, baseUrl } from "@/utils/urls";
 
 export const metadata: Metadata = {
   title: {
@@ -14,7 +17,7 @@ export const metadata: Metadata = {
   description: "جایاب",
 };
 
-export default function RootLayout({
+const RootLayout = async ({
   children,
   params,
   modal,
@@ -22,7 +25,9 @@ export default function RootLayout({
   children: React.ReactNode;
   params: { [key: string]: string };
   modal: React.ReactNode;
-}>) {
+}>) => {
+  const { data: appSetting }: { data: InnitSettingsDto } = await serverCall(baseUrl + apiRoutes.APP_SETTINGS);
+
   return (
     <html lang="fa" dir={"rtl"}>
       <head>
@@ -34,6 +39,13 @@ export default function RootLayout({
         {/* <title>{"جایاب"}</title> */}
         {/* <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"></meta> */}
         {/* <title>{process.env.NEXT_PUBLIC_NAME}</title> */}
+        {/* {appSetting?.activeGoogleIndex === "0" && <meta name="googlebot" content="noindex,nofollow" />} */}
+        <noscript
+          dangerouslySetInnerHTML={{
+            __html: `<iframe src="https://www.googletagmanager.com/ns.html?id=${appSetting?.googleTagManagerId?.toString()}"
+            height="0" width="0" style="display:none;visibility:hidden"></iframe>`,
+          }}
+        ></noscript>
         <meta name="keywords" content="جایاب" />
         <meta property="og:title" content="جایاب" />
         {/* <title>تــک رخ</title> */}
@@ -49,11 +61,13 @@ export default function RootLayout({
         <link rel="manifest" href="/manifest.json" />
         {/* <link rel="apple-touch-icon" sizes="180x180" href="/assets/icons/app/apple-touch-icon.png" /> */}
       </head>
-      <body content="noindex,nofollow" className={`${x_Iransans.className} `}>
+      <body className={`${x_Iransans.className} `}>
         <LayoutProvider modal={modal} params={params}>
           {children}
         </LayoutProvider>
       </body>
     </html>
   );
-}
+};
+
+export default RootLayout;
