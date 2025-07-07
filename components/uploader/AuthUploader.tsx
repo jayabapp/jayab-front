@@ -11,6 +11,7 @@ import { useStoreTheme } from "../../store";
 import BtnLoading from "../shared/Button/BtnLoading";
 import Modal from "../Modal";
 import { AuthService } from "@/api_services/auth/auth.service";
+import EditImageModal from "./EditImageModal";
 
 //For Slider
 
@@ -60,7 +61,7 @@ const AuthUploader = ({
   const [selectedFile, setselectedFile] = useState<string | null>(null);
   const [isCropping, setisCropping] = useState(false);
 
-  const { mutate } = useMutation({ mutationFn: AuthService.UploadUsersImage });
+  const { mutate, isPending: sendLoading } = useMutation({ mutationFn: AuthService.UploadUsersImage });
 
   const uploadTemp = (file: Blob) => {
     setLoading(true);
@@ -96,22 +97,19 @@ const AuthUploader = ({
     if (type == "image" && file.name.split(".")[1] == "jfif")
       return toast.error("لطفا از فایل تصویر درست استفاده نمایید");
     else {
-      const compressedBlob = await imageCompression(file as File, {
-        maxSizeMB: 1,
-        maxWidthOrHeight: 1400,
-        useWebWorker: true,
-      });
-      const compressedFile = new File([compressedBlob], file.name, {
-        type: file.type,
-        lastModified: file.lastModified,
-      });
+      // const compressedBlob = await imageCompression(file as File, {
+      //   maxSizeMB: 1,
+      //   maxWidthOrHeight: 1400,
+      //   useWebWorker: true,
+      // });
       // setselectedFile(compressedFile);
-      setImage(URL.createObjectURL(compressedFile));
-      setselectedFile(URL.createObjectURL(compressedFile));
+
+      setImage(URL.createObjectURL(file));
+      setselectedFile(URL.createObjectURL(file));
     }
   };
 
-  async function uploadImage() {
+  async function uploadImage(image: any) {
     setSubLoading(true);
     if (!!image) {
       const response = await fetch(image);
@@ -147,6 +145,7 @@ const AuthUploader = ({
     setCoordinates(cropper.getCoordinates());
     if (cropper.getCanvas()?.toDataURL()) setImage(cropper.getCanvas()?.toDataURL());
   };
+
   return (
     <div className={`flex w-fit  ${containerClass}`} style={{ zIndex: "4 !important" }}>
       {/* <div id="myVIdeo"></div> */}
@@ -248,7 +247,19 @@ const AuthUploader = ({
           }}
         />
       )}
-      <Modal
+
+      {!!selectedFile ? (
+        <EditImageModal
+          cropRatio={cropRatio}
+          imageUrl={selectedFile || ""}
+          isUploading={sendLoading}
+          onComplete={uploadTemp}
+          onHide={onHide}
+        />
+      ) : (
+        <></>
+      )}
+      {/* <Modal
         show={!!selectedFile ? true : false}
         options={{
           containerClass:
@@ -354,7 +365,7 @@ const AuthUploader = ({
         </div>
 
         <div></div>
-      </Modal>
+      </Modal> */}
     </div>
   );
 };

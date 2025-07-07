@@ -154,7 +154,7 @@ const Header = ({ scroll }: { scroll?: number }) => {
       <div
         id="headerContainer"
         className={`
-      ${headerMobileBlackList.find((e) => pathname.includes(e)) && " hidden md:block"}
+     
 
 transition-all  ease-in-out duration-1000 header-content-container w-full mx-auto custome-shadow-card  backdrop-blur-md  bg-white dark:bg-dark-900   pt-2 pb-2   border-b dark:border-zinc-500 border-gray-100 `}
       >
