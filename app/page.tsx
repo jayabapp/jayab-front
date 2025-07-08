@@ -1,7 +1,3 @@
-import BannersContainer from "@/components/Home/BannersContainer";
-import HomeAdvisorSub from "@/components/Home/HomeAdvisorSub";
-import HomeCityFilterContainer from "@/components/Home/HomeCityFilterContainer";
-import HomePropertiesList from "@/components/Home/HomePropertiesList";
 import HomeSearchPart from "@/components/Home/HomeSearchPart";
 import HomeSkeleton from "@/components/Home/HomeSkeleton/BannerSkeleton";
 import MainFiltersContainer from "@/components/Home/MainFiltersContainer";
@@ -33,6 +29,11 @@ import { Suspense } from "react";
 //       </div>
 //     );4//   },
 // });
+
+const BannersContainer = dynamic(() => import("@/components/Home/BannersContainer"));
+const HomeAdvisorSub = dynamic(() => import("@/components/Home/HomeAdvisorSub"));
+const HomeCityFilterContainer = dynamic(() => import("@/components/Home/HomeCityFilterContainer"));
+const HomePropertiesList = dynamic(() => import("@/components/Home/HomePropertiesList"));
 const Home = async () => {
   const { data: banners } = await serverCall(baseUrl + apiRoutes.BANNERS + `?position=main_1`);
   const { data: middleBanners } = await serverCall(baseUrl + apiRoutes.BANNERS + `?position=main_2`);
@@ -44,7 +45,13 @@ const Home = async () => {
 
   return (
     <div style={{ minHeight: "100dvh" }} id="homeParent" className="home-container  !px-0   flex flex-col gap-3 ">
-      {!!banners && !isEmpty(banners) ? <BannersContainer banners={banners || []} /> : <></>}
+      {!!banners && !isEmpty(banners) ? (
+        <Suspense>
+          <BannersContainer banners={banners || []} />
+        </Suspense>
+      ) : (
+        <></>
+      )}
       {/* {!!middleBanners ? (
         <MiddleBanners cols={2} containerClass="  pr-2 md:pr-0 py-4" list={middleBanners || []} />
       ) : (
@@ -78,7 +85,9 @@ const Home = async () => {
           )}{" "}
         </section>
       </Suspense>
-      <HomePropertiesList middleBanners={middleBanners || []} data={propertyData?.data || []} /> <TheInstallPrompt />
+      <Suspense>
+        <HomePropertiesList middleBanners={middleBanners || []} data={propertyData?.data || []} /> <TheInstallPrompt />
+      </Suspense>
     </div>
   );
 };

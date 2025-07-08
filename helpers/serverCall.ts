@@ -19,7 +19,7 @@ async function serverCall(url: string, params?: any) {
     };
     const response = await fetch(`${url}${!!params ? `?${queryBuilder(params)}` : ""}`, {
       // next: { revalidate: revalidate ? revalidate : 300 },
-      next: { revalidate: MinMaxRandom() },
+      next: { revalidate: MinMaxRandom(), tags: [url] },
       ...config1,
     });
 
