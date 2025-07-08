@@ -93,15 +93,7 @@ const EditImageModal = ({ imageUrl, isUploading, onHide, onComplete, cropRatio }
             aspectRatio,
           }}
         /> */}
-        <div
-          className="flex items-center justify-center"
-          style={{
-            position: "relative",
-            width: "100%",
-            minHeight: "60dvh",
-            maxHeight: "60dvh",
-          }}
-        >
+        <div className="flex w-full  relative  h-[60dvh] items-center justify-center">
           <Cropper
             defaultSize={({ imageSize }, settings) => {
               return {

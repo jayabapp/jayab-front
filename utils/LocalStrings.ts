@@ -367,6 +367,8 @@ const _STRINGS = {
   VERIFY_PROP_MODAL_TEXT: "به منظور عملکرد بهتر و افزایش بازدید، لطفا در اسرع وقت ملک خود احراز کنید.",
   NEXT_MONTH: "ماه بعد",
   LAST_MONTH: "ماه قبل",
+
+  NAVIGATE: "مسیر یابی",
 };
 
 export default _STRINGS;

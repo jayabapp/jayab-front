@@ -1,8 +1,11 @@
 import Modal from "@/components/Modal";
 import ModalHeaderPart from "@/components/Modal/ModalHeaderPart";
+import Button from "@/components/shared/Button/Button";
 import _STRINGS from "@/utils/LocalStrings";
 import dynamic from "next/dynamic";
+import Link from "next/link";
 import React, { useEffect, useMemo, useState } from "react";
+import { isAndroid, isIOS } from "react-device-detect";
 
 const PropertyMapPopModal = ({ data, show, onHide }: { data: any; show: boolean; onHide: () => void | null }) => {
   const MapPlaceShower = useMemo(
@@ -25,7 +28,7 @@ const PropertyMapPopModal = ({ data, show, onHide }: { data: any; show: boolean;
     >
       <ModalHeaderPart onHide={onHide} title={_STRINGS.COORDINATES} />
       <div className="w-full bg-white rounded-md">
-        <div className="w-full h-[85dvh] md:h-[60dvh] relative">
+        <div className="w-full h-[80dvh] md:h-[60dvh] relative">
           {data && data?.longitude && (
             <MapPlaceShower
               containerClass="w-full"
@@ -43,6 +46,16 @@ const PropertyMapPopModal = ({ data, show, onHide }: { data: any; show: boolean;
           )}
         </div>
       </div>
+      <Link
+        href={
+          !isAndroid
+            ? `http://maps.google.com/maps/dir/?api=1&destination=${data?.latitude},${data?.longitude}&travelmode=driving`
+            : `geo:${data?.latitude},${data?.longitude}`
+        }
+      >
+        {" "}
+        <Button containerClass="w-full  p-4 " width="w-full" title={_STRINGS.NAVIGATE} />
+      </Link>
     </Modal>
   );
 };
