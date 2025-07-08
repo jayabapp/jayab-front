@@ -74,7 +74,7 @@ function ProductImagesContainer({
   attsImagesArray?: any[] | number[];
 }) {
   const { userInfo } = useStoreInit((data) => data);
-  const ref = useRef<SwiperTyype>(null);
+  // const ref = useRef<SwiperTyype>(null);
   const [modalProps, setModalProps] = useState<ImageSlideType>({
     data: data,
     isVisible: false,
@@ -104,11 +104,11 @@ function ProductImagesContainer({
       }
     }
   }, [productImageId]);
-  useEffect(() => {
-    if (productImageId) {
-      ref.current?.slideTo(productImageId ? addImages?.findIndex((e) => e?.id == productImageId) : 0);
-    }
-  }, [addImages]);
+  // useEffect(() => {
+  //   if (productImageId) {
+  //     ref.current?.slideTo(productImageId ? addImages?.findIndex((e) => e?.id == productImageId) : 0);
+  //   }
+  // }, [addImages]);
 
   if (!data) return null;
   return (
@@ -171,10 +171,12 @@ function ProductImagesContainer({
             <></>
           )}
           <Swiper
-            pagination
             slidesWidth={{ def: "100%", md: "100%" }}
             spacing="0rem"
             options={{ align: "center", direction: "rtl", dragFree: false }}
+            onShowCountClick={(activeIndex: any) => {
+              setModalProps({ isVisible: true, data: data, currentIndex: activeIndex });
+            }}
           >
             {addImages?.map((i, index: number) => (
               <SwiperSlide key={index} className={`w-full  !h-auto    cursor-pointer select-none `}>

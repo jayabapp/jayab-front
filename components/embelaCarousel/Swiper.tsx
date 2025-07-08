@@ -15,6 +15,7 @@ type PropType = {
   spacing?: string;
   autoplay?: boolean;
   pagination?: boolean;
+  onShowCountClick?: (e: any) => void | null;
   withArrows?: boolean;
 };
 
@@ -32,6 +33,7 @@ const Swiper: React.FC<PropType> = (props) => {
     autoplay = false,
     pagination,
     withArrows,
+    onShowCountClick,
   } = props;
 
   /* -------------------------------------------------------------------------- */
@@ -112,6 +114,16 @@ const Swiper: React.FC<PropType> = (props) => {
               className={"embla__dot".concat(index === selectedIndex ? " embla__dot--selected" : "")}
             />
           ))}
+        </div>
+      ) : !!onShowCountClick ? (
+        <div
+          onClick={() => {
+            onShowCountClick(selectedIndex);
+          }}
+          className=" absolute   cursor-pointer left-4 bottom-4  flex items-center justify-evenly !left-4  !rounded-md !right-auto  w-11  h-7 bg-white/70"
+        >
+          <p className="text-sm h-full text-center flex items-center justify-center  mt-0.5">{scrollSnaps?.length}</p>
+          <img className="w-3.5" src="/assets/icons/property/upscale_icon.svg" />
         </div>
       ) : (
         <></>

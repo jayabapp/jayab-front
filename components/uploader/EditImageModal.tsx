@@ -81,7 +81,7 @@ const EditImageModal = ({ imageUrl, isUploading, onHide, onComplete, cropRatio }
       }}
     >
       <div className="relative  py-20 px-4 md:p-20 w-full h-[90dvh]  !relative   flex flex-col items-center justify-center">
-        <Cropper
+        {/* <Cropper
           ref={cropperRef}
           src={imageUrl}
           stencilProps={{
@@ -92,8 +92,33 @@ const EditImageModal = ({ imageUrl, isUploading, onHide, onComplete, cropRatio }
 
             aspectRatio,
           }}
-        />
-
+        /> */}
+        <div
+          className="flex items-center justify-center"
+          style={{
+            position: "relative",
+            width: "100%",
+            minHeight: "60dvh",
+            maxHeight: "60dvh",
+          }}
+        >
+          <Cropper
+            defaultSize={({ imageSize }, settings) => {
+              return {
+                width: imageSize.width,
+                height: imageSize.height,
+              };
+            }}
+            style={{ maxHeight: "60dvh" }}
+            ref={cropperRef}
+            stencilProps={{
+              aspectRatio: cropRatio || undefined,
+            }}
+            src={imageUrl}
+            // onChange={onChange}
+            className={"cropper"}
+          />
+        </div>
         <div className="mt-4 flex justify-center px-4  md:px-4 !overflow-x-scroll items-center gap-2  w-full ">
           {aspectRatioList
             .filter((e) => {
