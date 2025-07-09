@@ -52,6 +52,7 @@ const PropertyMapPopModal = ({ data, show, onHide }: { data: any; show: boolean;
             ? `http://maps.google.com/maps/dir/?api=1&destination=${data?.latitude},${data?.longitude}&travelmode=driving`
             : `geo:${data?.latitude},${data?.longitude}`
         }
+        target="_blank"
       >
         {" "}
         <Button containerClass="w-full  p-4 " width="w-full" title={_STRINGS.NAVIGATE} />

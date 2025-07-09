@@ -48,7 +48,11 @@ const SinglePropertyIntroduction = ({ data }: { data: SinglePropDto }) => {
   });
 
   const onCreateChat = () => {
-    createFindChat({ property_id: data?.id });
+    if (!!isLogin) {
+      createFindChat({ property_id: data?.id });
+    } else {
+      showLogin();
+    }
   };
 
   const onContactClick = () => {
