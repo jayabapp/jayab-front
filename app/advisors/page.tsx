@@ -6,7 +6,6 @@ import AdvisorCard from "@/components/Advisor/AdvisorCard";
 import SingleAdvisorModal from "@/components/Advisor/SingleAdvisorModal";
 import Breadcrumbs from "@/components/BreadCrumbs";
 import CityModal from "@/components/CityModal";
-import BannersContainer from "@/components/Home/BannersContainer";
 import SearchBox from "@/components/SearchBoxComp";
 import BtnLoading from "@/components/shared/Button/BtnLoading";
 import Button from "@/components/shared/Button/Button";
@@ -25,6 +24,8 @@ import { usePathname, useRouter } from "next/navigation";
 import React, { useEffect, useState } from "react";
 import InfiniteScroll from "react-infinite-scroll-component";
 
+import dynamic from "next/dynamic";
+const BannersContainer = dynamic(() => import("@/components/Home/BannersContainer"));
 const AdvisorsListPage = () => {
   const router = useRouter();
   const queriesParams = useQueryGet<any>();

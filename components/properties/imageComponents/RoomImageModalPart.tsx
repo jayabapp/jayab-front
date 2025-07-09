@@ -6,8 +6,7 @@ import _STRINGS from "@/utils/LocalStrings";
 
 import SmallLoading from "@/components/shared/Lotties/SmallLoading";
 import { NEW_IMAGE_URL } from "@/utils/urls";
-import Swiper from "@/components/embelaCarousel/Swiper";
-import SwiperSlide from "@/components/embelaCarousel/SwiperSlide";
+
 import SwiperWithThumnails from "@/components/embelaCarousel/SwiperWithThumnails";
 import { TransformWrapper, TransformComponent } from "react-zoom-pan-pinch";
 const RoomImageModalPart = ({

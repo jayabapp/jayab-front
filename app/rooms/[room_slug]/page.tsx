@@ -1,4 +1,3 @@
-import ProductImagesContainer from "@/components/properties/imageComponents/PropertiesImagesPart";
 import ProductSkeleton from "@/components/properties/ProductSkeleton";
 import SinglePorpertyAccards from "@/components/properties/SinglePropertyAccards";
 import SinglePropertycallender from "@/components/properties/SinglePropertycallender";
@@ -8,7 +7,8 @@ import serverCall from "@/helpers/serverCall";
 import { apiRoutes, baseUrl } from "@/utils/urls";
 import { Metadata, ResolvingMetadata } from "next";
 import React, { Suspense } from "react";
-
+import dynamic from "next/dynamic";
+const ProductImagesContainer = dynamic(() => import("@/components/properties/imageComponents/PropertiesImagesPart"));
 type Props = {
   params: Promise<{ room_slug: string }>;
   searchParams: Promise<{ [key: string]: string | string[] | undefined }>;
