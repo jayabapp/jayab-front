@@ -26,6 +26,7 @@ const SinglePropertyIntroduction = ({ data }: { data: SinglePropDto }) => {
   const { isAdvisor } = useStoreParams((data) => data);
   const [showContact, setShowContact] = useState(false);
   const [showShare, setShowShare] = useState(false);
+  const [origin, setOrigin] = useState("");
   const { mutate: createFindChat, isPending } = useMutation({
     mutationFn: ChatService.StartOrFindChat,
     onSuccess: (e) => {
@@ -87,6 +88,9 @@ const SinglePropertyIntroduction = ({ data }: { data: SinglePropDto }) => {
     }
   }, [data]);
 
+  useEffect(() => {
+    if (!!window.origin) setOrigin(window.origin);
+  }, []);
   return (
     <div className=" flex w-full  flex-col relative  gap-2 md:gap-3">
       <div className="w-full flex items-start md:items-center justify-between gap-2">
@@ -99,7 +103,7 @@ const SinglePropertyIntroduction = ({ data }: { data: SinglePropDto }) => {
           <div className="bg-black/10 rounded-md text-xs md:text-sm  px-2 py-1  flex items-center justify-center">
             کد {data.code}
           </div>{" "}
-          <ShareLink passedHref={`${window.origin}/rooms/${data?.code}`} />
+          <ShareLink passedHref={`${origin}/rooms/${data?.code}`} />
           <div className="flex items-center gap-1">
             <BookMarkButton data={data} />
           </div>

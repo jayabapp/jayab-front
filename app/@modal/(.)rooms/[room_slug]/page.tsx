@@ -4,19 +4,22 @@ import { PropertyService } from "@/api_services/property/property.service";
 import Headers from "@/components/headers";
 import Modal from "@/components/Modal";
 import AnimationlessModal from "@/components/Modal/AnimationlessModal";
-import ProductImagesContainer from "@/components/properties/imageComponents/PropertiesImagesPart";
+import dynamic from "next/dynamic";
+
 import ProductSkeleton from "@/components/properties/ProductSkeleton";
-import SinglePorpertyAccards from "@/components/properties/SinglePropertyAccards";
-import SinglePropertycallender from "@/components/properties/SinglePropertycallender";
-import SinglePropertyIntroduction from "@/components/properties/SinglePropertyIntroduction";
-import LottieLoading from "@/components/shared/Lotties/LottieLoading";
+
+// import LottieLoading from "@/components/shared/Lotties/LottieLoading";
 
 import _STRINGS from "@/utils/LocalStrings";
 import { useQuery } from "@tanstack/react-query";
 import { usePathname } from "next/navigation";
 
-import React, { useState, use } from "react";
+import React, { useState, use, Suspense } from "react";
 
+const ProductImagesContainer = dynamic(() => import("@/components/properties/imageComponents/PropertiesImagesPart"));
+const SinglePropertyIntroduction = dynamic(() => import("@/components/properties/SinglePropertyIntroduction"));
+const SinglePropertycallender = dynamic(() => import("@/components/properties/SinglePropertycallender"));
+const SinglePorpertyAccards = dynamic(() => import("@/components/properties/SinglePropertyAccards"));
 export default function SingleDeceasedPage({ params }: { params: Promise<{ room_slug: string }> }) {
   const incomingParams = use(params);
   const pathname = usePathname();
@@ -48,11 +51,19 @@ export default function SingleDeceasedPage({ params }: { params: Promise<{ room_
           <ProductSkeleton />
         ) : !!properyData ? (
           <>
-            <ProductImagesContainer productImageId={null} data={properyData} />
-            <SinglePropertyIntroduction data={properyData} />
+            <Suspense>
+              <ProductImagesContainer productImageId={null} data={properyData} />
+            </Suspense>
+            <Suspense>
+              <SinglePropertyIntroduction data={properyData} />
+            </Suspense>
             {/* <SingleMobilePropertyIntroductions data={properyData} /> */}
-            <SinglePorpertyAccards data={properyData} />
-            <SinglePropertycallender data={properyData} />
+            <Suspense>
+              <SinglePorpertyAccards data={properyData} />
+            </Suspense>
+            <Suspense>
+              <SinglePropertycallender data={properyData} />
+            </Suspense>
           </>
         ) : (
           <></>

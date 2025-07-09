@@ -90,16 +90,24 @@ const Swiper: React.FC<PropType> = (props) => {
         <div className="embla__container">{children}</div>
         {!!withArrows ? (
           <div className="  embla__buttons ">
-            <PrevButton
-              className=" !-top-[10%] !left-0 scale-75 hover:scale-[0.8]  md:hover:scale-102   md:scale-100"
-              onClick={onNextButtonClick}
-              disabled={nextBtnDisabled}
-            />
-            <NextButton
-              className="!right-0 !-top-[10%] scale-75  hover:scale-[0.8]  md:hover:scale-102  md:scale-100"
-              onClick={onPrevButtonClick}
-              disabled={prevBtnDisabled}
-            />
+            {!nextBtnDisabled ? (
+              <PrevButton
+                className=" !-top-[10%] !left-0 scale-75 hover:scale-[0.8]  md:hover:scale-102   md:scale-100"
+                onClick={onNextButtonClick}
+                disabled={nextBtnDisabled}
+              />
+            ) : (
+              <></>
+            )}
+            {!prevBtnDisabled ? (
+              <NextButton
+                className="!right-0 !-top-[10%] scale-75  hover:scale-[0.8]  md:hover:scale-102  md:scale-100"
+                onClick={onPrevButtonClick}
+                disabled={prevBtnDisabled}
+              />
+            ) : (
+              <></>
+            )}
           </div>
         ) : (
           <></>

@@ -29,6 +29,7 @@ import MobileFooter from "../../components/Footer/MobileFooter";
 import FingerprintJS from "@fingerprintjs/fingerprintjs";
 import LoginModal from "@/components/Modal/LoginModal";
 import FCM from "../FCM";
+import { getParameter } from "@/helpers/queryGet";
 function FallBack() {
   return <></>;
 }
@@ -42,7 +43,6 @@ const Footer = dynamic(() => import("../../components/Footer"), {
 const MainWrapper = ({ children }: mainWrapper) => {
   const router = useRouter();
   const pathname = usePathname();
-  const searchParams = useSearchParams();
 
   const { connecting } = useStoreSocket((state) => state);
   const { isDark } = useStoreParams((state) => state);
@@ -58,8 +58,8 @@ const MainWrapper = ({ children }: mainWrapper) => {
     /**
      * admin panel sso
      */
-    const ssoToken = searchParams.get("sso_token");
-    const redirectUrl = searchParams.get("__next")?.replaceAll("|", "/");
+    const ssoToken = getParameter("sso_token");
+    const redirectUrl = getParameter("__next")?.replaceAll("|", "/");
     console.log({ ssoToken, redirectUrl });
 
     //if the url has sso_token query param

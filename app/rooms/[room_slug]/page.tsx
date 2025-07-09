@@ -1,7 +1,4 @@
 import ProductSkeleton from "@/components/properties/ProductSkeleton";
-import SinglePorpertyAccards from "@/components/properties/SinglePropertyAccards";
-import SinglePropertycallender from "@/components/properties/SinglePropertycallender";
-import SinglePropertyIntroduction from "@/components/properties/SinglePropertyIntroduction";
 
 import serverCall from "@/helpers/serverCall";
 import { apiRoutes, baseUrl } from "@/utils/urls";
@@ -9,6 +6,9 @@ import { Metadata, ResolvingMetadata } from "next";
 import React, { Suspense } from "react";
 import dynamic from "next/dynamic";
 const ProductImagesContainer = dynamic(() => import("@/components/properties/imageComponents/PropertiesImagesPart"));
+const SinglePropertyIntroduction = dynamic(() => import("@/components/properties/SinglePropertyIntroduction"));
+const SinglePropertycallender = dynamic(() => import("@/components/properties/SinglePropertycallender"));
+const SinglePorpertyAccards = dynamic(() => import("@/components/properties/SinglePropertyAccards"));
 type Props = {
   params: Promise<{ room_slug: string }>;
   searchParams: Promise<{ [key: string]: string | string[] | undefined }>;
@@ -42,9 +42,12 @@ const SinglePropertyPage = async ({ params }: { params: Promise<{ room_slug: str
             <SinglePropertyIntroduction data={properyData} />
           </Suspense>
           {/* <SingleMobilePropertyIntroductions data={properyData} /> */}
-          <SinglePorpertyAccards data={properyData} />
-
-          <SinglePropertycallender data={properyData} />
+          <Suspense>
+            <SinglePorpertyAccards data={properyData} />
+          </Suspense>
+          <Suspense>
+            <SinglePropertycallender data={properyData} />
+          </Suspense>
         </>
       ) : (
         <ProductSkeleton />

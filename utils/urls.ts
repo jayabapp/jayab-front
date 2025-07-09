@@ -7,7 +7,7 @@ export const NEW_IMAGE_URL = (
 ) => {
   if (item?.bucket && item?.bucket != null)
     return `https://${item?.bucket}.${item?.end_point}/${item?.path}/${keyValue ? item[keyValue] : item?.name}`;
-  else return "";
+  else return "/assets/icons/logo/logo.svg";
 };
 export const imageUrlBase = `${Url}/images/contents/`;
 export const IMAGE_URL = (path: string) => `${Url}/${path}`;
