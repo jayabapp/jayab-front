@@ -1,7 +1,7 @@
 import { Cropper, CropperRef } from "react-advanced-cropper";
 //import "react-advanced-cropper/dist/style.css";
 import "react-advanced-cropper/dist/themes/compact.css";
-
+import * as Sentry from "@sentry/nextjs";
 import React, { useEffect, useRef, useState } from "react";
 import {
   RatioIcon11,
@@ -45,8 +45,16 @@ const EditImageModal = ({ imageUrl, isUploading, onHide, onComplete, cropRatio }
         if (blob) {
           const cropped = new File([blob], "cropped-image.png", { type: "image/png" });
           onComplete(cropped);
+        } else {
+          const error = new Error(`${blob}blob does not exict`);
+          error.name = "Blob error";
+          Sentry.captureException(error);
         }
       }, "image/png");
+    } else {
+      const error = new Error(`${canvas}canvas does not exict`);
+      error.name = "Canvas error";
+      Sentry.captureException(error);
     }
   };
 

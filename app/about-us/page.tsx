@@ -5,7 +5,7 @@ import Breadcrumbs from "@/components/BreadCrumbs";
 import Editable from "@/components/Editable";
 
 import LottieLoading from "@/components/shared/Lotties/LottieLoading";
-
+import * as Sentry from "@sentry/nextjs";
 import Notify from "@/components/shared/Toast";
 import _STRINGS from "@/utils/LocalStrings";
 import { NEW_IMAGE_URL } from "@/utils/urls";
@@ -24,6 +24,7 @@ const AboutUs = () => {
   return (
     <div id="homeParent" className="container     transition-all duration-500 ease-in-out ">
       <Breadcrumbs />
+
       <div className="flex  flex-col items-center justify-center">
         <img src="/assets/icons/logo/header_logo.svg" />
         {isLoading ? (

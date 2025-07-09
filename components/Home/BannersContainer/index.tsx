@@ -1,3 +1,4 @@
+"use client";
 import React from "react";
 import ImageCarousel from "../../shared/ImageCarousel";
 import _STRINGS from "@/utils/LocalStrings";
@@ -6,6 +7,7 @@ type ImageCarouselTypes = {
   banners?: any[];
   fixed_banners?: any | null;
 };
+
 const BannersContainer = ({ banners, fixed_banners }: ImageCarouselTypes) => {
   return (
     <div

@@ -5,7 +5,7 @@ import serverCall from "@/helpers/serverCall";
 import { apiRoutes, baseUrl } from "@/utils/urls";
 import { Metadata, ResolvingMetadata } from "next";
 import { Suspense } from "react";
-
+import * as Sentry from "@sentry/nextjs";
 function Fallback() {
   return <LottieLoading />;
 }
@@ -24,6 +24,10 @@ export async function generateMetadata({ params }: Props, parent: ResolvingMetad
   return {
     title: landings?.content?.seo?.metaTitle || landings?.content?.title,
     description: landings?.content?.seo?.metaDescription || landings?.content?.slug,
+
+    other: {
+      ...Sentry.getTraceData(),
+    },
   };
 }
 

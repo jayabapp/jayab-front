@@ -9,13 +9,26 @@ import { InnitSettingsDto } from "@/api_services/home/home.interface";
 import serverCall from "@/helpers/serverCall";
 import { apiRoutes, baseUrl } from "@/utils/urls";
 
-export const metadata: Metadata = {
-  title: {
-    template: "%s | جایاب",
-    default: "جایاب",
-  },
-  description: "جایاب",
-};
+import * as Sentry from "@sentry/nextjs";
+export function generateMetadata(): Metadata {
+  return {
+    title: {
+      template: "%s | جایاب",
+      default: "جایاب",
+    },
+    description: "جایاب",
+    other: {
+      ...Sentry.getTraceData(),
+    },
+  };
+}
+// export const metadata: Metadata = {
+//   title: {
+//     template: "%s | جایاب",
+//     default: "جایاب",
+//   },
+//   description: "جایاب",
+// };
 
 const RootLayout = async ({
   children,
