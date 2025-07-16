@@ -17,7 +17,6 @@ import { useStoreSocket } from "@/store";
 
 const TicketsPage = () => {
   const { notification } = useStoreSocket((e) => e);
-  console.log(notification, "orderStatusIdorderStatusId");
   const params = useParams();
   const [message, setMessage] = useState<string>("");
   const [disabled, setDisabled] = useState(false);

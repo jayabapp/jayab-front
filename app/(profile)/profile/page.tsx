@@ -6,20 +6,19 @@ import { UserService } from "@/api_services/user/user.service";
 import ConfirmModal from "@/components/Modal/ConfirmModal";
 import ProfileItem from "@/components/profile/ProfileItem";
 
-import BtnLoading from "@/components/shared/Button/BtnLoading";
 import Button from "@/components/shared/Button/Button";
-import MainUploader from "@/components/uploader";
 import { useAuthStore, useStoreInit } from "@/store";
 import { profileItems } from "@/utils/constantss";
 
 import _STRINGS from "@/utils/LocalStrings";
-import { NEW_IMAGE_URL } from "@/utils/urls";
-
+import dynamic from "next/dynamic";
 import { useMutation, useQuery } from "@tanstack/react-query";
 import { isEmpty } from "lodash";
 import { useRouter } from "next/navigation";
-import React, { useEffect, useState } from "react";
+import React, { Suspense, useEffect, useState } from "react";
 import { isMobile, isTablet } from "react-device-detect";
+
+const MainUploader = dynamic(() => import("@/components/uploader"));
 
 const Profile = () => {
   const [profileImage, setProfileImage] = useState<any>(null);
@@ -91,28 +90,30 @@ const Profile = () => {
               className="
           flex items-center gap-2"
             >
-              <MainUploader
-                innerClasses={{
-                  secontParentClass: "!rounded-full   !aspect-auto ",
-                  sizeClass: " !rounded-full !w-20 !h-20",
-                  imageClass: " !rounded-full ",
-                }}
-                title={_STRINGS.IMAGE}
-                withCrop
-                // isLogo
-                link="/attachments?type=PROFILE"
-                key={`uploader`}
-                containerClass={"my-3  w-fit flex items-start justify-start "}
-                item={profileImage}
-                onSelect={(file) => {
-                  mutate({ profile_image_id: file?.id });
-                  setProfileImage(file);
-                }}
-                showCamera
-                // onDelete={() => {
-                //   setProfileImage(null);
-                // }}
-              />
+              <Suspense>
+                <MainUploader
+                  innerClasses={{
+                    secontParentClass: "!rounded-full   !aspect-auto ",
+                    sizeClass: " !rounded-full !w-20 !h-20",
+                    imageClass: " !rounded-full ",
+                  }}
+                  title={_STRINGS.IMAGE}
+                  withCrop
+                  // isLogo
+                  link="/attachments?type=PROFILE"
+                  key={`uploader`}
+                  containerClass={"my-3  w-fit flex items-start justify-start "}
+                  item={profileImage}
+                  onSelect={(file) => {
+                    mutate({ profile_image_id: file?.id });
+                    setProfileImage(file);
+                  }}
+                  showCamera
+                  // onDelete={() => {
+                  //   setProfileImage(null);
+                  // }}
+                />
+              </Suspense>
               <div className="flex flex-col gap-3">
                 <p className="font-bold">{data?.full_name}</p>
                 <p className="text-sm">{data?.mobile_number}</p>

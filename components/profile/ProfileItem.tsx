@@ -20,6 +20,7 @@ const ProfileItem = ({
 
   return (
     <Link
+      prefetch={false}
       href={item?.route}
       className={`   ${
         selected ? "text-primary-700 " : "border-r-transparent "

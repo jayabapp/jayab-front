@@ -101,7 +101,7 @@ const EditImageModal = ({ imageUrl, isUploading, onHide, onComplete, cropRatio }
             aspectRatio,
           }}
         /> */}
-        <div className="flex w-full  relative  h-[60dvh] items-center justify-center">
+        <div className="flex w-full   relative  h-[60dvh] items-center justify-center">
           <Cropper
             defaultSize={({ imageSize }, settings) => {
               return {
@@ -109,17 +109,17 @@ const EditImageModal = ({ imageUrl, isUploading, onHide, onComplete, cropRatio }
                 height: imageSize.height,
               };
             }}
-            style={{ maxHeight: "60dvh" }}
+            style={{ maxHeight: "60dvh", height: "100%", width: "100%", objectFit: "contain" }}
             ref={cropperRef}
             stencilProps={{
               aspectRatio: cropRatio || undefined,
             }}
             src={imageUrl}
             // onChange={onChange}
-            className={"cropper"}
+            className={"cropper flex items-center justify-center"}
           />
         </div>
-        <div className="mt-4 flex justify-center px-4  md:px-4 !overflow-x-scroll items-center gap-2  w-full ">
+        <div className="mt-4  flex flex-row h-24 justify-center !overflow-x-scroll  items-center gap-2  w-full ">
           {aspectRatioList
             .filter((e) => {
               if (cropRatio) {
@@ -128,11 +128,14 @@ const EditImageModal = ({ imageUrl, isUploading, onHide, onComplete, cropRatio }
                 return e;
               }
             })
-            .map((e, i) => (
-              <button className="shrink-0" key={i} onClick={() => setAspectRatio(e.value)}>
-                {React.createElement(e.icon, { color: aspectRatio === e.value ? "#61dafb" : "#ffffff" })}
-              </button>
-            ))}
+            .map((e, i) => {
+              const Icon = e.icon;
+              return (
+                <button className=" aspect-auto w-fit " key={i} onClick={() => setAspectRatio(e.value)}>
+                  <Icon color={aspectRatio === e.value ? "#61dafb" : "#ffffff"} />
+                </button>
+              );
+            })}
         </div>
         <div className="lg:absolute mt-8 lg:mt-0 flex justify-center lg:flex-col gap-6 left-3  lg:top-1/3">
           <img
