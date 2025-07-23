@@ -370,6 +370,7 @@ const _STRINGS = {
 
   NAVIGATE: "مسیر یابی",
   ADDS_LIST: "لیست آگهی ها",
+  REPORT_WRONG: "گزارش تخلف",
 };
 
 export default _STRINGS;

@@ -1,12 +1,15 @@
+"use client";
 import { useRouter } from "next/navigation";
-import { ReactNode } from "react";
+import { ReactNode, useState } from "react";
 import React from "react";
 import Modal from ".";
 import SmallLoading from "../shared/Lotties/SmallLoading";
+import MultiLineFormInput from "../shared/Form/MultiLineFormInput";
+import _STRINGS from "@/utils/LocalStrings";
 type ModalProps = {
   children?: ReactNode;
   onHide: () => void;
-  onConfirm: () => void | null;
+  onConfirm: (e?: string | null | undefined) => void | null;
   isVisible?: boolean;
   isLoading?: boolean;
   options?: op;
@@ -20,7 +23,9 @@ type ModalProps = {
   messageClass?: string;
 };
 interface op {
-  containerClass: string;
+  containerClass?: string;
+  hasInput?: boolean;
+  inputTitle?: string;
 }
 const ConfirmModal = ({
   isVisible,
@@ -35,7 +40,9 @@ const ConfirmModal = ({
   confirmTextClassName,
   messageClass,
   hideTextClassName,
+  options,
 }: ModalProps) => {
+  const [message, setMessage] = useState("");
   const router = useRouter();
   return (
     <Modal
@@ -56,6 +63,22 @@ const ConfirmModal = ({
           ""
         )}
         <p className={`font-light text-center text-sm dark:text-neutral-200 my-5  ${messageClass}`}>{text}</p>
+        {options?.hasInput ? (
+          <MultiLineFormInput
+            item={{
+              title: options?.inputTitle || _STRINGS.MESSAGE,
+              inputClass: "  !w-full !bg-primary-300",
+              containerClass: "pb-4 w-full",
+              rows: 4,
+            }}
+            value={message}
+            onChangeText={(e) => {
+              setMessage(e);
+            }}
+          />
+        ) : (
+          <></>
+        )}
         <div className="flex flex-row w-full px-4  gap-4 justify-evenly mx-auto mb-4">
           <div
             className={`bg-primary-700 dark:bg-primary-600 w-full hover:opacity-80 transition-all duration-200 ease-in-out text-white mx-2 text-center py-2.5 rounded-md cursor-pointer flex justify-center items-center ${confirmTextClassName} `}

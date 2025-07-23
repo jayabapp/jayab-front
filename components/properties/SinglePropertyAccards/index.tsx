@@ -8,6 +8,7 @@ import FeatAccard from "./FeatAccard";
 import GeneralFeatAccard from "./GeneralFeatAccard";
 import MapPopupPart from "./MapPopupPart";
 import RulesPopPart from "./RulesPopPart";
+import ReportRoom from "./ReportRoom";
 
 const SinglePorpertyAccards = ({ data }: { data: SinglePropDto }) => {
   return (
@@ -20,6 +21,7 @@ const SinglePorpertyAccards = ({ data }: { data: SinglePropDto }) => {
       <GeneralFeatAccard data={data} />
       {!!data?.latitude ? <MapPopupPart data={data} /> : <></>}
       <RulesPopPart data={data} />
+      <ReportRoom data={data} />
     </div>
   );
 };
