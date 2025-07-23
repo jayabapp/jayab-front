@@ -369,6 +369,7 @@ const _STRINGS = {
   LAST_MONTH: "ماه قبل",
 
   NAVIGATE: "مسیر یابی",
+  ADDS_LIST: "لیست آگهی ها",
 };
 
 export default _STRINGS;

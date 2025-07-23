@@ -9,7 +9,7 @@ import Link from "next/link";
 const PropertyCardOwnerPart = ({ data, goToLink }: { goToLink: string; data: PropertyListDto }) => {
   return (
     <div className="w-full flex flex-col ">
-      <Divider moreClass="my-1" />
+      {/* <Divider moreClass="my-1" />
       <div className="w-full flex  py-2  border-primary-200 items-center justify-between ">
         <p className="text-xs">{_STRINGS.ADD_DURATION} :</p>
 
@@ -25,8 +25,8 @@ const PropertyCardOwnerPart = ({ data, goToLink }: { goToLink: string; data: Pro
             {_STRINGS.EXTEND_SUBS}
           </Link>
         </div>
-      </div>
-      <Divider moreClass="my-1" />
+      </div> */}
+      {/* <Divider moreClass="my-1" />
       <Link
         href={`/profile/owner/properties/${data?.id}/subscription`}
         prefetch={false}
@@ -37,7 +37,7 @@ const PropertyCardOwnerPart = ({ data, goToLink }: { goToLink: string; data: Pro
         <div className=" flex items-center  gap-2">
           <img src="/assets/icons/shared/chevron-left.svg" />
         </div>
-      </Link>
+      </Link> */}
       <Divider moreClass="my-1" />
       <div className="w-full flex  py-2  border-primary-200 items-center justify-between ">
         <div className="flex w-full items-start gap-1">

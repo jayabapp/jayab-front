@@ -137,7 +137,7 @@ const ProfileDropdown = ({ notifBadge }: { notifBadge?: number | string }) => {
                 <></>
               )}
 
-              {!!userInfo?.advisor_id ? (
+              {/* {!!userInfo?.advisor_id ? (
                 <MenuItem key={`myAdds52`}>
                   <Link className="" prefetch={false} href={`/profile/advisor/subscription`}>
                     <div
@@ -158,7 +158,7 @@ const ProfileDropdown = ({ notifBadge }: { notifBadge?: number | string }) => {
                 </MenuItem>
               ) : (
                 <></>
-              )}
+              )} */}
               {profileDropDownItems.map((e) => (
                 <MenuItem key={e.id}>
                   <Link prefetch={false} href={e?.route}>

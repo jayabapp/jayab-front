@@ -67,7 +67,7 @@ function FilterdProperties({ sortType, setSortType, query }: FilterdPropertiesTy
       `${pathname}?${queryBuilder({
         ...temp,
 
-        sort_type: query.sort_type ? query.sort_type : sortType?.id,
+        // sort_type: query.sort_type ? query.sort_type : sortType?.id,
       })}`
     );
   }, [
