@@ -45,7 +45,7 @@ const ReportRoom = ({ data }: { data: SinglePropDto }) => {
           confirmTextClassName=" !bg-red-500"
           isLoading={loading}
           options={{ inputTitle: "متن گزارش ", hasInput: true }}
-          confirmText="ثبت گرازش"
+          confirmText="ثبت گزارش"
           onConfirm={onConfirm}
           text="گزارش خود را ثبت کنید"
           onHide={onHideMap}
