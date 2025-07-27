@@ -109,14 +109,14 @@ const EditImageModal = ({ imageUrl, isUploading, onHide, onComplete, cropRatio }
                 height: imageSize.height,
               };
             }}
-            style={{ maxHeight: "60dvh", height: "100%", width: "100%", objectFit: "contain" }}
+            style={{ height: "60dvh" }}
             ref={cropperRef}
             stencilProps={{
-              aspectRatio: cropRatio || undefined,
+              aspectRatio: cropRatio || aspectRatio || undefined,
             }}
             src={imageUrl}
             // onChange={onChange}
-            className={"cropper flex items-center justify-center"}
+            className={"cropper"}
           />
         </div>
         <div className="mt-4  flex flex-row h-24 justify-center !overflow-x-scroll  items-center gap-2  w-full ">

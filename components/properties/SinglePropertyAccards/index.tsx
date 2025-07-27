@@ -21,7 +21,7 @@ const SinglePorpertyAccards = ({ data }: { data: SinglePropDto }) => {
       <GeneralFeatAccard data={data} />
       {!!data?.latitude ? <MapPopupPart data={data} /> : <></>}
       <RulesPopPart data={data} />
-      <ReportRoom data={data} />
+      {/* <ReportRoom data={data} /> */}
     </div>
   );
 };

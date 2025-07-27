@@ -51,7 +51,7 @@ const InviePage = () => {
           <></>
         )}
 
-        {/* <Button onClick={() => onShare(advisorProfile)} containerClass="w-full" width="w-full" title={_STRINGS.SHARE} /> */}
+        <Button onClick={() => onShare(advisorProfile)} containerClass="w-full" width="w-full" title={_STRINGS.SHARE} />
       </div>
     </div>
   );

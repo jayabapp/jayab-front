@@ -154,7 +154,7 @@ const AdvisorsListPage = () => {
               onClick={showCityModalFunc}
               title={cityTitle || _STRINGS.SELECT_CITY}
             />
-            {/* {!userInfo?.advisor_id ? (
+            {!userInfo?.advisor_id ? (
               <Button
                 variant="outline"
                 roundedClass="rounded-full"
@@ -173,7 +173,7 @@ const AdvisorsListPage = () => {
               </Link>
             ) : (
               <></>
-            )} */}
+            )}
           </div>
         </div>
         {isLoading && data?.length == 0 ? (
