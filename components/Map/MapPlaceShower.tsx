@@ -42,7 +42,7 @@ const MapPlaceShower = ({
   const map = useRef<any>(null);
   useEffect(() => {
     map.current = new nmp_mapboxgl.Map({
-      mapType: nmp_mapboxgl.Map.mapTypes.neshanRaster,
+      mapType: nmp_mapboxgl.Map.mapTypes.neshanVector,
       container: map.current || "map",
       center: { lat: center[1], lng: center[0] },
       zoom: 16,

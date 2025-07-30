@@ -1,6 +1,7 @@
 import Modal from "@/components/Modal";
 import ModalHeaderPart from "@/components/Modal/ModalHeaderPart";
 import Button from "@/components/shared/Button/Button";
+import mapRedirectHelper from "@/helpers/map.link";
 import _STRINGS from "@/utils/LocalStrings";
 import { parseUrl } from "next/dist/shared/lib/router/utils/parse-url";
 import dynamic from "next/dynamic";
@@ -18,14 +19,6 @@ const PropertyMapPopModal = ({ data, show, onHide }: { data: any; show: boolean;
   );
   const [center, setCenter] = useState([51.37, 35.767]);
 
-  const createMapLink = () => {
-    const label = data?.title || "ملک";
-    const uriBegin = `geo:${data?.latitude},${data?.longitude}`;
-    const query = `${data?.latitude},${data?.longitude}(` + label + ")";
-    const encodedQuery = encodeURI(query);
-    const uriString = uriBegin + "?q=" + encodedQuery;
-    return parseUrl(uriString);
-  };
   return (
     <Modal
       options={{
@@ -55,15 +48,7 @@ const PropertyMapPopModal = ({ data, show, onHide }: { data: any; show: boolean;
           )}
         </div>
       </div>
-      <Link
-        href={
-          !isAndroid
-            ? `http://maps.google.com/maps/dir/?api=1&destination=${data?.latitude},${data?.longitude}&travelmode=driving`
-            : createMapLink()
-          // `geo:${data?.latitude},${data?.longitude}?label=ملک`
-        }
-        target="_blank"
-      >
+      <Link href={mapRedirectHelper(data)} target="_blank">
         {" "}
         <Button containerClass="w-full  p-4 " width="w-full" title={_STRINGS.NAVIGATE} />
       </Link>
