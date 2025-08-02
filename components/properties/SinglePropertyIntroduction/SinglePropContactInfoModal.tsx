@@ -12,6 +12,7 @@ import React, { useEffect, useState } from "react";
 import PropertyContactInfoItem from "./PropertyContactInfoItem";
 import Modal from "@/components/Modal";
 import ModalBottomSheet from "@/components/Modal/ModalBottomSheet";
+import LinearSkeleton from "../ProductSkeleton/LinearSkeleton";
 
 const SinglePropContactInfoModal = ({
   data,
@@ -44,8 +45,13 @@ const SinglePropContactInfoModal = ({
       <ModalHeaderPart hideArrow title={_STRINGS.CONTACT_INFO} onHide={onHide} />
 
       <div className="w-full p-4 flex flex-col">
-        {isEmpty(state) ? (
-          <EmptyList />
+        {isPending ? (
+          <div className="w-full flex flex-col gap-2">
+            <LinearSkeleton width={"100%"} />
+            <LinearSkeleton width={"100%"} />
+          </div>
+        ) : isEmpty(contactInfo) ? (
+          <p className="w-full text-center">{_STRINGS?.EMPTY_LIST}</p>
         ) : (
           state?.map((e) => (
             <PropertyContactInfoItem onHide={onHide} key={`contactItem${e?.assistant_full_name}`} data={e} />
