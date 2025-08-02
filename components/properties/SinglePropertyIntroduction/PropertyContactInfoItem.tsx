@@ -1,5 +1,6 @@
 import { PropertyContactIInfDto } from "@/api_services/property/property.interface";
 import Button from "@/components/shared/Button/Button";
+import maskPhoneNumber from "@/helpers/maskPhoneNumber";
 import _STRINGS from "@/utils/LocalStrings";
 import React from "react";
 
@@ -17,7 +18,7 @@ const PropertyContactInfoItem = ({ data, onHide }: { onHide: () => void | null; 
         <p className=" text-sm ">
           {!!data?.is_owner ? _STRINGS.OWNER : _STRINGS.OWNER_ASSIST} : {data?.assistant_full_name}
         </p>
-        <p className=" text-sm ">{data?.assistant_mobile_number}</p>
+        <p className=" text-sm ">{maskPhoneNumber(data?.assistant_mobile_number)}</p>
       </div>
       <div className="flex flex-row items-center justify-center gap-2">
         <Button
