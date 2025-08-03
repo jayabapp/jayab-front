@@ -122,7 +122,7 @@ const AdvisorRegister = () => {
           ) : (
             <></>
           )}
-          <div className="flex flex-row w-full  items-center  gap-2">
+          {/* <div className="flex flex-row w-full  items-center  gap-2">
             {" "}
             <div className="flex items-center gap-2">
               {" "}
@@ -154,7 +154,7 @@ const AdvisorRegister = () => {
             ) : (
               <></>
             )}
-          </div>
+          </div> */}
         </div>
       ) : (
         <></>
@@ -167,7 +167,7 @@ const AdvisorRegister = () => {
       ) : (
         <></>
       )}
-      <div className="  w-full  grid  gird-cols-1 md:grid-cols-2 gap-3">
+      {/* <div className="  w-full  grid  gird-cols-1 md:grid-cols-2 gap-3">
         {subscriptionPlans?.list?.map((e) => (
           <AdvisorPlansCard
             setShowConfirm={setShowConfirmRegister}
@@ -176,7 +176,7 @@ const AdvisorRegister = () => {
             key={e?.id}
           />
         ))}
-      </div>
+      </div> */}
 
       <ConfirmModal
         isVisible={showConfirmRegister}
