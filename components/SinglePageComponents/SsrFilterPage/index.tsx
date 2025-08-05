@@ -36,6 +36,8 @@ type sortTypeType = { id?: string; title?: string };
 
 const SsrFilterPage = ({ landings, firstData }: { firstData: { data: any[] }; landings: SingleLandingDto }) => {
   const [cursor, setCursor] = useState(0);
+  const [hiddenFilters, setHiddenFilters] = useState<string[]>([]);
+
   const [showCityModal, setShowCiyModal] = useState(false);
   const [defaultMobileFilters, setDefaultMobileFilters] = useState<any>({});
   const pathname = usePathname();
@@ -60,18 +62,16 @@ const SsrFilterPage = ({ landings, firstData }: { firstData: { data: any[] }; la
       });
     }
 
+    /* -------------------------------------------------------------------------- */
+    /*                        FILTERD KEYS COMING FROM SLUG                       */
+    /* -------------------------------------------------------------------------- */
+
+    setHiddenFilters(Object.keys(landings?.query));
+    /////////
     setQueries({ ...defaults, ...queriesParams });
     setDefaultMobileFilters({ ...defaults, ...queriesParams });
     setFilters({ ...defaults, ...queriesParams });
   }, [landings?.query]);
-
-  // useEffect(() => {
-  //   if (pathname.includes("/rooms")) {
-  //     setQueries(queriesParams);
-  //     setDefaultMobileFilters(queriesParams);
-  //     setFilters(queriesParams);
-  //   }
-  // }, [searchParams]);
 
   const [sortType, setSortType] = useState<sortTypeType | undefined>(
     queries?.sort_type ? SORT_TYPES?.find((i) => i?.id == queries?.sort_type) : SORT_TYPES[0]
@@ -90,8 +90,8 @@ const SsrFilterPage = ({ landings, firstData }: { firstData: { data: any[] }; la
     delete body.categories;
 
     setDefaultMobileFilters(body);
-    // router.replace(`${pathname}?${queryBuilder(body)}`);
-    router.replace(`rooms?${queryBuilder(body)}`);
+    router.replace(`${pathname}?${queryBuilder(body)}`);
+    // router.replace(`rooms?${queryBuilder(body)}`);
   };
 
   const hideCityModal = () => {
@@ -115,6 +115,7 @@ const SsrFilterPage = ({ landings, firstData }: { firstData: { data: any[] }; la
     setFilterModalShow(false);
     router.replace(`${pathname}?${queryBuilder(body)}`);
   };
+
   return (
     <div className="app-container !pt-32  lg:!pt-20  xl: z-2 ">
       <div className=" hidden  z-1 w-full xl:flex flex-col xl:flex-row items-center justify-between ">
@@ -124,6 +125,7 @@ const SsrFilterPage = ({ landings, firstData }: { firstData: { data: any[] }; la
       <div className="w-full hidden xl:flex  pb-4">
         {" "}
         <FiltersSelectedFiltersShowcase
+          hiddenFilters={hiddenFilters}
           setFilterModalShow={setFilterModalShow}
           query={queries}
           propertyTypes={propertyTypes || {}}
@@ -137,6 +139,7 @@ const SsrFilterPage = ({ landings, firstData }: { firstData: { data: any[] }; la
             <div className=" !col-span-9 ">
               {" "}
               <FiltersSelectedFiltersShowcase
+                hiddenFilters={hiddenFilters}
                 setFilterModalShow={setFilterModalShow}
                 query={queries}
                 propertyTypes={propertyTypes || {}}
@@ -146,14 +149,24 @@ const SsrFilterPage = ({ landings, firstData }: { firstData: { data: any[] }; la
         </div>
       </div>
       <div className="w-full pb-3 flex flex-row   justify-between">
-        <FilterPageCitiesTitle title={cityButtonTItle} cb={showCityModalFunc} />
+        {!hiddenFilters?.includes("cities") ? (
+          <FilterPageCitiesTitle title={cityButtonTItle} cb={showCityModalFunc} />
+        ) : (
+          <div> </div>
+        )}
         <SortMenu query={queries} />
       </div>
       <div className="grid grid-cols-12  min-h-[80dvh] mb-8 xl:mb-4">
         {/* SIDEBAR */}
         <div className="grid grid-cols-12  col-span-12 ">
           <div className="hidden gap-4 lg:flex h-fit flex-col items-center rounded-10  border col-span-3 ">
-            <FiltersPart propertyTypes={propertyTypes} filters={filters} setFilters={setFilters} queries={queries} />
+            <FiltersPart
+              hiddenFilters={hiddenFilters}
+              propertyTypes={propertyTypes}
+              filters={filters}
+              setFilters={setFilters}
+              queries={queries}
+            />
             <Button
               title={_STRINGS?.DO_THE_FILTERING}
               onClick={() => {
@@ -216,8 +229,18 @@ const SsrFilterPage = ({ landings, firstData }: { firstData: { data: any[] }; la
         {/* BODY */}
         <div className="w-[90%] mx-auto">
           <div className=" w-full  pt-4 pb-8  ">
-            <FilterPageCitiesTitle title={cityButtonTItle} cb={showCityModalFunc} />
-            <FiltersPart propertyTypes={propertyTypes} filters={filters} setFilters={setFilters} queries={queries} />
+            {!hiddenFilters?.includes("cities") ? (
+              <FilterPageCitiesTitle title={cityButtonTItle} cb={showCityModalFunc} />
+            ) : (
+              <div> </div>
+            )}
+            <FiltersPart
+              hiddenFilters={hiddenFilters}
+              propertyTypes={propertyTypes}
+              filters={filters}
+              setFilters={setFilters}
+              queries={queries}
+            />
           </div>
           <div className=" w-full   pb-6 fixed bottom-0 right-0 bg-white z-1 border-t  ">
             {" "}
@@ -236,7 +259,7 @@ const SsrFilterPage = ({ landings, firstData }: { firstData: { data: any[] }; la
       </Modal>
 
       <CityModal
-        passedUrl="/rooms"
+        passedUrl={pathname}
         onSubmitCustomeCB={!!filterModalShow ? setFilters : undefined}
         customeValues={!!filterModalShow ? filters : false}
         show={showCityModal}

@@ -111,6 +111,9 @@ const CityModal = ({
     }
   };
 
+  const onProvCancelClick = (item: NewCitiesListDto) => {
+    setSelectedCities(selectedCities?.filter((e) => !item?.child?.some((x) => x?.id == e?.id)));
+  };
   /* -------------------------------------------------------------------------- */
   /*                            SETTING DEFAULT VALS                            */
   /* -------------------------------------------------------------------------- */
@@ -148,7 +151,12 @@ const CityModal = ({
       <div className=" w-full flex flex-col gap-4  mt-4 p-3  h-auto min-h-full">
         <CityModalSearchPart search={search} setSearch={setSearch} />
 
-        <CityModalSelectedAccardiom selectedCities={selectedCities} onCityClick={onCityClick} />
+        <CityModalSelectedAccardiom
+          onProvCancelClick={onProvCancelClick}
+          provinces={provinces}
+          selectedCities={selectedCities}
+          onCityClick={onCityClick}
+        />
         <p>{!selectedProv ? _STRINGS.PROV_LISTS : `${_STRINGS.CITY_LISTS} ${selectedProv?.title}`}</p>
 
         {/*  SELECT ALL CHECK */}

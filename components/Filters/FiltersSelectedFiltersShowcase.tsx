@@ -14,6 +14,7 @@ const FiltersSelectedFiltersShowcase = ({
   query,
   propertyTypes,
   setFilterModalShow,
+  hiddenFilters,
 }: {
   propertyTypes: {
     [key: string]: ProvienceTypesDto[];
@@ -21,6 +22,7 @@ const FiltersSelectedFiltersShowcase = ({
 
   query: any;
   setFilterModalShow: Dispatch<SetStateAction<boolean>>;
+  hiddenFilters?: string[];
 }) => {
   const ref = useRef<Swiper>(null);
   const router = useRouter();
@@ -113,7 +115,9 @@ const FiltersSelectedFiltersShowcase = ({
     // router.replace(`${pathname}?${queryBuilder(body)}`);
     router.replace(`/rooms?${queryBuilder(body)}`);
   };
-
+  const isHiddenFilter = (key: string) => {
+    return hiddenFilters?.includes(key);
+  };
   return (
     <SwiperWithNavigation
       reference={ref}
@@ -142,23 +146,25 @@ const FiltersSelectedFiltersShowcase = ({
         <></>
       )}
       {/* DYNAMIC FILTERS */}
-      {finallizedSelectedOptions?.["property_type"]?.map((e: any, index: number) => (
-        <SwiperSlide key={`selectedItems${e?.id}`} className="!w-auto    ">
-          <div className="rounded-full !w-auto   gap-4 py-2 h-8 px-1 flex items-center justify-center border border-primary-700  bg-primary-700/5 text-primary-700  text-xs ">
-            <p className="text-xs pr-2">{e?.title} </p>
-            <div
-              onClick={() => {
-                onFilterRemoveClick(e, "property_type");
-              }}
-              className=" cursor-pointer w-4 h-4 aspect-square rounded-full border border-primary-700 flex items-center justify-center"
-            >
-              <img src="/assets/icons/adds/blue_plus.svg" className="w-2 h-2 rotate-45 aspect-square " />
+      {!isHiddenFilter("property_type") &&
+        finallizedSelectedOptions?.["property_type"]?.map((e: any, index: number) => (
+          <SwiperSlide key={`selectedItems${e?.id}`} className="!w-auto    ">
+            <div className="rounded-full !w-auto   gap-4 py-2 h-8 px-1 flex items-center justify-center border border-primary-700  bg-primary-700/5 text-primary-700  text-xs ">
+              <p className="text-xs pr-2">{e?.title} </p>
+              <div
+                onClick={() => {
+                  onFilterRemoveClick(e, "property_type");
+                }}
+                className=" cursor-pointer w-4 h-4 aspect-square rounded-full border border-primary-700 flex items-center justify-center"
+              >
+                <img src="/assets/icons/adds/blue_plus.svg" className="w-2 h-2 rotate-45 aspect-square " />
+              </div>
             </div>
-          </div>
-        </SwiperSlide>
-      ))}
+          </SwiperSlide>
+        ))}
       {/*  HAS POOL */}
-      {!!query?.has_pool && query?.has_pool != "2" ? (
+      {/* {!isHiddenFilter("has_pool") && !!query?.has_pool && query?.has_pool != "2" ? ( */}
+      {!isHiddenFilter("has_pool") && !!query?.has_pool ? (
         <SwiperSlide key={`hasPool`} className="!w-auto    ">
           <div className="rounded-full !w-auto   gap-4 py-2 h-8 px-1 flex items-center justify-center border border-primary-700  bg-primary-700/5 text-primary-700  text-xs ">
             <p className="text-xs pr-2">
@@ -178,23 +184,24 @@ const FiltersSelectedFiltersShowcase = ({
         <></>
       )}
       {/* DYNAMIC FILTERS */}
-      {finallizedSelectedOptions?.["pool_type"]?.map((e: any, index: number) => (
-        <SwiperSlide key={`selectedItems${e?.id}`} className="!w-auto    ">
-          <div className="rounded-full !w-auto   gap-4 py-2 h-8 px-1 flex items-center justify-center border border-primary-700  bg-primary-700/5 text-primary-700  text-xs ">
-            <p className="text-xs pr-2">{e?.title} </p>
-            <div
-              onClick={() => {
-                onFilterRemoveClick(e, "pool_type");
-              }}
-              className=" cursor-pointer w-4 h-4 aspect-square rounded-full border border-primary-700 flex items-center justify-center"
-            >
-              <img src="/assets/icons/adds/blue_plus.svg" className="w-2 h-2 rotate-45 aspect-square " />
+      {!isHiddenFilter("pool_type") &&
+        finallizedSelectedOptions?.["pool_type"]?.map((e: any, index: number) => (
+          <SwiperSlide key={`selectedItems${e?.id}`} className="!w-auto    ">
+            <div className="rounded-full !w-auto   gap-4 py-2 h-8 px-1 flex items-center justify-center border border-primary-700  bg-primary-700/5 text-primary-700  text-xs ">
+              <p className="text-xs pr-2">{e?.title} </p>
+              <div
+                onClick={() => {
+                  onFilterRemoveClick(e, "pool_type");
+                }}
+                className=" cursor-pointer w-4 h-4 aspect-square rounded-full border border-primary-700 flex items-center justify-center"
+              >
+                <img src="/assets/icons/adds/blue_plus.svg" className="w-2 h-2 rotate-45 aspect-square " />
+              </div>
             </div>
-          </div>
-        </SwiperSlide>
-      ))}
+          </SwiperSlide>
+        ))}
       {/*  BEDROOMS */}
-      {!!query?.total_bedrooms ? (
+      {!isHiddenFilter("total_bedrooms") && !!query?.total_bedrooms ? (
         <SwiperSlide key={`selecRooms`} className="!w-auto    ">
           <div className="rounded-full !w-auto   gap-4 py-2 h-8 px-1 flex items-center justify-center border border-primary-700  bg-primary-700/5 text-primary-700  text-xs ">
             <p className="text-xs pr-2">
@@ -214,7 +221,7 @@ const FiltersSelectedFiltersShowcase = ({
         <></>
       )}
       {/*  GUESTS */}
-      {!!query?.total_guests ? (
+      {!isHiddenFilter("total_guests") && !!query?.total_guests ? (
         <SwiperSlide key={`selecGuests`} className="!w-auto    ">
           <div className="rounded-full !w-auto   gap-4 py-2 h-8 px-1 flex items-center justify-center border border-primary-700  bg-primary-700/5 text-primary-700  text-xs ">
             <p className="text-xs pr-2">
@@ -234,21 +241,22 @@ const FiltersSelectedFiltersShowcase = ({
         <></>
       )}
       {/* DYNAMIC FILTERS */}
-      {finallizedSelectedOptions?.["entertainment"]?.map((e: any, index: number) => (
-        <SwiperSlide key={`selectedItems${e?.id}`} className="!w-auto    ">
-          <div className="rounded-full !w-auto   gap-4 py-2 h-8 px-1 flex items-center justify-center border border-primary-700  bg-primary-700/5 text-primary-700  text-xs ">
-            <p className="text-xs pr-2">{e?.title} </p>
-            <div
-              onClick={() => {
-                onFilterRemoveClick(e, "entertainment");
-              }}
-              className=" cursor-pointer w-4 h-4 aspect-square rounded-full border border-primary-700 flex items-center justify-center"
-            >
-              <img src="/assets/icons/adds/blue_plus.svg" className="w-2 h-2 rotate-45 aspect-square " />
+      {!isHiddenFilter("entertainment") &&
+        finallizedSelectedOptions?.["entertainment"]?.map((e: any, index: number) => (
+          <SwiperSlide key={`selectedItems${e?.id}`} className="!w-auto    ">
+            <div className="rounded-full !w-auto   gap-4 py-2 h-8 px-1 flex items-center justify-center border border-primary-700  bg-primary-700/5 text-primary-700  text-xs ">
+              <p className="text-xs pr-2">{e?.title} </p>
+              <div
+                onClick={() => {
+                  onFilterRemoveClick(e, "entertainment");
+                }}
+                className=" cursor-pointer w-4 h-4 aspect-square rounded-full border border-primary-700 flex items-center justify-center"
+              >
+                <img src="/assets/icons/adds/blue_plus.svg" className="w-2 h-2 rotate-45 aspect-square " />
+              </div>
             </div>
-          </div>
-        </SwiperSlide>
-      ))}
+          </SwiperSlide>
+        ))}
       {/* {finallizedSelectedOptions?.map((oneRow) => {
         return oneRow?.map((e: any, index: number) => (
           <SwiperSlide key={`selectedItems${e?.id}`} className="!w-auto    ">
@@ -351,7 +359,7 @@ const FiltersSelectedFiltersShowcase = ({
         <></>
       )}
       {/*  HAS DISCOUNT */}
-      {!!query?.has_discount && query?.has_discount == "1" ? (
+      {!isHiddenFilter("has_discount") && !!query?.has_discount && query?.has_discount == "1" ? (
         <SwiperSlide key={`selecDiscount`} className="!w-auto    ">
           <div className="rounded-full !w-auto   gap-4 py-2 h-8 px-1 flex items-center justify-center border border-primary-700  bg-primary-700/5 text-primary-700  text-xs ">
             <p className="text-xs pr-2">{_STRINGS.HAS_DISCOUNT}</p>
@@ -370,7 +378,7 @@ const FiltersSelectedFiltersShowcase = ({
       )}
 
       {/*  HAS DISCOUNT */}
-      {!!query?.is_premium && query?.is_premium == "1" ? (
+      {!isHiddenFilter("is_premium") && !!query?.is_premium && query?.is_premium == "1" ? (
         <SwiperSlide key={`selecPermium`} className="!w-auto    ">
           <div className="rounded-full !w-auto   gap-4 py-2 h-8 px-1 flex items-center justify-center border border-primary-700  bg-primary-700/5 text-primary-700  text-xs ">
             <p className="text-xs pr-2">{_STRINGS.PERMIUM_PROPS}</p>
