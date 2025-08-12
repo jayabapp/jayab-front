@@ -38,6 +38,7 @@ export interface catQueryTypes {
   max_commission: string | null | undefined;
   min_commission: string | null | undefined;
   party: string | null | undefined;
+  pattern: string | null | undefined;
   q: string | null | undefined;
 }
 
@@ -54,7 +55,6 @@ function SsrClinetPartFilterProperties({ sortType, query, setCursor, cursor }: S
   const [refetcherBoolean, setRefetcherBoolean] = useState(false);
   const [week, setWeek] = useState<any[]>([]);
   const [data, setData] = useState<PropertyListDto[]>([]);
-
   useEffect(() => {
     setCursor(0);
     setData([]);
@@ -69,23 +69,27 @@ function SsrClinetPartFilterProperties({ sortType, query, setCursor, cursor }: S
     );
   }, [
     sortType,
-    query.max_price,
-    query.min_price,
-    query.sort_type,
-    query?.property_type,
-    query?.pool_type,
-    query?.has_pool,
-    query?.total_bedrooms,
-    query?.total_guests,
-    query?.entertainment,
-    query?.has_discount,
-    query?.is_premium,
-    query?.max_building_area,
-    query?.max_building_area,
-    query?.min_commission,
-    query?.max_commission,
-    query?.party,
-    query?.q,
+
+    JSON.stringify(query),
+    // query.max_price,
+    // query.min_price,
+    // query.sort_type,
+    // query?.property_type,
+    // query?.pool_type,
+    // query?.has_pool,
+    // query?.total_bedrooms,
+    // query?.total_guests,
+    // query?.entertainment,
+    // query?.has_discount,
+    // query?.is_premium,
+    // query?.max_building_area,
+    // query?.max_building_area,
+    // query?.min_commission,
+    // query?.max_commission,
+    // query?.party,
+    // query?.q,
+    // query?.cities,
+    // query?.pattern,
   ]);
 
   const {
@@ -112,6 +116,7 @@ function SsrClinetPartFilterProperties({ sortType, query, setCursor, cursor }: S
       query.max_commission,
       query.party,
       query?.q,
+      query?.pattern,
     ],
     queryFn: () => {
       return PropertyService?.GetProperties({
@@ -140,6 +145,7 @@ function SsrClinetPartFilterProperties({ sortType, query, setCursor, cursor }: S
         sort_type: query?.sort_type || undefined,
         q: query?.q || undefined,
         party: query?.party || undefined,
+        pattern: query?.pattern || undefined,
       });
     },
     gcTime: 0,
@@ -197,7 +203,7 @@ function SsrClinetPartFilterProperties({ sortType, query, setCursor, cursor }: S
               }}
               hasMore={data?.length % 30 == 0 ? true : false}
               loader={
-                <div className="w-full mt-8 flex items-center justify-center">
+                <div className="w-full md:col-span-2 xl:col-span-3  mt-8 flex items-center justify-center">
                   <BtnLoading />
                 </div>
               }

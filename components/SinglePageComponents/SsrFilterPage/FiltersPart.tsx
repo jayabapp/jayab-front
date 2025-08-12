@@ -12,8 +12,12 @@ import { poolFilterTypes } from "@/utils/constantss";
 import _STRINGS from "@/utils/LocalStrings";
 import React from "react";
 
-const FiltersPart = ({ queries, setFilters, filters, propertyTypes }: any) => {
+const FiltersPart = ({ queries, setFilters, filters, propertyTypes, hiddenFilters }: any) => {
   const { userInfo } = useStoreInit((data) => data);
+
+  const isHiddenFilter = (key: string) => {
+    return hiddenFilters?.includes(key);
+  };
 
   return (
     <div className="  z-2 h-fit flex-col items-center p-3  bg-white dark:bg-zinc-800 rounded-xl w-full ">
@@ -21,34 +25,43 @@ const FiltersPart = ({ queries, setFilters, filters, propertyTypes }: any) => {
         <img src="/assets/icons/property/filter_icon.svg" />
         <p className="font-medium  text-lg">{_STRINGS.FILTERS}</p>
       </div>
-      <SimpleAccordion
-        item={{ parenClass: "  pb-4  border-b w-full p-2 !px-0", disableBorderB: true }}
-        title={_STRINGS.PROPERTY_TYPE}
-        isOpenFirst
-      >
-        <ProductModels
-          mobileFilters={filters}
-          setMobileFilters={setFilters}
-          queryKey={"property_type"}
-          list={propertyTypes?.PROPERTY_TYPE || []}
-          query={queries}
-        />
-      </SimpleAccordion>
-      <SimpleAccordion
-        item={{ parenClass: "  pb-4  border-b w-full p-2 !px-0", disableBorderB: true }}
-        title={_STRINGS.POOL_STATUS}
-        isOpenFirst
-      >
-        <ProductModels
-          mobileFilters={filters}
-          setMobileFilters={setFilters}
-          queryKey={"has_pool"}
-          list={poolFilterTypes || []}
-          query={queries}
-        />
-      </SimpleAccordion>
+      {isHiddenFilter("property_type") ? (
+        <></>
+      ) : (
+        <SimpleAccordion
+          item={{ parenClass: "  pb-4  border-b w-full p-2 !px-0", disableBorderB: true }}
+          title={_STRINGS.PROPERTY_TYPE}
+          isOpenFirst
+        >
+          <ProductModels
+            mobileFilters={filters}
+            setMobileFilters={setFilters}
+            queryKey={"property_type"}
+            list={propertyTypes?.PROPERTY_TYPE || []}
+            query={queries}
+          />
+        </SimpleAccordion>
+      )}
 
-      {queries?.has_pool == "0" ? (
+      {isHiddenFilter("has_pool") ? (
+        <></>
+      ) : (
+        <SimpleAccordion
+          item={{ parenClass: "  pb-4  border-b w-full p-2 !px-0", disableBorderB: true }}
+          title={_STRINGS.POOL_STATUS}
+          isOpenFirst
+        >
+          <ProductModels
+            mobileFilters={filters}
+            setMobileFilters={setFilters}
+            queryKey={"has_pool"}
+            list={poolFilterTypes || []}
+            query={queries}
+          />
+        </SimpleAccordion>
+      )}
+
+      {queries?.has_pool == "0" || isHiddenFilter("pool_type") ? (
         <></>
       ) : (
         <SimpleAccordion
@@ -66,49 +79,73 @@ const FiltersPart = ({ queries, setFilters, filters, propertyTypes }: any) => {
         </SimpleAccordion>
       )}
 
-      <FilterCounter
-        title={_STRINGS.ROOM_COUNT}
-        mobileFilters={filters}
-        setMobileFilters={setFilters}
-        queryKey={"total_bedrooms"}
-        query={queries}
-      />
-      <FilterCounter
-        title={_STRINGS.PPL_COUNT}
-        mobileFilters={filters}
-        setMobileFilters={setFilters}
-        queryKey={"total_guests"}
-        query={queries}
-      />
-      <SimpleAccordion
-        item={{ parenClass: "  pb-4  border-b w-full p-2 !px-0", disableBorderB: true }}
-        title={_STRINGS.ENTERTAINMENT}
-      >
-        <ProductModels
+      {isHiddenFilter("total_bedrooms") ? (
+        <></>
+      ) : (
+        <FilterCounter
+          title={_STRINGS.ROOM_COUNT}
           mobileFilters={filters}
           setMobileFilters={setFilters}
-          queryKey={"entertainment"}
-          isMulty
-          list={propertyTypes?.ENTERTAINMENT || []}
+          queryKey={"total_bedrooms"}
           query={queries}
         />
-      </SimpleAccordion>
+      )}
+      {isHiddenFilter("total_guests") ? (
+        <></>
+      ) : (
+        <FilterCounter
+          title={_STRINGS.PPL_COUNT}
+          mobileFilters={filters}
+          setMobileFilters={setFilters}
+          queryKey={"total_guests"}
+          query={queries}
+        />
+      )}
+      {isHiddenFilter("entertainment") ? (
+        <></>
+      ) : (
+        <SimpleAccordion
+          item={{ parenClass: "  pb-4  border-b w-full p-2 !px-0", disableBorderB: true }}
+          title={_STRINGS.ENTERTAINMENT}
+        >
+          <ProductModels
+            mobileFilters={filters}
+            setMobileFilters={setFilters}
+            queryKey={"entertainment"}
+            isMulty
+            list={propertyTypes?.ENTERTAINMENT || []}
+            query={queries}
+          />
+        </SimpleAccordion>
+      )}
+
       {!!userInfo?.advisor_id ? <DateFilter filters={filters} setFilters={setFilters} /> : <></>}
-      <FilterCheck
-        title={_STRINGS.HAS_DISCOUNT}
-        mobileFilters={filters}
-        setMobileFilters={setFilters}
-        queryKey={"has_discount"}
-        query={queries}
-      />
-      <FilterCheck
-        withBadge
-        title={_STRINGS.PERMIUM_PROPS}
-        mobileFilters={filters}
-        setMobileFilters={setFilters}
-        queryKey={"is_premium"}
-        query={queries}
-      />
+
+      {isHiddenFilter("has_discount") ? (
+        <></>
+      ) : (
+        <FilterCheck
+          title={_STRINGS.HAS_DISCOUNT}
+          mobileFilters={filters}
+          setMobileFilters={setFilters}
+          queryKey={"has_discount"}
+          query={queries}
+        />
+      )}
+
+      {isHiddenFilter("is_premium") ? (
+        <></>
+      ) : (
+        <FilterCheck
+          withBadge
+          title={_STRINGS.PERMIUM_PROPS}
+          mobileFilters={filters}
+          setMobileFilters={setFilters}
+          queryKey={"is_premium"}
+          query={queries}
+        />
+      )}
+
       {/* COMMISION RANGE  */}
 
       {!!userInfo?.advisor_id ? (

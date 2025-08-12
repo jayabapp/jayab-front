@@ -27,6 +27,7 @@ const SuccessAddModal = ({
         <div className="w-full flex items-center justify-center gap-4">
           {" "}
           <Button containerClass="w-full" width="w-full" title={_STRINGS.PAY} onClick={callBack} />
+          {/* <Button containerClass="w-full" width="w-full" title={_STRINGS.ADDS_LIST} onClick={callBack} /> */}
           <Button
             containerClass="w-full"
             width="w-full"

@@ -335,6 +335,7 @@ const CreatePropertyTerms = () => {
         onHIde={() => {}}
         callBack={() => {
           router.push(`/profile/owner/properties/${property_id}/subscription`);
+          // router.push(`/profile/owner/properties`);
         }}
       />
     </div>
