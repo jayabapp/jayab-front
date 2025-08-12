@@ -526,6 +526,7 @@ export interface GetPropertiesPlusFilters {
   has_discount?: string | null | number;
   has_pool?: string | null | number;
   is_premium?: string | null | number;
+  pattern?: string | null | number;
   max_price?: string | null | number;
   checkin?: string | null | number;
   checkout?: string | null | number;

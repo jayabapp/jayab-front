@@ -187,13 +187,13 @@ const SsrFilterPage = ({ landings, firstData }: { firstData: { data: any[] }; la
             md:mt-0 `}
           >
             <SsrPartFilter firstData={firstData?.data} />
-            {cursor == 0 && !isEmpty(firstData?.data) && firstData?.data?.length % 50 == 0 ? (
+            {cursor == 0 && !isEmpty(firstData?.data) && firstData?.data?.length % 51 == 0 ? (
               <Button
                 onClick={() => {
                   setCursor(last(firstData?.data)?.id || 0);
                 }}
                 title={_STRINGS.SHOW_MORE}
-                containerClass="w-full flex items-center justify-center"
+                containerClass="w-full mt-6 flex items-center justify-center"
               />
             ) : (
               <></>
