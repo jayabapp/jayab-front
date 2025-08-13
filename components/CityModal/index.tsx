@@ -94,19 +94,23 @@ const CityModal = ({
   });
 
   useEffect(() => {
-    if (!!defaultCitiesData || !!defaultProvienceCities) {
+    if (!!defaultCitiesData || (!!defaultProvienceCities && !isEmpty(defaultProvienceCities))) {
       const allDefaultCities = !!defaultCitiesData
         ? [...defaultCitiesData, ...defaultProvienceCities]
         : defaultProvienceCities;
 
-      console.log({ defaultProvienceCities, defaultCitiesData });
       setSelectedCities(allDefaultCities);
-      if (!!setTitle)
+      if (!!setTitle) {
+        const selectedProv = provinces?.find((e) => e?.id == queries?.province_id);
+
         setTitle(
-          `جستجو در  ${allDefaultCities?.[0]?.title} ${
-            allDefaultCities?.length > 1 ? ` و ${allDefaultCities?.length - 1} شهر دیگر` : ``
+          `جستجو در  ${selectedProv ? `شهر های ${selectedProv?.title}` : defaultCitiesData?.[0]?.title} ${
+            !!defaultCitiesData && defaultCitiesData?.length > 1
+              ? ` و ${!!selectedProv ? defaultCitiesData?.length : defaultCitiesData?.length - 1} شهر دیگر`
+              : ``
           }`
         );
+      }
     } else {
       if (!!setTitle) setTitle("");
     }

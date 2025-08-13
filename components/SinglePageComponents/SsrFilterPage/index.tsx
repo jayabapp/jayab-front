@@ -115,7 +115,6 @@ const SsrFilterPage = ({ landings, firstData }: { firstData: { data: any[] }; la
     setFilterModalShow(false);
     router.replace(`${pathname}?${queryBuilder(body)}`);
   };
-
   return (
     <div className="app-container !pt-32  lg:!pt-20  xl: z-2 ">
       <div className=" hidden  z-1 w-full xl:flex flex-col xl:flex-row items-center justify-between ">
@@ -149,7 +148,7 @@ const SsrFilterPage = ({ landings, firstData }: { firstData: { data: any[] }; la
         </div>
       </div>
       <div className="w-full pb-3 flex flex-row   justify-between">
-        {!hiddenFilters?.includes("cities") ? (
+        {!hiddenFilters?.includes("cities") && !hiddenFilters?.includes("province_id") ? (
           <FilterPageCitiesTitle title={cityButtonTItle} cb={showCityModalFunc} />
         ) : (
           <div> </div>
