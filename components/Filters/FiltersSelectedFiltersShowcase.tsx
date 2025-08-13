@@ -81,8 +81,8 @@ const FiltersSelectedFiltersShowcase = ({
       delete body[queryKey];
     }
 
-    router.replace(`/rooms?${queryBuilder(body)}`);
-    // router.replace(`${pathname}?${queryBuilder(body)}`);
+    // router.replace(`/rooms?${queryBuilder(body)}`);
+    router.replace(`${pathname}?${queryBuilder(body)}`);
   };
 
   const onFilterRemoveClick = (i: any, key: string) => {
@@ -112,8 +112,8 @@ const FiltersSelectedFiltersShowcase = ({
     const body = {
       ...temp,
     };
-    // router.replace(`${pathname}?${queryBuilder(body)}`);
-    router.replace(`/rooms?${queryBuilder(body)}`);
+    router.replace(`${pathname}?${queryBuilder(body)}`);
+    // router.replace(`/rooms?${queryBuilder(body)}`);
   };
   const isHiddenFilter = (key: string) => {
     return hiddenFilters?.includes(key);
