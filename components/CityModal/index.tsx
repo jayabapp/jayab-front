@@ -43,13 +43,14 @@ const CityModal = ({
   const [queries, setQueries] = useState<{ [key: string]: any }>({});
   const [selectedProv, setSelectedProv] = useState<NewCitiesListDto | null>(null);
   const [selectedCities, setSelectedCities] = useState<ChildCities[]>([]);
+  const [defaultProvienceCities, setDefaultProvienceCities] = useState<ChildCities[]>([]);
   const [search, setSearch] = useState("");
 
   useEffect(() => {
     if (!!customeValues) {
       setQueries(customeValues);
     } else setQueries(queriesParams);
-  }, [customeValues, queriesParams?.cities]);
+  }, [customeValues, queriesParams?.cities, queriesParams?.province_id]);
 
   const { data: provinces, isLoading: provLoading } = useQuery({
     queryFn: () => CityService.GetAllCities({ is_parent: 1 }),
@@ -69,6 +70,18 @@ const CityModal = ({
   });
 
   /* -------------------------------------------------------------------------- */
+  /*                        SET DEFAULT PROVIENCE CITIES                        */
+  /* -------------------------------------------------------------------------- */
+
+  useEffect(() => {
+    if (!isEmpty(provinces) && queries?.province_id) {
+      setDefaultProvienceCities(provinces?.find((e) => e?.id == queries?.province_id)?.child || []);
+    } else {
+      setDefaultProvienceCities([]);
+    }
+  }, [provinces, queries?.province_id]);
+
+  /* -------------------------------------------------------------------------- */
   /*                             GETTING ALL CITIES                             */
   /* -------------------------------------------------------------------------- */
 
@@ -81,18 +94,27 @@ const CityModal = ({
   });
 
   useEffect(() => {
-    if (!!defaultCitiesData) {
-      setSelectedCities(defaultCitiesData);
-      if (!!setTitle)
+    if (!!defaultCitiesData || (!!defaultProvienceCities && !isEmpty(defaultProvienceCities))) {
+      const allDefaultCities = !!defaultCitiesData
+        ? [...defaultCitiesData, ...defaultProvienceCities]
+        : defaultProvienceCities;
+
+      setSelectedCities(allDefaultCities);
+      if (!!setTitle) {
+        const selectedProv = provinces?.find((e) => e?.id == queries?.province_id);
+
         setTitle(
-          `جستجو در  ${defaultCitiesData?.[0]?.title} ${
-            defaultCitiesData?.length > 1 ? ` و ${defaultCitiesData?.length - 1} شهر دیگر` : ``
+          `جستجو در  ${selectedProv ? `شهر های ${selectedProv?.title}` : defaultCitiesData?.[0]?.title} ${
+            !!defaultCitiesData && defaultCitiesData?.length > 1
+              ? ` و ${!!selectedProv ? defaultCitiesData?.length : defaultCitiesData?.length - 1} شهر دیگر`
+              : ``
           }`
         );
+      }
     } else {
       if (!!setTitle) setTitle("");
     }
-  }, [defaultCitiesData, queries]);
+  }, [defaultCitiesData, JSON.stringify(queries), defaultProvienceCities]);
 
   /////////////////
 
@@ -125,8 +147,34 @@ const CityModal = ({
       const body = {
         ...queries,
       };
-      body.cities = selectedCities?.map((e) => e?.id);
 
+      /* -------------------------------------------------------------------------- */
+      /*                                 NEW ROUTING                                */
+      /* -------------------------------------------------------------------------- */
+      const provincesHelper = provinces || [];
+      const copiedProvs = JSON.parse(JSON.stringify([...provincesHelper]));
+
+      const allIncludedProves = copiedProvs
+        ?.filter((e: any) => e?.child?.some((f: any) => selectedCities?.some((x) => x?.id == f?.id)))
+        ?.map((e: any) => ({
+          ...e,
+          child: e?.child?.filter((f: any) => selectedCities?.some((x) => x?.id == f?.id)),
+        }));
+
+      const allFullProviencesSelected = allIncludedProves?.filter((e: NewCitiesListDto) => {
+        const selectedMainProv = provinces?.find((x) => x?.id == e?.id);
+        return selectedMainProv?.child?.length == e?.child?.length;
+      });
+      if (allFullProviencesSelected?.length == 1) {
+        body.cities = allIncludedProves
+          ?.filter((x: NewCitiesListDto) => x?.id != allFullProviencesSelected?.[0]?.id)
+          ?.flatMap((e: NewCitiesListDto) => e?.child)
+          ?.map((e: NewCitiesListDto) => e?.id);
+        body.province_id = allFullProviencesSelected?.[0]?.id;
+      } else {
+        body.cities = selectedCities?.map((e) => e?.id);
+        delete body.province_id;
+      }
       if (!!passedUrl) {
         router.push(`${passedUrl}?${queryBuilder(body)}`);
       } else {
