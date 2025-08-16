@@ -6,7 +6,6 @@ import { useState } from "react";
 import Notify from "../Toast";
 import { isMobile } from "react-device-detect";
 import { shareLinks } from "@/utils/constantss";
-// import { ShareNetwork } from "@phosphor-icons/react/dist/ssr";
 
 const ShareLink = ({
   containerClass = "flex-row relative justify-start",

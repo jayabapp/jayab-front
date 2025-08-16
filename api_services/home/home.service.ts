@@ -1,6 +1,7 @@
 import { apiRoutes } from "@/utils/urls";
-import { ContentByKeyDto, ContentDto, SearchSuggDto } from "./home.interface";
+import { ContentByKeyDto, ContentDto, QuestionDto, SearchSuggDto } from "./home.interface";
 import { apiCall } from "../common/apicall.helper";
+import { Meta } from "../chat/chat.interface";
 
 export class HomeService {
   // static FORGOT_PASSWORD_LIST_CACHEKEY = "FORGOT_PASSWORD_LIST";
@@ -11,6 +12,7 @@ export class HomeService {
   // static GET_BRANDS_CACHEKEY = "GET_BRANDS";
   static CONTENT_BY_KEY_CACHEKEY = "CONTENT_BY_KEY";
   static SEARCH_SUGGS_CACHEKEY = "SEARCH_SUGGS";
+  static CONTENT_QUESTIONS_KEY = "CONTENTQUESTIONSKEY";
 
   static async GetBanners(dto: { position: "main_sidebar" | "advisor" }) {
     try {
@@ -92,4 +94,49 @@ export class HomeService {
   //     throw e;
   //   }
   // }
+
+  static async FindAllComments(
+    dto: { page: number; per_page: number; content_id?: number | string; product_id?: number | string },
+    callback?: (a?: { data: QuestionDto[]; meta: Meta } | null) => void
+  ) {
+    try {
+      const result = await apiCall<
+        { page: number; per_page: number; content_id?: number | string; product_id?: number | string },
+        { data: QuestionDto[]; meta: Meta } | null
+      >("GET", apiRoutes.CONTENTS_QUESTIONS, dto);
+      if (!!callback) {
+        callback(result);
+      }
+      return result || null;
+    } catch (e) {
+      throw e;
+    }
+  }
+
+  static async SendQuestion(body: {
+    content_id?: number | string;
+
+    rate?: number;
+    author_name: string;
+    mobile_number: string;
+    question: string;
+    product_id?: number | string;
+  }) {
+    try {
+      const result = await apiCall<
+        {
+          product_id?: number | string;
+          content_id?: number | string;
+          rate?: number;
+          author_name: string;
+          mobile_number: string;
+          question: string;
+        },
+        unknown
+      >("POST", apiRoutes.CONTENTS_QUESTIONS, body);
+      return result;
+    } catch (e) {
+      throw e;
+    }
+  }
 }

@@ -49,6 +49,7 @@ export default async function PropertiesPage({
         ...searchParamsData,
       })
     : null;
+
   return (
     <>
       <Suspense fallback={<Fallback />}>

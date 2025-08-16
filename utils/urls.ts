@@ -58,6 +58,8 @@ export const apiRoutes = {
 
   GET_PROPERTIES: "/user/properties",
 
+  CONTENTS_QUESTIONS: `/content-questions`,
+
   SETTING_SITEMAP: `/settings/sitemap`,
 
   SETTING_ROBOTS: `/settings/robots`,

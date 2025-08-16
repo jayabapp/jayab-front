@@ -184,6 +184,16 @@ const CityModal = ({
     onHide();
   };
 
+  const provienceAndCitiesSearchEngine = (e: NewCitiesListDto | ProvienceTypesDto) => {
+    let foundOne = false;
+    if (e?.title.includes(search)) {
+      foundOne = true;
+    } else if (!!e?.child?.find((x) => x?.title?.includes(search))) {
+      foundOne = true;
+    }
+    return foundOne;
+  };
+
   return (
     <Modal
       zIndex={40000000}
@@ -225,12 +235,12 @@ const CityModal = ({
             <EmptyList />
           ) : (
             provinces
-              ?.filter((e) => e?.title.includes(search))
+              ?.filter((e) => provienceAndCitiesSearchEngine(e))
               ?.map((e) => (
                 <ProvienceCard
                   callback={() => {
                     setSelectedProv(e);
-                    setSearch("");
+                    // setSearch("");
                   }}
                   item={e}
                   key={`prov${e?.id}${e?.title}`}
@@ -241,7 +251,7 @@ const CityModal = ({
           <EmptyList />
         ) : (
           cities
-            ?.filter((e) => e?.title.includes(search))
+            ?.filter((e) => provienceAndCitiesSearchEngine(e))
             ?.map((e) => (
               <CityCard
                 isChecked={selectedCities?.map((x) => x?.id)?.includes(e?.id)}

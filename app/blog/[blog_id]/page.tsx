@@ -1,16 +1,15 @@
-import BlogsContainer from "@/components/blogs/BlogsContainer";
-import MainImageTextBlock from "@/components/blogs/MainImageTextBlog";
+import { ContentDto } from "@/api_services/home/home.interface";
+import Gallery from "@/components/blogs/Gallery";
+import MainImageTextBlock from "@/components/blogs/MainImageTextBlock";
+import RelatedBlogs from "@/components/blogs/RelatedBlogs";
 import SingleProductBreadCrumb from "@/components/BreadCrumbs/SingleProductBreadCrumb";
-import { Divider } from "@/components/shared/Divider";
-import LottieLoading from "@/components/shared/Lotties/LottieLoading";
+import { ContentQuestions } from "@/components/ContentQuestions";
+import { HTMLGenerator } from "@/helpers/html.generator";
 import serverCall from "@/helpers/serverCall";
-import _STRINGS from "@/utils/LocalStrings";
-import { NEW_IMAGE_URL, apiRoutes, baseUrl } from "@/utils/urls";
-import moment from "moment-jalaali";
+import { apiRoutes, baseUrl } from "@/utils/urls";
 import { Metadata, ResolvingMetadata } from "next";
-import Image from "next/image";
-import React from "react";
-
+import Link from "next/link";
+import { Suspense } from "react";
 type Props = {
   params: Promise<{ id: string; blog_id: string }>;
   searchParams: Promise<{ [key: string]: string | string[] | undefined }>;
@@ -26,85 +25,59 @@ export async function generateMetadata({ params, searchParams }: Props, parent: 
     description: blogData?.seo?.metaDescription || blogData?.full_text,
   };
 }
-
 const SingleBlogPage = async ({ params }: Props) => {
   const { blog_id } = await params;
+  const { data }: { data: ContentDto } = await serverCall(baseUrl + apiRoutes.SINGLE_CONTENT_WITH_SLUG(blog_id));
 
-  const { data } = await serverCall(baseUrl + apiRoutes.SINGLE_CONTENT_WITH_SLUG(blog_id));
-  const { data: blogs } = await serverCall(baseUrl + apiRoutes.CONTENTS + `?key=blog&page=1`);
+  const { html, headings, timeToRead, wordCount } = HTMLGenerator(data?.html || "", {
+    hasHeading: true,
+    hasCount: true,
+  });
 
   return (
-    <div className="app-container relative   !overflow-visible">
-      {!data ? (
-        <> </>
-      ) : (
+    <div className="app-container relative !pt-24 flex flex-col !gap-6  !overflow-visible">
+      {!data ? null : (
         <SingleProductBreadCrumb
           dataArray={[
             { title: "خانه", link: "/" },
-            { title: data?.category?.title || "", link: `/blog?sort=newest` },
+            { title: data?.category?.title || "", link: `/blog` },
             { title: data?.title || "", link: `#` },
           ]}
         />
       )}
-      <div className="grid grid-cols-3   gap-4">
-        {!data ? (
-          <div className=" col-span-3 md:mt-6 ">
-            {" "}
-            <LottieLoading />{" "}
+      <Suspense>
+        <MainImageTextBlock data={data} timeToRead={timeToRead}>
+          <div className={` w-full scrollbar   overflow-y-scroll   relative`}>
+            {headings?.map((i, index) => (
+              <div key={`HEADING${index}`} className={`text-xs! my-4  md:my-6`}>
+                <Link href={`#${i?.id}`} replace className="flex flex-row items-center justify-start gap-2">
+                  <div
+                    className="text-[16px] !text-right !font-regular hover:!text-primary-700 transition duration-300 hover:font-bold"
+                    dangerouslySetInnerHTML={{ __html: i?.innerText }}
+                  />
+                  <img src="/assets/icons/blog/arrow_down.svg" alt="arrow_down" className="w-3 h-3" />
+                </Link>
+              </div>
+            ))}
           </div>
-        ) : (
-          <div className=" col-span-3 md:col-span-3 md:mt-6 gap-4">
-            <MainImageTextBlock data={data} />
-            {/* <div className="w-full mt-2 flex items-center justify-between">
-              <div className=" text-primary-700 ">
-                <p className="  text-2xl font-bold ">{data?.title}</p>{" "}
-                <p> {moment(data?.created_at).format("jYYYY/jMM/jDD")}</p>
-              </div>
-            </div> */}
-            {/* {data?.feature_image ? (
-              <div className="  py-8 w-full  aspect-[2.2] md:aspect-[2.2/1] relative">
-                <Image
-                  // onError={onImageError}
-                  src={NEW_IMAGE_URL(data?.feature_image)}
-                  fill
-                  className="  md:object-cover  w-full  !rounded-20 aspect-[2.2] md:aspect-[2.2/1]  "
-                  alt={data?.feature_image?.alt || data?.title}
-                />
-              </div>
-            ) : (
-              <div className="  py-8 w-full  aspect-[2.5/1] relative">
-                <img
-                  src={"/assets/icons/shared/place_holder.svg"}
-                  className=" object-cover  w-full  aspect-[2.5/1] !rounded-20 "
-                  alt={data?.feature_image?.alt || data?.title}
-                />
-              </div>
-            )} */}
-            <div className="flexflex-col mt-6 mb-8 gap-8">
-              {/* {data ? <Article data={data} key={`artivle`} /> : <></>} */}
-
-              {data ? (
-                <div
-                  dangerouslySetInnerHTML={{
-                    __html: data?.html || data?.full_text,
-                  }}
-                />
-              ) : (
-                <></>
-              )}
-            </div>
-
-            {!!blogs?.data && !!data ? (
-              <BlogsContainer
-                data={blogs?.data?.filter((e: { id: string }) => e?.id !== data?.id) || []}
-                viewAllUrl="/blog"
-                title={_STRINGS?.OTHER_ARTICLS}
-              />
-            ) : (
-              <></>
-            )}
-          </div>
-        )}
+        </MainImageTextBlock>
+      </Suspense>
+      <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+        <div className="rounded-10 content w-full md:shadow-md md:bg-white md:p-4 col-span-1 md:col-span-2">
+          <div className="break-words" dangerouslySetInnerHTML={{ __html: `${html}` }} />
+          <ContentQuestions
+            containerClass="!px-0 border-t !rounded-none !mb-0"
+            title="نظر خود را در مورد این مطلب بنویسید:"
+            // showRate={false}
+            contentId={data?.id}
+          />
+        </div>
+        <div className="md:p-4 rounded-10 md:shadow-md md:bg-white sticky h-fit top-28 self-start flex flex-col gap-8">
+          <RelatedBlogs id={data?.id as number} />
+          <Suspense>
+            <Gallery images={data?.attachments?.map((i) => i?.attachment) as []} />
+          </Suspense>
+        </div>
       </div>
     </div>
   );

@@ -106,3 +106,138 @@ export interface InnitSettingsDto {
   activeGoogleIndex: string;
   hasProductAttribute: boolean;
 }
+
+export interface QuestionDto {
+  id: number;
+  question: string;
+  answer: string | null;
+  image_id: null;
+  rate: number;
+  author_name: string;
+  is_publish: boolean;
+  created_at: Date;
+  updated_at: Date;
+  image: null;
+}
+
+export interface ContentDto {
+  id: number;
+  title: string;
+  slug: null;
+  key: null;
+  small_text: string;
+  full_text: string;
+  feature_image_id: null;
+  is_active: boolean;
+  category_id: number;
+  order: null;
+  html: string;
+  view_count: number;
+  link: string;
+  video_id: null;
+  fields: { [key: string]: string };
+  seo: null;
+  created_at: string;
+  updated_at: string;
+  deleted_at: null;
+  category: Category;
+  feature_image: ImageDto;
+  attachments: any[];
+}
+
+export interface Fields {}
+
+export interface InnitSettingsDto {
+  isMarketplace: boolean;
+  googleTagManagerId: string;
+  activeGoogleIndex: string;
+  hasProductAttribute: boolean;
+}
+
+export interface Post {
+  id: number;
+  title: string;
+  description: string | null;
+  full_description: string;
+  image_src: string;
+  logo: string;
+  slug: string;
+  views: number;
+  coin: number;
+  account_name: string;
+  shop_id: string;
+}
+
+export interface HomeLandingDto {
+  url: string;
+  title: string;
+  image: ImageDto | null;
+}
+
+export interface WalletProps {
+  id: number;
+  user_id: number;
+  credit: number;
+  deposit_credit: number;
+  gold_credit: number;
+  avg_gold_asset_price: number;
+  gold_wallet_address: string;
+  created_at: Date;
+  updated_at: Date;
+  auction_deposit_credit: number;
+  gold_credit_in_rial: number;
+}
+
+export interface BannerType {
+  id: number;
+  parent_id: null;
+  category_name: string;
+  category_name_en: string;
+  description: null;
+  category_order: number;
+  small_text: null;
+  full_text: null;
+  keywords: null;
+  image_location: string;
+  created_at: null;
+  updated_at: null;
+  content: Content[];
+}
+
+export interface Content {
+  id: number;
+  category_id: number;
+  title: string;
+  slug: string;
+  author: string;
+  small_text: string;
+  full_text: string;
+  description: null;
+  content_order: number;
+  keywords: null;
+  active: number;
+  image_location: string;
+  publish_at: null;
+  end_publish_at: null;
+  created_at: Date;
+  updated_at: Date;
+}
+
+export interface ProductTagsType {
+  id: number;
+  title: string;
+  image_id: number;
+  sort_order: number;
+  created_at: Date;
+  updated_at: Date;
+  image: ImageDto;
+}
+
+export interface Meta {
+  total?: number;
+  lastPage?: number;
+  currentPage?: number;
+  perPage?: number;
+  prev?: null;
+  next?: null;
+}

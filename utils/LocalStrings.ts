@@ -294,6 +294,7 @@ const _STRINGS = {
   REFRAL_CODE: "کد معرف",
   ACTIVITY_FIELD: "حوزه فعالیت",
   SELECT_PROVE: "انتخاب استان",
+  SELECT_PROVE_CITY: "انتخاب استان/شهر",
   SELECT_CITY: "انتخاب شهر",
   PROV_LISTS: "لیست استان ها",
   CITY_LISTS: "لیست شهرهای استان",
@@ -371,6 +372,18 @@ const _STRINGS = {
   NAVIGATE: "مسیر یابی",
   ADDS_LIST: "لیست آگهی ها",
   REPORT_WRONG: "گزارش تخلف",
+  RECAPTHCA_ERROR: "کد امنیتی وارد شده صحیح نمی‌باشد",
+  ASK_QUESTION_TITLE: "سوال خود را بپرسید",
+  ASK_QUESTION_NAME: "",
+  ASK_QUESTION_NAME_PLACEHOLDER: "نام و نام خانوادگی",
+  ASK_QUESTION_PHONE: "",
+  ASK_QUESTION_PHONE_PLACEHOLDER: "شماره تماس",
+  ASK_QUESTION_DESCRIPTION: "متن سوال",
+  WHAT_U_GONNA_READ: "آنچه در این مقاله میخوانید:",
+
+  ASK_QUESTION_DESCRIPTION_PLACEHOLDER: "متن سوال",
+  ASK_QUESTION_CAPTCHA: "کد امنیتی",
+  ASK_QUESTION_SUBMIT: "ارسال",
 };
 
 export default _STRINGS;

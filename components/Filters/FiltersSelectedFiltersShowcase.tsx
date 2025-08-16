@@ -37,18 +37,20 @@ const FiltersSelectedFiltersShowcase = ({
   const finallizedSelectedOptions = useMemo(() => {
     let data: any = {};
     if (!!propertyTypes && query) {
-      let objectKeys = Object.keys(propertyTypes)?.map((e) => e?.toLowerCase());
+      let objectKeys = Object.keys(propertyTypes)
+        ?.map((e) => e?.toLowerCase())
+        ?.filter((e) => !!e);
 
       for (let index = 0; index < objectKeys.length; index++) {
         const element = objectKeys[index];
         if (!!query?.[element]) {
           data[element] = query?.[element]
             ?.split(",")
+            ?.filter((e: any) => !!e)
             ?.map((x: any) => propertyTypes[element.toUpperCase()]?.find((z) => z?.id == x));
         }
       }
     }
-
     return data;
   }, [propertyTypes, query]);
   // const finallizedSelectedOptions = useMemo(() => {
@@ -118,6 +120,7 @@ const FiltersSelectedFiltersShowcase = ({
   const isHiddenFilter = (key: string) => {
     return hiddenFilters?.includes(key);
   };
+
   return (
     <SwiperWithNavigation
       reference={ref}
