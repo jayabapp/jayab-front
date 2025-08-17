@@ -1,5 +1,5 @@
 "use client";
-import React, { ReactNode, useEffect, useState } from "react";
+import React, { ReactNode, useCallback, useEffect, useState } from "react";
 import { EmblaOptionsType, EmblaPluginType } from "embla-carousel";
 import useEmblaCarousel from "embla-carousel-react";
 import { DotButton, useDotButton } from "./EmblaCarouselDotButton";
@@ -16,6 +16,7 @@ type PropType = {
   autoplay?: boolean;
   pagination?: boolean;
   onShowCountClick?: (e: any) => void | null;
+  setSelectedIndex?: (e: any) => void | null;
   withArrows?: boolean;
 };
 
@@ -34,6 +35,7 @@ const Swiper: React.FC<PropType> = (props) => {
     pagination,
     withArrows,
     onShowCountClick,
+    setSelectedIndex,
   } = props;
 
   /* -------------------------------------------------------------------------- */
@@ -78,6 +80,22 @@ const Swiper: React.FC<PropType> = (props) => {
 
   const { selectedIndex, scrollSnaps, onDotButtonClick } = useDotButton(emblaApi);
   const { prevBtnDisabled, nextBtnDisabled, onPrevButtonClick, onNextButtonClick } = usePrevNextButtons(emblaApi);
+
+  /* -------------------------------------------------------------------------- */
+  /*                           SELECTED INDEX CALLBACL                          */
+  /* -------------------------------------------------------------------------- */
+  const onSelect = useCallback(() => {
+    if (!emblaApi || !setSelectedIndex) return;
+    setSelectedIndex(emblaApi.selectedScrollSnap());
+  }, [emblaApi, setSelectedIndex]);
+
+  useEffect(() => {
+    if (!emblaApi || !onSelect) return;
+    onSelect();
+
+    emblaApi.on("select", onSelect).on("reInit", onSelect);
+  }, [emblaApi, onSelect]);
+
   return (
     <section
       style={{

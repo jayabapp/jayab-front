@@ -15,9 +15,10 @@ import { difference, isEmpty } from "lodash";
 import ProductImage from "./ProductImage";
 import { SingleOwnerPropertyDto, SinglePropDto } from "@/api_services/property/property.interface";
 import RoomImageModalPart from "./RoomImageModalPart";
-import Swiper from "@/components/embelaCarousel/Swiper";
 import SwiperSlide from "@/components/embelaCarousel/SwiperSlide";
 import { useStoreInit } from "@/store";
+import dynamic from "next/dynamic";
+const Swiper = dynamic(() => import("@/components/embelaCarousel/Swiper"));
 // const ProductOptionsContainer = dynamic(() => import("./ProductOptionsContainer"), {
 //   ssr: false,
 // });
@@ -73,6 +74,8 @@ function ProductImagesContainer({
   productImageId: number | null;
   attsImagesArray?: any[] | number[];
 }) {
+  const [currentIndex, setCurrentIndex] = useState(0);
+
   const { userInfo } = useStoreInit((data) => data);
   // const ref = useRef<SwiperTyype>(null);
   const [modalProps, setModalProps] = useState<ImageSlideType>({
@@ -109,7 +112,6 @@ function ProductImagesContainer({
   //     ref.current?.slideTo(productImageId ? addImages?.findIndex((e) => e?.id == productImageId) : 0);
   //   }
   // }, [addImages]);
-
   if (!data) return null;
   return (
     <div className={`flex flex-row w-full gap-2 overflow-visible`}>
@@ -132,6 +134,7 @@ function ProductImagesContainer({
               {true ? (
                 <div className={` rounded-10 overflow-clip  ${index == 3 ? " blur-sm " : " "}`}>
                   <ProductImage
+                    imageSize="thumbnail"
                     id={`${e?.id}`}
                     item={e}
                     moreClass={"w-full bg-white aspect-square object-cover"}
@@ -176,6 +179,10 @@ function ProductImagesContainer({
             options={{ align: "center", direction: "rtl", dragFree: false }}
             onShowCountClick={(activeIndex: any) => {
               setModalProps({ isVisible: true, data: data, currentIndex: activeIndex });
+              setCurrentIndex(activeIndex);
+            }}
+            setSelectedIndex={(e) => {
+              setCurrentIndex(e);
             }}
           >
             {addImages?.map((i, index: number) => (
@@ -186,9 +193,13 @@ function ProductImagesContainer({
                 >
                   {" "}
                   {!!i ? (
-                    <img
-                      src={NEW_IMAGE_URL(i || "")}
-                      className="w-full h-full !p-0  !overflow-clip  bg-white  rounded-20  aspect-square !object-cover "
+                    <Image
+                      fill
+                      loading="lazy"
+                      src={NEW_IMAGE_URL(i || "", currentIndex == index ? "name" : "thumbnail")}
+                      className={`w-full h-full !p-0  transform-gpu !overflow-clip  bg-white  transition-all 
+                  
+                      rounded-20 duration-500 aspect-square !object-cover `}
                       alt={`${i?.alt || ""}`}
                     />
                   ) : (
