@@ -8,15 +8,12 @@ import { apiRoutes, baseUrl } from "@/utils/urls";
 import LottieLoading from "@/components/shared/Lotties/LottieLoading";
 import Breadcrumbs from "@/components/BreadCrumbs";
 
+import MehaHeaderHelper from "@/helpers/MetaHeaderHelper";
+
 export async function generateMetadata(): Promise<Metadata> {
   const { data: aboutUsWebsite } = await serverCall(baseUrl + apiRoutes.CONTENT_BY_KEY("terms"));
 
-  return {
-    title: aboutUsWebsite?.seo?.metaTitle || "آئین نامه و قوانین مقررات استفاده از اپلیکیشن جیبینو ",
-    description:
-      aboutUsWebsite?.seo?.metaDescription ||
-      " انجام تمامی خریدها در پلتفرم جیبینو اعم از خریدهای داخل و خارج از درگاه های جیبینو خواه به صورت امتیازی یا ریالی در هر زمان به معنی پذیرفتن کامل کلیه شرایط و قوانین جیبینو از سوی کاربر است",
-  };
+  return MehaHeaderHelper(aboutUsWebsite);
 }
 
 const Terms = async () => {

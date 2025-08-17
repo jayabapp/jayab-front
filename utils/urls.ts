@@ -206,4 +206,6 @@ export const apiRoutes = {
   SINGLE_CONTENT_WITH_SLUG: (slug: number | string) => `/contents/by-slug/${slug}`,
 
   REDIRECT_CHECK: (url: string) => `/user/redirect-urls/${url}`,
+
+  SINGLE_CONTENT_CATEGORY: (slug: number | string) => `/contents/category/${slug}`,
 };

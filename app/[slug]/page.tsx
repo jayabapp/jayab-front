@@ -6,6 +6,9 @@ import { apiRoutes, baseUrl } from "@/utils/urls";
 import { Metadata, ResolvingMetadata } from "next";
 import { Suspense } from "react";
 import * as Sentry from "@sentry/nextjs";
+
+import MehaHeaderHelper from "@/helpers/MetaHeaderHelper";
+import { headers } from "next/headers";
 function Fallback() {
   return <LottieLoading />;
 }
@@ -19,6 +22,8 @@ type Props = {
 
 export async function generateMetadata({ params }: Props, parent: ResolvingMetadata): Promise<Metadata> {
   const paramData = await params;
+  const requestHeaders = await headers();
+  const xCanonical = await requestHeaders?.get("x-canonical");
   const { data: landings } = await serverCall(baseUrl + apiRoutes.SINGLE_USER_LANDING_PAGE(paramData?.slug));
 
   return {
@@ -27,6 +32,9 @@ export async function generateMetadata({ params }: Props, parent: ResolvingMetad
 
     other: {
       ...Sentry.getTraceData(),
+    },
+    alternates: {
+      canonical: landings?.content?.seo?.canonicalURL || xCanonical,
     },
   };
 }

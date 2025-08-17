@@ -9,7 +9,10 @@ import serverCall from "@/helpers/serverCall";
 import { apiRoutes, baseUrl } from "@/utils/urls";
 import { Metadata, ResolvingMetadata } from "next";
 import Link from "next/link";
+
+import MehaHeaderHelper from "@/helpers/MetaHeaderHelper";
 import { Suspense } from "react";
+import { BlogSchema } from "@/components/SchemaGenerator/Schemas";
 type Props = {
   params: Promise<{ id: string; blog_id: string }>;
   searchParams: Promise<{ [key: string]: string | string[] | undefined }>;
@@ -20,10 +23,7 @@ export async function generateMetadata({ params, searchParams }: Props, parent: 
 
   const { data: blogData } = await serverCall(baseUrl + apiRoutes.SINGLE_CONTENT_WITH_SLUG(blog_id));
 
-  return {
-    title: blogData?.seo?.metaTitle || blogData?.title,
-    description: blogData?.seo?.metaDescription || blogData?.full_text,
-  };
+  return MehaHeaderHelper(blogData);
 }
 const SingleBlogPage = async ({ params }: Props) => {
   const { blog_id } = await params;
@@ -36,6 +36,7 @@ const SingleBlogPage = async ({ params }: Props) => {
 
   return (
     <div className="app-container relative !pt-24 flex flex-col !gap-6  !overflow-visible">
+      <BlogSchema data={data} timeToRead={timeToRead || 0} wordCount={wordCount || 0} />
       {!data ? null : (
         <SingleProductBreadCrumb
           dataArray={[

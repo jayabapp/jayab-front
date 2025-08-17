@@ -14,14 +14,12 @@ type Props = {
   searchParams: Promise<{ [key: string]: string | string[] | undefined }>;
 };
 
+import MehaHeaderHelper from "@/helpers/MetaHeaderHelper";
 export async function generateMetadata({ params }: Props, parent: ResolvingMetadata): Promise<Metadata> {
   const paramData = await params;
   const { data: properyData } = await serverCall(baseUrl + apiRoutes.GET_SINGLEPROPERTY_SlUG(paramData?.room_slug));
 
-  return {
-    title: properyData?.title || "آگهی",
-    description: properyData?.title,
-  };
+  return MehaHeaderHelper(properyData);
 }
 
 const SinglePropertyPage = async ({ params }: { params: Promise<{ room_slug: string }> }) => {

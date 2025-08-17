@@ -5,6 +5,7 @@ import Breadcrumbs from "@/components/BreadCrumbs";
 import Editable from "@/components/Editable";
 
 import CreateMarker from "@/components/Map/CreateMarker";
+import { LocalBusinessSchema } from "@/components/SchemaGenerator/Schemas";
 import ContactUsPageItem from "@/components/contactus/ContactUsPageItem";
 import ContactuUItem from "@/components/contactus/ContactuUItem";
 import LottieLoading from "@/components/shared/Lotties/LottieLoading";
@@ -46,6 +47,8 @@ const Channels = () => {
 
   return (
     <div id="homeParent" className="container    transition-all duration-500 ease-in-out ">
+      <LocalBusinessSchema />
+
       <Breadcrumbs />
       {isLoading ? <LottieLoading /> : <></>}
 

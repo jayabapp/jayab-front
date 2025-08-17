@@ -10,6 +10,15 @@ import LatestBlogCard from "@/components/blogs/BlogCard";
 import { isEmpty } from "lodash";
 import EmptyList from "@/components/shared/Lotties/EmptyList";
 import ServerSidePaginate from "@/components/shared/Pagination/ServerSidePaginate";
+import { Metadata } from "next";
+
+import MehaHeaderHelper from "@/helpers/MetaHeaderHelper";
+
+export async function generateMetadata(): Promise<Metadata> {
+  const { data: blogContent } = await serverCall(baseUrl + apiRoutes.SINGLE_CONTENT_CATEGORY("blog"));
+
+  return MehaHeaderHelper(blogContent);
+}
 
 const BlogsPage = async ({
   searchParams,

@@ -2,6 +2,7 @@
 import { allRoutes } from "@/utils/constantss";
 import { useRouter, usePathname } from "next/navigation";
 import React, { useEffect, useState } from "react";
+import { BreadCrumbSchema } from "../SchemaGenerator/Schemas";
 
 const Breadcrumbs = () => {
   const router = useRouter();
@@ -45,6 +46,7 @@ const Breadcrumbs = () => {
   };
   return (
     <div className="pr-4 mt-4 mb-3 w-full  hidden md:flex ">
+      <BreadCrumbSchema breadcrumbs={crumbs} />
       <div className="flex w-11/12 flex-wrap">
         {crumbs?.map((e, i, arr) => (
           <a

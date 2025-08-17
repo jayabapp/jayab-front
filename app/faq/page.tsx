@@ -10,6 +10,7 @@ import Editable from "@/components/Editable";
 import { chunkArray } from "@/helpers/chunk-array.helper";
 import Breadcrumbs from "@/components/BreadCrumbs";
 import LottieLoading from "@/components/shared/Lotties/LottieLoading";
+import { FaqSchema } from "@/components/SchemaGenerator/Schemas";
 
 const RepetitiveQuestions = () => {
   const { data: faqData, isLoading: faqLoading } = useQuery({
@@ -26,6 +27,7 @@ const RepetitiveQuestions = () => {
 
   return (
     <div id="homeParent" className="container    transition-all duration-500 ease-in-out ">
+      <FaqSchema />
       <Breadcrumbs />
 
       {faqLoading ? (

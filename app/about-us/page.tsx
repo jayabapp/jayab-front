@@ -12,6 +12,7 @@ import { NEW_IMAGE_URL } from "@/utils/urls";
 import { useQuery } from "@tanstack/react-query";
 import DOMPurify from "isomorphic-dompurify";
 import React from "react";
+import { LocalBusinessSchema } from "@/components/SchemaGenerator/Schemas";
 
 const AboutUs = () => {
   const { data: aboutUs, isLoading } = useQuery({
@@ -23,6 +24,7 @@ const AboutUs = () => {
 
   return (
     <div id="homeParent" className="container     transition-all duration-500 ease-in-out ">
+      <LocalBusinessSchema />
       <Breadcrumbs />
 
       <div className="flex  flex-col items-center justify-center">

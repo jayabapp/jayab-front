@@ -2,6 +2,7 @@ import HomeSearchPart from "@/components/Home/HomeSearchPart";
 import HomeSkeleton from "@/components/Home/HomeSkeleton/BannerSkeleton";
 import MainFiltersContainer from "@/components/Home/MainFiltersContainer";
 import TheInstallPrompt from "@/components/InstallPrompt/TheInstallPrompt";
+import { OrganizationSchema, SearchboxSchema } from "@/components/SchemaGenerator/Schemas";
 import PopSearchbox from "@/components/SearchBoxComp/PopSearchbox";
 import LottieLoading from "@/components/shared/Lotties/LottieLoading";
 import serverCall from "@/helpers/serverCall";
@@ -45,6 +46,8 @@ const Home = async () => {
 
   return (
     <div style={{ minHeight: "100dvh" }} id="homeParent" className="home-container  !px-0   flex flex-col gap-3 ">
+      <SearchboxSchema />
+      <OrganizationSchema />
       {!!banners && !isEmpty(banners) ? (
         <Suspense>
           <BannersContainer banners={banners || []} />
