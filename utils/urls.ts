@@ -104,6 +104,8 @@ export const apiRoutes = {
 
   UPDATE_PROFILE_IMAGE: "/profile/profile-image",
 
+  ADMIN_EDIT_VALIDATE: `/admin/auth/validate-edit-mode`,
+
   SINGLE_TICKET_GET: (id: string | number) => `/user/tickets/${id}`,
 
   SINGLE_PROPERTY_CONTACT_INFO: (propertySlug: string | number | null) =>
@@ -202,4 +204,6 @@ export const apiRoutes = {
   GET_SNGLE_CHAT: (chatroomId: number | string) => `/chat/${chatroomId}`,
 
   SINGLE_CONTENT_WITH_SLUG: (slug: number | string) => `/contents/by-slug/${slug}`,
+
+  REDIRECT_CHECK: (url: string) => `/user/redirect-urls/${url}`,
 };

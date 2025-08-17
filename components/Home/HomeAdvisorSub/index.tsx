@@ -29,7 +29,7 @@ const HomeAdvisorSub = () => {
       {" "}
       {advisorProfile ? (
         <div
-          className="w-full items-center justify-center  pb-4 flex flex-col md:flex-row gap-2  
+          className="w-full items-center justify-center  pb-4 flex flex-col lg:flex-row gap-2  
 
 "
         >
@@ -47,7 +47,7 @@ const HomeAdvisorSub = () => {
           {advisorProfile?.status?.id == 20 && !!isActive && remainingDays <= 3 ? (
             <Link
               href={`/profile/advisor/subscription`}
-              className="w-full md:w-[30%] rounded-full flex items-center justify-center gap-4 h-10 bg-primary-350 "
+              className="w-full lg:w-[30%] rounded-full flex items-center justify-center gap-4 h-10 bg-primary-350 "
             >
               <img className="w-5 h-5 aspect-square" src="/assets/icons/home/white_alarm.svg" />
               <p className="text-white">
@@ -60,7 +60,7 @@ const HomeAdvisorSub = () => {
           {advisorProfile?.status?.id == 20 && !isActive ? (
             <Link
               href={`/profile/advisor/subscription`}
-              className="w-full md:w-[30%] rounded-full flex items-center justify-center gap-4 h-10 bg-primary-150 "
+              className="w-full lg:w-[30%] rounded-full flex items-center justify-center gap-4 h-10 bg-primary-150 "
             >
               <img className="w-5 h-5 aspect-square" src="/assets/icons/home/white_alarm.svg" />
               <p className="text-white">{_STRINGS.EXPIRED}</p>

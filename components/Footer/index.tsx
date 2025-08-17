@@ -145,7 +145,7 @@ const Footer = () => {
               referrerPolicy="no-referrer"
               prefetch={false}
             >
-              <img src={NEW_IMAGE_URL(e?.feature_image)} className="aspect-[3] max-w-[120px] " />
+              <img src={NEW_IMAGE_URL(e?.feature_image)} className=" h-10 aspect-[3] max-w-[120px] " />
             </Link>
           ))}
         </div>

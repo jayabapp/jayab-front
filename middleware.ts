@@ -1,0 +1,51 @@
+import { md5 } from "js-md5";
+import { NextRequest, NextResponse } from "next/server";
+import serverCall from "./helpers/serverCall";
+import { apiRoutes, baseUrl } from "./utils/urls";
+
+export async function middleware(request: NextRequest) {
+  const headers = new Headers(request.headers);
+  const PATH_NAME = request.nextUrl.pathname;
+  const queryParams = request.nextUrl.searchParams;
+  const queriesArray = Array.from(queryParams?.entries());
+  const HREF = `${process.env.NEXT_PUBLIC_WEB_SITE}${PATH_NAME}${
+    queriesArray?.length > 0
+      ? "?" +
+        queriesArray
+          ?.map((e) => `${e[0]}=${encodeURI(e[1])}`)
+          .join("&")
+          .toString()
+      : ""
+  }`;
+
+  headers.set("x-canonical", HREF);
+
+  if (
+    !headers.get("referer")?.includes("localhost") &&
+    !headers.get("referer")?.includes(`${process.env.NEXT_PUBLIC_WEB_SITE}`)
+  ) {
+    if (PATH_NAME != "/") {
+      const HASHED = md5(decodeURI(HREF));
+
+      const { data } = await serverCall(baseUrl + apiRoutes.REDIRECT_CHECK(HASHED) + `?href=${HREF}`);
+
+      if (!!data) {
+        const response = NextResponse.redirect(new URL(data?.destination, request.url), data?.permanent ? 308 : 307);
+        // response.headers.set("is-refresh", "1");
+        response.headers.set("x-canonical", data?.destination);
+        return response;
+      }
+    }
+    // headers.set("is-refresh", "1");
+  } else {
+    // headers.set("is-refresh", "0");
+  }
+
+  return NextResponse.next({ headers });
+}
+
+export const config = {
+  matcher: [
+    "/((?!api|_next/static|static|_next/image|assets/|favicon.ico|sitemap.xml|robots.txt|.well-known|sw.js|workbox*).*)",
+  ],
+};
