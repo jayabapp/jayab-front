@@ -1,36 +1,29 @@
-"use client";
-
-import React, { useMemo, useState } from "react";
+import React from "react";
 import _STRINGS from "@/utils/LocalStrings";
 import SimpleAccordion from "@/components/shared/SimpleAccorion";
 
-import { useQuery } from "@tanstack/react-query";
-import { HomeService } from "@/api_services/home/home.service";
 import Editable from "@/components/Editable";
 import { chunkArray } from "@/helpers/chunk-array.helper";
 import Breadcrumbs from "@/components/BreadCrumbs";
 import LottieLoading from "@/components/shared/Lotties/LottieLoading";
 import { FaqSchema } from "@/components/SchemaGenerator/Schemas";
+import { apiRoutes, baseUrl } from "@/utils/urls";
+import { ContentDto } from "@/api_services/home/home.interface";
+import serverCall from "@/helpers/serverCall";
 
-const RepetitiveQuestions = () => {
-  const { data: faqData, isLoading: faqLoading } = useQuery({
-    queryKey: [HomeService?.CONTENTS_CACHEKEY, "faq"],
-    queryFn: () =>
-      HomeService?.GetContent({
-        key: "faq",
-        page: 1,
-      }),
-    staleTime: 0,
-    gcTime: 0,
-  });
-  const faqChunckedData = useMemo(() => chunkArray(faqData?.data || [], 2), [faqData]);
+const RepetitiveQuestions = async () => {
+  const { data: faqData }: { data: { data: ContentDto[] } } = await serverCall(
+    baseUrl + apiRoutes.CONTENTS + `?key=${"faq"}&per_page=20&page=${1}`
+  );
+
+  const faqChunckedData = chunkArray(faqData?.data || [], 2);
 
   return (
     <div id="homeParent" className="container    transition-all duration-500 ease-in-out ">
       <FaqSchema />
       <Breadcrumbs />
 
-      {faqLoading ? (
+      {!faqData ? (
         <LottieLoading />
       ) : (
         <div className="grid grid-cols-1 md:grid-cols-2  mt-2 gap-3">

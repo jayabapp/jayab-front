@@ -47,9 +47,9 @@ const HomeAdvisorSub = () => {
           {advisorProfile?.status?.id == 20 && !!isActive && remainingDays <= 3 ? (
             <Link
               href={`/profile/advisor/subscription`}
-              className="w-full lg:w-[30%] rounded-full flex items-center justify-center gap-4 h-10 bg-primary-350 "
+              className="w-full md:w-[90%] lg:w-[30%] rounded-full flex items-center justify-center gap-4 h-10 bg-primary-350 "
             >
-              <img className="w-5 h-5 aspect-square" src="/assets/icons/home/white_alarm.svg" />
+              <img className="w-5   h-5 aspect-square" src="/assets/icons/home/white_alarm.svg" />
               <p className="text-white">
                 {_STRINGS.EXPIRES_IN} : {timeLeft(advisorProfile?.subscription_expired_at, false)}
               </p>
@@ -60,7 +60,7 @@ const HomeAdvisorSub = () => {
           {advisorProfile?.status?.id == 20 && !isActive ? (
             <Link
               href={`/profile/advisor/subscription`}
-              className="w-full lg:w-[30%] rounded-full flex items-center justify-center gap-4 h-10 bg-primary-150 "
+              className="w-full md:w-[90%] lg:w-[30%] rounded-full flex items-center justify-center gap-4 h-10 bg-primary-150 "
             >
               <img className="w-5 h-5 aspect-square" src="/assets/icons/home/white_alarm.svg" />
               <p className="text-white">{_STRINGS.EXPIRED}</p>
