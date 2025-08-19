@@ -1,7 +1,6 @@
 "use client";
-import React, { useEffect, useRef, useState } from "react";
+import React, { Suspense, useEffect, useRef, useState } from "react";
 
-import SwiperCore, { Swiper as SwiperTyype } from "swiper";
 import { NEW_IMAGE_URL } from "../../../utils/urls";
 // import Modal from "../shared/Modal";
 
@@ -9,16 +8,16 @@ import Image from "next/image";
 import _STRINGS from "@/utils/LocalStrings";
 import { ImageDto } from "@/api_services/auth/auth.interface";
 
-import SwiperWithNavigation from "../../SwiperWithNavigation";
-
 import { difference, isEmpty } from "lodash";
 import ProductImage from "./ProductImage";
 import { SingleOwnerPropertyDto, SinglePropDto } from "@/api_services/property/property.interface";
 import RoomImageModalPart from "./RoomImageModalPart";
-import SwiperSlide from "@/components/embelaCarousel/SwiperSlide";
+
 import { useStoreInit } from "@/store";
 import dynamic from "next/dynamic";
+import BlockSkeleton from "../ProductSkeleton/BlockSkeleton";
 const Swiper = dynamic(() => import("@/components/embelaCarousel/Swiper"));
+const SwiperSlide = dynamic(() => import("@/components/embelaCarousel/SwiperSlide"));
 // const ProductOptionsContainer = dynamic(() => import("./ProductOptionsContainer"), {
 //   ssr: false,
 // });
@@ -173,42 +172,52 @@ function ProductImagesContainer({
           ) : (
             <></>
           )}
-          <Swiper
-            slidesWidth={{ def: "100%", md: "100%" }}
-            spacing="0rem"
-            options={{ align: "center", direction: "rtl", dragFree: false }}
-            onShowCountClick={(activeIndex: any) => {
-              setModalProps({ isVisible: true, data: data, currentIndex: activeIndex });
-              setCurrentIndex(activeIndex);
-            }}
-            setSelectedIndex={(e) => {
-              setCurrentIndex(e);
-            }}
-          >
-            {addImages?.map((i, index: number) => (
-              <SwiperSlide key={index} className={`w-full  !h-auto    cursor-pointer select-none `}>
-                <div
-                  onClick={() => setModalProps({ isVisible: true, data: data, currentIndex: index })}
-                  className={`w-full    h-full  aspect-square relative  rounded-20 `}
-                >
+          <Suspense>
+            {" "}
+            <Swiper
+              LoadingSkeleton={
+                <div className="   !rounded-20  overflow-clip w-full h-full">
                   {" "}
-                  {!!i ? (
+                  <img
+                    src={NEW_IMAGE_URL(addImages?.[0] || "", "thumbnail")}
+                    className={`w-full h-full !p-0  transform-gpu  blur-sm !overflow-clip  bg-white  transition-all 
+                  
+                      !rounded-20 duration-500 aspect-square !object-cover `}
+                    alt={`${addImages?.[0]?.alt || ""}`}
+                  />
+                </div>
+              }
+              slidesWidth={{ def: "100%", md: "100%" }}
+              spacing="0rem"
+              options={{ align: "center", direction: "rtl", dragFree: false }}
+              onShowCountClick={(activeIndex: any) => {
+                setModalProps({ isVisible: true, data: data, currentIndex: activeIndex });
+                setCurrentIndex(activeIndex);
+              }}
+              setSelectedIndex={(e) => {
+                setCurrentIndex(e);
+              }}
+            >
+              {addImages?.map((i, index: number) => (
+                <SwiperSlide key={index} className={`w-full  !h-auto    cursor-pointer select-none `}>
+                  <div
+                    onClick={() => setModalProps({ isVisible: true, data: data, currentIndex: index })}
+                    className={`w-full    h-full  aspect-square relative  rounded-20 `}
+                  >
+                    {" "}
                     <Image
                       fill
-                      loading="lazy"
                       src={NEW_IMAGE_URL(i || "", currentIndex == index ? "name" : "thumbnail")}
                       className={`w-full h-full !p-0  transform-gpu !overflow-clip  bg-white  transition-all 
                   
                       rounded-20 duration-500 aspect-square !object-cover `}
                       alt={`${i?.alt || ""}`}
                     />
-                  ) : (
-                    <></>
-                  )}
-                </div>
-              </SwiperSlide>
-            ))}
-          </Swiper>
+                  </div>
+                </SwiperSlide>
+              ))}
+            </Swiper>
+          </Suspense>
         </div>
       </div>
     </div>

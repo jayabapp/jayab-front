@@ -18,6 +18,7 @@ type PropType = {
   pagination?: boolean;
   slides: any[];
   defaultSelectedIndex?: number;
+  LoadingSkeleton?: ReactNode;
 };
 
 const SwiperWithThumnails: React.FC<PropType> = (props) => {
@@ -36,6 +37,7 @@ const SwiperWithThumnails: React.FC<PropType> = (props) => {
     pagination,
     slides,
     defaultSelectedIndex,
+    LoadingSkeleton,
   } = props;
 
   /* -------------------------------------------------------------------------- */
@@ -127,7 +129,7 @@ const SwiperWithThumnails: React.FC<PropType> = (props) => {
       dir={dir}
     >
       <div className="embla__viewport relative flex" ref={emblaRef}>
-        <div className="embla__container">{children}</div>
+        <div className="embla__container">{emblaMainApi ? children : !!LoadingSkeleton ? LoadingSkeleton : <></>}</div>
         <div className="  embla__buttons">
           <PrevButton onClick={onNextButtonClick} disabled={nextBtnDisabled} />
           <NextButton onClick={onPrevButtonClick} disabled={prevBtnDisabled} />

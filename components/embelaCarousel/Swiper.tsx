@@ -7,9 +7,11 @@ import { useMediaQuery } from "react-responsive";
 import { useAutoplay } from "./EmblaCarouselAutoplay";
 import Autoplay from "embla-carousel-autoplay";
 import { NextButton, PrevButton, usePrevNextButtons } from "./EmblaCarouselArrowButtons";
+import BlockSkeleton from "../properties/ProductSkeleton/BlockSkeleton";
 type PropType = {
   options?: EmblaOptionsType;
   children: ReactNode;
+  LoadingSkeleton?: ReactNode;
   slidesWidth?: { def: string; md: string };
   dir?: "rtl" | "ltr";
   spacing?: string;
@@ -36,6 +38,7 @@ const Swiper: React.FC<PropType> = (props) => {
     withArrows,
     onShowCountClick,
     setSelectedIndex,
+    LoadingSkeleton,
   } = props;
 
   /* -------------------------------------------------------------------------- */
@@ -105,7 +108,7 @@ const Swiper: React.FC<PropType> = (props) => {
       dir={dir}
     >
       <div className="embla__viewport" ref={emblaRef}>
-        <div className="embla__container">{children}</div>
+        <div className="embla__container">{emblaApi ? children : !!LoadingSkeleton ? LoadingSkeleton : <></>}</div>
         {!!withArrows ? (
           <div className="  embla__buttons ">
             {!nextBtnDisabled ? (
@@ -141,12 +144,12 @@ const Swiper: React.FC<PropType> = (props) => {
             />
           ))}
         </div>
-      ) : !!onShowCountClick ? (
+      ) : !!onShowCountClick && !!emblaApi ? (
         <div
           onClick={() => {
             onShowCountClick(selectedIndex);
           }}
-          className=" absolute   cursor-pointer left-4 bottom-4  flex items-center justify-evenly !left-4  !rounded-md !right-auto  w-11  h-7 bg-white/70"
+          className=" absolute   cursor-pointer  bottom-4  flex items-center justify-evenly !left-4  !rounded-md !right-auto  w-11  h-7 bg-white/70"
         >
           <p className="text-sm h-full text-center flex items-center justify-center  mt-0.5">{scrollSnaps?.length}</p>
           <img className="w-3.5" src="/assets/icons/property/upscale_icon.svg" />

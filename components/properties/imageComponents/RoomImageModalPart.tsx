@@ -67,7 +67,7 @@ const RoomImageModalPart = ({
           </div>
           <div className="flex items-center gap-2">
             {" "}
-            <h2 className="text-md dark:text-neutral-300">{modalProps?.data?.title}</h2>
+            <h2 className=" !text-base  !line-clamp-1 dark:text-neutral-300">{modalProps?.data?.title}</h2>
           </div>
         </div>
         <div className="w-full   md:h-full  relative  md:px-[25%] ">
