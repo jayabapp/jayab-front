@@ -11,8 +11,10 @@ import type {
   Product,
   SearchAction,
   Service,
+  Place,
 } from "schema-dts";
 import { JsonLd } from ".";
+import { SinglePropDto } from "@/api_services/property/property.interface";
 export const FaqSchema = async () => {
   const { data: faqData } = await serverCall(baseUrl + apiRoutes.CONTENTS + `?key=faq&per_page=20&page=1`);
   return JsonLd<FAQPage>({
@@ -177,41 +179,64 @@ export const BlogSchema = ({
 /*                                    PRODUCT                                    */
 /* -------------------------------------------------------------------------- */
 
-// export const ProductSchema = ({ data, comments }: { data: SingleProductDto; comments: ProductCommentDto[] }) => {
-//   return JsonLd<Product>({
-//     "@context": "https://schema.org",
-//     "@type": "Product",
-//     url: `${process.env.NEXT_PUBLIC_WEB_SITE}${generateProductURL(data?.product)}`,
-//     image: [NEW_IMAGE_URL(data?.product?.feature_image)],
-//     name: data?.product?.title,
-//     description: data?.product?.description,
-//     alternateName: data?.product?.title_en || "",
-//     brand: data?.product?.category?.title,
+export const ProductSchema = ({ data }: { data: SinglePropDto }) => {
+  return JsonLd<Product>({
+    "@context": "https://schema.org",
+    "@type": "Product",
+    url: `${process.env.NEXT_PUBLIC_WEB_SITE}/rooms/${data?.slug}`,
+    image: [NEW_IMAGE_URL(data?.feature_image)],
+    name: data?.title,
+    // description: data?.,
+    // alternateName: data?.title_en || "",
+    // brand: data?.category?.title,
 
-//     aggregateRating: {
-//       "@type": "AggregateRating",
-//       ratingValue: data?.product?.rate,
-//       reviewCount: data?.product?.rate_count,
-//     },
-//     review: comments?.map((e) => ({
-//       "@type": "Review",
-//       author: e?.user_fullname,
-//       reviewBody: e?.body,
-//       reviewRating: {
-//         "@type": "Rating",
-//         ratingValue: e?.rate,
-//       },
-//     })),
-//     offers: [
-//       {
-//         "@type": "Offer",
-//         priceCurrency: "IRR",
-//         price: data?.product?.cheapest_price?.discounted_price || data?.product?.cheapest_price?.price,
-//         availability: data?.product?.cheapest_price ? "InStock" : "OutOfStock",
-//       },
-//     ],
-//   });
-// };
+    // aggregateRating: {
+    //   "@type": "AggregateRating",
+    //   ratingValue: data?.rate,
+    //   reviewCount: data?.rate_count,
+    // },
+
+    offers: [
+      {
+        "@type": "Offer",
+        priceCurrency: "IRR",
+        price: data?.daily_price?.today_offer || data?.daily_price?.normal,
+      },
+    ],
+  });
+};
+
+/* -------------------------------------------------------------------------- */
+/*                                    PLACE                                   */
+/* -------------------------------------------------------------------------- */
+export const PlaceSchema = ({ data }: { data: SinglePropDto }) => {
+  return JsonLd<Place>({
+    "@context": "https://schema.org",
+    "@type": "Place",
+    url: `${process.env.NEXT_PUBLIC_WEB_SITE}/rooms/${data?.slug}`,
+    image: [NEW_IMAGE_URL(data?.feature_image)],
+    name: data?.title,
+
+    // description: data?.,
+    // alternateName: data?.title_en || "",
+    // brand: data?.category?.title,
+
+    // aggregateRating: {
+    //   "@type": "AggregateRating",
+    //   ratingValue: data?.rate,
+    //   reviewCount: data?.rate_count,
+    // },
+
+    // offers: [
+    //   {
+    //     "@type": "Offer",
+    //     priceCurrency: "IRR",
+    //     price: data?.cheapest_price?.discounted_price || data?.cheapest_price?.price,
+    //     availability: data?.cheapest_price ? "InStock" : "OutOfStock",
+    //   },
+    // ],
+  });
+};
 
 export const BreadCrumbSchema = ({
   breadcrumbs,

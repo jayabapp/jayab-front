@@ -27,7 +27,11 @@ export async function generateMetadata({ params, searchParams }: Props, parent: 
 }
 const SingleBlogPage = async ({ params }: Props) => {
   const { blog_id } = await params;
-  const { data }: { data: ContentDto } = await serverCall(baseUrl + apiRoutes.SINGLE_CONTENT_WITH_SLUG(blog_id));
+  const { data }: { data: ContentDto } = await serverCall(
+    baseUrl + apiRoutes.SINGLE_CONTENT_WITH_SLUG(blog_id),
+    undefined,
+    { redirect404: true }
+  );
 
   const { html, headings, timeToRead, wordCount } = HTMLGenerator(data?.html || "", {
     hasHeading: true,
@@ -51,12 +55,15 @@ const SingleBlogPage = async ({ params }: Props) => {
           <div className={` w-full scrollbar   overflow-y-scroll   relative`}>
             {headings?.map((i, index) => (
               <div key={`HEADING${index}`} className={`text-xs! my-4  md:my-6`}>
-                <Link href={`#${i?.id}`} replace className="flex flex-row items-center justify-start gap-2">
+                <Link href={`#${i?.id}`} replace className="flex  group flex-row items-center justify-start gap-2">
+                  <img
+                    src="/assets/icons/shared/blue_chevron_left.svg"
+                    className=" w-3 h-3  grayscale group-hover:grayscale-0    group-hover:-rotate-90 transition-all "
+                  />
                   <div
                     className="text-[16px] !text-right !font-regular hover:!text-primary-700 transition duration-300 hover:font-bold"
                     dangerouslySetInnerHTML={{ __html: i?.innerText }}
                   />
-                  <img src="/assets/icons/blog/arrow_down.svg" alt="arrow_down" className="w-3 h-3" />
                 </Link>
               </div>
             ))}

@@ -15,6 +15,7 @@ type Props = {
 };
 
 import MehaHeaderHelper from "@/helpers/MetaHeaderHelper";
+import { PlaceSchema, ProductSchema } from "@/components/SchemaGenerator/Schemas";
 export async function generateMetadata({ params }: Props, parent: ResolvingMetadata): Promise<Metadata> {
   const paramData = await params;
   const { data: properyData } = await serverCall(baseUrl + apiRoutes.GET_SINGLEPROPERTY_SlUG(paramData?.room_slug));
@@ -31,6 +32,8 @@ const SinglePropertyPage = async ({ params }: { params: Promise<{ room_slug: str
     <div className=" !pb-48 lg:!pb-36   gap-4 justify-start items-start container grid grid-cols-1  md:grid-cols-2  !h-auto   !overflow-x-visible">
       {!!properyData ? (
         <>
+          <ProductSchema data={properyData} />
+          <PlaceSchema data={properyData} />
           <Suspense>
             {" "}
             <ProductImagesContainer productImageId={null} data={properyData} />

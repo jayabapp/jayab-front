@@ -1,7 +1,14 @@
+import { notFound } from "next/navigation";
 import MinMaxRandom from "./MinMaxRandom";
 import queryBuilder from "./queryBuilder";
 
-async function serverCall(url: string, params?: any) {
+async function serverCall(
+  url: string,
+  params?: any,
+  options?: {
+    redirect404?: boolean;
+  }
+) {
   try {
     let headers: {
       Accept: string;
@@ -25,12 +32,19 @@ async function serverCall(url: string, params?: any) {
 
     if (!response?.ok) {
       // This will activate the closest `error.js` Error Boundary
-      throw new Error("Failed to fetch server data");
+      if (!!options?.redirect404 && (response?.status == 404 || response?.status == 500)) {
+        notFound();
+      } else {
+        throw new Error("Failed to fetch server data");
+      }
     }
 
     const data = await response?.json();
     return data || null;
-  } catch (error) {
+  } catch (error: any) {
+    if (error?.digest == "NEXT_HTTP_ERROR_FALLBACK;404") {
+      throw error;
+    }
     console.log("----------------------------------");
     console.log(error);
     return { data: null };
