@@ -116,7 +116,7 @@ const PropertyCard = ({ data, isOwner, week }: { data: PropertyListDto; isOwner?
               alt={data?.feature_image?.alt || ""}
               src={
                 !!data?.feature_image
-                  ? NEW_IMAGE_URL(data?.feature_image, "thumbnail")
+                  ? NEW_IMAGE_URL(data?.feature_image, "medium")
                   : "/assets/icons/shared/image_placeholder.svg"
               }
               className=" w-full rounded-10  h-full  object-cover aspect-square"

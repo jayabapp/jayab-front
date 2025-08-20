@@ -95,7 +95,7 @@ const SinglePropertyIntroduction = ({ data }: { data: SinglePropDto }) => {
     <div className=" flex w-full  flex-col relative  gap-2 md:gap-3">
       <div className="w-full flex items-start md:items-center justify-between gap-2">
         {" "}
-        <h1 className=" font-medium text-xl w-3/5 md:w-full md:text-2xl ">{data?.title}</h1>
+        <h1 className=" font-medium text-base w-3/5 md:w-full md:text-2xl ">{data?.title}</h1>
         {!!data?.is_authorized ? <AuthorizationStatus isAuthorized={data?.is_authorized} /> : <></>}
       </div>
       <div className=" flex items-center w-full justify-between">
