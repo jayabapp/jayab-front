@@ -212,11 +212,10 @@ export const ProductSchema = ({ data }: { data: SinglePropDto }) => {
 export const PlaceSchema = ({ data }: { data: SinglePropDto }) => {
   return JsonLd<Place>({
     "@context": "https://schema.org",
-    "@type": "Place",
+    "@type": "Room",
     url: `${process.env.NEXT_PUBLIC_WEB_SITE}/rooms/${data?.slug}`,
     image: [NEW_IMAGE_URL(data?.feature_image)],
     name: data?.title,
-
     // description: data?.,
     // alternateName: data?.title_en || "",
     // brand: data?.category?.title,
