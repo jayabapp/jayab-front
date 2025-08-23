@@ -122,7 +122,7 @@ function BlogsContainer({
           className="   flex  gap-2  px-3 py-1  w-fit bg-transparent  self-end"
         >
           <p className="no-underline text-primary-700  text-base    ">{_STRINGS?.SEE_ALL}</p>{" "}
-          <img src="/assets/icons/shared/blue_chevron_left.svg" />
+          <img src="/assets/icons/shared/blue_chevron_left.svg" alt="qwr" />
         </Link>
       </div>
     </div>

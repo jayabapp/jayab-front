@@ -217,7 +217,7 @@ transition-all  ease-in-out duration-1000 header-content-container w-full mx-aut
                       containerClass="w-fit"
                       width="w-full"
                       roundedClass="rounded-full"
-                      icon={<img className="ml-2" src="/assets/icons/shared/circular_plus.svg" />}
+                      icon={<img className="ml-2" alt="circular_plus" src="/assets/icons/shared/circular_plus.svg" />}
                     />
                   </Link>
                 )}

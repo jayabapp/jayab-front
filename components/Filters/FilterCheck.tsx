@@ -62,7 +62,11 @@ const FilterCheck = ({
         title={title}
         isChecked={queyData == 1 ? true : false}
       />
-      {!!withBadge ? <img className="w-4 h-4 aspect-square " src="/assets/icons/adds/verified_badge.svg" /> : <></>}
+      {!!withBadge ? (
+        <img className="w-4 h-4 aspect-square " alt="verified_badge" src="/assets/icons/adds/verified_badge.svg" />
+      ) : (
+        <></>
+      )}
     </div>
   );
 };

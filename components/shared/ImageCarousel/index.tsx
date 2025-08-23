@@ -32,7 +32,11 @@ const ImageCarousel = ({ list, item }: ImageCarouselTypes) => {
         {" "}
         {list?.map((e, i) => (
           <SwiperSlide key={`${e.id}banners`}>
-            <Link href={e?.property?.slug ? `/rooms/${e?.property?.slug}` : e?.link ? e?.link : ""} prefetch={false}>
+            <Link
+              aria-label={e?.image?.alt || e?.title}
+              href={e?.property?.slug ? `/rooms/${e?.property?.slug}` : e?.link ? e?.link : ""}
+              prefetch={false}
+            >
               {" "}
               <Editable
                 editIconClass=" !top-auto  !bottom-0"

@@ -48,7 +48,7 @@ export const DotButton: React.FC<PropType> = (props) => {
   const { children, ...restProps } = props;
 
   return (
-    <button type="button" {...restProps}>
+    <button name={"dot_butt"} type="button" {...restProps}>
       {children}
     </button>
   );

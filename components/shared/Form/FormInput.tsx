@@ -94,6 +94,7 @@ const FormInput = ({ item, value, onChangeText, errors, errorKey = "" }: props) 
 
       {!!item?.iconUrl && (
         <img
+          alt="before_icon"
           className={`absolute ${item?.title ? "top-[61%]" : "top-[32%]"} w-4 aspect-square right-4 ${
             item?.iconUrlClassName
           } ${item?.iconFunc ? "cursor-pointer" : ""}`}
@@ -107,6 +108,7 @@ const FormInput = ({ item, value, onChangeText, errors, errorKey = "" }: props) 
       )}
       {!!item?.iconEndUrl && (
         <img
+          alt="after_icon"
           className={`absolute top-[28%] w-5 aspect-square left-4 ${item?.iconEndUrlClassName} ${
             item?.iconEndFunc ? "cursor-pointer" : ""
           }`}
