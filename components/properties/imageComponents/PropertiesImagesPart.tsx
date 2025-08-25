@@ -205,8 +205,7 @@ function ProductImagesContainer({
                     className={`w-full    h-full  aspect-square relative  rounded-20 `}
                   >
                     {" "}
-                    <Image
-                      fill
+                    <img
                       src={NEW_IMAGE_URL(i || "", currentIndex == index ? "name" : "thumbnail")}
                       className={`w-full h-full !p-0  transform-gpu !overflow-clip  bg-white  transition-all 
                   
