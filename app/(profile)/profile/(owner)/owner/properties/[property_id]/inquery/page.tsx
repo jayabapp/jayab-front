@@ -104,7 +104,7 @@ const PropertyInquery = () => {
                 </div>
                 <div className="w-full flex items-start md:items-center justify-between gap-2">
                   {" "}
-                  <p className=" font-medium text-lg w-3/5 md:w-4/5 md:text-2xl ">{data?.title}</p>{" "}
+                  <p className=" font-medium text-lg w-full md:text-2xl ">{data?.title}</p>{" "}
                 </div>
               </div>
 

@@ -23,10 +23,10 @@ const Terms = async () => {
     <div className="container  !overflow-visible">
       <Breadcrumbs />
       <div className="grid grid-cols-3 gap-4">
-        <div className=" col-span-3 md:col-span-3 md:mt-6 md:px-4 flex flex-col gap-8 ">
+        <div className=" col-span-3 md:col-span-3 md:mt-6 md:px-4 flex flex-col gap-4 ">
           <div className=" flex flex-col justify-center w-full items-center gap-2">
             {/* <img src="/assets/icons/shared/judges_hammer.svg" className="w-18 aspect-square " /> */}
-            <p className="  text-2xl  text-primary-700 font-bold  ">{_STRINGS.TERMS}</p>
+            <h1 className="    ">{_STRINGS.TERMS}</h1>
           </div>{" "}
           {!aboutUsWebsite ? (
             <LottieLoading />

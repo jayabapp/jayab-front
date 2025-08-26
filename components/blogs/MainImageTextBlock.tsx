@@ -43,7 +43,7 @@ const MainImageTextBlock = ({ data, children, timeToRead }: ImageTextDTO) => {
         </div>
         <div className="w-full md:!aspect-[3/2] gap-1.5 md:gap-16 flex flex-col">
           <div className="flex flex-col w-full h-fit md:aspect-[2] ">
-            <h1 className=""> {item?.title}</h1>
+            <h1> {item?.title}</h1>
             {children}
           </div>
           <div>
