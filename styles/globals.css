@@ -686,3 +686,7 @@ table {
 .blogBody a {
   @apply text-primary-700;
 }
+
+ul {
+  list-style: inside;
+}
