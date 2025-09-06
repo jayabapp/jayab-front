@@ -93,19 +93,37 @@ const PropertyCard = ({ data, isOwner, week }: { data: PropertyListDto; isOwner?
               </div>
               {/* LOCATION */}
               <div className="flex w-full  items-center gap-1">
-                <img
-                  src="/assets/icons/adds/pin_point_location.svg"
-                  alt={`location${data?.id}`}
-                  className="w-5 h-5 aspect-square"
-                />
-                <p className="text-xs line-clamp-1 text-center mt-0.5">
+                {!!data?.is_promoted ? (
+                  <p className="  font-bold  text-primary-700  shrink-0  text-xs  pl-1 border-l">{_STRINGS.LADDERED}</p>
+                ) : (
+                  // <img
+                  //   src="/assets/icons/adds/pin_point_location.svg"
+                  //   alt={`location${data?.id}`}
+                  //   className="w-5 h-5 aspect-square"
+                  // />
+                  <></>
+                )}
+
+                <p className="text-xs line-clamp-1 text-center ">
                   {data?.city} <span className="text-xs ">{data?.province ? `(${data?.province})` : ``}</span>
                 </p>
               </div>
             </>
           )}
 
-          {!!isOwner ? <StatusShower data={data?.status} /> : <></>}
+          {!!isOwner ? (
+            <div className="flex items-center w-full gap-2">
+              <StatusShower data={data?.status} />
+
+              {!!data?.is_promoted ? (
+                <p className="  font-bold  text-primary-700  shrink-0  text-xs  pr-1 border-r">{_STRINGS.LADDERED}</p>
+              ) : (
+                <></>
+              )}
+            </div>
+          ) : (
+            <></>
+          )}
         </Link>{" "}
         {/* IMAGE PART */}
         <Link

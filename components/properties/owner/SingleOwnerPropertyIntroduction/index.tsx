@@ -51,15 +51,23 @@ const SingleOwnerPropertyIntroduction = ({ data }: { data: SingleOwnerPropertyDt
         <p className=" font-medium text-lg w-3/5 md:w-full md:text-2xl ">{data?.title}</p>
         <AuthorizationStatus isAuthorized={data?.is_authorized} data={data} />
       </div>
-      <div className="flex items-center gap-4">
-        <div className="bg-black/10 rounded-md text-base  px-2 py-1  flex items-center justify-center">
-          کد {data.code}
-        </div>{" "}
-        {/* <div className="flex items-center gap-1">
+      <div className=" w-full flex items-center justify-between">
+        <div className="flex items-center gap-4">
+          <div className="bg-black/10 rounded-md text-base  px-2 py-1  flex items-center justify-center">
+            کد {data.code}
+          </div>{" "}
+          {/* <div className="flex items-center gap-1">
           <img className="w-5 h-5 aspect-square" src="/assets/icons/adds/filled_heart.svg" />
           <p className="text-base  opacity-60">{data?.favorites_count || 0}</p>
         </div> */}
-        <ShareLink passedHref={process.env.NEXT_PUBLIC_WEBSITE_URL + `/rooms/${data?.code}`} />
+          <ShareLink passedHref={process.env.NEXT_PUBLIC_WEBSITE_URL + `/rooms/${data?.code}`} />
+        </div>
+
+        {!!data?.is_promoted ? (
+          <p className="  font-bold  text-primary-700  shrink-0  text-xs ">{_STRINGS.LADDERED}</p>
+        ) : (
+          <></>
+        )}
       </div>
 
       <div className="flex items-start gap-4    py-2 w-full ">

@@ -10,12 +10,15 @@ import timeLeft from "@/helpers/timeLeft";
 import { useStoreInit } from "@/store";
 import _STRINGS from "@/utils/LocalStrings";
 import { useMutation, useQuery } from "@tanstack/react-query";
+import { isEmpty } from "lodash";
 import moment from "moment-jalaali";
-import { useRouter } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
 import React, { useEffect, useState } from "react";
 
 const AdvisorRegister = () => {
   const router = useRouter();
+  const searchParams = useSearchParams();
+  const pay_key = searchParams.get("pay_key");
   const { userInfo } = useStoreInit((data) => data);
   const [showEndSub, setShowEndSub] = useState(false);
   const [showConfirmRegister, setShowConfirmRegister] = useState(false);
@@ -91,6 +94,32 @@ const AdvisorRegister = () => {
     }
     pusher(link);
   };
+
+  /* -------------------------------------------------------------------------- */
+  /*                                  AUTO PAY                                  */
+  /* -------------------------------------------------------------------------- */
+  const { mutate: payMutate } = useMutation({
+    mutationFn: AdvisorService.payAdvisorPlan,
+    onSuccess: (e) => {
+      if (!!e) router.push(e);
+    },
+  });
+
+  useEffect(() => {
+    if (!!pay_key && !isEmpty(subscriptionPlans?.list)) {
+      const planId =
+        pay_key == "is-especial"
+          ? subscriptionPlans?.list?.find((x) => !!x?.is_special)?.id
+          : subscriptionPlans?.list?.find((x) => !x?.is_special)?.id;
+      if (!!planId) {
+        payMutate({
+          gateway: "ZARINPAL",
+          plan_id: planId,
+          redirect_url: `${window.origin}/profile/advisor/subscription`,
+        });
+      }
+    }
+  }, [pay_key, subscriptionPlans]);
 
   return (
     <div className=" profile-container  flex flex-col gap-4 ">

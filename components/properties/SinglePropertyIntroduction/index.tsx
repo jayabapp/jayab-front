@@ -17,6 +17,7 @@ import SinglePropSharePop from "./SinglePropSharePop";
 import { useAuthStore, useStoreInit, useStoreParams } from "@/store";
 import { useRouter } from "next/navigation";
 import SinglePropContactInfoModal from "./SinglePropContactInfoModal";
+import { isMobile } from "react-device-detect";
 
 const SinglePropertyIntroduction = ({ data }: { data: SinglePropDto }) => {
   const { isLogin } = useAuthStore((state) => state);
@@ -112,19 +113,28 @@ const SinglePropertyIntroduction = ({ data }: { data: SinglePropDto }) => {
             <p className="text-xs  md:text-sm font-light   ">{favCount}</p>
           </div>
         </div>
-        {!!isAdvisor && !!userInfo?.advisor_id ? (
-          <Button
-            onClick={onShareClick}
-            title={_STRINGS.SEND_INFO}
-            width=" text-xs !px-4 !py-1.5 "
-            variant="flat"
-            roundedClass="rounded-md"
-            color="themeLight"
-            icon={<img className=" ml-1" src="/assets/icons/property/share_icon.svg" />}
-          />
-        ) : (
-          <></>
-        )}
+
+        <div>
+          {!!isAdvisor && !!userInfo?.advisor_id ? (
+            <Button
+              onClick={onShareClick}
+              title={_STRINGS.SEND_INFO}
+              width=" text-xs !px-4 !py-1.5 "
+              variant="flat"
+              roundedClass="rounded-md"
+              color="themeLight"
+              icon={<img className=" ml-1" src="/assets/icons/property/share_icon.svg" />}
+            />
+          ) : (
+            <></>
+          )}
+
+          {!!data?.is_promoted ? (
+            <p className="  font-bold  text-primary-700  shrink-0  text-sm ">{_STRINGS.LADDERED}</p>
+          ) : (
+            <></>
+          )}
+        </div>
       </div>{" "}
       {/*                          */}
       <div className="flex items-center gap-4  relative   py-0.5 w-full md:justify-between">
@@ -158,7 +168,13 @@ const SinglePropertyIntroduction = ({ data }: { data: SinglePropDto }) => {
       )} */}
       <div className="flex items-center gap-2   py-0.5 w-full md:justify-between">
         <div className="flex items-center gap-1">
-          <img className=" h-6" src="/assets/icons/adds/pin_point_location.svg" />
+          {data?.is_promoted && !!isMobile ? (
+            <p className="  font-bold  text-primary-700  shrink-0  text-xs  pl-1 border-l">{_STRINGS.LADDERED}</p>
+          ) : (
+            // <img className=" h-6" src="/assets/icons/adds/pin_point_location.svg" />
+
+            <></>
+          )}
           <p className=" hidden md:flex">{_STRINGS.PROPERTY_LOC} :</p>
         </div>
         <p className=" text-xs md:text-sm">

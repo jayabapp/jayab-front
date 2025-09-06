@@ -257,6 +257,7 @@ export interface SinglePropDto {
   bedrooms: Bedrooms;
   has_pool: boolean;
   is_authorized: boolean;
+  is_promoted: boolean;
   is_chat_enabled: boolean;
   province: string;
   city: string;
@@ -370,6 +371,7 @@ export interface PropertyListDto {
   total_bedrooms: number;
   bedrooms: Bedrooms;
   has_pool: boolean;
+  is_promoted: boolean;
   province: string;
   city: string;
   advisor_commission: number;
@@ -424,6 +426,7 @@ export interface SingleOwnerPropertyDto {
   is_today_reserved: boolean;
   is_authorized: boolean;
   has_blue_tick: boolean;
+  is_promoted: boolean;
   status: Status;
   remaining_days: null;
   authorize_status: boolean;

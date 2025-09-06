@@ -43,7 +43,7 @@ const CreateYourAdvisor = () => {
       if (!!e) {
         useStoreInit.setState({ userInfo: e });
       }
-      router.back();
+      router.replace(`/profile/advisor/subscription?pay_key=${subscription_key}`);
     },
   });
   const onSubmit = () => {

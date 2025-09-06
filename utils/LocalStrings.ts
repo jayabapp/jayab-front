@@ -347,6 +347,7 @@ const _STRINGS = {
   DESTINATIONS: "مقاصد",
   SEARCH_CITY_OR_ADD: "جستجوی شهر یا آگهی",
   CONFIRM_CODE: "تایید موبایل",
+  WAITING_FOR_PAYMENT: "در انتظار پرداخت",
 
   REMOVE_FILTERS: "حذف همه",
   SUBMIT: "تایید",
@@ -384,6 +385,7 @@ const _STRINGS = {
   ASK_QUESTION_DESCRIPTION_PLACEHOLDER: "متن سوال",
   ASK_QUESTION_CAPTCHA: "کد امنیتی",
   ASK_QUESTION_SUBMIT: "ارسال",
+  LADDERED: "نردبان شده",
 };
 
 export default _STRINGS;
