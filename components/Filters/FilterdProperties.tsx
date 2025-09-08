@@ -89,6 +89,7 @@ function FilterdProperties({ sortType, setSortType, query }: FilterdPropertiesTy
     query?.min_building_area,
     query?.q,
     query?.cities,
+    query?.province_id,
     query?.min_commission,
     query?.max_commission,
     query?.checkout,
@@ -120,6 +121,7 @@ function FilterdProperties({ sortType, setSortType, query }: FilterdPropertiesTy
       query?.max_commission,
       query?.q,
       query?.cities,
+      query?.province_id,
       query?.checkout,
       query?.checkin,
       query?.party,
@@ -194,6 +196,7 @@ function FilterdProperties({ sortType, setSortType, query }: FilterdPropertiesTy
     setWeek(weeks);
   }, []);
 
+  console.log(query?.cities, " query?.cities query?.cities");
   return (
     <div className="w-full px-0  self-center">
       <div className=" w-full">
