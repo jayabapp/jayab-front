@@ -63,7 +63,6 @@ const CreateEditProperty = ({
     },
     queryKey: [CityService.CITIES_CHILDEREN_CACHEKEY, values?.province],
   });
-  console.log(sample(randomeTitlePlaceholder), "randomeTitlePlaceholder.slice(random(5), random(4))?.map((e) => e)");
 
   return (
     <div className=" w-full gap-5  grid grid-cols-1 md:grid-cols-2   items-center ">

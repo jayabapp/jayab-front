@@ -64,9 +64,9 @@ const CreateEditPropertyEnvInfo = ({
           containerClass: "w-full relative col-span-full",
 
           rows: 3,
-          extraElement: (
-            <div className="absolute font-medium  left-0 top-0">{200 - `${values?.pattern_dscr}`?.length}</div>
-          ),
+          // extraElement: (
+          //   <div className="absolute font-medium  left-0 top-0">{200 - `${values?.pattern_dscr}`?.length}</div>
+          // ),
         }}
         value={values?.pattern_dscr || ""}
         onChangeText={(e) => {
