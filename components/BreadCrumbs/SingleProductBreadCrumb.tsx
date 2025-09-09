@@ -11,7 +11,7 @@ const SingleProductBreadCrumb = ({ dataArray }: { dataArray: { title: string; li
   };
 
   return (
-    <div className="pr-4 z-5 mt-5 mb-3 w-[90vw]  hidden md:flex  ">
+    <div id="BREADCRUMB" className="pr-4 z-5 mt-5 mb-3 w-[90vw]  hidden md:flex  ">
       <BreadCrumbSchema breadcrumbs={dataArray} />
       <div className="flex w-11/12 flex-wrap">
         {dataArray?.map((e, index, arr) => (

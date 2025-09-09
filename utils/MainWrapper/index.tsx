@@ -60,7 +60,6 @@ const MainWrapper = ({ children }: mainWrapper) => {
      */
     const ssoToken = getParameter("sso_token");
     const redirectUrl = getParameter("__next")?.replaceAll("|", "/");
-    console.log({ ssoToken, redirectUrl });
 
     //if the url has sso_token query param
     if (ssoToken) {

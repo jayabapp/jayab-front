@@ -150,7 +150,7 @@ const Header = ({ scroll }: { scroll?: number }) => {
   };
 
   return (
-    <div className="relative">
+    <header className="relative">
       <div
         id="headerContainer"
         className={`
@@ -394,7 +394,7 @@ transition-all  ease-in-out duration-1000 header-content-container w-full mx-aut
       </div>
 
       <DrawerMenu isOpen={isOpen} setIsOpen={setIsOpen} />
-    </div>
+    </header>
   );
 };
 

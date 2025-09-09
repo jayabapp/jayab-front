@@ -156,6 +156,7 @@ export const allRoutes: { [key: string]: string } = {
   facility: "امکانات ملک",
   subscription: "ارتقا آگهی و افزایش بازدید",
   price: _STRINGS.CAPS_N_PRICES,
+  "is-not-especial": "مشاور",
   environment: "اطلاعات محیطی ملک",
   bedroom: "اطلاعات اتاق خواب، سرویس و حمام",
 
@@ -363,4 +364,14 @@ export const shareButtonItems = [
   { title: "اشتراک گذاری تصاویر", icon: "/assets/icons/share/blue_pic.svg", id: "1" },
   { title: "اشتراک گذاری اطلاعات", icon: "/assets/icons/share/blue_exclemation.svg", id: "2" },
   { title: "اشتراک گذاری موقعیت مکانی", icon: "/assets/icons/adds/blue_pinpoint_location.svg", id: "3" },
+];
+
+export const randomeTitlePlaceholder = [
+  "ویلا استخردار دوخوابه در ماسال",
+  "کلبه جنگلی دوبلکس سه‌خوابه در ماسال",
+  " ویلا لوکس استخردار چهارخوابه در رامسر",
+  "سوییت یک‌خوابه ساحلی نزدیک دریا در کیش",
+  "ویلا برای تولد با سالن بزرگ در شهریار",
+  "باغ ویلا برای مهمانی فضای سرسبز در کردان",
+  "کلبه چوبی مثلثی(سوئیسی) با جکوزی در جنگل های رشت",
 ];

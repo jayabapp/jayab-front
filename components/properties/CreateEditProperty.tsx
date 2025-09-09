@@ -2,12 +2,12 @@ import FormInput from "@/components/shared/Form/FormInput";
 import _STRINGS from "@/utils/LocalStrings";
 import React from "react";
 import SinglePopUpSelect from "../shared/Form/SingleSelectPopUpSelect";
-import { createPropertySteps } from "@/utils/constantss";
+import { createPropertySteps, randomeTitlePlaceholder } from "@/utils/constantss";
 import { useQuery } from "@tanstack/react-query";
 import { PropertyService } from "@/api_services/property/property.service";
 import FormInputWithExternalUnit from "../shared/Form/FormInputWithExternalUnit";
 import { AuthService } from "@/api_services/auth/auth.service";
-import { isEmpty } from "lodash";
+import { isEmpty, random, sample } from "lodash";
 import MultiLineFormInput from "../shared/Form/MultiLineFormInput";
 import Checkbox from "../shared/Form/Checkbox";
 import { CityService } from "@/api_services/city/city.service";
@@ -63,6 +63,7 @@ const CreateEditProperty = ({
     },
     queryKey: [CityService.CITIES_CHILDEREN_CACHEKEY, values?.province],
   });
+  console.log(sample(randomeTitlePlaceholder), "randomeTitlePlaceholder.slice(random(5), random(4))?.map((e) => e)");
 
   return (
     <div className=" w-full gap-5  grid grid-cols-1 md:grid-cols-2   items-center ">
@@ -76,7 +77,12 @@ const CreateEditProperty = ({
       />
 
       <FormInput
-        item={{ title: _STRINGS.ADD_TITLE, isMandatory: true, containerClass: "w-full" }}
+        item={{
+          title: _STRINGS.ADD_TITLE,
+          placeholder: `مثال: ${sample(randomeTitlePlaceholder)}`,
+          isMandatory: true,
+          containerClass: "w-full",
+        }}
         value={values?.title || ""}
         onChangeText={(e) => {
           onChange(e, "title");

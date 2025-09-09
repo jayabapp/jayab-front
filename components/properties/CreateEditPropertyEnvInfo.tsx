@@ -61,9 +61,12 @@ const CreateEditPropertyEnvInfo = ({
         item={{
           title: _STRINGS.ACCESS_ROUTE_DESC,
           // isMandatory: true,
-          containerClass: "w-full col-span-full",
+          containerClass: "w-full relative col-span-full",
 
           rows: 3,
+          extraElement: (
+            <div className="absolute font-medium  left-0 top-0">{200 - `${values?.pattern_dscr}`?.length}</div>
+          ),
         }}
         value={values?.pattern_dscr || ""}
         onChangeText={(e) => {

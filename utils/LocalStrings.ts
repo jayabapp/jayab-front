@@ -386,6 +386,7 @@ const _STRINGS = {
   ASK_QUESTION_CAPTCHA: "کد امنیتی",
   ASK_QUESTION_SUBMIT: "ارسال",
   LADDERED: "نردبان شده",
+  TITLE_PLACEHOLDER: "مثال: کلبه سوئیسی در جنگل , ویلا استخردار در رامسر",
 };
 
 export default _STRINGS;

@@ -4128,7 +4128,7 @@ lines-and-columns@^1.1.6:
 
 loadash@^1.0.0:
   version "1.0.0"
-  resolved "https://registry.npmjs.org/loadash/-/loadash-1.0.0.tgz"
+  resolved "https://registry.yarnpkg.com/loadash/-/loadash-1.0.0.tgz#b92e54d809f3c225f4f9a9cfbaeae5b56de1ca9f"
   integrity sha512-xlX5HBsXB3KG0FJbJJG/3kYWCfsCyCSus3T+uHVu6QL6YxAdggmm3QeyLgn54N2yi5/UE6xxL5ZWJAAiHzHYEg==
 
 locate-path@^6.0.0:
