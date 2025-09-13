@@ -20,7 +20,7 @@ const ShareLink = ({
   useEffect(() => {
     const url = !!passedHref ? passedHref : `${window.location.href}?utm_source=true`;
     setUrl(url);
-  }, []);
+  }, [passedHref]);
   const onShare = async () => {
     const title = "جایاب";
     const text = "";
