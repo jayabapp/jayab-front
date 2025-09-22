@@ -11,7 +11,8 @@ import ProgressBar from "@/components/shared/progressbar";
 import StepShower from "@/components/shared/StepShower";
 import MainUploader from "@/components/uploader";
 import FullscreenImage from "@/components/uploader/FullScreenImage";
-import MultiUploader from "@/components/uploader/MultiUploader";
+import NewMultUploader from "@/components/uploader/NewMultUploader";
+
 import UploadedItemShowCase from "@/components/uploader/UploadedItemShowCase";
 import { useStoreInit } from "@/store";
 import { createPropertySteps } from "@/utils/constantss";
@@ -25,17 +26,14 @@ import React, { useEffect, useMemo, useState } from "react";
 
 const CreatePropertyImages = () => {
   const [loading, setLoading] = useState(false);
+  const [imagesLoadings, setimagesLoadings] = useState<{ [key: string]: any }>({});
 
   const [show, setShow] = useState(false);
   const [selectedFullScreen, setSelectedFullScreen] = useState<ImageDto | null>(null);
   const router = useRouter();
-  const pathname = usePathname();
   const searchParams = useSearchParams();
   const edit_mode = searchParams.get("edit_mode");
-  const { userInfo } = useStoreInit((data) => data);
-  const [totalLength, setTotalLength] = useState(0);
-  const [uploadedImages, setUploadedImages] = useState(0);
-  const [uploaderLoading, setUploaderLoading] = useState(false);
+
   const [images, setImages] = useState<any[]>([]);
   const [primaryImageId, setPrimaryImageId] = useState<string | number>(0);
   const params = useParams();
@@ -68,7 +66,7 @@ const CreatePropertyImages = () => {
   useEffect(() => {
     if (!!initPropData?.feature_image_id) {
       setPrimaryImageId(initPropData?.feature_image_id || 0);
-      setImages(initPropData?.attachments);
+      setImages(initPropData?.attachments?.map((e) => ({ data: e })) || []);
     }
   }, [initPropData]);
 
@@ -105,27 +103,6 @@ const CreatePropertyImages = () => {
             {!isEmpty(images) ? "2- عکس اصلی خود را با ضربه زدن روی عکس مورد نظر انتخاب کنید." : ""}{" "}
           </p>
         </div>{" "}
-        <div className=" w-full  min-h-8">
-          {!!totalLength && !!uploaderLoading && totalLength > 1 ? (
-            <div className="flex flex-col gap-2 w-full">
-              <p className=" text-sm text-primary-700">
-                {" "}
-                {uploadedImages} از {totalLength}
-              </p>
-              <ProgressBar
-                step={uploadedImages}
-                divs={Array.from({ length: totalLength }, (v, k) => k).map((e, index) => ({
-                  value: e,
-                  id: e,
-                  color: "#3886E5",
-                  width: (100 * (index + 1)) / totalLength,
-                }))}
-              />{" "}
-            </div>
-          ) : (
-            <></>
-          )}
-        </div>
         {isLoading ? (
           <div className="w-full flex items-center justify-center">
             {" "}
@@ -133,24 +110,22 @@ const CreatePropertyImages = () => {
           </div>
         ) : (
           <>
-            <MultiUploader
+            <NewMultUploader
               setLoading={setLoading}
               loading={loading}
-              innerClasses={{ sizeClass: " w-24 aspect-square h-24", secontParentClass: "w-24" }}
+              innerClasses={{ sizeClass: " w-28 md:w-36  aspect-square ", secontParentClass: "  w-28 md:w-36 " }}
               title={"افزودن عکس"}
               link="/attachments?type=OWNER_PROPERTY_IMAGE"
               key={`uploader`}
-              containerClass={" w-24  "}
+              containerClass={" w-28 md:w-36    "}
               item={null}
-              onSelect={(file) => {
-                setImages((e) => [...e, file]);
-              }}
+              setImages={setImages}
               onDelete={() => {}}
-              setTotalLength={setTotalLength}
-              setUploadedImages={setUploadedImages}
-              setUploaderLoading={setUploaderLoading}
+              images={images}
+              setimagesLoadings={setimagesLoadings}
+              imagesLoadings={imagesLoadings}
             />
-            {images?.map((e) => (
+            {images?.map((e, index, arr) => (
               <div
                 onClick={() => {
                   setPrimaryImageId(e?.id);
@@ -163,12 +138,16 @@ const CreatePropertyImages = () => {
                     // setSelectedFullScreen(e);
                     // setShow(true);
                   }}
-                  innerClasses={{ sizeClass: " w-24 aspect-square h-24", secontParentClass: "w-24" }}
+                  innerClasses={{
+                    sizeClass: " w-28 md:w-36 aspect-square h-28 md:h-36",
+                    secontParentClass: "w-28 md:w-36",
+                  }}
                   key={`uploader${e?.id}`}
-                  containerClass={" w-24  "}
+                  containerClass={" w-28 md:w-36  "}
                   item={e}
+                  progress={imagesLoadings?.[e?.id]}
                   onDelete={() => {
-                    setImages(images?.filter((i) => e?.id !== i?.id));
+                    setImages(arr?.filter((i) => e?.data?.id !== i?.data?.id));
                   }}
                 />
                 <div

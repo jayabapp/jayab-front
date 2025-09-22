@@ -146,11 +146,19 @@ export class AuthService {
     }
   }
 
-  static async UploadUsersImage(dto: { formData: FormData; link: string }) {
+  static async UploadUsersImage(dto: {
+    formData: FormData;
+    link: string;
+    id?: string | number;
+    onProgressCallBack?: (e: any) => void | null;
+  }) {
     try {
-      const result = await apiCall<FormData, SetPasswordResponse>("POST", dto.link, dto.formData);
-      return result;
-    } catch (e) {
+      const result = await apiCall<FormData, SetPasswordResponse>("POST", dto.link, dto.formData, {
+        progressCallBack: dto.onProgressCallBack,
+      });
+      return { result, id: dto?.id };
+    } catch (e: any) {
+      e.id = dto.id;
       throw e;
     }
   }

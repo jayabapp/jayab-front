@@ -1,7 +1,7 @@
-import React, { useState } from "react";
-import FullscreenImage from "./FullScreenImage";
-import { ImageDto } from "@/api_services/auth/auth.interface";
+import React, { use, useEffect, useState } from "react";
+
 import { NEW_IMAGE_URL } from "@/utils/urls";
+import ProgressBar from "../shared/progressbar";
 
 const UploadedItemShowCase = ({
   containerClass,
@@ -9,16 +9,34 @@ const UploadedItemShowCase = ({
   item,
   onDelete,
   cb,
+  progress,
 }: {
-  item: ImageDto;
+  item: any;
   containerClass?: string;
   innerClasses?: { sizeClass?: string; secontParentClass?: string };
   onDelete?: () => void | null;
   cb: () => void | null;
+  progress: number;
 }) => {
+  const [showRealData, setShowRealData] = useState(false);
   return (
-    <div className={`flex w-fit  ${containerClass} `} style={{ zIndex: "4 !important" }}>
+    <div className={`flex w-fit relative  ${containerClass} `} style={{ zIndex: "4 !important" }}>
       {/* <div id="myVIdeo"></div> */}
+      {(!!progress || progress == 0) && !showRealData ? (
+        <div className=" rounded-20 z-1 px-4   absolute left-0 top-0 w-full h-full flex items-center justify-center bg-black/40">
+          <ProgressBar
+            step={Math.ceil((Number(progress) || 0.2) * 100)}
+            divs={Array.from({ length: 101 }, (v, k) => k).map((e, index) => ({
+              value: e,
+              id: e,
+              color: "#f87171",
+              width: index,
+            }))}
+          />
+        </div>
+      ) : (
+        <></>
+      )}
       <div
         className={`flex  w-fit  flex-col     items-center justify-start   rounded-20 ${innerClasses?.secontParentClass}`}
         // style={{ overflowX: "scroll" }}
@@ -36,16 +54,36 @@ const UploadedItemShowCase = ({
               !!innerClasses?.sizeClass ? innerClasses?.sizeClass : "h-24 w-24"
             } `}
           >
-            <img
-              alt="img"
-              src={NEW_IMAGE_URL(item)}
-              className={`object-cover  w-full bg-gradient-to-b rounded-20 aspect-square max-w-max 
+            {!!item?.data ? (
+              <img
+                onLoad={() => {
+                  setShowRealData(true);
+                }}
+                alt="img"
+                src={NEW_IMAGE_URL(item?.data)}
+                className={`object-cover  w-full bg-gradient-to-b rounded-20 aspect-square max-w-max 
+                   ${!!innerClasses?.sizeClass ? innerClasses?.sizeClass : "h-24 w-24"}
+                  `}
+              />
+            ) : (
+              <></>
+            )}
+            {!!item?.url ? (
+              <img
+                alt="img"
+                src={item?.url}
+                className={`object-cover  ${
+                  !!showRealData ? "opacity-0" : "opacity-100"
+                } absolute left-0 top-0 right-0 bottom-0 m-auto w-full bg-gradient-to-b rounded-20 aspect-square max-w-max 
                   
                    ${!!innerClasses?.sizeClass ? innerClasses?.sizeClass : "h-24 w-24"}
                   `}
-            />
+              />
+            ) : (
+              <></>
+            )}
           </div>
-          {!!onDelete ? (
+          {!!onDelete && !!item?.data ? (
             <div
               className="   bg-transparent cursor-pointer absolute top-2 left-2 shadow-2xl "
               onClick={(e) => {
