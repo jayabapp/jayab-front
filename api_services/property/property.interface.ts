@@ -256,6 +256,7 @@ export interface SinglePropDto {
   total_bedrooms: number;
   bedrooms: Bedrooms;
   has_pool: boolean;
+  has_blue_tick: boolean;
   is_authorized: boolean;
   is_promoted: boolean;
   is_chat_enabled: boolean;

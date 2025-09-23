@@ -92,11 +92,22 @@ const SinglePropertyIntroduction = ({ data }: { data: SinglePropDto }) => {
   useEffect(() => {
     if (!!window.origin) setOrigin(window.origin);
   }, []);
+
   return (
     <div className=" flex w-full  flex-col relative  gap-2 md:gap-3">
       <div className="w-full flex items-start md:items-center justify-between gap-2">
-        {" "}
-        <h1 className=" font-medium text-base w-3/5 md:w-full md:text-2xl ">{data?.title}</h1>
+        <div className="flex items-center w-3/5 md:w-full gap-2">
+          {!!data?.has_blue_tick ? (
+            <img
+              src="/assets/icons/adds/verified_badge.svg"
+              alt="verified_badge"
+              className="w-[1.125rem] h-[1.125rem]"
+            />
+          ) : (
+            <></>
+          )}
+          <h1 className=" font-medium text-base w-full md:text-2xl ">{data?.title}</h1>
+        </div>
         {!!data?.is_authorized ? <AuthorizationStatus isAuthorized={data?.is_authorized} /> : <></>}
       </div>
       <div className=" flex items-center w-full justify-between">
