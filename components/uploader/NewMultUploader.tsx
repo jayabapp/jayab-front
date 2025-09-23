@@ -130,9 +130,9 @@ const NewMultUploader = ({
       },
       {
         onSuccess: (data) => {
-          if (!!isLast) {
-            setLoading(false);
-          }
+          // if (!!isLast) {
+          //   setLoading(false);
+          // }
         },
       }
     );
