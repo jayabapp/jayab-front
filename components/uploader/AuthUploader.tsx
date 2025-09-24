@@ -63,10 +63,19 @@ const AuthUploader = ({
 
   const { mutate, isPending: sendLoading } = useMutation({ mutationFn: AuthService.UploadUsersImage });
 
-  const uploadTemp = (file: Blob) => {
+  const uploadTemp = async (file: Blob) => {
     setLoading(true);
+    const compressedBlob = await imageCompression(file as any, {
+      maxSizeMB: 1,
+      maxWidthOrHeight: 1240,
+      useWebWorker: true,
+    });
+    const compressedFile = new File([compressedBlob], "whatever", {
+      type: file.type,
+      lastModified: Date.now(),
+    });
     var formData = new FormData();
-    formData.append("file", file);
+    formData.append("file", compressedFile);
 
     mutate(
       { formData: formData, link: link },
@@ -77,8 +86,6 @@ const AuthUploader = ({
           onSelect(e?.result);
           setImage("");
           setselectedFile(null);
-          // setNewCrop(null);
-          // setDisable(true);
         },
         onError: () => {
           setSubLoading(false);
@@ -97,53 +104,15 @@ const AuthUploader = ({
     if (type == "image" && file.name.split(".")[1] == "jfif")
       return toast.error("لطفا از فایل تصویر درست استفاده نمایید");
     else {
-      // const compressedBlob = await imageCompression(file as File, {
-      //   maxSizeMB: 1,
-      //   maxWidthOrHeight: 1400,
-      //   useWebWorker: true,
-      // });
-      // setselectedFile(compressedFile);
-
       setImage(URL.createObjectURL(file));
       setselectedFile(URL.createObjectURL(file));
     }
   };
 
-  async function uploadImage(image: any) {
-    setSubLoading(true);
-    if (!!image) {
-      const response = await fetch(image);
-      const blob = await response.blob();
-      const file = new File([blob], "file.jpeg", {
-        type: blob.type,
-      });
-      uploadTemp(file);
-    } else {
-      setSubLoading(false);
-    }
-  }
-
   const onHide = () => {
     setImage("");
     setselectedFile(null);
     setisCropping(false);
-  };
-
-  const onRotate = (rotate: number) => {
-    if (!!cropperRef.current) {
-      cropperRef.current?.rotateImage(rotate, { normalize: true });
-    }
-  };
-
-  const onFlip = (horizontal?: boolean, vertical?: boolean) => {
-    if (!!cropperRef.current) {
-      cropperRef.current?.flipImage(horizontal, vertical);
-    }
-  };
-
-  const onChange = (cropper: CropperRef) => {
-    setCoordinates(cropper.getCoordinates());
-    if (cropper.getCanvas()?.toDataURL()) setImage(cropper.getCanvas()?.toDataURL());
   };
 
   return (

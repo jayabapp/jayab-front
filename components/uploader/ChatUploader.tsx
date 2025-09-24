@@ -104,10 +104,20 @@ const ChatUploader = ({
     }
   };
 
-  const uploadTemp = (file: Blob) => {
+  const uploadTemp = async (file: Blob) => {
     setLoading(true);
+
+    const compressedBlob = await imageCompression(file as any, {
+      maxSizeMB: 1,
+      maxWidthOrHeight: 1240,
+      useWebWorker: true,
+    });
+    const compressedFile = new File([compressedBlob], "whatever", {
+      type: file.type,
+      lastModified: Date.now(),
+    });
     var formData = new FormData();
-    formData.append("file", file);
+    formData.append("file", compressedFile);
 
     mutate(
       { formData: formData, link: link },
@@ -133,16 +143,16 @@ const ChatUploader = ({
     if (type == "image" && file.name.split(".")[1] == "jfif")
       return toast.error("لطفا از فایل تصویر درست استفاده نمایید");
     else {
-      const compressedBlob = await imageCompression(file as File, {
-        maxSizeMB: 1,
-        maxWidthOrHeight: 1400,
-        useWebWorker: true,
-      });
-      const compressedFile = new File([compressedBlob], file.name, {
-        type: file.type,
-        lastModified: file.lastModified,
-      });
-      setselectedFile(compressedFile);
+      // const compressedBlob = await imageCompression(file as File, {
+      //   maxSizeMB: 1,
+      //   maxWidthOrHeight: 1400,
+      //   useWebWorker: true,
+      // });
+      // const compressedFile = new File([compressedBlob], file.name, {
+      //   type: file.type,
+      //   lastModified: file.lastModified,
+      // });
+      setselectedFile(file);
     }
   };
   async function uploadImage() {

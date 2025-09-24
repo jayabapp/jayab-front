@@ -11,6 +11,7 @@ import { useStoreTheme } from "../../store";
 import { AuthService } from "@/api_services/auth/auth.service";
 import BtnLoading from "../shared/Button/BtnLoading";
 import Modal from "../Modal";
+import EditImageModal from "./EditImageModal";
 //For Slider
 
 type props = {
@@ -63,12 +64,22 @@ const MainUploader = ({
   const [selectedFile, setselectedFile] = useState<string | null>(null);
   const [isCropping, setisCropping] = useState(false);
 
-  const { mutate } = useMutation({ mutationFn: AuthService.UploadUsersImage });
+  const { mutate, isPending: sendLoading } = useMutation({ mutationFn: AuthService.UploadUsersImage });
 
-  const uploadTemp = (file: Blob) => {
+  const uploadTemp = async (file: Blob) => {
     setLoading(true);
+
+    const compressedBlob = await imageCompression(file as any, {
+      maxSizeMB: 1,
+      maxWidthOrHeight: 1240,
+      useWebWorker: true,
+    });
+    const compressedFile = new File([compressedBlob], "whatever", {
+      type: file.type,
+      lastModified: Date.now(),
+    });
     var formData = new FormData();
-    formData.append("file", file);
+    formData.append("file", compressedFile);
 
     mutate(
       { formData: formData, link: link },
@@ -99,57 +110,15 @@ const MainUploader = ({
     if (type == "image" && file.name.split(".")[1] == "jfif")
       return toast.error("لطفا از فایل تصویر درست استفاده نمایید");
     else {
-      const compressedBlob = await imageCompression(file as File, {
-        maxSizeMB: 1,
-        maxWidthOrHeight: 1240,
-        useWebWorker: true,
-      });
-      const compressedFile = new File([compressedBlob], file.name, {
-        type: file.type,
-        lastModified: file.lastModified,
-      });
-      // setselectedFile(compressedFile);
-      setImage(URL.createObjectURL(compressedFile));
-      setselectedFile(URL.createObjectURL(compressedFile));
+      setImage(URL.createObjectURL(file));
+      setselectedFile(URL.createObjectURL(file));
     }
   };
-
-  async function uploadImage() {
-    setSubLoading(true);
-
-    if (!!image) {
-      const response = await fetch(image);
-      const blob = await response.blob();
-      const file = new File([blob], "file.jpeg", {
-        type: blob.type,
-      });
-      uploadTemp(file);
-    } else {
-      setSubLoading(false);
-    }
-  }
 
   const onHide = () => {
     setImage("");
     setselectedFile(null);
     setisCropping(false);
-  };
-
-  const onRotate = (rotate: number) => {
-    if (!!cropperRef.current) {
-      cropperRef.current?.rotateImage(rotate, { normalize: true });
-    }
-  };
-
-  const onFlip = (horizontal?: boolean, vertical?: boolean) => {
-    if (!!cropperRef.current) {
-      cropperRef.current?.flipImage(horizontal, vertical);
-    }
-  };
-
-  const onChange = (cropper: CropperRef) => {
-    setCoordinates(cropper.getCoordinates());
-    if (cropper.getCanvas()?.toDataURL()) setImage(cropper.getCanvas()?.toDataURL());
   };
 
   return (
@@ -271,113 +240,17 @@ const MainUploader = ({
           }
         />
       )}
-      <Modal
-        show={!!selectedFile ? true : false}
-        options={{
-          containerClass:
-            "mx-auto my-0 !h-fit  w-11/12 md:w-1/2 xl:w-1/3 2xl:w-1/4 rounded-2xl overflow-y-scroll  bg-zinc-800   dark:bg-slate-800",
-        }}
-        onHide={onHide}
-      >
-        <div
-          className="flex bg-zinc-900 dark:bg-slate-800 items-center justify-center"
-          style={{
-            position: "relative",
-            width: "100%",
-            minHeight: "60dvh",
-            maxHeight: "60dvh",
-          }}
-        >
-          <Cropper
-            defaultSize={({ imageSize }, settings) => {
-              return {
-                width: imageSize.width,
-                height: imageSize.height,
-              };
-            }}
-            style={{ maxHeight: "60dvh" }}
-            ref={cropperRef}
-            stencilProps={{
-              aspectRatio: cropRatio || undefined,
-            }}
-            src={selectedFile}
-            onChange={onChange}
-            className={"cropper"}
-          />
-        </div>
-        <div className=" w-full flex  gap-4 relative bg-zinc-800 dark:bg-slate-800 pt-8   pb-8  items-center justify-center">
-          <img
-            onClick={() => {
-              onRotate(-90);
-            }}
-            src={"/assets/icons/uploader/rotate_icon.svg"}
-            className="absolute cursor-pointer left-[30%]  dark:invert-0 "
-          />
-          <img
-            onClick={() => {
-              onFlip(true, undefined);
-            }}
-            src={"/assets/icons/uploader/flip_icon.svg"}
-            className="absolute scale-[-1] rotate-90 cursor-pointer left-[15%]  dark:invert-0 "
-          />
-
-          <img
-            onClick={() => {
-              onFlip(undefined, true);
-            }}
-            className="absolute   cursor-pointer right-[15%]  dark:invert-0 "
-            src={"/assets/icons/uploader/flip_icon.svg"}
-          />
-
-          <img
-            onClick={() => {
-              onRotate(90);
-            }}
-            src={"/assets/icons/uploader/rotate_icon.svg"}
-            className="absolute  scale-x-[-1] cursor-pointer right-[30%]  dark:invert-0 "
-          />
-        </div>
-
-        <div className=" w-full grid overflow-clip   p-2 gap-2 items-center bg-zinc-800 dark:bg-slate-800 justify-center grid-cols-2 ">
-          <div
-            onClick={() => {
-              if (!subLoading) {
-                uploadImage();
-              }
-            }}
-            className={`  transition-all  w-full cursor-pointer flex py-1.5  border rounded-xl border-green-600 dark:border-dark-green gap-3 items-center  border-l justify-center`}
-          >
-            {subLoading ? (
-              <div className=" flex items-center justify-center w-full min-h-[1.7rem]">
-                {" "}
-                <BtnLoading />
-              </div>
-            ) : (
-              <>
-                {" "}
-                <img
-                  src="/assets/icons/shared/check_icon.svg"
-                  className=" items-center justify-center text-center text-green-600 border-green-600 w-4 dark:text-dark-green"
-                />
-                <p className="text-green-600 border-green-600  text-lg font-medium dark:text-dark-green">تایید</p>
-              </>
-            )}{" "}
-          </div>
-          <div
-            onClick={() => {
-              if (!isCropping) {
-                onHide();
-              }
-            }}
-            className="w-full py-1.5 cursor-pointer gap-3  border rounded-xl border-red-600 dark:border-dark-red flex items-center justify-center"
-          >
-            <img src="/assets/icons/adds/red_x_mark.svg" className="  text-red-600 w-4 dark:text-dark-red" />
-            <p className="text-red-600  text-lg font-medium dark:text-dark-red">بستن</p>
-          </div>
-        </div>
-
-        <div></div>
-      </Modal>
+      {!!selectedFile ? (
+        <EditImageModal
+          cropRatio={cropRatio}
+          imageUrl={selectedFile || ""}
+          isUploading={sendLoading}
+          onComplete={uploadTemp}
+          onHide={onHide}
+        />
+      ) : (
+        <></>
+      )}
     </div>
   );
 };
