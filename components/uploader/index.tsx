@@ -12,6 +12,7 @@ import { AuthService } from "@/api_services/auth/auth.service";
 import BtnLoading from "../shared/Button/BtnLoading";
 import Modal from "../Modal";
 import EditImageModal from "./EditImageModal";
+import Notify from "../shared/Toast";
 //For Slider
 
 type props = {
@@ -64,41 +65,50 @@ const MainUploader = ({
   const [selectedFile, setselectedFile] = useState<string | null>(null);
   const [isCropping, setisCropping] = useState(false);
 
-  const { mutate, isPending: sendLoading } = useMutation({ mutationFn: AuthService.UploadUsersImage });
+  const { mutate } = useMutation({ mutationFn: AuthService.UploadUsersImage });
 
   const uploadTemp = async (file: Blob) => {
     setLoading(true);
 
-    const compressedBlob = await imageCompression(file as any, {
-      maxSizeMB: 1,
-      maxWidthOrHeight: 1240,
-      useWebWorker: true,
-    });
-    const compressedFile = new File([compressedBlob], "whatever", {
-      type: file.type,
-      lastModified: Date.now(),
-    });
-    var formData = new FormData();
-    formData.append("file", compressedFile);
+    let compressedBlob;
+    let compressedFile;
+    try {
+      compressedBlob = await imageCompression(file as any, {
+        maxSizeMB: 1,
+        maxWidthOrHeight: 1240,
+        useWebWorker: true,
+      });
+      compressedFile = new File([compressedBlob], "whatever", {
+        type: file.type,
+        lastModified: Date.now(),
+      });
+    } catch (error) {
+      compressedFile = file;
+      console.error("Image compression failed:", error);
+    }
+    if (!!compressedFile) {
+      var formData = new FormData();
+      formData.append("file", compressedFile);
 
-    mutate(
-      { formData: formData, link: link },
-      {
-        onSuccess: (e) => {
-          setLoading(false);
-          setSubLoading(false);
-          onSelect(e?.result);
-          setImage("");
-          setselectedFile(null);
-          // setNewCrop(null);
-          // setDisable(true);
-        },
-        onError: () => {
-          setSubLoading(false);
-          setLoading(false);
-        },
-      }
-    );
+      mutate(
+        { formData: formData, link: link },
+        {
+          onSuccess: (e) => {
+            setLoading(false);
+            setSubLoading(false);
+            onSelect(e?.result);
+            setImage("");
+            setselectedFile(null);
+            // setNewCrop(null);
+            // setDisable(true);
+          },
+          onError: () => {
+            setSubLoading(false);
+            setLoading(false);
+          },
+        }
+      );
+    }
   };
 
   const pick: ReactEventHandler = async (e) => {
@@ -244,7 +254,7 @@ const MainUploader = ({
         <EditImageModal
           cropRatio={cropRatio}
           imageUrl={selectedFile || ""}
-          isUploading={sendLoading}
+          isUploading={loading}
           onComplete={uploadTemp}
           onHide={onHide}
         />
