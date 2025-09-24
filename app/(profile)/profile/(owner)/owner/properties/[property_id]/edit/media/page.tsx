@@ -82,9 +82,10 @@ const CreatePropertyImages = () => {
 
   useEffect(() => {
     if (!primaryImageId && !isEmpty(images)) {
-      setPrimaryImageId(images?.[0]?.id);
+      setPrimaryImageId(images?.[0]?.data?.id);
     }
   }, [images]);
+
   return (
     <div
       id="homeParent"
@@ -128,7 +129,7 @@ const CreatePropertyImages = () => {
             {images?.map((e, index, arr) => (
               <div
                 onClick={() => {
-                  setPrimaryImageId(e?.id);
+                  setPrimaryImageId(e?.data?.id);
                 }}
                 className=" relative rounded-10"
                 key={`uploader${e?.id}`}
@@ -152,7 +153,7 @@ const CreatePropertyImages = () => {
                 />
                 <div
                   className={` ${
-                    primaryImageId == e?.id ? "opacity-100" : "opacity-0"
+                    !!primaryImageId && primaryImageId == e?.data?.id ? "opacity-100" : "opacity-0"
                   } transition-all absolute text-xxs h-7 bottom-0 w-full flex items-center justify-center bg-white/60  text-gray-700`}
                 >
                   {_STRINGS.PRIMARY_IMAGE}{" "}
