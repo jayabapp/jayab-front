@@ -74,7 +74,7 @@ const AuthUploader = ({
         onSuccess: (e) => {
           setLoading(false);
           setSubLoading(false);
-          onSelect(e);
+          onSelect(e?.result);
           setImage("");
           setselectedFile(null);
           // setNewCrop(null);

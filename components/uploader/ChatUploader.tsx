@@ -113,7 +113,7 @@ const ChatUploader = ({
       { formData: formData, link: link },
       {
         onSuccess: (e) => {
-          submit(e);
+          submit(e?.result);
 
           // onSelect(e);
         },
