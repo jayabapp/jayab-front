@@ -73,7 +73,7 @@ const CreatePropertyImages = () => {
   const onSubmit = () => {
     if (initPropData?.id) {
       mutate({
-        images: images?.map((e) => e?.id),
+        images: images?.map((e) => e?.data?.id),
         feature_image_id: primaryImageId,
         propertyId: initPropData?.id,
       });
