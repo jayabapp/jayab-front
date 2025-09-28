@@ -106,7 +106,7 @@ const SinglePropertyIntroduction = ({ data }: { data: SinglePropDto }) => {
           ) : (
             <></>
           )}
-          <h1 className=" font-medium text-base w-full md:text-2xl ">{data?.title}</h1>
+          <h1 className=" font-medium text-base w-full md:text-2xl  ">{data?.title}</h1>
         </div>
         {!!data?.is_authorized ? <AuthorizationStatus isAuthorized={data?.is_authorized} /> : <></>}
       </div>
@@ -141,7 +141,7 @@ const SinglePropertyIntroduction = ({ data }: { data: SinglePropDto }) => {
           )}
 
           {!!data?.is_promoted ? (
-            <p className="  font-bold  text-primary-700  shrink-0  text-sm ">{_STRINGS.LADDERED}</p>
+            <p className="  font-bold  text-primary-700  shrink-0  text-sm  hidden md:flex ">{_STRINGS.LADDERED}</p>
           ) : (
             <></>
           )}

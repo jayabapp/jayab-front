@@ -615,7 +615,7 @@ textarea {
 h1 {
   color: #083e5e;
   font-size: 1.476rem;
-  @apply font-bold !leading-10;
+  @apply font-bold !leading-8;
 }
 h2 {
   color: #0c5e8d;
