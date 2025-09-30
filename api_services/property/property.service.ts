@@ -26,6 +26,7 @@ import {
 import { YupValidator } from "@/utils/YupValidator";
 import { sendMediaSchema } from "./property.schema";
 import { p2e } from "@/helpers/NumberConverter";
+import { ImageDto } from "../auth/auth.interface";
 
 export class PropertyService {
   static USER_PROP_OPTIONS_CACHEKEY = "USER_PROP_OPTIONS";
@@ -66,7 +67,7 @@ export class PropertyService {
 
   static async getSinglePropertyContactInfo(dto: { propertySlug: string | number | null }) {
     try {
-      const result = await apiCall<unknown, PropertyContactIInfDto[]>(
+      const result = await apiCall<unknown, { list: PropertyContactIInfDto[]; owner: { selfie_image: ImageDto } }>(
         "GET",
         apiRoutes.SINGLE_PROPERTY_CONTACT_INFO(dto.propertySlug)
       );

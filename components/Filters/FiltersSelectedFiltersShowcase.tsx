@@ -15,6 +15,7 @@ const FiltersSelectedFiltersShowcase = ({
   propertyTypes,
   setFilterModalShow,
   hiddenFilters,
+  containerClass,
 }: {
   propertyTypes: {
     [key: string]: ProvienceTypesDto[];
@@ -23,6 +24,7 @@ const FiltersSelectedFiltersShowcase = ({
   query: any;
   setFilterModalShow: Dispatch<SetStateAction<boolean>>;
   hiddenFilters?: string[];
+  containerClass?: string;
 }) => {
   const ref = useRef<Swiper>(null);
   const router = useRouter();
@@ -123,8 +125,9 @@ const FiltersSelectedFiltersShowcase = ({
 
   return (
     <SwiperWithNavigation
+      containerClass={containerClass}
       reference={ref}
-      className=" !max-w-full md:pb-3 flex items-center"
+      className=" !max-w-full   !w-full flex items-center"
       onBeforeInit={(swiper: Swiper) => (ref.current = swiper)}
       dataLength={50}
       // grid={{

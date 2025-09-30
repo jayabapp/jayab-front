@@ -64,7 +64,7 @@ ul {
 }
 
 .app-container {
-  @apply h-full bg-white !min-h-screen px-3 md:px-10 lg:px-12 2xl:px-[10%]   pt-24 lg:pt-28 pb-32 lg:pb-48 overflow-x-scroll;
+  @apply h-full bg-white !min-h-screen px-3 md:px-10 lg:px-12 2xl:px-[10%]   pt-24 lg:pt-28 pb-32 lg:pb-48;
 }
 
 .app-size {

@@ -11,7 +11,7 @@ const SingleProductBreadCrumb = ({ dataArray }: { dataArray: { title: string; li
   };
 
   return (
-    <div id="BREADCRUMB" className="pr-4 z-5 mt-5 mb-3 w-[90vw]  hidden md:flex  ">
+    <div id="BREADCRUMB" className={`pr-4 md:pr-0 z-5  w-[90vw]  hidden md:flex  `}>
       <BreadCrumbSchema breadcrumbs={dataArray} />
       <div className="flex w-11/12 flex-wrap">
         {dataArray?.map((e, index, arr) => (
@@ -37,7 +37,7 @@ const SingleProductBreadCrumb = ({ dataArray }: { dataArray: { title: string; li
               )}{" "}
               <h6
                 className={`text-sm text-dark-700  transition-all hover:scale-110 hover:text-primary-800 dark:hover:text-primary-800 dark:text-gray-400 ${
-                  index == arr?.length - 1 ? "font-medium " : " opacity-50"
+                  index == arr?.length - 1 ? "font-normal " : " opacity-50"
                 }`}
               >
                 {e.title}

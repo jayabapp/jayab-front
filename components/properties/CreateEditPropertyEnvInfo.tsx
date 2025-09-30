@@ -10,6 +10,7 @@ import { AuthService } from "@/api_services/auth/auth.service";
 import { isEmpty } from "lodash";
 import MultiLineFormInput from "../shared/Form/MultiLineFormInput";
 import Checkbox from "../shared/Form/Checkbox";
+import FormCounter from "./FormCounter";
 
 export interface CreateProperyStepThree {
   distance_dscr: string | number | null;
@@ -64,8 +65,9 @@ const CreateEditPropertyEnvInfo = ({
           containerClass: "w-full relative col-span-full",
 
           rows: 3,
+          extraElement: <FormCounter max={800} value={values?.pattern_dscr || ""} />,
           // extraElement: (
-          //   <div className="absolute font-medium  left-0 top-0">{200 - `${values?.pattern_dscr}`?.length}</div>
+          //   <div className="absolute font-medium  left-0 top-0">{800 - `${values?.pattern_dscr}`?.length}</div>
           // ),
         }}
         value={values?.pattern_dscr || ""}
@@ -85,8 +87,8 @@ const CreateEditPropertyEnvInfo = ({
         item={{
           title: _STRINGS.DISTANCETO_POINT,
           isMandatory: true,
-          containerClass: "w-full col-span-full",
-
+          containerClass: "w-full relative col-span-full",
+          extraElement: <FormCounter max={800} value={values?.distance_dscr || ""} />,
           rows: 3,
         }}
         value={values?.distance_dscr || ""}

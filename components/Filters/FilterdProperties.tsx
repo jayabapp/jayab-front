@@ -196,14 +196,16 @@ function FilterdProperties({ sortType, setSortType, query }: FilterdPropertiesTy
     setWeek(weeks);
   }, []);
 
-  console.log(query?.cities, " query?.cities query?.cities");
   return (
     <div className="w-full px-0  self-center">
       <div className=" w-full">
         {/* <SortContainer query={query} /> */}
 
         {isLoading && data?.length == 0 ? (
-          <LottieLoading />
+          <div className="col-span-full">
+            {" "}
+            <LottieLoading />{" "}
+          </div>
         ) : data && data?.length > 0 ? (
           <InfiniteScroll
             scrollThreshold={0.5}
@@ -224,7 +226,7 @@ function FilterdProperties({ sortType, setSortType, query }: FilterdPropertiesTy
             ))}
           </InfiniteScroll>
         ) : (
-          <div className="col-span-4">
+          <div className="col-span-full">
             <EmptyList />
           </div>
         )}

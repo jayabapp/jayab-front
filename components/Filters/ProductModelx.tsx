@@ -63,7 +63,7 @@ const ProductModels = ({ query, queryKey, list, isMulty, setMobileFilters, mobil
       {list?.map((i) => (
         <div
           key={`BRAND${i?.id}`}
-          className="flex items-center my-3 gap-2 cursor-pointer"
+          className="flex items-center my-2 gap-2 cursor-pointer"
           onClick={() => {
             let temp: any = queyData;
             if (isArray(queyData) && isMulty) {

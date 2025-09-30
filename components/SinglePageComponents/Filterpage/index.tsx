@@ -38,6 +38,7 @@ export interface PostPageQuery {
 type sortTypeType = { id?: string; title?: string };
 
 const Filterpage = () => {
+  const [stickyHeight, setStickyHeight] = useState(600);
   const [cityButtonTItle, setCityTitleButton] = useState("");
   const [showCityModal, setShowCiyModal] = useState(false);
   const [defaultMobileFilters, setDefaultMobileFilters] = useState<any>({});
@@ -106,68 +107,84 @@ const Filterpage = () => {
     router.replace(`${pathname}?${queryBuilder(body)}`);
   };
 
+  useEffect(() => {
+    setStickyHeight((window.visualViewport?.height || 700) - 90);
+  }, []);
+
   return (
-    <div className="app-container !px-0 xl:!px-10 lg:!px-12 2xl:!px-[5%] !pt-32  lg:!pt-28  xl: z-2 ">
-      <div className=" hidden  z-1 w-full xl:flex flex-col xl:flex-row items-center justify-between ">
-        {/* <Breadcrumbs /> */}
-        <SingleProductBreadCrumb dataArray={breadCrumbs} />
-      </div>
-      <div className="w-full hidden xl:flex  pb-4">
-        {" "}
-        <FiltersSelectedFiltersShowcase
-          setFilterModalShow={setFilterModalShow}
-          query={queries}
-          propertyTypes={propertyTypes || {}}
-        />
-      </div>
-      <div className="flex fixed pt-1 xl:hidden h-16 right-0  items-center justify-center   z-10 xl:z-1  top-[4rem] xl:top-auto left-0 xl:left-auto bg-white xl:bg-transparent xl:relative flex-col w-full xl:gap-2  ">
-        <div className=" flex  order-1  xl:hidden  relative w-full">
-          <div className=" z-1  px-2  relative  w-full items-center gap-1 justify-between  ">
-            <div className=" !col-span-9 ">
+    <div className="app-container !px-0 xl:!px-10 lg:!px-12 2xl:!px-[5%] !pt-32  lg:!pt-20  xl: z-2  flex flex-col !gap-2 ">
+      <div className="grid grid-cols-12  col-span-12 ">
+        <div
+          style={{ height: `${stickyHeight}px` }}
+          className="hidden   justify-between   overflow-y-hidden    gap-4 lg:sticky lg:top-20 lg:flex  flex-col items-center rounded-10  border col-span-3 "
+        >
+          <div className=" w-full flex flex-col gap-4 overflow-y-scroll">
+            <FiltersPart propertyTypes={propertyTypes} filters={filters} setFilters={setFilters} queries={queries} />
+          </div>
+          <Button
+            title={_STRINGS?.DO_THE_FILTERING}
+            onClick={() => {
+              queryMaker(filters);
+              // router.replace(`${pathname}?${queryBuilder(specs)}`);
+              setFilterModalShow(false);
+            }}
+            width="w-full"
+            containerClass="w-full flex items-center flex-col px-2 pb-2 pt-0"
+          />
+        </div>{" "}
+        <div
+          className={`col-span-12  md:col-span-12 lg:col-span-9 px-3 md:pr-4 md:pl-0  
+   
+            md:mt-0 `}
+        >
+          <div className=" hidden  z-1 w-full xl:flex flex-col xl:flex-row items-center justify-between ">
+            {/* <Breadcrumbs /> */}
+            <SingleProductBreadCrumb dataArray={breadCrumbs} />
+          </div>
+          {/* <div className="w-full hidden xl:flex ">
+            {" "}
+            <FiltersSelectedFiltersShowcase
+              setFilterModalShow={setFilterModalShow}
+              query={queries}
+              propertyTypes={propertyTypes || {}}
+            />
+          </div> */}
+          <div className="flex fixed pt-1 xl:hidden h-16 right-0  items-center justify-center   z-10 xl:z-1  top-[4rem] xl:top-auto left-0 xl:left-auto bg-white xl:bg-transparent xl:relative flex-col w-full xl:gap-2  ">
+            <div className=" flex  order-1  xl:hidden  relative w-full">
+              <div className=" z-1  px-2  relative  w-full items-center gap-1 justify-between  ">
+                <div className=" !col-span-9 ">
+                  <FiltersSelectedFiltersShowcase
+                    setFilterModalShow={setFilterModalShow}
+                    query={queries}
+                    propertyTypes={propertyTypes || {}}
+                  />
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div className="  w-full flex xl:hidden">
+            <PropertiesFilterList propertyKey={"property_type"} data={propertyTypes?.PROPERTY_TYPE} query={queries} />
+          </div>
+          <div className="w-full grow-0 shrink-0 flex flex-row  px-3 xl:px-0 relative  justify-between">
+            <div className="flex  flex-row w-[90%]  items-center  gap-4 justify-start ">
+              <FilterPageCitiesTitle title={cityButtonTItle} cb={showCityModalFunc} />
               <FiltersSelectedFiltersShowcase
+                containerClass="   !hidden md:!contents "
                 setFilterModalShow={setFilterModalShow}
                 query={queries}
                 propertyTypes={propertyTypes || {}}
               />
-            </div>
-            {/* <SortMenu query={queries} /> */}
+            </div>{" "}
+            <SortMenu query={queries} />
           </div>
-        </div>
-      </div>
-
-      <div className="  w-full flex xl:hidden">
-        <PropertiesFilterList propertyKey={"property_type"} data={propertyTypes?.PROPERTY_TYPE} query={queries} />
-      </div>
-      <div className="w-full pb-3 flex flex-row  px-3 xl:px-0  justify-between">
-        <FilterPageCitiesTitle title={cityButtonTItle} cb={showCityModalFunc} />
-        <SortMenu query={queries} />
-      </div>
-      <div className="grid grid-cols-12 ">
-        {/* SIDEBAR */}
-        <div className="grid grid-cols-12  col-span-12 ">
-          <div className="hidden gap-4 lg:flex h-fit flex-col items-center rounded-10  border col-span-3 ">
-            <FiltersPart propertyTypes={propertyTypes} filters={filters} setFilters={setFilters} queries={queries} />
-            <Button
-              title={_STRINGS?.DO_THE_FILTERING}
-              onClick={() => {
-                queryMaker(filters);
-                // router.replace(`${pathname}?${queryBuilder(specs)}`);
-                setFilterModalShow(false);
-              }}
-              width="w-full"
-              containerClass="w-full flex items-center flex-col px-2 pb-2 pt-6"
-            />
-          </div>
+          {/* <div className="grid grid-cols-12 "> */}
+          {/* SIDEBAR */}
 
           {/* LEFT SIDE */}
 
-          <div
-            className={`col-span-12  md:col-span-12 lg:col-span-9 px-3 md:px-4 
-   
-            md:mt-0 `}
-          >
-            <FilterdProperties sortType={sortType} setSortType={setSortType} query={queries} />
-          </div>
+          <FilterdProperties sortType={sortType} setSortType={setSortType} query={queries} />
+          {/* </div> */}
         </div>
       </div>
       {/* <=======================================================================MODALS ================================================================> */}

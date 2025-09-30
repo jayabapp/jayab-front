@@ -7,13 +7,13 @@ import "swiper/css";
 import "swiper/css/pagination";
 // import ChevronArrow from "../DynamicIcons/ChevronArrow";
 SwiperCore.use([Keyboard]);
-function SwiperWithNavigation({ dataLength, children, reference, ...props }: any) {
+function SwiperWithNavigation({ dataLength, children, reference, containerClass, ...props }: any) {
   const [isEnd, setIsEnd] = useState(false);
   const [isStart, setisStart] = useState(!props?.initialSlide || props?.initialSlide == 0);
   const [slidesPerView, setslidesPerView] = useState<number | string>(2);
 
   return (
-    <div className={`w-full rounded-20  !select-none `}>
+    <div className={`w-full  flex items-center !select-none  ${containerClass}`}>
       {!isEnd && dataLength > slidesPerView ? (
         <div
           onClick={() => {

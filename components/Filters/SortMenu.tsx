@@ -56,7 +56,7 @@ const SortMenu = ({ query }: SortMenuType) => {
   };
 
   return (
-    <div className="w-fit flex lg:flex-row  gap-3 items-center justify-between rounded-10 dark:border-zinc-600 ">
+    <div className="w-fit flex lg:flex-row  shrink-0 gap-3 items-center justify-between rounded-10 dark:border-zinc-600 ">
       <Menu as="div" className="relative inline-block text-left mr-1">
         <div>
           <MenuButton className=" h-auto md:h-11  rounded-lg cursor-pointer flex justify-between items-center">

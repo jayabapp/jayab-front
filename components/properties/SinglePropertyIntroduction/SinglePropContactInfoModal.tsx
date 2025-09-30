@@ -37,7 +37,7 @@ const SinglePropContactInfoModal = ({
 
   useEffect(() => {
     if (!!contactInfo) {
-      setState(contactInfo);
+      setState(contactInfo?.list);
     }
   }, [contactInfo]);
   return (
@@ -54,7 +54,12 @@ const SinglePropContactInfoModal = ({
           <p className="w-full text-center">{_STRINGS?.EMPTY_LIST}</p>
         ) : (
           state?.map((e) => (
-            <PropertyContactInfoItem onHide={onHide} key={`contactItem${e?.assistant_full_name}`} data={e} />
+            <PropertyContactInfoItem
+              ownerImage={contactInfo?.owner?.selfie_image}
+              onHide={onHide}
+              key={`contactItem${e?.assistant_full_name}`}
+              data={e}
+            />
           ))
         )}
       </div>

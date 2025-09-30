@@ -1,10 +1,20 @@
+import { ImageDto } from "@/api_services/auth/auth.interface";
 import { PropertyContactIInfDto } from "@/api_services/property/property.interface";
 import Button from "@/components/shared/Button/Button";
 import maskPhoneNumber from "@/helpers/maskPhoneNumber";
 import _STRINGS from "@/utils/LocalStrings";
+import { NEW_IMAGE_URL } from "@/utils/urls";
 import React from "react";
 
-const PropertyContactInfoItem = ({ data, onHide }: { onHide: () => void | null; data: PropertyContactIInfDto }) => {
+const PropertyContactInfoItem = ({
+  data,
+  onHide,
+  ownerImage,
+}: {
+  onHide: () => void | null;
+  data: PropertyContactIInfDto;
+  ownerImage?: ImageDto;
+}) => {
   const onActionButtinsClick = (type: "tel" | "sms") => {
     onHide();
     setTimeout(() => {
@@ -15,9 +25,16 @@ const PropertyContactInfoItem = ({ data, onHide }: { onHide: () => void | null; 
   return (
     <div className="w-full py-3 border-t first:border-t-0   flex flex-row items-center justify-between  ">
       <div className="flex flex-col gap-2 ">
-        <p className=" text-sm ">
-          {!!data?.is_owner ? _STRINGS.OWNER : _STRINGS.OWNER_ASSIST} : {data?.assistant_full_name}
-        </p>
+        <div className="flex items-center gap-2">
+          {!!ownerImage && !!data?.is_owner ? (
+            <img src={NEW_IMAGE_URL(ownerImage)} className=" w-9 h-9 aspect-square rounded-full " />
+          ) : (
+            <></>
+          )}
+          <p className=" text-sm ">
+            {!!data?.is_owner ? _STRINGS.OWNER : _STRINGS.OWNER_ASSIST} : {data?.assistant_full_name}
+          </p>
+        </div>
         <p className=" text-sm ">{maskPhoneNumber(data?.assistant_mobile_number)}</p>
       </div>
       <div className="flex flex-row items-center justify-center gap-2">

@@ -37,7 +37,7 @@ type sortTypeType = { id?: string; title?: string };
 const SsrFilterPage = ({ landings, firstData }: { firstData: { data: any[] }; landings: SingleLandingDto }) => {
   const [cursor, setCursor] = useState(0);
   const [hiddenFilters, setHiddenFilters] = useState<string[]>([]);
-
+  const [stickyHeight, setStickyHeight] = useState(600);
   const [showCityModal, setShowCiyModal] = useState(false);
   const [defaultMobileFilters, setDefaultMobileFilters] = useState<any>({});
   const pathname = usePathname();
@@ -115,76 +115,81 @@ const SsrFilterPage = ({ landings, firstData }: { firstData: { data: any[] }; la
     setFilterModalShow(false);
     router.replace(`${pathname}?${queryBuilder(body)}`);
   };
-  return (
-    <div className="app-container !pt-32  lg:!pt-20  xl: z-2 ">
-      <div className=" hidden  z-1 w-full xl:flex flex-col xl:flex-row items-center justify-between ">
-        <SingleProductBreadCrumb dataArray={breadCrumbs} />
-      </div>
-      <h1 className="mb-3 text-lg font-medium">{landings?.content?.title}</h1>
-      <div className="w-full hidden xl:flex  pb-4">
-        {" "}
-        <FiltersSelectedFiltersShowcase
-          hiddenFilters={hiddenFilters}
-          setFilterModalShow={setFilterModalShow}
-          query={queries}
-          propertyTypes={propertyTypes || {}}
-        />
-      </div>
 
-      <div className="flex fixed  pt-1 xl:hidden h-16 right-0  items-center justify-center   z-10 xl:z-1  top-[4rem] xl:top-auto left-0 xl:left-auto bg-white xl:bg-transparent xl:relative flex-col w-full xl:gap-2  ">
-        {" "}
-        <div className=" flex  order-1  xl:hidden  relative w-full">
-          <div className=" z-1  pr-2  relative  w-full items-center gap-1 justify-between  ">
-            <div className=" !col-span-9 ">
-              {" "}
+  useEffect(() => {
+    setStickyHeight((window.visualViewport?.height || 700) - 90);
+  }, []);
+
+  return (
+    <div className="app-container  !pt-32  lg:!pt-20  !relative z-2 ">
+      <div className="grid grid-cols-12  col-span-12 ">
+        <div
+          style={{ height: `${stickyHeight}px` }}
+          className="hidden   justify-between   overflow-y-hidden    gap-4 lg:sticky lg:top-20 lg:flex  flex-col items-center rounded-10  border col-span-3 "
+        >
+          <div className=" w-full flex flex-col gap-4 overflow-y-scroll">
+            <FiltersPart propertyTypes={propertyTypes} filters={filters} setFilters={setFilters} queries={queries} />
+          </div>
+          <Button
+            title={_STRINGS?.DO_THE_FILTERING}
+            onClick={() => {
+              queryMaker(filters);
+              // router.replace(`${pathname}?${queryBuilder(specs)}`);
+              setFilterModalShow(false);
+            }}
+            width="w-full"
+            containerClass="w-full flex items-center flex-col px-2 pb-2 pt-0"
+          />
+        </div>{" "}
+        <div
+          className={`col-span-12  md:col-span-12 lg:col-span-9 px-0 md:pr-4 md:pl-0  
+   
+            md:mt-0 `}
+        >
+          <div className=" hidden     z-1 w-full xl:flex flex-col xl:flex-row items-center justify-between ">
+            <SingleProductBreadCrumb dataArray={breadCrumbs} />
+          </div>
+          <h1 className="mb-3 text-lg font-medium">{landings?.content?.title}</h1>
+
+          <div className="flex fixed  pt-1 xl:hidden h-16 right-0  items-center justify-center   z-10 xl:z-1  top-[4rem] xl:top-auto left-0 xl:left-auto bg-white xl:bg-transparent xl:relative flex-col w-full xl:gap-2  ">
+            {" "}
+            <div className=" flex  order-1  xl:hidden  relative w-full">
+              <div className=" z-1  pr-2  relative  w-full items-center gap-1 justify-between  ">
+                <div className=" !col-span-9 ">
+                  {" "}
+                  <FiltersSelectedFiltersShowcase
+                    hiddenFilters={hiddenFilters}
+                    setFilterModalShow={setFilterModalShow}
+                    query={queries}
+                    propertyTypes={propertyTypes || {}}
+                  />
+                </div>{" "}
+              </div>
+            </div>
+          </div>
+
+          <div className="w-full grow-0 shrink-0 flex flex-row  px-3 xl:px-0 relative  justify-between">
+            <div className="flex  flex-row w-[90%]  items-center justify-start  gap-4 ">
+              {!hiddenFilters?.includes("cities") && !hiddenFilters?.includes("province_id") ? (
+                <FilterPageCitiesTitle title={cityButtonTItle} cb={showCityModalFunc} />
+              ) : (
+                <div> </div>
+              )}
               <FiltersSelectedFiltersShowcase
                 hiddenFilters={hiddenFilters}
+                containerClass="   !hidden md:!contents "
                 setFilterModalShow={setFilterModalShow}
                 query={queries}
                 propertyTypes={propertyTypes || {}}
               />
             </div>{" "}
+            <SortMenu query={queries} />
           </div>
-        </div>
-      </div>
-      <div className="w-full pb-3 flex flex-row   justify-between">
-        {!hiddenFilters?.includes("cities") && !hiddenFilters?.includes("province_id") ? (
-          <FilterPageCitiesTitle title={cityButtonTItle} cb={showCityModalFunc} />
-        ) : (
-          <div> </div>
-        )}
-        <SortMenu query={queries} />
-      </div>
-      <div className="grid grid-cols-12  min-h-[80dvh] mb-8 xl:mb-4">
-        {/* SIDEBAR */}
-        <div className="grid grid-cols-12  col-span-12 ">
-          <div className="hidden gap-4 lg:flex h-fit flex-col items-center rounded-10  border col-span-3 ">
-            <FiltersPart
-              hiddenFilters={hiddenFilters}
-              propertyTypes={propertyTypes}
-              filters={filters}
-              setFilters={setFilters}
-              queries={queries}
-            />
-            <Button
-              title={_STRINGS?.DO_THE_FILTERING}
-              onClick={() => {
-                queryMaker(filters);
-                // router.replace(`${pathname}?${queryBuilder(specs)}`);
-                setFilterModalShow(false);
-              }}
-              width="w-full"
-              containerClass="w-full flex items-center flex-col px-2 pb-2 pt-6"
-            />
-          </div>
+          <div className="  min-h-[80dvh] mb-8 xl:mb-4">
+            {/* SIDEBAR */}
 
-          {/* LEFT SIDE */}
+            {/* LEFT SIDE */}
 
-          <div
-            className={`col-span-12  md:col-span-12 lg:col-span-9 px-3 md:px-4 
-   
-            md:mt-0 `}
-          >
             <SsrPartFilter firstData={firstData?.data} />
             {cursor == 0 && !isEmpty(firstData?.data) && firstData?.data?.length % 51 == 0 ? (
               <Button
@@ -199,11 +204,11 @@ const SsrFilterPage = ({ landings, firstData }: { firstData: { data: any[] }; la
             )}
             <SsrClinetPartFilterProperties cursor={cursor} setCursor={setCursor} sortType={sortType} query={queries} />
           </div>
+          <SsrFilterPageContents data={landings} />
         </div>
+        {/*  CONTENT PART */}
       </div>
-      {/*  CONTENT PART */}
 
-      <SsrFilterPageContents data={landings} />
       {/* <=======================================================================MODALS ================================================================> */}
       <Modal
         options={{

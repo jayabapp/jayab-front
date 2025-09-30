@@ -38,10 +38,10 @@ const SinglePropContactInfoPop = ({
       <div className="w-full p-4 flex flex-col">
         {isPending ? (
           <LottieLoading />
-        ) : isEmpty(contactInfo) ? (
+        ) : isEmpty(contactInfo?.list) ? (
           <EmptyList />
         ) : (
-          contactInfo?.map((e) => (
+          contactInfo?.list?.map((e) => (
             <PropertyContactInfoItem onHide={onHide} key={`contactItem${e?.assistant_full_name}`} data={e} />
           ))
         )}

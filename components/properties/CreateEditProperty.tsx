@@ -11,6 +11,7 @@ import { isEmpty, random, sample } from "lodash";
 import MultiLineFormInput from "../shared/Form/MultiLineFormInput";
 import Checkbox from "../shared/Form/Checkbox";
 import { CityService } from "@/api_services/city/city.service";
+import FormCounter from "./FormCounter";
 
 export interface CreateProperyStepOne {
   title: string | number | null;
@@ -180,8 +181,8 @@ const CreateEditProperty = ({
         item={{
           title: _STRINGS.EXACT_ADDRESS,
           isMandatory: true,
-          containerClass: "w-full col-span-full",
-
+          containerClass: "w-full relative col-span-full",
+          extraElement: <FormCounter max={200} value={values?.address || ""} />,
           rows: 3,
         }}
         value={values?.address || ""}
