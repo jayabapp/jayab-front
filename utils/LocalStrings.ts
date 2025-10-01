@@ -387,6 +387,7 @@ const _STRINGS = {
   ASK_QUESTION_SUBMIT: "ارسال",
   LADDERED: "نردبان شده",
   TITLE_PLACEHOLDER: "مثال: کلبه سوئیسی در جنگل , ویلا استخردار در رامسر",
+  HOST: "میزبان",
 };
 
 export default _STRINGS;

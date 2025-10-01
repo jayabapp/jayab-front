@@ -55,7 +55,7 @@ const SinglePropContactInfoModal = ({
         ) : (
           state?.map((e) => (
             <PropertyContactInfoItem
-              ownerImage={contactInfo?.owner?.selfie_image}
+              image={contactInfo?.owner?.selfie_image}
               onHide={onHide}
               key={`contactItem${e?.assistant_full_name}`}
               data={e}

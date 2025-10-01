@@ -25,6 +25,7 @@ import { useParams, usePathname, useRouter, useSearchParams } from "next/navigat
 import React, { useEffect, useState } from "react";
 import { HomeService } from "@/api_services/home/home.service";
 import LottieLoading from "@/components/shared/Lotties/LottieLoading";
+import FormCounter from "@/components/properties/FormCounter";
 
 const CreatePropertyTerms = () => {
   const router = useRouter();
@@ -193,9 +194,11 @@ const CreatePropertyTerms = () => {
         <MultiLineFormInput
           item={{
             title: _STRINGS.MORE_DESC,
-            containerClass: "w-full col-span-full",
+            containerClass: "w-full  relative col-span-full",
             placeholder: _STRINGS.DESCRIPTION_DOTS,
             rows: 3,
+            maxLength: 1024,
+            extraElement: <FormCounter max={1024} value={values?.guest_dscr || ""} />,
           }}
           value={values?.guest_dscr || ""}
           onChangeText={(e) => {
@@ -219,9 +222,11 @@ const CreatePropertyTerms = () => {
         <MultiLineFormInput
           item={{
             title: _STRINGS.MORE_DESC,
-            containerClass: "w-full col-span-full",
+            containerClass: "w-full relative col-span-full",
             placeholder: _STRINGS.DESCRIPTION_DOTS,
             rows: 3,
+            maxLength: 1024,
+            extraElement: <FormCounter max={1024} value={values?.guest_dscr || ""} />,
           }}
           value={values?.pet_dscr || ""}
           onChangeText={(e) => {
@@ -245,9 +250,11 @@ const CreatePropertyTerms = () => {
         <MultiLineFormInput
           item={{
             title: _STRINGS.MORE_DESC,
-            containerClass: "w-full col-span-full",
+            containerClass: "w-full relative col-span-full",
             placeholder: _STRINGS.DESCRIPTION_DOTS,
             rows: 3,
+            maxLength: 1024,
+            extraElement: <FormCounter max={1024} value={values?.guest_dscr || ""} />,
           }}
           value={values?.party_dscr || ""}
           onChangeText={(e) => {
@@ -283,9 +290,11 @@ const CreatePropertyTerms = () => {
       <MultiLineFormInput
         item={{
           title: _STRINGS.REQUIRED_DOCS,
-          containerClass: "w-full col-span-full",
+          containerClass: "w-full relative col-span-full",
           rows: 3,
           placeholder: _STRINGS.DESCRIPTION_DOTS,
+          maxLength: 1024,
+          extraElement: <FormCounter max={1024} value={values?.guest_dscr || ""} />,
         }}
         value={values?.doc_dscr || ""}
         onChangeText={(e) => {
@@ -296,8 +305,10 @@ const CreatePropertyTerms = () => {
         item={{
           title: _STRINGS.PROP_DESC,
           placeholder: _STRINGS.DESCRIPTION_DOTS,
-          containerClass: "w-full col-span-full",
+          containerClass: "w-full relative col-span-full",
           rows: 3,
+          maxLength: 1024,
+          extraElement: <FormCounter max={1024} value={values?.guest_dscr || ""} />,
         }}
         value={values?.property_dscr || ""}
         onChangeText={(e) => {
@@ -308,8 +319,10 @@ const CreatePropertyTerms = () => {
         item={{
           title: _STRINGS.OTHER_DESC,
           placeholder: _STRINGS.DESCRIPTION_DOTS,
-          containerClass: "w-full col-span-full",
+          containerClass: "w-full relative col-span-full",
           rows: 3,
+          maxLength: 1024,
+          extraElement: <FormCounter max={1024} value={values?.guest_dscr || ""} />,
         }}
         value={values?.other_dscr || ""}
         onChangeText={(e) => {

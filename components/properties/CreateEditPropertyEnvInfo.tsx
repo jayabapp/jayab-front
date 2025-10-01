@@ -65,9 +65,9 @@ const CreateEditPropertyEnvInfo = ({
           containerClass: "w-full relative col-span-full",
 
           rows: 3,
-          extraElement: <FormCounter max={800} value={values?.pattern_dscr || ""} />,
+          extraElement: <FormCounter max={1024} value={values?.pattern_dscr || ""} />,
           // extraElement: (
-          //   <div className="absolute font-medium  left-0 top-0">{800 - `${values?.pattern_dscr}`?.length}</div>
+          //   <div className="absolute font-medium  left-0 top-0">{1024 - `${values?.pattern_dscr}`?.length}</div>
           // ),
         }}
         value={values?.pattern_dscr || ""}
@@ -88,7 +88,7 @@ const CreateEditPropertyEnvInfo = ({
           title: _STRINGS.DISTANCETO_POINT,
           isMandatory: true,
           containerClass: "w-full relative col-span-full",
-          extraElement: <FormCounter max={800} value={values?.distance_dscr || ""} />,
+          extraElement: <FormCounter max={1024} value={values?.distance_dscr || ""} />,
           rows: 3,
         }}
         value={values?.distance_dscr || ""}

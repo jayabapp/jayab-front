@@ -183,7 +183,7 @@ transition-all  ease-in-out duration-1000 header-content-container w-full mx-aut
                       />
                     </Link>
                     <div className="flex flex-col gap-0">
-                      <p className="font-bold text-lg  text-primary-700 ">
+                      <p className="font-bold text-lg  text-primary-700  line-clamp-1">
                         {userInfo?.full_name ? userInfo?.full_name : _STRINGS.LOGO}
                       </p>
                       <p className="text-xs text-primary-800 ">{userInfo?.mobile_number}</p>

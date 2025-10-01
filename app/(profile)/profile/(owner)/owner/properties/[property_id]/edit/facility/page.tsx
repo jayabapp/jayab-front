@@ -22,6 +22,7 @@ import _, { isArray, remove } from "lodash";
 import { useParams, usePathname, useRouter, useSearchParams } from "next/navigation";
 import React, { useEffect, useState } from "react";
 import LottieLoading from "@/components/shared/Lotties/LottieLoading";
+import FormCounter from "@/components/properties/FormCounter";
 
 const CreatePropertyFacility = () => {
   const router = useRouter();
@@ -212,9 +213,10 @@ const CreatePropertyFacility = () => {
           <MultiLineFormInput
             item={{
               title: _STRINGS.OTHER_ACCESSES,
-              containerClass: "w-full col-span-full",
-
+              containerClass: "w-full  relative col-span-full",
+              extraElement: <FormCounter max={1024} value={values?.facility_dscr || ""} />,
               rows: 3,
+              maxLength: 1024,
             }}
             value={values?.facility_dscr || ""}
             onChangeText={(e) => {

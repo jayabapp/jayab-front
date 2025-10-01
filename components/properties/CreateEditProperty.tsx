@@ -81,7 +81,9 @@ const CreateEditProperty = ({
           title: _STRINGS.ADD_TITLE,
           placeholder: `مثال: ${sample(randomeTitlePlaceholder)}`,
           isMandatory: true,
-          containerClass: "w-full",
+          maxLength: 55,
+          containerClass: "w-full  relative ",
+          extraElement: <FormCounter max={55} value={values?.title || ""} containerClass=" top-0  !bottom-auto" />,
         }}
         value={values?.title || ""}
         onChangeText={(e) => {
@@ -182,7 +184,7 @@ const CreateEditProperty = ({
           title: _STRINGS.EXACT_ADDRESS,
           isMandatory: true,
           containerClass: "w-full relative col-span-full",
-          extraElement: <FormCounter max={200} value={values?.address || ""} />,
+          extraElement: <FormCounter max={1024} value={values?.address || ""} />,
           rows: 3,
         }}
         value={values?.address || ""}

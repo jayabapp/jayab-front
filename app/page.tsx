@@ -9,6 +9,7 @@ import serverCall from "@/helpers/serverCall";
 import _STRINGS from "@/utils/LocalStrings";
 import { apiRoutes, baseUrl } from "@/utils/urls";
 import { isEmpty } from "lodash";
+import { Metadata } from "next";
 import dynamic from "next/dynamic";
 import { Suspense } from "react";
 // const BannersContainer = dynamic(() => import("@/components/Home/BannersContainer"), {
@@ -35,6 +36,15 @@ const BannersContainer = dynamic(() => import("@/components/Home/BannersContaine
 const HomeAdvisorSub = dynamic(() => import("@/components/Home/HomeAdvisorSub"));
 const HomeCityFilterContainer = dynamic(() => import("@/components/Home/HomeCityFilterContainer"));
 const HomePropertiesList = dynamic(() => import("@/components/Home/HomePropertiesList"));
+
+export async function generateMetadata(): Promise<Metadata> {
+  return {
+    title: " اجاره ویلا و سوییت تمیز و امن در شمال و سراسر ایران ",
+    description:
+      "رزرو آنی ویلا و سوییت در شمال و سراسر ایران؛ اجاره ویلا بدون کمیسیون و بی‌ واسطه با آدرس و شماره مستقیم میزبان. بیش از هزار اقامتگاه تمیز و امن | جایاب",
+  };
+}
+
 const Home = async () => {
   const { data: banners } = await serverCall(baseUrl + apiRoutes.BANNERS + `?position=main_1`);
   const { data: middleBanners } = await serverCall(baseUrl + apiRoutes.BANNERS + `?position=main_2`);
