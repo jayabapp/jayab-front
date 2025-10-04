@@ -9,6 +9,7 @@ import * as Sentry from "@sentry/nextjs";
 
 import MehaHeaderHelper from "@/helpers/MetaHeaderHelper";
 import { headers } from "next/headers";
+import { HTMLGenerator } from "@/helpers/html.generator";
 function Fallback() {
   return <LottieLoading />;
 }

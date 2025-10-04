@@ -26,11 +26,11 @@ const SimpleAccordion = ({ title, children, ExtraElement, item, isOpenFirst, tit
     <div
       className={`${isOpen ? "" : ""}  h-fit ${
         item?.parenClass
-      } transition-all duration-100 ease-in-out  overflow-clip  px-4 py-1 `}
+      } transition-all duration-100 ease-in-out  overflow-clip  px-4 py-3 `}
     >
       <div
         className={` flex justify-between items-center gap-3  ${item?.headClass}    transition-all cursor-pointer ${
-          isOpen ? ` ${item?.disableBorderB ? "" : "border-b"}    ` : "rounded-md "
+          isOpen ? ` ${item?.disableBorderB ? "" : "border-b"}   pb-2 ` : "rounded-md "
         }`}
         onClick={() => setIsOpen((e) => !e)}
       >
@@ -64,7 +64,7 @@ const SimpleAccordion = ({ title, children, ExtraElement, item, isOpenFirst, tit
 
       <div
         className={`${item?.parentClass}  ${
-          isOpen ? "is-opend   " : ""
+          isOpen ? "is-opend  pt-2 " : ""
         } accardion-class   rounded-b-md transition-all `}
       >
         <div className="text-justify  font-light text-sm  ">{children}</div>
