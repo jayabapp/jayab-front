@@ -19,7 +19,7 @@ const CityModalHeaderPart = ({
         className={` -rotate-90 transition-all  ${!!selectedProv ? "" : "opacity-0"} `}
         src="/assets/icons/shared/chevron.svg"
       />{" "}
-      <h3 className=" text-base font-semibold">{!selectedProv ? _STRINGS.SELECT_PROVE_CITY : _STRINGS.SELECT_CITY}</h3>
+      <p className=" text-base font-semibold">{!selectedProv ? _STRINGS.SELECT_PROVE_CITY : _STRINGS.SELECT_CITY}</p>
       <img src="/assets/icons/adds/x_mark.svg" className="w-3 h-3 dark:invert" alt="" onClick={onHide} />
     </div>
   );

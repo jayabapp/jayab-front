@@ -16,6 +16,7 @@ type Props = {
 
 import MehaHeaderHelper from "@/helpers/MetaHeaderHelper";
 import { PlaceSchema, ProductSchema } from "@/components/SchemaGenerator/Schemas";
+import { notFound, redirect } from "next/navigation";
 export async function generateMetadata({ params }: Props, parent: ResolvingMetadata): Promise<Metadata> {
   const paramData = await params;
   const { data: properyData } = await serverCall(baseUrl + apiRoutes.GET_SINGLEPROPERTY_SlUG(paramData?.room_slug));
@@ -27,6 +28,14 @@ const SinglePropertyPage = async ({ params }: { params: Promise<{ room_slug: str
   const pageParams = await params;
 
   const { data: properyData } = await serverCall(baseUrl + apiRoutes.GET_SINGLEPROPERTY_SlUG(pageParams?.room_slug));
+
+  if (!properyData) {
+    notFound();
+  }
+
+  if (decodeURI(properyData?.slug) != decodeURI(pageParams?.room_slug)) {
+    redirect(`/rooms/${properyData?.slug}`);
+  }
 
   return (
     <div className=" !pb-48 lg:!pb-36   gap-4 justify-start items-start container grid grid-cols-1  md:grid-cols-2  !h-auto   !overflow-x-visible">

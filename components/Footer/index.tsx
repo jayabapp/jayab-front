@@ -50,7 +50,7 @@ const Footer = () => {
   const socials = data?.data?.filter((e: any) => e?.fields?.key == "social");
   const others = data?.data?.filter((e) => e?.fields?.key !== "social");
   return (
-    <footer className="w-full  pb-20  mb:pb-6 bg-primary-200   hidden  lg:flex   flex-col items-center justify-center bg-dark-500  bg-no-repeat bg-cover  relative md:pt-[6rem] ">
+    <footer className="w-full  z-2 pb-20  mb:pb-6 bg-primary-200   hidden  lg:flex   flex-col items-center justify-center bg-dark-500  bg-no-repeat bg-cover  relative md:pt-[6rem] ">
       <CallBox />
       <div className="w-full md:px-[10%]  px-4 lg:w-full mx-auto  py-4 grid grid-cols-4 lg:grid-cols-6 gap-5">
         {/* ABOUT US */}

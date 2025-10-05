@@ -27,7 +27,7 @@ const ModalHeaderPart = ({
       )}
       <div className="flex flex-row gap-2">
         {" "}
-        <h3 className=" text-base font-semibold">{title}</h3>
+        <p className=" text-base font-semibold">{title}</p>
       </div>{" "}
       <img
         src="/assets/icons/adds/x_mark.svg"

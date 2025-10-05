@@ -35,13 +35,13 @@ const SingleProductBreadCrumb = ({ dataArray }: { dataArray: { title: string; li
               ) : (
                 <></>
               )}{" "}
-              <h6
+              <p
                 className={`text-sm text-dark-700  transition-all hover:scale-110 hover:text-primary-800 dark:hover:text-primary-800 dark:text-gray-400 ${
                   index == arr?.length - 1 ? "font-normal " : " opacity-50"
                 }`}
               >
                 {e.title}
-              </h6>{" "}
+              </p>{" "}
             </div>
             {index < arr?.length - 1 && (
               <svg
