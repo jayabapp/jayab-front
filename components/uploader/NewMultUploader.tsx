@@ -63,8 +63,8 @@ const NewMultUploader = ({
   const imagePickerRef = useRef<HTMLDivElement>(null);
   const [show, setShow] = useState(false);
   const [showImage, setShowImage] = useState<any>("");
-
-  const { mutate, isPending } = useMutation({
+  const [uploadingImages, setUploadingImages] = useState<any[]>([]);
+  const { mutateAsync, isPending } = useMutation({
     mutationFn: AuthService.UploadUsersImage,
     mutationKey: [setImages],
     gcTime: 0,
@@ -107,21 +107,22 @@ const NewMultUploader = ({
 
   const uploadTemp = async (file: Blob, id: number | string, isLast?: boolean) => {
     try {
-      // const compressedBlob = await imageCompression(file as any, {
-      //   maxSizeMB: 1,
-      //   maxWidthOrHeight: 1240,
-      //   useWebWorker: true,
-      // });
+      const compressedBlob = await imageCompression(file as any, {
+        maxSizeMB: 1,
+        maxWidthOrHeight: 1240,
+        useWebWorker: true,
+        maxIteration: 5,
+      });
 
-      // const compressedFile = new File([compressedBlob], file.type || "image", {
-      //   type: file.type,
-      //   lastModified: Date.now(),
-      // });
+      const compressedFile = new File([compressedBlob], file.type || "image", {
+        type: file.type,
+        lastModified: Date.now(),
+      });
 
       const formData = new FormData();
-      formData.append("file", file);
+      formData.append("file", compressedFile);
 
-      mutate({
+      await mutateAsync({
         id,
         formData,
         link,
@@ -138,53 +139,57 @@ const NewMultUploader = ({
     }
   };
 
-  const pick: ReactEventHandler = useCallback(
-    (e) => {
-      const target = e.target as HTMLInputElement;
-      const files = target?.files ? target?.files : null;
-      if (!files) return;
+  const pick: ReactEventHandler = async (e) => {
+    const target = e.target as HTMLInputElement;
+    const files = target?.files ? target?.files : null;
+    if (!files) return;
 
-      // Hard cap total images
-      if (images.length + files.length > MAX_TOTAL_IMAGES) {
-        return Notify({
-          type: "error",
-          body: `حداکثر ${MAX_TOTAL_IMAGES} تصویر می‌توانید انتخاب کنید.`,
-        });
-      }
-
-      if (files.length > 10) {
-        return Notify({
-          type: "error",
-          body: "در هر تلاش بیشتر از 10 عدد عکس انتخاب نکنید.",
-        });
-      }
-
-      const loadingsObj: { [key: string | number]: any } = {};
-      setLoading(true);
-
-      Array.from(files).forEach((file, index) => {
-        const id = `id${random(1, 50000)}`;
-        loadingsObj[id] = 0;
-
-        if (type === "image" && !file.type.includes("image/")) {
-          return toast.error("لطفا از فایل تصویر استفاده نمایید");
-        }
-        if (type === "image" && file.name.split(".")[1] === "jfif") {
-          return toast.error("لطفا از فایل تصویر درست استفاده نمایید");
-        }
-
-        const objectUrl = URL.createObjectURL(file);
-        setImages((prev) => [...prev, { url: objectUrl, id }]);
-
-        uploadTemp(file, id, index + 1 === files.length).finally(() => {
-          file = null as any; // release file ref
-        });
+    // Hard cap total images
+    if (images.length + files.length > MAX_TOTAL_IMAGES) {
+      return Notify({
+        type: "error",
+        body: `حداکثر ${MAX_TOTAL_IMAGES} تصویر می‌توانید انتخاب کنید.`,
       });
+    }
 
-      setimagesLoadings(loadingsObj);
-    },
-    [setImages, images]
-  );
+    if (files.length > 10) {
+      return Notify({
+        type: "error",
+        body: "در هر تلاش بیشتر از 10 عدد عکس انتخاب نکنید.",
+      });
+    }
+
+    const loadingsObj: { [key: string | number]: any } = {};
+    setLoading(true);
+    let filesUploding = [];
+    for (let i = 0; i < files.length; i++) {
+      let file = files?.[i];
+      const id = `id_${file.lastModified}_${Math.random().toString(36).slice(2)}`;
+      filesUploding.push({ id, file });
+      loadingsObj[id] = 0;
+
+      if (type === "image" && !file.type.includes("image/")) {
+        return toast.error("لطفا از فایل تصویر استفاده نمایید");
+      }
+      if (type === "image" && file.name.split(".")[1] === "jfif") {
+        return toast.error("لطفا از فایل تصویر درست استفاده نمایید");
+      }
+
+      const objectUrl = URL.createObjectURL(file);
+      setImages((prev) => [...prev, { url: objectUrl, id }]);
+    }
+
+    setimagesLoadings(loadingsObj);
+
+    if (filesUploding?.length == files?.length) {
+      for (let i = 0; i < filesUploding.length; i++) {
+        let file = filesUploding?.[i];
+        await uploadTemp(file?.file, file?.id, i + 1 === filesUploding.length).finally(() => {
+          file = null as any;
+        });
+      }
+    }
+  };
 
   return (
     <div className={`flex w-fit ${containerClass}`} style={{ zIndex: 4 }}>
@@ -193,6 +198,7 @@ const NewMultUploader = ({
           multiple
           className="hidden"
           type="file"
+          accept="image/png, image/jpeg"
           id={`formFile-${type}`}
           ref={imagePickerRef as RefObject<HTMLInputElement>}
           onChange={pick}

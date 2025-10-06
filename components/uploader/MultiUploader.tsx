@@ -136,6 +136,7 @@ const MultiUploader = ({
           multiple
           className="  hidden "
           type="file"
+          // accept="image/png, image/gif, image/jpeg"
           id={`formFile-${type}`}
           ref={imagePickerRef as RefObject<HTMLInputElement>}
           onChange={pick}
