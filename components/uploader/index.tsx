@@ -70,44 +70,50 @@ const MainUploader = ({
   const uploadTemp = async (file: Blob) => {
     setLoading(true);
 
-    let compressedBlob;
-    let compressedFile;
     try {
-      compressedBlob = await imageCompression(file as any, {
-        maxSizeMB: 1,
-        maxWidthOrHeight: 1240,
-        useWebWorker: true,
-      });
-      compressedFile = new File([compressedBlob], "whatever", {
-        type: file.type,
-        lastModified: Date.now(),
-      });
-    } catch (error) {
-      compressedFile = file;
-      console.error("Image compression failed:", error);
-    }
-    if (!!compressedFile) {
-      var formData = new FormData();
-      formData.append("file", compressedFile);
+      let compressedBlob;
+      let compressedFile;
+      try {
+        compressedBlob = await imageCompression(file as any, {
+          maxSizeMB: 1,
+          maxWidthOrHeight: 1240,
+          useWebWorker: true,
+          maxIteration: 5,
+        });
+        compressedFile = new File([compressedBlob], "whatever", {
+          type: file.type,
+          lastModified: Date.now(),
+        });
+      } catch (error) {
+        compressedFile = file;
+        console.error("Image compression failed:", error);
+      }
+      if (!!compressedFile) {
+        var formData = new FormData();
+        formData.append("file", compressedFile);
 
-      mutate(
-        { formData: formData, link: link },
-        {
-          onSuccess: (e) => {
-            setLoading(false);
-            setSubLoading(false);
-            onSelect(e?.result);
-            setImage("");
-            setselectedFile(null);
-            // setNewCrop(null);
-            // setDisable(true);
-          },
-          onError: () => {
-            setSubLoading(false);
-            setLoading(false);
-          },
-        }
-      );
+        mutate(
+          { formData: formData, link: link },
+          {
+            onSuccess: (e) => {
+              setLoading(false);
+              setSubLoading(false);
+              onSelect(e?.result);
+              setImage("");
+              setselectedFile(null);
+              // setNewCrop(null);
+              // setDisable(true);
+            },
+            onError: () => {
+              setSubLoading(false);
+              setLoading(false);
+            },
+          }
+        );
+      }
+    } finally {
+      // drop file reference
+      file = null as any;
     }
   };
 

@@ -20,7 +20,7 @@ const MapPopupPart = ({ data }: { data: SinglePropDto }) => {
         onClick={onShowMap}
         className="  cursor-pointer border border-gray-300 rounded-10  px-4 py-3 flex items-center justify-between"
       >
-        <p className="font-bold bg-white  text-xs  md:text-sm !mt-0  rounded-10 w-full ">{_STRINGS.COORDINATES}</p>
+        <p className="font-medium bg-white  text-sm  md:text-base !mt-0  rounded-10 w-full ">{_STRINGS.COORDINATES}</p>
         <img
           src="/assets/icons/shared/chevron.svg"
           className={` object-contain transition-all   w-4 aspect-square  `}

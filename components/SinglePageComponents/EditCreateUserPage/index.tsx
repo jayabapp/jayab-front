@@ -50,6 +50,9 @@ const EditCreateUserPage = ({
         />
       </div>
       <div className="flex flex-col gap-1 items-center justify-center ">
+        <div className="p-4  rounded-10 bg-orange-50 items-center my-3 justify-center  text-justify ">
+          <p className="text-sm   text-center text-orange-700    "> {_STRINGS.ADD_IMAGE_WARNING}</p>
+        </div>
         <p>{_STRINGS.YOUR_IMAGE}</p>
         <AuthUploader
           cropRatio={1}
