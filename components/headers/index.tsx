@@ -121,10 +121,11 @@ const Header = ({ scroll }: { scroll?: number }) => {
   const { data: chaNotifBadge } = useQuery({
     queryKey: [ChatService.UNREAD_CHAT_COUNT_CACHEKEY, isLogin, pathname],
     queryFn: () => {
-      if (!!isLogin && pathname == "/") {
+      if (!!isLogin && (pathname == "/" || pathname == "/chat")) {
         return ChatService.getUnreadChatCount();
       } else return null;
     },
+    refetchOnWindowFocus: true,
   });
 
   const onCreateAddClick = () => {
@@ -330,13 +331,16 @@ transition-all  ease-in-out duration-1000 header-content-container w-full mx-aut
             className={` text-xs gap-2  lg:text-md  justify-between font-medium flex-row hidden lg:flex w-[60%] transition-all ease-in-out duration-1000 items-center `}
           >
             {!!isLogin ? (
-              <TextIcon
-                item={{
-                  icon: "/assets/icons/header/messages_geader_icon.svg",
-                  title: _STRINGS.MESSAGES,
-                  route: "/chat",
-                }}
-              />
+              <div className="relative">
+                <AbsoluteBadge count={chaNotifBadge?.unread_count || 0} />
+                <TextIcon
+                  item={{
+                    icon: "/assets/icons/header/messages_geader_icon.svg",
+                    title: _STRINGS.MESSAGES,
+                    route: "/chat",
+                  }}
+                />{" "}
+              </div>
             ) : (
               // <div className="lg:flex shrink-0 hidden items-center gap-2">
               //   <Link prefetch={false} href={"/auth"} className="shrink-0 transition-all hover:text-primary-700">
@@ -345,6 +349,7 @@ transition-all  ease-in-out duration-1000 header-content-container w-full mx-aut
               // </div>
               <></>
             )}
+
             <TextIcon
               item={{ icon: "/assets/icons/header/adds_header_icon.svg", title: _STRINGS.ADDS, route: "/rooms" }}
             />

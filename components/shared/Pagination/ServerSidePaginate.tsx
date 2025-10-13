@@ -5,21 +5,24 @@ import { DOTS, usePagination } from "./usePagination";
 import { usePathname } from "next/navigation";
 import { useRouter } from "next/navigation";
 import queryBuilder from "@/helpers/queryBuilder";
+import { catQueryTypes } from "@/components/Filters/FilterdProperties";
 type paginationType = {
   totalCount: number;
   q?: string;
   siblingCount?: number;
   currentPage: number;
   pageSize: number;
+  query?: catQueryTypes;
 };
 
 const ServerSidePaginate = (props: paginationType) => {
-  const { totalCount, siblingCount = 1, currentPage, pageSize, q } = props;
+  const { totalCount, siblingCount = 1, currentPage, pageSize, q, query } = props;
   const pathname = usePathname();
   const router = useRouter();
 
   const catPusher = (page: number | string) => {
     let body: { page?: string | number; q?: string } = {
+      ...query,
       page: page,
       q: q,
     };

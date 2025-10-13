@@ -22,6 +22,7 @@ import {
   PropertyContactIInfDto,
   SinglePropDto,
   OwnerPropsRangeDto,
+  PageMetaDto,
 } from "./property.interface";
 import { YupValidator } from "@/utils/YupValidator";
 import { sendMediaSchema } from "./property.schema";
@@ -657,7 +658,7 @@ export class PropertyService {
 
   static async GetProperties(dto: GetPropertiesPlusFilters) {
     try {
-      const result = await apiCall<GetPropertiesPlusFilters, { data: PropertyListDto[] }>(
+      const result = await apiCall<GetPropertiesPlusFilters, { data: PropertyListDto[]; meta: PageMetaDto }>(
         "GET",
         apiRoutes.GET_PROPERTIES,
         dto

@@ -38,7 +38,7 @@ const ProductModels = ({ query, queryKey, list, isMulty, setMobileFilters, mobil
     if (temp[queryKey] == items) {
       delete body[queryKey];
     }
-
+    delete body.page;
     if (!!setMobileFilters) {
       setMobileFilters(body);
     } else {

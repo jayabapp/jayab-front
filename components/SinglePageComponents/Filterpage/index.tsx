@@ -77,7 +77,7 @@ const Filterpage = () => {
       ...items,
     };
     delete body.categories;
-
+    delete body.page;
     setDefaultMobileFilters(body);
     router.replace(`${pathname}?${queryBuilder(body)}`);
   };

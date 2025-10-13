@@ -628,3 +628,11 @@ export interface OwnerPropsRangeDto {
   min_price: number;
   step: number;
 }
+export interface PageMetaDto {
+  total: number;
+  lastPage: number;
+  currentPage: number;
+  perPage: number;
+  prev: null;
+  next: number;
+}

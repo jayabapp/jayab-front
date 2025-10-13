@@ -50,6 +50,7 @@ const ChatHeader = ({ image, description, name, offSetTop, is_recipient_online, 
       setIsBlocked(false);
     }
   }, [data]);
+
   return (
     <div
       style={

@@ -42,9 +42,8 @@ const FilterCounter = ({
     if (temp[queryKey] == 0) {
       delete body[queryKey];
     }
-
+    delete body.page;
     if (!!setMobileFilters) {
-      console.log(body, "bodybody");
       setMobileFilters(body);
     } else {
       router.replace(`${pathname}?${queryBuilder(body)}`);

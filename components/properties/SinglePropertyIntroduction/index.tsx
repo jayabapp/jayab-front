@@ -125,7 +125,12 @@ const SinglePropertyIntroduction = ({ data }: { data: SinglePropDto }) => {
           </div>
         </div>
 
-        <div>
+        <div className="flex  items-center gap-2">
+          {!!data?.is_promoted ? (
+            <p className="  font-bold  text-primary-700  shrink-0  text-sm  hidden md:flex ">{_STRINGS.LADDERED}</p>
+          ) : (
+            <></>
+          )}
           {!!isAdvisor && !!userInfo?.advisor_id ? (
             <Button
               onClick={onShareClick}
@@ -136,12 +141,6 @@ const SinglePropertyIntroduction = ({ data }: { data: SinglePropDto }) => {
               color="themeLight"
               icon={<img className=" ml-1" src="/assets/icons/property/share_icon.svg" />}
             />
-          ) : (
-            <></>
-          )}
-
-          {!!data?.is_promoted ? (
-            <p className="  font-bold  text-primary-700  shrink-0  text-sm  hidden md:flex ">{_STRINGS.LADDERED}</p>
           ) : (
             <></>
           )}
@@ -224,14 +223,18 @@ const SinglePropertyIntroduction = ({ data }: { data: SinglePropDto }) => {
               roundedClass="rounded-full"
               title={_STRINGS.CONTACT_INFO}
             />
-            <Button
-              width="w-full !py-2  !font-bold !text-sm "
-              containerClass="w-full  "
-              roundedClass="rounded-full"
-              title={_STRINGS.CHAT_IN_JAYAB}
-              onClick={onCreateChat}
-              loading={isPending}
-            />
+            {data?.is_chat_enabled ? (
+              <Button
+                width="w-full !py-2  !font-bold !text-sm "
+                containerClass="w-full  "
+                roundedClass="rounded-full"
+                title={_STRINGS.CHAT_IN_JAYAB}
+                onClick={onCreateChat}
+                loading={isPending}
+              />
+            ) : (
+              <></>
+            )}
           </div>
         </FixedBottomContainer>
       </div>

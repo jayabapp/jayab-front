@@ -84,7 +84,7 @@ const FiltersSelectedFiltersShowcase = ({
     } else {
       delete body[queryKey];
     }
-
+    delete body.page;
     // router.replace(`/rooms?${queryBuilder(body)}`);
     router.replace(`${pathname}?${queryBuilder(body)}`);
   };
@@ -113,6 +113,7 @@ const FiltersSelectedFiltersShowcase = ({
       const element = array[index];
       delete temp[element];
     }
+    delete temp.page;
     const body = {
       ...temp,
     };

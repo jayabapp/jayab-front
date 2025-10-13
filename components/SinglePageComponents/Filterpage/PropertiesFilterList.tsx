@@ -40,7 +40,7 @@ function PropertiesFilterList({
     if (temp[propertyKey] == items) {
       delete body[propertyKey];
     }
-
+    delete body.page;
     router.replace(`${pathname}?${queryBuilder(body)}`);
   };
 
