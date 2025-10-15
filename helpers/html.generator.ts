@@ -10,7 +10,11 @@ type ReturnType = {
 };
 export const HTMLGenerator = (html: string, options?: { hasHeading?: boolean; hasCount?: boolean }): ReturnType => {
   const { hasHeading, hasCount } = options || {};
-  let root = HTMLParser.parse(DOMPurify.sanitize(html));
+  let root = HTMLParser.parse(
+    DOMPurify.sanitize(html, {
+      ADD_ATTR: ["target", "rel"],
+    })
+  );
   root.querySelectorAll("#quote").map((i) => i?.replaceWith(quoteGenerator(i?.innerText)));
   root.querySelectorAll("table").map((i) => {
     i?.replaceWith(tableGenerator(i));
