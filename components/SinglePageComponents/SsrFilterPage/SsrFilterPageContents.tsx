@@ -17,9 +17,9 @@ const SsrFilterPageContents = ({ data }: { data: SingleLandingDto }) => {
       {!!data?.related_landings ? <ContentRelatedTags data={data?.related_landings} /> : <></>}{" "}
       {html ? (
         <div
-          className=" !text-justify  blogBody category_table transition-all leading-7 px-2 md:px-[5%] "
+          className=" !text-justify  content blogBody category_table transition-all leading-7 px-2 md:px-[5%] "
           dangerouslySetInnerHTML={{
-            __html: DOMPurify.sanitize(html, { FORBID_ATTR: ["style"] }),
+            __html: DOMPurify.sanitize(html),
           }}
         />
       ) : (

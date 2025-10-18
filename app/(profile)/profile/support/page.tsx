@@ -67,7 +67,7 @@ const Support = () => {
       <Button
         variant="outline"
         width="!font-bold !bg-white"
-        containerClass="flex items-center  justify-center md:justify-start"
+        containerClass="flex items-center  justify-center xl:justify-start"
         title={_STRINGS?.SEND_NEW_TICKET}
         onClick={() => {
           router?.push("/profile/support/new-ticket");

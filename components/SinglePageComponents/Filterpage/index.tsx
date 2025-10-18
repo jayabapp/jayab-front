@@ -133,9 +133,9 @@ const Filterpage = () => {
           />
         </div>{" "}
         <div
-          className={`col-span-12  md:col-span-12 lg:col-span-9 px-3 md:pr-4 md:pl-0  
+          className={`col-span-12  md:col-span-12 lg:col-span-9 px-3 xl:pr-4 xl:pl-0  
    
-            md:mt-0 `}
+            xl:mt-0 `}
         >
           <div className=" hidden  z-1 w-full xl:flex flex-col xl:flex-row items-center justify-between ">
             {/* <Breadcrumbs /> */}
@@ -170,7 +170,7 @@ const Filterpage = () => {
             <div className="flex  flex-row w-[90%]  items-center  gap-4 justify-start ">
               <FilterPageCitiesTitle title={cityButtonTItle} cb={showCityModalFunc} />
               <FiltersSelectedFiltersShowcase
-                containerClass="   !hidden md:!contents "
+                containerClass="   !hidden xl:!contents "
                 setFilterModalShow={setFilterModalShow}
                 query={queries}
                 propertyTypes={propertyTypes || {}}
@@ -226,7 +226,7 @@ const Filterpage = () => {
             onClick={() => {
               removeExtraFilters();
             }}
-            className="absolute flex items-center gap-2 left-4"
+            className="absolute flex items-center gap-2 left-4 md:left-12"
           >
             <p className=" text-sm text-primary-700">{_STRINGS.REMOVE_FILTERS}</p>
             <img src="/assets/icons/property/blue_trash_icon.svg" />
