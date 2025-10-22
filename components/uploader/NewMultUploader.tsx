@@ -171,16 +171,15 @@ const NewMultUploader = ({
       let file = files?.[i];
       const id = `id_${file.lastModified}_${Math.random().toString(36).slice(2)}`;
 
+      if (type === "image" && !file.type.includes("image/")) {
+        toast.error("لطفا از فایل تصویر استفاده نمایید");
+        continue;
+      }
+      if (type === "image" && file.name.split(".")[1] === "jfif") {
+        toast.error("لطفا از فایل تصویر درست استفاده نمایید");
+        continue;
+      }
       loadingsObj[id] = 0;
-
-      // if (type === "image" && !file.type.includes("image/")) {
-      //   toast.error("لطفا از فایل تصویر استفاده نمایید");
-      //   continue;
-      // }
-      // if (type === "image" && file.name.split(".")[1] === "jfif") {
-      //   toast.error("لطفا از فایل تصویر درست استفاده نمایید");
-      //   continue;
-      // }
       filesUploding.push({ id, file });
       const objectUrl = URL.createObjectURL(file);
       setImages((prev) => [...prev, { url: objectUrl, id }]);
