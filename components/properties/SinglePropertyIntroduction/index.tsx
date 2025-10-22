@@ -115,7 +115,7 @@ const SinglePropertyIntroduction = ({ data }: { data: SinglePropDto }) => {
           <div className="bg-black/10 rounded-md text-xs md:text-sm  px-2 py-1  flex items-center justify-center">
             کد {data.code}
           </div>{" "}
-          <ShareLink passedHref={`${origin}/rooms/${data?.code}`} />
+          <ShareLink passedHref={`${origin}/rooms/${data?.code}-s`} />
           <div className="flex items-center gap-1">
             <BookMarkButton data={data} />
           </div>

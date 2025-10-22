@@ -1,5 +1,5 @@
 "use client";
-import { useSearchParams } from "next/navigation";
+import { useParams, useSearchParams } from "next/navigation";
 import { useRouter, usePathname } from "next/navigation";
 import React, { useEffect, useState } from "react";
 import { throttle } from "lodash";
@@ -44,14 +44,17 @@ const Header = ({ scroll }: { scroll?: number }) => {
   const { userInfo } = useStoreInit((data) => data);
   const router = useRouter();
   const pathname = usePathname();
-  const params: any = useSearchParams();
+  const params = useParams();
+  const { room_slug } = params;
+  const searchParams: any = useSearchParams();
   const { isLogin } = useAuthStore((state: any) => state);
-  const searchTextInparam = params.get("q");
-  const utm_source = params.get("utm_source");
+  const searchTextInparam = searchParams.get("q");
+  const utm_source = searchParams.get("utm_source");
 
   const [visibleTopHeader, setVisibleTopHeader] = useState(true);
   const [theme, setTheme] = useState("dark");
   const [searchText, setsearchText] = useState<string | null>(null);
+  const [backHomeCode, setBackHomeCode] = useState(false);
   const [isOpen, setIsOpen] = useState(false);
 
   useEffect(() => {
@@ -150,6 +153,31 @@ const Header = ({ scroll }: { scroll?: number }) => {
     }
   };
 
+  /* -------------------------------------------------------------------------- */
+  /*                             SET GET GO BACKHOME                            */
+  /* -------------------------------------------------------------------------- */
+
+  useEffect(() => {
+    const splitedRoomSlug = `${room_slug}`?.split("-");
+    if (!!room_slug) {
+      if (splitedRoomSlug?.[1] == "s") {
+        localStorage.setItem("back-home-code", splitedRoomSlug?.[0]);
+      }
+    }
+  }, [room_slug]);
+
+  const removeLocalBackHomeFunc = () => {
+    localStorage.removeItem("back-home-code");
+  };
+  useEffect(() => {
+    const splitedRoomSlug = `${room_slug}`?.split("-");
+    const backHomeCodeStorage = localStorage.getItem("back-home-code");
+    if (splitedRoomSlug?.[0] == backHomeCodeStorage) {
+      setBackHomeCode(true);
+    } else {
+      setBackHomeCode(false);
+    }
+  }, [room_slug]);
   return (
     <header className="relative">
       <div
@@ -229,7 +257,8 @@ transition-all  ease-in-out duration-1000 header-content-container w-full mx-aut
                 <img
                   src="/assets/icons/shared/chevron-right.svg"
                   onClick={(e) => {
-                    if (utm_source == "true") {
+                    if (utm_source == "true" || backHomeCode) {
+                      removeLocalBackHomeFunc();
                       router.push("/");
                     } else if (pathname == "/profile/orders") {
                       router.push("/");
@@ -270,7 +299,13 @@ transition-all  ease-in-out duration-1000 header-content-container w-full mx-aut
                     ) : (
                       <div className="flex gap-2 items-center">
                         {pathname.includes("/rooms/") ? (
-                          <Link className="w-5 h-5 aspect-square" href={"/"}>
+                          <Link
+                            onClick={() => {
+                              removeLocalBackHomeFunc();
+                            }}
+                            className="w-5 h-5 aspect-square"
+                            href={"/"}
+                          >
                             <img
                               src="/assets/icons/navbar/home_nav_black.svg"
                               className="transition-all grayscale opacity-60  hover:opacity-100 hover:grayscale-0"

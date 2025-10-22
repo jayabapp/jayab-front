@@ -35,7 +35,7 @@ const CategoryItem = ({ item }: { item: HomeLandingDto }) => {
         />
       </div>
 
-      <h2 className={` opacity-80 text-xs text-center  line-clamp-2 h-8 md:h-12 md:text-base `}>{item?.title}</h2>
+      <h2 className={` opacity-80 text-xs text-center  line-clamp-1 h-5 md:h-8  md:text-base `}>{item?.title}</h2>
     </Link>
   );
 };

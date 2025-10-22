@@ -114,7 +114,7 @@ ul {
   @apply w-full overflow-x-hidden  max-w-full px-4  mx-auto     pb-24  pt-20  md:shadow-lg  md:rounded-20;
 }
 .home-container {
-  @apply h-full bg-transparent mx-auto !max-w-full min-h-[100dvh] px-3 md:px-3 lg:px-4 xl:px-[15%]  pt-24 lg:pt-28  pb-32 lg:pb-44 overflow-x-scroll;
+  @apply h-full bg-transparent mx-auto !max-w-full min-h-[100dvh] px-3 md:px-3 lg:px-4 xl:px-[15%]  pt-24 lg:pt-24  pb-32 lg:pb-44 overflow-x-scroll;
 }
 .container {
   @apply h-full bg-transparent mx-auto !max-w-full min-h-[100dvh] px-3 md:px-3 lg:px-4 xl:px-[15%]  pt-20 lg:pt-28  pb-32 lg:pb-44 overflow-x-scroll;

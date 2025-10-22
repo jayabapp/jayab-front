@@ -29,7 +29,7 @@ const HomeAdvisorSub = () => {
       {" "}
       {advisorProfile ? (
         <div
-          className="w-full items-center justify-center  pb-4 flex flex-col lg:flex-row gap-2  
+          className="w-full items-center justify-center   flex flex-col lg:flex-row gap-2  
 
 "
         >
