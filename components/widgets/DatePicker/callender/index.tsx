@@ -61,10 +61,10 @@ const Callender = ({
     } else return false;
   };
   const nextMonth = () => {
-    setChosenDate(moment(chosenDate, "jYYYY/jMM/jDD").add(1, "months").format("jYYYY/jMM/jDD"));
+    setChosenDate(moment(chosenDate, "jYYYY/jMM/jDD").startOf("month").add(1, "months").format("jYYYY/jMM/jDD"));
   };
   const lastMonth = () => {
-    setChosenDate(moment(chosenDate, "jYYYY/jMM/jDD").subtract(1, "months").format("jYYYY/jMM/jDD"));
+    setChosenDate(moment(chosenDate, "jYYYY/jMM/jDD").startOf("month").subtract(1, "months").format("jYYYY/jMM/jDD"));
   };
 
   return (

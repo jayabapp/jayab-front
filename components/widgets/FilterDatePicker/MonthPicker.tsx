@@ -12,10 +12,10 @@ type props = {
 
 const MonthPicker = ({ date, setDate, month, year, prefix }: props) => {
   const nextMonth = () => {
-    setDate(moment(date, "jYYYY/jMM/jDD").add(1, "month").format("jYYYY/jMM/jDD"));
+    setDate(moment(date, "jYYYY/jMM/jDD").startOf("month").add(1, "month").format("jYYYY/jMM/jDD"));
   };
   const lastMonth = () => {
-    setDate(moment(date, "jYYYY/jMM/jDD").subtract(1, "month").format("jYYYY/jMM/jDD"));
+    setDate(moment(date, "jYYYY/jMM/jDD").startOf("month").subtract(1, "month").format("jYYYY/jMM/jDD"));
   };
 
   return (
