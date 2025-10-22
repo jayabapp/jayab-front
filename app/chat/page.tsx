@@ -16,6 +16,9 @@ const ChatListPage = () => {
   const { data, isLoading, refetch } = useQuery({
     queryKey: [ChatService.CHAT_CACHEKEY],
     queryFn: ChatService.GetChatList,
+
+    gcTime: 0,
+    staleTime: 0,
   });
 
   useEffect(() => {

@@ -133,6 +133,9 @@ const NewMultUploader = ({
           }));
         },
       });
+    } catch {
+      setimagesLoadings((e) => ({ ...e, [id]: 1 }));
+      setImages((e) => e?.filter((x) => x?.id != id));
     } finally {
       // drop file reference
       file = null as any;
@@ -162,35 +165,38 @@ const NewMultUploader = ({
     const loadingsObj: { [key: string | number]: any } = {};
     setLoading(true);
     let filesUploding = [];
+    // const trimedFiles=files?.filter(e=>)
+
     for (let i = 0; i < files.length; i++) {
       let file = files?.[i];
       const id = `id_${file.lastModified}_${Math.random().toString(36).slice(2)}`;
-      filesUploding.push({ id, file });
+
       loadingsObj[id] = 0;
 
-      if (type === "image" && !file.type.includes("image/")) {
-        return toast.error("لطفا از فایل تصویر استفاده نمایید");
-      }
-      if (type === "image" && file.name.split(".")[1] === "jfif") {
-        return toast.error("لطفا از فایل تصویر درست استفاده نمایید");
-      }
-
+      // if (type === "image" && !file.type.includes("image/")) {
+      //   toast.error("لطفا از فایل تصویر استفاده نمایید");
+      //   continue;
+      // }
+      // if (type === "image" && file.name.split(".")[1] === "jfif") {
+      //   toast.error("لطفا از فایل تصویر درست استفاده نمایید");
+      //   continue;
+      // }
+      filesUploding.push({ id, file });
       const objectUrl = URL.createObjectURL(file);
       setImages((prev) => [...prev, { url: objectUrl, id }]);
     }
 
     setimagesLoadings(loadingsObj);
 
-    if (filesUploding?.length == files?.length) {
-      for (let i = 0; i < filesUploding.length; i++) {
-        let file = filesUploding?.[i];
-        await uploadTemp(file?.file, file?.id, i + 1 === filesUploding.length).finally(() => {
-          file = null as any;
-        });
-      }
+    // if (filesUploding?.length == files?.length) {
+    for (let i = 0; i < filesUploding.length; i++) {
+      let file = filesUploding?.[i];
+      await uploadTemp(file?.file, file?.id, i + 1 === filesUploding.length).finally(() => {
+        file = null as any;
+      });
     }
+    // }
   };
-
   return (
     <div className={`flex w-fit ${containerClass}`} style={{ zIndex: 4 }}>
       <div className={`flex w-fit flex-col items-center justify-start rounded-20 ${innerClasses?.secontParentClass}`}>
