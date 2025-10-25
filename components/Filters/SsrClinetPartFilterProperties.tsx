@@ -1,3 +1,4 @@
+"use client";
 import { difference, last } from "lodash";
 import { useRouter, usePathname } from "next/navigation";
 import { Dispatch, SetStateAction, useEffect, useState } from "react";
@@ -14,6 +15,7 @@ import EmptyList from "../shared/Lotties/EmptyList";
 import { PropertyListDto } from "@/api_services/property/property.interface";
 import moment from "moment-jalaali";
 import { WeekDays } from "@/utils/constantss";
+import ServerSidePaginate from "../shared/Pagination/ServerSidePaginate";
 
 export interface catQueryTypes {
   max_price: string | null | undefined;
@@ -39,58 +41,34 @@ export interface catQueryTypes {
   min_commission: string | null | undefined;
   party: string | null | undefined;
   pattern: string | null | undefined;
+  page: string | null | undefined;
   q: string | null | undefined;
 }
 
 type SsrClinetPartFilterPropertiesType = {
   sortType?: { id?: string };
-  query: catQueryTypes;
-  setCursor: Dispatch<SetStateAction<number>>;
-  cursor: number;
+  pageQuery: string | null | undefined;
+  query: any;
 };
 
-function SsrClinetPartFilterProperties({ sortType, query, setCursor, cursor }: SsrClinetPartFilterPropertiesType) {
+function SsrClinetPartFilterProperties({ sortType, query, pageQuery }: SsrClinetPartFilterPropertiesType) {
   const router = useRouter();
   const pathname = usePathname();
   const [refetcherBoolean, setRefetcherBoolean] = useState(false);
+  const [hasPaginate, setHasPaginate] = useState(false);
   const [week, setWeek] = useState<any[]>([]);
   const [data, setData] = useState<PropertyListDto[]>([]);
+  const [page, setPage] = useState(pageQuery ? Number(pageQuery) : 1);
   useEffect(() => {
-    setCursor(0);
     setData([]);
     let temp = { ...query };
     setRefetcherBoolean(!refetcherBoolean);
     router.replace(
       `${pathname}?${queryBuilder({
         ...temp,
-
-        // sort_type: query.sort_type ? query.sort_type : sortType?.id,
       })}`
     );
-  }, [
-    sortType,
-
-    JSON.stringify(query),
-    // query.max_price,
-    // query.min_price,
-    // query.sort_type,
-    // query?.property_type,
-    // query?.pool_type,
-    // query?.has_pool,
-    // query?.total_bedrooms,
-    // query?.total_guests,
-    // query?.entertainment,
-    // query?.has_discount,
-    // query?.is_premium,
-    // query?.max_building_area,
-    // query?.max_building_area,
-    // query?.min_commission,
-    // query?.max_commission,
-    // query?.party,
-    // query?.q,
-    // query?.cities,
-    // query?.pattern,
-  ]);
+  }, [sortType, JSON.stringify(query)]);
 
   const {
     isLoading,
@@ -120,14 +98,14 @@ function SsrClinetPartFilterProperties({ sortType, query, setCursor, cursor }: S
     ],
     queryFn: () => {
       return PropertyService?.GetProperties({
-        cursor: Number(cursor),
+        page: Number(page),
         min_price: Number(query.min_price) || undefined,
         max_price: Number(query.max_price) || undefined,
         max_building_area: Number(query.max_building_area) || undefined,
         min_building_area: Number(query.min_building_area) || undefined,
         max_commission: Number(query.max_commission) || undefined,
         min_commission: Number(query.min_commission) || undefined,
-        per_page: 30,
+        per_page: 51,
         cities: query?.cities || undefined,
         code: query?.code || undefined,
         entertainment: query?.entertainment || undefined,
@@ -155,15 +133,15 @@ function SsrClinetPartFilterProperties({ sortType, query, setCursor, cursor }: S
 
   useEffect(() => {
     if (!!propQueryData?.data) {
-      if (Number(cursor) == 0 || cursor == 0) {
+      if (Number(page) == 1 || page == 1) {
         setData([]);
       } else setData((x) => [...x, ...propQueryData?.data]);
     }
   }, [propQueryData]);
 
   useEffect(() => {
-    if (cursor != 0) refetch();
-  }, [cursor, refetcherBoolean]);
+    if (page != 1) refetch();
+  }, [page, refetcherBoolean]);
 
   useEffect(() => {
     const dayOfWeek = moment().day();
@@ -186,9 +164,23 @@ function SsrClinetPartFilterProperties({ sortType, query, setCursor, cursor }: S
 
     setWeek(weeks);
   }, []);
+
+  useEffect(() => {
+    if (pageQuery) {
+      setHasPaginate(true);
+    }
+  }, []);
+  useEffect(() => {
+    if (pageQuery) {
+      setPage(Number(pageQuery));
+    } else {
+      setPage(1);
+      setHasPaginate(false);
+    }
+  }, [pageQuery]);
   return (
     <div className="w-full px-0  self-center">
-      {cursor != 0 ? (
+      {page != 1 ? (
         <div className=" w-full">
           {/* <SortContainer query={query} /> */}
 
@@ -199,9 +191,17 @@ function SsrClinetPartFilterProperties({ sortType, query, setCursor, cursor }: S
               scrollThreshold={0.5}
               dataLength={data?.length} //This is important field to render the next data
               next={() => {
-                setCursor(last(data)?.id || 0);
+                window.history.replaceState(
+                  "",
+                  "",
+                  `${pathname}?${queryBuilder({
+                    ...query,
+                    page: propQueryData?.meta?.next || 1,
+                    // sort_type: query.sort_type ? query.sort_type : sortType?.id,
+                  })}`
+                );
               }}
-              hasMore={data?.length % 30 == 0 ? true : false}
+              hasMore={!!hasPaginate ? false : propQueryData?.meta?.lastPage != page ? true : false}
               loader={
                 <div className="w-full md:col-span-2 xl:col-span-3  mt-8 flex items-center justify-center">
                   <BtnLoading />
@@ -219,6 +219,16 @@ function SsrClinetPartFilterProperties({ sortType, query, setCursor, cursor }: S
             </div>
           )}
         </div>
+      ) : (
+        <></>
+      )}
+      {!!propQueryData?.meta && !!hasPaginate ? (
+        <ServerSidePaginate
+          currentPage={page}
+          pageSize={propQueryData?.meta?.perPage}
+          totalCount={propQueryData?.meta?.total}
+          query={query}
+        />
       ) : (
         <></>
       )}

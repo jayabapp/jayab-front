@@ -51,13 +51,14 @@ export default async function PropertiesPage({
   const searchParamsData = await searchParams;
   const { data: landings } = await serverCall(baseUrl + apiRoutes.SINGLE_USER_LANDING_PAGE(paramData?.slug));
 
-  const data = (await !isEmpty(searchParamsData))
-    ? await serverCall(baseUrl + apiRoutes.GET_PROPERTIES, {
-        cursor: 0,
-        per_page: 51,
-        ...searchParamsData,
-      })
-    : null;
+  const data =
+    (await !isEmpty(searchParamsData)) && !searchParamsData?.page
+      ? await serverCall(baseUrl + apiRoutes.GET_PROPERTIES, {
+          page: 1,
+          per_page: 51,
+          ...searchParamsData,
+        })
+      : null;
 
   return (
     <>

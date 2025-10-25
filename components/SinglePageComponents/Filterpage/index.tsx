@@ -14,7 +14,6 @@ import useQueryGet from "@/helpers/queryGet";
 import { poolFilterTypes, SORT_TYPES } from "@/utils/constantss";
 import SingleProductBreadCrumb from "@/components/BreadCrumbs/SingleProductBreadCrumb";
 import SortMenu from "@/components/Filters/SortMenu";
-import FilterdProperties from "@/components/Filters/FilterdProperties";
 import Modal from "@/components/Modal";
 import { ParsedUrlQuery } from "querystring";
 import { PropertyService } from "@/api_services/property/property.service";
@@ -27,6 +26,7 @@ import FilterPageCitiesTitle from "@/components/CityModal/FilterPageCitiesTitle"
 import CityModal from "@/components/CityModal";
 import ModalHeaderPart from "@/components/Modal/ModalHeaderPart";
 import PropertiesFilterList from "./PropertiesFilterList";
+import FilterdPropertiesPageOrianted from "@/components/Filters/NewFiltredProperties";
 
 interface OtpQuery extends ParsedUrlQuery {
   id: string;
@@ -183,7 +183,7 @@ const Filterpage = () => {
 
           {/* LEFT SIDE */}
 
-          <FilterdProperties sortType={sortType} setSortType={setSortType} query={queries} />
+          <FilterdPropertiesPageOrianted sortType={sortType} setSortType={setSortType} query={queries} />
           {/* </div> */}
         </div>
       </div>

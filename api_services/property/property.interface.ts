@@ -546,7 +546,7 @@ export interface GetPropertiesPlusFilters {
   title?: string | null | number;
   total_bedrooms?: string | null | number;
   total_guests?: string | null | number;
-  cursor: string | null | number;
+  page: string | null | number;
   per_page: string | null | number;
 
   max_building_area?: string | null | number;

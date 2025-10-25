@@ -144,7 +144,7 @@ const _STRINGS = {
   SEARCH_PLACE: "جستجوی آدرس...",
   SEARCH_PLACE_INPUT: "جستجوی آدرس",
   PROPERTY_LOCATION: "موقعیت مکانی ملک",
-  PROPERTY_MEDIA: "تصاویر و ویدئو ملک",
+  PROPERTY_MEDIA: "تصاویر  ملک",
   PRIMARY_IMAGE: "عکس اصلی",
   FEATURE_IMAGE_NEEDED: "لطفا عکس اصلی را انتخاب کنید.",
   ENV_PATTERN: "بافت محیطی",

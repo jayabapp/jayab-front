@@ -60,7 +60,7 @@ function HomePropertiesClientPart({ setCursor, cursor }: HomePropertiesClientPar
     queryKey: [PropertyService?.GET_PROPERTIES_CACHEKEY, cursor],
     queryFn: () => {
       return PropertyService?.GetProperties({
-        cursor: Number(cursor),
+        page: Number(cursor || 1),
 
         per_page: 30,
       });

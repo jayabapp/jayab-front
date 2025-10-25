@@ -1,6 +1,6 @@
 "use client";
 import { debounce } from "lodash";
-import React, { useCallback, useEffect, useRef, useState } from "react";
+import React, { ReactNode, useCallback, useEffect, useRef, useState } from "react";
 import { useSearchParams } from "next/navigation";
 import { useStoreTheme } from "../../store";
 import SmallLoading from "../shared/Lotties/SmallLoading";
@@ -14,6 +14,7 @@ interface props {
   disableTypeing?: boolean;
   boxId?: string;
   passedText?: string;
+  children?: ReactNode;
 
   onSubmit: (e: string | null) => void | null;
   onClear: () => void | null;
@@ -36,6 +37,7 @@ const SearchBox = ({
   passedText,
   boxId = "SEARCH_BOX",
   passedQuerykey = "q",
+  children,
 }: props) => {
   const searchParam = useSearchParams().get(passedQuerykey);
 
@@ -120,19 +122,24 @@ const SearchBox = ({
             value={passedText || text}
           />
         </div>
-        <div className="inline-flex w-1/4 justify-end">
-          {loading && (
-            <div className="ml-2">
-              <SmallLoading />
-            </div>
-          )}
+        {!!loading || element?.value ? (
+          <div className="inline-flex w-1/4 justify-end">
+            {loading && (
+              <div className="ml-2">
+                <SmallLoading />
+              </div>
+            )}
 
-          {element?.value && (
-            <div className="text-primary-700 text-xs mr-2 cursor-pointer " onClick={cancelSearch}>
-              {cancelText}
-            </div>
-          )}
-        </div>{" "}
+            {element?.value && (
+              <div className="text-primary-700 text-xs mr-2 cursor-pointer " onClick={cancelSearch}>
+                {cancelText}
+              </div>
+            )}
+          </div>
+        ) : (
+          <></>
+        )}{" "}
+        {children}
       </div>
     </div>
   );

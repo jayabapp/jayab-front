@@ -35,7 +35,6 @@ export interface PostPageQuery {
 type sortTypeType = { id?: string; title?: string };
 
 const SsrFilterPage = ({ landings, firstData }: { firstData: { data: any[] }; landings: SingleLandingDto }) => {
-  const [cursor, setCursor] = useState(0);
   const [hiddenFilters, setHiddenFilters] = useState<string[]>([]);
   const [stickyHeight, setStickyHeight] = useState(600);
   const [showCityModal, setShowCiyModal] = useState(false);
@@ -49,6 +48,7 @@ const SsrFilterPage = ({ landings, firstData }: { firstData: { data: any[] }; la
     { title: "خانه", link: "/" },
     { title: landings?.content?.title || "آگهی ها", link: "" },
   ]);
+
   const queriesParams = useQueryGet<any>();
   const [queries, setQueries] = useState(queriesParams);
 
@@ -185,16 +185,25 @@ const SsrFilterPage = ({ landings, firstData }: { firstData: { data: any[] }; la
             </div>{" "}
             <SortMenu query={queries} />
           </div>
-          <div className="  min-h-[80dvh] mb-8 xl:mb-4">
+          <div className="  min-h-[80dvh] mb-12 xl:mb-20">
             {/* SIDEBAR */}
 
             {/* LEFT SIDE */}
 
-            <SsrPartFilter firstData={firstData?.data} />
-            {cursor == 0 && !isEmpty(firstData?.data) && firstData?.data?.length % 51 == 0 ? (
+            {firstData?.data ? <SsrPartFilter firstData={firstData?.data} /> : <></>}
+            {(queriesParams?.page == 1 || !queriesParams?.page) &&
+            !isEmpty(firstData?.data) &&
+            firstData?.data?.length % 51 == 0 ? (
               <Button
                 onClick={() => {
-                  setCursor(last(firstData?.data)?.id || 0);
+                  window.history.replaceState(
+                    "",
+                    "",
+                    `${pathname}?${queryBuilder({
+                      ...queries,
+                      page: 2,
+                    })}`
+                  );
                 }}
                 title={_STRINGS.SHOW_MORE}
                 containerClass="w-full mt-6 flex items-center justify-center"
@@ -202,7 +211,7 @@ const SsrFilterPage = ({ landings, firstData }: { firstData: { data: any[] }; la
             ) : (
               <></>
             )}
-            <SsrClinetPartFilterProperties cursor={cursor} setCursor={setCursor} sortType={sortType} query={queries} />
+            <SsrClinetPartFilterProperties pageQuery={queriesParams?.page} sortType={sortType} query={queries} />
           </div>
           <SsrFilterPageContents data={landings} />
         </div>

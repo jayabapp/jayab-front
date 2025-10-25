@@ -5,14 +5,13 @@ import { DOTS, usePagination } from "./usePagination";
 import { usePathname } from "next/navigation";
 import { useRouter } from "next/navigation";
 import queryBuilder from "@/helpers/queryBuilder";
-import { catQueryTypes } from "@/components/Filters/FilterdProperties";
 type paginationType = {
   totalCount: number;
   q?: string;
   siblingCount?: number;
   currentPage: number;
   pageSize: number;
-  query?: catQueryTypes;
+  query?: any;
 };
 
 const ServerSidePaginate = (props: paginationType) => {

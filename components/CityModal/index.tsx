@@ -175,6 +175,8 @@ const CityModal = ({
         body.cities = selectedCities?.map((e) => e?.id);
         delete body.province_id;
       }
+
+      delete body.page;
       if (!!passedUrl) {
         router.push(`${passedUrl}?${queryBuilder(body)}`);
       } else {

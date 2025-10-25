@@ -11,6 +11,7 @@ const SsrFilterPageContents = ({ data }: { data: SingleLandingDto }) => {
     hasHeading: true,
     hasCount: true,
   });
+
   return (
     <div className="w-full flex gap-4 flex-col ">
       {" "}

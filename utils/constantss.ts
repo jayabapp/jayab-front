@@ -79,7 +79,7 @@ export const createPropertySteps = (id?: null | number) => [
     link: `/profile/owner/properties/${id}/edit/location?edit_mode=true`,
   },
   {
-    full_title: "تصاویر و ویدئو ملک",
+    full_title: "تصاویر  ملک",
     title: "تصاویر",
     id: 3,
     link: `/profile/owner/properties/${id}/edit/media?edit_mode=true`,

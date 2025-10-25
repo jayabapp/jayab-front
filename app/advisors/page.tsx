@@ -145,15 +145,23 @@ const AdvisorsListPage = () => {
               doTheFiltering(e || "", "search");
             }}
             placeholder="کد یا نام مشاور ..."
-          />
-          <div className=" w-full flex   md:flex-wrap flex-col md:flex-row  gap-2 md:gap-4 items-center ">
-            <Button
+          >
+            <div
+              onClick={showCityModalFunc}
+              className=" w-3/4 md:w-1/2  z-2    cursor-pointer  justify-end flex items-center gap-2"
+            >
+              <p className="text-3xl text-neutral-200">|</p>{" "}
+              <p className="text-xs min-w-12  "> {!!cityTitle ? cityTitle.replace("جستجو در  ", "") : `شهر`}</p>
+            </div>
+          </SearchBox>
+          <div className=" w-full flex   md:flex-wrap flex-col md:flex-row  gap-2 md:gap-4 items-center  md:justify-end ">
+            {/* <Button
               roundedClass="rounded-full"
               width=" w-full md:w-fit"
               containerClass="w-full md:w-fit flex items-center justify-center  md:col-span-3"
               onClick={showCityModalFunc}
               title={cityTitle || _STRINGS.SELECT_CITY}
-            />
+            /> */}
             {!userInfo?.advisor_id ? (
               <Button
                 variant="outline"
@@ -166,7 +174,7 @@ const AdvisorsListPage = () => {
             ) : userInfo?.advisor_id && !userInfo?.advisor?.is_special ? (
               <Link
                 href={`/profile/advisor/subscription/is-especial`}
-                className="w-full  md:col-span-4  rounded-full flex items-center justify-center gap-4 h-12 bg-primary-600 "
+                className="w-full md:w-fit  px-12  md:col-span-4  rounded-full flex items-center justify-center gap-4 h-12 bg-primary-600 "
               >
                 <img className="w-5 h-5 aspect-square" src="/assets/icons/home/white_star_tick.svg" />
                 <p className="text-white">{_STRINGS.REGISTER_AS_SPECIAL_AD}</p>

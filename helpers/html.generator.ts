@@ -12,7 +12,8 @@ export const HTMLGenerator = (html: string, options?: { hasHeading?: boolean; ha
   const { hasHeading, hasCount } = options || {};
   let root = HTMLParser.parse(
     DOMPurify.sanitize(html, {
-      ADD_ATTR: ["target", "rel"],
+      ADD_ATTR: ["target", "rel", "allow", "allowfullscreen", "frameborder", "src"],
+      ADD_TAGS: ["iframe"],
     })
   );
   root.querySelectorAll("#quote").map((i) => i?.replaceWith(quoteGenerator(i?.innerText)));
