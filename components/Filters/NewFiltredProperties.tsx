@@ -230,8 +230,8 @@ function FilterdPropertiesPageOrianted({ sortType, setSortType, query }: Filterd
             dataLength={data?.length} //This is important field to render the next data
             next={() => {
               // setPage(propQueryData?.meta?.next || 1);
-              window.history.replaceState(
-                "",
+              window?.history?.replaceState(
+                {},
                 "",
                 `${pathname}?${queryBuilder({
                   ...query,

@@ -8,17 +8,17 @@ import _STRINGS from "@/utils/LocalStrings";
 import HomePropertiesClientPart from "./HomePropertiesClientPart";
 
 const HomePropertiesList = ({ data, middleBanners }: { data: any[]; middleBanners: any[] }) => {
-  const [cursor, setCursor] = useState(0);
+  const [page, setPage] = useState(1);
   const bannerGroup = useMemo(() => {
     if (!!middleBanners) return chunk(middleBanners, 2);
   }, [middleBanners]);
   return (
     <div className="w-full px-3  md:px-3 lg:px-4 2xl:px-[5%] ">
       <HomePropertiesSsrPart middleBanners={bannerGroup || []} data={data} />
-      {cursor == 0 && !isEmpty(data) && data?.length % 24 == 0 ? (
+      {page == 1 && !isEmpty(data) && data?.length % 24 == 0 ? (
         <Button
           onClick={() => {
-            setCursor(last(data)?.id || 0);
+            setPage(2);
           }}
           title={_STRINGS.SHOW_MORE}
           containerClass="w-full flex items-center justify-center"
@@ -26,7 +26,7 @@ const HomePropertiesList = ({ data, middleBanners }: { data: any[]; middleBanner
       ) : (
         <></>
       )}
-      {cursor == 0 ? <></> : <HomePropertiesClientPart cursor={cursor} setCursor={setCursor} />}
+      {page == 1 ? <></> : <HomePropertiesClientPart page={page} setPage={setPage} />}
     </div>
   );
 };

@@ -191,8 +191,8 @@ function SsrClinetPartFilterProperties({ sortType, query, pageQuery }: SsrClinet
               scrollThreshold={0.5}
               dataLength={data?.length} //This is important field to render the next data
               next={() => {
-                window.history.replaceState(
-                  "",
+                window?.history?.replaceState(
+                  {},
                   "",
                   `${pathname}?${queryBuilder({
                     ...query,

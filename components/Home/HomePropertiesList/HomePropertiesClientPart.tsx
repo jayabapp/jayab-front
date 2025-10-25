@@ -18,11 +18,11 @@ export interface catQueryTypes {
 }
 
 type HomePropertiesClientPartType = {
-  setCursor: Dispatch<SetStateAction<number>>;
-  cursor: number;
+  page: number;
+  setPage: React.Dispatch<React.SetStateAction<number>>;
 };
 
-function HomePropertiesClientPart({ setCursor, cursor }: HomePropertiesClientPartType) {
+function HomePropertiesClientPart({ setPage, page }: HomePropertiesClientPartType) {
   const router = useRouter();
   const pathname = usePathname();
   const [week, setWeek] = useState<any[]>([]);
@@ -57,10 +57,10 @@ function HomePropertiesClientPart({ setCursor, cursor }: HomePropertiesClientPar
     refetch,
     data: propQueryData,
   } = useQuery({
-    queryKey: [PropertyService?.GET_PROPERTIES_CACHEKEY, cursor],
+    queryKey: [PropertyService?.GET_PROPERTIES_CACHEKEY, page],
     queryFn: () => {
       return PropertyService?.GetProperties({
-        page: Number(cursor || 1),
+        page: Number(page || 2),
 
         per_page: 30,
       });
@@ -72,19 +72,19 @@ function HomePropertiesClientPart({ setCursor, cursor }: HomePropertiesClientPar
 
   useEffect(() => {
     if (!!propQueryData?.data) {
-      if (Number(cursor) == 0 || cursor == 0) {
+      if (Number(page) == 1 || page == 1) {
         setData([]);
       } else setData((x) => [...x, ...propQueryData?.data]);
     }
   }, [propQueryData]);
 
   useEffect(() => {
-    if (cursor != 0) refetch();
-  }, [cursor, refetcherBoolean]);
+    if (page != 1) refetch();
+  }, [page, refetcherBoolean]);
 
   return (
     <div className="w-full px-0  self-center">
-      {cursor != 0 ? (
+      {page != 1 ? (
         <div className=" w-full">
           {/* <SortContainer query={query} /> */}
 
@@ -95,7 +95,7 @@ function HomePropertiesClientPart({ setCursor, cursor }: HomePropertiesClientPar
               scrollThreshold={0.5}
               dataLength={data?.length} //This is important field to render the next data
               next={() => {
-                setCursor(last(data)?.id || 0);
+                setPage(propQueryData?.meta?.next || 1);
               }}
               hasMore={data?.length % 30 == 0 ? true : false}
               loader={

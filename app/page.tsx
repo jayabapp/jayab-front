@@ -50,7 +50,7 @@ const Home = async () => {
   const { data: middleBanners } = await serverCall(baseUrl + apiRoutes.BANNERS + `?position=main_2`);
   const { data: landings } = await serverCall(baseUrl + apiRoutes.USER_LANDING_PAGES);
   const { data: propertyData } = await serverCall(baseUrl + apiRoutes.GET_PROPERTIES, {
-    cursor: 0,
+    page: 1,
     per_page: 24,
   });
 

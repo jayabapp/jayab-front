@@ -196,8 +196,8 @@ const SsrFilterPage = ({ landings, firstData }: { firstData: { data: any[] }; la
             firstData?.data?.length % 51 == 0 ? (
               <Button
                 onClick={() => {
-                  window.history.replaceState(
-                    "",
+                  window?.history?.replaceState(
+                    {},
                     "",
                     `${pathname}?${queryBuilder({
                       ...queries,
