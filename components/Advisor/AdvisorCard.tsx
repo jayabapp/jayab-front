@@ -29,7 +29,7 @@ const AdvisorCard = ({
     <div onClick={callback} className=" rounded-2xl gap-2   shadow-card  p-4  w-full  flex flex-col items-center ">
       <div className="w-full flex items-center gap-2">
         {/* IMAGE PART    */}
-        <div className=" flex flex-col gap-2 h-full justify-between w-1/4  md:w-1/5 2xl:w-1/4">
+        <div className=" flex flex-col gap-2 h-full justify-between w-1/4  lg:w-1/5 2xl:w-1/4">
           <div className="relative w-full  aspect-square ">
             {" "}
             <img
@@ -46,7 +46,7 @@ const AdvisorCard = ({
             {_STRINGS.CODE} {data?.user?.referral_code}
           </div>
         </div>
-        <div className=" w-3/4 md:w-4/5  2xl:w-3/4   flex flex-col gap-2 h-full justify-between shrink-0">
+        <div className=" w-3/4 lg:w-4/5  2xl:w-3/4   flex flex-col gap-2 h-full justify-between shrink-0">
           <p className="  font-medium  text-sm md:text-base">{data?.user?.full_name}</p>
           {/* CIRCULAR PROGRESS PARTS  */}
           <div className="w-full flex md:flex-cow  items-center justify-between gap-2">

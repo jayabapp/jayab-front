@@ -33,16 +33,23 @@ export class AdvisorService {
     }
   }
 
-  static async userAdvisorsList(dto: { per_page: number; cursor: number; q?: string; cities?: (number | string)[] }) {
+  static async userAdvisorsList(dto: {
+    per_page: number;
+    cursor: number;
+    q?: string;
+    cities?: (number | string)[];
+    province_id?: string | number;
+  }) {
     try {
       const result = await apiCall<
-        { per_page: number; cursor: number; q?: string; cities?: (number | string)[] },
+        { per_page: number; cursor: number; q?: string; cities?: (number | string)[]; province_id?: string | number },
         AdvisorPageListDto[]
       >("GET", apiRoutes.USER_ADVISORS, {
         cursor: dto.cursor,
         per_page: dto.per_page,
         q: dto.q,
         cities: dto.cities,
+        province_id: dto.province_id,
       });
       return result;
     } catch (e) {

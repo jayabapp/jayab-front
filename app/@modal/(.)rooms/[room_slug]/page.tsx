@@ -15,6 +15,8 @@ import { useQuery } from "@tanstack/react-query";
 import { usePathname } from "next/navigation";
 
 import React, { useState, use, Suspense } from "react";
+import { mobileFooterBlackList } from "@/utils/constantss";
+import Footer from "@/components/Footer";
 
 const ProductImagesContainer = dynamic(() => import("@/components/properties/imageComponents/PropertiesImagesPart"));
 const SinglePropertyIntroduction = dynamic(() => import("@/components/properties/SinglePropertyIntroduction"));
@@ -69,6 +71,7 @@ export default function SingleDeceasedPage({ params }: { params: Promise<{ room_
           <></>
         )}
       </div>
+      <Footer />
     </AnimationlessModal>
   );
 }

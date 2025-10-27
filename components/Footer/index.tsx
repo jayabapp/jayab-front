@@ -52,7 +52,7 @@ const Footer = () => {
   return (
     <footer className="w-full  z-2 pb-20  mb:pb-6 bg-primary-200   hidden  lg:flex   flex-col items-center justify-center bg-dark-500  bg-no-repeat bg-cover  relative md:pt-[6rem] ">
       <CallBox />
-      <div className="w-full md:px-[10%]  px-4 lg:w-full mx-auto  py-4 grid grid-cols-4 lg:grid-cols-6 gap-5">
+      <div className="w-full md:px-[10%]  px-4 lg:w-full mx-auto  py-4 grid grid-cols-4 lg:grid-cols-7 gap-5">
         {/* ABOUT US */}
         <div
           key={`footers`}
@@ -95,8 +95,8 @@ const Footer = () => {
               <p className=" text-sm  cursor-pointer  opacity-100 hover:text-primary-700">{e?.title}</p>
             </Link>
           ))}
-        </div>
-
+        </div>{" "}
+        <div className=" hidden md:flex   col-span-1 order-2 lg:order-1"></div>
         {/* CONTACT US */}
         <div
           key={`foossters`}
@@ -110,7 +110,6 @@ const Footer = () => {
             )}
           </div>
         </div>
-
         {/* SOCIALS */}
       </div>
       {/* SOCIAL IN MOBILE */}

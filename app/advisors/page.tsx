@@ -60,7 +60,8 @@ const AdvisorsListPage = () => {
         cursor: Number(cursor),
         per_page: 20,
         q: queriesParams.search,
-        cities: !!queriesParams?.cities ? queriesParams.cities : undefined,
+        cities: !!queriesParams?.cities ? queriesParams?.cities : undefined,
+        province_id: !!queriesParams?.province_id ? queriesParams?.province_id : undefined,
       });
     },
     gcTime: 0,
@@ -198,7 +199,7 @@ const AdvisorsListPage = () => {
                 <BtnLoading />
               </div>
             }
-            className="grid px-1   pb-8 pt-4 !overflow-hidden  grid-cols-1 gap-2 md:gap-4  lg:grid-cols-2 2xl:grid-cols-3 "
+            className="grid px-1   pb-8 pt-4 !overflow-hidden  grid-cols-1 gap-2 md:gap-4  md:grid-cols-2 2xl:grid-cols-3 "
           >
             {data?.map((i) => (
               <AdvisorCard
