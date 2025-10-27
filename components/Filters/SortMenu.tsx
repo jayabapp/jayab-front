@@ -1,15 +1,11 @@
 import { useRouter, usePathname } from "next/navigation";
 import React, { useEffect, Fragment, useState } from "react";
 
-import Button from "../shared/Button/Button";
-
 import { Menu, MenuButton, MenuItem, MenuItems, Transition } from "@headlessui/react";
 import queryBuilder from "@/helpers/queryBuilder";
-import { useQuery } from "@tanstack/react-query";
 import { SORT_TYPES } from "@/utils/constantss";
 import { useStoreInit } from "@/store";
 
-type sortTypeType = { id?: string; title?: string };
 export interface SortMenuType {
   query?: any;
 }
@@ -79,7 +75,7 @@ const SortMenu = ({ query }: SortMenuType) => {
           leaveFrom="transform opacity-100 scale-100"
           leaveTo="transform opacity-0 scale-95"
         >
-          <MenuItems className="absolute top-0 md:top-auto left-0 z-20  mt-2 w-48 origin-top-center  rounded-20 bg-white dark:bg-zinc-800 custom-shadow ring-1 ring-black ring-opacity-5 focus:outline-none  overflow-scroll">
+          <div className="absolute top-0 md:top-auto left-0 z-20  mt-2 w-48 origin-top-center  rounded-20 bg-white dark:bg-zinc-800 custom-shadow ring-1 ring-black ring-opacity-5 focus:outline-none  overflow-scroll">
             <div className="flex gap-2 px-3 items-center flex-col  py-2 border-b border-gray-275 dark:border-zinc-500 ">
               {" "}
               {sortTypes.map((e) => (
@@ -103,7 +99,7 @@ const SortMenu = ({ query }: SortMenuType) => {
                 </MenuItem>
               ))}
             </div>
-          </MenuItems>
+          </div>
         </Transition>
       </Menu>
     </div>

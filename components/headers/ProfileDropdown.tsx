@@ -1,4 +1,4 @@
-import { Menu, MenuButton, MenuItem, MenuItems, Transition } from "@headlessui/react";
+import { Menu, MenuButton, MenuItem, Transition } from "@headlessui/react";
 
 import { usePathname, useRouter } from "next/navigation";
 import React, { Fragment, useRef, useState } from "react";
@@ -94,7 +94,7 @@ const ProfileDropdown = ({ notifBadge }: { notifBadge?: number | string }) => {
           leaveFrom="transform opacity-100 scale-100"
           leaveTo="transform opacity-0 scale-95"
         >
-          <MenuItems className="absolute left-0  z-20  mt-2 w-48 origin-top-center  rounded-xl bg-white dark:bg-zinc-800 shadow-xl ring-1 ring-black ring-opacity-5 focus:outline-none  overflow-scroll">
+          <div className="absolute left-0  z-20  mt-2 w-48 origin-top-center  rounded-xl bg-white dark:bg-zinc-800 shadow-xl ring-1 ring-black ring-opacity-5 focus:outline-none  overflow-scroll">
             <div className="px-1 py-2 ">
               <MenuItem key={`safasfsafq`}>
                 <Link className="" prefetch={false} href={`/notifications`}>
@@ -188,7 +188,7 @@ const ProfileDropdown = ({ notifBadge }: { notifBadge?: number | string }) => {
                 </button>
               </MenuItem>
             </div>
-          </MenuItems>
+          </div>
         </Transition>
       </Menu>
     </div>

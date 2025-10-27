@@ -46,7 +46,7 @@ const MenuDropDown = ({}) => {
           leaveFrom="transform opacity-100 scale-100"
           leaveTo="transform opacity-0 scale-95"
         >
-          <MenuItems className="absolute left-0  z-20  mt-2 w-48 origin-top-center  rounded-xl bg-white dark:bg-zinc-800 shadow-xl ring-1 ring-black ring-opacity-5 focus:outline-none  overflow-scroll">
+          <div className="absolute left-0  z-20  mt-2 w-48 origin-top-center  rounded-xl bg-white dark:bg-zinc-800 shadow-xl ring-1 ring-black ring-opacity-5 focus:outline-none  overflow-scroll">
             <div className="px-1 py-2 ">
               {menuDropDownItems.map((e) => (
                 <MenuItem key={e.id}>
@@ -64,7 +64,7 @@ const MenuDropDown = ({}) => {
                 </MenuItem>
               ))}
             </div>
-          </MenuItems>
+          </div>
         </Transition>
       </Menu>
     </div>
