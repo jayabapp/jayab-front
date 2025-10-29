@@ -1,6 +1,6 @@
 "use client";
 
-import { usePathname, useRouter, useSearchParams, useSelectedLayoutSegment } from "next/navigation";
+import { usePathname, useRouter } from "next/navigation";
 import { ReactNode, use, useEffect, useState } from "react";
 import { Toaster } from "sonner";
 import { isMobile } from "react-device-detect";

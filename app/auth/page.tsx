@@ -1,8 +1,12 @@
 "use client";
 import AuthPageComponent from "@/components/SinglePageComponents/AuthComponent";
-import React from "react";
+import React, { Suspense } from "react";
 const Auth = () => {
-  return <AuthPageComponent />;
+  return (
+    <Suspense>
+      <AuthPageComponent />
+    </Suspense>
+  );
 };
 
 export default Auth;

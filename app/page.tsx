@@ -70,7 +70,10 @@ const Home = async () => {
       ) : (
         <></>
       )} */}
-      <HomeSearchPart />
+      <Suspense>
+        {" "}
+        <HomeSearchPart />
+      </Suspense>
       <Suspense fallback={<LottieLoading />}>
         {" "}
         <section

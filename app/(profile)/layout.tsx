@@ -2,7 +2,7 @@
 
 import Profile from "@/components/profile/Profile";
 
-import React, { ReactNode } from "react";
+import React, { ReactNode, Suspense } from "react";
 
 interface layOut {
   children: ReactNode;
@@ -18,7 +18,7 @@ const layout = ({ children }: layOut) => {
         className={`col-span-9 w-full  mx-auto h-full   mb-16 profile-py-28-md `}
         style={{ gridColumn: "span 9 / span 9" }}
       >
-        {children}
+        <Suspense> {children}</Suspense>
       </div>
     </div>
   );
