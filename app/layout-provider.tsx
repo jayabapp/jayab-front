@@ -1,7 +1,6 @@
 "use client";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import React, { ReactNode, Suspense, useEffect, useState } from "react";
-import { AnimatePresence } from "framer-motion";
 import MainWrapper from "../utils/MainWrapper";
 import { useStoreQuery } from "@/store";
 interface Layout {
@@ -22,17 +21,15 @@ const LayoutProvider = (props: Layout) => {
   }, [client]);
 
   return (
-    <AnimatePresence mode="wait" initial={false} onExitComplete={() => window.scrollTo(0, 0)}>
-      {" "}
-      <QueryClientProvider client={client}>
-        <Suspense fallback={<></>}>
-          <MainWrapper>
-            {" "}
-            {props?.children} {props?.modal}
-          </MainWrapper>
-        </Suspense>
-      </QueryClientProvider>
-    </AnimatePresence>
+    <QueryClientProvider client={client}>
+      {/* <Suspense fallback={<></>}> */}
+      <MainWrapper>
+        {" "}
+        {props?.children}
+        {props?.modal}
+      </MainWrapper>
+      {/* </Suspense> */}
+    </QueryClientProvider>
   );
 };
 export default LayoutProvider;

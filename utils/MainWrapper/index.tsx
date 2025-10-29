@@ -38,7 +38,7 @@ interface mainWrapper {
   children: ReactNode;
 }
 const Footer = dynamic(() => import("../../components/Footer"), {
-  ssr: false,
+  ssr: true,
 });
 const MainWrapper = ({ children }: mainWrapper) => {
   const router = useRouter();

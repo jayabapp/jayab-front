@@ -19,7 +19,7 @@ const EmojiPicker = dynamic(
   () => {
     return import("emoji-picker-react");
   },
-  { ssr: false }
+  { ssr: true }
 );
 export interface ChatFooterTypes {
   showProduct: boolean;

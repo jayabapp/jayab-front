@@ -1,9 +1,8 @@
 "use client";
 import { debounce } from "lodash";
-import React, { useCallback, useEffect, useRef, useState } from "react";
+import React, { Suspense, useCallback, useEffect, useRef, useState } from "react";
 import { useSearchParams } from "next/navigation";
 import HistoryMaker from "./HistoryMaker";
-import HistorySuggPart from "./HistorySuggPart";
 import { useQuery } from "@tanstack/react-query";
 import SuggestedPart from "./SuggestedPart";
 import { isMobile } from "react-device-detect";
@@ -11,7 +10,8 @@ import SmallLoading from "../shared/Lotties/SmallLoading";
 import { HomeService } from "@/api_services/home/home.service";
 import _STRINGS from "@/utils/LocalStrings";
 import ModalHeaderPart from "../Modal/ModalHeaderPart";
-
+import dynamic from "next/dynamic";
+const HistorySuggPart = dynamic(() => import("./HistorySuggPart"), { ssr: true });
 interface props {
   initValue?: string | undefined;
   placeholder?: string;
@@ -233,13 +233,16 @@ const PopSearchbox = ({
           data={suggsData}
         />
 
-        <HistorySuggPart
-          handleChange={(e) => {
-            // setShowPop(false);
-            handleChange(e);
-            // onSubmit(e);
-          }}
-        />
+        <Suspense>
+          {" "}
+          <HistorySuggPart
+            handleChange={(e) => {
+              // setShowPop(false);
+              handleChange(e);
+              // onSubmit(e);
+            }}
+          />
+        </Suspense>
         {!suggsData ? (
           <div className="w-full  my-10 opacity-20  flex-col flex items-center justify-center">
             <img className="w-20  aspect-auto opacity-50" src="/assets/icons/edit/magnifier.svg" />

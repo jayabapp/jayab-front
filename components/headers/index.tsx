@@ -1,7 +1,7 @@
 "use client";
 import { useParams, useSearchParams } from "next/navigation";
 import { useRouter, usePathname } from "next/navigation";
-import React, { useEffect, useState } from "react";
+import React, { Suspense, useEffect, useState } from "react";
 import { throttle } from "lodash";
 import dynamic from "next/dynamic";
 import Link from "next/link";
@@ -22,7 +22,7 @@ import { UserService } from "@/api_services/user/user.service";
 import { ChatService } from "@/api_services/chat/chat.service";
 import { NEW_IMAGE_URL } from "@/utils/urls";
 const PopSearchbox = dynamic(() => import("../SearchBoxComp/PopSearchbox"), {
-  ssr: false,
+  ssr: true,
 });
 
 type textIconType = {
@@ -312,17 +312,19 @@ transition-all  ease-in-out duration-1000 header-content-container w-full mx-aut
                             />
                           </Link>
                         ) : (
-                          <PopSearchbox
-                            justIcon
-                            boxId={scroll ? "SEARCH_BOX_Mobile_Modal" : "SEARCH_BOX_Mobile"}
-                            placeholder={_STRINGS?.SEARCH_CITY_OR_ADD}
-                            onSubmit={(text) => setsearchText(text)}
-                            onClear={() => {
-                              setsearchText("");
-                            }}
-                            item={{ bg: "" }}
-                            autofocus={isInSearch}
-                          />
+                          <Suspense>
+                            <PopSearchbox
+                              justIcon
+                              boxId={scroll ? "SEARCH_BOX_Mobile_Modal" : "SEARCH_BOX_Mobile"}
+                              placeholder={_STRINGS?.SEARCH_CITY_OR_ADD}
+                              onSubmit={(text) => setsearchText(text)}
+                              onClear={() => {
+                                setsearchText("");
+                              }}
+                              item={{ bg: "" }}
+                              autofocus={isInSearch}
+                            />
+                          </Suspense>
                         )}
                       </div>
                     )}

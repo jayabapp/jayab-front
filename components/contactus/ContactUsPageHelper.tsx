@@ -22,7 +22,7 @@ const ContactUsPageHelper = () => {
   const Map = useMemo(
     () =>
       dynamic(() => import("@/components/Map/MapPlaceShower"), {
-        ssr: false,
+        ssr: true,
       }),
     []
   );
