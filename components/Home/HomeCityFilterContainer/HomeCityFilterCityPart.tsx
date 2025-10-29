@@ -28,7 +28,7 @@ const HomeCityFilterCityPart = () => {
           src="/assets/icons/shared/skiny_blue_chevron_left.svg"
         />
       </div>
-      <CityModal onHide={onHideCities} show={showCities} passedUrl={"/rooms"} />
+      <CityModal isHome onHide={onHideCities} show={showCities} passedUrl={"/rooms"} />
     </>
   );
 };

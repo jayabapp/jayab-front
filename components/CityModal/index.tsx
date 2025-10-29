@@ -28,6 +28,7 @@ const CityModal = ({
   passedUrl,
   onSubmitCustomeCB,
   customeValues,
+  isHome,
 }: {
   show: boolean;
   onHide: () => void | null;
@@ -36,6 +37,7 @@ const CityModal = ({
   passedUrl?: string;
   onSubmitCustomeCB?: (e: any) => void | null;
   customeValues?: any;
+  isHome?: boolean;
 }) => {
   const router = useRouter();
   const pathname = usePathname();
@@ -178,7 +180,10 @@ const CityModal = ({
 
       delete body.page;
       if (!!passedUrl) {
-        router.push(`${passedUrl}?${queryBuilder(body)}`);
+        if (!!isHome && !body?.province_id && isEmpty(body?.cities)) {
+        } else {
+          router.push(`${passedUrl}?${queryBuilder(body)}`);
+        }
       } else {
         router.replace(`${pathname}?${queryBuilder(body)}`);
       }
