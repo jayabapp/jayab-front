@@ -13,6 +13,7 @@ type dates = {
   active_days?: number[] | undefined;
   callenderData?: OwnerCallendarItemDto[] | undefined;
   prefix?: string;
+  disablePrevMonths?: boolean;
   setSelectedDay?: (e: any | null) => void | null;
   setChosenDateState?: (e: any | null) => void | null;
   options?: { valueType: "persian" | "global"; showTimeOfTheDay?: boolean };
@@ -24,12 +25,13 @@ const Callender = ({
   setChosenDateState,
   callenderData,
   active_days,
+  disablePrevMonths,
   options = { valueType: "persian" },
 }: dates) => {
   const [chosenDate, setChosenDate] = useState<string | number>(
     !!selectedDate ? moment(selectedDate, "jYYYY/jMM/jDD").format("jYYYY/jMM/jDD") : moment().format("jYYYY/jMM/jDD")
   );
-  const [firstTime, setFirstTime] = useState(true);
+
   const [year, setYear] = useState(moment(chosenDate, "jYYYY/jMM/jDD").format("jYYYY"));
   const [month, setMonth] = useState(moment(chosenDate, "jYYYY/jMM/jDD").format("jMMMM"));
   const [numbericMonth, setNumericMonth] = useState(moment(chosenDate).format("jMM"));
@@ -64,7 +66,11 @@ const Callender = ({
     setChosenDate(moment(chosenDate, "jYYYY/jMM/jDD").startOf("month").add(1, "months").format("jYYYY/jMM/jDD"));
   };
   const lastMonth = () => {
-    setChosenDate(moment(chosenDate, "jYYYY/jMM/jDD").startOf("month").subtract(1, "months").format("jYYYY/jMM/jDD"));
+    if (!!disablePrevMonths && moment(chosenDate, "jYYYY/jMM/jDD").month() == moment().month()) {
+      console.log("cant go back");
+    } else {
+      setChosenDate(moment(chosenDate, "jYYYY/jMM/jDD").startOf("month").subtract(1, "months").format("jYYYY/jMM/jDD"));
+    }
   };
 
   return (
@@ -86,6 +92,7 @@ const Callender = ({
           setPreventer(true);
         }
       }}
+      onDragStart={(e) => {}}
       onDragOver={(e) => {
         if (prevX > e.pageX && doTheMath(start, e.pageX) && !preventer) {
           lastMonth();
@@ -114,7 +121,7 @@ const Callender = ({
         {" "}
         {/* <YearPicker prefix={prefix} date={`${chosenDate}`} setDate={setChosenDate} month={month} year={year} />
         <MonthPicker prefix={prefix} date={`${chosenDate}`} setDate={setChosenDate} month={month} year={year} /> */}
-        <YearMonthPicker prefix={prefix} date={`${chosenDate}`} setDate={setChosenDate} month={month} year={year} />
+        <YearMonthPicker prefix={prefix} lastMonth={lastMonth} nextMonth={nextMonth} month={month} year={year} />
       </div>
       <DaysOfTheWeel />
       <DayPicker

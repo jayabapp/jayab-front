@@ -34,7 +34,7 @@ const SinglePropertyPage = async ({ params }: { params: Promise<{ room_slug: str
   }
 
   if (decodeURI(properyData?.slug) != decodeURI(pageParams?.room_slug)) {
-    redirect(`/rooms/${properyData?.slug}`);
+    redirect(`/rooms/${encodeURI(properyData?.slug)}`);
   }
 
   return (

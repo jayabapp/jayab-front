@@ -17,7 +17,7 @@ export async function middleware(request: NextRequest) {
           .toString()
       : ""
   }`;
-
+  console.log(headers, "headersheaders");
   headers.set("x-canonical", HREF);
 
   if (

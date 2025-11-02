@@ -96,97 +96,83 @@ const ProfileDropdown = ({ notifBadge }: { notifBadge?: number | string }) => {
         >
           <div className="absolute left-0  z-20  mt-2 w-48 origin-top-center  rounded-xl bg-white dark:bg-zinc-800 shadow-xl ring-1 ring-black ring-opacity-5 focus:outline-none  overflow-scroll">
             <div className="px-1 py-2 ">
-              <MenuItem key={`safasfsafq`}>
-                <Link className="" prefetch={false} href={`/notifications`}>
+              <Link key={`safasfsafq`} className="" prefetch={false} href={`/notifications`}>
+                <div
+                  className={` relative hover:bg-primary-700/80 dark:hover:bg-zinc-600  cursor-pointer hover:text-white text-gray-600 dark:text-gray-300 group flex w-full gap-2 items-center rounded-md px-2 py-2 text-sm font-light no-underline`}
+                >
+                  <div className="relative">
+                    {" "}
+                    <AbsoluteBadge count={Number(notifBadge) || 0} />
+                    <img
+                      src={`/assets/icons/header/prof_dropdownn_bell.svg`}
+                      className={`w-6 h-6 aspect-square ${asPath.includes("notifications") ? " " : ""} dark:invert `}
+                    />
+                  </div>
+                  <p className="text-sm"> {_STRINGS.MY_NOTIFS}</p>
+                </div>
+              </Link>
+
+              {!!userInfo?.owner_id ? (
+                <Link key={`myAdd2s`} className="" prefetch={false} href={`/profile/owner/properties`}>
                   <div
                     className={` relative hover:bg-primary-700/80 dark:hover:bg-zinc-600  cursor-pointer hover:text-white text-gray-600 dark:text-gray-300 group flex w-full gap-2 items-center rounded-md px-2 py-2 text-sm font-light no-underline`}
                   >
                     <div className="relative">
                       {" "}
-                      <AbsoluteBadge count={Number(notifBadge) || 0} />
                       <img
-                        src={`/assets/icons/header/prof_dropdownn_bell.svg`}
+                        src={`/assets/icons/header/header_my_adds.svg`}
                         className={`w-6 h-6 aspect-square ${asPath.includes("notifications") ? " " : ""} dark:invert `}
                       />
                     </div>
-                    <p className="text-sm"> {_STRINGS.MY_NOTIFS}</p>
+                    <p className="text-sm"> {"آگهی های من"}</p>
                   </div>
                 </Link>
-              </MenuItem>
-
-              {!!userInfo?.owner_id ? (
-                <MenuItem key={`myAdd2s`}>
-                  <Link className="" prefetch={false} href={`/profile/owner/properties`}>
-                    <div
-                      className={` relative hover:bg-primary-700/80 dark:hover:bg-zinc-600  cursor-pointer hover:text-white text-gray-600 dark:text-gray-300 group flex w-full gap-2 items-center rounded-md px-2 py-2 text-sm font-light no-underline`}
-                    >
-                      <div className="relative">
-                        {" "}
-                        <img
-                          src={`/assets/icons/header/header_my_adds.svg`}
-                          className={`w-6 h-6 aspect-square ${
-                            asPath.includes("notifications") ? " " : ""
-                          } dark:invert `}
-                        />
-                      </div>
-                      <p className="text-sm"> {"آگهی های من"}</p>
-                    </div>
-                  </Link>
-                </MenuItem>
               ) : (
                 <></>
               )}
 
               {!!userInfo?.advisor_id ? (
-                <MenuItem key={`myAdds52`}>
-                  <Link className="" prefetch={false} href={`/profile/advisor/subscription`}>
-                    <div
-                      className={` relative hover:bg-primary-700/80 dark:hover:bg-zinc-600  cursor-pointer hover:text-white text-gray-600 dark:text-gray-300 group flex w-full gap-2 items-center rounded-md px-2 py-2 text-sm font-light no-underline`}
-                    >
-                      <div className="relative">
-                        {" "}
-                        <img
-                          src={`/assets/icons/header/header_my_sub.svg`}
-                          className={`w-6 h-6 aspect-square ${
-                            asPath.includes("/profile/advisor/subscription") ? " " : ""
-                          } dark:invert `}
-                        />
-                      </div>
-                      <p className="text-sm"> {"بخش مشاور"}</p>
+                <Link key={`myAdds52`} className="" prefetch={false} href={`/profile/advisor/subscription`}>
+                  <div
+                    className={` relative hover:bg-primary-700/80 dark:hover:bg-zinc-600  cursor-pointer hover:text-white text-gray-600 dark:text-gray-300 group flex w-full gap-2 items-center rounded-md px-2 py-2 text-sm font-light no-underline`}
+                  >
+                    <div className="relative">
+                      {" "}
+                      <img
+                        src={`/assets/icons/header/header_my_sub.svg`}
+                        className={`w-6 h-6 aspect-square ${
+                          asPath.includes("/profile/advisor/subscription") ? " " : ""
+                        } dark:invert `}
+                      />
                     </div>
-                  </Link>
-                </MenuItem>
+                    <p className="text-sm"> {"بخش مشاور"}</p>
+                  </div>
+                </Link>
               ) : (
                 <></>
               )}
               {profileDropDownItems.map((e) => (
-                <MenuItem key={e.id}>
-                  <Link prefetch={false} href={e?.route}>
-                    <div
-                      className={`hover:bg-primary-700/80 dark:hover:bg-zinc-600  cursor-pointer hover:text-white text-gray-600 dark:text-gray-300 group flex w-full gap-2 items-center rounded-md px-2 py-2 text-sm font-light no-underline`}
-                    >
-                      <img
-                        src={e?.imgSrc}
-                        className={`w-6 h-6 aspect-square ${asPath.includes(e?.route) ? " " : ""} dark:invert `}
-                      />
-                      <p className="text-sm"> {e?.title}</p>
-                    </div>
-                  </Link>
-                </MenuItem>
+                <Link key={`${e.id}pItem`} prefetch={false} href={e?.route}>
+                  <div
+                    key={e.id}
+                    className={`hover:bg-primary-700/80 dark:hover:bg-zinc-600  cursor-pointer hover:text-white text-gray-600 dark:text-gray-300 group flex w-full gap-2 items-center rounded-md px-2 py-2 text-sm font-light no-underline`}
+                  >
+                    <img
+                      src={e?.imgSrc}
+                      className={`w-6 h-6 aspect-square ${asPath.includes(e?.route) ? " " : ""} dark:invert `}
+                    />
+                    <p className="text-sm"> {e?.title}</p>
+                  </div>
+                </Link>
               ))}
-              <MenuItem>
-                <button
-                  className={` text-red-500
+              <button
+                className={` text-red-500
                      group flex w-full px-2    items-center rounded-md  gap-2 py-2 text-sm font-medium`}
-                  onClick={() => setisVisible(true)}
-                >
-                  <img
-                    src={"/assets/icons/header/header_logout.svg"}
-                    className={`w-6 h-6 aspect-square dark:invert `}
-                  />{" "}
-                  {_STRINGS.LOGOUT_TITLE}
-                </button>
-              </MenuItem>
+                onClick={() => setisVisible(true)}
+              >
+                <img src={"/assets/icons/header/header_logout.svg"} className={`w-6 h-6 aspect-square dark:invert `} />{" "}
+                {_STRINGS.LOGOUT_TITLE}
+              </button>
             </div>
           </div>
         </Transition>
