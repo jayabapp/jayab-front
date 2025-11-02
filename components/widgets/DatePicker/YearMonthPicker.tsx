@@ -4,14 +4,24 @@ import _STRINGS from "@/utils/LocalStrings";
 
 moment.loadPersian({ dialect: "persian-modern" });
 type props = {
+  date: string;
   year: string;
   month: string;
   prefix?: string;
-  lastMonth: () => void | null;
-  nextMonth: () => void | null;
+  disablePrevMonths?: boolean;
+  setDate: (e: any | null) => void | null;
 };
 
-const YearMonthPicker = ({ month, year, prefix, lastMonth, nextMonth }: props) => {
+const YearMonthPicker = ({ date, setDate, month, year, prefix, disablePrevMonths }: props) => {
+  const nextMonth = () => {
+    setDate(moment(date, "jYYYY/jMM/jDD").startOf("month").add(1, "month").format("jYYYY/jMM/jDD"));
+  };
+  const lastMonth = () => {
+    if (!!disablePrevMonths && moment(date, "jYYYY/jMM/jDD").month() == moment().month()) {
+      console.log("cant go back");
+    } else setDate(moment(date, "jYYYY/jMM/jDD").startOf("month").subtract(1, "month").format("jYYYY/jMM/jDD"));
+  };
+
   return (
     <div className="flex snap-x w-full justify-between items-center  px-4">
       <div className="flex items-center gap-2">

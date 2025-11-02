@@ -16,7 +16,7 @@ import { PropertyService } from "@/api_services/property/property.service";
 import Button from "@/components/shared/Button/Button";
 import FiltersPart from "./FiltersPart";
 import FiltersSelectedFiltersShowcase from "@/components/Filters/FiltersSelectedFiltersShowcase";
-import SsrClinetPartFilterProperties from "@/components/Filters/SsrClinetPartFilterProperties";
+import SsrClinetPartFilterProperties, { removeKeyArray } from "@/components/Filters/SsrClinetPartFilterProperties";
 import { SingleLandingDto } from "@/api_services/property/property.interface";
 import { isArray, isEmpty, last } from "lodash";
 import SsrPartFilter from "@/components/Filters/SsrPartFilter";
@@ -88,6 +88,7 @@ const SsrFilterPage = ({ landings, firstData }: { firstData: { data: any[] }; la
       ...items,
     };
     delete body.categories;
+    removeKeyArray(hiddenFilters, body);
 
     setDefaultMobileFilters(body);
     router.replace(`${pathname}?${queryBuilder(body)}`);
@@ -179,7 +180,12 @@ const SsrFilterPage = ({ landings, firstData }: { firstData: { data: any[] }; la
                 hiddenFilters={hiddenFilters}
                 containerClass="   !hidden md:!contents "
                 setFilterModalShow={setFilterModalShow}
-                query={queries}
+                query={(() => {
+                  let temp = { ...queries };
+                  removeKeyArray(hiddenFilters, temp);
+
+                  return temp;
+                })()}
                 propertyTypes={propertyTypes || {}}
               />
             </div>{" "}
@@ -196,11 +202,13 @@ const SsrFilterPage = ({ landings, firstData }: { firstData: { data: any[] }; la
             firstData?.data?.length % 51 == 0 ? (
               <Button
                 onClick={() => {
+                  let temp = { ...queries };
+                  removeKeyArray(hiddenFilters, temp);
                   window?.history?.replaceState(
                     {},
                     "",
                     `${pathname}?${queryBuilder({
-                      ...queries,
+                      ...temp,
                       page: 2,
                     })}`
                   );
@@ -211,7 +219,12 @@ const SsrFilterPage = ({ landings, firstData }: { firstData: { data: any[] }; la
             ) : (
               <></>
             )}
-            <SsrClinetPartFilterProperties pageQuery={queriesParams?.page} sortType={sortType} query={queries} />
+            <SsrClinetPartFilterProperties
+              pageQuery={queriesParams?.page}
+              sortType={sortType}
+              query={queries}
+              hiddenFilters={hiddenFilters}
+            />
           </div>
           <SsrFilterPageContents data={landings} />
         </div>

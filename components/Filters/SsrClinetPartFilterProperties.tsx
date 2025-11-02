@@ -49,9 +49,21 @@ type SsrClinetPartFilterPropertiesType = {
   sortType?: { id?: string };
   pageQuery: string | null | undefined;
   query: any;
+  hiddenFilters: string[];
 };
 
-function SsrClinetPartFilterProperties({ sortType, query, pageQuery }: SsrClinetPartFilterPropertiesType) {
+export const removeKeyArray = (keys: string[], object: { [keys: string]: any }) => {
+  for (let index = 0; index < keys.length; index++) {
+    delete object?.[keys[index]];
+  }
+};
+
+function SsrClinetPartFilterProperties({
+  sortType,
+  query,
+  pageQuery,
+  hiddenFilters,
+}: SsrClinetPartFilterPropertiesType) {
   const router = useRouter();
   const pathname = usePathname();
   const [refetcherBoolean, setRefetcherBoolean] = useState(false);
@@ -60,14 +72,19 @@ function SsrClinetPartFilterProperties({ sortType, query, pageQuery }: SsrClinet
   const [data, setData] = useState<PropertyListDto[]>([]);
   const [page, setPage] = useState(pageQuery ? Number(pageQuery) : 1);
   useEffect(() => {
-    setData([]);
-    let temp = { ...query };
-    setRefetcherBoolean(!refetcherBoolean);
-    router.replace(
-      `${pathname}?${queryBuilder({
-        ...temp,
-      })}`
-    );
+    if (!!hiddenFilters) {
+      setData([]);
+      let temp = { ...query };
+      removeKeyArray(hiddenFilters, temp);
+      setRefetcherBoolean(!refetcherBoolean);
+      if (!!temp) {
+        router.replace(
+          `${pathname}?${queryBuilder({
+            ...temp,
+          })}`
+        );
+      }
+    }
   }, [sortType, JSON.stringify(query)]);
 
   const {
@@ -191,11 +208,13 @@ function SsrClinetPartFilterProperties({ sortType, query, pageQuery }: SsrClinet
               scrollThreshold={0.5}
               dataLength={data?.length} //This is important field to render the next data
               next={() => {
+                let temp = { ...query };
+                removeKeyArray(hiddenFilters, temp);
                 window?.history?.replaceState(
                   {},
                   "",
                   `${pathname}?${queryBuilder({
-                    ...query,
+                    ...temp,
                     page: propQueryData?.meta?.next || 1,
                     // sort_type: query.sort_type ? query.sort_type : sortType?.id,
                   })}`
@@ -227,7 +246,16 @@ function SsrClinetPartFilterProperties({ sortType, query, pageQuery }: SsrClinet
           currentPage={page}
           pageSize={propQueryData?.meta?.perPage}
           totalCount={propQueryData?.meta?.total}
-          query={query}
+          query={
+            !!hiddenFilters
+              ? (() => {
+                  let temp = { ...query };
+                  removeKeyArray(hiddenFilters, temp);
+
+                  return temp;
+                })()
+              : query
+          }
         />
       ) : (
         <></>

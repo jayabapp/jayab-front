@@ -45,7 +45,7 @@ const Header = ({ scroll }: { scroll?: number }) => {
   const router = useRouter();
   const pathname = usePathname();
   const params = useParams();
-  const { room_slug } = params;
+  const { room_slug, slug } = params;
   const searchParams: any = useSearchParams();
   const { isLogin } = useAuthStore((state: any) => state);
   const searchTextInparam = searchParams.get("q");
@@ -178,6 +178,7 @@ const Header = ({ scroll }: { scroll?: number }) => {
       setBackHomeCode(false);
     }
   }, [room_slug]);
+
   return (
     <header className="relative">
       <div
@@ -260,7 +261,7 @@ transition-all  ease-in-out duration-1000 header-content-container w-full mx-aut
                     if (utm_source == "true" || backHomeCode) {
                       removeLocalBackHomeFunc();
                       router.push("/");
-                    } else if (pathname == "/profile/orders") {
+                    } else if (pathname == "/profile/orders" || !!slug) {
                       router.push("/");
                     } else {
                       router.back();

@@ -109,7 +109,7 @@ export const createPropertySteps = (id?: null | number) => [
     link: `/profile/owner/properties/${id}/edit/price?edit_mode=true`,
   },
   {
-    full_title: "اطلاعات دستیار مالک",
+    full_title: "اطلاعات دستیار میزبان",
     title: "دستیار",
     id: 8,
     link: `/profile/owner/properties/${id}/edit/assistants?edit_mode=true`,
@@ -149,7 +149,7 @@ export const allRoutes: { [key: string]: string } = {
 
   advisor: "مشاور",
   "is-especial": "مشاور ویژه",
-  assistants: "افزودن دستیار مالک",
+  assistants: "افزودن دستیار میزبان",
   initials: _STRINGS.REGISTER_PROPERTY,
   location: _STRINGS.SUBMIT_PROPERTY,
   media: _STRINGS.PROPERTY_MEDIA,

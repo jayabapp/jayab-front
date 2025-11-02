@@ -121,7 +121,14 @@ const Callender = ({
         {" "}
         {/* <YearPicker prefix={prefix} date={`${chosenDate}`} setDate={setChosenDate} month={month} year={year} />
         <MonthPicker prefix={prefix} date={`${chosenDate}`} setDate={setChosenDate} month={month} year={year} /> */}
-        <YearMonthPicker prefix={prefix} lastMonth={lastMonth} nextMonth={nextMonth} month={month} year={year} />
+        <YearMonthPicker
+          prefix={prefix}
+          date={`${chosenDate}`}
+          setDate={setChosenDate}
+          month={month}
+          year={year}
+          disablePrevMonths={disablePrevMonths}
+        />
       </div>
       <DaysOfTheWeel />
       <DayPicker

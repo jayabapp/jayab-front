@@ -26,9 +26,9 @@ const PropertyContactInfoItem = ({
     <div className="w-full py-3 border-t first:border-t-0   flex flex-row items-center justify-between  ">
       <div className="flex flex-row items-center gap-3 ">
         <img
-          src={!!image && !!!!data?.is_owner ? NEW_IMAGE_URL(image) : "/assets/icons/profile/profile_holder.svg"}
+          src={!!image && !!data?.is_owner ? NEW_IMAGE_URL(image) : "/assets/images/add/wall_e_lover.png"}
           className={` w-10 h-10  md:w-14 md:h-14 aspect-square rounded-full ${
-            !!image && !!!!data?.is_owner ? "border border-primary-700" : ""
+            !!image && !!data?.is_owner ? "border border-primary-700" : ""
           } `}
         />
         <div className="flex flex-col items-start gap-2">

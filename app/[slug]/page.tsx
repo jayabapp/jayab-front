@@ -10,6 +10,7 @@ import * as Sentry from "@sentry/nextjs";
 import MehaHeaderHelper from "@/helpers/MetaHeaderHelper";
 import { headers } from "next/headers";
 import { HTMLGenerator } from "@/helpers/html.generator";
+import { isArray } from "lodash";
 function Fallback() {
   return <LottieLoading />;
 }
@@ -25,6 +26,7 @@ export async function generateMetadata({ params }: Props, parent: ResolvingMetad
   const paramData = await params;
   const requestHeaders = await headers();
   const xCanonical = await requestHeaders?.get("x-canonical");
+
   const { data: landings } = await serverCall(baseUrl + apiRoutes.SINGLE_USER_LANDING_PAGE(paramData?.slug));
 
   return {
@@ -51,11 +53,21 @@ export default async function PropertiesPage({
   const searchParamsData = await searchParams;
   const { data: landings } = await serverCall(baseUrl + apiRoutes.SINGLE_USER_LANDING_PAGE(paramData?.slug));
 
+  let defaults: any = {};
+  if (!!landings?.query) {
+    Object.keys(landings?.query)?.map((e) => {
+      if (isArray(landings?.query?.[e])) {
+        return (defaults[e] = `${landings?.query?.[e]?.map((x) => x)}`);
+      } else return (defaults[e] = landings?.query?.[e]);
+    });
+  }
+
   const data =
-    (await !isEmpty(searchParamsData)) && !searchParamsData?.page
+    ((await !isEmpty(searchParamsData)) || (await !isEmpty(defaults))) && !searchParamsData?.page
       ? await serverCall(baseUrl + apiRoutes.GET_PROPERTIES, {
           page: 1,
           per_page: 51,
+          ...defaults,
           ...searchParamsData,
         })
       : null;

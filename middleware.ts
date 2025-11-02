@@ -17,8 +17,8 @@ export async function middleware(request: NextRequest) {
           .toString()
       : ""
   }`;
-  console.log(headers, "headersheaders");
-  headers.set("x-canonical", HREF);
+
+  headers.set("x-canonical", `${process.env.NEXT_PUBLIC_WEB_SITE}${PATH_NAME}`);
 
   if (
     !headers.get("referer")?.includes("localhost") &&
