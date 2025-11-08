@@ -28,11 +28,10 @@ export async function middleware(request: NextRequest) {
       const HASHED = md5(decodeURI(HREF));
 
       const { data } = await serverCall(baseUrl + apiRoutes.REDIRECT_CHECK(HASHED) + `?href=${HREF}`);
-
       if (!!data) {
         const response = NextResponse.redirect(new URL(data?.destination, request.url), data?.permanent ? 308 : 307);
-        // response.headers.set("is-refresh", "1");
-        response.headers.set("x-canonical", data?.destination);
+
+        response.headers.set("x-canonical", encodeURI(data?.destination));
         return response;
       }
     }
