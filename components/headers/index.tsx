@@ -180,8 +180,6 @@ const Header = ({ scroll }: { scroll?: number }) => {
   //   }
   // }, [room_slug]);
 
-  useEffect(() => {}, []);
-
   return (
     <header className="relative">
       <div
@@ -261,10 +259,10 @@ transition-all  ease-in-out duration-1000 header-content-container w-full mx-aut
                 <img
                   src="/assets/icons/shared/chevron-right.svg"
                   onClick={(e) => {
-                    if (!!getBackHome) {
+                    if (!!getBackHome && !!room_slug) {
                       // removeLocalBackHomeFunc();
                       router.push("/");
-                    } else if (pathname == "/profile/orders") {
+                    } else if (pathname == "/profile/orders" || (!!slug && !room_slug)) {
                       router.push("/");
                     } else {
                       router.back();
