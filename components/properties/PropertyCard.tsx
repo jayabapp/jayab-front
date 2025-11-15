@@ -18,11 +18,21 @@ import { simpleWeekDays } from "@/utils/constantss";
 const PropertyCard = ({ data, isOwner, week }: { data: PropertyListDto; isOwner?: boolean; week?: string[] }) => {
   const { likes, ssrLikedProducts } = useStoreParams((state) => state);
   const goToLink = !!isOwner ? `/profile/owner/properties/${data?.id}` : `/rooms/${data?.slug}`;
+
+  const removeredirectRoomToHome = () => {
+    useStoreParams.setState({ getBackHome: false });
+  };
+
   return (
     <div className="w-full shadow-card  rounded-2xl    justify-between flex flex-col  p-3   gap-2  ">
       <div className="w-full  grid grid-cols-5 gap-2   ">
         {/* INFO */}
-        <Link href={`${goToLink}`} prefetch={false} className="col-span-3  !outline-none order-1  flex flex-col gap-1">
+        <Link
+          onClick={removeredirectRoomToHome}
+          href={`${goToLink}`}
+          prefetch={false}
+          className="col-span-3  !outline-none order-1  flex flex-col gap-1"
+        >
           {/* TITLE */}
           <div className="flex items-start gap-2">
             {!!data?.has_blue_tick ? (
@@ -127,6 +137,7 @@ const PropertyCard = ({ data, isOwner, week }: { data: PropertyListDto; isOwner?
         </Link>{" "}
         {/* IMAGE PART */}
         <Link
+          onClick={removeredirectRoomToHome}
           href={`${goToLink}`}
           prefetch={false}
           className=" flex h-fit !outline-none items-start  justify-start w-full col-span-2  order-2 "

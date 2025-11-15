@@ -123,12 +123,15 @@ const CreatePropertyPricing = () => {
             />
           </div>
           <div className=" flex flex-col gap-2 border-b   pb-8 w-full">
-            <div className="w-full flex items-center justify-between ">
+            <div className="w-full flex items-start justify-between ">
               {" "}
-              <p className="font-bold w-fit text-start  text-sm md:text-base text-primary-700  ">
-                {_STRINGS.COMITION_PERC}
-              </p>
-              <p className="text-primary-700 text-sm">{` % ${values?.advisor_commission} `}</p>
+              <div className="flex flex-col gap-2">
+                <p className="font-bold w-fit text-start  text-sm md:text-base text-primary-700  ">
+                  {_STRINGS.COMITION_PERC} ( اختیاری )
+                </p>
+                <p className=" text-xs text-primary-800 md:text-sm">{_STRINGS.hOW_MUCH_DO_U_WANT_TO_COMM}</p>
+              </div>
+              <p className="text-primary-700  shrink-0 text-sm">{` % ${values?.advisor_commission} `}</p>
             </div>
             <div className="flex px-4 items-center justify-center">
               {" "}

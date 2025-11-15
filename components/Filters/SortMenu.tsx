@@ -79,24 +79,23 @@ const SortMenu = ({ query }: SortMenuType) => {
             <div className="flex gap-2 px-3 items-center flex-col  py-2 border-b border-gray-275 dark:border-zinc-500 ">
               {" "}
               {sortTypes.map((e) => (
-                <MenuItem key={e.id}>
-                  <div
-                    className={`w-full pl-8  py-2 border-t first:border-t-0 pt-2 gap-2 flex items-center cursor-pointer relative`}
-                    onClick={() => {
-                      if (query?.sort_type == e?.id) {
-                        // setTag(null);
-                      } else setTag(e?.id);
-                    }}
-                  >
-                    {query?.sort_type == e?.id ? (
-                      <img className="absolute left-2 " src="/assets/icons/adds/blue_tick.svg" />
-                    ) : (
-                      <></>
-                    )}
-                    <img src={e?.icon} className=" w-4 h-4 aspect-square" />
-                    <p className="text-xs text-black dark:text-zinc-300 opacity-70"> {e?.title}</p>
-                  </div>
-                </MenuItem>
+                <div
+                  key={e.id}
+                  className={`w-full pl-8  py-2 border-t first:border-t-0 pt-2 gap-2 flex items-center cursor-pointer relative`}
+                  onClick={() => {
+                    if (query?.sort_type == e?.id) {
+                      // setTag(null);
+                    } else setTag(e?.id);
+                  }}
+                >
+                  {query?.sort_type == e?.id ? (
+                    <img className="absolute left-2 " src="/assets/icons/adds/blue_tick.svg" />
+                  ) : (
+                    <></>
+                  )}
+                  <img src={e?.icon} className=" w-4 h-4 aspect-square" />
+                  <p className="text-xs text-black dark:text-zinc-300 opacity-70"> {e?.title}</p>
+                </div>
               ))}
             </div>
           </div>

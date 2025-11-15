@@ -48,6 +48,7 @@ const Header = ({ scroll }: { scroll?: number }) => {
   const { room_slug, slug } = params;
   const searchParams: any = useSearchParams();
   const { isLogin } = useAuthStore((state: any) => state);
+  const { getBackHome } = useStoreParams((state: any) => state);
   const searchTextInparam = searchParams.get("q");
   const utm_source = searchParams.get("utm_source");
 
@@ -157,27 +158,29 @@ const Header = ({ scroll }: { scroll?: number }) => {
   /*                             SET GET GO BACKHOME                            */
   /* -------------------------------------------------------------------------- */
 
-  useEffect(() => {
-    const splitedRoomSlug = `${room_slug}`?.split("-");
-    if (!!room_slug) {
-      if (splitedRoomSlug?.[1] == "s") {
-        localStorage.setItem("back-home-code", splitedRoomSlug?.[0]);
-      }
-    }
-  }, [room_slug]);
+  // useEffect(() => {
+  //   const splitedRoomSlug = `${room_slug}`?.split("-");
+  //   if (!!room_slug) {
+  //     if (splitedRoomSlug?.[1] == "s") {
+  //       localStorage.setItem("back-home-code", splitedRoomSlug?.[0]);
+  //     }
+  //   }
+  // }, [room_slug]);
 
-  const removeLocalBackHomeFunc = () => {
-    localStorage.removeItem("back-home-code");
-  };
-  useEffect(() => {
-    const splitedRoomSlug = `${room_slug}`?.split("-");
-    const backHomeCodeStorage = localStorage.getItem("back-home-code");
-    if (splitedRoomSlug?.[0] == backHomeCodeStorage) {
-      setBackHomeCode(true);
-    } else {
-      setBackHomeCode(false);
-    }
-  }, [room_slug]);
+  // const removeLocalBackHomeFunc = () => {
+  //   localStorage.removeItem("back-home-code");
+  // };
+  // useEffect(() => {
+  //   const splitedRoomSlug = `${room_slug}`?.split("-");
+  //   const backHomeCodeStorage = localStorage.getItem("back-home-code");
+  //   if (splitedRoomSlug?.[0] == backHomeCodeStorage) {
+  //     setBackHomeCode(true);
+  //   } else {
+  //     setBackHomeCode(false);
+  //   }
+  // }, [room_slug]);
+
+  useEffect(() => {}, []);
 
   return (
     <header className="relative">
@@ -258,10 +261,10 @@ transition-all  ease-in-out duration-1000 header-content-container w-full mx-aut
                 <img
                   src="/assets/icons/shared/chevron-right.svg"
                   onClick={(e) => {
-                    if (utm_source == "true" || backHomeCode) {
-                      removeLocalBackHomeFunc();
+                    if (!!getBackHome) {
+                      // removeLocalBackHomeFunc();
                       router.push("/");
-                    } else if (pathname == "/profile/orders" || !!slug) {
+                    } else if (pathname == "/profile/orders") {
                       router.push("/");
                     } else {
                       router.back();
@@ -302,7 +305,7 @@ transition-all  ease-in-out duration-1000 header-content-container w-full mx-aut
                         {pathname.includes("/rooms/") ? (
                           <Link
                             onClick={() => {
-                              removeLocalBackHomeFunc();
+                              // removeLocalBackHomeFunc();
                             }}
                             className="w-5 h-5 aspect-square"
                             href={"/"}

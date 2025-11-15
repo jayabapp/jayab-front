@@ -29,6 +29,7 @@ export type ParamStore = {
   showInstallPrompt: boolean;
   sideBarStatus: boolean;
   loginModal: boolean;
+  getBackHome: boolean;
   likes: number[];
   bookmarks: number[];
   ssrLikedProducts?: { [key: string]: number | string };
@@ -43,6 +44,7 @@ export const useStoreParams = create<ParamStore>((set) => ({
   loginModal: false,
   loginModalCancelRoute: "",
   isAdvisor: false,
+  getBackHome: true,
   likes: [],
   bookmarks: [],
   ssrLikedProducts: {},
