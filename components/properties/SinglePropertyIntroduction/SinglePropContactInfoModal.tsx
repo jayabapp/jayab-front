@@ -51,7 +51,7 @@ const SinglePropContactInfoModal = ({
             <LinearSkeleton width={"100%"} />
           </div>
         ) : isEmpty(contactInfo) ? (
-          <p className="w-full text-center">{_STRINGS?.EMPTY_LIST}</p>
+          <p className="w-full text-center">{_STRINGS?.EMPTY_CONTACT_LIST}</p>
         ) : (
           state?.map((e) => (
             <PropertyContactInfoItem

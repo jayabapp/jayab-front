@@ -76,7 +76,7 @@ const Authorize = () => {
         className="w-full flex items-center justify-center
  flex-col"
       >
-        <p className="w-full text-start">{_STRINGS.NATIONAL_CARD_IMAGE} :</p>
+        <p className="w-full text-start">{_STRINGS.NATIONAL_CARD_IMAGE_AUTH} :</p>
 
         <MainUploader
           title={_STRINGS.IMAGE}
@@ -100,7 +100,7 @@ const Authorize = () => {
       </div>
 
       <div className=" flex items-start w-full flex-wrap gap-2">
-        <p>{_STRINGS.DOCS_IMAGES}</p>
+        <p>{_STRINGS.DOCS_IMAGE_AUTH} :</p>
         <div className=" w-full  min-h-8">
           {!!totalLength && !!uploaderLoading && totalLength > 1 ? (
             <div className="flex flex-col gap-2 w-full">
