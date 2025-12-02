@@ -109,6 +109,25 @@ const Footer = () => {
               <></>
             )}
           </div>
+
+          {process.env.NEXT_PUBLIC_ENAMAD_ID && process.env.NEXT_PUBLIC_ENAMAD_CODE && (
+            <div className="flex flex-row w-fit  items-center justify-center gap-5">
+              <a
+                referrerPolicy="origin"
+                className="w-16 h-16"
+                target="_blank"
+                href={`https://trustseal.enamad.ir/?id=${process.env.NEXT_PUBLIC_ENAMAD_ID}&Code=${process.env.NEXT_PUBLIC_ENAMAD_CODE}`}
+              >
+                <img
+                  referrerPolicy="origin"
+                  className="w-16 h-16"
+                  src={`https://trustseal.enamad.ir/logo.aspx?id=${process.env.NEXT_PUBLIC_ENAMAD_ID}&Code=${process.env.NEXT_PUBLIC_ENAMAD_CODE}`}
+                  alt=""
+                  id={process.env.NEXT_PUBLIC_ENAMAD_CODE}
+                />
+              </a>
+            </div>
+          )}
         </div>
         {/* SOCIALS */}
       </div>
