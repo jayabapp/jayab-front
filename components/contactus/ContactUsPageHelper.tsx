@@ -1,18 +1,18 @@
 "use client";
 
-import { HomeService } from "@/api_services/home/home.service";
 import Breadcrumbs from "@/components/BreadCrumbs";
 import Editable from "@/components/Editable";
 
 import CreateMarker from "@/components/Map/CreateMarker";
 import ContactUsPageItem from "@/components/contactus/ContactUsPageItem";
 import ContactuUItem from "@/components/contactus/ContactuUItem";
+import { HTMLGenerator } from "@/helpers/html.generator";
 
 import _STRINGS from "@/utils/LocalStrings";
 
 import dynamic from "next/dynamic";
 
-import React, { Suspense, useEffect, useMemo, useRef, useState } from "react";
+import { Suspense, useEffect, useMemo, useState } from "react";
 
 const ContactUsPageHelper = ({ data }: { data: any }) => {
   const Map = useMemo(
@@ -34,6 +34,11 @@ const ContactUsPageHelper = ({ data }: { data: any }) => {
       url: "/assets/icons/forms/location.svg",
     });
   }, [locationPosition]);
+
+  const { html } = HTMLGenerator(data?.data[0]?.category?.description || "", {
+    hasHeading: true,
+    hasCount: true,
+  });
 
   return (
     <div id="homeParent" className="container    transition-all duration-500 ease-in-out ">
@@ -69,8 +74,13 @@ const ContactUsPageHelper = ({ data }: { data: any }) => {
         </div>
         <div className="flex w-full  md:order-1 order-1 flex-col items-center md:items-start justify-center ">
           {" "}
-          {data?.data && data?.data[0]?.category?.description ? (
-            <p className="text-sm text-justify  mt-8">{data?.data[0]?.category?.description}</p>
+          {data?.data && !!html ? (
+            <div
+              className=" !text-justify  content blogBody category_table transition-all leading-7 px-2 md:px-[5%] "
+              dangerouslySetInnerHTML={{
+                __html: html,
+              }}
+            />
           ) : (
             <></>
           )}

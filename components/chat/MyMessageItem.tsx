@@ -1,19 +1,19 @@
-import React, { Fragment, useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 
-import { useRef } from "react";
+import { NewSingleChatDto } from "@/api_services/chat/chat.interface";
 import _STRINGS from "@/utils/LocalStrings";
-import { NewSingleChatDto, SingleChatDto } from "@/api_services/chat/chat.interface";
-import moment from "moment-jalaali";
 import { NEW_IMAGE_URL } from "@/utils/urls";
-import Notify from "../shared/Toast";
-import ChatItemMoreOptions from "./ChatItemMoreOptions";
+import moment from "moment-jalaali";
+import { useRef } from "react";
 import FullscreenImage from "../uploader/FullScreenImage";
+import ChatItemMoreOptions from "./ChatItemMoreOptions";
 
 type itemType = {
   data: NewSingleChatDto;
   index: number;
   length: number;
 };
+moment.loadPersian();
 
 const MyMessageItem = ({ data, index, length }: itemType) => {
   const refer = useRef<HTMLDivElement>(null);
@@ -89,6 +89,7 @@ const MyMessageItem = ({ data, index, length }: itemType) => {
         >
           {!data?.media && !data?.text ? _STRINGS.DELETED_MESSAGE : data?.text}
         </p>
+
         <div className="w-full absolute left-4 bottom-1 flex items-center justify-end gap-1">
           {/* {data?.seen ? (
           <img src="/assets/icons/chat/double-tick.svg" className="brightness-200" />
@@ -96,6 +97,9 @@ const MyMessageItem = ({ data, index, length }: itemType) => {
           <img src="/assets/icons/chat/tick.svg" />
         )} */}
           {/* <p className="text-xxs md:text-xs">{moment(data?.created_at).format(" hh:mm  - jYYYY/jMM/jDD")}</p> */}
+        </div>
+        <div className="w-full absolute left-4 bottom-1 flex items-center justify-end gap-1">
+          <p className="text-xxs md:text-xs">{moment(data?.created_at).format(" hh:mm  - jYYYY/jMM/jDD")}</p>
         </div>
       </div>
       {show && (

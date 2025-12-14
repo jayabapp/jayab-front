@@ -1,8 +1,12 @@
 import { Cropper, CropperRef } from "react-advanced-cropper";
 //import "react-advanced-cropper/dist/style.css";
-import "react-advanced-cropper/dist/themes/compact.css";
+import _STRINGS from "@/utils/LocalStrings";
 import * as Sentry from "@sentry/nextjs";
-import React, { useEffect, useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
+import "react-advanced-cropper/dist/themes/compact.css";
+import Modal from "../Modal";
+import Button from "../shared/Button/Button";
+import FixedBottomContainer from "../shared/FixedBottomContainer";
 import {
   RatioIcon11,
   RatioIcon12,
@@ -12,10 +16,6 @@ import {
   RatioIcon52,
   RatioIconFree,
 } from "./icons/ratio-icons";
-import Button from "../shared/Button/Button";
-import Modal from "../Modal";
-import _STRINGS from "@/utils/LocalStrings";
-import FixedBottomContainer from "../shared/FixedBottomContainer";
 
 type Props = {
   imageUrl: string;

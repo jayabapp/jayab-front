@@ -33,3 +33,28 @@ messaging.onBackgroundMessage(function (payload) {
     registration.showNotification(notificationTitle, notificationOptions);
   });
 });
+
+// messaging.onBackgroundMessage((payload) => {
+//   if (payload.notification) {
+//     // Browser already displayed it
+//     return;
+//   }
+
+//   self.registration.showNotification("payload.notification.title", {
+//     body: "payload.notification.body",
+//     data: payload.data,
+//   });
+// });
+
+// self.addEventListener("notificationclick", (event) => {
+//   event.notification.close();
+
+//   console.log("✅ CLICK FIRED", event.notification.data);
+
+//   const { type, chatroom_id } = event.notification.data;
+
+//   let url = "/";
+//   if (type === "chat") url = `/chat/${chatroom_id}`;
+
+//   event.waitUntil(clients.openWindow(url));
+// });
