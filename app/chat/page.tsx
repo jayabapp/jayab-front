@@ -7,8 +7,9 @@ import EmptyList from "@/components/shared/Lotties/EmptyList";
 import LottieLoading from "@/components/shared/Lotties/LottieLoading";
 import { useChatStore } from "@/store";
 import { useQuery } from "@tanstack/react-query";
+import { produce } from "immer";
 import { isEmpty } from "lodash";
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 
 const ChatListPage = () => {
   const { chatNotification } = useChatStore((state) => state);
@@ -28,14 +29,22 @@ const ChatListPage = () => {
   }, [data]);
 
   useEffect(() => {
-    if (!!chatNotification?.chatroom_id && chats) {
+    if (chatNotification) {
       if (chats?.find((e) => e?.uuid == chatNotification?.chatroom_id)) {
-        const comingChatMessage = chats?.find((e) => e?.uuid == chatNotification?.chatroom_id);
-        const newChats = chats?.filter((e) => e?.uuid != chatNotification?.chatroom_id);
-        if (!!comingChatMessage) {
-          comingChatMessage.unread_count = `${Number(comingChatMessage?.unread_count) + 1} `;
-          setChats([comingChatMessage, ...newChats]);
-        }
+        setChats((current) =>
+          produce(current, (draft) => {
+            const i = draft.findIndex((e) => e.uuid === chatNotification.chatroom_id);
+            if (i !== -1) {
+              draft[i].unread_count = (Number(draft[i].unread_count) || 0) + 1;
+              draft[i].last_message.text = chatNotification?.message?.text;
+              draft[i].last_message.updated_at = chatNotification?.message?.created_at;
+            }
+            if (i > 0) {
+              const [item] = draft.splice(i, 1);
+              draft.unshift(item);
+            }
+          })
+        );
       } else {
         refetch();
       }

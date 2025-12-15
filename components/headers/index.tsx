@@ -1,26 +1,24 @@
 "use client";
-import { useParams, useSearchParams } from "next/navigation";
-import { useRouter, usePathname } from "next/navigation";
-import React, { Suspense, useEffect, useState } from "react";
 import { throttle } from "lodash";
 import dynamic from "next/dynamic";
 import Link from "next/link";
+import { useParams, usePathname, useRouter, useSearchParams } from "next/navigation";
+import React, { Suspense, useEffect, useState } from "react";
 
 import _STRINGS from "@/utils/LocalStrings";
 
-import { useAuthStore, useStoreInit, useStoreParams } from "@/store";
-import HeaderTitle from "./HeaderTitle";
-import DrawerMenu from "../shared/DrawerMenu";
-import ProfileDropdown from "./ProfileDropdown";
-import MenuDropDown from "./MenuDropDown";
-import Button from "../shared/Button/Button";
-import AbsoluteBadge from "./AbsoluteBadge";
-import { headerBlackList, headerMobileBlackList } from "@/utils/constantss";
-import { PropertyService } from "@/api_services/property/property.service";
-import { useQuery } from "@tanstack/react-query";
-import { UserService } from "@/api_services/user/user.service";
 import { ChatService } from "@/api_services/chat/chat.service";
+import { PropertyService } from "@/api_services/property/property.service";
+import { UserService } from "@/api_services/user/user.service";
+import { useAuthStore, useStoreInit, useStoreParams } from "@/store";
 import { NEW_IMAGE_URL } from "@/utils/urls";
+import { useQuery } from "@tanstack/react-query";
+import Button from "../shared/Button/Button";
+import DrawerMenu from "../shared/DrawerMenu";
+import AbsoluteBadge from "./AbsoluteBadge";
+import HeaderTitle from "./HeaderTitle";
+import MenuDropDown from "./MenuDropDown";
+import ProfileDropdown from "./ProfileDropdown";
 const PopSearchbox = dynamic(() => import("../SearchBoxComp/PopSearchbox"), {
   ssr: true,
 });
@@ -45,7 +43,7 @@ const Header = ({ scroll }: { scroll?: number }) => {
   const router = useRouter();
   const pathname = usePathname();
   const params = useParams();
-  const { room_slug, slug } = params;
+  const { room_slug, slug, chat_id } = params;
   const searchParams: any = useSearchParams();
   const { isLogin } = useAuthStore((state: any) => state);
   const { getBackHome } = useStoreParams((state: any) => state);
@@ -180,6 +178,10 @@ const Header = ({ scroll }: { scroll?: number }) => {
   //   }
   // }, [room_slug]);
 
+  const removeredirectRoomToHome = () => {
+    useStoreParams.setState({ getBackHome: false });
+  };
+
   return (
     <header className="relative">
       <div
@@ -259,8 +261,8 @@ transition-all  ease-in-out duration-1000 header-content-container w-full mx-aut
                 <img
                   src="/assets/icons/shared/chevron-right.svg"
                   onClick={(e) => {
-                    if (!!getBackHome && !!room_slug) {
-                      // removeLocalBackHomeFunc();
+                    if (!!getBackHome && (!!room_slug || !!chat_id)) {
+                      removeredirectRoomToHome();
                       router.push("/");
                     } else if (pathname == "/profile/orders" || (!!slug && !room_slug)) {
                       router.push("/");
@@ -292,7 +294,12 @@ transition-all  ease-in-out duration-1000 header-content-container w-full mx-aut
                         <></>
                       )
                     ) : pathname.includes("/profile") ? (
-                      <Link href={"/"}>
+                      <Link
+                        onClick={() => {
+                          removeredirectRoomToHome();
+                        }}
+                        href={"/"}
+                      >
                         <img
                           src="/assets/icons/navbar/home_nav.svg"
                           className="transition-all grayscale opacity-50  hover:opacity-100 hover:grayscale-0"
