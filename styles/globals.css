@@ -603,6 +603,7 @@ textarea {
   @apply !pt-24 !-mt-20 !mb-2;
 }
 .content {
+  font-kerning: none;
   a {
     @apply !text-primary-700 !underline !underline-offset-4;
   }
