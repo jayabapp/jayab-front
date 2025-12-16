@@ -76,7 +76,7 @@ const ContactUsPageHelper = ({ data }: { data: any }) => {
           {" "}
           {data?.data && !!html ? (
             <div
-              className=" !text-justify  content blogBody category_table transition-all leading-7 px-2 md:px-[5%] "
+              className=" !text-justify whitespace-pre-wrap  content blogBody category_table transition-all leading-7  "
               dangerouslySetInnerHTML={{
                 __html: html,
               }}
