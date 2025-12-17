@@ -54,7 +54,7 @@ const RootLayout = async ({
             height="0" width="0" style="display:none;visibility:hidden"></iframe>`,
           }}
         />
-        <noscript
+        <script
           dangerouslySetInnerHTML={{
             __html: `!function (t, e, n) {
 t.yektanetAnalyticsObject = n, t[n] = t[n] || function () {
