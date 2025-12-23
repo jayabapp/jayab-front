@@ -15,7 +15,7 @@ const BannersContainer = ({ banners, devices }: ImageCarouselTypes) => {
     
        w-full h-full  md:gap-3 lg:grid-cols-3  px-0  `}
     >
-      <ImageCarousel devices={devices} item={{ showCount: 1.5 }} list={banners || []} />
+      <ImageCarousel devices={devices} list={banners || []} />
     </div>
   );
 };
