@@ -26,10 +26,10 @@ export async function generateMetadata({ params }: Props, parent: ResolvingMetad
 
 const SinglePropertyPage = async ({
   params,
-  isModal,
-}: {
+}: // isModal,
+{
   params: Promise<{ room_slug: string }>;
-  isModal?: boolean;
+  // isModal?: boolean;
 }) => {
   const pageParams = await params;
 
@@ -47,13 +47,15 @@ const SinglePropertyPage = async ({
     <div className=" !pb-48 lg:!pb-36   gap-4 justify-start items-start container grid grid-cols-1  md:grid-cols-2  !h-auto   !overflow-x-visible">
       {!!properyData ? (
         <>
-          {!!isModal ? (
+          {/* {!!isModal ? (
             <head>
               <title>{properyData?.title}</title>
+              <meta property="og:title" content="Title Here" />
+              <meta property="og:description" content="Description Here" />
             </head>
           ) : (
             <></>
-          )}
+          )} */}
 
           <ProductSchema data={properyData} />
           <PlaceSchema data={properyData} />

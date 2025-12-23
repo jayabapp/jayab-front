@@ -2,7 +2,6 @@ import Headers from "@/components/headers";
 import AnimationlessModal from "@/components/Modal/AnimationlessModal";
 import dynamic from "next/dynamic";
 
-import SinglePropertyPage from "@/app/rooms/[room_slug]/page";
 import Footer from "@/components/Footer";
 import { headers } from "next/headers";
 
@@ -50,6 +49,8 @@ const ModalServer = async ({ params }: { params: Promise<{ room_slug: string }> 
   //   }, [properyData]);
   const requestHeaders = await headers();
   const xPath = requestHeaders?.get("x-pathname");
+
+  console.log(xPath, "xPathxPath");
   return (
     <AnimationlessModal
       show={xPath?.includes("rooms/") ? true : false}
@@ -61,7 +62,7 @@ const ModalServer = async ({ params }: { params: Promise<{ room_slug: string }> 
     >
       <Headers />
       <div className=" w-full">
-        <SinglePropertyPage isModal params={params} />
+        {/* <SinglePropertyPage isModal params={params} /> */}
         {/* {!!isPending ? (
           <ProductSkeleton />
         ) : !!properyData ? (

@@ -1,4 +1,4 @@
-import ModalServer from "./ModalServer";
+import ModalClient from "./ModalClient";
 
 type Props = {
   params: Promise<{ room_slug: string }>;
@@ -18,12 +18,12 @@ type Props = {
 
 export default async function Page({ params }: { params: Promise<{ room_slug: string }> }) {
   const pageParams = await params;
-  // return <ModalClient params={pageParams} />;
-  return (
-    <>
-      <ModalServer params={params} />
-    </>
-  );
+  return <ModalClient params={pageParams} />;
+  // return (
+  //   <>
+  //     <ModalServer params={params} />
+  //   </>
+  // );
 }
 
 // import PropertiesModal from "@/components/properties/PropertiesModal";
