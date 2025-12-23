@@ -1,21 +1,18 @@
 "use client";
-import React, { Suspense, useEffect, useRef, useState } from "react";
+import { Suspense, useEffect, useState } from "react";
 
 import { NEW_IMAGE_URL } from "../../../utils/urls";
 // import Modal from "../shared/Modal";
 
-import Image from "next/image";
-import _STRINGS from "@/utils/LocalStrings";
 import { ImageDto } from "@/api_services/auth/auth.interface";
 
+import { SingleOwnerPropertyDto, SinglePropDto } from "@/api_services/property/property.interface";
 import { difference, isEmpty } from "lodash";
 import ProductImage from "./ProductImage";
-import { SingleOwnerPropertyDto, SinglePropDto } from "@/api_services/property/property.interface";
 import RoomImageModalPart from "./RoomImageModalPart";
 
 import { useStoreInit } from "@/store";
 import dynamic from "next/dynamic";
-import BlockSkeleton from "../ProductSkeleton/BlockSkeleton";
 const Swiper = dynamic(() => import("@/components/embelaCarousel/Swiper"));
 const SwiperSlide = dynamic(() => import("@/components/embelaCarousel/SwiperSlide"));
 // const ProductOptionsContainer = dynamic(() => import("./ProductOptionsContainer"), {
@@ -175,20 +172,7 @@ function ProductImagesContainer({
           <Suspense>
             {" "}
             <Swiper
-              LoadingSkeleton={
-                <div className="   !rounded-20  overflow-clip w-full h-full">
-                  {" "}
-                  <img
-                    src={NEW_IMAGE_URL(addImages?.[0] || "", "thumbnail")}
-                    className={`w-full h-full !p-0  transform-gpu  blur-sm !overflow-clip  bg-white  transition-all 
-                  
-                      !rounded-20 duration-500 aspect-square !object-cover `}
-                    alt={`${addImages?.[0]?.alt || ""}`}
-                  />
-                </div>
-              }
               slidesWidth={{ def: "100%", md: "100%" }}
-              spacing="0rem"
               options={{ align: "center", direction: "rtl", dragFree: false }}
               onShowCountClick={(activeIndex: any) => {
                 setModalProps({ isVisible: true, data: data, currentIndex: activeIndex });

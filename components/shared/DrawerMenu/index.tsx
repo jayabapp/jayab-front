@@ -1,19 +1,8 @@
 import { Transition, TransitionChild } from "@headlessui/react";
 
-import { useRouter, usePathname } from "next/navigation";
-import React, { useEffect, useState } from "react";
+import { usePathname, useRouter } from "next/navigation";
+import { useEffect, useState } from "react";
 
-import Button from "../Button/Button";
-
-import FormInput from "../Form/FormInput";
-import _STRINGS from "@/utils/LocalStrings";
-
-import { isArray } from "lodash";
-import Notify from "../Toast";
-import { useMutation, useQuery } from "@tanstack/react-query";
-import { AuthService } from "@/api_services/auth/auth.service";
-import { isMobile } from "react-device-detect";
-import Link from "next/link";
 import { Divider } from "../Divider";
 
 type DrawerMenuType = {
@@ -105,7 +94,7 @@ const DrawerContent = ({ onSelect, isOpen, setIsOpen }: drawerMenuContentType) =
           <img
             src="/assets/icons/logo/logo.svg"
             onClick={() => router?.replace("/")}
-            alt="bazar_tour"
+            alt="jayab"
             className="w-44 h-auto object-contain "
           />
         </div>

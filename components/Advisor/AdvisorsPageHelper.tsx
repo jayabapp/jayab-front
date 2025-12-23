@@ -10,17 +10,15 @@ import BtnLoading from "@/components/shared/Button/BtnLoading";
 import Button from "@/components/shared/Button/Button";
 import EmptyList from "@/components/shared/Lotties/EmptyList";
 import LottieLoading from "@/components/shared/Lotties/LottieLoading";
-import SimpleAccordion from "@/components/shared/SimpleAccorion";
 import queryBuilder from "@/helpers/queryBuilder";
 import useQueryGet from "@/helpers/queryGet";
 import { useAuthStore, useStoreInit, useStoreParams } from "@/store";
-import { fakeConsultants } from "@/utils/faker";
 import _STRINGS from "@/utils/LocalStrings";
 import { useQuery } from "@tanstack/react-query";
 import { last } from "lodash";
 import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
-import React, { Suspense, useEffect, useState } from "react";
+import { Suspense, useEffect, useState } from "react";
 import InfiniteScroll from "react-infinite-scroll-component";
 
 import dynamic from "next/dynamic";

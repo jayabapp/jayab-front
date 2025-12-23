@@ -37,7 +37,6 @@ const RootLayout = async ({
   const { data: appSetting }: { data: InnitSettingsDto } = await serverCall(baseUrl + apiRoutes.APP_SETTINGS);
 
   // safe defaults for LayoutProvider (root layout doesn't receive params/modal)
-  const params: Record<string, string> = {};
   // const modal: ReactNode = null;
 
   return (
@@ -77,9 +76,7 @@ s.src = "https://cdn.yektanet.com/rg_woebegone/scripts_v3/Sfsc56h6/rg.complete.j
         <link rel="manifest" href="/manifest.json" />
       </head>
       <body className={`${x_Iransans.className}`}>
-        <LayoutProvider modal={modal} params={params}>
-          {children}
-        </LayoutProvider>
+        <LayoutProvider modal={modal}>{children}</LayoutProvider>
       </body>
     </html>
   );

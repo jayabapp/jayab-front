@@ -1,17 +1,29 @@
 "use client";
-import { debounce } from "lodash";
-import React, { Suspense, useCallback, useEffect, useRef, useState } from "react";
-import { useSearchParams } from "next/navigation";
-import HistoryMaker from "./HistoryMaker";
-import { useQuery } from "@tanstack/react-query";
-import SuggestedPart from "./SuggestedPart";
-import { isMobile } from "react-device-detect";
-import SmallLoading from "../shared/Lotties/SmallLoading";
 import { HomeService } from "@/api_services/home/home.service";
 import _STRINGS from "@/utils/LocalStrings";
-import ModalHeaderPart from "../Modal/ModalHeaderPart";
+import { useQuery } from "@tanstack/react-query";
+import { debounce } from "lodash";
 import dynamic from "next/dynamic";
+import { useSearchParams } from "next/navigation";
+import { Suspense, useCallback, useEffect, useRef, useState } from "react";
+import { isMobile } from "react-device-detect";
+import ModalHeaderPart from "../Modal/ModalHeaderPart";
+import SmallLoading from "../shared/Lotties/SmallLoading";
+import HistoryMaker from "./HistoryMaker";
+import SuggestedPart from "./SuggestedPart";
 const HistorySuggPart = dynamic(() => import("./HistorySuggPart"), { ssr: true });
+
+// Separate client component that uses useSearchParams
+const SearchParamExtractor = ({ onSearchParam }: { onSearchParam: (param: string | null) => void }) => {
+  const searchParam = useSearchParams().get("q");
+
+  useEffect(() => {
+    onSearchParam(searchParam);
+  }, [searchParam, onSearchParam]);
+
+  return null;
+};
+
 interface props {
   initValue?: string | undefined;
   placeholder?: string;
@@ -41,7 +53,7 @@ const PopSearchbox = ({
   boxId = "SEARCH_BOX",
   justIcon = false,
 }: props) => {
-  const searchParam = useSearchParams().get("q");
+  const [searchParam, setSearchParam] = useState<string | null>(null);
   const [showPop, setShowPop] = useState(false);
   const inputRef = useRef<HTMLInputElement>(null);
   const primeInputRef = useRef<HTMLInputElement>(null);
@@ -139,6 +151,9 @@ const PopSearchbox = ({
 
   return (
     <div className={`${containerClass} relative`}>
+      <Suspense>
+        <SearchParamExtractor onSearchParam={setSearchParam} />
+      </Suspense>
       {!!justIcon ? (
         <img
           src="/assets/icons/edit/magnifier.svg"

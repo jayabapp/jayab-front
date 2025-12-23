@@ -1,14 +1,13 @@
 "use client";
-import React from "react";
+import { DeviceInfo } from "@/helpers/device.detector";
 import ImageCarousel from "../../shared/ImageCarousel";
-import _STRINGS from "@/utils/LocalStrings";
 
 type ImageCarouselTypes = {
   banners?: any[];
-  fixed_banners?: any | null;
+  devices?: DeviceInfo;
 };
 
-const BannersContainer = ({ banners, fixed_banners }: ImageCarouselTypes) => {
+const BannersContainer = ({ banners, devices }: ImageCarouselTypes) => {
   return (
     <div
       className={`
@@ -16,7 +15,7 @@ const BannersContainer = ({ banners, fixed_banners }: ImageCarouselTypes) => {
     
        w-full h-full  md:gap-3 lg:grid-cols-3  px-0  `}
     >
-      <ImageCarousel item={{ showCount: 1.5 }} list={banners || []} />
+      <ImageCarousel devices={devices} item={{ showCount: 1.5 }} list={banners || []} />
     </div>
   );
 };

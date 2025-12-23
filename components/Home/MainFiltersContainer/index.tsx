@@ -1,15 +1,22 @@
-import _, { isEmpty } from "lodash";
+import { isEmpty } from "lodash";
 
-import _STRINGS from "@/utils/LocalStrings";
-
+import { HomeLandingDto } from "@/api_services/home/home.interface";
 import EmptyList from "@/components/shared/Lotties/EmptyList";
+import { DeviceInfo } from "@/helpers/device.detector";
+import dynamic from "next/dynamic";
+import CategoryItem from "./CategoryItem";
 const Swiper = dynamic(() => import("@/components/embelaCarousel/Swiper"), { ssr: true });
 const SwiperSlide = dynamic(() => import("@/components/embelaCarousel/SwiperSlide"), { ssr: true });
-import CategoryItem from "./CategoryItem";
-import { HomeLandingDto } from "@/api_services/home/home.interface";
-import dynamic from "next/dynamic";
 
-function MainFiltersContainer({ data, title }: { data: HomeLandingDto[]; title: string }) {
+function MainFiltersContainer({
+  data,
+  title,
+  devices,
+}: {
+  data: HomeLandingDto[];
+  title: string;
+  devices?: DeviceInfo;
+}) {
   // const ref = useRef<Swiper>(null);
   return (
     <div className={` w-full noSelect   select-none   relative  rounded-20 flex gap-2 md:gap-2 flex-col items-center`}>
@@ -28,9 +35,33 @@ function MainFiltersContainer({ data, title }: { data: HomeLandingDto[]; title: 
           </div>
         ) : (
           <Swiper
+            slidesPerView={!!devices?.isMobile || !!devices?.isTablet ? 4 : 8}
+            spaceBetween={15}
+            breakPoints={{
+              320: {
+                slidesPerView: 4,
+                spaceBetween: 15,
+              },
+              640: {
+                slidesPerView: 4,
+                spaceBetween: 15,
+              },
+              // when window width is >= 768px
+              768: {
+                slidesPerView: 4,
+                spaceBetween: 15,
+              },
+              1024: {
+                slidesPerView: 8,
+                spaceBetween: 15,
+              },
+              1600: {
+                slidesPerView: 8,
+                spaceBetween: 15,
+              },
+            }}
             withArrows
             slidesWidth={{ def: "25%", md: "12.5%" }}
-            spacing="0"
             options={{ align: "start", direction: "rtl", dragFree: true }}
           >
             {data?.map((i, index: number) => (

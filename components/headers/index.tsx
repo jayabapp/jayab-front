@@ -2,7 +2,7 @@
 import { throttle } from "lodash";
 import dynamic from "next/dynamic";
 import Link from "next/link";
-import { useParams, usePathname, useRouter, useSearchParams } from "next/navigation";
+import { useParams, usePathname, useRouter } from "next/navigation";
 import React, { Suspense, useEffect, useState } from "react";
 
 import _STRINGS from "@/utils/LocalStrings";
@@ -44,15 +44,11 @@ const Header = ({ scroll }: { scroll?: number }) => {
   const pathname = usePathname();
   const params = useParams();
   const { room_slug, slug, chat_id } = params;
-  const searchParams: any = useSearchParams();
   const { isLogin } = useAuthStore((state: any) => state);
   const { getBackHome } = useStoreParams((state: any) => state);
-  const searchTextInparam = searchParams.get("q");
-  const utm_source = searchParams.get("utm_source");
 
   const [visibleTopHeader, setVisibleTopHeader] = useState(true);
   const [theme, setTheme] = useState("dark");
-  const [searchText, setsearchText] = useState<string | null>(null);
   const [backHomeCode, setBackHomeCode] = useState(false);
   const [isOpen, setIsOpen] = useState(false);
 
@@ -79,12 +75,6 @@ const Header = ({ scroll }: { scroll?: number }) => {
       else setVisibleTopHeader(true);
     }
   }, [scroll]);
-
-  useEffect(() => {
-    if (!searchTextInparam) {
-      setsearchText(null);
-    }
-  }, [searchTextInparam]);
 
   /* -------------------------- GET USER FOR DROPDOWN ------------------------- */
   const path = pathname;
@@ -326,10 +316,8 @@ transition-all  ease-in-out duration-1000 header-content-container w-full mx-aut
                               justIcon
                               boxId={scroll ? "SEARCH_BOX_Mobile_Modal" : "SEARCH_BOX_Mobile"}
                               placeholder={_STRINGS?.SEARCH_CITY_OR_ADD}
-                              onSubmit={(text) => setsearchText(text)}
-                              onClear={() => {
-                                setsearchText("");
-                              }}
+                              onSubmit={(text) => {}}
+                              onClear={() => {}}
                               item={{ bg: "" }}
                               autofocus={isInSearch}
                             />
@@ -354,23 +342,24 @@ transition-all  ease-in-out duration-1000 header-content-container w-full mx-aut
                 {" "}
                 <img
                   src="/assets/icons/logo/header_logo.svg"
-                  alt="bazar_tour"
+                  alt="jayab"
                   className="w-fit  h-auto object-contain ml-2 md:ml-2 mr-2 md:mr-0 cursor-pointer "
                 />
               </Link>
             </div>
             <div className="w-3/4">
-              <PopSearchbox
-                boxId={scroll ? "SEARCH_BOX_Modal" : "SEARCH_BOX"}
-                placeholder={_STRINGS?.SEARCH_CITY_OR_ADD}
-                onSubmit={(text) => setsearchText(text)}
-                onClear={() => {
-                  setsearchText("");
-                  // router.replace(pathname);
-                }}
-                item={{ bg: `!bg-white/70 ${pathname == "/" ? "" : "!border"} ` }}
-                autofocus={isInSearch}
-              />
+              <Suspense>
+                <PopSearchbox
+                  boxId={scroll ? "SEARCH_BOX_Modal" : "SEARCH_BOX"}
+                  placeholder={_STRINGS?.SEARCH_CITY_OR_ADD}
+                  onSubmit={(text) => {}}
+                  onClear={() => {
+                    // router.replace(pathname);
+                  }}
+                  item={{ bg: `!bg-white/70 ${pathname == "/" ? "" : "!border"} ` }}
+                  autofocus={isInSearch}
+                />
+              </Suspense>
             </div>
           </div>
           <div

@@ -1,21 +1,21 @@
-import React from "react";
+import { NEW_IMAGE_URL } from "../../../utils/urls";
 
-import { NEW_IMAGE_URL, imageUrl } from "../../../utils/urls";
-
-import "swiper/css/pagination";
-import Image from "next/image";
 import Editable from "@/components/Editable";
+import Image from "next/image";
+import "swiper/css/pagination";
 
 import Swiper from "@/components/embelaCarousel/Swiper";
 import SwiperSlide from "@/components/embelaCarousel/SwiperSlide";
+import { DeviceInfo } from "@/helpers/device.detector";
 import Link from "next/link";
 
 type ImageCarouselTypes = {
   list: any[];
   item?: { parentClass?: string; showCount?: number; imageClasses?: string };
+  devices?: DeviceInfo;
 };
 
-const ImageCarousel = ({ list, item }: ImageCarouselTypes) => {
+const ImageCarousel = ({ list, item, devices }: ImageCarouselTypes) => {
   // const onImageError = (e: any) => {
   //   e.target.src = "/assets/images/home/image_placeholder.png";
   // };
@@ -25,8 +25,31 @@ const ImageCarousel = ({ list, item }: ImageCarouselTypes) => {
       <Swiper
         pagination
         autoplay
-        spacing="0.5rem"
-        slidesWidth={{ def: "100%", md: "40%" }}
+        spaceBetween={!!devices?.isMobile || devices?.isTablet ? 15 : 5}
+        slidesPerView={!!devices?.isMobile || devices?.isTablet ? 1 : 3}
+        breakPoints={{
+          320: {
+            slidesPerView: 1,
+            spaceBetween: 15,
+          },
+          640: {
+            slidesPerView: 1,
+            spaceBetween: 5,
+          },
+          // when window width is >= 768px
+          768: {
+            slidesPerView: 1,
+            spaceBetween: 5,
+          },
+          1024: {
+            slidesPerView: 3,
+            spaceBetween: 5,
+          },
+          1600: {
+            slidesPerView: 3,
+            spaceBetween: 5,
+          },
+        }}
         options={{ align: "center", direction: "rtl", dragFree: false, loop: true }}
       >
         {" "}

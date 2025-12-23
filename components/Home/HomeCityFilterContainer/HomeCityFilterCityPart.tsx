@@ -1,7 +1,7 @@
 "use client";
 import CityModal from "@/components/CityModal";
 import _STRINGS from "@/utils/LocalStrings";
-import React, { useState } from "react";
+import { Suspense, useState } from "react";
 
 const HomeCityFilterCityPart = () => {
   const [showCities, setShowCities] = useState(false);
@@ -28,7 +28,10 @@ const HomeCityFilterCityPart = () => {
           src="/assets/icons/shared/skiny_blue_chevron_left.svg"
         />
       </div>
-      <CityModal isHome onHide={onHideCities} show={showCities} passedUrl={"/rooms"} />
+      <Suspense>
+        {" "}
+        <CityModal isHome onHide={onHideCities} show={showCities} passedUrl={"/rooms"} />
+      </Suspense>{" "}
     </>
   );
 };

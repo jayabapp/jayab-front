@@ -1,35 +1,30 @@
 "use client";
 
 import { usePathname, useRouter } from "next/navigation";
-import { ReactNode, use, useEffect, useState } from "react";
-import { Toaster } from "sonner";
+import { ReactNode, Suspense, useEffect, useState } from "react";
 import { isMobile } from "react-device-detect";
-import { Suspense } from "react";
+import { Toaster } from "sonner";
 // import { footerWhiteList, sidenavBlackList } from "../constants";
 // import { AuthService } from "@repo/api/modules/auth/auth.service";
 import { useQuery } from "@tanstack/react-query";
 import dynamic from "next/dynamic";
 // import BtnLoading from "@/components/shared/Button/BtnLoading";
 // import GrowingCircleAnimation from "@/components/shared/DarkModeToggle";
-import _STRINGS from "../LocalStrings";
 import { SocketIO } from "../../components/SocketIo";
 // import SideNav from "@/components/SideNav";
 // import DesktopHeader from "@/components/Home/HomeHeader/DesktopHeader";
 // import ConnectingBanner from "@/components/Headers/ConnectingBanner";
-import { useAuthStore, useStoreInit, useStoreParams, useStoreSocket, useStoreTheme } from "@/store";
+import { useAuthStore, useStoreInit, useStoreParams, useStoreSocket } from "@/store";
 
-import { footerBlacklist, headerBlackList, mobileFooterBlackList } from "../constantss";
-import RotatePhone from "@/components/shared/Lotties/RotatePhone";
-import Splashscreen from "@/components/SplashScreen";
-import ConnectingBanner from "@/components/headers/ConnectingBanner";
 import { AuthService } from "@/api_services/auth/auth.service";
-import Headers from "@/components/headers";
+import RotatePhone from "@/components/shared/Lotties/RotatePhone";
 import MobileFooter from "../../components/Footer/MobileFooter";
+import { headerBlackList, mobileFooterBlackList } from "../constantss";
 
-import FingerprintJS from "@fingerprintjs/fingerprintjs";
 import LoginModal from "@/components/Modal/LoginModal";
-import FCM from "../FCM";
 import { getParameter } from "@/helpers/queryGet";
+import FingerprintJS from "@fingerprintjs/fingerprintjs";
+import FCM from "../FCM";
 function FallBack() {
   return <></>;
 }
@@ -38,6 +33,10 @@ interface mainWrapper {
   children: ReactNode;
 }
 const Footer = dynamic(() => import("../../components/Footer"), {
+  ssr: true,
+});
+
+const Headers = dynamic(() => import("@/components/headers"), {
   ssr: true,
 });
 const MainWrapper = ({ children }: mainWrapper) => {
@@ -213,15 +212,10 @@ const MainWrapper = ({ children }: mainWrapper) => {
   return (
     <div className={`app-background  app-text transition-opacity`}>
       {/* <DesktopHeader /> */}
-      {!headerBlackList.includes(pathname) && (
-        <Suspense fallback={<FallBack />}>
-          <Headers />
-        </Suspense>
-      )}
+      {!headerBlackList.includes(pathname) && <Headers />}
       <div className="app-size relative " style={{ background: pathname == "/" && !isDark ? "" : "" }}>
-        {connecting && pathname.includes("/chat") ? <ConnectingBanner /> : <></>}
+        {/* {connecting && pathname.includes("/chat") ? <ConnectingBanner /> : <></>} */}
         <div style={{ minHeight: "100dvh" }} className="  mx-auto h-full   w-full   ">
-          {/* {!sidenavBlackList?.includes(pathname || "") && <SideNav />} */}
           {children}
         </div>
         <Suspense fallback={<FallBack />}>

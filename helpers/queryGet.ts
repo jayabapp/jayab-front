@@ -1,3 +1,4 @@
+"use client";
 import { useSearchParams } from "next/navigation";
 import { useMemo } from "react";
 type KeyValue = Record<string, string>;

@@ -1,13 +1,12 @@
 "use client";
-import React, { ReactNode, useCallback, useEffect, useState } from "react";
-import { EmblaOptionsType, EmblaPluginType } from "embla-carousel";
-import useEmblaCarousel from "embla-carousel-react";
-import { DotButton, useDotButton } from "./EmblaCarouselDotButton";
-import { useMediaQuery } from "react-responsive";
-import { useAutoplay } from "./EmblaCarouselAutoplay";
-import Autoplay from "embla-carousel-autoplay";
 import { NEW_IMAGE_URL } from "@/utils/urls";
+import { EmblaOptionsType, EmblaPluginType } from "embla-carousel";
+import Autoplay from "embla-carousel-autoplay";
+import useEmblaCarousel from "embla-carousel-react";
+import React, { ReactNode, useCallback, useEffect, useState } from "react";
+import { useMediaQuery } from "react-responsive";
 import { NextButton, PrevButton, usePrevNextButtons } from "./EmblaCarouselArrowButtons";
+import { useAutoplay } from "./EmblaCarouselAutoplay";
 type PropType = {
   options?: EmblaOptionsType;
   children: ReactNode;
@@ -131,8 +130,8 @@ const SwiperWithThumnails: React.FC<PropType> = (props) => {
       <div className="embla__viewport relative flex" ref={emblaRef}>
         <div className="embla__container">{emblaMainApi ? children : !!LoadingSkeleton ? LoadingSkeleton : <></>}</div>
         <div className="  embla__buttons">
-          <PrevButton onClick={onNextButtonClick} disabled={nextBtnDisabled} />
-          <NextButton onClick={onPrevButtonClick} disabled={prevBtnDisabled} />
+          {!!nextBtnDisabled ? <></> : <PrevButton onClick={onNextButtonClick} disabled={nextBtnDisabled} />}
+          {!!prevBtnDisabled ? <> </> : <NextButton onClick={onPrevButtonClick} disabled={prevBtnDisabled} />}
         </div>
       </div>
 
