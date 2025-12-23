@@ -17,7 +17,7 @@ export async function middleware(request: NextRequest) {
           .toString()
       : ""
   }`;
-
+  headers.set("x-pathname", HREF);
   headers.set("x-canonical", `${process.env.NEXT_PUBLIC_WEB_SITE}${PATH_NAME}`);
 
   if (

@@ -1,11 +1,11 @@
 "use client";
 
-import React, { Fragment, JSX, ReactNode } from "react";
 import { Dialog, Transition } from "@headlessui/react";
+import { JSX, ReactNode } from "react";
 
 type ModalProps = {
   children?: ReactNode;
-  onHide: () => void;
+  onHide?: () => void;
   show?: boolean;
   options?: op;
 };
@@ -23,7 +23,7 @@ const AnimationlessModal = ({ children, show, onHide, options }: ModalProps): JS
           as="div"
           className="relative"
           style={{ zIndex: options?.zIndex ? options?.zIndex : 1000 }}
-          onClose={onHide}
+          onClose={!!onHide ? onHide : () => {}}
         >
           <div className="fixed inset-0 bg-black bg-opacity-70 	" onClick={onHide} />
 
