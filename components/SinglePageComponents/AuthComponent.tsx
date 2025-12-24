@@ -1,21 +1,20 @@
 "use client";
 
-import { useMutation, useQuery } from "@tanstack/react-query";
-import moment from "moment-jalaali";
-import { useRouter, useSearchParams } from "next/navigation";
-import React, { useEffect, useState } from "react";
-import { useAuthStore, useStoreTheme } from "../../store";
-import Image from "next/image";
-import TheInstallPrompt from "../../components/InstallPrompt/TheInstallPrompt";
 import { AuthService } from "@/api_services/auth/auth.service";
 import { HomeService } from "@/api_services/home/home.service";
+import { p2e } from "@/helpers/NumberConverter";
+import _STRINGS from "@/utils/LocalStrings";
+import { useMutation, useQuery } from "@tanstack/react-query";
+import moment from "moment-jalaali";
+import Image from "next/image";
+import { useRouter, useSearchParams } from "next/navigation";
+import { useEffect, useState } from "react";
+import { useAuthStore } from "../../store";
 import Terms from "../auth/Terms";
+import AuthHeader from "../headers/AuthHeader";
 import Button from "../shared/Button/Button";
 import FormInput from "../shared/Form/FormInput";
 import Notify from "../shared/Toast";
-import { p2e } from "@/helpers/NumberConverter";
-import _STRINGS from "@/utils/LocalStrings";
-import AuthHeader from "../headers/AuthHeader";
 const AuthPageComponent = () => {
   const { isLogin } = useAuthStore((state) => state);
   const router = useRouter();
@@ -88,7 +87,7 @@ const AuthPageComponent = () => {
   }, [isLogin]);
   return (
     <div className="auth-container bg-cover    min-h-screen h-fit flex flex-col gap-8 items-center  md:!pb-8   relative">
-      <AuthHeader title={_STRINGS.ENTER} disableBack />
+      <AuthHeader title={_STRINGS.ENTER} />
       <div className="w-full gap-8 flex flex-col items-center md:w-3/4 mx-auto relative lg:w-[35%] bg-white  md:shadow-lg md:border   dark:bg-zinc-900 rounded-2xl  pt-0 md:pt-8   pb-8 mt-8 ">
         <div className="w-full items-center justify-center flex flex-col gap-4  ">
           {" "}

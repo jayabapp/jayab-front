@@ -1,19 +1,13 @@
 "use client";
 
-import React, { useEffect, useState } from "react";
-import _STRINGS from "../../utils/LocalStrings";
-import { apiRoutes, imageUrlBase, NEW_IMAGE_URL } from "../../utils/urls";
-import SocialList from "./SocialList";
+import { NEW_IMAGE_URL } from "../../utils/urls";
 
-import FormInput from "../shared/Form/FormInput";
-import Button from "../shared/Button/Button";
-import { useMutation, useQuery } from "@tanstack/react-query";
-import { AuthService } from "@/api_services/auth/auth.service";
-import Link from "next/link";
 import { HomeService } from "@/api_services/home/home.service";
-import CallBox from "./CallBox";
 import { footerLinks } from "@/utils/constantss";
+import { useQuery } from "@tanstack/react-query";
+import Link from "next/link";
 import ContactuUItem from "../contactus/ContactuUItem";
+import CallBox from "./CallBox";
 
 const Footer = () => {
   /* --------------------------- SUMMARY DESCRIPTION -------------------------- */
@@ -58,10 +52,15 @@ const Footer = () => {
           key={`footers`}
           className={`col-span-4 lg:col-span-2  flex w-full flex-col justify-between gap-6 h-fit order-2 lg:order-1 `}
         >
-          <div className=" flex items-center gap-4 justify-start">
+          <Link
+            href={"/"}
+            prefetch={false}
+            referrerPolicy="no-referrer"
+            className=" flex items-center gap-4 justify-start"
+          >
             <img src="/assets/icons/logo/header_logo.svg" alt={"footer_logo"} className="w-fit " />
             {/* <div className=" font-bold text-primary-700 text-3xl ">{aboutUs ? aboutUs?.title : _STRINGS?.LOGO}</div> */}
-          </div>
+          </Link>
 
           <p className=" break-words font-light text-sm dark:text-zinc-100 leading-6 opacity-100  line-clamp-4">
             {!!aboutUs ? aboutUs?.small_text || aboutUs?.full_text : ""}
@@ -147,7 +146,7 @@ const Footer = () => {
         <div className="  hidden md:flex    items-center gap-4">
           <div className="w-full   dark:text-zinc-100  text-center text-sm  ">
             تمامی حقوق مادی و معنوی این وبسایت متعلق به شرکت .
-            <a className="text-blue-500 underline underline-offset-2" href="">
+            <a className="text-blue-500 underline underline-offset-2" href="/">
               &nbsp; جایاب &nbsp;
             </a>
             میباشد

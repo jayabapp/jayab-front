@@ -4,7 +4,6 @@ import serverCall from "@/helpers/serverCall";
 import { apiRoutes, baseUrl } from "@/utils/urls";
 import { Metadata, ResolvingMetadata } from "next";
 import dynamic from "next/dynamic";
-import { Suspense } from "react";
 const ProductImagesContainer = dynamic(() => import("@/components/properties/imageComponents/PropertiesImagesPart"));
 const SinglePropertyIntroduction = dynamic(() => import("@/components/properties/SinglePropertyIntroduction"));
 const SinglePropertycallender = dynamic(() => import("@/components/properties/SinglePropertycallender"));
@@ -59,21 +58,11 @@ const SinglePropertyPage = async ({
 
           <ProductSchema data={properyData} />
           <PlaceSchema data={properyData} />
-          <Suspense>
-            {" "}
-            <ProductImagesContainer productImageId={null} data={properyData} />
-          </Suspense>
-          <Suspense>
-            {" "}
-            <SinglePropertyIntroduction data={properyData} />
-          </Suspense>
+          <ProductImagesContainer productImageId={null} data={properyData} />
+          <SinglePropertyIntroduction data={properyData} />
           {/* <SingleMobilePropertyIntroductions data={properyData} /> */}
-          <Suspense>
-            <SinglePorpertyAccards data={properyData} />
-          </Suspense>
-          <Suspense>
-            <SinglePropertycallender data={properyData} />
-          </Suspense>
+          <SinglePorpertyAccards data={properyData} />
+          <SinglePropertycallender data={properyData} />
         </>
       ) : (
         <ProductSkeleton />

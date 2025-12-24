@@ -21,12 +21,13 @@ const ImageCarousel = ({ list, item, devices }: ImageCarouselTypes) => {
   // };
 
   return (
-    <div className="h-full  col-span-full  px-4 md:pl-0 md:pr-4  py-0">
+    <div className="h-full  col-span-full  px-4 md:pl-0 md:pr-0  py-0">
       <Swiper
         pagination
         autoplay
         spaceBetween={!!devices?.isMobile || devices?.isTablet ? 15 : 5}
         slidesPerView={!!devices?.isMobile || devices?.isTablet ? 1 : 2.5}
+        viewportClassName="px-4"
         breakPoints={{
           320: {
             slidesPerView: 1,
@@ -50,7 +51,7 @@ const ImageCarousel = ({ list, item, devices }: ImageCarouselTypes) => {
             spaceBetween: 5,
           },
         }}
-        options={{ align: "center", direction: "rtl", dragFree: false, loop: true }}
+        options={{ align: "center", direction: "rtl", dragFree: true, loop: true }}
       >
         {" "}
         {list?.map((e, i) => (

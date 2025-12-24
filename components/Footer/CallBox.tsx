@@ -1,15 +1,16 @@
 "use client";
-import React from "react";
-import Button from "../shared/Button/Button";
-import Link from "next/link";
-import _STRINGS from "@/utils/LocalStrings";
 import { HomeService } from "@/api_services/home/home.service";
-import { useQuery } from "@tanstack/react-query";
-import BtnLoading from "../shared/Button/BtnLoading";
+import { useAuthStore } from "@/store";
+import _STRINGS from "@/utils/LocalStrings";
 import { NEW_IMAGE_URL } from "@/utils/urls";
+import { useQuery } from "@tanstack/react-query";
+import Link from "next/link";
 import Editable from "../Editable";
+import BtnLoading from "../shared/Button/BtnLoading";
+import Button from "../shared/Button/Button";
 
 const CallBox = () => {
+  const { isLogin } = useAuthStore((state) => state);
   const { data: footerCallUs, isLoading } = useQuery({
     queryKey: [HomeService?.CONTENT_BY_KEY_CACHEKEY, "footerCallUs"],
     queryFn: () => {
@@ -50,7 +51,12 @@ const CallBox = () => {
                 <p className=" font-bold text-white  text-base md:text-xl "> {footerCallUs?.title} </p>
                 <p className="  text-sm  text-white "> {footerCallUs?.small_text} </p>
               </div>
-              <Link href={footerCallUs?.link || ""} className="shrink-0" target="_blank" referrerPolicy="no-referrer">
+              <Link
+                href={isLogin ? footerCallUs?.link || "" : `/auth?redirect_url=${footerCallUs?.link}`}
+                className="shrink-0"
+                target="_blank"
+                referrerPolicy="no-referrer"
+              >
                 {" "}
                 <Button
                   color="themeLight"

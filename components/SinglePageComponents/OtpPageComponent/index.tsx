@@ -1,19 +1,19 @@
 "use client";
 
-import OtpInput from "./OtpInput";
-import { useMutation } from "@tanstack/react-query";
-import moment from "moment-jalaali";
-import { useRouter, useSearchParams } from "next/navigation";
-import React, { useEffect, useRef, useState } from "react";
-import Image from "next/image";
 import { AuthService } from "@/api_services/auth/auth.service";
 import AuthHeader from "@/components/headers/AuthHeader";
 import Button from "@/components/shared/Button/Button";
 import Notify from "@/components/shared/Toast";
-import { p2e } from "@/helpers/NumberConverter";
-import _STRINGS from "@/utils/LocalStrings";
-import { useAuthStore } from "@/store";
 import { calculateTimeLeft } from "@/helpers/calculateTimeLeft";
+import { p2e } from "@/helpers/NumberConverter";
+import { useAuthStore } from "@/store";
+import _STRINGS from "@/utils/LocalStrings";
+import { useMutation } from "@tanstack/react-query";
+import moment from "moment-jalaali";
+import Image from "next/image";
+import { useRouter, useSearchParams } from "next/navigation";
+import { useEffect, useRef, useState } from "react";
+import OtpInput from "./OtpInput";
 
 const OtpPageSignInComponent = ({
   socket,

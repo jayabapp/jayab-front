@@ -1,16 +1,12 @@
 import LottieLoading from "@/components/shared/Lotties/LottieLoading";
-import Filterpage from "@/components/SinglePageComponents/Filterpage";
 import SsrFilterPage from "@/components/SinglePageComponents/SsrFilterPage";
 import serverCall from "@/helpers/serverCall";
 import { apiRoutes, baseUrl } from "@/utils/urls";
-import { Metadata, ResolvingMetadata } from "next";
-import { Suspense } from "react";
 import * as Sentry from "@sentry/nextjs";
+import { Metadata, ResolvingMetadata } from "next";
 
-import MehaHeaderHelper from "@/helpers/MetaHeaderHelper";
-import { headers } from "next/headers";
-import { HTMLGenerator } from "@/helpers/html.generator";
 import { isArray } from "lodash";
+import { headers } from "next/headers";
 function Fallback() {
   return <LottieLoading />;
 }
@@ -74,9 +70,7 @@ export default async function PropertiesPage({
 
   return (
     <>
-      <Suspense fallback={<Fallback />}>
-        <SsrFilterPage firstData={data?.data ? data?.data : []} landings={landings} />
-      </Suspense>
+      <SsrFilterPage firstData={data?.data ? data?.data : []} landings={landings} />
     </>
   );
 }
