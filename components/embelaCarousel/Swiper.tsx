@@ -26,7 +26,6 @@ type PropType = {
   withSimpleArrows?: boolean;
   selectedIndexCb?: (i: any) => void | null;
   onShowCountClick?: (e: any) => void | null;
-  setSelectedIndex?: (e: any) => void | null;
 };
 
 const Swiper: React.FC<PropType> = (props) => {

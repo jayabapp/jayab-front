@@ -99,7 +99,7 @@ const MyMessageItem = ({ data, index, length }: itemType) => {
           {/* <p className="text-xxs md:text-xs">{moment(data?.created_at).format(" hh:mm  - jYYYY/jMM/jDD")}</p> */}
         </div>
         <div className="w-full absolute left-4 bottom-1 flex items-center justify-end gap-1">
-          <p className="text-xxs md:text-xs">{moment(data?.created_at).format(" hh:mm  - jYYYY/jMM/jDD")}</p>
+          <p className="text-xxs md:text-xs">{moment(data?.created_at).format(" HH:mm  - jYYYY/jMM/jDD")}</p>
         </div>
       </div>
       {show && (

@@ -1,23 +1,22 @@
 "use client";
-import _STRINGS from "@/utils/LocalStrings";
-import React, { useEffect, useState } from "react";
-import SinglePropertyPricePart from "../SinglePropertyPricePart";
-import Button from "@/components/shared/Button/Button";
-import { SinglePropDto } from "@/api_services/property/property.interface";
-import { useMutation, useQuery } from "@tanstack/react-query";
 import { ChatService } from "@/api_services/chat/chat.service";
-import FavButton from "../FavButton";
-import BookMarkButton from "../BookMarkButton";
+import { SinglePropDto } from "@/api_services/property/property.interface";
 import { PropertyService } from "@/api_services/property/property.service";
-import AuthorizationStatus from "../AuthorizationStatus";
+import Button from "@/components/shared/Button/Button";
 import FixedBottomContainer from "@/components/shared/FixedBottomContainer";
-import SinglePropContactIfoPop from "./SinglePropContactInfoPop";
 import ShareLink from "@/components/shared/shareComponent/BrowserShare";
-import SinglePropSharePop from "./SinglePropSharePop";
 import { useAuthStore, useStoreInit, useStoreParams } from "@/store";
+import _STRINGS from "@/utils/LocalStrings";
+import { useMutation, useQuery } from "@tanstack/react-query";
 import { useRouter } from "next/navigation";
-import SinglePropContactInfoModal from "./SinglePropContactInfoModal";
+import { useEffect, useState } from "react";
 import { isMobile } from "react-device-detect";
+import AuthorizationStatus from "../AuthorizationStatus";
+import BookMarkButton from "../BookMarkButton";
+import FavButton from "../FavButton";
+import SinglePropertyPricePart from "../SinglePropertyPricePart";
+import SinglePropContactInfoModal from "./SinglePropContactInfoModal";
+import SinglePropSharePop from "./SinglePropSharePop";
 
 const SinglePropertyIntroduction = ({ data }: { data: SinglePropDto }) => {
   const { isLogin } = useAuthStore((state) => state);
@@ -179,7 +178,9 @@ const SinglePropertyIntroduction = ({ data }: { data: SinglePropDto }) => {
       <div className="flex items-center gap-2   py-0.5 w-full md:justify-between">
         <div className="flex items-center gap-1">
           {data?.is_promoted && !!isMobile ? (
-            <p className="  font-bold  text-primary-700  shrink-0  text-xs  pl-1 border-l">{_STRINGS.LADDERED}</p>
+            <p className="  font-bold  text-primary-700  shrink-0  text-xs md:hidden  pl-1 border-l">
+              {_STRINGS.LADDERED}
+            </p>
           ) : (
             // <img className=" h-6" src="/assets/icons/adds/pin_point_location.svg" />
 

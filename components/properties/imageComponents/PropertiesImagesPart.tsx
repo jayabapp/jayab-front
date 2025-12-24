@@ -109,6 +109,7 @@ function ProductImagesContainer({
   //   }
   // }, [addImages]);
   if (!data) return null;
+
   return (
     <div className={`flex flex-row w-full gap-2 overflow-visible`}>
       <div className="relative  hidden md:flex  md:w-1/5 ">
@@ -178,7 +179,7 @@ function ProductImagesContainer({
                 setModalProps({ isVisible: true, data: data, currentIndex: activeIndex });
                 setCurrentIndex(activeIndex);
               }}
-              setSelectedIndex={(e) => {
+              selectedIndexCb={(e) => {
                 setCurrentIndex(e);
               }}
             >

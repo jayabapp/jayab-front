@@ -90,7 +90,7 @@ const PrivateOthersMessage = ({ data, index, length }: itemType) => {
           {!data?.media && !data?.text ? _STRINGS.DELETED_MESSAGE : data?.text}
         </p>
         <div className="w-full absolute left-4 bottom-1 flex items-center justify-end gap-1">
-          <p className="text-xxs md:text-xs">{moment(data?.created_at).format(" hh:mm  - jYYYY/jMM/jDD")}</p>
+          <p className="text-xxs md:text-xs">{moment(data?.created_at).format(" HH:mm  - jYYYY/jMM/jDD")}</p>
         </div>
       </div>
       {show && <ChatItemMoreOptions close={close} data={data} refer={refer} show={show} />}
