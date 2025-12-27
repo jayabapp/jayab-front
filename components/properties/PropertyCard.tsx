@@ -1,19 +1,15 @@
 "use client";
-import { fakeVilla } from "@/utils/faker";
-import _STRINGS from "@/utils/LocalStrings";
-import React, { useEffect } from "react";
-import AddCardPricePart from "./AddCardPricePart";
-import Link from "next/link";
 import { PropertyListDto } from "@/api_services/property/property.interface";
-import { NEW_IMAGE_URL } from "@/utils/urls";
-import StatusShower from "../shared/StatusShower";
-import PropertyCardOwnerPart from "./PropertyCardOwnerPart";
 import { useStoreParams } from "@/store";
-import DaysOfTheWeekStatus from "./DaysOfTheWeekStatus";
-import Image from "next/image";
+import _STRINGS from "@/utils/LocalStrings";
+import { NEW_IMAGE_URL } from "@/utils/urls";
 import { isEmpty } from "lodash";
-import moment from "moment-jalaali";
-import { simpleWeekDays } from "@/utils/constantss";
+import Image from "next/image";
+import Link from "next/link";
+import StatusShower from "../shared/StatusShower";
+import AddCardPricePart from "./AddCardPricePart";
+import DaysOfTheWeekStatus from "./DaysOfTheWeekStatus";
+import PropertyCardOwnerPart from "./PropertyCardOwnerPart";
 
 const PropertyCard = ({ data, isOwner, week }: { data: PropertyListDto; isOwner?: boolean; week?: string[] }) => {
   const { likes, ssrLikedProducts } = useStoreParams((state) => state);
@@ -69,7 +65,7 @@ const PropertyCard = ({ data, isOwner, week }: { data: PropertyListDto; isOwner?
 
           <div className={`w-full flex  flex-row ${"items-start"}  h-8  gap-2 justify-start`}>
             {" "}
-            <p className=" leading-5 text-xs 2xl:text-sm  shrink-0 ">{_STRINGS.TODAYS_PRICE}</p>
+            <p className=" leading-5 text-xs 2xl:text-xs  shrink-0 ">{_STRINGS.TODAYS_PRICE}</p>
             <AddCardPricePart
               data={{
                 discounted_price: data?.today_price?.discounted_price,

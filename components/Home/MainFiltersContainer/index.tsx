@@ -36,28 +36,28 @@ function MainFiltersContainer({
         ) : (
           <Swiper
             slidesPerView={!!devices?.isMobile || !!devices?.isTablet ? 4 : 8}
-            spaceBetween={15}
+            spaceBetween={0}
             breakPoints={{
               320: {
                 slidesPerView: 4,
-                spaceBetween: 15,
+                spaceBetween: 0,
               },
               640: {
                 slidesPerView: 4,
-                spaceBetween: 15,
+                spaceBetween: 0,
               },
               // when window width is >= 768px
               768: {
                 slidesPerView: 4,
-                spaceBetween: 15,
+                spaceBetween: 0,
               },
               1024: {
                 slidesPerView: 8,
-                spaceBetween: 15,
+                spaceBetween: 0,
               },
               1600: {
                 slidesPerView: 8,
-                spaceBetween: 15,
+                spaceBetween: 0,
               },
             }}
             withArrows

@@ -26,28 +26,28 @@ function HomeCityFilterContainer({
       </div>{" "}
       <SwiperEm
         slidesPerView={!!devices?.isMobile || !!devices?.isTablet ? 4 : 10}
-        spaceBetween={15}
+        spaceBetween={2}
         breakPoints={{
           320: {
             slidesPerView: 4,
-            spaceBetween: 15,
+            spaceBetween: 2,
           },
           640: {
             slidesPerView: 4,
-            spaceBetween: 15,
+            spaceBetween: 2,
           },
           // when window width is >= 768px
           768: {
             slidesPerView: 4,
-            spaceBetween: 15,
+            spaceBetween: 2,
           },
           1024: {
             slidesPerView: 8,
-            spaceBetween: 15,
+            spaceBetween: 2,
           },
           1600: {
             slidesPerView: 10,
-            spaceBetween: 15,
+            spaceBetween: 2,
           },
         }}
         withArrows

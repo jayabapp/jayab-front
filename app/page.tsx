@@ -1,3 +1,4 @@
+import HomeSearchPart from "@/components/Home/HomeSearchPart";
 import MainFiltersContainer from "@/components/Home/MainFiltersContainer";
 import TheInstallPrompt from "@/components/InstallPrompt/TheInstallPrompt";
 import { OrganizationSchema, SearchboxSchema } from "@/components/SchemaGenerator/Schemas";
@@ -8,6 +9,7 @@ import { apiRoutes, baseUrl } from "@/utils/urls";
 import { isEmpty } from "lodash";
 import { Metadata } from "next";
 import dynamic from "next/dynamic";
+import { Suspense } from "react";
 
 const BannersContainer = dynamic(() => import("@/components/Home/BannersContainer"));
 const HomeAdvisorSub = dynamic(() => import("@/components/Home/HomeAdvisorSub"));
@@ -43,7 +45,9 @@ const Home = async () => {
       ) : (
         <></>
       )} */}{" "}
-      {/* <HomeSearchPartWrapper /> */}
+      <Suspense fallback={null}>
+        <HomeSearchPart />
+      </Suspense>
       <section
         style={{
           minHeight:

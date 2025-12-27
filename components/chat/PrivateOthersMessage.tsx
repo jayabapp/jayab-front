@@ -51,7 +51,7 @@ const PrivateOthersMessage = ({ data, index, length }: itemType) => {
           setShow(true);
         }}
         className={`  ${`my-anchor-element${data?.id}`}   select-none bg-white dark:bg-dark-700 w-[70%] md:w-[40%] h-fit bg-white-200 ${
-          data?.media ? "p-1" : "p-4"
+          data?.media ? "p-1" : "p-4  pb-2"
         } rounded-xl rounded-bl-none    ${show ? "!bg-primary-50/30 " : ""}  ${data?.media ? "pt-3" : ""} `}
       >
         {/* <img className="absolute top-[-3px]   dark:hidden left-[-6px]" src="/assets/icons/chat/Polygon-white.svg" /> */}
@@ -89,7 +89,7 @@ const PrivateOthersMessage = ({ data, index, length }: itemType) => {
         >
           {!data?.media && !data?.text ? _STRINGS.DELETED_MESSAGE : data?.text}
         </p>
-        <div className="w-full absolute left-4 bottom-1 flex items-center justify-end gap-1">
+        <div className="w-full  flex items-center justify-end gap-1">
           <p className="text-xxs md:text-xs">{moment(data?.created_at).format(" HH:mm  - jYYYY/jMM/jDD")}</p>
         </div>
       </div>

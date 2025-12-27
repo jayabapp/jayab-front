@@ -53,7 +53,7 @@ const MyMessageItem = ({ data, index, length }: itemType) => {
         className={` ${`my-anchor-element${data?.id}`}  ${
           show ? "bg-primary-50/30 " : ""
         }  w-[70%] md:w-[40%]  cursor-pointer text-black relative bg-[#d7f4be] dark:bg-gray-700 z-1 ${
-          data?.media ? "p-1" : "p-4"
+          data?.media ? "p-1" : "p-4 pb-2 "
         }   rounded-xl   rounded-br-none h-fit`}
       >
         {!!data?.media ? (
@@ -98,7 +98,7 @@ const MyMessageItem = ({ data, index, length }: itemType) => {
         )} */}
           {/* <p className="text-xxs md:text-xs">{moment(data?.created_at).format(" hh:mm  - jYYYY/jMM/jDD")}</p> */}
         </div>
-        <div className="w-full absolute left-4 bottom-1 flex items-center justify-end gap-1">
+        <div className="w-full  flex items-center justify-end gap-1">
           <p className="text-xxs md:text-xs">{moment(data?.created_at).format(" HH:mm  - jYYYY/jMM/jDD")}</p>
         </div>
       </div>

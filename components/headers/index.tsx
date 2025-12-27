@@ -1,5 +1,4 @@
 "use client";
-import { throttle } from "lodash";
 import dynamic from "next/dynamic";
 import Link from "next/link";
 import { useParams, usePathname, useRouter } from "next/navigation";
@@ -46,35 +45,41 @@ const Header = ({ scroll }: { scroll?: number }) => {
   const { room_slug, slug, chat_id } = params;
   const { isLogin } = useAuthStore((state: any) => state);
   const { getBackHome } = useStoreParams((state: any) => state);
-
-  const [visibleTopHeader, setVisibleTopHeader] = useState(true);
-  const [theme, setTheme] = useState("dark");
-  const [backHomeCode, setBackHomeCode] = useState(false);
   const [isOpen, setIsOpen] = useState(false);
+  const [showLogins, setShowLogins] = useState(false);
 
   useEffect(() => {
-    window?.addEventListener("scroll", handleScroll);
-    const temp = localStorage.getItem("theme");
-    const isLoginTemp = localStorage.getItem("isLogin");
-    useAuthStore.setState({ isLogin: isLoginTemp === "true" ? true : false });
-
-    if (temp) {
-      setTheme(temp);
-    }
-    return () => window?.removeEventListener("scroll", handleScroll);
+    setTimeout(() => {
+      setShowLogins(true);
+    }, 1000);
   }, []);
 
-  const handleScroll = throttle((event) => {
-    if (window?.scrollY > 20) setVisibleTopHeader(false);
-    else setVisibleTopHeader(true);
-  }, 100);
+  // const [visibleTopHeader, setVisibleTopHeader] = useState(true);
+  // const [theme, setTheme] = useState("dark");
 
-  useEffect(() => {
-    if (scroll) {
-      if (scroll > 20) setVisibleTopHeader(false);
-      else setVisibleTopHeader(true);
-    }
-  }, [scroll]);
+  // useEffect(() => {
+  //   window?.addEventListener("scroll", handleScroll);
+  //   const temp = localStorage.getItem("theme");
+  //   const isLoginTemp = localStorage.getItem("isLogin");
+  //   useAuthStore.setState({ isLogin: isLoginTemp === "true" ? true : false });
+
+  //   if (temp) {
+  //     setTheme(temp);
+  //   }
+  //   return () => window?.removeEventListener("scroll", handleScroll);
+  // }, []);
+
+  // const handleScroll = throttle((event) => {
+  //   if (window?.scrollY > 20) setVisibleTopHeader(false);
+  //   else setVisibleTopHeader(true);
+  // }, 100);
+
+  // useEffect(() => {
+  //   if (scroll) {
+  //     if (scroll > 20) setVisibleTopHeader(false);
+  //     else setVisibleTopHeader(true);
+  //   }
+  // }, [scroll]);
 
   /* -------------------------- GET USER FOR DROPDOWN ------------------------- */
   const path = pathname;
@@ -142,32 +147,6 @@ const Header = ({ scroll }: { scroll?: number }) => {
     }
   };
 
-  /* -------------------------------------------------------------------------- */
-  /*                             SET GET GO BACKHOME                            */
-  /* -------------------------------------------------------------------------- */
-
-  // useEffect(() => {
-  //   const splitedRoomSlug = `${room_slug}`?.split("-");
-  //   if (!!room_slug) {
-  //     if (splitedRoomSlug?.[1] == "s") {
-  //       localStorage.setItem("back-home-code", splitedRoomSlug?.[0]);
-  //     }
-  //   }
-  // }, [room_slug]);
-
-  // const removeLocalBackHomeFunc = () => {
-  //   localStorage.removeItem("back-home-code");
-  // };
-  // useEffect(() => {
-  //   const splitedRoomSlug = `${room_slug}`?.split("-");
-  //   const backHomeCodeStorage = localStorage.getItem("back-home-code");
-  //   if (splitedRoomSlug?.[0] == backHomeCodeStorage) {
-  //     setBackHomeCode(true);
-  //   } else {
-  //     setBackHomeCode(false);
-  //   }
-  // }, [room_slug]);
-
   const removeredirectRoomToHome = () => {
     useStoreParams.setState({ getBackHome: false });
   };
@@ -214,35 +193,39 @@ transition-all  ease-in-out duration-1000 header-content-container w-full mx-aut
                   </div>
                 </div>
 
-                {isLogin ? (
-                  <>
-                    {" "}
-                    <div className="flex items-center py-2 px-4 gap-6">
-                      <Link prefetch={false} href={"/chat"} className="relative">
-                        <AbsoluteBadge count={chaNotifBadge?.unread_count || 0} />
-                        <img alt="chat" src="/assets/icons/header/blue_chat.svg" className="w-6 h-6 aspect-square" />
-                      </Link>
-                      <Link prefetch={false} href={"/notifications"} className="relative">
-                        <AbsoluteBadge count={notifBadge || 0} />
-                        <img
-                          alt="notificatons"
-                          src="/assets/icons/header/blue_bell.svg"
-                          className="w-6 h-6 aspect-square"
-                        />
-                      </Link>
-                    </div>
-                  </>
+                {showLogins ? (
+                  isLogin ? (
+                    <>
+                      {" "}
+                      <div className="flex items-center py-2 px-4 gap-6">
+                        <Link prefetch={false} href={"/chat"} className="relative">
+                          <AbsoluteBadge count={chaNotifBadge?.unread_count || 0} />
+                          <img alt="chat" src="/assets/icons/header/blue_chat.svg" className="w-6 h-6 aspect-square" />
+                        </Link>
+                        <Link prefetch={false} href={"/notifications"} className="relative">
+                          <AbsoluteBadge count={notifBadge || 0} />
+                          <img
+                            alt="notificatons"
+                            src="/assets/icons/header/blue_bell.svg"
+                            className="w-6 h-6 aspect-square"
+                          />
+                        </Link>
+                      </div>
+                    </>
+                  ) : (
+                    <Link prefetch={false} href={"/auth"} className="relative">
+                      {" "}
+                      <Button
+                        title={`${_STRINGS.ENTER}/${_STRINGS.REGISTER}`}
+                        containerClass="w-fit"
+                        width="w-full"
+                        roundedClass="rounded-full"
+                        icon={<img className="ml-2" alt="circular_plus" src="/assets/icons/shared/circular_plus.svg" />}
+                      />
+                    </Link>
+                  )
                 ) : (
-                  <Link prefetch={false} href={"/auth"} className="relative">
-                    {" "}
-                    <Button
-                      title={`${_STRINGS.ENTER}/${_STRINGS.REGISTER}`}
-                      containerClass="w-fit"
-                      width="w-full"
-                      roundedClass="rounded-full"
-                      icon={<img className="ml-2" alt="circular_plus" src="/assets/icons/shared/circular_plus.svg" />}
-                    />
-                  </Link>
+                  <></>
                 )}
               </div>
             ) : (
@@ -272,7 +255,7 @@ transition-all  ease-in-out duration-1000 header-content-container w-full mx-aut
                     {/**************     IN ADVISORS PAGE  WE NEED ADVISOR CREATE BUTTON  ***************/}
 
                     {pathname == "/advisors" ? (
-                      !userInfo?.advisor_id ? (
+                      !userInfo?.advisor_id && !!showLogins ? (
                         <Button
                           roundedClass="rounded-full"
                           width=" !px-3  !text-sm !py-1 w-fit "
@@ -365,7 +348,7 @@ transition-all  ease-in-out duration-1000 header-content-container w-full mx-aut
           <div
             className={` text-xs gap-2  lg:text-md  justify-between font-medium flex-row hidden lg:flex w-[60%] transition-all ease-in-out duration-1000 items-center `}
           >
-            {!!isLogin ? (
+            {!!isLogin && !!showLogins ? (
               <div className="relative">
                 <AbsoluteBadge count={chaNotifBadge?.unread_count || 0} />
                 <TextIcon
@@ -395,7 +378,7 @@ transition-all  ease-in-out duration-1000 header-content-container w-full mx-aut
                 route: "/advisors",
               }}
             />
-            {!!isLogin ? (
+            {!!isLogin && !!showLogins ? (
               <>
                 <ProfileDropdown notifBadge={notifBadge || 0} />
               </>
@@ -404,21 +387,25 @@ transition-all  ease-in-out duration-1000 header-content-container w-full mx-aut
             )}
             <MenuDropDown />
 
-            {!!isLogin ? (
-              <></>
+            {!!showLogins ? (
+              !!isLogin ? (
+                <></>
+              ) : (
+                <div className="lg:flex shrink-0 hidden items-center gap-2">
+                  <Link prefetch={false} href={"/auth"} className="shrink-0 transition-all hover:text-primary-700">
+                    <Button
+                      onClick={() => {}}
+                      title={`${_STRINGS?.ENTER} / ${_STRINGS?.REGISTER}`}
+                      containerClass="w-fit shrink-0 "
+                      width="w-full shrink-0"
+                      roundedClass="rounded-full"
+                      variant="outline"
+                    />
+                  </Link>
+                </div>
+              )
             ) : (
-              <div className="lg:flex shrink-0 hidden items-center gap-2">
-                <Link prefetch={false} href={"/auth"} className="shrink-0 transition-all hover:text-primary-700">
-                  <Button
-                    onClick={() => {}}
-                    title={`${_STRINGS?.ENTER} / ${_STRINGS?.REGISTER}`}
-                    containerClass="w-fit shrink-0 "
-                    width="w-full shrink-0"
-                    roundedClass="rounded-full"
-                    variant="outline"
-                  />
-                </Link>
-              </div>
+              <></>
             )}
 
             <Button
