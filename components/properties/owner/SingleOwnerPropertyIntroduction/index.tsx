@@ -1,15 +1,14 @@
 "use client";
-import _STRINGS from "@/utils/LocalStrings";
-import React, { useEffect, useState } from "react";
-import Button from "@/components/shared/Button/Button";
 import { SingleOwnerPropertyDto } from "@/api_services/property/property.interface";
-import SinglePropertyPricePart from "../../SinglePropertyPricePart";
-import AuthorizationStatus from "../../AuthorizationStatus";
 import StatusShower from "@/components/shared/StatusShower";
 import ShareLink from "@/components/shared/shareComponent/BrowserShare";
-import VerifyPropertyModal from "../../VerifyPropertyModal";
-import { useRouter } from "next/navigation";
+import _STRINGS from "@/utils/LocalStrings";
 import Link from "next/link";
+import { useRouter } from "next/navigation";
+import { useEffect, useState } from "react";
+import AuthorizationStatus from "../../AuthorizationStatus";
+import SinglePropertyPricePart from "../../SinglePropertyPricePart";
+import VerifyPropertyModal from "../../VerifyPropertyModal";
 
 const SingleOwnerPropertyIntroduction = ({ data }: { data: SingleOwnerPropertyDto }) => {
   const router = useRouter();
@@ -86,7 +85,7 @@ const SingleOwnerPropertyIntroduction = ({ data }: { data: SingleOwnerPropertyDt
       <div className="flex w-full gap-1">
         <img src="/assets/icons/adds/pin_point_location.svg" className="w-5 h-5 aspect-square" />
         <p className="text-xs">
-          {data?.city} <span className=" font-light  text-xs">({data?.province})</span>
+          {data?.province} - {data?.city} {data?.region ? ` - ${data?.region}` : ""}
         </p>
       </div>
       <div className="w-full flex  py-2  border-primary-200 items-center justify-between ">

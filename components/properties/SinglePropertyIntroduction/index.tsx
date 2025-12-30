@@ -176,20 +176,18 @@ const SinglePropertyIntroduction = ({ data }: { data: SinglePropDto }) => {
         <></>
       )} */}
       <div className="flex items-center gap-2   py-0.5 w-full lg:justify-between">
-        <div className="flex items-center gap-1">
-          {data?.is_promoted && !!isMobile ? (
-            <p className="  font-bold  text-primary-700  shrink-0  text-xs lg:hidden  pl-1 border-l">
-              {_STRINGS.LADDERED}
-            </p>
-          ) : (
-            // <img className=" h-6" src="/assets/icons/adds/pin_point_location.svg" />
+        {data?.is_promoted && !!isMobile ? (
+          <p className="  font-bold  text-primary-700  shrink-0  text-xs lg:hidden  pl-1 border-l">
+            {_STRINGS.LADDERED}
+          </p>
+        ) : (
+          // <img className=" h-6" src="/assets/icons/adds/pin_point_location.svg" />
 
-            <></>
-          )}
-          <p className=" hidden lg:flex">{_STRINGS.PROPERTY_LOC} :</p>
-        </div>
+          <></>
+        )}
+        <p className=" hidden lg:flex">{_STRINGS.PROPERTY_LOC} :</p>
         <p className=" text-xs lg:text-sm">
-          {data?.city} <span className=" font-light">({data?.province})</span>
+          {data?.city} <span className=" font-light">({data?.region || data?.province})</span>
         </p>
       </div>
       <div className="w-full  hidden md:flex  items-center justify-between gap-4 ">

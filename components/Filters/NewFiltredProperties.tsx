@@ -1,19 +1,17 @@
-import { difference, last } from "lodash";
-import { useRouter, usePathname } from "next/navigation";
+import { usePathname, useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 
-import queryBuilder from "@/helpers/queryBuilder";
-import InfiniteScroll from "react-infinite-scroll-component";
-import BtnLoading from "../shared/Button/BtnLoading";
-import { useQuery } from "@tanstack/react-query";
-import PropertyCard from "../properties/PropertyCard";
-import { fakeVilla } from "@/utils/faker";
-import { PropertyService } from "@/api_services/property/property.service";
-import LottieLoading from "../shared/Lotties/LottieLoading";
-import EmptyList from "../shared/Lotties/EmptyList";
 import { PropertyListDto } from "@/api_services/property/property.interface";
-import moment from "moment-jalaali";
+import { PropertyService } from "@/api_services/property/property.service";
+import queryBuilder from "@/helpers/queryBuilder";
 import { WeekDays } from "@/utils/constantss";
+import { useQuery } from "@tanstack/react-query";
+import moment from "moment-jalaali";
+import InfiniteScroll from "react-infinite-scroll-component";
+import PropertyCard from "../properties/PropertyCard";
+import BtnLoading from "../shared/Button/BtnLoading";
+import EmptyList from "../shared/Lotties/EmptyList";
+import LottieLoading from "../shared/Lotties/LottieLoading";
 import ServerSidePaginate from "../shared/Pagination/ServerSidePaginate";
 
 export interface catQueryTypes {
@@ -23,6 +21,7 @@ export interface catQueryTypes {
   min_building_area: string | null | undefined;
   sort_type: string | null | undefined;
   cities: string | null | undefined;
+  regions: string | null | undefined;
   code: string | null | undefined;
   entertainment: string | null | undefined;
   has_pool: string | null | undefined;
@@ -91,6 +90,7 @@ function FilterdPropertiesPageOrianted({ sortType, setSortType, query }: Filterd
     query?.min_building_area,
     query?.q,
     query?.cities,
+    query?.regions,
     query?.province_id,
     query?.min_commission,
     query?.max_commission,
@@ -123,6 +123,7 @@ function FilterdPropertiesPageOrianted({ sortType, setSortType, query }: Filterd
       query?.max_commission,
       query?.q,
       query?.cities,
+      query?.regions,
       query?.province_id,
       query?.checkout,
       query?.checkin,
@@ -139,6 +140,7 @@ function FilterdPropertiesPageOrianted({ sortType, setSortType, query }: Filterd
         max_commission: Number(query.max_commission) || undefined,
         per_page: 30,
         cities: query?.cities || undefined,
+        regions: query?.regions || undefined,
         code: query?.code || undefined,
         entertainment: query?.entertainment || undefined,
         has_pool: query?.has_pool || undefined,

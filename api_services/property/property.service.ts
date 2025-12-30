@@ -1,33 +1,33 @@
+import { p2e } from "@/helpers/NumberConverter";
 import { apiRoutes } from "@/utils/urls";
+import { YupValidator } from "@/utils/YupValidator";
+import { ImageDto } from "../auth/auth.interface";
 import { apiCall } from "../common/apicall.helper";
 import {
   AssistantSendDto,
   CreatePropertyStepOneDto,
   FacilitiesValuesDto,
   GetPropBadgeDto,
+  GetPropertiesPlusFilters,
   OwnerCallendarItemDto,
+  OwnerPropsRangeDto,
   OwnerSinglePropertyAuthdata,
+  PageMetaDto,
   PayPropertySubSendDto,
   PricingPropertySendDto,
+  PropertyContactIInfDto,
   PropertyListDto,
   PropertyOptionGroup,
   PropertyStatsDto,
   PropertySubsDto,
   PropertyTermsSendDto,
-  ProvienceTypesDto,
   PropInitDto,
+  ProvienceTypesDto,
   RoomInfosDto,
   SingleOwnerPropertyDto,
-  GetPropertiesPlusFilters,
-  PropertyContactIInfDto,
   SinglePropDto,
-  OwnerPropsRangeDto,
-  PageMetaDto,
 } from "./property.interface";
-import { YupValidator } from "@/utils/YupValidator";
 import { sendMediaSchema } from "./property.schema";
-import { p2e } from "@/helpers/NumberConverter";
-import { ImageDto } from "../auth/auth.interface";
 
 export class PropertyService {
   static USER_PROP_OPTIONS_CACHEKEY = "USER_PROP_OPTIONS";
@@ -434,7 +434,7 @@ export class PropertyService {
           ownership: dto.ownership,
           property_type: dto.property_type,
           province_id: dto.province_id,
-          // region_id:dto.region_id,
+          region_id: dto.region_id,
           title: dto.title,
           unit_per_floor: dto.unit_per_floor,
         }

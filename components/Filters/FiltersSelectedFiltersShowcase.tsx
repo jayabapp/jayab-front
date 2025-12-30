@@ -1,14 +1,14 @@
 import { ProvienceTypesDto } from "@/api_services/property/property.interface";
+import numberWithCommas from "@/helpers/numberWithCommas";
 import queryBuilder from "@/helpers/queryBuilder";
+import _STRINGS from "@/utils/LocalStrings";
+import moment from "moment-jalaali";
 import { usePathname, useRouter } from "next/navigation";
-import React, { Dispatch, SetStateAction, useEffect, useMemo, useRef } from "react";
-import SwiperWithNavigation from "../SwiperWithNavigation";
+import { Dispatch, SetStateAction, useMemo, useRef } from "react";
+import { isMobile } from "react-device-detect";
 import Swiper from "swiper";
 import { SwiperSlide } from "swiper/react";
-import _STRINGS from "@/utils/LocalStrings";
-import { isMobile } from "react-device-detect";
-import numberWithCommas from "@/helpers/numberWithCommas";
-import moment from "moment-jalaali";
+import SwiperWithNavigation from "../SwiperWithNavigation";
 
 const FiltersSelectedFiltersShowcase = ({
   query,

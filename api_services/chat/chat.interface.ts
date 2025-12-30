@@ -265,6 +265,7 @@ export interface PropertyChatDto {
   slug: string;
   title: string;
   feature_image: ImageDto;
+  is_expired: boolean;
 }
 
 export interface SingleChatDetailsDto {
@@ -281,6 +282,7 @@ export interface Recipient {
   participant_id: number;
   user_id: number;
   role: string;
+  user_mobile_number: string;
 }
 
 export interface SendMessageReeturnDto {
@@ -346,6 +348,7 @@ export interface ChatListDto {
   last_message: LastMessageDto;
   property_id: number;
   property_title: string;
+  other_side_mobile: string;
   property_image: ImageDto;
   unread_count: number | string;
 }

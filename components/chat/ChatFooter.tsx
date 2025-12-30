@@ -1,20 +1,17 @@
-import React, { ChangeEvent, useCallback, useEffect, useState } from "react";
+import React, { useCallback, useEffect, useState } from "react";
 
-import FormInput from "../shared/Form/FormInput";
-import _STRINGS from "@/utils/LocalStrings";
-
-import ChatProductReply from "./ChatProductReply";
-import { useMutation } from "@tanstack/react-query";
+import { SingleChatDetailsDto } from "@/api_services/chat/chat.interface";
 import { ChatService } from "@/api_services/chat/chat.service";
+import { useChatStore, useStoreSocket } from "@/store";
+import { useMutation } from "@tanstack/react-query";
+import { debounce } from "lodash";
+import dynamic from "next/dynamic";
 import { isIOS } from "react-device-detect";
 import BtnLoading from "../shared/Button/BtnLoading";
-import ChatInput from "./ChatInput";
-import dynamic from "next/dynamic";
-import ChatReply from "./ChatReply";
-import { NewSingleChatDto, SingleChatDetailsDto } from "@/api_services/chat/chat.interface";
-import { debounce } from "lodash";
-import { useChatStore, useStoreSocket } from "@/store";
 import ChatUploader from "../uploader/ChatUploader";
+import ChatInput from "./ChatInput";
+import ChatReply from "./ChatReply";
+import ExpiredPropertyModal from "./ExpiredPropertyModal";
 const EmojiPicker = dynamic(
   () => {
     return import("emoji-picker-react");
@@ -50,6 +47,7 @@ const ChatFooter = ({
   singleChatData,
   setData,
 }: ChatFooterTypes) => {
+  const [showExpired, setShowExpired] = useState(false);
   const [isTyping, setIsTyping] = useState<boolean | null>(false);
   const { chatReply } = useChatStore((state) => state);
   const { socket } = useStoreSocket((state) => state);
@@ -132,6 +130,8 @@ const ChatFooter = ({
   // }, [isTyping, socket, !!singleChatData]);
 
   const submit = () => {
+    if (!!singleChatData?.property?.is_expired) return setShowExpired(true);
+
     if ((text || !!image) && chatId) {
       const body: { id: string | number; text: string; media_id?: number } = { id: chatId, text };
       if (!!image) {
@@ -273,6 +273,11 @@ const ChatFooter = ({
           />
         </div>
       </div>
+      <ExpiredPropertyModal
+        singleChatData={singleChatData}
+        visibleModal={showExpired}
+        setVisibleModal={setShowExpired}
+      />
     </div>
   );
 };

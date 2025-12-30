@@ -1,24 +1,23 @@
-import React, { useEffect, useState } from "react";
-import Modal from "../Modal";
-import { useQuery } from "@tanstack/react-query";
+import { ChildCities, NewCitiesListDto } from "@/api_services/city/city.interface";
 import { CityService } from "@/api_services/city/city.service";
 import { ProvienceTypesDto } from "@/api_services/property/property.interface";
-import LottieLoading from "../shared/Lotties/LottieLoading";
-import ProvienceCard from "./ProvienceCard";
+import queryBuilder from "@/helpers/queryBuilder";
+import useQueryGet from "@/helpers/queryGet";
 import _STRINGS from "@/utils/LocalStrings";
+import { useQuery } from "@tanstack/react-query";
 import { isEmpty } from "lodash";
+import { usePathname, useRouter } from "next/navigation";
+import { useEffect, useState } from "react";
+import Modal from "../Modal";
+import Button from "../shared/Button/Button";
 import EmptyList from "../shared/Lotties/EmptyList";
+import LottieLoading from "../shared/Lotties/LottieLoading";
 import CityCard from "./CityCard";
+import CityModalAllCitiesButton from "./CityModalAllCitiesButton";
 import CityModalHeaderPart from "./CityModalHeaderPart";
 import CityModalSearchPart from "./CityModalSearchPart";
 import CityModalSelectedAccardiom from "./CityModalSelectedAccardiom";
-import CityModalAllCitiesButton from "./CityModalAllCitiesButton";
-import FixedBottomContainer from "../shared/FixedBottomContainer";
-import Button from "../shared/Button/Button";
-import useQueryGet from "@/helpers/queryGet";
-import { usePathname, useRouter } from "next/navigation";
-import queryBuilder from "@/helpers/queryBuilder";
-import { ChildCities, NewCitiesListDto } from "@/api_services/city/city.interface";
+import ProvienceCard from "./ProvienceCard";
 
 const CityModal = ({
   show,
@@ -29,6 +28,7 @@ const CityModal = ({
   onSubmitCustomeCB,
   customeValues,
   isHome,
+  setRegionsCb,
 }: {
   show: boolean;
   onHide: () => void | null;
@@ -36,6 +36,7 @@ const CityModal = ({
   item?: { submitTitle?: string };
   passedUrl?: string;
   onSubmitCustomeCB?: (e: any) => void | null;
+  setRegionsCb?: (e: ChildCities | null) => void | null;
   customeValues?: any;
   isHome?: boolean;
 }) => {
@@ -102,6 +103,18 @@ const CityModal = ({
         : defaultProvienceCities;
 
       setSelectedCities(allDefaultCities);
+
+      /* -------------------------------------------------------------------------- */
+      /*                                 SET REGIONS                                */
+      /* -------------------------------------------------------------------------- */
+
+      if (!!setRegionsCb) {
+        if (allDefaultCities?.length == 1 && !isEmpty(allDefaultCities?.[0]?.child)) {
+          setRegionsCb(allDefaultCities?.[0]);
+        } else {
+          setRegionsCb(null);
+        }
+      }
       if (!!setTitle) {
         const selectedProv = provinces?.find((e) => e?.id == queries?.province_id);
 
@@ -179,6 +192,7 @@ const CityModal = ({
       }
 
       delete body.page;
+      delete body.regions;
       if (!!passedUrl) {
         if (!!isHome && !body?.province_id && isEmpty(body?.cities)) {
         } else {

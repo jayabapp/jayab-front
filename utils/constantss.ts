@@ -1,4 +1,3 @@
-import { title } from "process";
 import _STRINGS from "./LocalStrings";
 
 export const connectingWhiteList = ["/chat"];
@@ -53,7 +52,7 @@ export const headerBlackList = [
   "/auth/register/terms",
   "/auth/register/success",
 ];
-export const headerMobileBlackList = ["/chat/"];
+export const headerMobileSearchBlackList = ["/chat"];
 
 export const mobileFooterBlackList = [
   "/auth",

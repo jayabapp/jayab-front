@@ -18,27 +18,32 @@ const ChatListItem = ({ item }: { item: ChatListDto }) => {
       }}
       prefetch={false}
       href={`/chat/${item?.uuid}`}
-      className="w-full pb-3 relative border-b flex items-start flex-row  gap-2"
+      className="w-full flex  pb-3  border-b flex-col"
     >
-      <img
-        className="w-12 aspect-square h-12 rounded-10 "
-        src={NEW_IMAGE_URL(item?.property_image, "medium")}
-        alt={`${item?.property_title}`}
-      />
-
-      <div className="flex w-full flex-col gap-2">
-        <div className=" w-full flex   flex-col  md:flex-row  items-center justify-between">
+      <div className="w-full  relative  flex items-start flex-row  gap-2">
+        <img
+          className="w-12 aspect-square h-12 rounded-md "
+          src={NEW_IMAGE_URL(item?.property_image, "medium")}
+          alt={`${item?.property_title}`}
+        />
+        <div className=" w-full flex   flex-col   items-start gap-2 justify-between">
           <p className=" font-medium  text-sm   w-full text-start md:w-fit "> {item?.property_title}</p>
-          <p className="text-xs opacity-50  w-full text-end hidden md:flex  md:w-fit  ">
-            {/* {moment(item?.last_message?.updated_at).utc(true).local().format("hh:mm - jYYYY/jMM/jDD")} */}
+          <div className="w-full flex items-center gap-0.5 ">
+            <img className="w-5 h-5" src="/assets/icons/chat/basil_user.svg" />
+            <p className="text-xs !leading-2 opacity-50 mt-1 ">{item?.other_side_mobile}</p>
+          </div>
+        </div>
+      </div>
+
+      <div className="flex w-full flex-col gap-2 pr-14  mt-2  ">
+        <div className=" w-full flex   flex-row  items-center gap-2 justify-between">
+          <div className="   rounded-md w-full p-1">
+            <p className="text-xs line-clamp-1">{item?.last_message?.text}</p>
+          </div>
+          <p className="text-xs opacity-50   shrink-0 text-end flex justify-end w-fit  ">
             {moment(item?.last_update).format("HH:mm - jYYYY/jMM/jDD")}
           </p>
         </div>
-        <p className="text-xs line-clamp-1">{item?.last_message?.text}</p>
-        <p className="text-xs opacity-50  w-full text-end flex justify-end md:hidden  md:w-fit  ">
-          {/* {moment(item?.last_message?.updated_at).utc(true).local().format("hh:mm - jYYYY/jMM/jDD")} */}
-          {moment(item?.last_update).format("HH:mm - jYYYY/jMM/jDD")}
-        </p>
       </div>
       {!!item?.unread_count && item?.unread_count != "0" ? (
         <div className="rounded-full absolute left-0 bottom-2  flex items-center justify-center w-5 h-5 aspect-square text-sm bg-primary-700 text-white transition-all duration-200 ease-in-out">

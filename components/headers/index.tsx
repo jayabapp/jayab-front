@@ -10,6 +10,7 @@ import { ChatService } from "@/api_services/chat/chat.service";
 import { PropertyService } from "@/api_services/property/property.service";
 import { UserService } from "@/api_services/user/user.service";
 import { useAuthStore, useStoreInit, useStoreParams } from "@/store";
+import { headerMobileSearchBlackList } from "@/utils/constantss";
 import { NEW_IMAGE_URL } from "@/utils/urls";
 import { useQuery } from "@tanstack/react-query";
 import Button from "../shared/Button/Button";
@@ -280,7 +281,9 @@ transition-all  ease-in-out duration-1000 header-content-container w-full mx-aut
                       </Link>
                     ) : (
                       <div className="flex gap-2 items-center">
-                        {pathname.includes("/rooms/") ? (
+                        {headerMobileSearchBlackList.find((e) => pathname?.includes(e)) ? (
+                          <></>
+                        ) : pathname.includes("/rooms/") ? (
                           <Link
                             onClick={() => {
                               // removeLocalBackHomeFunc();

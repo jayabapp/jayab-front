@@ -1,7 +1,6 @@
 "use client";
 import { PropertyService } from "@/api_services/property/property.service";
 import CreateEditProperty, { CreateProperyStepOne } from "@/components/properties/CreateEditProperty";
-import PageHeaders from "@/components/headers/PageHeader";
 import Button from "@/components/shared/Button/Button";
 import FixedBottomContainer from "@/components/shared/FixedBottomContainer";
 import StepShower from "@/components/shared/StepShower";
@@ -11,9 +10,9 @@ import { createPropertySteps } from "@/utils/constantss";
 import _STRINGS from "@/utils/LocalStrings";
 import { useMutation, useQuery } from "@tanstack/react-query";
 
-import { useParams, usePathname, useRouter, useSearchParams } from "next/navigation";
-import React, { useEffect, useState } from "react";
 import LottieLoading from "@/components/shared/Lotties/LottieLoading";
+import { useParams, usePathname, useRouter, useSearchParams } from "next/navigation";
+import { useEffect, useState } from "react";
 
 const CreateProperty = () => {
   const router = useRouter();
@@ -42,6 +41,7 @@ const CreateProperty = () => {
     property_type: "",
     construction_year: "",
     city: "",
+    region: "",
     province: "",
     units_in_floor: "",
     building_area: "",
@@ -72,6 +72,7 @@ const CreateProperty = () => {
         building_area: initPropData?.building_area || null,
         can_chat: initPropData?.is_chat_enabled,
         city: initPropData?.city_id,
+        region: initPropData?.region_id,
         construction_year: initPropData?.construction_year,
         direction:
           initPropData?.property_options?.find((e) => e?.option?.group == "BUILDING_DIRECTION")?.option_id || null,
@@ -110,6 +111,7 @@ const CreateProperty = () => {
         building_area: Number(p2e(values?.building_area || "")),
         building_direction: values?.direction,
         city_id: values?.city,
+        region_id: values?.region,
         construction_year: Number(p2e(values?.construction_year || "")),
         floor: Number(p2e(values?.floor || "")),
         floors: Number(p2e(values?.floor_count || "")),

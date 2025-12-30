@@ -1,14 +1,14 @@
 "use client";
-import React, { useEffect, useState } from "react";
-import { useRouter } from "next/navigation";
-import _STRINGS from "@/utils/LocalStrings";
-import { isIOS } from "react-device-detect";
 import { ImageDto } from "@/api_services/auth/auth.interface";
-import { NEW_IMAGE_URL } from "@/utils/urls";
-import ConfirmModal from "../Modal/ConfirmModal";
-import { useMutation } from "@tanstack/react-query";
-import { ChatService } from "@/api_services/chat/chat.service";
 import { SingleChatDetailsDto } from "@/api_services/chat/chat.interface";
+import { ChatService } from "@/api_services/chat/chat.service";
+import _STRINGS from "@/utils/LocalStrings";
+import { NEW_IMAGE_URL } from "@/utils/urls";
+import { useMutation } from "@tanstack/react-query";
+import { useRouter } from "next/navigation";
+import { useEffect, useState } from "react";
+import { isIOS } from "react-device-detect";
+import ConfirmModal from "../Modal/ConfirmModal";
 
 type chatHeaderType = {
   image?: ImageDto;
@@ -60,7 +60,7 @@ const ChatHeader = ({ image, description, name, offSetTop, is_recipient_online, 
             }
           : {}
       }
-      className="flex fixed  justify-between pr-2 z-30 bg-white  dark:bg-dark-900 w-full left-0  md:left-[10%] md:right-[10%] mx-auto lg:top-0 md:w-[50%]    top-0 xl:top-[4.5rem] pt-4 items-center gap-2 pb-3 shadow-md "
+      className="flex fixed  justify-between pr-2 z-50 bg-white  dark:bg-dark-900 w-full left-0  md:left-[10%] md:right-[10%] mx-auto lg:top-0 md:w-[50%]   min-h-[4.25rem]   top-0 xl:top-[4.5rem] pt-4 items-center gap-2 pb-3 shadow-md "
     >
       <div className="flex items-center w-full gap-2">
         {" "}
@@ -73,7 +73,7 @@ const ChatHeader = ({ image, description, name, offSetTop, is_recipient_online, 
         />
         <div className="flex items-center   w-full gap-2">
           {image ? (
-            <div className="w-8 shrink-0 relative flex items-center aspect-square">
+            <div className="w-10 shrink-0 relative flex items-center aspect-square">
               {/* <div
                 className={` z-2 w-2 h-2  aspect-square rounded-full absolute left-0 bottom-0 animate-pulse ${
                   is_recipient_online ? "bg-emerald-400" : "bg-red-400"
@@ -82,7 +82,7 @@ const ChatHeader = ({ image, description, name, offSetTop, is_recipient_online, 
 
               <img
                 src={image ? NEW_IMAGE_URL(image) : "/assets/icons/logo/logo.svg"}
-                className="w-8 col-span-1 md:w-14 rounded-full  clear-left  aspect-square"
+                className="w-10 col-span-1 md:w-14 rounded-full  clear-left  aspect-square"
               />
             </div>
           ) : (
@@ -91,6 +91,14 @@ const ChatHeader = ({ image, description, name, offSetTop, is_recipient_online, 
           <div className="flex h-full flex-col justify-around col-span-3">
             <p className="text-sm md:text-base">{name || _STRINGS?.CHAT}</p>
             <p className="text-xs font-extralight md:text-sm">{description}</p>
+            {!!data?.recipient?.user_mobile_number ? (
+              <div className="w-full flex items-center gap-0.5 ">
+                <img className="w-5 h-5" src="/assets/icons/chat/basil_user.svg" />
+                <p className="text-xs !leading-2 opacity-50 mt-1 ">{data?.recipient?.user_mobile_number}</p>
+              </div>
+            ) : (
+              <></>
+            )}
           </div>
         </div>
       </div>

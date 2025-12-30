@@ -20,7 +20,7 @@ export interface CreatePropertyStepOneDto {
   ownership: number | string | null;
   province_id: number | string | null;
   city_id: number | string | null;
-  // region_id: number | string | null;
+  region_id: number | string | null;
   address: number | string | null;
   is_chat_enabled: boolean | null;
   is_location_visible: boolean | null;
@@ -245,6 +245,7 @@ export interface SinglePropDto {
   title: string;
   property_descriptions: PropertyDescriptionsDto;
   slug: string;
+  region: string;
   feature_image: ImageDto;
   attachments_count: number;
   images: ImageDto[];
@@ -374,6 +375,7 @@ export interface PropertyListDto {
   has_pool: boolean;
   is_promoted: boolean;
   province: string;
+  region: string;
   city: string;
   advisor_commission: number;
   today_price: TodayPrice;
@@ -421,6 +423,7 @@ export interface SingleOwnerPropertyDto {
   total_bedrooms: number;
   has_pool: boolean;
   province: string;
+  region: string;
   city: string;
   advisor_commission: number;
   today_price: TodayPrice;
@@ -522,6 +525,7 @@ export interface Statistic {
 
 export interface GetPropertiesPlusFilters {
   cities?: string | null | number;
+  regions?: string | null | number;
   sort_type?: string | null | number;
   code?: string | null | number;
   q?: string | null | number;
@@ -541,7 +545,6 @@ export interface GetPropertiesPlusFilters {
   pool_type?: string | null | number;
   property_type?: string | null | number;
   province_id?: string | null | number;
-  regions?: (string | null | number)[];
   start_day?: string | null | number;
   title?: string | null | number;
   total_bedrooms?: string | null | number;

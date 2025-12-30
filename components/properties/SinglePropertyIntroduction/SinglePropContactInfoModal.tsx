@@ -1,18 +1,14 @@
 "use client";
 import { PropertyContactIInfDto, SinglePropDto } from "@/api_services/property/property.interface";
 import { PropertyService } from "@/api_services/property/property.service";
+import ModalBottomSheet from "@/components/Modal/ModalBottomSheet";
 import ModalHeaderPart from "@/components/Modal/ModalHeaderPart";
-import PopUpDown from "@/components/PopUpDown";
-import EmptyList from "@/components/shared/Lotties/EmptyList";
-import LottieLoading from "@/components/shared/Lotties/LottieLoading";
 import _STRINGS from "@/utils/LocalStrings";
 import { useQuery } from "@tanstack/react-query";
 import { isEmpty } from "lodash";
-import React, { useEffect, useState } from "react";
-import PropertyContactInfoItem from "./PropertyContactInfoItem";
-import Modal from "@/components/Modal";
-import ModalBottomSheet from "@/components/Modal/ModalBottomSheet";
+import { useEffect, useState } from "react";
 import LinearSkeleton from "../ProductSkeleton/LinearSkeleton";
+import PropertyContactInfoItem from "./PropertyContactInfoItem";
 
 const SinglePropContactInfoModal = ({
   data,
@@ -41,29 +37,37 @@ const SinglePropContactInfoModal = ({
     }
   }, [contactInfo]);
   return (
-    <ModalBottomSheet onHide={onHide} show={show}>
-      <ModalHeaderPart hideArrow title={_STRINGS.CONTACT_INFO} onHide={onHide} />
+    <>
+      <ModalBottomSheet
+        options={{
+          containerClass: `mx-auto rounded-t-20 absolute pb-[1.5rem] md:pb-4 bottom-0 md:translate-x-1/2 md:right-1/2 w-full md:w-[calc(35svw)]  bg-white dark:bg-zinc-900 overflow-y-scroll  dark:bg-dark-700`,
+        }}
+        onHide={onHide}
+        show={show}
+      >
+        <ModalHeaderPart hideArrow title={_STRINGS.CONTACT_INFO} onHide={onHide} />
 
-      <div className="w-full p-4 flex flex-col">
-        {isPending ? (
-          <div className="w-full flex flex-col gap-2">
-            <LinearSkeleton width={"100%"} />
-            <LinearSkeleton width={"100%"} />
-          </div>
-        ) : isEmpty(contactInfo) ? (
-          <p className="w-full text-center">{_STRINGS?.EMPTY_CONTACT_LIST}</p>
-        ) : (
-          state?.map((e) => (
-            <PropertyContactInfoItem
-              image={contactInfo?.owner?.selfie_image}
-              onHide={onHide}
-              key={`contactItem${e?.assistant_full_name}`}
-              data={e}
-            />
-          ))
-        )}
-      </div>
-    </ModalBottomSheet>
+        <div className="w-full p-4 flex flex-col">
+          {isPending ? (
+            <div className="w-full flex flex-col gap-2">
+              <LinearSkeleton width={"100%"} />
+              <LinearSkeleton width={"100%"} />
+            </div>
+          ) : isEmpty(contactInfo) ? (
+            <p className="w-full text-center">{_STRINGS?.EMPTY_CONTACT_LIST}</p>
+          ) : (
+            state?.map((e) => (
+              <PropertyContactInfoItem
+                image={contactInfo?.owner?.selfie_image}
+                onHide={onHide}
+                key={`contactItem${e?.assistant_full_name}`}
+                data={e}
+              />
+            ))
+          )}
+        </div>
+      </ModalBottomSheet>
+    </>
   );
 };
 

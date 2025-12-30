@@ -1,13 +1,16 @@
+import _STRINGS from "@/utils/LocalStrings";
 import React from "react";
 import FormInput from "../shared/Form/FormInput";
-import _STRINGS from "@/utils/LocalStrings";
 
 const CityModalSearchPart = ({
   search,
   setSearch,
+  options,
 }: {
   search: string;
   setSearch: React.Dispatch<React.SetStateAction<string>>;
+
+  options?: { placeholder?: string };
 }) => {
   return (
     <div className="flex items-center w-full relative ">
@@ -21,7 +24,7 @@ const CityModalSearchPart = ({
           inputClass: "rounded-full",
           iconUrl: "/assets/icons/edit/magnifier.svg",
           iconUrlClassName: "w-5 !top-[29%] h-5",
-          placeholder: _STRINGS.SEARCH_DESTINY,
+          placeholder: options?.placeholder || _STRINGS.SEARCH_DESTINY,
         }}
       />
 

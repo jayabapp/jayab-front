@@ -1,10 +1,9 @@
 import { PropertyListDto } from "@/api_services/property/property.interface";
 import _STRINGS from "@/utils/LocalStrings";
-import React from "react";
-import AuthorizationStatus from "./AuthorizationStatus";
-import { Divider } from "../shared/Divider";
-import Button from "../shared/Button/Button";
 import Link from "next/link";
+import Button from "../shared/Button/Button";
+import { Divider } from "../shared/Divider";
+import AuthorizationStatus from "./AuthorizationStatus";
 
 const PropertyCardOwnerPart = ({ data, goToLink }: { goToLink: string; data: PropertyListDto }) => {
   return (
@@ -43,7 +42,7 @@ const PropertyCardOwnerPart = ({ data, goToLink }: { goToLink: string; data: Pro
         <div className="flex w-full items-start gap-1">
           <img src="/assets/icons/adds/pin_point_location.svg" className="w-5 h-5 aspect-square" />
           <p className="text-sm">
-            {data?.city} <span className=" font-light  text-sm">({data?.province})</span>
+            {data?.province} {"-"} {data?.city} {data?.region ? ` - ${data?.region}` : ""}
           </p>
         </div>
         <Divider moreClass="my-1" />

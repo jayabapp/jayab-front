@@ -1,32 +1,28 @@
 "use client";
 
-import { useEffect, useState } from "react";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
+import { useEffect, useState } from "react";
 
-import { Divider } from "@/components/shared/Divider";
-import SimpleAccordion from "@/components/shared/SimpleAccorion";
-
-import { useQuery } from "@tanstack/react-query";
 import _STRINGS from "@/utils/LocalStrings";
+import { useQuery } from "@tanstack/react-query";
 
-import queryBuilder from "@/helpers/queryBuilder";
-import useQueryGet from "@/helpers/queryGet";
-import { poolFilterTypes, SORT_TYPES } from "@/utils/constantss";
+import { ChildCities } from "@/api_services/city/city.interface";
+import { PropertyService } from "@/api_services/property/property.service";
 import SingleProductBreadCrumb from "@/components/BreadCrumbs/SingleProductBreadCrumb";
+import CityModal from "@/components/CityModal";
+import FilterPageCitiesTitle from "@/components/CityModal/FilterPageCitiesTitle";
+import FiltersSelectedFiltersShowcase from "@/components/Filters/FiltersSelectedFiltersShowcase";
+import FilterdPropertiesPageOrianted from "@/components/Filters/NewFiltredProperties";
 import SortMenu from "@/components/Filters/SortMenu";
 import Modal from "@/components/Modal";
-import { ParsedUrlQuery } from "querystring";
-import { PropertyService } from "@/api_services/property/property.service";
-import ProductModels from "@/components/Filters/ProductModelx";
-import Button from "@/components/shared/Button/Button";
-import FilterCounter from "@/components/Filters/FilterCounter";
-import FiltersPart from "./FiltersPart";
-import FiltersSelectedFiltersShowcase from "@/components/Filters/FiltersSelectedFiltersShowcase";
-import FilterPageCitiesTitle from "@/components/CityModal/FilterPageCitiesTitle";
-import CityModal from "@/components/CityModal";
 import ModalHeaderPart from "@/components/Modal/ModalHeaderPart";
+import Button from "@/components/shared/Button/Button";
+import queryBuilder from "@/helpers/queryBuilder";
+import useQueryGet from "@/helpers/queryGet";
+import { SORT_TYPES } from "@/utils/constantss";
+import { ParsedUrlQuery } from "querystring";
+import FiltersPart from "./FiltersPart";
 import PropertiesFilterList from "./PropertiesFilterList";
-import FilterdPropertiesPageOrianted from "@/components/Filters/NewFiltredProperties";
 
 interface OtpQuery extends ParsedUrlQuery {
   id: string;
@@ -38,6 +34,7 @@ export interface PostPageQuery {
 type sortTypeType = { id?: string; title?: string };
 
 const Filterpage = () => {
+  const [cityWithRegions, setCityWithRegions] = useState<ChildCities | null>(null);
   const [stickyHeight, setStickyHeight] = useState(600);
   const [cityButtonTItle, setCityTitleButton] = useState("");
   const [showCityModal, setShowCiyModal] = useState(false);
@@ -138,17 +135,9 @@ const Filterpage = () => {
             xl:mt-0 `}
         >
           <div className=" hidden  z-1 w-full xl:flex flex-col xl:flex-row items-center justify-between ">
-            {/* <Breadcrumbs /> */}
             <SingleProductBreadCrumb dataArray={breadCrumbs} />
           </div>
-          {/* <div className="w-full hidden xl:flex ">
-            {" "}
-            <FiltersSelectedFiltersShowcase
-              setFilterModalShow={setFilterModalShow}
-              query={queries}
-              propertyTypes={propertyTypes || {}}
-            />
-          </div> */}
+
           <div className="flex fixed pt-1 xl:hidden h-16 right-0  items-center justify-center   z-10 xl:z-1  top-[4rem] xl:top-auto left-0 xl:left-auto bg-white xl:bg-transparent xl:relative flex-col w-full xl:gap-2  ">
             <div className=" flex  order-1  xl:hidden  relative w-full">
               <div className=" z-1  px-2  relative  w-full items-center gap-1 justify-between  ">
@@ -168,7 +157,12 @@ const Filterpage = () => {
           </div>
           <div className="w-full grow-0 shrink-0 flex flex-row  px-3 xl:px-0 relative  justify-between">
             <div className="flex  flex-row w-[90%]  items-center  gap-4 justify-start ">
-              <FilterPageCitiesTitle title={cityButtonTItle} cb={showCityModalFunc} />
+              <FilterPageCitiesTitle
+                queries={queries}
+                cityWithRegions={cityWithRegions}
+                title={cityButtonTItle}
+                cb={showCityModalFunc}
+              />
               <FiltersSelectedFiltersShowcase
                 containerClass="   !hidden xl:!contents "
                 setFilterModalShow={setFilterModalShow}
@@ -235,7 +229,12 @@ const Filterpage = () => {
         {/* BODY */}
         <div className="w-[90%] mx-auto">
           <div className=" w-full  pt-4 pb-8  ">
-            <FilterPageCitiesTitle title={cityButtonTItle} cb={showCityModalFunc} />
+            <FilterPageCitiesTitle
+              queries={queries}
+              cityWithRegions={cityWithRegions}
+              title={cityButtonTItle}
+              cb={showCityModalFunc}
+            />
             <FiltersPart propertyTypes={propertyTypes} filters={filters} setFilters={setFilters} queries={queries} />
           </div>
           <div className=" w-full   pb-6 fixed bottom-0 right-0  bg-white z-1 border-t  ">
@@ -254,6 +253,7 @@ const Filterpage = () => {
         </div>
       </Modal>
       <CityModal
+        setRegionsCb={setCityWithRegions}
         onSubmitCustomeCB={!!filterModalShow ? setFilters : undefined}
         customeValues={!!filterModalShow ? filters : false}
         show={showCityModal}

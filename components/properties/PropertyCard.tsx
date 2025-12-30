@@ -111,7 +111,10 @@ const PropertyCard = ({ data, isOwner, week }: { data: PropertyListDto; isOwner?
                 )}
 
                 <p className="text-xs line-clamp-1 text-center ">
-                  {data?.city} <span className="text-xs ">{data?.province ? `(${data?.province})` : ``}</span>
+                  {data?.city}{" "}
+                  <span className="text-xs ">
+                    {data?.province || data?.region ? `(${data?.region || data?.province})` : ``}
+                  </span>
                 </p>
               </div>
             </>

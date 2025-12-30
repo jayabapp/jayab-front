@@ -1,7 +1,6 @@
 import numberWithCommas from "@/helpers/numberWithCommas";
 import moment from "moment-jalaali";
-import React from "react";
-import { LineChart, Line, Cell, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer } from "recharts";
+import { Line, LineChart, ResponsiveContainer, Tooltip, XAxis, YAxis } from "recharts";
 
 const SimpleBarChart = ({ data }: { data: any }) => {
   const CustomTooltip = ({ active, payload, label }: any) => {
@@ -26,7 +25,7 @@ const SimpleBarChart = ({ data }: { data: any }) => {
         margin={{
           top: 5,
           right: 30,
-          left: 20,
+          left: 0,
           bottom: 5,
         }}
       >

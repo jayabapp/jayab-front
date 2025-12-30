@@ -1,29 +1,29 @@
 "use client";
 
-import { useEffect, useState } from "react";
-import { notFound, usePathname, useRouter, useSearchParams } from "next/navigation";
-import { Divider } from "@/components/shared/Divider";
-import { useQuery } from "@tanstack/react-query";
-import _STRINGS from "@/utils/LocalStrings";
-import queryBuilder from "@/helpers/queryBuilder";
-import useQueryGet from "@/helpers/queryGet";
-import { poolFilterTypes, SORT_TYPES } from "@/utils/constantss";
-import SingleProductBreadCrumb from "@/components/BreadCrumbs/SingleProductBreadCrumb";
-import SortMenu from "@/components/Filters/SortMenu";
-import Modal from "@/components/Modal";
-import { ParsedUrlQuery } from "querystring";
-import { PropertyService } from "@/api_services/property/property.service";
-import Button from "@/components/shared/Button/Button";
-import FiltersPart from "./FiltersPart";
-import FiltersSelectedFiltersShowcase from "@/components/Filters/FiltersSelectedFiltersShowcase";
-import SsrClinetPartFilterProperties, { removeKeyArray } from "@/components/Filters/SsrClinetPartFilterProperties";
+import { ChildCities } from "@/api_services/city/city.interface";
 import { SingleLandingDto } from "@/api_services/property/property.interface";
-import { isArray, isEmpty, last } from "lodash";
-import SsrPartFilter from "@/components/Filters/SsrPartFilter";
+import { PropertyService } from "@/api_services/property/property.service";
+import SingleProductBreadCrumb from "@/components/BreadCrumbs/SingleProductBreadCrumb";
 import CityModal from "@/components/CityModal";
 import FilterPageCitiesTitle from "@/components/CityModal/FilterPageCitiesTitle";
-import SsrFilterPageContents from "./SsrFilterPageContents";
+import FiltersSelectedFiltersShowcase from "@/components/Filters/FiltersSelectedFiltersShowcase";
+import SortMenu from "@/components/Filters/SortMenu";
+import SsrClinetPartFilterProperties, { removeKeyArray } from "@/components/Filters/SsrClinetPartFilterProperties";
+import SsrPartFilter from "@/components/Filters/SsrPartFilter";
+import Modal from "@/components/Modal";
 import ModalHeaderPart from "@/components/Modal/ModalHeaderPart";
+import Button from "@/components/shared/Button/Button";
+import queryBuilder from "@/helpers/queryBuilder";
+import useQueryGet from "@/helpers/queryGet";
+import { SORT_TYPES } from "@/utils/constantss";
+import _STRINGS from "@/utils/LocalStrings";
+import { useQuery } from "@tanstack/react-query";
+import { isArray, isEmpty, throttle } from "lodash";
+import { usePathname, useRouter, useSearchParams } from "next/navigation";
+import { ParsedUrlQuery } from "querystring";
+import { useEffect, useState } from "react";
+import FiltersPart from "./FiltersPart";
+import SsrFilterPageContents from "./SsrFilterPageContents";
 
 interface OtpQuery extends ParsedUrlQuery {
   id: string;
@@ -35,6 +35,7 @@ export interface PostPageQuery {
 type sortTypeType = { id?: string; title?: string };
 
 const SsrFilterPage = ({ landings, firstData }: { firstData: { data: any[] }; landings: SingleLandingDto }) => {
+  const [cityWithRegions, setCityWithRegions] = useState<ChildCities | null>(null);
   const [hiddenFilters, setHiddenFilters] = useState<string[]>([]);
   const [stickyHeight, setStickyHeight] = useState(600);
   const [showCityModal, setShowCiyModal] = useState(false);
@@ -121,6 +122,22 @@ const SsrFilterPage = ({ landings, firstData }: { firstData: { data: any[] }; la
     setStickyHeight((window.visualViewport?.height || 700) - 90);
   }, []);
 
+  /* -------------------------------------------------------------------------- */
+  /*                                  SCROLL Y                                  */
+  /* -------------------------------------------------------------------------- */
+
+  const [showShadow, setShowShadow] = useState(false);
+
+  useEffect(() => {
+    window?.addEventListener("scroll", handleScroll);
+
+    return () => window?.removeEventListener("scroll", handleScroll);
+  }, []);
+
+  const handleScroll = throttle((event) => {
+    if (window?.scrollY > 20) setShowShadow(true);
+    else setShowShadow(false);
+  }, 100);
   return (
     <div className="app-container  !pt-32  lg:!pt-20  !relative z-2 ">
       <div className="grid grid-cols-12  col-span-12 ">
@@ -152,7 +169,11 @@ const SsrFilterPage = ({ landings, firstData }: { firstData: { data: any[] }; la
           </div>
           <h1 className="mb-3 text-lg font-medium">{landings?.content?.title}</h1>
 
-          <div className="flex fixed  pt-1 xl:hidden h-16 right-0  items-center justify-center   z-10 xl:z-1  top-[4rem] xl:top-auto left-0 xl:left-auto bg-white xl:bg-transparent xl:relative flex-col w-full xl:gap-2  ">
+          <div
+            className={`flex fixed  ${
+              !!showShadow ? "shadow-md" : ""
+            }  md:shadow-none pt-1 transition-all duration-300 xl:hidden h-16 right-0  items-center justify-center   z-10 xl:z-1  top-[4rem] xl:top-auto left-0 xl:left-auto bg-white xl:bg-transparent xl:relative flex-col w-full xl:gap-2  `}
+          >
             {" "}
             <div className=" flex  order-1  xl:hidden  relative w-full">
               <div className=" z-1  pr-2  relative  w-full items-center gap-1 justify-between  ">
@@ -169,10 +190,20 @@ const SsrFilterPage = ({ landings, firstData }: { firstData: { data: any[] }; la
             </div>
           </div>
 
-          <div className="w-full grow-0 shrink-0 flex flex-row  px-3 xl:px-0 relative  justify-between">
+          <div className="w-full grow-0 shrink-0 flex flex-row  px-1 xl:px-0 relative  justify-between">
             <div className="flex  flex-row w-[90%]  items-center justify-start  gap-4 ">
-              {!hiddenFilters?.includes("cities") && !hiddenFilters?.includes("province_id") ? (
-                <FilterPageCitiesTitle title={cityButtonTItle} cb={showCityModalFunc} />
+              {(!hiddenFilters?.includes("cities") || !!cityWithRegions) && !hiddenFilters?.includes("province_id") ? (
+                <FilterPageCitiesTitle
+                  cityWithRegions={cityWithRegions}
+                  queries={queries}
+                  title={cityButtonTItle}
+                  hideCityPart={
+                    !!hiddenFilters?.includes("cities") &&
+                    !!cityWithRegions?.child &&
+                    !hiddenFilters?.includes("province_id")
+                  }
+                  cb={showCityModalFunc}
+                />
               ) : (
                 <div> </div>
               )}
@@ -255,11 +286,22 @@ const SsrFilterPage = ({ landings, firstData }: { firstData: { data: any[] }; la
         {/* BODY */}
         <div className="w-[90%] mx-auto">
           <div className=" w-full  pt-4 pb-8  ">
-            {!hiddenFilters?.includes("cities") ? (
-              <FilterPageCitiesTitle title={cityButtonTItle} cb={showCityModalFunc} />
+            {(!hiddenFilters?.includes("cities") || !!cityWithRegions) && !hiddenFilters?.includes("province_id") ? (
+              <FilterPageCitiesTitle
+                cityWithRegions={cityWithRegions}
+                queries={queries}
+                title={cityButtonTItle}
+                hideCityPart={
+                  !!hiddenFilters?.includes("cities") &&
+                  !!cityWithRegions?.child &&
+                  !hiddenFilters?.includes("province_id")
+                }
+                cb={showCityModalFunc}
+              />
             ) : (
               <div> </div>
             )}
+
             <FiltersPart
               hiddenFilters={hiddenFilters}
               propertyTypes={propertyTypes}
@@ -285,9 +327,11 @@ const SsrFilterPage = ({ landings, firstData }: { firstData: { data: any[] }; la
       </Modal>
 
       <CityModal
+        setRegionsCb={setCityWithRegions}
         passedUrl={pathname}
         onSubmitCustomeCB={!!filterModalShow ? setFilters : undefined}
-        customeValues={!!filterModalShow ? filters : false}
+        customeValues={filters}
+        // customeValues={!!filterModalShow ? filters : false}
         show={showCityModal}
         onHide={hideCityModal}
         setTitle={setCityTitleButton}

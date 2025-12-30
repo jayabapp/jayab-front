@@ -1,16 +1,14 @@
-import FormInput from "@/components/shared/Form/FormInput";
-import _STRINGS from "@/utils/LocalStrings";
-import React from "react";
-import SinglePopUpSelect from "../shared/Form/SingleSelectPopUpSelect";
-import { createPropertySteps, randomeTitlePlaceholder } from "@/utils/constantss";
-import { useQuery } from "@tanstack/react-query";
-import { PropertyService } from "@/api_services/property/property.service";
-import FormInputWithExternalUnit from "../shared/Form/FormInputWithExternalUnit";
-import { AuthService } from "@/api_services/auth/auth.service";
-import { isEmpty, random, sample } from "lodash";
-import MultiLineFormInput from "../shared/Form/MultiLineFormInput";
-import Checkbox from "../shared/Form/Checkbox";
 import { CityService } from "@/api_services/city/city.service";
+import { PropertyService } from "@/api_services/property/property.service";
+import FormInput from "@/components/shared/Form/FormInput";
+import { randomeTitlePlaceholder } from "@/utils/constantss";
+import _STRINGS from "@/utils/LocalStrings";
+import { useQuery } from "@tanstack/react-query";
+import { isEmpty, sample } from "lodash";
+import Checkbox from "../shared/Form/Checkbox";
+import FormInputWithExternalUnit from "../shared/Form/FormInputWithExternalUnit";
+import MultiLineFormInput from "../shared/Form/MultiLineFormInput";
+import SinglePopUpSelect from "../shared/Form/SingleSelectPopUpSelect";
 import FormCounter from "./FormCounter";
 
 export interface CreateProperyStepOne {
@@ -24,6 +22,7 @@ export interface CreateProperyStepOne {
   floor: string | number | null;
   province: string | number | null;
   city: string | number | null;
+  region: string | number | null;
   construction_year: string | number | null;
   direction: string | number | null;
   address: string | number | null;
@@ -64,6 +63,8 @@ const CreateEditProperty = ({
     },
     queryKey: [CityService.CITIES_CHILDEREN_CACHEKEY, values?.province],
   });
+
+  const selectedCity = cities?.find((e) => e?.id == values?.city);
 
   return (
     <div className=" w-full gap-5  grid grid-cols-1 md:grid-cols-2   items-center ">
@@ -137,23 +138,49 @@ const CreateEditProperty = ({
           onChange(e, "owenershp_type");
         }}
       />
-      <SinglePopUpSelect
-        closeOnSelect
-        item={{ list: provinces || [], title: _STRINGS.PROVINCE, isMandatory: true }}
-        value={values?.province || ""}
-        onSelect={(e) => {
-          onChange(e, "province");
-          onChange(null, "city");
-        }}
-      />
-      <SinglePopUpSelect
-        closeOnSelect
-        item={{ list: cities || [], title: _STRINGS.CITY, isMandatory: true, disable: isEmpty(cities) }}
-        value={values?.city || ""}
-        onSelect={(e) => {
-          onChange(e, "city");
-        }}
-      />
+
+      <div
+        className={` w-full  col-span-full  grid grid-cols-1  gap-5 ${
+          !isEmpty(selectedCity?.child) ? "md:grid-cols-3" : "md:grid-cols-2"
+        }  `}
+      >
+        <SinglePopUpSelect
+          closeOnSelect
+          item={{ list: provinces || [], title: _STRINGS.PROVINCE, isMandatory: true }}
+          value={values?.province || ""}
+          onSelect={(e) => {
+            onChange(e, "province");
+            onChange(null, "city");
+            onChange(null, "region");
+          }}
+        />
+        <SinglePopUpSelect
+          closeOnSelect
+          item={{ list: cities || [], title: _STRINGS.CITY, isMandatory: true, disable: isEmpty(cities) }}
+          value={values?.city || ""}
+          onSelect={(e) => {
+            onChange(e, "city");
+            onChange(null, "region");
+          }}
+        />
+        {!isEmpty(selectedCity?.child) ? (
+          <SinglePopUpSelect
+            closeOnSelect
+            item={{
+              list: selectedCity?.child || [],
+              title: _STRINGS.LOCAL,
+              isMandatory: true,
+              disable: isEmpty(selectedCity?.child),
+            }}
+            value={values?.region || ""}
+            onSelect={(e) => {
+              onChange(e, "region");
+            }}
+          />
+        ) : (
+          <></>
+        )}
+      </div>
       <FormInput
         item={{
           title: _STRINGS.CREATED_AT_YEAR,

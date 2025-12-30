@@ -21,4 +21,5 @@ export interface NewCitiesListDto {
 export interface ChildCities {
   id: number;
   title: string;
+  child?: ChildCities[];
 }
