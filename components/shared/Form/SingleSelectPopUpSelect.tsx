@@ -1,11 +1,13 @@
-import React, { useState } from "react";
+import { useState } from "react";
 // import PopUpDown from "../PopUpDown";
 // import Selecti from "./SingleSelectSelecti";
 import { isEmpty } from "lodash";
 // import ModalBottomSheet from "../Modal/ModalBottomSheet";
-import PopUpDown from "@/components/PopUpDown";
-import Selecti from "./SingleSelectSelecti";
+import ModalBottomSheet from "@/components/Modal/ModalBottomSheet";
+import ModalHeaderPart from "@/components/Modal/ModalHeaderPart";
+import { p2e } from "@/helpers/NumberConverter";
 import _STRINGS from "@/utils/LocalStrings";
+import Selecti from "./SingleSelectSelecti";
 
 export interface ItemType {
   id: number | string;
@@ -24,6 +26,7 @@ type PopUpSelectType = {
     isMandatory?: boolean;
     inputClass?: string;
     containerClass?: string;
+    searcheable?: boolean;
   };
   value: string | number;
   closeOnSelect?: boolean;
@@ -41,6 +44,7 @@ const SinglePopUpSelect = ({
 }: PopUpSelectType) => {
   const [show, setShow] = useState(false);
 
+  const [search, setSearch] = useState("");
   return (
     <div className={`relative  inline-block w-full ${item?.containerClass} ${item?.disable ? "opacity-60" : ""} `}>
       <div className="flex flex-col">
@@ -84,28 +88,59 @@ const SinglePopUpSelect = ({
           /> */}
         </div>
       </div>
-      <PopUpDown item={{ title: item?.title }} setVisible={setShow} visible={show}>
+      <ModalBottomSheet
+        options={{
+          containerClass: `  ${
+            item?.searcheable ? " min-h-[90dvh]" : ""
+          } mx-auto rounded-t-20 !h-[90dvh] md:!h-auto  max-h-[90dvh] absolute pb-[1.5rem] md:pb-10 bottom-0 md:translate-x-1/2 md:right-1/2 w-full md:w-[calc(50svw)]  overflow-y-scroll bg-white dark:bg-primary-background`,
+        }}
+        onHide={() => {
+          setShow(false);
+        }}
+        show={show}
+      >
+        <ModalHeaderPart
+          titleClass="text-primary-700"
+          title={item?.title || ""}
+          onHide={() => {
+            setShow(false);
+          }}
+        />
         <div className="flex flex-col   px-6 py-4">
+          {item?.searcheable ? (
+            <div className="form-control !py-1.5 mb-2 !text-sm top-14  transition-all sticky z-2  rounded-10   !bg-neutral-100 ">
+              <input
+                value={search}
+                placeholder={`جستجوی ${item?.title}`}
+                onChange={(e) => setSearch(e.target.value)}
+                className={`  !bg-neutral-100  dark:bg-slate-800 w-5/6 focus:border-primary-700 py-1 `}
+              />
+            </div>
+          ) : (
+            <></>
+          )}
           {/* <div className="w-full p-4 pt-0 flex items-center justify-center border-b border-primary-300">
             <p className="">{item?.title}</p>
           </div> */}
           {isEmpty(item?.list) ? (
             <p className="w-full text-center mt-4"> {_STRINGS.NODATA_LIST}</p>
           ) : (
-            item?.list?.map((item) => (
-              <Selecti
-                velueString={velueString}
-                key={item?.id}
-                item={item}
-                value={value}
-                onSelect={onSelect}
-                closeOnSelect={closeOnSelect}
-                setShow={setShow}
-              />
-            ))
+            item?.list
+              ?.filter((item) => item?.title?.toLocaleLowerCase().includes(p2e(search).toLowerCase()))
+              ?.map((item) => (
+                <Selecti
+                  velueString={velueString}
+                  key={item?.id}
+                  item={item}
+                  value={value}
+                  onSelect={onSelect}
+                  closeOnSelect={closeOnSelect}
+                  setShow={setShow}
+                />
+              ))
           )}
         </div>
-      </PopUpDown>
+      </ModalBottomSheet>
     </div>
   );
 };

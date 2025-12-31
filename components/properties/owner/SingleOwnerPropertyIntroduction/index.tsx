@@ -69,8 +69,8 @@ const SingleOwnerPropertyIntroduction = ({ data }: { data: SingleOwnerPropertyDt
         )}
       </div>
 
-      <div className="flex items-start gap-4    py-2 w-full ">
-        <div className="flex  items-center gap-1">
+      <div className="flex items-start gap-4     w-full ">
+        <div className="flex   text-sm items-center gap-1">
           <p>{_STRINGS.TODAYS_PRICE} </p>
         </div>
         <SinglePropertyPricePart data={data} />
@@ -84,7 +84,7 @@ const SingleOwnerPropertyIntroduction = ({ data }: { data: SingleOwnerPropertyDt
       </div>
       <div className="flex w-full gap-1">
         <img src="/assets/icons/adds/pin_point_location.svg" className="w-5 h-5 aspect-square" />
-        <p className="text-xs">
+        <p className="text-xs mt-1">
           {data?.province} - {data?.city} {data?.region ? ` - ${data?.region}` : ""}
         </p>
       </div>

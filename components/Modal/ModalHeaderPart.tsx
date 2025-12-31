@@ -1,17 +1,17 @@
-import { ProvienceTypesDto } from "@/api_services/property/property.interface";
-import _STRINGS from "@/utils/LocalStrings";
-import React, { ReactNode } from "react";
+import { ReactNode } from "react";
 
 const ModalHeaderPart = ({
   onHide,
   title,
   hideArrow,
   children,
+  titleClass,
 }: {
   onHide: () => void | null;
   title: string;
   hideArrow?: boolean;
   children?: ReactNode;
+  titleClass?: string;
 }) => {
   return (
     <div className="app-text flex     border-b items-center justify-center md:justify-between py-3 px-4 sticky top-0 bg-white dark:bg-zinc-800 z-10">
@@ -27,7 +27,7 @@ const ModalHeaderPart = ({
       )}
       <div className="flex flex-row gap-2">
         {" "}
-        <p className=" text-base font-semibold">{title}</p>
+        <p className={` text-base font-semibold ${titleClass || ""}`}>{title}</p>
       </div>{" "}
       <img
         src="/assets/icons/adds/x_mark.svg"

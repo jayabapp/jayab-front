@@ -1,4 +1,5 @@
 import { Category, ContentDto } from "@/api_services/home/home.interface";
+import { SinglePropDto } from "@/api_services/property/property.interface";
 import serverCall from "@/helpers/serverCall";
 import { apiRoutes, baseUrl, NEW_IMAGE_URL } from "@/utils/urls";
 import type {
@@ -8,13 +9,12 @@ import type {
   FAQPage,
   LocalBusiness,
   Organization,
+  Place,
   Product,
   SearchAction,
   Service,
-  Place,
 } from "schema-dts";
 import { JsonLd } from ".";
-import { SinglePropDto } from "@/api_services/property/property.interface";
 export const FaqSchema = async () => {
   const { data: faqData } = await serverCall(baseUrl + apiRoutes.CONTENTS + `?key=faq&per_page=20&page=1`);
   return JsonLd<FAQPage>({
@@ -186,6 +186,7 @@ export const ProductSchema = ({ data }: { data: SinglePropDto }) => {
     url: `${process.env.NEXT_PUBLIC_WEB_SITE}/rooms/${data?.slug}`,
     image: [NEW_IMAGE_URL(data?.feature_image)],
     name: data?.title,
+
     // description: data?.,
     // alternateName: data?.title_en || "",
     // brand: data?.category?.title,

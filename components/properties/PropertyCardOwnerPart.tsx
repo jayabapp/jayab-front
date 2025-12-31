@@ -41,7 +41,7 @@ const PropertyCardOwnerPart = ({ data, goToLink }: { goToLink: string; data: Pro
       <div className="w-full flex  py-2  border-primary-200 items-center justify-between ">
         <div className="flex w-full items-start gap-1">
           <img src="/assets/icons/adds/pin_point_location.svg" className="w-5 h-5 aspect-square" />
-          <p className="text-sm">
+          <p className="text-sm mt-0.5">
             {data?.province} {"-"} {data?.city} {data?.region ? ` - ${data?.region}` : ""}
           </p>
         </div>

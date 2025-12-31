@@ -146,7 +146,7 @@ const CreateEditProperty = ({
       >
         <SinglePopUpSelect
           closeOnSelect
-          item={{ list: provinces || [], title: _STRINGS.PROVINCE, isMandatory: true }}
+          item={{ list: provinces || [], title: _STRINGS.PROVINCE, isMandatory: true, searcheable: true }}
           value={values?.province || ""}
           onSelect={(e) => {
             onChange(e, "province");
@@ -156,7 +156,13 @@ const CreateEditProperty = ({
         />
         <SinglePopUpSelect
           closeOnSelect
-          item={{ list: cities || [], title: _STRINGS.CITY, isMandatory: true, disable: isEmpty(cities) }}
+          item={{
+            list: cities || [],
+            title: _STRINGS.CITY,
+            isMandatory: true,
+            disable: isEmpty(cities),
+            searcheable: true,
+          }}
           value={values?.city || ""}
           onSelect={(e) => {
             onChange(e, "city");
@@ -171,6 +177,7 @@ const CreateEditProperty = ({
               title: _STRINGS.LOCAL,
               isMandatory: true,
               disable: isEmpty(selectedCity?.child),
+              searcheable: true,
             }}
             value={values?.region || ""}
             onSelect={(e) => {

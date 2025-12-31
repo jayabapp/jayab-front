@@ -1,31 +1,23 @@
 "use client";
-import {
-  AssistantSendDto,
-  PricingPropertySendDto,
-  PropertyTermsSendDto,
-} from "@/api_services/property/property.interface";
+import { HomeService } from "@/api_services/home/home.service";
+import { PropertyTermsSendDto } from "@/api_services/property/property.interface";
 import { PropertyService } from "@/api_services/property/property.service";
+import FormCounter from "@/components/properties/FormCounter";
 import SuccessAddModal from "@/components/properties/SuccessAddModal";
 import PropTermItem from "@/components/properties/TermItem";
-import TitleCounter from "@/components/properties/TitleCounter";
-import PageHeaders from "@/components/headers/PageHeader";
 import Button from "@/components/shared/Button/Button";
 import FixedBottomContainer from "@/components/shared/FixedBottomContainer";
 import Checkbox from "@/components/shared/Form/Checkbox";
 import FormInput from "@/components/shared/Form/FormInput";
-import FormInputWithExternalUnit from "@/components/shared/Form/FormInputWithExternalUnit";
 import MultiLineFormInput from "@/components/shared/Form/MultiLineFormInput";
-import RangeWithTitle from "@/components/shared/Form/RangeWithTitle";
+import LottieLoading from "@/components/shared/Lotties/LottieLoading";
 import StepShower from "@/components/shared/StepShower";
 import { createPropertySteps } from "@/utils/constantss";
 import _STRINGS from "@/utils/LocalStrings";
 import { useMutation, useQuery } from "@tanstack/react-query";
 import { isArray } from "lodash";
 import { useParams, usePathname, useRouter, useSearchParams } from "next/navigation";
-import React, { useEffect, useState } from "react";
-import { HomeService } from "@/api_services/home/home.service";
-import LottieLoading from "@/components/shared/Lotties/LottieLoading";
-import FormCounter from "@/components/properties/FormCounter";
+import { useEffect, useState } from "react";
 
 const CreatePropertyTerms = () => {
   const router = useRouter();
@@ -295,6 +287,7 @@ const CreatePropertyTerms = () => {
           placeholder: _STRINGS.DESCRIPTION_DOTS,
           maxLength: 1024,
           extraElement: <FormCounter max={1024} value={values?.guest_dscr || ""} />,
+          isMandatory: true,
         }}
         value={values?.doc_dscr || ""}
         onChangeText={(e) => {
