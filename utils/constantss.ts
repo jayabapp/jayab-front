@@ -54,6 +54,7 @@ export const headerBlackList = [
 ];
 export const headerMobileSearchBlackList = ["/chat"];
 
+export const mobileHeaderBlackList = ["/chat/"];
 export const mobileFooterBlackList = [
   "/auth",
   "/auth/otp",

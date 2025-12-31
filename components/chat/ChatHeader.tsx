@@ -7,8 +7,8 @@ import { NEW_IMAGE_URL } from "@/utils/urls";
 import { useMutation } from "@tanstack/react-query";
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
-import { isIOS } from "react-device-detect";
 import ConfirmModal from "../Modal/ConfirmModal";
+import BtnLoading from "../shared/Button/BtnLoading";
 
 type chatHeaderType = {
   image?: ImageDto;
@@ -53,13 +53,13 @@ const ChatHeader = ({ image, description, name, offSetTop, is_recipient_online, 
 
   return (
     <div
-      style={
-        isIOS && offSetTop
-          ? {
-              top: offSetTop,
-            }
-          : {}
-      }
+      // style={
+      //   isIOS && offSetTop
+      //     ? {
+      //         top: offSetTop,
+      //       }
+      //     : {}
+      // }
       className="flex fixed  justify-between pr-2 z-50 bg-white  dark:bg-dark-900 w-full left-0  md:left-[10%] md:right-[10%] mx-auto lg:top-0 md:w-[50%]   min-h-[4.25rem]   top-0 xl:top-[4.5rem] pt-4 items-center gap-2 pb-3 shadow-md "
     >
       <div className="flex items-center w-full gap-2">
@@ -89,15 +89,24 @@ const ChatHeader = ({ image, description, name, offSetTop, is_recipient_online, 
             <></>
           )}
           <div className="flex h-full flex-col justify-around col-span-3">
-            <p className="text-sm md:text-base">{name || _STRINGS?.CHAT}</p>
-            <p className="text-xs font-extralight md:text-sm">{description}</p>
-            {!!data?.recipient?.user_mobile_number ? (
-              <div className="w-full flex items-center gap-0.5 ">
-                <img className="w-5 h-5" src="/assets/icons/chat/basil_user.svg" />
-                <p className="text-xs !leading-2 opacity-50 mt-1 ">{data?.recipient?.user_mobile_number}</p>
-              </div>
+            {!!name || !!data?.recipient?.user_mobile_number ? (
+              <>
+                {" "}
+                <p className="text-sm md:text-base">{name || _STRINGS?.CHAT}</p>
+                <p className="text-xs font-extralight md:text-sm">{description}</p>
+                {!!data?.recipient?.user_mobile_number ? (
+                  <div className="w-full flex items-center gap-0.5 ">
+                    <img className="w-5 h-5" src="/assets/icons/chat/basil_user.svg" />
+                    <p className="text-xs !leading-2 opacity-50 mt-1 ">{data?.recipient?.user_mobile_number}</p>
+                  </div>
+                ) : (
+                  <></>
+                )}
+              </>
             ) : (
-              <></>
+              <>
+                <BtnLoading />
+              </>
             )}
           </div>
         </div>

@@ -18,7 +18,7 @@ const ChatListItem = ({ item }: { item: ChatListDto }) => {
       }}
       prefetch={false}
       href={`/chat/${item?.uuid}`}
-      className="w-full flex  pb-3  border-b flex-col"
+      className="w-full flex  relative pb-3  border-b flex-col"
     >
       <div className="w-full  relative  flex items-start flex-row  gap-2">
         <img
@@ -35,7 +35,7 @@ const ChatListItem = ({ item }: { item: ChatListDto }) => {
         </div>
       </div>
 
-      <div className="flex w-full flex-col gap-2 pr-14  mt-2  ">
+      <div className="flex relative w-full flex-col gap-2 pr-14  mt-2  ">
         <div className=" w-full flex   flex-row  items-center gap-2 justify-between">
           <div className="   rounded-md w-full p-1">
             <p className="text-xs line-clamp-1">{item?.last_message?.text}</p>
@@ -46,7 +46,7 @@ const ChatListItem = ({ item }: { item: ChatListDto }) => {
         </div>
       </div>
       {!!item?.unread_count && item?.unread_count != "0" ? (
-        <div className="rounded-full absolute left-0 bottom-2  flex items-center justify-center w-5 h-5 aspect-square text-sm bg-primary-700 text-white transition-all duration-200 ease-in-out">
+        <div className="rounded-full absolute left-0 top-2  flex items-center justify-center w-5 h-5 aspect-square text-sm bg-primary-700 text-white transition-all duration-200 ease-in-out">
           {item?.unread_count}
         </div>
       ) : (

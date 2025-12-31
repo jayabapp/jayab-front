@@ -50,7 +50,6 @@ const ChatListPage = () => {
       }
     }
   }, [chatNotification]);
-
   return (
     <div
       id="homeParent"

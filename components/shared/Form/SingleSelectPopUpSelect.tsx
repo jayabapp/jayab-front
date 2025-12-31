@@ -113,7 +113,7 @@ const SinglePopUpSelect = ({
                 value={search}
                 placeholder={`جستجوی ${item?.title}`}
                 onChange={(e) => setSearch(e.target.value)}
-                className={`  !bg-neutral-100  dark:bg-slate-800 w-5/6 focus:border-primary-700 py-1 `}
+                className={` !text-base !bg-neutral-100  dark:bg-slate-800 w-5/6 focus:border-primary-700 py-1 `}
               />
             </div>
           ) : (

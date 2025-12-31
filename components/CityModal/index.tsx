@@ -286,25 +286,35 @@ const CityModal = ({
         )}
       </div>
 
-      <div className=" bg-white shadow-card w-full py-4 flex items-center sticky gap-4 px-[10%] bottom-0  ">
-        {!!selectedProv ? (
+      {!!selectedProv ? (
+        <div className=" bg-white shadow-card w-full py-4 flex items-center sticky gap-4 px-[10%] bottom-0  ">
           <Button
+            key={"s1"}
             onClick={removeSelectedProve}
             width="w-full "
             variant="outline"
             containerClass="flex w-full  items-center justify-center "
             title={_STRINGS.RETURN}
           />
-        ) : (
-          <></>
-        )}
-        <Button
-          onClick={onSubmitClick}
-          width="w-full "
-          containerClass="flex w-full   items-center justify-center "
-          title={item?.submitTitle || (!!onSubmitCustomeCB ? _STRINGS.SUBMIT : _STRINGS.SEARCH)}
-        />
-      </div>
+          <Button
+            key={"s2"}
+            onClick={onSubmitClick}
+            width="w-full "
+            containerClass="flex w-full   items-center justify-center "
+            title={item?.submitTitle || (!!onSubmitCustomeCB ? _STRINGS.SUBMIT : _STRINGS.SEARCH)}
+          />
+        </div>
+      ) : (
+        <div className=" bg-white shadow-card w-full py-4 flex items-center sticky gap-4 px-[10%] bottom-0  ">
+          <Button
+            key={"s4235"}
+            onClick={onSubmitClick}
+            width="w-full "
+            containerClass="flex w-full   items-center justify-center "
+            title={item?.submitTitle || (!!onSubmitCustomeCB ? _STRINGS.SUBMIT : _STRINGS.SEARCH)}
+          />
+        </div>
+      )}
     </Modal>
   );
 };

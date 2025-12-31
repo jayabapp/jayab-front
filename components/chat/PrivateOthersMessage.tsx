@@ -45,7 +45,7 @@ const PrivateOthersMessage = ({ data, index, length }: itemType) => {
   const isEmojisOnly = (string: string) => removeEmojis(string)?.length === 0;
 
   return (
-    <div className={`col-span-4 w-[100%]   relative  flex justify-end `}>
+    <div id={data?.id} className={`col-span-4 w-[100%]   relative  flex justify-end `}>
       <div
         onClick={() => {
           setShow(true);
