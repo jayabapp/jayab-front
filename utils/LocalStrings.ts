@@ -397,7 +397,7 @@ const _STRINGS = {
   EMPTY_CONTACT_LIST: "محدودیت نمایش اطلاعات تماس",
   SHOW_FULL_NUMBER: "نمایش کامل شماره تماس",
   ROOM_EXPIRED_NOTICE: "محات اعتبار آگهی شما به اتمام رسیده است",
-  LATER: "بعدا",
+  LATER: "فعلا نه",
   ROOM_STATS: "آمار بازدید آگهی",
   LOCAL: "محله",
   SELECT_LOCAL: "انتخاب محله",
