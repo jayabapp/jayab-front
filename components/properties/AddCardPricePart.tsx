@@ -1,17 +1,32 @@
-import { PropertyListDto } from "@/api_services/property/property.interface";
 import numberWithCommas from "@/helpers/numberWithCommas";
 import _STRINGS from "@/utils/LocalStrings";
-import React from "react";
 
 const AddCardPricePart = ({
   data,
   containerClass,
+  ribbon,
 }: {
   data: { price?: number; discounted_price?: number; discount_percentage?: number };
   containerClass?: string;
+  ribbon?: {
+    ribbon_title_color?: string;
+    ribbon_bg_color?: string;
+    ribbon_title?: string;
+  };
 }) => {
   return (
-    <div className={`${containerClass || " flex flex-col  w-full gap-0 md:gap-0"} `}>
+    <div className={`${containerClass || " flex flex-col  w-full gap-0 md:gap-0"}   `}>
+      {ribbon?.ribbon_title ? (
+        <div
+          style={{ background: ribbon?.ribbon_bg_color, color: ribbon?.ribbon_title_color }}
+          className="absolute left-[-20%] md:left-[-15%]  xl:left-[-13%] top-4 z-10 w-[200px] -rotate-45  py-0.5  text-xs flex items-center justify-center text-center font-medium  shadow-md"
+        >
+          {ribbon?.ribbon_title}
+        </div>
+      ) : (
+        <></>
+      )}
+
       {!!data?.discounted_price ? (
         <>
           {" "}

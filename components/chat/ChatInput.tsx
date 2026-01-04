@@ -1,7 +1,6 @@
-import React, { useEffect, useState, useRef, useCallback, useMemo, LegacyRef } from "react";
-import EmojiPicker from "emoji-picker-react";
-import TextareaAutosize from "react-textarea-autosize";
 import _STRINGS from "@/utils/LocalStrings";
+import React, { useEffect, useRef, useState } from "react";
+import TextareaAutosize from "react-textarea-autosize";
 
 const ChatInput = ({
   value,
@@ -10,6 +9,7 @@ const ChatInput = ({
   placeholder,
   padding,
   onFocus,
+  inputRef,
 }: {
   maxRows: number;
   value: string;
@@ -17,8 +17,8 @@ const ChatInput = ({
   padding?: string;
   onChangeText: (e: any) => void | null;
   onFocus?: () => void | null;
+  inputRef: React.RefObject<HTMLTextAreaElement | null>;
 }) => {
-  const inputRef = useRef<HTMLTextAreaElement>(null);
   const fileInputRef = useRef<HTMLInputElement>(null);
   const [text, setText] = useState("");
   const [direction, setDirection] = useState<"ltr" | "rtl">("rtl");

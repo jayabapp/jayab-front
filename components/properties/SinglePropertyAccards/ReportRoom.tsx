@@ -1,35 +1,43 @@
 "use client";
 import { SinglePropDto } from "@/api_services/property/property.interface";
 import _STRINGS from "@/utils/LocalStrings";
-import React, { useState } from "react";
+import { useState } from "react";
 
-import PropertTermsModal from "./PropertTermsModal";
-import ConfirmModal from "@/components/Modal/ConfirmModal";
-import Notify from "@/components/shared/Toast";
-import { random } from "lodash";
+import { PropertyService } from "@/api_services/property/property.service";
+import { useMutation } from "@tanstack/react-query";
+import ReportPop from "./ReportPop";
 
 const ReportRoom = ({ data }: { data: SinglePropDto }) => {
-  const [loading, setLoading] = useState(false);
-  const [showReport, setShowReport] = useState(false);
+  // const [reportTitle, setReportTitle] = useState("");
+  // const [report, setReport] = useState("");
+  const [show, setShow] = useState(false);
 
-  const onHideMap = () => {
-    setShowReport(false);
+  const onHide = () => {
+    setShow(false);
+
+    // setReport("");
+    // setReportTitle("");
   };
-  const onConfirm = () => {
-    setLoading(true);
-    setTimeout(() => {
-      setShowReport(false);
-      setLoading(false);
-      Notify({ body: "گزارش با موفقیت ثبت شد.", type: "success" });
-    }, random(1, 3) * 1000);
+
+  const { mutate, isPending } = useMutation({
+    mutationFn: PropertyService.reportPost,
+    onSuccess: () => {
+      onHide();
+    },
+  });
+
+  // const onSubmit = () => {
+  //   mutate({ description: report, title: reportTitle, post_id: data?.id });
+  // };
+
+  const onShowReport = () => {
+    setShow(true);
   };
-  const onShowMap = () => {
-    setShowReport(true);
-  };
+
   return (
     <>
       <div
-        onClick={onShowMap}
+        onClick={onShowReport}
         className="  cursor-pointer border border-gray-300 rounded-10  px-4 py-3 flex items-center justify-between"
       >
         <p className=" text-red-500 bg-white  text-sm lg:text-base font-medium  !mt-0  rounded-10 w-full ">
@@ -40,20 +48,7 @@ const ReportRoom = ({ data }: { data: SinglePropDto }) => {
           className={` object-contain transition-all   w-4 aspect-square  `}
         />
       </div>
-      {!!showReport ? (
-        <ConfirmModal
-          confirmTextClassName=" !bg-red-500"
-          isLoading={loading}
-          options={{ inputTitle: "متن گزارش ", hasInput: true }}
-          confirmText="ثبت گزارش"
-          onConfirm={onConfirm}
-          text="گزارش خود را ثبت کنید"
-          onHide={onHideMap}
-          isVisible={showReport}
-        />
-      ) : (
-        <></>
-      )}
+      {!!show ? <ReportPop postId={data?.id} setShow={setShow} show={show} /> : <></>}
     </>
   );
 };

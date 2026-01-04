@@ -106,6 +106,8 @@ export const apiRoutes = {
 
   ADMIN_EDIT_VALIDATE: `/admin/auth/validate-edit-mode`,
 
+  PROPERTY_REPORT: (postId: string | number) => `/user/property-reports/${postId}`,
+
   SINGLE_TICKET_GET: (id: string | number) => `/user/tickets/${id}`,
 
   SINGLE_PROPERTY_CONTACT_INFO: (propertySlug: string | number | null) =>

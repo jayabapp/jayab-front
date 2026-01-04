@@ -8,7 +8,6 @@ import { useMutation, useQuery } from "@tanstack/react-query";
 import { useParams, useSearchParams } from "next/navigation";
 import { ParsedUrlQuery } from "querystring";
 import { useEffect, useRef, useState } from "react";
-import { isIOS } from "react-device-detect";
 
 import useViewportHeightFix from "@/components/chat/UseViewPortHeight";
 import ConfirmModal from "@/components/Modal/ConfirmModal";
@@ -232,12 +231,9 @@ const Chat = () => {
     <div
       ref={ref}
       style={{
-        // height: useDetectKeyboardOpen() ? (isIOS ? "100dvh" : "56dvh") : "100dvh",
-        height: isIOS ? "100dvh" : height,
-
-        // paddingBottom: useDetectKeyboardOpen() && isIOS ? "20dvh" : "",
+        height: "100dvh",
       }}
-      className={`chat-container md:!w-1/2 overflow-y-clip  !bg-neutral-100    max-h-[100dvh] relative col-span-4 `}
+      className={`chat-container flex flex-col   md:!w-1/2 overflow-y-clip  !bg-neutral-100    max-h-[100dvh] relative col-span-4 `}
       // style={{ height: `${useWindowSize()?.height}px` }}
     >
       <ChatHeader

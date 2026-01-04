@@ -7,7 +7,7 @@ export interface ContentByKeyDto {
   title: string;
   slug: string;
   key: string;
-  small_text: null;
+  small_text: string;
   full_text: string;
   feature_image_id: null;
   is_active: boolean;

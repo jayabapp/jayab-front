@@ -1,14 +1,13 @@
 import { SinglePropDto } from "@/api_services/property/property.interface";
-import React from "react";
-import PrimaryAccard from "./PrimaryAccard";
-import GuestAccard from "./GuestAccard";
 import EnvAccard from "./EnvAccard";
-import RoomAccard from "./RoomAccard";
 import FeatAccard from "./FeatAccard";
 import GeneralFeatAccard from "./GeneralFeatAccard";
+import GuestAccard from "./GuestAccard";
 import MapPopupPart from "./MapPopupPart";
-import RulesPopPart from "./RulesPopPart";
+import PrimaryAccard from "./PrimaryAccard";
 import ReportRoom from "./ReportRoom";
+import RoomAccard from "./RoomAccard";
+import RulesPopPart from "./RulesPopPart";
 
 const SinglePorpertyAccards = ({ data }: { data: SinglePropDto }) => {
   return (
@@ -21,7 +20,7 @@ const SinglePorpertyAccards = ({ data }: { data: SinglePropDto }) => {
       <GeneralFeatAccard data={data} />
       {!!data?.latitude ? <MapPopupPart data={data} /> : <></>}
       <RulesPopPart data={data} />
-      {/* <ReportRoom data={data} /> */}
+      <ReportRoom data={data} />
     </div>
   );
 };

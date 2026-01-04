@@ -52,7 +52,7 @@ const ExpiredPropertyModal = ({
       onHide={onHideFunc}
     >
       <div className=" py-5 flex-col items-center  justify-center  gap-4 flex px-3">
-        {isLoading ? (
+        {isLoading || !data ? (
           <LottieLoading />
         ) : (
           <>

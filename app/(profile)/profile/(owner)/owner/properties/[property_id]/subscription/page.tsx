@@ -132,6 +132,7 @@ const Subscription = () => {
             <div className="w-full flex items-start gap-2 ">
               <p className="font-bold text-sm text-primary-700 shrink-0">{_STRINGS.COST} :</p>
               <AddCardPricePart
+                ribbon={e}
                 containerClass=" items-center text-primary-700 flex flex-row w-full gap-2"
                 data={{ price: e?.price, discounted_price: e?.price_with_discount }}
               />

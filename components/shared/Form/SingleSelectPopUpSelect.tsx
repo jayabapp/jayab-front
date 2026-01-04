@@ -101,7 +101,7 @@ const SinglePopUpSelect = ({
       >
         <ModalHeaderPart
           titleClass="text-primary-700"
-          title={item?.title || ""}
+          title={item?.title || item?.placeholder || ""}
           onHide={() => {
             setShow(false);
           }}

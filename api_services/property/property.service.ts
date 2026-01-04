@@ -800,4 +800,26 @@ export class PropertyService {
       throw e;
     }
   }
+
+  /* -------------------------------------------------------------------------- */
+  /*                                 REPORT PROPERTY                                */
+  /* -------------------------------------------------------------------------- */
+
+  static async reportPost(dto: { post_id: string | number; title: string; description: string }) {
+    try {
+      const result = await apiCall<
+        {
+          title: string;
+          description: string;
+        },
+        unknown
+      >("POST", apiRoutes.PROPERTY_REPORT(dto.post_id), {
+        description: dto?.description,
+        title: dto?.title,
+      });
+      return result;
+    } catch (e) {
+      throw e;
+    }
+  }
 }

@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect, useState } from "react";
+import React, { useCallback, useEffect, useRef, useState } from "react";
 
 import { SingleChatDetailsDto } from "@/api_services/chat/chat.interface";
 import { ChatService } from "@/api_services/chat/chat.service";
@@ -54,12 +54,14 @@ const ChatFooter = ({
   const [text, setText] = useState("");
   const [showEmojiPicker, setShowEmojiPicker] = useState(false);
   const [image, setImage] = useState<any>(null);
+  const inputRef = useRef<HTMLTextAreaElement>(null);
   const { connecting } = useStoreSocket((state) => state);
+
   const { mutate: sendMessage, isPending: sedLoading } = useMutation({
     mutationFn: ChatService.SendMessage,
     onSuccess: (d) => {
       setText("");
-
+      inputRef?.current?.blur();
       // setCursor(0);
       // setRefresher((e) => !e);
       if (!!d?.message) {
@@ -130,7 +132,11 @@ const ChatFooter = ({
   // }, [isTyping, socket, !!singleChatData]);
 
   const submit = () => {
-    if (!!singleChatData?.property?.is_expired) return setShowExpired(true);
+    if (
+      !!singleChatData?.property?.is_expired &&
+      singleChatData?.self?.user_id == singleChatData?.property?.owner?.user?.id
+    )
+      return setShowExpired(true);
 
     if ((text || !!image) && chatId) {
       const body: { id: string | number; text: string; media_id?: number } = { id: chatId, text };
@@ -215,6 +221,7 @@ const ChatFooter = ({
         </div>
 
         <ChatInput
+          inputRef={inputRef}
           onFocus={() => {
             setShowEmojiPicker(false);
             if (callback) callback();

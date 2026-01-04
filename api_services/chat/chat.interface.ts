@@ -266,6 +266,7 @@ export interface PropertyChatDto {
   title: string;
   feature_image: ImageDto;
   is_expired: boolean;
+  owner: { user: { id: number } };
 }
 
 export interface SingleChatDetailsDto {

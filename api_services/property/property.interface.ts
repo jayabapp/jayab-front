@@ -229,6 +229,9 @@ export interface PropertySubsDto {
   is_promote: boolean;
   is_special: boolean;
   description: string;
+  ribbon_title_color: string;
+  ribbon_title: string;
+  ribbon_bg_color: string;
 }
 
 export interface PayPropertySubSendDto {
