@@ -5,6 +5,7 @@ import { ChatService } from "@/api_services/chat/chat.service";
 import _STRINGS from "@/utils/LocalStrings";
 import { NEW_IMAGE_URL } from "@/utils/urls";
 import { useMutation } from "@tanstack/react-query";
+import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 import ConfirmModal from "../Modal/ConfirmModal";
@@ -51,6 +52,11 @@ const ChatHeader = ({ image, description, name, offSetTop, is_recipient_online, 
     }
   }, [data]);
 
+  const goToLink =
+    // data?.property?.owner?.user?.id == data?.self?.user_id
+    //   ? `/profile/owner/properties/${data?.property?.id}`
+    //   :
+    `/rooms/${data?.property?.slug}`;
   return (
     <div
       // style={
@@ -62,11 +68,13 @@ const ChatHeader = ({ image, description, name, offSetTop, is_recipient_online, 
       // }
       className="flex fixed  justify-between pr-2 z-50 bg-white  dark:bg-dark-900 w-full left-0  md:left-[10%] md:right-[10%] mx-auto lg:top-0 md:w-[50%]   min-h-[4.25rem]   top-0 xl:top-[4.5rem] pt-4 items-center gap-2 pb-3 shadow-md "
     >
-      <div className="flex items-center w-full gap-2">
+      <Link href={goToLink} className="flex items-center w-full gap-2">
         {" "}
         <img
           src="/assets/icons/shared/chevron.svg"
-          onClick={() => {
+          onClick={(e) => {
+            e.preventDefault();
+            e.stopPropagation();
             router.back();
           }}
           className=" dark:invert h-4 aspect-square w-4 -rotate-90  justify-start  "
@@ -110,7 +118,7 @@ const ChatHeader = ({ image, description, name, offSetTop, is_recipient_online, 
             )}
           </div>
         </div>
-      </div>
+      </Link>
       <img
         onClick={showBlockFunc}
         className={`w-6 h-6 cursor-pointer aspect-square ${
