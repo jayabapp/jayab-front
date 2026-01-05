@@ -13,10 +13,12 @@ const PropertyContactInfoItem = ({
   data,
   onHide,
   image,
+  isPropertyExpired,
 }: {
   onHide: () => void | null;
   data: PropertyContactIInfDto;
   image?: ImageDto;
+  isPropertyExpired?: boolean;
 }) => {
   const [showNumber, setShowNumber] = useState(false);
   const onActionButtinsClick = (type: "tel" | "sms") => {
@@ -89,9 +91,12 @@ const PropertyContactInfoItem = ({
           </div>
           <div
             onClick={() => {
+              if (!!isPropertyExpired) return;
               onActionButtinsClick("sms");
             }}
-            className=" w-9 h-9  bg-white border border-primary-700 aspect-square rounded-full flex items-center justify-center "
+            className={`${
+              isPropertyExpired ? " grayscale opacity-60 " : ""
+            }  w-9 h-9  bg-white border border-primary-700 aspect-square rounded-full flex items-center justify-center `}
           >
             <img className="w-4 h-4  aspect-square" src="/assets/icons/advisor/blue_sms.svg" />
           </div>

@@ -68,10 +68,10 @@ export class PropertyService {
 
   static async getSinglePropertyContactInfo(dto: { propertySlug: string | number | null }) {
     try {
-      const result = await apiCall<unknown, { list: PropertyContactIInfDto[]; owner: { selfie_image: ImageDto } }>(
-        "GET",
-        apiRoutes.SINGLE_PROPERTY_CONTACT_INFO(dto.propertySlug)
-      );
+      const result = await apiCall<
+        unknown,
+        { list: PropertyContactIInfDto[]; owner: { selfie_image: ImageDto }; isPropertyExpired?: boolean }
+      >("GET", apiRoutes.SINGLE_PROPERTY_CONTACT_INFO(dto.propertySlug));
       return result;
     } catch (e) {
       throw e;

@@ -36,6 +36,7 @@ const SinglePropContactInfoModal = ({
       setState(contactInfo?.list);
     }
   }, [contactInfo]);
+
   return (
     <>
       <ModalBottomSheet
@@ -58,6 +59,7 @@ const SinglePropContactInfoModal = ({
           ) : (
             state?.map((e) => (
               <PropertyContactInfoItem
+                isPropertyExpired={contactInfo?.isPropertyExpired}
                 image={contactInfo?.owner?.selfie_image}
                 onHide={onHide}
                 key={`contactItem${e?.assistant_full_name}`}

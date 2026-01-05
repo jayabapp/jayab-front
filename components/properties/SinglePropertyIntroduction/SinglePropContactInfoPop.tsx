@@ -42,7 +42,12 @@ const SinglePropContactInfoPop = ({
             <EmptyList />
           ) : (
             contactInfo?.list?.map((e) => (
-              <PropertyContactInfoItem onHide={onHide} key={`contactItem${e?.assistant_full_name}`} data={e} />
+              <PropertyContactInfoItem
+                isPropertyExpired={contactInfo?.isPropertyExpired}
+                onHide={onHide}
+                key={`contactItem${e?.assistant_full_name}`}
+                data={e}
+              />
             ))
           )}
         </div>
