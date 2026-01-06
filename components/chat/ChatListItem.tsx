@@ -40,11 +40,9 @@ const ChatListItem = ({ item }: { item: ChatListDto }) => {
           <div className="   rounded-md w-full p-1">
             <p className="text-xs line-clamp-1">{item?.last_message?.text}</p>
           </div>
-          {moment(item?.last_update || item?.last_message?.updated_at || item?.last_message?.created_at).isValid() ? (
+          {!!item?.last_update && moment(item?.last_update).isValid() ? (
             <p className="text-xs opacity-50   shrink-0 text-end flex justify-end w-fit  ">
-              {moment(item?.last_update || item?.last_message?.updated_at || item?.last_message?.created_at).format(
-                "HH:mm - jYYYY/jMM/jDD"
-              )}
+              {moment(item?.last_update).format("HH:mm - jYYYY/jMM/jDD")}
             </p>
           ) : (
             <></>

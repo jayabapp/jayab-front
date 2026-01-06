@@ -68,7 +68,7 @@ const ChatHeader = ({ image, description, name, offSetTop, is_recipient_online, 
       // }
       className="flex fixed  justify-between pr-2 z-50 bg-white  dark:bg-dark-900 w-full left-0  md:left-[10%] md:right-[10%] mx-auto lg:top-0 md:w-[50%]   min-h-[4.25rem]   top-0 xl:top-[4.5rem] pt-4 items-center gap-2 pb-3 shadow-md "
     >
-      <Link href={goToLink} className="flex items-center w-full gap-2">
+      <div className="flex items-center w-full gap-2">
         {" "}
         <img
           src="/assets/icons/shared/chevron.svg"
@@ -96,7 +96,7 @@ const ChatHeader = ({ image, description, name, offSetTop, is_recipient_online, 
           ) : (
             <></>
           )}
-          <div className="flex h-full flex-col justify-around col-span-3">
+          <Link href={goToLink} className="flex h-full flex-col justify-around col-span-3">
             {!!name || !!data?.recipient?.user_mobile_number ? (
               <>
                 {" "}
@@ -116,9 +116,9 @@ const ChatHeader = ({ image, description, name, offSetTop, is_recipient_online, 
                 <BtnLoading />
               </>
             )}
-          </div>
+          </Link>
         </div>
-      </Link>
+      </div>
       <img
         onClick={showBlockFunc}
         className={`w-6 h-6 cursor-pointer aspect-square ${
