@@ -1,16 +1,18 @@
 "use client";
-import { useRouter, usePathname } from "next/navigation";
+import { AdvisorService } from "@/api_services/advisor/advisor.propery";
+import { PropertyService } from "@/api_services/property/property.service";
+import { useAuthStore, useStoreInit, useStoreParams } from "@/store";
+import { useQuery } from "@tanstack/react-query";
+import moment from "moment-jalaali";
+import { usePathname, useRouter } from "next/navigation";
 import { useState } from "react";
 import { isIOS } from "react-device-detect";
 import _STRINGS from "../../utils/LocalStrings";
-import { useStoreInit, useStoreParams, useStoreTheme } from "@/store";
-import { PropertyService } from "@/api_services/property/property.service";
-import { useQuery } from "@tanstack/react-query";
 
 const MobileFooter: React.FC = ({}) => {
   const { userInfo } = useStoreInit((data) => data);
   const router = useRouter();
-
+  const { isLogin } = useAuthStore((state: any) => state);
   const route = usePathname();
 
   const { data: initPropData, refetch } = useQuery({
@@ -84,6 +86,25 @@ const MobileFooter: React.FC = ({}) => {
     }
     return "browser";
   }
+
+  /* -------------------------------------------------------------------------- */
+  /*                               ADVISOR STATUS                               */
+  /* -------------------------------------------------------------------------- */
+
+  const { data: advisorProfile } = useQuery({
+    queryKey: [AdvisorService.USER_ADVISORS_PROFILE_CACHEKEY, isLogin],
+
+    queryFn: () => {
+      if (!!isLogin) return AdvisorService.userAdvisorsProfile();
+      else return null;
+    },
+  });
+  const isActive = moment().isBefore(advisorProfile?.subscription_expired_at);
+  const remainingDays = moment(advisorProfile?.subscription_expired_at).diff(moment(), "days");
+
+  const hasBadge =
+    (advisorProfile?.status?.id == 20 && !!isActive && remainingDays <= 3) ||
+    (advisorProfile?.status?.id == 20 && !isActive);
   return (
     <div
       className={`z-10    flex   max-w-[800px]  ${
@@ -94,9 +115,7 @@ const MobileFooter: React.FC = ({}) => {
         {footerItems?.map((el, i) => {
           return (
             <div
-              className={` w-[15%] ${
-                !isFocused(el?.route) && el?.title ? " opacity-60 grayscale brightness-90  " : " "
-              }   cursor-pointer select-none flex flex-col items-center gap-1 justify-center transition-all duration-1000	ease-in-out  `}
+              className={` w-[15%]   relative cursor-pointer select-none flex flex-col items-center gap-1 justify-center transition-all duration-1000	ease-in-out  `}
               onClick={() => {
                 if (!isFocused(el?.route)) {
                   useStoreParams.setState({ sideBarStatus: false });
@@ -110,16 +129,24 @@ const MobileFooter: React.FC = ({}) => {
               }}
               key={el?.id}
             >
+              {!!hasBadge && el?.route == "/advisors" ? (
+                <div className="w-2 h-2 rounded-full  absolute left-2 z-1 -top-0.5 bg-red-600 animate-pulse transition-all"></div>
+              ) : (
+                <></>
+              )}
+
               <img
                 alt={`${el?.id}footerItem`}
                 src={el?.icon}
-                className={` w-5 h-5 aspect-square object-contain ${isFocused(el?.route) && el?.title ? "" : " "}`}
+                className={` w-5  ${
+                  !isFocused(el?.route) && el?.title ? " opacity-60 grayscale brightness-90  " : " "
+                }  h-5 aspect-square object-contain`}
               />
 
               {el?.title ? (
                 <p
                   className={`  ${
-                    !isFocused(el?.route) && el?.title ? "  " : "     "
+                    !isFocused(el?.route) && el?.title ? " opacity-60 grayscale brightness-90  " : " "
                   }   truncate text-xs  md:text-base  text-primary-700 select-none
             
                 `}

@@ -22,6 +22,8 @@ import { Suspense, useEffect, useState } from "react";
 import InfiniteScroll from "react-infinite-scroll-component";
 
 import dynamic from "next/dynamic";
+const HomeAdvisorSub = dynamic(() => import("@/components/Home/HomeAdvisorSub"));
+
 const BannersContainer = dynamic(() => import("@/components/Home/BannersContainer"));
 const SearchBox = dynamic(() => import("@/components/SearchBoxComp"));
 const AdvisorsPageHelper = () => {
@@ -185,6 +187,8 @@ const AdvisorsPageHelper = () => {
             )}
           </div>
         </div>
+        <HomeAdvisorSub />
+
         {isLoading && data?.length == 0 ? (
           <LottieLoading />
         ) : data && data?.length > 0 ? (

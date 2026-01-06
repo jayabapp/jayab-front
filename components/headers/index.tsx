@@ -6,6 +6,7 @@ import React, { Suspense, useEffect, useState } from "react";
 
 import _STRINGS from "@/utils/LocalStrings";
 
+import { AdvisorService } from "@/api_services/advisor/advisor.propery";
 import { ChatService } from "@/api_services/chat/chat.service";
 import { PropertyService } from "@/api_services/property/property.service";
 import { UserService } from "@/api_services/user/user.service";
@@ -13,6 +14,7 @@ import { useAuthStore, useStoreInit, useStoreParams } from "@/store";
 import { headerMobileSearchBlackList } from "@/utils/constantss";
 import { NEW_IMAGE_URL } from "@/utils/urls";
 import { useQuery } from "@tanstack/react-query";
+import moment from "moment-jalaali";
 import Button from "../shared/Button/Button";
 import DrawerMenu from "../shared/DrawerMenu";
 import AbsoluteBadge from "./AbsoluteBadge";
@@ -24,17 +26,30 @@ const PopSearchbox = dynamic(() => import("../SearchBoxComp/PopSearchbox"), {
 });
 
 type textIconType = {
-  item: { route: string; icon: string; title: string };
+  item: { route: string; icon: string; title: string; hasBadge?: boolean };
 };
 
 const TextIcon = ({ item }: textIconType) => (
   <Link
     prefetch={false}
     href={item?.route}
-    className={`flex items-center transition-all  brightness-125 hover:brightness-100 hover:grayscale-0  grayscale justify-center col-span-1 gap-2 flex-row ml-4 `}
+    className={`flex items-center relative transition-all  group  justify-center col-span-1 gap-2 flex-row ml-4 `}
   >
-    <img src={item?.icon} className="dark:invert" />
-    <p className="text-primary-700 shrink-0  ">{item?.title}</p>
+    {item?.hasBadge ? (
+      <div className="w-2 h-2 rounded-full  absolute -left-2 z-1 -top-0.5 bg-red-600 animate-pulse transition-all"></div>
+    ) : (
+      <></>
+    )}
+
+    <img
+      src={item?.icon}
+      className={`dark:invert  brightness-125 group-hover:brightness-100 group-hover:grayscale-0  grayscale `}
+    />
+    <p
+      className={`text-primary-700 shrink-0  brightness-125 group-hover:brightness-100 group-hover:grayscale-0  grayscale  }`}
+    >
+      {item?.title}
+    </p>
   </Link>
 );
 
@@ -151,6 +166,25 @@ const Header = ({ scroll }: { scroll?: number }) => {
   const removeredirectRoomToHome = () => {
     useStoreParams.setState({ getBackHome: false });
   };
+
+  /* -------------------------------------------------------------------------- */
+  /*                               ADVISOR STATUS                               */
+  /* -------------------------------------------------------------------------- */
+
+  const { data: advisorProfile } = useQuery({
+    queryKey: [AdvisorService.USER_ADVISORS_PROFILE_CACHEKEY, isLogin],
+
+    queryFn: () => {
+      if (!!isLogin) return AdvisorService.userAdvisorsProfile();
+      else return null;
+    },
+  });
+  const isActive = moment().isBefore(advisorProfile?.subscription_expired_at);
+  const remainingDays = moment(advisorProfile?.subscription_expired_at).diff(moment(), "days");
+
+  const hasBadge =
+    (advisorProfile?.status?.id == 20 && !!isActive && remainingDays <= 3) ||
+    (advisorProfile?.status?.id == 20 && !isActive);
 
   return (
     <header className="relative">
@@ -379,6 +413,7 @@ transition-all  ease-in-out duration-1000 header-content-container w-full mx-aut
                 icon: "/assets/icons/header/consultant_header.svg",
                 title: _STRINGS.CONSULTANTS,
                 route: "/advisors",
+                hasBadge: hasBadge,
               }}
             />
             {!!isLogin && !!showLogins ? (

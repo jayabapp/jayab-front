@@ -12,7 +12,6 @@ import dynamic from "next/dynamic";
 import { Suspense } from "react";
 
 const BannersContainer = dynamic(() => import("@/components/Home/BannersContainer"));
-const HomeAdvisorSub = dynamic(() => import("@/components/Home/HomeAdvisorSub"));
 const HomeCityFilterContainer = dynamic(() => import("@/components/Home/HomeCityFilterContainer"));
 const HomePropertiesList = dynamic(() => import("@/components/Home/HomePropertiesList"));
 
@@ -61,7 +60,6 @@ const Home = async () => {
         className="px-3   relative  select-none md:px-3 lg:px-4 2xl:px-[5%]  pt-0 md:py-0 w-full"
       >
         {" "}
-        <HomeAdvisorSub />
         {/* {!!landings?.popular_city && !isEmpty(landings?.popular_city) ? ( */}
         <HomeCityFilterContainer
           devices={devices}
