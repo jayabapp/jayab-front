@@ -5,6 +5,8 @@
   "scripts": {
     "dev": "next dev --turbopack -p 3037",
     "build": "next build",
+    "build:prod": "NODE_ENV=production next build",
+    "build:brotli": "BROTLI_COMPRESS=true next build",
     "start": "next start",
     "lint": "next lint"
   },
@@ -63,6 +65,9 @@
     "@types/react": "^19",
     "@types/react-dom": "^19",
     "@types/react-lottie": "^1.2.10",
+    "compression-webpack-plugin": "^11.1.0",
+    "critters": "^0.0.25",
+    "cssnano": "^7.1.2",
     "eslint": "^9",
     "eslint-config-next": "^15.3.5",
     "postcss": "^8",
