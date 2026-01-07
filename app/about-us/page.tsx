@@ -1,17 +1,11 @@
-import { HomeService } from "@/api_services/home/home.service";
 import Breadcrumbs from "@/components/BreadCrumbs";
 import Editable from "@/components/Editable";
 
-import LottieLoading from "@/components/shared/Lotties/LottieLoading";
-import * as Sentry from "@sentry/nextjs";
-import Notify from "@/components/shared/Toast";
-import _STRINGS from "@/utils/LocalStrings";
-import { apiRoutes, baseUrl, NEW_IMAGE_URL } from "@/utils/urls";
-import { useQuery } from "@tanstack/react-query";
-import DOMPurify from "isomorphic-dompurify";
-import React from "react";
 import { LocalBusinessSchema } from "@/components/SchemaGenerator/Schemas";
+import LottieLoading from "@/components/shared/Lotties/LottieLoading";
 import serverCall from "@/helpers/serverCall";
+import { apiRoutes, baseUrl, NEW_IMAGE_URL } from "@/utils/urls";
+import DOMPurify from "isomorphic-dompurify";
 
 const AboutUs = async () => {
   const { data: aboutUs } = await serverCall(baseUrl + apiRoutes.CONTENT_BY_KEY("aboutUs"));

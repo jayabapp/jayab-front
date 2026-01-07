@@ -10,7 +10,6 @@ import { apiRoutes, baseUrl } from "@/utils/urls";
 import { x_Iransans } from "./fonts/x_iran/x_Iransans";
 import LayoutProvider from "./layout-provider";
 
-import * as Sentry from "@sentry/nextjs";
 import Script from "next/script";
 import type { ReactNode } from "react";
 
@@ -21,9 +20,6 @@ export function generateMetadata(): Metadata {
       default: "جایاب",
     },
     description: "جایاب",
-    other: {
-      ...Sentry.getTraceData(),
-    },
   };
 }
 

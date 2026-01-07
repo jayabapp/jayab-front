@@ -1,7 +1,7 @@
 import { Cropper, CropperRef } from "react-advanced-cropper";
 //import "react-advanced-cropper/dist/style.css";
 import _STRINGS from "@/utils/LocalStrings";
-import * as Sentry from "@sentry/nextjs";
+
 import { useEffect, useRef, useState } from "react";
 import "react-advanced-cropper/dist/themes/compact.css";
 import Modal from "../Modal";
@@ -48,13 +48,11 @@ const EditImageModal = ({ imageUrl, isUploading, onHide, onComplete, cropRatio }
         } else {
           const error = new Error(`${blob}blob does not exict`);
           error.name = "Blob error";
-          Sentry.captureException(error);
         }
       }, "image/png");
     } else {
       const error = new Error(`${canvas}canvas does not exict`);
       error.name = "Canvas error";
-      Sentry.captureException(error);
     }
   };
 

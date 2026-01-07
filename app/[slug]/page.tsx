@@ -2,7 +2,6 @@ import LottieLoading from "@/components/shared/Lotties/LottieLoading";
 import SsrFilterPage from "@/components/SinglePageComponents/SsrFilterPage";
 import serverCall from "@/helpers/serverCall";
 import { apiRoutes, baseUrl } from "@/utils/urls";
-import * as Sentry from "@sentry/nextjs";
 import { Metadata, ResolvingMetadata } from "next";
 
 import { isArray } from "lodash";
@@ -30,7 +29,7 @@ export async function generateMetadata({ params }: Props, parent: ResolvingMetad
     description: landings?.content?.seo?.metaDescription || landings?.content?.slug,
 
     other: {
-      ...Sentry.getTraceData(),
+      // ...Sentry.getTraceData(),
     },
     alternates: {
       canonical: landings?.content?.seo?.canonicalURL || xCanonical,
