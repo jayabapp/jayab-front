@@ -2,22 +2,20 @@
 
 import _STRINGS from "@/utils/LocalStrings";
 
-import React, { useEffect, useState } from "react";
-import { useRouter } from "next/navigation";
 import { useQuery } from "@tanstack/react-query";
+import { useRouter } from "next/navigation";
+import { useEffect, useState } from "react";
 
-import InfiniteScroll from "react-infinite-scroll-component";
 import BtnLoading from "@/components/shared/Button/BtnLoading";
+import InfiniteScroll from "react-infinite-scroll-component";
 
-import Button from "@/components/shared/Button/Button";
+import { MetaDto, TicketDatum } from "@/api_services/support/support.interface";
 import { SupportService } from "@/api_services/support/support.service";
-import { MetaDto, TicketDatum, TicketsDto } from "@/api_services/support/support.interface";
-import { Meta } from "@/api_services/chat/chat.interface";
-import Breadcrumbs from "@/components/BreadCrumbs";
-import { isEmpty } from "lodash";
-import LottieLoading from "@/components/shared/Lotties/LottieLoading";
+import Button from "@/components/shared/Button/Button";
 import EmptyList from "@/components/shared/Lotties/EmptyList";
+import LottieLoading from "@/components/shared/Lotties/LottieLoading";
 import SupportCard from "@/components/support/SupportCard";
+import isEmpty from "lodash/isEmpty";
 
 const Support = () => {
   const router = useRouter();

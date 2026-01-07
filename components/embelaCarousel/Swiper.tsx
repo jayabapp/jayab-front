@@ -51,7 +51,7 @@ const Swiper: React.FC<PropType> = (props) => {
   const BREAKPOINTS = props?.breakPoints ? Object.entries(props?.breakPoints) : undefined;
 
   const perViewOptions: any = useMemo(() => {
-    if (!innerWidth) return { slidesPerView: props?.slidesPerView || 1, spaceBetween: 0 };
+    if (!innerWidth) return { slidesPerView: props?.slidesPerView || 1, spaceBetween: props?.spaceBetween || 0 };
 
     return (
       BREAKPOINTS?.map(([size, options], index) => {

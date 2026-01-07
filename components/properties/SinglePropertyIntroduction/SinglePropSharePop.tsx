@@ -3,17 +3,13 @@ import { SinglePropDto } from "@/api_services/property/property.interface";
 import { PropertyService } from "@/api_services/property/property.service";
 import ModalHeaderPart from "@/components/Modal/ModalHeaderPart";
 import PopUpDown from "@/components/PopUpDown";
-import EmptyList from "@/components/shared/Lotties/EmptyList";
-import LottieLoading from "@/components/shared/Lotties/LottieLoading";
+import Button from "@/components/shared/Button/Button";
+import Notify from "@/components/shared/Toast";
 import { shareButtonItems } from "@/utils/constantss";
 import _STRINGS from "@/utils/LocalStrings";
 import { useQuery } from "@tanstack/react-query";
-import { isEmpty } from "lodash";
-import React, { use, useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import SinglePropSharePopItem from "./SinglePropSharePopItem";
-import Button from "@/components/shared/Button/Button";
-import { isMobile } from "react-device-detect";
-import Notify from "@/components/shared/Toast";
 
 const SinglePropSharePop = ({
   data,

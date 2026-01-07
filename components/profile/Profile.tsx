@@ -1,18 +1,16 @@
 import { useRouter } from "next/navigation";
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 
-import _STRINGS from "@/utils/LocalStrings";
-import { isMobile } from "react-device-detect";
-import { useAuthStore, useStoreInit } from "@/store";
-import ConfirmModal from "../Modal/ConfirmModal";
-import { profileItems } from "@/utils/constantss";
-import ProfileItem from "./ProfileItem";
-import Button from "../shared/Button/Button";
-import { NEW_IMAGE_URL } from "@/utils/urls";
-import { isEmpty } from "lodash";
-import MainUploader from "../uploader";
-import { useMutation } from "@tanstack/react-query";
 import { UserService } from "@/api_services/user/user.service";
+import { useAuthStore, useStoreInit } from "@/store";
+import { profileItems } from "@/utils/constantss";
+import _STRINGS from "@/utils/LocalStrings";
+import { useMutation } from "@tanstack/react-query";
+import { isMobile } from "react-device-detect";
+import ConfirmModal from "../Modal/ConfirmModal";
+import Button from "../shared/Button/Button";
+import MainUploader from "../uploader";
+import ProfileItem from "./ProfileItem";
 
 const Profile = ({}) => {
   const [profileImage, setProfileImage] = useState<any>(null);

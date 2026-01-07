@@ -1,9 +1,8 @@
+import { ChildCities } from "@/api_services/city/city.interface";
+import _STRINGS from "@/utils/LocalStrings";
+import isEmpty from "lodash/isEmpty";
 import React from "react";
 import Checkbox from "../shared/Form/Checkbox";
-import _STRINGS from "@/utils/LocalStrings";
-import { ProvienceTypesDto } from "@/api_services/property/property.interface";
-import { isEmpty } from "lodash";
-import { ChildCities } from "@/api_services/city/city.interface";
 
 const CityModalAllCitiesButton = ({
   cities,

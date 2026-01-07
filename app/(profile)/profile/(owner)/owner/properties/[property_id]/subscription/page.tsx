@@ -12,7 +12,7 @@ import SimpleBarChart from "@/components/widgets/chart/SimpleBarChart";
 import numberWithCommas from "@/helpers/numberWithCommas";
 import _STRINGS from "@/utils/LocalStrings";
 import { useMutation, useQuery } from "@tanstack/react-query";
-import { isEmpty } from "lodash";
+import isEmpty from "lodash/isEmpty";
 import { useParams, useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 

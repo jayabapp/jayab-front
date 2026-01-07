@@ -4,8 +4,7 @@ import PropertyCard from "@/components/properties/PropertyCard";
 import EmptyList from "@/components/shared/Lotties/EmptyList";
 import LottieLoading from "@/components/shared/Lotties/LottieLoading";
 import { useQuery } from "@tanstack/react-query";
-import { isEmpty } from "lodash";
-import React from "react";
+import isEmpty from "lodash/isEmpty";
 
 const BookMarks = () => {
   const { data: properties, isLoading } = useQuery({

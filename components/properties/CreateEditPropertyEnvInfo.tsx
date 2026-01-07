@@ -1,15 +1,8 @@
-import FormInput from "@/components/shared/Form/FormInput";
-import _STRINGS from "@/utils/LocalStrings";
-import React from "react";
-import SinglePopUpSelect from "../shared/Form/SingleSelectPopUpSelect";
-import { createPropertySteps } from "@/utils/constantss";
-import { useQuery } from "@tanstack/react-query";
 import { PropertyService } from "@/api_services/property/property.service";
-import FormInputWithExternalUnit from "../shared/Form/FormInputWithExternalUnit";
-import { AuthService } from "@/api_services/auth/auth.service";
-import { isEmpty } from "lodash";
+import _STRINGS from "@/utils/LocalStrings";
+import { useQuery } from "@tanstack/react-query";
 import MultiLineFormInput from "../shared/Form/MultiLineFormInput";
-import Checkbox from "../shared/Form/Checkbox";
+import SinglePopUpSelect from "../shared/Form/SingleSelectPopUpSelect";
 import FormCounter from "./FormCounter";
 
 export interface CreateProperyStepThree {

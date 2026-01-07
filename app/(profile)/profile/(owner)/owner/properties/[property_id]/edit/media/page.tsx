@@ -1,28 +1,21 @@
 "use client";
 import { ImageDto } from "@/api_services/auth/auth.interface";
 import { PropertyService } from "@/api_services/property/property.service";
-import PageHeaders from "@/components/headers/PageHeader";
-import SearchPlaceModal from "@/components/Map/SearchPlaceModal";
-import SearchBox from "@/components/SearchBoxComp";
 import Button from "@/components/shared/Button/Button";
 import FixedBottomContainer from "@/components/shared/FixedBottomContainer";
 import LottieLoading from "@/components/shared/Lotties/LottieLoading";
-import ProgressBar from "@/components/shared/progressbar";
 import StepShower from "@/components/shared/StepShower";
-import MainUploader from "@/components/uploader";
 import FullscreenImage from "@/components/uploader/FullScreenImage";
 import NewMultUploader from "@/components/uploader/NewMultUploader";
 
 import UploadedItemShowCase from "@/components/uploader/UploadedItemShowCase";
-import { useStoreInit } from "@/store";
 import { createPropertySteps } from "@/utils/constantss";
 import _STRINGS from "@/utils/LocalStrings";
 import { NEW_IMAGE_URL } from "@/utils/urls";
 import { useMutation, useQuery } from "@tanstack/react-query";
-import { isEmpty } from "lodash";
-import dynamic from "next/dynamic";
-import { useParams, usePathname, useRouter, useSearchParams } from "next/navigation";
-import React, { useEffect, useMemo, useState } from "react";
+import isEmpty from "lodash/isEmpty";
+import { useParams, useRouter, useSearchParams } from "next/navigation";
+import { useEffect, useState } from "react";
 
 const CreatePropertyImages = () => {
   const [loading, setLoading] = useState(false);

@@ -5,7 +5,7 @@ import EmptyList from "@/components/shared/Lotties/EmptyList";
 import queryBuilder from "@/helpers/queryBuilder";
 import useQueryGet from "@/helpers/queryGet";
 import _STRINGS from "@/utils/LocalStrings";
-import { isEmpty } from "lodash";
+import isEmpty from "lodash/isEmpty";
 import { usePathname, useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 import CityCard from "../CityCard";

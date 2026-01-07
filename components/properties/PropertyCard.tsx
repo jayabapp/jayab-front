@@ -3,7 +3,7 @@ import { PropertyListDto } from "@/api_services/property/property.interface";
 import { useStoreParams } from "@/store";
 import _STRINGS from "@/utils/LocalStrings";
 import { NEW_IMAGE_URL } from "@/utils/urls";
-import { isEmpty } from "lodash";
+import isEmpty from "lodash/isEmpty";
 import Image from "next/image";
 import Link from "next/link";
 import StatusShower from "../shared/StatusShower";
@@ -144,6 +144,7 @@ const PropertyCard = ({ data, isOwner, week }: { data: PropertyListDto; isOwner?
           <div className=" aspect-square w-full h-full relative">
             <Image
               fill
+              loading="lazy"
               quality={100}
               alt={data?.feature_image?.alt || ""}
               src={

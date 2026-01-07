@@ -7,7 +7,7 @@ import EmptyList from "@/components/shared/Lotties/EmptyList";
 import LottieLoading from "@/components/shared/Lotties/LottieLoading";
 import _STRINGS from "@/utils/LocalStrings";
 import { useQuery } from "@tanstack/react-query";
-import { isEmpty } from "lodash";
+import isEmpty from "lodash/isEmpty";
 import PropertyContactInfoItem from "./PropertyContactInfoItem";
 
 const SinglePropContactInfoPop = ({

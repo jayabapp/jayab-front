@@ -1,17 +1,14 @@
 "use client";
+import React, { ReactEventHandler, useEffect, useRef, useState } from "react";
 import "react-advanced-cropper/dist/style.css";
-import React, { useRef, useState, useCallback, ReactEventHandler, useEffect } from "react";
 
-import FullscreenImage from "./FullScreenImage";
+import { AuthService } from "@/api_services/auth/auth.service";
+import { useMutation } from "@tanstack/react-query";
 import imageCompression from "browser-image-compression";
 import { toast } from "sonner";
-import { useMutation } from "@tanstack/react-query";
-import { useStoreTheme } from "../../store";
-import { AuthService } from "@/api_services/auth/auth.service";
 import BtnLoading from "../shared/Button/BtnLoading";
-import Modal from "../Modal";
 import Notify from "../shared/Toast";
-import { random } from "lodash";
+import FullscreenImage from "./FullScreenImage";
 
 type props = {
   type?: string;

@@ -6,14 +6,13 @@ import AdvisorPlansCard from "@/components/Advisor/AdvisorPlansCard";
 import ConfirmModal from "@/components/Modal/ConfirmModal";
 import Button from "@/components/shared/Button/Button";
 import StatusShower from "@/components/shared/StatusShower";
-import timeLeft from "@/helpers/timeLeft";
 import { useStoreInit } from "@/store";
 import _STRINGS from "@/utils/LocalStrings";
 import { useMutation, useQuery } from "@tanstack/react-query";
-import { isEmpty } from "lodash";
+import isEmpty from "lodash/isEmpty";
 import moment from "moment-jalaali";
 import { useRouter, useSearchParams } from "next/navigation";
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 
 const AdvisorRegister = () => {
   const router = useRouter();

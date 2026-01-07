@@ -1,9 +1,8 @@
-import { ProvienceTypesDto } from "@/api_services/property/property.interface";
-import React, { useEffect, useState } from "react";
-import SimpleAccordion from "../shared/SimpleAccorion";
-import _STRINGS from "@/utils/LocalStrings";
-import { isEmpty } from "lodash";
 import { ChildCities, NewCitiesListDto } from "@/api_services/city/city.interface";
+import _STRINGS from "@/utils/LocalStrings";
+import isEmpty from "lodash/isEmpty";
+import { useEffect, useState } from "react";
+import SimpleAccordion from "../shared/SimpleAccorion";
 
 const CityModalSelectedAccardiom = ({
   selectedCities,

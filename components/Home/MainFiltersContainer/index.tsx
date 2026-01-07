@@ -1,4 +1,4 @@
-import { isEmpty } from "lodash";
+import isEmpty from "lodash/isEmpty";
 
 import { HomeLandingDto } from "@/api_services/home/home.interface";
 import EmptyList from "@/components/shared/Lotties/EmptyList";

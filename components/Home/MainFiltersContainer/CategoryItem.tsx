@@ -1,7 +1,6 @@
+import { HomeLandingDto } from "@/api_services/home/home.interface";
 import { NEW_IMAGE_URL } from "@/utils/urls";
 import Image from "next/image";
-import React from "react";
-import { HomeLandingDto } from "@/api_services/home/home.interface";
 import Link from "next/link";
 
 const CategoryItem = ({ item }: { item: HomeLandingDto }) => {
@@ -22,6 +21,7 @@ const CategoryItem = ({ item }: { item: HomeLandingDto }) => {
       <div id={`${item?.title || "fake"}CatImage`} className="w-full relative rounded-10  aspect-[0.85] z-30">
         {" "}
         <Image
+          loading="eager"
           // src={imageError ? DefaultIcon : IMAGE_URL(data?.cover_location)}
           src={item?.image ? NEW_IMAGE_URL(item?.image) : "/assets/icons/shared/image_placeholder.svg"}
           alt={`icatImages${item?.title}`}

@@ -1,6 +1,5 @@
 "use client";
 
-import { GetProfileDto } from "@/api_services/auth/auth.interface";
 import { AuthService } from "@/api_services/auth/auth.service";
 import { UserService } from "@/api_services/user/user.service";
 import ConfirmModal from "@/components/Modal/ConfirmModal";
@@ -11,11 +10,11 @@ import { useAuthStore, useStoreInit } from "@/store";
 import { profileItems } from "@/utils/constantss";
 
 import _STRINGS from "@/utils/LocalStrings";
-import dynamic from "next/dynamic";
 import { useMutation, useQuery } from "@tanstack/react-query";
-import { isEmpty } from "lodash";
+import isEmpty from "lodash/isEmpty";
+import dynamic from "next/dynamic";
 import { useRouter } from "next/navigation";
-import React, { Suspense, useEffect, useState } from "react";
+import { Suspense, useEffect, useState } from "react";
 import { isMobile, isTablet } from "react-device-detect";
 
 const MainUploader = dynamic(() => import("@/components/uploader"));

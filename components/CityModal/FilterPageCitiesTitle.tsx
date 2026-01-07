@@ -1,7 +1,7 @@
 import { ChildCities } from "@/api_services/city/city.interface";
 import queryBuilder from "@/helpers/queryBuilder";
 import _STRINGS from "@/utils/LocalStrings";
-import { isEmpty } from "lodash";
+import isEmpty from "lodash/isEmpty";
 import { usePathname, useRouter } from "next/navigation";
 import { useCallback, useState } from "react";
 import RegionModal from "./RegionModal";

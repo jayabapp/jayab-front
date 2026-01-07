@@ -5,7 +5,7 @@ import ModalBottomSheet from "@/components/Modal/ModalBottomSheet";
 import ModalHeaderPart from "@/components/Modal/ModalHeaderPart";
 import _STRINGS from "@/utils/LocalStrings";
 import { useQuery } from "@tanstack/react-query";
-import { isEmpty } from "lodash";
+import isEmpty from "lodash/isEmpty";
 import { useEffect, useState } from "react";
 import LinearSkeleton from "../ProductSkeleton/LinearSkeleton";
 import PropertyContactInfoItem from "./PropertyContactInfoItem";

@@ -8,9 +8,9 @@ import FixedBottomContainer from "@/components/shared/FixedBottomContainer";
 import { useStoreInit } from "@/store";
 import _STRINGS from "@/utils/LocalStrings";
 import { useMutation, useQuery } from "@tanstack/react-query";
-import { isEmpty } from "lodash";
+import isEmpty from "lodash/isEmpty";
 import { useParams, useRouter } from "next/navigation";
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 
 const CreateYourAdvisor = () => {
   const router = useRouter();

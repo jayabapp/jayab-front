@@ -1,18 +1,18 @@
 "use client";
 
-import { isEmpty } from "lodash";
+import isEmpty from "lodash/isEmpty";
 
 import { useEffect, useRef, useState } from "react";
 import type { Swiper } from "swiper";
 import { SwiperSlide } from "swiper/react";
 
-import Link from "next/link";
-import BlogCard from "./BlogCard";
-import _STRINGS from "@/utils/LocalStrings";
 import { ContentDto } from "@/api_services/home/home.interface";
-import LottieLoading from "../shared/Lotties/LottieLoading";
+import _STRINGS from "@/utils/LocalStrings";
+import Link from "next/link";
 import EmptyList from "../shared/Lotties/EmptyList";
+import LottieLoading from "../shared/Lotties/LottieLoading";
 import SwiperWithNavigation from "../SwiperWithNavigation";
+import BlogCard from "./BlogCard";
 type BlogsContainerTypes = {
   title: string;
 

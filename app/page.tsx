@@ -6,7 +6,7 @@ import deviceTypeDetector from "@/helpers/device.detector";
 import serverCall from "@/helpers/serverCall";
 import _STRINGS from "@/utils/LocalStrings";
 import { apiRoutes, baseUrl } from "@/utils/urls";
-import { isEmpty } from "lodash";
+import isEmpty from "lodash/isEmpty";
 import { Metadata } from "next";
 import dynamic from "next/dynamic";
 import { Suspense } from "react";

@@ -1,15 +1,14 @@
-import React, { Suspense } from "react";
-import _STRINGS from "@/utils/LocalStrings";
+import { Suspense } from "react";
 
-import serverCall from "@/helpers/serverCall";
-import { apiRoutes, baseUrl } from "@/utils/urls";
+import LatestBlogCard from "@/components/blogs/BlogCard";
 import Breadcrumbs from "@/components/BreadCrumbs";
 import LottieLoading from "@/components/shared/Lotties/LottieLoading";
-import LatestBlogCard from "@/components/blogs/BlogCard";
+import serverCall from "@/helpers/serverCall";
+import { apiRoutes, baseUrl } from "@/utils/urls";
 
-import { isEmpty } from "lodash";
 import EmptyList from "@/components/shared/Lotties/EmptyList";
 import ServerSidePaginate from "@/components/shared/Pagination/ServerSidePaginate";
+import isEmpty from "lodash/isEmpty";
 import { Metadata } from "next";
 
 import MehaHeaderHelper from "@/helpers/MetaHeaderHelper";

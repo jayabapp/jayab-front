@@ -1,6 +1,7 @@
 import localFont from "next/font/local";
 
 export const x_Iransans = localFont({
+  display: "swap",
   src: [
     {
       path: "./IRANSansX-Light.ttf",

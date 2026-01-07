@@ -1,7 +1,7 @@
 import { useState } from "react";
 // import PopUpDown from "../PopUpDown";
 // import Selecti from "./SingleSelectSelecti";
-import { isEmpty } from "lodash";
+import isEmpty from "lodash/isEmpty";
 // import ModalBottomSheet from "../Modal/ModalBottomSheet";
 import ModalBottomSheet from "@/components/Modal/ModalBottomSheet";
 import ModalHeaderPart from "@/components/Modal/ModalHeaderPart";

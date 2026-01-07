@@ -1,7 +1,5 @@
-import { isEmpty } from "lodash";
-import React from "react";
-import { ItemType } from "./MultiSelectPopUpSelect";
 import Checkbox from "./Checkbox";
+import { ItemType } from "./MultiSelectPopUpSelect";
 
 type SelectiType = {
   item: ItemType;

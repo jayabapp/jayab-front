@@ -1,11 +1,9 @@
-import Link from "next/link";
-import React from "react";
-import { useRouter } from "next/navigation";
-import { isEmpty } from "lodash";
-import _STRINGS from "@/utils/LocalStrings";
-import BtnLoading from "../shared/Button/BtnLoading";
-import findTree from "@/helpers/FindTree";
 import { SearchSuggDto } from "@/api_services/home/home.interface";
+import _STRINGS from "@/utils/LocalStrings";
+import isEmpty from "lodash/isEmpty";
+import { useRouter } from "next/navigation";
+import React from "react";
+import BtnLoading from "../shared/Button/BtnLoading";
 const SuggestedPart = ({
   data,
   isLoading,

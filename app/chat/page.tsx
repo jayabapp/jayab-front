@@ -8,7 +8,7 @@ import LottieLoading from "@/components/shared/Lotties/LottieLoading";
 import { useChatStore } from "@/store";
 import { useQuery } from "@tanstack/react-query";
 import { produce } from "immer";
-import { isEmpty } from "lodash";
+import isEmpty from "lodash/isEmpty";
 import { useEffect, useState } from "react";
 
 const ChatListPage = () => {

@@ -1,6 +1,6 @@
 import _STRINGS from "@/utils/LocalStrings";
-import { isEmpty } from "lodash";
-import React, { useEffect, useState } from "react";
+import isEmpty from "lodash/isEmpty";
+import { useEffect, useState } from "react";
 type SuggsType = { title: string; id: string };
 
 const HistorySuggPart = ({ handleChange }: { handleChange: (e: string) => void | null }) => {

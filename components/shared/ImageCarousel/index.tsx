@@ -73,9 +73,10 @@ const ImageCarousel = ({ list, item, devices }: ImageCarouselTypes) => {
                 } transition-all duration-300 ease-in-out   relative`}
               >
                 <Image
-                  loading="lazy"
-                  fetchPriority="auto"
+                  // loading="lazy"
+                  fetchPriority="high"
                   fill
+                  priority={true}
                   // onError={onImageError}
                   alt={e?.image?.alt}
                   // src={true ? "saf" : IMAGE_URL(e?.image_location)}
@@ -86,6 +87,8 @@ const ImageCarousel = ({ list, item, devices }: ImageCarouselTypes) => {
                 />
                 <Image
                   fill
+                  fetchPriority="high"
+                  priority={true}
                   // onError={onImageError}
                   alt={e?.image?.alt}
                   // src={true ? "saf" : IMAGE_URL(e?.image_location)}
