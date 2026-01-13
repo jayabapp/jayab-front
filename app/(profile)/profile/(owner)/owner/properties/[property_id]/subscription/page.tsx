@@ -189,7 +189,7 @@ const Subscription = () => {
         </>
       ) : !isEmpty(statsData?.statistics) ? (
         <div className="w-full">
-          <p className="text-xl font-bold text-primary-700 mb-4">{_STRINGS.ROOM_STATS}</p>
+          <p className="text-base font-bold  mb-4">{_STRINGS.ROOM_STATS}</p>
           <div className="h-96">
             <SimpleBarChart data={getFilledStats()} />
           </div>
