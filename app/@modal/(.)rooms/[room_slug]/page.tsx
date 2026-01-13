@@ -18,7 +18,11 @@ type Props = {
 
 export default async function Page({ params }: { params: Promise<{ room_slug: string }> }) {
   const pageParams = await params;
-  return <ModalClient params={pageParams} />;
+  return (
+    <>
+      <ModalClient params={pageParams} />
+    </>
+  );
   // return (
   //   <>
   //     <ModalServer params={params} />

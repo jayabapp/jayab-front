@@ -18,31 +18,45 @@ const SimpleBarChart = ({ data }: { data: any }) => {
   return (
     <ResponsiveContainer width="100%" height="100%">
       <LineChart
-        stackOffset="expand"
-        // width={500}
+        // stackOffset="expand"
         // height={300}
         data={data}
         margin={{
           top: 5,
-          right: 30,
-          left: 0,
+          right: 5,
+          left: -15,
           bottom: 5,
         }}
       >
         {/* <CartesianGrid strokeDasharray="3 3" /> */}
         <XAxis
           dataKey="date"
-          tickFormatter={(value) => moment(value).format("jMM/jDD") || ""}
-          tickMargin={10}
-          // tick={{ textAnchor: "start", dx: -6 }}
+          tickFormatter={(value) => {
+            if (moment(value).isSame(moment(), "day")) {
+              return "امروز";
+            }
+            return moment(value).format("jMM/jDD") || "";
+          }}
+          tickMargin={5}
+          // tick={{ textAnchor: "start", }}
           // angle={-90}
           stroke="#C8CBD0"
+          // textAnchor="middle"
+          fontSize={12}
+          textAnchor="middle"
+
+          // tick={(props) => <CustomizedAxisTick {...props} />}
         />
         <YAxis
+          textAnchor="start"
+          interval={1}
+          fontSize={12}
           tickFormatter={(value) => numberWithCommas(value) || ""}
           type="number"
-          tickMargin={35}
+          tickMargin={5}
           stroke="#C8CBD0"
+          className="bg-red-800"
+
           // tick={{ fontSize: 12, color: "red" }}
         />
         {/* <Tooltip /> */}
@@ -51,7 +65,7 @@ const SimpleBarChart = ({ data }: { data: any }) => {
         <Tooltip
           content={(e) => <CustomTooltip active={e?.active} label={e?.label} payload={e?.payload} key={e?.label} />}
         />
-        <Line dataKey="value" type={"monotone"} fill="#3886E5" strokeWidth={"3px"} />
+        <Line dataKey="value" type={"linear"} fill="#3886E5" strokeWidth={"3px"} />
       </LineChart>
     </ResponsiveContainer>
   );
