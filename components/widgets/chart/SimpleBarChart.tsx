@@ -15,6 +15,12 @@ const SimpleBarChart = ({ data }: { data: any }) => {
 
     return null;
   };
+
+  const Max = Math.max(...data.map((i: any) => i.value));
+  const ticks = Array.from(
+    { length: Max / 10 <= 1 ? Max / 2 + 1 : 11 },
+    (_, idx) => idx * (Max / 10 <= 1 ? 2 : Max / 100 < 1 ? 10 : Math.round(Max / 10))
+  );
   return (
     <ResponsiveContainer width="100%" height="100%">
       <LineChart
@@ -49,11 +55,14 @@ const SimpleBarChart = ({ data }: { data: any }) => {
         />
         <YAxis
           textAnchor="start"
-          interval={1}
+          interval={0}
           fontSize={12}
+          ticks={ticks}
           tickFormatter={(value) => numberWithCommas(value) || ""}
           type="number"
           tickMargin={5}
+          // tickMargin={50}
+          domain={Max ? [0, Max % 2 == 0 ? Max : Max + 1] : ["dataMin", "dataMax"]}
           stroke="#C8CBD0"
           className="bg-red-800"
 
