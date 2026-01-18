@@ -1,4 +1,5 @@
 import numberWithCommas from "@/helpers/numberWithCommas";
+import { chartSteps } from "@/utils/constantss";
 import moment from "moment-jalaali";
 import { Line, LineChart, ResponsiveContainer, Tooltip, XAxis, YAxis } from "recharts";
 
@@ -18,9 +19,18 @@ const SimpleBarChart = ({ data }: { data: any }) => {
 
   const Max = Math.max(...data.map((i: any) => i.value));
   const ticks = Array.from(
-    { length: Max / 10 <= 1 ? Max / 2 + 1 : 11 },
-    (_, idx) => idx * (Max / 10 <= 1 ? 2 : Max / 100 < 1 ? 10 : Math.round(Max / 10))
+    { length: 11 },
+    (_, idx) =>
+      idx *
+      (Max > 100
+        ? Math.ceil(Max / 10)
+        : (Object.entries(chartSteps)?.find(
+            ([key, value]) => Number(Max) <= Number(value?.[1]) && Number(Max) >= Number(value?.[0])
+          )?.[0] as any))
+    // { length: Max / 10 <= 1 ? Max / 2 + 1 : 11 },
+    // (_, idx) => idx * (Max / 10 <= 1 ? 2 : Math.ceil(Max / 10))
   );
+
   return (
     <ResponsiveContainer width="100%" height="100%">
       <LineChart
