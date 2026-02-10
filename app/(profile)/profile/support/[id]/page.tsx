@@ -1,19 +1,17 @@
 "use client";
-import React, { useEffect, useState } from "react";
-import { useParams } from "next/navigation";
 import { useMutation, useQuery } from "@tanstack/react-query";
+import { useParams } from "next/navigation";
+import { useEffect, useState } from "react";
 
-import FormInput from "@/components/shared/Form/FormInput";
-import _STRINGS from "@/utils/LocalStrings";
-import Button from "@/components/shared/Button/Button";
 import { SupportService } from "@/api_services/support/support.service";
-import Breadcrumbs from "@/components/BreadCrumbs";
+import Modal from "@/components/Modal";
+import Button from "@/components/shared/Button/Button";
 import MultiLineFormInput from "@/components/shared/Form/MultiLineFormInput";
-import Message from "@/components/support/Message";
 import LottieLoading from "@/components/shared/Lotties/LottieLoading";
 import Notify from "@/components/shared/Toast";
-import Modal from "@/components/Modal";
+import Message from "@/components/support/Message";
 import { useStoreSocket } from "@/store";
+import _STRINGS from "@/utils/LocalStrings";
 
 const TicketsPage = () => {
   const { notification } = useStoreSocket((e) => e);
@@ -76,11 +74,12 @@ const TicketsPage = () => {
           </div>
 
           {/* {data?.status == 20 && ( */}
-          <div className="fixed translate-x-1/2 right-1/2  bottom-0  w-full p-4 responsive-width z-40 flex flex-col items-center  ">
+          <div className="  fixed translate-x-1/2 right-1/2  bottom-[4.5rem] lg:bottom-0  w-full p-4 responsive-width z-40 flex flex-col items-center  ">
             <Button
               disabled={data?.status == 100}
               title={data?.status == 100 ? _STRINGS.TICKET_CLOSED : _STRINGS.ANSWER_MESSAGE}
               onClick={() => setVisibleModal(true)}
+              width=" !py-1 md:!py-3 "
               // icon={<ChatBubbleLeftEllipsisIcon className="w-6 ml-2" />}
             />
 
