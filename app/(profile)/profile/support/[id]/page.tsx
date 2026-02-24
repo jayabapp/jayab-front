@@ -74,12 +74,14 @@ const TicketsPage = () => {
           </div>
 
           {/* {data?.status == 20 && ( */}
-          <div className="  fixed translate-x-1/2 right-1/2  bottom-[4.5rem] lg:bottom-0  w-full p-4 responsive-width z-40 flex flex-col items-center  ">
+          <div className="  fixed translate-x-1/2 md:translate-x-1/4  bg-white md:bg-transparent  border-y md:border-none  right-1/2  bottom-[4.5rem] lg:bottom-0  w-full p-4 responsive-width z-40 flex flex-col items-center  ">
             <Button
               disabled={data?.status == 100}
               title={data?.status == 100 ? _STRINGS.TICKET_CLOSED : _STRINGS.ANSWER_MESSAGE}
               onClick={() => setVisibleModal(true)}
-              width=" !py-1 md:!py-3 "
+              width=" !border !border-white  !w-full   "
+              containerClass=" w-1/2 md:w-1/3"
+
               // icon={<ChatBubbleLeftEllipsisIcon className="w-6 ml-2" />}
             />
 

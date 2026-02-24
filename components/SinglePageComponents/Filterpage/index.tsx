@@ -60,7 +60,7 @@ const Filterpage = () => {
   }, [searchParams]);
 
   const [sortType, setSortType] = useState<sortTypeType | undefined>(
-    queries?.sort_type ? SORT_TYPES?.find((i) => i?.id == queries?.sort_type) : SORT_TYPES[0]
+    queries?.sort_type ? SORT_TYPES?.find((i) => i?.id == queries?.sort_type) : SORT_TYPES[0],
   );
   const [filterModalShow, setFilterModalShow] = useState(false);
 

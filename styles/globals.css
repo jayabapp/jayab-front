@@ -311,7 +311,10 @@ input[type="number"] {
   position: absolute;
   transform: translateY(-100%);
   width: 100%;
-  box-shadow: rgb(0 0 0 / 5%) 0px -20px 20px, rgb(0 0 0 / 10%) 0px -6px 6px, rgb(0 0 0 / 3%) 0px -30px 30px;
+  box-shadow:
+    rgb(0 0 0 / 5%) 0px -20px 20px,
+    rgb(0 0 0 / 10%) 0px -6px 6px,
+    rgb(0 0 0 / 3%) 0px -30px 30px;
   background: #343434;
   border-radius: 10px 10px 0 0;
   overflow: visible;
@@ -392,7 +395,9 @@ input[type="number"] {
 .form-title-gradient {
   background: white;
   background-repeat: no-repeat;
-  background-size: 100% 50%, 100% 50%;
+  background-size:
+    100% 50%,
+    100% 50%;
   background-position: top, bottom;
 }
 
