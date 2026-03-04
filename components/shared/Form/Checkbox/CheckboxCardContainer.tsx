@@ -10,23 +10,35 @@ const CheckboxCardContainer = ({
   item,
 }: {
   isChecked: boolean;
-  onSelect: () => void;
-
   title?: string;
   description?: string;
   children?: ReactNode;
+  onSelect: () => void;
   item?: {
     disabled?: boolean;
+    hint?: string;
   };
 }) => {
   return (
     <div
-      className={`w-full flex flex-col gap-2 rounded-10 border p-2 relative overflow-clip ${
-        item?.disabled ? " opacity-50 grayscale" : ""
+      className={`w-full flex flex-col gap-2 rounded-10 border py-2 px-2.5 relative overflow-clip ${
+        item?.disabled ? "bg-neutral-50 grayscale" : ""
       } `}
     >
-      <Checkbox isChecked={isChecked} onSelect={item?.disabled ? () => {} : onSelect} title={title} />
-      <p className="text-xs md:text-sm">{description}</p>
+      <Checkbox
+        isChecked={isChecked}
+        onSelect={item?.disabled ? () => {} : onSelect}
+        title={title}
+      />
+      {!!item?.hint && (
+        <p className="-mt-2 leading-3 text-xs opacity-75 font-regular text-neutral-500 ">
+          {item?.hint}
+        </p>
+      )}
+
+      <p className="text-xs md:text-sm font-thin text-justify !leading-relaxed">
+        {description}
+      </p>
       <span> {children}</span>
     </div>
   );
