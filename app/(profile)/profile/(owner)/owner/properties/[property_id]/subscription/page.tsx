@@ -156,7 +156,7 @@ const Subscription = () => {
       return Notify({ type: "warn", body: "لطفا پلن مورد نظر را انتخاب کنید" });
 
     mutate({
-      gateway: "SANDBOX",
+      gateway: "ZARINPAL",
       redirect_url: window.origin + `/profile/owner/properties/${property_id}`,
       property_id: `${property_id}`,
       subscription_id: subId,
