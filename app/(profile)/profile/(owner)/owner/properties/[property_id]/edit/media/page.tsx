@@ -19,10 +19,14 @@ import { useEffect, useState } from "react";
 
 const CreatePropertyImages = () => {
   const [loading, setLoading] = useState(false);
-  const [imagesLoadings, setimagesLoadings] = useState<{ [key: string]: any }>({});
+  const [imagesLoadings, setimagesLoadings] = useState<{ [key: string]: any }>(
+    {},
+  );
 
   const [show, setShow] = useState(false);
-  const [selectedFullScreen, setSelectedFullScreen] = useState<ImageDto | null>(null);
+  const [selectedFullScreen, setSelectedFullScreen] = useState<ImageDto | null>(
+    null,
+  );
   const router = useRouter();
   const searchParams = useSearchParams();
   const edit_mode = searchParams.get("edit_mode");
@@ -51,7 +55,9 @@ const CreatePropertyImages = () => {
       if (!!edit_mode) {
         router.replace(`/profile/owner/properties/${property_id}/edit`);
       } else {
-        router.push(`/profile/owner/properties/${property_id}/edit/environment`);
+        router.push(
+          `/profile/owner/properties/${property_id}/edit/environment`,
+        );
       }
     },
   });
@@ -85,21 +91,30 @@ const CreatePropertyImages = () => {
       className="profile-container    items-center   transition-all duration-500 ease-in-out flex flex-col gap-6 "
     >
       <div className="w-full px-4 md:px-0 pb-4 pt-8">
-        {" "}
-        <StepShower steps={createPropertySteps(initPropData?.id) || []} value={3} />
+        <StepShower
+          steps={createPropertySteps(initPropData?.id) || []}
+          value={3}
+        />
       </div>
 
       <div className=" flex items-start w-full flex-wrap gap-4">
         <div className=" bg-primary-350/5 border p-3  w-full  rounded-10 border-primary-350  flex flex-col gap-3">
-          <p className="text-xs text-primary-350"> {"1- حداکثر تعداد آپلود همزمان عکس 10 عدد میباشد."} </p>
           <p className="text-xs text-primary-350">
-            {" "}
-            {!isEmpty(images) ? "2- عکس اصلی خود را با ضربه زدن روی عکس مورد نظر انتخاب کنید." : ""}{" "}
+            1- حداکثر تعداد آپلود همزمان عکس 10 عدد میباشد.
           </p>
-        </div>{" "}
+          <p className="text-xs text-primary-350">
+            {!isEmpty(images)
+              ? "2- عکس اصلی خود را با ضربه زدن روی عکس مورد نظر انتخاب کنید."
+              : ""}
+          </p>
+          <p className="text-xs text-primary-350">
+            3- در صورت بروز اختلال در شبکه اینترنت، میتوانید ابتدا یک عکس آپلود
+            و پس از اتمام مراحل ثبت اقامتگاه، مجددا تصاویر بیشتری بارگذاری
+            نمائید.
+          </p>
+        </div>
         {isLoading ? (
           <div className="w-full flex items-center justify-center">
-            {" "}
             <LottieLoading margin="w-full" />
           </div>
         ) : (
@@ -107,7 +122,10 @@ const CreatePropertyImages = () => {
             <NewMultUploader
               setLoading={setLoading}
               loading={loading}
-              innerClasses={{ sizeClass: " w-28 md:w-36  aspect-square ", secontParentClass: "  w-28 md:w-36 " }}
+              innerClasses={{
+                sizeClass: " w-28 md:w-36  aspect-square ",
+                secontParentClass: "  w-28 md:w-36 ",
+              }}
               title={"افزودن عکس"}
               link="/attachments?type=OWNER_PROPERTY_IMAGE"
               key={`uploader`}
@@ -146,10 +164,12 @@ const CreatePropertyImages = () => {
                 />
                 <div
                   className={` ${
-                    !!primaryImageId && primaryImageId == e?.data?.id ? "opacity-100" : "opacity-0"
+                    !!primaryImageId && primaryImageId == e?.data?.id
+                      ? "opacity-100"
+                      : "opacity-0"
                   } transition-all absolute text-xxs h-7 bottom-0 w-full flex items-center justify-center bg-white/60  text-gray-700`}
                 >
-                  {_STRINGS.PRIMARY_IMAGE}{" "}
+                  {_STRINGS.PRIMARY_IMAGE}
                 </div>
               </div>
             ))}
