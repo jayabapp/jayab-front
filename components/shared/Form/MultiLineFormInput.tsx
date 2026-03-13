@@ -36,7 +36,13 @@ export interface props {
     rows?: number;
   };
 }
-const FormInput = ({ item, value, onChangeText, errors, errorKey = "" }: props) => {
+const FormInput = ({
+  item,
+  value,
+  onChangeText,
+  errors,
+  errorKey = "",
+}: props) => {
   return (
     <div className={item?.containerClass + " "}>
       {item?.title ? (
@@ -52,7 +58,6 @@ const FormInput = ({ item, value, onChangeText, errors, errorKey = "" }: props) 
       ) : (
         <></>
       )}
-
       <textarea
         rows={item?.rows || 3}
         className={`${!!item?.iconUrl ? " !pl-10" : ""}  ${!!item?.iconEndUrl ? " !pr-10" : ""} ${
@@ -63,8 +68,8 @@ const FormInput = ({ item, value, onChangeText, errors, errorKey = "" }: props) 
           item?.disableHover
             ? ""
             : !!errors && !!errors[errorKey]
-            ? "border-red-100"
-            : " hover:border-gray-1150 focus:border-primary-700/30"
+              ? "border-red-100"
+              : " hover:border-gray-1150 focus:border-primary-700/30"
         } `}
         id={`${item?.id}`}
         placeholder={item?.placeholder || item?.title}
@@ -107,7 +112,10 @@ const FormInput = ({ item, value, onChangeText, errors, errorKey = "" }: props) 
       )}
       {!!item?.extraElement && <span>{item?.extraElement}</span>}
       {!!item?.hint && (
-        <div id={`${item?.id}`} className={`text-xs font-light text-gray-400 mt-1 mr-5 `}>
+        <div
+          id={`${item?.id}`}
+          className={`text-xs font-light text-gray-400 mt-1 mr-5 `}
+        >
           {item?.hint}
         </div>
       )}

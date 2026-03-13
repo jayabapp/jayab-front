@@ -21,8 +21,16 @@ const CreateEditPropertyEnvInfo = ({
   onChange: (value: string | number | null | boolean, key: string) => void;
 }) => {
   const { data: patterns } = useQuery({
-    queryFn: () => PropertyService.GetUserPropertyGroup({ group: ["PATTERN", "ACCESS", "NEIGHBORHOOD"] }),
-    queryKey: [PropertyService.USER_PROP_OPTIONS_CACHEKEY, "PATTERN", "ACCESS", "NEIGHBORHOOD"],
+    queryFn: () =>
+      PropertyService.GetUserPropertyGroup({
+        group: ["PATTERN", "ACCESS", "NEIGHBORHOOD"],
+      }),
+    queryKey: [
+      PropertyService.USER_PROP_OPTIONS_CACHEKEY,
+      "PATTERN",
+      "ACCESS",
+      "NEIGHBORHOOD",
+    ],
   });
   // const { data: accessRoutes } = useQuery({
   //   queryFn: () => PropertyService.GetUserPropertyGroup({ group: "ACCESS" }),
@@ -37,7 +45,11 @@ const CreateEditPropertyEnvInfo = ({
     <div className=" w-full gap-5  grid grid-cols-1 md:grid-cols-2   items-center ">
       <SinglePopUpSelect
         closeOnSelect
-        item={{ list: patterns?.["PATTERN"] || [], title: _STRINGS.ENV_PATTERN, isMandatory: true }}
+        item={{
+          list: patterns?.["PATTERN"] || [],
+          title: _STRINGS.ENV_PATTERN,
+          isMandatory: true,
+        }}
         value={values?.pattern || ""}
         onSelect={(e) => {
           onChange(e, "pattern");
@@ -45,7 +57,11 @@ const CreateEditPropertyEnvInfo = ({
       />
       <SinglePopUpSelect
         closeOnSelect
-        item={{ list: patterns?.["ACCESS"] || [], title: _STRINGS.ACCESS_ROUTE, isMandatory: true }}
+        item={{
+          list: patterns?.["ACCESS"] || [],
+          title: _STRINGS.ACCESS_ROUTE,
+          isMandatory: true,
+        }}
         value={values?.access || ""}
         onSelect={(e) => {
           onChange(e, "access");
@@ -56,9 +72,11 @@ const CreateEditPropertyEnvInfo = ({
           title: _STRINGS.ACCESS_ROUTE_DESC,
           // isMandatory: true,
           containerClass: "w-full relative col-span-full",
-
+          placeholder: _STRINGS.ENVIRONMENT_DESCRIPTION,
           rows: 3,
-          extraElement: <FormCounter max={1024} value={values?.pattern_dscr || ""} />,
+          extraElement: (
+            <FormCounter max={1024} value={values?.pattern_dscr || ""} />
+          ),
           // extraElement: (
           //   <div className="absolute font-medium  left-0 top-0">{1024 - `${values?.pattern_dscr}`?.length}</div>
           // ),
@@ -70,7 +88,11 @@ const CreateEditPropertyEnvInfo = ({
       />
       <SinglePopUpSelect
         closeOnSelect
-        item={{ list: patterns?.["NEIGHBORHOOD"] || [], title: _STRINGS.NEIGHBORHOOD_TYPE, isMandatory: true }}
+        item={{
+          list: patterns?.["NEIGHBORHOOD"] || [],
+          title: _STRINGS.NEIGHBORHOOD_TYPE,
+          isMandatory: true,
+        }}
         value={values?.neighborhood || ""}
         onSelect={(e) => {
           onChange(e, "neighborhood");
@@ -79,9 +101,12 @@ const CreateEditPropertyEnvInfo = ({
       <MultiLineFormInput
         item={{
           title: _STRINGS.DISTANCETO_POINT,
+          placeholder: _STRINGS.PLACES_DESCRIPTION,
           isMandatory: true,
           containerClass: "w-full relative col-span-full",
-          extraElement: <FormCounter max={1024} value={values?.distance_dscr || ""} />,
+          extraElement: (
+            <FormCounter max={1024} value={values?.distance_dscr || ""} />
+          ),
           rows: 3,
         }}
         value={values?.distance_dscr || ""}
