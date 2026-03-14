@@ -115,6 +115,20 @@ const Profile = ({}) => {
         ) : (
           <></>
         )}
+        {!!userInfo?.owner_id ? (
+          <ProfileItem
+            disableArrow
+            item={{
+              id: 1214,
+              imgSrc: "/assets/icons/header/header_my_adds.svg",
+              route: "/profile/owner/requests",
+              title: "درخواست ها",
+            }}
+            key={`profileItemownerReserve`}
+          />
+        ) : (
+          <></>
+        )}
         {!!userInfo?.advisor_id ? (
           <ProfileItem
             disableArrow

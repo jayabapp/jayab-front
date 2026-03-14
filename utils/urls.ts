@@ -112,6 +112,9 @@ export const apiRoutes = {
 
   CANCEL_RESERVE: (propertyReserveId: string | number) => `/reserves/${propertyReserveId}`,
 
+  OWNER_CALL_RESERVE_REQUEST: (propertyReserveId: string | number) =>
+    `/owner/reserves/${propertyReserveId}/events/click-guest-mobile`,
+
   PROPERTY_REPORT: (postId: string | number) => `/user/property-reports/${postId}`,
 
   SINGLE_TICKET_GET: (id: string | number) => `/user/tickets/${id}`,

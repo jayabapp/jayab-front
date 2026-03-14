@@ -1,26 +1,24 @@
 "use client";
 import { ReserveListDto } from "@/api_services/reserve/reserve.interface";
 import { ReserveService } from "@/api_services/reserve/reserve.service";
-import ConfirmModal from "@/components/Modal/ConfirmModal";
 import ReserveCard from "@/components/properties/reserve/ReserveCard";
 import BtnLoading from "@/components/shared/Button/BtnLoading";
 import EmptyList from "@/components/shared/Lotties/EmptyList";
 import LottieLoading from "@/components/shared/Lotties/LottieLoading";
-import { useMutation, useQuery } from "@tanstack/react-query";
+import { useQuery } from "@tanstack/react-query";
 import { isEmpty, last } from "lodash";
 import { useEffect, useState } from "react";
 import InfiniteScroll from "react-infinite-scroll-component";
 const UserReserves = () => {
   const [cursor, setCursor] = useState(0);
   const [reserves, setReserves] = useState<ReserveListDto[]>([]);
-  const [selectedCancel, setSelectedCancel] = useState<ReserveListDto | null>(null);
   const {
     data: solidData,
     isLoading,
     refetch,
   } = useQuery({
-    queryKey: [ReserveService?.RESERVE_CACHEKEY, cursor],
-    queryFn: () => ReserveService?.userReserves({ cursor }),
+    queryKey: [ReserveService?.OWNER_RESERVE_CACHEKEY, cursor],
+    queryFn: () => ReserveService?.ownerReserves({ cursor }),
     staleTime: 0,
     gcTime: 0,
   });
@@ -45,24 +43,6 @@ const UserReserves = () => {
     }, 1800000);
     return () => clearInterval(interval);
   }, []);
-
-  /* -------------------------------------------------------------------------- */
-  /*                                   CANCEL                                   */
-  /* -------------------------------------------------------------------------- */
-
-  const { mutate } = useMutation({
-    mutationFn: ReserveService.cancelReserve,
-    onSuccess: () => {
-      setSelectedCancel(null);
-      setCursor(0);
-      refetch();
-    },
-  });
-
-  const onConfirmCancel = () => {
-    if (!selectedCancel) return;
-    mutate({ propertyReserveId: selectedCancel?.id });
-  };
 
   return (
     <div
@@ -91,19 +71,10 @@ const UserReserves = () => {
               <EmptyList />
             </div>
           ) : (
-            reserves?.map((e) => <ReserveCard data={e} setSelectedCancel={setSelectedCancel} key={`reserve${e?.id}`} />)
+            reserves?.map((e) => <ReserveCard isOwner data={e} key={`reserve${e?.id}`} />)
           )}
         </InfiniteScroll>
       )}
-
-      <ConfirmModal
-        isVisible={!!selectedCancel}
-        text={`از کنسل کردن رزرو ${selectedCancel?.property?.title} مطمئنید ؟`}
-        onConfirm={onConfirmCancel}
-        onHide={() => {
-          setSelectedCancel(null);
-        }}
-      />
     </div>
   );
 };

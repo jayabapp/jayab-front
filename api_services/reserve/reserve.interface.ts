@@ -14,9 +14,11 @@ export interface ReserveListDto {
   property_id: number;
   status: Status;
   user_id: number;
+  is_subscription_expired: boolean;
   check_in: Date;
   check_out: Date;
   guests_count: string;
+  guest_mobile: string;
   user_action: number;
   owner_seen_at: null;
   canceled_at: null;

@@ -1,9 +1,12 @@
 "use client";
 import { ReserveListDto } from "@/api_services/reserve/reserve.interface";
+import { ReserveService } from "@/api_services/reserve/reserve.service";
+import Button from "@/components/shared/Button/Button";
 import StatusShower from "@/components/shared/StatusShower";
 import { useStoreParams } from "@/store";
 import _STRINGS from "@/utils/LocalStrings";
 import { NEW_IMAGE_URL } from "@/utils/urls";
+import { useMutation } from "@tanstack/react-query";
 import moment from "moment-jalaali";
 import Image from "next/image";
 import Link from "next/link";
@@ -17,7 +20,7 @@ const ReserveCard = ({
 }: {
   data: ReserveListDto;
   isOwner?: boolean;
-  setSelectedCancel: (e: ReserveListDto) => void | null;
+  setSelectedCancel?: (e: ReserveListDto) => void | null;
 }) => {
   const goToLink = `/rooms/${data?.property?.slug}`;
 
@@ -25,6 +28,15 @@ const ReserveCard = ({
     useStoreParams.setState({ getBackHome: false });
   };
 
+  const { mutate, isPending } = useMutation({ mutationFn: ReserveService.ownerMobileClick });
+
+  const onCallClick = () => {
+    if (data?.is_subscription_expired) {
+      mutate({ id: data?.id });
+    } else {
+      window.open(`tel:${data?.guest_mobile}`, "_blank", "noopener,noreferrer");
+    }
+  };
   return (
     <div className="w-full shadow-card  rounded-2xl    justify-between flex flex-col  p-3   gap-2  ">
       <div className="w-full  grid grid-cols-5 gap-2   ">
@@ -91,10 +103,10 @@ const ReserveCard = ({
       <div className="flex items-center justify-between ">
         <StatusShower data={data?.status} />
 
-        {!isOwner ? (
+        {!isOwner && !!setSelectedCancel ? (
           <div
             onClick={() => {
-              setSelectedCancel(data);
+              setSelectedCancel?.(data);
             }}
             className=" cursor-pointer bg-red-100    w-fit flex items-center gap-2 px-3 py-2 rounded-xl text-xxs  md:text-sm font-medium"
           >
@@ -102,7 +114,13 @@ const ReserveCard = ({
             <img src="/assets/icons/adds/x_mark.svg" className=" w-2 h-2  md:w-3 cursor-pointer opacity-60 md:h-3" />
           </div>
         ) : (
-          <></>
+          <Button
+            onClick={onCallClick}
+            loading={isPending}
+            icon={<img className="w-4 h-4  aspect-square" src="/assets/icons/advisor/white_phone.svg" />}
+            width=" !py-1 "
+            title={`${data?.guest_mobile}`}
+          />
         )}
       </div>
     </div>
