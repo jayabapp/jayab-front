@@ -146,7 +146,7 @@ export const allRoutes: { [key: string]: string } = {
   blog: "بلاگ",
   blogs: "بلاگ",
   orders: "سفارشات",
-
+  reserves: "رزرو های من",
   advisor: "مشاور",
   "is-especial": "مشاور ویژه",
   assistants: "افزودن دستیار میزبان",
@@ -249,6 +249,14 @@ export const profileItems = [
   //   guard: true,
   //   isMobile: false,
   // },
+  {
+    id: 1251769,
+    title: "رزرو های من",
+    route: "/profile/reserves",
+    imgSrc: "/assets/icons/header/header_my_saves.svg",
+    guard: true,
+    isMobile: false,
+  },
   {
     id: 769,
     title: "آگهی های ذخیره شده",

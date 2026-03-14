@@ -15,7 +15,7 @@ import AuthorizationStatus from "../AuthorizationStatus";
 import BookMarkButton from "../BookMarkButton";
 import FavButton from "../FavButton";
 import SinglePropertyPricePart from "../SinglePropertyPricePart";
-import SinglePropContactInfoModal from "./SinglePropContactInfoModal";
+import SinglePropReservePop from "./SinglePropReservePop";
 import SinglePropSharePop from "./SinglePropSharePop";
 
 const SinglePropertyIntroduction = ({ data }: { data: SinglePropDto }) => {
@@ -26,6 +26,7 @@ const SinglePropertyIntroduction = ({ data }: { data: SinglePropDto }) => {
   const { isAdvisor } = useStoreParams((data) => data);
   const [showContact, setShowContact] = useState(false);
   const [showShare, setShowShare] = useState(false);
+  const [showReserve, setShowReserve] = useState(false);
   const [origin, setOrigin] = useState("");
   const { mutate: createFindChat, isPending } = useMutation({
     mutationFn: ChatService.StartOrFindChat,
@@ -92,6 +93,20 @@ const SinglePropertyIntroduction = ({ data }: { data: SinglePropDto }) => {
     if (!!window.origin) setOrigin(window.origin);
   }, []);
 
+  /* -------------------------------------------------------------------------- */
+  /*                                   RESERVE                                  */
+  /* -------------------------------------------------------------------------- */
+
+  const onReserveClick = () => {
+    if (!!isLogin) {
+      setShowReserve(true);
+    } else {
+      showLogin();
+    }
+  };
+  const onReserveHideClick = () => {
+    setShowReserve(false);
+  };
   return (
     <div className=" flex w-full  flex-col relative  gap-2 md:gap-3">
       <div className="w-full flex items-start md:items-center justify-between gap-2">
@@ -191,7 +206,7 @@ const SinglePropertyIntroduction = ({ data }: { data: SinglePropDto }) => {
         </p>
       </div>
       <div className="w-full  hidden md:flex  items-center justify-between gap-4 ">
-        <Button
+        {/* <Button
           onClick={onContactClick}
           width="w-full"
           containerClass="w-full"
@@ -209,13 +224,21 @@ const SinglePropertyIntroduction = ({ data }: { data: SinglePropDto }) => {
           />
         ) : (
           <></>
-        )}
+        )} */}
+
+        <Button
+          onClick={onReserveClick}
+          width="w-1/2"
+          containerClass="w-full flex items-center  justify-end"
+          roundedClass="rounded-full"
+          title={_STRINGS.RESERVE}
+        />
       </div>
       <div className="z-20 flex md:hidden">
         <FixedBottomContainer>
           {" "}
           <div className="w-full  px-4  flex items-center justify-between gap-4 ">
-            <Button
+            {/* <Button
               onClick={onContactClick}
               width="w-full  !py-2  !font-bold  !text-sm "
               containerClass="w-full"
@@ -233,15 +256,22 @@ const SinglePropertyIntroduction = ({ data }: { data: SinglePropDto }) => {
               />
             ) : (
               <></>
-            )}
+            )} */}
+            <Button
+              onClick={onReserveClick}
+              width="w-full"
+              containerClass="w-full items-center  justify-center"
+              roundedClass="rounded-full"
+              title={_STRINGS.RESERVE}
+            />
           </div>
         </FixedBottomContainer>
       </div>
       <div className="absolute">
         {" "}
         {/* <SinglePropContactIfoPop show={!!showContact} data={data} onHide={onContactClose} /> */}
-        <SinglePropContactInfoModal show={!!showContact} data={data} onHide={onContactClose} />
         <SinglePropSharePop show={!!showShare} data={data} onHide={onShareClose} />
+        <SinglePropReservePop show={!!showReserve} data={data} onHide={onReserveHideClick} />
       </div>
     </div>
   );

@@ -135,6 +135,19 @@ const Profile = () => {
             ) : (
               <></>
             )}
+            {!isEmpty(PersonalProfileItems) && !!data?.owner_id ? (
+              <ProfileItem
+                item={{
+                  id: 1214,
+                  imgSrc: "/assets/icons/header/header_my_adds.svg",
+                  route: "/profile/owner/properties",
+                  title: "درخواست ها",
+                }}
+                key={`profileItemowner`}
+              />
+            ) : (
+              <></>
+            )}
             {!!data?.advisor_id ? (
               <ProfileItem
                 item={{

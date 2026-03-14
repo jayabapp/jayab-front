@@ -3,7 +3,7 @@ export const baseUrl = `${Url}/api/v1`;
 export const imageUrl = `${Url}/`;
 export const NEW_IMAGE_URL = (
   item?: { bucket: string; end_point: string; path: string; name: string; thumbnail: string; medium: string } | null,
-  keyValue?: "name" | "thumbnail" | "medium"
+  keyValue?: "name" | "thumbnail" | "medium",
 ) => {
   if (item?.bucket && item?.bucket != null)
     return `https://${item?.bucket}.${item?.end_point}/${item?.path}/${keyValue ? item[keyValue] : item?.name}`;
@@ -105,6 +105,12 @@ export const apiRoutes = {
   UPDATE_PROFILE_IMAGE: "/profile/profile-image",
 
   ADMIN_EDIT_VALIDATE: `/admin/auth/validate-edit-mode`,
+
+  RESERVE: "/reserves",
+
+  OWNER_RESERVE: "/owner/reserves",
+
+  CANCEL_RESERVE: (propertyReserveId: string | number) => `/reserves/${propertyReserveId}`,
 
   PROPERTY_REPORT: (postId: string | number) => `/user/property-reports/${postId}`,
 

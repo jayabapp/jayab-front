@@ -1,9 +1,7 @@
-import React, { useState, useMemo, useEffect } from "react";
-import MonthPicker from "./MonthPicker";
-import DaysOfTheWeel from "./DaysOfTheWeek";
-import DayPicker from "./DayPicker";
 import moment from "moment-jalaali";
-import YearPicker from "./YearPicker";
+import { useEffect, useState } from "react";
+import DayPicker from "./DayPicker";
+import DaysOfTheWeel from "./DaysOfTheWeek";
 import YearMonthPicker from "./YearMonthPicker";
 
 type dates = {
@@ -25,7 +23,7 @@ const SingleDatePicker = ({
   options = { valueType: "persian" },
 }: dates) => {
   const [chosenDate, setChosenDate] = useState<string | number>(
-    !!selectedDate ? moment(selectedDate, "jYYYY/jMM/jDD").format("jYYYY/jMM/jDD") : moment().format("jYYYY/jMM/jDD")
+    !!selectedDate ? moment(selectedDate, "jYYYY/jMM/jDD").format("jYYYY/jMM/jDD") : moment().format("jYYYY/jMM/jDD"),
   );
   const [firstTime, setFirstTime] = useState(true);
   const [year, setYear] = useState(moment(chosenDate, "jYYYY/jMM/jDD").format("jYYYY"));
@@ -83,21 +81,21 @@ const SingleDatePicker = ({
       onTouchEnd={(e) => {
         // alert(e.changedTouches[0]?.pageX);
         if (start > e.changedTouches[0].pageX && doTheMath(start, e.changedTouches[0].pageX) && !preventer) {
-          nextMonth();
+          lastMonth();
           setPreventer(true);
         } else if (start < e.changedTouches[0].pageX && doTheMath(start, e.changedTouches[0].pageX) && !preventer) {
+          nextMonth();
           // dragged right
-          lastMonth();
           setPreventer(true);
         }
       }}
       onDragOver={(e) => {
         if (prevX > e.pageX && doTheMath(start, e.pageX) && !preventer) {
-          nextMonth();
           setPreventer(true);
+          lastMonth();
         } else if (prevX < e.pageX && doTheMath(start, e.pageX) && !preventer) {
           // dragged right
-          lastMonth();
+          nextMonth();
           setPreventer(true);
         }
 

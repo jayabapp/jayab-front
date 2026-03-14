@@ -14,10 +14,12 @@ const SinglePropContactInfoModal = ({
   data,
   show,
   onHide,
+  type,
 }: {
   data: SinglePropDto;
   show: boolean;
   onHide: () => void | null;
+  type: "tel" | "sms" | "";
 }) => {
   const [state, setState] = useState<PropertyContactIInfDto[] | null>();
   const { data: contactInfo, isPending } = useQuery({
@@ -59,6 +61,7 @@ const SinglePropContactInfoModal = ({
           ) : (
             state?.map((e) => (
               <PropertyContactInfoItem
+                type={type}
                 isPropertyExpired={contactInfo?.isPropertyExpired}
                 image={contactInfo?.owner?.selfie_image}
                 onHide={onHide}
