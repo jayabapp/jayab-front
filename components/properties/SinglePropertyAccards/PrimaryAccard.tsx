@@ -1,12 +1,10 @@
 "use client";
 import { SinglePropDto } from "@/api_services/property/property.interface";
-import SimpleAccordion from "@/components/shared/SimpleAccorion";
-import React from "react";
-import _STRINGS from "@/utils/LocalStrings";
 import LinearTextBlock from "@/components/properties/SinglePropertyAccards/LinearTextBlock";
-import SelectedOptions from "./PropertySelectedOptions";
-import PropertySelectedOptions from "./PropertySelectedOptions";
+import SimpleAccordion from "@/components/shared/SimpleAccorion";
 import numberWithCommas from "@/helpers/numberWithCommas";
+import _STRINGS from "@/utils/LocalStrings";
+import PropertySelectedOptions from "./PropertySelectedOptions";
 const PrimaryAccard = ({ data }: { data: SinglePropDto }) => {
   return (
     <SimpleAccordion
@@ -49,10 +47,17 @@ const PrimaryAccard = ({ data }: { data: SinglePropDto }) => {
           <p className="text-sm font-light">{_STRINGS.PROP_EXACT_ADDRESS} </p>
           <p className="font-medium">{data?.address}</p>
         </div>
-        <div className="flex flex-col gap-1 w-full ">
-          <p className="text-sm font-light">{_STRINGS.PROP_DESC} </p>
-          <p className="font-medium">{data?.property_descriptions?.ad_dscr}</p>
-        </div>
+
+        {!!data?.property_descriptions?.ad_dscr || data?.property_descriptions?.property_dscr ? (
+          <div className="flex flex-col gap-1 w-full ">
+            <p className="text-sm font-light">{_STRINGS.PROP_DESC} </p>
+            <p className="font-medium whitespace-pre-wrap">
+              {data?.property_descriptions?.ad_dscr || data?.property_descriptions?.property_dscr}
+            </p>
+          </div>
+        ) : (
+          <></>
+        )}
       </div>
     </SimpleAccordion>
   );

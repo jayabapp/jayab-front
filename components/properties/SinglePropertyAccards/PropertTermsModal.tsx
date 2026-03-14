@@ -6,7 +6,6 @@ import ModalHeaderPart from "@/components/Modal/ModalHeaderPart";
 import Checkbox from "@/components/shared/Form/Checkbox";
 import _STRINGS from "@/utils/LocalStrings";
 import { useQuery } from "@tanstack/react-query";
-import React from "react";
 
 const PropertTermsModal = ({
   data,
@@ -26,7 +25,6 @@ const PropertTermsModal = ({
     gcTime: 1000,
     staleTime: 1000,
   });
-  console.log(data, "datadata");
 
   const selectedRule = propertyRules?.data?.find((e) => e?.key == data?.canceling_type?.id);
 
@@ -44,7 +42,7 @@ const PropertTermsModal = ({
         <p className=" text-sm font-light">{_STRINGS.PROP_TERMS_PROLUGE}</p>
         <div className="flex flex-col gap-2">
           <p className=" text-sm font-bold">{_STRINGS.CANCENLATION_DESC}</p>
-          <p className="text-sm">{selectedRule?.small_text}</p>
+          <p className="text-sm whitespace-pre-wrap">{selectedRule?.small_text}</p>
         </div>
         <div className="flex flex-col gap-2">
           <p className=" text-sm font-bold">{_STRINGS.GUEST_TYPE_STATUS}</p>
@@ -77,12 +75,12 @@ const PropertTermsModal = ({
         </div>
         <div className="flex flex-col gap-2">
           <p className=" text-sm font-bold">{_STRINGS.PROP_DESC}</p>
-          <p className="text-sm">{data?.property_descriptions?.property_dscr}</p>
+          <p className="text-sm whitespace-pre-wrap">{data?.property_descriptions?.property_dscr}</p>
         </div>
         {!!data?.property_descriptions?.other_dscr ? (
           <div className="flex flex-col gap-2">
             <p className=" text-sm font-bold">{_STRINGS.OTHER_TERMS}</p>
-            <p className="text-sm">{data?.property_descriptions?.other_dscr}</p>
+            <p className="text-sm whitespace-pre-wrap">{data?.property_descriptions?.other_dscr}</p>
           </div>
         ) : (
           <></>
