@@ -165,7 +165,7 @@ export const allRoutes: { [key: string]: string } = {
   videos: "ویدیوها",
   "about-us": "درباره ما",
   branch: "اعطای نمایندگی",
-
+  requests: "درخواست ها",
   edit: "اطلاعات شخصی",
 
   support: "تیکت ",
