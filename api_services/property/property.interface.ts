@@ -253,6 +253,7 @@ export interface SinglePropDto {
   attachments_count: number;
   images: ImageDto[];
   std_capacity: number;
+  remaining_days: number;
   max_capacity: number;
   favorite_count: number;
   check_in_hour: number;

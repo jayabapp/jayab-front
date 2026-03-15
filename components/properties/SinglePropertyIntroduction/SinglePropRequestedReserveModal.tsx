@@ -127,28 +127,34 @@ const SinglePropRequestedReserveModal = ({
           </div>
           <Divider />
           <div className="w-full flex flex-col items-center justify-center gap-2">
-            <Button
-              onClick={() => {
-                onActionsClick(1);
-              }}
-              width="w-full  !py-2  !font-bold  !text-sm "
-              containerClass="w-full"
-              roundedClass="rounded-full"
-              title={_STRINGS.CALL}
-              variant="outline"
-              loading={loading}
-            />
-            <Button
-              variant="outline"
-              onClick={() => {
-                onActionsClick(2);
-              }}
-              width="w-full  !py-2  !font-bold  !text-sm "
-              containerClass="w-full"
-              roundedClass="rounded-full"
-              title={_STRINGS.SMS}
-              loading={loading}
-            />
+            {!!data?.remaining_days ? (
+              <>
+                <Button
+                  onClick={() => {
+                    onActionsClick(1);
+                  }}
+                  width="w-full  !py-2  !font-bold  !text-sm "
+                  containerClass="w-full"
+                  roundedClass="rounded-full"
+                  title={_STRINGS.CALL}
+                  variant="outline"
+                  loading={loading}
+                />
+                <Button
+                  variant="outline"
+                  onClick={() => {
+                    onActionsClick(2);
+                  }}
+                  width="w-full  !py-2  !font-bold  !text-sm "
+                  containerClass="w-full"
+                  roundedClass="rounded-full"
+                  title={_STRINGS.SMS}
+                  loading={loading}
+                />
+              </>
+            ) : (
+              <></>
+            )}
             {data?.is_chat_enabled ? (
               <Button
                 width="w-full !py-2  !font-bold !text-sm "

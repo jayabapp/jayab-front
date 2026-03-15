@@ -1,5 +1,4 @@
-import { ImageDto } from "../auth/auth.interface";
-import { Status } from "../property/property.interface";
+import { PropertyListDto, Status } from "../property/property.interface";
 
 export interface CreateReserveDto {
   property_id: number;
@@ -27,13 +26,6 @@ export interface ReserveListDto {
   owner_clicked_guest_mobile: number;
   created_at: Date;
   updated_at: Date;
-  property: Property;
+  property: PropertyListDto;
   ttl_seconds: number;
-}
-
-export interface Property {
-  title: string;
-  slug: string;
-  code: string;
-  feature_image: ImageDto;
 }
