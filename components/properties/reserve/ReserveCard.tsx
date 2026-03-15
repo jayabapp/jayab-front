@@ -143,38 +143,44 @@ const ReserveCard = ({
           </div>
         </Link>
       </div>
-      <Divider moreClass=" border-dashed border-2 " />
+      <Divider moreClass=" border-dashed  " />
 
-      {!isOwner ? (
-        <>
-          <div className=" w-full flex items-center justify-between">
-            <p className=" font-medium">{_STRINGS.RESERVEE_EXPIRE} </p>
-            <div className="flex items-center   gap-2 ">
-              {" "}
-              <NumberFlow
-                value={`${countdown?.seconds || "00"}` as any}
-                format={{ useGrouping: false }}
-                aria-hidden
-                animated={true}
-                className={`pointer-events-none pt-1  text-lg !font-medium !space-x-14   w-10  h-10  flex items-center justify-center aspect-square rounded-lg bg-black text-white !tracking-[0.15rem] `}
-                willChange
-              />{" "}
-              <p className="text-black font-bold text-lg">{`:`}</p>
-              <NumberFlow
-                value={`${countdown?.minutes || "00"}` as any}
-                format={{ useGrouping: false }}
-                aria-hidden
-                animated={true}
-                className={`pointer-events-none pt-1 text-lg !font-medium !space-x-14   w-10  h-10  flex items-center justify-center aspect-square rounded-lg bg-black text-white !tracking-[0.15rem] `}
-                willChange
-              />
-            </div>
+      <div className=" w-full flex items-center flex-col pb-1 gap-2 justify-center">
+        <div className="flex items-center   gap-2 ">
+          {" "}
+          <div className="flex flex-col gap-1">
+            <p className="w-full text-center text-sm">{_STRINGS.SECONDS}</p>
+            <NumberFlow
+              value={`${countdown?.seconds || "00"}` as any}
+              format={{ useGrouping: false }}
+              aria-hidden
+              animated={true}
+              className={`pointer-events-none pt-1  text-lg !font-medium !space-x-14   w-12  h-12  flex items-center justify-center aspect-square rounded-lg bg-black text-white !tracking-[0.15rem] `}
+              willChange
+            />{" "}
           </div>
-          <Divider moreClass=" " />
-        </>
-      ) : (
-        <></>
-      )}
+          <p className="text-black pt-6 font-bold text-lg">{`:`}</p>
+          <div className="flex flex-col gap-1">
+            <p className="w-full text-center text-sm">{_STRINGS.MINUTE}</p>
+            <NumberFlow
+              value={`${countdown?.minutes || "00"}` as any}
+              format={{ useGrouping: false }}
+              aria-hidden
+              animated={true}
+              className={`pointer-events-none pt-1 text-lg !font-medium !space-x-14   w-12  h-12  flex items-center justify-center aspect-square rounded-lg bg-black text-white !tracking-[0.15rem] `}
+              willChange
+            />
+          </div>
+        </div>
+        {!!isOwner ? (
+          <p className="text-sm text-red-600 text-center w-full">
+            پس از اتمام تایم و عدم پاسخ لینک ویلاهای مشابه برای میهمان ارسال می گردد.
+          </p>
+        ) : (
+          <></>
+        )}
+      </div>
+      <Divider moreClass="  border-dashed  " />
 
       <div className="w-full flex mt-2 flex-col  gap-2">
         <LinearTextBlock
@@ -189,7 +195,7 @@ const ReserveCard = ({
         />
         <LinearTextBlock
           title={_STRINGS.PPL_COUNT}
-          value={data?.guests_count}
+          value={`${data?.guests_count} نفر`}
           options={{ title_class: " !font-normal !text-sm", value_class: "!text-sm" }}
         />
         {/* {isOwner ? (
@@ -211,7 +217,7 @@ const ReserveCard = ({
             onClick={() => {
               setSelectedCancel?.(data);
             }}
-            className=" cursor-pointer bg-red-100    w-fit flex items-center gap-2 px-3 py-2 rounded-xl text-xxs  md:text-sm font-medium"
+            className=" cursor-pointer bg-neutral-200    w-fit flex items-center gap-2 px-3 py-2 rounded-xl text-xxs  md:text-sm font-medium"
           >
             لغو رزرو
             <img src="/assets/icons/adds/x_mark.svg" className=" w-2 h-2  md:w-2 cursor-pointer opacity-60 md:h-2" />

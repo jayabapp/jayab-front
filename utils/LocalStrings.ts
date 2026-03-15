@@ -14,6 +14,7 @@ const _STRINGS = {
   ADAD: "عدد",
   NAFAR: "نفر",
   DESCRIPTION: "توضیحات",
+  SECONDS: "ثانیه",
   MINUTE: "دقیقه",
   HOUR: "ساعت",
   EMAIL: "ایمیل ",
