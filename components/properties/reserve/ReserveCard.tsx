@@ -18,6 +18,7 @@ import LinearTextBlock from "../SinglePropertyAccards/LinearTextBlock";
 import { ChatService } from "@/api_services/chat/chat.service";
 import NumberFlow from "@number-flow/react";
 import { useRouter } from "next/navigation";
+import SinglePropContactInfoModal from "../SinglePropertyIntroduction/SinglePropContactInfoModal";
 moment.loadPersian({ dialect: "persian-modern" });
 
 const ReserveCard = ({
@@ -80,6 +81,10 @@ const ReserveCard = ({
 
   const onContactClick = (type: "sms" | "tel") => {
     setContactType(type);
+  };
+
+  const onContactClose = () => {
+    setContactType("");
   };
 
   return (
@@ -286,10 +291,11 @@ const ReserveCard = ({
                     onContactClick("tel");
                   }}
                   width="w-full  !py-2  !font-bold  !text-sm "
-                  containerClass="w-full"
+                  containerClass="w-2/3"
                   roundedClass="rounded-full"
                   title={_STRINGS.CALL}
                   variant="outline"
+                  icon={<img className="w-4 h-4  aspect-square" src="/assets/icons/advisor/blue_phone.svg" />}
                 />
                 <Button
                   variant="outline"
@@ -297,9 +303,10 @@ const ReserveCard = ({
                     onContactClick("sms");
                   }}
                   width="w-full  !py-2  !font-bold  !text-sm "
-                  containerClass="w-full"
+                  containerClass="w-2/3"
                   roundedClass="rounded-full"
                   title={_STRINGS.SMS}
+                  icon={<img className="w-4 h-4  ml-1 aspect-square" src="/assets/icons/advisor/blue_sms.svg" />}
                 />
               </>
             ) : (
@@ -308,8 +315,9 @@ const ReserveCard = ({
             {data?.property?.is_chat_enabled ? (
               <Button
                 width="w-full !py-2  !font-bold !text-sm "
-                containerClass="w-full  "
+                containerClass="w-2/3  "
                 roundedClass="rounded-full"
+                icon={<img className="w-4 h-4  ml-1 aspect-square" src="/assets/icons/advisor/white_message.svg" />}
                 title={_STRINGS.CHAT_IN_JAYAB}
                 onClick={() => {
                   onCreateChat();
@@ -322,6 +330,12 @@ const ReserveCard = ({
           </div>
         </>
       )}
+      <SinglePropContactInfoModal
+        type={contactType}
+        show={!!contactType}
+        data={data?.property}
+        onHide={onContactClose}
+      />
     </div>
   );
 };

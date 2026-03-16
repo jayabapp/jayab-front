@@ -16,7 +16,7 @@ const SinglePropContactInfoModal = ({
   onHide,
   type,
 }: {
-  data: SinglePropDto;
+  data: SinglePropDto | any;
   show: boolean;
   onHide: () => void | null;
   type: "tel" | "sms" | "";

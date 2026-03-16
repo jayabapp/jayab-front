@@ -1,3 +1,4 @@
+import Notify from "@/components/shared/Toast";
 import _STRINGS from "@/utils/LocalStrings";
 import moment from "moment-jalaali";
 import { Dispatch, SetStateAction, useState } from "react";
@@ -39,6 +40,12 @@ const DateSpanPicker = ({
   const START_TITLE = !!dates?.start ? moment(dates?.start).format("jYYYY/jMM/jDD") : startTitle;
   const END_TITLE = !!dates?.start ? moment(dates?.end).format("jYYYY/jMM/jDD") : endTitle;
 
+  const onConfirmDate = (e: any) => {
+    if (!e?.start || !e?.end) return Notify({ body: `${startTitle} و ${endTitle} را انتخاب کنید.` });
+
+    setDates(e);
+    onHide();
+  };
   return (
     <>
       <div className="flex w-full items-center justify-between gap-4">
@@ -59,14 +66,7 @@ const DateSpanPicker = ({
           </div>
         </div>
       </div>
-      <DateSpanPickerModal
-        onHide={onHide}
-        show={show}
-        onConfirm={(e) => {
-          setDates(e);
-          onHide();
-        }}
-      />
+      <DateSpanPickerModal onHide={onHide} show={show} onConfirm={onConfirmDate} />
     </>
   );
 };

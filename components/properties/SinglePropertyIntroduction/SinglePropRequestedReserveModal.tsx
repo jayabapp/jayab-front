@@ -134,11 +134,12 @@ const SinglePropRequestedReserveModal = ({
                     onActionsClick(1);
                   }}
                   width="w-full  !py-2  !font-bold  !text-sm "
-                  containerClass="w-full"
+                  containerClass="w-1/2"
                   roundedClass="rounded-full"
                   title={_STRINGS.CALL}
                   variant="outline"
                   loading={loading}
+                  icon={<img className="w-4 h-4  aspect-square" src="/assets/icons/advisor/blue_phone.svg" />}
                 />
                 <Button
                   variant="outline"
@@ -146,9 +147,10 @@ const SinglePropRequestedReserveModal = ({
                     onActionsClick(2);
                   }}
                   width="w-full  !py-2  !font-bold  !text-sm "
-                  containerClass="w-full"
+                  containerClass="w-1/2"
                   roundedClass="rounded-full"
                   title={_STRINGS.SMS}
+                  icon={<img className="w-4 h-4  ml-1 aspect-square" src="/assets/icons/advisor/blue_sms.svg" />}
                   loading={loading}
                 />
               </>
@@ -158,9 +160,10 @@ const SinglePropRequestedReserveModal = ({
             {data?.is_chat_enabled ? (
               <Button
                 width="w-full !py-2  !font-bold !text-sm "
-                containerClass="w-full  "
+                containerClass="w-1/2  "
                 roundedClass="rounded-full"
                 title={_STRINGS.CHAT_IN_JAYAB}
+                icon={<img className="w-4 h-4  ml-1 aspect-square" src="/assets/icons/advisor/white_message.svg" />}
                 onClick={() => {
                   onActionsClick(3);
                 }}
