@@ -388,6 +388,7 @@ export interface PropertyListDto {
   has_blue_tick: boolean;
   status: Status;
   remaining_days: null;
+  is_chat_enabled: null;
   reserve_days: ReserveDaysDto[];
 }
 

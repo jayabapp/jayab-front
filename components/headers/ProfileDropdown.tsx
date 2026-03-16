@@ -1,14 +1,12 @@
-import { Menu, MenuButton, MenuItem, Transition } from "@headlessui/react";
+import { Menu, MenuButton, Transition } from "@headlessui/react";
 
 import { usePathname, useRouter } from "next/navigation";
-import React, { Fragment, useRef, useState } from "react";
+import { Fragment, useRef, useState } from "react";
 
 import ConfirmModal from "../Modal/ConfirmModal";
 
-import { useMutation } from "@tanstack/react-query";
-import { AuthService } from "@/api_services/auth/auth.service";
-import Link from "next/link";
 import _STRINGS from "@/utils/LocalStrings";
+import Link from "next/link";
 
 import { useAuthStore, useStoreInit, useStoreParams } from "@/store";
 import { profileDropDownItems } from "@/utils/constantss";
@@ -125,6 +123,24 @@ const ProfileDropdown = ({ notifBadge }: { notifBadge?: number | string }) => {
                       />
                     </div>
                     <p className="text-sm"> {"آگهی های من"}</p>
+                  </div>
+                </Link>
+              ) : (
+                <></>
+              )}
+              {!!userInfo?.owner_id ? (
+                <Link key={`myAdd2s`} className="" prefetch={false} href={`/profile/owner/requests`}>
+                  <div
+                    className={` relative hover:bg-primary-700/80 dark:hover:bg-zinc-600  cursor-pointer hover:text-white text-gray-600 dark:text-gray-300 group flex w-full gap-2 items-center rounded-md px-2 py-2 text-sm font-light no-underline`}
+                  >
+                    <div className="relative">
+                      {" "}
+                      <img
+                        src={`/assets/icons/header/header_my_adds.svg`}
+                        className={`w-6 h-6 aspect-square ${asPath.includes("notifications") ? " " : ""} dark:invert `}
+                      />
+                    </div>
+                    <p className="text-sm"> {"درخواست ها"}</p>
                   </div>
                 </Link>
               ) : (

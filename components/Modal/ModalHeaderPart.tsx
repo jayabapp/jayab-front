@@ -6,10 +6,12 @@ const ModalHeaderPart = ({
   hideArrow,
   children,
   titleClass,
+  showX,
 }: {
   onHide: () => void | null;
   title: string;
   hideArrow?: boolean;
+  showX?: boolean;
   children?: ReactNode;
   titleClass?: string;
 }) => {
@@ -31,7 +33,7 @@ const ModalHeaderPart = ({
       </div>{" "}
       <img
         src="/assets/icons/adds/x_mark.svg"
-        className="w-3   cursor-pointer hidden md:block h-3 dark:invert"
+        className={`w-3   ${showX ? "block" : "hidden md:block"} cursor-pointer  h-3 dark:invert`}
         alt=""
         onClick={onHide}
       />

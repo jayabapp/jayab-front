@@ -5,6 +5,7 @@ import ReserveCard from "@/components/properties/reserve/ReserveCard";
 import BtnLoading from "@/components/shared/Button/BtnLoading";
 import EmptyList from "@/components/shared/Lotties/EmptyList";
 import LottieLoading from "@/components/shared/Lotties/LottieLoading";
+import _STRINGS from "@/utils/LocalStrings";
 import { useQuery } from "@tanstack/react-query";
 import { isEmpty, last } from "lodash";
 import { useEffect, useState } from "react";
@@ -49,6 +50,9 @@ const UserReserves = () => {
       id="homeParent"
       className="   profile-container flex flex-col gap-4   transition-all duration-500 ease-in-out "
     >
+      <div className=" bg-primary-350/5 border p-3  w-full  rounded-10 border-primary-350  flex flex-col gap-3">
+        <p className="text-xs text-primary-350">{_STRINGS.OWNER_PLZ_CALL_MSG}</p>
+      </div>
       {!!isLoading && isEmpty(reserves) ? (
         <LottieLoading />
       ) : (

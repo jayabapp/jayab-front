@@ -15,7 +15,9 @@ import Link from "next/link";
 import { useEffect, useState } from "react";
 import LinearTextBlock from "../SinglePropertyAccards/LinearTextBlock";
 
+import { ChatService } from "@/api_services/chat/chat.service";
 import NumberFlow from "@number-flow/react";
+import { useRouter } from "next/navigation";
 moment.loadPersian({ dialect: "persian-modern" });
 
 const ReserveCard = ({
@@ -27,6 +29,7 @@ const ReserveCard = ({
   isOwner?: boolean;
   setSelectedCancel?: (e: ReserveListDto) => void | null;
 }) => {
+  const router = useRouter();
   const goToLink = `/rooms/${data?.property?.slug}`;
   const [countdown, setCountdown] = useState<{ minutes: string; seconds: string }>({ minutes: "00", seconds: "00" });
   const removeredirectRoomToHome = () => {
@@ -57,6 +60,28 @@ const ReserveCard = ({
     return () => clearInterval(interval);
   }, [data, isOwner]);
 
+  /* -------------------------------------------------------------------------- */
+  /*                                 CONTACTING                                 */
+  /* -------------------------------------------------------------------------- */
+
+  const [contactType, setContactType] = useState<"tel" | "sms" | "">("");
+
+  const { mutate: createFindChat, isPending: chatLoading } = useMutation({
+    mutationFn: ChatService.StartOrFindChat,
+    onSuccess: (e) => {
+      router.push(`/chat/${e?.chatroom_id}`);
+    },
+    onError: () => {},
+  });
+
+  const onCreateChat = () => {
+    createFindChat({ property_id: data?.property?.id });
+  };
+
+  const onContactClick = (type: "sms" | "tel") => {
+    setContactType(type);
+  };
+
   return (
     <div className="w-full shadow-card  rounded-2xl    justify-between flex flex-col  p-3   gap-2  ">
       <div className="w-full  grid grid-cols-8 gap-2   ">
@@ -69,7 +94,7 @@ const ReserveCard = ({
         >
           {/* TITLE */}
           <div className="flex items-start gap-2">
-            <p className="text-sm line-clamp-1  text-right font-semibold">{data?.property?.title}</p>
+            <p className="text-sm line-clamp-1  text-right font-semibold">{data?.property?.title} درخواست رزرو برای</p>
           </div>
 
           {/* CODE  - LIKES */}
@@ -146,6 +171,14 @@ const ReserveCard = ({
       <Divider moreClass=" border-dashed  " />
 
       <div className=" w-full flex items-center flex-col pb-1 gap-2 justify-center">
+        {" "}
+        {!!isOwner ? (
+          <p className="text-sm text-red-600 text-center w-full">
+            پس از اتمام تایم و عدم پاسخ لینک ویلاهای مشابه برای میهمان ارسال می گردد.
+          </p>
+        ) : (
+          <></>
+        )}
         <div className="flex items-center   gap-2 ">
           {" "}
           <div className="flex flex-col gap-1">
@@ -173,16 +206,19 @@ const ReserveCard = ({
           </div>
         </div>
         {!!isOwner ? (
-          <p className="text-sm text-red-600 text-center w-full">
-            پس از اتمام تایم و عدم پاسخ لینک ویلاهای مشابه برای میهمان ارسال می گردد.
-          </p>
-        ) : (
           <></>
+        ) : (
+          <p className="text-sm text-gray-400 text-center w-full">مدت زمان انتظار جهت پاسخ میزبان. </p>
         )}
       </div>
       <Divider moreClass="  border-dashed  " />
 
       <div className="w-full flex mt-2 flex-col  gap-2">
+        <LinearTextBlock
+          title={_STRINGS.PPL_COUNT}
+          value={`${data?.guests_count} نفر`}
+          options={{ title_class: " !font-normal !text-sm", value_class: "!text-sm" }}
+        />
         <LinearTextBlock
           options={{ title_class: " !font-normal !text-sm", value_class: "!text-sm" }}
           title={_STRINGS.START_DATE}
@@ -194,8 +230,8 @@ const ReserveCard = ({
           options={{ title_class: " !font-normal !text-sm", value_class: "!text-sm" }}
         />
         <LinearTextBlock
-          title={_STRINGS.PPL_COUNT}
-          value={`${data?.guests_count} نفر`}
+          title={_STRINGS.DURATION}
+          value={` ${moment(data?.check_out).diff(data?.check_in, "days")} روز`}
           options={{ title_class: " !font-normal !text-sm", value_class: "!text-sm" }}
         />
         {/* {isOwner ? (
@@ -209,29 +245,83 @@ const ReserveCard = ({
             )} */}
       </div>
       <Divider moreClass=" " />
-      <div className="flex items-center justify-between ">
-        <StatusShower data={data?.status} />
+      <div className="w-full flex flex-col gap-2">
+        <p className="font-medium">{_STRINGS.REQUEST_STATUS}</p>
+        <div className="flex items-center justify-between ">
+          <StatusShower data={data?.status} />
 
-        {!isOwner && !!setSelectedCancel ? (
-          <div
-            onClick={() => {
-              setSelectedCancel?.(data);
-            }}
-            className=" cursor-pointer bg-neutral-200    w-fit flex items-center gap-2 px-3 py-2 rounded-xl text-xxs  md:text-sm font-medium"
-          >
-            لغو رزرو
-            <img src="/assets/icons/adds/x_mark.svg" className=" w-2 h-2  md:w-2 cursor-pointer opacity-60 md:h-2" />
-          </div>
-        ) : (
-          <Button
-            onClick={onCallClick}
-            loading={isPending}
-            icon={<img className="w-4 h-4  aspect-square" src="/assets/icons/advisor/white_phone.svg" />}
-            width=" !py-1 "
-            title={`${data?.guest_mobile}`}
-          />
-        )}
+          {!isOwner && !!setSelectedCancel ? (
+            <div
+              onClick={() => {
+                setSelectedCancel?.(data);
+              }}
+              className=" cursor-pointer bg-neutral-100 border     w-fit flex items-center gap-2 px-3 py-2 rounded-xl text-xxs  md:text-sm font-medium"
+            >
+              لغو رزرو
+              <img src="/assets/icons/adds/x_mark.svg" className=" w-2 h-2  md:w-2 cursor-pointer opacity-60 md:h-2" />
+            </div>
+          ) : (
+            <Button
+              onClick={onCallClick}
+              loading={isPending}
+              icon={<img className="w-4 h-4  aspect-square" src="/assets/icons/advisor/white_phone.svg" />}
+              width=" !py-1 "
+              title={`${data?.guest_mobile}`}
+            />
+          )}
+        </div>
       </div>
+
+      {isOwner ? (
+        <></>
+      ) : (
+        <>
+          <Divider moreClass=" " />
+
+          <div className="w-full flex flex-col items-center justify-center gap-2">
+            {!!data?.property?.remaining_days ? (
+              <>
+                <Button
+                  onClick={() => {
+                    onContactClick("tel");
+                  }}
+                  width="w-full  !py-2  !font-bold  !text-sm "
+                  containerClass="w-full"
+                  roundedClass="rounded-full"
+                  title={_STRINGS.CALL}
+                  variant="outline"
+                />
+                <Button
+                  variant="outline"
+                  onClick={() => {
+                    onContactClick("sms");
+                  }}
+                  width="w-full  !py-2  !font-bold  !text-sm "
+                  containerClass="w-full"
+                  roundedClass="rounded-full"
+                  title={_STRINGS.SMS}
+                />
+              </>
+            ) : (
+              <></>
+            )}
+            {data?.property?.is_chat_enabled ? (
+              <Button
+                width="w-full !py-2  !font-bold !text-sm "
+                containerClass="w-full  "
+                roundedClass="rounded-full"
+                title={_STRINGS.CHAT_IN_JAYAB}
+                onClick={() => {
+                  onCreateChat();
+                }}
+                loading={chatLoading}
+              />
+            ) : (
+              <></>
+            )}
+          </div>
+        </>
+      )}
     </div>
   );
 };

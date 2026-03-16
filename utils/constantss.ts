@@ -205,6 +205,12 @@ export const profileDropDownItems = [
     imgSrc: "/assets/icons/header/header_my_turnovers.svg",
   },
   {
+    id: 112423,
+    title: "رزرو های من",
+    route: "/profile/reserves",
+    imgSrc: "/assets/icons/header/header_my_saves.svg",
+  },
+  {
     id: 123,
     title: "آگهی های ذخیره شده",
     route: "/profile/bookmarks",
