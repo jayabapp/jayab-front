@@ -8,17 +8,17 @@ import Notify from "@/components/shared/Toast";
 import DateSpanPicker from "@/components/widgets/UpdatedDatePicker/DateSpanPicker";
 import _STRINGS from "@/utils/LocalStrings";
 import moment from "moment-jalaali";
-import { useState } from "react";
+import { Dispatch, SetStateAction, useState } from "react";
 import SinglePropRequestedReserveModal from "./SinglePropRequestedReserveModal";
 
 const SinglePropReservePop = ({
   data,
   show,
-  onHide,
+  setShow,
 }: {
   data: SinglePropDto;
   show: boolean;
-  onHide: () => void | null;
+  setShow: Dispatch<SetStateAction<boolean>>;
 }) => {
   const [dates, setDates] = useState<{ start?: Date; end?: Date }>();
   const [count, setCount] = useState<number | string>("");
@@ -34,13 +34,13 @@ const SinglePropReservePop = ({
     } else if (!count) {
       Notify({ body: `تعداد نفرات را مشخص کنید.`, type: "warn" });
     } else {
-      onHide();
+      setShow(false);
       setShowReserveReq(true);
     }
   };
 
   const onCloseReserveReq = () => {
-    onHide();
+    setShow(false);
     setShowReserveReq(false);
     setCount("");
     setDates({});
@@ -52,10 +52,18 @@ const SinglePropReservePop = ({
         options={{
           containerClass: `mx-auto rounded-t-20 absolute pb-[1.5rem] md:pb-4 bottom-0 md:translate-x-1/2 md:right-1/2 w-full md:w-[calc(35svw)]  bg-white dark:bg-zinc-900 overflow-y-scroll  dark:bg-dark-700`,
         }}
-        onHide={onHide}
+        onHide={() => {
+          setShow(false);
+        }}
         show={show}
       >
-        <ModalHeaderPart hideArrow title={_STRINGS.RESERVE} onHide={onHide} />
+        <ModalHeaderPart
+          hideArrow
+          title={_STRINGS.RESERVE}
+          onHide={() => {
+            setShow(false);
+          }}
+        />
         <div className=" flex flex-col gap-4  p-4">
           {/* DATES */}
           <div className="w-full flex flex-col gap-2">
@@ -99,8 +107,9 @@ const SinglePropReservePop = ({
       </ModalBottomSheet>
       <SinglePropRequestedReserveModal
         count={count}
+        setShowEdit={setShow}
         onHide={onCloseReserveReq}
-        show={showReserveReq}
+        show={showReserveReq && !show}
         startDate={moment(dates?.start).format("jYYYY/jMM/jDD")}
         data={data}
         endDate={moment(dates?.end).format("jYYYY/jMM/jDD")}

@@ -1,3 +1,4 @@
+import { ReserveUserAction } from "@/enum/reserve.enum";
 import { PropertyListDto, Status } from "../property/property.interface";
 
 export interface CreateReserveDto {
@@ -12,13 +13,14 @@ export interface ReserveListDto {
   id: number;
   property_id: number;
   status: Status;
+  is_chat_enabled: boolean;
   user_id: number;
   is_subscription_expired: boolean;
   check_in: Date;
   check_out: Date;
   guests_count: string;
   guest_mobile: string;
-  user_action: number;
+  user_action: ReserveUserAction;
   owner_seen_at: null;
   canceled_at: null;
   expired_at: null;

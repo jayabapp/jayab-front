@@ -271,7 +271,7 @@ const SinglePropertyIntroduction = ({ data }: { data: SinglePropDto }) => {
         {" "}
         {/* <SinglePropContactIfoPop show={!!showContact} data={data} onHide={onContactClose} /> */}
         <SinglePropSharePop show={!!showShare} data={data} onHide={onShareClose} />
-        <SinglePropReservePop show={!!showReserve} data={data} onHide={onReserveHideClick} />
+        <SinglePropReservePop show={!!showReserve} data={data} setShow={setShowReserve} />
       </div>
     </div>
   );

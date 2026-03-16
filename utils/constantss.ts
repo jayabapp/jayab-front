@@ -1,3 +1,4 @@
+import { ReserveUserAction } from "@/enum/reserve.enum";
 import _STRINGS from "./LocalStrings";
 
 export const connectingWhiteList = ["/chat"];
@@ -401,4 +402,11 @@ export const chartSteps = {
   8: [71, 80],
   9: [81, 90],
   10: [91, 100],
+};
+
+export const ReserveReqTypes = {
+  [ReserveUserAction.CALL]: _STRINGS.CALL,
+  [ReserveUserAction.SMS]: _STRINGS.SMS,
+  [ReserveUserAction.RESERVE]: _STRINGS.RESERVE,
+  [ReserveUserAction.CHAT]: _STRINGS.CHAT,
 };

@@ -16,6 +16,8 @@ import { useEffect, useState } from "react";
 import LinearTextBlock from "../SinglePropertyAccards/LinearTextBlock";
 
 import { ChatService } from "@/api_services/chat/chat.service";
+import { ReserveUserAction } from "@/enum/reserve.enum";
+import { ReserveReqTypes } from "@/utils/constantss";
 import NumberFlow from "@number-flow/react";
 import { useRouter } from "next/navigation";
 import SinglePropContactInfoModal from "../SinglePropertyIntroduction/SinglePropContactInfoModal";
@@ -95,7 +97,7 @@ const ReserveCard = ({
           onClick={removeredirectRoomToHome}
           href={`${goToLink}`}
           prefetch={false}
-          className="col-span-6  !outline-none order-1  flex flex-col gap-1"
+          className={`col-span-6  !outline-none   ${isOwner ? "order-2" : "order-1"}    flex flex-col gap-1`}
         >
           {/* TITLE */}
           <div className="flex items-start gap-2">
@@ -155,7 +157,7 @@ const ReserveCard = ({
           onClick={removeredirectRoomToHome}
           href={`${goToLink}`}
           prefetch={false}
-          className=" flex h-fit !outline-none items-start  justify-start w-full col-span-2  order-2 "
+          className={` flex h-fit !outline-none items-start  justify-start w-full col-span-2 ${isOwner ? "order-1" : "order-2"}   `}
         >
           <div className=" aspect-square w-full h-full relative">
             <Image
@@ -173,49 +175,55 @@ const ReserveCard = ({
           </div>
         </Link>
       </div>
-      <Divider moreClass=" border-dashed  " />
+      {!!isOwner || data?.user_action == ReserveUserAction.RESERVE ? (
+        <>
+          <Divider moreClass=" border-dashed  " />
 
-      <div className=" w-full flex items-center flex-col pb-1 gap-2 justify-center">
-        {" "}
-        {!!isOwner ? (
-          <p className="text-sm text-red-600 text-center w-full">
-            پس از اتمام تایم و عدم پاسخ لینک ویلاهای مشابه برای میهمان ارسال می گردد.
-          </p>
-        ) : (
-          <></>
-        )}
-        <div className="flex items-center   gap-2 ">
-          {" "}
-          <div className="flex flex-col gap-1">
-            <p className="w-full text-center text-sm">{_STRINGS.SECONDS}</p>
-            <NumberFlow
-              value={`${countdown?.seconds || "00"}` as any}
-              format={{ useGrouping: false }}
-              aria-hidden
-              animated={true}
-              className={`pointer-events-none pt-1  text-lg !font-medium !space-x-14   w-12  h-12  flex items-center justify-center aspect-square rounded-lg bg-black text-white !tracking-[0.15rem] `}
-              willChange
-            />{" "}
+          <div className=" w-full flex items-center flex-col pb-1 gap-2 justify-center">
+            {" "}
+            {!!isOwner ? (
+              <p className="text-sm text-red-600 text-center w-full">
+                پس از اتمام تایم و عدم پاسخ لینک ویلاهای مشابه برای میهمان ارسال می گردد.
+              </p>
+            ) : (
+              <></>
+            )}
+            <div className="flex items-center   gap-2 ">
+              {" "}
+              <div className="flex flex-col gap-1">
+                <p className="w-full text-center text-sm">{_STRINGS.SECONDS}</p>
+                <NumberFlow
+                  value={`${countdown?.seconds || "00"}` as any}
+                  format={{ useGrouping: false }}
+                  aria-hidden
+                  animated={true}
+                  className={`pointer-events-none pt-1  text-lg !font-medium !space-x-14    w-12  h-12  flex items-center justify-center aspect-square rounded-lg bg-black text-white !tracking-[0.15rem] `}
+                  willChange
+                />{" "}
+              </div>
+              <p className="text-black pt-6 font-bold text-lg">{`:`}</p>
+              <div className="flex flex-col gap-1">
+                <p className="w-full text-center text-sm">{_STRINGS.MINUTE}</p>
+                <NumberFlow
+                  value={`${countdown?.minutes || "00"}` as any}
+                  format={{ useGrouping: false }}
+                  aria-hidden
+                  animated={true}
+                  className={`pointer-events-none pt-1 text-lg !font-medium !space-x-14    w-12  h-12  flex items-center justify-center aspect-square rounded-lg bg-black text-white !tracking-[0.15rem] `}
+                  willChange
+                />
+              </div>
+            </div>
+            {!!isOwner ? (
+              <></>
+            ) : (
+              <p className="text-sm text-gray-400 text-center w-full">مدت زمان انتظار جهت پاسخ میزبان. </p>
+            )}
           </div>
-          <p className="text-black pt-6 font-bold text-lg">{`:`}</p>
-          <div className="flex flex-col gap-1">
-            <p className="w-full text-center text-sm">{_STRINGS.MINUTE}</p>
-            <NumberFlow
-              value={`${countdown?.minutes || "00"}` as any}
-              format={{ useGrouping: false }}
-              aria-hidden
-              animated={true}
-              className={`pointer-events-none pt-1 text-lg !font-medium !space-x-14   w-12  h-12  flex items-center justify-center aspect-square rounded-lg bg-black text-white !tracking-[0.15rem] `}
-              willChange
-            />
-          </div>
-        </div>
-        {!!isOwner ? (
-          <></>
-        ) : (
-          <p className="text-sm text-gray-400 text-center w-full">مدت زمان انتظار جهت پاسخ میزبان. </p>
-        )}
-      </div>
+        </>
+      ) : (
+        <></>
+      )}
       <Divider moreClass="  border-dashed  " />
 
       <div className="w-full flex mt-2 flex-col  gap-2">
@@ -236,23 +244,24 @@ const ReserveCard = ({
         />
         <LinearTextBlock
           title={_STRINGS.DURATION}
-          value={` ${moment(data?.check_out).diff(data?.check_in, "days")} روز`}
+          value={` ${moment(data?.check_out).diff(data?.check_in, "days")} شب`}
           options={{ title_class: " !font-normal !text-sm", value_class: "!text-sm" }}
         />
-        {/* {isOwner ? (
-              <LinearTextBlock
-                title={_STRINGS.YOUR_CALL_CLICKS}
-                value={data?.owner_clicked_guest_mobile}
-                options={{ title_class: " !font-normal !text-sm", value_class: "!text-sm" }}
-              />
-            ) : (
-              <></>
-            )} */}
+        {isOwner ? (
+          <LinearTextBlock
+            title={_STRINGS.REQUEST_TYPE}
+            value={ReserveReqTypes[data?.user_action]}
+            options={{ title_class: " !font-normal !text-sm", value_class: "!text-sm" }}
+          />
+        ) : (
+          <></>
+        )}
       </div>
       <Divider moreClass=" " />
+
       <div className="w-full flex flex-col gap-2">
-        <p className="font-medium">{_STRINGS.REQUEST_STATUS}</p>
-        <div className="flex items-center justify-between ">
+        <p className={`font-medium ${isOwner ? "hidden" : ""}`}>{_STRINGS.REQUEST_STATUS}</p>
+        <div className={`flex items-center justify-between ${isOwner ? "flex-col gap-3" : ""} `}>
           <StatusShower data={data?.status} />
 
           {!isOwner && !!setSelectedCancel ? (
@@ -312,7 +321,7 @@ const ReserveCard = ({
             ) : (
               <></>
             )}
-            {data?.property?.is_chat_enabled ? (
+            {data?.is_chat_enabled ? (
               <Button
                 width="w-full !py-2  !font-bold !text-sm "
                 containerClass="w-2/3  "
@@ -329,6 +338,17 @@ const ReserveCard = ({
             )}
           </div>
         </>
+      )}
+      {!isOwner && data?.status?.id == 10 ? (
+        <>
+          <Divider moreClass=" " />
+          <div className="flex flex-col gap-1">
+            <p className=" text-center whitespace-pre-wrap ">رزرو شما پس از هماهنگی با میزبان نهایی خواهد شد </p>
+            <p className=" text-center font-medium whitespace-pre-wrap ">تماس با میزبان = رزرو سریعتر</p>
+          </div>
+        </>
+      ) : (
+        <></>
       )}
       <SinglePropContactInfoModal
         type={contactType}

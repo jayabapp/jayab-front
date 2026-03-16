@@ -5,6 +5,7 @@ import { ReserveService } from "@/api_services/reserve/reserve.service";
 import ModalBottomSheet from "@/components/Modal/ModalBottomSheet";
 import Button from "@/components/shared/Button/Button";
 import { Divider } from "@/components/shared/Divider";
+import { ReserveUserAction } from "@/enum/reserve.enum";
 import { useStoreParams } from "@/store";
 import _STRINGS from "@/utils/LocalStrings";
 import { NEW_IMAGE_URL } from "@/utils/urls";
@@ -23,10 +24,12 @@ const SinglePropRequestedReserveModal = ({
   startDate,
   count,
   endDate,
+  setShowEdit,
 }: {
   data: SinglePropDto;
   show: boolean;
   onHide: () => void | null;
+  setShowEdit: (e: boolean) => void | null;
   endDate: string;
   startDate: string;
   count: string | number;
@@ -81,6 +84,8 @@ const SinglePropRequestedReserveModal = ({
             onContactClick("sms");
           } else if (user_action == 3) {
             onCreateChat();
+          } else if (user_action == 4) {
+            router.push("/profile/reserves");
           }
           onHide();
         },
@@ -100,18 +105,79 @@ const SinglePropRequestedReserveModal = ({
         }}
       >
         <div className="w-full flex flex-col   p-4 rounded-2xl     gap-4">
-          <div className="w-full grid grid-cols-4 gap-2">
-            <div className="w-full  aspect-square relative ">
-              <Image
-                fill
-                alt={data?.feature_image?.alt || ""}
-                className=" rounded-2xl  w-full object-cover aspect-square"
-                src={NEW_IMAGE_URL(data?.feature_image)}
-              />
+          <div className="w-full  grid grid-cols-8 gap-2   ">
+            {/* INFO */}
+            <div className={`col-span-6  !outline-none   order-1   flex flex-col gap-1`}>
+              {/* TITLE */}
+              <div className="flex items-start gap-2">
+                <p className="text-sm line-clamp-1  text-right font-semibold">{data?.title} درخواست رزرو برای</p>
+              </div>
+
+              {/* CODE  - LIKES */}
+              <div className="flex items-center justify-between gap-4">
+                <div className="bg-black/10 font-normal rounded-md text-xs   px-2 py-1  leading-4  flex items-center justify-center">
+                  کد {data?.code}
+                </div>{" "}
+              </div>
+
+              <div className="w-full flex mt-2 flex-col  gap-2">
+                <>
+                  {" "}
+                  {/* DESCRIPTION */}
+                  <div className="w-full">
+                    <p className="text-xs">
+                      {" "}
+                      <span>{data?.total_bedrooms} اتاق</span> - <span>تا {data?.max_capacity} نفر</span>{" "}
+                      {!!data?.has_pool ? <span className="text-primary-700"> - {_STRINGS.HAS_POOL} </span> : <></>}
+                    </p>
+                  </div>
+                  {/* LOCATION */}
+                  <div className="flex w-full  items-center gap-1">
+                    {!!data?.is_promoted ? (
+                      <p className="  font-bold  text-primary-700  shrink-0  text-xs  pl-1 border-l">
+                        {_STRINGS.LADDERED}
+                      </p>
+                    ) : (
+                      // <img
+                      //   src="/assets/icons/adds/pin_point_location.svg"
+                      //   alt={`location${data?.id}`}
+                      //   className="w-5 h-5 aspect-square"
+                      // />
+                      <></>
+                    )}
+
+                    <p className="text-xs line-clamp-1 text-center ">
+                      {data?.city}{" "}
+                      <span className="text-xs ">
+                        {data?.province || data?.region ? `(${data?.region || data?.province})` : ``}
+                      </span>
+                    </p>
+                  </div>
+                </>
+              </div>
+            </div>{" "}
+            {/* IMAGE PART */}
+            <div className={` flex h-fit !outline-none items-start  justify-start w-full col-span-2 order-2  `}>
+              <div className=" aspect-square w-full h-full relative">
+                <Image
+                  fill
+                  loading="lazy"
+                  quality={100}
+                  alt={data?.feature_image?.alt || ""}
+                  src={
+                    !!data?.feature_image
+                      ? NEW_IMAGE_URL(data?.feature_image, "medium")
+                      : "/assets/icons/shared/image_placeholder.svg"
+                  }
+                  className=" w-full rounded-10  h-full  object-cover aspect-square"
+                />
+              </div>
             </div>
-            <p className=" font-medium text-lg w-full  col-span-3 md:text-xl ">{data?.title}</p>{" "}
           </div>
+          {/* <div className=" relative w-full "> */}
+
           <Divider />
+          {/* </div> */}
           <div className="w-full flex flex-col gap-2">
             <LinearTextBlock
               options={{ title_class: " !font-normal" }}
@@ -124,6 +190,21 @@ const SinglePropRequestedReserveModal = ({
               options={{ title_class: " !font-normal" }}
             />
             <LinearTextBlock title={_STRINGS.PPL_COUNT} value={count} options={{ title_class: " !font-normal" }} />
+            <LinearTextBlock
+              title={_STRINGS.DURATION}
+              value={` ${moment(endDate, "jYYYY/jMM/jD").diff(moment(startDate, "jYYYY/jMM/jD"), "days")} شب`}
+              options={{ title_class: " !font-normal !text-sm", value_class: "!text-sm" }}
+            />
+            <Button
+              title={_STRINGS.EDIT}
+              variant="Faded"
+              width="  !bg-gray-200  !text-gray-600 !font-medium w-1/4 !py-1"
+              roundedClass="rounded-full"
+              containerClass=" w-full  flex items-start justify-start "
+              onClick={() => {
+                setShowEdit(true);
+              }}
+            />
           </div>
           <Divider />
           <div className="w-full flex flex-col items-center justify-center gap-2">
@@ -131,7 +212,19 @@ const SinglePropRequestedReserveModal = ({
               <>
                 <Button
                   onClick={() => {
-                    onActionsClick(1);
+                    onActionsClick(ReserveUserAction.RESERVE);
+                  }}
+                  width="w-full  !py-2  !font-bold  !text-sm "
+                  containerClass="w-1/2"
+                  roundedClass="rounded-full"
+                  title={_STRINGS.SUBMIT_RESERVE}
+                  variant="outline"
+                  loading={loading}
+                  // icon={<img className="w-4 h-4  aspect-square" src="/assets/icons/advisor/blue_phone.svg" />}
+                />
+                <Button
+                  onClick={() => {
+                    onActionsClick(ReserveUserAction.CALL);
                   }}
                   width="w-full  !py-2  !font-bold  !text-sm "
                   containerClass="w-1/2"
@@ -144,7 +237,7 @@ const SinglePropRequestedReserveModal = ({
                 <Button
                   variant="outline"
                   onClick={() => {
-                    onActionsClick(2);
+                    onActionsClick(ReserveUserAction.SMS);
                   }}
                   width="w-full  !py-2  !font-bold  !text-sm "
                   containerClass="w-1/2"
@@ -165,7 +258,7 @@ const SinglePropRequestedReserveModal = ({
                 title={_STRINGS.CHAT_IN_JAYAB}
                 icon={<img className="w-4 h-4  ml-1 aspect-square" src="/assets/icons/advisor/white_message.svg" />}
                 onClick={() => {
-                  onActionsClick(3);
+                  onActionsClick(ReserveUserAction.CHAT);
                 }}
                 loading={loading}
               />
