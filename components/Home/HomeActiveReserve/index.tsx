@@ -27,8 +27,11 @@ const HomeActiveReserve = () => {
   return (
     <>
       {!!data ? (
-        <div className="w-full shadow-card  rounded-2xl    justify-between flex flex-col  p-3   gap-2  ">
-          <p className=" font-semibold "> درخواست رزرو فعال</p>
+        <div className="w-full shadow-card  rounded-2xl   mb-6  bg-primary-700/10 shadow-primary-700/10  justify-between flex flex-col  p-3   gap-2  ">
+          <div className="flex items-center gap-1">
+            <p className=" font-semibold "> درخواست رزرو فعال</p>
+            <div className=" size-2 mb-3  rounded-full bg-red-700 animate-pulse  duration-700" />
+          </div>
           <Divider />
           <div className="w-full  grid grid-cols-8 gap-2   ">
             {/* INFO */}
@@ -120,7 +123,10 @@ const HomeActiveReserve = () => {
 
           <div className={`flex items-center justify-between  `}>
             <StatusShower data={data?.status} />{" "}
-            <Link href="/profile/reserves" className="text-primary-700 font-medium">
+            <Link
+              href="/profile/reserves"
+              className="text-primary-700 px-3 py-0.5 border border-primary-700 rounded-lg font-medium"
+            >
               {" "}
               {_STRINGS.SEE_DETAILS} رزرو{" "}
             </Link>
