@@ -108,6 +108,8 @@ export const apiRoutes = {
 
   RESERVE: "/reserves",
 
+  RESERVE_ACTIVE: "/reserves/active",
+
   OWNER_RESERVE: "/owner/reserves",
 
   CANCEL_RESERVE: (propertyReserveId: string | number) => `/reserves/${propertyReserveId}`,

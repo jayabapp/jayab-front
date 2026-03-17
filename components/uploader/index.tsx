@@ -1,18 +1,14 @@
 "use client";
+import { ReactEventHandler, useRef, useState } from "react";
 import "react-advanced-cropper/dist/style.css";
-import React, { useRef, useState, useCallback, ReactEventHandler, useEffect } from "react";
 
-import FullscreenImage from "./FullScreenImage";
-import imageCompression from "browser-image-compression";
-import { toast } from "sonner";
-import { useMutation } from "@tanstack/react-query";
-import { Cropper, CropperRef, Coordinates } from "react-advanced-cropper";
-import { useStoreTheme } from "../../store";
 import { AuthService } from "@/api_services/auth/auth.service";
+import { useMutation } from "@tanstack/react-query";
+import { Coordinates, CropperRef } from "react-advanced-cropper";
+import { toast } from "sonner";
 import BtnLoading from "../shared/Button/BtnLoading";
-import Modal from "../Modal";
 import EditImageModal from "./EditImageModal";
-import Notify from "../shared/Toast";
+import FullscreenImage from "./FullScreenImage";
 //For Slider
 
 type props = {
@@ -71,26 +67,26 @@ const MainUploader = ({
     setLoading(true);
 
     try {
-      let compressedBlob;
-      let compressedFile;
-      try {
-        compressedBlob = await imageCompression(file as any, {
-          maxSizeMB: 1,
-          maxWidthOrHeight: 1240,
-          useWebWorker: true,
-          maxIteration: 5,
-        });
-        compressedFile = new File([compressedBlob], "whatever", {
-          type: file.type,
-          lastModified: Date.now(),
-        });
-      } catch (error) {
-        compressedFile = file;
-        console.error("Image compression failed:", error);
-      }
-      if (!!compressedFile) {
+      // let compressedBlob;
+      // let compressedFile;
+      // try {
+      //   compressedBlob = await imageCompression(file as any, {
+      //     maxSizeMB: 1,
+      //     maxWidthOrHeight: 1240,
+      //     useWebWorker: true,
+      //     maxIteration: 5,
+      //   });
+      //   compressedFile = new File([compressedBlob], "whatever", {
+      //     type: file.type,
+      //     lastModified: Date.now(),
+      //   });
+      // } catch (error) {
+      //   compressedFile = file;
+      //   console.error("Image compression failed:", error);
+      // }
+      if (!!file) {
         var formData = new FormData();
-        formData.append("file", compressedFile);
+        formData.append("file", file);
 
         mutate(
           { formData: formData, link: link },
@@ -108,7 +104,7 @@ const MainUploader = ({
               setSubLoading(false);
               setLoading(false);
             },
-          }
+          },
         );
       }
     } finally {
@@ -203,10 +199,10 @@ const MainUploader = ({
                   typeof item == "string"
                     ? "imageUrl" + item
                     : item?.file_location
-                    ? "imageUrl" + item?.file_location
-                    : item?.name
-                    ? `https://${item?.bucket}.${item?.end_point}/${item?.path}/${item?.name}`
-                    : item
+                      ? "imageUrl" + item?.file_location
+                      : item?.name
+                        ? `https://${item?.bucket}.${item?.end_point}/${item?.path}/${item?.name}`
+                        : item,
                 );
               }}
               className={`cursor-pointer border   bg-whiteGray-100  dark:bg-zinc-700  rounded-20 aspect-square relative  ${
@@ -219,10 +215,10 @@ const MainUploader = ({
                   typeof item == "string"
                     ? "imageUrl" + item
                     : item.file_location
-                    ? "imageUrl" + item.file_location
-                    : item.name
-                    ? `https://${item?.bucket}.${item?.end_point}/${item?.path}/${item?.name}`
-                    : item
+                      ? "imageUrl" + item.file_location
+                      : item.name
+                        ? `https://${item?.bucket}.${item?.end_point}/${item?.path}/${item?.name}`
+                        : item
                 }
                 className={`object-cover  w-full bg-gradient-to-b rounded-20 aspect-square max-w-max 
                   

@@ -1,5 +1,4 @@
 import Notify from "@/components/shared/Toast";
-import _STRINGS from "@/utils/LocalStrings";
 import { baseUrl } from "@/utils/urls";
 import axios, { AxiosRequestConfig, AxiosRequestHeaders } from "axios";
 
@@ -129,11 +128,6 @@ const handleError = (error: any) => {
   Notify({
     type: "error",
     title: "خطا",
-    body:
-      error?.response?.data?.messages?.fa == "RESERVE6"
-        ? _STRINGS.CANT_RESERVE_MESSAGE
-        : typeof message == "string"
-          ? message
-          : message[0],
+    body: typeof message == "string" ? message : message[0],
   });
 };

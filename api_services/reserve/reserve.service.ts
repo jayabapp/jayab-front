@@ -5,10 +5,11 @@ import { CreateReserveDto, ReserveListDto } from "./reserve.interface";
 export class ReserveService {
   static RESERVE_CACHEKEY = "RESERVES";
   static OWNER_RESERVE_CACHEKEY = "OWNER_RESERVES";
+  static RESERVE_ACTIVE_CACHEKEY = "RESERVE_ACTIVES";
 
   static async createReserve(dto: CreateReserveDto) {
     try {
-      const result = await apiCall<unknown, any>("POST", apiRoutes.RESERVE, dto);
+      const result = await apiCall<unknown, ReserveListDto>("POST", apiRoutes.RESERVE, dto);
       return result;
     } catch (e) {
       throw e;
@@ -37,6 +38,15 @@ export class ReserveService {
           per_page: 20,
         },
       );
+      return result;
+    } catch (e) {
+      throw e;
+    }
+  }
+
+  static async activeReserve() {
+    try {
+      const result = await apiCall<unknown, ReserveListDto>("GET", apiRoutes.RESERVE_ACTIVE);
       return result;
     } catch (e) {
       throw e;

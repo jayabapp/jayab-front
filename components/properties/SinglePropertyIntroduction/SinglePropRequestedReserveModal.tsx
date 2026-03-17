@@ -1,12 +1,13 @@
 "use client";
 import { ChatService } from "@/api_services/chat/chat.service";
 import { SinglePropDto } from "@/api_services/property/property.interface";
+import { ReserveListDto } from "@/api_services/reserve/reserve.interface";
 import { ReserveService } from "@/api_services/reserve/reserve.service";
 import ModalBottomSheet from "@/components/Modal/ModalBottomSheet";
 import Button from "@/components/shared/Button/Button";
 import { Divider } from "@/components/shared/Divider";
+import Notify from "@/components/shared/Toast";
 import { ReserveUserAction } from "@/enum/reserve.enum";
-import { useStoreParams } from "@/store";
 import _STRINGS from "@/utils/LocalStrings";
 import { NEW_IMAGE_URL } from "@/utils/urls";
 import { useMutation } from "@tanstack/react-query";
@@ -14,6 +15,7 @@ import moment from "moment-jalaali";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
+import ActiveReservePop from "../reserve/ActiveReservePop";
 import LinearTextBlock from "../SinglePropertyAccards/LinearTextBlock";
 import SinglePropContactInfoModal from "./SinglePropContactInfoModal";
 
@@ -37,10 +39,7 @@ const SinglePropRequestedReserveModal = ({
   const router = useRouter();
   const [contactType, setContactType] = useState<"tel" | "sms" | "">("");
   const [loading, setLoading] = useState(false);
-  const showLogin = () => {
-    useStoreParams.setState({ loginModal: true });
-  };
-
+  const [activeReserve, setActiveReserve] = useState<ReserveListDto | null>(null);
   const { mutate: createFindChat } = useMutation({
     mutationFn: ChatService.StartOrFindChat,
     onSuccess: (e) => {
@@ -75,19 +74,26 @@ const SinglePropRequestedReserveModal = ({
         user_action: user_action,
       },
       {
-        onSuccess: () => {
-          if (user_action == 1) {
+        onSuccess: (e) => {
+          // if (user_action == 1) {
+          //   setLoading(false);
+          //   onContactClick("tel");
+          // } else if (user_action == 2) {
+          //   setLoading(false);
+          //   onContactClick("sms");
+          // } else if (user_action == 3) {
+          //   onCreateChat();
+          // } else
+
+          if (!!e) {
             setLoading(false);
-            onContactClick("tel");
-          } else if (user_action == 2) {
-            setLoading(false);
-            onContactClick("sms");
-          } else if (user_action == 3) {
-            onCreateChat();
+            onHide();
+            setActiveReserve(e);
+            Notify({ body: _STRINGS.CANT_RESERVE_MESSAGE, type: "warn" });
           } else if (user_action == 4) {
             router.push("/profile/reserves");
           }
-          onHide();
+          // onHide();
         },
         onError: () => {
           setLoading(false);
@@ -208,23 +214,24 @@ const SinglePropRequestedReserveModal = ({
           </div>
           <Divider />
           <div className="w-full flex flex-col items-center justify-center gap-2">
+            <Button
+              onClick={() => {
+                onActionsClick(ReserveUserAction.RESERVE);
+              }}
+              width="w-full  !py-2  !font-bold  !text-sm "
+              containerClass="w-1/2"
+              roundedClass="rounded-full"
+              title={_STRINGS.SUBMIT_RESERVE}
+              variant="outline"
+              loading={loading}
+              // icon={<img className="w-4 h-4  aspect-square" src="/assets/icons/advisor/blue_phone.svg" />}
+            />
             {!!data?.remaining_days ? (
               <>
                 <Button
                   onClick={() => {
-                    onActionsClick(ReserveUserAction.RESERVE);
-                  }}
-                  width="w-full  !py-2  !font-bold  !text-sm "
-                  containerClass="w-1/2"
-                  roundedClass="rounded-full"
-                  title={_STRINGS.SUBMIT_RESERVE}
-                  variant="outline"
-                  loading={loading}
-                  // icon={<img className="w-4 h-4  aspect-square" src="/assets/icons/advisor/blue_phone.svg" />}
-                />
-                <Button
-                  onClick={() => {
-                    onActionsClick(ReserveUserAction.CALL);
+                    // onActionsClick(ReserveUserAction.CALL);
+                    onContactClick("tel");
                   }}
                   width="w-full  !py-2  !font-bold  !text-sm "
                   containerClass="w-1/2"
@@ -237,7 +244,8 @@ const SinglePropRequestedReserveModal = ({
                 <Button
                   variant="outline"
                   onClick={() => {
-                    onActionsClick(ReserveUserAction.SMS);
+                    onContactClick("sms");
+                    // onActionsClick(ReserveUserAction.SMS);
                   }}
                   width="w-full  !py-2  !font-bold  !text-sm "
                   containerClass="w-1/2"
@@ -258,7 +266,8 @@ const SinglePropRequestedReserveModal = ({
                 title={_STRINGS.CHAT_IN_JAYAB}
                 icon={<img className="w-4 h-4  ml-1 aspect-square" src="/assets/icons/advisor/white_message.svg" />}
                 onClick={() => {
-                  onActionsClick(ReserveUserAction.CHAT);
+                  // onActionsClick(ReserveUserAction.CHAT);
+                  onCreateChat();
                 }}
                 loading={loading}
               />
@@ -269,6 +278,14 @@ const SinglePropRequestedReserveModal = ({
         </div>
       </ModalBottomSheet>
       <SinglePropContactInfoModal type={contactType} show={!!contactType} data={data} onHide={onContactClose} />
+
+      <ActiveReservePop
+        data={activeReserve}
+        show={!!activeReserve}
+        onHide={() => {
+          setActiveReserve(null);
+        }}
+      />
     </>
   );
 };

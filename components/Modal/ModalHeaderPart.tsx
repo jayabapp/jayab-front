@@ -16,8 +16,10 @@ const ModalHeaderPart = ({
   titleClass?: string;
 }) => {
   return (
-    <div className="app-text flex     border-b items-center justify-center md:justify-between py-3 px-4 sticky top-0 bg-white dark:bg-zinc-800 z-10">
-      {!!hideArrow ? (
+    <div
+      className={`app-text flex     border-b items-center ${showX ? "justify-between " : "justify-center"}   md:justify-between py-3 px-4 sticky top-0 bg-white dark:bg-zinc-800 z-10`}
+    >
+      {!!hideArrow || showX ? (
         <></>
       ) : (
         <img
