@@ -1,12 +1,11 @@
-import moment from "moment-jalaali";
 import React, { useEffect, useState } from "react";
 // import CalenderIcon from "../../DynamicIcons/CalenderIcon";
 // import CircularArrowLeft from "../../DynamicIcons/CircularArrowLeft";
 // import CircularArrowRight from "../../DynamicIcons/CircularArrowRight";
-import "@moamfar/react-time-date-picker/dist/style.css";
+// import "@moamfar/react-time-date-picker/dist/style.css";
 
 import ModalBottomSheet from "@/components/Modal/ModalBottomSheet";
-import { DatePicker, DatePickerSelectedDate } from "@moamfar/react-time-date-picker";
+// import { DatePicker, DatePickerSelectedDate } from "@moamfar/react-time-date-picker";
 const DatePickerModal = ({
   date,
   setDate,
@@ -15,8 +14,8 @@ const DatePickerModal = ({
   minYear = 1404,
   maxYear = minYear + 10,
 }: {
-  date?: DatePickerSelectedDate;
-  setDate: React.Dispatch<React.SetStateAction<DatePickerSelectedDate | undefined>>;
+  date?: any;
+  setDate: React.Dispatch<React.SetStateAction<any | undefined>>;
   title: string;
   minDate?: string;
   minYear?: number;
@@ -61,7 +60,7 @@ const DatePickerModal = ({
             "!px-10 mx-auto rounded-t-20 absolute pb-[1.5rem] md:pb-10 bottom-0 md:translate-x-1/2 md:right-1/2 w-full md:w-[calc(50svw)]  bg-white dark:bg-zinc-900 overflow-y-scroll  dark:bg-dark-700 ",
         }}
       >
-        <DatePicker
+        {/* <DatePicker
           minDate={minDate}
           minYear={minYear}
           sonnerOptions={{
@@ -90,7 +89,7 @@ const DatePickerModal = ({
           setSelectedDate={(date) => {
             setDate?.(date);
           }}
-        />
+        /> */}
       </ModalBottomSheet>
     </>
   );

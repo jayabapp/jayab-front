@@ -16,7 +16,6 @@ import { useEffect, useState } from "react";
 import LinearTextBlock from "../SinglePropertyAccards/LinearTextBlock";
 
 import { ChatService } from "@/api_services/chat/chat.service";
-import { ReserveReqTypes } from "@/utils/constantss";
 import NumberFlow from "@number-flow/react";
 import { useRouter } from "next/navigation";
 import SinglePropContactInfoModal from "../SinglePropertyIntroduction/SinglePropContactInfoModal";
@@ -26,12 +25,16 @@ const ReserveCard = ({
   data,
   isOwner,
   setSelectedCancel,
+  refetchCallBack,
 }: {
   data: ReserveListDto;
   isOwner?: boolean;
   setSelectedCancel?: (e: ReserveListDto) => void | null;
+  refetchCallBack?: () => void | null;
 }) => {
+  const startMoment = moment().add(data?.ttl_seconds, "seconds").toString();
   const router = useRouter();
+
   const goToLink = `/rooms/${data?.property?.slug}`;
   const [countdown, setCountdown] = useState<{ minutes: string; seconds: string }>({ minutes: "00", seconds: "00" });
   const removeredirectRoomToHome = () => {
@@ -53,15 +56,24 @@ const ReserveCard = ({
   /* -------------------------------------------------------------------------- */
 
   useEffect(() => {
-    if (!data?.updated_at && !isOwner) return;
+    if (!data?.ttl_seconds && !isOwner) return;
     const interval = setInterval(() => {
-      const time = calculateTimeLeft(moment(data?.updated_at).add(data?.ttl_seconds, "seconds").toString());
+      const time = calculateTimeLeft(startMoment);
       setCountdown(time);
-      if (time?.minutes == "00" && time.seconds == "00") clearInterval(interval);
+      if (time?.minutes == "00" && time.seconds == "00") {
+        clearInterval(interval);
+      }
     }, 1000);
     return () => clearInterval(interval);
-  }, [data, isOwner]);
+  }, [data, isOwner, refetchCallBack]);
 
+  useEffect(() => {
+    if (countdown?.minutes == "00" && countdown?.seconds == "01") {
+      setTimeout(() => {
+        refetchCallBack?.();
+      }, 3000);
+    }
+  }, [countdown]);
   /* -------------------------------------------------------------------------- */
   /*                                 CONTACTING                                 */
   /* -------------------------------------------------------------------------- */
@@ -219,7 +231,7 @@ const ReserveCard = ({
         )}
       </div>
 
-      <Divider moreClass="  border-dashed  " />
+      <Divider moreClass="  !border-transparent  " />
 
       <div className="w-full flex mt-2 flex-col  gap-2">
         <LinearTextBlock
@@ -246,7 +258,7 @@ const ReserveCard = ({
           value={` ${moment(data?.check_out).diff(data?.check_in, "days")} شب`}
           options={{ title_class: " !font-normal !text-sm", value_class: "!text-sm" }}
         />
-        {isOwner ? (
+        {/* {isOwner ? (
           <LinearTextBlock
             dots
             title={_STRINGS.REQUEST_TYPE}
@@ -255,14 +267,14 @@ const ReserveCard = ({
           />
         ) : (
           <></>
-        )}
+        )} */}
       </div>
       <Divider moreClass=" " />
 
       <div className="w-full flex flex-col gap-2">
         <p className={`font-medium ${isOwner ? "hidden" : ""}`}>{_STRINGS.REQUEST_STATUS}</p>
         <div className={`flex items-center justify-between ${isOwner ? "flex-col gap-3" : ""} `}>
-          <StatusShower data={data?.status} />
+          {!!isOwner ? <p className="text-center">میهمان منتظر باسخ شماست</p> : <StatusShower data={data?.status} />}
 
           {!isOwner && !!setSelectedCancel ? (
             <div

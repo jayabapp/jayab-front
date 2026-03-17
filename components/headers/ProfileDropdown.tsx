@@ -129,7 +129,7 @@ const ProfileDropdown = ({ notifBadge }: { notifBadge?: number | string }) => {
                 <></>
               )}
               {!!userInfo?.owner_id ? (
-                <Link key={`myAdd2s`} className="" prefetch={false} href={`/profile/owner/requests`}>
+                <Link key={`myAdd2s`} className="" prefetch={false} href={`/profile/owner/reserves`}>
                   <div
                     className={` relative hover:bg-primary-700/80 dark:hover:bg-zinc-600  cursor-pointer hover:text-white text-gray-600 dark:text-gray-300 group flex w-full gap-2 items-center rounded-md px-2 py-2 text-sm font-light no-underline`}
                   >

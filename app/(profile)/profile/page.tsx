@@ -140,7 +140,7 @@ const Profile = () => {
                 item={{
                   id: 1214,
                   imgSrc: "/assets/icons/header/header_my_adds.svg",
-                  route: "/profile/owner/requests",
+                  route: "/profile/owner/reserves",
                   title: "درخواست ها",
                 }}
                 key={`profileItemowner`}

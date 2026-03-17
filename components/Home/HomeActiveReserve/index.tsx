@@ -27,7 +27,7 @@ const HomeActiveReserve = () => {
   return (
     <>
       {!!data ? (
-        <div className="w-full shadow-card  rounded-2xl   mb-6  bg-primary-700/10 shadow-primary-700/10  justify-between flex flex-col  p-3   gap-2  ">
+        <div className="w-full shadow-card  rounded-2xl   mb-6 mt-3  bg-primary-700/10 shadow-primary-700/10  justify-between flex flex-col  p-3   gap-2  ">
           <div className="flex items-center gap-1">
             <p className=" font-semibold "> درخواست رزرو فعال</p>
             <div className=" size-2 mb-3  rounded-full bg-red-700 animate-pulse  duration-700" />

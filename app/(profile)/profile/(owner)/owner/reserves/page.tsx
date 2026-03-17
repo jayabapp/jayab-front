@@ -37,13 +37,17 @@ const UserReserves = () => {
   /*                              REFETCH INTERVAL                              */
   /* -------------------------------------------------------------------------- */
 
-  useEffect(() => {
-    const interval = setInterval(() => {
-      setCursor(0);
-      refetch();
-    }, 1800000);
-    return () => clearInterval(interval);
-  }, []);
+  // useEffect(() => {
+  //   const interval = setInterval(() => {
+  //     setCursor(0);
+  //     refetch();
+  //   }, 1800000);
+  //   return () => clearInterval(interval);
+  // }, []);
+  const refetchCallBack = () => {
+    setCursor(0);
+    refetch();
+  };
 
   return (
     <div
@@ -75,7 +79,9 @@ const UserReserves = () => {
               <EmptyList />
             </div>
           ) : (
-            reserves?.map((e) => <ReserveCard isOwner data={e} key={`reserve${e?.id}`} />)
+            reserves?.map((e) => (
+              <ReserveCard refetchCallBack={refetchCallBack} isOwner data={e} key={`reserve${e?.id}`} />
+            ))
           )}
         </InfiniteScroll>
       )}
