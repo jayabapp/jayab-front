@@ -107,7 +107,7 @@ const SinglePropRequestedReserveModal = ({
         onHide={onHide}
         show={show}
         options={{
-          containerClass: `mx-auto rounded-t-20 absolute pb-[1.5rem] md:pb-10 bottom-0 md:translate-x-1/2 md:right-1/2 w-full md:w-[calc(50svw)]  bg-primary-50 dark:bg-zinc-900 overflow-y-scroll  dark:bg-dark-700`,
+          containerClass: `mx-auto rounded-t-20 absolute pb-[1.5rem] lg:pb-10 bottom-0 lg:translate-x-1/2 lg:right-1/2 w-full lg:w-[calc(50svw)]  bg-primary-50 dark:bg-zinc-900 overflow-y-scroll  dark:bg-dark-700`,
         }}
       >
         <div className="w-full flex flex-col   p-4 rounded-2xl     gap-4">
@@ -180,37 +180,63 @@ const SinglePropRequestedReserveModal = ({
               </div>
             </div>
           </div>
-          {/* <div className=" relative w-full "> */}
-
-          <Divider />
-          {/* </div> */}
+          <div className=" relative w-full py-4 ">
+            <Divider />
+            <Button
+              title={`${_STRINGS.EDIT}`}
+              variant="solid"
+              width="  bg-gray-300 !text-black/60 w-fit !py-0 "
+              roundedClass="rounded-full"
+              icon={
+                <img
+                  className=" size-4 ml-1 grayscale brightness-50  opacity-60 "
+                  src="/assets/icons/shared/edit-pencel.svg"
+                />
+              }
+              containerClass=" w-full absolute right-0  flex items-start -top-0 justify-start "
+              onClick={() => {
+                setShowEdit(true);
+              }}
+            />
+          </div>
           <div className="w-full flex flex-col gap-2">
             <LinearTextBlock
+              dots
               options={{ title_class: " !font-normal" }}
               title={_STRINGS.START_DATE}
               value={` ${moment(startDate, "jYYYY/jMM/jD").format("ddd")} - ${startDate}`}
             />
             <LinearTextBlock
+              dots
               title={_STRINGS.EXIT_DATE}
               value={`${moment(endDate, "jYYYY/jMM/jD").format("ddd")} - ${endDate} `}
               options={{ title_class: " !font-normal" }}
             />
-            <LinearTextBlock title={_STRINGS.PPL_COUNT} value={count} options={{ title_class: " !font-normal" }} />
             <LinearTextBlock
+              dots
+              title={_STRINGS.PPL_COUNT}
+              value={`${!!`${count}`.includes("+") ? `بیشتر از  ${count}`.replace("+", "") : count} نفر`}
+              options={{ title_class: " !font-normal" }}
+            />
+            <LinearTextBlock
+              dots
               title={_STRINGS.DURATION}
               value={` ${moment(endDate, "jYYYY/jMM/jD").diff(moment(startDate, "jYYYY/jMM/jD"), "days")} شب`}
               options={{ title_class: " !font-normal !text-sm", value_class: "!text-sm" }}
             />
-            <Button
-              title={_STRINGS.EDIT}
+            {/* <Button
+              title={`${_STRINGS.EDIT} تاریخ و نفرات`}
               variant="Faded"
-              width="  !bg-gray-200  !text-gray-600 !font-medium w-1/4 !py-1"
+              width="  !bg-orange-500  !text-white w-full lg:w-1/2  !py-1.5"
               roundedClass="rounded-full"
-              containerClass=" w-full  flex items-start justify-start "
+              icon={
+                <img className=" size-4 ml-1  brightness-200 grayscale " src="/assets/icons/shared/edit-pencel.svg" />
+              }
+              containerClass=" w-full   flex items-center justify-center "
               onClick={() => {
                 setShowEdit(true);
               }}
-            />
+            /> */}
           </div>
           <Divider />
           <div className="w-full flex flex-col items-center justify-center gap-2">

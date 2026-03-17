@@ -228,7 +228,7 @@ const SinglePropertyIntroduction = ({ data }: { data: SinglePropDto }) => {
 
         <Button
           onClick={onReserveClick}
-          width="w-1/2"
+          width="w-full  md:!py-1  lg:!py-2 lg:!text-lg"
           containerClass="w-full flex items-center  justify-end"
           roundedClass="rounded-full"
           title={_STRINGS.RESERVE}

@@ -1,6 +1,5 @@
-import React, { Fragment, JSX, ReactNode } from "react";
 import { Dialog, DialogPanel, Transition, TransitionChild } from "@headlessui/react";
-import { useRouter } from "next/navigation";
+import { Fragment, JSX, ReactNode } from "react";
 type ModalProps = {
   children?: ReactNode;
   onHide: () => void;
@@ -48,7 +47,7 @@ const ModalBottomSheet = ({ children, show, onHide, options }: ModalProps): JSX.
                 className={
                   options?.containerClass
                     ? options?.containerClass
-                    : `mx-auto rounded-t-20 absolute pb-[1.5rem] md:pb-10 bottom-0 md:translate-x-1/2 md:right-1/2 w-full md:w-[calc(50svw)]  bg-white dark:bg-zinc-900 overflow-y-scroll  dark:bg-dark-700`
+                    : `mx-auto rounded-t-20 absolute pb-[1.5rem] lg:pb-10 bottom-0 lg:translate-x-1/2 lg:right-1/2 w-full lg:w-[calc(50svw)]  bg-white dark:bg-zinc-900 overflow-y-scroll  dark:bg-dark-700`
                 }
               >
                 {children}

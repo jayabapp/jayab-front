@@ -55,7 +55,7 @@ const ReserveCard = ({
   useEffect(() => {
     if (!data?.updated_at && !isOwner) return;
     const interval = setInterval(() => {
-      const time = calculateTimeLeft(moment(data?.updated_at).add(30, "minute").toString());
+      const time = calculateTimeLeft(moment(data?.updated_at).add(data?.ttl_seconds, "seconds").toString());
       setCountdown(time);
       if (time?.minutes == "00" && time.seconds == "00") clearInterval(interval);
     }, 1000);
@@ -223,27 +223,32 @@ const ReserveCard = ({
 
       <div className="w-full flex mt-2 flex-col  gap-2">
         <LinearTextBlock
+          dots
           title={_STRINGS.PPL_COUNT}
-          value={`${data?.guests_count} نفر`}
+          value={`${!!`${data?.guests_count}`.includes("+") ? `بیشتر از  ${data?.guests_count}`.replace("+", "") : data?.guests_count} نفر`}
           options={{ title_class: " !font-normal !text-sm", value_class: "!text-sm" }}
         />
         <LinearTextBlock
+          dots
           options={{ title_class: " !font-normal !text-sm", value_class: "!text-sm" }}
           title={_STRINGS.START_DATE}
           value={` ${moment(data?.check_in).format("ddd - jYYYY/jMM/jD")}`}
         />
         <LinearTextBlock
+          dots
           title={_STRINGS.EXIT_DATE}
           value={` ${moment(data?.check_out).format("ddd - jYYYY/jMM/jD")}`}
           options={{ title_class: " !font-normal !text-sm", value_class: "!text-sm" }}
         />
         <LinearTextBlock
+          dots
           title={_STRINGS.DURATION}
           value={` ${moment(data?.check_out).diff(data?.check_in, "days")} شب`}
           options={{ title_class: " !font-normal !text-sm", value_class: "!text-sm" }}
         />
         {isOwner ? (
           <LinearTextBlock
+            dots
             title={_STRINGS.REQUEST_TYPE}
             value={ReserveReqTypes[data?.user_action]}
             options={{ title_class: " !font-normal !text-sm", value_class: "!text-sm" }}
