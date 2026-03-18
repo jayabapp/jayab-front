@@ -3,12 +3,8 @@ import { SinglePropDto } from "@/api_services/property/property.interface";
 import { PropertyService } from "@/api_services/property/property.service";
 import ModalBottomSheet from "@/components/Modal/ModalBottomSheet";
 import ModalHeaderPart from "@/components/Modal/ModalHeaderPart";
-import EmptyList from "@/components/shared/Lotties/EmptyList";
-import LottieLoading from "@/components/shared/Lotties/LottieLoading";
 import _STRINGS from "@/utils/LocalStrings";
 import { useQuery } from "@tanstack/react-query";
-import isEmpty from "lodash/isEmpty";
-import PropertyContactInfoItem from "./PropertyContactInfoItem";
 
 const SinglePropContactInfoPop = ({
   data,
@@ -35,7 +31,7 @@ const SinglePropContactInfoPop = ({
       <ModalBottomSheet onHide={onHide} show={show}>
         <ModalHeaderPart hideArrow title={_STRINGS.CONTACT_INFO} onHide={onHide} />
 
-        <div className="w-full p-4 flex flex-col">
+        {/* <div className="w-full p-4 flex flex-col">
           {isPending ? (
             <LottieLoading />
           ) : isEmpty(contactInfo?.list) ? (
@@ -50,7 +46,7 @@ const SinglePropContactInfoPop = ({
               />
             ))
           )}
-        </div>
+        </div> */}
       </ModalBottomSheet>
     </>
   );

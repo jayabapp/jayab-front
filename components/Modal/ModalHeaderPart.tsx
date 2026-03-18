@@ -6,16 +6,20 @@ const ModalHeaderPart = ({
   hideArrow,
   children,
   titleClass,
+  showX,
 }: {
   onHide: () => void | null;
   title: string;
   hideArrow?: boolean;
+  showX?: boolean;
   children?: ReactNode;
   titleClass?: string;
 }) => {
   return (
-    <div className="app-text flex     border-b items-center justify-center md:justify-between py-3 px-4 sticky top-0 bg-white dark:bg-zinc-800 z-10">
-      {!!hideArrow ? (
+    <div
+      className={`app-text flex     border-b items-center ${showX ? "justify-between " : "justify-center"}   md:justify-between py-3 px-4 sticky top-0 bg-white dark:bg-zinc-800 z-10`}
+    >
+      {!!hideArrow || showX ? (
         <></>
       ) : (
         <img
@@ -31,7 +35,7 @@ const ModalHeaderPart = ({
       </div>{" "}
       <img
         src="/assets/icons/adds/x_mark.svg"
-        className="w-3   cursor-pointer hidden md:block h-3 dark:invert"
+        className={`w-3   ${showX ? "block" : "hidden md:block"} cursor-pointer  h-3 dark:invert`}
         alt=""
         onClick={onHide}
       />

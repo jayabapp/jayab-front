@@ -1,3 +1,4 @@
+import { ReserveUserAction } from "@/enum/reserve.enum";
 import _STRINGS from "./LocalStrings";
 
 export const connectingWhiteList = ["/chat"];
@@ -146,7 +147,7 @@ export const allRoutes: { [key: string]: string } = {
   blog: "بلاگ",
   blogs: "بلاگ",
   orders: "سفارشات",
-
+  reserves: "رزرو های من",
   advisor: "مشاور",
   "is-especial": "مشاور ویژه",
   assistants: "افزودن دستیار میزبان",
@@ -165,7 +166,7 @@ export const allRoutes: { [key: string]: string } = {
   videos: "ویدیوها",
   "about-us": "درباره ما",
   branch: "اعطای نمایندگی",
-
+  requests: "درخواست ها",
   edit: "اطلاعات شخصی",
 
   support: "تیکت ",
@@ -203,6 +204,12 @@ export const profileDropDownItems = [
     title: "پرداخت های من",
     route: "/profile/my-payments",
     imgSrc: "/assets/icons/header/header_my_turnovers.svg",
+  },
+  {
+    id: 112423,
+    title: "رزرو های من",
+    route: "/profile/reserves",
+    imgSrc: "/assets/icons/header/header_my_saves.svg",
   },
   {
     id: 123,
@@ -249,6 +256,14 @@ export const profileItems = [
   //   guard: true,
   //   isMobile: false,
   // },
+  {
+    id: 1251769,
+    title: "رزرو های من",
+    route: "/profile/reserves",
+    imgSrc: "/assets/icons/header/header_my_saves.svg",
+    guard: true,
+    isMobile: false,
+  },
   {
     id: 769,
     title: "آگهی های ذخیره شده",
@@ -387,4 +402,11 @@ export const chartSteps = {
   8: [71, 80],
   9: [81, 90],
   10: [91, 100],
+};
+
+export const ReserveReqTypes = {
+  [ReserveUserAction.CALL]: _STRINGS.CALL,
+  [ReserveUserAction.SMS]: _STRINGS.SMS,
+  [ReserveUserAction.RESERVE]: _STRINGS.RESERVE,
+  [ReserveUserAction.CHAT]: _STRINGS.CHAT,
 };

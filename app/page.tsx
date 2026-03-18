@@ -1,3 +1,4 @@
+import HomeActiveReserve from "@/components/Home/HomeActiveReserve";
 import HomeSearchPart from "@/components/Home/HomeSearchPart";
 import MainFiltersContainer from "@/components/Home/MainFiltersContainer";
 import TheInstallPrompt from "@/components/InstallPrompt/TheInstallPrompt";
@@ -46,6 +47,11 @@ const Home = async () => {
       )} */}{" "}
       <Suspense fallback={null}>
         <HomeSearchPart />
+      </Suspense>
+      <Suspense fallback={null}>
+        <div className="w-full px-4 md:px-[20%] lg:px-[35%]">
+          <HomeActiveReserve />
+        </div>
       </Suspense>
       <section
         style={{

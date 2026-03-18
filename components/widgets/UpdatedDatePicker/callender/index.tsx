@@ -1,25 +1,25 @@
 import moment from "moment-jalaali";
 import { useEffect, useState } from "react";
-import DayPicker from "./DayPicker";
-import DaysOfTheWeel from "./DaysOfTheWeek";
-import YearMonthPicker from "./YearMonthPicker";
+import DayPicker from "../DayPicker";
+import DaysOfTheWeel from "../DaysOfTheWeel";
+import YearMonthPicker from "../YearMonthPicker";
 
 type dates = {
   selectedDate?: string | number;
-  freeDaysOfMonth?: boolean;
-  smallerDateFonts?: boolean;
+  active_days?: number[] | undefined;
+  callenderData?: any[] | undefined;
   prefix?: string;
-  color?: string;
   setSelectedDay?: (e: any | null) => void | null;
+  setChosenDateState?: (e: any | null) => void | null;
   options?: { valueType: "persian" | "global"; showTimeOfTheDay?: boolean };
 };
-const SingleDatePicker = ({
+const Callender = ({
   selectedDate,
   setSelectedDay,
   prefix,
-  color,
-  freeDaysOfMonth,
-  smallerDateFonts,
+  setChosenDateState,
+  callenderData,
+  active_days,
   options = { valueType: "persian" },
 }: dates) => {
   const [chosenDate, setChosenDate] = useState<string | number>(
@@ -41,11 +41,11 @@ const SingleDatePicker = ({
     setNumericMonth(moment(chosenDate, "jYYYY/jMM/jDD").format("jMM"));
   }, [chosenDate]);
 
-  // useEffect(() => {
-  //   if (!!selectedDate) {
-  //     setChosenDate(moment(selectedDate, "jYYYY/jMM/jDD").format("jYYYY/jMM/jDD"));
-  //   }
-  // }, [selectedDate]);
+  useEffect(() => {
+    if (!!setChosenDateState) {
+      setChosenDateState(chosenDate);
+    }
+  }, [chosenDate]);
 
   useEffect(() => {
     setTimeout(() => setLoading(false), 1500);
@@ -57,18 +57,11 @@ const SingleDatePicker = ({
     } else return false;
   };
   const nextMonth = () => {
-    setChosenDate(moment(chosenDate, "jYYYY/jMM/jDD").startOf("month").add(1, "months").format("jYYYY/jMM/jDD"));
+    setChosenDate(moment(chosenDate, "jYYYY/jMM/jDD").add(1, "months").format("jYYYY/jMM/jDD"));
   };
   const lastMonth = () => {
-    setChosenDate(moment(chosenDate, "jYYYY/jMM/jDD").startOf("month").subtract(1, "months").format("jYYYY/jMM/jDD"));
+    setChosenDate(moment(chosenDate, "jYYYY/jMM/jDD").subtract(1, "months").format("jYYYY/jMM/jDD"));
   };
-
-  // useEffect(()=>{
-
-  //   if(!!firstTime){
-
-  //   }
-  // },[])
 
   return (
     <div
@@ -84,15 +77,15 @@ const SingleDatePicker = ({
           lastMonth();
           setPreventer(true);
         } else if (start < e.changedTouches[0].pageX && doTheMath(start, e.changedTouches[0].pageX) && !preventer) {
-          nextMonth();
           // dragged right
+          nextMonth();
           setPreventer(true);
         }
       }}
       onDragOver={(e) => {
         if (prevX > e.pageX && doTheMath(start, e.pageX) && !preventer) {
-          setPreventer(true);
           lastMonth();
+          setPreventer(true);
         } else if (prevX < e.pageX && doTheMath(start, e.pageX) && !preventer) {
           // dragged right
           nextMonth();
@@ -101,24 +94,28 @@ const SingleDatePicker = ({
 
         setPrevX(e.pageX);
       }}
-      // onDragOverCapture={(e) => console.log(e, "eeeeeeeee")}
-      className="flex transition-all duration-500 ease-in-out bg-neutral-100 rounded-2xl p-4 md:p-12  gap-2 flex-col"
+      className="flex transition-all duration-500 ease-in-out  w-full  rounded-20 md:p-4    gap-2 flex-col"
       draggable
     >
-      {/* <div className="flex flex-col gap-1 items-start">
-        <p style={{ color: color }}>{moment(selectedDate, "jYYYY/jMM/jDD").format("jYYYY")}</p>
-        <p className=" text-2xl " style={{ color: color }}>
-          {moment(selectedDate, "jYYYY/jMM/jDD").format("   ddd jDD jMMMM")}
-        </p>
-      </div> */}
+      <div
+        className={` hidden  text-primary-500 flex-col gap-1 items-start   transition-all ${
+          !!selectedDate ? " h-[3.75rem]" : " opacity-0 h-0"
+        }`}
+      >
+        <p>{moment(selectedDate, "jYYYY/jMM/jDD").format("jYYYY")}</p>
+        <p className=" text-base md:text-2xl ">{moment(selectedDate, "jYYYY/jMM/jDD").format("   ddd jDD jMMMM")}</p>
+      </div>
+
       <div className="flex items-center gap-4">
         {" "}
+        {/* <YearPicker prefix={prefix} date={`${chosenDate}`} setDate={setChosenDate} month={month} year={year} />
+        <MonthPicker prefix={prefix} date={`${chosenDate}`} setDate={setChosenDate} month={month} year={year} /> */}
         <YearMonthPicker prefix={prefix} date={`${chosenDate}`} setDate={setChosenDate} month={month} year={year} />
       </div>
       <DaysOfTheWeel />
       <DayPicker
-        smallerDateFonts={smallerDateFonts}
-        freeDaysOfMonth={freeDaysOfMonth}
+        active_days={active_days}
+        callenderData={callenderData}
         date={chosenDate}
         month={numbericMonth}
         year={year}
@@ -131,4 +128,4 @@ const SingleDatePicker = ({
   );
 };
 
-export default SingleDatePicker;
+export default Callender;

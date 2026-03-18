@@ -26,7 +26,7 @@ const Selecti = ({ item, value, onSelect, closeOnSelect, setShow, velueString }:
           setShow(false);
         }
       }}
-      className={` relative  flex w-full items-center gap-4 justify-center  border-t cursor-pointer border-gray-100 py-2 transition-all duration-700 ease-in-out`}
+      className={` relative  flex w-full items-center gap-4 justify-center  border-t  first:border-t-0 cursor-pointer border-gray-100 py-2 transition-all duration-700 ease-in-out`}
     >
       {closeOnSelect ? (
         <div className=" absolute right-0">

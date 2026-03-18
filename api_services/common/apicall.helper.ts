@@ -1,6 +1,6 @@
 import Notify from "@/components/shared/Toast";
 import { baseUrl } from "@/utils/urls";
-import axios, { AxiosRequestHeaders, AxiosResponse, AxiosRequestConfig, AxiosProgressEvent } from "axios";
+import axios, { AxiosRequestConfig, AxiosRequestHeaders } from "axios";
 
 type Methods = "POST" | "PUT" | "DELETE" | "PATCH" | "GET";
 
@@ -28,7 +28,7 @@ export async function apiCall<T, K>(
     progressCallBack?: (e: any) => void | null;
     isSocketToken?: boolean;
     passedToken?: string;
-  }
+  },
 ): Promise<K | undefined> {
   try {
     /**
@@ -125,5 +125,9 @@ const handleError = (error: any) => {
     error?.response?.data?.messages?.fa ||
     error?.response?.data?.message ||
     error?.message;
-  Notify({ type: "error", title: "خطا", body: typeof message == "string" ? message : message[0] });
+  Notify({
+    type: "error",
+    title: "خطا",
+    body: typeof message == "string" ? message : message[0],
+  });
 };

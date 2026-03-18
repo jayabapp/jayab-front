@@ -135,6 +135,32 @@ const Profile = () => {
             ) : (
               <></>
             )}
+            {!isEmpty(PersonalProfileItems) && !!data?.owner_id ? (
+              <ProfileItem
+                item={{
+                  id: 1214,
+                  imgSrc: "/assets/icons/header/header_my_adds.svg",
+                  route: "/profile/owner/reserves",
+                  title: "درخواست های رزرو",
+                }}
+                key={`profileItemowner`}
+              />
+            ) : (
+              <></>
+            )}
+            {/* {!isEmpty(PersonalProfileItems) && !!data?.owner_id ? (
+              <ProfileItem
+                item={{
+                  id: 1214,
+                  imgSrc: "/assets/icons/header/header_my_adds.svg",
+                  route: "/profile/owner/call-logs",
+                  title: "تماس های من",
+                }}
+                key={`profileItemowner`}
+              />
+            ) : (
+              <></>
+            )} */}
             {!!data?.advisor_id ? (
               <ProfileItem
                 item={{
