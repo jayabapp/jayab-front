@@ -202,7 +202,7 @@ const ReserveCard = ({
       </div>
       <Divider moreClass=" border-dashed  " />{" "}
       {isOwner && !ownerCounter ? (
-        <></>
+        <p className=" text-center"> زمان شما برای پاسخ به این درخواست به اتمام رسیده است.</p>
       ) : (
         <>
           <div className=" w-full flex items-center flex-col pb-1 gap-2 justify-center">
@@ -274,22 +274,23 @@ const ReserveCard = ({
           value={` ${moment(data?.check_out).diff(data?.check_in, "days")} شب`}
           options={{ title_class: " !font-normal !text-sm", value_class: "!text-sm" }}
         />
-        {/* {isOwner ? (
+        {isOwner ? (
           <LinearTextBlock
             dots
-            title={_STRINGS.REQUEST_TYPE}
-            value={ReserveReqTypes[data?.user_action]}
+            title={_STRINGS.REQUEST_DATE}
+            value={`${moment(data?.created_at).format("ddd - jYYYY/jMM/jD")}`}
             options={{ title_class: " !font-normal !text-sm", value_class: "!text-sm" }}
           />
         ) : (
           <></>
-        )} */}
+        )}
       </div>
       {/* <Divider moreClass=" " /> */}
       <div className="w-full flex flex-col gap-2">
         {/* <p className={`font-medium ${isOwner ? "hidden" : ""}`}>{_STRINGS.REQUEST_STATUS}</p> */}
-        <div className={`flex items-center justify-between ${isOwner ? "flex-col gap-3" : ""} `}>
-          {!!isOwner ? <p className="text-center">میهمان منتظر پاسخ شماست</p> : <StatusShower data={data?.status} />}
+        {!!isOwner ? <p className="text-center">میهمان منتظر پاسخ شماست</p> : <></>}
+        <div className={`flex items-center justify-between  `}>
+          <StatusShower data={data?.status} />
 
           {!isOwner && !!setSelectedCancel ? (
             <div
