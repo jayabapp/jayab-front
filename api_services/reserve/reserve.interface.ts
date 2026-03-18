@@ -78,7 +78,7 @@ export interface Property {
   feature_image: ImageDto;
   province: City;
   city: City;
-  region: null;
+  region: { title: string };
 }
 
 export interface AdminDescription {

@@ -140,7 +140,7 @@ const ProfileDropdown = ({ notifBadge }: { notifBadge?: number | string }) => {
                         className={`w-6 h-6 aspect-square ${asPath.includes("notifications") ? " " : ""} dark:invert `}
                       />
                     </div>
-                    <p className="text-sm"> {"درخواست ها"}</p>
+                    <p className="text-sm"> {"درخواست های رزرو"}</p>
                   </div>
                 </Link>
               ) : (

@@ -141,7 +141,7 @@ const Profile = () => {
                   id: 1214,
                   imgSrc: "/assets/icons/header/header_my_adds.svg",
                   route: "/profile/owner/reserves",
-                  title: "درخواست ها",
+                  title: "درخواست های رزرو",
                 }}
                 key={`profileItemowner`}
               />

@@ -168,8 +168,8 @@ const ReserveCard = ({
                 <p className="text-xs line-clamp-1 text-center ">
                   {data?.property?.city?.title}{" "}
                   <span className="text-xs ">
-                    {data?.property?.province?.title || data?.property?.region
-                      ? `(${data?.property?.region || data?.property?.province?.title})`
+                    {data?.property?.province?.title || data?.property?.region?.title
+                      ? `(${data?.property?.region?.title || data?.property?.province?.title})`
                       : ``}
                   </span>
                 </p>
@@ -285,11 +285,11 @@ const ReserveCard = ({
           <></>
         )} */}
       </div>
-      <Divider moreClass=" " />
+      {/* <Divider moreClass=" " /> */}
       <div className="w-full flex flex-col gap-2">
-        <p className={`font-medium ${isOwner ? "hidden" : ""}`}>{_STRINGS.REQUEST_STATUS}</p>
+        {/* <p className={`font-medium ${isOwner ? "hidden" : ""}`}>{_STRINGS.REQUEST_STATUS}</p> */}
         <div className={`flex items-center justify-between ${isOwner ? "flex-col gap-3" : ""} `}>
-          {!!isOwner ? <p className="text-center">میهمان منتظر باسخ شماست</p> : <StatusShower data={data?.status} />}
+          {!!isOwner ? <p className="text-center">میهمان منتظر پاسخ شماست</p> : <StatusShower data={data?.status} />}
 
           {!isOwner && !!setSelectedCancel ? (
             <div
@@ -403,7 +403,7 @@ const ReserveCard = ({
         }}
         isVisible={showSub}
         title="مهلت آگهی شما به اتمام رسیده"
-        text="برای فعال شدن امکان گفتگو و نمایش شماره تماس در آگهی، اشتراک خود را تمدید کنید "
+        text="برای فعال شدن امکان تماس و دریافت شماره میهمان و همچین نمایش شماره تماس شما به میهمانان اشتراک آگهی خود را تمدید کنید."
         confirmText="تمدید اعتبار"
       />
     </div>

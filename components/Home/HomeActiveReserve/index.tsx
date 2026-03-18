@@ -24,7 +24,7 @@ const HomeActiveReserve = () => {
   const removeredirectRoomToHome = () => {
     useStoreParams.setState({ getBackHome: false });
   };
-
+  console.log(data, "datadata");
   return (
     <>
       {!!data ? (
@@ -88,8 +88,8 @@ const HomeActiveReserve = () => {
                     <p className="text-xs line-clamp-1 text-center ">
                       {data?.property?.city?.title}{" "}
                       <span className="text-xs ">
-                        {data?.property?.province?.title || data?.property?.region
-                          ? `(${data?.property?.region || data?.property?.province?.title})`
+                        {data?.property?.province?.title || data?.property?.region?.title
+                          ? `(${data?.property?.region?.title || data?.property?.province?.title})`
                           : ``}
                       </span>
                     </p>
