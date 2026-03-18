@@ -302,7 +302,7 @@ const ReserveCard = ({
               لغو رزرو
               <img src="/assets/icons/adds/x_mark.svg" className=" w-2 h-2  md:w-2 cursor-pointer opacity-60 md:h-2" />
             </div>
-          ) : (
+          ) : data?.status?.id != 20 ? (
             <Button
               onClick={onCallClick}
               loading={isPending}
@@ -310,6 +310,8 @@ const ReserveCard = ({
               width=" !py-1 "
               title={`${`${data?.guest_mobile}`?.includes("*") ? " تماس با میهمان" : data?.guest_mobile}`}
             />
+          ) : (
+            <></>
           )}
         </div>
       </div>
