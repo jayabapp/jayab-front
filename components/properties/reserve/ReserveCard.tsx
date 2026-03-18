@@ -193,49 +193,55 @@ const ReserveCard = ({
         </Link>
       </div>
 
-      <Divider moreClass=" border-dashed  " />
-
-      <div className=" w-full flex items-center flex-col pb-1 gap-2 justify-center">
-        {" "}
-        {!!isOwner ? (
-          <p className="text-sm text-red-600 text-center w-full">
-            پس از اتمام تایم و عدم پاسخ لینک ویلاهای مشابه برای میهمان ارسال می گردد.
-          </p>
-        ) : (
-          <></>
-        )}
-        <div className="flex items-center   gap-2 ">
+      {isOwner && !data?.show_counter ? (
+        <></>
+      ) : (
+        <>
           {" "}
-          <div className="flex flex-col gap-1">
-            <p className="w-full text-center text-sm">{_STRINGS.SECONDS}</p>
-            <NumberFlow
-              value={`${countdown?.seconds || "00"}` as any}
-              format={{ useGrouping: false }}
-              aria-hidden
-              animated={true}
-              className={`pointer-events-none pt-1  text-lg !font-medium !space-x-14    w-12  h-12  flex items-center justify-center aspect-square rounded-lg bg-black text-white !tracking-[0.15rem] `}
-              willChange
-            />{" "}
+          <Divider moreClass=" border-dashed  " />
+          <div className=" w-full flex items-center flex-col pb-1 gap-2 justify-center">
+            {" "}
+            {!!isOwner ? (
+              <p className="text-sm text-red-600 text-center w-full">
+                پس از اتمام تایم و عدم پاسخ لینک ویلاهای مشابه برای میهمان ارسال می گردد.
+              </p>
+            ) : (
+              <></>
+            )}
+            <div className="flex items-center   gap-2 ">
+              {" "}
+              <div className="flex flex-col gap-1">
+                <p className="w-full text-center text-sm">{_STRINGS.SECONDS}</p>
+                <NumberFlow
+                  value={`${countdown?.seconds || "00"}` as any}
+                  format={{ useGrouping: false }}
+                  aria-hidden
+                  animated={true}
+                  className={`pointer-events-none pt-1  text-lg !font-medium !space-x-14    w-12  h-12  flex items-center justify-center aspect-square rounded-lg bg-black text-white !tracking-[0.15rem] `}
+                  willChange
+                />{" "}
+              </div>
+              <p className="text-black pt-6 font-bold text-lg">{`:`}</p>
+              <div className="flex flex-col gap-1">
+                <p className="w-full text-center text-sm">{_STRINGS.MINUTE}</p>
+                <NumberFlow
+                  value={`${countdown?.minutes || "00"}` as any}
+                  format={{ useGrouping: false }}
+                  aria-hidden
+                  animated={true}
+                  className={`pointer-events-none pt-1 text-lg !font-medium !space-x-14    w-12  h-12  flex items-center justify-center aspect-square rounded-lg bg-black text-white !tracking-[0.15rem] `}
+                  willChange
+                />
+              </div>
+            </div>
+            {!!isOwner ? (
+              <></>
+            ) : (
+              <p className="text-sm text-gray-400 text-center w-full">مدت زمان انتظار جهت بررسی میزبان</p>
+            )}
           </div>
-          <p className="text-black pt-6 font-bold text-lg">{`:`}</p>
-          <div className="flex flex-col gap-1">
-            <p className="w-full text-center text-sm">{_STRINGS.MINUTE}</p>
-            <NumberFlow
-              value={`${countdown?.minutes || "00"}` as any}
-              format={{ useGrouping: false }}
-              aria-hidden
-              animated={true}
-              className={`pointer-events-none pt-1 text-lg !font-medium !space-x-14    w-12  h-12  flex items-center justify-center aspect-square rounded-lg bg-black text-white !tracking-[0.15rem] `}
-              willChange
-            />
-          </div>
-        </div>
-        {!!isOwner ? (
-          <></>
-        ) : (
-          <p className="text-sm text-gray-400 text-center w-full">مدت زمان انتظار جهت بررسی میزبان</p>
-        )}
-      </div>
+        </>
+      )}
 
       <Divider moreClass="  !border-transparent  " />
 

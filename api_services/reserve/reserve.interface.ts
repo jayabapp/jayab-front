@@ -19,6 +19,7 @@ export interface ReserveListDto {
   check_out: Date;
   guests_count: string;
   owner_seen_at: null;
+  show_counter: boolean;
   canceled_at: null;
   expired_at: null;
   description: null;
