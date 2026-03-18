@@ -35,6 +35,7 @@ const ReserveCard = ({
 }) => {
   const startMoment = moment().add(data?.ttl_seconds, "seconds").toString();
   const router = useRouter();
+  const [ownerCounter, setOwnerCounter] = useState(false);
   const [showSub, setShowSub] = useState(false);
   const goToLink = `/rooms/${data?.property?.slug}`;
   const [countdown, setCountdown] = useState<{ minutes: string; seconds: string }>({ minutes: "00", seconds: "00" });
@@ -48,6 +49,7 @@ const ReserveCard = ({
       if (data?.is_subscription_expired) {
         setShowSub(true);
       } else {
+        setOwnerCounter(false);
         window.open(`tel:${data?.guest_mobile}`, "_blank", "noopener,noreferrer");
       }
     },
@@ -80,6 +82,12 @@ const ReserveCard = ({
       }, 3000);
     }
   }, [countdown]);
+
+  useEffect(() => {
+    if (isOwner && data) {
+      setOwnerCounter(data?.show_counter);
+    }
+  }, [data, isOwner]);
   /* -------------------------------------------------------------------------- */
   /*                                 CONTACTING                                 */
   /* -------------------------------------------------------------------------- */
@@ -192,13 +200,11 @@ const ReserveCard = ({
           </div>
         </Link>
       </div>
-
-      {isOwner && !data?.show_counter ? (
+      <Divider moreClass=" border-dashed  " />{" "}
+      {isOwner && !ownerCounter ? (
         <></>
       ) : (
         <>
-          {" "}
-          <Divider moreClass=" border-dashed  " />
           <div className=" w-full flex items-center flex-col pb-1 gap-2 justify-center">
             {" "}
             {!!isOwner ? (
@@ -242,9 +248,7 @@ const ReserveCard = ({
           </div>
         </>
       )}
-
       <Divider moreClass="  !border-transparent  " />
-
       <div className="w-full flex mt-2 flex-col  gap-2">
         <LinearTextBlock
           dots
@@ -282,7 +286,6 @@ const ReserveCard = ({
         )} */}
       </div>
       <Divider moreClass=" " />
-
       <div className="w-full flex flex-col gap-2">
         <p className={`font-medium ${isOwner ? "hidden" : ""}`}>{_STRINGS.REQUEST_STATUS}</p>
         <div className={`flex items-center justify-between ${isOwner ? "flex-col gap-3" : ""} `}>
@@ -309,7 +312,6 @@ const ReserveCard = ({
           )}
         </div>
       </div>
-
       {isOwner ? (
         <></>
       ) : (
@@ -392,7 +394,6 @@ const ReserveCard = ({
         data={data?.property}
         onHide={onContactClose}
       />
-
       <ConfirmModal
         onConfirm={() => {
           router.push(`/profile/owner/properties/${data?.property?.id}/subscription`);

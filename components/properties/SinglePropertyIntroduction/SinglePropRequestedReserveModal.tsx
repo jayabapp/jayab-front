@@ -201,7 +201,6 @@ const SinglePropRequestedReserveModal = ({
             />
           </div>
           <div className="w-full flex flex-col gap-2">
-            <p className="text-center  font-medium">میتوانید از روش های زیر برای رزرو اقدام کنید.</p>
             <LinearTextBlock
               dots
               title={_STRINGS.PPL_COUNT}
@@ -242,6 +241,8 @@ const SinglePropRequestedReserveModal = ({
           </div>
           <Divider />
           <div className="w-full flex flex-col items-center justify-center gap-2">
+            <p className="text-center  font-medium">میتوانید از روش های زیر برای رزرو اقدام کنید.</p>
+
             <Button
               onClick={() => {
                 onActionsClick(ReserveUserAction.RESERVE);
