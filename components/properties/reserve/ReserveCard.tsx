@@ -278,7 +278,7 @@ const ReserveCard = ({
           <LinearTextBlock
             dots
             title={_STRINGS.REQUEST_DATE}
-            value={`${moment(data?.created_at).format("ddd - jYYYY/jMM/jD")}`}
+            value={`${moment(data?.created_at).format("hh:mm - jYYYY/jMM/jD")}`}
             options={{ title_class: " !font-normal !text-sm", value_class: "!text-sm" }}
           />
         ) : (
