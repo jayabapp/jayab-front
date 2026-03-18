@@ -419,7 +419,7 @@ const _STRINGS = {
   YOUR_CALL_CLICKS: " تعداد کیلیک روی دکمه تماس",
   OWNER_PLZ_CALL_MSG: "میزبان گرامی ; تمامی رزرو ها پس از ارتباط و تماس مستقیم با میهمان قطعی میگردد.",
   CANT_RESERVE_MESSAGE: "فعلا امکان صدور درخواست جدید ندارین مگر اینکه درخواست درحال انجام رو کنسل کنین.",
-  SUBMIT_RESERVE: "ثبت رزرو",
+  SUBMIT_RESERVE: " ارسال درخواست رزرو",
   REQUEST_TYPE: "نوع درخواست",
   SEE_DETAILS: "مشاهده جزئیات",
   ADD_IMAGE_WARNING:

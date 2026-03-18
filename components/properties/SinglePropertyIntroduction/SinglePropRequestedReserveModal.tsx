@@ -101,6 +101,7 @@ const SinglePropRequestedReserveModal = ({
       },
     );
   };
+  const isExpired = !data?.remaining_days;
   return (
     <>
       <ModalBottomSheet
@@ -116,27 +117,27 @@ const SinglePropRequestedReserveModal = ({
             <div className={`col-span-6  !outline-none   order-1   flex flex-col gap-1`}>
               {/* TITLE */}
               <div className="flex items-start gap-2">
-                <p className="text-sm line-clamp-1  text-right font-semibold">{data?.title} درخواست رزرو برای</p>
+                <p className="text-sm line-clamp-1  text-right font-semibold">درخواست رزرو برای {data?.title} </p>
               </div>
 
               {/* CODE  - LIKES */}
-              <div className="flex items-center justify-between gap-4">
+              {/* <div className="flex items-center justify-between gap-4">
                 <div className="bg-black/10 font-normal rounded-md text-xs   px-2 py-1  leading-4  flex items-center justify-center">
                   کد {data?.code}
                 </div>{" "}
-              </div>
+              </div> */}
 
               <div className="w-full flex mt-2 flex-col  gap-2">
                 <>
                   {" "}
                   {/* DESCRIPTION */}
-                  <div className="w-full">
+                  {/* <div className="w-full">
                     <p className="text-xs">
                       {" "}
                       <span>{data?.total_bedrooms} اتاق</span> - <span>تا {data?.max_capacity} نفر</span>{" "}
                       {!!data?.has_pool ? <span className="text-primary-700"> - {_STRINGS.HAS_POOL} </span> : <></>}
                     </p>
-                  </div>
+                  </div> */}
                   {/* LOCATION */}
                   <div className="flex w-full  items-center gap-1">
                     {!!data?.is_promoted ? (
@@ -200,6 +201,13 @@ const SinglePropRequestedReserveModal = ({
             />
           </div>
           <div className="w-full flex flex-col gap-2">
+            <p className="text-center  font-medium">میتوانید از روش های زیر برای رزرو اقدام کنید.</p>
+            <LinearTextBlock
+              dots
+              title={_STRINGS.PPL_COUNT}
+              value={`${!!`${count}`.includes("+") ? `بیشتر از  ${count}`.replace("+", "") : count} نفر`}
+              options={{ title_class: " !font-normal" }}
+            />
             <LinearTextBlock
               dots
               options={{ title_class: " !font-normal" }}
@@ -210,12 +218,6 @@ const SinglePropRequestedReserveModal = ({
               dots
               title={_STRINGS.EXIT_DATE}
               value={`${moment(endDate, "jYYYY/jMM/jD").format("ddd")} - ${endDate} `}
-              options={{ title_class: " !font-normal" }}
-            />
-            <LinearTextBlock
-              dots
-              title={_STRINGS.PPL_COUNT}
-              value={`${!!`${count}`.includes("+") ? `بیشتر از  ${count}`.replace("+", "") : count} نفر`}
               options={{ title_class: " !font-normal" }}
             />
             <LinearTextBlock
@@ -252,38 +254,50 @@ const SinglePropRequestedReserveModal = ({
               loading={loading}
               // icon={<img className="w-4 h-4  aspect-square" src="/assets/icons/advisor/blue_phone.svg" />}
             />
-            {!!data?.remaining_days ? (
-              <>
-                <Button
-                  onClick={() => {
-                    // onActionsClick(ReserveUserAction.CALL);
-                    onContactClick("tel");
-                  }}
-                  width="w-full  !py-2  !font-bold  !text-sm "
-                  containerClass="w-1/2"
-                  roundedClass="rounded-full"
-                  title={_STRINGS.CALL}
-                  variant="outline"
-                  loading={loading}
-                  icon={<img className="w-4 h-4  aspect-square" src="/assets/icons/advisor/blue_phone.svg" />}
+            {/* {!!data?.remaining_days ? (
+              <> */}
+            <Button
+              disabled={!!isExpired}
+              onClick={() => {
+                // onActionsClick(ReserveUserAction.CALL);
+                onContactClick("tel");
+              }}
+              width={`w-full  !py-2  !font-bold  !text-sm ${isExpired ? "  !text-gray-400" : ""} `}
+              containerClass="w-1/2"
+              roundedClass="rounded-full"
+              title={_STRINGS.CALL}
+              variant="outline"
+              loading={loading}
+              icon={
+                <img
+                  className={`w-4 h-4  aspect-square ${isExpired ? "  opacity-50  grayscale" : ""} `}
+                  src="/assets/icons/advisor/blue_phone.svg"
                 />
-                <Button
-                  variant="outline"
-                  onClick={() => {
-                    onContactClick("sms");
-                    // onActionsClick(ReserveUserAction.SMS);
-                  }}
-                  width="w-full  !py-2  !font-bold  !text-sm "
-                  containerClass="w-1/2"
-                  roundedClass="rounded-full"
-                  title={_STRINGS.SMS}
-                  icon={<img className="w-4 h-4  ml-1 aspect-square" src="/assets/icons/advisor/blue_sms.svg" />}
-                  loading={loading}
+              }
+            />
+            <Button
+              disabled={!!isExpired}
+              variant="outline"
+              onClick={() => {
+                onContactClick("sms");
+                // onActionsClick(ReserveUserAction.SMS);
+              }}
+              width={`w-full  !py-2  !font-bold  !text-sm ${isExpired ? "  !text-gray-400" : ""} `}
+              containerClass="w-1/2"
+              roundedClass="rounded-full"
+              title={_STRINGS.SMS}
+              icon={
+                <img
+                  className={`w-4 h-4 ${isExpired ? "  opacity-50  grayscale" : ""}   ml-1 aspect-square`}
+                  src="/assets/icons/advisor/blue_sms.svg"
                 />
-              </>
+              }
+              loading={loading}
+            />
+            {/* </>
             ) : (
               <></>
-            )}
+            )} */}
             {data?.is_chat_enabled ? (
               <Button
                 width="w-full !py-2  !font-bold !text-sm "

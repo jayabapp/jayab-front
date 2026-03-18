@@ -16,6 +16,7 @@ import { useEffect, useState } from "react";
 import LinearTextBlock from "../SinglePropertyAccards/LinearTextBlock";
 
 import { ChatService } from "@/api_services/chat/chat.service";
+import ConfirmModal from "@/components/Modal/ConfirmModal";
 import NumberFlow from "@number-flow/react";
 import { useRouter } from "next/navigation";
 import SinglePropContactInfoModal from "../SinglePropertyIntroduction/SinglePropContactInfoModal";
@@ -34,21 +35,26 @@ const ReserveCard = ({
 }) => {
   const startMoment = moment().add(data?.ttl_seconds, "seconds").toString();
   const router = useRouter();
-
+  const [showSub, setShowSub] = useState(false);
   const goToLink = `/rooms/${data?.property?.slug}`;
   const [countdown, setCountdown] = useState<{ minutes: string; seconds: string }>({ minutes: "00", seconds: "00" });
   const removeredirectRoomToHome = () => {
     useStoreParams.setState({ getBackHome: false });
   };
 
-  const { mutate, isPending } = useMutation({ mutationFn: ReserveService.ownerMobileClick });
+  const { mutate, isPending } = useMutation({
+    mutationFn: ReserveService.ownerMobileClick,
+    onSuccess: () => {
+      if (data?.is_subscription_expired) {
+        setShowSub(true);
+      } else {
+        window.open(`tel:${data?.guest_mobile}`, "_blank", "noopener,noreferrer");
+      }
+    },
+  });
 
   const onCallClick = () => {
-    if (data?.is_subscription_expired) {
-      mutate({ id: data?.id });
-    } else {
-      window.open(`tel:${data?.guest_mobile}`, "_blank", "noopener,noreferrer");
-    }
+    mutate({ id: data?.id });
   };
 
   /* -------------------------------------------------------------------------- */
@@ -99,7 +105,7 @@ const ReserveCard = ({
   const onContactClose = () => {
     setContactType("");
   };
-
+  const isExpired = data?.is_subscription_expired;
   return (
     <div className="w-full shadow-card  rounded-2xl    justify-between flex flex-col  p-3   gap-2  ">
       <div className="w-full  grid grid-cols-8 gap-2   ">
@@ -112,22 +118,22 @@ const ReserveCard = ({
         >
           {/* TITLE */}
           <div className="flex items-start gap-2">
-            <p className="text-sm line-clamp-1  text-right font-semibold">درخواست رزرو برای {data?.property?.title} </p>
+            <p className="text-sm   text-right font-semibold">درخواست رزرو برای {data?.property?.title} </p>
           </div>
 
           {/* CODE  - LIKES */}
-          <div className="flex items-center justify-between gap-4">
+          {/* <div className="flex items-center justify-between gap-4">
             <div className="bg-black/10 font-normal rounded-md text-xs   px-2 py-1  leading-4  flex items-center justify-center">
               کد {data?.property?.code}
             </div>{" "}
-          </div>
+          </div> */}
 
-          <div className="w-full flex mt-2 flex-col  gap-2">
+          <div className="w-full flex  flex-col  gap-2">
             <>
               {" "}
               {/* DESCRIPTION */}
-              <div className="w-full">
-                <p className="text-xs">
+              {/* <div className="w-full"> */}
+              {/* <p className="text-xs">
                   {" "}
                   <span>{data?.property?.total_bedrooms} اتاق</span> -{" "}
                   <span>تا {data?.property?.max_capacity} نفر</span>{" "}
@@ -136,11 +142,11 @@ const ReserveCard = ({
                   ) : (
                     <></>
                   )}
-                </p>
-              </div>
+                </p> */}
+              {/* </div> */}
               {/* LOCATION */}
               <div className="flex w-full  items-center gap-1">
-                {!!data?.property?.is_promoted ? (
+                {/* {!!data?.property?.is_promoted ? (
                   <p className="  font-bold  text-primary-700  shrink-0  text-xs  pl-1 border-l">{_STRINGS.LADDERED}</p>
                 ) : (
                   // <img
@@ -149,13 +155,13 @@ const ReserveCard = ({
                   //   className="w-5 h-5 aspect-square"
                   // />
                   <></>
-                )}
+                )} */}
 
                 <p className="text-xs line-clamp-1 text-center ">
-                  {data?.property?.city}{" "}
+                  {data?.property?.city?.title}{" "}
                   <span className="text-xs ">
-                    {data?.property?.province || data?.property?.region
-                      ? `(${data?.property?.region || data?.property?.province})`
+                    {data?.property?.province?.title || data?.property?.region
+                      ? `(${data?.property?.region || data?.property?.province?.title})`
                       : ``}
                   </span>
                 </p>
@@ -227,7 +233,7 @@ const ReserveCard = ({
         {!!isOwner ? (
           <></>
         ) : (
-          <p className="text-sm text-gray-400 text-center w-full">مدت زمان انتظار جهت پاسخ میزبان. </p>
+          <p className="text-sm text-gray-400 text-center w-full">مدت زمان انتظار جهت بررسی میزبان</p>
         )}
       </div>
 
@@ -292,7 +298,7 @@ const ReserveCard = ({
               loading={isPending}
               icon={<img className="w-4 h-4  aspect-square" src="/assets/icons/advisor/white_phone.svg" />}
               width=" !py-1 "
-              title={`${data?.guest_mobile}`}
+              title={`${`${data?.guest_mobile}`?.includes("*") ? " تماس با میهمان" : data?.guest_mobile}`}
             />
           )}
         </div>
@@ -305,34 +311,46 @@ const ReserveCard = ({
           <Divider moreClass=" " />
 
           <div className="w-full flex flex-col items-center justify-center gap-2">
-            {!!data?.property?.remaining_days ? (
-              <>
-                <Button
-                  onClick={() => {
-                    onContactClick("tel");
-                  }}
-                  width="w-full  !py-2  !font-bold  !text-sm "
-                  containerClass="w-2/3"
-                  roundedClass="rounded-full"
-                  title={_STRINGS.CALL}
-                  variant="outline"
-                  icon={<img className="w-4 h-4  aspect-square" src="/assets/icons/advisor/blue_phone.svg" />}
+            {/* {!!data?.property?.remaining_days ? (
+              <> */}
+            <Button
+              disabled={isExpired}
+              onClick={() => {
+                onContactClick("tel");
+              }}
+              width={`  ${isExpired ? "  !text-gray-400" : ""}  w-full  !py-2  !font-bold  !text-sm `}
+              containerClass="w-2/3"
+              roundedClass="rounded-full"
+              title={_STRINGS.CALL}
+              variant="outline"
+              icon={
+                <img
+                  className={`w-4 h-4   ${isExpired ? "  opacity-50  grayscale" : ""}    aspect-square`}
+                  src="/assets/icons/advisor/blue_phone.svg"
                 />
-                <Button
-                  variant="outline"
-                  onClick={() => {
-                    onContactClick("sms");
-                  }}
-                  width="w-full  !py-2  !font-bold  !text-sm "
-                  containerClass="w-2/3"
-                  roundedClass="rounded-full"
-                  title={_STRINGS.SMS}
-                  icon={<img className="w-4 h-4  ml-1 aspect-square" src="/assets/icons/advisor/blue_sms.svg" />}
+              }
+            />
+            <Button
+              disabled={isExpired}
+              variant="outline"
+              onClick={() => {
+                onContactClick("sms");
+              }}
+              width={`w-full  !py-2  !font-bold  !text-sm  ${isExpired ? "  !text-gray-400" : ""}  `}
+              containerClass="w-2/3"
+              roundedClass="rounded-full"
+              title={_STRINGS.SMS}
+              icon={
+                <img
+                  className={`w-4 h-4  ml-1 aspect-square  ${isExpired ? "  opacity-50  grayscale" : ""}  `}
+                  src="/assets/icons/advisor/blue_sms.svg"
                 />
-              </>
+              }
+            />
+            {/* </>
             ) : (
               <></>
-            )}
+            )} */}
             {data?.is_chat_enabled ? (
               <Button
                 width="w-full !py-2  !font-bold !text-sm "
@@ -356,7 +374,7 @@ const ReserveCard = ({
           <Divider moreClass=" " />
           <div className="flex flex-col gap-1">
             <p className=" text-center whitespace-pre-wrap ">رزرو شما پس از هماهنگی با میزبان نهایی خواهد شد </p>
-            <p className=" text-center font-medium whitespace-pre-wrap ">تماس با میزبان = رزرو سریعتر</p>
+            {/* <p className=" text-center font-medium whitespace-pre-wrap ">تماس با میزبان = رزرو سریعتر</p>  */}
           </div>
         </>
       ) : (
@@ -367,6 +385,19 @@ const ReserveCard = ({
         show={!!contactType}
         data={data?.property}
         onHide={onContactClose}
+      />
+
+      <ConfirmModal
+        onConfirm={() => {
+          router.push(`/profile/owner/properties/${data?.property?.id}/subscription`);
+        }}
+        onHide={() => {
+          setShowSub(false);
+        }}
+        isVisible={showSub}
+        title="مهلت آگهی شما به اتمام رسیده"
+        text="برای فعال شدن امکان گفتگو و نمایش شماره تماس در آگهی، اشتراک خود را تمدید کنید "
+        confirmText="تمدید اعتبار"
       />
     </div>
   );

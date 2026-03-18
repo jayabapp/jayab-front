@@ -1,6 +1,6 @@
 import { apiRoutes } from "@/utils/urls";
 import { apiCall } from "../common/apicall.helper";
-import { CreateReserveDto, ReserveListDto } from "./reserve.interface";
+import { ActiveReserveDto, CreateReserveDto, ReserveListDto } from "./reserve.interface";
 
 export class ReserveService {
   static RESERVE_CACHEKEY = "RESERVES";
@@ -46,7 +46,7 @@ export class ReserveService {
 
   static async activeReserve() {
     try {
-      const result = await apiCall<unknown, ReserveListDto>("GET", apiRoutes.RESERVE_ACTIVE);
+      const result = await apiCall<unknown, ActiveReserveDto>("GET", apiRoutes.RESERVE_ACTIVE);
       return result;
     } catch (e) {
       throw e;

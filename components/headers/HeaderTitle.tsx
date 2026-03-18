@@ -1,7 +1,6 @@
 "use client";
 import { allRoutes } from "@/utils/constantss";
 import { useParams, usePathname } from "next/navigation";
-import React from "react";
 
 const HeaderTitle = () => {
   const pathname = usePathname();
@@ -14,6 +13,8 @@ const HeaderTitle = () => {
     return "ویرایش اطلاعات ملک";
   } else if (pathname == "/profile/advisor/subscription") {
     return "بخش مشاور";
+  } else if (pathname?.includes("/owner/reserves")) {
+    return "درخواست های رزرو";
   } else if (allRoutes.hasOwnProperty(lastPart)) {
     return allRoutes[lastPart];
   } else if (pathname?.includes("/products/")) {

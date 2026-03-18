@@ -148,7 +148,7 @@ const Profile = () => {
             ) : (
               <></>
             )}
-            {!isEmpty(PersonalProfileItems) && !!data?.owner_id ? (
+            {/* {!isEmpty(PersonalProfileItems) && !!data?.owner_id ? (
               <ProfileItem
                 item={{
                   id: 1214,
@@ -160,7 +160,7 @@ const Profile = () => {
               />
             ) : (
               <></>
-            )}
+            )} */}
             {!!data?.advisor_id ? (
               <ProfileItem
                 item={{

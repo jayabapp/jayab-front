@@ -1,5 +1,5 @@
-import { ReserveUserAction } from "@/enum/reserve.enum";
-import { PropertyListDto, Status } from "../property/property.interface";
+import { ImageDto } from "../auth/auth.interface";
+import { Status } from "../property/property.interface";
 
 export interface CreateReserveDto {
   property_id: number;
@@ -13,14 +13,11 @@ export interface ReserveListDto {
   id: number;
   property_id: number;
   status: Status;
-  is_chat_enabled: boolean;
   user_id: number;
-  is_subscription_expired: boolean;
   check_in: Date;
+  is_subscription_expired: boolean;
   check_out: Date;
   guests_count: string;
-  guest_mobile: string;
-  user_action: ReserveUserAction;
   owner_seen_at: null;
   canceled_at: null;
   expired_at: null;
@@ -28,6 +25,103 @@ export interface ReserveListDto {
   owner_clicked_guest_mobile: number;
   created_at: Date;
   updated_at: Date;
-  property: PropertyListDto;
+  property: Property;
   ttl_seconds: number;
+  guest_mobile: number;
+  is_chat_enabled: boolean;
+}
+
+export interface Property {
+  id: number;
+  code: string;
+  owner_id: number;
+  title: string;
+  slug: string;
+  slug_hash: null;
+  land_area: number;
+  building_area: number;
+  floors: number;
+  unit_per_floor: number;
+  floor: number;
+  construction_year: number;
+  region_id: null;
+  province_id: number;
+  city_id: number;
+  address: string;
+  lat: number;
+  lng: number;
+  feature_image_id: number;
+  video_id: null;
+  is_chat_enabled: boolean;
+  is_location_visible: boolean;
+  has_pool: boolean;
+  std_capacity: number;
+  max_capacity: number;
+  canceling_type: string;
+  advisor_commission: number;
+  check_in_hour: string;
+  check_out_hour: string;
+  subscription_expired_at: Date;
+  promoted_at: Date;
+  sort_order: string;
+  contact_type: number;
+  status: number;
+  admin_descriptions: AdminDescription[];
+  is_authorized: boolean;
+  has_blue_tick: boolean;
+  options_array: number[];
+  favorite_count: number;
+  created_at: Date;
+  updated_at: Date;
+  deleted_at: null;
+  feature_image: ImageDto;
+  province: City;
+  city: City;
+  region: null;
+}
+
+export interface AdminDescription {
+  status: string;
+  admin_id: number;
+  admin_name: string;
+  admin_role: string;
+  created_at: Date;
+  description: string;
+}
+
+export interface City {
+  title: string;
+}
+
+export interface ActiveReserveDto {
+  id: number;
+  property_id: number;
+  status: Status;
+  user_id: number;
+  check_in: Date;
+  check_out: Date;
+  guests_count: string;
+  owner_seen_at: null;
+  canceled_at: null;
+  expired_at: null;
+  description: null;
+  owner_clicked_guest_mobile: number;
+  created_at: Date;
+  updated_at: Date;
+  property: Property;
+  ttl_seconds: number;
+  is_chat_enabled: boolean;
+}
+
+export interface AdminDescription {
+  status: string;
+  admin_id: number;
+  admin_name: string;
+  admin_role: string;
+  created_at: Date;
+  description: string;
+}
+
+export interface City {
+  title: string;
 }

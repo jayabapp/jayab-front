@@ -24,6 +24,7 @@ const HomeActiveReserve = () => {
   const removeredirectRoomToHome = () => {
     useStoreParams.setState({ getBackHome: false });
   };
+
   return (
     <>
       {!!data ? (
@@ -60,7 +61,7 @@ const HomeActiveReserve = () => {
                   <div className="w-full">
                     <p className="text-xs">
                       {" "}
-                      <span>{data?.property?.total_bedrooms} اتاق</span> -{" "}
+                      {/* <span>{data?.property?.total_bedrooms} اتاق</span> -{" "} */}
                       <span>تا {data?.property?.max_capacity} نفر</span>{" "}
                       {!!data?.property?.has_pool ? (
                         <span className="text-primary-700"> - {_STRINGS.HAS_POOL} </span>
@@ -71,7 +72,7 @@ const HomeActiveReserve = () => {
                   </div>
                   {/* LOCATION */}
                   <div className="flex w-full  items-center gap-1">
-                    {!!data?.property?.is_promoted ? (
+                    {/* {!!data?.property?.is_promoted ? (
                       <p className="  font-bold  text-primary-700  shrink-0  text-xs  pl-1 border-l">
                         {_STRINGS.LADDERED}
                       </p>
@@ -82,13 +83,13 @@ const HomeActiveReserve = () => {
                       //   className="w-5 h-5 aspect-square"
                       // />
                       <></>
-                    )}
+                    )} */}
 
                     <p className="text-xs line-clamp-1 text-center ">
-                      {data?.property?.city}{" "}
+                      {data?.property?.city?.title}{" "}
                       <span className="text-xs ">
-                        {data?.property?.province || data?.property?.region
-                          ? `(${data?.property?.region || data?.property?.province})`
+                        {data?.property?.province?.title || data?.property?.region
+                          ? `(${data?.property?.region || data?.property?.province?.title})`
                           : ``}
                       </span>
                     </p>
@@ -125,7 +126,7 @@ const HomeActiveReserve = () => {
             <StatusShower data={data?.status} />{" "}
             <Link
               href="/profile/reserves"
-              className="text-primary-700 px-3 py-0.5 border border-primary-700 rounded-lg font-medium"
+              className="text-primary-700 text-sm h-9 flex items-center justify-center px-3 py-0.5 border border-primary-700 rounded-xl font-medium"
             >
               {" "}
               {_STRINGS.SEE_DETAILS} رزرو{" "}

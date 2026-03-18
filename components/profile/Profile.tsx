@@ -129,7 +129,7 @@ const Profile = ({}) => {
         ) : (
           <></>
         )}
-        {!!userInfo?.owner_id ? (
+        {/* {!!userInfo?.owner_id ? (
           <ProfileItem
             disableArrow
             item={{
@@ -143,7 +143,7 @@ const Profile = ({}) => {
           />
         ) : (
           <></>
-        )}
+        )} */}
 
         {!!userInfo?.advisor_id ? (
           <ProfileItem
