@@ -66,7 +66,7 @@ const ChatHeader = ({ image, description, name, offSetTop, is_recipient_online, 
       //       }
       //     : {}
       // }
-      className="flex fixed  justify-between pr-2 z-50 bg-white  dark:bg-dark-900 w-full left-0  md:left-[10%] md:right-[10%] mx-auto lg:top-0 md:w-[50%]   min-h-[4.25rem]   top-0 xl:top-[4.5rem] pt-4 items-center gap-2 pb-3 shadow-md "
+      className="flex fixed  justify-between pr-2 z-50 md:z-30 bg-white  dark:bg-dark-900 w-full left-0  md:left-[10%] md:right-[10%] mx-auto lg:top-0 md:w-[50%]   min-h-[4.25rem]   top-0 xl:top-[4.5rem] pt-4 items-center gap-2 pb-3 shadow-md "
     >
       <div className="flex items-center w-full gap-2">
         {" "}

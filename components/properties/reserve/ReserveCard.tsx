@@ -35,7 +35,7 @@ const ReserveCard = ({
 }) => {
   const startMoment = moment().add(data?.ttl_seconds, "seconds").toString();
   const router = useRouter();
-  const [ownerCounter, setOwnerCounter] = useState(false);
+  const [showCounter, setShowCounter] = useState(false);
   const [showSub, setShowSub] = useState(false);
   const goToLink = `/rooms/${data?.property?.slug}`;
   const [countdown, setCountdown] = useState<{ minutes: string; seconds: string }>({ minutes: "00", seconds: "00" });
@@ -49,7 +49,7 @@ const ReserveCard = ({
       if (data?.is_subscription_expired) {
         setShowSub(true);
       } else {
-        setOwnerCounter(false);
+        setShowCounter(false);
         window.open(`tel:${data?.guest_mobile}`, "_blank", "noopener,noreferrer");
       }
     },
@@ -79,15 +79,15 @@ const ReserveCard = ({
     if (countdown?.minutes == "00" && countdown?.seconds == "01") {
       setTimeout(() => {
         refetchCallBack?.();
-      }, 3000);
+      }, 4000);
     }
   }, [countdown]);
 
   useEffect(() => {
-    if (isOwner && data) {
-      setOwnerCounter(data?.show_counter);
+    if (data) {
+      setShowCounter(data?.show_counter);
     }
-  }, [data, isOwner]);
+  }, [data]);
   /* -------------------------------------------------------------------------- */
   /*                                 CONTACTING                                 */
   /* -------------------------------------------------------------------------- */
@@ -201,9 +201,9 @@ const ReserveCard = ({
         </Link>
       </div>
       <Divider moreClass=" border-dashed  " />{" "}
-      {isOwner && !ownerCounter ? (
+      {isOwner && !showCounter ? (
         <p className=" text-center"> زمان شما برای پاسخ به این درخواست به اتمام رسیده است.</p>
-      ) : (
+      ) : !!showCounter ? (
         <>
           <div className=" w-full flex items-center flex-col pb-1 gap-2 justify-center">
             {" "}
@@ -247,6 +247,8 @@ const ReserveCard = ({
             )}
           </div>
         </>
+      ) : (
+        <></>
       )}
       <Divider moreClass="  !border-transparent  " />
       <div className="w-full flex mt-2 flex-col  gap-2">
@@ -288,7 +290,7 @@ const ReserveCard = ({
       {/* <Divider moreClass=" " /> */}
       <div className="w-full flex flex-col gap-2">
         {/* <p className={`font-medium ${isOwner ? "hidden" : ""}`}>{_STRINGS.REQUEST_STATUS}</p> */}
-        {!!isOwner ? <p className="text-center">میهمان منتظر پاسخ شماست</p> : <></>}
+        {!!isOwner && data?.status?.id == 10 ? <p className="text-center">میهمان منتظر پاسخ شماست</p> : <></>}
         <div className={`flex items-center justify-between  `}>
           <StatusShower data={data?.status} />
 
@@ -406,7 +408,7 @@ const ReserveCard = ({
         }}
         isVisible={showSub}
         title="مهلت آگهی شما به اتمام رسیده"
-        text="برای فعال شدن امکان تماس و دریافت شماره میهمان و همچین نمایش شماره تماس شما به میهمانان اشتراک آگهی خود را تمدید کنید."
+        text="برای فعال شدن امکان گفتگو و دریافت شماره میهمان و همچین نمایش شماره تماس شما به میهمانان اشتراک آگهی خود را تمدید کنید."
         confirmText="تمدید اعتبار"
       />
     </div>

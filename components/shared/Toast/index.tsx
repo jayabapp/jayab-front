@@ -1,12 +1,12 @@
-import React, { ReactNode } from "react";
-import { toast } from "sonner";
+import { x_Iransans } from "@/app/fonts/x_iran/x_Iransans";
 import errorIcon from "@/public/assets/lotties/notif/Error.json";
+import infoIcon from "@/public/assets/lotties/notif/Info.json";
 import successIcon from "@/public/assets/lotties/notif/Success.json";
 import warningIcon from "@/public/assets/lotties/notif/Warning.json";
-import infoIcon from "@/public/assets/lotties/notif/Info.json";
-import Lottie from "react-lottie";
-import { x_Iransans } from "@/app/fonts/x_iran/x_Iransans";
+import { ReactNode } from "react";
 import { isMobile } from "react-device-detect";
+import Lottie from "react-lottie";
+import { toast } from "sonner";
 interface props {
   type?: "success" | "error" | "warn" | "info";
   title?: string;
@@ -57,7 +57,7 @@ const Notify = (props: props) => {
         {/* <div className="absolute left-3 ">{closeIcon}</div> */}
       </div>
     ),
-    { id: type, position: isMobile ? "top-center" : "bottom-left", duration: 5000, className: " left-0  md:left-4" }
+    { id: type, position: isMobile ? "top-center" : "bottom-left", duration: 8000, className: " left-0  md:left-4" },
   );
 };
 

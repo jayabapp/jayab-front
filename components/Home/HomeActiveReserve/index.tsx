@@ -24,7 +24,6 @@ const HomeActiveReserve = () => {
   const removeredirectRoomToHome = () => {
     useStoreParams.setState({ getBackHome: false });
   };
-  console.log(data, "datadata");
   return (
     <>
       {!!data ? (
@@ -58,10 +57,9 @@ const HomeActiveReserve = () => {
                 <>
                   {" "}
                   {/* DESCRIPTION */}
-                  <div className="w-full">
+                  {/* <div className="w-full">
                     <p className="text-xs">
                       {" "}
-                      {/* <span>{data?.property?.total_bedrooms} اتاق</span> -{" "} */}
                       <span>تا {data?.property?.max_capacity} نفر</span>{" "}
                       {!!data?.property?.has_pool ? (
                         <span className="text-primary-700"> - {_STRINGS.HAS_POOL} </span>
@@ -69,7 +67,7 @@ const HomeActiveReserve = () => {
                         <></>
                       )}
                     </p>
-                  </div>
+                  </div> */}
                   {/* LOCATION */}
                   <div className="flex w-full  items-center gap-1">
                     {/* {!!data?.property?.is_promoted ? (

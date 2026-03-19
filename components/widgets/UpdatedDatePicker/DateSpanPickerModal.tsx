@@ -43,7 +43,7 @@ const DateSpanPickerModal = ({
   // Initialize with first three months
   const initializeMonths = React.useCallback(() => {
     const initialMonths: Date[] = [];
-    for (let i = 0; i < 2; i++) {
+    for (let i = 0; i < 3; i++) {
       const monthDate = moment(startDate).startOf("M").add(i, "months").toDate();
       initialMonths.push(monthDate);
     }
@@ -59,7 +59,7 @@ const DateSpanPickerModal = ({
     const newMonths: Date[] = [];
 
     // Add next three months
-    for (let i = 1; i <= 2; i++) {
+    for (let i = 1; i <= 3; i++) {
       const nextMonth = lastDate.clone().startOf("M").add(i, "months").toDate();
       newMonths.push(nextMonth);
     }
@@ -98,14 +98,14 @@ const DateSpanPickerModal = ({
     >
       <img
         src="/assets/icons/adds/x_mark.svg"
-        className="absolute top-4 right-4 cursor-pointer text-gray-500 hover:text-gray-700"
+        className="absolute top-4 right-4  z-20 cursor-pointer text-gray-500 hover:text-gray-700"
         onClick={onHide}
       />
 
-      <div id="modal-content" className="max-h-[90vh] pb-4  pt-8 md:pt-0 !rounded-lg  !overflow-scroll ">
+      <div id="modal-content" className="max-h-[90vh] mb-16  pt-8 md:pt-0 !rounded-lg  !overflow-scroll ">
         <InfiniteScroll
           hasMore={hasMore}
-          scrollThreshold={0.6}
+          scrollThreshold={0.1}
           dataLength={months.length}
           next={loadMoreMonths}
           loader={
@@ -115,7 +115,7 @@ const DateSpanPickerModal = ({
           }
           endMessage={<p className="text-center py-4 text-gray-500">{/* Optional end message */}</p>}
           scrollableTarget="modal-content"
-          className="w-full flex flex-col gap-0 "
+          className="w-full flex pb-16 h-full flex-col gap-0 "
         >
           {months.map((monthDate, index) => (
             <div key={`month-${monthDate.getTime()}`} className="">
