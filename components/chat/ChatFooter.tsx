@@ -16,7 +16,7 @@ const EmojiPicker = dynamic(
   () => {
     return import("emoji-picker-react");
   },
-  { ssr: true }
+  { ssr: true },
 );
 export interface ChatFooterTypes {
   showProduct: boolean;
@@ -78,6 +78,11 @@ const ChatFooter = ({
         callback();
       }
     },
+    onError: (e: any) => {
+      if (e?.message_code == "CHAT10") {
+        setShowExpired(true);
+      }
+    },
   });
 
   // const checkTyping = useCallback(
@@ -100,7 +105,7 @@ const ChatFooter = ({
     debounce(() => {
       setIsTyping(false);
     }, 3000),
-    []
+    [],
   );
 
   useEffect(() => {
