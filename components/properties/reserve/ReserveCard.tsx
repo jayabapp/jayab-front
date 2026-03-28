@@ -81,7 +81,7 @@ const ReserveCard = ({
         refetchCallBack?.();
       }, 4000);
     }
-  }, [countdown]);
+  }, [countdown, refetchCallBack]);
 
   useEffect(() => {
     if (data) {
