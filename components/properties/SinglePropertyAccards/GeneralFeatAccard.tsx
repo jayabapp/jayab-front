@@ -1,9 +1,7 @@
 import { SinglePropDto } from "@/api_services/property/property.interface";
 import SimpleAccordion from "@/components/shared/SimpleAccorion";
 import _STRINGS from "@/utils/LocalStrings";
-import React from "react";
 import LinearTextBlock from "./LinearTextBlock";
-import numberWithCommas from "@/helpers/numberWithCommas";
 import PropertySelectedOptions from "./PropertySelectedOptions";
 
 const GeneralFeatAccard = ({ data }: { data: SinglePropDto }) => {
@@ -16,13 +14,13 @@ const GeneralFeatAccard = ({ data }: { data: SinglePropDto }) => {
     >
       <div className="flex items-center flex-col gap-4">
         <div className="flex w-full flex-col  gap-3">
-          <p className="text-primary-700 font-bold">{_STRINGS.WC}</p>
+          <p className=" font-bold">{_STRINGS.WC}</p>
 
           <LinearTextBlock title={_STRINGS.WC_IR} value={data?.bedrooms?.wc} unit={_STRINGS.ADAD} />
           <LinearTextBlock title={_STRINGS.WC_INTERNATIONAL} value={data?.bedrooms?.wc_ir} unit={_STRINGS.ADAD} />
         </div>
         <div className="flex w-full flex-col  gap-3">
-          <p className="text-primary-700 font-bold">{_STRINGS.SHOWER}</p>
+          <p className=" font-bold">{_STRINGS.SHOWER}</p>
 
           <LinearTextBlock title={_STRINGS.ALL_SHOWER} value={data?.bedrooms?.bathroom_general} unit={_STRINGS.ADAD} />
           <LinearTextBlock title={_STRINGS.TUB_SHOWER} value={data?.bedrooms?.bathroom_tub} unit={_STRINGS.ADAD} />
@@ -35,7 +33,7 @@ const GeneralFeatAccard = ({ data }: { data: SinglePropDto }) => {
         </div>
         {!!data?.options?.cool_heat ? (
           <div className="flex w-full flex-col  gap-3">
-            <p className="text-primary-700 font-bold">{_STRINGS.COOL_HEAT}</p>
+            <p className=" font-bold">{_STRINGS.COOL_HEAT}</p>
             <div className="w-full gap-3 flex flex-wrap">
               {" "}
               {data?.options?.cool_heat?.map((e) => (
@@ -48,7 +46,7 @@ const GeneralFeatAccard = ({ data }: { data: SinglePropDto }) => {
         )}
         {!!data?.options?.welfare ? (
           <div className="flex w-full flex-wrap  gap-3">
-            <p className="text-primary-700 font-bold">{_STRINGS.WELFARE_TITLE}</p>
+            <p className=" font-bold">{_STRINGS.WELFARE_TITLE}</p>
             <div className="w-full gap-3 flex flex-wrap">
               {" "}
               {data?.options?.welfare?.map((e) => (

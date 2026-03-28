@@ -1,5 +1,6 @@
 import { ChildCities } from "@/api_services/city/city.interface";
 import Modal from "@/components/Modal";
+import ModalHeaderPart from "@/components/Modal/ModalHeaderPart";
 import Button from "@/components/shared/Button/Button";
 import EmptyList from "@/components/shared/Lotties/EmptyList";
 import queryBuilder from "@/helpers/queryBuilder";
@@ -42,7 +43,7 @@ const RegionModal = ({
         queriesParams?.regions
           ?.split(",")
           ?.map((e: string | number) => cityWithRegions?.child?.find((x) => x?.id == e))
-          ?.filter((f: any) => !!f)
+          ?.filter((f: any) => !!f),
       );
     } else {
       setSelectedregions([]);
@@ -104,7 +105,7 @@ const RegionModal = ({
       onHide={onHide}
       show={!!show}
     >
-      {/* <CityModalHeaderPart selectedProv={selectedProv} onHide={onHide} removeSelectedProve={removeSelectedProve} /> */}
+      <ModalHeaderPart onHide={onHide} title={_STRINGS.LOCAL} />
 
       <div className=" w-full flex flex-col gap-4  mt-4 p-3  h-auto min-h-full">
         <CityModalSearchPart options={{ placeholder: _STRINGS.SEARCH_REGION }} search={search} setSearch={setSearch} />
@@ -116,14 +117,14 @@ const RegionModal = ({
         ) : (
           cityWithRegions?.child
             ?.filter((e) => onRegionSearchFunc(e))
-            ?.map((e) => (
+            ?.map((e, i) => (
               <CityCard
                 isChecked={selectedRegions?.map((x) => x?.id)?.includes(e?.id)}
                 callback={() => {
                   onRegionClick(e);
                 }}
                 item={e}
-                key={`cities${e?.title}`}
+                key={`cities${e?.title}${e?.id || i}`}
               />
             ))
         )}

@@ -1,11 +1,10 @@
 import { SinglePropDto } from "@/api_services/property/property.interface";
 import SimpleAccordion from "@/components/shared/SimpleAccorion";
 import _STRINGS from "@/utils/LocalStrings";
-import React from "react";
-import LinearTextBlock from "./LinearTextBlock";
 import PropertySelectedOptions from "./PropertySelectedOptions";
 
 const FeatAccard = ({ data }: { data: SinglePropDto }) => {
+  console.log(data?.property_descriptions, "data?.property_descriptionsdata?.property_descriptions");
   return (
     <SimpleAccordion
       item={{
@@ -16,7 +15,7 @@ const FeatAccard = ({ data }: { data: SinglePropDto }) => {
       <div className="flex items-center flex-col gap-4">
         {!!data?.options?.entertainment ? (
           <div className="flex w-full flex-col  gap-3">
-            <p className="text-primary-700 font-bold">{_STRINGS.ENTERTAINMENT}</p>
+            <p className=" font-bold">{_STRINGS.ENTERTAINMENT}</p>
             {data?.options?.entertainment?.map((e) => (
               <PropertySelectedOptions title={e} key={`${e}poolType`} />
             ))}
@@ -26,7 +25,7 @@ const FeatAccard = ({ data }: { data: SinglePropDto }) => {
         )}
         {!!data?.options?.kitchen ? (
           <div className="flex w-full flex-col  gap-3">
-            <p className="text-primary-700 font-bold">{_STRINGS.KITCHEN_ACC}</p>
+            <p className=" font-bold">{_STRINGS.KITCHEN_ACC}</p>
             {data?.options?.kitchen?.map((e) => (
               <PropertySelectedOptions title={e} key={`${e}poolType`} />
             ))}
@@ -34,10 +33,15 @@ const FeatAccard = ({ data }: { data: SinglePropDto }) => {
         ) : (
           <></>
         )}
-        <div className=" flex w-full flex-col items-start justify-start gap-2">
-          <p className="text-sm font-light">{_STRINGS.OTHER_ACCS}</p>
-          <p className="font-medium"> {data?.property_descriptions?.other_dscr}</p>
-        </div>
+
+        {data?.property_descriptions?.facility_dscr ? (
+          <div className=" flex w-full flex-col items-start justify-start gap-2">
+            <p className="text-sm font-light">{_STRINGS.OTHER_ACCS}</p>
+            <p className="font-medium"> {data?.property_descriptions?.facility_dscr}</p>
+          </div>
+        ) : (
+          <></>
+        )}
       </div>
     </SimpleAccordion>
   );

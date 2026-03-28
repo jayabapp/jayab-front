@@ -1,13 +1,16 @@
+import { ChildCities } from "@/api_services/city/city.interface";
 import { ProvienceTypesDto } from "@/api_services/property/property.interface";
 import numberWithCommas from "@/helpers/numberWithCommas";
 import queryBuilder from "@/helpers/queryBuilder";
 import _STRINGS from "@/utils/LocalStrings";
+import { isEmpty } from "lodash";
 import moment from "moment-jalaali";
 import { usePathname, useRouter } from "next/navigation";
 import { Dispatch, SetStateAction, useMemo, useRef } from "react";
 import { isMobile } from "react-device-detect";
 import Swiper from "swiper";
 import { SwiperSlide } from "swiper/react";
+import RegionButton from "../CityModal/RegionButton";
 import SwiperWithNavigation from "../SwiperWithNavigation";
 
 const FiltersSelectedFiltersShowcase = ({
@@ -16,6 +19,8 @@ const FiltersSelectedFiltersShowcase = ({
   setFilterModalShow,
   hiddenFilters,
   containerClass,
+  cityWithRegions,
+  setShowRegions,
 }: {
   propertyTypes: {
     [key: string]: ProvienceTypesDto[];
@@ -25,10 +30,16 @@ const FiltersSelectedFiltersShowcase = ({
   setFilterModalShow: Dispatch<SetStateAction<boolean>>;
   hiddenFilters?: string[];
   containerClass?: string;
+  setShowRegions: Dispatch<SetStateAction<boolean>>;
+  cityWithRegions: ChildCities | null;
 }) => {
   const ref = useRef<Swiper>(null);
   const router = useRouter();
   const pathname = usePathname();
+  const regionsIds = query?.regions
+    ?.split(",")
+
+    ?.filter((f: any) => !!f);
   // const finalizzedKeys = Object.keys(propertyTypes)
   //   ?.filter((e) => !!query?.[e.toLowerCase()])
   //   ?.map((e) => e?.toLowerCase());
@@ -148,6 +159,20 @@ const FiltersSelectedFiltersShowcase = ({
             <img src="/assets/icons/property/white_filter_icon.svg" className="   cursor-pointer w-3 h-3 shrink-0" />
             <p className="text-white  text-xs">{_STRINGS.FILTERS}</p>
           </div>
+        </SwiperSlide>
+      ) : (
+        <></>
+      )}
+      {/* REGION PART */}
+
+      {!isEmpty(cityWithRegions?.child) ? (
+        <SwiperSlide className="!w-auto ">
+          <RegionButton
+            regionsIds={regionsIds}
+            removeFiltersKeys={removeFiltersKeys}
+            setShowRegions={setShowRegions}
+            containerClass="flex md:hidden"
+          />
         </SwiperSlide>
       ) : (
         <></>

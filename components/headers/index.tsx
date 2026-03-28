@@ -9,6 +9,7 @@ import _STRINGS from "@/utils/LocalStrings";
 import { AdvisorService } from "@/api_services/advisor/advisor.propery";
 import { ChatService } from "@/api_services/chat/chat.service";
 import { PropertyService } from "@/api_services/property/property.service";
+import { ReserveService } from "@/api_services/reserve/reserve.service";
 import { UserService } from "@/api_services/user/user.service";
 import { useAuthStore, useStoreInit, useStoreParams } from "@/store";
 import { headerMobileSearchBlackList } from "@/utils/constantss";
@@ -29,17 +30,19 @@ type textIconType = {
   item: { route: string; icon: string; title: string; hasBadge?: boolean };
 };
 
+const Pulser = ({ className }: { className?: string }) => (
+  <div
+    className={`w-2 h-2 rounded-full  absolute -left-2 z-1 -top-0.5 bg-red-600 animate-pulse transition-all ${className}`}
+  ></div>
+);
+
 const TextIcon = ({ item }: textIconType) => (
   <Link
     prefetch={false}
     href={item?.route}
     className={`flex items-center relative transition-all  group  justify-center col-span-1 gap-2 flex-row ml-4 `}
   >
-    {item?.hasBadge ? (
-      <div className="w-2 h-2 rounded-full  absolute -left-2 z-1 -top-0.5 bg-red-600 animate-pulse transition-all"></div>
-    ) : (
-      <></>
-    )}
+    {item?.hasBadge ? <Pulser /> : <></>}
 
     <img
       src={item?.icon}
@@ -185,6 +188,17 @@ const Header = ({ scroll }: { scroll?: number }) => {
   const hasBadge =
     (advisorProfile?.status?.id == 20 && !!isActive && remainingDays <= 3) ||
     (advisorProfile?.status?.id == 20 && !isActive);
+
+  /* -------------------------------------------------------------------------- */
+  /*                               ACTIVE RESERVE                               */
+  /* -------------------------------------------------------------------------- */
+
+  const { data: activeReserve } = useQuery({
+    queryKey: [ReserveService.RESERVE_ACTIVE_CACHEKEY, isLogin],
+    enabled: isLogin,
+
+    queryFn: ReserveService.activeReserve,
+  });
 
   return (
     <header className="relative">
@@ -417,9 +431,10 @@ transition-all  ease-in-out duration-1000 header-content-container w-full mx-aut
               }}
             />
             {!!isLogin && !!showLogins ? (
-              <>
+              <div className="relative ">
+                {/* {!!activeReserve ? <Pulser className=" !left-2 !top-0.5" /> : <></>} */}
                 <ProfileDropdown notifBadge={notifBadge || 0} />
-              </>
+              </div>
             ) : (
               <></>
             )}

@@ -1,9 +1,8 @@
 import { SinglePropDto } from "@/api_services/property/property.interface";
 import SimpleAccordion from "@/components/shared/SimpleAccorion";
-import _STRINGS from "@/utils/LocalStrings";
-import React from "react";
-import LinearTextBlock from "./LinearTextBlock";
 import numberWithCommas from "@/helpers/numberWithCommas";
+import _STRINGS from "@/utils/LocalStrings";
+import LinearTextBlock from "./LinearTextBlock";
 
 const GuestAccard = ({ data }: { data: SinglePropDto }) => {
   return (
@@ -15,18 +14,18 @@ const GuestAccard = ({ data }: { data: SinglePropDto }) => {
     >
       <div className="flex items-center flex-col gap-4">
         <div className="flex w-full flex-col  gap-3">
-          <p className="text-primary-700 font-bold">{_STRINGS.GUEST_CAP}</p>
+          <p className=" font-bold">{_STRINGS.GUEST_CAP}</p>
 
           <LinearTextBlock title={_STRINGS.STANDARD_GUEST_CAP} value={data?.std_capacity} unit={_STRINGS.NAFAR} />
           <LinearTextBlock title={_STRINGS.MAX_GUEST_CAP} value={data?.max_capacity} unit={_STRINGS.NAFAR} />
         </div>
         <div className="flex w-full flex-col  gap-3">
-          <p className="text-primary-700 font-bold">{_STRINGS.RENT_TYPE}</p>
+          <p className=" font-bold">{_STRINGS.RENT_TYPE}</p>
 
           <LinearTextBlock title={_STRINGS.PROP_RENT_TYPE} value={data?.rent_type == "DAILY" ? _STRINGS.DAILY : ""} />
         </div>
         <div className="flex w-full flex-col  gap-3">
-          <p className="text-primary-700 font-bold">{_STRINGS.DAYLI_RENT_PRICE}</p>
+          <p className=" font-bold">{_STRINGS.DAYLI_RENT_PRICE}</p>
 
           <LinearTextBlock
             title={_STRINGS.WEEK_STARTER_DAYS_PRICE}

@@ -6,6 +6,7 @@ import { PropertyService } from "@/api_services/property/property.service";
 import SingleProductBreadCrumb from "@/components/BreadCrumbs/SingleProductBreadCrumb";
 import CityModal from "@/components/CityModal";
 import FilterPageCitiesTitle from "@/components/CityModal/FilterPageCitiesTitle";
+import RegionModal from "@/components/CityModal/RegionModal";
 import FiltersSelectedFiltersShowcase from "@/components/Filters/FiltersSelectedFiltersShowcase";
 import SortMenu from "@/components/Filters/SortMenu";
 import SsrClinetPartFilterProperties, { removeKeyArray } from "@/components/Filters/SsrClinetPartFilterProperties";
@@ -35,6 +36,8 @@ export interface PostPageQuery {
 type sortTypeType = { id?: string; title?: string };
 
 const SsrFilterPage = ({ landings, firstData }: { firstData: { data: any[] }; landings: SingleLandingDto }) => {
+  const [showRegions, setShowRegions] = useState(false);
+
   const [cityWithRegions, setCityWithRegions] = useState<ChildCities | null>(null);
   const [hiddenFilters, setHiddenFilters] = useState<string[]>([]);
   const [stickyHeight, setStickyHeight] = useState(600);
@@ -75,7 +78,7 @@ const SsrFilterPage = ({ landings, firstData }: { firstData: { data: any[] }; la
   }, [landings?.query]);
 
   const [sortType, setSortType] = useState<sortTypeType | undefined>(
-    queries?.sort_type ? SORT_TYPES?.find((i) => i?.id == queries?.sort_type) : SORT_TYPES[0]
+    queries?.sort_type ? SORT_TYPES?.find((i) => i?.id == queries?.sort_type) : SORT_TYPES[0],
   );
   const [filterModalShow, setFilterModalShow] = useState(false);
 
@@ -180,6 +183,8 @@ const SsrFilterPage = ({ landings, firstData }: { firstData: { data: any[] }; la
                 <div className=" !col-span-9 ">
                   {" "}
                   <FiltersSelectedFiltersShowcase
+                    setShowRegions={setShowRegions}
+                    cityWithRegions={cityWithRegions}
                     hiddenFilters={hiddenFilters}
                     setFilterModalShow={setFilterModalShow}
                     query={queries}
@@ -196,6 +201,8 @@ const SsrFilterPage = ({ landings, firstData }: { firstData: { data: any[] }; la
                 <FilterPageCitiesTitle
                   cityWithRegions={cityWithRegions}
                   queries={queries}
+                  setShowRegions={setShowRegions}
+                  showRegions={showRegions}
                   title={cityButtonTItle}
                   hideCityPart={
                     !!hiddenFilters?.includes("cities") &&
@@ -208,6 +215,8 @@ const SsrFilterPage = ({ landings, firstData }: { firstData: { data: any[] }; la
                 <div> </div>
               )}
               <FiltersSelectedFiltersShowcase
+                cityWithRegions={cityWithRegions}
+                setShowRegions={setShowRegions}
                 hiddenFilters={hiddenFilters}
                 containerClass="   !hidden md:!contents "
                 setFilterModalShow={setFilterModalShow}
@@ -241,7 +250,7 @@ const SsrFilterPage = ({ landings, firstData }: { firstData: { data: any[] }; la
                     `${pathname}?${queryBuilder({
                       ...temp,
                       page: 2,
-                    })}`
+                    })}`,
                   );
                 }}
                 title={_STRINGS.SHOW_MORE}
@@ -261,7 +270,6 @@ const SsrFilterPage = ({ landings, firstData }: { firstData: { data: any[] }; la
         </div>
         {/*  CONTENT PART */}
       </div>
-
       {/* <=======================================================================MODALS ================================================================> */}
       <Modal
         options={{
@@ -289,6 +297,8 @@ const SsrFilterPage = ({ landings, firstData }: { firstData: { data: any[] }; la
             {(!hiddenFilters?.includes("cities") || !!cityWithRegions) && !hiddenFilters?.includes("province_id") ? (
               <FilterPageCitiesTitle
                 cityWithRegions={cityWithRegions}
+                setShowRegions={setShowRegions}
+                showRegions={showRegions}
                 queries={queries}
                 title={cityButtonTItle}
                 hideCityPart={
@@ -325,7 +335,6 @@ const SsrFilterPage = ({ landings, firstData }: { firstData: { data: any[] }; la
           </div>
         </div>
       </Modal>
-
       <CityModal
         setRegionsCb={setCityWithRegions}
         passedUrl={pathname}
@@ -336,6 +345,13 @@ const SsrFilterPage = ({ landings, firstData }: { firstData: { data: any[] }; la
         onHide={hideCityModal}
         setTitle={setCityTitleButton}
       />
+      <RegionModal
+        cityWithRegions={cityWithRegions}
+        show={showRegions}
+        onHide={() => {
+          setShowRegions(false);
+        }}
+      />{" "}
     </div>
   );
 };

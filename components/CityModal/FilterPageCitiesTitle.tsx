@@ -3,8 +3,8 @@ import queryBuilder from "@/helpers/queryBuilder";
 import _STRINGS from "@/utils/LocalStrings";
 import isEmpty from "lodash/isEmpty";
 import { usePathname, useRouter } from "next/navigation";
-import { useCallback, useState } from "react";
-import RegionModal from "./RegionModal";
+import { Dispatch, SetStateAction, useCallback } from "react";
+import RegionButton from "./RegionButton";
 
 const FilterPageCitiesTitle = ({
   title,
@@ -12,14 +12,17 @@ const FilterPageCitiesTitle = ({
   cityWithRegions,
   queries,
   hideCityPart,
+  showRegions,
+  setShowRegions,
 }: {
   title?: string;
   cb: () => void | null;
   cityWithRegions: ChildCities | null;
   queries: any;
   hideCityPart?: boolean;
+  setShowRegions: Dispatch<SetStateAction<boolean>>;
+  showRegions: boolean;
 }) => {
-  const [showRegions, setShowRegions] = useState(false);
   const pathname = usePathname();
   const router = useRouter();
 
@@ -43,7 +46,7 @@ const FilterPageCitiesTitle = ({
       router.replace(`${pathname}?${queryBuilder(body)}`);
       // router.replace(`/rooms?${queryBuilder(body)}`);
     },
-    [queries]
+    [queries],
   );
 
   return (
@@ -64,47 +67,16 @@ const FilterPageCitiesTitle = ({
         )}
 
         {!isEmpty(cityWithRegions?.child) ? (
-          <div
-            onClick={(e) => {
-              e.preventDefault();
-              e.stopPropagation();
-              setShowRegions(true);
-            }}
-            className={`rounded-full !w-auto  min-w-16 gap-2   py-2 h-8 px-1 flex items-center justify-center border ${
-              isEmpty(regionsIds)
-                ? "border-gray-400  bg-gray-400/5 text-gray-400"
-                : "border-primary-700  bg-primary-700/5 text-primary-700"
-            }  text-xs `}
-          >
-            <p className="text-xs pr-1 ">{!isEmpty(regionsIds) ? _STRINGS.LOCAL : _STRINGS.SELECT_LOCAL} </p>
-
-            {!isEmpty(regionsIds) ? `(${regionsIds?.length} مورد) ` : ""}
-            {!isEmpty(regionsIds) ? (
-              <div
-                onClick={(e) => {
-                  e.preventDefault();
-                  e.stopPropagation();
-                  removeFiltersKeys(["regions"]);
-                }}
-                className=" cursor-pointer w-4   h-4 aspect-square rounded-full border border-primary-700 flex items-center justify-center"
-              >
-                <img src="/assets/icons/adds/blue_plus.svg" className="w-2 h-2 rotate-45 aspect-square " />
-              </div>
-            ) : (
-              ""
-            )}
-          </div>
+          <RegionButton
+            regionsIds={regionsIds}
+            removeFiltersKeys={removeFiltersKeys}
+            setShowRegions={setShowRegions}
+            containerClass="hidden md:flex"
+          />
         ) : (
           <></>
         )}
       </div>
-      <RegionModal
-        cityWithRegions={cityWithRegions}
-        show={showRegions}
-        onHide={() => {
-          setShowRegions(false);
-        }}
-      />{" "}
     </>
   );
 };

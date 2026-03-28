@@ -9,15 +9,16 @@ import numberWithCommas from "@/helpers/numberWithCommas";
 import { useStoreInit } from "@/store";
 import { poolFilterTypes } from "@/utils/constantss";
 import _STRINGS from "@/utils/LocalStrings";
-import React from "react";
 
 const FiltersPart = ({ queries, setFilters, filters, propertyTypes }: any) => {
   const { userInfo } = useStoreInit((data) => data);
   return (
     <div className="  z-2 h-fit flex-col items-center p-3  bg-white dark:bg-zinc-800 rounded-xl w-full ">
-      <div className=" hidden md:flex   items-center gap-2 mb-2 ">
-        <img src="/assets/icons/property/filter_icon.svg" />
-        <p className="font-medium  text-lg">{_STRINGS.FILTERS}</p>
+      <div className=" flex items-center justify-between">
+        <div className=" hidden md:flex   items-center gap-2 mb-2 ">
+          <img src="/assets/icons/property/filter_icon.svg" />
+          <p className="font-medium  text-lg">{_STRINGS.FILTERS}</p>
+        </div>
       </div>
       <SimpleAccordion
         item={{ parenClass: "  pb-2  border-b w-full p-2 !px-0", disableBorderB: true }}

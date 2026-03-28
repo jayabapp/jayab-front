@@ -34,6 +34,8 @@ export interface PostPageQuery {
 type sortTypeType = { id?: string; title?: string };
 
 const Filterpage = () => {
+  const [showRegions, setShowRegions] = useState(false);
+
   const [cityWithRegions, setCityWithRegions] = useState<ChildCities | null>(null);
   const [stickyHeight, setStickyHeight] = useState(600);
   const [cityButtonTItle, setCityTitleButton] = useState("");
@@ -51,6 +53,7 @@ const Filterpage = () => {
 
   const [queries, setQueries] = useState(queriesParams);
 
+  console.log(showRegions, "showRegionsshowRegions");
   useEffect(() => {
     if (pathname == "/rooms") {
       setQueries(queriesParams);
@@ -143,6 +146,8 @@ const Filterpage = () => {
               <div className=" z-1  px-2  relative  w-full items-center gap-1 justify-between  ">
                 <div className=" !col-span-9 ">
                   <FiltersSelectedFiltersShowcase
+                    cityWithRegions={cityWithRegions}
+                    setShowRegions={setShowRegions}
                     setFilterModalShow={setFilterModalShow}
                     query={queries}
                     propertyTypes={propertyTypes || {}}
@@ -158,12 +163,16 @@ const Filterpage = () => {
           <div className="w-full grow-0 shrink-0 flex flex-row  px-3 xl:px-0 relative  justify-between">
             <div className="flex  flex-row w-[90%]  items-center  gap-4 justify-start ">
               <FilterPageCitiesTitle
+                showRegions={showRegions}
+                setShowRegions={setShowRegions}
                 queries={queries}
                 cityWithRegions={cityWithRegions}
                 title={cityButtonTItle}
                 cb={showCityModalFunc}
               />
               <FiltersSelectedFiltersShowcase
+                cityWithRegions={cityWithRegions}
+                setShowRegions={setShowRegions}
                 containerClass="   !hidden xl:!contents "
                 setFilterModalShow={setFilterModalShow}
                 query={queries}
@@ -230,6 +239,8 @@ const Filterpage = () => {
         <div className="w-[90%] mx-auto">
           <div className=" w-full  pt-4 pb-8  ">
             <FilterPageCitiesTitle
+              showRegions={showRegions}
+              setShowRegions={setShowRegions}
               queries={queries}
               cityWithRegions={cityWithRegions}
               title={cityButtonTItle}

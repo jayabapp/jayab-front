@@ -202,13 +202,13 @@ const ReserveCard = ({
       </div>
       <Divider moreClass=" border-dashed  " />{" "}
       {isOwner && !showCounter ? (
-        <p className=" text-center"> زمان شما برای پاسخ به این درخواست به اتمام رسیده است.</p>
+        <p className=" text-center text-sm"> زمان شما برای پاسخ به این درخواست به اتمام رسیده است.</p>
       ) : !!showCounter ? (
         <>
           <div className=" w-full flex items-center flex-col pb-1 gap-2 justify-center">
             {" "}
             {!!isOwner ? (
-              <p className="text-sm text-red-600 text-center w-full">
+              <p className="text-xs text-red-600 text-center w-full">
                 پس از اتمام تایم و عدم پاسخ لینک ویلاهای مشابه برای میهمان ارسال می گردد.
               </p>
             ) : (
@@ -290,7 +290,7 @@ const ReserveCard = ({
       {/* <Divider moreClass=" " /> */}
       <div className="w-full flex flex-col gap-2">
         {/* <p className={`font-medium ${isOwner ? "hidden" : ""}`}>{_STRINGS.REQUEST_STATUS}</p> */}
-        {!!isOwner && data?.status?.id == 10 ? <p className="text-center">میهمان منتظر پاسخ شماست</p> : <></>}
+        {!!isOwner && data?.status?.id == 10 ? <p className="text-center text-sm">میهمان منتظر پاسخ شماست</p> : <></>}
         <div className={`flex items-center justify-between  `}>
           <StatusShower data={data?.status} />
 
@@ -326,45 +326,52 @@ const ReserveCard = ({
           <div className="w-full flex flex-col items-center justify-center gap-2">
             {/* {!!data?.property?.remaining_days ? (
               <> */}
-            <Button
-              disabled={isExpired}
-              onClick={() => {
-                onContactClick("tel");
-              }}
-              width={`  ${isExpired ? "  !text-gray-400" : ""}  w-full  !py-2  !font-bold  !text-sm `}
-              containerClass="w-2/3"
-              roundedClass="rounded-full"
-              title={_STRINGS.CALL}
-              variant="outline"
-              icon={
-                <img
-                  className={`w-4 h-4   ${isExpired ? "  opacity-50  grayscale" : ""}    aspect-square`}
-                  src="/assets/icons/advisor/blue_phone.svg"
+            {!!isExpired ? (
+              <></>
+            ) : (
+              <>
+                {" "}
+                <Button
+                  disabled={isExpired}
+                  onClick={() => {
+                    onContactClick("tel");
+                  }}
+                  width={`  ${isExpired ? "  !text-gray-400" : ""}  w-full  !py-2  !font-bold  !text-sm `}
+                  containerClass="w-2/3"
+                  roundedClass="rounded-full"
+                  title={_STRINGS.CALL}
+                  variant="outline"
+                  icon={
+                    <img
+                      className={`w-4 h-4   ${isExpired ? "  opacity-50  grayscale" : ""}    aspect-square`}
+                      src="/assets/icons/advisor/blue_phone.svg"
+                    />
+                  }
                 />
-              }
-            />
-            <Button
-              disabled={isExpired}
-              variant="outline"
-              onClick={() => {
-                onContactClick("sms");
-              }}
-              width={`w-full  !py-2  !font-bold  !text-sm  ${isExpired ? "  !text-gray-400" : ""}  `}
-              containerClass="w-2/3"
-              roundedClass="rounded-full"
-              title={_STRINGS.SMS}
-              icon={
-                <img
-                  className={`w-4 h-4  ml-1 aspect-square  ${isExpired ? "  opacity-50  grayscale" : ""}  `}
-                  src="/assets/icons/advisor/blue_sms.svg"
+                <Button
+                  disabled={isExpired}
+                  variant="outline"
+                  onClick={() => {
+                    onContactClick("sms");
+                  }}
+                  width={`w-full  !py-2  !font-bold  !text-sm  ${isExpired ? "  !text-gray-400" : ""}  `}
+                  containerClass="w-2/3"
+                  roundedClass="rounded-full"
+                  title={_STRINGS.SMS}
+                  icon={
+                    <img
+                      className={`w-4 h-4  ml-1 aspect-square  ${isExpired ? "  opacity-50  grayscale" : ""}  `}
+                      src="/assets/icons/advisor/blue_sms.svg"
+                    />
+                  }
                 />
-              }
-            />
+              </>
+            )}
             {/* </>
             ) : (
               <></>
             )} */}
-            {data?.is_chat_enabled ? (
+            {data?.is_chat_enabled || !isOwner ? (
               <Button
                 width="w-full !py-2  !font-bold !text-sm "
                 containerClass="w-2/3  "
@@ -386,7 +393,9 @@ const ReserveCard = ({
         <>
           <Divider moreClass=" " />
           <div className="flex flex-col gap-1">
-            <p className=" text-center whitespace-pre-wrap ">رزرو شما پس از هماهنگی با میزبان نهایی خواهد شد </p>
+            <p className=" text-center whitespace-pre-wrap text-sm ">
+              رزرو شما پس از هماهنگی با میزبان نهایی خواهد شد{" "}
+            </p>
             {/* <p className=" text-center font-medium whitespace-pre-wrap ">تماس با میزبان = رزرو سریعتر</p>  */}
           </div>
         </>

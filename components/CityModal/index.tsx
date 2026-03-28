@@ -123,7 +123,7 @@ const CityModal = ({
             !!defaultCitiesData && defaultCitiesData?.length > 1
               ? ` و ${!!selectedProv ? defaultCitiesData?.length : defaultCitiesData?.length - 1} شهر دیگر`
               : ``
-          }`
+          }`,
         );
       }
     } else {
@@ -273,14 +273,14 @@ const CityModal = ({
         ) : (
           cities
             ?.filter((e) => provienceAndCitiesSearchEngine(e))
-            ?.map((e) => (
+            ?.map((e, i) => (
               <CityCard
                 isChecked={selectedCities?.map((x) => x?.id)?.includes(e?.id)}
                 callback={() => {
                   onCityClick(e);
                 }}
                 item={e}
-                key={`cities${e?.title}`}
+                key={`cities${e?.title}${e?.id || i}`}
               />
             ))
         )}
