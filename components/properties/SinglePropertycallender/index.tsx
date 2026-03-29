@@ -2,11 +2,11 @@
 import { OwnerCallendarItemDto } from "@/api_services/property/property.interface";
 import { PropertyService } from "@/api_services/property/property.service";
 import Callender from "@/components/widgets/DatePicker/callender";
+import { useStoreInit } from "@/store";
 import { useQuery } from "@tanstack/react-query";
 import moment from "moment-jalaali";
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import OwnerCallemdarGuide from "../owner/SingleOwnerPropertycallender/OwnerCallemdarGuide";
-import { useStoreInit } from "@/store";
 
 const SinglePropertycallender = ({ data }: { data: any }) => {
   const { userInfo } = useStoreInit((data) => data);

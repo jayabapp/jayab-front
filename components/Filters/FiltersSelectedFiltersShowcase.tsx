@@ -150,12 +150,13 @@ const FiltersSelectedFiltersShowcase = ({
       spaceBetween={10}
     >
       {isMobile ? (
-        <SwiperSlide className="!w-auto ">
-          {" "}
-          <div
-            onClick={() => setFilterModalShow(true)}
-            className=" col-span-3 flex   w-fit px-3  h-8  rounded-full   bg-primary-700 items-center gap-2 "
-          >
+        <SwiperSlide
+          onClick={() => {
+            setFilterModalShow(true);
+          }}
+          className=" z-5 !w-auto "
+        >
+          <div className=" col-span-3 flex   w-fit px-3  h-8  rounded-full   bg-primary-700 items-center gap-2 ">
             <img src="/assets/icons/property/white_filter_icon.svg" className="   cursor-pointer w-3 h-3 shrink-0" />
             <p className="text-white  text-xs">{_STRINGS.FILTERS}</p>
           </div>

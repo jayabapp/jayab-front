@@ -58,8 +58,7 @@ const UserReserves = () => {
     mutationFn: ReserveService.cancelReserve,
     onSuccess: () => {
       setSelectedCancel(null);
-      setCursor(0);
-      refetch();
+      refetchCallBack();
     },
   });
 

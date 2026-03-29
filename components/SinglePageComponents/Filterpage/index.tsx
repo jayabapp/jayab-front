@@ -11,6 +11,7 @@ import { PropertyService } from "@/api_services/property/property.service";
 import SingleProductBreadCrumb from "@/components/BreadCrumbs/SingleProductBreadCrumb";
 import CityModal from "@/components/CityModal";
 import FilterPageCitiesTitle from "@/components/CityModal/FilterPageCitiesTitle";
+import RegionModal from "@/components/CityModal/RegionModal";
 import FiltersSelectedFiltersShowcase from "@/components/Filters/FiltersSelectedFiltersShowcase";
 import FilterdPropertiesPageOrianted from "@/components/Filters/NewFiltredProperties";
 import SortMenu from "@/components/Filters/SortMenu";
@@ -53,7 +54,6 @@ const Filterpage = () => {
 
   const [queries, setQueries] = useState(queriesParams);
 
-  console.log(showRegions, "showRegionsshowRegions");
   useEffect(() => {
     if (pathname == "/rooms") {
       setQueries(queriesParams);
@@ -271,6 +271,13 @@ const Filterpage = () => {
         onHide={hideCityModal}
         setTitle={setCityTitleButton}
       />
+      <RegionModal
+        cityWithRegions={cityWithRegions}
+        show={showRegions}
+        onHide={() => {
+          setShowRegions(false);
+        }}
+      />{" "}
     </div>
   );
 };
