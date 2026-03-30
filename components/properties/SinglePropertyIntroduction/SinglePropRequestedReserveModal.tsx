@@ -257,44 +257,50 @@ const SinglePropRequestedReserveModal = ({
             />
             {/* {!!data?.remaining_days ? (
               <> */}
-            <Button
-              disabled={!!isExpired}
-              onClick={() => {
-                // onActionsClick(ReserveUserAction.CALL);
-                onContactClick("tel");
-              }}
-              width={`w-full  !py-2  !font-bold  !text-sm ${isExpired ? "  !text-gray-400" : ""} `}
-              containerClass="w-1/2"
-              roundedClass="rounded-full"
-              title={_STRINGS.CALL}
-              variant="outline"
-              loading={loading}
-              icon={
-                <img
-                  className={`w-4 h-4  aspect-square ${isExpired ? "  opacity-50  grayscale" : ""} `}
-                  src="/assets/icons/advisor/blue_phone.svg"
+            {!!isExpired ? (
+              <></>
+            ) : (
+              <>
+                <Button
+                  disabled={!!isExpired}
+                  onClick={() => {
+                    // onActionsClick(ReserveUserAction.CALL);
+                    onContactClick("tel");
+                  }}
+                  width={`w-full  !py-2  !font-bold  !text-sm ${isExpired ? "  !text-gray-400" : ""} `}
+                  containerClass="w-1/2"
+                  roundedClass="rounded-full"
+                  title={_STRINGS.CALL}
+                  variant="outline"
+                  loading={loading}
+                  icon={
+                    <img
+                      className={`w-4 h-4  aspect-square ${isExpired ? "  opacity-50  grayscale" : ""} `}
+                      src="/assets/icons/advisor/blue_phone.svg"
+                    />
+                  }
                 />
-              }
-            />
-            <Button
-              disabled={!!isExpired}
-              variant="outline"
-              onClick={() => {
-                onContactClick("sms");
-                // onActionsClick(ReserveUserAction.SMS);
-              }}
-              width={`w-full  !py-2  !font-bold  !text-sm ${isExpired ? "  !text-gray-400" : ""} `}
-              containerClass="w-1/2"
-              roundedClass="rounded-full"
-              title={_STRINGS.SMS}
-              icon={
-                <img
-                  className={`w-4 h-4 ${isExpired ? "  opacity-50  grayscale" : ""}   ml-1 aspect-square`}
-                  src="/assets/icons/advisor/blue_sms.svg"
+                <Button
+                  disabled={!!isExpired}
+                  variant="outline"
+                  onClick={() => {
+                    onContactClick("sms");
+                    // onActionsClick(ReserveUserAction.SMS);
+                  }}
+                  width={`w-full  !py-2  !font-bold  !text-sm ${isExpired ? "  !text-gray-400" : ""} `}
+                  containerClass="w-1/2"
+                  roundedClass="rounded-full"
+                  title={_STRINGS.SMS}
+                  icon={
+                    <img
+                      className={`w-4 h-4 ${isExpired ? "  opacity-50  grayscale" : ""}   ml-1 aspect-square`}
+                      src="/assets/icons/advisor/blue_sms.svg"
+                    />
+                  }
+                  loading={loading}
                 />
-              }
-              loading={loading}
-            />
+              </>
+            )}
             {/* </>
             ) : (
               <></>
