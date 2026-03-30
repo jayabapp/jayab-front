@@ -103,7 +103,7 @@ const ReserveCard = ({
   });
 
   const onCreateChat = () => {
-    createFindChat({ property_id: data?.property?.id });
+    createFindChat({ property_id: data?.property?.id || data?.property_id });
   };
 
   const onContactClick = (type: "sms" | "tel") => {
@@ -371,7 +371,7 @@ const ReserveCard = ({
             ) : (
               <></>
             )} */}
-            {data?.is_chat_enabled || !isOwner ? (
+            {!isOwner ? (
               <Button
                 width="w-full !py-2  !font-bold !text-sm "
                 containerClass="w-2/3  "

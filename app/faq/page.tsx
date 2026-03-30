@@ -1,19 +1,17 @@
-import React from "react";
-import _STRINGS from "@/utils/LocalStrings";
 import SimpleAccordion from "@/components/shared/SimpleAccorion";
 
-import Editable from "@/components/Editable";
-import { chunkArray } from "@/helpers/chunk-array.helper";
-import Breadcrumbs from "@/components/BreadCrumbs";
-import LottieLoading from "@/components/shared/Lotties/LottieLoading";
-import { FaqSchema } from "@/components/SchemaGenerator/Schemas";
-import { apiRoutes, baseUrl } from "@/utils/urls";
 import { ContentDto } from "@/api_services/home/home.interface";
+import Breadcrumbs from "@/components/BreadCrumbs";
+import Editable from "@/components/Editable";
+import { FaqSchema } from "@/components/SchemaGenerator/Schemas";
+import LottieLoading from "@/components/shared/Lotties/LottieLoading";
+import { chunkArray } from "@/helpers/chunk-array.helper";
 import serverCall from "@/helpers/serverCall";
+import { apiRoutes, baseUrl } from "@/utils/urls";
 
 const RepetitiveQuestions = async () => {
   const { data: faqData }: { data: { data: ContentDto[] } } = await serverCall(
-    baseUrl + apiRoutes.CONTENTS + `?key=${"faq"}&per_page=20&page=${1}`
+    baseUrl + apiRoutes.CONTENTS + `?key=${"faq"}&per_page=20&page=${1}`,
   );
 
   const faqChunckedData = chunkArray(faqData?.data || [], 2);
@@ -41,7 +39,7 @@ const RepetitiveQuestions = async () => {
                     title={e?.title}
                   >
                     <div
-                      className="text-xs md:text-sm"
+                      className="text-xs content md:text-sm"
                       dangerouslySetInnerHTML={{ __html: e?.full_text || e?.small_text }}
                     />
                   </SimpleAccordion>

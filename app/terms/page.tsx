@@ -1,12 +1,11 @@
-import React from "react";
 import _STRINGS from "@/utils/LocalStrings";
 
-import DOMPurify from "isomorphic-dompurify";
-import { Metadata } from "next";
+import Breadcrumbs from "@/components/BreadCrumbs";
+import LottieLoading from "@/components/shared/Lotties/LottieLoading";
 import serverCall from "@/helpers/serverCall";
 import { apiRoutes, baseUrl } from "@/utils/urls";
-import LottieLoading from "@/components/shared/Lotties/LottieLoading";
-import Breadcrumbs from "@/components/BreadCrumbs";
+import DOMPurify from "isomorphic-dompurify";
+import { Metadata } from "next";
 
 import MehaHeaderHelper from "@/helpers/MetaHeaderHelper";
 
@@ -32,7 +31,7 @@ const Terms = async () => {
             <LottieLoading />
           ) : (
             <div
-              className=" font-light !text-base  mt-2 leading-8"
+              className=" font-light !text-base text-start  content mt-2 leading-8"
               dangerouslySetInnerHTML={{
                 __html: DOMPurify.sanitize(aboutUsWebsite?.html || aboutUsWebsite?.full_text || ""),
               }}
