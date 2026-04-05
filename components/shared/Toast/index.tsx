@@ -1,3 +1,4 @@
+"use client";
 import { x_Iransans } from "@/app/fonts/x_iran/x_Iransans";
 import errorIcon from "@/public/assets/lotties/notif/Error.json";
 import infoIcon from "@/public/assets/lotties/notif/Info.json";
@@ -32,6 +33,7 @@ const Notify = (props: props) => {
         return { icon: infoIcon, border: "border-r-sky-400" };
     }
   };
+  const LottieHelper = Lottie;
 
   toast.custom(
     (t) => (
@@ -47,7 +49,7 @@ const Notify = (props: props) => {
         }}
       >
         <div className="w-14 h-14">
-          <Lottie options={{ animationData: _findTypeData().icon, loop: true }} />
+          <LottieHelper options={{ animationData: _findTypeData()?.icon, loop: true }} />
         </div>
         <div className={`mr-3   app-text  ${x_Iransans.className}  `}>
           {/* <h1 className="font-bold text-sm mx-2">{title}</h1> */}

@@ -1,3 +1,4 @@
+"use client";
 import { HomeService } from "@/api_services/home/home.service";
 import { SinglePropDto } from "@/api_services/property/property.interface";
 import Checkbox from "@/components/shared/Form/Checkbox";
