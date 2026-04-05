@@ -51,6 +51,7 @@ const ReserveCard = ({
       } else {
         setShowCounter(false);
         window.open(`tel:${data?.guest_mobile}`, "_blank", "noopener,noreferrer");
+        refetchCallBack?.();
       }
     },
   });
