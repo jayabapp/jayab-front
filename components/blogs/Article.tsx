@@ -2,8 +2,6 @@ import { ContentDto } from "@/api_services/home/home.interface";
 import { NEW_IMAGE_URL } from "@/utils/urls";
 import moment from "moment-jalaali";
 import Image from "next/image";
-import React from "react";
-import { isMobile } from "react-device-detect";
 import ShareLink from "../shared/shareComponent/BrowserShare";
 
 const Article = ({ data, item }: { data: ContentDto; item?: { customeImageClass?: string } }) => {
@@ -43,7 +41,7 @@ const Article = ({ data, item }: { data: ContentDto; item?: { customeImageClass?
         </div>
         {/* description */}
         <div
-          className="!text-justify"
+          className="!text-justify content "
           dangerouslySetInnerHTML={{
             __html: data?.small_text,
           }}

@@ -1,9 +1,7 @@
-import React from "react";
 import _STRINGS from "@/utils/LocalStrings";
-import { Divider } from "../shared/Divider";
-import { ContentByKeyDto } from "@/api_services/home/home.interface";
-import SimpleLoading from "../shared/Lotties/SimpleLoading";
 import Modal from "../Modal";
+import { Divider } from "../shared/Divider";
+import SimpleLoading from "../shared/Lotties/SimpleLoading";
 
 type TermsTypes = {
   visibleTermsModal: boolean;
@@ -33,7 +31,7 @@ const Terms = ({ visibleTermsModal, setvisibleTermsModal, termsLoading, termsCon
           </div>
         ) : (
           <div
-            className="  bg-neutral-200 dark:bg-zinc-800 font-light text-sm px-2 py-3 rounded-lg text-justify mx-2 lg:mx-4 leading-6 my-2 "
+            className="  bg-neutral-200 dark:bg-zinc-800 font-light text-sm px-2 py-3 rounded-lg  content text-justify mx-2 lg:mx-4 leading-6 my-2 "
             dangerouslySetInnerHTML={{ __html: termsContent?.html || "" }}
           />
         )}

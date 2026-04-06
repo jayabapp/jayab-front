@@ -172,7 +172,7 @@ const FiltersSelectedFiltersShowcase = ({
             regionsIds={regionsIds}
             removeFiltersKeys={removeFiltersKeys}
             setShowRegions={setShowRegions}
-            containerClass="flex md:hidden"
+            containerClass="flex lg:hidden"
           />
         </SwiperSlide>
       ) : (

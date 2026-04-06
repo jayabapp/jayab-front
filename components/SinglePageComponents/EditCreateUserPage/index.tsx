@@ -1,12 +1,9 @@
 import { HomeService } from "@/api_services/home/home.service";
 import BtnLoading from "@/components/shared/Button/BtnLoading";
-import Button from "@/components/shared/Button/Button";
-import FixedBottomContainer from "@/components/shared/FixedBottomContainer";
 import FormInput from "@/components/shared/Form/FormInput";
 import AuthUploader from "@/components/uploader/AuthUploader";
 import _STRINGS from "@/utils/LocalStrings";
 import { useQuery } from "@tanstack/react-query";
-import React from "react";
 
 const EditCreateUserPage = ({
   values,
@@ -28,7 +25,7 @@ const EditCreateUserPage = ({
 
   return (
     <div className="w-full flex flex-col gap-4   ">
-      <div className="p-4  rounded-10 bg-primary-100 items-center justify-center  text-justify">
+      <div className="p-4  rounded-10 bg-primary-100 items-center justify-center content  text-justify">
         {isLoading ? <BtnLoading /> : ownerCreateContent?.small_text || ""}
       </div>
 
@@ -50,7 +47,7 @@ const EditCreateUserPage = ({
         />
       </div>
       <div className="flex flex-col gap-1 items-center justify-center ">
-        <div className="p-4  rounded-10 bg-orange-50 items-center my-3 justify-center  text-justify ">
+        <div className="p-4  rounded-10 bg-orange-50 items-center my-3 justify-center content  text-justify ">
           <p className="text-sm   text-center text-orange-700    "> {_STRINGS.ADD_IMAGE_WARNING}</p>
         </div>
         <p>{_STRINGS.YOUR_IMAGE}</p>

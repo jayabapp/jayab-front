@@ -1,9 +1,7 @@
-import _STRINGS from "@/utils/LocalStrings";
+import { TicketDatum } from "@/api_services/support/support.interface";
 import moment from "moment-jalaali";
 import Link from "next/link";
-import React from "react";
 import StatusShower from "../shared/StatusShower";
-import { TicketDatum, TicketsDto } from "@/api_services/support/support.interface";
 
 const SupportCard = ({ item, type }: { item: TicketDatum; type?: "complain" }) => {
   return (
@@ -12,7 +10,9 @@ const SupportCard = ({ item, type }: { item: TicketDatum; type?: "complain" }) =
       className="flex flex-col  border  bg-white  custome-shadow-card rounded-20 dark:border dark:border-zinc-500 gap-4 p-4 "
     >
       <p className="text-sm md:text-base font-medium">{item?.title}</p>
-      <p className="text-justify opacity-80  text-xs md:text-sm leading-6  whitespace-pre-line ">{item?.message}</p>
+      <p className="text-justify opacity-80 content  text-xs md:text-sm leading-6  whitespace-pre-line ">
+        {item?.message}
+      </p>
       <div className="flex items-center justify-between w-full">
         <StatusShower data={item?.status} />
 

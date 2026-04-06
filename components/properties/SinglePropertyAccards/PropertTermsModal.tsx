@@ -42,7 +42,7 @@ const PropertTermsModal = ({
         <p className=" text-sm font-light">{_STRINGS.PROP_TERMS_PROLUGE}</p>
         <div className="flex flex-col gap-2">
           <p className=" text-sm font-bold">{_STRINGS.CANCENLATION_DESC}</p>
-          <p className="text-sm whitespace-pre-wrap  text-justify">{selectedRule?.small_text}</p>
+          <p className="text-sm whitespace-pre-wrap  text-justify content ">{selectedRule?.small_text}</p>
         </div>
         <div className="flex flex-col gap-2">
           <p className=" text-sm font-bold">{_STRINGS.GUEST_TYPE_STATUS}</p>
@@ -53,12 +53,14 @@ const PropertTermsModal = ({
         <div className="flex flex-col gap-2">
           <p className=" text-sm font-bold">{_STRINGS.ANIMAL_RULES}</p>
           <p className="text-sm">{data?.options?.pet}</p>
-          <p className="text-sm whitespace-pre-wrap text-justify ">{data?.property_descriptions?.pet_dscr}</p>
+          <p className="text-sm whitespace-pre-wrap text-justify content  ">{data?.property_descriptions?.pet_dscr}</p>
         </div>
         <div className="flex flex-col gap-2">
           <p className=" text-sm font-bold">{_STRINGS.PARTY_RULES}</p>
           <p className="text-sm">{data?.options?.party}</p>
-          <p className="text-sm whitespace-pre-wrap text-justify ">{data?.property_descriptions?.party_dscr}</p>
+          <p className="text-sm whitespace-pre-wrap text-justify content  ">
+            {data?.property_descriptions?.party_dscr}
+          </p>
         </div>
         <div className="w-full flex items-center  gap-8">
           {" "}
@@ -77,12 +79,16 @@ const PropertTermsModal = ({
         </div>
         <div className="flex flex-col gap-2">
           <p className=" text-sm font-bold">{_STRINGS.PROP_DESC}</p>
-          <p className="text-sm whitespace-pre-wrap text-justify ">{data?.property_descriptions?.property_dscr}</p>
+          <p className="text-sm whitespace-pre-wrap text-justify content  ">
+            {data?.property_descriptions?.property_dscr}
+          </p>
         </div>
         {!!data?.property_descriptions?.other_dscr ? (
           <div className="flex flex-col gap-2">
             <p className=" text-sm font-bold">{_STRINGS.OTHER_TERMS}</p>
-            <p className="text-sm whitespace-pre-wrap text-justify ">{data?.property_descriptions?.other_dscr}</p>
+            <p className="text-sm whitespace-pre-wrap text-justify content  ">
+              {data?.property_descriptions?.other_dscr}
+            </p>
           </div>
         ) : (
           <></>

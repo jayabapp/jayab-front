@@ -1,8 +1,7 @@
 "use client";
 
-import { Transition } from "@headlessui/react";
 import DOMPurify from "isomorphic-dompurify";
-import React, { useState, ReactNode } from "react";
+import { ReactNode, useState } from "react";
 type props = {
   title: string;
   isOpenFirst?: boolean;
@@ -37,7 +36,7 @@ const SimpleAccordion = ({ title, children, ExtraElement, item, isOpenFirst, tit
         <div className="flex items-center gap-4">
           {titleIcon ? <div>{titleIcon}</div> : <></>}{" "}
           <div
-            className={`text-sm lg:text-base font-medium line-clamp-2    text-justify ${item?.titleClass}`}
+            className={`text-sm lg:text-base font-medium line-clamp-2  content  text-justify ${item?.titleClass}`}
             dangerouslySetInnerHTML={{
               __html: DOMPurify.sanitize(title, { FORBID_ATTR: ["style"] }),
             }}

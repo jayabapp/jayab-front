@@ -1,12 +1,10 @@
 "use client";
 
-import DOMPurify from "isomorphic-dompurify";
-import React from "react";
-import { imageUrl, IMAGE_URL, NEW_IMAGE_URL } from "../../utils/urls";
-import { Divider } from "../shared/Divider";
-import _STRINGS from "@/utils/LocalStrings";
-import moment from "moment-jalaali";
 import { ImageDto } from "@/api_services/auth/auth.interface";
+import _STRINGS from "@/utils/LocalStrings";
+import DOMPurify from "isomorphic-dompurify";
+import moment from "moment-jalaali";
+import { NEW_IMAGE_URL } from "../../utils/urls";
 
 export interface ImageTextDTO {
   data?: {
@@ -50,7 +48,7 @@ const MainImageTextBlock = ({ data, children }: ImageTextDTO) => {
             <p className="  text-2xl md:text-4xl font-bold text-white">{title}</p>
           </div> */}
           <div
-            className=" rounded-2xl py-2 px-0 md:p-4 !text-justify md:border  !text-base  !leading-6 md:!leading-6 opacity-80"
+            className=" rounded-2xl py-2 px-0 md:p-4 content !text-justify md:border  !text-base  !leading-6 md:!leading-6 opacity-80"
             dangerouslySetInnerHTML={{ __html: item.body || _STRINGS.LOREM }}
           />
           <div>
