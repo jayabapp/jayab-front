@@ -5,7 +5,7 @@ import { NEW_IMAGE_URL } from "@/utils/urls";
 import moment from "moment-jalaali";
 import Link from "next/link";
 
-const ChatListItem = ({ item }: { item: ChatListDto }) => {
+const ChatListItem = ({ item, onClickCb }: { item: ChatListDto; onClickCb?: () => void | null }) => {
   moment.locale("fa", { useGregorianParser: true });
   const removeredirectRoomToHome = () => {
     useStoreParams.setState({ getBackHome: false });
@@ -15,6 +15,7 @@ const ChatListItem = ({ item }: { item: ChatListDto }) => {
     <Link
       onClick={() => {
         removeredirectRoomToHome();
+        onClickCb?.();
       }}
       prefetch={false}
       href={`/chat/${item?.uuid}`}

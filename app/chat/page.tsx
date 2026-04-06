@@ -12,7 +12,7 @@ import isEmpty from "lodash/isEmpty";
 import { useEffect, useState } from "react";
 
 const ChatListPage = () => {
-  const { chatNotification } = useChatStore((state) => state);
+  const { chatNotification, chatsPageData } = useChatStore((state) => state);
   const [chats, setChats] = useState<ChatListDto[]>([]);
   const { data, isLoading, refetch } = useQuery({
     queryKey: [ChatService.CHAT_CACHEKEY],
@@ -43,7 +43,7 @@ const ChatListPage = () => {
               const [item] = draft.splice(i, 1);
               draft.unshift(item);
             }
-          })
+          }),
         );
       } else {
         refetch();
@@ -55,14 +55,32 @@ const ChatListPage = () => {
       id="homeParent"
       className="  container  flex flex-col  w-full md:w-2/3 gap-4  transition-all duration-500 ease-in-out "
     >
-      {isLoading ? (
+      {!!chatsPageData && !!isLoading && isEmpty(chats) ? (
+        <>
+          {chatsPageData?.map((e: any) => (
+            <ChatListItem
+              // onClickCb={() => {
+              //   useChatStore.setState({ chatsPageData: chats });
+              // }}
+              item={e}
+              key={`historyChatItem${e?.id}`}
+            />
+          ))}
+        </>
+      ) : isLoading ? (
         <LottieLoading />
       ) : isEmpty(chats) ? (
         <EmptyList />
       ) : (
         <>
           {chats?.map((e) => (
-            <ChatListItem item={e} key={`chatItem${e?.id}`} />
+            <ChatListItem
+              onClickCb={() => {
+                useChatStore.setState({ chatsPageData: chats });
+              }}
+              item={e}
+              key={`chatItem${e?.id}`}
+            />
           ))}
         </>
       )}

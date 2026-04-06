@@ -1,7 +1,7 @@
 import { GetProfileDto } from "@/api_services/auth/auth.interface";
 import { Moment } from "moment-jalaali";
 import { create } from "zustand";
-import { persist, createJSONStorage } from "zustand/middleware";
+import { persist } from "zustand/middleware";
 /* -------------------------------------------------------------------------- */
 /* AUTH */
 /* -------------------------------------------------------------------------- */
@@ -97,8 +97,8 @@ export const useStoreTheme = create<ThemeStore, any>(
     }),
     {
       name: "theme-storage",
-    }
-  )
+    },
+  ),
 );
 /* -------------------------------------------------------------------------- */
 /* SOCKET */
@@ -134,6 +134,7 @@ export type ChatStore = {
   deletedMessage: any;
   chatNotification: any;
   chatProduct: any;
+  chatsPageData: any;
 };
 
 export const useChatStore = create<ChatStore>(() => ({
@@ -144,4 +145,5 @@ export const useChatStore = create<ChatStore>(() => ({
   usersStatus: null,
   chatNotification: null,
   chatProduct: null,
+  chatsPageData: null,
 }));
