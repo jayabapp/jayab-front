@@ -7,7 +7,7 @@ import { isEmpty } from "lodash";
 import moment from "moment-jalaali";
 import { usePathname, useRouter } from "next/navigation";
 import { Dispatch, SetStateAction, useMemo, useRef } from "react";
-import { isMobile } from "react-device-detect";
+import { isMobile, isTablet } from "react-device-detect";
 import Swiper from "swiper";
 import { SwiperSlide } from "swiper/react";
 import RegionButton from "../CityModal/RegionButton";
@@ -149,7 +149,7 @@ const FiltersSelectedFiltersShowcase = ({
       slidesPerView={"auto"}
       spaceBetween={10}
     >
-      {isMobile ? (
+      {isMobile || isTablet ? (
         <SwiperSlide
           onClick={() => {
             setFilterModalShow(true);
