@@ -71,7 +71,7 @@ const FilterPageCitiesTitle = ({
             regionsIds={regionsIds}
             removeFiltersKeys={removeFiltersKeys}
             setShowRegions={setShowRegions}
-            containerClass="hidden lg:flex"
+            containerClass="hidden xl:flex"
           />
         ) : (
           <></>
