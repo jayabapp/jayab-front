@@ -3,13 +3,15 @@
 import { NEW_IMAGE_URL } from "../../utils/urls";
 
 import { HomeService } from "@/api_services/home/home.service";
-import { footerLinks } from "@/utils/constantss";
+import { footerHiddenBlackList, footerLinks } from "@/utils/constantss";
 import { useQuery } from "@tanstack/react-query";
 import Link from "next/link";
+import { usePathname } from "next/navigation";
 import ContactuUItem from "../contactus/ContactuUItem";
 import CallBox from "./CallBox";
 
 const Footer = () => {
+  const pathname = usePathname();
   /* --------------------------- SUMMARY DESCRIPTION -------------------------- */
 
   /* --------------------------- ABOUT US -------------------------- */
@@ -43,8 +45,12 @@ const Footer = () => {
   });
   const socials = data?.data?.filter((e: any) => e?.fields?.key == "social");
   const others = data?.data?.filter((e) => e?.fields?.key !== "social");
+
+  console.log(pathname, "pathnamepathname");
   return (
-    <footer className="w-full  z-2 pb-20  mb:pb-6 bg-primary-200   hidden  lg:flex   flex-col items-center justify-center bg-dark-500  bg-no-repeat bg-cover  relative md:pt-[6rem] ">
+    <footer
+      className={`  ${!!footerHiddenBlackList.find((e) => pathname?.includes(e)) ? "hidden lg:hidden" : ""} w-full  z-2 pb-20  mb:pb-6 bg-primary-200   hidden  lg:flex   flex-col items-center justify-center bg-dark-500  bg-no-repeat bg-cover  relative md:pt-[6rem] `}
+    >
       <CallBox />
       <div className="w-full md:px-[10%]  px-4 lg:w-full mx-auto  py-4 grid grid-cols-4 lg:grid-cols-7 gap-5">
         {/* ABOUT US */}

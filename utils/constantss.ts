@@ -61,10 +61,12 @@ export const mobileFooterBlackList = [
   "/auth/otp",
   "/auth/register",
   "/profile/owner/properties",
-  "/chat/",
+  // "/chat/",
   "/profile/advisor",
   // "/profile/",
 ];
+
+export const footerHiddenBlackList = ["/chat/"];
 
 export const createPropertySteps = (id?: null | number) => [
   {

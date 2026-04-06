@@ -2,6 +2,7 @@
 import { AdvisorService } from "@/api_services/advisor/advisor.propery";
 import { PropertyService } from "@/api_services/property/property.service";
 import { useAuthStore, useStoreInit, useStoreParams } from "@/store";
+import { footerHiddenBlackList } from "@/utils/constantss";
 import { useQuery } from "@tanstack/react-query";
 import moment from "moment-jalaali";
 import { usePathname, useRouter } from "next/navigation";
@@ -107,7 +108,7 @@ const MobileFooter: React.FC = ({}) => {
     (advisorProfile?.status?.id == 20 && !isActive);
   return (
     <div
-      className={`z-10    flex   max-w-[800px]  ${
+      className={`   ${!!footerHiddenBlackList.find((e) => route?.includes(e)) ? "hidden lg:hidden" : ""}  z-10     flex   max-w-[800px]  ${
         isIOS && getPWADisplayMode() == "standalone" ? "pb-8" : "pb-5"
       }  flex lg:hidden  pt-3 justify-between  md:rounded-md  left-0  right-0     mx-auto   shadow-card transition-all duration-1000	ease-in-out  items-center fixed bottom-0 w-full   bg-white  `}
     >
