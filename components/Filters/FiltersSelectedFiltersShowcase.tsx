@@ -7,7 +7,6 @@ import { isEmpty } from "lodash";
 import moment from "moment-jalaali";
 import { usePathname, useRouter } from "next/navigation";
 import { Dispatch, SetStateAction, useMemo, useRef } from "react";
-import { isMobile, isTablet } from "react-device-detect";
 import Swiper from "swiper";
 import { SwiperSlide } from "swiper/react";
 import RegionButton from "../CityModal/RegionButton";
@@ -149,21 +148,21 @@ const FiltersSelectedFiltersShowcase = ({
       slidesPerView={"auto"}
       spaceBetween={10}
     >
-      {isMobile || isTablet ? (
-        <SwiperSlide
-          onClick={() => {
-            setFilterModalShow(true);
-          }}
-          className=" z-5 !w-auto "
-        >
-          <div className=" col-span-3 flex   w-fit px-3  h-8  rounded-full   bg-primary-700 items-center gap-2 ">
-            <img src="/assets/icons/property/white_filter_icon.svg" className="   cursor-pointer w-3 h-3 shrink-0" />
-            <p className="text-white  text-xs">{_STRINGS.FILTERS}</p>
-          </div>
-        </SwiperSlide>
-      ) : (
+      {/* {isMobile || isTablet ? ( */}
+      <SwiperSlide
+        onClick={() => {
+          setFilterModalShow(true);
+        }}
+        className=" z-5 !w-auto flex lg:hidden "
+      >
+        <div className=" col-span-3 flex   w-fit px-3  h-8  rounded-full   bg-primary-700 items-center gap-2 ">
+          <img src="/assets/icons/property/white_filter_icon.svg" className="   cursor-pointer w-3 h-3 shrink-0" />
+          <p className="text-white  text-xs">{_STRINGS.FILTERS}</p>
+        </div>
+      </SwiperSlide>
+      {/* ) : (
         <></>
-      )}
+      )} */}
       {/* REGION PART */}
 
       {!isEmpty(cityWithRegions?.child) ? (
@@ -172,7 +171,7 @@ const FiltersSelectedFiltersShowcase = ({
             regionsIds={regionsIds}
             removeFiltersKeys={removeFiltersKeys}
             setShowRegions={setShowRegions}
-            containerClass="flex xl:hidden"
+            containerClass="flex lg:hidden"
           />
         </SwiperSlide>
       ) : (
