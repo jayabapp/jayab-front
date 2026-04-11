@@ -282,6 +282,8 @@ export interface SinglePropDto {
   address: string;
   options: Options;
   canceling_type: CancelationType;
+  owner_info: { avatar: ImageDto; full_name: string };
+  owner: { id: string | number };
 }
 
 export interface CancelationType {

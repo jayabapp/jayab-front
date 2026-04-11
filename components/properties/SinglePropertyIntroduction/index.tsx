@@ -7,6 +7,7 @@ import FixedBottomContainer from "@/components/shared/FixedBottomContainer";
 import ShareLink from "@/components/shared/shareComponent/BrowserShare";
 import { useAuthStore, useStoreInit, useStoreParams } from "@/store";
 import _STRINGS from "@/utils/LocalStrings";
+import { NEW_IMAGE_URL } from "@/utils/urls";
 import { useMutation, useQuery } from "@tanstack/react-query";
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
@@ -107,6 +108,23 @@ const SinglePropertyIntroduction = ({ data }: { data: SinglePropDto }) => {
   const onReserveHideClick = () => {
     setShowReserve(false);
   };
+
+  const OwnerPart = () => {
+    return (
+      <div className="flex flex-row items-center gap-2 ">
+        <img
+          src={!!data?.owner_info ? NEW_IMAGE_URL(data?.owner_info?.avatar) : "/assets/images/add/wall_e_lover.png"}
+          className={` size-10  md:size-12 aspect-square rounded-full 
+              `}
+        />
+        <div className="flex flex-col items-start gap-1">
+          <p className="text-sm font-bold text-primary-700">{_STRINGS.HOST}</p>
+          <p className=" text-sm  text-primary-700 font-medium ">{data?.owner_info?.full_name}</p>
+        </div>
+      </div>
+    );
+  };
+
   return (
     <div className=" flex w-full  flex-col relative  gap-2 md:gap-3">
       <div className="w-full flex items-start md:items-center justify-between gap-2">
@@ -206,7 +224,7 @@ const SinglePropertyIntroduction = ({ data }: { data: SinglePropDto }) => {
         </p>
       </div>
       <div className="w-full bg-primary-700/20  rounded-full p-2  hidden md:flex  items-center justify-between gap-4 ">
-        <div></div>
+        <OwnerPart />
         {/* <Button
           onClick={onContactClick}
           width="w-full"
@@ -229,7 +247,7 @@ const SinglePropertyIntroduction = ({ data }: { data: SinglePropDto }) => {
 
         <Button
           onClick={onReserveClick}
-          width="w-full  !px-8 md:!py-1  lg:!py-2 lg:!text-lg"
+          width="w-full  !px-8 md:!py-2.5  lg:!py-2 lg:!text-lg"
           containerClass="w-1/4 flex items-center  justify-end"
           roundedClass="rounded-full"
           title={_STRINGS.RESERVE}
@@ -238,8 +256,10 @@ const SinglePropertyIntroduction = ({ data }: { data: SinglePropDto }) => {
       <div className="z-20 flex md:hidden">
         <FixedBottomContainer>
           {" "}
-          <div className="w-full  px-4  flex items-center justify-between gap-4 ">
-            {/* <Button
+          <div className="w-full flex  px-4">
+            <div className="w-full  bg-primary-700/20  rounded-full p-2   flex items-center justify-between gap-4 ">
+              <OwnerPart />
+              {/* <Button
               onClick={onContactClick}
               width="w-full  !py-2  !font-bold  !text-sm "
               containerClass="w-full"
@@ -258,13 +278,15 @@ const SinglePropertyIntroduction = ({ data }: { data: SinglePropDto }) => {
             ) : (
               <></>
             )} */}
-            <Button
-              onClick={onReserveClick}
-              width="w-full"
-              containerClass="w-full items-center  justify-center"
-              roundedClass="rounded-full"
-              title={_STRINGS.RESERVE}
-            />
+              <Button
+                onClick={onReserveClick}
+                width="w-full !text-xl !py-1.5"
+                // containerClass="w-full items-center  justify-center"
+                containerClass="w-1/3   flex items-center  justify-end"
+                roundedClass="rounded-full"
+                title={_STRINGS.RESERVE}
+              />
+            </div>
           </div>
         </FixedBottomContainer>
       </div>
