@@ -1,8 +1,8 @@
+import { useAuthStore, useChatStore, useStoreSocket } from "@/store";
+import { Url } from "@/utils/urls";
+import { useRouter } from "next/navigation";
 import { useEffect } from "react";
 import { io } from "socket.io-client";
-import { useAuthStore, useChatStore, useStoreInit, useStoreSocket } from "@/store";
-import { useRouter } from "next/navigation";
-import { Url } from "@/utils/urls";
 import Notify from "../shared/Toast";
 
 export const SocketIO = () => {

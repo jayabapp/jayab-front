@@ -1,4 +1,4 @@
-import React, { use, useEffect, useState } from "react";
+import { useState } from "react";
 
 import { NEW_IMAGE_URL } from "@/utils/urls";
 import ProgressBar from "../shared/progressbar";
@@ -19,10 +19,11 @@ const UploadedItemShowCase = ({
   progress: number;
 }) => {
   const [showRealData, setShowRealData] = useState(false);
+  const [isError, setIsError] = useState(false);
   return (
     <div className={`flex w-fit relative  ${containerClass} `} style={{ zIndex: "4 !important" }}>
       {/* <div id="myVIdeo"></div> */}
-      {(!!progress || progress == 0) && !showRealData ? (
+      {(!!progress || progress == 0) && (!showRealData || !!isError) ? (
         <div className=" rounded-20 z-1 px-4   absolute left-0 top-0 w-full h-full flex items-center justify-center bg-black/40">
           <ProgressBar
             step={Math.ceil((Number(progress) || 0.2) * 100)}
@@ -54,10 +55,16 @@ const UploadedItemShowCase = ({
               !!innerClasses?.sizeClass ? innerClasses?.sizeClass : "h-24 w-24"
             } `}
           >
-            {!!item?.data ? (
+            {!!isError ? (
+              <> </>
+            ) : !!item?.data ? (
               <img
                 onLoad={() => {
                   setShowRealData(true);
+                }}
+                onError={() => {
+                  setShowRealData(true);
+                  setIsError(true);
                 }}
                 alt="img"
                 src={NEW_IMAGE_URL(item?.data)}

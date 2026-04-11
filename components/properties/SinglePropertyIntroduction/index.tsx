@@ -205,7 +205,8 @@ const SinglePropertyIntroduction = ({ data }: { data: SinglePropDto }) => {
           {data?.city} <span className=" font-light">({data?.region || data?.province})</span>
         </p>
       </div>
-      <div className="w-full  hidden md:flex  items-center justify-between gap-4 ">
+      <div className="w-full bg-primary-700/20  rounded-full p-2  hidden md:flex  items-center justify-between gap-4 ">
+        <div></div>
         {/* <Button
           onClick={onContactClick}
           width="w-full"
@@ -228,8 +229,8 @@ const SinglePropertyIntroduction = ({ data }: { data: SinglePropDto }) => {
 
         <Button
           onClick={onReserveClick}
-          width="w-full  md:!py-1  lg:!py-2 lg:!text-lg"
-          containerClass="w-full flex items-center  justify-end"
+          width="w-full  !px-8 md:!py-1  lg:!py-2 lg:!text-lg"
+          containerClass="w-1/4 flex items-center  justify-end"
           roundedClass="rounded-full"
           title={_STRINGS.RESERVE}
         />

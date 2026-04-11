@@ -4,7 +4,6 @@ import "react-advanced-cropper/dist/style.css";
 
 import { AuthService } from "@/api_services/auth/auth.service";
 import { useMutation } from "@tanstack/react-query";
-import imageCompression from "browser-image-compression";
 import { toast } from "sonner";
 import BtnLoading from "../shared/Button/BtnLoading";
 import Notify from "../shared/Toast";
@@ -73,7 +72,7 @@ const NewMultUploader = ({
             x.data = data?.result;
             return x;
           } else return x;
-        })
+        }),
       );
     },
 
@@ -103,21 +102,22 @@ const NewMultUploader = ({
   }, [images]);
 
   const uploadTemp = async (file: Blob, id: number | string, isLast?: boolean) => {
+    console.log("try1");
     try {
-      const compressedBlob = await imageCompression(file as any, {
-        maxSizeMB: 1,
-        maxWidthOrHeight: 1240,
-        useWebWorker: true,
-        maxIteration: 5,
-      });
+      // const compressedBlob = await imageCompression(file as any, {
+      //   maxSizeMB: 1,
+      //   maxWidthOrHeight: 1240,
+      //   useWebWorker: true,
+      //   maxIteration: 5,
+      // });
 
-      const compressedFile = new File([compressedBlob], file.type || "image", {
-        type: file.type,
-        lastModified: Date.now(),
-      });
+      // const compressedFile = new File([compressedBlob], file.type || "image", {
+      //   type: file.type,
+      //   lastModified: Date.now(),
+      // });
 
       const formData = new FormData();
-      formData.append("file", compressedFile);
+      formData.append("file", file);
 
       await mutateAsync({
         id,
@@ -248,10 +248,10 @@ const NewMultUploader = ({
                     typeof item == "string"
                       ? "imageUrl" + item
                       : item?.file_location
-                      ? "imageUrl" + item?.file_location
-                      : item?.name
-                      ? `https://${item?.bucket}.${item?.end_point}/${item?.path}/${item?.name}`
-                      : item
+                        ? "imageUrl" + item?.file_location
+                        : item?.name
+                          ? `https://${item?.bucket}.${item?.end_point}/${item?.path}/${item?.name}`
+                          : item,
                   );
                 }
               }}
@@ -265,10 +265,10 @@ const NewMultUploader = ({
                   typeof item == "string"
                     ? "imageUrl" + item
                     : item.file_location
-                    ? "imageUrl" + item.file_location
-                    : item.name
-                    ? `https://${item?.bucket}.${item?.end_point}/${item?.path}/${item?.name}`
-                    : item
+                      ? "imageUrl" + item.file_location
+                      : item.name
+                        ? `https://${item?.bucket}.${item?.end_point}/${item?.path}/${item?.name}`
+                        : item
                 }
                 className="object-cover w-full rounded-20 aspect-square max-w-max"
               />
