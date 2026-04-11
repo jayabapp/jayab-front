@@ -11,7 +11,7 @@ type dates = {
   prefix?: string;
   color?: string;
   setSelectedDay?: (e: any | null) => void | null;
-  options?: { valueType: "persian" | "global"; showTimeOfTheDay?: boolean };
+  options?: { valueType?: "persian" | "global"; showTimeOfTheDay?: boolean; disableDaySelect?: boolean };
 };
 const SingleDatePicker = ({
   selectedDate,

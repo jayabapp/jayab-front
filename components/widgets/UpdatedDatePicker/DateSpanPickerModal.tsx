@@ -3,10 +3,10 @@ import BtnLoading from "@/components/shared/Button/BtnLoading";
 import Button from "@/components/shared/Button/Button";
 import _STRINGS from "@/utils/LocalStrings";
 import moment from "moment-jalaali";
+import dynamic from "next/dynamic";
 import React, { useEffect, useState } from "react";
-import InfiniteScroll from "react-infinite-scroll-component";
 import DatePicker from "./index";
-
+const InfiniteScroll = dynamic(() => import("react-infinite-scroll-component"), { ssr: false });
 const DateSpanPickerModal = ({
   onConfirm,
   show,

@@ -1,7 +1,7 @@
-import React, { useEffect, useMemo, useState } from "react";
-import moment from "moment-jalaali";
-import Day from "./Day";
 import { OwnerCallendarItemDto } from "@/api_services/property/property.interface";
+import moment from "moment-jalaali";
+import { useEffect, useMemo, useState } from "react";
+import Day from "./Day";
 moment.loadPersian({ dialect: "persian-modern" });
 type props = {
   callenderData?: OwnerCallendarItemDto[] | undefined;
@@ -13,7 +13,7 @@ type props = {
   smallerDateFonts?: boolean;
   selectedDate?: string | number;
   setSelectedDay?: (e: any | null) => void | null;
-  options?: { valueType: "persian" | "global"; showTimeOfTheDay?: boolean };
+  options?: { valueType?: "persian" | "global"; showTimeOfTheDay?: boolean; disableDaySelect?: boolean };
   freeDaysOfMonth?: boolean;
 };
 
@@ -39,7 +39,7 @@ const DayPicker = ({
           month: moment(selectedDate, `jYYYY/jMM/jD`).format("jMM"),
           year: moment(selectedDate, `jYYYY/jMM/jD`).format("jYYYY"),
         }
-      : { day: moment().jDate(), month: month, year: year }
+      : { day: moment().jDate(), month: month, year: year },
   );
   const [numberOfDays, setNumberOfDays] = useState(moment.jDaysInMonth(Number(year), Number(month) - 1));
 
@@ -51,7 +51,7 @@ const DayPicker = ({
   const [daysData, setDaysData] = useState(
     Array.from({ length: numberOfDays }, (e, i) => {
       return { id: i + 1, month: month, year: year, isActive: false };
-    })
+    }),
   );
 
   useEffect(() => {
@@ -69,7 +69,7 @@ const DayPicker = ({
             is_peak: !!callenderData?.find((e) => e?.day == i + 1)?.is_peak,
             isActive: !!active_days.includes(moment(`${year}/${month}/${i + 1}`, `jYYYY/jMM/jD`).day()),
           };
-        })
+        }),
       );
   }, [numberOfDays, date, month, year, callenderData]);
 
@@ -108,12 +108,12 @@ const DayPicker = ({
           lengthOfBefore == -1
             ? 35 - daysData?.length
             : lengthOfBefore > 4
-            ? 42 - (lengthOfBefore + daysData?.length)
-            : 35 - (lengthOfBefore + daysData?.length),
+              ? 42 - (lengthOfBefore + daysData?.length)
+              : 35 - (lengthOfBefore + daysData?.length),
       },
       (e, i) => {
         return { id: i + 1 };
-      }
+      },
     );
   }, [lastDaysData, daysOfOurLives, daysData]);
 
@@ -169,6 +169,7 @@ const DayPicker = ({
           year={year}
           month={month}
           showTimeOfTheDay={options?.showTimeOfTheDay}
+          disableClick={options?.disableDaySelect}
         />
       ))}
       {nextDaysMemo?.map((e, i) => (

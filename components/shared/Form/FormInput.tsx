@@ -1,11 +1,9 @@
 "use client";
 
-import { IMAGE_URL } from "@/utils/urls";
-
-import React, { useRef, memo, ReactNode } from "react";
+import { p2e } from "@/helpers/NumberConverter";
+import { memo, ReactNode, RefObject, useRef } from "react";
 import Num2persian from "../../../helpers/Num2Persian";
 import _STRINGS from "../../../utils/LocalStrings";
-import { p2e } from "@/helpers/NumberConverter";
 export interface props {
   value: string | number | undefined;
   errorKey?: string;
@@ -38,6 +36,7 @@ export interface props {
     extraElement?: ReactNode;
     convertToText?: boolean;
     onClick?: () => void | null;
+    passedRef?: RefObject<HTMLInputElement | null>;
   };
 }
 const FormInput = ({ item, value, onChangeText, errors, errorKey = "" }: props) => {
@@ -62,7 +61,7 @@ const FormInput = ({ item, value, onChangeText, errors, errorKey = "" }: props) 
       <input
         onClick={item?.onClick ? item?.onClick : (e) => null}
         type={item?.keyboard == "password" ? "password" : item?.keyboard == "number" ? "tel" : "text"}
-        ref={inputRef}
+        ref={item?.passedRef || inputRef}
         inputMode={item?.keyboard == "number" ? "tel" : "text"}
         pattern={item?.keyboard == "number" ? "[0-9]*" : ""}
         className={`${!!item?.iconUrl ? " !pr-[3rem]" : ""}  ${!!item?.iconEndUrl ? " !pl-10" : ""} ${
@@ -73,8 +72,8 @@ const FormInput = ({ item, value, onChangeText, errors, errorKey = "" }: props) 
           item?.disableHover
             ? ""
             : !!errors && !!errors[errorKey]
-            ? "border-red-100"
-            : " hover:border-gray-1150 focus:border-primary-700/30"
+              ? "border-red-100"
+              : " hover:border-gray-1150 focus:border-primary-700/30"
         } `}
         id={`input-${item?.id}`}
         placeholder={item?.placeholder || item?.title}

@@ -6,7 +6,8 @@ export const NEW_IMAGE_URL = (
   keyValue?: "name" | "thumbnail" | "medium",
 ) => {
   if (item?.bucket && item?.bucket != null)
-    return `https://${item?.bucket}.${item?.end_point}/${item?.path}/${keyValue ? item[keyValue] : item?.name}`;
+    // return `https://${item?.bucket}.${item?.end_point}/${item?.path}/${keyValue ? item[keyValue] : item?.name}`;
+    return `https://${item?.bucket}.${item?.end_point}/${item?.path}/${item?.name}`;
   else return "/assets/icons/logo/logo.svg";
 };
 export const imageUrlBase = `${Url}/images/contents/`;

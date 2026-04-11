@@ -1,8 +1,7 @@
 "use client";
 import { debounce } from "lodash";
-import React, { ReactNode, useCallback, useEffect, useRef, useState } from "react";
 import { useSearchParams } from "next/navigation";
-import { useStoreTheme } from "../../store";
+import { ReactNode, useCallback, useEffect, useRef, useState } from "react";
 import SmallLoading from "../shared/Lotties/SmallLoading";
 interface props {
   initValue?: string | undefined;
@@ -21,6 +20,7 @@ interface props {
   errors?: { [key: string]: string[] };
   item?: {
     bg?: string;
+    disable_cancel?: boolean;
   };
 }
 
@@ -79,7 +79,7 @@ const SearchBox = ({
     debounce(() => {
       setisTyping(false);
     }, 500),
-    []
+    [],
   );
   useEffect(() => {
     if (!element?.value && !searchParam) {
@@ -122,7 +122,7 @@ const SearchBox = ({
             value={passedText || text}
           />
         </div>
-        {!!loading || element?.value ? (
+        {(!!loading || element?.value) && !item?.disable_cancel ? (
           <div className="inline-flex w-1/4 justify-end">
             {loading && (
               <div className="ml-2">

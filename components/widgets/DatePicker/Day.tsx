@@ -22,9 +22,20 @@ type dataTypes = {
   showTimeOfTheDay?: boolean;
   freeDaysOfMonth?: boolean;
   smallerDateFonts?: boolean;
+  disableClick?: boolean;
 };
 
-const Day = ({ onSelect, data, selectedDayId, month, year, freeDaysOfMonth, today, smallerDateFonts }: dataTypes) => {
+const Day = ({
+  onSelect,
+  data,
+  selectedDayId,
+  month,
+  year,
+  freeDaysOfMonth,
+  today,
+  smallerDateFonts,
+  disableClick,
+}: dataTypes) => {
   const isBefore = !!freeDaysOfMonth
     ? false
     : moment(moment(`${year}/${month}/${data?.id}`, "jYYYY/jMM/jD")).isBefore();
@@ -35,10 +46,10 @@ const Day = ({ onSelect, data, selectedDayId, month, year, freeDaysOfMonth, toda
   return (
     <div
       className={`aspect-square   ${!!data?.year && (!isBefore || !!isToday) ? "bg-primary-450" : " opacity-50 "} ${
-        onSelect ? "cursor-pointer" : ""
+        onSelect && !disableClick ? "cursor-pointer" : ""
       } `}
       onClick={() => {
-        if (onSelect && !!data?.year && (!isBefore || !!isToday)) {
+        if (!disableClick && onSelect && !!data?.year && (!isBefore || !!isToday)) {
           onSelect(data);
         }
       }}

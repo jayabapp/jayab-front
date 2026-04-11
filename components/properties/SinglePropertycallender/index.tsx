@@ -77,6 +77,7 @@ const SinglePropertycallender = ({ data }: { data: any }) => {
         }}
         selectedDate={callenderselectedDate}
         disablePrevMonths
+        options={{ disableDaySelect: true }}
       />
       <OwnerCallemdarGuide isAdvisor={!!userInfo?.advisor_id} isCustomer={!!userInfo?.advisor_id ? false : true} />
     </div>

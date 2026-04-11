@@ -12,7 +12,7 @@ import _STRINGS from "@/utils/LocalStrings";
 import { useMutation, useQuery } from "@tanstack/react-query";
 import dynamic from "next/dynamic";
 import { useParams, usePathname, useRouter, useSearchParams } from "next/navigation";
-import React, { useEffect, useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 
 const CreateProperty = () => {
   const Map = useMemo(
@@ -20,7 +20,7 @@ const CreateProperty = () => {
       dynamic(() => import("@/components/Map"), {
         ssr: false,
       }),
-    []
+    [],
   );
   const searchParams = useSearchParams();
   const edit_mode = searchParams.get("edit_mode");
@@ -95,6 +95,7 @@ const CreateProperty = () => {
             className="absolute top-2 z-1 left-0 right-0  w-[70%] md:w-1/2 mx-auto "
           >
             <SearchBox
+              item={{ disable_cancel: true }}
               containerClass="  "
               boxId={"SEARCH_BOX_Mobile"}
               placeholder={_STRINGS?.SEARCH_PLACE_INPUT}

@@ -1,11 +1,8 @@
-import React, { useState, useEffect } from "react";
-import MonthPicker from "../MonthPicker";
-import DaysOfTheWeel from "../DaysOfTheWeek";
-import DayPicker from "../DayPicker";
-import moment from "moment-jalaali";
-import YearPicker from "../YearPicker";
-import { useStoreTheme } from "../../../../store";
 import { OwnerCallendarItemDto } from "@/api_services/property/property.interface";
+import moment from "moment-jalaali";
+import { useEffect, useState } from "react";
+import DayPicker from "../DayPicker";
+import DaysOfTheWeel from "../DaysOfTheWeek";
 import YearMonthPicker from "../YearMonthPicker";
 
 type dates = {
@@ -16,7 +13,7 @@ type dates = {
   disablePrevMonths?: boolean;
   setSelectedDay?: (e: any | null) => void | null;
   setChosenDateState?: (e: any | null) => void | null;
-  options?: { valueType: "persian" | "global"; showTimeOfTheDay?: boolean };
+  options?: { valueType?: "persian" | "global"; showTimeOfTheDay?: boolean; disableDaySelect: boolean };
 };
 const Callender = ({
   selectedDate,
@@ -26,10 +23,10 @@ const Callender = ({
   callenderData,
   active_days,
   disablePrevMonths,
-  options = { valueType: "persian" },
+  options = { valueType: "persian", disableDaySelect: false },
 }: dates) => {
   const [chosenDate, setChosenDate] = useState<string | number>(
-    !!selectedDate ? moment(selectedDate, "jYYYY/jMM/jDD").format("jYYYY/jMM/jDD") : moment().format("jYYYY/jMM/jDD")
+    !!selectedDate ? moment(selectedDate, "jYYYY/jMM/jDD").format("jYYYY/jMM/jDD") : moment().format("jYYYY/jMM/jDD"),
   );
 
   const [year, setYear] = useState(moment(chosenDate, "jYYYY/jMM/jDD").format("jYYYY"));
