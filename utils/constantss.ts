@@ -333,13 +333,13 @@ export const profileItems = [
 ];
 
 export const WeekDays = [
-  { title: "شنبه", id: 6 },
+  { title: "شـنبه", id: 6 },
   { title: "یکشنبه", id: 0 },
   { title: "دوشنبه", id: 1 },
   { title: "سه شنبه", id: 2 },
   { title: "چهارشنبه", id: 3 },
   { title: "پنجشنبه", id: 4 },
-  { title: "جمعه", id: 5 },
+  { title: "جـمعه", id: 5 },
 ];
 export const simpleWeekDays = ["یکشنبه", "دوشنبه", "سه شنبه", "چهارشنبه", "پنجشنبه", "جمعه", "شنبه"];
 
