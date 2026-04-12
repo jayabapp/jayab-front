@@ -1,20 +1,18 @@
 "use client";
-import { difference, last } from "lodash";
-import { useRouter, usePathname } from "next/navigation";
-import { Dispatch, SetStateAction, useEffect, useState } from "react";
+import { usePathname, useRouter } from "next/navigation";
+import { useEffect, useState } from "react";
 
-import queryBuilder from "@/helpers/queryBuilder";
-import InfiniteScroll from "react-infinite-scroll-component";
-import BtnLoading from "../shared/Button/BtnLoading";
-import { useQuery } from "@tanstack/react-query";
-import PropertyCard from "../properties/PropertyCard";
-import { fakeVilla } from "@/utils/faker";
-import { PropertyService } from "@/api_services/property/property.service";
-import LottieLoading from "../shared/Lotties/LottieLoading";
-import EmptyList from "../shared/Lotties/EmptyList";
 import { PropertyListDto } from "@/api_services/property/property.interface";
-import moment from "moment-jalaali";
+import { PropertyService } from "@/api_services/property/property.service";
+import queryBuilder from "@/helpers/queryBuilder";
 import { WeekDays } from "@/utils/constantss";
+import { useQuery } from "@tanstack/react-query";
+import moment from "moment-jalaali";
+import InfiniteScroll from "react-infinite-scroll-component";
+import PropertyCard from "../properties/PropertyCard";
+import BtnLoading from "../shared/Button/BtnLoading";
+import EmptyList from "../shared/Lotties/EmptyList";
+import LottieLoading from "../shared/Lotties/LottieLoading";
 import ServerSidePaginate from "../shared/Pagination/ServerSidePaginate";
 
 export interface catQueryTypes {
@@ -81,7 +79,7 @@ function SsrClinetPartFilterProperties({
         router.replace(
           `${pathname}?${queryBuilder({
             ...temp,
-          })}`
+          })}`,
         );
       }
     }
@@ -217,7 +215,7 @@ function SsrClinetPartFilterProperties({
                     ...temp,
                     page: propQueryData?.meta?.next || 1,
                     // sort_type: query.sort_type ? query.sort_type : sortType?.id,
-                  })}`
+                  })}`,
                 );
               }}
               hasMore={!!hasPaginate ? false : propQueryData?.meta?.lastPage != page ? true : false}

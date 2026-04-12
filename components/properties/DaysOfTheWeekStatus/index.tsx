@@ -1,8 +1,5 @@
 import { ReserveDaysDto } from "@/api_services/property/property.interface";
 
-import _STRINGS from "@/utils/LocalStrings";
-import React from "react";
-
 const DaysOfTheWeekStatus = ({ isCard, data, week }: { week: any[]; isCard?: boolean; data: ReserveDaysDto[] }) => {
   return (
     <div
@@ -34,7 +31,7 @@ const DaysOfTheWeekStatus = ({ isCard, data, week }: { week: any[]; isCard?: boo
                 data?.find((x) => x?.day_number == e?.id)?.is_reserved
                   ? " bg-primary-700 border-primary-700  text-white "
                   : "  bg-white  border-primary-250 text-gray-400"
-              } text-xxs  border-2  min-w-9 rounded-full h-5   ${
+              } text-xxs  border  min-w-9 rounded-full h-5   ${
                 isCard ? "" : " !h-6 md:text-sm  "
               } w-full  relative  flex items-center justify-center `}
             >

@@ -1,14 +1,11 @@
 "use client";
-import Editable from "@/components/Editable";
 import PropertyCard from "@/components/properties/PropertyCard";
 import EmptyList from "@/components/shared/Lotties/EmptyList";
 import LottieLoading from "@/components/shared/Lotties/LottieLoading";
-import { NEW_IMAGE_URL } from "@/utils/urls";
-import { chunk, isEmpty } from "lodash";
-import Image from "next/image";
-import { useRouter } from "next/navigation";
+import { WeekDays } from "@/utils/constantss";
+import { isEmpty } from "lodash";
+import moment from "moment-jalaali";
 import { Fragment, useEffect, useState } from "react";
-import { isMobile } from "react-device-detect";
 import HomeProductsBannerItems from "./HomeProductsBannerItems";
 
 type HomePropertiesSsrPartType = {
@@ -17,6 +14,28 @@ type HomePropertiesSsrPartType = {
 };
 
 function HomePropertiesSsrPart({ data, middleBanners }: HomePropertiesSsrPartType) {
+  const [week, setWeek] = useState<any[]>([]);
+  useEffect(() => {
+    const dayOfWeek = moment().day();
+
+    const weeks = [];
+    for (let index = dayOfWeek; index < dayOfWeek + 7; index++) {
+      const item = WeekDays?.find((e) => {
+        if (index >= 7) {
+          return e?.id == index - 7;
+        } else {
+          return e?.id == index;
+        }
+      });
+      if (index < 7) {
+        weeks.push(item);
+      } else {
+        weeks.push(item);
+      }
+    }
+
+    setWeek(weeks);
+  }, []);
   return (
     <div className="w-full px-0  self-center">
       <div className=" w-full">
@@ -28,7 +47,7 @@ function HomePropertiesSsrPart({ data, middleBanners }: HomePropertiesSsrPartTyp
               const bannerItem = !isEmpty(middleBanners) ? middleBanners[Math.floor(index / 8)] : [];
               return (
                 <Fragment key={`PRODUCT${i?.id}`}>
-                  <PropertyCard data={i} key={`PRODUCT${i?.id}`} />
+                  <PropertyCard week={week} data={i} key={`PRODUCT${i?.id}`} />
                   {(index + 1) % 8 == 0 && !!bannerItem?.[0] && !!bannerItem?.[1] ? (
                     <div
                       key={`banenr${i?.id}`}
