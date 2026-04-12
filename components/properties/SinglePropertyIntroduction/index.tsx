@@ -2,6 +2,7 @@
 import { ChatService } from "@/api_services/chat/chat.service";
 import { SinglePropDto } from "@/api_services/property/property.interface";
 import { PropertyService } from "@/api_services/property/property.service";
+import AutoFitText from "@/components/shared/AutoFitText";
 import Button from "@/components/shared/Button/Button";
 import FixedBottomContainer from "@/components/shared/FixedBottomContainer";
 import ShareLink from "@/components/shared/shareComponent/BrowserShare";
@@ -119,7 +120,15 @@ const SinglePropertyIntroduction = ({ data }: { data: SinglePropDto }) => {
         />
         <div className="flex flex-col items-start gap-1">
           <p className="text-sm font-bold text-primary-700">{_STRINGS.HOST}</p>
-          <p className=" text-sm  text-primary-700 font-medium ">{data?.owner_info?.full_name}</p>
+          {/* <p className=" text-sm  text-primary-700 font-medium ">{data?.owner_info?.full_name}</p> */}
+          <div className="w-36 relative">
+            <AutoFitText
+              maxFontSize={14}
+              minFontSize={10}
+              className="text-sm  w-36  text-primary-700 font-medium "
+              text={`${data?.owner_info?.full_name}`}
+            />
+          </div>
         </div>
       </div>
     );

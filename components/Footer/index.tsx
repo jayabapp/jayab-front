@@ -46,7 +46,6 @@ const Footer = () => {
   const socials = data?.data?.filter((e: any) => e?.fields?.key == "social");
   const others = data?.data?.filter((e) => e?.fields?.key !== "social");
 
-  console.log(pathname, "pathnamepathname");
   return (
     <footer
       className={`  ${!!footerHiddenBlackList.find((e) => pathname?.includes(e)) ? "hidden lg:hidden" : ""} w-full  z-2 pb-20  mb:pb-6 bg-primary-200   hidden  lg:flex   flex-col items-center justify-center bg-dark-500  bg-no-repeat bg-cover  relative md:pt-[6rem] `}
