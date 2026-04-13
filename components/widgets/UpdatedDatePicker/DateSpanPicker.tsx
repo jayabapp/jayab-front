@@ -10,6 +10,7 @@ const DateSpanPicker = ({
   setDates,
   endTitle = _STRINGS.EXIT_DATE,
   startTitle = _STRINGS.START_DATE,
+  forbiden_dates,
 }: {
   dates:
     | {
@@ -28,6 +29,7 @@ const DateSpanPicker = ({
   >;
   endTitle?: string;
   startTitle?: string;
+  forbiden_dates?: Date[];
 }) => {
   const [show, setShow] = useState(false);
   const onHide = () => {
@@ -66,7 +68,7 @@ const DateSpanPicker = ({
           </div>
         </div>
       </div>
-      <DateSpanPickerModal onHide={onHide} show={show} onConfirm={onConfirmDate} />
+      <DateSpanPickerModal forbiden_dates={forbiden_dates} onHide={onHide} show={show} onConfirm={onConfirmDate} />
     </>
   );
 };

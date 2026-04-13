@@ -15,6 +15,7 @@ type DayDataType = {
 };
 
 interface DayProps {
+  forbiden_dates?: Date[];
   data?: DayDataType | any;
   onSelect?: (e: DayDataType | null | any) => void | null;
   selectedDayId?: { day: number; month: string; year: string };
@@ -50,7 +51,78 @@ const Day = memo(
     dateSpan,
     setDateSpan,
     maxSpanLength,
+    forbiden_dates,
   }: DayProps) => {
+    // Helper function to check if a date is forbidden
+    const isDateForbidden = useCallback(
+      (dateToCheck: moment.Moment | null) => {
+        if (!dateToCheck || !forbiden_dates?.length) return false;
+
+        return forbiden_dates.some((forbiddenDate) => {
+          const forbiddenMoment = moment(forbiddenDate);
+          return dateToCheck.isSame(forbiddenMoment, "day");
+        });
+      },
+      [forbiden_dates],
+    );
+
+    // Helper function to check if a date range contains any forbidden dates
+    const hasForbiddenInRange = useCallback(
+      (startDate: moment.Moment, endDate: moment.Moment): boolean => {
+        if (!forbiden_dates?.length) return false;
+
+        const minDate = startDate.clone().startOf("day");
+        const maxDate = endDate.clone().startOf("day");
+
+        return forbiden_dates.some((forbiddenDate) => {
+          const forbidden = moment(forbiddenDate).startOf("day");
+          return forbidden.isBetween(minDate, maxDate, "day", "[]");
+        });
+      },
+      [forbiden_dates],
+    );
+
+    // Helper function to find the nearest valid date when selection includes forbidden dates
+    const findNearestValidEndDate = useCallback(
+      (startDate: moment.Moment, clickedDate: moment.Moment): moment.Moment | null => {
+        if (!forbiden_dates?.length) return clickedDate;
+
+        const isMovingForward = clickedDate.isAfter(startDate);
+        let currentDate = clickedDate.clone();
+        let step = isMovingForward ? -1 : 1; // Move backwards if going forward, forwards if going backwards
+
+        // Find the nearest date that doesn't create a span with forbidden dates
+        let foundValid = false;
+        let attempts = 0;
+        const maxAttempts = 365; // Prevent infinite loop
+
+        while (!foundValid && attempts < maxAttempts) {
+          const minDate = isMovingForward ? startDate : currentDate;
+          const maxDate = isMovingForward ? currentDate : startDate;
+
+          if (!hasForbiddenInRange(minDate, maxDate)) {
+            foundValid = true;
+            return currentDate;
+          }
+
+          currentDate.add(step, "days");
+          attempts++;
+
+          // Don't go before start date
+          if (isMovingForward && currentDate.isBefore(startDate)) {
+            return null;
+          }
+          // Don't go after clicked date when moving backwards
+          if (!isMovingForward && currentDate.isAfter(clickedDate)) {
+            return null;
+          }
+        }
+
+        return foundValid ? currentDate : null;
+      },
+      [forbiden_dates, hasForbiddenInRange],
+    );
+
     // Memoize date calculations including span logic
     const dateInfo = useMemo(() => {
       if (!data?.id || !month || !year) {
@@ -67,7 +139,9 @@ const Day = memo(
           isSpanEnd: false,
           isBetweenSpan: false,
           isExceedsMaxSpan: false,
-          isValidForSelection: false, // New property to track if day is valid for span selection
+          isValidForSelection: false,
+          isForbidden: false,
+          isPartOfForbiddenSpan: false,
           momentDate: null,
           jsDate: null,
         };
@@ -77,13 +151,17 @@ const Day = memo(
       const momentDate = moment(dateString, "jYYYY/jMM/jD");
       const jsDate = momentDate.toDate();
 
+      // Check if this date is forbidden
+      const isForbidden = isDateForbidden(momentDate);
+
       // Check if this date is within the current span
       let isInSpan = false;
       let isSpanStart = false;
       let isSpanEnd = false;
       let isBetweenSpan = false;
       let isExceedsMaxSpan = false;
-      let isValidForSelection = false; // Initialize as false
+      let isValidForSelection = false;
+      let isPartOfForbiddenSpan = false;
 
       if (dateSpan?.start && dateSpan?.end) {
         const start = moment(dateSpan.start);
@@ -94,6 +172,11 @@ const Day = memo(
         isSpanEnd = current.isSame(end, "day");
         isBetweenSpan = current.isBetween(start, end, "day", "[]");
         isInSpan = isSpanStart || isSpanEnd || isBetweenSpan;
+
+        // Check if this date is part of a span that contains forbidden dates
+        if (isInSpan && forbiden_dates?.length) {
+          isPartOfForbiddenSpan = hasForbiddenInRange(start, end);
+        }
       } else if (dateSpan?.start && !dateSpan?.end) {
         // Single date selected (waiting for end)
         const start = moment(dateSpan.start);
@@ -105,12 +188,35 @@ const Day = memo(
         if (maxSpanLength) {
           const daysBetween = Math.abs(current.diff(start, "days"));
           isExceedsMaxSpan = daysBetween + 1 > maxSpanLength;
-          // Day is valid for selection if it doesn't exceed maxSpanLength AND it's not the same as start
+
+          // Check if selecting this date would include forbidden dates
+          const wouldIncludeForbidden =
+            !current.isSame(start, "day") &&
+            hasForbiddenInRange(current.isBefore(start) ? current : start, current.isBefore(start) ? start : current);
+
+          // Day is valid for selection if:
+          // 1. Doesn't exceed maxSpanLength
+          // 2. Not the same as start
+          // 3. Not before today
+          // 4. NOT FORBIDDEN
+          // 5. Would NOT include any forbidden dates in the range
           isValidForSelection =
-            !isExceedsMaxSpan && !current.isSame(start, "day") && !current.isBefore(moment(new Date()), "day");
+            !isExceedsMaxSpan &&
+            !current.isSame(start, "day") &&
+            !current.isBefore(moment(new Date()), "day") &&
+            !isForbidden &&
+            !wouldIncludeForbidden;
         } else {
-          // If no maxSpanLength, all days are valid (except the start date itself)
-          isValidForSelection = !current.isSame(start, "day") && !current.isBefore(moment(new Date()), "day");
+          // If no maxSpanLength, all days are valid (except start date, past dates, and forbidden dates)
+          const wouldIncludeForbidden =
+            !current.isSame(start, "day") &&
+            hasForbiddenInRange(current.isBefore(start) ? current : start, current.isBefore(start) ? start : current);
+
+          isValidForSelection =
+            !current.isSame(start, "day") &&
+            !current.isBefore(moment(new Date()), "day") &&
+            !isForbidden &&
+            !wouldIncludeForbidden;
         }
       }
 
@@ -127,15 +233,31 @@ const Day = memo(
         isSpanEnd,
         isBetweenSpan,
         isExceedsMaxSpan,
-        isValidForSelection, // Include in the returned object
+        isValidForSelection,
+        isForbidden,
+        isPartOfForbiddenSpan,
         momentDate: momentDate,
         jsDate,
       };
-    }, [data, month, year, freeDaysOfMonth, today, selectedDayId, dateSpan, maxSpanLength]);
+    }, [
+      data,
+      month,
+      year,
+      freeDaysOfMonth,
+      today,
+      selectedDayId,
+      dateSpan,
+      maxSpanLength,
+      isDateForbidden,
+      hasForbiddenInRange,
+    ]);
 
-    // Handle date span selection with maxSpanLength validation
+    // Handle date span selection with forbidden dates validation
     const handleSpanSelection = useCallback(() => {
       if (!setDateSpan || !dateInfo.jsDate) return;
+
+      // Prevent selection if date is forbidden
+      if (dateInfo.isForbidden) return;
 
       setDateSpan((prev) => {
         // If no start date, set start
@@ -148,15 +270,46 @@ const Day = memo(
           if (moment(prev.start).isSame(moment(dateInfo.jsDate), "day")) {
             return { start: null, end: null };
           }
+
           const startMoment = moment(prev.start);
           const clickedMoment = moment(dateInfo.jsDate);
 
-          // Calculate span length
+          // Determine the range that would be created
+          const rangeStart = clickedMoment.isBefore(startMoment) ? clickedMoment : startMoment;
+          const rangeEnd = clickedMoment.isBefore(startMoment) ? startMoment : clickedMoment;
+
+          // Check if the range contains any forbidden dates
+          const containsForbidden = hasForbiddenInRange(rangeStart, rangeEnd);
+
+          // If range contains forbidden dates, try to find a valid end date
+          if (containsForbidden) {
+            // const validEndDate = findNearestValidEndDate(startMoment, clickedMoment);
+            // Notify({ type: "error", body: "روز قابل انتخاب نیست" });
+            // if (!validEndDate) {
+            // If no valid end date found, just set the clicked date as new start
+            //   return { start: dateInfo.jsDate, end: null };
+            // }
+
+            // Check if the valid end date respects maxSpanLength
+            // const daysBetween = Math.abs(validEndDate.diff(startMoment, "days")) + 1;
+
+            // if (maxSpanLength && daysBetween > maxSpanLength) {
+            //   return { start: dateInfo.jsDate, end: null };
+            // }
+
+            // Set the adjusted valid range
+            // if (validEndDate.isBefore(startMoment)) {
+            //   return { start: null, end: prev.start };
+            // } else {
+            return { start: prev.start, end: null };
+            // }
+          }
+
+          // Calculate days between for original selection
           const daysBetween = Math.abs(clickedMoment.diff(startMoment, "days")) + 1;
 
           // Check if span exceeds maxSpanLength
           if (maxSpanLength && daysBetween > maxSpanLength) {
-            // If exceeds max, don't set end, just return current state
             return { start: dateInfo.jsDate, end: null };
           }
 
@@ -172,10 +325,19 @@ const Day = memo(
         // If both exist, reset with clicked date as start
         return { start: dateInfo.jsDate, end: null };
       });
-    }, [setDateSpan, dateInfo.jsDate, maxSpanLength]);
+    }, [
+      setDateSpan,
+      dateInfo.jsDate,
+      dateInfo.isForbidden,
+      maxSpanLength,
+      hasForbiddenInRange,
+      findNearestValidEndDate,
+    ]);
 
     // Combine click handlers
     const handleClick = useCallback(() => {
+      // Don't allow clicking on forbidden dates
+      if (dateInfo.isForbidden) return;
       if (!dateInfo.jsDate || (dateInfo.isBefore && !dateInfo?.isToday)) return;
 
       // If span selection is enabled, handle that first
@@ -187,19 +349,33 @@ const Day = memo(
       if (onSelect && (!dateInfo.isBefore || dateInfo.isToday)) {
         onSelect(data || null);
       }
-    }, [onSelect, data, dateInfo.isBefore, dateInfo.isToday, dateInfo.jsDate, setDateSpan, handleSpanSelection]);
+    }, [
+      onSelect,
+      data,
+      dateInfo.isBefore,
+      dateInfo.isToday,
+      dateInfo.jsDate,
+      setDateSpan,
+      handleSpanSelection,
+      dateInfo.isForbidden,
+    ]);
 
-    // Memoize dynamic class names including span styles
+    // Memoize dynamic class names including forbidden styles
     const containerClasses = useMemo(() => {
       const baseClasses = "aspect-square m-0.5 md:m-1 rounded-lg relative overflow-hidden";
 
       let bgClass = "bg-white border border-primary-border";
-      if (dateInfo.isBefore && !dateInfo.isToday) {
+
+      if (dateInfo.isForbidden) {
+        bgClass = " striped opacity-60";
+      } else if (dateInfo.isPartOfForbiddenSpan) {
+        bgClass = "bg-red-50 border-red-200 opacity-50";
+      } else if (dateInfo.isBefore && !dateInfo.isToday) {
         bgClass = "bg-primary-300 opacity-50";
       } else if (dateInfo.isValidForSelection) {
         bgClass = "bg-green-100/20 border border-green-300";
       } else if (dateInfo.isExceedsMaxSpan) {
-        bgClass = " cursor-pointer";
+        bgClass = "cursor-pointer";
       } else if (dateInfo.isInSpan) {
         if (dateInfo.isSpanStart) {
           bgClass = "bg-primary-700 !m-0 !rounded-l-none";
@@ -210,11 +386,13 @@ const Day = memo(
         }
       }
 
-      const cursorClass = onSelect || setDateSpan ? "cursor-pointer" : "";
+      const cursorClass =
+        (onSelect || setDateSpan) && !dateInfo.isForbidden && !dateInfo.isPartOfForbiddenSpan
+          ? "cursor-pointer"
+          : "cursor-not-allowed";
 
-      if (dateInfo.isExceedsMaxSpan) {
-        // Remove cursor-pointer if exceeds max span
-        return `${baseClasses} ${bgClass}`.trim();
+      if (dateInfo.isExceedsMaxSpan || dateInfo.isForbidden || dateInfo.isPartOfForbiddenSpan) {
+        return `${baseClasses} ${bgClass} ${cursorClass}`.trim();
       }
 
       return `${baseClasses} ${bgClass} ${cursorClass}`.trim();
@@ -226,7 +404,9 @@ const Day = memo(
       dateInfo.isSpanEnd,
       dateInfo.isBetweenSpan,
       dateInfo.isExceedsMaxSpan,
-      dateInfo.isValidForSelection, // Add this dependency
+      dateInfo.isValidForSelection,
+      dateInfo.isForbidden,
+      dateInfo.isPartOfForbiddenSpan,
       onSelect,
       setDateSpan,
     ]);
@@ -239,12 +419,19 @@ const Day = memo(
         data?.isActive ? "border-b-2 border-white" : "",
       ];
 
-      if (dateInfo.isSelected && !dateInfo.isInSpan) {
+      if (dateInfo.isSelected && !dateInfo.isInSpan && !dateInfo.isForbidden && !dateInfo.isPartOfForbiddenSpan) {
         classes.push("!bg-primary-800 rounded-lg");
       }
 
       return classes.filter(Boolean).join(" ");
-    }, [dateInfo.isReserved, dateInfo.isSelected, dateInfo.isInSpan, data?.isActive]);
+    }, [
+      dateInfo.isReserved,
+      dateInfo.isSelected,
+      dateInfo.isInSpan,
+      dateInfo.isForbidden,
+      dateInfo.isPartOfForbiddenSpan,
+      data?.isActive,
+    ]);
 
     const dateTextClasses = useMemo(() => {
       const classes = ["z-10 font-medium"];
@@ -255,16 +442,16 @@ const Day = memo(
         classes.push("text-base");
       }
 
-      if (dateInfo.isFriday) {
+      if (dateInfo.isForbidden) {
+        classes.push("text-gray-500 ");
+      } else if (dateInfo.isPartOfForbiddenSpan) {
+        classes.push("text-red-400 line-through");
+      } else if (dateInfo.isFriday) {
         classes.push("text-red-700");
-      }
-
-      if (dateInfo.isBefore && !dateInfo.isToday) {
+      } else if (dateInfo.isBefore && !dateInfo.isToday) {
         classes.push("text-gray-500");
       } else if (dateInfo.isValidForSelection) {
         classes.push("text-green-800 font-semibold");
-      } else if (dateInfo.isExceedsMaxSpan) {
-        // classes.push("text-red-600");
       } else if (dateInfo.isInSpan) {
         if (dateInfo.isSpanStart || dateInfo.isSpanEnd) {
           classes.push("text-white font-bold");
@@ -288,7 +475,9 @@ const Day = memo(
       dateInfo.isSpanEnd,
       dateInfo.isSelected,
       dateInfo.isExceedsMaxSpan,
-      dateInfo.isValidForSelection, // Add this dependency
+      dateInfo.isValidForSelection,
+      dateInfo.isForbidden,
+      dateInfo.isPartOfForbiddenSpan,
     ]);
 
     // Don't render anything if no data
@@ -298,10 +487,18 @@ const Day = memo(
       <div
         className={containerClasses}
         onClick={handleClick}
-        role={(onSelect || setDateSpan) && !dateInfo.isExceedsMaxSpan ? "button" : "button"}
-        tabIndex={(onSelect || setDateSpan) && !dateInfo.isExceedsMaxSpan ? 0 : 0}
+        role={
+          (onSelect || setDateSpan) && !dateInfo.isForbidden && !dateInfo.isPartOfForbiddenSpan ? "button" : "button"
+        }
+        tabIndex={(onSelect || setDateSpan) && !dateInfo.isForbidden && !dateInfo.isPartOfForbiddenSpan ? 0 : -1}
         onKeyDown={(e) => {
-          if ((onSelect || setDateSpan) && e.key === "Enter" && !dateInfo.isBefore) {
+          if (
+            (onSelect || setDateSpan) &&
+            e.key === "Enter" &&
+            !dateInfo.isBefore &&
+            !dateInfo.isForbidden &&
+            !dateInfo.isPartOfForbiddenSpan
+          ) {
             handleClick();
           }
         }}
@@ -315,6 +512,8 @@ const Day = memo(
                 : ""
         } ${dateInfo.isExceedsMaxSpan ? "Exceeds maximum span length" : ""} ${
           dateInfo.isValidForSelection ? "Valid for selection" : ""
+        } ${dateInfo.isForbidden ? "Forbidden - Cannot select" : ""} ${
+          dateInfo.isPartOfForbiddenSpan ? "Part of span containing forbidden dates" : ""
         }`}
       >
         <div
@@ -328,44 +527,70 @@ const Day = memo(
           data-is-between-span={dateInfo.isBetweenSpan}
           data-exceeds-max-span={dateInfo.isExceedsMaxSpan}
           data-is-valid-for-selection={dateInfo.isValidForSelection}
+          data-is-forbidden={dateInfo.isForbidden}
+          data-is-part-of-forbidden-span={dateInfo.isPartOfForbiddenSpan}
         >
           {/* Today indicator */}
-          {dateInfo.isToday && <div className="absolute top-0.5 md:top-1 w-1.5 h-1.5 bg-primary-700 rounded-full" />}
+          {dateInfo.isToday && !dateInfo.isForbidden && !dateInfo.isPartOfForbiddenSpan && (
+            <div className="absolute top-0.5 md:top-1 w-1.5 h-1.5 bg-primary-700 rounded-full" />
+          )}
+
+          {/* Part of forbidden span indicator */}
+          {dateInfo.isPartOfForbiddenSpan && !dateInfo.isForbidden && (
+            <div className="absolute inset-0 flex items-center justify-center">
+              <div className="w-full h-0.5 bg-red-300 rotate-45 absolute opacity-50" />
+              <div className="w-full h-0.5 bg-red-300 -rotate-45 absolute opacity-50" />
+            </div>
+          )}
 
           {/* Memo indicator */}
-          {dateInfo.hasMemo && !dateInfo.isExceedsMaxSpan && (
-            <div
-              className={`absolute left-1 top-1 w-1.5 h-1.5 aspect-square rounded-full ${
-                dateInfo.isInSpan && (dateInfo.isSpanStart || dateInfo.isSpanEnd)
-                  ? "bg-white"
-                  : dateInfo.isValidForSelection
-                    ? "bg-green-600"
-                    : "bg-primary-600"
-              }`}
-              aria-label="Has memo"
-            />
-          )}
+          {dateInfo.hasMemo &&
+            !dateInfo.isExceedsMaxSpan &&
+            !dateInfo.isForbidden &&
+            !dateInfo.isPartOfForbiddenSpan && (
+              <div
+                className={`absolute left-1 top-1 w-1.5 h-1.5 aspect-square rounded-full ${
+                  dateInfo.isInSpan && (dateInfo.isSpanStart || dateInfo.isSpanEnd)
+                    ? "bg-white"
+                    : dateInfo.isValidForSelection
+                      ? "bg-green-600"
+                      : "bg-primary-600"
+                }`}
+                aria-label="Has memo"
+              />
+            )}
 
           {/* Peak indicator */}
-          {dateInfo.isPeak && !dateInfo.isInSpan && !dateInfo.isExceedsMaxSpan && !dateInfo.isValidForSelection && (
-            <div
-              className="absolute bottom-1 left-0 right-0 mx-auto h-1 w-2/3 bg-primary-800 rounded-full"
-              aria-label="Peak day"
-            />
-          )}
+          {dateInfo.isPeak &&
+            !dateInfo.isInSpan &&
+            !dateInfo.isExceedsMaxSpan &&
+            !dateInfo.isValidForSelection &&
+            !dateInfo.isForbidden &&
+            !dateInfo.isPartOfForbiddenSpan && (
+              <div
+                className="absolute bottom-1 left-0 right-0 mx-auto h-1 w-2/3 bg-primary-800 rounded-full"
+                aria-label="Peak day"
+              />
+            )}
 
           {/* Day number */}
           <p className={dateTextClasses}>{data.id}</p>
 
-          {/* Price part - only render if price exists and not in span mode */}
-          {data.price && !dateInfo.isInSpan && !dateInfo.isExceedsMaxSpan && !dateInfo.isValidForSelection && (
-            <DayPricePart data={data} />
-          )}
+          {/* Price part - only render if price exists and not in span mode and not forbidden/blocked */}
+          {data.price &&
+            !dateInfo.isInSpan &&
+            !dateInfo.isExceedsMaxSpan &&
+            !dateInfo.isValidForSelection &&
+            !dateInfo.isForbidden &&
+            !dateInfo.isPartOfForbiddenSpan && <DayPricePart data={data} />}
 
           {/* Span start/end indicators */}
-          {(dateInfo.isSpanStart || dateInfo.isSpanEnd) && !dateInfo.isExceedsMaxSpan && (
-            <div className="absolute -bottom-1 left-0 right-0 mx-auto w-3 h-0.5 bg-white rounded-full" />
-          )}
+          {(dateInfo.isSpanStart || dateInfo.isSpanEnd) &&
+            !dateInfo.isExceedsMaxSpan &&
+            !dateInfo.isForbidden &&
+            !dateInfo.isPartOfForbiddenSpan && (
+              <div className="absolute -bottom-1 left-0 right-0 mx-auto w-3 h-0.5 bg-white rounded-full" />
+            )}
         </div>
       </div>
     );

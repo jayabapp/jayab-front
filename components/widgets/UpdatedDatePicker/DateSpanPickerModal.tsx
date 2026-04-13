@@ -3,22 +3,24 @@ import BtnLoading from "@/components/shared/Button/BtnLoading";
 import Button from "@/components/shared/Button/Button";
 import _STRINGS from "@/utils/LocalStrings";
 import moment from "moment-jalaali";
-import dynamic from "next/dynamic";
 import React, { useEffect, useState } from "react";
+import InfiniteScroll from "react-infinite-scroll-component";
 import DatePicker from "./index";
-const InfiniteScroll = dynamic(() => import("react-infinite-scroll-component"), { ssr: false });
+// const InfiniteScroll = dynamic(() => import("react-infinite-scroll-component"), { ssr: false });
 const DateSpanPickerModal = ({
   onConfirm,
   show,
   onHide,
   startDate = moment().toDate(),
   defaultSpanDates,
+  forbiden_dates,
 }: {
   onConfirm: (e: any) => void | null;
   show: boolean;
   onHide: () => void | null;
   startDate?: Date;
   defaultSpanDates?: { start?: Date; end?: Date };
+  forbiden_dates?: Date[];
 }) => {
   const [months, setMonths] = React.useState<Date[]>([]);
   const [hasMore, setHasMore] = React.useState<boolean>(true);
@@ -120,6 +122,7 @@ const DateSpanPickerModal = ({
           {months.map((monthDate, index) => (
             <div key={`month-${monthDate.getTime()}`} className="">
               <DatePicker
+                options={{ maxSpanLength: 15 }}
                 // options={{ maxSpanLength: 6 }}
                 dateSpan={dateSpan}
                 setDateSpan={setDateSpan}
@@ -129,6 +132,7 @@ const DateSpanPickerModal = ({
                 // You might need to pass other props like:
                 // selectedDates={dateSpan}
                 // onDateSelect={handleDateSelect}
+                forbiden_dates={forbiden_dates}
               />
             </div>
           ))}
@@ -138,7 +142,7 @@ const DateSpanPickerModal = ({
       {!!onConfirm ? (
         <Button
           onClick={() => onConfirm(dateSpan)}
-          disabled={!dateSpan?.start}
+          disabled={!dateSpan?.start || !dateSpan?.end}
           width="w-full"
           containerClass=" absolute z-50 bottom-4 mx-auto w-[calc(100%-2rem)] left-4 right-4 "
           title={!!dateSpan?.end ? _STRINGS.SELECT_DATE_SPAN : _STRINGS.SELECT_DATE}

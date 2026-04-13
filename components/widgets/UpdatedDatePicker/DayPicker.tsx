@@ -53,6 +53,7 @@ type Props = {
     }>
   >;
   options?: { valueType?: "persian" | "global"; showTimeOfTheDay?: boolean; maxSpanLength?: number };
+  forbiden_dates?: Date[];
 };
 
 const DayPicker = ({
@@ -68,6 +69,7 @@ const DayPicker = ({
   smallerDateFonts,
   setDateSpan,
   dateSpan,
+  forbiden_dates,
 }: Props) => {
   // Memoize today's date to prevent recalculation on every render
   const today = useMemo<TodayData>(
@@ -153,7 +155,6 @@ const DayPicker = ({
       const dayMoment = moment(dayKey, "jYYYY/jMM/jD");
       const dayOfWeek = dayMoment.day();
       const callenderItem = callenderDataMap.get(i);
-
       newDaysData.push({
         id: i,
         month,
@@ -165,7 +166,6 @@ const DayPicker = ({
         isActive: activeDaysSet.has(dayOfWeek),
       });
     }
-
     setDaysData(newDaysData);
   }, [monthInfo.numberOfDays, month, year, activeDaysSet, callenderDataMap]);
 
@@ -248,6 +248,7 @@ const DayPicker = ({
           dateSpan={dateSpan}
           setDateSpan={setDateSpan}
           maxSpanLength={options?.maxSpanLength}
+          forbiden_dates={forbiden_dates}
         />
       )),
     [

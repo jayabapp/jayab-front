@@ -46,6 +46,42 @@ const SinglePropReservePop = ({
     setDates({});
   };
 
+  const generateRandomDates = () => {
+    const startDate = moment(); // Current Jalali date
+    const endDate = moment().add(2, "jMonth"); // 2 months later in Jalali
+    const totalDays = endDate.diff(startDate, "days");
+
+    const dates = [];
+    const dateSet = new Set();
+
+    // Generate 10 unique random dates
+    while (dates.length < 10 && dateSet.size < totalDays + 1) {
+      const randomDays = Math.floor(Math.random() * (totalDays + 1));
+      // Create the random date by adding days to the start date
+      const randomDate = startDate.clone().add(randomDays, "days");
+      const dateKey = randomDate.format("jYYYY/jMM/jD"); // Key for uniqueness check
+
+      if (!dateSet.has(dateKey)) {
+        dateSet.add(dateKey);
+        dates.push({
+          id: dates.length,
+          // Jalali Formatting
+          date: randomDate.toDate(),
+          jalaliDate: randomDate.format("jYYYY/jMM/jD"),
+          fullJalali: randomDate.format("jMMMM jD, jYYYY"), // e.g., "مرداد 5, 1403"
+          weekday: randomDate.format("dddd"), // Weekday name (depends on locale)
+          // Gregorian equivalent (optional, for reference)
+          gregorian: randomDate.format("YYYY/MM/DD"),
+        });
+      }
+    }
+
+    // Sort chronologically (Jalali dates sort correctly if formatted as YYYY/MM/DD)
+    dates.sort((a, b) => a.jalaliDate.localeCompare(b.jalaliDate));
+
+    return dates;
+  };
+
   return (
     <>
       <ModalBottomSheet
@@ -83,7 +119,11 @@ const SinglePropReservePop = ({
                 setDate={setEndDate}
               /> */}
 
-              <DateSpanPicker dates={dates} setDates={setDates} />
+              <DateSpanPicker
+                forbiden_dates={generateRandomDates()?.map((e) => e?.date)}
+                dates={dates}
+                setDates={setDates}
+              />
             </div>
           </div>
           <div className="w-full flex flex-col gap-2">

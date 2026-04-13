@@ -24,6 +24,7 @@ type dates = {
     }>
   >;
   options?: { valueType?: "persian" | "global"; showTimeOfTheDay?: boolean; maxSpanLength?: number };
+  forbiden_dates?: Date[];
 };
 const SingleDatePicker = ({
   selectedDate,
@@ -36,6 +37,7 @@ const SingleDatePicker = ({
   setDateSpan,
   dateSpan,
   options = { valueType: "persian" },
+  forbiden_dates,
 }: dates) => {
   const [chosenDate, setChosenDate] = useState<string | number>(
     !!startDate || !!startDate
@@ -153,6 +155,7 @@ const SingleDatePicker = ({
         setSelectedDay={setSelectedDay}
         selectedDate={selectedDate}
         options={options}
+        forbiden_dates={forbiden_dates}
       />
     </div>
   );
