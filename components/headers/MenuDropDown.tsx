@@ -1,19 +1,18 @@
-import { Menu, MenuButton, MenuItem, MenuItems, Transition } from "@headlessui/react";
+import { Menu, MenuButton, Transition } from "@headlessui/react";
 
 import { usePathname } from "next/navigation";
-import React, { Fragment, useRef } from "react";
+import { Fragment, useRef } from "react";
 
 import Link from "next/link";
-import _STRINGS from "@/utils/LocalStrings";
 
 import { menuDropDownItems } from "@/utils/constantss";
 
-const MenuDropDown = ({}) => {
+const MenuDropDown = ({ isHome }: { isHome: boolean }) => {
   const ref = useRef<HTMLButtonElement>(null);
   const asPath = usePathname();
 
   return (
-    <div className="text-right mt-1">
+    <div className="text-right flex items-center justify-center ">
       <Menu
         onMouseEnter={() => {
           if (ref?.current) {
@@ -26,17 +25,11 @@ const MenuDropDown = ({}) => {
           }
         }}
         as="div"
-        className="relative inline-block text-left"
+        className="relative    items-start justify-start flex"
       >
-        <div>
-          <MenuButton
-            ref={ref}
-            className={`flex items-center transition-all  brightness-125 hover:brightness-100 hover:grayscale-0  grayscale justify-center col-span-1 gap-2 flex-row ml-6`}
-          >
-            <img src="/assets/icons/header/menu_header.svg" className="dark:invert" />
-            <p className="text-primary-700 shrink-0 text-sm  ">{_STRINGS.MENU}</p>
-          </MenuButton>
-        </div>
+        <MenuButton ref={ref} className={` `}>
+          <img src="/assets/icons/header/menu_header.svg" className="dark:invert  w-6 h-6" />
+        </MenuButton>
         <Transition
           as={Fragment}
           enter="transition ease-out duration-100"
@@ -46,7 +39,7 @@ const MenuDropDown = ({}) => {
           leaveFrom="transform opacity-100 scale-100"
           leaveTo="transform opacity-0 scale-95"
         >
-          <div className="absolute left-0  z-20  mt-2 w-48 origin-top-center  rounded-xl bg-white dark:bg-zinc-800 shadow-xl ring-1 ring-black ring-opacity-5 focus:outline-none  overflow-scroll">
+          <div className="absolute -left-10  z-20  mt-2 w-48 origin-top-center  rounded-xl bg-white dark:bg-zinc-800 shadow-xl ring-1 ring-black ring-opacity-5 focus:outline-none  overflow-scroll">
             <div className="px-1 py-2 ">
               {menuDropDownItems.map((e) => (
                 <Link

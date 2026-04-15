@@ -705,3 +705,10 @@ ul {
 *:focus {
   outline: none !important;
 }
+
+.padding-x {
+  @apply px-3 md:px-10  2xl:px-[9%];
+}
+.extra-padding-x {
+  @apply px-3 md:px-10 xl:!px-[15%] 2xl:!px-[20%];
+}

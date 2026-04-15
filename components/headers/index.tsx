@@ -15,6 +15,7 @@ import { useAuthStore, useStoreInit, useStoreParams } from "@/store";
 import { headerMobileSearchBlackList } from "@/utils/constantss";
 import { NEW_IMAGE_URL } from "@/utils/urls";
 import { useQuery } from "@tanstack/react-query";
+import { throttle } from "lodash";
 import moment from "moment-jalaali";
 import Button from "../shared/Button/Button";
 import DrawerMenu from "../shared/DrawerMenu";
@@ -27,7 +28,8 @@ const PopSearchbox = dynamic(() => import("../SearchBoxComp/PopSearchbox"), {
 });
 
 type textIconType = {
-  item: { route: string; icon: string; title: string; hasBadge?: boolean };
+  item: { route?: string; icon?: string; title: string; hasBadge?: boolean; cb?: () => void | null };
+  isHome: boolean;
 };
 
 const Pulser = ({ className }: { className?: string }) => (
@@ -36,25 +38,38 @@ const Pulser = ({ className }: { className?: string }) => (
   ></div>
 );
 
-const TextIcon = ({ item }: textIconType) => (
-  <Link
-    prefetch={false}
-    href={item?.route}
-    className={`flex items-center relative transition-all  group  justify-center col-span-1 gap-2 flex-row ml-4 `}
-  >
-    {item?.hasBadge ? <Pulser /> : <></>}
+const TextIcon = ({ item, isHome }: textIconType) => {
+  const parentClass = "flex items-center relative transition-all  group  justify-center col-span-1 gap-2 flex-row ";
+  const textColor = isHome ? "text-white" : "text-black";
+  if (!!item?.route) {
+    return (
+      <Link prefetch={false} href={item?.route || ""} className={parentClass}>
+        {item?.hasBadge ? <Pulser /> : <></>}
 
-    <img
+        {/* <img
       src={item?.icon}
       className={`dark:invert  brightness-125 group-hover:brightness-100 group-hover:grayscale-0  grayscale `}
-    />
-    <p
-      className={`text-primary-700 shrink-0  brightness-125 group-hover:brightness-100 group-hover:grayscale-0  grayscale  }`}
-    >
-      {item?.title}
-    </p>
-  </Link>
-);
+    /> */}
+        <p className={`${textColor}  shrink-0  font-medium  group-hover:brightness-100 group-hover:text-primary-700  `}>
+          {item?.title}
+        </p>
+      </Link>
+    );
+  } else
+    return (
+      <div onClick={item?.cb} className={parentClass}>
+        {item?.hasBadge ? <Pulser /> : <></>}
+
+        {/* <img
+      src={item?.icon}
+      className={`dark:invert  brightness-125 group-hover:brightness-100 group-hover:grayscale-0  grayscale `}
+    /> */}
+        <p className={`${textColor}  shrink-0  font-medium  group-hover:brightness-100 group-hover:text-primary-700  `}>
+          {item?.title}
+        </p>
+      </div>
+    );
+};
 
 const Header = ({ scroll }: { scroll?: number }) => {
   const { userInfo } = useStoreInit((data) => data);
@@ -66,7 +81,7 @@ const Header = ({ scroll }: { scroll?: number }) => {
   const { getBackHome } = useStoreParams((state: any) => state);
   const [isOpen, setIsOpen] = useState(false);
   const [showLogins, setShowLogins] = useState(false);
-
+  const [visibleTopHeader, setVisibleTopHeader] = useState(true);
   useEffect(() => {
     setTimeout(() => {
       setShowLogins(true);
@@ -76,29 +91,26 @@ const Header = ({ scroll }: { scroll?: number }) => {
   // const [visibleTopHeader, setVisibleTopHeader] = useState(true);
   // const [theme, setTheme] = useState("dark");
 
-  // useEffect(() => {
-  //   window?.addEventListener("scroll", handleScroll);
-  //   const temp = localStorage.getItem("theme");
-  //   const isLoginTemp = localStorage.getItem("isLogin");
-  //   useAuthStore.setState({ isLogin: isLoginTemp === "true" ? true : false });
+  useEffect(() => {
+    window?.addEventListener("scroll", handleScroll);
+    const temp = localStorage.getItem("theme");
+    const isLoginTemp = localStorage.getItem("isLogin");
+    useAuthStore.setState({ isLogin: isLoginTemp === "true" ? true : false });
 
-  //   if (temp) {
-  //     setTheme(temp);
-  //   }
-  //   return () => window?.removeEventListener("scroll", handleScroll);
-  // }, []);
+    return () => window?.removeEventListener("scroll", handleScroll);
+  }, []);
 
-  // const handleScroll = throttle((event) => {
-  //   if (window?.scrollY > 20) setVisibleTopHeader(false);
-  //   else setVisibleTopHeader(true);
-  // }, 100);
+  const handleScroll = throttle((event) => {
+    if (window?.scrollY > 20) setVisibleTopHeader(false);
+    else setVisibleTopHeader(true);
+  }, 100);
 
-  // useEffect(() => {
-  //   if (scroll) {
-  //     if (scroll > 20) setVisibleTopHeader(false);
-  //     else setVisibleTopHeader(true);
-  //   }
-  // }, [scroll]);
+  useEffect(() => {
+    if (scroll) {
+      if (scroll > 20) setVisibleTopHeader(false);
+      else setVisibleTopHeader(true);
+    }
+  }, [scroll]);
 
   /* -------------------------- GET USER FOR DROPDOWN ------------------------- */
   const path = pathname;
@@ -199,18 +211,18 @@ const Header = ({ scroll }: { scroll?: number }) => {
 
     queryFn: ReserveService.activeReserve,
   });
-
+  const isHome = pathname == "/" ? true : false;
   return (
     <header className="relative">
       <div
         id="headerContainer"
         className={`
-     
+     ${visibleTopHeader && isHome ? "  pb-24 from-black/40  " : " from-white/60 backdrop-blur-md    "}
 
-transition-all  ease-in-out duration-1000 header-content-container w-full mx-auto   shadow-sm  backdrop-blur-md  bg-white dark:bg-dark-900   pt-2 pb-2   border-b dark:border-zinc-500 border-gray-100 `}
+transition-all  bg-gradient-to-b  to-black/0   ease-in-out duration-1000 header-content-container w-full mx-auto     dark:bg-dark-900   py-4 `}
       >
         {/* ROW 1 */}
-        <div className="flex justify-between  items-center  xl:gap-[10%]  py-1  px-3 md:px-10  2xl:px-[9%]  ">
+        <div className="flex justify-between  items-center  xl:gap-[10%]  py-1  padding-x  ">
           <div className=" lg:hidden flex w-full  ">
             {pathname == "/" ? (
               <div className="w-full flex items-center  bg-primary-100  py-1  rounded-full justify-between pl-2 pr-1.5 gap-2">
@@ -346,7 +358,7 @@ transition-all  ease-in-out duration-1000 header-content-container w-full mx-aut
                           </Link>
                         ) : (
                           <Suspense>
-                            <PopSearchbox
+                            {/* <PopSearchbox
                               justIcon
                               boxId={scroll ? "SEARCH_BOX_Mobile_Modal" : "SEARCH_BOX_Mobile"}
                               placeholder={_STRINGS?.SEARCH_CITY_OR_ADD}
@@ -354,7 +366,7 @@ transition-all  ease-in-out duration-1000 header-content-container w-full mx-aut
                               onClear={() => {}}
                               item={{ bg: "" }}
                               autofocus={isInSearch}
-                            />
+                            /> */}
                           </Suspense>
                         )}
                       </div>
@@ -364,65 +376,39 @@ transition-all  ease-in-out duration-1000 header-content-container w-full mx-aut
               </div>
             )}
           </div>
-          <div className="hidden md:visible items-center w-auto md:w-1/2  justify-between lg:flex flex-row ">
-            <div
-              key={`heaeder
-            
-          `}
-              className={` w-fit flex flex-col justify-between h-fit  `}
-            >
-              {" "}
-              <Link prefetch={false} href={"/"} className="w-fit  ">
-                {" "}
-                <img
-                  src="/assets/icons/logo/header_logo.svg"
-                  alt="jayab"
-                  className="w-fit  h-auto object-contain ml-2 md:ml-2 mr-2 md:mr-0 cursor-pointer "
-                />
-              </Link>
-            </div>
-            <div className="w-3/4">
-              <Suspense>
-                <PopSearchbox
-                  boxId={scroll ? "SEARCH_BOX_Modal" : "SEARCH_BOX"}
-                  placeholder={_STRINGS?.SEARCH_CITY_OR_ADD}
-                  onSubmit={(text) => {}}
-                  onClear={() => {
-                    // router.replace(pathname);
-                  }}
-                  item={{ bg: `!bg-white/70 ${pathname == "/" ? "" : "!border"} ` }}
-                  autofocus={isInSearch}
-                />
-              </Suspense>
-            </div>
-          </div>
           <div
-            className={` text-xs gap-2  lg:text-md  justify-between font-medium flex-row hidden lg:flex w-[60%] transition-all ease-in-out duration-1000 items-center `}
+            className={` text-xs   lg:text-md   gap-8 font-medium flex-row hidden lg:flex w-[50%] transition-all ease-in-out duration-1000 items-center `}
           >
-            {!!isLogin && !!showLogins ? (
-              <div className="relative">
-                <AbsoluteBadge count={chaNotifBadge?.unread_count || 0} />
-                <TextIcon
-                  item={{
-                    icon: "/assets/icons/header/messages_geader_icon.svg",
-                    title: _STRINGS.MESSAGES,
-                    route: "/chat",
-                  }}
-                />{" "}
+            {!!showLogins ? (
+              <div
+                className={` flex items-center transition-all   rounded-full ${isHome ? "border-white bg-white/40 " : " border-primary-700 bg-primary-700/40 "}  transition-all  border   p-1 pr-3  brightness-125 hover:brightness-100  justify-center col-span-1 gap-3 flex-row`}
+              >
+                <MenuDropDown isHome={isHome} />
+                {isLogin ? (
+                  <div
+                    className={` border ${isHome ? "border-white" : "border-primary-700"}  transition-all   rounded-full flex items-center justify-center`}
+                  >
+                    <img src="/assets/icons/header/new-face/user.svg" />
+                  </div>
+                ) : (
+                  <div className="lg:flex shrink-0 hidden items-center gap-2 pl-2">
+                    <TextIcon
+                      isHome={isHome}
+                      item={{
+                        icon: "/assets/icons/header/adds_header_icon.svg",
+                        title: `${_STRINGS?.ENTER} / ${_STRINGS?.REGISTER}`,
+                        route: "/auth",
+                      }}
+                    />
+                  </div>
+                )}
               </div>
             ) : (
-              // <div className="lg:flex shrink-0 hidden items-center gap-2">
-              //   <Link prefetch={false} href={"/auth"} className="shrink-0 transition-all hover:text-primary-700">
-              //     {_STRINGS?.ENTER} / {_STRINGS?.REGISTER}
-              //   </Link>
-              // </div>
               <></>
             )}
 
             <TextIcon
-              item={{ icon: "/assets/icons/header/adds_header_icon.svg", title: _STRINGS.ADDS, route: "/rooms" }}
-            />
-            <TextIcon
+              isHome={isHome}
               item={{
                 icon: "/assets/icons/header/consultant_header.svg",
                 title: _STRINGS.CONSULTANTS,
@@ -432,43 +418,57 @@ transition-all  ease-in-out duration-1000 header-content-container w-full mx-aut
             />
             {!!isLogin && !!showLogins ? (
               <div className="relative ">
-                {/* {!!activeReserve ? <Pulser className=" !left-2 !top-0.5" /> : <></>} */}
-                <ProfileDropdown notifBadge={notifBadge || 0} />
+                <ProfileDropdown isHome={isHome} notifBadge={notifBadge || 0} />
               </div>
             ) : (
               <></>
             )}
-            <MenuDropDown />
-
-            {!!showLogins ? (
-              !!isLogin ? (
-                <></>
-              ) : (
-                <div className="lg:flex shrink-0 hidden items-center gap-2">
-                  <Link prefetch={false} href={"/auth"} className="shrink-0 transition-all hover:text-primary-700">
-                    <Button
-                      onClick={() => {}}
-                      title={`${_STRINGS?.ENTER} / ${_STRINGS?.REGISTER}`}
-                      containerClass="w-fit shrink-0 "
-                      width="w-full shrink-0"
-                      roundedClass="rounded-full"
-                      variant="outline"
-                    />
-                  </Link>
-                </div>
-              )
+            <TextIcon
+              isHome={isHome}
+              item={{ icon: "/assets/icons/header/adds_header_icon.svg", title: _STRINGS.ADDS, route: "/rooms" }}
+            />
+            {!!isLogin && !!showLogins ? (
+              <div className="relative">
+                <AbsoluteBadge count={chaNotifBadge?.unread_count || 0} />
+                <TextIcon
+                  isHome={isHome}
+                  item={{
+                    icon: "/assets/icons/header/messages_geader_icon.svg",
+                    title: _STRINGS.CHAT,
+                    route: "/chat",
+                  }}
+                />{" "}
+              </div>
             ) : (
               <></>
             )}
-
-            <Button
+            <TextIcon isHome={isHome} item={{ title: _STRINGS.ADD_ADD, cb: onCreateAddClick }} />
+            {/* <Button
               onClick={onCreateAddClick}
               title={_STRINGS.ADD_ADD}
               containerClass="w-fit shrink-0 "
               width="w-full shrink-0"
               roundedClass="rounded-full"
               icon={<img className="ml-2" src="/assets/icons/shared/circular_plus.svg" />}
-            />
+            /> */}
+          </div>
+          <div className="hidden md:visible items-center w-auto md:w-fit  justify-between lg:flex flex-row ">
+            <div
+              key={`heaeder
+            
+          `}
+              className={` w-full flex flex-col justify-between h-full  `}
+            >
+              {" "}
+              <Link prefetch={false} href={"/"} className="w-full  ">
+                {" "}
+                <img
+                  src="/assets/icons/logo/new_header_logo.svg"
+                  alt="jayab"
+                  className="w-full  h-auto object-contain  mr-2 md:mr-0 cursor-pointer "
+                />
+              </Link>
+            </div>
           </div>
         </div>
       </div>

@@ -1,5 +1,6 @@
 "use client";
 import { SinglePropDto } from "@/api_services/property/property.interface";
+import { PropertyService } from "@/api_services/property/property.service";
 import ModalBottomSheet from "@/components/Modal/ModalBottomSheet";
 import ModalHeaderPart from "@/components/Modal/ModalHeaderPart";
 import Button from "@/components/shared/Button/Button";
@@ -7,6 +8,7 @@ import SinglePopUpSelect from "@/components/shared/Form/SingleSelectPopUpSelect"
 import Notify from "@/components/shared/Toast";
 import DateSpanPicker from "@/components/widgets/UpdatedDatePicker/DateSpanPicker";
 import _STRINGS from "@/utils/LocalStrings";
+import { useQuery } from "@tanstack/react-query";
 import moment from "moment-jalaali";
 import { Dispatch, SetStateAction, useState } from "react";
 import SinglePropRequestedReserveModal from "./SinglePropRequestedReserveModal";
@@ -46,41 +48,47 @@ const SinglePropReservePop = ({
     setDates({});
   };
 
-  const generateRandomDates = () => {
-    const startDate = moment(); // Current Jalali date
-    const endDate = moment().add(2, "jMonth"); // 2 months later in Jalali
-    const totalDays = endDate.diff(startDate, "days");
+  // const generateRandomDates = () => {
+  //   const startDate = moment(); // Current Jalali date
+  //   const endDate = moment().add(2, "jMonth"); // 2 months later in Jalali
+  //   const totalDays = endDate.diff(startDate, "days");
 
-    const dates = [];
-    const dateSet = new Set();
+  //   const dates = [];
+  //   const dateSet = new Set();
 
-    // Generate 10 unique random dates
-    while (dates.length < 10 && dateSet.size < totalDays + 1) {
-      const randomDays = Math.floor(Math.random() * (totalDays + 1));
-      // Create the random date by adding days to the start date
-      const randomDate = startDate.clone().add(randomDays, "days");
-      const dateKey = randomDate.format("jYYYY/jMM/jD"); // Key for uniqueness check
+  //   // Generate 10 unique random dates
+  //   while (dates.length < 10 && dateSet.size < totalDays + 1) {
+  //     const randomDays = Math.floor(Math.random() * (totalDays + 1));
+  //     // Create the random date by adding days to the start date
+  //     const randomDate = startDate.clone().add(randomDays, "days");
+  //     const dateKey = randomDate.format("jYYYY/jMM/jD"); // Key for uniqueness check
 
-      if (!dateSet.has(dateKey)) {
-        dateSet.add(dateKey);
-        dates.push({
-          id: dates.length,
-          // Jalali Formatting
-          date: randomDate.toDate(),
-          jalaliDate: randomDate.format("jYYYY/jMM/jD"),
-          fullJalali: randomDate.format("jMMMM jD, jYYYY"), // e.g., "مرداد 5, 1403"
-          weekday: randomDate.format("dddd"), // Weekday name (depends on locale)
-          // Gregorian equivalent (optional, for reference)
-          gregorian: randomDate.format("YYYY/MM/DD"),
-        });
-      }
-    }
+  //     if (!dateSet.has(dateKey)) {
+  //       dateSet.add(dateKey);
+  //       dates.push({
+  //         id: dates.length,
+  //         // Jalali Formatting
+  //         date: randomDate.toDate(),
+  //         jalaliDate: randomDate.format("jYYYY/jMM/jD"),
+  //         fullJalali: randomDate.format("jMMMM jD, jYYYY"), // e.g., "مرداد 5, 1403"
+  //         weekday: randomDate.format("dddd"), // Weekday name (depends on locale)
+  //         // Gregorian equivalent (optional, for reference)
+  //         gregorian: randomDate.format("YYYY/MM/DD"),
+  //       });
+  //     }
+  //   }
 
-    // Sort chronologically (Jalali dates sort correctly if formatted as YYYY/MM/DD)
-    dates.sort((a, b) => a.jalaliDate.localeCompare(b.jalaliDate));
+  //   // Sort chronologically (Jalali dates sort correctly if formatted as YYYY/MM/DD)
+  //   dates.sort((a, b) => a.jalaliDate.localeCompare(b.jalaliDate));
 
-    return dates;
-  };
+  //   return dates;
+  // };
+
+  const { data: reserveDates } = useQuery({
+    queryKey: [PropertyService.PROPERTY_RESERVED_DATES_CACHEKEY, data?.id, show],
+    queryFn: () => PropertyService.propertyReservedDates({ post_id: data?.id }),
+    enabled: !!data?.id && !!show,
+  });
 
   return (
     <>
@@ -119,11 +127,7 @@ const SinglePropReservePop = ({
                 setDate={setEndDate}
               /> */}
 
-              <DateSpanPicker
-                forbiden_dates={generateRandomDates()?.map((e) => e?.date)}
-                dates={dates}
-                setDates={setDates}
-              />
+              <DateSpanPicker forbiden_dates={reserveDates || []} dates={dates} setDates={setDates} />
             </div>
           </div>
           <div className="w-full flex flex-col gap-2">

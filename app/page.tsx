@@ -1,4 +1,5 @@
 import HomeActiveReserve from "@/components/Home/HomeActiveReserve";
+import HomePropertyTypes from "@/components/Home/HomePropertyTypes";
 import HomeSearchPart from "@/components/Home/HomeSearchPart";
 import MainFiltersContainer from "@/components/Home/MainFiltersContainer";
 import TheInstallPrompt from "@/components/InstallPrompt/TheInstallPrompt";
@@ -12,7 +13,7 @@ import { Metadata } from "next";
 import dynamic from "next/dynamic";
 import { Suspense } from "react";
 
-const BannersContainer = dynamic(() => import("@/components/Home/BannersContainer"));
+const HomeBannerPart = dynamic(() => import("@/components/Home/BannersContainer/HomeBannerPart"));
 const HomeCityFilterContainer = dynamic(() => import("@/components/Home/HomeCityFilterContainer"));
 const HomePropertiesList = dynamic(() => import("@/components/Home/HomePropertiesList"));
 
@@ -32,14 +33,15 @@ const Home = async () => {
     page: 1,
     per_page: 24,
   });
+  const { data: propertyTypes } = await serverCall(baseUrl + apiRoutes.USER_PROP_OPTIONS + "?group[]=PROPERTY_TYPE");
 
   const devices = await deviceTypeDetector();
 
   return (
-    <div style={{ minHeight: "100dvh" }} id="homeParent" className="home-container  !px-0   flex flex-col gap-3 ">
+    <div style={{ minHeight: "100dvh" }} id="homeParent" className="home-container  !px-0 !pt-0   flex flex-col gap-5 ">
       <SearchboxSchema />
       <OrganizationSchema />
-      {!!banners && !isEmpty(banners) ? <BannersContainer devices={devices} banners={banners || []} /> : <></>}
+      {!!banners && !isEmpty(banners) ? <HomeBannerPart devices={devices} banners={banners || []} /> : <></>}
       {/* {!!middleBanners ? (
         <MiddleBanners cols={2} containerClass="  pr-2 md:pr-0 py-4" list={middleBanners || []} />
       ) : (
@@ -63,9 +65,9 @@ const Home = async () => {
               ? "30dvh"
               : "0",
         }}
-        className="px-3   relative  select-none md:px-3 lg:px-4 2xl:px-[5%]  pt-0 md:py-0 w-full"
+        className="px-3  flex flex-col  relative gap-6  select-none md:px-3 lg:px-4 2xl:px-[5%]  pt-0 md:py-0 w-full"
       >
-        {" "}
+        <HomePropertyTypes title="نوع اقامتگاه" data={propertyTypes?.PROPERTY_TYPE} />{" "}
         {/* {!!landings?.popular_city && !isEmpty(landings?.popular_city) ? ( */}
         <HomeCityFilterContainer
           devices={devices}

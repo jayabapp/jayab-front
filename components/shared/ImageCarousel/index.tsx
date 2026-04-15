@@ -2,7 +2,6 @@ import { NEW_IMAGE_URL } from "../../../utils/urls";
 
 import Editable from "@/components/Editable";
 import Image from "next/image";
-import "swiper/css/pagination";
 
 import Swiper from "@/components/embelaCarousel/Swiper";
 import SwiperSlide from "@/components/embelaCarousel/SwiperSlide";

@@ -74,6 +74,7 @@ export interface HomeLandingDto {
   url: string;
   title: string;
   image: ImageDto | null;
+  id: string | number;
 }
 
 export interface SearchSuggDto {
