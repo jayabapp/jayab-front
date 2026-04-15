@@ -5,7 +5,6 @@ import Link from "next/link";
 import { HomeLandingDto } from "@/api_services/home/home.interface";
 
 const HomeCityItem = ({ item }: { item: HomeLandingDto }) => {
-  console.log(item, "itemitem");
   return (
     <Link
       href={item?.url}
@@ -14,12 +13,9 @@ const HomeCityItem = ({ item }: { item: HomeLandingDto }) => {
       // data-umami-event-id={item?.title}
       // data-umami-event={"Category Select"}
 
-      className="grid gap-4 grid-cols-5 items-center  w-full group  select-none transition-all duration-500 "
+      className="flex flex-col overflow-clip  rounded-10  aspect-square relative items-center  w-full group  select-none transition-all duration-500 "
     >
-      <div
-        id={`${item?.title || "fake"}CatImage`}
-        className="w-full  col-span-2  relative rounded-20  aspect-square z-30"
-      >
+      <div id={`${item?.title || "fake"}CatImage`} className="w-full  col-span-2  relative rounded-10  aspect-square ">
         {" "}
         <Image
           loading="eager"
@@ -27,14 +23,16 @@ const HomeCityItem = ({ item }: { item: HomeLandingDto }) => {
           src={item?.image ? NEW_IMAGE_URL(item?.image) : "/assets/icons/shared/image_placeholder.svg"}
           alt={`icatImages${item?.title}`}
           fill
-          className={`mix-blend-multiply z-2  rounded-20 dark:mix-blend-normal    w-full transition-all duration-500 aspect-square !object-cover
+          className={` rounded-10     w-full transition-all duration-500 aspect-square !object-cover
 
    
           `}
         />
       </div>
 
-      <h2 className={` col-span-3 !text-black w-full text-start text-xs  md:text-base`}>{item?.title}</h2>
+      <div className="absolute left-0 bottom-0 flex items-center  justify-center  py-1.5 bg-primary-700/60 w-full ">
+        <h2 className={`  col-span-3 !text-white w-fit text-start text-xs  md:text-base`}>{item?.title}</h2>
+      </div>
     </Link>
   );
 };

@@ -712,3 +712,49 @@ ul {
 .extra-padding-x {
   @apply px-3 md:px-10 xl:!px-[15%] 2xl:!px-[20%];
 }
+
+@keyframes pulseOpacity {
+  0% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.1;
+  }
+  100% {
+    opacity: 1;
+  }
+}
+
+.pulse-1 {
+  animation: pulseOpacity 1.4s infinite;
+}
+
+.pulse-2 {
+  animation: pulseOpacity 1.4s infinite 0.3s;
+}
+
+@keyframes shake {
+  0% {
+    transform: translateX(0);
+  }
+  25% {
+    transform: translateX(-1px);
+  }
+  50% {
+    transform: translateX(1.3px);
+  }
+  75% {
+    transform: translateX(-1px);
+  }
+  100% {
+    transform: translateX(0);
+  }
+}
+
+.shake-on-hover {
+  transition: transform 0.1s ease;
+}
+
+.icon-parent:hover .shake-on-hover {
+  animation: shake 0.25s ease-in-out;
+}

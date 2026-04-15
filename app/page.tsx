@@ -1,6 +1,5 @@
 import HomeActiveReserve from "@/components/Home/HomeActiveReserve";
 import HomePropertyTypes from "@/components/Home/HomePropertyTypes";
-import HomeSearchPart from "@/components/Home/HomeSearchPart";
 import MainFiltersContainer from "@/components/Home/MainFiltersContainer";
 import TheInstallPrompt from "@/components/InstallPrompt/TheInstallPrompt";
 import { OrganizationSchema, SearchboxSchema } from "@/components/SchemaGenerator/Schemas";
@@ -34,7 +33,6 @@ const Home = async () => {
     per_page: 24,
   });
   const { data: propertyTypes } = await serverCall(baseUrl + apiRoutes.USER_PROP_OPTIONS + "?group[]=PROPERTY_TYPE");
-
   const devices = await deviceTypeDetector();
 
   return (
@@ -47,14 +45,6 @@ const Home = async () => {
       ) : (
         <></>
       )} */}{" "}
-      <Suspense fallback={null}>
-        <HomeSearchPart />
-      </Suspense>
-      <Suspense fallback={null}>
-        <div className="w-full px-4 md:px-[20%] lg:px-[35%]">
-          <HomeActiveReserve />
-        </div>
-      </Suspense>
       <section
         style={{
           minHeight:
@@ -65,8 +55,13 @@ const Home = async () => {
               ? "30dvh"
               : "0",
         }}
-        className="px-3  flex flex-col  relative gap-6  select-none md:px-3 lg:px-4 2xl:px-[5%]  pt-0 md:py-0 w-full"
+        className=" bg-white  rounded-t-20   mt-[-10dvh] md:mt-0  flex flex-col  relative gap-6  select-none  px-0  pt-10 md:py-0 w-full"
       >
+        <Suspense fallback={null}>
+          <div className="w-full px-4 md:px-[20%] lg:px-[35%]">
+            <HomeActiveReserve />
+          </div>
+        </Suspense>
         <HomePropertyTypes title="نوع اقامتگاه" data={propertyTypes?.PROPERTY_TYPE} />{" "}
         {/* {!!landings?.popular_city && !isEmpty(landings?.popular_city) ? ( */}
         <HomeCityFilterContainer

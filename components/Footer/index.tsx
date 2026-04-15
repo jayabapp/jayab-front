@@ -4,11 +4,11 @@ import { NEW_IMAGE_URL } from "../../utils/urls";
 
 import { HomeService } from "@/api_services/home/home.service";
 import { footerHiddenBlackList, footerLinks } from "@/utils/constantss";
+import _STRINGS from "@/utils/LocalStrings";
 import { useQuery } from "@tanstack/react-query";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import ContactuUItem from "../contactus/ContactuUItem";
-import CallBox from "./CallBox";
 
 const Footer = () => {
   const pathname = usePathname();
@@ -45,13 +45,42 @@ const Footer = () => {
   });
   const socials = data?.data?.filter((e: any) => e?.fields?.key == "social");
   const others = data?.data?.filter((e) => e?.fields?.key !== "social");
-
+  const PHONE_NUMBER = others?.find((i) => i?.fields?.key == "tel" || i?.key == "tel");
   return (
     <footer
-      className={`  ${!!footerHiddenBlackList.find((e) => pathname?.includes(e)) ? "hidden lg:hidden" : ""} w-full  z-2 pb-20  mb:pb-6 bg-primary-200   hidden  lg:flex   flex-col items-center justify-center bg-dark-500  bg-no-repeat bg-cover  relative md:pt-[6rem] `}
+      className={`  ${!!footerHiddenBlackList.find((e) => pathname?.includes(e)) ? "hidden lg:hidden" : ""} w-full  z-2   bg-primary-1000   flex   flex-col items-center justify-center bg-dark-500  bg-no-repeat bg-cover  relative  pb-20 lg:pb-0 pt-12 lg:pt-[6rem] `}
     >
-      <CallBox />
-      <div className="w-full md:px-[10%]  px-4 lg:w-full mx-auto  py-4 grid grid-cols-4 lg:grid-cols-7 gap-5">
+      {/* <CallBox /> */}
+
+      {!!PHONE_NUMBER && (
+        <Link
+          href={PHONE_NUMBER?.link || `tel:${PHONE_NUMBER?.full_text || PHONE_NUMBER?.small_text || ""}`}
+          className="icon-parent hidden md:flex fixed z-[100] w-16  items-center justify-center aspect-square rounded-full bg-primary-700   bottom-16 right-16"
+        >
+          <svg width="40" height="40" viewBox="0 0 40 40" className="" fill="none">
+            <path
+              className="shake-on-hover"
+              fillRule="evenodd"
+              clipRule="evenodd"
+              d="M30.0375 7.5608C28.3345 5.76783 25.5175 6.10375 24.1097 8.09484L22.3584 10.5719C21.2323 12.1645 21.3274 14.3786 22.6713 15.7934L23.0114 16.1515C23.0123 16.154 23.0133 16.1566 23.0143 16.1595C23.0323 16.21 23.0778 16.3708 23.033 16.6761C22.9403 17.3087 22.4519 18.5944 20.4691 20.682C18.48 22.7761 17.2735 23.2697 16.7144 23.3605C16.4732 23.3997 16.3471 23.3656 16.3068 23.3515L15.7393 22.7539C14.5257 21.4763 12.6335 21.2246 11.1079 22.1027L8.45442 23.63C6.18648 24.9354 5.65862 28.1287 7.47109 30.0369L9.44407 32.1141C10.0598 32.7624 10.8995 33.3158 11.9371 33.4182C14.4702 33.6683 20.3385 33.3426 26.4904 26.8658C32.2309 20.8221 33.3214 15.5653 33.4593 12.9969L32.5341 12.9473L33.4593 12.9969C33.5274 11.7279 32.9617 10.6395 32.2175 9.85593L30.0375 7.5608ZM25.8108 9.29757C26.5224 8.29111 27.8008 8.23106 28.527 8.99557L30.707 11.2907C31.1672 11.7753 31.4087 12.3307 31.3789 12.8853C31.2664 14.9822 30.3634 19.7632 24.9799 25.431C19.3352 31.3738 14.1348 31.5417 12.1417 31.345C11.7476 31.3061 11.3422 31.0874 10.9546 30.6794L8.98163 28.6022C8.13053 27.7061 8.35362 26.0918 9.4937 25.4356L12.1472 23.9083C12.8593 23.4984 13.6934 23.6251 14.2287 24.1887L14.8613 24.8547L15.5935 24.1592C14.8613 24.8547 14.8623 24.8557 14.8632 24.8567L14.8652 24.8588L14.8693 24.863L14.8781 24.872L14.8981 24.8916C14.9124 24.9055 14.9289 24.9207 14.9475 24.9371C14.9849 24.9698 15.0311 25.0072 15.0866 25.0465C15.1978 25.1254 15.346 25.2122 15.5334 25.2861C15.9168 25.4373 16.423 25.5184 17.0484 25.4169C18.2671 25.2189 19.8645 24.3435 21.9796 22.1168C24.1009 19.8834 24.9128 18.2171 25.0944 16.9781C25.1868 16.3474 25.1128 15.8424 24.9771 15.4611C24.9104 15.2736 24.8316 15.124 24.7589 15.0105C24.7227 14.9538 24.6882 14.9064 24.6576 14.8678C24.6424 14.8486 24.6281 14.8315 24.6151 14.8165L24.5966 14.7957L24.5881 14.7865L24.5841 14.7822L24.5821 14.7801C24.5812 14.7791 24.5802 14.7781 23.8418 15.4794L24.5802 14.7781L24.1818 14.3587C23.563 13.7072 23.4731 12.6039 24.0594 11.7746L25.8108 9.29757Z"
+              fill="white"
+            />
+            <path
+              className="pulse-1"
+              d="M18.1782 5.87477C18.0863 5.30686 17.5494 4.92162 16.9815 5.01356C16.9464 5.02029 16.8333 5.04143 16.774 5.05463C16.6555 5.08102 16.4902 5.12166 16.2841 5.18169C15.8719 5.30175 15.296 5.49954 14.6049 5.81639C13.2212 6.45077 11.3798 7.5605 9.46894 9.47134C7.5581 11.3822 6.44837 13.2236 5.81399 14.6073C5.49714 15.2984 5.29935 15.8743 5.17929 16.2865C5.11926 16.4926 5.07862 16.6579 5.05223 16.7764C5.03903 16.8357 5.02939 16.8833 5.02266 16.9184L5.01467 16.9617C4.92273 17.5296 5.30446 18.0887 5.87237 18.1806C6.43864 18.2723 6.97212 17.8889 7.06632 17.3237C7.06922 17.3085 7.07718 17.2677 7.08574 17.2293C7.10288 17.1524 7.13252 17.0304 7.17951 16.8691C7.2735 16.5464 7.43674 16.0667 7.70779 15.4755C8.24922 14.2945 9.22282 12.6637 10.9421 10.9445C12.6613 9.22522 14.2921 8.25162 15.4731 7.71019C16.0643 7.43914 16.544 7.2759 16.8667 7.18191C17.028 7.13492 17.2308 7.08837 17.3077 7.07124C17.8729 6.97705 18.2699 6.44105 18.1782 5.87477Z"
+              fill="white"
+            />
+            <path
+              className="pulse-2"
+              fillRule="evenodd"
+              clipRule="evenodd"
+              d="M17.8581 10.6679C17.7 10.1147 17.1235 9.79441 16.5703 9.95246L16.8565 10.954C16.5703 9.95246 16.5698 9.9526 16.5694 9.95274L16.5683 9.95303L16.5662 9.95364L16.5616 9.955L16.5508 9.95821L16.5233 9.96677C16.5024 9.97347 16.4762 9.98219 16.4451 9.99326C16.3827 10.0154 16.3002 10.0469 16.1991 10.0902C15.9968 10.1769 15.7203 10.3108 15.3807 10.5118C14.7009 10.9142 13.7728 11.5825 12.6826 12.6727C11.5924 13.7629 10.9241 14.691 10.5217 15.3708C10.3207 15.7104 10.1868 15.9869 10.1001 16.1892C10.0568 16.2903 10.0253 16.3728 10.0032 16.4351C9.9921 16.4663 9.98337 16.4925 9.97668 16.5134L9.96811 16.5409L9.9649 16.5517L9.96355 16.5563L9.96293 16.5584L9.96264 16.5594C9.9625 16.5599 9.96236 16.5604 10.9639 16.8466L9.96236 16.5604C9.80431 17.1136 10.1246 17.6901 10.6778 17.8482C11.2262 18.0049 11.7977 17.6913 11.9614 17.1468L11.9666 17.1318C11.974 17.111 11.9893 17.0699 12.015 17.0099C12.0664 16.89 12.1596 16.6938 12.3146 16.4319C12.6243 15.9086 13.1836 15.118 14.1557 14.1458C15.1279 13.1737 15.9185 12.6144 16.4418 12.3047C16.7037 12.1497 16.8999 12.0565 17.0198 12.0051C17.0798 11.9794 17.1209 11.9641 17.1417 11.9566L17.1567 11.9515C17.7012 11.7878 18.0148 11.2163 17.8581 10.6679Z"
+              fill="white"
+            />
+          </svg>
+        </Link>
+      )}
+      <div className="w-full padding-x lg:w-full mx-auto  py-4 grid grid-cols-4 lg:grid-cols-7 gap-5">
         {/* ABOUT US */}
         <div
           key={`footers`}
@@ -72,7 +101,7 @@ const Footer = () => {
           </p>
           <div className=" hidden md:flex justify-center md:justify-start mt-3 gap-2 mb-4">
             {socials && socials?.length > 0 ? (
-              socials?.map((e) => <ContactuUItem e={e} key={`${e?.id}SocialcONT`} disableText={true} />)
+              socials?.map((e) => <ContactuUItem isShiny e={e} key={`${e?.id}SocialcONT`} disableText={true} />)
             ) : (
               <></>
             )}
@@ -83,6 +112,8 @@ const Footer = () => {
           key={`footerasfs`}
           className={`col-span-3 lg:col-span-1  gap-2 flex w-full flex-col justify-between h-fit order-2 lg:order-1 `}
         >
+          <p className=" text-lg font-bold  pb-4">{_STRINGS.FAST_ACCESS}</p>
+
           {footerLinks?.map((e, index) => (
             <Link
               prefetch={false}
@@ -91,11 +122,11 @@ const Footer = () => {
               style={{ textDecoration: "none" }}
               className="flex items-center gap-2 mb-2"
             >
-              <img
+              {/* <img
                 src="/assets/icons/footer/footer_bullet.svg"
                 alt={`${e?.title}dot`}
                 className="w-4 aspect-square h-4 "
-              />
+              /> */}
               <p className=" text-sm  cursor-pointer  opacity-100 hover:text-primary-700">{e?.title}</p>
             </Link>
           ))}
@@ -107,6 +138,7 @@ const Footer = () => {
           className={`col-span-4 lg:col-span-2  flex w-full flex-col justify-between h-fit order-2 lg:order-1 `}
         >
           <div className="flex justify-center flex-col gap-4  mt-3 mb-4">
+            <p className=" text-lg font-bold  pb-4">{_STRINGS.COMUNICATION_WAYS}</p>
             {others && others?.length > 0 ? (
               others?.map((e) => <ContactuUItem e={e} textClass=" !font-normal " key={`${e?.id}SocialcONT`} />)
             ) : (
@@ -147,7 +179,7 @@ const Footer = () => {
       </div>
       {/* SECTION 4 */}
 
-      <div className="bg-white   rounded-20 w-full  mx-auto px-4 shadow-md   lg:w-[80%] h-14  md:h-20 flex items-center justify-between  ">
+      <div className="bg-black/10   padding-x  w-full  mx-auto  shadow-md    h-14  md:h-20 flex items-center justify-between  ">
         <div className="  hidden md:flex    items-center gap-4">
           <div className="w-full   dark:text-zinc-100  text-center text-sm  ">
             تمامی حقوق مادی و معنوی این وبسایت متعلق به شرکت .

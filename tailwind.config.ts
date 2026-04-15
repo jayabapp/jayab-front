@@ -36,6 +36,7 @@ export default {
           700: "#3886E5",
           800: "#858A95",
           900: "#F53E4F",
+          1000: "#E0E5EC",
         },
         btnColor: {
           primary: "#3886E5",

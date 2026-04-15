@@ -48,7 +48,7 @@ const PopSearchbox = ({
   autofocus = true,
   initValue,
   onClear,
-  containerClass = " w-full md:w-[90%] mx-auto",
+  containerClass = " w-full md:w-[80%] mx-auto",
   item,
   boxId = "SEARCH_BOX",
   justIcon = false,
@@ -117,7 +117,7 @@ const PopSearchbox = ({
     debounce(() => {
       setisTyping(false);
     }, 1000),
-    []
+    [],
   );
   useEffect(() => {
     if (!element?.value && !searchParam) {
@@ -173,9 +173,9 @@ const PopSearchbox = ({
         >
           {" "}
           <div className="flex items-center gap-1 w-full">
-            <div className="">
+            {/* <div className="">
               <img src="/assets/icons/edit/magnifier.svg" width={20} className="dark:invert" height={20} />
-            </div>
+            </div> */}
             <div
               id={boxId}
               ref={inputRef}

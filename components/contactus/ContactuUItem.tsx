@@ -1,14 +1,15 @@
 import { ContentDto } from "@/api_services/home/home.interface";
 import { NEW_IMAGE_URL } from "@/utils/urls";
-import React from "react";
 import { useRouter } from "next/navigation";
 const ContactuUItem = ({
   e,
   disableText = false,
   textClass,
+  isShiny,
 }: {
   e: ContentDto;
   disableText?: boolean;
+  isShiny?: boolean;
   textClass?: string;
 }) => {
   const router = useRouter();
@@ -30,9 +31,9 @@ const ContactuUItem = ({
         }
         if (link) window.open(link, "_blank", "noopener,noreferrer");
       }}
-      className={`flex items-center gap-2  ${
-        (e?.link || e?.small_text) && e?.key !== "address" ? "cursor-pointer" : ""
-      }`}
+      className={`flex items-center gap-2  ${(e?.link || e?.small_text) && e?.key !== "address" ? "cursor-pointer" : ""}
+      ${isShiny ? " bg-gradient-to-br from-white via-transparent to-white rounded-full w-10 h-10  flex items-center justify-center " : ""}
+      `}
     >
       {e?.feature_image ? (
         <img

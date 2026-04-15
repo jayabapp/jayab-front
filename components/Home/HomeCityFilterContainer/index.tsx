@@ -20,34 +20,35 @@ function HomeCityFilterContainer({
 }) {
   const chunckedData = chunk(data || [], 2);
   return (
-    <div className={` w-full noSelect   select-none  gap-1  md:gap-2 relative rounded-20 flex flex-col items-center`}>
-      <div className="w-full flex items-center justify-between ">
+    <div className={` w-full noSelect   select-none  gap-4  md:gap-2 relative rounded-20 flex flex-col items-center`}>
+      <div className="w-full flex  padding-x items-center justify-between ">
         <p className=" font-bold   shrink-0 text-center md:text-start text-xl  ">{title}</p>
         {/* <HomeCityFilterCityPart /> */}
       </div>{" "}
       <SwiperEm
+        viewportClassName="padding-x"
         slidesPerView={!!devices?.isMobile || !!devices?.isTablet ? 4 : 10}
         spaceBetween={1}
         breakPoints={{
           320: {
-            slidesPerView: 3,
-            spaceBetween: 2,
+            slidesPerView: 3.75,
+            spaceBetween: 10,
           },
           640: {
-            slidesPerView: 3,
-            spaceBetween: 2,
+            slidesPerView: 3.75,
+            spaceBetween: 10,
           },
           // when window width is >= 768px
           768: {
-            slidesPerView: 3,
-            spaceBetween: 2,
+            slidesPerView: 3.75,
+            spaceBetween: 10,
           },
           1024: {
-            slidesPerView: 5,
+            slidesPerView: 8,
             spaceBetween: 2,
           },
           1600: {
-            slidesPerView: 5,
+            slidesPerView: 8,
             spaceBetween: 2,
           },
         }}

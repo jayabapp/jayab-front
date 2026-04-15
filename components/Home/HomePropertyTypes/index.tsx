@@ -10,24 +10,25 @@ import PropertyTypeItem from "./PropertyTypeItem";
 
 function HomePropertyTypes({ data, title, devices }: { data: HomeLandingDto[]; title: string; devices?: DeviceInfo }) {
   return (
-    <div className={` w-full noSelect   select-none  gap-1  md:gap-2 relative rounded-20 flex flex-col items-start `}>
-      <p className=" font-bold   shrink-0 text-center md:text-start text-xl  ">{title}</p>
+    <div className={` w-full noSelect   select-none  gap-4 md:gap-2 relative rounded-20 flex flex-col items-start `}>
+      <p className=" font-bold  padding-x  shrink-0 text-center md:text-start text-xl  ">{title}</p>
       <SwiperEm
+        viewportClassName="  padding-x "
         slidesPerView={!!devices?.isMobile || !!devices?.isTablet ? 4 : 10}
         spaceBetween={2}
         breakPoints={{
           320: {
-            slidesPerView: 4,
-            spaceBetween: 2,
+            slidesPerView: 4.25,
+            spaceBetween: 10,
           },
           640: {
-            slidesPerView: 4,
-            spaceBetween: 2,
+            slidesPerView: 4.25,
+            spaceBetween: 10,
           },
           // when window width is >= 768px
           768: {
-            slidesPerView: 4,
-            spaceBetween: 2,
+            slidesPerView: 4.25,
+            spaceBetween: 10,
           },
           1024: {
             slidesPerView: 8,
@@ -38,7 +39,6 @@ function HomePropertyTypes({ data, title, devices }: { data: HomeLandingDto[]; t
             spaceBetween: 2,
           },
         }}
-        withArrows
         slidesWidth={{ def: "25%", md: "10%" }}
         options={{ align: "start", direction: "rtl", dragFree: true, loop: false }}
       >

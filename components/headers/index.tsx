@@ -13,7 +13,6 @@ import { ReserveService } from "@/api_services/reserve/reserve.service";
 import { UserService } from "@/api_services/user/user.service";
 import { useAuthStore, useStoreInit, useStoreParams } from "@/store";
 import { headerMobileSearchBlackList } from "@/utils/constantss";
-import { NEW_IMAGE_URL } from "@/utils/urls";
 import { useQuery } from "@tanstack/react-query";
 import { throttle } from "lodash";
 import moment from "moment-jalaali";
@@ -212,82 +211,80 @@ const Header = ({ scroll }: { scroll?: number }) => {
     queryFn: ReserveService.activeReserve,
   });
   const isHome = pathname == "/" ? true : false;
+
+  const MenuProfileItem = () => {
+    return (
+      <div
+        className={` flex items-center transition-all   rounded-full ${isHome ? "border-white bg-white/40 " : " border-primary-700 bg-primary-700/40 "}  transition-all  border   p-1 pr-3  brightness-125 hover:brightness-100  justify-center col-span-1 gap-3 flex-row`}
+      >
+        <MenuDropDown isHome={isHome} />
+        {isLogin ? (
+          <Link
+            href={"/profile/edit"}
+            prefetch={false}
+            className={` border ${isHome ? "border-white" : "border-primary-700"}  transition-all   rounded-full flex items-center justify-center`}
+          >
+            <img src="/assets/icons/header/new-face/user.svg" />
+          </Link>
+        ) : (
+          <div className="lg:flex shrink-0 hidden items-center gap-2 pl-2">
+            <TextIcon
+              isHome={isHome}
+              item={{
+                icon: "/assets/icons/header/adds_header_icon.svg",
+                title: `${_STRINGS?.ENTER} / ${_STRINGS?.REGISTER}`,
+                route: "/auth",
+              }}
+            />
+          </div>
+        )}
+      </div>
+    );
+  };
+
   return (
     <header className="relative">
       <div
         id="headerContainer"
         className={`
-     ${visibleTopHeader && isHome ? "  pb-24 from-black/40  " : " from-white/60 backdrop-blur-md    "}
+     ${isHome && visibleTopHeader ? "  md:pb-24    " : ""}
 
-transition-all  bg-gradient-to-b  to-black/0   ease-in-out duration-1000 header-content-container w-full mx-auto     dark:bg-dark-900   py-4 `}
+transition-all  bg-gradient-to-b ease-in-out duration-1000   ${isHome ? "from-black/40 to-black/0 " : " from-white   to-white/10 "}   header-content-container w-full mx-auto     dark:bg-dark-900   py-4 `}
       >
         {/* ROW 1 */}
         <div className="flex justify-between  items-center  xl:gap-[10%]  py-1  padding-x  ">
           <div className=" lg:hidden flex w-full  ">
-            {pathname == "/" ? (
-              <div className="w-full flex items-center  bg-primary-100  py-1  rounded-full justify-between pl-2 pr-1.5 gap-2">
-                <div className="flex items-center gap-4">
-                  <div className=" flex items-center justify-center gap-2">
-                    {" "}
-                    <Link
-                      prefetch={false}
-                      href={"/profile"}
-                      className="w-[2.875rem]   aspect-square h-[2.875rem] !outline-none "
-                    >
-                      <img
-                        src={
-                          userInfo?.profile_image
-                            ? NEW_IMAGE_URL(userInfo?.profile_image)
-                            : "/assets/icons/logo/mobile_header_logo.svg"
-                        }
-                        alt="jayab"
-                        className=" w-[2.875rem]   aspect-square h-[2.875rem] rounded-full  object-cover !outline-none cursor-pointer "
-                        // onClick={() => pusher("/")}
-                      />
-                    </Link>
-                    <div className="flex flex-col gap-0">
-                      <p className="font-bold text-lg  text-primary-700  line-clamp-1">
-                        {userInfo?.full_name ? userInfo?.full_name : _STRINGS.LOGO}
-                      </p>
-                      <p className="text-xs text-primary-800 ">{userInfo?.mobile_number}</p>
-                    </div>
-                  </div>
-                </div>
+            {isHome ? (
+              <div className="w-full flex items-center  py-1  rounded-full justify-between pl-2 pr-1.5 gap-2">
+                <MenuProfileItem />
 
-                {showLogins ? (
-                  isLogin ? (
-                    <>
-                      {" "}
-                      <div className="flex items-center py-2 px-4 gap-6">
-                        <Link prefetch={false} href={"/chat"} className="relative">
+                <div className="flex items-center py-2 px-4 gap-6">
+                  {showLogins ? (
+                    isLogin ? (
+                      <>
+                        {" "}
+                        {/* <Link prefetch={false} href={"/chat"} className="relative">
                           <AbsoluteBadge count={chaNotifBadge?.unread_count || 0} />
                           <img alt="chat" src="/assets/icons/header/blue_chat.svg" className="w-6 h-6 aspect-square" />
-                        </Link>
+                        </Link> */}
                         <Link prefetch={false} href={"/notifications"} className="relative">
                           <AbsoluteBadge count={notifBadge || 0} />
                           <img
                             alt="notificatons"
-                            src="/assets/icons/header/blue_bell.svg"
-                            className="w-6 h-6 aspect-square"
+                            src="/assets/icons/header/white_bell.svg"
+                            className="w-5 h-5 aspect-square"
                           />
                         </Link>
-                      </div>
-                    </>
+                      </>
+                    ) : (
+                      <></>
+                    )
                   ) : (
-                    <Link prefetch={false} href={"/auth"} className="relative">
-                      {" "}
-                      <Button
-                        title={`${_STRINGS.ENTER}/${_STRINGS.REGISTER}`}
-                        containerClass="w-fit"
-                        width="w-full"
-                        roundedClass="rounded-full"
-                        icon={<img className="ml-2" alt="circular_plus" src="/assets/icons/shared/circular_plus.svg" />}
-                      />
-                    </Link>
-                  )
-                ) : (
-                  <></>
-                )}
+                    <></>
+                  )}
+
+                  <img className="w-10 h-10 aspect-square" src="/assets/icons/logo/header_mobile_logo.svg" />
+                </div>
               </div>
             ) : (
               <div className="flex items-center w-full justify-between  gap-4">
@@ -379,33 +376,7 @@ transition-all  bg-gradient-to-b  to-black/0   ease-in-out duration-1000 header-
           <div
             className={` text-xs   lg:text-md   gap-8 font-medium flex-row hidden lg:flex w-[50%] transition-all ease-in-out duration-1000 items-center `}
           >
-            {!!showLogins ? (
-              <div
-                className={` flex items-center transition-all   rounded-full ${isHome ? "border-white bg-white/40 " : " border-primary-700 bg-primary-700/40 "}  transition-all  border   p-1 pr-3  brightness-125 hover:brightness-100  justify-center col-span-1 gap-3 flex-row`}
-              >
-                <MenuDropDown isHome={isHome} />
-                {isLogin ? (
-                  <div
-                    className={` border ${isHome ? "border-white" : "border-primary-700"}  transition-all   rounded-full flex items-center justify-center`}
-                  >
-                    <img src="/assets/icons/header/new-face/user.svg" />
-                  </div>
-                ) : (
-                  <div className="lg:flex shrink-0 hidden items-center gap-2 pl-2">
-                    <TextIcon
-                      isHome={isHome}
-                      item={{
-                        icon: "/assets/icons/header/adds_header_icon.svg",
-                        title: `${_STRINGS?.ENTER} / ${_STRINGS?.REGISTER}`,
-                        route: "/auth",
-                      }}
-                    />
-                  </div>
-                )}
-              </div>
-            ) : (
-              <></>
-            )}
+            {!!showLogins ? <MenuProfileItem /> : <></>}
 
             <TextIcon
               isHome={isHome}
@@ -452,20 +423,37 @@ transition-all  bg-gradient-to-b  to-black/0   ease-in-out duration-1000 header-
               icon={<img className="ml-2" src="/assets/icons/shared/circular_plus.svg" />}
             /> */}
           </div>
-          <div className="hidden md:visible items-center w-auto md:w-fit  justify-between lg:flex flex-row ">
+          <div className="hidden md:visible items-center  justify-between lg:flex flex-row  w-2/5">
             <div
               key={`heaeder
             
           `}
-              className={` w-full flex flex-col justify-between h-full  `}
+              className={` w-full flex gap-4 flex-row justify-end h-full  `}
             >
-              {" "}
-              <Link prefetch={false} href={"/"} className="w-full  ">
+              <Suspense>
+                {!!isHome ? (
+                  <></>
+                ) : (
+                  <>
+                    <PopSearchbox
+                      boxId={scroll ? "SEARCH_BOX_Modal" : "SEARCH_BOX"}
+                      placeholder={_STRINGS?.SEARCH_CITY_OR_ADD}
+                      onSubmit={(text) => {}}
+                      onClear={() => {
+                        // router.replace(pathname);
+                      }}
+                      item={{ bg: `!bg-white/70 ${isHome ? "" : "!border"} ` }}
+                      autofocus={isInSearch}
+                    />
+                  </>
+                )}
+              </Suspense>{" "}
+              <Link prefetch={false} href={"/"} className=" w-32  shrink-0 h-10 ">
                 {" "}
                 <img
                   src="/assets/icons/logo/new_header_logo.svg"
                   alt="jayab"
-                  className="w-full  h-auto object-contain  mr-2 md:mr-0 cursor-pointer "
+                  className="w-32  shrink-0 h-10 object-contain   cursor-pointer "
                 />
               </Link>
             </div>

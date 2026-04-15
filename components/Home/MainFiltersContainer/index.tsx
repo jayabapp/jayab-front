@@ -19,8 +19,8 @@ function MainFiltersContainer({
 }) {
   // const ref = useRef<Swiper>(null);
   return (
-    <div className={` w-full noSelect   select-none   relative  rounded-20 flex gap-2 md:gap-2 flex-col items-center`}>
-      <p className=" font-bold   shrink-0 text-center  w-full md:!text-start text-xl  ">{title}</p>
+    <div className={` w-full noSelect   select-none   relative  rounded-20 flex gap-4 md:gap-2 flex-col items-center`}>
+      <p className=" font-bold   shrink-0    padding-x w-full !text-start text-xl  ">{title}</p>
       {
         // isLoading ? (
         //   <div className=" min-h-[30dvh] w-full flex items-center justify-center">
@@ -35,33 +35,34 @@ function MainFiltersContainer({
           </div>
         ) : (
           <Swiper
-            slidesPerView={!!devices?.isMobile || !!devices?.isTablet ? 4 : 8}
+            viewportClassName="padding-x"
+            slidesPerView={!!devices?.isMobile || !!devices?.isTablet ? 4.5 : 9}
             spaceBetween={0}
             breakPoints={{
               320: {
-                slidesPerView: 4,
-                spaceBetween: 0,
+                slidesPerView: 4.5,
+                spaceBetween: 10,
               },
               640: {
-                slidesPerView: 4,
-                spaceBetween: 0,
+                slidesPerView: 4.5,
+                spaceBetween: 10,
               },
               // when window width is >= 768px
               768: {
-                slidesPerView: 4,
-                spaceBetween: 0,
+                slidesPerView: 4.5,
+                spaceBetween: 10,
               },
               1024: {
-                slidesPerView: 8,
-                spaceBetween: 0,
+                slidesPerView: 9,
+                spaceBetween: 10,
               },
               1600: {
-                slidesPerView: 8,
-                spaceBetween: 0,
+                slidesPerView: 9,
+                spaceBetween: 10,
               },
             }}
             withArrows
-            slidesWidth={{ def: "25%", md: "12.5%" }}
+            // slidesWidth={{ def: "25%", md: "12.5%" }}
             options={{ align: "start", direction: "rtl", dragFree: true }}
           >
             {data?.map((i, index: number) => (
