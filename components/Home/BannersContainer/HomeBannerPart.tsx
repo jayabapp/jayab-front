@@ -27,7 +27,7 @@ const HomeBannerPart = ({ banners, devices }: ImageCarouselTypes) => {
     >
       {/* HOME SEARCH PART  */}
 
-      <div className="w-full extra-padding-x  lg:!px-[28%] flex absolute m-auto left-0 right-0  bottom-[40%] flex-col   z-20  gap-20">
+      <div className="w-full extra-padding-x  lg:!px-[28%] flex absolute m-auto left-0 right-0  bottom-[25%] lg:bottom-[40%] flex-col   z-20  gap-20">
         <div className="flex z-5 gap-4 items-center justify-center flex-col">
           <img className="w-40" src="/assets/images/home/home_banner_logo.png" />
           <h1 className="text-white font-bold text-lg text-center">{_STRINGS.HOME_TITLE}</h1>
@@ -60,7 +60,7 @@ const HomeBannerPart = ({ banners, devices }: ImageCarouselTypes) => {
           contentId={item?.id}
           // // href={item?.link ? item?.link : undefined}
           // target={item?.link ? "_blank" : ""}
-          className={` focus:outline-none w-full px-0  aspect-[1.2]  md:aspect-[3]   ${
+          className={` focus:outline-none w-full px-0  aspect-[1.5]  md:aspect-[3]   ${
             item?.link || item?.category || item?.product || item?.brand_id ? "cursor-pointer" : ""
           } transition-all duration-300 ease-in-out   relative`}
         >
@@ -73,7 +73,7 @@ const HomeBannerPart = ({ banners, devices }: ImageCarouselTypes) => {
             alt={item?.image?.alt}
             // src={true ? "saf" : IMAGE_URL(e?.image_location)}
             src={NEW_IMAGE_URL(item?.image)}
-            className={`w-full object-cover  hidden  md:flex aspect-[1.2] md:aspect-[3]   align-middle  ${
+            className={`w-full object-cover  hidden  md:flex aspect-[1.5] md:aspect-[3]   align-middle  ${
               item?.imageClasses ? item?.imageClasses : ""
             }   `}
           />
@@ -85,7 +85,7 @@ const HomeBannerPart = ({ banners, devices }: ImageCarouselTypes) => {
             alt={item?.image?.alt}
             // src={true ? "saf" : IMAGE_URL(e?.image_location)}
             src={NEW_IMAGE_URL(item?.image_sm ? item?.image_sm : item?.image)}
-            className={`w-full object-cover  flex  md:hidden aspect-[1.2]  md:aspect-[3] align-middle  ${
+            className={`w-full object-cover  flex  md:hidden aspect-[1.5]  md:aspect-[3] align-middle  ${
               item?.imageClasses ? item?.imageClasses : ""
             }   `}
           />

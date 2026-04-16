@@ -55,14 +55,16 @@ export const headerBlackList = [
 ];
 export const headerMobileSearchBlackList = ["/chat"];
 
-export const mobileHeaderBlackList = ["/chat/"];
-export const mobileFooterBlackList = [
+export const mobileHeaderBlackList = [
+  "/chat/",
   "/auth",
   "/auth/otp",
   "/auth/register",
   "/profile/owner/properties",
-  // "/chat/",
   "/profile/advisor",
+];
+export const mobileFooterBlackList = [
+  // "/chat/",
   // "/profile/",
 ];
 

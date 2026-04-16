@@ -61,7 +61,6 @@ function MainFiltersContainer({
                 spaceBetween: 10,
               },
             }}
-            withArrows
             // slidesWidth={{ def: "25%", md: "12.5%" }}
             options={{ align: "start", direction: "rtl", dragFree: true }}
           >

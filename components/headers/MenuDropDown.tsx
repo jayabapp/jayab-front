@@ -7,7 +7,7 @@ import Link from "next/link";
 
 import { menuDropDownItems } from "@/utils/constantss";
 
-const MenuDropDown = ({ isHome }: { isHome: boolean }) => {
+const MenuDropDown = ({ isHeaderLight }: { isHeaderLight: boolean }) => {
   const ref = useRef<HTMLButtonElement>(null);
   const asPath = usePathname();
 
@@ -28,7 +28,10 @@ const MenuDropDown = ({ isHome }: { isHome: boolean }) => {
         className="relative    items-start justify-start flex"
       >
         <MenuButton ref={ref} className={` `}>
-          <img src="/assets/icons/header/menu_header.svg" className="dark:invert  w-6 h-6" />
+          <img
+            src="/assets/icons/header/menu_header.svg"
+            className={` ${isHeaderLight ? "" : "invert"}  transition-all  w-6 h-6`}
+          />
         </MenuButton>
         <Transition
           as={Fragment}

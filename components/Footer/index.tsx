@@ -48,7 +48,7 @@ const Footer = () => {
   const PHONE_NUMBER = others?.find((i) => i?.fields?.key == "tel" || i?.key == "tel");
   return (
     <footer
-      className={`  ${!!footerHiddenBlackList.find((e) => pathname?.includes(e)) ? "hidden lg:hidden" : ""} w-full  z-2   bg-primary-1000   flex   flex-col items-center justify-center bg-dark-500  bg-no-repeat bg-cover  relative  pb-20 lg:pb-0 pt-12 lg:pt-[6rem] `}
+      className={`  ${!!footerHiddenBlackList.find((e) => pathname?.includes(e)) ? "hidden lg:hidden" : ""} w-full  z-2   bg-primary-1000   flex   flex-col items-center justify-center bg-dark-500  bg-no-repeat bg-cover  relative  pb-36 lg:pb-0 pt-12 lg:pt-[6rem] `}
     >
       {/* <CallBox /> */}
 
@@ -179,8 +179,8 @@ const Footer = () => {
       </div>
       {/* SECTION 4 */}
 
-      <div className="bg-black/10   padding-x  w-full  mx-auto  shadow-md    h-14  md:h-20 flex items-center justify-between  ">
-        <div className="  hidden md:flex    items-center gap-4">
+      <div className="bg-black/10   padding-x  w-full  mx-auto  shadow-md    h-fit   lg:h-20 flex flex-col  py-2 md:py-0 gap-4 lg:flex-row   items-center justify-between  ">
+        <div className="  flex    items-center gap-4">
           <div className="w-full   dark:text-zinc-100  text-center text-sm  ">
             تمامی حقوق مادی و معنوی این وبسایت متعلق به شرکت .
             <a className="text-blue-500 underline underline-offset-2" href="/">

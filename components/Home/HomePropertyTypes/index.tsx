@@ -11,7 +11,7 @@ import PropertyTypeItem from "./PropertyTypeItem";
 function HomePropertyTypes({ data, title, devices }: { data: HomeLandingDto[]; title: string; devices?: DeviceInfo }) {
   return (
     <div className={` w-full noSelect   select-none  gap-4 md:gap-2 relative rounded-20 flex flex-col items-start `}>
-      <p className=" font-bold  padding-x  shrink-0 text-center md:text-start text-xl  ">{title}</p>
+      <p className=" font-bold  padding-x  shrink-0 text-center md:text-start text-lg lg:text-xl  ">{title}</p>
       <SwiperEm
         viewportClassName="  padding-x "
         slidesPerView={!!devices?.isMobile || !!devices?.isTablet ? 4 : 10}
@@ -31,7 +31,7 @@ function HomePropertyTypes({ data, title, devices }: { data: HomeLandingDto[]; t
             spaceBetween: 10,
           },
           1024: {
-            slidesPerView: 8,
+            slidesPerView: 10,
             spaceBetween: 2,
           },
           1600: {

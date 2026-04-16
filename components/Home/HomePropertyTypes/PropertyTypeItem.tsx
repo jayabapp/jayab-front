@@ -6,7 +6,7 @@ const PropertyTypeItem = ({ item }: { item: HomeLandingDto }) => {
   return (
     <Link
       href={`/rooms?property_type=${item?.id}`}
-      className="flex  justify-center lg:justify-start  rounded-2xl  border   aspect-square lg:aspect-auto lg:border-transparent flex-col lg:flex-row  items-center gap-2"
+      className="flex  justify-center   rounded-2xl  border   aspect-square  flex-col   items-center gap-2"
     >
       <img
         className=" size-7 md:size-11  rounded-sm "

@@ -27,7 +27,7 @@ function HomeCityFilterContainer({
       </div>{" "}
       <SwiperEm
         viewportClassName="padding-x"
-        slidesPerView={!!devices?.isMobile || !!devices?.isTablet ? 4 : 10}
+        slidesPerView={!!devices?.isMobile || !!devices?.isTablet ? 3.75 : 8}
         spaceBetween={1}
         breakPoints={{
           320: {

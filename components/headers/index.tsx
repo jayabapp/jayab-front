@@ -29,6 +29,7 @@ const PopSearchbox = dynamic(() => import("../SearchBoxComp/PopSearchbox"), {
 type textIconType = {
   item: { route?: string; icon?: string; title: string; hasBadge?: boolean; cb?: () => void | null };
   isHome: boolean;
+  visibleTopHeader?: boolean;
 };
 
 const Pulser = ({ className }: { className?: string }) => (
@@ -37,9 +38,9 @@ const Pulser = ({ className }: { className?: string }) => (
   ></div>
 );
 
-const TextIcon = ({ item, isHome }: textIconType) => {
+const TextIcon = ({ item, isHome, visibleTopHeader }: textIconType) => {
   const parentClass = "flex items-center relative transition-all  group  justify-center col-span-1 gap-2 flex-row ";
-  const textColor = isHome ? "text-white" : "text-black";
+  const textColor = isHome && visibleTopHeader ? "text-white" : "text-black";
   if (!!item?.route) {
     return (
       <Link prefetch={false} href={item?.route || ""} className={parentClass}>
@@ -49,7 +50,9 @@ const TextIcon = ({ item, isHome }: textIconType) => {
       src={item?.icon}
       className={`dark:invert  brightness-125 group-hover:brightness-100 group-hover:grayscale-0  grayscale `}
     /> */}
-        <p className={`${textColor}  shrink-0  font-medium  group-hover:brightness-100 group-hover:text-primary-700  `}>
+        <p
+          className={`${textColor}  text-sm lg:text-base transition-all duration-100  shrink-0  font-medium  group-hover:brightness-100 group-hover:text-primary-700  `}
+        >
           {item?.title}
         </p>
       </Link>
@@ -63,7 +66,9 @@ const TextIcon = ({ item, isHome }: textIconType) => {
       src={item?.icon}
       className={`dark:invert  brightness-125 group-hover:brightness-100 group-hover:grayscale-0  grayscale `}
     /> */}
-        <p className={`${textColor}  shrink-0  font-medium  group-hover:brightness-100 group-hover:text-primary-700  `}>
+        <p
+          className={`${textColor} ${visibleTopHeader} shrink-0  ransition-all duration-100 font-medium  group-hover:brightness-100 group-hover:text-primary-700  `}
+        >
           {item?.title}
         </p>
       </div>
@@ -212,23 +217,29 @@ const Header = ({ scroll }: { scroll?: number }) => {
   });
   const isHome = pathname == "/" ? true : false;
 
+  const isHeaderLight = isHome && visibleTopHeader;
+
   const MenuProfileItem = () => {
     return (
       <div
-        className={` flex items-center transition-all   rounded-full ${isHome ? "border-white bg-white/40 " : " border-primary-700 bg-primary-700/40 "}  transition-all  border   p-1 pr-3  brightness-125 hover:brightness-100  justify-center col-span-1 gap-3 flex-row`}
+        className={` flex items-center transition-all   rounded-full ${isHeaderLight ? "border-white " : "border-gray-500"} bg-white/40    border   p-1 pr-3  brightness-125 hover:brightness-100  justify-center col-span-1 gap-3 flex-row`}
       >
-        <MenuDropDown isHome={isHome} />
+        <MenuDropDown isHeaderLight={isHeaderLight} />
         {isLogin ? (
           <Link
             href={"/profile/edit"}
             prefetch={false}
-            className={` border ${isHome ? "border-white" : "border-primary-700"}  transition-all   rounded-full flex items-center justify-center`}
+            className={`  ${isHeaderLight ? "border-white " : "border-gray-500"} border  transition-all   rounded-full flex items-center justify-center`}
           >
-            <img src="/assets/icons/header/new-face/user.svg" />
+            <img
+              src="/assets/icons/header/new-face/user.svg"
+              className={`${isHeaderLight ? "" : "invert"} transition-all`}
+            />
           </Link>
         ) : (
-          <div className="lg:flex shrink-0 hidden items-center gap-2 pl-2">
+          <div className="flex shrink-0  items-center gap-2 pl-2">
             <TextIcon
+              visibleTopHeader={visibleTopHeader}
               isHome={isHome}
               item={{
                 icon: "/assets/icons/header/adds_header_icon.svg",
@@ -247,18 +258,20 @@ const Header = ({ scroll }: { scroll?: number }) => {
       <div
         id="headerContainer"
         className={`
-     ${isHome && visibleTopHeader ? "  md:pb-24    " : ""}
+     ${isHome && visibleTopHeader ? "  bg-gradient-to-b     from-black/40 to-black/0  md:pb-24    " : visibleTopHeader ? "" : "   "}
 
-transition-all  bg-gradient-to-b ease-in-out duration-1000   ${isHome ? "from-black/40 to-black/0 " : " from-white   to-white/10 "}   header-content-container w-full mx-auto     dark:bg-dark-900   py-4 `}
+transition-all ease-out  duration-300  header-content-container w-full mx-auto     dark:bg-dark-900    `}
       >
         {/* ROW 1 */}
-        <div className="flex justify-between  items-center  xl:gap-[10%]  py-1  padding-x  ">
+        <div
+          className={`flex justify-between  transition-all items-center  xl:gap-[10%]   duration-300  padding-x  py-2 lg:py-4   ${isHeaderLight ? "    bg-transparent " : visibleTopHeader ? "   bg-white   " : "   bg-white   shadow-lg "} `}
+        >
           <div className=" lg:hidden flex w-full  ">
             {isHome ? (
               <div className="w-full flex items-center  py-1  rounded-full justify-between pl-2 pr-1.5 gap-2">
                 <MenuProfileItem />
 
-                <div className="flex items-center py-2 px-4 gap-6">
+                <div className="flex items-center gap-6">
                   {showLogins ? (
                     isLogin ? (
                       <>
@@ -272,7 +285,7 @@ transition-all  bg-gradient-to-b ease-in-out duration-1000   ${isHome ? "from-bl
                           <img
                             alt="notificatons"
                             src="/assets/icons/header/white_bell.svg"
-                            className="w-5 h-5 aspect-square"
+                            className={`w-5 h-5 transition-all aspect-square ${isHeaderLight ? "" : "invert   opacity-50"} `}
                           />
                         </Link>
                       </>
@@ -379,6 +392,7 @@ transition-all  bg-gradient-to-b ease-in-out duration-1000   ${isHome ? "from-bl
             {!!showLogins ? <MenuProfileItem /> : <></>}
 
             <TextIcon
+              visibleTopHeader={visibleTopHeader}
               isHome={isHome}
               item={{
                 icon: "/assets/icons/header/consultant_header.svg",
@@ -389,12 +403,13 @@ transition-all  bg-gradient-to-b ease-in-out duration-1000   ${isHome ? "from-bl
             />
             {!!isLogin && !!showLogins ? (
               <div className="relative ">
-                <ProfileDropdown isHome={isHome} notifBadge={notifBadge || 0} />
+                <ProfileDropdown isHome={visibleTopHeader} notifBadge={notifBadge || 0} />
               </div>
             ) : (
               <></>
             )}
             <TextIcon
+              visibleTopHeader={visibleTopHeader}
               isHome={isHome}
               item={{ icon: "/assets/icons/header/adds_header_icon.svg", title: _STRINGS.ADDS, route: "/rooms" }}
             />
@@ -402,6 +417,7 @@ transition-all  bg-gradient-to-b ease-in-out duration-1000   ${isHome ? "from-bl
               <div className="relative">
                 <AbsoluteBadge count={chaNotifBadge?.unread_count || 0} />
                 <TextIcon
+                  visibleTopHeader={visibleTopHeader}
                   isHome={isHome}
                   item={{
                     icon: "/assets/icons/header/messages_geader_icon.svg",
@@ -413,7 +429,11 @@ transition-all  bg-gradient-to-b ease-in-out duration-1000   ${isHome ? "from-bl
             ) : (
               <></>
             )}
-            <TextIcon isHome={isHome} item={{ title: _STRINGS.ADD_ADD, cb: onCreateAddClick }} />
+            <TextIcon
+              visibleTopHeader={visibleTopHeader}
+              isHome={isHome}
+              item={{ title: _STRINGS.ADD_ADD, cb: onCreateAddClick }}
+            />
             {/* <Button
               onClick={onCreateAddClick}
               title={_STRINGS.ADD_ADD}
