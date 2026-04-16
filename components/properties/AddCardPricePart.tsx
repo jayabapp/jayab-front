@@ -15,7 +15,7 @@ const AddCardPricePart = ({
   };
 }) => {
   return (
-    <div className={`${containerClass || " flex flex-col  w-full gap-0 md:gap-0"}   `}>
+    <div className={`${containerClass || " flex flex-col  w-fit gap-0 md:gap-0"}   `}>
       {ribbon?.ribbon_title ? (
         <div
           style={{ background: ribbon?.ribbon_bg_color, color: ribbon?.ribbon_title_color }}
@@ -33,10 +33,10 @@ const AddCardPricePart = ({
           <div className=" relative gap-2 flex items-center">
             <p className="text-xs md:text-xs relative  flex items-center line-through  opacity-65">
               {" "}
-              {numberWithCommas(data?.price)} <span className="text-xxs">{_STRINGS.TOMAN}</span>
+              {numberWithCommas(data?.price)}
             </p>
             {data?.discount_percentage ? (
-              <div className="w-7 gap-0.5 flex-col h-5 rounded-md transition-all  px-1 py-[0.2rem]   bg-primary-150 text-white  aspect-square flex items-center justify-center">
+              <div className="w-7 gap-0.5 flex-col h-5 rounded-full transition-all  px-1 py-[0.2rem]   bg-primary-1100 text-white  aspect-square flex items-center justify-center">
                 <p className="  text-xxs   ">%{data?.discount_percentage}</p>{" "}
               </div>
             ) : (

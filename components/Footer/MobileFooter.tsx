@@ -42,6 +42,8 @@ const MobileFooter: React.FC = ({}) => {
       title: _STRINGS.CREATE_ADD,
       route: "/profile/owner/properties",
       callBack: () => {
+        useStoreParams.setState({ sideBarStatus: false });
+
         if (!!userInfo) {
           if (!userInfo?.owner_id) {
             router.push(`/profile/edit`);
@@ -64,6 +66,41 @@ const MobileFooter: React.FC = ({}) => {
 
       icon: "/assets/icons/navbar/footer_consultancy.svg",
     },
+    {
+      id: 1442,
+      title: _STRINGS.MY_PROFILE,
+      route: "/profile",
+
+      icon: "/assets/icons/navbar/my_jayab.svg",
+    },
+  ];
+
+  const rightFooterItems = [
+    {
+      id: 2,
+      title: _STRINGS.HOME,
+      route: "/",
+
+      icon: "/assets/icons/navbar/home_nav.svg",
+    },
+    {
+      id: 142142,
+      title: _STRINGS.CONSULTAMCY,
+      route: "/advisors",
+
+      icon: "/assets/icons/navbar/footer_consultancy.svg",
+    },
+  ];
+  const lefttFooterItems = [
+    {
+      id: 242,
+      title: _STRINGS.CHAT,
+      route: "/chat",
+
+      icon: "/assets/icons/navbar/footer_chat.svg",
+      notif: true,
+    },
+
     {
       id: 1442,
       title: _STRINGS.MY_PROFILE,
@@ -106,26 +143,41 @@ const MobileFooter: React.FC = ({}) => {
   const hasBadge =
     (advisorProfile?.status?.id == 20 && !!isActive && remainingDays <= 3) ||
     (advisorProfile?.status?.id == 20 && !isActive);
+
+  /* -------------------------------------------------------------------------- */
+  /*                            ON CREATE POST CLICK                            */
+  /* -------------------------------------------------------------------------- */
+
+  const onCreatePost = () => {
+    useStoreParams.setState({ sideBarStatus: false });
+
+    if (!!userInfo) {
+      if (!userInfo?.owner_id) {
+        router.push(`/profile/edit`);
+      } else {
+        refetch().then((e) => {
+          if (!!e?.data) router.push(`/profile/owner/properties/${e?.data?.id}/edit/initials`);
+        });
+      }
+    } else {
+      useStoreParams.setState({ loginModal: true });
+    }
+  };
   return (
     <div
       className={`   ${!!footerHiddenBlackList.find((e) => route?.includes(e)) ? "hidden lg:hidden" : ""}  z-10     flex   max-w-[800px]  ${
-        isIOS && getPWADisplayMode() == "standalone" ? "pb-8" : "pb-5"
-      }  flex lg:hidden  pt-3 justify-between  md:rounded-md  left-0  right-0     mx-auto   shadow-card transition-all duration-1000	ease-in-out  items-center fixed bottom-0 w-full   bg-white  `}
+        isIOS && getPWADisplayMode() == "standalone" ? "pb-8" : "pb-6"
+      }  flex lg:hidden  pt-3 justify-between  md:rounded-md  left-0  right-0     drop-shadow-2xl  mx-auto   shadow-card transition-all duration-1000	ease-in-out  items-center fixed bottom-0 w-full   bg-white  `}
     >
-      <div className="flex w-full items-center   justify-around px-4     md:gap-6">
-        {footerItems?.map((el, i) => {
+      <div className="flex w-full items-center   justify-around px-3     ">
+        {rightFooterItems?.map((el, i) => {
           return (
             <div
-              className={` w-[15%]   relative cursor-pointer select-none flex flex-col items-center gap-1 justify-center transition-all duration-1000	ease-in-out  `}
+              className={` w-full   relative cursor-pointer select-none flex flex-col items-center gap-1 justify-center transition-all duration-1000	ease-in-out  `}
               onClick={() => {
                 if (!isFocused(el?.route)) {
-                  useStoreParams.setState({ sideBarStatus: false });
-                  if (!!el?.callBack) {
-                    el?.callBack();
-                  } else {
-                    router.push(`${el?.route}`);
-                    setFocused(el);
-                  }
+                  router.push(`${el?.route}`);
+                  setFocused(el);
                 }
               }}
               key={el?.id}
@@ -139,9 +191,66 @@ const MobileFooter: React.FC = ({}) => {
               <img
                 alt={`${el?.id}footerItem`}
                 src={el?.icon}
-                className={` w-5  ${
+                className={` w-6  ${
                   !isFocused(el?.route) && el?.title ? " opacity-60 grayscale brightness-90  " : " "
-                }  h-5 aspect-square object-contain`}
+                }  h-6 aspect-square object-contain`}
+              />
+
+              {el?.title ? (
+                <p
+                  className={`  ${
+                    !isFocused(el?.route) && el?.title ? " opacity-60 grayscale brightness-90  " : " "
+                  }   truncate text-xs  md:text-base  text-primary-700 select-none
+            
+                `}
+                >
+                  {el?.title}
+                </p>
+              ) : (
+                <></>
+              )}
+            </div>
+          );
+        })}
+        {/* CENTER */}
+        <div onClick={onCreatePost} className={`  flex flex-col justify-between   shrink-0   w-24     relative  `}>
+          <img className=" -bottom-[2.1rem] h-24  absolute w-24 " src="/assets/icons/navbar/footer_bump.svg" />
+          <div className=" w-full h-full  aspect-square  absolute -top-[1.65rem] left-0 right-0 mx-auto rounded-full  bg-transparent flex items-center justify-center ">
+            <img src="/assets/icons/navbar/footer_big_plus.svg" />
+          </div>
+
+          <p className=" truncate text-xs  absolute -bottom-[1.375rem] right-0 left-0 mx-auto md:text-base  text-center text-primary-700 select-none opacity-60 grayscale brightness-90  ">
+            {_STRINGS.CREATE_ADD}
+          </p>
+        </div>
+
+        {/* LEFT PART  */}
+        {lefttFooterItems?.map((el, i) => {
+          return (
+            <div
+              className={` w-full   relative cursor-pointer select-none flex flex-col items-center gap-1 justify-center transition-all duration-1000	ease-in-out  `}
+              onClick={() => {
+                if (!isFocused(el?.route)) {
+                  useStoreParams.setState({ sideBarStatus: false });
+
+                  router.push(`${el?.route}`);
+                  setFocused(el);
+                }
+              }}
+              key={el?.id}
+            >
+              {!!hasBadge && el?.route == "/advisors" ? (
+                <div className="w-2 h-2 rounded-full  absolute left-2 z-1 -top-0.5 bg-red-600 animate-pulse transition-all"></div>
+              ) : (
+                <></>
+              )}
+
+              <img
+                alt={`${el?.id}footerItem`}
+                src={el?.icon}
+                className={` w-6  ${
+                  !isFocused(el?.route) && el?.title ? " opacity-60 grayscale brightness-90  " : " "
+                }  h-6 aspect-square object-contain`}
               />
 
               {el?.title ? (

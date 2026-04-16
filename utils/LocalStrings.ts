@@ -78,7 +78,7 @@ const _STRINGS = {
   RECORD_SCORE: "ثبت امتیاز",
   RECORD_CONSULTANT_SCORE: "ثبت امتیاز مشاور",
 
-  TODAYS_PRICE: "قیمت امروز:",
+  TODAYS_PRICE: "قیمت امروز",
   VERIFIED: "احراز شده",
   ROOM_COUNTS: "تعداد اتاق",
   ROOM: "اتاق",
@@ -435,6 +435,7 @@ const _STRINGS = {
   /////////////NEW-FACE//////////////
   FAST_ACCESS: "دسترسی سریع",
   COMUNICATION_WAYS: "راه‌های ارتباطی",
+  POOL_LESS: "بدون استخر",
 };
 
 export default _STRINGS;
