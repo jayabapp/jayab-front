@@ -36,28 +36,28 @@ function MainFiltersContainer({
         ) : (
           <Swiper
             viewportClassName="padding-x"
-            slidesPerView={!!devices?.isMobile || !!devices?.isTablet ? 4.5 : 9}
+            slidesPerView={!!devices?.isMobile || !!devices?.isTablet ? 4.5 : 8}
             spaceBetween={0}
             breakPoints={{
               320: {
-                slidesPerView: 4.5,
+                slidesPerView: 4.25,
                 spaceBetween: 10,
               },
               640: {
-                slidesPerView: 4.5,
+                slidesPerView: 4.25,
                 spaceBetween: 10,
               },
               // when window width is >= 768px
               768: {
-                slidesPerView: 4.5,
+                slidesPerView: 4.25,
                 spaceBetween: 10,
               },
               1024: {
-                slidesPerView: 9,
+                slidesPerView: 8,
                 spaceBetween: 10,
               },
               1600: {
-                slidesPerView: 9,
+                slidesPerView: 8,
                 spaceBetween: 10,
               },
             }}

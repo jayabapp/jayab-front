@@ -14,7 +14,7 @@ function HomePropertyTypes({ data, title, devices }: { data: HomeLandingDto[]; t
       <p className=" font-bold  padding-x  shrink-0 text-center md:text-start text-lg lg:text-xl  ">{title}</p>
       <SwiperEm
         viewportClassName="  padding-x "
-        slidesPerView={!!devices?.isMobile || !!devices?.isTablet ? 4 : 10}
+        slidesPerView={!!devices?.isMobile || !!devices?.isTablet ? 4 : 8}
         spaceBetween={2}
         breakPoints={{
           320: {
@@ -31,11 +31,11 @@ function HomePropertyTypes({ data, title, devices }: { data: HomeLandingDto[]; t
             spaceBetween: 10,
           },
           1024: {
-            slidesPerView: 10,
+            slidesPerView: 8,
             spaceBetween: 2,
           },
           1600: {
-            slidesPerView: 10,
+            slidesPerView: 8,
             spaceBetween: 2,
           },
         }}

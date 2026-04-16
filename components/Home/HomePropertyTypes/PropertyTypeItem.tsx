@@ -9,7 +9,7 @@ const PropertyTypeItem = ({ item }: { item: HomeLandingDto }) => {
       className="flex  justify-center   rounded-2xl  border   aspect-square  flex-col   items-center gap-2"
     >
       <img
-        className=" size-7 md:size-11  rounded-sm "
+        className=" size-7 md:size-16  rounded-sm "
         src={item?.image ? NEW_IMAGE_URL(item?.image) : "/assets/icons/logo/mobile_header_logo.svg"}
       />
       <p className=" text-xs line-clamp-1 md:text-base font-normal md:font-bold">{item?.title}</p>

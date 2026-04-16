@@ -27,7 +27,7 @@ const HomeBannerPart = ({ banners, devices }: ImageCarouselTypes) => {
     >
       {/* HOME SEARCH PART  */}
 
-      <div className="w-full extra-padding-x  lg:!px-[28%] flex absolute m-auto left-0 right-0  bottom-[25%] lg:bottom-[40%] flex-col   z-20  gap-20">
+      <div className="w-full extra-padding-x  lg:!px-[28%] flex absolute m-auto left-0 right-0  bottom-[25%] lg:bottom-[30%] flex-col   z-20  gap-20">
         <div className="flex z-5 gap-4 items-center justify-center flex-col">
           <img className="w-40" src="/assets/images/home/home_banner_logo.png" />
           <h1 className="text-white font-bold text-lg text-center">{_STRINGS.HOME_TITLE}</h1>
@@ -47,7 +47,7 @@ const HomeBannerPart = ({ banners, devices }: ImageCarouselTypes) => {
               // autofocus={isInSearch}
             />
           </Suspense>
-          <div className="w-[1px] h-12 bg-gray-300"></div>
+          <div className="w-[1px] h-8 bg-gray-300"></div>
           <HomeCityFilterCityPart />
         </div>
       </div>

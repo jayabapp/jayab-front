@@ -14,7 +14,7 @@ const HomePropertiesList = ({ data, middleBanners }: { data: any[]; middleBanner
     if (!!middleBanners) return chunk(middleBanners, 2);
   }, [middleBanners]);
   return (
-    <div className="w-full px-3  md:px-3 lg:px-4 2xl:px-[5%] ">
+    <div className="w-full  padding-x ">
       <HomePropertiesSsrPart middleBanners={bannerGroup || []} data={data} />
       {page == 1 && !isEmpty(data) && data?.length % 24 == 0 ? (
         <Link className="w-full " href={"/rooms"} prefetch={false}>

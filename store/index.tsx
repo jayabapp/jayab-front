@@ -63,8 +63,17 @@ export const useStoreInit = create<InitStore>(() => ({
 }));
 
 /* -------------------------------------------------------------------------- */
-/* THEME */
+/* SELECTED CITIES */
 /* -------------------------------------------------------------------------- */
+
+export type LocationsStore = {
+  locationsData: { [key: string]: any | null };
+};
+
+export const useCitiesStore = create<LocationsStore>(() => ({
+  locationsData: {},
+}));
+
 /* -------------------------------------------------------------------------- */
 /* THEME */
 /* -------------------------------------------------------------------------- */

@@ -16,6 +16,7 @@ import { headerMobileSearchBlackList } from "@/utils/constantss";
 import { useQuery } from "@tanstack/react-query";
 import { throttle } from "lodash";
 import moment from "moment-jalaali";
+import HomeCityFilterCityPart from "../Home/HomeCityFilterContainer/HomeCityFilterCityPart";
 import Button from "../shared/Button/Button";
 import DrawerMenu from "../shared/DrawerMenu";
 import AbsoluteBadge from "./AbsoluteBadge";
@@ -67,7 +68,7 @@ const TextIcon = ({ item, isHome, visibleTopHeader }: textIconType) => {
       className={`dark:invert  brightness-125 group-hover:brightness-100 group-hover:grayscale-0  grayscale `}
     /> */}
         <p
-          className={`${textColor} ${visibleTopHeader} shrink-0  ransition-all duration-100 font-medium  group-hover:brightness-100 group-hover:text-primary-700  `}
+          className={`${textColor} ${visibleTopHeader} shrink-0  cursor-pointer ransition-all duration-100 font-medium  group-hover:brightness-100 group-hover:text-primary-700  `}
         >
           {item?.title}
         </p>
@@ -403,7 +404,7 @@ transition-all ease-out  duration-300  header-content-container w-full mx-auto  
             />
             {!!isLogin && !!showLogins ? (
               <div className="relative ">
-                <ProfileDropdown isHome={visibleTopHeader} notifBadge={notifBadge || 0} />
+                <ProfileDropdown isHome={isHeaderLight} notifBadge={notifBadge || 0} />
               </div>
             ) : (
               <></>
@@ -455,7 +456,25 @@ transition-all ease-out  duration-300  header-content-container w-full mx-auto  
                   <></>
                 ) : (
                   <>
-                    <PopSearchbox
+                    <div className=" hidden md:flex  w-full border h-12 bg-white rounded-full items-center gap-2  pl-4">
+                      <Suspense>
+                        <PopSearchbox
+                          boxId={scroll ? "SEARCH_BOX_Modal" : "SEARCH_BOX"}
+                          placeholder={_STRINGS?.SEARCH_CITY_OR_ADD}
+                          onSubmit={() => {}}
+                          onClear={() => {
+                            // setsearchText("");
+                            // router.replace(pathname);
+                          }}
+                          containerClass={" w-full mx-auto"}
+                          item={{ bg: `!bg-transparent  !border-none ` }}
+                          // autofocus={isInSearch}
+                        />
+                      </Suspense>
+                      <div className="w-[1px] h-8 bg-gray-300"></div>
+                      <HomeCityFilterCityPart />
+                    </div>
+                    {/* <PopSearchbox
                       boxId={scroll ? "SEARCH_BOX_Modal" : "SEARCH_BOX"}
                       placeholder={_STRINGS?.SEARCH_CITY_OR_ADD}
                       onSubmit={(text) => {}}
@@ -464,7 +483,7 @@ transition-all ease-out  duration-300  header-content-container w-full mx-auto  
                       }}
                       item={{ bg: `!bg-white/70 ${isHome ? "" : "!border"} ` }}
                       autofocus={isInSearch}
-                    />
+                    /> */}
                   </>
                 )}
               </Suspense>{" "}

@@ -3,6 +3,7 @@ import { CityService } from "@/api_services/city/city.service";
 import { ProvienceTypesDto } from "@/api_services/property/property.interface";
 import queryBuilder from "@/helpers/queryBuilder";
 import useQueryGet from "@/helpers/queryGet";
+import { useCitiesStore } from "@/store";
 import _STRINGS from "@/utils/LocalStrings";
 import { useQuery } from "@tanstack/react-query";
 import isEmpty from "lodash/isEmpty";
@@ -163,6 +164,9 @@ const CityModal = ({
         ...queries,
       };
 
+      let fullSelectedcities = [];
+      let selectedProv = [];
+
       /* -------------------------------------------------------------------------- */
       /*                                 NEW ROUTING                                */
       /* -------------------------------------------------------------------------- */
@@ -180,7 +184,11 @@ const CityModal = ({
         const selectedMainProv = provinces?.find((x) => x?.id == e?.id);
         return selectedMainProv?.child?.length == e?.child?.length;
       });
+
+      fullSelectedcities = selectedCities;
+
       if (allFullProviencesSelected?.length == 1) {
+        selectedProv = allFullProviencesSelected;
         body.cities = allIncludedProves
           ?.filter((x: NewCitiesListDto) => x?.id != allFullProviencesSelected?.[0]?.id)
           ?.flatMap((e: NewCitiesListDto) => e?.child)
@@ -193,6 +201,19 @@ const CityModal = ({
 
       delete body.page;
       delete body.regions;
+
+      /* -------------------------------------------------------------------------- */
+      /*                            SETTING DATA FOR SHOW                           */
+      /* -------------------------------------------------------------------------- */
+
+      useCitiesStore.setState({
+        locationsData: {
+          cities: fullSelectedcities,
+          province: selectedProv,
+        },
+      });
+
+      /////////////////////
       if (!!passedUrl) {
         if (!!isHome && !body?.province_id && isEmpty(body?.cities)) {
         } else {
@@ -202,6 +223,7 @@ const CityModal = ({
         router.replace(`${pathname}?${queryBuilder(body)}`);
       }
     }
+
     onHide();
   };
 

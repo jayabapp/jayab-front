@@ -81,7 +81,7 @@ const ProfileDropdown = ({ notifBadge, isHome }: { notifBadge?: number | string;
           >
             {/* <img src="/assets/icons/navbar/my_jayab.svg" className="dark:invert" /> */}
             <p
-              className={`  ${isHome ? "text-white" : " text-black "}  shrink-0 font-medium   group-hover:text-primary-700 `}
+              className={`  text-sm ${isHome ? "text-white" : " text-black "}  shrink-0 font-medium   group-hover:text-primary-700 `}
             >
               {_STRINGS.MY_PROFILE}
             </p>

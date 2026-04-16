@@ -18,7 +18,7 @@ const CategoryItem = ({ item }: { item: HomeLandingDto }) => {
       // }}
       className="flex flex-col  lg:gap-4 aspect-square justify-between  lg:justify-center items-center p-2 w-full group border rounded-2xl select-none transition-all duration-500 "
     >
-      <div id={`${item?.title || "fake"}CatImage`} className=" relative rounded-sm    w-10 h-10 t aspect-square z-30">
+      <div id={`${item?.title || "fake"}CatImage`} className=" relative rounded-sm    w-10 h-10  aspect-square z-30">
         {" "}
         <Image
           loading="eager"
