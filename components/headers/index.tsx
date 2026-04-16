@@ -369,7 +369,7 @@ transition-all ease-out  duration-300  header-content-container w-full mx-auto  
                           </Link>
                         ) : (
                           <Suspense>
-                            {/* <PopSearchbox
+                            <PopSearchbox
                               justIcon
                               boxId={scroll ? "SEARCH_BOX_Mobile_Modal" : "SEARCH_BOX_Mobile"}
                               placeholder={_STRINGS?.SEARCH_CITY_OR_ADD}
@@ -377,7 +377,7 @@ transition-all ease-out  duration-300  header-content-container w-full mx-auto  
                               onClear={() => {}}
                               item={{ bg: "" }}
                               autofocus={isInSearch}
-                            /> */}
+                            />
                           </Suspense>
                         )}
                       </div>

@@ -18,7 +18,10 @@ const CategoryItem = ({ item }: { item: HomeLandingDto }) => {
       // }}
       className="flex flex-col  lg:gap-4 aspect-square justify-between  lg:justify-center items-center p-2 w-full group border rounded-2xl select-none transition-all duration-500 "
     >
-      <div id={`${item?.title || "fake"}CatImage`} className=" relative rounded-sm    w-10 h-10  aspect-square z-30">
+      <div
+        id={`${item?.title || "fake"}CatImage`}
+        className=" relative rounded-sm    lg:size-16 size-10  aspect-square z-30"
+      >
         {" "}
         <Image
           loading="eager"
@@ -26,7 +29,7 @@ const CategoryItem = ({ item }: { item: HomeLandingDto }) => {
           src={item?.image ? NEW_IMAGE_URL(item?.image) : "/assets/icons/shared/image_placeholder.svg"}
           alt={`icatImages${item?.title}`}
           fill
-          className={`mix-blend-multiply z-2  rounded-sm dark:mix-blend-normal    w-10 h-10 transition-all duration-500 aspect-square  ${
+          className={`mix-blend-multiply z-2  rounded-sm dark:mix-blend-normal    lg:size-16 size-10 transition-all duration-500 aspect-square  ${
             !!item?.image ? "!object-cover" : "!object-contain opacity-50 bg-primary-200  md:px-8"
           }
 

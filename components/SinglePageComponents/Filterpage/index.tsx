@@ -141,7 +141,7 @@ const Filterpage = () => {
             <SingleProductBreadCrumb dataArray={breadCrumbs} />
           </div>
 
-          <div className="flex fixed pt-1 xl:hidden h-16 right-0  items-center justify-center   z-10 xl:z-1  top-[4rem] xl:top-auto left-0 xl:left-auto bg-white xl:bg-transparent xl:relative flex-col w-full xl:gap-2  ">
+          <div className="flex fixed pt-1 xl:hidden h-16 right-0  items-center justify-center   z-10 xl:z-1  top-[3rem] xl:top-auto left-0 xl:left-auto bg-white xl:bg-transparent xl:relative flex-col w-full xl:gap-2  ">
             <div className=" flex  order-1  xl:hidden  relative w-full">
               <div className=" z-1  px-2  relative  w-full items-center gap-1 justify-between  ">
                 <div className=" !col-span-9 ">
