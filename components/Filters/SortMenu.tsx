@@ -1,10 +1,10 @@
-import { useRouter, usePathname } from "next/navigation";
-import React, { useEffect, Fragment, useState } from "react";
+import { usePathname, useRouter } from "next/navigation";
+import { Fragment, useEffect, useState } from "react";
 
-import { Menu, MenuButton, MenuItem, MenuItems, Transition } from "@headlessui/react";
 import queryBuilder from "@/helpers/queryBuilder";
-import { SORT_TYPES } from "@/utils/constantss";
 import { useStoreInit } from "@/store";
+import { SORT_TYPES } from "@/utils/constantss";
+import { Menu, MenuButton, Transition } from "@headlessui/react";
 
 export interface SortMenuType {
   query?: any;
@@ -38,7 +38,7 @@ const SortMenu = ({ query }: SortMenuType) => {
       router.replace(
         `${pathname}?${queryBuilder({
           ...temp,
-        })}`
+        })}`,
       );
     } else {
       router.replace(
@@ -46,7 +46,7 @@ const SortMenu = ({ query }: SortMenuType) => {
           ...temp,
 
           sort_type: id,
-        })}`
+        })}`,
       );
     }
   };
@@ -56,9 +56,9 @@ const SortMenu = ({ query }: SortMenuType) => {
       <Menu as="div" className="relative inline-block text-left mr-1">
         <div>
           <MenuButton className=" h-auto md:h-11  rounded-lg cursor-pointer flex justify-between items-center">
-            <div className="  gap-2  h-auto py-1 px-2  rounded-full bg-primary-400  flex items-center justify-center  ">
+            <div className="  gap-2  h-auto py-1 px-2  rounded-full bg-white border-primary-400 border  flex items-center justify-center  ">
               {" "}
-              <p className="  text-xs md:text-base">
+              <p className="  text-xs md:text-sm">
                 {" "}
                 {sortTypes?.find((e) => e?.id == query?.sort_type)?.title || SORT_TYPES?.[0]?.title}
               </p>{" "}

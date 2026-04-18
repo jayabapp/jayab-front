@@ -83,8 +83,30 @@ const SsrFilterPage = ({ landings, firstData }: { firstData: { data: any[] }; la
   const [filterModalShow, setFilterModalShow] = useState(false);
 
   const { data: propertyTypes } = useQuery({
-    queryFn: () => PropertyService.GetUserPropertyGroup({ group: ["PROPERTY_TYPE", "ENTERTAINMENT", "POOL_TYPE"] }),
-    queryKey: [PropertyService.USER_PROP_OPTIONS_CACHEKEY, "PROPERTY_TYPE", "ENTERTAINMENT", "POOL_TYPE"],
+    queryFn: () =>
+      PropertyService.GetUserPropertyGroup({
+        group: [
+          "PROPERTY_TYPE",
+          "ENTERTAINMENT",
+          "POOL_TYPE",
+          "OWNERSHIP",
+          "KITCHEN",
+          "COOL_HEAT",
+          "WELFARE",
+          "PATTERN",
+        ],
+      }),
+    queryKey: [
+      PropertyService.USER_PROP_OPTIONS_CACHEKEY,
+      "PROPERTY_TYPE",
+      "ENTERTAINMENT",
+      "POOL_TYPE",
+      "OWNERSHIP",
+      "KITCHEN",
+      "COOL_HEAT",
+      "WELFARE",
+      "PATTERN",
+    ],
   });
 
   const queryMaker = (items: any) => {
@@ -175,7 +197,7 @@ const SsrFilterPage = ({ landings, firstData }: { firstData: { data: any[] }; la
           <div
             className={`flex fixed  ${
               !!showShadow ? "shadow-md" : ""
-            }  md:shadow-none pt-1 transition-all duration-300 xl:hidden h-16 right-0  items-center justify-center   z-10 xl:z-1  top-[4rem] xl:top-auto left-0 xl:left-auto bg-white xl:bg-transparent xl:relative flex-col w-full xl:gap-2  `}
+            }  md:shadow-none pt-1 transition-all duration-300 xl:hidden h-16 right-0  items-center justify-center   z-10 xl:z-1  top-[3rem] xl:top-auto left-0 xl:left-auto bg-white xl:bg-transparent xl:relative flex-col w-full xl:gap-2  `}
           >
             {" "}
             <div className=" flex  order-1  xl:hidden  relative w-full">

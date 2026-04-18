@@ -131,7 +131,7 @@ const _STRINGS = {
   FLOOR_COUNT: "تعداد طبقات ",
   UNITS_IN_FLOOR: "تعداد واحد در طبقات ",
   FLOOR: "طبقه",
-  OWNERSHIP_TYPE: "نوع مالکیت  ",
+  OWNERSHIP: "نوع مالکیت  ",
   PROVINCE: "استان",
   CITY: "شهر",
   CREATED_AT_YEAR: "سال ساخت ",

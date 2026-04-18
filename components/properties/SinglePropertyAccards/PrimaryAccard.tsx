@@ -24,7 +24,7 @@ const PrimaryAccard = ({ data }: { data: SinglePropDto }) => {
         <LinearTextBlock title={_STRINGS.FLOOR_COUNT} value={data?.floors} />
         <LinearTextBlock title={_STRINGS.UNITS_IN_FLOOR} value={data?.unit_per_floor} />
         <LinearTextBlock title={_STRINGS.FLOOR} value={data?.floor == 0 ? "همکف" : data?.floor} />
-        <LinearTextBlock title={_STRINGS.OWNERSHIP_TYPE} value={data?.options?.ownership} />
+        <LinearTextBlock title={_STRINGS.OWNERSHIP} value={data?.options?.ownership} />
         <LinearTextBlock title={_STRINGS.PROVINCE} value={data?.province} />
         <LinearTextBlock title={_STRINGS.CITY} value={data?.city} />
         <LinearTextBlock title={_STRINGS.ROOM_COUNTS} value={data?.bedrooms?.total_bedrooms} unit={_STRINGS.ROOM} />

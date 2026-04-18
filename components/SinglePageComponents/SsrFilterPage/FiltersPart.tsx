@@ -10,7 +10,6 @@ import numberWithCommas from "@/helpers/numberWithCommas";
 import { useStoreInit } from "@/store";
 import { poolFilterTypes } from "@/utils/constantss";
 import _STRINGS from "@/utils/LocalStrings";
-import React from "react";
 
 const FiltersPart = ({ queries, setFilters, filters, propertyTypes, hiddenFilters }: any) => {
   const { userInfo } = useStoreInit((data) => data);
@@ -145,7 +144,77 @@ const FiltersPart = ({ queries, setFilters, filters, propertyTypes, hiddenFilter
           query={queries}
         />
       )}
+      {/* NEW  FILTERS    04/18/2026 */}
 
+      {isHiddenFilter("pattern") ? (
+        <></>
+      ) : (
+        <SimpleAccordion
+          item={{ parenClass: "  pb-2  border-b w-full p-2 !px-0", disableBorderB: true }}
+          title={_STRINGS.ENV_PATTERN}
+        >
+          <ProductModels
+            mobileFilters={filters}
+            setMobileFilters={setFilters}
+            queryKey={"pattern"}
+            isMulty
+            list={propertyTypes?.PATTERN || []}
+            query={queries}
+          />
+        </SimpleAccordion>
+      )}
+      {isHiddenFilter("welfare") ? (
+        <></>
+      ) : (
+        <SimpleAccordion
+          item={{ parenClass: "  pb-2  border-b w-full p-2 !px-0", disableBorderB: true }}
+          title={_STRINGS.WELFARE}
+        >
+          <ProductModels
+            mobileFilters={filters}
+            setMobileFilters={setFilters}
+            queryKey={"welfare"}
+            isMulty
+            list={propertyTypes?.WELFARE || []}
+            query={queries}
+          />
+        </SimpleAccordion>
+      )}
+      {isHiddenFilter("cool_heat") ? (
+        <></>
+      ) : (
+        <SimpleAccordion
+          item={{ parenClass: "  pb-2  border-b w-full p-2 !px-0", disableBorderB: true }}
+          title={_STRINGS.COOL_HEAT}
+        >
+          <ProductModels
+            mobileFilters={filters}
+            setMobileFilters={setFilters}
+            queryKey={"cool_heat"}
+            isMulty
+            list={propertyTypes?.COOL_HEAT || []}
+            query={queries}
+          />
+        </SimpleAccordion>
+      )}
+
+      {isHiddenFilter("kitchen") ? (
+        <></>
+      ) : (
+        <SimpleAccordion
+          item={{ parenClass: "  pb-2  border-b w-full p-2 !px-0", disableBorderB: true }}
+          title={_STRINGS.KITCHEN_ACC}
+        >
+          <ProductModels
+            mobileFilters={filters}
+            setMobileFilters={setFilters}
+            queryKey={"kitchen"}
+            isMulty
+            list={propertyTypes?.KITCHEN || []}
+            query={queries}
+          />
+        </SimpleAccordion>
+      )}
       {/* COMMISION RANGE  */}
 
       {!!userInfo?.advisor_id ? (

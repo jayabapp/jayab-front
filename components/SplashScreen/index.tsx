@@ -1,22 +1,50 @@
-import React, { useEffect, useState } from "react";
+import { AnimatePresence, motion } from "framer-motion";
 
-import { useStoreTheme } from "../../store";
-import { NEW_IMAGE_URL } from "@/utils/urls";
-import _STRINGS from "@/utils/LocalStrings";
-const Splashscreen = () => {
-  // const themes = JSON.parse(JSON.parse(JSON.stringify(localStorage.getItem("theme-storage") || "")));
+let initialized = false;
+
+const SplashScreen = ({ isVisible }: { isVisible: boolean }) => {
   return (
-    <div className="app-background relative flex flex-col  justify-center items-center mx-auto">
-      <div className="h-[100dvh] object-cover app-size  !relative " style={{ backgroundColor: "white" }}>
-        <div className="flex gap-4 z-2 flex-col w-full absolute top-[50%] items-center justify-center mt-2">
-          <img src={"/assets/icons/logo/logo.svg"} className=" rounded-md  w-24 aspect-square " />
-          <p className=" text-white text-center " style={{ fontSize: "1.5rem", fontWeight: 500 }}>
-            {"_STRINGS.TITLE"}
-          </p>
-        </div>
-      </div>
-    </div>
+    <AnimatePresence>
+      {isVisible && (
+        <motion.div
+          className="fixed inset-0 z-[5000] bg-primary-500 flex flex-col gap-10 items-center justify-center"
+          initial={{ opacity: 1 }}
+          exit={{ opacity: 0, scale: 1.05 }}
+          transition={{ duration: 0.5, ease: "easeInOut" }}
+        >
+          {/* Radial glow behind logo */}
+          <img className="md:hidden w-screen h-screen absolute inset-0 z-0" src="/assets/images/splash/Splash.png" />
+          <img
+            className="hidden md:block w-screen h-screen absolute inset-0 z-0"
+            src="/assets/images/splash/SplashDesktop.png"
+          />
+          <div className="w-screen h-screen absolute inset-0 bg-primary-700 " />
+          <motion.div
+            className="absolute rounded-full bg-white/25 blur-3xl"
+            initial={{ width: 0, height: 0, opacity: 0 }}
+            animate={{ width: 300, height: 300, opacity: 1 }}
+            transition={{ duration: 1, ease: "easeOut", repeat: 10, repeatType: "reverse" }}
+          />
+
+          {/* Logo */}
+          <motion.div
+            initial={{ opacity: 0, scale: 0.4 }}
+            animate={{ opacity: 1, scale: 1 }}
+            transition={{
+              duration: 0.7,
+              ease: [0.34, 1.56, 0.64, 1], // spring-like overshoot
+            }}
+          >
+            <img
+              src="/assets/icons/logo/logo.svg"
+              alt="logo"
+              className=" grayscale brightness-[400]  size-[10rem] relative z-10"
+            />
+          </motion.div>
+        </motion.div>
+      )}
+    </AnimatePresence>
   );
 };
 
-export default Splashscreen;
+export default SplashScreen;

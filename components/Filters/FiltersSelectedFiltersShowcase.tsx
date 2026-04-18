@@ -138,7 +138,8 @@ const FiltersSelectedFiltersShowcase = ({
   /* -------------------------------------------------------------------------- */
   /*                             DYNAMiC QUERY KEYS                             */
   /* -------------------------------------------------------------------------- */
-  const dynamicPropsInQueryKeys = Object.keys(propertyTypes)?.filter((e) => query?.[e?.toLowerCase()]);
+  // const dynamicPropsInQueryKeys = Object.keys(propertyTypes)?.filter((e) => query?.[e?.toLowerCase()]);
+  const dynamicPropsInQueryKeys = Object.keys(propertyTypes);
   const filteredDynamicPropsInQueryKeys = dynamicPropsInQueryKeys?.filter((e) => !isHiddenFilter(e?.toLowerCase()));
 
   return (
@@ -162,7 +163,7 @@ const FiltersSelectedFiltersShowcase = ({
         }}
         className=" z-5 !w-auto flex lg:hidden "
       >
-        <div className=" col-span-3 flex   w-fit px-3  h-8  rounded-full   bg-primary-700 items-center gap-2 ">
+        <div className=" col-span-3 flex   w-fit px-3  h-7  rounded-full   bg-primary-700 items-center gap-2 ">
           <img src="/assets/icons/property/white_filter_icon.svg" className="   cursor-pointer w-3 h-3 shrink-0" />
           <p className="text-white  text-xs">{_STRINGS.FILTERS}</p>
         </div>
@@ -188,7 +189,7 @@ const FiltersSelectedFiltersShowcase = ({
       {!isHiddenFilter("property_type") &&
         finallizedSelectedOptions?.["property_type"]?.map((e: any, index: number) => (
           <SwiperSlide key={`selectedItems${e?.id}`} className="!w-auto    ">
-            <div className="rounded-full !w-auto   gap-4 py-2 h-8 px-1 flex items-center justify-center border border-primary-700  bg-primary-700/5 text-primary-700  text-xs ">
+            <div className="rounded-full !w-auto   gap-4 py-1 h-7 px-1 flex items-center justify-center border border-primary-700  bg-primary-700/5 text-primary-700  text-xs ">
               <p className="text-xs pr-2">{e?.title} </p>
               <div
                 onClick={() => {
@@ -205,7 +206,7 @@ const FiltersSelectedFiltersShowcase = ({
       {/* {!isHiddenFilter("has_pool") && !!query?.has_pool && query?.has_pool != "2" ? ( */}
       {!isHiddenFilter("has_pool") && !!query?.has_pool ? (
         <SwiperSlide key={`hasPool`} className="!w-auto    ">
-          <div className="rounded-full !w-auto   gap-4 py-2 h-8 px-1 flex items-center justify-center border border-primary-700  bg-primary-700/5 text-primary-700  text-xs ">
+          <div className="rounded-full !w-auto   gap-4 py-1 h-7 px-1 flex items-center justify-center border border-primary-700  bg-primary-700/5 text-primary-700  text-xs ">
             <p className="text-xs pr-2">
               {_STRINGS.POOL_STATUS} : {query?.has_pool == "0" ? "بدون استخر" : "  استخردار"}
             </p>
@@ -226,7 +227,7 @@ const FiltersSelectedFiltersShowcase = ({
       {!isHiddenFilter("pool_type") &&
         finallizedSelectedOptions?.["pool_type"]?.map((e: any, index: number) => (
           <SwiperSlide key={`selectedItems${e?.id}`} className="!w-auto    ">
-            <div className="rounded-full !w-auto   gap-4 py-2 h-8 px-1 flex items-center justify-center border border-primary-700  bg-primary-700/5 text-primary-700  text-xs ">
+            <div className="rounded-full !w-auto   gap-4 py-1 h-7 px-1 flex items-center justify-center border border-primary-700  bg-primary-700/5 text-primary-700  text-xs ">
               <p className="text-xs pr-2">{e?.title} </p>
               <div
                 onClick={() => {
@@ -242,7 +243,7 @@ const FiltersSelectedFiltersShowcase = ({
       {/*  BEDROOMS */}
       {!isHiddenFilter("total_bedrooms") && !!query?.total_bedrooms ? (
         <SwiperSlide key={`selecRooms`} className="!w-auto    ">
-          <div className="rounded-full !w-auto   gap-4 py-2 h-8 px-1 flex items-center justify-center border border-primary-700  bg-primary-700/5 text-primary-700  text-xs ">
+          <div className="rounded-full !w-auto   gap-4 py-1 h-7 px-1 flex items-center justify-center border border-primary-700  bg-primary-700/5 text-primary-700  text-xs ">
             <p className="text-xs pr-2">
               {_STRINGS.ROOM_COUNT} : {query?.total_bedrooms}
             </p>
@@ -262,7 +263,7 @@ const FiltersSelectedFiltersShowcase = ({
       {/*  GUESTS */}
       {!isHiddenFilter("total_guests") && !!query?.total_guests ? (
         <SwiperSlide key={`selecGuests`} className="!w-auto    ">
-          <div className="rounded-full !w-auto   gap-4 py-2 h-8 px-1 flex items-center justify-center border border-primary-700  bg-primary-700/5 text-primary-700  text-xs ">
+          <div className="rounded-full !w-auto   gap-4 py-1 h-7 px-1 flex items-center justify-center border border-primary-700  bg-primary-700/5 text-primary-700  text-xs ">
             <p className="text-xs pr-2">
               {_STRINGS.PPL_COUNT} : {query?.total_guests}
             </p>
@@ -284,7 +285,7 @@ const FiltersSelectedFiltersShowcase = ({
       {/* {!isHiddenFilter("entertainment") &&
         finallizedSelectedOptions?.["entertainment"]?.map((e: any, index: number) => (
           <SwiperSlide key={`selectedItems${e?.id}`} className="!w-auto    ">
-            <div className="rounded-full !w-auto   gap-4 py-2 h-8 px-1 flex items-center justify-center border border-primary-700  bg-primary-700/5 text-primary-700  text-xs ">
+            <div className="rounded-full !w-auto   gap-4 py-1 h-7 px-1 flex items-center justify-center border border-primary-700  bg-primary-700/5 text-primary-700  text-xs ">
               <p className="text-xs pr-2">{e?.title} </p>
               <div
                 onClick={() => {
@@ -307,6 +308,7 @@ const FiltersSelectedFiltersShowcase = ({
               list={propertyTypes?.[key?.toUpperCase()]}
               queryKey={key?.toLowerCase()}
               query={query}
+              removeFiltersKeys={removeFiltersKeys}
             />
           </SwiperSlide>
         );
@@ -315,7 +317,7 @@ const FiltersSelectedFiltersShowcase = ({
       {/* {finallizedSelectedOptions?.map((oneRow) => {
         return oneRow?.map((e: any, index: number) => (
           <SwiperSlide key={`selectedItems${e?.id}`} className="!w-auto    ">
-            <div className="rounded-full !w-auto   gap-4 py-2 h-8 px-1 flex items-center justify-center border border-primary-700  bg-primary-700/5 text-primary-700  text-xs ">
+            <div className="rounded-full !w-auto   gap-4 py-1 h-7 px-1 flex items-center justify-center border border-primary-700  bg-primary-700/5 text-primary-700  text-xs ">
               <p className="text-xs pr-2">{e?.title} </p>
               <div
                 onClick={() => {
@@ -332,7 +334,7 @@ const FiltersSelectedFiltersShowcase = ({
       {/* START END DATE */}
       {!!query?.checkout && !!query?.checkin ? (
         <SwiperSlide key={`selecDATE`} className="!w-auto    ">
-          <div className="rounded-full !w-auto   gap-4 py-2 h-8 px-1 flex items-center justify-center border border-primary-700  bg-primary-700/5 text-primary-700  text-xs ">
+          <div className="rounded-full !w-auto   gap-4 py-1 h-7 px-1 flex items-center justify-center border border-primary-700  bg-primary-700/5 text-primary-700  text-xs ">
             <p className="text-xs pr-2">
               {_STRINGS.FROM} {moment(query?.checkin).format("jDD/jMMMM/jYYYY")} {_STRINGS.TO}{" "}
               {moment(query?.checkout).format("jDD/jMMMM/jYYYY")}
@@ -353,7 +355,7 @@ const FiltersSelectedFiltersShowcase = ({
       {/* COMMISION FILTER */}
       {!!query?.max_commission && !!query?.min_commission ? (
         <SwiperSlide key={`selecCommiss`} className="!w-auto    ">
-          <div className="rounded-full !w-auto   gap-4 py-2 h-8 px-1 flex items-center justify-center border border-primary-700  bg-primary-700/5 text-primary-700  text-xs ">
+          <div className="rounded-full !w-auto   gap-4 py-1 h-7 px-1 flex items-center justify-center border border-primary-700  bg-primary-700/5 text-primary-700  text-xs ">
             <p className="text-xs pr-2">
               {_STRINGS.COMMIS_JUST_PERC} {_STRINGS.FROM} {numberWithCommas(query?.min_commission)}% {_STRINGS.TO}{" "}
               {numberWithCommas(query?.max_commission)}%
@@ -374,7 +376,7 @@ const FiltersSelectedFiltersShowcase = ({
       {/* PRICE FILTER */}
       {!!query?.max_price && !!query?.min_price ? (
         <SwiperSlide key={`selecPRICE`} className="!w-auto    ">
-          <div className="rounded-full !w-auto   gap-4 py-2 h-8 px-1 flex items-center justify-center border border-primary-700  bg-primary-700/5 text-primary-700  text-xs ">
+          <div className="rounded-full !w-auto   gap-4 py-1 h-7 px-1 flex items-center justify-center border border-primary-700  bg-primary-700/5 text-primary-700  text-xs ">
             <p className="text-xs pr-2">
               {_STRINGS.PRICE} {_STRINGS.FROM} {numberWithCommas(query?.min_price)} {_STRINGS.TO}{" "}
               {numberWithCommas(query?.max_price)} {_STRINGS.TOMAN}
@@ -395,7 +397,7 @@ const FiltersSelectedFiltersShowcase = ({
       {/*  AREA */}
       {!!query?.max_building_area && !!query?.min_building_area ? (
         <SwiperSlide key={`selecAREA`} className="!w-auto    ">
-          <div className="rounded-full !w-auto   gap-4 py-2 h-8 px-1 flex items-center justify-center border border-primary-700  bg-primary-700/5 text-primary-700  text-xs ">
+          <div className="rounded-full !w-auto   gap-4 py-1 h-7 px-1 flex items-center justify-center border border-primary-700  bg-primary-700/5 text-primary-700  text-xs ">
             <p className="text-xs pr-2">
               {_STRINGS.ROOM_SIZE} {_STRINGS.FROM} {query?.min_building_area} {_STRINGS.TO} {query?.max_building_area}{" "}
               {_STRINGS.METER}
@@ -416,7 +418,7 @@ const FiltersSelectedFiltersShowcase = ({
       {/*  HAS DISCOUNT */}
       {!isHiddenFilter("has_discount") && !!query?.has_discount && query?.has_discount == "1" ? (
         <SwiperSlide key={`selecDiscount`} className="!w-auto    ">
-          <div className="rounded-full !w-auto   gap-4 py-2 h-8 px-1 flex items-center justify-center border border-primary-700  bg-primary-700/5 text-primary-700  text-xs ">
+          <div className="rounded-full !w-auto   gap-4 py-1 h-7 px-1 flex items-center justify-center border border-primary-700  bg-primary-700/5 text-primary-700  text-xs ">
             <p className="text-xs pr-2">{_STRINGS.HAS_DISCOUNT}</p>
             <div
               onClick={() => {
@@ -435,7 +437,7 @@ const FiltersSelectedFiltersShowcase = ({
       {/*  HAS DISCOUNT */}
       {!isHiddenFilter("is_premium") && !!query?.is_premium && query?.is_premium == "1" ? (
         <SwiperSlide key={`selecPermium`} className="!w-auto    ">
-          <div className="rounded-full !w-auto   gap-4 py-2 h-8 px-1 flex items-center justify-center border border-primary-700  bg-primary-700/5 text-primary-700  text-xs ">
+          <div className="rounded-full !w-auto   gap-4 py-1 h-7 px-1 flex items-center justify-center border border-primary-700  bg-primary-700/5 text-primary-700  text-xs ">
             <p className="text-xs pr-2">{_STRINGS.PERMIUM_PROPS}</p>
             <div
               onClick={() => {

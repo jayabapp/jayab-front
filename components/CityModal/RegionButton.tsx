@@ -20,7 +20,7 @@ const RegionButton = ({
         e.stopPropagation();
         setShowRegions(true);
       }}
-      className={` ${containerClass} rounded-full !w-auto  min-w-16 gap-2   py-2 h-8 px-1  items-center justify-center border ${
+      className={` ${containerClass} rounded-full !w-auto  min-w-16 gap-2   py-1 h-7 px-1  items-center justify-center border ${
         isEmpty(regionsIds)
           ? "border-gray-400  bg-gray-400/5 text-gray-400"
           : "border-primary-700  bg-primary-700/5 text-primary-700"

@@ -55,7 +55,7 @@ const Footer = () => {
       {!!PHONE_NUMBER && (
         <Link
           href={PHONE_NUMBER?.link || `tel:${PHONE_NUMBER?.full_text || PHONE_NUMBER?.small_text || ""}`}
-          className="icon-parent hidden md:flex fixed z-[100] w-16  items-center justify-center aspect-square rounded-full bg-primary-700   bottom-16 right-16"
+          className="icon-parent hidden lg:flex fixed z-[100] w-16  items-center justify-center aspect-square rounded-full bg-primary-700   bottom-16 right-16"
         >
           <svg width="40" height="40" viewBox="0 0 40 40" className="" fill="none">
             <path

@@ -132,7 +132,7 @@ const CreateEditProperty = ({
       />
       <SinglePopUpSelect
         closeOnSelect
-        item={{ list: propertyTypes?.["OWNERSHIP"] || [], title: _STRINGS.OWNERSHIP_TYPE, isMandatory: true }}
+        item={{ list: propertyTypes?.["OWNERSHIP"] || [], title: _STRINGS.OWNERSHIP, isMandatory: true }}
         value={values?.owenershp_type || ""}
         onSelect={(e) => {
           onChange(e, "owenershp_type");
