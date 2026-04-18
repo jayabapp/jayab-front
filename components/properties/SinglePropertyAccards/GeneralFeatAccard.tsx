@@ -46,7 +46,7 @@ const GeneralFeatAccard = ({ data }: { data: SinglePropDto }) => {
         )}
         {!!data?.options?.welfare ? (
           <div className="flex w-full flex-wrap  gap-3">
-            <p className=" font-bold">{_STRINGS.WELFARE_TITLE}</p>
+            <p className=" font-bold">{_STRINGS.WELFARE}</p>
             <div className="w-full gap-3 flex flex-wrap">
               {" "}
               {data?.options?.welfare?.map((e) => (

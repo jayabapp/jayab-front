@@ -68,8 +68,30 @@ const Filterpage = () => {
   const [filterModalShow, setFilterModalShow] = useState(false);
 
   const { data: propertyTypes } = useQuery({
-    queryFn: () => PropertyService.GetUserPropertyGroup({ group: ["PROPERTY_TYPE", "ENTERTAINMENT", "POOL_TYPE"] }),
-    queryKey: [PropertyService.USER_PROP_OPTIONS_CACHEKEY, "PROPERTY_TYPE", "ENTERTAINMENT", "POOL_TYPE"],
+    queryFn: () =>
+      PropertyService.GetUserPropertyGroup({
+        group: [
+          "PROPERTY_TYPE",
+          "ENTERTAINMENT",
+          "POOL_TYPE",
+          "OWNERSHIP",
+          "KITCHEN",
+          "COOL_HEAT",
+          "WELFARE",
+          "PATTERN",
+        ],
+      }),
+    queryKey: [
+      PropertyService.USER_PROP_OPTIONS_CACHEKEY,
+      "PROPERTY_TYPE",
+      "ENTERTAINMENT",
+      "POOL_TYPE",
+      "OWNERSHIP",
+      "KITCHEN",
+      "COOL_HEAT",
+      "WELFARE",
+      "PATTERN",
+    ],
   });
 
   const queryMaker = (items: any) => {

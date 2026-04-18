@@ -726,11 +726,11 @@ ul {
 }
 
 .pulse-1 {
-  animation: pulseOpacity 1.4s infinite;
+  animation: pulseOpacity 1.4s infinite 0.3s;
 }
 
 .pulse-2 {
-  animation: pulseOpacity 1.4s infinite 0.3s;
+  animation: pulseOpacity 1.4s infinite;
 }
 
 @keyframes shake {

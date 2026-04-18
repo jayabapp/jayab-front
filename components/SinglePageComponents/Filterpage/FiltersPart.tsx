@@ -111,6 +111,61 @@ const FiltersPart = ({ queries, setFilters, filters, propertyTypes }: any) => {
         query={queries}
       />
 
+      {/* NEW  FILTERS    04/18/2026 */}
+
+      <SimpleAccordion
+        item={{ parenClass: "  pb-2  border-b w-full p-2 !px-0", disableBorderB: true }}
+        title={_STRINGS.ENV_PATTERN}
+      >
+        <ProductModels
+          mobileFilters={filters}
+          setMobileFilters={setFilters}
+          queryKey={"pattern"}
+          isMulty
+          list={propertyTypes?.PATTERN || []}
+          query={queries}
+        />
+      </SimpleAccordion>
+      <SimpleAccordion
+        item={{ parenClass: "  pb-2  border-b w-full p-2 !px-0", disableBorderB: true }}
+        title={_STRINGS.WELFARE}
+      >
+        <ProductModels
+          mobileFilters={filters}
+          setMobileFilters={setFilters}
+          queryKey={"welfare"}
+          isMulty
+          list={propertyTypes?.WELFARE || []}
+          query={queries}
+        />
+      </SimpleAccordion>
+      <SimpleAccordion
+        item={{ parenClass: "  pb-2  border-b w-full p-2 !px-0", disableBorderB: true }}
+        title={_STRINGS.COOL_HEAT}
+      >
+        <ProductModels
+          mobileFilters={filters}
+          setMobileFilters={setFilters}
+          queryKey={"cool_heat"}
+          isMulty
+          list={propertyTypes?.COOL_HEAT || []}
+          query={queries}
+        />
+      </SimpleAccordion>
+      <SimpleAccordion
+        item={{ parenClass: "  pb-2  border-b w-full p-2 !px-0", disableBorderB: true }}
+        title={_STRINGS.KITCHEN_ACC}
+      >
+        <ProductModels
+          mobileFilters={filters}
+          setMobileFilters={setFilters}
+          queryKey={"kitchen"}
+          isMulty
+          list={propertyTypes?.KITCHEN || []}
+          query={queries}
+        />
+      </SimpleAccordion>
+
       {/* COMMISION RANGE  */}
 
       {!!userInfo?.advisor_id ? (

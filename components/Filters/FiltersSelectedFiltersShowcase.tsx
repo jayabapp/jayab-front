@@ -11,6 +11,7 @@ import Swiper from "swiper";
 import { SwiperSlide } from "swiper/react";
 import RegionButton from "../CityModal/RegionButton";
 import SwiperWithNavigation from "../SwiperWithNavigation";
+import SelectiveFilterShowCase from "./SelectiveFilterShowCase";
 
 const FiltersSelectedFiltersShowcase = ({
   query,
@@ -133,6 +134,12 @@ const FiltersSelectedFiltersShowcase = ({
   const isHiddenFilter = (key: string) => {
     return hiddenFilters?.includes(key);
   };
+
+  /* -------------------------------------------------------------------------- */
+  /*                             DYNAMiC QUERY KEYS                             */
+  /* -------------------------------------------------------------------------- */
+  const dynamicPropsInQueryKeys = Object.keys(propertyTypes)?.filter((e) => query?.[e?.toLowerCase()]);
+  const filteredDynamicPropsInQueryKeys = dynamicPropsInQueryKeys?.filter((e) => !isHiddenFilter(e?.toLowerCase()));
 
   return (
     <SwiperWithNavigation
@@ -273,7 +280,8 @@ const FiltersSelectedFiltersShowcase = ({
         <></>
       )}
       {/* DYNAMIC FILTERS */}
-      {!isHiddenFilter("entertainment") &&
+
+      {/* {!isHiddenFilter("entertainment") &&
         finallizedSelectedOptions?.["entertainment"]?.map((e: any, index: number) => (
           <SwiperSlide key={`selectedItems${e?.id}`} className="!w-auto    ">
             <div className="rounded-full !w-auto   gap-4 py-2 h-8 px-1 flex items-center justify-center border border-primary-700  bg-primary-700/5 text-primary-700  text-xs ">
@@ -288,7 +296,22 @@ const FiltersSelectedFiltersShowcase = ({
               </div>
             </div>
           </SwiperSlide>
-        ))}
+        ))} */}
+
+      {filteredDynamicPropsInQueryKeys?.map((key) => {
+        const STRINGS: any = { ..._STRINGS };
+        return (
+          <SwiperSlide key={`selectedItems${key}`} className="!w-auto    ">
+            <SelectiveFilterShowCase
+              title={STRINGS?.[key?.toUpperCase()] || ""}
+              list={propertyTypes?.[key?.toUpperCase()]}
+              queryKey={key?.toLowerCase()}
+              query={query}
+            />
+          </SwiperSlide>
+        );
+      })}
+
       {/* {finallizedSelectedOptions?.map((oneRow) => {
         return oneRow?.map((e: any, index: number) => (
           <SwiperSlide key={`selectedItems${e?.id}`} className="!w-auto    ">
