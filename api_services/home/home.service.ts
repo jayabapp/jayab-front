@@ -1,7 +1,7 @@
 import { apiRoutes } from "@/utils/urls";
-import { ContentByKeyDto, ContentDto, QuestionDto, SearchSuggDto } from "./home.interface";
-import { apiCall } from "../common/apicall.helper";
 import { Meta } from "../chat/chat.interface";
+import { apiCall } from "../common/apicall.helper";
+import { ContentByKeyDto, ContentDto, QuestionDto, SearchSuggDto } from "./home.interface";
 
 export class HomeService {
   // static FORGOT_PASSWORD_LIST_CACHEKEY = "FORGOT_PASSWORD_LIST";
@@ -43,7 +43,7 @@ export class HomeService {
           key: dto?.key,
           page: dto?.page,
           per_page: dto?.per_page,
-        }
+        },
       );
       return result;
     } catch (e) {
@@ -77,9 +77,14 @@ export class HomeService {
 
   static async GetSearchSuggs(dto: { q?: string }) {
     try {
-      const result = await apiCall<{ q?: string }, SearchSuggDto>("GET", apiRoutes.SEARCH_SUGGS, {
-        q: dto?.q,
-      });
+      const result = await apiCall<{ q?: string }, SearchSuggDto>(
+        "GET",
+        apiRoutes.SEARCH_SUGGS,
+        {
+          q: dto?.q,
+        },
+        { version: "v2" },
+      );
       return result;
     } catch (e) {
       throw e;
@@ -97,7 +102,7 @@ export class HomeService {
 
   static async FindAllComments(
     dto: { page: number; per_page: number; content_id?: number | string; product_id?: number | string },
-    callback?: (a?: { data: QuestionDto[]; meta: Meta } | null) => void
+    callback?: (a?: { data: QuestionDto[]; meta: Meta } | null) => void,
   ) {
     try {
       const result = await apiCall<

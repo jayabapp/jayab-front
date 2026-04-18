@@ -126,6 +126,7 @@ const MainWrapper = ({ children }: mainWrapper) => {
         return null;
       }
     },
+
     staleTime: 0,
     gcTime: 0,
   });

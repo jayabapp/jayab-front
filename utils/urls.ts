@@ -1,5 +1,7 @@
 export const Url = process.env.NEXT_PUBLIC_BASE_URL;
 export const baseUrl = `${Url}/api/v1`;
+
+export const baseUrlV = (v: string) => `${Url}/api/${v}`;
 export const imageUrl = `${Url}/`;
 export const NEW_IMAGE_URL = (
   item?: { bucket: string; end_point: string; path: string; name: string; thumbnail: string; medium: string } | null,

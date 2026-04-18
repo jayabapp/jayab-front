@@ -31,6 +31,8 @@ const SearchBoxCitiesPart = ({ setShowPop }: { setShowPop: Dispatch<SetStateActi
       delete body[queryKey];
     }
     delete body.page;
+    delete body.regions;
+
     setShowPop(false);
     router.replace(`${pathname}?${queryBuilder(body)}`);
   };
@@ -44,9 +46,9 @@ const SearchBoxCitiesPart = ({ setShowPop }: { setShowPop: Dispatch<SetStateActi
         temp = [...queyCityData, `${i?.id}`];
       }
     }
+
     const newStoredCities = temp?.map((e: any) => locationsData?.cities?.find((x: any) => x?.id == e));
 
-    console.log(newStoredCities);
     useCitiesStore.setState({
       locationsData: {
         cities: newStoredCities,
