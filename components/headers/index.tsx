@@ -106,13 +106,13 @@ const Header = ({ scroll }: { scroll?: number }) => {
   }, []);
 
   const handleScroll = throttle((event) => {
-    if (window?.scrollY > 20) setVisibleTopHeader(false);
+    if (window?.scrollY > 60) setVisibleTopHeader(false);
     else setVisibleTopHeader(true);
   }, 100);
 
   useEffect(() => {
     if (scroll) {
-      if (scroll > 20) setVisibleTopHeader(false);
+      if (scroll > 60) setVisibleTopHeader(false);
       else setVisibleTopHeader(true);
     }
   }, [scroll]);
@@ -273,6 +273,19 @@ transition-all ease-out  duration-300  header-content-container w-full mx-auto  
                 <MenuProfileItem />
 
                 <div className="flex items-center gap-6">
+                  <div className={` ${visibleTopHeader ? "hidden" : "  flex"} transition-all `}>
+                    <Suspense>
+                      <PopSearchbox
+                        justIcon
+                        boxId={scroll ? "SEARCH_BOX_Mobile_Modal" : "SEARCH_BOX_Mobile"}
+                        placeholder={_STRINGS?.SEARCH_CITY_OR_ADD}
+                        onSubmit={(text) => {}}
+                        onClear={() => {}}
+                        item={{ bg: "" }}
+                        autofocus={isInSearch}
+                      />
+                    </Suspense>
+                  </div>
                   {showLogins ? (
                     isLogin ? (
                       <>
@@ -281,12 +294,16 @@ transition-all ease-out  duration-300  header-content-container w-full mx-auto  
                           <AbsoluteBadge count={chaNotifBadge?.unread_count || 0} />
                           <img alt="chat" src="/assets/icons/header/blue_chat.svg" className="w-6 h-6 aspect-square" />
                         </Link> */}
-                        <Link prefetch={false} href={"/notifications"} className="relative">
+                        <Link
+                          prefetch={false}
+                          href={"/notifications"}
+                          className="relative w-5 h-5 transition-all aspect-square  shrink-0 "
+                        >
                           <AbsoluteBadge count={notifBadge || 0} />
                           <img
                             alt="notificatons"
                             src="/assets/icons/header/white_bell.svg"
-                            className={`w-5 h-5 transition-all aspect-square ${isHeaderLight ? "" : "invert   opacity-50"} `}
+                            className={`w-5 h-5 transition-all aspect-square  shrink-0 ${isHeaderLight ? "" : "invert   opacity-50"} `}
                           />
                         </Link>
                       </>

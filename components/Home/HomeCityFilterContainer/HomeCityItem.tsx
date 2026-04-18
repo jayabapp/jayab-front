@@ -1,12 +1,21 @@
+"use client";
 import { NEW_IMAGE_URL } from "@/utils/urls";
 import Image from "next/image";
 import Link from "next/link";
 
 import { HomeLandingDto } from "@/api_services/home/home.interface";
+import { useCitiesStore } from "@/store";
 
 const HomeCityItem = ({ item }: { item: HomeLandingDto }) => {
+  const onClickCB = () => {
+    useCitiesStore.setState({
+      locationsData: {},
+    });
+  };
+
   return (
     <Link
+      onClick={onClickCB}
       href={item?.url}
       prefetch={false}
       id={item?.title}

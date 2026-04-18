@@ -1,15 +1,14 @@
 "use client";
 import { HomeService } from "@/api_services/home/home.service";
-import _STRINGS from "@/utils/LocalStrings";
 import { useQuery } from "@tanstack/react-query";
 import { debounce } from "lodash";
 import dynamic from "next/dynamic";
 import { useSearchParams } from "next/navigation";
 import { Suspense, useCallback, useEffect, useRef, useState } from "react";
 import { isMobile } from "react-device-detect";
-import ModalHeaderPart from "../Modal/ModalHeaderPart";
 import SmallLoading from "../shared/Lotties/SmallLoading";
 import HistoryMaker from "./HistoryMaker";
+import SearchBoxCitiesPart from "./SearchBoxCitiesPart";
 import SuggestedPart from "./SuggestedPart";
 const HistorySuggPart = dynamic(() => import("./HistorySuggPart"), { ssr: true });
 
@@ -217,16 +216,16 @@ const PopSearchbox = ({
       <div
         className={` ${
           showPop
-            ? `   w-full  top-0  h-[100dvh]   xl:h-auto  xl:absolute  opacity-100  min-h-[25dvh] `
+            ? `   w-full  top-0  h-[100dvh]   xl:h-auto  xl:absolute  opacity-100  min-w-[25dvw]  min-h-[25dvh] `
             : ` top-[200dvh]  xl:top-0  -z-50  xl:hidden  h-0 xl:opacity-0`
         } transition-all   fixed  overflow-hidden    rounded-10  border  left-0 w-full -top-2  duration-500 z-50  bg-white `}
       >
-        <ModalHeaderPart
+        {/* <ModalHeaderPart
           title={_STRINGS.SEARCH}
           onHide={() => {
             setShowPop(false);
           }}
-        />
+        /> */}
         <div className="flex px-4  pt-4 items-center relative w-full gap-2 flex-row ">
           <div className=" relative flex items-center rounded-full border-primary-200 dark:bg-transparent  py-3   gap-1 px-3   w-full  border-2 ">
             {" "}
@@ -241,6 +240,8 @@ const PopSearchbox = ({
             />
           </div>
         </div>
+
+        <SearchBoxCitiesPart setShowPop={setShowPop} />
         <SuggestedPart
           setShowPop={setShowPop}
           searchedText={element?.value || ""}

@@ -2,9 +2,10 @@
 import CityModal from "@/components/CityModal";
 import { useCitiesStore } from "@/store";
 import _STRINGS from "@/utils/LocalStrings";
+import { isEmpty } from "lodash";
 import { Suspense, useState } from "react";
 
-const HomeCityFilterCityPart = () => {
+const HomeCityFilterCityPart = ({ options }: { options?: { cotainerClass?: string } }) => {
   const { locationsData } = useCitiesStore();
   const [showCities, setShowCities] = useState(false);
 
@@ -20,21 +21,26 @@ const HomeCityFilterCityPart = () => {
           !!locationsData?.cities && locationsData?.cities?.length > 1 && !locationsData?.province?.[0]
             ? // ? ` ${!!locationsData?.province?.[0] && locationsData?.cities?.length == locationsData?.province?.[0]?.child?.length ? "" : ` و ${locationsData?.cities?.length - (locationsData?.province?.[0]?.child?.length || 1)}  شهر دیگر`} `
               `${locationsData?.cities?.length} ${_STRINGS.CITY}`
-            : ``
+            : locationsData?.cities?.length == 1 && !locationsData?.province?.[0]
+              ? locationsData?.cities?.[0]?.title
+              : ""
         }`
       : _STRINGS.CITY;
   return (
     <>
       {" "}
-      <div onClick={onShowCities} className=" flex cursor-pointer items-center shrink-0 gap-2">
+      <div
+        onClick={onShowCities}
+        className={` flex cursor-pointer items-center shrink-0 gap-2  ${options?.cotainerClass || ""} `}
+      >
         <p
-          className={` font-normal md:font-bold text-sm  shrink-0  ${locationsData?.province || locationsData?.cities ? "text-black opacity-70" : " text-black opacity-40"}  `}
+          className={` font-normal md:font-bold text-sm  shrink-0  ${!isEmpty(locationsData?.province) || !isEmpty(locationsData?.cities) ? "text-black opacity-70" : " text-black opacity-40"}  `}
         >
           {citiesTitle}
         </p>
         <img
           src="/assets/icons/home/home_location.svg"
-          className={`h-5 aspect-auto ${locationsData?.province || locationsData?.cities ? "   text-black opacity-70 " : "opacity-40"}`}
+          className={`h-5 aspect-auto ${!isEmpty(locationsData?.province) || !isEmpty(locationsData?.cities) ? "   text-black opacity-70 " : "opacity-40"}`}
         />
 
         {/* <img

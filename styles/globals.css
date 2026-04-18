@@ -81,7 +81,7 @@ ul {
 
 /* --------------------------------- HEADER --------------------------------- */
 .header-content-container {
-  @apply fixed top-0   right-0 left-0  z-40;
+  @apply fixed top-0   right-0 left-0  z-20;
 }
 .header-container {
   @apply w-full flex  justify-between items-center px-2  h-full;

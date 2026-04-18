@@ -27,12 +27,12 @@ const HomeBannerPart = ({ banners, devices }: ImageCarouselTypes) => {
     >
       {/* HOME SEARCH PART  */}
 
-      <div className="w-full extra-padding-x  lg:!px-[28%] flex absolute m-auto left-0 right-0  bottom-[25%] lg:bottom-[30%] flex-col   z-20  gap-20">
+      <div className="w-full extra-padding-x  lg:!px-[28%] flex absolute m-auto left-0 right-0  bottom-[25%] lg:bottom-[30%] flex-col   z-20 lg:z-1  gap-20">
         <div className="flex z-5 gap-4 items-center justify-center flex-col">
           <img className="w-40" src="/assets/images/home/home_banner_logo.png" />
           <h1 className="text-white font-bold text-lg text-center">{_STRINGS.HOME_TITLE}</h1>
         </div>
-        <div className=" hidden md:flex   h-14 bg-white rounded-full items-center gap-2  pl-4">
+        <div className=" flex backdrop-blur-md    lg:backdrop-blur-none    absolute bottom-[-4dvh]  w-[90%] left-0 right-0 mx-auto  shadow-card lg:relative  lg:h-14 lg:bg-white rounded-full items-center  gap-1 lg:gap-2    p-[1px]   lg:pl-4">
           <Suspense>
             <PopSearchbox
               boxId={"HOME_SEARCH_BOX"}
@@ -43,12 +43,17 @@ const HomeBannerPart = ({ banners, devices }: ImageCarouselTypes) => {
                 // router.replace(pathname);
               }}
               containerClass={" w-full mx-auto"}
-              item={{ bg: `!bg-transparent  !border-none ` }}
+              item={{ bg: `!bg-white lg:bg-transparent !rounded-l-none  lg:!rounded-l-20  !border-none ` }}
               // autofocus={isInSearch}
             />
           </Suspense>
-          <div className="w-[1px] h-8 bg-gray-300"></div>
-          <HomeCityFilterCityPart />
+          <div className="w-[1px] h-8 bg-gray-300 lg:flex hidden"></div>
+          <HomeCityFilterCityPart
+            options={{
+              cotainerClass:
+                " h-11  px-2  rounded-l-20 lg:rounded-l-0 lg:px-0   bg-white   lg:h-auto lg:bg-transparent",
+            }}
+          />
         </div>
       </div>
 

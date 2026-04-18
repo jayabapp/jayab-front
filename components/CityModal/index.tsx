@@ -189,10 +189,12 @@ const CityModal = ({
 
       if (allFullProviencesSelected?.length == 1) {
         selectedProv = allFullProviencesSelected;
-        body.cities = allIncludedProves
+        const citiesWhithoutProv = allIncludedProves
           ?.filter((x: NewCitiesListDto) => x?.id != allFullProviencesSelected?.[0]?.id)
-          ?.flatMap((e: NewCitiesListDto) => e?.child)
-          ?.map((e: NewCitiesListDto) => e?.id);
+          ?.flatMap((e: NewCitiesListDto) => e?.child);
+
+        body.cities = citiesWhithoutProv?.map((e: NewCitiesListDto) => e?.id);
+        fullSelectedcities = citiesWhithoutProv?.map((e: NewCitiesListDto) => e);
         body.province_id = allFullProviencesSelected?.[0]?.id;
       } else {
         body.cities = selectedCities?.map((e) => e?.id);
