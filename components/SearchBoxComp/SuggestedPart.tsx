@@ -35,6 +35,7 @@ const SuggestedPart = ({
     }
     if (city?.level == CitiesSuggestTypes?.REGION) {
       body.cities = [{ title: city?.parent_title, id: city?.parent_id }];
+      body.regions = [city];
       link = `/rooms?cities=${city?.parent_id}&regions=${city?.id}`;
     }
 
@@ -63,7 +64,8 @@ const SuggestedPart = ({
       {isLoading ? (
         <BtnLoading />
       ) : !!data && isEmpty(data?.cities) && isEmpty(data?.cities) && isEmpty(data?.properties) ? (
-        <p>{_STRINGS.CANT_FIND}</p>
+        // <p>{_STRINGS.CANT_FIND}</p>
+        <></>
       ) : (
         <>
           {!isEmpty(data?.properties) ? (
@@ -102,7 +104,11 @@ const SuggestedPart = ({
                   <p className=" text-primary-700 text-sm md:text-base transition-all">
                     {" "}
                     {e?.level == "province" ? _STRINGS.PROVINCE : ""} {e?.title}{" "}
-                    {e?.level == "region" ? `(${e?.parent_title})` : ""}{" "}
+                    {e?.level == "region" ? (
+                      <span className="  opacity-70 text-xs "> {`(${e?.parent_title})`} </span>
+                    ) : (
+                      ""
+                    )}{" "}
                   </p>
                 </div>
               ))}

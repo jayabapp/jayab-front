@@ -61,7 +61,7 @@ function HomeCityFilterContainer({
 
           return (
             <SwiperSlide key={index} className={`w-full  !h-auto   p-0 md:py-2 cursor-pointer select-none md:px-2`}>
-              <div className="flex flex-col gap-3">
+              <div className="flex flex-col gap-2.5 lg:gap-3 ">
                 <HomeCityItem item={firstItem} key={`${firstItem?.title}${index}cat`} />
                 {!!secondItem ? <HomeCityItem item={secondItem} key={`${secondItem?.title}${index}cat`} /> : <></>}
               </div>

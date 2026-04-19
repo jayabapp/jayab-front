@@ -1,12 +1,12 @@
 "use client";
 import Editable from "@/components/Editable";
-import PopSearchbox from "@/components/SearchBoxComp/PopSearchbox";
+import HomePopSearch from "@/components/SearchBoxComp/HomePopSearch";
 import { DeviceInfo } from "@/helpers/device.detector";
 import _STRINGS from "@/utils/LocalStrings";
 import { NEW_IMAGE_URL } from "@/utils/urls";
 import { random } from "lodash";
 import Image from "next/image";
-import { Suspense } from "react";
+import { Suspense, useState } from "react";
 import HomeCityFilterCityPart from "../HomeCityFilterContainer/HomeCityFilterCityPart";
 
 type ImageCarouselTypes = {
@@ -17,7 +17,7 @@ type ImageCarouselTypes = {
 const HomeBannerPart = ({ banners, devices }: ImageCarouselTypes) => {
   const randomeNumber = random(0, (banners?.length || 1) - 1, false);
   const item = banners?.[Math.floor(randomeNumber)];
-
+  const [showPop, setShowPop] = useState(false);
   return (
     <div
       className={`
@@ -27,36 +27,59 @@ const HomeBannerPart = ({ banners, devices }: ImageCarouselTypes) => {
     >
       {/* HOME SEARCH PART  */}
 
-      <div className="w-full extra-padding-x  lg:!px-[28%] flex absolute m-auto left-0 right-0  bottom-[25%] lg:bottom-[30%] flex-col   z-20 lg:z-1  gap-20">
-        <div className="flex z-5 gap-4 items-center justify-center flex-col">
-          <img className="w-40" src="/assets/images/home/home_banner_logo.png" />
+      <div className="w-full extra-padding-x  lg:!px-[28%] flex absolute m-auto left-0 right-0  bottom-[35%] lg:bottom-[30%] flex-col   z-10 lg:z-1  gap-20">
+        <div className="flex z-5 gap-2 lg:gap-4 items-center justify-center flex-col">
+          <img className=" w-32 lg:w-40" src="/assets/images/home/home_banner_logo.png" />
           <h1 className="text-white font-bold text-lg text-center">{_STRINGS.HOME_TITLE}</h1>
         </div>
-        <div className=" flex backdrop-blur-md    lg:backdrop-blur-none    absolute bottom-[-4dvh]  w-[90%] left-0 right-0 mx-auto  shadow-card lg:relative  lg:h-14 lg:bg-white rounded-full items-center  gap-1 lg:gap-2    p-[1px]   lg:pl-4">
-          <Suspense>
-            <PopSearchbox
-              boxId={"HOME_SEARCH_BOX"}
-              placeholder={_STRINGS?.SEARCH_CITY_OR_ADD}
-              onSubmit={() => {}}
-              onClear={() => {
-                // setsearchText("");
-                // router.replace(pathname);
-              }}
-              containerClass={" w-full mx-auto"}
-              item={{ bg: `!bg-white lg:bg-transparent !rounded-l-none  lg:!rounded-l-20  !border-none ` }}
-              // autofocus={isInSearch}
-            />
-          </Suspense>
+        <div className=" flex backdrop-blur-md    lg:backdrop-blur-none    absolute bottom-[-7dvh]  w-[90%] left-0 right-0 mx-auto  shadow-card lg:relative  lg:h-14 lg:bg-white rounded-full items-center  gap-1 lg:gap-2    p-[1px]   lg:pl-4">
+          <div
+            onClick={() => {
+              setShowPop(true);
+            }}
+            className={`bg-transparent border rounded-20  px-4 py-1.5  overflow-hidden w-full dark:bg-zinc-600  flex justify-between items-center  !bg-white lg:bg-transparent !rounded-l-none  lg:!rounded-l-20  !border-none `}
+          >
+            {" "}
+            <div className="flex items-center gap-1 w-full">
+              {/* <div className="">
+              <img src="/assets/icons/edit/magnifier.svg" width={20} className="dark:invert" height={20} />
+            </div> */}
+              <div
+                id={"HOME_SEARCH_BOX"}
+                className={`bg-transparent text-sm  dark:bg-transparent py-1 pl-3 pr-0.5  w-full opacity-50  `}
+                // onChange={(v) => handleChange(v.target.value)}
+              >
+                {" "}
+                {_STRINGS?.SEARCH_CITY_OR_ADD}{" "}
+              </div>
+            </div>{" "}
+          </div>
+
           <div className="w-[1px] h-8 bg-gray-300 lg:flex hidden"></div>
           <HomeCityFilterCityPart
             options={{
               cotainerClass:
-                " h-11  px-2  rounded-l-20 lg:rounded-l-0 lg:px-0   bg-white   lg:h-auto lg:bg-transparent",
+                " h-10  px-2  rounded-l-20 lg:rounded-l-0 lg:px-0   bg-white   lg:h-auto lg:bg-transparent",
             }}
           />
         </div>
       </div>
-
+      <Suspense>
+        <HomePopSearch
+          setShowPop={setShowPop}
+          showPop={showPop}
+          boxId={"HOME_SEARCH_BOX"}
+          placeholder={_STRINGS?.SEARCH_CITY_OR_ADD}
+          onSubmit={() => {}}
+          onClear={() => {
+            // setsearchText("");
+            // router.replace(pathname);
+          }}
+          containerClass={" w-full mx-auto"}
+          item={{ bg: `` }}
+          // autofocus={isInSearch}
+        />
+      </Suspense>
       <div aria-label={item?.image?.alt || item?.title}>
         {" "}
         <Editable

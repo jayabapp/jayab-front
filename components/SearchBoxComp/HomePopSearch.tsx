@@ -7,7 +7,7 @@ import { useMutation, useQuery } from "@tanstack/react-query";
 import { debounce } from "lodash";
 import dynamic from "next/dynamic";
 import { useRouter, useSearchParams } from "next/navigation";
-import { Suspense, useCallback, useEffect, useRef, useState } from "react";
+import { Dispatch, SetStateAction, Suspense, useCallback, useEffect, useRef, useState } from "react";
 import { isMobile } from "react-device-detect";
 import ModalHeaderPart from "../Modal/ModalHeaderPart";
 import SmallLoading from "../shared/Lotties/SmallLoading";
@@ -35,7 +35,8 @@ interface props {
   boxId?: string;
   autofocus?: boolean;
   justIcon?: boolean;
-
+  showPop: boolean;
+  setShowPop: Dispatch<SetStateAction<boolean>>;
   onSubmit: (e: string | null) => void | null;
   onClear: () => void | null;
   errors?: { [key: string]: string[] };
@@ -44,7 +45,7 @@ interface props {
   };
 }
 
-const PopSearchbox = ({
+const HomePopSearch = ({
   placeholder = "search...",
   cancelText = "لغو",
   onSubmit,
@@ -55,10 +56,11 @@ const PopSearchbox = ({
   item,
   boxId = "SEARCH_BOX",
   justIcon = false,
+  setShowPop,
+  showPop,
 }: props) => {
   const { push } = useRouter();
   const [searchParam, setSearchParam] = useState<string | null>(null);
-  const [showPop, setShowPop] = useState(false);
   const inputRef = useRef<HTMLInputElement>(null);
   const primeInputRef = useRef<HTMLInputElement>(null);
 
@@ -190,70 +192,11 @@ const PopSearchbox = ({
       <Suspense>
         <SearchParamExtractor onSearchParam={setSearchParam} />
       </Suspense>
-      {!!justIcon ? (
-        <img
-          src="/assets/icons/edit/magnifier.svg"
-          onClick={() => {
-            setShowPop(true);
-          }}
-          width={20}
-          className="dark:invert"
-          height={20}
-        />
-      ) : (
-        <div
-          onClick={() => {
-            setShowPop(true);
-          }}
-          className={`bg-transparent border rounded-20  px-4 py-1.5  overflow-hidden dark:bg-zinc-600  flex justify-between items-center  ${item?.bg}`}
-        >
-          {" "}
-          <div className="flex items-center gap-1 w-full">
-            {/* <div className="">
-              <img src="/assets/icons/edit/magnifier.svg" width={20} className="dark:invert" height={20} />
-            </div> */}
-            <div
-              id={boxId}
-              ref={inputRef}
-              className={`bg-transparent text-sm  dark:bg-transparent py-1 pl-3 pr-0.5  w-full ${!text ? "opacity-50" : ""}  `}
-              // onChange={(v) => handleChange(v.target.value)}
-            >
-              {" "}
-              {text || placeholder}{" "}
-            </div>
-          </div>{" "}
-          <div className="inline-flex w-1/5 justify-end">
-            {loading && (
-              <div className="ml-2">
-                <SmallLoading />
-              </div>
-            )}
 
-            {/* {element?.value && (
-              <div
-                className="text-rose-500  text-xs ml-3 cursor-pointer "
-                onClick={(e) => {
-                  e?.preventDefault();
-                  e?.stopPropagation();
-                  cancelSearch();
-                }}
-              >
-                {cancelText}
-              </div>
-            )} */}
-          </div>
-        </div>
-      )}
-      {/* 
-      <div
-        className={` ${
-          showPop ? `    top-0 ` : `  top-[200dvh] `
-        } transition-all  fixed p-4 h-[100dvh]    rounded-10  border  left-0 w-full  duration-1000 z-50  bg-white `}
-      > */}
       <div
         className={` ${
           showPop
-            ? `   w-full  top-0  h-[100dvh]   xl:h-auto  xl:absolute  opacity-100  min-w-[25dvw]  min-h-[25dvh] `
+            ? `   w-full xl:w-1/2  top-0  h-[100dvh]   xl:h-auto  xl:absolute   xl:top-[35dvh] left-0 right-0 xl:mx-auto   opacity-100  min-w-[25dvw]  min-h-[25dvh] `
             : ` top-[200dvh]  xl:top-0  -z-50  xl:hidden  h-0 xl:opacity-0`
         } transition-all   fixed  overflow-hidden    rounded-10  border shadow-card  left-0 w-full -top-2  duration-500 z-50  bg-white `}
       >
@@ -349,4 +292,4 @@ const PopSearchbox = ({
   );
 };
 
-export default PopSearchbox;
+export default HomePopSearch;

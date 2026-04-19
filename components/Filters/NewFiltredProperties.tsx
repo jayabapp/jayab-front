@@ -69,7 +69,7 @@ function FilterdPropertiesPageOrianted({ sortType, setSortType, query }: Filterd
         ...temp,
 
         // sort_type: query.sort_type ? query.sort_type : sortType?.id,
-      })}`
+      })}`,
     );
   }, [
     sortType,
@@ -239,7 +239,7 @@ function FilterdPropertiesPageOrianted({ sortType, setSortType, query }: Filterd
                   ...query,
                   page: propQueryData?.meta?.next || 1,
                   // sort_type: query.sort_type ? query.sort_type : sortType?.id,
-                })}`
+                })}`,
               );
             }}
             hasMore={!!hasPaginate ? false : propQueryData?.meta?.lastPage != page ? true : false}
@@ -248,7 +248,7 @@ function FilterdPropertiesPageOrianted({ sortType, setSortType, query }: Filterd
                 <BtnLoading />
               </div>
             }
-            className="grid   pb-8 pt-4 md:pt-2 px-1  !overflow-hidden  grid-cols-1 gap-2 md:gap-4  md:grid-cols-2 xl:grid-cols-3 "
+            className="grid   pb-8 pt-4 md:pt-2 px-3 lg:px-1  !overflow-hidden  grid-cols-1 gap-2 md:gap-4  md:grid-cols-2 xl:grid-cols-3 "
           >
             {data?.map((i) => (
               <PropertyCard week={week} data={i} key={`PRODUCT${i?.id}`} />

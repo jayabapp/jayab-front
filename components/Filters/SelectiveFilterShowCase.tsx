@@ -45,7 +45,7 @@ const SelectiveFilterShowCase = ({
         )}
       </div>
       <ModalBottomSheet show={isVisible} onHide={_onHide}>
-        <ModalHeaderPart title={title} onHide={_onHide} />
+        <ModalHeaderPart showX title={title} onHide={_onHide} />
 
         <div className=" flex p-4">
           <ProductModels

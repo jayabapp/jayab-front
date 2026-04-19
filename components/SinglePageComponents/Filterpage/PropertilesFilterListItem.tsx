@@ -26,7 +26,7 @@ const PropertilesFilterListItem = ({
       }}
       className={` ${
         isSelected ? " bg-primary-100" : ""
-      }     flex flex-col gap-2 items-center p-1.5 w-full group  select-none transition-all duration-500 `}
+      }     flex flex-col gap-2 items-center p-1.5  rounded-10 w-full group  select-none transition-all duration-500 `}
     >
       <div id={`${item?.title || "fake"}CatImage`} className=" w-2/3 lg:w-full    relative   aspect-square z-30">
         {" "}

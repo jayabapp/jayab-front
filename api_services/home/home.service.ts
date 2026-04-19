@@ -1,7 +1,7 @@
 import { apiRoutes } from "@/utils/urls";
 import { Meta } from "../chat/chat.interface";
 import { apiCall } from "../common/apicall.helper";
-import { ContentByKeyDto, ContentDto, QuestionDto, SearchSuggDto } from "./home.interface";
+import { CitySuggestDto, ContentByKeyDto, ContentDto, QuestionDto, SearchSuggDto } from "./home.interface";
 
 export class HomeService {
   // static FORGOT_PASSWORD_LIST_CACHEKEY = "FORGOT_PASSWORD_LIST";
@@ -13,6 +13,7 @@ export class HomeService {
   static CONTENT_BY_KEY_CACHEKEY = "CONTENT_BY_KEY";
   static SEARCH_SUGGS_CACHEKEY = "SEARCH_SUGGS";
   static CONTENT_QUESTIONS_KEY = "CONTENTQUESTIONSKEY";
+  static SEARCH_KEY = "SEARCH";
 
   static async GetBanners(dto: { position: "main_sidebar" | "advisor" }) {
     try {
@@ -85,6 +86,20 @@ export class HomeService {
         },
         { version: "v2" },
       );
+      return result;
+    } catch (e) {
+      throw e;
+    }
+  }
+
+  static async Search(dto: { q?: string }) {
+    try {
+      const result = await apiCall<
+        { q?: string },
+        { client_query: { [key: string]: any }; cities_list: CitySuggestDto[] }
+      >("GET", apiRoutes.SEARCH, {
+        q: dto?.q,
+      });
       return result;
     } catch (e) {
       throw e;

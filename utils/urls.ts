@@ -69,6 +69,8 @@ export const apiRoutes = {
 
   SEARCH_SUGGS: `/user/properties/search/suggestions`,
 
+  SEARCH: `/user/properties/search/extract`,
+
   CONTENTS: `/contents`,
 
   OWNER_PROPERTIES_LIST: "/owner/properties",

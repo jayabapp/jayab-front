@@ -332,7 +332,7 @@ transition-all ease-out  duration-300  header-content-container w-full mx-auto  
                       router.back();
                     }
                   }}
-                  className="cursor-pointer w-12 h-6      "
+                  className="cursor-pointer w-12 h-5      "
                   // src="/assets/icons/addresses/garbage.svg"
                 />
                 <p className="font-bold text-base text-center">

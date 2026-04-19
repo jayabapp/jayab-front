@@ -134,7 +134,7 @@ const Filterpage = () => {
   }, []);
 
   return (
-    <div className="app-container padding-x !pt-32  lg:!pt-20  xl: z-2  flex flex-col !gap-2 ">
+    <div className="app-container !px-0 md:!px-10  2xl:px-[9%] !pt-32  lg:!pt-20  xl: z-2  flex flex-col !gap-2 ">
       {/* <div className="app-container !px-0 xl:!px-10 lg:!px-12 2xl:!px-[5%] !pt-32  lg:!pt-20  xl: z-2  flex flex-col !gap-2 "> */}
       <div className="grid grid-cols-12  col-span-12 ">
         <div
@@ -156,12 +156,15 @@ const Filterpage = () => {
           />
         </div>{" "}
         <div
-          className={`col-span-12  md:col-span-12 lg:col-span-9 px-3 xl:pr-4 xl:pl-0  
+          className={`col-span-12  md:col-span-12 lg:col-span-9 px-0 xl:pr-4 xl:pl-0  
    
             xl:mt-0 `}
         >
           <div className=" hidden  z-1 w-full xl:flex flex-col xl:flex-row items-center justify-between ">
             <SingleProductBreadCrumb dataArray={breadCrumbs} />
+            <div className="w-full  items-center justify-end hidden lg:flex ">
+              <SortMenu query={queries} />
+            </div>
           </div>
 
           <div className="flex fixed pt-1 xl:hidden h-16 right-0  items-center justify-center   z-10 xl:z-1  top-[3rem] xl:top-auto left-0 xl:left-auto bg-white xl:bg-transparent xl:relative flex-col w-full xl:gap-2  ">
@@ -184,7 +187,7 @@ const Filterpage = () => {
             <PropertiesFilterList propertyKey={"property_type"} data={propertyTypes?.PROPERTY_TYPE} query={queries} />
           </div>
           <div className="w-full grow-0 shrink-0 flex flex-row  px-3 xl:px-0 relative  justify-between">
-            <div className="flex  flex-row w-[90%]  items-center  gap-4 justify-start ">
+            <div className="flex  flex-row w-[90%] lg:w-full  items-center  gap-0 justify-start ">
               <FilterPageCitiesTitle
                 showRegions={showRegions}
                 setShowRegions={setShowRegions}
@@ -202,7 +205,9 @@ const Filterpage = () => {
                 propertyTypes={propertyTypes || {}}
               />
             </div>{" "}
-            <SortMenu query={queries} />
+            <div className="w-full flex lg:hidden">
+              <SortMenu query={queries} />
+            </div>
           </div>
           {/* <div className="grid grid-cols-12 "> */}
           {/* SIDEBAR */}
