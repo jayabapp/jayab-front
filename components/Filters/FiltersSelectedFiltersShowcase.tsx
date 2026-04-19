@@ -6,11 +6,10 @@ import _STRINGS from "@/utils/LocalStrings";
 import { isEmpty } from "lodash";
 import moment from "moment-jalaali";
 import { usePathname, useRouter } from "next/navigation";
-import { Dispatch, SetStateAction, useMemo, useRef } from "react";
-import Swiper from "swiper";
-import { SwiperSlide } from "swiper/react";
+import { Dispatch, SetStateAction, useMemo } from "react";
 import RegionButton from "../CityModal/RegionButton";
-import SwiperWithNavigation from "../SwiperWithNavigation";
+import Swiper from "../embelaCarousel/Swiper";
+import SwiperSlide from "../embelaCarousel/SwiperSlide";
 import SelectiveFilterShowCase from "./SelectiveFilterShowCase";
 
 const FiltersSelectedFiltersShowcase = ({
@@ -33,7 +32,6 @@ const FiltersSelectedFiltersShowcase = ({
   setShowRegions: Dispatch<SetStateAction<boolean>>;
   cityWithRegions: ChildCities | null;
 }) => {
-  const ref = useRef<Swiper>(null);
   const router = useRouter();
   const pathname = usePathname();
   const regionsIds = query?.regions
@@ -143,43 +141,35 @@ const FiltersSelectedFiltersShowcase = ({
   const filteredDynamicPropsInQueryKeys = dynamicPropsInQueryKeys?.filter((e) => !isHiddenFilter(e?.toLowerCase()));
 
   return (
-    <SwiperWithNavigation
-      containerClass={containerClass}
-      reference={ref}
-      className=" !max-w-full   !w-full flex items-center"
-      onBeforeInit={(swiper: Swiper) => (ref.current = swiper)}
-      dataLength={50}
+    <Swiper
+      parentClass={containerClass}
       // grid={{
       //   rows: 2,
       //   fill: "row",
       // }}
-      slidesPerView={"auto"}
-      spaceBetween={10}
+      autoFit
     >
-      {/* {isMobile || isTablet ? ( */}
-      <SwiperSlide
-        onClick={() => {
-          setFilterModalShow(true);
-        }}
-        className=" z-5 !w-auto flex lg:hidden "
-      >
-        <div className=" col-span-3 flex   w-fit px-3  h-7  rounded-full   bg-primary-700 items-center gap-2 ">
+      <SwiperSlide className=" z-5  flex lg:hidden !w-auto  ">
+        <div
+          onClick={() => {
+            setFilterModalShow(true);
+          }}
+          className=" col-span-3 flex   w-fit px-3  h-7  rounded-full   bg-primary-700 items-center gap-2 "
+        >
           <img src="/assets/icons/property/white_filter_icon.svg" className="   cursor-pointer w-3 h-3 shrink-0" />
           <p className="text-white  text-xs">{_STRINGS.FILTERS}</p>
         </div>
       </SwiperSlide>
-      {/* ) : (
-        <></>
-      )} */}
+
       {/* REGION PART */}
 
       {!isEmpty(cityWithRegions?.child) ? (
-        <SwiperSlide className="!w-auto ">
+        <SwiperSlide className="!w-auto flex lg:hidden ">
           <RegionButton
             regionsIds={regionsIds}
             removeFiltersKeys={removeFiltersKeys}
             setShowRegions={setShowRegions}
-            containerClass="flex lg:hidden"
+            containerClass=""
           />
         </SwiperSlide>
       ) : (
@@ -224,7 +214,7 @@ const FiltersSelectedFiltersShowcase = ({
         <></>
       )}
       {/* DYNAMIC FILTERS */}
-      {!isHiddenFilter("pool_type") &&
+      {/* {!isHiddenFilter("pool_type") &&
         finallizedSelectedOptions?.["pool_type"]?.map((e: any, index: number) => (
           <SwiperSlide key={`selectedItems${e?.id}`} className="!w-auto    ">
             <div className="rounded-full !w-auto   gap-4 py-1 h-7 px-1 flex items-center justify-center border border-primary-700  bg-primary-700/5 text-primary-700  text-xs ">
@@ -239,7 +229,7 @@ const FiltersSelectedFiltersShowcase = ({
               </div>
             </div>
           </SwiperSlide>
-        ))}
+        ))} */}
       {/*  BEDROOMS */}
       {!isHiddenFilter("total_bedrooms") && !!query?.total_bedrooms ? (
         <SwiperSlide key={`selecRooms`} className="!w-auto    ">
@@ -452,7 +442,7 @@ const FiltersSelectedFiltersShowcase = ({
       ) : (
         <></>
       )}
-    </SwiperWithNavigation>
+    </Swiper>
   );
 };
 

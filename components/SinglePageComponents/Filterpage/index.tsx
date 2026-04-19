@@ -191,7 +191,7 @@ const Filterpage = () => {
             <PropertiesFilterList propertyKey={"property_type"} data={propertyTypes?.PROPERTY_TYPE} query={queries} />
           </div>
           <div className="w-full grow-0 shrink-0 flex flex-row  px-3 xl:px-0 relative  justify-between">
-            <div className="flex  flex-row w-[90%] lg:w-full  items-center  gap-0 justify-start ">
+            <div className="flex  flex-row w-[90%] gap-2 lg:w-full  items-center   justify-start ">
               <FilterPageCitiesTitle
                 showRegions={showRegions}
                 setShowRegions={setShowRegions}

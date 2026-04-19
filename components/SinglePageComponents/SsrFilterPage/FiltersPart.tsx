@@ -38,6 +38,7 @@ const FiltersPart = ({ queries, setFilters, filters, propertyTypes, hiddenFilter
             queryKey={"property_type"}
             list={propertyTypes?.PROPERTY_TYPE || []}
             query={queries}
+            isMulty
           />
         </SimpleAccordion>
       )}

@@ -531,36 +531,36 @@ export interface Statistic {
 }
 
 export interface GetPropertiesPlusFilters {
-  cities?: string | null | number;
-  regions?: string | null | number;
-  sort_type?: string | null | number;
-  code?: string | null | number;
-  q?: string | null | number;
-  entertainment?: string | null | number;
-  party?: string | null | number;
-  has_discount?: string | null | number;
-  has_pool?: string | null | number;
-  is_premium?: string | null | number;
-  pattern?: string | null | number;
-  max_price?: string | null | number;
-  checkin?: string | null | number;
-  checkout?: string | null | number;
-  max_commission?: string | null | number;
-  min_commission?: string | null | number;
-  min_price?: string | null | number;
-  num_days?: string | null | number;
-  pool_type?: string | null | number;
-  property_type?: string | null | number;
-  province_id?: string | null | number;
-  start_day?: string | null | number;
-  title?: string | null | number;
-  total_bedrooms?: string | null | number;
-  total_guests?: string | null | number;
-  page: string | null | number;
-  per_page: string | null | number;
+  cities?: any;
+  regions?: any;
+  sort_type?: any;
+  code?: any;
+  q?: any;
+  entertainment?: any;
+  party?: any;
+  has_discount?: any;
+  has_pool?: any;
+  is_premium?: any;
+  pattern?: any;
+  max_price?: any;
+  checkin?: any;
+  checkout?: any;
+  max_commission?: any;
+  min_commission?: any;
+  min_price?: any;
+  num_days?: any;
+  pool_type?: any;
+  property_type?: any;
+  province_id?: any;
+  start_day?: any;
+  title?: any;
+  total_bedrooms?: any;
+  total_guests?: any;
+  page: any;
+  per_page: any;
 
-  max_building_area?: string | null | number;
-  min_building_area?: string | null | number;
+  max_building_area?: any;
+  min_building_area?: any;
 }
 
 export interface SingleLandingDto {

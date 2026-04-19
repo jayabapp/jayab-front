@@ -22,6 +22,11 @@ export interface catQueryTypes {
   sort_type: string | null | undefined;
   cities: string | null | undefined;
   regions: string | null | undefined;
+  pattern: string | null | undefined;
+  welfare: string | null | undefined;
+  cool_heat: string | null | undefined;
+  kitchen: string | null | undefined;
+  ownership: string | null | undefined;
   code: string | null | undefined;
   entertainment: string | null | undefined;
   has_pool: string | null | undefined;
@@ -97,6 +102,11 @@ function FilterdPropertiesPageOrianted({ sortType, setSortType, query }: Filterd
     query?.checkout,
     query?.checkin,
     query?.party,
+    query?.ownership,
+    query?.kitchen,
+    query?.cool_heat,
+    query?.welfare,
+    query?.pattern,
   ]);
 
   const {
@@ -128,37 +138,43 @@ function FilterdPropertiesPageOrianted({ sortType, setSortType, query }: Filterd
       query?.checkout,
       query?.checkin,
       query?.party,
+      query?.ownership,
+      query?.kitchen,
+      query?.cool_heat,
+      query?.welfare,
+      query?.pattern,
     ],
     queryFn: () => {
       return PropertyService?.GetProperties({
         page: Number(page),
-        min_price: Number(query.min_price) || undefined,
-        max_price: Number(query.max_price) || undefined,
-        max_building_area: Number(query.max_building_area) || undefined,
-        min_building_area: Number(query.min_building_area) || undefined,
-        min_commission: Number(query.min_commission) || undefined,
-        max_commission: Number(query.max_commission) || undefined,
         per_page: 30,
-        cities: query?.cities || undefined,
-        regions: query?.regions || undefined,
-        code: query?.code || undefined,
-        entertainment: query?.entertainment || undefined,
-        has_pool: query?.has_pool || undefined,
-        is_premium: query?.is_premium || undefined,
-        total_guests: query?.total_guests || undefined,
-        start_day: query?.start_day || undefined,
-        num_days: query?.num_days || undefined,
-        total_bedrooms: query?.total_bedrooms || undefined,
-        property_type: query?.property_type || undefined,
-        pool_type: query?.pool_type || undefined,
-        has_discount: query?.has_discount || undefined,
-        province_id: query?.province_id || undefined,
-        title: query?.title || undefined,
-        sort_type: query?.sort_type || undefined,
-        checkout: query?.checkout || undefined,
-        checkin: query?.checkin || undefined,
-        q: query?.q || undefined,
-        party: query?.party || undefined,
+        // min_price: Number(query.min_price) || undefined,
+        // max_price: Number(query.max_price) || undefined,
+        // max_building_area: Number(query.max_building_area) || undefined,
+        // min_building_area: Number(query.min_building_area) || undefined,
+        // min_commission: Number(query.min_commission) || undefined,
+        // max_commission: Number(query.max_commission) || undefined,
+        // cities: query?.cities || undefined,
+        // regions: query?.regions || undefined,
+        // code: query?.code || undefined,
+        // entertainment: query?.entertainment || undefined,
+        // has_pool: query?.has_pool || undefined,
+        // is_premium: query?.is_premium || undefined,
+        // total_guests: query?.total_guests || undefined,
+        // start_day: query?.start_day || undefined,
+        // num_days: query?.num_days || undefined,
+        // total_bedrooms: query?.total_bedrooms || undefined,
+        // property_type: query?.property_type || undefined,
+        // pool_type: query?.pool_type || undefined,
+        // has_discount: query?.has_discount || undefined,
+        // province_id: query?.province_id || undefined,
+        // title: query?.title || undefined,
+        // sort_type: query?.sort_type || undefined,
+        // checkout: query?.checkout || undefined,
+        // checkin: query?.checkin || undefined,
+        // q: query?.q || undefined,
+        // party: query?.party || undefined,
+        ...(query as any),
       });
     },
     gcTime: 0,
