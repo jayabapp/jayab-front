@@ -29,6 +29,7 @@ export type ParamStore = {
   showInstallPrompt: boolean;
   sideBarStatus: boolean;
   loginModal: boolean;
+  topHeaderVisible: boolean;
   getBackHome: boolean;
   likes: number[];
   bookmarks: number[];
@@ -38,6 +39,7 @@ export type ParamStore = {
 
 export const useStoreParams = create<ParamStore>((set) => ({
   isDark: false,
+  topHeaderVisible: true,
   showInstallPrompt: false,
   installPrompt: null,
   sideBarStatus: false,

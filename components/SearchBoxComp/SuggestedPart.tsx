@@ -60,9 +60,12 @@ const SuggestedPart = ({
   };
 
   return (
-    <div className=" flex items-start flex-col py-4 justify-start px-4 gap-4">
+    <div className=" flex items-start flex-col w-full py-4 justify-start px-4 gap-2">
       {isLoading ? (
-        <BtnLoading />
+        <div className=" w-full flex items-center justify-center  ">
+          {" "}
+          <BtnLoading />{" "}
+        </div>
       ) : !!data && isEmpty(data?.cities) && isEmpty(data?.cities) && isEmpty(data?.properties) ? (
         // <p>{_STRINGS.CANT_FIND}</p>
         <></>
@@ -88,7 +91,7 @@ const SuggestedPart = ({
           )}
           {!isEmpty(data?.cities) ? (
             <div className="w-full flex flex-col gap-2">
-              <p className="font-medium">{_STRINGS.CITIES}</p>
+              {/* <p className="font-medium">{_STRINGS.CITIES}</p> */}
               {data?.cities?.map((e) => (
                 <div
                   onClick={() => {
@@ -118,7 +121,7 @@ const SuggestedPart = ({
           )}
           {!isEmpty(data?.landings) ? (
             <div className="w-full flex flex-col gap-2">
-              <p className="font-medium">{_STRINGS.RELATED_RESULTS}</p>
+              {/* <p className="font-medium">{_STRINGS.RELATED_RESULTS}</p> */}
               {data?.landings?.map((e) => (
                 <div
                   onClick={() => {

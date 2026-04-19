@@ -12,7 +12,7 @@ import { PropertyService } from "@/api_services/property/property.service";
 import { ReserveService } from "@/api_services/reserve/reserve.service";
 import { UserService } from "@/api_services/user/user.service";
 import { useAuthStore, useStoreInit, useStoreParams } from "@/store";
-import { headerMobileSearchBlackList } from "@/utils/constantss";
+import { headerMobileSearchBlackList, headerWithFullSeach } from "@/utils/constantss";
 import { useQuery } from "@tanstack/react-query";
 import { throttle } from "lodash";
 import moment from "moment-jalaali";
@@ -78,15 +78,29 @@ const TextIcon = ({ item, isHome, visibleTopHeader }: textIconType) => {
 
 const Header = ({ scroll }: { scroll?: number }) => {
   const { userInfo } = useStoreInit((data) => data);
+
   const router = useRouter();
   const pathname = usePathname();
   const params = useParams();
   const { room_slug, slug, chat_id } = params;
   const { isLogin } = useAuthStore((state: any) => state);
-  const { getBackHome } = useStoreParams((state: any) => state);
+  const { getBackHome, topHeaderVisible } = useStoreParams((state: any) => state);
   const [isOpen, setIsOpen] = useState(false);
   const [showLogins, setShowLogins] = useState(false);
-  const [visibleTopHeader, setVisibleTopHeader] = useState(true);
+
+  /* -------------------------------------------------------------------------- */
+  /*                              TOP HEADER STORE                              */
+  /* -------------------------------------------------------------------------- */
+
+  const showTopHeader = () => {
+    useStoreParams.setState({ topHeaderVisible: true });
+  };
+  const hideTopHeader = () => {
+    useStoreParams.setState({ topHeaderVisible: false });
+  };
+
+  ////////////////
+
   useEffect(() => {
     setTimeout(() => {
       setShowLogins(true);
@@ -106,14 +120,14 @@ const Header = ({ scroll }: { scroll?: number }) => {
   }, []);
 
   const handleScroll = throttle((event) => {
-    if (window?.scrollY > 60) setVisibleTopHeader(false);
-    else setVisibleTopHeader(true);
+    if (window?.scrollY > 60) hideTopHeader();
+    else showTopHeader();
   }, 100);
 
   useEffect(() => {
     if (scroll) {
-      if (scroll > 60) setVisibleTopHeader(false);
-      else setVisibleTopHeader(true);
+      if (scroll > 60) hideTopHeader();
+      else showTopHeader();
     }
   }, [scroll]);
 
@@ -218,7 +232,7 @@ const Header = ({ scroll }: { scroll?: number }) => {
   });
   const isHome = pathname == "/" ? true : false;
 
-  const isHeaderLight = isHome && visibleTopHeader;
+  const isHeaderLight = isHome && topHeaderVisible;
 
   const MenuProfileItem = () => {
     return (
@@ -240,7 +254,7 @@ const Header = ({ scroll }: { scroll?: number }) => {
         ) : (
           <div className="flex shrink-0  items-center gap-2 pl-2">
             <TextIcon
-              visibleTopHeader={visibleTopHeader}
+              visibleTopHeader={topHeaderVisible}
               isHome={isHome}
               item={{
                 icon: "/assets/icons/header/adds_header_icon.svg",
@@ -253,19 +267,20 @@ const Header = ({ scroll }: { scroll?: number }) => {
       </div>
     );
   };
+  console.log(params, "paramsparams");
 
   return (
     <header className="relative">
       <div
         id="headerContainer"
         className={`
-     ${isHome && visibleTopHeader ? "  bg-gradient-to-b     from-black/40 to-black/0  md:pb-24    " : visibleTopHeader ? "" : "   "}
+     ${isHome && topHeaderVisible ? "  bg-gradient-to-b     from-black/40 to-black/0  md:pb-24    " : topHeaderVisible ? "" : "   "}
 
 transition-all ease-out  duration-300  header-content-container w-full mx-auto     dark:bg-dark-900    `}
       >
         {/* ROW 1 */}
         <div
-          className={`flex justify-between  transition-all items-center  xl:gap-[10%]   duration-300  padding-x  py-2 lg:py-4   ${isHeaderLight ? "    bg-transparent " : visibleTopHeader ? "   bg-white   " : "   bg-white   shadow-lg "} `}
+          className={`flex justify-between  transition-all items-center  xl:gap-[10%]   duration-300  padding-x  py-2 lg:py-4   ${isHeaderLight ? "    bg-transparent " : topHeaderVisible ? "   bg-white   " : `   bg-white    ${headerWithFullSeach.includes(pathname) || !!params?.slug ? " border-b  lg:border-b-0  lg:shadow-lg" : "shadow-lg"}  `} `}
         >
           <div className=" lg:hidden flex w-full  ">
             {isHome ? (
@@ -273,7 +288,7 @@ transition-all ease-out  duration-300  header-content-container w-full mx-auto  
                 <MenuProfileItem />
 
                 <div className="flex items-center gap-6">
-                  <div className={` ${visibleTopHeader ? "hidden" : "  flex"} transition-all `}>
+                  <div className={` ${topHeaderVisible ? "hidden" : "  flex"} transition-all `}>
                     <Suspense>
                       <PopSearchbox
                         justIcon
@@ -290,10 +305,6 @@ transition-all ease-out  duration-300  header-content-container w-full mx-auto  
                     isLogin ? (
                       <>
                         {" "}
-                        {/* <Link prefetch={false} href={"/chat"} className="relative">
-                          <AbsoluteBadge count={chaNotifBadge?.unread_count || 0} />
-                          <img alt="chat" src="/assets/icons/header/blue_chat.svg" className="w-6 h-6 aspect-square" />
-                        </Link> */}
                         <Link
                           prefetch={false}
                           href={"/notifications"}
@@ -317,6 +328,35 @@ transition-all ease-out  duration-300  header-content-container w-full mx-auto  
                   <img className="w-10 h-10 aspect-square" src="/assets/icons/logo/header_mobile_logo.svg" />
                 </div>
               </div>
+            ) : headerWithFullSeach.includes(pathname) || !!params?.slug ? (
+              <div className="flex items-center w-full justify-between  gap-4">
+                {" "}
+                <img
+                  src="/assets/icons/shared/chevron-right.svg"
+                  onClick={(e) => {
+                    if (!!getBackHome && (!!room_slug || !!chat_id)) {
+                      removeredirectRoomToHome();
+                      router.push("/");
+                    } else if (pathname == "/profile/orders" || (!!slug && !room_slug)) {
+                      router.push("/");
+                    } else {
+                      router.back();
+                    }
+                  }}
+                  className="cursor-pointer w-12 h-4      "
+                  // src="/assets/icons/addresses/garbage.svg"
+                />
+                <Suspense>
+                  <PopSearchbox
+                    boxId={scroll ? "SEARCH_BOX_Mobile_Modal" : "SEARCH_BOX_Mobile"}
+                    placeholder={_STRINGS?.SEARCH_CITY_OR_ADD}
+                    onSubmit={(text) => {}}
+                    onClear={() => {}}
+                    item={{ bg: "" }}
+                    autofocus={isInSearch}
+                  />
+                </Suspense>
+              </div>
             ) : (
               <div className="flex items-center w-full justify-between  gap-4">
                 {" "}
@@ -332,7 +372,7 @@ transition-all ease-out  duration-300  header-content-container w-full mx-auto  
                       router.back();
                     }
                   }}
-                  className="cursor-pointer w-12 h-5      "
+                  className="cursor-pointer w-12 h-4      "
                   // src="/assets/icons/addresses/garbage.svg"
                 />
                 <p className="font-bold text-base text-center">
@@ -410,7 +450,7 @@ transition-all ease-out  duration-300  header-content-container w-full mx-auto  
             {!!showLogins ? <MenuProfileItem /> : <></>}
 
             <TextIcon
-              visibleTopHeader={visibleTopHeader}
+              visibleTopHeader={topHeaderVisible}
               isHome={isHome}
               item={{
                 icon: "/assets/icons/header/consultant_header.svg",
@@ -427,7 +467,7 @@ transition-all ease-out  duration-300  header-content-container w-full mx-auto  
               <></>
             )}
             <TextIcon
-              visibleTopHeader={visibleTopHeader}
+              visibleTopHeader={topHeaderVisible}
               isHome={isHome}
               item={{ icon: "/assets/icons/header/adds_header_icon.svg", title: _STRINGS.ADDS, route: "/rooms" }}
             />
@@ -435,7 +475,7 @@ transition-all ease-out  duration-300  header-content-container w-full mx-auto  
               <div className="relative">
                 <AbsoluteBadge count={chaNotifBadge?.unread_count || 0} />
                 <TextIcon
-                  visibleTopHeader={visibleTopHeader}
+                  visibleTopHeader={topHeaderVisible}
                   isHome={isHome}
                   item={{
                     icon: "/assets/icons/header/messages_geader_icon.svg",
@@ -448,7 +488,7 @@ transition-all ease-out  duration-300  header-content-container w-full mx-auto  
               <></>
             )}
             <TextIcon
-              visibleTopHeader={visibleTopHeader}
+              visibleTopHeader={topHeaderVisible}
               isHome={isHome}
               item={{ title: _STRINGS.ADD_ADD, cb: onCreateAddClick }}
             />

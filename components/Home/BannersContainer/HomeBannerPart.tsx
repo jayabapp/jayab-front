@@ -1,6 +1,7 @@
 "use client";
 import Editable from "@/components/Editable";
 import HomePopSearch from "@/components/SearchBoxComp/HomePopSearch";
+import SearchBoxDropDown from "@/components/SearchBoxComp/SearchBoxDropDown";
 import { DeviceInfo } from "@/helpers/device.detector";
 import _STRINGS from "@/utils/LocalStrings";
 import { NEW_IMAGE_URL } from "@/utils/urls";
@@ -33,11 +34,16 @@ const HomeBannerPart = ({ banners, devices }: ImageCarouselTypes) => {
           <h1 className="text-white font-bold text-lg text-center">{_STRINGS.HOME_TITLE}</h1>
         </div>
         <div className=" flex backdrop-blur-md    lg:backdrop-blur-none    absolute bottom-[-7dvh]  w-[90%] left-0 right-0 mx-auto  shadow-card lg:relative  lg:h-14 lg:bg-white rounded-full items-center  gap-1 lg:gap-2    p-[1px]   lg:pl-4">
+          <SearchBoxDropDown
+            placeholder={_STRINGS?.SEARCH_CITY_OR_ADD}
+            containerClass="bg-transparent border  h-full rounded-full lg:flex hidden    w-full dark:bg-zinc-600   justify-between items-center  !bg-white lg:bg-transparent !rounded-l-none  lg:!rounded-l-20  !border-none "
+          />
+
           <div
             onClick={() => {
               setShowPop(true);
             }}
-            className={`bg-transparent border rounded-20  px-4 py-1.5  overflow-hidden w-full dark:bg-zinc-600  flex justify-between items-center  !bg-white lg:bg-transparent !rounded-l-none  lg:!rounded-l-20  !border-none `}
+            className={`bg-transparent border  lg:hidden rounded-20  px-4 py-1.5  overflow-hidden w-full dark:bg-zinc-600  flex justify-between items-center  !bg-white lg:bg-transparent !rounded-l-none  lg:!rounded-l-20  !border-none `}
           >
             {" "}
             <div className="flex items-center gap-1 w-full">

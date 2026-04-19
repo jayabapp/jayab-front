@@ -20,6 +20,7 @@ import ModalHeaderPart from "@/components/Modal/ModalHeaderPart";
 import Button from "@/components/shared/Button/Button";
 import queryBuilder from "@/helpers/queryBuilder";
 import useQueryGet from "@/helpers/queryGet";
+import { useStoreParams } from "@/store";
 import { SORT_TYPES } from "@/utils/constantss";
 import { ParsedUrlQuery } from "querystring";
 import FiltersPart from "./FiltersPart";
@@ -133,6 +134,7 @@ const Filterpage = () => {
     setStickyHeight((window.visualViewport?.height || 700) - 90);
   }, []);
 
+  const { topHeaderVisible } = useStoreParams((state: any) => state);
   return (
     <div className="app-container !px-0 md:!px-10  2xl:px-[9%] !pt-32  lg:!pt-20  xl: z-2  flex flex-col !gap-2 ">
       {/* <div className="app-container !px-0 xl:!px-10 lg:!px-12 2xl:!px-[5%] !pt-32  lg:!pt-20  xl: z-2  flex flex-col !gap-2 "> */}
@@ -167,7 +169,9 @@ const Filterpage = () => {
             </div>
           </div>
 
-          <div className="flex fixed pt-1 xl:hidden h-16 right-0  items-center justify-center   z-10 xl:z-1  top-[3rem] xl:top-auto left-0 xl:left-auto bg-white xl:bg-transparent xl:relative flex-col w-full xl:gap-2  ">
+          <div
+            className={`flex fixed pt-1 xl:hidden h-16 right-0 duration-1000   transition-all items-center justify-center   z-10 xl:z-1  top-[3rem] xl:top-auto left-0 xl:left-auto bg-white xl:bg-transparent xl:relative flex-col w-full xl:gap-2  ${!topHeaderVisible ? "  shadow-lg lg:shadow-none" : ""} `}
+          >
             <div className=" flex  order-1  xl:hidden  relative w-full">
               <div className=" z-1  px-2  relative  w-full items-center gap-1 justify-between  ">
                 <div className=" !col-span-9 ">
@@ -205,7 +209,7 @@ const Filterpage = () => {
                 propertyTypes={propertyTypes || {}}
               />
             </div>{" "}
-            <div className="w-full flex lg:hidden">
+            <div className="w-full items-center justify-end flex lg:hidden">
               <SortMenu query={queries} />
             </div>
           </div>

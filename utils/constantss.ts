@@ -63,6 +63,7 @@ export const mobileHeaderBlackList = [
   "/profile/owner/properties",
   "/profile/advisor",
 ];
+export const headerWithFullSeach = ["/rooms"];
 export const mobileFooterBlackList = [
   // "/chat/",
   // "/profile/",

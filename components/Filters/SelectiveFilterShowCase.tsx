@@ -28,7 +28,10 @@ const SelectiveFilterShowCase = ({
         <p className="text-xs pr-2">{title} </p>
         {!!slectedCount ? (
           <>
-            <p className="text-sm font-medium pr-2"> : {slectedCount || ""} </p>
+            <p className="text-sm font-medium pr-2">
+              {" "}
+              {slectedCount || ""} <span className="text-xxs font-normal "> مورد</span>
+            </p>
             <div
               onClick={(e) => {
                 e.preventDefault();

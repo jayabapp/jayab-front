@@ -4,7 +4,7 @@ import { CitiesSuggestTypes } from "@/enum/cities_suggest.enum";
 import { useCitiesStore } from "@/store";
 import _STRINGS from "@/utils/LocalStrings";
 import { useMutation, useQuery } from "@tanstack/react-query";
-import { debounce } from "lodash";
+import { debounce, isEmpty } from "lodash";
 import dynamic from "next/dynamic";
 import { useRouter, useSearchParams } from "next/navigation";
 import { Suspense, useCallback, useEffect, useRef, useState } from "react";
@@ -56,6 +56,7 @@ const PopSearchbox = ({
   boxId = "SEARCH_BOX",
   justIcon = false,
 }: props) => {
+  const { locationsData } = useCitiesStore();
   const { push } = useRouter();
   const [searchParam, setSearchParam] = useState<string | null>(null);
   const [showPop, setShowPop] = useState(false);
@@ -120,7 +121,7 @@ const PopSearchbox = ({
   const checkTyping = useCallback(
     debounce(() => {
       setisTyping(false);
-    }, 600),
+    }, 200),
     [],
   );
   useEffect(() => {
@@ -184,6 +185,8 @@ const PopSearchbox = ({
       push(link);
     },
   });
+
+  console.log(locationsData, "locationsDatalocationsData");
 
   return (
     <div className={`${containerClass} relative`}>
@@ -297,7 +300,11 @@ const PopSearchbox = ({
           </div>
         </div>
 
-        <SearchBoxCitiesPart setShowPop={setShowPop} />
+        {!isEmpty(locationsData?.regions) || !isEmpty(locationsData?.cities) || !isEmpty(locationsData?.province) ? (
+          <SearchBoxCitiesPart setShowPop={setShowPop} />
+        ) : (
+          <></>
+        )}
         <SuggestedPart
           setShowPop={setShowPop}
           searchedText={element?.value || ""}
