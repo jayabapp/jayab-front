@@ -68,7 +68,7 @@ const TextIcon = ({ item, isHome, visibleTopHeader }: textIconType) => {
       className={`dark:invert  brightness-125 group-hover:brightness-100 group-hover:grayscale-0  grayscale `}
     /> */}
         <p
-          className={`${textColor} ${visibleTopHeader} shrink-0  cursor-pointer ransition-all duration-100 font-medium  group-hover:brightness-100 group-hover:text-primary-700  `}
+          className={`${textColor} ${visibleTopHeader} shrink-0 text-sm lg:text-base   cursor-pointer ransition-all duration-100 font-medium  group-hover:brightness-100 group-hover:text-primary-700  `}
         >
           {item?.title}
         </p>
@@ -267,7 +267,6 @@ const Header = ({ scroll }: { scroll?: number }) => {
       </div>
     );
   };
-  console.log(params, "paramsparams");
 
   return (
     <header className="relative">

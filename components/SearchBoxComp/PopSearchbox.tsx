@@ -186,8 +186,6 @@ const PopSearchbox = ({
     },
   });
 
-  console.log(locationsData, "locationsDatalocationsData");
-
   return (
     <div className={`${containerClass} relative`}>
       <Suspense>
