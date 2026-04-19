@@ -8,7 +8,7 @@ const HomeSearchPart = () => {
     <div className=" flex backdrop-blur-md    lg:backdrop-blur-none      w-[90%]  mx-auto  shadow-card   lg:h-14 lg:bg-white rounded-full items-center  gap-1 lg:gap-2    p-[1px]   lg:pl-4">
       <PopSearchbox
         boxId={"HOME_SEARCH_BOX"}
-        placeholder={_STRINGS?.SEARCH_CITY_OR_ADD}
+        placeholder={_STRINGS?.SEARCH}
         onSubmit={() => {}}
         onClear={() => {
           // setsearchText("");

@@ -292,7 +292,7 @@ transition-all ease-out  duration-300  header-content-container w-full mx-auto  
                       <PopSearchbox
                         justIcon
                         boxId={scroll ? "SEARCH_BOX_Mobile_Modal" : "SEARCH_BOX_Mobile"}
-                        placeholder={_STRINGS?.SEARCH_CITY_OR_ADD}
+                        placeholder={_STRINGS?.SEARCH}
                         onSubmit={(text) => {}}
                         onClear={() => {}}
                         item={{ bg: "" }}
@@ -348,7 +348,7 @@ transition-all ease-out  duration-300  header-content-container w-full mx-auto  
                 <Suspense>
                   <PopSearchbox
                     boxId={scroll ? "SEARCH_BOX_Mobile_Modal" : "SEARCH_BOX_Mobile"}
-                    placeholder={_STRINGS?.SEARCH_CITY_OR_ADD}
+                    placeholder={_STRINGS?.SEARCH}
                     onSubmit={(text) => {}}
                     onClear={() => {}}
                     item={{ bg: "" }}
@@ -428,7 +428,7 @@ transition-all ease-out  duration-300  header-content-container w-full mx-auto  
                             <PopSearchbox
                               justIcon
                               boxId={scroll ? "SEARCH_BOX_Mobile_Modal" : "SEARCH_BOX_Mobile"}
-                              placeholder={_STRINGS?.SEARCH_CITY_OR_ADD}
+                              placeholder={_STRINGS?.SEARCH}
                               onSubmit={(text) => {}}
                               onClear={() => {}}
                               item={{ bg: "" }}
@@ -516,7 +516,7 @@ transition-all ease-out  duration-300  header-content-container w-full mx-auto  
                       <Suspense>
                         <PopSearchbox
                           boxId={scroll ? "SEARCH_BOX_Modal" : "SEARCH_BOX"}
-                          placeholder={_STRINGS?.SEARCH_CITY_OR_ADD}
+                          placeholder={_STRINGS?.SEARCH}
                           onSubmit={() => {}}
                           onClear={() => {
                             // setsearchText("");
@@ -532,7 +532,7 @@ transition-all ease-out  duration-300  header-content-container w-full mx-auto  
                     </div>
                     {/* <PopSearchbox
                       boxId={scroll ? "SEARCH_BOX_Modal" : "SEARCH_BOX"}
-                      placeholder={_STRINGS?.SEARCH_CITY_OR_ADD}
+                      placeholder={_STRINGS?.SEARCH}
                       onSubmit={(text) => {}}
                       onClear={() => {
                         // router.replace(pathname);
