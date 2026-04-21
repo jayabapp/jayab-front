@@ -46,7 +46,7 @@ const DateSpanPickerModal = ({
   const initializeMonths = React.useCallback(() => {
     const initialMonths: Date[] = [];
     for (let i = 0; i < 3; i++) {
-      const monthDate = moment(startDate).startOf("M").add(i, "months").toDate();
+      const monthDate = moment(startDate).startOf("jMonth").add(i, "jMonth").toDate();
       initialMonths.push(monthDate);
     }
     setMonths(initialMonths);
@@ -62,7 +62,7 @@ const DateSpanPickerModal = ({
 
     // Add next three months
     for (let i = 1; i <= 3; i++) {
-      const nextMonth = lastDate.clone().startOf("M").add(i, "months").toDate();
+      const nextMonth = lastDate.clone().startOf("jMonth").add(i, "jMonth").toDate();
       newMonths.push(nextMonth);
     }
 

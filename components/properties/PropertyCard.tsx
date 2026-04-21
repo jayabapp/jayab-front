@@ -57,7 +57,7 @@ const PropertyCard = ({ data, isOwner, week }: { data: PropertyListDto; isOwner?
               {/* LOCATION */}
               <div className="flex w-full  items-center gap-1">
                 {!!data?.is_promoted ? (
-                  <p className="  font-medium  text-primary-700  shrink-0  text-xs  pl-1 border-l">
+                  <p className="   font-bold    text-primary-700  shrink-0  text-xs  pl-1 border-l">
                     {_STRINGS.LADDERED}
                   </p>
                 ) : (
