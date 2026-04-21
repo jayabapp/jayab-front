@@ -26,13 +26,14 @@ const CityModalSelectedAccardiom = ({
           ?.map((e: any) => ({
             ...e,
             child: e?.child?.filter((f: any) => selectedCities?.some((x) => x?.id == f?.id)),
-          }))
+          })),
       );
     }
   }, [provinces, selectedCities]);
   return (
     <SimpleAccordion
       item={{ parenClass: ` transition-all !px-0 ` }}
+      isOpenFirst={!isEmpty(selectedProvs)}
       title={`${_STRINGS.SELECTED_CITIES}  ${!isEmpty(selectedCities) ? `(${selectedCities?.length} شهر)` : ""} `}
     >
       <div className={` gap-2 w-full flex flex-wrap`}>

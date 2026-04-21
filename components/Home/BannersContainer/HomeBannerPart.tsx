@@ -33,7 +33,7 @@ const HomeBannerPart = ({ banners, devices }: ImageCarouselTypes) => {
           <img className=" w-32 lg:w-40" src="/assets/images/home/home_banner_logo.png" />
           <h1 className="text-white font-bold text-lg text-center">{_STRINGS.HOME_TITLE}</h1>
         </div>
-        <div className=" flex backdrop-blur-md    lg:backdrop-blur-none    absolute bottom-[-7vh]  w-[90%] left-0 right-0 mx-auto  shadow-card lg:relative  lg:h-14 lg:bg-white rounded-full items-center  gap-1 lg:gap-2    p-[1px]   lg:pl-4">
+        <div className=" flex backdrop-blur-md    lg:backdrop-blur-none    absolute bottom-[-7vh]  w-[90%] left-0 right-0 mx-auto  lg:relative  lg:h-14 lg:bg-white rounded-full items-center  gap-1 lg:gap-2    p-[1px]   lg:pl-4">
           <SearchBoxDropDown
             placeholder={_STRINGS?.SEARCH}
             containerClass="bg-transparent border  h-full rounded-full lg:flex hidden    w-full dark:bg-zinc-600   justify-between items-center  !bg-white lg:bg-transparent !rounded-l-none  lg:!rounded-l-20  !border-none "
@@ -65,7 +65,7 @@ const HomeBannerPart = ({ banners, devices }: ImageCarouselTypes) => {
           <HomeCityFilterCityPart
             options={{
               cotainerClass:
-                " h-10  px-2  rounded-l-20 lg:rounded-l-0 lg:px-0   bg-white   lg:h-auto lg:bg-transparent",
+                " h-10  px-2 w-[25%] lg:w-fit  rounded-l-20 lg:rounded-l-0 lg:px-0  justify-between  bg-white   lg:h-auto lg:bg-transparent",
             }}
           />
         </div>

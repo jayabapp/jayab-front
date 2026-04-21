@@ -83,7 +83,7 @@ const PropertyCard = ({ data, isOwner, week }: { data: PropertyListDto; isOwner?
 
           {/* CODE  - LIKES */}
           <div className="flex items-center gap-4">
-            <div className="bg-gray-200 font-normal rounded-full text-xs  text-black  px-3 h-6  leading-4  flex items-center justify-center">
+            <div className="bg-gray-200 font-normal rounded-full text-xs  text-black  px-2 h-5  leading-4  flex items-center justify-center">
               کد {data.code}
             </div>{" "}
             <div className="flex items-center gap-1">

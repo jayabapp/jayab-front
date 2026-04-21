@@ -2,14 +2,12 @@
 import { HomeService } from "@/api_services/home/home.service";
 import { CitiesSuggestTypes } from "@/enum/cities_suggest.enum";
 import { useCitiesStore } from "@/store";
-import _STRINGS from "@/utils/LocalStrings";
 import { useMutation, useQuery } from "@tanstack/react-query";
 import { debounce, isEmpty } from "lodash";
 import dynamic from "next/dynamic";
 import { useRouter, useSearchParams } from "next/navigation";
 import { Suspense, useCallback, useEffect, useRef, useState } from "react";
 import { isMobile } from "react-device-detect";
-import ModalHeaderPart from "../Modal/ModalHeaderPart";
 import SmallLoading from "../shared/Lotties/SmallLoading";
 import HistoryMaker from "./HistoryMaker";
 import SearchBoxCitiesPart from "./SearchBoxCitiesPart";
@@ -258,12 +256,13 @@ const PopSearchbox = ({
             : ` top-[200dvh]  xl:top-0  -z-50  xl:hidden  h-0 xl:opacity-0`
         } transition-all   fixed  overflow-hidden    rounded-10  border shadow-card  left-0 w-full -top-2  duration-500 z-50  bg-white `}
       >
-        <ModalHeaderPart
-          title={_STRINGS.SEARCH}
-          onHide={() => {
+        <img
+          src="/assets/icons/adds/x_mark.svg"
+          className={`w-3  mt-4 mr-4 cursor-pointer  h-3 dark:invert`}
+          alt=""
+          onClick={() => {
             setShowPop(false);
           }}
-          showX
         />
         <div className="flex px-4  pt-4 items-center relative w-full gap-2 flex-row ">
           <div className=" relative flex items-center rounded-full border-primary-200 dark:bg-transparent  w-full py-3   gap-1 px-3   border-2 ">

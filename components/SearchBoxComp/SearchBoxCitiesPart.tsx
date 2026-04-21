@@ -89,7 +89,7 @@ const SearchBoxCitiesPart = ({ setShowPop }: { setShowPop: Dispatch<SetStateActi
   };
 
   return (
-    <div className="w-full p-4 flex flex-col gap-1">
+    <div className="w-full p-4  flex flex-wrap gap-2 ">
       {locationsData?.province?.map((e: any) => (
         <SearchBoxCitiesPartCarts
           province

@@ -15,7 +15,7 @@ const TextIcon = ({ title, iconUrl, disabled }: { title: string; iconUrl: string
 const PropertycardFeaturePart = ({ data }: { data: PropertyListDto }) => {
   return (
     <div className={`w-full flex   justify-start gap-4   items-center `}>
-      <TextIcon title={`${data?.max_capacity} نفر`} iconUrl="/assets/icons/adds/max_cap_house.svg" />
+      <TextIcon title={`تا ${data?.max_capacity} نفر`} iconUrl="/assets/icons/adds/max_cap_house.svg" />
       <TextIcon title={`${data?.total_bedrooms} اتاق`} iconUrl="/assets/icons/adds/prop_card_bed.svg" />
       <TextIcon
         disabled={!data?.has_pool}

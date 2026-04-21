@@ -4,7 +4,7 @@ const SearchBoxCitiesPartCarts = ({ item, cb, province }: { item: any; province?
   return (
     <div
       onClick={cb}
-      className="  transition-all  hover:brightness-75  cursor-pointer  bg-primary-1000/50 w-full py-0.5 px-2 rounded-md flex items-center justify-between"
+      className="  transition-all w-fit  gap-2 hover:brightness-75  cursor-pointer  bg-primary-1000/50  py-0.5 px-2 rounded-md flex items-center justify-between"
     >
       <p className="text-sm">
         {province && _STRINGS.PROVINCE} {item?.title}

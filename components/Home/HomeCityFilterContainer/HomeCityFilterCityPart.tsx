@@ -18,7 +18,7 @@ const HomeCityFilterCityPart = ({ options }: { options?: { cotainerClass?: strin
 
   const citiesTitle =
     locationsData?.province?.[0] || !isEmpty(locationsData?.cities)
-      ? `${locationsData?.province?.[0] ? `شهر های ${locationsData?.province?.[0]?.title}` : ""} ${
+      ? `${locationsData?.province?.[0] ? `${locationsData?.province?.[0]?.title}` : ""} ${
           !!locationsData?.cities && locationsData?.cities?.length > 1 && !locationsData?.province?.[0]
             ? // ? ` ${!!locationsData?.province?.[0] && locationsData?.cities?.length == locationsData?.province?.[0]?.child?.length ? "" : ` و ${locationsData?.cities?.length - (locationsData?.province?.[0]?.child?.length || 1)}  شهر دیگر`} `
               `${locationsData?.cities?.length} ${_STRINGS.CITY}`
