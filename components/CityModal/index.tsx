@@ -54,7 +54,7 @@ const CityModal = ({
     if (!!customeValues) {
       setQueries(customeValues);
     } else setQueries(queriesParams);
-  }, [customeValues, queriesParams?.cities, queriesParams?.province_id]);
+  }, [customeValues, queriesParams?.cities, queriesParams?.provinces]);
 
   const { data: provinces, isLoading: provLoading } = useQuery({
     queryFn: () => CityService.GetAllCities({ is_parent: 1 }),
@@ -78,12 +78,17 @@ const CityModal = ({
   /* -------------------------------------------------------------------------- */
 
   useEffect(() => {
-    if (!isEmpty(provinces) && queries?.province_id) {
-      setDefaultProvienceCities(provinces?.find((e) => e?.id == queries?.province_id)?.child || []);
+    if (!isEmpty(provinces) && queries?.provinces) {
+      const queryProvincesIds = queries?.provinces?.split(",");
+      const ProvincesCities = provinces
+        ?.filter((e) => queryProvincesIds?.includes(`${e?.id}`))
+        ?.flatMap((e) => e?.child);
+
+      setDefaultProvienceCities(ProvincesCities || []);
     } else {
       setDefaultProvienceCities([]);
     }
-  }, [provinces, queries?.province_id]);
+  }, [provinces, queries?.provinces]);
 
   /* -------------------------------------------------------------------------- */
   /*                             GETTING ALL CITIES                             */
@@ -117,7 +122,8 @@ const CityModal = ({
         }
       }
       if (!!setTitle) {
-        const selectedProv = provinces?.find((e) => e?.id == queries?.province_id);
+        const queryProvincesIds = queries?.provinces?.split(",");
+        const selectedProv = provinces?.find((e) => queryProvincesIds?.includes(e?.id));
 
         setTitle(
           `جستجو در  ${selectedProv ? `شهر های ${selectedProv?.title}` : defaultCitiesData?.[0]?.title} ${
@@ -187,18 +193,19 @@ const CityModal = ({
 
       fullSelectedcities = selectedCities;
 
-      if (allFullProviencesSelected?.length == 1) {
+      if (allFullProviencesSelected?.length > 0) {
         selectedProv = allFullProviencesSelected;
         const citiesWhithoutProv = allIncludedProves
-          ?.filter((x: NewCitiesListDto) => x?.id != allFullProviencesSelected?.[0]?.id)
+          ?.filter((x: NewCitiesListDto) => !allFullProviencesSelected?.map((p: any) => p?.id).includes(x?.id))
           ?.flatMap((e: NewCitiesListDto) => e?.child);
+        console.log(citiesWhithoutProv, allFullProviencesSelected);
 
         body.cities = citiesWhithoutProv?.map((e: NewCitiesListDto) => e?.id);
         fullSelectedcities = citiesWhithoutProv?.map((e: NewCitiesListDto) => e);
-        body.province_id = allFullProviencesSelected?.[0]?.id;
+        body.provinces = allFullProviencesSelected?.map((e: any) => e?.id);
       } else {
         body.cities = selectedCities?.map((e) => e?.id);
-        delete body.province_id;
+        delete body.provinces;
       }
 
       delete body.page;
@@ -211,17 +218,19 @@ const CityModal = ({
       useCitiesStore.setState({
         locationsData: {
           cities: fullSelectedcities,
-          province: selectedProv,
+          provinces: selectedProv,
         },
       });
 
       /////////////////////
       if (!!passedUrl) {
-        if (!!isHome && !body?.province_id && isEmpty(body?.cities)) {
+        if (!!isHome && !body?.provinces && isEmpty(body?.cities)) {
         } else {
+          console.log(`${passedUrl}?${queryBuilder(body)}`);
           router.push(`${passedUrl}?${queryBuilder(body)}`);
         }
       } else {
+        console.log(`${passedUrl}?${queryBuilder(body)}`);
         router.replace(`${pathname}?${queryBuilder(body)}`);
       }
     }

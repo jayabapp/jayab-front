@@ -35,7 +35,7 @@ const RegionModal = ({
 
   useEffect(() => {
     setQueries(queriesParams);
-  }, [queriesParams?.regions, queriesParams?.cities, queriesParams?.province_id]);
+  }, [queriesParams?.regions, queriesParams?.cities, queriesParams?.provinces]);
 
   useEffect(() => {
     if (!!queriesParams?.regions && !isEmpty(cityWithRegions?.child)) {

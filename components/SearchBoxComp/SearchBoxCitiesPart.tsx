@@ -18,6 +18,7 @@ const SearchBoxCitiesPart = ({ setShowPop }: { setShowPop: Dispatch<SetStateActi
   const pathname = usePathname();
   const router = useRouter();
 
+  const queyProvincesData = queriesParams["provinces"] ? `${queriesParams["provinces"]}`?.split(",") : "";
   const queyCityData = queriesParams["cities"] ? `${queriesParams["cities"]}`?.split(",") : "";
   const queyRegionsData = queriesParams["regions"] ? `${queriesParams["regions"]}`?.split(",") : "";
 
@@ -32,13 +33,13 @@ const SearchBoxCitiesPart = ({ setShowPop }: { setShowPop: Dispatch<SetStateActi
       delete body[queryKey];
     }
     delete body.page;
-    if (queryKey == "cities" || queryKey == "province_id") {
+    if (queryKey == "cities" || queryKey == "provinces") {
       delete body.regions;
     }
     setShowPop(false);
     router.replace(`${pathname}?${queryBuilder(body)}`);
   };
-
+  ///////////////////////////
   const onClickCity = (i: any) => {
     let temp: any = queyCityData || [];
     if (isArray(queyCityData)) {
@@ -53,11 +54,12 @@ const SearchBoxCitiesPart = ({ setShowPop }: { setShowPop: Dispatch<SetStateActi
     useCitiesStore.setState({
       locationsData: {
         cities: newStoredCities,
-        province: locationsData?.province,
+        provinces: locationsData?.provinces,
       },
     });
     queryMaker(temp, "cities");
   };
+  ////////////////////////////////
   const onClickRegion = (i: any) => {
     let temp: any = queyRegionsData || [];
     if (isArray(queyRegionsData)) {
@@ -72,31 +74,44 @@ const SearchBoxCitiesPart = ({ setShowPop }: { setShowPop: Dispatch<SetStateActi
     useCitiesStore.setState({
       locationsData: {
         cities: locationsData?.cities,
-        province: locationsData?.province,
+        provinces: locationsData?.provinces,
         regions: newStoredRegions,
       },
     });
     queryMaker(temp, "regions");
   };
-  const onProvinceCity = () => {
+  ////////////////////////////////
+  const onProvinceCity = (p: any) => {
+    let temp: any = queyProvincesData || [];
+    if (isArray(queyProvincesData)) {
+      if (queyProvincesData?.some((it: string) => it == `${p?.id}`)) {
+        temp = queyProvincesData?.filter((it: string) => it != `${p?.id}`);
+      } else {
+        temp = [...queyProvincesData, `${p?.id}`];
+      }
+    }
+    const newStoredProvinces = temp?.map((e: any) => locationsData?.provinces?.find((x: any) => x?.id == e));
+
     useCitiesStore.setState({
       locationsData: {
         cities: locationsData?.cities,
-        province: [],
+        provinces: newStoredProvinces,
       },
     });
-    queryMaker([], "province_id");
+
+    queryMaker(temp, "provinces");
   };
 
   return (
-    <div className="w-full p-4  flex flex-wrap gap-2 ">
-      {locationsData?.province?.map((e: any) => (
+    <div className="w-full p-4  flex flex-col gap-2 ">
+      <p>شهرهای انتخاب شده</p>
+      {locationsData?.provinces?.map((e: any) => (
         <SearchBoxCitiesPartCarts
           province
           item={e}
           key={`${e?.id}provSearch`}
           cb={() => {
-            onProvinceCity();
+            onProvinceCity(e);
           }}
         />
       ))}

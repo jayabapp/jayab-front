@@ -29,9 +29,9 @@ const SuggestedPart = ({
       link = `/rooms?cities=${city?.id}`;
     }
     if (city?.level == CitiesSuggestTypes?.PROVINCE) {
-      link = `/rooms?province_id=${city?.id}`;
+      link = `/rooms?provinces=${city?.id}`;
 
-      body.province = [{ id: city?.id, title: city?.title }];
+      body.provinces = [{ id: city?.id, title: city?.title }];
     }
     if (city?.level == CitiesSuggestTypes?.REGION) {
       body.cities = [{ title: city?.parent_title, id: city?.parent_id }];

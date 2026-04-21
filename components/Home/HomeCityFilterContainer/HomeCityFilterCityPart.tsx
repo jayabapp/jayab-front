@@ -17,16 +17,26 @@ const HomeCityFilterCityPart = ({ options }: { options?: { cotainerClass?: strin
   };
 
   const citiesTitle =
-    locationsData?.province?.[0] || !isEmpty(locationsData?.cities)
-      ? `${locationsData?.province?.[0] ? `${locationsData?.province?.[0]?.title}` : ""} ${
-          !!locationsData?.cities && locationsData?.cities?.length > 1 && !locationsData?.province?.[0]
+    locationsData?.provinces || !isEmpty(locationsData?.cities)
+      ? `${locationsData?.provinces?.length == 1 ? `${locationsData?.provinces?.[0]?.title}` : locationsData?.provinces?.length > 1 ? `${locationsData?.provinces?.length} استان` : ""} ${
+          !!locationsData?.cities && locationsData?.cities?.length > 1 && !locationsData?.provinces?.[0]
             ? // ? ` ${!!locationsData?.province?.[0] && locationsData?.cities?.length == locationsData?.province?.[0]?.child?.length ? "" : ` و ${locationsData?.cities?.length - (locationsData?.province?.[0]?.child?.length || 1)}  شهر دیگر`} `
               `${locationsData?.cities?.length} ${_STRINGS.CITY}`
-            : locationsData?.cities?.length == 1 && !locationsData?.province?.[0]
+            : locationsData?.cities?.length == 1 && !locationsData?.provinces?.[0]
               ? locationsData?.cities?.[0]?.title
               : ""
         }`
       : _STRINGS.CITY;
+
+  // const locDataCities = locationsData?.cities?.map((e: any) => e?.id);
+  // const locDataProvinces = locationsData?.provinces?.map((e: any) => e?.id);
+
+  // const defaultQueryData = useMemo(() => {
+  //   return {
+  //     cities: locationsData?.cities?.map((e: any) => e?.id),
+  //     provinces: locationsData?.provinces?.map((e: any) => e?.id)?.join(","),
+  //   };
+  // }, []);
   return (
     <>
       {" "}
@@ -35,13 +45,13 @@ const HomeCityFilterCityPart = ({ options }: { options?: { cotainerClass?: strin
         className={` flex cursor-pointer items-center shrink-0 gap-2  ${options?.cotainerClass || ""} `}
       >
         <p
-          className={` font-normal md:font-bold text-sm  shrink-0  ${!isEmpty(locationsData?.province) || !isEmpty(locationsData?.cities) ? "text-black opacity-70" : " text-black opacity-40"}  `}
+          className={` font-normal md:font-bold text-sm  shrink-0  ${!isEmpty(locationsData?.provinces) || !isEmpty(locationsData?.cities) ? "text-black opacity-70" : " text-black opacity-40"}  `}
         >
           {citiesTitle}
         </p>
         <img
           src="/assets/icons/home/home_location.svg"
-          className={`h-5 aspect-auto ${!isEmpty(locationsData?.province) || !isEmpty(locationsData?.cities) ? "   text-black opacity-70 " : "opacity-40"}`}
+          className={`h-5 aspect-auto ${!isEmpty(locationsData?.provinces) || !isEmpty(locationsData?.cities) ? "   text-black opacity-70 " : "opacity-40"}`}
         />
 
         {/* <img
@@ -59,7 +69,7 @@ const HomeCityFilterCityPart = ({ options }: { options?: { cotainerClass?: strin
         <CityModal
           customeValues={{
             cities: locationsData?.cities?.map((e: any) => e?.id),
-            province_id: locationsData?.province?.id,
+            provinces: locationsData?.provinces?.map((e: any) => e?.id)?.join(","),
           }}
           isHome
           onHide={onHideCities}

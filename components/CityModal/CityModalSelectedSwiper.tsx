@@ -46,7 +46,10 @@ const CityModalSelectedSwiper = ({
               return (
                 <SwiperSlide key={`selectedItemsPROv${val?.id || val}`} className=" ">
                   <div className="rounded-full gap-4 py-1 px-1 flex items-center justify-center border border-primary-700/30  bg-primary-700/5  text-xs">
-                    <p className="text-sm text-primary-text  font-medium  pr-2"> همه شهر های {val?.title} </p>
+                    <p className="text-sm text-primary-text  font-medium  pr-2">
+                      {" "}
+                      {_STRINGS.PROVINCE} {val?.title}{" "}
+                    </p>
                     <div
                       onClick={() => {
                         onProvCancelClick(val);

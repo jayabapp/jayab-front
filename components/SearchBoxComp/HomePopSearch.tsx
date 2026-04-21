@@ -167,7 +167,7 @@ const HomePopSearch = ({
       useCitiesStore.setState({
         locationsData: {
           cities: data?.cities_list?.filter((e) => e?.level == CitiesSuggestTypes.CITY),
-          province: data?.cities_list?.filter((e) => e?.level == CitiesSuggestTypes.PROVINCE),
+          provinces: data?.cities_list?.filter((e) => e?.level == CitiesSuggestTypes.PROVINCE),
           regions: data?.cities_list?.filter((e) => e?.level == CitiesSuggestTypes.REGION),
         },
       });

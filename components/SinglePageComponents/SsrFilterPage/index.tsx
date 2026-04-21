@@ -219,7 +219,7 @@ const SsrFilterPage = ({ landings, firstData }: { firstData: { data: any[] }; la
 
           <div className="w-full grow-0 shrink-0 flex flex-row  px-1 xl:px-0 relative  justify-between">
             <div className="flex  flex-row w-[90%]  items-center justify-start  gap-4 ">
-              {(!hiddenFilters?.includes("cities") || !!cityWithRegions) && !hiddenFilters?.includes("province_id") ? (
+              {(!hiddenFilters?.includes("cities") || !!cityWithRegions) && !hiddenFilters?.includes("provinces") ? (
                 <FilterPageCitiesTitle
                   cityWithRegions={cityWithRegions}
                   queries={queries}
@@ -229,7 +229,7 @@ const SsrFilterPage = ({ landings, firstData }: { firstData: { data: any[] }; la
                   hideCityPart={
                     !!hiddenFilters?.includes("cities") &&
                     !!cityWithRegions?.child &&
-                    !hiddenFilters?.includes("province_id")
+                    !hiddenFilters?.includes("provinces")
                   }
                   cb={showCityModalFunc}
                 />
@@ -316,7 +316,7 @@ const SsrFilterPage = ({ landings, firstData }: { firstData: { data: any[] }; la
         {/* BODY */}
         <div className="w-[90%] mx-auto">
           <div className=" w-full  pt-4 pb-8  ">
-            {(!hiddenFilters?.includes("cities") || !!cityWithRegions) && !hiddenFilters?.includes("province_id") ? (
+            {(!hiddenFilters?.includes("cities") || !!cityWithRegions) && !hiddenFilters?.includes("provinces") ? (
               <FilterPageCitiesTitle
                 cityWithRegions={cityWithRegions}
                 setShowRegions={setShowRegions}
@@ -326,7 +326,7 @@ const SsrFilterPage = ({ landings, firstData }: { firstData: { data: any[] }; la
                 hideCityPart={
                   !!hiddenFilters?.includes("cities") &&
                   !!cityWithRegions?.child &&
-                  !hiddenFilters?.includes("province_id")
+                  !hiddenFilters?.includes("provinces")
                 }
                 cb={showCityModalFunc}
               />

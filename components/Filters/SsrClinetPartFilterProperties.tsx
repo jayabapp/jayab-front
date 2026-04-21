@@ -31,7 +31,7 @@ export interface catQueryTypes {
   property_type: string | null | undefined;
   pool_type: string | null | undefined;
   title: string | null | undefined;
-  province_id: string | null | undefined;
+  provinces: string | null | undefined;
   has_discount: string | null | undefined;
   max_building_area: string | null | undefined;
   min_building_area: string | null | undefined;
@@ -103,7 +103,7 @@ function SsrClinetPartFilterProperties({
     query?.q,
     query?.cities,
     query?.regions,
-    query?.province_id,
+    query?.provinces,
     query?.min_commission,
     query?.max_commission,
     query?.checkout,

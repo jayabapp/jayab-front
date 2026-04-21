@@ -38,7 +38,7 @@ export interface catQueryTypes {
   property_type: string | null | undefined;
   pool_type: string | null | undefined;
   title: string | null | undefined;
-  province_id: string | null | undefined;
+  provinces: string | null | undefined;
   q: string | null | undefined;
   page: string | null | undefined;
   party: string | null | undefined;
@@ -96,7 +96,7 @@ function FilterdPropertiesPageOrianted({ sortType, setSortType, query }: Filterd
     query?.q,
     query?.cities,
     query?.regions,
-    query?.province_id,
+    query?.provinces,
     query?.min_commission,
     query?.max_commission,
     query?.checkout,
@@ -134,7 +134,7 @@ function FilterdPropertiesPageOrianted({ sortType, setSortType, query }: Filterd
       query?.q,
       query?.cities,
       query?.regions,
-      query?.province_id,
+      query?.provinces,
       query?.checkout,
       query?.checkin,
       query?.party,
