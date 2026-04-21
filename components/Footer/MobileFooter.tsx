@@ -250,8 +250,10 @@ const MobileFooter: React.FC = ({}) => {
             {/* CENTER */}
             <div onClick={onCreatePost} className={`  flex flex-col justify-between   shrink-0   w-24     relative  `}>
               <img className=" -bottom-[2.1rem] h-24  absolute w-24 " src="/assets/icons/navbar/footer_bump.svg" />
-              <div className=" w-full h-full  aspect-square  absolute -top-[1.65rem] left-0 right-0 mx-auto rounded-full  bg-transparent flex items-center justify-center ">
-                <img src="/assets/icons/navbar/footer_big_plus.svg" />
+              <div className=" w-full h-full  aspect-square  absolute -top-[1.85rem] left-0 right-0 mx-auto rounded-full  bg-transparent flex items-center justify-center ">
+                <div className="footer-plus-shadow  flex items-center justify-center  size-[3.250rem] rounded-full border border-primary-1200 ">
+                  <img className="size-[0.875rem]" src="/assets/icons/navbar/footer_big_plus.svg" />
+                </div>
               </div>
 
               <p className=" truncate text-xs  absolute -bottom-[1.375rem] right-0 left-0 mx-auto md:text-base  text-center text-primary-700 select-none opacity-60 grayscale brightness-90  ">

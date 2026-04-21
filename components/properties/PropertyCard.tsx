@@ -64,7 +64,7 @@ const PropertyCard = ({ data, isOwner, week }: { data: PropertyListDto; isOwner?
                   <></>
                 )}
 
-                <p className="text-xs text-gray-500 line-clamp-1 text-center ">
+                <p className="text-xs  line-clamp-1 text-center ">
                   {data?.city}،{" "}
                   <span className="text-xs ">
                     {data?.province || data?.region ? `${data?.region || data?.province}` : ``}
@@ -103,7 +103,7 @@ const PropertyCard = ({ data, isOwner, week }: { data: PropertyListDto; isOwner?
 
           <div className={`w-full flex  flex-row ${"items-end"}  justify-between    gap-2 `}>
             {" "}
-            <p className="  text-xxs 2xl:text-xs  text-gray-500 shrink-0 ">{_STRINGS.TODAYS_PRICE}</p>
+            <p className="  text-xs 2xl:text-xs   shrink-0 ">{_STRINGS.TODAYS_PRICE}</p>
             <AddCardPricePart
               data={{
                 discounted_price: data?.today_price?.discounted_price,
@@ -188,6 +188,10 @@ const PropertyCard = ({ data, isOwner, week }: { data: PropertyListDto; isOwner?
         </Link>
       </div>
       {isOwner ? <PropertyCardOwnerPart goToLink={goToLink} data={data} /> : <></>}
+      {/* DESCRIPTION */}
+      <div className="w-full pt-1.5 ">
+        <PropertycardFeaturePart data={data} />
+      </div>
       {!!data?.reserve_days && !isEmpty(data?.reserve_days) ? (
         <div className="w-full pt-1 border-t">
           {" "}
@@ -196,10 +200,6 @@ const PropertyCard = ({ data, isOwner, week }: { data: PropertyListDto; isOwner?
       ) : (
         <></>
       )}
-      {/* DESCRIPTION */}
-      <div className="w-full pt-1.5 border-t">
-        <PropertycardFeaturePart data={data} />
-      </div>
     </div>
   );
 };

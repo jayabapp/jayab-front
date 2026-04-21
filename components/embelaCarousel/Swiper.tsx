@@ -100,7 +100,7 @@ const Swiper: React.FC<PropType> = (props) => {
     () =>
       autoFit
         ? {
-            "--slide-spacing": "0.5rem",
+            "--slide-spacing": props?.spaceBetween ?? "0.5rem",
             "--slide-size": `auto`,
           }
         : {
@@ -109,7 +109,7 @@ const Swiper: React.FC<PropType> = (props) => {
               : (props?.spaceBetween ?? "0rem"),
             "--slide-size": `${100 / (perViewOptions?.slidesPerView || props?.slidesPerView || 1)}%`,
           },
-    [perViewOptions, autoFit],
+    [perViewOptions, autoFit, props?.spaceBetween],
   );
 
   const { autoplayIsPlaying, toggleAutoplay, onAutoplayButtonClick } = useAutoplay(emblaApi);

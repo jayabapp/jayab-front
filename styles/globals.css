@@ -762,3 +762,7 @@ ul {
 .property-card-shadow {
   box-shadow: 0px 0px 10px 0px rgba(0, 7, 55, 0.1);
 }
+
+.footer-plus-shadow {
+  box-shadow: 0px 3.64px 10.93px 0px rgba(53, 130, 224, 0.35);
+}

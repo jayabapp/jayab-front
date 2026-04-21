@@ -17,7 +17,7 @@ import CityCard from "./CityCard";
 import CityModalAllCitiesButton from "./CityModalAllCitiesButton";
 import CityModalHeaderPart from "./CityModalHeaderPart";
 import CityModalSearchPart from "./CityModalSearchPart";
-import CityModalSelectedAccardiom from "./CityModalSelectedAccardiom";
+import CityModalSelectedSwiper from "./CityModalSelectedSwiper";
 import ProvienceCard from "./ProvienceCard";
 
 const CityModal = ({
@@ -254,7 +254,7 @@ const CityModal = ({
       <div className=" w-full flex flex-col gap-4  mt-4 p-3  h-auto min-h-full">
         <CityModalSearchPart search={search} setSearch={setSearch} />
 
-        <CityModalSelectedAccardiom
+        <CityModalSelectedSwiper
           onProvCancelClick={onProvCancelClick}
           provinces={provinces}
           selectedCities={selectedCities}
