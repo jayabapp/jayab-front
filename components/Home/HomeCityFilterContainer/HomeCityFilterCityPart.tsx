@@ -8,7 +8,7 @@ import { Suspense, useState } from "react";
 const HomeCityFilterCityPart = ({ options }: { options?: { cotainerClass?: string } }) => {
   const { locationsData } = useCitiesStore();
   const [showCities, setShowCities] = useState(false);
-
+  const [title, setTitle] = useState("");
   const onHideCities = () => {
     setShowCities(false);
   };
@@ -37,6 +37,7 @@ const HomeCityFilterCityPart = ({ options }: { options?: { cotainerClass?: strin
   //     provinces: locationsData?.provinces?.map((e: any) => e?.id)?.join(","),
   //   };
   // }, []);
+
   return (
     <>
       {" "}
@@ -45,13 +46,13 @@ const HomeCityFilterCityPart = ({ options }: { options?: { cotainerClass?: strin
         className={` flex cursor-pointer items-center shrink-0 gap-2  ${options?.cotainerClass || ""} `}
       >
         <p
-          className={` font-normal md:font-bold text-sm  shrink-0  ${!isEmpty(locationsData?.provinces) || !isEmpty(locationsData?.cities) ? "text-black opacity-70" : " text-black opacity-40"}  `}
+          className={` font-normal md:font-bold text-sm  shrink-0  ${!!title ? "text-black opacity-70" : " text-black opacity-40"}  `}
         >
-          {citiesTitle}
+          {title || _STRINGS.CITY}
         </p>
         <img
           src="/assets/icons/home/home_location.svg"
-          className={`h-5 aspect-auto ${!isEmpty(locationsData?.provinces) || !isEmpty(locationsData?.cities) ? "   text-black opacity-70 " : "opacity-40"}`}
+          className={`h-5 aspect-auto ${!!title ? "   text-black opacity-70 " : "opacity-40"}`}
         />
 
         {/* <img
@@ -67,11 +68,12 @@ const HomeCityFilterCityPart = ({ options }: { options?: { cotainerClass?: strin
       <Suspense>
         {" "}
         <CityModal
-          customeValues={{
-            cities: locationsData?.cities?.map((e: any) => e?.id),
-            provinces: locationsData?.provinces?.map((e: any) => e?.id)?.join(","),
-          }}
+          // customeValues={{
+          //   cities: locationsData?.cities?.map((e: any) => e?.id),
+          //   provinces: locationsData?.provinces?.map((e: any) => e?.id)?.join(","),
+          // }}
           isHome
+          setTitle={setTitle}
           onHide={onHideCities}
           show={showCities}
           passedUrl={"/rooms"}

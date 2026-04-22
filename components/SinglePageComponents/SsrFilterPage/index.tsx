@@ -9,6 +9,7 @@ import FilterPageCitiesTitle from "@/components/CityModal/FilterPageCitiesTitle"
 import RegionModal from "@/components/CityModal/RegionModal";
 import FiltersSelectedFiltersShowcase from "@/components/Filters/FiltersSelectedFiltersShowcase";
 import SortMenu from "@/components/Filters/SortMenu";
+import SpecialFilterButtons from "@/components/Filters/SpecialFilterButtons";
 import SsrClinetPartFilterProperties, { removeKeyArray } from "@/components/Filters/SsrClinetPartFilterProperties";
 import SsrPartFilter from "@/components/Filters/SsrPartFilter";
 import Modal from "@/components/Modal";
@@ -192,7 +193,12 @@ const SsrFilterPage = ({ landings, firstData }: { firstData: { data: any[] }; la
           <div className=" hidden     z-1 w-full xl:flex flex-col xl:flex-row items-center justify-between ">
             <SingleProductBreadCrumb dataArray={breadCrumbs} />
           </div>
-          <h1 className="mb-3 text-lg font-medium">{landings?.content?.title}</h1>
+          <div className="mb-3  w-full flex items-center justify-between">
+            <h1 className=" text-lg font-medium">{landings?.content?.title}</h1>
+            <div className="w-fit hidden lg:flex">
+              <SortMenu query={queries} />
+            </div>
+          </div>
 
           <div
             className={`flex fixed  ${
@@ -218,7 +224,8 @@ const SsrFilterPage = ({ landings, firstData }: { firstData: { data: any[] }; la
           </div>
 
           <div className="w-full grow-0 shrink-0 flex flex-row  px-1 xl:px-0 relative  justify-between">
-            <div className="flex  flex-row w-[90%]  items-center justify-start  gap-4 ">
+            <div className="flex  flex-row   items-center justify-start  gap-1 ">
+              <SpecialFilterButtons containerClass=" !w-full   lg:!w-fit" query={queries} />
               {(!hiddenFilters?.includes("cities") || !!cityWithRegions) && !hiddenFilters?.includes("provinces") ? (
                 <FilterPageCitiesTitle
                   cityWithRegions={cityWithRegions}
@@ -226,11 +233,12 @@ const SsrFilterPage = ({ landings, firstData }: { firstData: { data: any[] }; la
                   setShowRegions={setShowRegions}
                   showRegions={showRegions}
                   title={cityButtonTItle}
-                  hideCityPart={
-                    !!hiddenFilters?.includes("cities") &&
-                    !!cityWithRegions?.child &&
-                    !hiddenFilters?.includes("provinces")
-                  }
+                  hideCityPart
+                  // hideCityPart={
+                  //   !!hiddenFilters?.includes("cities") &&
+                  //   !!cityWithRegions?.child &&
+                  //   !hiddenFilters?.includes("provinces")
+                  // }
                   cb={showCityModalFunc}
                 />
               ) : (
@@ -251,7 +259,9 @@ const SsrFilterPage = ({ landings, firstData }: { firstData: { data: any[] }; la
                 propertyTypes={propertyTypes || {}}
               />
             </div>{" "}
-            <SortMenu query={queries} />
+            <div className="w-fit flex lg:hidden">
+              <SortMenu query={queries} />
+            </div>
           </div>
           <div className="  min-h-[80dvh] mb-12 xl:mb-20">
             {/* SIDEBAR */}
@@ -323,11 +333,7 @@ const SsrFilterPage = ({ landings, firstData }: { firstData: { data: any[] }; la
                 showRegions={showRegions}
                 queries={queries}
                 title={cityButtonTItle}
-                hideCityPart={
-                  !!hiddenFilters?.includes("cities") &&
-                  !!cityWithRegions?.child &&
-                  !hiddenFilters?.includes("provinces")
-                }
+                hideCityPart
                 cb={showCityModalFunc}
               />
             ) : (

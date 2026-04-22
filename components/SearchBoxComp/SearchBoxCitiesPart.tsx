@@ -105,34 +105,37 @@ const SearchBoxCitiesPart = ({ setShowPop }: { setShowPop: Dispatch<SetStateActi
   return (
     <div className="w-full p-4  flex flex-col gap-2 ">
       <p>شهرهای انتخاب شده</p>
-      {locationsData?.provinces?.map((e: any) => (
-        <SearchBoxCitiesPartCarts
-          province
-          item={e}
-          key={`${e?.id}provSearch`}
-          cb={() => {
-            onProvinceCity(e);
-          }}
-        />
-      ))}
-      {locationsData?.cities?.map((e: any) => (
-        <SearchBoxCitiesPartCarts
-          item={e}
-          key={`${e?.id}citySearch`}
-          cb={() => {
-            onClickCity(e);
-          }}
-        />
-      ))}
-      {locationsData?.regions?.map((e: any) => (
-        <SearchBoxCitiesPartCarts
-          item={e}
-          key={`${e?.id}regionSearch`}
-          cb={() => {
-            onClickRegion(e);
-          }}
-        />
-      ))}
+      <div className="w-full flex flex-wrap gap-2 ">
+        {" "}
+        {locationsData?.provinces?.map((e: any) => (
+          <SearchBoxCitiesPartCarts
+            province
+            item={e}
+            key={`${e?.id}provSearch`}
+            cb={() => {
+              onProvinceCity(e);
+            }}
+          />
+        ))}
+        {locationsData?.cities?.map((e: any) => (
+          <SearchBoxCitiesPartCarts
+            item={e}
+            key={`${e?.id}citySearch`}
+            cb={() => {
+              onClickCity(e);
+            }}
+          />
+        ))}
+        {locationsData?.regions?.map((e: any) => (
+          <SearchBoxCitiesPartCarts
+            item={e}
+            key={`${e?.id}regionSearch`}
+            cb={() => {
+              onClickRegion(e);
+            }}
+          />
+        ))}
+      </div>
     </div>
   );
 };

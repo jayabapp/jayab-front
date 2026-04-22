@@ -23,7 +23,7 @@ const SelectiveFilterShowCase = ({
     <>
       <div
         onClick={_onShow}
-        className={`rounded-full !w-auto   ${!!slectedCount ? "" : " grayscale opacity-70"}  transition-all  cursor-pointer  gap-0   py-1 h-7 pl-2 pr-1 flex items-center justify-center border    border-primary-700  bg-primary-700/5 text-primary-700  text-xs `}
+        className={`rounded-full !w-auto   ${!!slectedCount ? "" : " grayscale opacity-70"}  transition-all  cursor-pointer  gap-0   py-1 h-[1.625rem] pl-2 pr-1 flex items-center justify-center border    border-primary-700  bg-primary-700/5 text-primary-700  text-xs `}
       >
         <p className="text-xs pr-2">{title} </p>
         {!!slectedCount ? (

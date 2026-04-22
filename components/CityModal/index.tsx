@@ -122,15 +122,19 @@ const CityModal = ({
         }
       }
       if (!!setTitle) {
-        const queryProvincesIds = queries?.provinces?.split(",");
-        const selectedProv = provinces?.find((e) => queryProvincesIds?.includes(e?.id));
+        const queryProvincesIds = queries?.provinces?.split(",")?.map((e: string) => Number(e));
+        const selectedProvs = provinces?.filter((e) => queryProvincesIds?.includes(e?.id));
 
         setTitle(
-          `جستجو در  ${selectedProv ? `شهر های ${selectedProv?.title}` : defaultCitiesData?.[0]?.title} ${
-            !!defaultCitiesData && defaultCitiesData?.length > 1
-              ? ` و ${!!selectedProv ? defaultCitiesData?.length : defaultCitiesData?.length - 1} شهر دیگر`
-              : ``
-          }`,
+          `${
+            selectedProvs?.length == 1 && isEmpty(defaultCitiesData)
+              ? `استان ${selectedProvs?.[0]?.title}`
+              : defaultCitiesData?.length == 1 && isEmpty(selectedProvs)
+                ? defaultCitiesData?.[0]?.title
+                : !isEmpty(selectedProvs) || !isEmpty(defaultCitiesData)
+                  ? `${(defaultCitiesData?.length || 0) + (selectedProvs?.length || 0)} ${_STRINGS.CITY}`
+                  : ""
+          } `,
         );
       }
     } else {
@@ -226,11 +230,9 @@ const CityModal = ({
       if (!!passedUrl) {
         if (!!isHome && !body?.provinces && isEmpty(body?.cities)) {
         } else {
-          console.log(`${passedUrl}?${queryBuilder(body)}`);
           router.push(`${passedUrl}?${queryBuilder(body)}`);
         }
       } else {
-        console.log(`${passedUrl}?${queryBuilder(body)}`);
         router.replace(`${pathname}?${queryBuilder(body)}`);
       }
     }
@@ -242,7 +244,7 @@ const CityModal = ({
     let foundOne = false;
     if (e?.title.includes(search)) {
       foundOne = true;
-    } else if (!!e?.child?.find((x) => x?.title?.includes(search))) {
+    } else if (!!e?.child?.find((x) => x?.title == search)) {
       foundOne = true;
     }
     return foundOne;

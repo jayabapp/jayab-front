@@ -415,3 +415,13 @@ export const ReserveReqTypes = {
   [ReserveUserAction.RESERVE]: _STRINGS.RESERVE,
   [ReserveUserAction.CHAT]: _STRINGS.CHAT,
 };
+
+export const sortDynamicFiltersInOrder = [
+  "PROPERTY_TYPE",
+  "POOL_TYPE",
+  "PATTERN",
+  "ENTERTAINMENT",
+  "WELFARE",
+  "COOL_HEAT",
+  "KITCHEN",
+];

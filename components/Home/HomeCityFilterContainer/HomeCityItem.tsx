@@ -39,7 +39,7 @@ const HomeCityItem = ({ item }: { item: HomeLandingDto }) => {
         />
       </div>
 
-      <div className="absolute left-0 bottom-0 flex items-center  justify-center  py-1.5 bg-primary-700/60 w-full ">
+      <div className="absolute left-0 bottom-0 flex items-center  justify-start  py-1.5  pr-1.5  lg:pr-2.5 w-full ">
         <h2 className={`  col-span-3 !text-white w-fit text-start text-xs  md:text-base`}>{item?.title}</h2>
       </div>
     </Link>

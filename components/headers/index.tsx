@@ -267,7 +267,7 @@ const Header = ({ scroll }: { scroll?: number }) => {
       </div>
     );
   };
-
+  console.log(pathname, "pathnamepathname");
   return (
     <header className="relative">
       <div
@@ -327,9 +327,9 @@ transition-all ease-out  duration-300  header-content-container w-full mx-auto  
                   <img className="w-10 h-10 aspect-square" src="/assets/icons/logo/header_mobile_logo.svg" />
                 </div>
               </div>
-            ) : headerWithFullSeach.includes(pathname) || !!params?.slug ? (
+            ) : (headerWithFullSeach.includes(pathname) && !room_slug && !slug) || (!!slug && !room_slug) ? (
               <div className="flex items-center w-full justify-between  gap-4">
-                {" "}
+                {/* {" "}
                 <img
                   src="/assets/icons/shared/chevron-right.svg"
                   onClick={(e) => {
@@ -344,17 +344,22 @@ transition-all ease-out  duration-300  header-content-container w-full mx-auto  
                   }}
                   className="cursor-pointer w-12 h-4      "
                   // src="/assets/icons/addresses/garbage.svg"
-                />
-                <Suspense>
-                  <PopSearchbox
-                    boxId={scroll ? "SEARCH_BOX_Mobile_Modal" : "SEARCH_BOX_Mobile"}
-                    placeholder={_STRINGS?.SEARCH}
-                    onSubmit={(text) => {}}
-                    onClear={() => {}}
-                    item={{ bg: "" }}
-                    autofocus={isInSearch}
-                  />
-                </Suspense>
+                /> */}
+                <div className=" flex  w-full border  bg-white rounded-full items-center gap-2  pl-4">
+                  <Suspense>
+                    <PopSearchbox
+                      boxId={scroll ? "SEARCH_BOX_Mobile_Modal" : "SEARCH_BOX_Mobile"}
+                      placeholder={_STRINGS?.SEARCH}
+                      onSubmit={(text) => {}}
+                      onClear={() => {}}
+                      containerClass={" w-full mx-auto"}
+                      item={{ bg: `!bg-transparent  !border-none ` }}
+                      autofocus={isInSearch}
+                    />
+                  </Suspense>
+                  <div className="w-[1px] h-8 bg-gray-300"></div>
+                  <HomeCityFilterCityPart />
+                </div>
               </div>
             ) : (
               <div className="flex items-center w-full justify-between  gap-4">

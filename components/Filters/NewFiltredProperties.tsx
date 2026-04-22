@@ -3,6 +3,7 @@ import { useEffect, useState } from "react";
 
 import { PropertyListDto } from "@/api_services/property/property.interface";
 import { PropertyService } from "@/api_services/property/property.service";
+import { FiltersEnum } from "@/enum/filters.enum";
 import queryBuilder from "@/helpers/queryBuilder";
 import { WeekDays } from "@/utils/constantss";
 import { useQuery } from "@tanstack/react-query";
@@ -47,6 +48,7 @@ export interface catQueryTypes {
   min_commission: string | null | undefined;
   checkout: string | null | undefined;
   checkin: string | null | undefined;
+  [key: string]: FiltersEnum | any;
 }
 
 type FilterdPropertiesTypePageOrianted = {
@@ -107,6 +109,8 @@ function FilterdPropertiesPageOrianted({ sortType, setSortType, query }: Filterd
     query?.cool_heat,
     query?.welfare,
     query?.pattern,
+    query?.[FiltersEnum.HAS_BLUE_TICK],
+    query?.[FiltersEnum.IS_AUTHORIZED],
   ]);
 
   const {
@@ -143,6 +147,8 @@ function FilterdPropertiesPageOrianted({ sortType, setSortType, query }: Filterd
       query?.cool_heat,
       query?.welfare,
       query?.pattern,
+      query?.[FiltersEnum.HAS_BLUE_TICK],
+      query?.[FiltersEnum.IS_AUTHORIZED],
     ],
     queryFn: () => {
       return PropertyService?.GetProperties({

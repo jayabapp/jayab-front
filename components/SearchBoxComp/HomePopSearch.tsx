@@ -7,7 +7,6 @@ import { debounce } from "lodash";
 import dynamic from "next/dynamic";
 import { useRouter, useSearchParams } from "next/navigation";
 import { Dispatch, SetStateAction, Suspense, useCallback, useEffect, useRef, useState } from "react";
-import { isMobile } from "react-device-detect";
 import SmallLoading from "../shared/Lotties/SmallLoading";
 import HistoryMaker from "./HistoryMaker";
 import SearchBoxCitiesPart from "./SearchBoxCitiesPart";
@@ -194,9 +193,9 @@ const HomePopSearch = ({
       <div
         className={` ${
           showPop
-            ? `   w-full xl:w-1/2  top-0  h-[100dvh]   xl:h-auto  xl:absolute   xl:top-[35dvh] left-0 right-0 xl:mx-auto   opacity-100  min-w-[25dvw]  min-h-[25dvh] `
-            : ` top-[200dvh]  xl:top-0  -z-50  xl:hidden  h-0 xl:opacity-0`
-        } transition-all   fixed  overflow-hidden    rounded-10  border shadow-card  left-0 w-full -top-2  duration-500 z-50  bg-white `}
+            ? `   w-full xl:w-1/2  top-0   min-h-[50dvh]  max-h-[90dvh]  lg:max-h-[50dvh]  xl:h-auto  xl:absolute   xl:top-[35dvh] left-0 right-0 xl:mx-auto   opacity-100  min-w-[25dvw]  lg:min-h-[25dvh] `
+            : ` top-[-200dvh]  xl:top-0  -z-50  xl:hidden  h-0 xl:opacity-0`
+        } transition-all   fixed  overflow-y-scroll    rounded-10  border shadow-card  left-0 w-full -top-2  duration-500 z-50  bg-white `}
       >
         <img
           src="/assets/icons/adds/x_mark.svg"
@@ -266,27 +265,14 @@ const HomePopSearch = ({
           <></>
         )}
       </div>
-      {!!isMobile ? (
-        <></>
-      ) : (
-        <div
-          className={`fixed left-0     top-0 w-full   transition-all duration-0   ${
-            showPop ? " z-10 h-[100dvh] " : " -z-10  h-0"
-          } `}
-        >
-          {" "}
-          <div
-            onClick={() => {
-              setShowPop(false);
-            }}
-            className={` w-full h-full top-0   inset-0 bg-black bg-opacity-70  bg-transparent transition-all duration-700 ${
-              showPop ? " opacity-100 " : " opacity-0"
-            } `}
-          >
-            {" "}
-          </div>
-        </div>
-      )}
+      <div
+        onClick={() => {
+          setShowPop(false);
+        }}
+        className={`fixed left-0  bg-black/35  lg:bg-transparent    top-0 w-full   transition-opacity   ${
+          showPop ? " z-[11] h-[100dvh]  opacity-100" : " opacity-0 -z-10  h-0"
+        } `}
+      ></div>
     </div>
   );
 };

@@ -90,7 +90,7 @@ const SuggestedPart = ({
             <> </>
           )}
           {!isEmpty(data?.cities) ? (
-            <div className="w-full flex flex-col gap-2">
+            <div className="w-full flex flex-col gap-3">
               {/* <p className="font-medium">{_STRINGS.CITIES}</p> */}
               {data?.cities?.map((e) => (
                 <div
@@ -100,13 +100,10 @@ const SuggestedPart = ({
                   key={`${e?.id}CITIES`}
                   className="flex cursor-pointer flex-row  grayscale transition-all  hover:grayscale-0 items-center gap-2"
                 >
-                  <img
-                    className="w-4  transition-all h-4 aspect-square"
-                    src="/assets/icons/addresses/location_center.svg"
-                  />{" "}
+                  <img className="w-4  transition-all h-4 aspect-square" src="/assets/icons/home/literly_map.svg" />{" "}
                   <p className=" text-primary-700 text-sm md:text-base transition-all">
                     {" "}
-                    {e?.level == "province" ? _STRINGS.PROVINCE : ""} {e?.title}{" "}
+                    {e?.level == "province" ? _STRINGS.PROVINCE : _STRINGS.CITY} {e?.title}{" "}
                     {e?.level == "region" ? (
                       <span className="  opacity-70 text-xs "> {`(${e?.parent_title})`} </span>
                     ) : (
@@ -121,7 +118,7 @@ const SuggestedPart = ({
           )}
           {!isEmpty(data?.landings) ? (
             <div className="w-full flex flex-col gap-2">
-              {/* <p className="font-medium">{_STRINGS.RELATED_RESULTS}</p> */}
+              <p className="font-medium">{_STRINGS.RELATED_RESULTS}</p>
               {data?.landings?.map((e) => (
                 <div
                   onClick={() => {

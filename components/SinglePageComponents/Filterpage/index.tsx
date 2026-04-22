@@ -15,6 +15,7 @@ import RegionModal from "@/components/CityModal/RegionModal";
 import FiltersSelectedFiltersShowcase from "@/components/Filters/FiltersSelectedFiltersShowcase";
 import FilterdPropertiesPageOrianted from "@/components/Filters/NewFiltredProperties";
 import SortMenu from "@/components/Filters/SortMenu";
+import SpecialFilterButtons from "@/components/Filters/SpecialFilterButtons";
 import Modal from "@/components/Modal";
 import ModalHeaderPart from "@/components/Modal/ModalHeaderPart";
 import Button from "@/components/shared/Button/Button";
@@ -191,11 +192,13 @@ const Filterpage = () => {
             <PropertiesFilterList propertyKey={"property_type"} data={propertyTypes?.PROPERTY_TYPE} query={queries} />
           </div>
           <div className="w-full grow-0 shrink-0 flex flex-row  px-3 xl:px-0 relative  justify-between">
-            <div className="flex  flex-row w-[90%] gap-2 lg:w-full  items-center   justify-start ">
+            <div className="flex  flex-row w-[90%]  gap-1 lg:w-full  items-center   justify-start ">
+              <SpecialFilterButtons query={queries} />
               <FilterPageCitiesTitle
                 showRegions={showRegions}
                 setShowRegions={setShowRegions}
                 queries={queries}
+                hideCityPart
                 cityWithRegions={cityWithRegions}
                 title={cityButtonTItle}
                 cb={showCityModalFunc}
@@ -209,7 +212,7 @@ const Filterpage = () => {
                 propertyTypes={propertyTypes || {}}
               />
             </div>{" "}
-            <div className="w-full items-center justify-end flex lg:hidden">
+            <div className="w-1/3 items-center justify-end flex lg:hidden">
               <SortMenu query={queries} />
             </div>
           </div>
@@ -271,6 +274,7 @@ const Filterpage = () => {
         <div className="w-[90%] mx-auto">
           <div className=" w-full  pt-4 pb-8  ">
             <FilterPageCitiesTitle
+              hideCityPart
               showRegions={showRegions}
               setShowRegions={setShowRegions}
               queries={queries}
