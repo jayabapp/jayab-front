@@ -106,7 +106,7 @@ const SuggestedPart = ({
                   <img className="w-4  transition-all h-4 aspect-square" src="/assets/icons/home/literly_map.svg" />{" "}
                   <p className=" text-primary-700 text-sm md:text-base transition-all">
                     {" "}
-                    {e?.level == "province" ? _STRINGS.PROVINCE : _STRINGS.CITY} {e?.title}{" "}
+                    {e?.level == "province" ? _STRINGS.PROVINCE : e?.level == "city" ? _STRINGS.CITY : ""} {e?.title}{" "}
                     {e?.level == "region" ? (
                       <span className="  opacity-70 text-xs "> {`(${e?.parent_title})`} </span>
                     ) : (

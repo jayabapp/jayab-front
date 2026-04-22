@@ -20,7 +20,7 @@ function MainFiltersContainer({
   // const ref = useRef<Swiper>(null);
   return (
     <div className={` w-full noSelect   select-none   relative  rounded-20 flex gap-4 md:gap-2 flex-col items-center`}>
-      <p className="  font-bold   shrink-0 text-start w-full padding-x md:text-start  text-base  lg:text-xl    ">
+      <p className="  font-bold   hidden lg:flex  shrink-0 text-start w-full padding-x md:text-start  text-base  lg:text-xl    ">
         {title}
       </p>
       {

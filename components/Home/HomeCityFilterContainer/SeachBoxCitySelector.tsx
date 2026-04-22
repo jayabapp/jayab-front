@@ -1,6 +1,5 @@
 "use client";
 import CityModal from "@/components/CityModal";
-import _STRINGS from "@/utils/LocalStrings";
 import { Suspense, useState } from "react";
 
 const SeachBoxCitySelector = ({
@@ -26,22 +25,21 @@ const SeachBoxCitySelector = ({
       {" "}
       <div
         onClick={onShowCities}
-        className={` px-4 py-2 w-full relative flex cursor-pointer items-center shrink-0 gap-2   border-y  `}
+        className={` px-0 py-2 w-full relative flex cursor-pointer items-center shrink-0 gap-2   border-t  `}
       >
-        <div className=" rounded-md flex items-center  justify-center  border size-7">
+        <div className=" rounded-md   bg-gray-50  size-10  flex items-center  justify-center  border ">
           <img
             src="/assets/icons/home/home_location.svg"
-            className={`h-4 aspect-auto ${!!title ? "   text-black opacity-70 " : "opacity-40"}`}
+            className={` size-5 aspect-auto ${!!title ? "   text-black opacity-70 " : "opacity-40"}`}
           />{" "}
         </div>
 
-        <p
-          className={`   text-sm md:text-base md:font-medium shrink-0  ${!!title ? "text-black opacity-70" : " text-black opacity-40"}  `}
-        >
-          {_STRINGS.SELECT_CITY}
-        </p>
+        <div className="flex flex-col items-start justify-start gap-1 ">
+          <p className="    text-sm   font-bold">لیست شهرها</p>
+          <p className="    text-xxs ">لیست تمامی شهرها و استان ها</p>
+        </div>
 
-        <img className="size-3 absolute left-4 " src="/assets/icons/shared/chevron-left.svg" />
+        <img className="size-3 absolute left-0 " src="/assets/icons/shared/chevron-left.svg" />
       </div>
       <Suspense>
         {" "}

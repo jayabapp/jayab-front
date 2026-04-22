@@ -249,26 +249,26 @@ const PopSearchbox = ({
       <div
         className={` ${
           showPop
-            ? `   w-full  top-0  min-h-[40dvh]  max-h-[90dvh]  lg:max-h-[50dvh]   xl:h-auto  xl:absolute  opacity-100  min-w-[25dvw]  lg:min-h-[25dvh] `
+            ? `   w-full  top-0  min-h-[25dvh]  max-h-[90dvh]  lg:max-h-[50dvh]   xl:h-auto  xl:absolute  opacity-100  min-w-[25dvw]  lg:min-h-[25dvh] `
             : `  top-[-200dvh]  xl:top-0  -z-50  xl:hidden  h-0 xl:opacity-0`
-        } transition-all    fixed  overflow-y-scroll    rounded-10  border shadow-card  left-0 w-full -top-2  duration-500 z-50  bg-white `}
+        } transition-all    fixed  flex flex-col items-center justify-between pb-4   overflow-y-scroll    rounded-b-10  border shadow-card  left-0 w-full -top-2  duration-500 z-50  bg-white `}
       >
-        <img
+        {/* <img
           src="/assets/icons/adds/x_mark.svg"
           className={`w-3  mt-4 mr-4 cursor-pointer  h-3 dark:invert`}
           alt=""
           onClick={() => {
             setShowPop(false);
           }}
-        />
+        /> */}
         <div className="flex px-4  pt-4 items-center relative w-full gap-2 flex-row ">
-          <div className=" relative flex items-center rounded-full border-primary-200 dark:bg-transparent  w-full py-3   gap-1 px-3   border-2 ">
+          <div className=" relative flex items-center rounded-full border-primary-200 dark:bg-transparent  w-full py-1.5   gap-1 px-1.5 pr-3   border-2 ">
             {" "}
             <input
               id={`${boxId}prime`}
               ref={primeInputRef}
               placeholder={placeholder}
-              className={`bg-transparent w-full `}
+              className={`bg-transparent w-full  placeholder:text-sm `}
               onChange={(v) => handleChange(v.target.value)}
               value={text}
             />
@@ -280,7 +280,7 @@ const PopSearchbox = ({
                       mutate({ q: text });
                     }
               }
-              className="  cursor-pointer h-10 w-10  flex items-center justify-center  p-2 absolute left-1 aspect-square rounded-full  bg-primary-700"
+              className="  cursor-pointer h-8 w-8  flex items-center justify-center  p-2 absolute left-1 aspect-square rounded-full  bg-primary-700"
             >
               {!!isPending ? (
                 <SmallLoading />

@@ -21,8 +21,8 @@ function HomeCityFilterContainer({
   const chunckedData = chunk(data || [], 2);
   return (
     <div className={` w-full noSelect   select-none  gap-4  md:gap-2 relative rounded-20 flex flex-col items-center`}>
-      <div className="w-full flex  padding-x items-center justify-between ">
-        <p className=" font-bold   shrink-0 text-center md:text-start  text-base  lg:text-xl  ">{title}</p>
+      <div className="w-full hidden lg:flex  padding-x items-center justify-between ">
+        <p className=" font-bold     shrink-0 text-center md:text-start  text-base  lg:text-xl  ">{title}</p>
         {/* <HomeCityFilterCityPart /> */}
       </div>{" "}
       <SwiperEm

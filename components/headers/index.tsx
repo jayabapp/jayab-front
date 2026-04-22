@@ -242,7 +242,7 @@ const Header = ({ scroll }: { scroll?: number }) => {
       //   {isLogin ? (
       <div className=" flex items-center gap-6">
         <Link
-          href={!!isLogin ? "/profile/edit" : "/auth"}
+          href={!!isLogin ? "/profile" : "/auth"}
           prefetch={false}
           className={`  ${isHeaderLight ? "border-white " : "border-gray-500"} border  transition-all   rounded-full flex items-center justify-center`}
         >
@@ -265,7 +265,7 @@ const Header = ({ scroll }: { scroll?: number }) => {
                 <img
                   alt="notificatons"
                   src="/assets/icons/header/white_bell.svg"
-                  className={`w-6 h-6 transition-all aspect-square  shrink-0 ${isHeaderLight ? "" : "invert   opacity-50"} `}
+                  className={`w-5 h-5 transition-all aspect-square  shrink-0 ${isHeaderLight ? "" : "invert   opacity-40"} `}
                 />
               </Link>
             </>
@@ -325,7 +325,13 @@ transition-all ease-out  duration-300  header-content-container w-full mx-auto  
                     </Suspense>
                   </div>
 
-                  <img className="w-10 h-10 aspect-square" src="/assets/icons/logo/header_mobile_logo.svg" />
+                  <div className="flex items-center gap-1 justify-center">
+                    <img
+                      className={`w-16 ${topHeaderVisible ? "flex" : "hidden"} `}
+                      src="/assets/icons/logo/just_title_logo.svg"
+                    />
+                    <img className="w-10 h-10 aspect-square" src="/assets/icons/logo/header_mobile_logo.svg" />
+                  </div>
                 </div>
               </div>
             ) : (headerWithFullSeach.includes(pathname) && !room_slug && !slug) || (!!slug && !room_slug) ? (
