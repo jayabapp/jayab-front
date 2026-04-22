@@ -6,6 +6,7 @@ import isEmpty from "lodash/isEmpty";
 import { useRouter } from "next/navigation";
 import React from "react";
 import BtnLoading from "../shared/Button/BtnLoading";
+import HistoryMaker from "./HistoryMaker";
 const SuggestedPart = ({
   data,
   isLoading,
@@ -76,6 +77,7 @@ const SuggestedPart = ({
               {data?.properties?.map((e) => (
                 <div
                   onClick={() => {
+                    HistoryMaker(e?.title);
                     onPropClick(e?.slug);
                   }}
                   key={`${e?.id}properties`}
@@ -95,6 +97,7 @@ const SuggestedPart = ({
               {data?.cities?.map((e) => (
                 <div
                   onClick={() => {
+                    HistoryMaker(e?.title);
                     onCityClick(e);
                   }}
                   key={`${e?.id}CITIES`}
@@ -122,6 +125,7 @@ const SuggestedPart = ({
               {data?.landings?.map((e) => (
                 <div
                   onClick={() => {
+                    HistoryMaker(e?.title);
                     onLandingClick(e?.url);
                   }}
                   key={`${e?.id}landings`}

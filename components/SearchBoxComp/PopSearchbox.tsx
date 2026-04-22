@@ -7,8 +7,8 @@ import { debounce, isEmpty } from "lodash";
 import dynamic from "next/dynamic";
 import { useRouter, useSearchParams } from "next/navigation";
 import { Suspense, useCallback, useEffect, useRef, useState } from "react";
+import SeachBoxCitySelector from "../Home/HomeCityFilterContainer/SeachBoxCitySelector";
 import SmallLoading from "../shared/Lotties/SmallLoading";
-import HistoryMaker from "./HistoryMaker";
 import SearchBoxCitiesPart from "./SearchBoxCitiesPart";
 import SuggestedPart from "./SuggestedPart";
 const HistorySuggPart = dynamic(() => import("./HistorySuggPart"), { ssr: true });
@@ -93,7 +93,6 @@ const PopSearchbox = ({
       setText(searchParam);
       if (typeof onSubmit == "function") {
         onSubmit(searchParam);
-        HistoryMaker(searchParam);
         setShowPop(false);
       }
     }
@@ -104,7 +103,6 @@ const PopSearchbox = ({
       if (element) element.value = text;
       if (typeof onSubmit == "function" && element) {
         // onSubmit(element.value);
-        HistoryMaker(element?.value);
         // setShowPop(false);
       }
 
@@ -251,9 +249,9 @@ const PopSearchbox = ({
       <div
         className={` ${
           showPop
-            ? `   w-full  top-0  min-h-[50dvh]  max-h-[90dvh]  lg:max-h-[50dvh]   xl:h-auto  xl:absolute  opacity-100  min-w-[25dvw]  lg:min-h-[25dvh] `
+            ? `   w-full  top-0  min-h-[40dvh]  max-h-[90dvh]  lg:max-h-[50dvh]   xl:h-auto  xl:absolute  opacity-100  min-w-[25dvw]  lg:min-h-[25dvh] `
             : `  top-[-200dvh]  xl:top-0  -z-50  xl:hidden  h-0 xl:opacity-0`
-        } transition-all   fixed  overflow-y-scroll    rounded-10  border shadow-card  left-0 w-full -top-2  duration-500 z-50  bg-white `}
+        } transition-all    fixed  overflow-y-scroll    rounded-10  border shadow-card  left-0 w-full -top-2  duration-500 z-50  bg-white `}
       >
         <img
           src="/assets/icons/adds/x_mark.svg"
@@ -307,7 +305,6 @@ const PopSearchbox = ({
           isLoading={isLoading || loading}
           data={suggsData}
         />
-
         <Suspense>
           {" "}
           <HistorySuggPart
@@ -318,14 +315,11 @@ const PopSearchbox = ({
             }}
           />
         </Suspense>
-        {!suggsData ? (
-          <div className="w-full  my-5 opacity-20  flex-col flex items-center justify-center">
-            {/* <img className="w-20  aspect-auto opacity-50" src="/assets/icons/edit/magnifier.svg" /> */}
-            {/* <p className="text-base font-bold">{_STRINGS.SEARCH}</p> */}
-          </div>
-        ) : (
-          <></>
-        )}
+        <SeachBoxCitySelector
+          onSubmitCB={() => {
+            setShowPop(false);
+          }}
+        />
       </div>
       <div
         onClick={() => {

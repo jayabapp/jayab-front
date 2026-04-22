@@ -21,7 +21,6 @@ import Button from "../shared/Button/Button";
 import DrawerMenu from "../shared/DrawerMenu";
 import AbsoluteBadge from "./AbsoluteBadge";
 import HeaderTitle from "./HeaderTitle";
-import MenuDropDown from "./MenuDropDown";
 import ProfileDropdown from "./ProfileDropdown";
 const PopSearchbox = dynamic(() => import("../SearchBoxComp/PopSearchbox"), {
   ssr: true,
@@ -236,38 +235,63 @@ const Header = ({ scroll }: { scroll?: number }) => {
 
   const MenuProfileItem = () => {
     return (
-      <div
-        className={` flex items-center transition-all   rounded-full ${isHeaderLight ? "border-white " : "border-gray-500"} bg-white/40    border   p-1 pr-3  brightness-125 hover:brightness-100  justify-center col-span-1 gap-3 flex-row`}
-      >
-        <MenuDropDown isHeaderLight={isHeaderLight} />
-        {isLogin ? (
-          <Link
-            href={"/profile/edit"}
-            prefetch={false}
-            className={`  ${isHeaderLight ? "border-white " : "border-gray-500"} border  transition-all   rounded-full flex items-center justify-center`}
-          >
-            <img
-              src="/assets/icons/header/new-face/user.svg"
-              className={`${isHeaderLight ? "" : "invert"} transition-all`}
-            />
-          </Link>
+      // <div
+      //   className={` flex items-center transition-all   rounded-full ${isHeaderLight ? "border-white " : "border-gray-500"} bg-white/40    border   p-1 pr-3  brightness-125 hover:brightness-100  justify-center col-span-1 gap-3 flex-row`}
+      // >
+      //   <MenuDropDown isHeaderLight={isHeaderLight} />
+      //   {isLogin ? (
+      <div className=" flex items-center gap-6">
+        <Link
+          href={!!isLogin ? "/profile/edit" : "/auth"}
+          prefetch={false}
+          className={`  ${isHeaderLight ? "border-white " : "border-gray-500"} border  transition-all   rounded-full flex items-center justify-center`}
+        >
+          <img
+            src="/assets/icons/header/new-face/user.svg"
+            className={`${isHeaderLight ? "" : "invert"} transition-all`}
+          />
+        </Link>
+
+        {showLogins ? (
+          isLogin ? (
+            <>
+              {" "}
+              <Link
+                prefetch={false}
+                href={"/notifications"}
+                className="relative w-5 h-5 transition-all aspect-square  shrink-0 flex   lg:hidden"
+              >
+                <AbsoluteBadge count={notifBadge || 0} />
+                <img
+                  alt="notificatons"
+                  src="/assets/icons/header/white_bell.svg"
+                  className={`w-6 h-6 transition-all aspect-square  shrink-0 ${isHeaderLight ? "" : "invert   opacity-50"} `}
+                />
+              </Link>
+            </>
+          ) : (
+            <></>
+          )
         ) : (
-          <div className="flex shrink-0  items-center gap-2 pl-2">
-            <TextIcon
-              visibleTopHeader={topHeaderVisible}
-              isHome={isHome}
-              item={{
-                icon: "/assets/icons/header/adds_header_icon.svg",
-                title: `${_STRINGS?.ENTER} / ${_STRINGS?.REGISTER}`,
-                route: "/auth",
-              }}
-            />
-          </div>
+          <></>
         )}
       </div>
+      //   ) : (
+      //     <div className="flex shrink-0  items-center gap-2 pl-2">
+      //       <TextIcon
+      //         visibleTopHeader={topHeaderVisible}
+      //         isHome={isHome}
+      //         item={{
+      //           icon: "/assets/icons/header/adds_header_icon.svg",
+      //           title: `${_STRINGS?.ENTER} / ${_STRINGS?.REGISTER}`,
+      //           route: "/auth",
+      //         }}
+      //       />
+      //     </div>
+      //   )}
+      // </div>
     );
   };
-  console.log(pathname, "pathnamepathname");
   return (
     <header className="relative">
       <div
@@ -300,29 +324,6 @@ transition-all ease-out  duration-300  header-content-container w-full mx-auto  
                       />
                     </Suspense>
                   </div>
-                  {showLogins ? (
-                    isLogin ? (
-                      <>
-                        {" "}
-                        <Link
-                          prefetch={false}
-                          href={"/notifications"}
-                          className="relative w-5 h-5 transition-all aspect-square  shrink-0 "
-                        >
-                          <AbsoluteBadge count={notifBadge || 0} />
-                          <img
-                            alt="notificatons"
-                            src="/assets/icons/header/white_bell.svg"
-                            className={`w-5 h-5 transition-all aspect-square  shrink-0 ${isHeaderLight ? "" : "invert   opacity-50"} `}
-                          />
-                        </Link>
-                      </>
-                    ) : (
-                      <></>
-                    )
-                  ) : (
-                    <></>
-                  )}
 
                   <img className="w-10 h-10 aspect-square" src="/assets/icons/logo/header_mobile_logo.svg" />
                 </div>
@@ -517,7 +518,7 @@ transition-all ease-out  duration-300  header-content-container w-full mx-auto  
                   <></>
                 ) : (
                   <>
-                    <div className=" hidden md:flex  w-full border h-12 bg-white rounded-full items-center gap-2  pl-4">
+                    <div className=" hidden md:flex  w-full border  bg-white rounded-full items-center gap-2  pl-4">
                       <Suspense>
                         <PopSearchbox
                           boxId={scroll ? "SEARCH_BOX_Modal" : "SEARCH_BOX"}

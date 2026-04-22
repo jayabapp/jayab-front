@@ -55,8 +55,8 @@ const SortMenu = ({ query }: SortMenuType) => {
     <div className="w-fit flex lg:flex-row  shrink-0 gap-3 items-center justify-between rounded-10 dark:border-zinc-600 ">
       <Menu as="div" className="relative  shrink-0 inline-block text-left mr-1">
         <div>
-          <MenuButton className=" h-auto md:h-11  shrink-0 rounded-lg cursor-pointer flex justify-between items-center">
-            <div className="  gap-2  h-auto py-1 px-2  shrink-0 rounded-full bg-white border-primary-400 border  flex items-center justify-center  ">
+          <MenuButton className="  md:h-6.5  shrink-0 rounded-lg cursor-pointer flex justify-between items-center">
+            <div className="  gap-2  h-6.5 px-2  shrink-0 rounded-full bg-white border-primary-400 border  flex items-center justify-center  ">
               {" "}
               <p className=" shrink-0 text-xs md:text-sm">
                 {" "}

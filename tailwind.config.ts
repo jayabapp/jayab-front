@@ -61,6 +61,9 @@ export default {
         "12.5%": "12.5%",
         25: "6.25rem",
       },
+      height: {
+        "6.5": "1.625rem",
+      },
     },
     darkMode: "class",
   },

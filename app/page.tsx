@@ -1,3 +1,4 @@
+import BannersContainer from "@/components/Home/BannersContainer";
 import HomeActiveReserve from "@/components/Home/HomeActiveReserve";
 import HomePropertyTypes from "@/components/Home/HomePropertyTypes";
 import MainFiltersContainer from "@/components/Home/MainFiltersContainer";
@@ -79,6 +80,7 @@ const Home = async () => {
         )}{" "} */}
       </section>
       <HomePropertiesList middleBanners={middleBanners || []} data={propertyData?.data || []} /> <TheInstallPrompt />
+      {!!banners && !isEmpty(banners) ? <BannersContainer devices={devices} banners={banners || []} /> : <></>}
     </div>
   );
 };

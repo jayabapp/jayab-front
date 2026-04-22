@@ -29,9 +29,9 @@ const HomeBannerPart = ({ banners, devices }: ImageCarouselTypes) => {
       {/* HOME SEARCH PART  */}
 
       <div className="w-full extra-padding-x  lg:!px-[28%] flex absolute m-auto left-0 right-0  bottom-[35%] lg:bottom-[30%] flex-col   z-10 lg:z-1  gap-20">
-        <div className="flex z-5 gap-2 lg:gap-4 items-center justify-center flex-col">
-          <img className=" w-32 lg:w-40" src="/assets/images/home/home_banner_logo.png" />
-          <h1 className="text-white font-bold text-lg text-center">{_STRINGS.HOME_TITLE}</h1>
+        <div className="flex z-5 !gap-2 lg:!gap-4 items-center justify-center flex-col">
+          <img className=" !w-24 lg:!w-40" src="/assets/images/home/home_banner_logo.png" />
+          <h1 className="text-white font-bold !text-sm lg:!text-lg  text-center">{_STRINGS.HOME_TITLE}</h1>
         </div>
         <div className=" flex backdrop-blur-md    lg:backdrop-blur-none    absolute bottom-[-7vh]  w-[90%] left-0 right-0 mx-auto  lg:relative  lg:h-14 lg:bg-white rounded-full items-center  gap-1 lg:gap-2    p-[1px]   lg:pl-4">
           <SearchBoxDropDown
@@ -65,7 +65,7 @@ const HomeBannerPart = ({ banners, devices }: ImageCarouselTypes) => {
           <HomeCityFilterCityPart
             options={{
               cotainerClass:
-                " h-10  px-2 w-[25%] lg:w-fit  rounded-l-20 lg:rounded-l-0 lg:px-0  justify-between  bg-white   lg:h-auto lg:bg-transparent",
+                " h-10  px-2 w-[35%] lg:w-fit  rounded-l-20 lg:rounded-l-0 lg:px-0  justify-between  bg-white   lg:h-auto lg:bg-transparent",
             }}
           />
         </div>

@@ -165,7 +165,7 @@ const SsrFilterPage = ({ landings, firstData }: { firstData: { data: any[] }; la
     else setShowShadow(false);
   }, 100);
   return (
-    <div className="app-container  !pt-32  lg:!pt-20  !relative z-2 ">
+    <div className="app-container  !pt-[7.5rem]  lg:!pt-20  !relative z-2 ">
       <div className="grid grid-cols-12  col-span-12 ">
         <div
           style={{ height: `${stickyHeight}px` }}
@@ -195,7 +195,8 @@ const SsrFilterPage = ({ landings, firstData }: { firstData: { data: any[] }; la
           </div>
           <div className="mb-3  w-full flex items-center justify-between">
             <h1 className=" text-lg font-medium">{landings?.content?.title}</h1>
-            <div className="w-fit hidden lg:flex">
+            <div className="w-fit   items-center justify-end  hidden lg:flex">
+              <SpecialFilterButtons query={queries} />
               <SortMenu query={queries} />
             </div>
           </div>
@@ -225,7 +226,10 @@ const SsrFilterPage = ({ landings, firstData }: { firstData: { data: any[] }; la
 
           <div className="w-full grow-0 shrink-0 flex flex-row  px-1 xl:px-0 relative  justify-between">
             <div className="flex  flex-row   items-center justify-start  gap-1 ">
-              <SpecialFilterButtons containerClass=" !w-full   lg:!w-fit" query={queries} />
+              <div className=" flex lg:hidden ">
+                {" "}
+                <SpecialFilterButtons containerClass=" !w-full   lg:!w-fit" query={queries} />
+              </div>
               {(!hiddenFilters?.includes("cities") || !!cityWithRegions) && !hiddenFilters?.includes("provinces") ? (
                 <FilterPageCitiesTitle
                   cityWithRegions={cityWithRegions}

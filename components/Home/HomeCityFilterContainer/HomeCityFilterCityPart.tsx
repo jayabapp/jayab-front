@@ -2,7 +2,6 @@
 import CityModal from "@/components/CityModal";
 import { useCitiesStore } from "@/store";
 import _STRINGS from "@/utils/LocalStrings";
-import { isEmpty } from "lodash";
 import { Suspense, useState } from "react";
 
 const HomeCityFilterCityPart = ({ options }: { options?: { cotainerClass?: string } }) => {
@@ -16,17 +15,17 @@ const HomeCityFilterCityPart = ({ options }: { options?: { cotainerClass?: strin
     setShowCities(true);
   };
 
-  const citiesTitle =
-    locationsData?.provinces || !isEmpty(locationsData?.cities)
-      ? `${locationsData?.provinces?.length == 1 ? `${locationsData?.provinces?.[0]?.title}` : locationsData?.provinces?.length > 1 ? `${locationsData?.provinces?.length} استان` : ""} ${
-          !!locationsData?.cities && locationsData?.cities?.length > 1 && !locationsData?.provinces?.[0]
-            ? // ? ` ${!!locationsData?.province?.[0] && locationsData?.cities?.length == locationsData?.province?.[0]?.child?.length ? "" : ` و ${locationsData?.cities?.length - (locationsData?.province?.[0]?.child?.length || 1)}  شهر دیگر`} `
-              `${locationsData?.cities?.length} ${_STRINGS.CITY}`
-            : locationsData?.cities?.length == 1 && !locationsData?.provinces?.[0]
-              ? locationsData?.cities?.[0]?.title
-              : ""
-        }`
-      : _STRINGS.CITY;
+  // const citiesTitle =
+  //   locationsData?.provinces || !isEmpty(locationsData?.cities)
+  //     ? `${locationsData?.provinces?.length == 1 ? `${locationsData?.provinces?.[0]?.title}` : locationsData?.provinces?.length > 1 ? `${locationsData?.provinces?.length} استان` : ""} ${
+  //         !!locationsData?.cities && locationsData?.cities?.length > 1 && !locationsData?.provinces?.[0]
+  //           ? // ? ` ${!!locationsData?.province?.[0] && locationsData?.cities?.length == locationsData?.province?.[0]?.child?.length ? "" : ` و ${locationsData?.cities?.length - (locationsData?.province?.[0]?.child?.length || 1)}  شهر دیگر`} `
+  //             `${locationsData?.cities?.length} ${_STRINGS.CITY}`
+  //           : locationsData?.cities?.length == 1 && !locationsData?.provinces?.[0]
+  //             ? locationsData?.cities?.[0]?.title
+  //             : ""
+  //       }`
+  //     : _STRINGS.CITY;
 
   // const locDataCities = locationsData?.cities?.map((e: any) => e?.id);
   // const locDataProvinces = locationsData?.provinces?.map((e: any) => e?.id);
@@ -48,7 +47,7 @@ const HomeCityFilterCityPart = ({ options }: { options?: { cotainerClass?: strin
         <p
           className={` font-normal md:font-bold text-sm  shrink-0  ${!!title ? "text-black opacity-70" : " text-black opacity-40"}  `}
         >
-          {title || _STRINGS.CITY}
+          {title || _STRINGS.SELECT_CITY}
         </p>
         <img
           src="/assets/icons/home/home_location.svg"

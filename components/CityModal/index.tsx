@@ -27,6 +27,7 @@ const CityModal = ({
   setTitle,
   passedUrl,
   onSubmitCustomeCB,
+  onSubmitExtendedCB,
   customeValues,
   isHome,
   setRegionsCb,
@@ -37,6 +38,7 @@ const CityModal = ({
   item?: { submitTitle?: string };
   passedUrl?: string;
   onSubmitCustomeCB?: (e: any) => void | null;
+  onSubmitExtendedCB?: () => void | null;
   setRegionsCb?: (e: ChildCities | null) => void | null;
   customeValues?: any;
   isHome?: boolean;
@@ -168,6 +170,7 @@ const CityModal = ({
 
   const onSubmitClick = () => {
     if (!!onSubmitCustomeCB) {
+      onSubmitExtendedCB?.();
       onSubmitCustomeCB((e: any) => ({ ...e, cities: selectedCities?.map((e) => e?.id) }));
     } else {
       const body = {
@@ -236,7 +239,7 @@ const CityModal = ({
         router.replace(`${pathname}?${queryBuilder(body)}`);
       }
     }
-
+    onSubmitExtendedCB?.();
     onHide();
   };
 

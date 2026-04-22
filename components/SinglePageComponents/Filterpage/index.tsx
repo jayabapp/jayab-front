@@ -137,7 +137,7 @@ const Filterpage = () => {
 
   const { topHeaderVisible } = useStoreParams((state: any) => state);
   return (
-    <div className="app-container !px-0 md:!px-10  2xl:px-[9%] !pt-32  lg:!pt-20  xl: z-2  flex flex-col !gap-2 ">
+    <div className="app-container !px-0 md:!px-10  2xl:px-[9%] !pt-[7.5rem]  lg:!pt-20  xl: z-2  flex flex-col !gap-2 ">
       {/* <div className="app-container !px-0 xl:!px-10 lg:!px-12 2xl:!px-[5%] !pt-32  lg:!pt-20  xl: z-2  flex flex-col !gap-2 "> */}
       <div className="grid grid-cols-12  col-span-12 ">
         <div
@@ -163,9 +163,11 @@ const Filterpage = () => {
    
             xl:mt-0 `}
         >
-          <div className=" hidden  z-1 w-full xl:flex flex-col xl:flex-row items-center justify-between ">
+          <div className=" hidden  z-1 w-full xl:flex flex-col xl:flex-row items-center justify-between  mb-2">
             <SingleProductBreadCrumb dataArray={breadCrumbs} />
             <div className="w-full  items-center justify-end hidden lg:flex ">
+              <SpecialFilterButtons query={queries} />
+
               <SortMenu query={queries} />
             </div>
           </div>
@@ -193,7 +195,10 @@ const Filterpage = () => {
           </div>
           <div className="w-full grow-0 shrink-0 flex flex-row  px-3 xl:px-0 relative  justify-between">
             <div className="flex  flex-row w-[90%]  gap-1 lg:w-full  items-center   justify-start ">
-              <SpecialFilterButtons query={queries} />
+              <div className=" flex lg:hidden ">
+                <SpecialFilterButtons query={queries} />
+              </div>
+
               <FilterPageCitiesTitle
                 showRegions={showRegions}
                 setShowRegions={setShowRegions}
@@ -206,7 +211,7 @@ const Filterpage = () => {
               <FiltersSelectedFiltersShowcase
                 cityWithRegions={cityWithRegions}
                 setShowRegions={setShowRegions}
-                containerClass="   !hidden xl:!contents "
+                containerClass="   !hidden xl:!contents  xl:!w-full"
                 setFilterModalShow={setFilterModalShow}
                 query={queries}
                 propertyTypes={propertyTypes || {}}

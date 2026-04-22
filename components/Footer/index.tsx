@@ -9,6 +9,7 @@ import { useQuery } from "@tanstack/react-query";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import ContactuUItem from "../contactus/ContactuUItem";
+import CallBox from "./CallBox";
 
 const Footer = () => {
   const pathname = usePathname();
@@ -48,9 +49,9 @@ const Footer = () => {
   const PHONE_NUMBER = others?.find((i) => i?.fields?.key == "tel" || i?.key == "tel");
   return (
     <footer
-      className={`  ${!!footerHiddenBlackList.find((e) => pathname?.includes(e)) ? "hidden lg:hidden" : ""} w-full  z-2   bg-primary-1000   flex   flex-col items-center justify-center bg-dark-500  bg-no-repeat bg-cover  relative  pb-36 lg:pb-0 pt-12 lg:pt-[6rem] `}
+      className={`  ${!!footerHiddenBlackList.find((e) => pathname?.includes(e)) ? "hidden lg:hidden" : ""} w-full  z-2   bg-primary-1000   flex   flex-col items-center justify-center bg-dark-500  bg-no-repeat bg-cover  relative  pt-72 lg:pt-[6rem] `}
     >
-      {/* <CallBox /> */}
+      <CallBox />
 
       {!!PHONE_NUMBER && (
         <Link
@@ -110,26 +111,27 @@ const Footer = () => {
         <div className=" hidden md:flex   col-span-1 order-2 lg:order-1"></div>
         <div
           key={`footerasfs`}
-          className={`col-span-3 lg:col-span-1  gap-2 flex w-full flex-col justify-between h-fit order-2 lg:order-1 `}
+          className={`col-span-4 lg:col-span-1  gap-2 flex w-full flex-col justify-between h-fit order-2 lg:order-1 `}
         >
           <p className=" text-lg font-bold  pb-4">{_STRINGS.FAST_ACCESS}</p>
-
-          {footerLinks?.map((e, index) => (
-            <Link
-              prefetch={false}
-              key={`FOOTER@${e.id}${index}`}
-              href={e.route || "#"}
-              style={{ textDecoration: "none" }}
-              className="flex items-center gap-2 mb-2"
-            >
-              {/* <img
+          <div className=" lg:grid-cols-1  grid grid-cols-3 gap-2  grid-rows-2  lg:grid-rows-none ">
+            {footerLinks?.map((e, index) => (
+              <Link
+                prefetch={false}
+                key={`FOOTER@${e.id}${index}`}
+                href={e.route || "#"}
+                style={{ textDecoration: "none" }}
+                className="flex items-center gap-2 mb-2"
+              >
+                {/* <img
                 src="/assets/icons/footer/footer_bullet.svg"
                 alt={`${e?.title}dot`}
                 className="w-4 aspect-square h-4 "
               /> */}
-              <p className=" text-sm  cursor-pointer  opacity-100 hover:text-primary-700">{e?.title}</p>
-            </Link>
-          ))}
+                <p className=" text-sm  cursor-pointer  opacity-100 hover:text-primary-700">{e?.title}</p>
+              </Link>
+            ))}
+          </div>
         </div>{" "}
         <div className=" hidden md:flex   col-span-1 order-2 lg:order-1"></div>
         {/* CONTACT US */}
