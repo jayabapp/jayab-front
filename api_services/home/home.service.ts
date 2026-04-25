@@ -1,3 +1,4 @@
+import { BannerPosition } from "@/enum/banners.enum";
 import { apiRoutes } from "@/utils/urls";
 import { Meta } from "../chat/chat.interface";
 import { apiCall } from "../common/apicall.helper";
@@ -15,9 +16,9 @@ export class HomeService {
   static CONTENT_QUESTIONS_KEY = "CONTENTQUESTIONSKEY";
   static SEARCH_KEY = "SEARCH";
 
-  static async GetBanners(dto: { position: "main_sidebar" | "advisor" }) {
+  static async GetBanners(dto: { position: BannerPosition }) {
     try {
-      const result = await apiCall<{ position: "main_sidebar" | "advisor" }, unknown[]>("GET", apiRoutes.BANNERS, {
+      const result = await apiCall<{ position: BannerPosition }, unknown[]>("GET", apiRoutes.BANNERS, {
         position: dto?.position,
       });
       return result;

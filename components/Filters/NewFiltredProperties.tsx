@@ -1,14 +1,18 @@
 import { usePathname, useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 
+import { HomeService } from "@/api_services/home/home.service";
 import { PropertyListDto } from "@/api_services/property/property.interface";
 import { PropertyService } from "@/api_services/property/property.service";
+import { BannerPosition } from "@/enum/banners.enum";
 import { FiltersEnum } from "@/enum/filters.enum";
 import queryBuilder from "@/helpers/queryBuilder";
 import { WeekDays } from "@/utils/constantss";
 import { useQuery } from "@tanstack/react-query";
 import moment from "moment-jalaali";
+import { isMobile } from "react-device-detect";
 import InfiniteScroll from "react-infinite-scroll-component";
+import HomeProductsBannerItems from "../Home/HomePropertiesList/HomeProductsBannerItems";
 import PropertyCard from "../properties/PropertyCard";
 import BtnLoading from "../shared/Button/BtnLoading";
 import EmptyList from "../shared/Lotties/EmptyList";
@@ -240,6 +244,13 @@ function FilterdPropertiesPageOrianted({ sortType, setSortType, query }: Filterd
     }
   }, [query?.page]);
 
+  const { data: banners } = useQuery({
+    queryKey: [HomeService.BANNERS_RANDOM_CACHEKEY, BannerPosition.ROOMS_1],
+    queryFn: () => {
+      return HomeService.GetBanners({ position: BannerPosition.ROOMS_1 });
+    },
+  });
+
   return (
     <div className="w-full px-0  self-center">
       <div className=" w-full">
@@ -272,6 +283,15 @@ function FilterdPropertiesPageOrianted({ sortType, setSortType, query }: Filterd
             }
             className="grid   pb-8 pt-4 md:pt-2 px-3 lg:px-1  !overflow-hidden  grid-cols-1 gap-2 md:gap-4  md:grid-cols-2 xl:grid-cols-3 "
           >
+            {banners?.map((e: any, index: number) => (
+              <div
+                style={{ gridRowStart: (index + 1) * (isMobile ? 6 : 3) }}
+                key={`banner${e?.id}`}
+                className={` col-span-full  `}
+              >
+                <HomeProductsBannerItems bannerItem={e} />
+              </div>
+            ))}
             {data?.map((i) => (
               <PropertyCard week={week} data={i} key={`PRODUCT${i?.id}`} />
             ))}
