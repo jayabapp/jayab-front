@@ -8,7 +8,7 @@ import { BannerPosition } from "@/enum/banners.enum";
 import deviceTypeDetector from "@/helpers/device.detector";
 import serverCall from "@/helpers/serverCall";
 import _STRINGS from "@/utils/LocalStrings";
-import { apiRoutes, baseUrl } from "@/utils/urls";
+import { apiRoutes, baseUrl, baseUrlV } from "@/utils/urls";
 import isEmpty from "lodash/isEmpty";
 import { Metadata } from "next";
 import dynamic from "next/dynamic";
@@ -27,9 +27,12 @@ export async function generateMetadata(): Promise<Metadata> {
 }
 
 const Home = async () => {
-  const { data: banners } = await serverCall(baseUrl + apiRoutes.BANNERS + `?position=${BannerPosition.MAIN_1}`);
-  const { data: middleBanners } = await serverCall(baseUrl + apiRoutes.BANNERS + `?position=${BannerPosition.MAIN_2}`);
-  const { data: bottomBanners } = await serverCall(baseUrl + apiRoutes.BANNERS + `?position=${BannerPosition.MAIN_3}`);
+  const { data: banners } = await serverCall(
+    baseUrlV("v2") +
+      apiRoutes.BANNERS +
+      `?positions[]=${BannerPosition.MAIN_1}&positions[]=${BannerPosition.MAIN_2}&positions[]=${BannerPosition.MAIN_3}`,
+  );
+
   const { data: landings } = await serverCall(baseUrl + apiRoutes.USER_LANDING_PAGES);
   const { data: propertyData } = await serverCall(baseUrl + apiRoutes.GET_PROPERTIES, {
     page: 1,
@@ -37,11 +40,16 @@ const Home = async () => {
   });
   const { data: propertyTypes } = await serverCall(baseUrl + apiRoutes.USER_PROP_OPTIONS + "?group[]=PROPERTY_TYPE");
   const devices = await deviceTypeDetector();
+
   return (
     <div style={{ minHeight: "100dvh" }} id="homeParent" className="home-container  !px-0 !pt-0   flex flex-col gap-5 ">
       <SearchboxSchema />
       <OrganizationSchema />
-      {!!banners && !isEmpty(banners) ? <HomeBannerPart devices={devices} banners={banners || []} /> : <></>}
+      {!!banners?.[BannerPosition.MAIN_1] && !isEmpty(banners?.[BannerPosition.MAIN_1]) ? (
+        <HomeBannerPart devices={devices} banners={banners?.[BannerPosition.MAIN_1] || []} />
+      ) : (
+        <></>
+      )}
       {/* {!!middleBanners ? (
         <MiddleBanners cols={2} containerClass="  pr-2 md:pr-0 py-4" list={middleBanners || []} />
       ) : (
@@ -80,9 +88,17 @@ const Home = async () => {
           <></>
         )}{" "} */}
       </section>
-      <HomePropertiesList middleBanners={middleBanners || []} data={propertyData?.data || []} devices={devices} />{" "}
+      <HomePropertiesList
+        middleBanners={banners?.[BannerPosition.MAIN_2] || []}
+        data={propertyData?.data || []}
+        devices={devices}
+      />{" "}
       <TheInstallPrompt />
-      {!!banners && !isEmpty(banners) ? <BannersContainer devices={devices} banners={bottomBanners || []} /> : <></>}
+      {!!banners && !isEmpty(banners) ? (
+        <BannersContainer devices={devices} banners={banners?.[BannerPosition.MAIN_3] || []} />
+      ) : (
+        <></>
+      )}
     </div>
   );
 };
