@@ -42,7 +42,7 @@ const Home = async () => {
   const devices = await deviceTypeDetector();
 
   return (
-    <div style={{ minHeight: "100dvh" }} id="homeParent" className="home-container  !px-0 !pt-0   flex flex-col gap-5 ">
+    <div style={{ minHeight: "100dvh" }} id="homeParent" className="home-container  !px-0 !pt-0   flex flex-col gap-0 ">
       <SearchboxSchema />
       <OrganizationSchema />
       {!!banners?.[BannerPosition.MAIN_1] && !isEmpty(banners?.[BannerPosition.MAIN_1]) ? (
@@ -65,7 +65,7 @@ const Home = async () => {
               ? "30dvh"
               : "0",
         }}
-        className=" bg-white  rounded-t-20   mt-[-10vh] md:mt-0  flex flex-col  relative gap-5 lg:gap-6  select-none  px-0  md:py-0 w-full"
+        className=" bg-white  rounded-t-20   -mt-[1.375rem] md:mt-0  flex flex-col  relative gap-5 lg:gap-6  select-none  px-0  md:py-0 w-full"
       >
         <Suspense fallback={null}>
           <div className="w-full px-4  mt-3 lg:mt-0 md:px-[20%] lg:px-[35%]">
@@ -87,12 +87,12 @@ const Home = async () => {
         {/* ) : (
           <></>
         )}{" "} */}
+        <HomePropertiesList
+          middleBanners={banners?.[BannerPosition.MAIN_2] || []}
+          data={propertyData?.data || []}
+          devices={devices}
+        />{" "}
       </section>
-      <HomePropertiesList
-        middleBanners={banners?.[BannerPosition.MAIN_2] || []}
-        data={propertyData?.data || []}
-        devices={devices}
-      />{" "}
       <TheInstallPrompt />
       {!!banners && !isEmpty(banners) ? (
         <BannersContainer devices={devices} banners={banners?.[BannerPosition.MAIN_3] || []} />

@@ -260,7 +260,7 @@ const Header = ({ scroll }: { scroll?: number }) => {
               <Link
                 prefetch={false}
                 href={"/notifications"}
-                className="relative w-5 h-5 transition-all aspect-square  shrink-0 flex   lg:hidden"
+                className="relative w-5 h-5 transition-all aspect-square  shrink-0 flex  "
               >
                 <AbsoluteBadge count={notifBadge || 0} />
                 <img
