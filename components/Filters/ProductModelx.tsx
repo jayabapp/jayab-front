@@ -1,8 +1,7 @@
-import { useRouter } from "next/navigation";
-import React, { Dispatch, useEffect, useState } from "react";
-import { usePathname } from "next/navigation";
 import queryBuilder from "@/helpers/queryBuilder";
 import { isArray } from "lodash";
+import { usePathname, useRouter } from "next/navigation";
+import { Dispatch } from "react";
 import Checkbox from "../shared/Form/Checkbox";
 
 type ProductModelsType = {
@@ -12,8 +11,17 @@ type ProductModelsType = {
   isMulty?: boolean;
   setMobileFilters?: Dispatch<any>;
   mobileFilters?: any;
+  onClickCb?: () => void | null;
 };
-const ProductModels = ({ query, queryKey, list, isMulty, setMobileFilters, mobileFilters }: ProductModelsType) => {
+const ProductModels = ({
+  query,
+  queryKey,
+  list,
+  isMulty,
+  setMobileFilters,
+  mobileFilters,
+  onClickCb,
+}: ProductModelsType) => {
   const router = useRouter();
   const pathname = usePathname();
 
@@ -21,8 +29,8 @@ const ProductModels = ({ query, queryKey, list, isMulty, setMobileFilters, mobil
     !!mobileFilters && mobileFilters[queryKey]
       ? `${mobileFilters[queryKey]}`?.split(",")
       : query[queryKey]
-      ? `${query[queryKey]}`?.split(",")
-      : "";
+        ? `${query[queryKey]}`?.split(",")
+        : "";
 
   const queryMaker = (items: any[]) => {
     let temp = mobileFilters ? { ...mobileFilters } : { ...query };
@@ -81,6 +89,8 @@ const ProductModels = ({ query, queryKey, list, isMulty, setMobileFilters, mobil
             }
 
             queryMaker(temp);
+
+            onClickCb?.();
           }}
         >
           <Checkbox

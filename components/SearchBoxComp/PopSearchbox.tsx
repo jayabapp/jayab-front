@@ -1,15 +1,15 @@
 "use client";
 import { HomeService } from "@/api_services/home/home.service";
-import _STRINGS from "@/utils/LocalStrings";
-import { useQuery } from "@tanstack/react-query";
-import { debounce } from "lodash";
+import { CitiesSuggestTypes } from "@/enum/cities_suggest.enum";
+import { useCitiesStore } from "@/store";
+import { useMutation, useQuery } from "@tanstack/react-query";
+import { debounce, isEmpty } from "lodash";
 import dynamic from "next/dynamic";
-import { useSearchParams } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
 import { Suspense, useCallback, useEffect, useRef, useState } from "react";
-import { isMobile } from "react-device-detect";
-import ModalHeaderPart from "../Modal/ModalHeaderPart";
+import SeachBoxCitySelector from "../Home/HomeCityFilterContainer/SeachBoxCitySelector";
 import SmallLoading from "../shared/Lotties/SmallLoading";
-import HistoryMaker from "./HistoryMaker";
+import SearchBoxCitiesPart from "./SearchBoxCitiesPart";
 import SuggestedPart from "./SuggestedPart";
 const HistorySuggPart = dynamic(() => import("./HistorySuggPart"), { ssr: true });
 
@@ -48,11 +48,13 @@ const PopSearchbox = ({
   autofocus = true,
   initValue,
   onClear,
-  containerClass = " w-full md:w-[90%] mx-auto",
+  containerClass = " w-full md:w-[80%] mx-auto",
   item,
   boxId = "SEARCH_BOX",
   justIcon = false,
 }: props) => {
+  const { locationsData } = useCitiesStore();
+  const { push } = useRouter();
   const [searchParam, setSearchParam] = useState<string | null>(null);
   const [showPop, setShowPop] = useState(false);
   const inputRef = useRef<HTMLInputElement>(null);
@@ -91,7 +93,6 @@ const PopSearchbox = ({
       setText(searchParam);
       if (typeof onSubmit == "function") {
         onSubmit(searchParam);
-        HistoryMaker(searchParam);
         setShowPop(false);
       }
     }
@@ -102,7 +103,6 @@ const PopSearchbox = ({
       if (element) element.value = text;
       if (typeof onSubmit == "function" && element) {
         // onSubmit(element.value);
-        HistoryMaker(element?.value);
         // setShowPop(false);
       }
 
@@ -116,8 +116,8 @@ const PopSearchbox = ({
   const checkTyping = useCallback(
     debounce(() => {
       setisTyping(false);
-    }, 1000),
-    []
+    }, 200),
+    [],
   );
   useEffect(() => {
     if (!element?.value && !searchParam) {
@@ -149,6 +149,38 @@ const PopSearchbox = ({
     !!showPop ? (document.body.style.overflow = "hidden") : (document.body.style.overflow = "auto");
   }, [showPop]);
 
+  ////////////////////////////////////////////
+  const { mutate, isPending } = useMutation({
+    mutationKey: [HomeService.SEARCH_KEY],
+    mutationFn: HomeService.Search,
+    onSuccess: (data) => {
+      if (!data?.client_query) return;
+
+      /* -------------------------------------------------------------------------- */
+      /*                              CITY STORE SETTER                             */
+      /* -------------------------------------------------------------------------- */
+
+      useCitiesStore.setState({
+        locationsData: {
+          cities: data?.cities_list?.filter((e) => e?.level == CitiesSuggestTypes.CITY),
+          provinces: data?.cities_list?.filter((e) => e?.level == CitiesSuggestTypes.PROVINCE),
+          regions: data?.cities_list?.filter((e) => e?.level == CitiesSuggestTypes.REGION),
+        },
+      });
+
+      /* -------------------------------------------------------------------------- */
+      /*                                 QUERY MAKER                                */
+      /* -------------------------------------------------------------------------- */
+
+      const createdQuery = Object.keys(data?.client_query)
+        ?.map((e) => `${e}=${data?.client_query?.[e]}`)
+        .join("&");
+      const link = `/rooms?${createdQuery}`;
+      setShowPop(false);
+      push(link);
+    },
+  });
+
   return (
     <div className={`${containerClass} relative`}>
       <Suspense>
@@ -173,13 +205,13 @@ const PopSearchbox = ({
         >
           {" "}
           <div className="flex items-center gap-1 w-full">
-            <div className="">
+            {/* <div className="">
               <img src="/assets/icons/edit/magnifier.svg" width={20} className="dark:invert" height={20} />
-            </div>
+            </div> */}
             <div
               id={boxId}
               ref={inputRef}
-              className={`bg-transparent dark:bg-transparent py-1 pl-3 pr-0.5  w-full ${!text ? "opacity-50" : ""}  `}
+              className={`bg-transparent text-sm  dark:bg-transparent py-1 pl-3 pr-0.5  w-full ${!text ? "opacity-50" : ""}  `}
               // onChange={(v) => handleChange(v.target.value)}
             >
               {" "}
@@ -193,7 +225,7 @@ const PopSearchbox = ({
               </div>
             )}
 
-            {element?.value && (
+            {/* {element?.value && (
               <div
                 className="text-rose-500  text-xs ml-3 cursor-pointer "
                 onClick={(e) => {
@@ -204,7 +236,7 @@ const PopSearchbox = ({
               >
                 {cancelText}
               </div>
-            )}
+            )} */}
           </div>
         </div>
       )}
@@ -217,37 +249,62 @@ const PopSearchbox = ({
       <div
         className={` ${
           showPop
-            ? `   w-full  top-0  h-[100dvh]   xl:h-auto  xl:absolute  opacity-100  min-h-[25dvh] `
-            : ` top-[200dvh]  xl:top-0  -z-50  xl:hidden  h-0 xl:opacity-0`
-        } transition-all   fixed  overflow-hidden    rounded-10  border  left-0 w-full -top-2  duration-500 z-50  bg-white `}
+            ? `   w-full  top-0  min-h-[25dvh]  max-h-[90dvh]  lg:max-h-[50dvh]   xl:h-auto  xl:absolute  opacity-100  min-w-[25dvw]  lg:min-h-[25dvh] `
+            : `  top-[-200dvh]  xl:top-0  -z-50  xl:hidden  h-0 xl:opacity-0`
+        } transition-all    fixed  flex flex-col items-center justify-between pb-4   overflow-y-scroll    rounded-b-10  border shadow-card  left-0 w-full -top-2  duration-500 z-50  bg-white `}
       >
-        <ModalHeaderPart
-          title={_STRINGS.SEARCH}
-          onHide={() => {
+        {/* <img
+          src="/assets/icons/adds/x_mark.svg"
+          className={`w-3  mt-4 mr-4 cursor-pointer  h-3 dark:invert`}
+          alt=""
+          onClick={() => {
             setShowPop(false);
           }}
-        />
+        /> */}
         <div className="flex px-4  pt-4 items-center relative w-full gap-2 flex-row ">
-          <div className=" relative flex items-center rounded-full border-primary-200 dark:bg-transparent  py-3   gap-1 px-3   w-full  border-2 ">
+          <div className=" relative flex items-center rounded-full border-primary-200 dark:bg-transparent  w-full py-1.5   gap-1 px-1.5 pr-3   border-2 ">
             {" "}
-            <img src="/assets/icons/edit/magnifier.svg" className="w-5 opacity-60 h-5 aspect-square   " />
             <input
               id={`${boxId}prime`}
               ref={primeInputRef}
               placeholder={placeholder}
-              className={`bg-transparent `}
+              className={`bg-transparent w-full  placeholder:text-sm `}
               onChange={(v) => handleChange(v.target.value)}
               value={text}
             />
+            <div
+              onClick={
+                !!isPending
+                  ? undefined
+                  : () => {
+                      mutate({ q: text });
+                    }
+              }
+              className="  cursor-pointer h-8 w-8  flex items-center justify-center  p-2 absolute left-1 aspect-square rounded-full  bg-primary-700"
+            >
+              {!!isPending ? (
+                <SmallLoading />
+              ) : (
+                <img
+                  src="/assets/icons/edit/magnifier.svg"
+                  className="w-5  grayscale invert  brightness-200 h-5 aspect-square   "
+                />
+              )}
+            </div>
           </div>
         </div>
+
+        {!isEmpty(locationsData?.regions) || !isEmpty(locationsData?.cities) || !isEmpty(locationsData?.province) ? (
+          <SearchBoxCitiesPart setShowPop={setShowPop} />
+        ) : (
+          <></>
+        )}
         <SuggestedPart
           setShowPop={setShowPop}
           searchedText={element?.value || ""}
           isLoading={isLoading || loading}
           data={suggsData}
         />
-
         <Suspense>
           {" "}
           <HistorySuggPart
@@ -258,36 +315,20 @@ const PopSearchbox = ({
             }}
           />
         </Suspense>
-        {!suggsData ? (
-          <div className="w-full  my-10 opacity-20  flex-col flex items-center justify-center">
-            <img className="w-20  aspect-auto opacity-50" src="/assets/icons/edit/magnifier.svg" />
-            {/* <p className="text-base font-bold">{_STRINGS.SEARCH}</p> */}
-          </div>
-        ) : (
-          <></>
-        )}
+        <SeachBoxCitySelector
+          onSubmitCB={() => {
+            setShowPop(false);
+          }}
+        />
       </div>
-      {!!isMobile ? (
-        <></>
-      ) : (
-        <div
-          className={`fixed left-0     top-0 w-full   transition-all duration-0   ${
-            showPop ? " z-10 h-[100dvh] " : " -z-10  h-0"
-          } `}
-        >
-          {" "}
-          <div
-            onClick={() => {
-              setShowPop(false);
-            }}
-            className={` w-full h-full top-0   inset-0 bg-black bg-opacity-70  bg-black/80 transition-all duration-700 ${
-              showPop ? " opacity-100 " : " opacity-0"
-            } `}
-          >
-            {" "}
-          </div>
-        </div>
-      )}
+      <div
+        onClick={() => {
+          setShowPop(false);
+        }}
+        className={`fixed left-0  bg-black/35  lg:bg-transparent    top-0 w-full   transition-opacity   ${
+          showPop ? " z-[11] h-[100dvh]  opacity-100" : " opacity-0 -z-10  h-0"
+        } `}
+      ></div>
     </div>
   );
 };

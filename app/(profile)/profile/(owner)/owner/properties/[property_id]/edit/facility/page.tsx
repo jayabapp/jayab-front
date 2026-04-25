@@ -1,28 +1,21 @@
 "use client";
-import { FacilitiesValuesDto, RoomInfosDto } from "@/api_services/property/property.interface";
+import { FacilitiesValuesDto } from "@/api_services/property/property.interface";
 import { PropertyService } from "@/api_services/property/property.service";
-import CreateEditProperty, { CreateProperyStepOne } from "@/components/properties/CreateEditProperty";
-import CreateEditPropertyEnvInfo, { CreateProperyStepThree } from "@/components/properties/CreateEditPropertyEnvInfo";
-import TitleCounter from "@/components/properties/TitleCounter";
-import PageHeaders from "@/components/headers/PageHeader";
 import Button from "@/components/shared/Button/Button";
 import FixedBottomContainer from "@/components/shared/FixedBottomContainer";
 import Checkbox from "@/components/shared/Form/Checkbox";
-import Counter from "@/components/shared/Form/Counter";
 import MultiLineFormInput from "@/components/shared/Form/MultiLineFormInput";
 import MultyPopUpSelect from "@/components/shared/Form/MultiSelectPopUpSelect";
 import StepShower from "@/components/shared/StepShower";
-import { p2e } from "@/helpers/NumberConverter";
-import { useStoreInit } from "@/store";
 import { createPropertySteps } from "@/utils/constantss";
 import _STRINGS from "@/utils/LocalStrings";
 import { useMutation, useQuery } from "@tanstack/react-query";
-import _, { isArray, remove } from "lodash";
+import { isArray } from "lodash";
 
-import { useParams, usePathname, useRouter, useSearchParams } from "next/navigation";
-import React, { useEffect, useState } from "react";
-import LottieLoading from "@/components/shared/Lotties/LottieLoading";
 import FormCounter from "@/components/properties/FormCounter";
+import LottieLoading from "@/components/shared/Lotties/LottieLoading";
+import { useParams, usePathname, useRouter, useSearchParams } from "next/navigation";
+import { useEffect, useState } from "react";
 
 const CreatePropertyFacility = () => {
   const router = useRouter();
@@ -243,7 +236,7 @@ const CreatePropertyFacility = () => {
           </div>
           <div className=" grid   grid-cols-2 md:grid-cols-3  gap-2  border-b pb-4 w-full">
             <p className="font-bold col-span-full w-full mb-2 text-start  text-sm md:text-base text-primary-700  ">
-              {_STRINGS.WELFARE_TITLE}
+              {_STRINGS.WELFARE}
             </p>
             {propertyTypes?.["WELFARE"]?.map((e, index) => (
               <Checkbox

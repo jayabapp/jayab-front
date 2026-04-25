@@ -9,6 +9,7 @@ import FilterPageCitiesTitle from "@/components/CityModal/FilterPageCitiesTitle"
 import RegionModal from "@/components/CityModal/RegionModal";
 import FiltersSelectedFiltersShowcase from "@/components/Filters/FiltersSelectedFiltersShowcase";
 import SortMenu from "@/components/Filters/SortMenu";
+import SpecialFilterButtons from "@/components/Filters/SpecialFilterButtons";
 import SsrClinetPartFilterProperties, { removeKeyArray } from "@/components/Filters/SsrClinetPartFilterProperties";
 import SsrPartFilter from "@/components/Filters/SsrPartFilter";
 import Modal from "@/components/Modal";
@@ -83,8 +84,30 @@ const SsrFilterPage = ({ landings, firstData }: { firstData: { data: any[] }; la
   const [filterModalShow, setFilterModalShow] = useState(false);
 
   const { data: propertyTypes } = useQuery({
-    queryFn: () => PropertyService.GetUserPropertyGroup({ group: ["PROPERTY_TYPE", "ENTERTAINMENT", "POOL_TYPE"] }),
-    queryKey: [PropertyService.USER_PROP_OPTIONS_CACHEKEY, "PROPERTY_TYPE", "ENTERTAINMENT", "POOL_TYPE"],
+    queryFn: () =>
+      PropertyService.GetUserPropertyGroup({
+        group: [
+          "PROPERTY_TYPE",
+          "ENTERTAINMENT",
+          "POOL_TYPE",
+          "OWNERSHIP",
+          "KITCHEN",
+          "COOL_HEAT",
+          "WELFARE",
+          "PATTERN",
+        ],
+      }),
+    queryKey: [
+      PropertyService.USER_PROP_OPTIONS_CACHEKEY,
+      "PROPERTY_TYPE",
+      "ENTERTAINMENT",
+      "POOL_TYPE",
+      "OWNERSHIP",
+      "KITCHEN",
+      "COOL_HEAT",
+      "WELFARE",
+      "PATTERN",
+    ],
   });
 
   const queryMaker = (items: any) => {
@@ -142,7 +165,7 @@ const SsrFilterPage = ({ landings, firstData }: { firstData: { data: any[] }; la
     else setShowShadow(false);
   }, 100);
   return (
-    <div className="app-container  !pt-32  lg:!pt-20  !relative z-2 ">
+    <div className="app-container  !pt-[7.5rem]  lg:!pt-20  !relative z-2 ">
       <div className="grid grid-cols-12  col-span-12 ">
         <div
           style={{ height: `${stickyHeight}px` }}
@@ -170,12 +193,18 @@ const SsrFilterPage = ({ landings, firstData }: { firstData: { data: any[] }; la
           <div className=" hidden     z-1 w-full xl:flex flex-col xl:flex-row items-center justify-between ">
             <SingleProductBreadCrumb dataArray={breadCrumbs} />
           </div>
-          <h1 className="mb-3 text-lg font-medium">{landings?.content?.title}</h1>
+          <div className="mb-3  w-full flex items-center justify-between">
+            <h1 className=" text-lg font-medium">{landings?.content?.title}</h1>
+            <div className="w-fit   items-center justify-end  hidden lg:flex">
+              <SpecialFilterButtons query={queries} />
+              <SortMenu query={queries} />
+            </div>
+          </div>
 
           <div
             className={`flex fixed  ${
               !!showShadow ? "shadow-md" : ""
-            }  md:shadow-none pt-1 transition-all duration-300 xl:hidden h-16 right-0  items-center justify-center   z-10 xl:z-1  top-[4rem] xl:top-auto left-0 xl:left-auto bg-white xl:bg-transparent xl:relative flex-col w-full xl:gap-2  `}
+            }  md:shadow-none pt-1 transition-all duration-300 xl:hidden h-16 right-0  items-center justify-center   z-10 xl:z-1  top-[3rem] xl:top-auto left-0 xl:left-auto bg-white xl:bg-transparent xl:relative flex-col w-full xl:gap-2  `}
           >
             {" "}
             <div className=" flex  order-1  xl:hidden  relative w-full">
@@ -196,19 +225,24 @@ const SsrFilterPage = ({ landings, firstData }: { firstData: { data: any[] }; la
           </div>
 
           <div className="w-full grow-0 shrink-0 flex flex-row  px-1 xl:px-0 relative  justify-between">
-            <div className="flex  flex-row w-[90%]  items-center justify-start  gap-4 ">
-              {(!hiddenFilters?.includes("cities") || !!cityWithRegions) && !hiddenFilters?.includes("province_id") ? (
+            <div className="flex  flex-row   items-center justify-start  gap-1 ">
+              <div className=" flex lg:hidden ">
+                {" "}
+                <SpecialFilterButtons containerClass=" !w-full   lg:!w-fit" query={queries} />
+              </div>
+              {(!hiddenFilters?.includes("cities") || !!cityWithRegions) && !hiddenFilters?.includes("provinces") ? (
                 <FilterPageCitiesTitle
                   cityWithRegions={cityWithRegions}
                   queries={queries}
                   setShowRegions={setShowRegions}
                   showRegions={showRegions}
                   title={cityButtonTItle}
-                  hideCityPart={
-                    !!hiddenFilters?.includes("cities") &&
-                    !!cityWithRegions?.child &&
-                    !hiddenFilters?.includes("province_id")
-                  }
+                  hideCityPart
+                  // hideCityPart={
+                  //   !!hiddenFilters?.includes("cities") &&
+                  //   !!cityWithRegions?.child &&
+                  //   !hiddenFilters?.includes("provinces")
+                  // }
                   cb={showCityModalFunc}
                 />
               ) : (
@@ -229,7 +263,9 @@ const SsrFilterPage = ({ landings, firstData }: { firstData: { data: any[] }; la
                 propertyTypes={propertyTypes || {}}
               />
             </div>{" "}
-            <SortMenu query={queries} />
+            <div className="w-fit flex lg:hidden">
+              <SortMenu query={queries} />
+            </div>
           </div>
           <div className="  min-h-[80dvh] mb-12 xl:mb-20">
             {/* SIDEBAR */}
@@ -294,18 +330,14 @@ const SsrFilterPage = ({ landings, firstData }: { firstData: { data: any[] }; la
         {/* BODY */}
         <div className="w-[90%] mx-auto">
           <div className=" w-full  pt-4 pb-8  ">
-            {(!hiddenFilters?.includes("cities") || !!cityWithRegions) && !hiddenFilters?.includes("province_id") ? (
+            {(!hiddenFilters?.includes("cities") || !!cityWithRegions) && !hiddenFilters?.includes("provinces") ? (
               <FilterPageCitiesTitle
                 cityWithRegions={cityWithRegions}
                 setShowRegions={setShowRegions}
                 showRegions={showRegions}
                 queries={queries}
                 title={cityButtonTItle}
-                hideCityPart={
-                  !!hiddenFilters?.includes("cities") &&
-                  !!cityWithRegions?.child &&
-                  !hiddenFilters?.includes("province_id")
-                }
+                hideCityPart
                 cb={showCityModalFunc}
               />
             ) : (

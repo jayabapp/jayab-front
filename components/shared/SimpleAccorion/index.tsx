@@ -1,7 +1,7 @@
 "use client";
 
 import DOMPurify from "isomorphic-dompurify";
-import { ReactNode, useState } from "react";
+import { ReactNode, useEffect, useState } from "react";
 type props = {
   title: string;
   isOpenFirst?: boolean;
@@ -21,6 +21,9 @@ type props = {
 
 const SimpleAccordion = ({ title, children, ExtraElement, item, isOpenFirst, titleIcon }: props) => {
   const [isOpen, setIsOpen] = useState(isOpenFirst || false);
+  useEffect(() => {
+    setIsOpen(isOpenFirst || false);
+  }, [isOpenFirst]);
   return (
     <div
       className={`${isOpen ? "" : ""}  h-fit ${

@@ -3,6 +3,7 @@ import { CityService } from "@/api_services/city/city.service";
 import { ProvienceTypesDto } from "@/api_services/property/property.interface";
 import queryBuilder from "@/helpers/queryBuilder";
 import useQueryGet from "@/helpers/queryGet";
+import { useCitiesStore } from "@/store";
 import _STRINGS from "@/utils/LocalStrings";
 import { useQuery } from "@tanstack/react-query";
 import isEmpty from "lodash/isEmpty";
@@ -16,7 +17,7 @@ import CityCard from "./CityCard";
 import CityModalAllCitiesButton from "./CityModalAllCitiesButton";
 import CityModalHeaderPart from "./CityModalHeaderPart";
 import CityModalSearchPart from "./CityModalSearchPart";
-import CityModalSelectedAccardiom from "./CityModalSelectedAccardiom";
+import CityModalSelectedSwiper from "./CityModalSelectedSwiper";
 import ProvienceCard from "./ProvienceCard";
 
 const CityModal = ({
@@ -26,6 +27,7 @@ const CityModal = ({
   setTitle,
   passedUrl,
   onSubmitCustomeCB,
+  onSubmitExtendedCB,
   customeValues,
   isHome,
   setRegionsCb,
@@ -36,6 +38,7 @@ const CityModal = ({
   item?: { submitTitle?: string };
   passedUrl?: string;
   onSubmitCustomeCB?: (e: any) => void | null;
+  onSubmitExtendedCB?: () => void | null;
   setRegionsCb?: (e: ChildCities | null) => void | null;
   customeValues?: any;
   isHome?: boolean;
@@ -53,7 +56,7 @@ const CityModal = ({
     if (!!customeValues) {
       setQueries(customeValues);
     } else setQueries(queriesParams);
-  }, [customeValues, queriesParams?.cities, queriesParams?.province_id]);
+  }, [customeValues, queriesParams?.cities, queriesParams?.provinces]);
 
   const { data: provinces, isLoading: provLoading } = useQuery({
     queryFn: () => CityService.GetAllCities({ is_parent: 1 }),
@@ -77,12 +80,17 @@ const CityModal = ({
   /* -------------------------------------------------------------------------- */
 
   useEffect(() => {
-    if (!isEmpty(provinces) && queries?.province_id) {
-      setDefaultProvienceCities(provinces?.find((e) => e?.id == queries?.province_id)?.child || []);
+    if (!isEmpty(provinces) && queries?.provinces) {
+      const queryProvincesIds = queries?.provinces?.split(",");
+      const ProvincesCities = provinces
+        ?.filter((e) => queryProvincesIds?.includes(`${e?.id}`))
+        ?.flatMap((e) => e?.child);
+
+      setDefaultProvienceCities(ProvincesCities || []);
     } else {
       setDefaultProvienceCities([]);
     }
-  }, [provinces, queries?.province_id]);
+  }, [provinces, queries?.provinces]);
 
   /* -------------------------------------------------------------------------- */
   /*                             GETTING ALL CITIES                             */
@@ -116,14 +124,19 @@ const CityModal = ({
         }
       }
       if (!!setTitle) {
-        const selectedProv = provinces?.find((e) => e?.id == queries?.province_id);
+        const queryProvincesIds = queries?.provinces?.split(",")?.map((e: string) => Number(e));
+        const selectedProvs = provinces?.filter((e) => queryProvincesIds?.includes(e?.id));
 
         setTitle(
-          `جستجو در  ${selectedProv ? `شهر های ${selectedProv?.title}` : defaultCitiesData?.[0]?.title} ${
-            !!defaultCitiesData && defaultCitiesData?.length > 1
-              ? ` و ${!!selectedProv ? defaultCitiesData?.length : defaultCitiesData?.length - 1} شهر دیگر`
-              : ``
-          }`,
+          `${
+            selectedProvs?.length == 1 && isEmpty(defaultCitiesData)
+              ? `استان ${selectedProvs?.[0]?.title}`
+              : defaultCitiesData?.length == 1 && isEmpty(selectedProvs)
+                ? defaultCitiesData?.[0]?.title
+                : !isEmpty(selectedProvs) || !isEmpty(defaultCitiesData)
+                  ? `${(defaultCitiesData?.length || 0) + (selectedProvs?.length || 0)} ${_STRINGS.CITY}`
+                  : ""
+          } `,
         );
       }
     } else {
@@ -157,11 +170,15 @@ const CityModal = ({
 
   const onSubmitClick = () => {
     if (!!onSubmitCustomeCB) {
+      onSubmitExtendedCB?.();
       onSubmitCustomeCB((e: any) => ({ ...e, cities: selectedCities?.map((e) => e?.id) }));
     } else {
       const body = {
         ...queries,
       };
+
+      let fullSelectedcities = [];
+      let selectedProv = [];
 
       /* -------------------------------------------------------------------------- */
       /*                                 NEW ROUTING                                */
@@ -180,21 +197,41 @@ const CityModal = ({
         const selectedMainProv = provinces?.find((x) => x?.id == e?.id);
         return selectedMainProv?.child?.length == e?.child?.length;
       });
-      if (allFullProviencesSelected?.length == 1) {
-        body.cities = allIncludedProves
-          ?.filter((x: NewCitiesListDto) => x?.id != allFullProviencesSelected?.[0]?.id)
-          ?.flatMap((e: NewCitiesListDto) => e?.child)
-          ?.map((e: NewCitiesListDto) => e?.id);
-        body.province_id = allFullProviencesSelected?.[0]?.id;
+
+      fullSelectedcities = selectedCities;
+
+      if (allFullProviencesSelected?.length > 0) {
+        selectedProv = allFullProviencesSelected;
+        const citiesWhithoutProv = allIncludedProves
+          ?.filter((x: NewCitiesListDto) => !allFullProviencesSelected?.map((p: any) => p?.id).includes(x?.id))
+          ?.flatMap((e: NewCitiesListDto) => e?.child);
+        console.log(citiesWhithoutProv, allFullProviencesSelected);
+
+        body.cities = citiesWhithoutProv?.map((e: NewCitiesListDto) => e?.id);
+        fullSelectedcities = citiesWhithoutProv?.map((e: NewCitiesListDto) => e);
+        body.provinces = allFullProviencesSelected?.map((e: any) => e?.id);
       } else {
         body.cities = selectedCities?.map((e) => e?.id);
-        delete body.province_id;
+        delete body.provinces;
       }
 
       delete body.page;
       delete body.regions;
+
+      /* -------------------------------------------------------------------------- */
+      /*                            SETTING DATA FOR SHOW                           */
+      /* -------------------------------------------------------------------------- */
+
+      useCitiesStore.setState({
+        locationsData: {
+          cities: fullSelectedcities,
+          provinces: selectedProv,
+        },
+      });
+
+      /////////////////////
       if (!!passedUrl) {
-        if (!!isHome && !body?.province_id && isEmpty(body?.cities)) {
+        if (!!isHome && !body?.provinces && isEmpty(body?.cities)) {
         } else {
           router.push(`${passedUrl}?${queryBuilder(body)}`);
         }
@@ -202,6 +239,7 @@ const CityModal = ({
         router.replace(`${pathname}?${queryBuilder(body)}`);
       }
     }
+    onSubmitExtendedCB?.();
     onHide();
   };
 
@@ -209,7 +247,7 @@ const CityModal = ({
     let foundOne = false;
     if (e?.title.includes(search)) {
       foundOne = true;
-    } else if (!!e?.child?.find((x) => x?.title?.includes(search))) {
+    } else if (!!e?.child?.find((x) => x?.title == search)) {
       foundOne = true;
     }
     return foundOne;
@@ -230,7 +268,7 @@ const CityModal = ({
       <div className=" w-full flex flex-col gap-4  mt-4 p-3  h-auto min-h-full">
         <CityModalSearchPart search={search} setSearch={setSearch} />
 
-        <CityModalSelectedAccardiom
+        <CityModalSelectedSwiper
           onProvCancelClick={onProvCancelClick}
           provinces={provinces}
           selectedCities={selectedCities}

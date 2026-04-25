@@ -29,6 +29,7 @@ export type ParamStore = {
   showInstallPrompt: boolean;
   sideBarStatus: boolean;
   loginModal: boolean;
+  topHeaderVisible: boolean;
   getBackHome: boolean;
   likes: number[];
   bookmarks: number[];
@@ -38,6 +39,7 @@ export type ParamStore = {
 
 export const useStoreParams = create<ParamStore>((set) => ({
   isDark: false,
+  topHeaderVisible: true,
   showInstallPrompt: false,
   installPrompt: null,
   sideBarStatus: false,
@@ -63,8 +65,17 @@ export const useStoreInit = create<InitStore>(() => ({
 }));
 
 /* -------------------------------------------------------------------------- */
-/* THEME */
+/* SELECTED CITIES */
 /* -------------------------------------------------------------------------- */
+
+export type LocationsStore = {
+  locationsData: { [key: string]: any | null };
+};
+
+export const useCitiesStore = create<LocationsStore>(() => ({
+  locationsData: {},
+}));
+
 /* -------------------------------------------------------------------------- */
 /* THEME */
 /* -------------------------------------------------------------------------- */

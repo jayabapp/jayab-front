@@ -1,13 +1,18 @@
 import { usePathname, useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 
+import { HomeService } from "@/api_services/home/home.service";
 import { PropertyListDto } from "@/api_services/property/property.interface";
 import { PropertyService } from "@/api_services/property/property.service";
+import { BannerPosition } from "@/enum/banners.enum";
+import { FiltersEnum } from "@/enum/filters.enum";
 import queryBuilder from "@/helpers/queryBuilder";
 import { WeekDays } from "@/utils/constantss";
 import { useQuery } from "@tanstack/react-query";
 import moment from "moment-jalaali";
+import { isMobile } from "react-device-detect";
 import InfiniteScroll from "react-infinite-scroll-component";
+import HomeProductsBannerItems from "../Home/HomePropertiesList/HomeProductsBannerItems";
 import PropertyCard from "../properties/PropertyCard";
 import BtnLoading from "../shared/Button/BtnLoading";
 import EmptyList from "../shared/Lotties/EmptyList";
@@ -22,6 +27,11 @@ export interface catQueryTypes {
   sort_type: string | null | undefined;
   cities: string | null | undefined;
   regions: string | null | undefined;
+  pattern: string | null | undefined;
+  welfare: string | null | undefined;
+  cool_heat: string | null | undefined;
+  kitchen: string | null | undefined;
+  ownership: string | null | undefined;
   code: string | null | undefined;
   entertainment: string | null | undefined;
   has_pool: string | null | undefined;
@@ -33,7 +43,7 @@ export interface catQueryTypes {
   property_type: string | null | undefined;
   pool_type: string | null | undefined;
   title: string | null | undefined;
-  province_id: string | null | undefined;
+  provinces: string | null | undefined;
   q: string | null | undefined;
   page: string | null | undefined;
   party: string | null | undefined;
@@ -42,6 +52,7 @@ export interface catQueryTypes {
   min_commission: string | null | undefined;
   checkout: string | null | undefined;
   checkin: string | null | undefined;
+  [key: string]: FiltersEnum | any;
 }
 
 type FilterdPropertiesTypePageOrianted = {
@@ -69,7 +80,7 @@ function FilterdPropertiesPageOrianted({ sortType, setSortType, query }: Filterd
         ...temp,
 
         // sort_type: query.sort_type ? query.sort_type : sortType?.id,
-      })}`
+      })}`,
     );
   }, [
     sortType,
@@ -91,12 +102,19 @@ function FilterdPropertiesPageOrianted({ sortType, setSortType, query }: Filterd
     query?.q,
     query?.cities,
     query?.regions,
-    query?.province_id,
+    query?.provinces,
     query?.min_commission,
     query?.max_commission,
     query?.checkout,
     query?.checkin,
     query?.party,
+    query?.ownership,
+    query?.kitchen,
+    query?.cool_heat,
+    query?.welfare,
+    query?.pattern,
+    query?.[FiltersEnum.HAS_BLUE_TICK],
+    query?.[FiltersEnum.IS_AUTHORIZED],
   ]);
 
   const {
@@ -124,41 +142,49 @@ function FilterdPropertiesPageOrianted({ sortType, setSortType, query }: Filterd
       query?.q,
       query?.cities,
       query?.regions,
-      query?.province_id,
+      query?.provinces,
       query?.checkout,
       query?.checkin,
       query?.party,
+      query?.ownership,
+      query?.kitchen,
+      query?.cool_heat,
+      query?.welfare,
+      query?.pattern,
+      query?.[FiltersEnum.HAS_BLUE_TICK],
+      query?.[FiltersEnum.IS_AUTHORIZED],
     ],
     queryFn: () => {
       return PropertyService?.GetProperties({
         page: Number(page),
-        min_price: Number(query.min_price) || undefined,
-        max_price: Number(query.max_price) || undefined,
-        max_building_area: Number(query.max_building_area) || undefined,
-        min_building_area: Number(query.min_building_area) || undefined,
-        min_commission: Number(query.min_commission) || undefined,
-        max_commission: Number(query.max_commission) || undefined,
         per_page: 30,
-        cities: query?.cities || undefined,
-        regions: query?.regions || undefined,
-        code: query?.code || undefined,
-        entertainment: query?.entertainment || undefined,
-        has_pool: query?.has_pool || undefined,
-        is_premium: query?.is_premium || undefined,
-        total_guests: query?.total_guests || undefined,
-        start_day: query?.start_day || undefined,
-        num_days: query?.num_days || undefined,
-        total_bedrooms: query?.total_bedrooms || undefined,
-        property_type: query?.property_type || undefined,
-        pool_type: query?.pool_type || undefined,
-        has_discount: query?.has_discount || undefined,
-        province_id: query?.province_id || undefined,
-        title: query?.title || undefined,
-        sort_type: query?.sort_type || undefined,
-        checkout: query?.checkout || undefined,
-        checkin: query?.checkin || undefined,
-        q: query?.q || undefined,
-        party: query?.party || undefined,
+        // min_price: Number(query.min_price) || undefined,
+        // max_price: Number(query.max_price) || undefined,
+        // max_building_area: Number(query.max_building_area) || undefined,
+        // min_building_area: Number(query.min_building_area) || undefined,
+        // min_commission: Number(query.min_commission) || undefined,
+        // max_commission: Number(query.max_commission) || undefined,
+        // cities: query?.cities || undefined,
+        // regions: query?.regions || undefined,
+        // code: query?.code || undefined,
+        // entertainment: query?.entertainment || undefined,
+        // has_pool: query?.has_pool || undefined,
+        // is_premium: query?.is_premium || undefined,
+        // total_guests: query?.total_guests || undefined,
+        // start_day: query?.start_day || undefined,
+        // num_days: query?.num_days || undefined,
+        // total_bedrooms: query?.total_bedrooms || undefined,
+        // property_type: query?.property_type || undefined,
+        // pool_type: query?.pool_type || undefined,
+        // has_discount: query?.has_discount || undefined,
+        // province_id: query?.province_id || undefined,
+        // title: query?.title || undefined,
+        // sort_type: query?.sort_type || undefined,
+        // checkout: query?.checkout || undefined,
+        // checkin: query?.checkin || undefined,
+        // q: query?.q || undefined,
+        // party: query?.party || undefined,
+        ...(query as any),
       });
     },
     gcTime: 0,
@@ -218,6 +244,13 @@ function FilterdPropertiesPageOrianted({ sortType, setSortType, query }: Filterd
     }
   }, [query?.page]);
 
+  const { data: banners } = useQuery({
+    queryKey: [HomeService.BANNERS_RANDOM_CACHEKEY, BannerPosition.ROOMS_1],
+    queryFn: () => {
+      return HomeService.GetBanners({ position: BannerPosition.ROOMS_1 });
+    },
+  });
+
   return (
     <div className="w-full px-0  self-center">
       <div className=" w-full">
@@ -239,7 +272,7 @@ function FilterdPropertiesPageOrianted({ sortType, setSortType, query }: Filterd
                   ...query,
                   page: propQueryData?.meta?.next || 1,
                   // sort_type: query.sort_type ? query.sort_type : sortType?.id,
-                })}`
+                })}`,
               );
             }}
             hasMore={!!hasPaginate ? false : propQueryData?.meta?.lastPage != page ? true : false}
@@ -248,8 +281,17 @@ function FilterdPropertiesPageOrianted({ sortType, setSortType, query }: Filterd
                 <BtnLoading />
               </div>
             }
-            className="grid   pb-8 pt-4 md:pt-2 px-1  !overflow-hidden  grid-cols-1 gap-2 md:gap-4  md:grid-cols-2 xl:grid-cols-3 "
+            className="grid   pb-8 pt-4 md:pt-2 px-3 lg:px-1  !overflow-hidden  grid-cols-1 gap-2 md:gap-4  md:grid-cols-2 xl:grid-cols-3 "
           >
+            {banners?.map((e: any, index: number) => (
+              <div
+                style={{ gridRowStart: (index + 1) * (isMobile ? 6 : 3) }}
+                key={`banner${e?.id}`}
+                className={` col-span-full  `}
+              >
+                <HomeProductsBannerItems bannerItem={e} />
+              </div>
+            ))}
             {data?.map((i) => (
               <PropertyCard week={week} data={i} key={`PRODUCT${i?.id}`} />
             ))}

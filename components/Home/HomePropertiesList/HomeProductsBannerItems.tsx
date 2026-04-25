@@ -3,7 +3,6 @@ import Editable from "@/components/Editable";
 import { NEW_IMAGE_URL } from "@/utils/urls";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
-import React from "react";
 import { isMobile } from "react-device-detect";
 
 const HomeProductsBannerItems = ({ bannerItem }: { bannerItem: any }) => {

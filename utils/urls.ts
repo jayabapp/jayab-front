@@ -1,5 +1,7 @@
 export const Url = process.env.NEXT_PUBLIC_BASE_URL;
 export const baseUrl = `${Url}/api/v1`;
+
+export const baseUrlV = (v: string) => `${Url}/api/${v}`;
 export const imageUrl = `${Url}/`;
 export const NEW_IMAGE_URL = (
   item?: { bucket: string; end_point: string; path: string; name: string; thumbnail: string; medium: string } | null,
@@ -67,6 +69,8 @@ export const apiRoutes = {
 
   SEARCH_SUGGS: `/user/properties/search/suggestions`,
 
+  SEARCH: `/user/properties/search/extract`,
+
   CONTENTS: `/contents`,
 
   OWNER_PROPERTIES_LIST: "/owner/properties",
@@ -119,6 +123,8 @@ export const apiRoutes = {
     `/owner/reserves/${propertyReserveId}/events/click-guest-mobile`,
 
   PROPERTY_REPORT: (postId: string | number) => `/user/property-reports/${postId}`,
+
+  PROPERTY_RESERVED_DATES: (postId: string | number) => `/user/properties/${postId}/reserved?months=3`,
 
   SINGLE_TICKET_GET: (id: string | number) => `/user/tickets/${id}`,
 

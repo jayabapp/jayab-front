@@ -1,18 +1,20 @@
+import BannersContainer from "@/components/Home/BannersContainer";
 import HomeActiveReserve from "@/components/Home/HomeActiveReserve";
-import HomeSearchPart from "@/components/Home/HomeSearchPart";
+import HomePropertyTypes from "@/components/Home/HomePropertyTypes";
 import MainFiltersContainer from "@/components/Home/MainFiltersContainer";
 import TheInstallPrompt from "@/components/InstallPrompt/TheInstallPrompt";
 import { OrganizationSchema, SearchboxSchema } from "@/components/SchemaGenerator/Schemas";
+import { BannerPosition } from "@/enum/banners.enum";
 import deviceTypeDetector from "@/helpers/device.detector";
 import serverCall from "@/helpers/serverCall";
 import _STRINGS from "@/utils/LocalStrings";
-import { apiRoutes, baseUrl } from "@/utils/urls";
+import { apiRoutes, baseUrl, baseUrlV } from "@/utils/urls";
 import isEmpty from "lodash/isEmpty";
 import { Metadata } from "next";
 import dynamic from "next/dynamic";
 import { Suspense } from "react";
 
-const BannersContainer = dynamic(() => import("@/components/Home/BannersContainer"));
+const HomeBannerPart = dynamic(() => import("@/components/Home/BannersContainer/HomeBannerPart"));
 const HomeCityFilterContainer = dynamic(() => import("@/components/Home/HomeCityFilterContainer"));
 const HomePropertiesList = dynamic(() => import("@/components/Home/HomePropertiesList"));
 
@@ -25,34 +27,34 @@ export async function generateMetadata(): Promise<Metadata> {
 }
 
 const Home = async () => {
-  const { data: banners } = await serverCall(baseUrl + apiRoutes.BANNERS + `?position=main_1`);
-  const { data: middleBanners } = await serverCall(baseUrl + apiRoutes.BANNERS + `?position=main_2`);
+  const { data: banners } = await serverCall(
+    baseUrlV("v2") +
+      apiRoutes.BANNERS +
+      `?positions[]=${BannerPosition.MAIN_1}&positions[]=${BannerPosition.MAIN_2}&positions[]=${BannerPosition.MAIN_3}`,
+  );
+
   const { data: landings } = await serverCall(baseUrl + apiRoutes.USER_LANDING_PAGES);
   const { data: propertyData } = await serverCall(baseUrl + apiRoutes.GET_PROPERTIES, {
     page: 1,
-    per_page: 24,
+    per_page: 12,
   });
-
+  const { data: propertyTypes } = await serverCall(baseUrl + apiRoutes.USER_PROP_OPTIONS + "?group[]=PROPERTY_TYPE");
   const devices = await deviceTypeDetector();
 
   return (
-    <div style={{ minHeight: "100dvh" }} id="homeParent" className="home-container  !px-0   flex flex-col gap-3 ">
+    <div style={{ minHeight: "100dvh" }} id="homeParent" className="home-container  !px-0 !pt-0   flex flex-col gap-0 ">
       <SearchboxSchema />
       <OrganizationSchema />
-      {!!banners && !isEmpty(banners) ? <BannersContainer devices={devices} banners={banners || []} /> : <></>}
+      {!!banners?.[BannerPosition.MAIN_1] && !isEmpty(banners?.[BannerPosition.MAIN_1]) ? (
+        <HomeBannerPart devices={devices} banners={banners?.[BannerPosition.MAIN_1] || []} />
+      ) : (
+        <></>
+      )}
       {/* {!!middleBanners ? (
         <MiddleBanners cols={2} containerClass="  pr-2 md:pr-0 py-4" list={middleBanners || []} />
       ) : (
         <></>
       )} */}{" "}
-      <Suspense fallback={null}>
-        <HomeSearchPart />
-      </Suspense>
-      <Suspense fallback={null}>
-        <div className="w-full px-4 md:px-[20%] lg:px-[35%]">
-          <HomeActiveReserve />
-        </div>
-      </Suspense>
       <section
         style={{
           minHeight:
@@ -63,9 +65,14 @@ const Home = async () => {
               ? "30dvh"
               : "0",
         }}
-        className="px-3   relative  select-none md:px-3 lg:px-4 2xl:px-[5%]  pt-0 md:py-0 w-full"
+        className=" bg-white  rounded-t-20   -mt-[1.375rem] md:mt-0  flex flex-col  relative gap-5 lg:gap-6  select-none  px-0  md:py-0 w-full"
       >
-        {" "}
+        <Suspense fallback={null}>
+          <div className="w-full px-4  mt-3 lg:mt-0 md:px-[20%] lg:px-[35%]">
+            <HomeActiveReserve />
+          </div>
+        </Suspense>
+        <HomePropertyTypes title="نوع اقامتگاه" data={propertyTypes?.PROPERTY_TYPE} />{" "}
         {/* {!!landings?.popular_city && !isEmpty(landings?.popular_city) ? ( */}
         <HomeCityFilterContainer
           devices={devices}
@@ -80,8 +87,18 @@ const Home = async () => {
         {/* ) : (
           <></>
         )}{" "} */}
+        <HomePropertiesList
+          middleBanners={banners?.[BannerPosition.MAIN_2] || []}
+          data={propertyData?.data || []}
+          devices={devices}
+        />{" "}
       </section>
-      <HomePropertiesList middleBanners={middleBanners || []} data={propertyData?.data || []} /> <TheInstallPrompt />
+      <TheInstallPrompt />
+      {!!banners && !isEmpty(banners) ? (
+        <BannersContainer devices={devices} banners={banners?.[BannerPosition.MAIN_3] || []} />
+      ) : (
+        <></>
+      )}
     </div>
   );
 };

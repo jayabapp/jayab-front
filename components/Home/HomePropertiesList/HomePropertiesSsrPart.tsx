@@ -2,6 +2,7 @@
 import PropertyCard from "@/components/properties/PropertyCard";
 import EmptyList from "@/components/shared/Lotties/EmptyList";
 import LottieLoading from "@/components/shared/Lotties/LottieLoading";
+import { DeviceInfo } from "@/helpers/device.detector";
 import { WeekDays } from "@/utils/constantss";
 import { isEmpty } from "lodash";
 import moment from "moment-jalaali";
@@ -11,9 +12,10 @@ import HomeProductsBannerItems from "./HomeProductsBannerItems";
 type HomePropertiesSsrPartType = {
   data: any;
   middleBanners: any;
+  devices?: DeviceInfo;
 };
 
-function HomePropertiesSsrPart({ data, middleBanners }: HomePropertiesSsrPartType) {
+function HomePropertiesSsrPart({ data, middleBanners, devices }: HomePropertiesSsrPartType) {
   const [week, setWeek] = useState<any[]>([]);
   useEffect(() => {
     const dayOfWeek = moment().day();
@@ -42,23 +44,27 @@ function HomePropertiesSsrPart({ data, middleBanners }: HomePropertiesSsrPartTyp
         {!data ? (
           <LottieLoading />
         ) : data?.length > 0 ? (
-          <div className="grid   pb-8 pt-2 md:pt-2 px-1  !overflow-hidden  grid-cols-1 gap-2 md:gap-4  md:grid-cols-2 xl:grid-cols-4 ">
+          <div className="grid   pb-8 pt-2 md:pt-2 grid-cols-1 gap-2 md:gap-4  md:grid-cols-2 xl:grid-cols-4 ">
+            <div className=" col-span-full row-start-7 lg:row-start-3  ">
+              <HomeProductsBannerItems bannerItem={middleBanners?.[0]} />
+            </div>
             {data?.map((i: any, index: number) => {
-              const bannerItem = !isEmpty(middleBanners) ? middleBanners[Math.floor(index / 8)] : [];
+              const bannerItem = !isEmpty(middleBanners)
+                ? middleBanners[Math.floor(index / (devices?.isDesktop ? 8 : 6))]
+                : [];
               return (
                 <Fragment key={`PRODUCT${i?.id}`}>
                   <PropertyCard week={week} data={i} key={`PRODUCT${i?.id}`} />
-                  {(index + 1) % 8 == 0 && !!bannerItem?.[0] && !!bannerItem?.[1] ? (
+                  {/* {(index + 1) % 8 == 0 && !!bannerItem?.[0] && !!bannerItem?.[1] ? (
                     <div
                       key={`banenr${i?.id}`}
                       className="w-full  py-2 col-span-full gap-4  grid  grid-cols-1 grid-rows-2 md:grid-rows-1 md:grid-cols-2 "
                     >
-                      <HomeProductsBannerItems bannerItem={bannerItem?.[0]} />
                       <HomeProductsBannerItems bannerItem={bannerItem?.[1]} />
                     </div>
                   ) : (
                     <></>
-                  )}
+                  )} */}
                 </Fragment>
               );
             })}

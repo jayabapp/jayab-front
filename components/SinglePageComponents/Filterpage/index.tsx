@@ -15,11 +15,13 @@ import RegionModal from "@/components/CityModal/RegionModal";
 import FiltersSelectedFiltersShowcase from "@/components/Filters/FiltersSelectedFiltersShowcase";
 import FilterdPropertiesPageOrianted from "@/components/Filters/NewFiltredProperties";
 import SortMenu from "@/components/Filters/SortMenu";
+import SpecialFilterButtons from "@/components/Filters/SpecialFilterButtons";
 import Modal from "@/components/Modal";
 import ModalHeaderPart from "@/components/Modal/ModalHeaderPart";
 import Button from "@/components/shared/Button/Button";
 import queryBuilder from "@/helpers/queryBuilder";
 import useQueryGet from "@/helpers/queryGet";
+import { useStoreParams } from "@/store";
 import { SORT_TYPES } from "@/utils/constantss";
 import { ParsedUrlQuery } from "querystring";
 import FiltersPart from "./FiltersPart";
@@ -68,8 +70,30 @@ const Filterpage = () => {
   const [filterModalShow, setFilterModalShow] = useState(false);
 
   const { data: propertyTypes } = useQuery({
-    queryFn: () => PropertyService.GetUserPropertyGroup({ group: ["PROPERTY_TYPE", "ENTERTAINMENT", "POOL_TYPE"] }),
-    queryKey: [PropertyService.USER_PROP_OPTIONS_CACHEKEY, "PROPERTY_TYPE", "ENTERTAINMENT", "POOL_TYPE"],
+    queryFn: () =>
+      PropertyService.GetUserPropertyGroup({
+        group: [
+          "PROPERTY_TYPE",
+          "ENTERTAINMENT",
+          "POOL_TYPE",
+          "OWNERSHIP",
+          "KITCHEN",
+          "COOL_HEAT",
+          "WELFARE",
+          "PATTERN",
+        ],
+      }),
+    queryKey: [
+      PropertyService.USER_PROP_OPTIONS_CACHEKEY,
+      "PROPERTY_TYPE",
+      "ENTERTAINMENT",
+      "POOL_TYPE",
+      "OWNERSHIP",
+      "KITCHEN",
+      "COOL_HEAT",
+      "WELFARE",
+      "PATTERN",
+    ],
   });
 
   const queryMaker = (items: any) => {
@@ -111,8 +135,10 @@ const Filterpage = () => {
     setStickyHeight((window.visualViewport?.height || 700) - 90);
   }, []);
 
+  const { topHeaderVisible } = useStoreParams((state: any) => state);
   return (
-    <div className="app-container !px-0 xl:!px-10 lg:!px-12 2xl:!px-[5%] !pt-32  lg:!pt-20  xl: z-2  flex flex-col !gap-2 ">
+    <div className="app-container !px-0 md:!px-10  2xl:px-[9%] !pt-[7.5rem]  lg:!pt-20  xl: z-2  flex flex-col !gap-2 ">
+      {/* <div className="app-container !px-0 xl:!px-10 lg:!px-12 2xl:!px-[5%] !pt-32  lg:!pt-20  xl: z-2  flex flex-col !gap-2 "> */}
       <div className="grid grid-cols-12  col-span-12 ">
         <div
           style={{ height: `${stickyHeight}px` }}
@@ -133,15 +159,22 @@ const Filterpage = () => {
           />
         </div>{" "}
         <div
-          className={`col-span-12  md:col-span-12 lg:col-span-9 px-3 xl:pr-4 xl:pl-0  
+          className={`col-span-12  md:col-span-12 lg:col-span-9 px-0 xl:pr-4 xl:pl-0  
    
             xl:mt-0 `}
         >
-          <div className=" hidden  z-1 w-full xl:flex flex-col xl:flex-row items-center justify-between ">
+          <div className=" hidden  z-1 w-full xl:flex flex-col xl:flex-row items-center justify-between  mb-2">
             <SingleProductBreadCrumb dataArray={breadCrumbs} />
+            <div className="w-full  items-center justify-end hidden lg:flex ">
+              <SpecialFilterButtons query={queries} />
+
+              <SortMenu query={queries} />
+            </div>
           </div>
 
-          <div className="flex fixed pt-1 xl:hidden h-16 right-0  items-center justify-center   z-10 xl:z-1  top-[4rem] xl:top-auto left-0 xl:left-auto bg-white xl:bg-transparent xl:relative flex-col w-full xl:gap-2  ">
+          <div
+            className={`flex fixed pt-1 xl:hidden h-16 right-0 duration-1000   transition-all items-center justify-center   z-10 xl:z-1  top-[3rem] xl:top-auto left-0 xl:left-auto bg-white xl:bg-transparent xl:relative flex-col w-full xl:gap-2  ${!topHeaderVisible ? "  shadow-lg lg:shadow-none" : ""} `}
+          >
             <div className=" flex  order-1  xl:hidden  relative w-full">
               <div className=" z-1  px-2  relative  w-full items-center gap-1 justify-between  ">
                 <div className=" !col-span-9 ">
@@ -161,11 +194,16 @@ const Filterpage = () => {
             <PropertiesFilterList propertyKey={"property_type"} data={propertyTypes?.PROPERTY_TYPE} query={queries} />
           </div>
           <div className="w-full grow-0 shrink-0 flex flex-row  px-3 xl:px-0 relative  justify-between">
-            <div className="flex  flex-row w-[90%]  items-center  gap-4 justify-start ">
+            <div className="flex  flex-row w-[90%]  gap-1 lg:w-full  items-center   justify-start ">
+              <div className=" flex lg:hidden ">
+                <SpecialFilterButtons query={queries} />
+              </div>
+
               <FilterPageCitiesTitle
                 showRegions={showRegions}
                 setShowRegions={setShowRegions}
                 queries={queries}
+                hideCityPart
                 cityWithRegions={cityWithRegions}
                 title={cityButtonTItle}
                 cb={showCityModalFunc}
@@ -173,13 +211,15 @@ const Filterpage = () => {
               <FiltersSelectedFiltersShowcase
                 cityWithRegions={cityWithRegions}
                 setShowRegions={setShowRegions}
-                containerClass="   !hidden xl:!contents "
+                containerClass="   !hidden xl:!contents  xl:!w-full"
                 setFilterModalShow={setFilterModalShow}
                 query={queries}
                 propertyTypes={propertyTypes || {}}
               />
             </div>{" "}
-            <SortMenu query={queries} />
+            <div className="w-1/3 items-center justify-end flex lg:hidden">
+              <SortMenu query={queries} />
+            </div>
           </div>
           {/* <div className="grid grid-cols-12 "> */}
           {/* SIDEBAR */}
@@ -239,6 +279,7 @@ const Filterpage = () => {
         <div className="w-[90%] mx-auto">
           <div className=" w-full  pt-4 pb-8  ">
             <FilterPageCitiesTitle
+              hideCityPart
               showRegions={showRegions}
               setShowRegions={setShowRegions}
               queries={queries}

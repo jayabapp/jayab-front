@@ -16,9 +16,12 @@ const CategoryItem = ({ item }: { item: HomeLandingDto }) => {
       //     onSuggClick(item?.url);
       //   }
       // }}
-      className="flex flex-col gap-2 items-center p-2 w-full group  select-none transition-all duration-500 "
+      className="flex  justify-center   rounded-2xl  border   aspect-square  flex-col   items-center gap-2 "
     >
-      <div id={`${item?.title || "fake"}CatImage`} className="w-full relative rounded-10  aspect-[0.85] z-30">
+      <div
+        id={`${item?.title || "fake"}CatImage`}
+        className=" relative rounded-sm   size-8 md:size-16  aspect-square z-30"
+      >
         {" "}
         <Image
           loading="eager"
@@ -26,7 +29,7 @@ const CategoryItem = ({ item }: { item: HomeLandingDto }) => {
           src={item?.image ? NEW_IMAGE_URL(item?.image) : "/assets/icons/shared/image_placeholder.svg"}
           alt={`icatImages${item?.title}`}
           fill
-          className={`mix-blend-multiply z-2  rounded-10 dark:mix-blend-normal    w-full transition-all duration-500 aspect-[0.85]  ${
+          className={`mix-blend-multiply z-2  rounded-sm dark:mix-blend-normal    size-7 md:size-16 transition-all duration-500 aspect-square  ${
             !!item?.image ? "!object-cover" : "!object-contain opacity-50 bg-primary-200  md:px-8"
           }
 
@@ -35,7 +38,11 @@ const CategoryItem = ({ item }: { item: HomeLandingDto }) => {
         />
       </div>
 
-      <h2 className={` opacity-80 text-xs text-center  line-clamp-1 h-5 md:h-8  md:text-base `}>{item?.title}</h2>
+      <h2
+        className={` opacity-80  text-sm font-medium md:font-bold text-center  line-clamp-1 h-5 !text-black md:h-8  md:text-base `}
+      >
+        {item?.title}
+      </h2>
     </Link>
   );
 };

@@ -31,7 +31,7 @@ export interface catQueryTypes {
   property_type: string | null | undefined;
   pool_type: string | null | undefined;
   title: string | null | undefined;
-  province_id: string | null | undefined;
+  provinces: string | null | undefined;
   has_discount: string | null | undefined;
   max_building_area: string | null | undefined;
   min_building_area: string | null | undefined;
@@ -83,7 +83,38 @@ function SsrClinetPartFilterProperties({
         );
       }
     }
-  }, [sortType, JSON.stringify(query)]);
+  }, [
+    sortType,
+    query.max_price,
+
+    query.sort_type,
+    query?.property_type,
+    query?.pool_type,
+    query?.has_pool,
+    query?.total_bedrooms,
+    query?.total_guests,
+    query?.entertainment,
+    query?.has_discount,
+    query?.is_premium,
+    query?.max_price,
+    query?.min_price,
+    query?.max_building_area,
+    query?.min_building_area,
+    query?.q,
+    query?.cities,
+    query?.regions,
+    query?.provinces,
+    query?.min_commission,
+    query?.max_commission,
+    query?.checkout,
+    query?.checkin,
+    query?.party,
+    query?.ownership,
+    query?.kitchen,
+    query?.cool_heat,
+    query?.welfare,
+    query?.pattern,
+  ]);
 
   const {
     isLoading,
@@ -109,37 +140,14 @@ function SsrClinetPartFilterProperties({
       query.max_commission,
       query.party,
       query?.q,
+      query?.ownership,
+      query?.kitchen,
+      query?.cool_heat,
+      query?.welfare,
       query?.pattern,
     ],
     queryFn: () => {
-      return PropertyService?.GetProperties({
-        page: Number(page),
-        min_price: Number(query.min_price) || undefined,
-        max_price: Number(query.max_price) || undefined,
-        max_building_area: Number(query.max_building_area) || undefined,
-        min_building_area: Number(query.min_building_area) || undefined,
-        max_commission: Number(query.max_commission) || undefined,
-        min_commission: Number(query.min_commission) || undefined,
-        per_page: 51,
-        cities: query?.cities || undefined,
-        code: query?.code || undefined,
-        entertainment: query?.entertainment || undefined,
-        has_pool: query?.has_pool || undefined,
-        is_premium: query?.is_premium || undefined,
-        total_guests: query?.total_guests || undefined,
-        start_day: query?.start_day || undefined,
-        num_days: query?.num_days || undefined,
-        total_bedrooms: query?.total_bedrooms || undefined,
-        property_type: query?.property_type || undefined,
-        pool_type: query?.pool_type || undefined,
-        has_discount: query?.has_discount || undefined,
-        province_id: query?.province_id || undefined,
-        title: query?.title || undefined,
-        sort_type: query?.sort_type || undefined,
-        q: query?.q || undefined,
-        party: query?.party || undefined,
-        pattern: query?.pattern || undefined,
-      });
+      return PropertyService?.GetProperties({ page: Number(page), per_page: 30, ...(query as any) });
     },
     gcTime: 0,
     staleTime: 0,

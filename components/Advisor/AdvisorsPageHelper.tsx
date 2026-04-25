@@ -21,6 +21,7 @@ import { usePathname, useRouter } from "next/navigation";
 import { Suspense, useEffect, useState } from "react";
 import InfiniteScroll from "react-infinite-scroll-component";
 
+import { BannerPosition } from "@/enum/banners.enum";
 import dynamic from "next/dynamic";
 const HomeAdvisorSub = dynamic(() => import("@/components/Home/HomeAdvisorSub"));
 
@@ -39,9 +40,9 @@ const AdvisorsPageHelper = () => {
   const [cityTitle, setCityTitle] = useState("");
   const [data, setData] = useState<AdvisorPageListDto[]>([]);
   const { data: banners } = useQuery({
-    queryKey: [HomeService.BANNERS_RANDOM_CACHEKEY, "advisor"],
+    queryKey: [HomeService.BANNERS_RANDOM_CACHEKEY, BannerPosition.Advisor],
     queryFn: () => {
-      return HomeService.GetBanners({ position: "advisor" });
+      return HomeService.GetBanners({ position: BannerPosition.Advisor });
     },
   });
 

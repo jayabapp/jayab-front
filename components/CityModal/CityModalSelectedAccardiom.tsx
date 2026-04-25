@@ -26,13 +26,14 @@ const CityModalSelectedAccardiom = ({
           ?.map((e: any) => ({
             ...e,
             child: e?.child?.filter((f: any) => selectedCities?.some((x) => x?.id == f?.id)),
-          }))
+          })),
       );
     }
   }, [provinces, selectedCities]);
   return (
     <SimpleAccordion
       item={{ parenClass: ` transition-all !px-0 ` }}
+      isOpenFirst={!isEmpty(selectedProvs)}
       title={`${_STRINGS.SELECTED_CITIES}  ${!isEmpty(selectedCities) ? `(${selectedCities?.length} شهر)` : ""} `}
     >
       <div className={` gap-2 w-full flex flex-wrap`}>
@@ -45,7 +46,10 @@ const CityModalSelectedAccardiom = ({
                   key={`selectedItemsPROv${val?.id || val}`}
                   className="rounded-full gap-4 py-1 px-1 flex items-center justify-center border border-primary-700/30  bg-primary-700/5  text-xs "
                 >
-                  <p className="text-sm text-primary-text  font-medium  pr-2"> همه شهر های {val?.title} </p>
+                  <p className="text-sm text-primary-text  font-medium  pr-2">
+                    {" "}
+                    {_STRINGS.PROVINCE} {val?.title}{" "}
+                  </p>
                   <div
                     onClick={() => {
                       onProvCancelClick(val);

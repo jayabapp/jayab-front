@@ -35,7 +35,7 @@ const RegionModal = ({
 
   useEffect(() => {
     setQueries(queriesParams);
-  }, [queriesParams?.regions, queriesParams?.cities, queriesParams?.province_id]);
+  }, [queriesParams?.regions, queriesParams?.cities, queriesParams?.provinces]);
 
   useEffect(() => {
     if (!!queriesParams?.regions && !isEmpty(cityWithRegions?.child)) {
@@ -105,7 +105,7 @@ const RegionModal = ({
       onHide={onHide}
       show={!!show}
     >
-      <ModalHeaderPart onHide={onHide} title={_STRINGS.LOCAL} />
+      <ModalHeaderPart showX onHide={onHide} title={_STRINGS.LOCAL} />
 
       <div className=" w-full flex flex-col gap-4  mt-4 p-3  h-auto min-h-full">
         <CityModalSearchPart options={{ placeholder: _STRINGS.SEARCH_REGION }} search={search} setSearch={setSearch} />

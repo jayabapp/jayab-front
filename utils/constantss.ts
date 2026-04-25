@@ -55,18 +55,21 @@ export const headerBlackList = [
 ];
 export const headerMobileSearchBlackList = ["/chat"];
 
-export const mobileHeaderBlackList = ["/chat/"];
-export const mobileFooterBlackList = [
+export const mobileHeaderBlackList = [
+  "/chat/",
   "/auth",
   "/auth/otp",
   "/auth/register",
   "/profile/owner/properties",
-  // "/chat/",
   "/profile/advisor",
+];
+export const headerWithFullSeach = ["/rooms"];
+export const mobileFooterBlackList = [
+  // "/chat/",
   // "/profile/",
 ];
 
-export const footerHiddenBlackList = ["/chat/"];
+export const footerHiddenBlackList = ["/chat/", "/auth"];
 
 export const createPropertySteps = (id?: null | number) => [
   {
@@ -412,3 +415,13 @@ export const ReserveReqTypes = {
   [ReserveUserAction.RESERVE]: _STRINGS.RESERVE,
   [ReserveUserAction.CHAT]: _STRINGS.CHAT,
 };
+
+export const sortDynamicFiltersInOrder = [
+  "PROPERTY_TYPE",
+  "POOL_TYPE",
+  "PATTERN",
+  "ENTERTAINMENT",
+  "WELFARE",
+  "COOL_HEAT",
+  "KITCHEN",
+];

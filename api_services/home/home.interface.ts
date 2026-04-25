@@ -74,12 +74,24 @@ export interface HomeLandingDto {
   url: string;
   title: string;
   image: ImageDto | null;
+  id: string | number;
 }
 
 export interface SearchSuggDto {
   properties: SearchPropDto[];
-  cities: City[];
+  cities: CitySuggestDto[];
   landings: LandingsDto[];
+}
+
+export interface CitySuggestDto {
+  id: number;
+  title: string;
+  parent_id: null;
+  level: string;
+  parent_title: string;
+  grandparent_title: string;
+  grandparent_id: null;
+  matched_words: string;
 }
 
 export interface City {

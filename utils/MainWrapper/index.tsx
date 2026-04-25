@@ -35,6 +35,9 @@ interface mainWrapper {
 const Footer = dynamic(() => import("../../components/Footer"), {
   ssr: true,
 });
+const SplashScreen = dynamic(() => import("@/components/SplashScreen"), {
+  ssr: true,
+});
 
 const Headers = dynamic(() => import("@/components/headers"), {
   ssr: true,
@@ -42,10 +45,10 @@ const Headers = dynamic(() => import("@/components/headers"), {
 const MainWrapper = ({ children }: mainWrapper) => {
   const router = useRouter();
   const pathname = usePathname();
-
   const { connecting } = useStoreSocket((state) => state);
   const { isDark } = useStoreParams((state) => state);
   const { isLogin, isAdminSso } = useAuthStore((state) => state);
+  const [isVisible, setIsVisible] = useState(true);
 
   const [accessChecked, setAccessChecked] = useState(false);
   const isAuthScreen = pathname.match("auth");
@@ -59,6 +62,18 @@ const MainWrapper = ({ children }: mainWrapper) => {
      */
     const ssoToken = getParameter("sso_token");
     const redirectUrl = getParameter("__next")?.replaceAll("|", "/");
+
+    /* -------------------------------------------------------------------------- */
+    /*                               splash removal                               */
+    /* -------------------------------------------------------------------------- */
+
+    if (!isLogin) {
+      setTimeout(() => {
+        setIsVisible(false);
+      }, 1500);
+    }
+
+    /////////////////
 
     //if the url has sso_token query param
     if (ssoToken) {
@@ -111,6 +126,7 @@ const MainWrapper = ({ children }: mainWrapper) => {
         return null;
       }
     },
+
     staleTime: 0,
     gcTime: 0,
   });
@@ -141,6 +157,7 @@ const MainWrapper = ({ children }: mainWrapper) => {
 
   useEffect(() => {
     if (!!profile) {
+      setIsVisible(false);
       useStoreInit.setState({ userInfo: profile });
     }
   }, [profile]);
@@ -162,7 +179,7 @@ const MainWrapper = ({ children }: mainWrapper) => {
           setIsLandscape(false);
         }
       },
-      false
+      false,
     );
 
     if (window.matchMedia("(orientation: landscape)").matches && isMobile) {
@@ -218,6 +235,7 @@ const MainWrapper = ({ children }: mainWrapper) => {
         <div style={{ minHeight: "100dvh" }} className="  mx-auto h-full   w-full   ">
           {children}
         </div>
+        <SplashScreen isVisible={isVisible} />
         <Suspense fallback={<FallBack />}>
           {" "}
           {!mobileFooterBlackList.find((e) => pathname?.includes(e)) && <Footer />}

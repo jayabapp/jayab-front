@@ -12,7 +12,7 @@ import { useAuthStore, useStoreInit, useStoreParams } from "@/store";
 import { profileDropDownItems } from "@/utils/constantss";
 import AbsoluteBadge from "./AbsoluteBadge";
 
-const ProfileDropdown = ({ notifBadge }: { notifBadge?: number | string }) => {
+const ProfileDropdown = ({ notifBadge, isHome }: { notifBadge?: number | string; isHome?: boolean }) => {
   const { userInfo } = useStoreInit((data) => data);
   const { isAdvisor } = useStoreParams((data) => data);
   const asPath = usePathname();
@@ -47,7 +47,7 @@ const ProfileDropdown = ({ notifBadge }: { notifBadge?: number | string }) => {
   };
 
   return (
-    <div className="text-right mt-1">
+    <div className="text-right ">
       {isVisible && (
         <ConfirmModal
           text={_STRINGS.LOG_OUT_MESSAGE}
@@ -72,15 +72,19 @@ const ProfileDropdown = ({ notifBadge }: { notifBadge?: number | string }) => {
           }
         }}
         as="div"
-        className="relative inline-block text-left"
+        className="relative  group inline-block text-left"
       >
         <div>
           <MenuButton
             ref={ref}
-            className={`flex items-center transition-all  brightness-125 hover:brightness-100 hover:grayscale-0  grayscale justify-center col-span-1 gap-2 flex-row ml-6`}
+            className={`flex items-center transition-all      justify-center col-span-1 gap-2 flex-row `}
           >
-            <img src="/assets/icons/navbar/my_jayab.svg" className="dark:invert" />
-            <p className="text-primary-700 shrink-0  text-sm ">{_STRINGS.MY_PROFILE}</p>
+            {/* <img src="/assets/icons/navbar/my_jayab.svg" className="dark:invert" /> */}
+            <p
+              className={`  text-sm ${isHome ? "text-white" : " text-black "}  shrink-0 font-medium   group-hover:text-primary-700 `}
+            >
+              {_STRINGS.MY_PROFILE}
+            </p>
           </MenuButton>
         </div>
         <Transition

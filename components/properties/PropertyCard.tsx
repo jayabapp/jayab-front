@@ -9,6 +9,7 @@ import Link from "next/link";
 import StatusShower from "../shared/StatusShower";
 import AddCardPricePart from "./AddCardPricePart";
 import DaysOfTheWeekStatus from "./DaysOfTheWeekStatus";
+import PropertycardFeaturePart from "./PropertyCardFeaturesPart";
 import PropertyCardOwnerPart from "./PropertyCardOwnerPart";
 
 const PropertyCard = ({ data, isOwner, week }: { data: PropertyListDto; isOwner?: boolean; week?: string[] }) => {
@@ -20,32 +21,69 @@ const PropertyCard = ({ data, isOwner, week }: { data: PropertyListDto; isOwner?
   };
 
   return (
-    <div className="w-full shadow-card  rounded-2xl    justify-between flex flex-col  p-3   gap-2  ">
+    <div className="w-full property-card-shadow   rounded-20    justify-between flex flex-col  p-3   gap-2  ">
       <div className="w-full  grid grid-cols-5 gap-2   ">
         {/* INFO */}
         <Link
           onClick={removeredirectRoomToHome}
           href={`${goToLink}`}
           prefetch={false}
-          className="col-span-3  !outline-none order-1  flex flex-col gap-1"
+          className="col-span-3  !outline-none order-1  flex flex-col justify-between gap-1"
         >
           {/* TITLE */}
           <div className="flex items-start gap-2">
             {!!data?.has_blue_tick ? (
-              <img
-                src="/assets/icons/adds/verified_badge.svg"
-                alt="verified_badge"
-                className="w-[1.125rem] h-[1.125rem]"
-              />
+              <img src="/assets/icons/adds/verified_hexy_badge.svg" alt="verified_badge" className="w-6 h-6" />
             ) : (
               <></>
             )}
-            <p className="text-sm line-clamp-1  text-right font-semibold">{data.title}</p>
+            <p className="text-sm line-clamp-1  text-right font-bold">{data.title}</p>
           </div>
 
+          {/*  TODAY STATUS */}
+          {!!isOwner ? (
+            <div className="w-full flex  flex-row  items-start gap-2 justify-start">
+              {" "}
+              <p className="text-sm  shrink-0 ">{_STRINGS.TODAY_STATUS} :</p>
+              <p
+                className={` text-sm font-bold ${!!data?.is_today_reserved ? " text-red-500 " : " text-primary-700 "} `}
+              >
+                {!!data?.is_today_reserved ? _STRINGS.IS_RESERVED : _STRINGS.EMPTY}{" "}
+              </p>
+            </div>
+          ) : (
+            <>
+              {" "}
+              {/* LOCATION */}
+              <div className="flex w-full  items-center gap-1">
+                {!!data?.is_promoted ? (
+                  <p className="   font-bold    text-primary-700  shrink-0  text-xs  pl-1 border-l">
+                    {_STRINGS.LADDERED}
+                  </p>
+                ) : (
+                  <></>
+                )}
+
+                <p className="text-xs  line-clamp-1 text-center ">
+                  {data?.city}،{" "}
+                  <span className="text-xs ">
+                    {data?.province || data?.region ? `${data?.region || data?.province}` : ``}
+                  </span>
+                </p>
+              </div>{" "}
+              {/* <div className="w-full">
+                <p className="text-xs">
+                  {" "}
+                  <span>{data?.total_bedrooms} اتاق</span> - <span>تا {data?.max_capacity} نفر</span>{" "}
+                  {!!data?.has_pool ? <span className="text-primary-700"> - {_STRINGS.HAS_POOL} </span> : <></>}
+                </p>
+              </div> */}
+            </>
+          )}
+
           {/* CODE  - LIKES */}
-          <div className="flex items-center gap-4">
-            <div className="bg-black/10 font-normal rounded-md text-xs   px-2 py-1  leading-4  flex items-center justify-center">
+          <div className="flex items-center gap-2">
+            <div className="bg-gray-200 font-normal rounded-full text-xs  text-black  px-2 h-5  leading-4  flex items-center justify-center">
               کد {data.code}
             </div>{" "}
             <div className="flex items-center gap-1">
@@ -63,9 +101,9 @@ const PropertyCard = ({ data, isOwner, week }: { data: PropertyListDto; isOwner?
           </div>
           {/* PRICING */}
 
-          <div className={`w-full flex  flex-row ${"items-start"}  h-8  gap-2 justify-start`}>
+          <div className={`w-full flex  flex-row ${"items-end"}  justify-between    gap-2 `}>
             {" "}
-            <p className=" leading-5 text-xs 2xl:text-xs  shrink-0 ">{_STRINGS.TODAYS_PRICE}</p>
+            <p className="  text-xs 2xl:text-xs   shrink-0 ">{_STRINGS.TODAYS_PRICE}</p>
             <AddCardPricePart
               data={{
                 discounted_price: data?.today_price?.discounted_price,
@@ -74,51 +112,6 @@ const PropertyCard = ({ data, isOwner, week }: { data: PropertyListDto; isOwner?
               }}
             />
           </div>
-
-          {/*  TODAY STATUS */}
-          {!!isOwner ? (
-            <div className="w-full flex  flex-row  items-start gap-2 justify-start">
-              {" "}
-              <p className="text-sm  shrink-0 ">{_STRINGS.TODAY_STATUS} :</p>
-              <p
-                className={` text-sm font-bold ${!!data?.is_today_reserved ? " text-red-500 " : " text-primary-700 "} `}
-              >
-                {!!data?.is_today_reserved ? _STRINGS.IS_RESERVED : _STRINGS.EMPTY}{" "}
-              </p>
-            </div>
-          ) : (
-            <>
-              {" "}
-              {/* DESCRIPTION */}
-              <div className="w-full">
-                <p className="text-xs">
-                  {" "}
-                  <span>{data?.total_bedrooms} اتاق</span> - <span>تا {data?.max_capacity} نفر</span>{" "}
-                  {!!data?.has_pool ? <span className="text-primary-700"> - {_STRINGS.HAS_POOL} </span> : <></>}
-                </p>
-              </div>
-              {/* LOCATION */}
-              <div className="flex w-full  items-center gap-1">
-                {!!data?.is_promoted ? (
-                  <p className="  font-bold  text-primary-700  shrink-0  text-xs  pl-1 border-l">{_STRINGS.LADDERED}</p>
-                ) : (
-                  // <img
-                  //   src="/assets/icons/adds/pin_point_location.svg"
-                  //   alt={`location${data?.id}`}
-                  //   className="w-5 h-5 aspect-square"
-                  // />
-                  <></>
-                )}
-
-                <p className="text-xs line-clamp-1 text-center ">
-                  {data?.city}{" "}
-                  <span className="text-xs ">
-                    {data?.province || data?.region ? `(${data?.region || data?.province})` : ``}
-                  </span>
-                </p>
-              </div>
-            </>
-          )}
 
           {!!isOwner ? (
             <div className="flex items-center w-full gap-2">
@@ -152,7 +145,7 @@ const PropertyCard = ({ data, isOwner, week }: { data: PropertyListDto; isOwner?
                   ? NEW_IMAGE_URL(data?.feature_image, "medium")
                   : "/assets/icons/shared/image_placeholder.svg"
               }
-              className=" w-full rounded-10  h-full  object-cover aspect-square"
+              className=" w-full rounded-2xl  h-full  object-cover aspect-square"
             />
             <div className="absolute z-1 right-2 top-2 flex flex-col gap-1 w-7">
               {" "}
@@ -172,21 +165,21 @@ const PropertyCard = ({ data, isOwner, week }: { data: PropertyListDto; isOwner?
               )} */}
             </div>
             {data?.advisor_commission || data?.advisor_commission == 0 ? (
-              <div className="w-16 gap-0.5  h-5 rounded-md transition-all  py-[0.2rem]   bg-black/50 text-white absolute z-1 left-2 flex-row top-2 aspect-square flex items-center justify-center">
+              <div className="w-16 gap-0.5  h-5 rounded-md transition-all  py-[0.2rem] backdrop-blur-[6px]   bg-primary-black/30 text-white absolute z-1 left-2 flex-row top-2 aspect-square flex items-center justify-center">
                 <p className="  text-xxs   "> کمیسیون: {data.advisor_commission}%</p>{" "}
               </div>
             ) : data?.attachments_count ? (
-              <div className="w-[2.125rem] gap-1  h-5 rounded-md transition-all  py-[0.2rem]   bg-black/50 text-white absolute z-1 left-2 flex-row top-2 aspect-square flex items-center justify-center">
-                <p className="  text-xxs   ">{data.attachments_count}</p>{" "}
-                <img className="w-2 h-2 " alt={`camera${data?.id}`} src="/assets/icons/adds/simple_camera.svg" />
+              <div className="w-12 gap-1.5  h-6 rounded-full transition-all  py-[0.2rem]  backdrop-blur-[6px]  bg-primary-black/30 text-white absolute z-1 left-2 flex-row top-2 aspect-square flex items-center justify-center">
+                <p className="  text-xs font-medium   ">{data.attachments_count}</p>{" "}
+                <img className="w-4 h-4 " alt={`camera${data?.id}`} src="/assets/icons/adds/simple_camera.svg" />
               </div>
             ) : (
               <></>
             )}
             {data?.is_authorized ? (
-              <div className=" left-0 right-0 w-fit   absolute   p-1  rounded-full flex items-center gap-2 bg-black/60  mx-auto bottom-1">
+              <div className="  right-2 w-fit  h-7   absolute   pr-1 pl-2   backdrop-blur-[6px]  bg-primary-black/30 rounded-full flex items-center gap-2  mx-auto bottom-2">
                 <img alt={`tick${data?.id}`} src="/assets/icons/adds/green_circular_tick.svg" />
-                <p className="text-xs text-white">{_STRINGS.VERIFIED}</p>
+                <p className="text-[0.6875rem]  font-medium text-white">{_STRINGS.VERIFIED}</p>
               </div>
             ) : (
               <></>
@@ -195,6 +188,10 @@ const PropertyCard = ({ data, isOwner, week }: { data: PropertyListDto; isOwner?
         </Link>
       </div>
       {isOwner ? <PropertyCardOwnerPart goToLink={goToLink} data={data} /> : <></>}
+      {/* DESCRIPTION */}
+      <div className="w-full pt-1.5 ">
+        <PropertycardFeaturePart data={data} />
+      </div>
       {!!data?.reserve_days && !isEmpty(data?.reserve_days) ? (
         <div className="w-full pt-1 border-t">
           {" "}

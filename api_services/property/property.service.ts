@@ -45,6 +45,7 @@ export class PropertyService {
   static SINGLE_PROPERTY_CONTACT_INFO_CACHEKEY = "SINGLE_PROPERTY_CONTACT_INFO";
   static GET_SINGLEPROPERTY_CALLENDER_CACHEKEY = "GET_SINGLEPROPERTY_CALLENDER";
   static SINGLE_PROPERTY_ADVISOR_SHARE_CACHEKEY = "SINGLE_PROPERTY_ADVISOR_SHARE";
+  static PROPERTY_RESERVED_DATES_CACHEKEY = "PROPERTY_RESERVED_DATES";
   static OWNER_PROPERTIES_PRICE_RANGE_UPDATE_CACHEKEY = "OWNER_PROPERTIES_PRICE_RANGE_UPDATE";
 
   static async GetUserPropertyGroup(dto: { group: (keyof typeof PropertyOptionGroup)[] }) {
@@ -817,6 +818,19 @@ export class PropertyService {
         description: dto?.description,
         title: dto?.title,
       });
+      return result;
+    } catch (e) {
+      throw e;
+    }
+  }
+
+  /* -------------------------------------------------------------------------- */
+  /*                             PROPERTY rESERVEDDATES                               */
+  /* -------------------------------------------------------------------------- */
+
+  static async propertyReservedDates(dto: { post_id: string | number }) {
+    try {
+      const result = await apiCall<unknown, Date[]>("GET", apiRoutes.PROPERTY_RESERVED_DATES(dto.post_id));
       return result;
     } catch (e) {
       throw e;

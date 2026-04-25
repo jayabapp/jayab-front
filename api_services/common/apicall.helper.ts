@@ -1,5 +1,5 @@
 import Notify from "@/components/shared/Toast";
-import { baseUrl } from "@/utils/urls";
+import { baseUrl, baseUrlV } from "@/utils/urls";
 import axios, { AxiosRequestConfig, AxiosRequestHeaders } from "axios";
 
 type Methods = "POST" | "PUT" | "DELETE" | "PATCH" | "GET";
@@ -28,6 +28,7 @@ export async function apiCall<T, K>(
     progressCallBack?: (e: any) => void | null;
     isSocketToken?: boolean;
     passedToken?: string;
+    version?: string;
   },
 ): Promise<K | undefined> {
   try {
@@ -38,7 +39,7 @@ export async function apiCall<T, K>(
 
     const config: AxiosRequestConfig = {
       method,
-      url: baseUrl + url,
+      url: !!options?.version ? baseUrlV(options?.version) + url : baseUrl + url,
       headers: headerItems(IS_FORM_DATA ? "file" : undefined, options?.isSocketToken, options?.passedToken),
       data: body,
 
