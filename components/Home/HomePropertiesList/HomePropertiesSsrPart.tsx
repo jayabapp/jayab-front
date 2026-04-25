@@ -45,6 +45,9 @@ function HomePropertiesSsrPart({ data, middleBanners, devices }: HomePropertiesS
           <LottieLoading />
         ) : data?.length > 0 ? (
           <div className="grid   pb-8 pt-2 md:pt-2 grid-cols-1 gap-2 md:gap-4  md:grid-cols-2 xl:grid-cols-4 ">
+            <div className=" col-span-full row-start-7 lg:row-start-3  ">
+              <HomeProductsBannerItems bannerItem={middleBanners?.[0]} />
+            </div>
             {data?.map((i: any, index: number) => {
               const bannerItem = !isEmpty(middleBanners)
                 ? middleBanners[Math.floor(index / (devices?.isDesktop ? 8 : 6))]
@@ -52,17 +55,16 @@ function HomePropertiesSsrPart({ data, middleBanners, devices }: HomePropertiesS
               return (
                 <Fragment key={`PRODUCT${i?.id}`}>
                   <PropertyCard week={week} data={i} key={`PRODUCT${i?.id}`} />
-                  {(index + 1) % 8 == 0 && !!bannerItem?.[0] && !!bannerItem?.[1] ? (
+                  {/* {(index + 1) % 8 == 0 && !!bannerItem?.[0] && !!bannerItem?.[1] ? (
                     <div
                       key={`banenr${i?.id}`}
                       className="w-full  py-2 col-span-full gap-4  grid  grid-cols-1 grid-rows-2 md:grid-rows-1 md:grid-cols-2 "
                     >
-                      <HomeProductsBannerItems bannerItem={bannerItem?.[0]} />
                       <HomeProductsBannerItems bannerItem={bannerItem?.[1]} />
                     </div>
                   ) : (
                     <></>
-                  )}
+                  )} */}
                 </Fragment>
               );
             })}

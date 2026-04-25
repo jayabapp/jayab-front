@@ -22,9 +22,10 @@ const HomePropertiesList = ({
   const bannerGroup = useMemo(() => {
     if (!!middleBanners) return chunk(middleBanners, 2);
   }, [middleBanners]);
+
   return (
     <div className="w-full  padding-x ">
-      <HomePropertiesSsrPart middleBanners={bannerGroup || []} data={data} devices={devices} />
+      <HomePropertiesSsrPart middleBanners={middleBanners || []} data={data} devices={devices} />
       {page == 1 && !isEmpty(data) && data?.length % 24 == 0 ? (
         <Link className="w-full " href={"/rooms"} prefetch={false}>
           <Button

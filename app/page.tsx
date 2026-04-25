@@ -37,7 +37,6 @@ const Home = async () => {
   });
   const { data: propertyTypes } = await serverCall(baseUrl + apiRoutes.USER_PROP_OPTIONS + "?group[]=PROPERTY_TYPE");
   const devices = await deviceTypeDetector();
-
   return (
     <div style={{ minHeight: "100dvh" }} id="homeParent" className="home-container  !px-0 !pt-0   flex flex-col gap-5 ">
       <SearchboxSchema />
