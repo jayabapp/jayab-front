@@ -12,9 +12,19 @@ import DaysOfTheWeekStatus from "./DaysOfTheWeekStatus";
 import PropertycardFeaturePart from "./PropertyCardFeaturesPart";
 import PropertyCardOwnerPart from "./PropertyCardOwnerPart";
 
-const PropertyCard = ({ data, isOwner, week }: { data: PropertyListDto; isOwner?: boolean; week?: string[] }) => {
+const PropertyCard = ({
+  data,
+  isOwner,
+  week,
+}: {
+  data: PropertyListDto;
+  isOwner?: boolean;
+  week?: string[];
+}) => {
   const { likes, ssrLikedProducts } = useStoreParams((state) => state);
-  const goToLink = !!isOwner ? `/profile/owner/properties/${data?.id}` : `/rooms/${data?.slug}`;
+  const goToLink = !!isOwner
+    ? `/profile/owner/properties/${data?.id}`
+    : `/rooms/${data?.slug}`;
 
   const removeredirectRoomToHome = () => {
     useStoreParams.setState({ getBackHome: false });
@@ -31,13 +41,19 @@ const PropertyCard = ({ data, isOwner, week }: { data: PropertyListDto; isOwner?
           className="col-span-3  !outline-none order-1  flex flex-col justify-between gap-1"
         >
           {/* TITLE */}
-          <div className="flex items-start gap-2">
+          <div className="flex items-center gap-2">
             {!!data?.has_blue_tick ? (
-              <img src="/assets/icons/adds/verified_hexy_badge.svg" alt="verified_badge" className="w-6 h-6" />
+              <img
+                src="/assets/icons/adds/verified_hexy_badge.svg"
+                alt="verified_badge"
+                className="w-6 h-6"
+              />
             ) : (
               <></>
             )}
-            <p className="text-sm line-clamp-1  text-right font-bold">{data.title}</p>
+            <p className="text-sm line-clamp-1  text-right font-bold">
+              {data.title}
+            </p>
           </div>
 
           {/*  TODAY STATUS */}
@@ -48,7 +64,9 @@ const PropertyCard = ({ data, isOwner, week }: { data: PropertyListDto; isOwner?
               <p
                 className={` text-sm font-bold ${!!data?.is_today_reserved ? " text-red-500 " : " text-primary-700 "} `}
               >
-                {!!data?.is_today_reserved ? _STRINGS.IS_RESERVED : _STRINGS.EMPTY}{" "}
+                {!!data?.is_today_reserved
+                  ? _STRINGS.IS_RESERVED
+                  : _STRINGS.EMPTY}{" "}
               </p>
             </div>
           ) : (
@@ -67,7 +85,9 @@ const PropertyCard = ({ data, isOwner, week }: { data: PropertyListDto; isOwner?
                 <p className="text-xs  line-clamp-1 text-center ">
                   {data?.city}،{" "}
                   <span className="text-xs ">
-                    {data?.province || data?.region ? `${data?.region || data?.province}` : ``}
+                    {data?.province || data?.region
+                      ? `${data?.region || data?.province}`
+                      : ``}
                   </span>
                 </p>
               </div>{" "}
@@ -96,14 +116,20 @@ const PropertyCard = ({ data, isOwner, week }: { data: PropertyListDto; isOwner?
                     : "/assets/icons/adds/empty_heart.svg"
                 }
               />
-              <p className="text-xxs  opacity-60">{ssrLikedProducts?.[data?.id] || data?.favorite_count}</p>
+              <p className="text-xxs  opacity-60">
+                {ssrLikedProducts?.[data?.id] || data?.favorite_count}
+              </p>
             </div>
           </div>
           {/* PRICING */}
 
-          <div className={`w-full flex  flex-row ${"items-end"}  justify-between    gap-2 `}>
+          <div
+            className={`w-full flex  flex-row ${"items-end"}  justify-between    gap-2 `}
+          >
             {" "}
-            <p className="  text-xs 2xl:text-xs   shrink-0 ">{_STRINGS.TODAYS_PRICE}</p>
+            <p className="  text-xs 2xl:text-xs   shrink-0 ">
+              {_STRINGS.TODAYS_PRICE}
+            </p>
             <AddCardPricePart
               data={{
                 discounted_price: data?.today_price?.discounted_price,
@@ -118,7 +144,9 @@ const PropertyCard = ({ data, isOwner, week }: { data: PropertyListDto; isOwner?
               <StatusShower data={data?.status} />
 
               {!!data?.is_promoted ? (
-                <p className="  font-bold  text-primary-700  shrink-0  text-xs  pr-1 border-r">{_STRINGS.LADDERED}</p>
+                <p className="  font-bold  text-primary-700  shrink-0  text-xs  pr-1 border-r">
+                  {_STRINGS.LADDERED}
+                </p>
               ) : (
                 <></>
               )}
@@ -166,20 +194,34 @@ const PropertyCard = ({ data, isOwner, week }: { data: PropertyListDto; isOwner?
             </div>
             {data?.advisor_commission || data?.advisor_commission == 0 ? (
               <div className="w-16 gap-0.5  h-5 rounded-md transition-all  py-[0.2rem] backdrop-blur-[6px]   bg-primary-black/30 text-white absolute z-1 left-2 flex-row top-2 aspect-square flex items-center justify-center">
-                <p className="  text-xxs   "> کمیسیون: {data.advisor_commission}%</p>{" "}
+                <p className="  text-xxs   ">
+                  {" "}
+                  کمیسیون: {data.advisor_commission}%
+                </p>{" "}
               </div>
             ) : data?.attachments_count ? (
               <div className="w-12 gap-1.5  h-6 rounded-full transition-all  py-[0.2rem]  backdrop-blur-[6px]  bg-primary-black/30 text-white absolute z-1 left-2 flex-row top-2 aspect-square flex items-center justify-center">
-                <p className="  text-xs font-medium   ">{data.attachments_count}</p>{" "}
-                <img className="w-4 h-4 " alt={`camera${data?.id}`} src="/assets/icons/adds/simple_camera.svg" />
+                <p className="  text-xs font-medium   ">
+                  {data.attachments_count}
+                </p>{" "}
+                <img
+                  className="w-4 h-4 "
+                  alt={`camera${data?.id}`}
+                  src="/assets/icons/adds/simple_camera.svg"
+                />
               </div>
             ) : (
               <></>
             )}
             {data?.is_authorized ? (
               <div className="  right-2 w-fit  h-7   absolute   pr-1 pl-2   backdrop-blur-[6px]  bg-primary-black/30 rounded-full flex items-center gap-2  mx-auto bottom-2">
-                <img alt={`tick${data?.id}`} src="/assets/icons/adds/green_circular_tick.svg" />
-                <p className="text-[0.6875rem]  font-medium text-white">{_STRINGS.VERIFIED}</p>
+                <img
+                  alt={`tick${data?.id}`}
+                  src="/assets/icons/adds/green_circular_tick.svg"
+                />
+                <p className="text-[0.6875rem]  font-medium text-white">
+                  {_STRINGS.VERIFIED}
+                </p>
               </div>
             ) : (
               <></>
@@ -187,7 +229,11 @@ const PropertyCard = ({ data, isOwner, week }: { data: PropertyListDto; isOwner?
           </div>
         </Link>
       </div>
-      {isOwner ? <PropertyCardOwnerPart goToLink={goToLink} data={data} /> : <></>}
+      {isOwner ? (
+        <PropertyCardOwnerPart goToLink={goToLink} data={data} />
+      ) : (
+        <></>
+      )}
       {/* DESCRIPTION */}
       <div className="w-full pt-1.5 ">
         <PropertycardFeaturePart data={data} />
@@ -195,7 +241,11 @@ const PropertyCard = ({ data, isOwner, week }: { data: PropertyListDto; isOwner?
       {!!data?.reserve_days && !isEmpty(data?.reserve_days) ? (
         <div className="w-full pt-1 border-t">
           {" "}
-          <DaysOfTheWeekStatus week={week || []} isCard={true} data={data?.reserve_days} />
+          <DaysOfTheWeekStatus
+            week={week || []}
+            isCard={true}
+            data={data?.reserve_days}
+          />
         </div>
       ) : (
         <></>
