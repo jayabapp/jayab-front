@@ -35,7 +35,7 @@ const HomeBannerPart = ({ banners, devices }: ImageCarouselTypes) => {
       </div>
 
       {/* HOME SEARCH PART  */}
-      <div className=" flex backdrop-blur-md   shadow-card lg:shadow-none  lg:backdrop-blur-none  z-5   absolute bottom-0   lg:bottom-[20%]  w-[90%] lg:w-[40%]   left-0 right-0     mx-auto    h-11   lg:h-14 lg:bg-white rounded-full items-center  gap-1 lg:gap-2    p-[1px]   lg:pl-4">
+      <div className=" flex backdrop-blur-md   shadow-card lg:shadow-none  lg:backdrop-blur-none  z-5   absolute bottom-0   lg:bottom-[12%]  w-[90%] lg:w-[40%]   left-0 right-0     mx-auto    h-11   lg:h-14 lg:bg-white rounded-full items-center  gap-1 lg:gap-2    p-[1px]   lg:pl-4">
         <SearchBoxDropDown
           placeholder={_STRINGS?.SEARCH}
           containerClass="bg-transparent border   rounded-full lg:flex hidden    w-full dark:bg-zinc-600   justify-between items-center  !bg-white lg:bg-transparent !rounded-l-none  lg:!rounded-l-20  !border-none "
