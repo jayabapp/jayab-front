@@ -176,7 +176,7 @@ const PopSearchbox = ({
         ?.map((e) => `${e}=${data?.client_query?.[e]}`)
         .join("&");
       const link = `/rooms?${createdQuery}`;
-
+      setShowPop(false);
       push(link);
     },
   });

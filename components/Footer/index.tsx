@@ -114,7 +114,7 @@ const Footer = () => {
           className={`col-span-4 lg:col-span-1  gap-2 flex w-full flex-col justify-between h-fit order-2 lg:order-1 `}
         >
           <p className=" text-lg font-bold  pb-4">{_STRINGS.FAST_ACCESS}</p>
-          <div className=" lg:grid-cols-1  grid grid-cols-3 gap-2  grid-rows-2  lg:grid-rows-none ">
+          <div className=" lg:grid-cols-1  grid grid-cols-2 gap-2  grid-rows-2  lg:grid-rows-none ">
             {footerLinks?.map((e, index) => (
               <Link
                 prefetch={false}

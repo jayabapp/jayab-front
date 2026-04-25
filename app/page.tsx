@@ -36,7 +36,7 @@ const Home = async () => {
   const { data: landings } = await serverCall(baseUrl + apiRoutes.USER_LANDING_PAGES);
   const { data: propertyData } = await serverCall(baseUrl + apiRoutes.GET_PROPERTIES, {
     page: 1,
-    per_page: 24,
+    per_page: 12,
   });
   const { data: propertyTypes } = await serverCall(baseUrl + apiRoutes.USER_PROP_OPTIONS + "?group[]=PROPERTY_TYPE");
   const devices = await deviceTypeDetector();
