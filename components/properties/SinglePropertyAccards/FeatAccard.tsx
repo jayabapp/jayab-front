@@ -4,7 +4,6 @@ import _STRINGS from "@/utils/LocalStrings";
 import PropertySelectedOptions from "./PropertySelectedOptions";
 
 const FeatAccard = ({ data }: { data: SinglePropDto }) => {
-  console.log(data?.property_descriptions, "data?.property_descriptionsdata?.property_descriptions");
   return (
     <SimpleAccordion
       item={{

@@ -331,37 +331,38 @@ const ReserveCard = ({
               <></>
             ) : (
               <>
-                {" "}
                 <Button
-                  disabled={isExpired}
+                  disabled={!!isExpired}
                   onClick={() => {
+                    // onActionsClick(ReserveUserAction.CALL);
                     onContactClick("call");
                   }}
-                  width={`  ${isExpired ? "  !text-gray-400" : ""}  w-full  !py-2  !font-bold  !text-sm `}
-                  containerClass="w-2/3"
-                  roundedClass="rounded-full"
+                  width={`w-full h-12 !text-black !font-normal !border-none  !py-2   !bg-primary-1100  !text-sm ${isExpired ? "  !text-gray-400" : ""} `}
+                  containerClass="w-full lg:w-1/2 "
+                  roundedClass=" rounded-xl"
                   title={_STRINGS.CALL}
                   variant="outline"
                   icon={
                     <img
-                      className={`w-4 h-4   ${isExpired ? "  opacity-50  grayscale" : ""}    aspect-square`}
+                      className={`w-4 h-4   absolute right-3 top-0 bottom-0 my-auto aspect-square ${isExpired ? "  opacity-50  grayscale" : ""} `}
                       src="/assets/icons/advisor/blue_phone.svg"
                     />
                   }
                 />
                 <Button
-                  disabled={isExpired}
+                  disabled={!!isExpired}
                   variant="outline"
                   onClick={() => {
                     onContactClick("sms");
+                    // onActionsClick(ReserveUserAction.SMS);
                   }}
-                  width={`w-full  !py-2  !font-bold  !text-sm  ${isExpired ? "  !text-gray-400" : ""}  `}
-                  containerClass="w-2/3"
-                  roundedClass="rounded-full"
+                  width={`w-full h-12 !border-none !text-black !font-normal !py-2 !bg-primary-1100   !text-sm ${isExpired ? "  !text-gray-400" : ""} `}
+                  containerClass="w-full lg:w-1/2  "
+                  roundedClass=" rounded-xl"
                   title={_STRINGS.SMS}
                   icon={
                     <img
-                      className={`w-4 h-4  ml-1 aspect-square  ${isExpired ? "  opacity-50  grayscale" : ""}  `}
+                      className={`w-4 h-4  absolute right-3 top-0 bottom-0 my-auto ${isExpired ? "  opacity-50  grayscale" : ""}   ml-1 aspect-square`}
                       src="/assets/icons/advisor/blue_sms.svg"
                     />
                   }
@@ -374,12 +375,19 @@ const ReserveCard = ({
             )} */}
             {!isOwner ? (
               <Button
-                width="w-full !py-2  !font-bold !text-sm "
-                containerClass="w-2/3  "
-                roundedClass="rounded-full"
-                icon={<img className="w-4 h-4  ml-1 aspect-square" src="/assets/icons/advisor/white_message.svg" />}
+                variant="outline"
+                width="w-full h-12 !border-none !text-black !font-normal  !py-2 !bg-primary-1100  !text-sm "
+                containerClass="w-full  lg:w-1/2 "
+                roundedClass=" rounded-xl"
                 title={_STRINGS.CHAT_IN_JAYAB}
+                icon={
+                  <img
+                    className="w-4 h-4  absolute right-3 top-0 bottom-0 my-auto  ml-1 aspect-square"
+                    src="/assets/icons/reserve/blue_chat_reserve.svg"
+                  />
+                }
                 onClick={() => {
+                  // onActionsClick(ReserveUserAction.CHAT);
                   onCreateChat();
                 }}
                 loading={chatLoading}

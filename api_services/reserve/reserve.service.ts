@@ -28,16 +28,11 @@ export class ReserveService {
     }
   }
 
-  static async userReserves(dto: { cursor: number }) {
+  static async userReserves(dto: { type: string }) {
     try {
-      const result = await apiCall<{ cursor: number; per_page: number }, { data: ReserveListDto[] }>(
-        "GET",
-        apiRoutes.RESERVE,
-        {
-          cursor: dto.cursor,
-          per_page: 20,
-        },
-      );
+      const result = await apiCall<{ type: string }, ReserveListDto[]>("GET", apiRoutes.RESERVE, {
+        type: dto.type,
+      });
       return result;
     } catch (e) {
       throw e;

@@ -3,36 +3,23 @@ import { ReserveListDto } from "@/api_services/reserve/reserve.interface";
 import { ReserveService } from "@/api_services/reserve/reserve.service";
 import ConfirmModal from "@/components/Modal/ConfirmModal";
 import ReserveCard from "@/components/properties/reserve/ReserveCard";
-import BtnLoading from "@/components/shared/Button/BtnLoading";
 import EmptyList from "@/components/shared/Lotties/EmptyList";
 import LottieLoading from "@/components/shared/Lotties/LottieLoading";
 import { useMutation, useQuery } from "@tanstack/react-query";
-import { isEmpty, last } from "lodash";
-import { useEffect, useState } from "react";
-import InfiniteScroll from "react-infinite-scroll-component";
+import { isEmpty } from "lodash";
+import { useState } from "react";
 const UserReserves = () => {
-  const [cursor, setCursor] = useState(0);
-  const [reserves, setReserves] = useState<ReserveListDto[]>([]);
   const [selectedCancel, setSelectedCancel] = useState<ReserveListDto | null>(null);
   const {
-    data: solidData,
+    data: reserves,
     isLoading,
     refetch,
   } = useQuery({
-    queryKey: [ReserveService?.RESERVE_CACHEKEY, cursor],
-    queryFn: () => ReserveService?.userReserves({ cursor }),
+    queryKey: [ReserveService?.RESERVE_CACHEKEY],
+    queryFn: () => ReserveService?.userReserves({ type: "active" }),
     staleTime: 0,
     gcTime: 0,
   });
-
-  useEffect(() => {
-    if (solidData?.data)
-      if (cursor == 0) {
-        setReserves((x) => solidData?.data);
-      } else {
-        setReserves((x) => [...x, ...solidData?.data]);
-      }
-  }, [solidData]);
 
   /* -------------------------------------------------------------------------- */
   /*                              REFETCH INTERVAL                              */
@@ -47,7 +34,6 @@ const UserReserves = () => {
   // }, []);
 
   const refetchCallBack = () => {
-    setCursor(0);
     refetch();
   };
   /* -------------------------------------------------------------------------- */
@@ -75,19 +61,7 @@ const UserReserves = () => {
       {!!isLoading && isEmpty(reserves) ? (
         <LottieLoading />
       ) : (
-        <InfiniteScroll
-          dataLength={reserves?.length} //This is important field to render the next data
-          next={() => {
-            setCursor(last(reserves)?.id || 0);
-          }}
-          hasMore={!isEmpty(solidData?.data) ? true : false}
-          className=" grid  grid-cols-1 lg:grid-cols-2 gap-4 pb-4  md:p-4"
-          loader={
-            <div className="flex  col-span-2 flex-col gap-4 p-4">
-              <BtnLoading />
-            </div>
-          }
-        >
+        <div className=" grid  grid-cols-1 lg:grid-cols-2 gap-4 pb-4  md:p-4">
           {reserves?.length == 0 ? (
             <div className="col-span-2">
               {" "}
@@ -103,7 +77,7 @@ const UserReserves = () => {
               />
             ))
           )}
-        </InfiniteScroll>
+        </div>
       )}
 
       <ConfirmModal

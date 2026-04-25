@@ -125,9 +125,12 @@ const handleError = (error: any) => {
     error?.response?.data?.messages?.fa ||
     error?.response?.data?.message ||
     error?.message;
-  Notify({
-    type: "error",
-    title: "خطا",
-    body: typeof message == "string" ? message : message[0],
-  });
+
+  if (error?.response?.data?.message_code !== "RESERVE6") {
+    Notify({
+      type: "error",
+      title: "خطا",
+      body: typeof message == "string" ? message : message[0],
+    });
+  }
 };

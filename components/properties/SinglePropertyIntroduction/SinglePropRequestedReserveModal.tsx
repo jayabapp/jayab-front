@@ -15,6 +15,7 @@ import Image from "next/image";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
 import ActiveReservePop from "../reserve/ActiveReservePop";
+import NoMoreReservesPop from "../reserve/NoMoreReservesPop";
 import SinglePropContactInfoModal from "./SinglePropContactInfoModal";
 
 const SinglePropRequestedReserveModal = ({
@@ -37,6 +38,7 @@ const SinglePropRequestedReserveModal = ({
   const router = useRouter();
   const [contactType, setContactType] = useState<"call" | "sms" | "">("");
   const [loading, setLoading] = useState(false);
+  const [showMax, setShowMax] = useState(false);
   const [activeReserve, setActiveReserve] = useState<ReserveListDto | null>(null);
   const { mutate: createFindChat } = useMutation({
     mutationFn: ChatService.StartOrFindChat,
@@ -93,7 +95,10 @@ const SinglePropRequestedReserveModal = ({
           }
           // onHide();
         },
-        onError: () => {
+        onError: (e: any) => {
+          if (e?.message_code == "RESERVE6") {
+            setShowMax(true);
+          }
           setLoading(false);
         },
       },
@@ -110,9 +115,9 @@ const SinglePropRequestedReserveModal = ({
         }}
       >
         <div className="w-full flex flex-col   p-4 rounded-2xl     gap-4">
-          <div className="w-full  grid grid-cols-5 gap-2   ">
+          <div className="w-full  grid grid-cols-5 lg:grid-cols-9 gap-2   ">
             {/* INFO */}
-            <div className={`col-span-4  !outline-none   order-2   flex flex-col gap-1  justify-center `}>
+            <div className={`col-span-4  xl:col-span-8 !outline-none   order-2   flex flex-col gap-1  justify-center `}>
               {/* TITLE */}
               <div className="flex items-start gap-2">
                 <p className="text-sm line-clamp-1  text-right font-semibold">درخواست رزرو برای {data?.title} </p>
@@ -352,6 +357,12 @@ const SinglePropRequestedReserveModal = ({
         show={!!activeReserve}
         onHide={() => {
           setActiveReserve(null);
+        }}
+      />
+      <NoMoreReservesPop
+        show={showMax}
+        onHide={() => {
+          setShowMax(false);
         }}
       />
     </>
