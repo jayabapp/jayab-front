@@ -11,6 +11,7 @@ import { ChatService } from "@/api_services/chat/chat.service";
 import { PropertyService } from "@/api_services/property/property.service";
 import { ReserveService } from "@/api_services/reserve/reserve.service";
 import { UserService } from "@/api_services/user/user.service";
+import { modam_font } from "@/app/fonts/modam/modam_font";
 import { useAuthStore, useStoreInit, useStoreParams } from "@/store";
 import { headerMobileSearchBlackList, headerWithFullSeach } from "@/utils/constantss";
 import { useQuery } from "@tanstack/react-query";
@@ -555,12 +556,13 @@ transition-all ease-out  duration-300  header-content-container w-full mx-auto  
                   </>
                 )}
               </Suspense>{" "}
-              <Link prefetch={false} href={"/"} className=" w-32  shrink-0 h-10 ">
+              <Link prefetch={false} href={"/"} className=" flex items-center gap-1.5    shrink-0 h-10 ">
                 {" "}
+                <p className={` text-2xl  font-medium text-primary-700  ${modam_font.className} `}>{_STRINGS.JAYAB}</p>
                 <img
                   src="/assets/icons/logo/new_header_logo.svg"
                   alt="jayab"
-                  className="w-32  shrink-0 h-10 object-contain   cursor-pointer "
+                  className=" size-10   shrink-0 h-10 object-contain   cursor-pointer "
                 />
               </Link>
             </div>

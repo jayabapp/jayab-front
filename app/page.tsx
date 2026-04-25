@@ -1,8 +1,10 @@
+import BannersContainer from "@/components/Home/BannersContainer";
 import HomeActiveReserve from "@/components/Home/HomeActiveReserve";
 import HomePropertyTypes from "@/components/Home/HomePropertyTypes";
 import MainFiltersContainer from "@/components/Home/MainFiltersContainer";
 import TheInstallPrompt from "@/components/InstallPrompt/TheInstallPrompt";
 import { OrganizationSchema, SearchboxSchema } from "@/components/SchemaGenerator/Schemas";
+import { BannerPosition } from "@/enum/banners.enum";
 import deviceTypeDetector from "@/helpers/device.detector";
 import serverCall from "@/helpers/serverCall";
 import _STRINGS from "@/utils/LocalStrings";
@@ -25,8 +27,9 @@ export async function generateMetadata(): Promise<Metadata> {
 }
 
 const Home = async () => {
-  const { data: banners } = await serverCall(baseUrl + apiRoutes.BANNERS + `?position=main_1`);
-  const { data: middleBanners } = await serverCall(baseUrl + apiRoutes.BANNERS + `?position=main_2`);
+  const { data: banners } = await serverCall(baseUrl + apiRoutes.BANNERS + `?position=${BannerPosition.MAIN_1}`);
+  const { data: middleBanners } = await serverCall(baseUrl + apiRoutes.BANNERS + `?position=${BannerPosition.MAIN_2}`);
+  const { data: bottomBanners } = await serverCall(baseUrl + apiRoutes.BANNERS + `?position=${BannerPosition.MAIN_3}`);
   const { data: landings } = await serverCall(baseUrl + apiRoutes.USER_LANDING_PAGES);
   const { data: propertyData } = await serverCall(baseUrl + apiRoutes.GET_PROPERTIES, {
     page: 1,
@@ -78,8 +81,9 @@ const Home = async () => {
           <></>
         )}{" "} */}
       </section>
-      <HomePropertiesList middleBanners={middleBanners || []} data={propertyData?.data || []} /> <TheInstallPrompt />
-      {/* {!!banners && !isEmpty(banners) ? <BannersContainer devices={devices} banners={banners || []} /> : <></>} */}
+      <HomePropertiesList middleBanners={middleBanners || []} data={propertyData?.data || []} devices={devices} />{" "}
+      <TheInstallPrompt />
+      {!!banners && !isEmpty(banners) ? <BannersContainer devices={devices} banners={bottomBanners || []} /> : <></>}
     </div>
   );
 };

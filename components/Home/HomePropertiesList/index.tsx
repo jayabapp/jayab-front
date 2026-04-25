@@ -1,6 +1,7 @@
 "use client";
 
 import Button from "@/components/shared/Button/Button";
+import { DeviceInfo } from "@/helpers/device.detector";
 import _STRINGS from "@/utils/LocalStrings";
 import { chunk, isEmpty } from "lodash";
 import Link from "next/link";
@@ -8,14 +9,22 @@ import { useMemo, useState } from "react";
 import HomePropertiesClientPart from "./HomePropertiesClientPart";
 import HomePropertiesSsrPart from "./HomePropertiesSsrPart";
 
-const HomePropertiesList = ({ data, middleBanners }: { data: any[]; middleBanners: any[] }) => {
+const HomePropertiesList = ({
+  data,
+  middleBanners,
+  devices,
+}: {
+  data: any[];
+  middleBanners: any[];
+  devices?: DeviceInfo;
+}) => {
   const [page, setPage] = useState(1);
   const bannerGroup = useMemo(() => {
     if (!!middleBanners) return chunk(middleBanners, 2);
   }, [middleBanners]);
   return (
     <div className="w-full  padding-x ">
-      <HomePropertiesSsrPart middleBanners={bannerGroup || []} data={data} />
+      <HomePropertiesSsrPart middleBanners={bannerGroup || []} data={data} devices={devices} />
       {page == 1 && !isEmpty(data) && data?.length % 24 == 0 ? (
         <Link className="w-full " href={"/rooms"} prefetch={false}>
           <Button
