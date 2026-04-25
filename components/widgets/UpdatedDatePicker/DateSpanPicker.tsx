@@ -2,7 +2,6 @@ import Notify from "@/components/shared/Toast";
 import _STRINGS from "@/utils/LocalStrings";
 import moment from "moment-jalaali";
 import { Dispatch, SetStateAction, useState } from "react";
-import { date } from "yup";
 import DateSpanPickerModal from "./DateSpanPickerModal";
 
 const DateSpanPicker = ({
@@ -50,21 +49,21 @@ const DateSpanPicker = ({
   };
   return (
     <>
-      <div className="flex w-full items-center justify-between gap-4">
+      <div className="flex w-full items-center justify-between gap-2">
         <div
           onClick={onShowCalender}
-          className=" w-full bg-neutral-100 px-2  h-12  cursor-pointer relative flex items-center justify-center  rounded-10     "
+          className=" w-full  border px-2  h-12  cursor-pointer relative flex items-center justify-center  rounded-10     "
         >
           <div className="flex flex-col ">
-            <p className={`text-center text-sm ${!!date ? " font-medium " : " opacity-50"} `}>{START_TITLE}</p>
+            <p className={`text-center text-sm ${!!dates ? " font-medium " : " opacity-50"} `}>{START_TITLE}</p>
           </div>
         </div>
         <div
           onClick={onShowCalender}
-          className=" w-full bg-neutral-100 px-2  h-12  cursor-pointer relative flex items-center justify-center  rounded-10     "
+          className=" w-full  border px-2  h-12  cursor-pointer relative flex items-center justify-center  rounded-10     "
         >
           <div className="flex flex-col ">
-            <p className={`text-center text-sm ${!!date ? " font-medium " : " opacity-50"} `}>{END_TITLE}</p>
+            <p className={`text-center text-sm ${!!dates ? " font-medium " : " opacity-50"} `}>{END_TITLE}</p>
           </div>
         </div>
       </div>

@@ -54,7 +54,7 @@ export class PropertyService {
         apiRoutes.USER_PROP_OPTIONS,
         {
           group: dto.group,
-        }
+        },
       );
       return result;
     } catch (e) {
@@ -66,12 +66,12 @@ export class PropertyService {
   /*                            PROPERTY CONTACT INFO                           */
   /* -------------------------------------------------------------------------- */
 
-  static async getSinglePropertyContactInfo(dto: { propertySlug: string | number | null }) {
+  static async getSinglePropertyContactInfo(dto: { propertySlug: string | number | null; action: string | number }) {
     try {
       const result = await apiCall<
-        unknown,
+        { action: string | number },
         { list: PropertyContactIInfDto[]; owner: { selfie_image: ImageDto }; isPropertyExpired?: boolean }
-      >("GET", apiRoutes.SINGLE_PROPERTY_CONTACT_INFO(dto.propertySlug));
+      >("GET", apiRoutes.SINGLE_PROPERTY_CONTACT_INFO(dto.propertySlug), { action: dto?.action });
       return result;
     } catch (e) {
       throw e;
@@ -83,7 +83,7 @@ export class PropertyService {
       const result = await apiCall<{ elements: string }, string>(
         "GET",
         apiRoutes.SINGLE_PROPERTY_ADVISOR_SHARE(dto.propertyId),
-        { elements: dto?.elements }
+        { elements: dto?.elements },
       );
       return result;
     } catch (e) {
@@ -120,7 +120,7 @@ export class PropertyService {
           promote_id: dto.promote_id,
           redirect_url: dto.redirect_url,
           subscription_id: dto.subscription_id,
-        }
+        },
       );
       return result;
     } catch (e) {
@@ -136,7 +136,7 @@ export class PropertyService {
     try {
       const result = await apiCall<unknown, SingleOwnerPropertyDto>(
         "GET",
-        apiRoutes.OWNER_PROPERTIES(dto?.property_id)
+        apiRoutes.OWNER_PROPERTIES(dto?.property_id),
       );
       return result;
     } catch (e) {
@@ -324,7 +324,7 @@ export class PropertyService {
     try {
       const result = await apiCall<unknown, GetPropBadgeDto>(
         "GET",
-        apiRoutes.OWNER_PROPERTIES_SINGLE_BADGE(dto?.property_id)
+        apiRoutes.OWNER_PROPERTIES_SINGLE_BADGE(dto?.property_id),
       );
       return result;
     } catch (e) {
@@ -348,7 +348,7 @@ export class PropertyService {
     try {
       const result = await apiCall<unknown, OwnerSinglePropertyAuthdata>(
         "GET",
-        apiRoutes.OWNER_PROPERTIES_SINGLE_AUTH(dto?.property_id)
+        apiRoutes.OWNER_PROPERTIES_SINGLE_AUTH(dto?.property_id),
       );
       return result;
     } catch (e) {
@@ -437,7 +437,7 @@ export class PropertyService {
           region_id: dto.region_id,
           title: dto.title,
           unit_per_floor: dto.unit_per_floor,
-        }
+        },
       );
       return result;
     } catch (e) {
@@ -457,7 +457,7 @@ export class PropertyService {
         {
           lat: dto.lat,
           lng: dto.lng,
-        }
+        },
       );
       return result;
     } catch (e) {
@@ -473,7 +473,7 @@ export class PropertyService {
     try {
       await YupValidator<{ images: (string | number | null)[]; feature_image_id: string | number | null }>(
         dto,
-        sendMediaSchema
+        sendMediaSchema,
       );
 
       const result = await apiCall<
@@ -491,7 +491,7 @@ export class PropertyService {
   static async CreatePropertySetBedroom(
     dto: RoomInfosDto & {
       propertyId: string | number | null;
-    }
+    },
   ) {
     try {
       const result = await apiCall<RoomInfosDto, ProvienceTypesDto[]>(
@@ -508,7 +508,7 @@ export class PropertyService {
           sofa_bed: dto.sofa_bed,
           wc: dto.wc,
           wc_ir: dto.wc_ir,
-        }
+        },
       );
       return result;
     } catch (e) {
@@ -519,7 +519,7 @@ export class PropertyService {
   static async CreatePropertySetFacility(
     dto: FacilitiesValuesDto & {
       propertyId: string | number | null;
-    }
+    },
   ) {
     try {
       const result = await apiCall<FacilitiesValuesDto, ProvienceTypesDto[]>(
@@ -533,7 +533,7 @@ export class PropertyService {
           kitchen: dto.kitchen,
           pool_type: dto.pool_type,
           welfare: dto.welfare,
-        }
+        },
       );
       return result;
     } catch (e) {
@@ -544,7 +544,7 @@ export class PropertyService {
   static async CreatePropertySetPrice(
     dto: PricingPropertySendDto & {
       propertyId: string | number | null;
-    }
+    },
   ) {
     try {
       const result = await apiCall<PricingPropertySendDto, ProvienceTypesDto[]>(
@@ -561,7 +561,7 @@ export class PropertyService {
           std_capacity: Number(p2e(dto.std_capacity || "")),
           thursday: Number(p2e(dto.thursday || "")),
           wednesday: Number(p2e(dto.wednesday || "")),
-        }
+        },
       );
       return result;
     } catch (e) {
@@ -572,7 +572,7 @@ export class PropertyService {
   static async CreatePropertySetAssistant(
     dto: AssistantSendDto & {
       propertyId: string | number | null;
-    }
+    },
   ) {
     try {
       const result = await apiCall<AssistantSendDto, ProvienceTypesDto[]>(
@@ -582,7 +582,7 @@ export class PropertyService {
           assistant_full_name: dto.assistant_full_name,
           assistant_mobile: dto.assistant_mobile,
           show_mobile_type: dto.show_mobile_type,
-        }
+        },
       );
       return result;
     } catch (e) {
@@ -593,7 +593,7 @@ export class PropertyService {
   static async CreatePropertySetTerms(
     dto: PropertyTermsSendDto & {
       propertyId: string | number | null;
-    }
+    },
   ) {
     try {
       const result = await apiCall<PropertyTermsSendDto, ProvienceTypesDto[]>(
@@ -613,7 +613,7 @@ export class PropertyService {
           pet: dto.pet,
           pet_dscr: dto.pet_dscr,
           property_dscr: dto.property_dscr,
-        }
+        },
       );
       return result;
     } catch (e) {
@@ -661,7 +661,7 @@ export class PropertyService {
       const result = await apiCall<GetPropertiesPlusFilters, { data: PropertyListDto[]; meta: PageMetaDto }>(
         "GET",
         apiRoutes.GET_PROPERTIES,
-        dto
+        dto,
       );
       return result;
     } catch (e) {
@@ -743,7 +743,7 @@ export class PropertyService {
     try {
       const result = await apiCall<{ lng: string | number | null; lat: string | number | null }, ProvienceTypesDto[]>(
         "DELETE",
-        apiRoutes.SINGLE_OWNER_PROPERTY(dto.propertyId)
+        apiRoutes.SINGLE_OWNER_PROPERTY(dto.propertyId),
       );
       return result;
     } catch (e) {
@@ -759,7 +759,7 @@ export class PropertyService {
     try {
       const result = await apiCall<unknown, PropertyStatsDto>(
         "GET",
-        apiRoutes.SINGLE_OWNER_PROPERTY_STATS(dto.propertyId)
+        apiRoutes.SINGLE_OWNER_PROPERTY_STATS(dto.propertyId),
       );
       return result;
     } catch (e) {
@@ -774,7 +774,7 @@ export class PropertyService {
         apiRoutes.SINGLE_PROPERTY_UPDATE_VIEW(dto.propertyId),
         {
           fingerprint: dto.fingerprint,
-        }
+        },
       );
       return result || null;
     } catch (e) {

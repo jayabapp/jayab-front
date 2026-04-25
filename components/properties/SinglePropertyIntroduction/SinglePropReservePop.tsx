@@ -99,14 +99,26 @@ const SinglePropReservePop = ({
               closeOnSelect
             />
           </div>
+          <div className=" flex items-center justify-between">
+            {!!dates ? (
+              !count ? (
+                <p className="text-xs ">{`${_STRINGS.PPL_COUNT} را مشخص کنید`}</p>
+              ) : (
+                <></>
+              )
+            ) : (
+              <p className="text-xs ">تاریخ را انتخاب کنید</p>
+            )}
 
-          <Button
-            onClick={onReserveClick}
-            width="w-full"
-            containerClass="w-full items-center  justify-center"
-            roundedClass="rounded-full"
-            title={_STRINGS.SUBMIT}
-          />
+            <Button
+              onClick={onReserveClick}
+              width={`w-full ${!!dates && !!count ? "" : " text-white "} `}
+              disabled={!dates || !count}
+              containerClass={` ${dates && !!count ? "w-full" : "w-1/2"}  items-center  justify-center`}
+              roundedClass="rounded-full"
+              title={_STRINGS.ENTER_AND_MOVE_ON}
+            />
+          </div>
         </div>
       </ModalBottomSheet>
       <SinglePropRequestedReserveModal

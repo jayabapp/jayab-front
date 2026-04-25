@@ -5,7 +5,6 @@ import { ReserveListDto } from "@/api_services/reserve/reserve.interface";
 import { ReserveService } from "@/api_services/reserve/reserve.service";
 import ModalBottomSheet from "@/components/Modal/ModalBottomSheet";
 import Button from "@/components/shared/Button/Button";
-import { Divider } from "@/components/shared/Divider";
 import Notify from "@/components/shared/Toast";
 import { ReserveUserAction } from "@/enum/reserve.enum";
 import _STRINGS from "@/utils/LocalStrings";
@@ -16,7 +15,6 @@ import Image from "next/image";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
 import ActiveReservePop from "../reserve/ActiveReservePop";
-import LinearTextBlock from "../SinglePropertyAccards/LinearTextBlock";
 import SinglePropContactInfoModal from "./SinglePropContactInfoModal";
 
 const SinglePropRequestedReserveModal = ({
@@ -37,7 +35,7 @@ const SinglePropRequestedReserveModal = ({
   count: string | number;
 }) => {
   const router = useRouter();
-  const [contactType, setContactType] = useState<"tel" | "sms" | "">("");
+  const [contactType, setContactType] = useState<"call" | "sms" | "">("");
   const [loading, setLoading] = useState(false);
   const [activeReserve, setActiveReserve] = useState<ReserveListDto | null>(null);
   const { mutate: createFindChat } = useMutation({
@@ -54,7 +52,7 @@ const SinglePropRequestedReserveModal = ({
     createFindChat({ property_id: data?.id });
   };
 
-  const onContactClick = (type: "sms" | "tel") => {
+  const onContactClick = (type: "sms" | "call") => {
     setContactType(type);
   };
   const onContactClose = () => {
@@ -108,52 +106,31 @@ const SinglePropRequestedReserveModal = ({
         onHide={onHide}
         show={show}
         options={{
-          containerClass: `mx-auto rounded-t-20 absolute pb-[1.5rem] lg:pb-10 !max-h-[90dvh] bottom-0 lg:translate-x-1/2 lg:right-1/2 w-full lg:w-[calc(50svw)]  bg-primary-50 dark:bg-zinc-900 overflow-y-scroll  dark:bg-dark-700`,
+          containerClass: `mx-auto rounded-t-20 absolute pb-[1.5rem] lg:pb-10 !max-h-[90dvh] bottom-0 lg:translate-x-1/2 lg:right-1/2 w-full lg:w-[calc(50svw)]  bg-white dark:bg-zinc-900 overflow-y-scroll  dark:bg-dark-700`,
         }}
       >
         <div className="w-full flex flex-col   p-4 rounded-2xl     gap-4">
-          <div className="w-full  grid grid-cols-8 gap-2   ">
+          <div className="w-full  grid grid-cols-5 gap-2   ">
             {/* INFO */}
-            <div className={`col-span-6  !outline-none   order-1   flex flex-col gap-1`}>
+            <div className={`col-span-4  !outline-none   order-2   flex flex-col gap-1  justify-center `}>
               {/* TITLE */}
               <div className="flex items-start gap-2">
                 <p className="text-sm line-clamp-1  text-right font-semibold">درخواست رزرو برای {data?.title} </p>
               </div>
 
-              {/* CODE  - LIKES */}
-              {/* <div className="flex items-center justify-between gap-4">
-                <div className="bg-black/10 font-normal rounded-md text-xs   px-2 py-1  leading-4  flex items-center justify-center">
-                  کد {data?.code}
-                </div>{" "}
-              </div> */}
-
-              <div className="w-full flex mt-2 flex-col  gap-2">
+              <div className="w-full flex flex-col  gap-2">
                 <>
-                  {" "}
-                  {/* DESCRIPTION */}
-                  {/* <div className="w-full">
-                    <p className="text-xs">
-                      {" "}
-                      <span>{data?.total_bedrooms} اتاق</span> - <span>تا {data?.max_capacity} نفر</span>{" "}
-                      {!!data?.has_pool ? <span className="text-primary-700"> - {_STRINGS.HAS_POOL} </span> : <></>}
-                    </p>
-                  </div> */}
                   {/* LOCATION */}
                   <div className="flex w-full  items-center gap-1">
-                    {!!data?.is_promoted ? (
+                    {/* {!!data?.is_promoted ? (
                       <p className="  font-bold  text-primary-700  shrink-0  text-xs  pl-1 border-l">
                         {_STRINGS.LADDERED}
                       </p>
                     ) : (
-                      // <img
-                      //   src="/assets/icons/adds/pin_point_location.svg"
-                      //   alt={`location${data?.id}`}
-                      //   className="w-5 h-5 aspect-square"
-                      // />
                       <></>
-                    )}
+                    )} */}
 
-                    <p className="text-xs line-clamp-1 text-center ">
+                    <p className="text-xs  flex items-center line-clamp-1 text-center gap-0.5 ">
                       {data?.city}{" "}
                       <span className="text-xs ">
                         {data?.province || data?.region ? `(${data?.region || data?.province})` : ``}
@@ -164,7 +141,7 @@ const SinglePropRequestedReserveModal = ({
               </div>
             </div>{" "}
             {/* IMAGE PART */}
-            <div className={` flex h-fit !outline-none items-start  justify-start w-full col-span-2 order-2  `}>
+            <div className={` flex h-fit !outline-none items-start  justify-start w-full  order-1  `}>
               <div className=" aspect-square w-full h-full relative">
                 <Image
                   fill
@@ -176,31 +153,61 @@ const SinglePropRequestedReserveModal = ({
                       ? NEW_IMAGE_URL(data?.feature_image, "medium")
                       : "/assets/icons/shared/image_placeholder.svg"
                   }
-                  className=" w-full rounded-10  h-full  object-cover aspect-square"
+                  className=" w-full rounded-20  h-full  object-cover aspect-square"
                 />
               </div>
             </div>
           </div>
-          <div className=" relative w-full py-4 ">
-            <Divider />
+
+          {/* DATE DETAILS */}
+          <div className="w-full flex items-center  gap-2 ">
+            <img className="size-5 " src="/assets/icons/reserve/blue_calendar_reserve.svg" />
+            {/* ENTER */}
+            <p className="flex   gap-1 items-center">
+              <span className="text-xs text-primary-1000  ">ورود</span>{" "}
+              <span className="text-sm "> {moment(startDate, "jYYYY/jMM/jD").format("jDD jMMMM")} </span>{" "}
+            </p>
+            {/* EXIT */}
+            <p className="flex gap-1 items-center">
+              <span className="text-xs text-primary-1000 ">خروج</span>{" "}
+              <span className="text-sm "> {moment(endDate, "jYYYY/jMM/jD").format("jDD jMMMM")} </span>{" "}
+            </p>
+            {/* TOTAL */}
+            <p className="text-sm ">
+              {" "}
+              {` (${moment(endDate, "jYYYY/jMM/jD").diff(moment(startDate, "jYYYY/jMM/jD"), "days")} شب)`}{" "}
+            </p>{" "}
+          </div>
+
+          {/* PPL COUNT */}
+          <div className=" w-full flex items-center justify-between">
+            <div className="flex  items-center  gap-1  ">
+              <img className="size-5 " src="/assets/icons/reserve/blue_persons.svg" />
+              <p className="text-sm ">{`${!!`${count}`.includes("+") ? `بیشتر از  ${count}`.replace("+", "") : count} نفر`}</p>
+            </div>
+
             <Button
               title={`${_STRINGS.EDIT}`}
-              variant="solid"
-              width="  bg-gray-300 !text-black/60 w-fit !py-0 "
-              roundedClass="rounded-full"
+              variant="outline"
+              width=" !px-4  !text-xs !border-gray-300  !py-1 !bg-gray-100 !text-black/50 !font-normal/60 w-fit !py-0 "
+              roundedClass=" rounded-xl"
               icon={
                 <img
-                  className=" size-4 ml-1 grayscale brightness-50  opacity-60 "
+                  className=" size-3 ml-1 grayscale brightness-50  opacity-60 "
                   src="/assets/icons/shared/edit-pencel.svg"
                 />
               }
-              containerClass=" w-full absolute right-0  flex items-start -top-0 justify-start "
+              containerClass=" flex items-start  justify-start  "
               onClick={() => {
                 setShowEdit(true);
               }}
             />
           </div>
-          <div className="w-full flex flex-col gap-2">
+
+          <p className="text-sm text-primary-1200 ">
+            با انتخاب یکی از روش‌های زیر، درخواست شما برای میزبان ارسال می‌شود.
+          </p>
+          {/* <div className="w-full flex flex-col items-center justify-center gap-2">
             <LinearTextBlock
               dots
               title={_STRINGS.PPL_COUNT}
@@ -224,12 +231,12 @@ const SinglePropRequestedReserveModal = ({
               title={_STRINGS.DURATION}
               value={` ${moment(endDate, "jYYYY/jMM/jD").diff(moment(startDate, "jYYYY/jMM/jD"), "days")} شب`}
               options={{ title_class: " !font-normal !text-sm", value_class: "!text-sm" }}
-            />
-            {/* <Button
+            /> */}
+          {/* <Button
               title={`${_STRINGS.EDIT} تاریخ و نفرات`}
               variant="Faded"
-              width="  !bg-orange-500  !text-white w-full lg:w-1/2  !py-1.5"
-              roundedClass="rounded-full"
+              width="  !bg-orange-500  !text-white w-full lg:w-full  !py-1.5"
+              roundedClass=" rounded-xl"
               icon={
                 <img className=" size-4 ml-1  brightness-200 grayscale " src="/assets/icons/shared/edit-pencel.svg" />
               }
@@ -238,25 +245,51 @@ const SinglePropRequestedReserveModal = ({
                 setShowEdit(true);
               }}
             /> */}
-          </div>
-          <Divider />
-          <div className="w-full flex flex-col items-center justify-center gap-2">
-            <p className="text-center  font-medium">میتوانید از روش های زیر برای رزرو اقدام کنید.</p>
-
+          {/* </div> */}
+          {/* <Divider /> */}
+          <div className="w-full flex flex-col items-center justify-center gap-3">
             <Button
               onClick={() => {
                 onActionsClick(ReserveUserAction.RESERVE);
               }}
-              width="w-full  !py-2  !font-bold  !text-sm "
-              containerClass="w-1/2"
-              roundedClass="rounded-full"
+              width="w-full h-12  !py-2  !text-black !font-normal !bg-primary-1100  !border-none !text-sm "
+              containerClass="w-full lg:w-1/2 "
+              roundedClass=" rounded-xl"
               title={_STRINGS.SUBMIT_RESERVE}
               variant="outline"
               loading={loading}
+              icon={
+                <img
+                  className={`w-4 h-4  aspect-square  absolute right-3 top-0 bottom-0 my-auto ${isExpired ? "  opacity-50  grayscale" : ""} `}
+                  src="/assets/icons/reserve/blue_reserve_icon.svg"
+                />
+              }
               // icon={<img className="w-4 h-4  aspect-square" src="/assets/icons/advisor/blue_phone.svg" />}
             />
             {/* {!!data?.remaining_days ? (
               <> */}
+            {data?.is_chat_enabled ? (
+              <Button
+                variant="outline"
+                width="w-full h-12 !border-none !text-black !font-normal  !py-2 !bg-primary-1100  !text-sm "
+                containerClass="w-full  lg:w-1/2 "
+                roundedClass=" rounded-xl"
+                title={_STRINGS.CHAT_IN_JAYAB}
+                icon={
+                  <img
+                    className="w-4 h-4  absolute right-3 top-0 bottom-0 my-auto  ml-1 aspect-square"
+                    src="/assets/icons/reserve/blue_chat_reserve.svg"
+                  />
+                }
+                onClick={() => {
+                  // onActionsClick(ReserveUserAction.CHAT);
+                  onCreateChat();
+                }}
+                loading={loading}
+              />
+            ) : (
+              <></>
+            )}
             {!!isExpired ? (
               <></>
             ) : (
@@ -265,17 +298,17 @@ const SinglePropRequestedReserveModal = ({
                   disabled={!!isExpired}
                   onClick={() => {
                     // onActionsClick(ReserveUserAction.CALL);
-                    onContactClick("tel");
+                    onContactClick("call");
                   }}
-                  width={`w-full  !py-2  !font-bold  !text-sm ${isExpired ? "  !text-gray-400" : ""} `}
-                  containerClass="w-1/2"
-                  roundedClass="rounded-full"
+                  width={`w-full h-12 !text-black !font-normal !border-none  !py-2   !bg-primary-1100  !text-sm ${isExpired ? "  !text-gray-400" : ""} `}
+                  containerClass="w-full lg:w-1/2 "
+                  roundedClass=" rounded-xl"
                   title={_STRINGS.CALL}
                   variant="outline"
                   loading={loading}
                   icon={
                     <img
-                      className={`w-4 h-4  aspect-square ${isExpired ? "  opacity-50  grayscale" : ""} `}
+                      className={`w-4 h-4   absolute right-3 top-0 bottom-0 my-auto aspect-square ${isExpired ? "  opacity-50  grayscale" : ""} `}
                       src="/assets/icons/advisor/blue_phone.svg"
                     />
                   }
@@ -287,13 +320,13 @@ const SinglePropRequestedReserveModal = ({
                     onContactClick("sms");
                     // onActionsClick(ReserveUserAction.SMS);
                   }}
-                  width={`w-full  !py-2  !font-bold  !text-sm ${isExpired ? "  !text-gray-400" : ""} `}
-                  containerClass="w-1/2"
-                  roundedClass="rounded-full"
+                  width={`w-full h-12 !border-none !text-black !font-normal !py-2 !bg-primary-1100   !text-sm ${isExpired ? "  !text-gray-400" : ""} `}
+                  containerClass="w-full lg:w-1/2  "
+                  roundedClass=" rounded-xl"
                   title={_STRINGS.SMS}
                   icon={
                     <img
-                      className={`w-4 h-4 ${isExpired ? "  opacity-50  grayscale" : ""}   ml-1 aspect-square`}
+                      className={`w-4 h-4  absolute right-3 top-0 bottom-0 my-auto ${isExpired ? "  opacity-50  grayscale" : ""}   ml-1 aspect-square`}
                       src="/assets/icons/advisor/blue_sms.svg"
                     />
                   }
@@ -305,25 +338,13 @@ const SinglePropRequestedReserveModal = ({
             ) : (
               <></>
             )} */}
-            {data?.is_chat_enabled ? (
-              <Button
-                width="w-full !py-2  !font-bold !text-sm "
-                containerClass="w-1/2  "
-                roundedClass="rounded-full"
-                title={_STRINGS.CHAT_IN_JAYAB}
-                icon={<img className="w-4 h-4  ml-1 aspect-square" src="/assets/icons/advisor/white_message.svg" />}
-                onClick={() => {
-                  // onActionsClick(ReserveUserAction.CHAT);
-                  onCreateChat();
-                }}
-                loading={loading}
-              />
-            ) : (
-              <></>
-            )}
           </div>
+          <p className="text-sm text-primary-700 text-center w-full">
+            «رزرو شما پس از هماهنگی با میزبان نهایی خواهد شد.»
+          </p>
         </div>
       </ModalBottomSheet>
+
       <SinglePropContactInfoModal type={contactType} show={!!contactType} data={data} onHide={onContactClose} />
 
       <ActiveReservePop

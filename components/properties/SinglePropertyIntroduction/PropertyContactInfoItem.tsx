@@ -1,11 +1,13 @@
 "use client";
 import { ImageDto } from "@/api_services/auth/auth.interface";
 import { PropertyContactIInfDto } from "@/api_services/property/property.interface";
+import { PropertyService } from "@/api_services/property/property.service";
 import Button from "@/components/shared/Button/Button";
 import Notify from "@/components/shared/Toast";
 import maskPhoneNumber from "@/helpers/maskPhoneNumber";
 import _STRINGS from "@/utils/LocalStrings";
 import { NEW_IMAGE_URL } from "@/utils/urls";
+import { useMutation } from "@tanstack/react-query";
 import { useState } from "react";
 import { isMacOs, isWindows } from "react-device-detect";
 
@@ -15,16 +17,27 @@ const PropertyContactInfoItem = ({
   image,
   isPropertyExpired,
   type,
+  propertySlug,
 }: {
   onHide: () => void | null;
   data: PropertyContactIInfDto;
   image?: ImageDto;
   isPropertyExpired?: boolean;
-  type: "tel" | "sms" | "";
+  propertySlug?: string;
+  type: "call" | "sms" | "";
 }) => {
   const [showNumber, setShowNumber] = useState(false);
-  const onActionButtinsClick = (type: "tel" | "sms") => {
+
+  const { mutate, isPending: mutatePending } = useMutation({
+    mutationFn: PropertyService.getSinglePropertyContactInfo,
+  });
+
+  const action = () => {
+    mutate({ propertySlug: propertySlug || "", action: type });
+  };
+  const onActionButtinsClick = (type: "call" | "sms") => {
     onHide();
+    action();
     setTimeout(() => {
       window.open(`${type}:${data?.assistant_mobile_number}`, "_blank", "noopener,noreferrer");
     }, 500);
@@ -78,15 +91,18 @@ const PropertyContactInfoItem = ({
             )
           }
           onClick={() => {
+            if (!showNumber) {
+              action();
+            }
             setShowNumber(true);
           }}
         />
       ) : (
         <div className="flex flex-row items-center justify-center gap-4">
-          {type == "tel" ? (
+          {type == "call" ? (
             <div
               onClick={() => {
-                onActionButtinsClick("tel");
+                onActionButtinsClick("call");
               }}
               className=" w-9 h-9  bg-primary-700 aspect-square rounded-full flex items-center justify-center "
             >

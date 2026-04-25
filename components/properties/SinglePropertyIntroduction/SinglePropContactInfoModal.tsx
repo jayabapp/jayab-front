@@ -19,14 +19,14 @@ const SinglePropContactInfoModal = ({
   data: SinglePropDto | any;
   show: boolean;
   onHide: () => void | null;
-  type: "tel" | "sms" | "";
+  type: "call" | "sms" | "";
 }) => {
   const [state, setState] = useState<PropertyContactIInfDto[] | null>();
   const { data: contactInfo, isPending } = useQuery({
     queryKey: [PropertyService.SINGLE_PROPERTY_CONTACT_INFO_CACHEKEY, data?.slug, show],
     queryFn: () => {
       if (!!data?.slug && !!show) {
-        return PropertyService.getSinglePropertyContactInfo({ propertySlug: data?.slug });
+        return PropertyService.getSinglePropertyContactInfo({ propertySlug: data?.slug, action: "view" });
       } else return null;
     },
     staleTime: 300,
@@ -67,6 +67,7 @@ const SinglePropContactInfoModal = ({
                 onHide={onHide}
                 key={`contactItem${e?.assistant_full_name}`}
                 data={e}
+                propertySlug={data?.slug}
               />
             ))
           )}
