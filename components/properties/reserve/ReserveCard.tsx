@@ -50,7 +50,7 @@ const ReserveCard = ({
         setShowSub(true);
       } else {
         setShowCounter(false);
-        window.open(`tel:${data?.guest_mobile}`, "_blank", "noopener,noreferrer");
+        window.open(`call:${data?.guest_mobile}`, "_blank", "noopener,noreferrer");
         refetchCallBack?.();
       }
     },
@@ -93,7 +93,7 @@ const ReserveCard = ({
   /*                                 CONTACTING                                 */
   /* -------------------------------------------------------------------------- */
 
-  const [contactType, setContactType] = useState<"tel" | "sms" | "">("");
+  const [contactType, setContactType] = useState<"call" | "sms" | "">("");
 
   const { mutate: createFindChat, isPending: chatLoading } = useMutation({
     mutationFn: ChatService.StartOrFindChat,
@@ -107,7 +107,7 @@ const ReserveCard = ({
     createFindChat({ property_id: data?.property?.id || data?.property_id });
   };
 
-  const onContactClick = (type: "sms" | "tel") => {
+  const onContactClick = (type: "sms" | "call") => {
     setContactType(type);
   };
 
@@ -335,7 +335,7 @@ const ReserveCard = ({
                 <Button
                   disabled={isExpired}
                   onClick={() => {
-                    onContactClick("tel");
+                    onContactClick("call");
                   }}
                   width={`  ${isExpired ? "  !text-gray-400" : ""}  w-full  !py-2  !font-bold  !text-sm `}
                   containerClass="w-2/3"

@@ -19,7 +19,7 @@ const SinglePropContactInfoPop = ({
     queryKey: [PropertyService.SINGLE_PROPERTY_CONTACT_INFO_CACHEKEY, data?.slug, show],
     queryFn: () => {
       if (!!data?.slug && !!show) {
-        return PropertyService.getSinglePropertyContactInfo({ propertySlug: data?.slug });
+        return PropertyService.getSinglePropertyContactInfo({ propertySlug: data?.slug, action: "view" });
       } else return null;
     },
     staleTime: 300,
