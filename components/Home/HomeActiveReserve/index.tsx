@@ -39,15 +39,18 @@ const HomeActiveReserve = () => {
       {isEmpty(reserves) ? (
         <> </>
       ) : (
-        <div className=" w-full grid   padding-x  bg-gradient-to-t  from-white  from-[10%] rounded-t-20 to-primary-350   p-4 -mt-4 pt-10 lg:mt-6  lg:grid-cols-3  gap-2 ">
+        <div className=" w-full grid   padding-x  bg-gradient-to-t   lg:to-white from-white  from-[10%] rounded-t-20 lg:rounded-t-none to-primary-350   p-4 -mt-4 pt-10 lg:mt-0  lg:grid-cols-3  gap-2 lg:gap-3 ">
           <div className="col-span-full w-full flex items-center justify-between">
             <div className="flex  items-center gap-1">
-              <p className=" font-semibold text-sm  text-white "> {reserves?.length} درخواست رزرو فعال</p>
+              <p className=" font-semibold !text-sm  lg:text-black text-white lg:!text-base ">
+                {" "}
+                {reserves?.length} درخواست رزرو فعال
+              </p>
               <div className=" size-2 mb-3  rounded-full bg-red-700 animate-pulse  duration-700" />
             </div>
             <Link href="/profile/reserves" className="flex items-center gap-1.5">
-              <p className="text-white text-sm ">{_STRINGS.WATCH} همه</p>
-              <img className="w-4" src="/assets/icons/property/white_arrow_left.svg" />
+              <p className="text-white lg:text-black !text-sm  lg:!text-base">{_STRINGS.WATCH} همه</p>
+              <img className="w-4  lg:brightness-0 " src="/assets/icons/property/white_arrow_left.svg" />
             </Link>
           </div>
 
@@ -58,7 +61,7 @@ const HomeActiveReserve = () => {
             return (
               <div
                 key={`reserved${data?.id}`}
-                className="w-full   bg-white  rounded-2xl    justify-between flex flex-col shadow-md  p-2   gap-2  "
+                className="w-full   bg-white  rounded-2xl    justify-between flex flex-col shadow-md  lg:shadow-card p-2   gap-2  "
               >
                 <div className="w-full  grid grid-cols-8 gap-2   ">
                   {/* INFO */}

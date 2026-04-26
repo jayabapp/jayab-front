@@ -96,7 +96,7 @@ const HomeBannerPart = ({ banners, devices }: ImageCarouselTypes) => {
           contentId={item?.id}
           // // href={item?.link ? item?.link : undefined}
           // target={item?.link ? "_blank" : ""}
-          className={` focus:outline-none w-full px-0  aspect-[1.5]  md:aspect-[3]   ${
+          className={` focus:outline-none w-full px-0  aspect-[1.5] max-h-[60dvh]  md:aspect-[3.029]   ${
             item?.link || item?.category || item?.product || item?.brand_id ? "cursor-pointer" : ""
           } transition-all duration-300 ease-in-out   relative`}
         >
@@ -109,7 +109,7 @@ const HomeBannerPart = ({ banners, devices }: ImageCarouselTypes) => {
             alt={item?.image?.alt}
             // src={true ? "saf" : IMAGE_URL(e?.image_location)}
             src={NEW_IMAGE_URL(item?.image)}
-            className={`w-full object-cover  hidden  md:flex aspect-[1.5] md:aspect-[3]   align-middle  ${
+            className={`w-full object-cover  hidden  md:flex aspect-[1.5] md:aspect-[3.029]   align-middle  ${
               item?.imageClasses ? item?.imageClasses : ""
             }   `}
           />
@@ -121,7 +121,7 @@ const HomeBannerPart = ({ banners, devices }: ImageCarouselTypes) => {
             alt={item?.image?.alt}
             // src={true ? "saf" : IMAGE_URL(e?.image_location)}
             src={NEW_IMAGE_URL(item?.image_sm ? item?.image_sm : item?.image)}
-            className={`w-full object-cover  flex  md:hidden aspect-[1.5]  md:aspect-[3] align-middle  ${
+            className={`w-full object-cover  flex  md:hidden aspect-[1.5]  md:aspect-[3.029] align-middle  ${
               item?.imageClasses ? item?.imageClasses : ""
             }   `}
           />
