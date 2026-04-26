@@ -47,9 +47,10 @@ const Footer = () => {
   const socials = data?.data?.filter((e: any) => e?.fields?.key == "social");
   const others = data?.data?.filter((e) => e?.fields?.key !== "social");
   const PHONE_NUMBER = others?.find((i) => i?.fields?.key == "tel" || i?.key == "tel");
+  const isHome = pathname == "/";
   return (
     <footer
-      className={`  ${!!footerHiddenBlackList.find((e) => pathname?.includes(e)) ? "hidden lg:hidden" : ""} w-full  z-2   bg-primary-1000   flex   flex-col items-center justify-center bg-dark-500  bg-no-repeat bg-cover  relative  pt-72 lg:pt-[6rem] `}
+      className={`  ${isHome ? "" : "  hidden lg:flex"} ${!!footerHiddenBlackList.find((e) => pathname?.includes(e)) ? "hidden lg:hidden" : ""} w-full  z-2   bg-primary-1000/40   flex   flex-col items-center justify-center bg-dark-500  bg-no-repeat bg-cover  relative  pt-[28rem] lg:pt-[6rem] `}
     >
       <CallBox />
 
@@ -97,7 +98,7 @@ const Footer = () => {
             {/* <div className=" font-bold text-primary-700 text-3xl ">{aboutUs ? aboutUs?.title : _STRINGS?.LOGO}</div> */}
           </Link>
 
-          <p className=" break-words font-light text-sm dark:text-zinc-100 leading-6 opacity-100  line-clamp-4">
+          <p className=" break-words  text-sm dark:text-zinc-100 leading-6 opacity-100  line-clamp-4">
             {!!aboutUs ? aboutUs?.small_text || aboutUs?.full_text : ""}
           </p>
           <div className=" hidden md:flex justify-center md:justify-start mt-3 gap-2 mb-4">
@@ -140,7 +141,7 @@ const Footer = () => {
           className={`col-span-4 lg:col-span-2  flex w-full flex-col justify-between h-fit order-2 lg:order-1 `}
         >
           <div className="flex justify-center flex-col gap-4  mt-3 mb-4">
-            <p className=" text-lg font-bold  pb-4">{_STRINGS.COMUNICATION_WAYS}</p>
+            <p className=" text-lg font-bold  pb-0 lg:pb-4">{_STRINGS.COMUNICATION_WAYS}</p>
             {others && others?.length > 0 ? (
               others?.map((e) => <ContactuUItem e={e} textClass=" !font-normal " key={`${e?.id}SocialcONT`} />)
             ) : (
@@ -181,7 +182,7 @@ const Footer = () => {
       </div>
       {/* SECTION 4 */}
 
-      <div className="bg-black/10   padding-x  w-full  mx-auto  shadow-md    h-fit   lg:h-20 flex flex-col  py-2 md:py-0 gap-4 lg:flex-row   items-center justify-between  ">
+      <div className="bg-white   padding-x  w-full  mx-auto  shadow-md    h-fit   lg:h-20 flex flex-col  py-2 md:py-0 gap-4 lg:flex-row   items-center justify-between  ">
         <div className="  flex    items-center gap-4">
           <div className="w-full   dark:text-zinc-100  text-center text-sm  ">
             تمامی حقوق مادی و معنوی این وبسایت متعلق به شرکت .

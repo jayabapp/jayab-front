@@ -209,7 +209,7 @@ const SinglePropRequestedReserveModal = ({
             />
           </div>
 
-          <p className="text-sm text-primary-1200 ">
+          <p className="text-sm text-primary-1300 ">
             با انتخاب یکی از روش‌های زیر، درخواست شما برای میزبان ارسال می‌شود.
           </p>
           {/* <div className="w-full flex flex-col items-center justify-center gap-2">

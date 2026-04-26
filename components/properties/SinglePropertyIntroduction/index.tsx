@@ -118,14 +118,14 @@ const SinglePropertyIntroduction = ({ data }: { data: SinglePropDto }) => {
           className={` size-10  md:size-12 aspect-square rounded-full 
               `}
         />
-        <div className="flex flex-col items-start gap-1">
+        <div className="flex flex-col  items-start gap-1">
           <p className="text-sm font-bold text-primary-700">{_STRINGS.HOST}</p>
           {/* <p className=" text-sm  text-primary-700 font-medium ">{data?.owner_info?.full_name}</p> */}
           <div className="w-36 relative">
             <AutoFitText
               maxFontSize={14}
               minFontSize={10}
-              className="text-sm  w-36  text-primary-700 font-medium "
+              className="text-sm   w-36  text-primary-700 font-medium "
               text={`${data?.owner_info?.full_name}`}
             />
           </div>

@@ -32,17 +32,22 @@ const HistorySuggPart = ({ handleChange }: { handleChange: (e: string) => void |
           <div
             key={e?.id}
             onClick={() => handleChange(e?.title)}
-            className="w-fit opacity-80 border rounded-full px-2 gap-2 flex justify-between items-center"
+            className="rounded-full gap-4 py-0.5 px-2 pl-1 flex items-center justify-center border border-primary-700/30  bg-primary-700/5  text-xs "
           >
-            <p className=" text-xs cursor-pointer">{e?.title}</p>
-            <img
-              src="/assets/icons/adds/x_mark.svg"
+            <p className="text-sm cursor-pointer">{e?.title}</p>
+
+            <div
               onClick={(t) => {
                 t?.stopPropagation();
                 filterSugges(e?.id);
               }}
-              className="cursor-pointer w-1.5 h-1.5 opacity-65"
-            />
+              className=" cursor-pointer w-4 h-4 aspect-square rounded-full border border-primary-700/30  flex items-center justify-center"
+            >
+              <img
+                src="/assets/icons/adds/x_mark.svg"
+                className="w-2.5 h-2.5    opacity-30 p-0.5  text-primary-text aspect-square "
+              />
+            </div>
           </div>
         ))}
       </div>

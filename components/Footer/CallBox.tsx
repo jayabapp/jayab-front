@@ -33,7 +33,7 @@ const CallBox = () => {
               : "/assets/images/footer/footer_place_holder_image.png"
           }
           alt={"footer_image "}
-          className=" md:absolute bottom-0  hidden lg:flex  !max-w-[14rem] "
+          className=" md:absolute bottom-0   lg:flex  !max-w-[14rem] "
         />
         {isLoading ? (
           <>

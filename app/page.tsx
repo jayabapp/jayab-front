@@ -68,7 +68,7 @@ const Home = async () => {
         className=" bg-white  rounded-t-20   -mt-[1.375rem] md:mt-0  flex flex-col  relative gap-5 lg:gap-6  select-none  px-0  md:py-0 w-full"
       >
         <Suspense fallback={null}>
-          <div className="w-full px-4  mt-3 lg:mt-0 md:px-[20%] lg:px-[35%]">
+          <div className="w-full   mt-3 lg:mt-0  px-0 ">
             <HomeActiveReserve />
           </div>
         </Suspense>

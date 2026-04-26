@@ -13,6 +13,7 @@ import { ReserveService } from "@/api_services/reserve/reserve.service";
 import { UserService } from "@/api_services/user/user.service";
 import { useAuthStore, useStoreInit, useStoreParams } from "@/store";
 import { headerMobileSearchBlackList, headerWithFullSeach } from "@/utils/constantss";
+import { NEW_IMAGE_URL } from "@/utils/urls";
 import { useQuery } from "@tanstack/react-query";
 import { throttle } from "lodash";
 import moment from "moment-jalaali";
@@ -34,12 +35,12 @@ type textIconType = {
 
 const Pulser = ({ className }: { className?: string }) => (
   <div
-    className={`w-2 h-2 rounded-full  absolute -left-2 z-1 -top-0.5 bg-red-600 animate-pulse transition-all ${className}`}
+    className={`w-2 h-2 rounded-full  absolute -left-2 z-1 -top-0.5 bg-red-600 animate-pulse transition-all  ${className}`}
   ></div>
 );
 
 const TextIcon = ({ item, isHome, visibleTopHeader }: textIconType) => {
-  const parentClass = "flex items-center relative transition-all  group  justify-center col-span-1 gap-2 flex-row ";
+  const parentClass = "flex items-center relative transition-all   group  justify-center col-span-1 gap-2 flex-row ";
   const textColor = isHome && visibleTopHeader ? "text-white" : "text-black";
   if (!!item?.route) {
     return (
@@ -51,7 +52,7 @@ const TextIcon = ({ item, isHome, visibleTopHeader }: textIconType) => {
       className={`dark:invert  brightness-125 group-hover:brightness-100 group-hover:grayscale-0  grayscale `}
     /> */}
         <p
-          className={`${textColor}  text-sm lg:text-base transition-all duration-100  shrink-0  font-medium  group-hover:brightness-100 group-hover:text-primary-700  `}
+          className={`${textColor}  text-sm lg:text-base transition-all  duration-100  shrink-0  font-medium  group-hover:brightness-100 group-hover:text-primary-700  `}
         >
           {item?.title}
         </p>
@@ -244,11 +245,15 @@ const Header = ({ scroll }: { scroll?: number }) => {
         <Link
           href={!!isLogin ? "/profile" : "/auth"}
           prefetch={false}
-          className={`  ${isHeaderLight ? "border-white " : "border-gray-500"} border  transition-all   rounded-full flex items-center justify-center`}
+          className={` ${!!isLogin ? "bg-white" : ""}  ${isHeaderLight ? "border-white " : "border-gray-500"} border  relative shrink-0  transition-all   rounded-full flex items-center justify-center`}
         >
           <img
-            src="/assets/icons/header/new-face/user.svg"
-            className={`${isHeaderLight ? "" : "invert"} transition-all`}
+            src={
+              userInfo?.profile_image
+                ? NEW_IMAGE_URL(userInfo?.profile_image)
+                : "/assets/icons/header/new-face/user.svg"
+            }
+            className={`${isHeaderLight ? "" : "invert"}  ${isLogin && !userInfo?.profile_image ? "grayscale" : ""}  shrink-0  size-6  rounded-full transform-gpu transition-all `}
           />
         </Link>
 
@@ -259,13 +264,13 @@ const Header = ({ scroll }: { scroll?: number }) => {
               <Link
                 prefetch={false}
                 href={"/notifications"}
-                className="relative w-5 h-5 transition-all aspect-square  shrink-0 flex  "
+                className="relative w-5 h-5 transition-all   aspect-square  shrink-0 flex  "
               >
                 <AbsoluteBadge count={notifBadge || 0} />
                 <img
                   alt="notificatons"
                   src="/assets/icons/header/white_bell.svg"
-                  className={`w-5 h-5 transition-all aspect-square  shrink-0 ${isHeaderLight ? "" : "invert   opacity-40"} `}
+                  className={`w-5 h-5 transition-all  aspect-square  transform-gpu shrink-0  ${isHeaderLight ? "" : "invert   opacity-40"} `}
                 />
               </Link>
             </>
@@ -292,6 +297,8 @@ const Header = ({ scroll }: { scroll?: number }) => {
       // </div>
     );
   };
+
+  console.log(userInfo, "userInfouserInfo");
   return (
     <header className="relative">
       <div
@@ -303,23 +310,23 @@ transition-all ease-out  duration-300  header-content-container w-full mx-auto  
       >
         {/* ROW 1 */}
         <div
-          className={`flex justify-between  transition-all items-center  xl:gap-[10%]   duration-300  padding-x  py-2 lg:py-4   ${isHeaderLight ? "    bg-transparent " : topHeaderVisible ? "   bg-white   " : `   bg-white    ${headerWithFullSeach.includes(pathname) || !!params?.slug ? " border-b  lg:border-b-0  lg:shadow-lg" : "shadow-lg"}  `} `}
+          className={`flex justify-between  transition-all items-center  xl:gap-[10%]    duration-300  padding-x  py-2 lg:py-4   ${isHeaderLight ? "    bg-transparent " : topHeaderVisible ? "   bg-white   " : `   bg-white    ${headerWithFullSeach.includes(pathname) || !!params?.slug ? " border-b  lg:border-b-0  lg:shadow-lg" : "shadow-lg"}  `} `}
         >
           <div className=" lg:hidden flex w-full  ">
             {isHome ? (
-              <div className="w-full flex items-center  py-1  rounded-full justify-between pl-2 pr-1.5 gap-2">
+              <div className="w-full flex items-center  py-1  rounded-full justify-between pl-2 pr-1.5 gap-6">
                 <MenuProfileItem />
 
-                <div className="flex items-center gap-6">
-                  <div className={` ${topHeaderVisible ? "hidden" : "  flex"} transition-all `}>
+                <div className="flex items-center gap-6 w-full justify-end">
+                  <div className={` ${topHeaderVisible ? "hidden" : "  flex"} transition-all   w-full `}>
                     <Suspense>
                       <PopSearchbox
-                        justIcon
                         boxId={scroll ? "SEARCH_BOX_Mobile_Modal" : "SEARCH_BOX_Mobile"}
                         placeholder={_STRINGS?.SEARCH}
                         onSubmit={(text) => {}}
                         onClear={() => {}}
-                        item={{ bg: "" }}
+                        containerClass={" w-full mx-auto"}
+                        item={{ bg: `  !py-1 ` }}
                         autofocus={isInSearch}
                       />
                     </Suspense>
@@ -330,7 +337,10 @@ transition-all ease-out  duration-300  header-content-container w-full mx-auto  
                       className={`w-16 ${topHeaderVisible ? "flex" : "hidden"} `}
                       src="/assets/icons/logo/just_title_logo.svg"
                     />
-                    <img className="w-10 h-10 aspect-square" src="/assets/icons/logo/header_mobile_logo.svg" />
+                    <img
+                      className="w-10 h-10 aspect-square  shrink-0 "
+                      src="/assets/icons/logo/header_mobile_logo.svg"
+                    />
                   </div>
                 </div>
               </div>
@@ -415,7 +425,7 @@ transition-all ease-out  duration-300  header-content-container w-full mx-auto  
                       >
                         <img
                           src="/assets/icons/navbar/home_nav.svg"
-                          className="transition-all grayscale opacity-50  hover:opacity-100 hover:grayscale-0"
+                          className="transition-all   grayscale opacity-50  hover:opacity-100 hover:grayscale-0"
                         />
                       </Link>
                     ) : (
@@ -432,7 +442,7 @@ transition-all ease-out  duration-300  header-content-container w-full mx-auto  
                           >
                             <img
                               src="/assets/icons/navbar/home_nav_black.svg"
-                              className="transition-all grayscale opacity-60  hover:opacity-100 hover:grayscale-0"
+                              className="transition-all  grayscale opacity-60  hover:opacity-100 hover:grayscale-0"
                             />
                           </Link>
                         ) : (
@@ -456,7 +466,7 @@ transition-all ease-out  duration-300  header-content-container w-full mx-auto  
             )}
           </div>
           <div
-            className={` text-xs   lg:text-md   gap-8 font-medium flex-row hidden lg:flex w-[50%] transition-all ease-in-out duration-1000 items-center `}
+            className={` text-xs   lg:text-md   gap-8 font-medium flex-row hidden lg:flex w-[50%] transition-all  ease-in-out duration-1000 items-center `}
           >
             {!!showLogins ? <MenuProfileItem /> : <></>}
 
@@ -562,7 +572,7 @@ transition-all ease-out  duration-300  header-content-container w-full mx-auto  
                     className={`w-16 ${topHeaderVisible && !!isHome ? "flex  grayscale brightness-[500]" : "hidden  lg:flex"} `}
                     src="/assets/icons/logo/just_title_logo.svg"
                   />
-                  <img className="w-10 h-10 aspect-square" src="/assets/icons/logo/header_mobile_logo.svg" />
+                  <img className="w-10 h-10 aspect-square shrink-0" src="/assets/icons/logo/header_mobile_logo.svg" />
                 </div>
               </Link>
             </div>

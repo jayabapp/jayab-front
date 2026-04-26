@@ -71,7 +71,7 @@ const SsrFilterPage = ({ landings, firstData }: { firstData: { data: any[] }; la
     /*                        FILTERD KEYS COMING FROM SLUG                       */
     /* -------------------------------------------------------------------------- */
 
-    setHiddenFilters(Object.keys(landings?.query));
+    // setHiddenFilters(Object.keys(landings?.query));
     /////////
     setQueries({ ...defaults, ...queriesParams });
     setDefaultMobileFilters({ ...defaults, ...queriesParams });

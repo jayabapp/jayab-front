@@ -1,19 +1,17 @@
 "use client";
 
-import _, { isEmpty } from "lodash";
+import { isEmpty } from "lodash";
 
-import { useEffect, useRef, useState } from "react";
+import { useRef } from "react";
 import type { Swiper } from "swiper";
 import { SwiperSlide } from "swiper/react";
 
-import _STRINGS from "@/utils/LocalStrings";
-
+import { ProvienceTypesDto } from "@/api_services/property/property.interface";
 import EmptyList from "@/components/shared/Lotties/EmptyList";
 import SwiperWithNavigation from "@/components/SwiperWithNavigation";
-import PropertilesFilterListItem from "./PropertilesFilterListItem";
-import { ProvienceTypesDto } from "@/api_services/property/property.interface";
-import { usePathname, useRouter } from "next/navigation";
 import queryBuilder from "@/helpers/queryBuilder";
+import { usePathname, useRouter } from "next/navigation";
+import PropertilesFilterListItem from "./PropertilesFilterListItem";
 
 function PropertiesFilterList({
   data,
@@ -68,12 +66,12 @@ function PropertiesFilterList({
             // when window width is >= 640px
             320: {
               slidesPerView: 4.5,
-              spaceBetween: 2,
+              spaceBetween: 5,
               grid: { fill: "row", rows: 1 },
             },
             640: {
               slidesPerView: 4.5,
-              spaceBetween: 2,
+              spaceBetween: 5,
               grid: { fill: "row", rows: 1 },
             },
             // when window width is >= 768px

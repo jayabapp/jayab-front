@@ -211,7 +211,7 @@ const PopSearchbox = ({
             <div
               id={boxId}
               ref={inputRef}
-              className={`bg-transparent text-sm  dark:bg-transparent py-1 pl-3 pr-0.5  w-full ${!text ? "opacity-50" : ""}  `}
+              className={`bg-transparent text-base lg:text-sm  line-clamp-1 dark:bg-transparent py-1 pl-3 pr-0.5  w-full ${!text ? "opacity-50" : ""}  `}
               // onChange={(v) => handleChange(v.target.value)}
             >
               {" "}

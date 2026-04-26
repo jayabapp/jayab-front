@@ -65,25 +65,9 @@ const FiltersSelectedFiltersShowcase = ({
     }
     return data;
   }, [propertyTypes, query]);
-  // const finallizedSelectedOptions = useMemo(() => {
-  //   let data = [];
-  //   if (!!propertyTypes && query) {
-  //     let objectKeys = Object.keys(propertyTypes)?.map((e) => e?.toLowerCase());
 
-  //     for (let index = 0; index < objectKeys.length; index++) {
-  //       const element = objectKeys[index];
-  //       if (!!query?.[element]) {
-  //         data.push(
-  //           query?.[element]?.split(",")?.map((x: any) => propertyTypes[element.toUpperCase()]?.find((z) => z?.id == x))
-  //         );
-  //       }
-  //     }
-  //   }
-
-  //   return data;
-  // }, [propertyTypes, query]);
-
-  const queryMaker = (items: any[], queryKey: string) => {
+  ///////////////////////////
+  const queryMakerArray = (items: any[], queryKey: string) => {
     let temp = { ...query };
     const body = {
       ...temp,
@@ -95,26 +79,35 @@ const FiltersSelectedFiltersShowcase = ({
       delete body[queryKey];
     }
     delete body.page;
-    // router.replace(`/rooms?${queryBuilder(body)}`);
     router.replace(`${pathname}?${queryBuilder(body)}`);
   };
 
+  const queryMakerItem = (item: any, queryKey: string) => {
+    let temp = { ...query };
+    const body = {
+      ...temp,
+    };
+
+    if (!!item) {
+      body[queryKey] = item;
+    } else {
+      delete body[queryKey];
+    }
+    delete body.page;
+    router.replace(`${pathname}?${queryBuilder(body)}`);
+  };
+
+  /////////////////////////
   const onFilterRemoveClick = (i: any, key: string) => {
     let array: any = [];
 
     array = finallizedSelectedOptions?.[key]?.filter((it: any) => it?.id != `${i?.id}`);
-    queryMaker(array, key);
+    queryMakerArray(array, key);
   };
 
-  // const onFilterClick = (i: any, queyData: any) => {
-  //   let temp: any = [];
-
-  //   if (queyData?.find((it: any) => it?.id == `${i?.id}`)) {
-  //     temp = queyData?.filter((it: any) => it?.id != `${i?.id}`);
-  //   }
-
-  //   queryMaker(temp, i?.group.toLowerCase());
-  // };
+  const onFilterAddClick = (value: any, key: string) => {
+    queryMakerItem(value, key.toLowerCase());
+  };
 
   const removeFiltersKeys = (array: string[]) => {
     let temp = { ...query };
@@ -197,25 +190,37 @@ const FiltersSelectedFiltersShowcase = ({
         ))}
       {/*  HAS POOL */}
       {/* {!isHiddenFilter("has_pool") && !!query?.has_pool && query?.has_pool != "2" ? ( */}
-      {!isHiddenFilter("has_pool") && !!query?.has_pool ? (
-        <SwiperSlide key={`hasPool`} className="!w-auto    ">
-          <div className="rounded-full !w-auto   gap-4 py-1 h-[1.625rem] px-1 flex items-center justify-center border border-primary-700  bg-primary-700/5 text-primary-700  text-xs ">
-            <p className="text-xs pr-2">
-              {_STRINGS.POOL_STATUS} : {query?.has_pool == "0" ? "بدون استخر" : "  استخردار"}
-            </p>
+      {/* {!isHiddenFilter("has_pool") && !!query?.has_pool ? ( */}
+      <SwiperSlide key={`hasPool`} className="!w-auto    ">
+        <div
+          onClick={() => {
+            onFilterAddClick(1, "has_pool");
+          }}
+          className={` cursor-pointer ${!!query?.has_pool ? "" : " grayscale opacity-70"} rounded-full !w-auto   gap-0 py-1 h-[1.625rem] px-1 flex items-center justify-center border border-primary-700  bg-primary-700/5 text-primary-700  text-xs `}
+        >
+          <p className="text-xs px-2">
+            {/*   {_STRINGS.POOL_STATUS} : */}
+            {query?.has_pool == "0" ? "بدون استخر" : "  استخردار"}
+          </p>
+          {!!query?.has_pool ? (
             <div
-              onClick={() => {
+              onClick={(e) => {
+                e.preventDefault();
+                e.stopPropagation();
                 removeFiltersKeys(["has_pool"]);
               }}
               className=" cursor-pointer w-4 h-4 aspect-square rounded-full border border-primary-700 flex items-center justify-center"
             >
               <img src="/assets/icons/adds/blue_plus.svg" className="w-2 h-2 rotate-45 aspect-square " />
             </div>
-          </div>
-        </SwiperSlide>
-      ) : (
+          ) : (
+            <></>
+          )}
+        </div>
+      </SwiperSlide>
+      {/* ) : (
         <></>
-      )}
+      )} */}
       {/* DYNAMIC FILTERS */}
       {/* {!isHiddenFilter("pool_type") &&
         finallizedSelectedOptions?.["pool_type"]?.map((e: any, index: number) => (

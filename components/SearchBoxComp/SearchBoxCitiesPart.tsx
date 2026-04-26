@@ -69,7 +69,9 @@ const SearchBoxCitiesPart = ({ setShowPop }: { setShowPop: Dispatch<SetStateActi
         temp = [...queyRegionsData, `${i?.id}`];
       }
     }
-    const newStoredRegions = temp?.map((e: any) => locationsData?.regions?.find((x: any) => x?.id == e));
+    const newStoredRegions = temp
+      ?.map((e: any) => locationsData?.regions?.find((x: any) => x?.id == e))
+      ?.filter((e: any) => !!e);
 
     useCitiesStore.setState({
       locationsData: {
