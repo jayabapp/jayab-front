@@ -4,7 +4,6 @@ import EmptyList from "@/components/shared/Lotties/EmptyList";
 import LottieLoading from "@/components/shared/Lotties/LottieLoading";
 import { DeviceInfo } from "@/helpers/device.detector";
 import { WeekDays } from "@/utils/constantss";
-import { isEmpty } from "lodash";
 import moment from "moment-jalaali";
 import { Fragment, useEffect, useState } from "react";
 import HomeProductsBannerItems from "./HomeProductsBannerItems";
@@ -45,13 +44,14 @@ function HomePropertiesSsrPart({ data, middleBanners, devices }: HomePropertiesS
           <LottieLoading />
         ) : data?.length > 0 ? (
           <div className="grid   pb-8 pt-2 md:pt-2 grid-cols-1 gap-2 md:gap-4  md:grid-cols-2 xl:grid-cols-4 ">
-            <div className=" col-span-full row-start-7 lg:row-start-3  ">
-              <HomeProductsBannerItems bannerItem={middleBanners?.[0]} />
-            </div>
+            {!!middleBanners?.[0] ? (
+              <div className=" col-span-full row-start-7 lg:row-start-3  ">
+                <HomeProductsBannerItems bannerItem={middleBanners?.[0]} />
+              </div>
+            ) : (
+              <></>
+            )}
             {data?.map((i: any, index: number) => {
-              const bannerItem = !isEmpty(middleBanners)
-                ? middleBanners[Math.floor(index / (devices?.isDesktop ? 8 : 6))]
-                : [];
               return (
                 <Fragment key={`PRODUCT${i?.id}`}>
                   <PropertyCard week={week} data={i} key={`PRODUCT${i?.id}`} />

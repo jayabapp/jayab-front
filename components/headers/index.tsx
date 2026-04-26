@@ -241,7 +241,7 @@ const Header = ({ scroll }: { scroll?: number }) => {
       // >
       //   <MenuDropDown isHeaderLight={isHeaderLight} />
       //   {isLogin ? (
-      <div className=" flex items-center gap-6">
+      <div className=" flex items-center  gap-3 lg:gap-6">
         <Link
           href={!!isLogin ? "/profile" : "/auth"}
           prefetch={false}
@@ -253,7 +253,7 @@ const Header = ({ scroll }: { scroll?: number }) => {
                 ? NEW_IMAGE_URL(userInfo?.profile_image)
                 : "/assets/icons/header/new-face/user.svg"
             }
-            className={`${isHeaderLight ? "" : "invert"}  ${isLogin && !userInfo?.profile_image ? "grayscale" : ""}  shrink-0  size-6  rounded-full transform-gpu transition-all `}
+            className={` ${isLogin && !userInfo?.profile_image ? " lg:brightness-0" : !isLogin && !isHeaderLight ? " brightness-0" : ""}  shrink-0  size-6  rounded-full transform-gpu transition-all `}
           />
         </Link>
 
@@ -298,7 +298,6 @@ const Header = ({ scroll }: { scroll?: number }) => {
     );
   };
 
-  console.log(userInfo, "userInfouserInfo");
   return (
     <header className="relative">
       <div
@@ -314,10 +313,10 @@ transition-all ease-out  duration-300  header-content-container w-full mx-auto  
         >
           <div className=" lg:hidden flex w-full  ">
             {isHome ? (
-              <div className="w-full flex items-center  py-1  rounded-full justify-between pl-2 pr-1.5 gap-6">
+              <div className="w-full flex items-center  py-1  rounded-full justify-between pl-2 pr-1.5 gap-3 lg:gap-6">
                 <MenuProfileItem />
 
-                <div className="flex items-center gap-6 w-full justify-end">
+                <div className="flex items-center gap-3 lg:gap-6 w-full justify-end">
                   <div className={` ${topHeaderVisible ? "hidden" : "  flex"} transition-all   w-full `}>
                     <Suspense>
                       <PopSearchbox
@@ -326,7 +325,7 @@ transition-all ease-out  duration-300  header-content-container w-full mx-auto  
                         onSubmit={(text) => {}}
                         onClear={() => {}}
                         containerClass={" w-full mx-auto"}
-                        item={{ bg: `  !py-1 ` }}
+                        item={{ bg: `  !py-0.5 ` }}
                         autofocus={isInSearch}
                       />
                     </Suspense>

@@ -83,7 +83,7 @@ const Profile = () => {
           <p className="text-sm font-medium">{_STRINGS.PLZ_SELECT_A_PAGE}</p>
         </div>
       ) : (
-        <div className="flex flex-col mt-4 ">
+        <div className="flex flex-col mt-0 lg:mt-4 ">
           {!!data ? (
             <div
               className="
