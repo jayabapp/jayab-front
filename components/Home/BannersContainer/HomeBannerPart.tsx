@@ -65,6 +65,7 @@ const HomeBannerPart = ({ banners, devices }: ImageCarouselTypes) => {
 
         <div className="w-[1px] h-8 bg-gray-300 lg:flex hidden"></div>
         <HomeCityFilterCityPart
+          isHome
           options={{
             cotainerClass:
               " h-10  px-2 shrink-0  w-fit  rounded-l-20 lg:rounded-l-0 lg:px-0  justify-between  bg-white   lg:h-auto lg:bg-transparent",

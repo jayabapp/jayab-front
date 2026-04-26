@@ -205,7 +205,6 @@ const CityModal = ({
         const citiesWhithoutProv = allIncludedProves
           ?.filter((x: NewCitiesListDto) => !allFullProviencesSelected?.map((p: any) => p?.id).includes(x?.id))
           ?.flatMap((e: NewCitiesListDto) => e?.child);
-        console.log(citiesWhithoutProv, allFullProviencesSelected);
 
         body.cities = citiesWhithoutProv?.map((e: NewCitiesListDto) => e?.id);
         fullSelectedcities = citiesWhithoutProv?.map((e: NewCitiesListDto) => e);
@@ -221,7 +220,6 @@ const CityModal = ({
       /* -------------------------------------------------------------------------- */
       /*                            SETTING DATA FOR SHOW                           */
       /* -------------------------------------------------------------------------- */
-
       useCitiesStore.setState({
         locationsData: {
           cities: fullSelectedcities,
@@ -230,6 +228,7 @@ const CityModal = ({
       });
 
       /////////////////////
+
       if (!!passedUrl) {
         if (!!isHome && !body?.provinces && isEmpty(body?.cities)) {
         } else {

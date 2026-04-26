@@ -4,7 +4,7 @@ import { useCitiesStore } from "@/store";
 import _STRINGS from "@/utils/LocalStrings";
 import { Suspense, useState } from "react";
 
-const HomeCityFilterCityPart = ({ options }: { options?: { cotainerClass?: string } }) => {
+const HomeCityFilterCityPart = ({ options, isHome }: { options?: { cotainerClass?: string }; isHome?: boolean }) => {
   const { locationsData } = useCitiesStore();
   const [showCities, setShowCities] = useState(false);
   const [title, setTitle] = useState("");
@@ -71,7 +71,7 @@ const HomeCityFilterCityPart = ({ options }: { options?: { cotainerClass?: strin
           //   cities: locationsData?.cities?.map((e: any) => e?.id),
           //   provinces: locationsData?.provinces?.map((e: any) => e?.id)?.join(","),
           // }}
-          isHome
+          isHome={isHome}
           setTitle={setTitle}
           onHide={onHideCities}
           show={showCities}

@@ -101,7 +101,6 @@ const SearchBoxCitiesPart = ({ setShowPop }: { setShowPop: Dispatch<SetStateActi
 
     queryMaker(temp, "provinces");
   };
-
   return (
     <div className="w-full p-4  flex flex-col gap-2 ">
       <p>شهرهای انتخاب شده</p>

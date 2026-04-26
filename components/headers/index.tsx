@@ -559,7 +559,7 @@ transition-all ease-out  duration-300  header-content-container w-full mx-auto  
                 {" "}
                 <div className="flex items-center gap-1 justify-center">
                   <img
-                    className={`w-16 ${topHeaderVisible ? "flex" : "hidden  lg:flex"} `}
+                    className={`w-16 ${topHeaderVisible && !!isHome ? "flex  grayscale brightness-[500]" : "hidden  lg:flex"} `}
                     src="/assets/icons/logo/just_title_logo.svg"
                   />
                   <img className="w-10 h-10 aspect-square" src="/assets/icons/logo/header_mobile_logo.svg" />

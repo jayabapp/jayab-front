@@ -10,11 +10,12 @@ const HomeProductsBannerItems = ({ bannerItem }: { bannerItem: any }) => {
   const pusher = (link: string) => {
     router.push(link);
   };
+
   return (
     <Editable
       isBanner
       contentId={bannerItem?.id}
-      className={`group   aspect-[3] md:aspect-[4]  focus:outline-none w-full px-0 relative overflow-hidden rounded-md   ${
+      className={`group   aspect-[3] md:aspect-[6]  focus:outline-none w-full px-0 relative overflow-hidden rounded-md   ${
         bannerItem?.brand_id || bannerItem?.link || bannerItem?.category || bannerItem?.product ? "cursor-pointer" : ""
       } `}
       onClick={() => {
@@ -23,7 +24,6 @@ const HomeProductsBannerItems = ({ bannerItem }: { bannerItem: any }) => {
         } else if (bannerItem?.link) pusher(bannerItem?.link);
       }}
     >
-      <div className="invisible">sd</div>
       <div className="w-full h-full rounded-20 object-cover overflow-hidden align-middle">
         <Image
           src={

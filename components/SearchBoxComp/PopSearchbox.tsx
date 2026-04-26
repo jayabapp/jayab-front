@@ -294,7 +294,7 @@ const PopSearchbox = ({
           </div>
         </div>
 
-        {!isEmpty(locationsData?.regions) || !isEmpty(locationsData?.cities) || !isEmpty(locationsData?.province) ? (
+        {!isEmpty(locationsData?.regions) || !isEmpty(locationsData?.cities) || !isEmpty(locationsData?.provinces) ? (
           <SearchBoxCitiesPart setShowPop={setShowPop} />
         ) : (
           <></>
