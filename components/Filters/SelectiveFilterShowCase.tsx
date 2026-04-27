@@ -25,7 +25,7 @@ const SelectiveFilterShowCase = ({
   const { replace } = useRouter();
   const pathname = usePathname();
   const [filters, setFilters] = useState({});
-  const slectedCount = query?.[queryKey]?.split(",")?.length;
+  const slectedCount = query?.[queryKey]?.split(",")?.filter((e: any) => !!e)?.length;
   const searchParams = useSearchParams();
   useEffect(() => {
     if (!!query) {

@@ -7,7 +7,7 @@ import _STRINGS from "@/utils/LocalStrings";
 import { indexOf, isEmpty } from "lodash";
 import moment from "moment-jalaali";
 import { usePathname, useRouter } from "next/navigation";
-import { Dispatch, SetStateAction, useMemo } from "react";
+import React, { Dispatch, SetStateAction, useMemo } from "react";
 import RegionButton from "../CityModal/RegionButton";
 import Swiper from "../embelaCarousel/Swiper";
 import SwiperSlide from "../embelaCarousel/SwiperSlide";
@@ -124,6 +124,7 @@ const FiltersSelectedFiltersShowcase = ({
     // router.replace(`/rooms?${queryBuilder(body)}`);
   };
   const isHiddenFilter = (key: string) => {
+    return false;
     return hiddenFilters?.includes(key);
   };
 
@@ -136,6 +137,8 @@ const FiltersSelectedFiltersShowcase = ({
   const sortFilteredDynamicPropsInQueryKeys = filteredDynamicPropsInQueryKeys
     .sort((a, b) => (indexOf(sortDynamicFiltersInOrder, a) > indexOf(sortDynamicFiltersInOrder, b) ? 1 : -1))
     .sort((a, b) => (!!query[a.toLowerCase()] ? -1 : 1));
+  const dynamicKeysLenght = sortFilteredDynamicPropsInQueryKeys?.filter((e) => !!query[e?.toLowerCase()])?.length;
+
   return (
     <Swiper
       parentClass={containerClass}
@@ -392,45 +395,54 @@ const FiltersSelectedFiltersShowcase = ({
       ) : (
         <></>
       )}
-      <SwiperSlide key={`hasPool`} className={`!w-auto  order-10 `}>
-        <div
-          onClick={() => {
-            onFilterAddClick(1, "has_pool");
-          }}
-          className={` cursor-pointer ${!!query?.has_pool ? "" : " grayscale opacity-70"} rounded-full !w-auto   gap-0 py-1 h-[1.625rem] px-1 flex items-center justify-center border border-primary-700  bg-primary-700/5 text-primary-700  text-xs `}
-        >
-          <p className="text-xs px-2">
-            {/*   {_STRINGS.POOL_STATUS} : */}
-            {query?.has_pool == "0" ? "بدون استخر" : "  استخردار"}
-          </p>
-          {!!query?.has_pool ? (
-            <div
-              onClick={(e) => {
-                e.preventDefault();
-                e.stopPropagation();
-                removeFiltersKeys(["has_pool"]);
-              }}
-              className=" cursor-pointer w-4 h-4 aspect-square rounded-full border border-primary-700 flex items-center justify-center"
-            >
-              <img src="/assets/icons/adds/blue_plus.svg" className="w-2 h-2 rotate-45 aspect-square " />
-            </div>
-          ) : (
-            <></>
-          )}
-        </div>
-      </SwiperSlide>
+
       {sortFilteredDynamicPropsInQueryKeys?.map((key, index) => {
         const STRINGS: any = { ..._STRINGS };
+
         return (
-          <SwiperSlide key={`selectedItems${key}`} className={`   !w-auto  order-[${index}]   `}>
-            <SelectiveFilterShowCase
-              title={STRINGS?.[key?.toUpperCase()] || ""}
-              list={propertyTypes?.[key?.toUpperCase()]}
-              queryKey={key?.toLowerCase()}
-              query={query}
-              removeFiltersKeys={removeFiltersKeys}
-            />
-          </SwiperSlide>
+          <React.Fragment key={`wrapper${key}`}>
+            <SwiperSlide key={`selectedItems${key}`} className={`   !w-auto    `}>
+              <SelectiveFilterShowCase
+                title={STRINGS?.[key?.toUpperCase()] || ""}
+                list={propertyTypes?.[key?.toUpperCase()]}
+                queryKey={key?.toLowerCase()}
+                query={query}
+                removeFiltersKeys={removeFiltersKeys}
+              />
+            </SwiperSlide>
+
+            {(!!dynamicKeysLenght && dynamicKeysLenght - 1 == index) || (!dynamicKeysLenght && index == 0) ? (
+              <SwiperSlide key={`hasPool`} className={`!w-auto  `}>
+                <div
+                  onClick={() => {
+                    onFilterAddClick(1, "has_pool");
+                  }}
+                  className={` cursor-pointer ${!!query?.has_pool ? "" : " grayscale opacity-70"} rounded-full !w-auto   gap-0 py-1 h-[1.625rem] px-1 flex items-center justify-center border border-primary-700  bg-primary-700/5 text-primary-700  text-xs `}
+                >
+                  <p className="text-xs px-2">
+                    {/*   {_STRINGS.POOL_STATUS} : */}
+                    {query?.has_pool == "0" ? "بدون استخر" : "  استخردار"}
+                  </p>
+                  {!!query?.has_pool ? (
+                    <div
+                      onClick={(e) => {
+                        e.preventDefault();
+                        e.stopPropagation();
+                        removeFiltersKeys(["has_pool"]);
+                      }}
+                      className=" cursor-pointer w-4 h-4 aspect-square rounded-full border border-primary-700 flex items-center justify-center"
+                    >
+                      <img src="/assets/icons/adds/blue_plus.svg" className="w-2 h-2 rotate-45 aspect-square " />
+                    </div>
+                  ) : (
+                    <></>
+                  )}
+                </div>
+              </SwiperSlide>
+            ) : (
+              <></>
+            )}
+          </React.Fragment>
         );
       })}
 
