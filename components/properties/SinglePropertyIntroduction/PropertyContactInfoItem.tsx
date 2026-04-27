@@ -100,25 +100,31 @@ const PropertyContactInfoItem = ({
       ) : (
         <div className="flex flex-row items-center justify-center gap-4">
           {type == "call" ? (
-            <div
-              onClick={() => {
-                onActionButtinsClick("call");
-              }}
-              className=" w-9 h-9  bg-primary-700 aspect-square rounded-full flex items-center justify-center "
-            >
-              <img className="w-4 h-4  aspect-square" src="/assets/icons/advisor/white_phone.svg" />
+            <div className="flex justify-center items-center gap-2">
+              <p className="text-sm font-medium text-primary-700">{_STRINGS.CALL}</p>
+              <div
+                onClick={() => {
+                  onActionButtinsClick("call");
+                }}
+                className=" w-9 h-9  bg-primary-700 aspect-square rounded-full flex items-center justify-center "
+              >
+                <img className="w-4 h-4  aspect-square" src="/assets/icons/advisor/white_phone.svg" />
+              </div>
             </div>
           ) : (
-            <div
-              onClick={() => {
-                if (!!isPropertyExpired) return;
-                onActionButtinsClick("sms");
-              }}
-              className={`${
-                isPropertyExpired ? " grayscale opacity-60 " : ""
-              }  w-9 h-9  bg-white border border-primary-700 aspect-square rounded-full flex items-center justify-center `}
-            >
-              <img className="w-4 h-4  aspect-square" src="/assets/icons/advisor/blue_sms.svg" />
+            <div className="flex justify-center items-center gap-2">
+              <p className="text-sm font-medium text-primary-700">{_STRINGS.SMS}</p>
+              <div
+                onClick={() => {
+                  if (!!isPropertyExpired) return;
+                  onActionButtinsClick("sms");
+                }}
+                className={`${
+                  isPropertyExpired ? " grayscale opacity-60 " : ""
+                }  w-9 h-9  bg-white border border-primary-700 aspect-square rounded-full flex items-center justify-center `}
+              >
+                <img className="w-4 h-4  aspect-square" src="/assets/icons/advisor/blue_sms.svg" />
+              </div>{" "}
             </div>
           )}
         </div>

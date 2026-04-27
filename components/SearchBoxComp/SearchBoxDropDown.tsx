@@ -8,7 +8,6 @@ import { debounce, isEmpty } from "lodash";
 import { useRouter } from "next/navigation";
 import { Fragment, Suspense, useCallback, useEffect, useRef, useState } from "react";
 import SmallLoading from "../shared/Lotties/SmallLoading";
-import HistoryMaker from "./HistoryMaker";
 import HistorySuggPart from "./HistorySuggPart";
 import SearchBoxCitiesPart from "./SearchBoxCitiesPart";
 import SuggestedPart from "./SuggestedPart";
@@ -76,7 +75,7 @@ const SearchBoxDropDown = ({
       setText(searchParam);
       if (typeof onSubmit == "function") {
         onSubmit(searchParam);
-        HistoryMaker(searchParam);
+        // HistoryMaker(searchParam);
         setShowResults(false);
       }
     }
@@ -87,7 +86,7 @@ const SearchBoxDropDown = ({
       if (element) element.value = text;
       if (typeof onSubmit == "function" && element) {
         // onSubmit(element.value);
-        HistoryMaker(element?.value);
+        // HistoryMaker(element?.value);
         // setShowPop(false);
       }
 

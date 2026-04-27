@@ -25,20 +25,20 @@ const ImageCarousel = ({ list, item, devices }: ImageCarouselTypes) => {
         pagination
         autoplay
         spaceBetween={!!devices?.isMobile || !!devices?.isTablet ? 2 : 5}
-        slidesPerView={!!devices?.isMobile || !!devices?.isTablet ? 1 : 2.5}
+        slidesPerView={!!devices?.isMobile || !!devices?.isTablet ? 1 : 3}
         viewportClassName=" !px-0 md:!px-4"
         breakPoints={{
           320: {
-            slidesPerView: 1.25,
+            slidesPerView: 1,
             spaceBetween: 2,
           },
           640: {
-            slidesPerView: 1.25,
+            slidesPerView: 1,
             spaceBetween: 2,
           },
           // when window width is >= 768px
           768: {
-            slidesPerView: 1.25,
+            slidesPerView: 1,
             spaceBetween: 2,
           },
           1024: {

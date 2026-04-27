@@ -40,6 +40,7 @@ export default {
           1100: "#F9F9FA",
           1200: "#A5C8F3",
           1300: "#4A505C",
+          1400: "#FD3542",
           black: "#010D25",
         },
         btnColor: {

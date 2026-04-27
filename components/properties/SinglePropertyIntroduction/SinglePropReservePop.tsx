@@ -91,11 +91,7 @@ const SinglePropReservePop = ({
   // };
 
   const { data: reserveDates } = useQuery({
-    queryKey: [
-      PropertyService.PROPERTY_RESERVED_DATES_CACHEKEY,
-      data?.id,
-      show,
-    ],
+    queryKey: [PropertyService.PROPERTY_RESERVED_DATES_CACHEKEY, data?.id, show],
     queryFn: () => PropertyService.propertyReservedDates({ post_id: data?.id }),
     enabled: !!data?.id && !!show,
   });
@@ -137,11 +133,7 @@ const SinglePropReservePop = ({
                 setDate={setEndDate}
               /> */}
 
-              <DateSpanPicker
-                forbiden_dates={reserveDates || []}
-                dates={dates}
-                setDates={setDates}
-              />
+              <DateSpanPicker forbiden_dates={reserveDates || []} dates={dates} setDates={setDates} />
             </div>
           </div>
           <div className="w-full flex flex-col gap-2">

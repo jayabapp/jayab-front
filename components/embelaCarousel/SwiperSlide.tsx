@@ -1,5 +1,5 @@
 "use client";
-import React, { ReactNode } from "react";
+import { ReactNode } from "react";
 
 type SwiperSlideType = {
   className?: string;
@@ -9,7 +9,7 @@ type SwiperSlideType = {
 
 const SwiperSlide = ({ children, className, ...props }: SwiperSlideType) => {
   return (
-    <div className={`    embla__slide   ${className} `} {...props}>
+    <div className={`  !select-none  embla__slide   ${className} `} {...props}>
       {children}
     </div>
   );

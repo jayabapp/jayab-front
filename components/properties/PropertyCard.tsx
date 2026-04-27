@@ -31,7 +31,7 @@ const PropertyCard = ({ data, isOwner, week }: { data: PropertyListDto; isOwner?
           className="col-span-3  !outline-none order-1  flex flex-col justify-between gap-1"
         >
           {/* TITLE */}
-          <div className="flex items-center gap-2">
+          <div className="flex items-start gap-2">
             {!!data?.has_blue_tick ? (
               <img src="/assets/icons/adds/verified_hexy_badge.svg" alt="verified_badge" className="w-6 h-6" />
             ) : (

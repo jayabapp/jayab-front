@@ -4,7 +4,6 @@ import Autoplay from "embla-carousel-autoplay";
 import useEmblaCarousel from "embla-carousel-react";
 import React, { ReactNode, useLayoutEffect, useMemo, useState } from "react";
 import { NextButton, PrevButton, usePrevNextButtons } from "./EmblaCarouselArrowButtons";
-import { useAutoplay } from "./EmblaCarouselAutoplay";
 import { DotButton, useDotButton } from "./EmblaCarouselDotButton";
 
 type MediaSizes = 320 | 640 | 768 | 1024 | 1600;
@@ -112,7 +111,7 @@ const Swiper: React.FC<PropType> = (props) => {
     [perViewOptions, autoFit, props?.spaceBetween],
   );
 
-  const { autoplayIsPlaying, toggleAutoplay, onAutoplayButtonClick } = useAutoplay(emblaApi);
+  // const { autoplayIsPlaying, toggleAutoplay, onAutoplayButtonClick } = useAutoplay(emblaApi);
 
   const { selectedIndex, scrollSnaps, onDotButtonClick } = useDotButton(emblaApi);
   const { prevBtnDisabled, nextBtnDisabled, onPrevButtonClick, onNextButtonClick } = usePrevNextButtons(emblaApi);
@@ -123,6 +122,10 @@ const Swiper: React.FC<PropType> = (props) => {
     }
   }, [selectedIndexCb, selectedIndex]);
 
+  // useEffect(() => {
+  //   if (!emblaApi) return;
+  //   emblaApi?.reInit();
+  // }, [children, emblaApi]);
   return (
     <section style={sizeStyle} className={`embla relative ${parentClass}`} dir={dir}>
       <div className={`embla__viewport ${viewportClassName}`} ref={emblaRef}>

@@ -36,7 +36,7 @@ const AddCardPricePart = ({
               {numberWithCommas(data?.price)}
             </p>
             {data?.discount_percentage ? (
-              <div className="w-7 gap-0.5 flex-col h-5 rounded-full transition-all  px-1 py-[0.2rem]   bg-primary-1100 text-white  aspect-square flex items-center justify-center">
+              <div className="w-7 gap-0.5 flex-col h-5 rounded-full transition-all  px-1 py-[0.2rem]   bg-primary-1400 text-white  aspect-square flex items-center justify-center">
                 <p className="  text-xxs   ">%{data?.discount_percentage}</p>{" "}
               </div>
             ) : (

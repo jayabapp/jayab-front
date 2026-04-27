@@ -77,7 +77,7 @@ const SuggestedPart = ({
               {data?.properties?.map((e) => (
                 <div
                   onClick={() => {
-                    HistoryMaker(e?.title);
+                    HistoryMaker(searchedText);
                     onPropClick(e?.slug);
                   }}
                   key={`${e?.id}properties`}
@@ -97,7 +97,7 @@ const SuggestedPart = ({
               {data?.cities?.map((e) => (
                 <div
                   onClick={() => {
-                    HistoryMaker(e?.title);
+                    HistoryMaker(searchedText);
                     onCityClick(e);
                   }}
                   key={`${e?.id}CITIES`}
@@ -125,7 +125,7 @@ const SuggestedPart = ({
               {data?.landings?.map((e) => (
                 <div
                   onClick={() => {
-                    HistoryMaker(e?.title);
+                    HistoryMaker(searchedText);
                     onLandingClick(e?.url);
                   }}
                   key={`${e?.id}landings`}

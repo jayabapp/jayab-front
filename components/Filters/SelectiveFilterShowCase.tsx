@@ -1,6 +1,11 @@
+import queryBuilder from "@/helpers/queryBuilder";
 import { useModalVisible } from "@/hooks/modal.hook";
+import _STRINGS from "@/utils/LocalStrings";
+import { usePathname, useRouter, useSearchParams } from "next/navigation";
+import { useEffect, useState } from "react";
 import ModalBottomSheet from "../Modal/ModalBottomSheet";
 import ModalHeaderPart from "../Modal/ModalHeaderPart";
+import Button from "../shared/Button/Button";
 import ProductModels from "./ProductModelx";
 
 const SelectiveFilterShowCase = ({
@@ -17,8 +22,26 @@ const SelectiveFilterShowCase = ({
   removeFiltersKeys: (array: string[]) => void;
 }) => {
   const { _onHide, _onShow, isVisible } = useModalVisible();
-
+  const { replace } = useRouter();
+  const pathname = usePathname();
+  const [filters, setFilters] = useState({});
   const slectedCount = query?.[queryKey]?.split(",")?.length;
+  const searchParams = useSearchParams();
+  useEffect(() => {
+    if (!!query) {
+      setFilters(query);
+    }
+  }, [searchParams]);
+
+  const queryMaker = (items: any) => {
+    const body = {
+      ...items,
+    };
+    delete body.categories;
+    delete body.page;
+    _onHide();
+    replace(`${pathname}?${queryBuilder(body)}`);
+  };
   return (
     <>
       <div
@@ -50,15 +73,26 @@ const SelectiveFilterShowCase = ({
       <ModalBottomSheet show={isVisible} onHide={_onHide}>
         <ModalHeaderPart showX title={title} onHide={_onHide} />
 
-        <div className=" flex p-4">
+        <div className=" flex flex-col p-4 !pb-0">
           <ProductModels
-            onClickCb={() => {
-              _onHide();
-            }}
+            // onClickCb={() => {
+            //   _onHide();
+            // }}
+            mobileFilters={filters}
+            setMobileFilters={setFilters}
             list={list}
             queryKey={queryKey}
             isMulty
             query={query}
+          />
+
+          <Button
+            onClick={() => {
+              queryMaker(filters);
+            }}
+            title={_STRINGS.SUBMIT_DO}
+            containerClass=" w-full "
+            width=" w-full "
           />
         </div>
       </ModalBottomSheet>

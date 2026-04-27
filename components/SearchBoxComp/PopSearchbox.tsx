@@ -301,7 +301,7 @@ const PopSearchbox = ({
         )}
         <SuggestedPart
           setShowPop={setShowPop}
-          searchedText={element?.value || ""}
+          searchedText={text || ""}
           isLoading={isLoading || loading}
           data={suggsData}
         />

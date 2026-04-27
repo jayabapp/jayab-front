@@ -120,7 +120,7 @@ const DateSpanPickerModal = ({
           className="w-full flex pb-16 h-full flex-col gap-0 "
         >
           {months.map((monthDate, index) => (
-            <div key={`month-${monthDate.getTime()}`} className="">
+            <div key={`month-${monthDate.getTime()}`} className="relative flex flex-col gap-0">
               <DatePicker
                 options={{ maxSpanLength: 15 }}
                 // options={{ maxSpanLength: 6 }}
@@ -134,6 +134,14 @@ const DateSpanPickerModal = ({
                 // onDateSelect={handleDateSelect}
                 forbiden_dates={forbiden_dates}
               />
+              {index == 0 ? (
+                <div className="flex lg:absolute right-12 bottom-2  px-4 md:px-0 text-primary-800 text-sm items-center gap-2 ">
+                  <div className="w-5 h-5 striped !bg-gray-100   rounded-md"></div>
+                  <p className=" text-xs md:text-sm">{_STRINGS.RESERVED_DAYS}</p>
+                </div>
+              ) : (
+                <></>
+              )}
             </div>
           ))}
         </InfiniteScroll>

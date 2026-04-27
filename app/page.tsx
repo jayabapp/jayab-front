@@ -65,7 +65,7 @@ const Home = async () => {
               ? "30dvh"
               : "0",
         }}
-        className=" bg-white  rounded-t-20   -mt-[1.375rem] md:mt-0  flex flex-col  relative gap-5 lg:gap-6  select-none  px-0  md:py-0 w-full"
+        className=" bg-white  rounded-t-20 mb-8  -mt-[1.375rem] md:mt-0  flex flex-col  relative gap-5 lg:gap-6  select-none  px-0  md:py-0 w-full"
       >
         <Suspense fallback={null}>
           <div className="w-full   mt-3 lg:mt-0  px-0 ">

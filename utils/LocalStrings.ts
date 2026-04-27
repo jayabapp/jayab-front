@@ -439,6 +439,7 @@ const _STRINGS = {
   FAST_ACCESS: "دسترسی سریع",
   COMUNICATION_WAYS: "راه‌های ارتباطی",
   POOL_LESS: "بدون استخر",
+  SUBMIT_DO: "اعمال",
 };
 
 export default _STRINGS;

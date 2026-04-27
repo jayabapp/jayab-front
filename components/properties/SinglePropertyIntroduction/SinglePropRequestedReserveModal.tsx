@@ -265,7 +265,7 @@ const SinglePropRequestedReserveModal = ({
               loading={loading}
               icon={
                 <img
-                  className={`w-4 h-4  aspect-square  absolute right-3 top-0 bottom-0 my-auto ${isExpired ? "  opacity-50  grayscale" : ""} `}
+                  className={`w-4 h-4  aspect-square  absolute right-3 top-0 bottom-0 my-auto  `}
                   src="/assets/icons/reserve/blue_reserve_icon.svg"
                 />
               }
