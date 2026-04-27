@@ -27,7 +27,7 @@ const BlogsPage = async ({
   const searchParamsData = await searchParams;
 
   const { data: blogs } = await serverCall(
-    baseUrl + apiRoutes.CONTENTS + `?key=${"blog"}&per_page=20&page=${searchParamsData?.page || 1}`
+    baseUrl + apiRoutes.CONTENTS + `?key=${"blog"}&per_page=18&page=${searchParamsData?.page || 1}`,
   );
   return (
     <div className="app-container  !overflow-visible">
@@ -52,7 +52,7 @@ const BlogsPage = async ({
             <ServerSidePaginate
               q={searchParamsData?.q || ""}
               currentPage={searchParamsData?.page || 1}
-              pageSize={12}
+              pageSize={18}
               totalCount={blogs?.meta?.total}
               siblingCount={1}
             />

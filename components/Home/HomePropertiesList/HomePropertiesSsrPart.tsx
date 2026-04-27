@@ -46,7 +46,7 @@ function HomePropertiesSsrPart({ data, middleBanners, devices }: HomePropertiesS
           <div className="grid   pb-8 pt-2 md:pt-2 grid-cols-1 gap-2 md:gap-4  md:grid-cols-2 xl:grid-cols-4 ">
             {!!middleBanners?.[0] ? (
               <div className=" col-span-full row-start-7 lg:row-start-3  ">
-                <HomeProductsBannerItems bannerItem={middleBanners?.[0]} />
+                <HomeProductsBannerItems devices={devices} bannerItem={middleBanners?.[0]} />
               </div>
             ) : (
               <></>

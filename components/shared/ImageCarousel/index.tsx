@@ -67,7 +67,7 @@ const ImageCarousel = ({ list, item, devices }: ImageCarouselTypes) => {
                 contentId={e?.id}
                 // // href={e?.link ? e?.link : undefined}
                 // target={e?.link ? "_blank" : ""}
-                className={` focus:outline-none w-full px-0  aspect-[2]  md:aspect-[2.5]   ${
+                className={` focus:outline-none w-full px-0  aspect-[1.5]  md:aspect-[2.5]   ${
                   e?.link || e?.category || e?.product || e?.brand_id ? "cursor-pointer" : ""
                 } transition-all duration-300 ease-in-out   relative`}
               >
@@ -80,7 +80,7 @@ const ImageCarousel = ({ list, item, devices }: ImageCarouselTypes) => {
                   alt={e?.image?.alt}
                   // src={true ? "saf" : IMAGE_URL(e?.image_location)}
                   src={NEW_IMAGE_URL(e?.image)}
-                  className={`w-full object-cover rounded-20 hidden  md:flex aspect-[2] md:aspect-[2.5]   align-middle  ${
+                  className={`w-full object-cover rounded-20 hidden  md:flex aspect-[1.5] md:aspect-[2.5]   align-middle  ${
                     item?.imageClasses ? item?.imageClasses : ""
                   }   `}
                 />
@@ -92,7 +92,7 @@ const ImageCarousel = ({ list, item, devices }: ImageCarouselTypes) => {
                   alt={e?.image?.alt}
                   // src={true ? "saf" : IMAGE_URL(e?.image_location)}
                   src={NEW_IMAGE_URL(e?.image_sm ? e?.image_sm : e?.image)}
-                  className={`w-full object-cover rounded-20 flex  md:hidden aspect-[2]  md:aspect-[2.5] align-middle  ${
+                  className={`w-full object-cover rounded-20 flex  md:hidden aspect-[1.5]  md:aspect-[2.5] align-middle  ${
                     item?.imageClasses ? item?.imageClasses : ""
                   }   `}
                 />
