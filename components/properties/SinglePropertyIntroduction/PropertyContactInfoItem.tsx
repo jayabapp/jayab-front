@@ -39,7 +39,11 @@ const PropertyContactInfoItem = ({
     onHide();
     action();
     setTimeout(() => {
-      window.open(`${type}:${data?.assistant_mobile_number}`, "_blank", "noopener,noreferrer");
+      window.open(
+        `${type == "call" ? "tel" : "sms"}:${data?.assistant_mobile_number}`,
+        "_blank",
+        "noopener,noreferrer",
+      );
     }, 500);
   };
 
