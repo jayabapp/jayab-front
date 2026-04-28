@@ -194,7 +194,7 @@ const SsrFilterPage = ({ landings, firstData }: { firstData: { data: any[] }; la
             <SingleProductBreadCrumb dataArray={breadCrumbs} />
           </div>
           <div className="mb-3  w-full flex items-center justify-between">
-            <h1 className=" text-lg font-medium">{landings?.content?.title}</h1>
+            <h2 className=" text-lg font-medium text-black">{landings?.content?.title}</h2>
             <div className="w-fit   items-center justify-end  hidden lg:flex">
               <SpecialFilterButtons query={queries} />
               <SortMenu query={queries} />

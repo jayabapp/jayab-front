@@ -314,6 +314,7 @@ const _STRINGS = {
   PERMIUM_PROPS: "ملک های ویژه",
   FAST_SEARCH: "جست و جوی سریع",
   MOST_VISITED_CITIES: "شهر های پربازدید",
+  MOST_VISITED_DESTINATIONS: "مقاصد پرطرفدار",
 
   SHOW_MORE: "نمایش بیشتر",
   COORDINATES: "موقعیت مکانی",

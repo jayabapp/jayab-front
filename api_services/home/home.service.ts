@@ -2,7 +2,14 @@ import { BannerPosition } from "@/enum/banners.enum";
 import { apiRoutes } from "@/utils/urls";
 import { Meta } from "../chat/chat.interface";
 import { apiCall } from "../common/apicall.helper";
-import { CitySuggestDto, ContentByKeyDto, ContentDto, QuestionDto, SearchSuggDto } from "./home.interface";
+import {
+  CitySuggestDto,
+  ContentByKeyDto,
+  ContentDto,
+  MostVisitedPlaces,
+  QuestionDto,
+  SearchSuggDto,
+} from "./home.interface";
 
 export class HomeService {
   // static FORGOT_PASSWORD_LIST_CACHEKEY = "FORGOT_PASSWORD_LIST";
@@ -15,12 +22,22 @@ export class HomeService {
   static SEARCH_SUGGS_CACHEKEY = "SEARCH_SUGGS";
   static CONTENT_QUESTIONS_KEY = "CONTENTQUESTIONSKEY";
   static SEARCH_KEY = "SEARCH";
+  static USER_LANDING_PAGES_KEY = "USER_LANDING_PAGES";
 
   static async GetBanners(dto: { position: BannerPosition }) {
     try {
       const result = await apiCall<{ position: BannerPosition }, unknown[]>("GET", apiRoutes.BANNERS, {
         position: dto?.position,
       });
+      return result;
+    } catch (e) {
+      throw e;
+    }
+  }
+
+  static async getLandings() {
+    try {
+      const result = await apiCall<any, MostVisitedPlaces>("GET", apiRoutes.USER_LANDING_PAGES);
       return result;
     } catch (e) {
       throw e;

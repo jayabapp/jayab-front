@@ -202,7 +202,7 @@ const MobileFooter: React.FC = ({}) => {
           }}
           className={`    z-10     flex   max-w-[800px]  ${
             isIOS && getPWADisplayMode() == "standalone" ? "pb-8" : "pb-6"
-          }  flex lg:hidden  pt-3 justify-between  md:rounded-md  left-0  right-0       mx-auto     items-center fixed bottom-0 w-full   bg-white  `}
+          }  flex lg:hidden  pt-3 justify-between  !touch-none md:rounded-md  left-0  right-0       mx-auto     items-center fixed bottom-0 w-full   bg-white  `}
         >
           <div className="flex w-full items-center   justify-around px-3     ">
             {rightFooterItems?.map((el, i) => {

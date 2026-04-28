@@ -253,3 +253,33 @@ export interface Meta {
   prev?: null;
   next?: null;
 }
+
+export interface MostVisitedPlaces {
+  popular_city: PopularCity[];
+  quick_search: PopularCity[];
+}
+
+export interface PopularCity {
+  url: string;
+  title: string;
+  image: ImageDto;
+  position: Position;
+}
+
+export enum Bucket {
+  KianCdn1 = "kian-cdn1",
+}
+
+export enum EndPoint {
+  S3IRThrAt1ArvanstorageIR = "s3.ir-thr-at1.arvanstorage.ir",
+}
+
+export enum Path {
+  JayabImagesContents = "jayab/images/contents",
+  JayabImagesContents20260426 = "jayab/images/contents/20260426",
+}
+
+export enum Position {
+  PopularCity = "popular_city",
+  QuickSearch = "quick_search",
+}

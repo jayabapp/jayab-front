@@ -331,14 +331,14 @@ transition-all ease-out  duration-300  header-content-container w-full mx-auto  
                     </Suspense>
                   </div>
 
-                  <div className="flex items-center gap-1 justify-center">
+                  <div className="flex items-center gap-1 shrink-0 justify-center">
                     <img
-                      className={`w-16 ${topHeaderVisible ? "flex" : "hidden"} `}
+                      className={`w-16 ${topHeaderVisible && !!isHome ? "flex  grayscale brightness-[500]" : "hidden  lg:flex"} `}
                       src="/assets/icons/logo/just_title_logo.svg"
                     />
                     <img
                       className="w-10 h-10 aspect-square  shrink-0 "
-                      src="/assets/icons/logo/header_mobile_logo.svg"
+                      src="/assets/images/logo/header_mobile_logo.png"
                     />
                   </div>
                 </div>
@@ -566,12 +566,12 @@ transition-all ease-out  duration-300  header-content-container w-full mx-auto  
               </Suspense>{" "}
               <Link prefetch={false} href={"/"} className=" flex items-center gap-1.5    shrink-0 h-10 ">
                 {" "}
-                <div className="flex items-center gap-1 justify-center">
+                <div className="flex items-center shrink-0 gap-1 justify-center">
                   <img
                     className={`w-16 ${topHeaderVisible && !!isHome ? "flex  grayscale brightness-[500]" : "hidden  lg:flex"} `}
                     src="/assets/icons/logo/just_title_logo.svg"
                   />
-                  <img className="w-10 h-10 aspect-square shrink-0" src="/assets/icons/logo/header_mobile_logo.svg" />
+                  <img className="w-10 h-10 aspect-square shrink-0" src="/assets/images/logo/header_mobile_logo.png" />
                 </div>
               </Link>
             </div>

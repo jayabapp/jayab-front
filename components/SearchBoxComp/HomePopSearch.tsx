@@ -10,6 +10,7 @@ import { Dispatch, SetStateAction, Suspense, useCallback, useEffect, useRef, use
 import SeachBoxCitySelector from "../Home/HomeCityFilterContainer/SeachBoxCitySelector";
 import SmallLoading from "../shared/Lotties/SmallLoading";
 import SearchBoxCitiesPart from "./SearchBoxCitiesPart";
+import SearchBoxPopularPlaces from "./SearchBoxPopularPlaces";
 import SuggestedPart from "./SuggestedPart";
 const HistorySuggPart = dynamic(() => import("./HistorySuggPart"), { ssr: true });
 
@@ -249,7 +250,7 @@ const HomePopSearch = ({
           isLoading={isLoading || loading}
           data={suggsData}
         />
-
+        <SearchBoxPopularPlaces />
         <Suspense>
           {" "}
           <HistorySuggPart

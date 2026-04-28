@@ -67,7 +67,7 @@ const SuggestedPart = ({
           {" "}
           <BtnLoading />{" "}
         </div>
-      ) : !!data && isEmpty(data?.cities) && isEmpty(data?.cities) && isEmpty(data?.properties) ? (
+      ) : !!data && isEmpty(data?.cities) && isEmpty(data?.properties) && isEmpty(data?.landings) ? (
         // <p>{_STRINGS.CANT_FIND}</p>
         <></>
       ) : (

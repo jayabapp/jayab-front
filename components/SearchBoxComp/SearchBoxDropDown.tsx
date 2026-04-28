@@ -7,9 +7,11 @@ import { useMutation, useQuery } from "@tanstack/react-query";
 import { debounce, isEmpty } from "lodash";
 import { useRouter } from "next/navigation";
 import { Fragment, Suspense, useCallback, useEffect, useRef, useState } from "react";
+import SeachBoxCitySelector from "../Home/HomeCityFilterContainer/SeachBoxCitySelector";
 import SmallLoading from "../shared/Lotties/SmallLoading";
 import HistorySuggPart from "./HistorySuggPart";
 import SearchBoxCitiesPart from "./SearchBoxCitiesPart";
+import SearchBoxPopularPlaces from "./SearchBoxPopularPlaces";
 import SuggestedPart from "./SuggestedPart";
 interface props {
   initValue?: string | undefined;
@@ -225,7 +227,7 @@ const SearchBoxDropDown = ({
           </div>{" "}
         </div>
         <Transition
-          show={showResults && !!text && (!!suggsData?.cities || !!suggsData?.landings || !!suggsData?.properties)}
+          show={showResults}
           as={Fragment}
           enter="transition ease-out duration-100"
           enterFrom="transform opacity-0 scale-95"
@@ -256,7 +258,7 @@ const SearchBoxDropDown = ({
                 isLoading={isLoading || loading}
                 data={suggsData}
               />
-
+              <SearchBoxPopularPlaces />
               <Suspense>
                 {" "}
                 <HistorySuggPart
@@ -267,6 +269,11 @@ const SearchBoxDropDown = ({
                   }}
                 />
               </Suspense>
+              <SeachBoxCitySelector
+                onSubmitCB={() => {
+                  setShowResults(false);
+                }}
+              />
             </div>
           </MenuItems>
         </Transition>
