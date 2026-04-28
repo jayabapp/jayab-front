@@ -258,7 +258,6 @@ const SearchBoxDropDown = ({
                 isLoading={isLoading || loading}
                 data={suggsData}
               />
-              <SearchBoxPopularPlaces />
               <Suspense>
                 {" "}
                 <HistorySuggPart
@@ -269,6 +268,7 @@ const SearchBoxDropDown = ({
                   }}
                 />
               </Suspense>
+              <SearchBoxPopularPlaces />
               <SeachBoxCitySelector
                 onSubmitCB={() => {
                   setShowResults(false);

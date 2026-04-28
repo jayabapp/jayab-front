@@ -306,8 +306,6 @@ const PopSearchbox = ({
           isLoading={isLoading || loading}
           data={suggsData}
         />
-        <SearchBoxPopularPlaces />
-
         <Suspense>
           {" "}
           <HistorySuggPart
@@ -318,6 +316,8 @@ const PopSearchbox = ({
             }}
           />
         </Suspense>
+        <SearchBoxPopularPlaces />
+
         <SeachBoxCitySelector
           onSubmitCB={() => {
             setShowPop(false);
