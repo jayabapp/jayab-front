@@ -175,7 +175,7 @@ const FiltersSelectedFiltersShowcase = ({
         <></>
       )}
       {/* DYNAMIC FILTERS */}
-      {!isHiddenFilter("property_type") &&
+      {/* {!isHiddenFilter("property_type") &&
         finallizedSelectedOptions?.["property_type"]?.map((e: any, index: number) => (
           <SwiperSlide key={`selectedItems${e?.id}`} className="!w-auto    ">
             <div className="rounded-full !w-auto   gap-4 py-1 h-[1.625rem] px-1 flex items-center justify-center border border-primary-700  bg-primary-700/5 text-primary-700  text-xs ">
@@ -190,7 +190,7 @@ const FiltersSelectedFiltersShowcase = ({
               </div>
             </div>
           </SwiperSlide>
-        ))}
+        ))} */}
       {/*  HAS POOL */}
       {/* {!isHiddenFilter("has_pool") && !!query?.has_pool && query?.has_pool != "2" ? ( */}
       {/* {!isHiddenFilter("has_pool") && !!query?.has_pool ? ( */}
