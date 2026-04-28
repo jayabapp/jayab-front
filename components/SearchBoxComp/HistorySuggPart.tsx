@@ -18,7 +18,7 @@ const HistorySuggPart = ({ handleChange }: { handleChange: (e: string) => void |
     localStorage.setItem("search_history", JSON.stringify(newSuggArr));
   };
   return (
-    <div className="flex px-4 pb-1 flex-col w-full">
+    <div className="flex px-4 py-4 flex-col w-full">
       {!isEmpty(historySuggs) ? (
         <div className=" w-full flex items-center  gap-2 mb-2">
           {/* <img src="/assets/icons/edit/magnifier.svg" className="w-4 h-4 " /> */}

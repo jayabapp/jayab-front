@@ -25,7 +25,7 @@ const SeachBoxCitySelector = ({
       {" "}
       <div
         onClick={onShowCities}
-        className={` px-0 py-2 w-full relative flex cursor-pointer items-center shrink-0 gap-2   border-t  `}
+        className={` px-0 pb-0 pt-4 w-full relative flex cursor-pointer items-center shrink-0 gap-2   border-t  `}
       >
         <div className=" rounded-md   bg-gray-50  size-10  flex items-center  justify-center  border ">
           <img
