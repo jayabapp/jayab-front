@@ -236,12 +236,12 @@ const SearchBoxDropDown = ({
           leaveFrom="transform opacity-100 scale-100"
           leaveTo="transform opacity-0 scale-95"
         >
-          <MenuItems className="absolute w-full  md:top-auto left-0 z-20  mt-2  origin-top-center  rounded-20   bg-white dark:bg-zinc-800 custome-shadow-card focus:outline-none  overflow-scroll">
+          <MenuItems className="absolute w-full  pb-2 md:top-auto left-0 z-20  mt-2  origin-top-center  rounded-20   bg-white dark:bg-zinc-800 custome-shadow-card focus:outline-none  overflow-scroll">
             <div
               onMouseLeave={() => {
                 // setShowResults(false);
               }}
-              className="flex gap-2   w-full items-center flex-col px-2 py-2 border-b border-gray-275 dark:border-zinc-500 "
+              className="flex gap-2   w-full items-center flex-col px-2 py-2  border-gray-275 dark:border-zinc-500 "
             >
               {!isEmpty(locationsData?.regions) ||
               !isEmpty(locationsData?.cities) ||
