@@ -184,7 +184,7 @@ const DayPicker = ({
     }
 
     return lastDays;
-  }, [monthInfo]);
+  }, [monthInfo, daysData.length]);
 
   // Memoize next days (days from next month)
   const nextDaysMemo = useMemo(() => {

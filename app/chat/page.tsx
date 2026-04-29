@@ -3,23 +3,29 @@
 import { ChatListDto } from "@/api_services/chat/chat.interface";
 import { ChatService } from "@/api_services/chat/chat.service";
 import ChatListItem from "@/components/chat/ChatListItem";
+import Button from "@/components/shared/Button/Button";
 import EmptyList from "@/components/shared/Lotties/EmptyList";
 import LottieLoading from "@/components/shared/Lotties/LottieLoading";
-import { useChatStore } from "@/store";
+import { useAuthStore, useChatStore } from "@/store";
+import _STRINGS from "@/utils/LocalStrings";
 import { useQuery } from "@tanstack/react-query";
 import { produce } from "immer";
 import isEmpty from "lodash/isEmpty";
+import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 
 const ChatListPage = () => {
   const { chatNotification, chatsPageData } = useChatStore((state) => state);
+  const { isLogin } = useAuthStore();
+  const router = useRouter();
   const [chats, setChats] = useState<ChatListDto[]>([]);
   const { data, isLoading, refetch } = useQuery({
-    queryKey: [ChatService.CHAT_CACHEKEY],
+    queryKey: [ChatService.CHAT_CACHEKEY, isLogin],
     queryFn: ChatService.GetChatList,
 
     gcTime: 0,
     staleTime: 0,
+    enabled: !!isLogin,
   });
 
   useEffect(() => {
@@ -50,6 +56,10 @@ const ChatListPage = () => {
       }
     }
   }, [chatNotification]);
+
+  const goToLogin = () => {
+    router.push("/auth");
+  };
   return (
     <div
       id="homeParent"
@@ -83,6 +93,19 @@ const ChatListPage = () => {
             />
           ))}
         </>
+      )}
+
+      {!isLogin ? (
+        <Button
+          containerClass="   mt-8 w-full"
+          width="w-full"
+          title={_STRINGS?.LOGIN_TO_UR_ACCOUNT}
+          onClick={() => {
+            goToLogin();
+          }}
+        />
+      ) : (
+        <></>
       )}
     </div>
   );

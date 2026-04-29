@@ -75,10 +75,10 @@ const SingleDatePicker = ({
     } else return false;
   };
   const nextMonth = () => {
-    setChosenDate(moment(chosenDate, "jYYYY/jMM/jDD").add(1, "months").format("jYYYY/jMM/jDD"));
+    setChosenDate(moment(chosenDate, "jYYYY/jMM/jDD").startOf("jMonth").add(1, "jMonth").format("jYYYY/jMM/jDD"));
   };
   const lastMonth = () => {
-    setChosenDate(moment(chosenDate, "jYYYY/jMM/jDD").subtract(1, "months").format("jYYYY/jMM/jDD"));
+    setChosenDate(moment(chosenDate, "jYYYY/jMM/jDD").startOf("jMonth").subtract(1, "jMonth").format("jYYYY/jMM/jDD"));
   };
 
   // useEffect(()=>{
