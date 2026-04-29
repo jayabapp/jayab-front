@@ -1,13 +1,13 @@
 import { SinglePropDto } from "@/api_services/property/property.interface";
 import SimpleAccordion from "@/components/shared/SimpleAccorion";
 import _STRINGS from "@/utils/LocalStrings";
-import React from "react";
+import { isMobile, isTablet } from "react-device-detect";
 import LinearTextBlock from "./LinearTextBlock";
-import numberWithCommas from "@/helpers/numberWithCommas";
 
 const EnvAccard = ({ data }: { data: SinglePropDto }) => {
   return (
     <SimpleAccordion
+      isOpenFirst={isMobile || isTablet}
       item={{
         parenClass: " bg-white border border-gray-300 !mt-0  rounded-10 w-full",
       }}

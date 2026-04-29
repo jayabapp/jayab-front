@@ -300,6 +300,7 @@ const Header = ({ scroll }: { scroll?: number }) => {
 
   return (
     <header className="relative">
+      <script type="text/javascript" src="https://s1.mediaad.org/serve/118386/retargeting.js" async></script>
       <div
         id="headerContainer"
         className={`

@@ -8,6 +8,7 @@ import PropertySelectedOptions from "./PropertySelectedOptions";
 const PrimaryAccard = ({ data }: { data: SinglePropDto }) => {
   return (
     <SimpleAccordion
+      isOpenFirst
       item={{
         parenClass: " bg-white border border-gray-300 !mt-0  rounded-10 w-full",
       }}

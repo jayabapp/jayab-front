@@ -2,11 +2,14 @@ import { SinglePropDto } from "@/api_services/property/property.interface";
 import SimpleAccordion from "@/components/shared/SimpleAccorion";
 import numberWithCommas from "@/helpers/numberWithCommas";
 import _STRINGS from "@/utils/LocalStrings";
+import { isMobile, isTablet } from "react-device-detect";
 import LinearTextBlock from "./LinearTextBlock";
 
 const GuestAccard = ({ data }: { data: SinglePropDto }) => {
+  console.log(isTablet, isMobile);
   return (
     <SimpleAccordion
+      isOpenFirst={isMobile || isTablet}
       item={{
         parenClass: " bg-white border border-gray-300 !mt-0  rounded-10 w-full",
       }}

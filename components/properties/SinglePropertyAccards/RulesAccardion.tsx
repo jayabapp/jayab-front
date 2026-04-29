@@ -5,6 +5,7 @@ import Checkbox from "@/components/shared/Form/Checkbox";
 import SimpleAccordion from "@/components/shared/SimpleAccorion";
 import _STRINGS from "@/utils/LocalStrings";
 import { useQuery } from "@tanstack/react-query";
+import { isMobile, isTablet } from "react-device-detect";
 
 const RulesAccardion = ({ data }: { data: SinglePropDto }) => {
   const { data: propertyRules, isLoading: rulesLoading } = useQuery({
@@ -19,6 +20,7 @@ const RulesAccardion = ({ data }: { data: SinglePropDto }) => {
   const selectedRule = propertyRules?.data?.find((e) => e?.key == data?.canceling_type?.id);
   return (
     <SimpleAccordion
+      isOpenFirst={isMobile || isTablet}
       item={{
         parenClass: " bg-white border border-gray-300 !mt-0  rounded-10 w-full",
       }}

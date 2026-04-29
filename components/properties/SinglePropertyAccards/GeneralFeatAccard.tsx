@@ -1,12 +1,14 @@
 import { SinglePropDto } from "@/api_services/property/property.interface";
 import SimpleAccordion from "@/components/shared/SimpleAccorion";
 import _STRINGS from "@/utils/LocalStrings";
+import { isMobile, isTablet } from "react-device-detect";
 import LinearTextBlock from "./LinearTextBlock";
 import PropertySelectedOptions from "./PropertySelectedOptions";
 
 const GeneralFeatAccard = ({ data }: { data: SinglePropDto }) => {
   return (
     <SimpleAccordion
+      isOpenFirst={isMobile || isTablet}
       item={{
         parenClass: " bg-white border border-gray-300 !mt-0  rounded-10 w-full",
       }}
