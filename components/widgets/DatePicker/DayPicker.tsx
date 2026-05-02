@@ -16,7 +16,7 @@ type props = {
   options?: { valueType?: "persian" | "global"; showTimeOfTheDay?: boolean; disableDaySelect?: boolean };
   freeDaysOfMonth?: boolean;
 };
-
+const DAYS_OF_WEEK_ISO: { [key: string]: any } = { "1": 2, "2": 3, "3": 4, "4": 5, "5": 6, "6": 0, "7": 1 } as const;
 const daysOfOurLives = ["شنبه", "یک‌شنبه", "دوشنبه", "سه‌شنبه", "چهارشنبه", "پنج‌شنبه", "جمعه"];
 const DayPicker = ({
   month,
@@ -44,7 +44,9 @@ const DayPicker = ({
   const [numberOfDays, setNumberOfDays] = useState(moment.jDaysInMonth(Number(year), Number(month) - 1));
 
   const [numberOfDaysLast, setNumberOfDaysLast] = useState(moment.jDaysInMonth(Number(year), Number(month) - 2));
-  const [startOfMonth, setStartOfMonth] = useState(moment(date, "jYYYY/jMM/jDD").startOf("jMonth").format("dddd"));
+  const [startOfMonth, setStartOfMonth] = useState(
+    DAYS_OF_WEEK_ISO[`${moment(date, "jYYYY/jMM/jDD").startOf("jMonth").isoWeekday()}`],
+  );
   const [lastDaysData, setLastDaysData] = useState<{ [key: string]: any }[] | []>([]);
   const [nextDaysData, setNextDaysData] = useState<{ [key: string]: any }[] | []>([]);
 
@@ -77,7 +79,7 @@ const DayPicker = ({
     setNumberOfDays(moment.jDaysInMonth(Number(year), Number(month) - 1));
 
     setNumberOfDaysLast(moment.jDaysInMonth(Number(year), Number(month) - 2));
-    setStartOfMonth(moment(date, "jYYYY/jMM/jDD").startOf("jMonth").format("dddd"));
+    setStartOfMonth(DAYS_OF_WEEK_ISO[`${moment(date, "jYYYY/jMM/jDD").startOf("jMonth").isoWeekday()}`]);
   }, [month, year, date]);
 
   // useEffect(() => {
@@ -92,7 +94,7 @@ const DayPicker = ({
   // }, [startOfMonth]);
 
   const lastDaysMemos = useMemo(() => {
-    const lengthOfBefore = daysOfOurLives?.findIndex((e) => e == startOfMonth);
+    const lengthOfBefore = startOfMonth;
     let lasts = numberOfDaysLast + 1;
     return Array.from({ length: lengthOfBefore }, (e, i) => {
       lasts = lasts - 1;
@@ -101,7 +103,7 @@ const DayPicker = ({
   }, [startOfMonth, daysOfOurLives]);
 
   const nextDaysMemo = useMemo(() => {
-    const lengthOfBefore = daysOfOurLives?.findIndex((e) => e == startOfMonth);
+    const lengthOfBefore = startOfMonth;
     return Array.from(
       {
         length:

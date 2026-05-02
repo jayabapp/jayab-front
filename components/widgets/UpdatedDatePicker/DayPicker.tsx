@@ -5,6 +5,7 @@ import Day from "./Day";
 moment.loadPersian({ dialect: "persian-modern" });
 
 const DAYS_OF_WEEK = ["شنبه", "یک‌شنبه", "دوشنبه", "سه‌شنبه", "چهارشنبه", "پنج‌شنبه", "جمعه"] as const;
+const DAYS_OF_WEEK_ISO: { [key: string]: any } = { "1": 2, "2": 3, "3": 4, "4": 5, "5": 6, "6": 0, "7": 1 } as const;
 
 interface DayData {
   id: number;
@@ -111,6 +112,8 @@ const DayPicker = ({
       numberOfDays: moment.jDaysInMonth(yearNum, monthNum - 1),
       numberOfDaysLast: moment.jDaysInMonth(yearNum, monthNum - 2),
       startOfMonth: dateMoment.startOf("jMonth").format("dddd"),
+      startOfMonthIndex: DAYS_OF_WEEK_ISO[`${dateMoment.startOf("jMonth").isoWeekday()}`] as any,
+      monthName: dateMoment.format("jMMMM"),
     };
   }, [year, month, date]);
 
@@ -171,8 +174,10 @@ const DayPicker = ({
 
   // Memoize last days (days from previous month)
   const lastDaysMemos = useMemo(() => {
-    const { startOfMonth, numberOfDaysLast } = monthInfo;
-    const lengthOfBefore = DAYS_OF_WEEK.findIndex((day) => day === startOfMonth);
+    const { startOfMonth, numberOfDaysLast, numberOfDays, startOfMonthIndex } = monthInfo;
+    // const lengthOfBefore = DAYS_OF_WEEK.findIndex((day) => day === startOfMonth);
+
+    const lengthOfBefore = startOfMonthIndex;
 
     if (lengthOfBefore <= 0) return [];
 
