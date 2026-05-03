@@ -441,6 +441,7 @@ const _STRINGS = {
   COMUNICATION_WAYS: "راه‌های ارتباطی",
   POOL_LESS: "بدون استخر",
   SUBMIT_DO: "اعمال",
+  DELETE_CIIES: "حذف شهرها",
 };
 
 export default _STRINGS;

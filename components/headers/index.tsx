@@ -86,7 +86,6 @@ const Header = ({ scroll }: { scroll?: number }) => {
   const { isLogin } = useAuthStore((state: any) => state);
   const { getBackHome, topHeaderVisible } = useStoreParams((state: any) => state);
   const [isOpen, setIsOpen] = useState(false);
-  const [showLogins, setShowLogins] = useState(false);
 
   /* -------------------------------------------------------------------------- */
   /*                              TOP HEADER STORE                              */
@@ -100,12 +99,6 @@ const Header = ({ scroll }: { scroll?: number }) => {
   };
 
   ////////////////
-
-  useEffect(() => {
-    setTimeout(() => {
-      setShowLogins(true);
-    }, 1000);
-  }, []);
 
   // const [visibleTopHeader, setVisibleTopHeader] = useState(true);
   // const [theme, setTheme] = useState("dark");
@@ -257,26 +250,22 @@ const Header = ({ scroll }: { scroll?: number }) => {
           />
         </Link>
 
-        {showLogins ? (
-          isLogin ? (
-            <>
-              {" "}
-              <Link
-                prefetch={false}
-                href={"/notifications"}
-                className="relative w-5 h-5 transition-all   aspect-square  shrink-0 flex  "
-              >
-                <AbsoluteBadge count={notifBadge || 0} />
-                <img
-                  alt="notificatons"
-                  src="/assets/icons/header/white_bell.svg"
-                  className={`w-5 h-5 transition-all  aspect-square  transform-gpu shrink-0  ${isHeaderLight ? "" : "invert   opacity-40"} `}
-                />
-              </Link>
-            </>
-          ) : (
-            <></>
-          )
+        {isLogin ? (
+          <>
+            {" "}
+            <Link
+              prefetch={false}
+              href={"/notifications"}
+              className="relative w-5 h-5 transition-all   aspect-square  shrink-0 flex  "
+            >
+              <AbsoluteBadge count={notifBadge || 0} />
+              <img
+                alt="notificatons"
+                src="/assets/icons/header/white_bell.svg"
+                className={`w-5 h-5 transition-all  aspect-square  transform-gpu shrink-0  ${isHeaderLight ? "" : "invert   opacity-40"} `}
+              />
+            </Link>
+          </>
         ) : (
           <></>
         )}
@@ -405,7 +394,7 @@ transition-all ease-out  duration-300  header-content-container w-full mx-auto  
                     {/**************     IN ADVISORS PAGE  WE NEED ADVISOR CREATE BUTTON  ***************/}
 
                     {pathname == "/advisors" ? (
-                      !userInfo?.advisor_id && !!showLogins ? (
+                      !userInfo?.advisor_id ? (
                         <Button
                           roundedClass="rounded-full"
                           width=" !px-3  !text-sm !py-1 w-fit "
@@ -468,7 +457,7 @@ transition-all ease-out  duration-300  header-content-container w-full mx-auto  
           <div
             className={` text-xs   lg:text-md   gap-8 font-medium flex-row hidden lg:flex w-[50%] transition-all  ease-in-out duration-1000 items-center `}
           >
-            {!!showLogins ? <MenuProfileItem /> : <></>}
+            <MenuProfileItem />
 
             <TextIcon
               visibleTopHeader={topHeaderVisible}
@@ -480,7 +469,7 @@ transition-all ease-out  duration-300  header-content-container w-full mx-auto  
                 hasBadge: hasBadge,
               }}
             />
-            {!!isLogin && !!showLogins ? (
+            {!!isLogin ? (
               <div className="relative ">
                 <ProfileDropdown isHome={isHeaderLight} notifBadge={notifBadge || 0} />
               </div>
@@ -492,7 +481,7 @@ transition-all ease-out  duration-300  header-content-container w-full mx-auto  
               isHome={isHome}
               item={{ icon: "/assets/icons/header/adds_header_icon.svg", title: _STRINGS.ADDS, route: "/rooms" }}
             />
-            {!!isLogin && !!showLogins ? (
+            {!!isLogin ? (
               <div className="relative">
                 <AbsoluteBadge count={chaNotifBadge?.unread_count || 0} />
                 <TextIcon

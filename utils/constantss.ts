@@ -228,13 +228,13 @@ export const profileDropDownItems = [
 export const menuDropDownItems = [
   { id: 115, title: "درباره ما", route: "/about-us", imgSrc: "/assets/icons/header/header_menu_about_us.svg" },
   { id: 230, title: "قوانین و مقررات", route: "/terms", imgSrc: "/assets/icons/header/header_menu_terms.svg" },
-  { id: 251, title: "اخبار و مقالات", route: "/blog", imgSrc: "/assets/icons/header/header_menu_blog.svg" },
+  { id: 251, title: "مجله گردشگری جایاب", route: "/blog", imgSrc: "/assets/icons/header/header_menu_blog.svg" },
   { id: 1238, title: "سوالات متداول", route: "/faq", imgSrc: "/assets/icons/header/header_menu_faq.svg" },
   { id: 4261, title: "تماس با ما", route: "/contact-us", imgSrc: "/assets/icons/header/header_menu_call.svg" },
 ];
 
 export const footerLinks = [
-  { id: 241, title: "مقالات ", route: "/blog" },
+  { id: 241, title: "مجله گردشگری جایاب ", route: "/blog" },
 
   { id: 521, title: "سوالات متداول", route: "/faq" },
   { id: 246, title: "درباره ما", route: "/about-us" },
@@ -424,4 +424,5 @@ export const sortDynamicFiltersInOrder = [
   "WELFARE",
   "COOL_HEAT",
   "KITCHEN",
+  "OWNERSHIP",
 ];

@@ -252,6 +252,14 @@ const CityModal = ({
     return foundOne;
   };
 
+  /* -------------------------------------------------------------------------- */
+  /*                               CLEAR SELECTED                               */
+  /* -------------------------------------------------------------------------- */
+  const clearSelected = () => {
+    setSelectedProv(null);
+    setSelectedCities([]);
+  };
+
   return (
     <Modal
       zIndex={40000000}
@@ -268,6 +276,7 @@ const CityModal = ({
         <CityModalSearchPart search={search} setSearch={setSearch} />
 
         <CityModalSelectedSwiper
+          clearSelected={clearSelected}
           onProvCancelClick={onProvCancelClick}
           provinces={provinces}
           selectedCities={selectedCities}

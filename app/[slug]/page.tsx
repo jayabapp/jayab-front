@@ -57,6 +57,8 @@ export default async function PropertiesPage({
     });
   }
 
+  console.log(landings, "landingslandings");
+
   const data =
     ((await !isEmpty(searchParamsData)) || (await !isEmpty(defaults))) && !searchParamsData?.page
       ? await serverCall(baseUrl + apiRoutes.GET_PROPERTIES, {

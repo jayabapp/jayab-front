@@ -10,10 +10,12 @@ const CityModalSelectedSwiper = ({
   onCityClick,
   provinces,
   onProvCancelClick,
+  clearSelected,
 }: {
   selectedCities: any[];
   onCityClick: (item: NewCitiesListDto | ChildCities) => void;
   onProvCancelClick: (item: NewCitiesListDto) => void;
+  clearSelected: () => void;
   provinces: NewCitiesListDto[] | undefined;
 }) => {
   const [selectedProvs, setSelectedProves] = useState<NewCitiesListDto[] | undefined>([]);
@@ -33,9 +35,15 @@ const CityModalSelectedSwiper = ({
   }, [provinces, selectedCities]);
   return (
     <div className=" flex flex-col gap-2 ">
-      <div className={`${!isEmpty(selectedProvs) ? " h-fit opacity-100" : " h-0 opacity-0"}  transition-all`}>
+      <div
+        className={`${!isEmpty(selectedProvs) ? " h-fit opacity-100" : " h-0 opacity-0"} flex flex-row items-center justify-between  transition-all`}
+      >
         {" "}
         <p className=" ">{`${_STRINGS.SELECTED_CITIES}  ${!isEmpty(selectedCities) ? `(${selectedCities?.length} شهر)` : ""} `}</p>
+        <div onClick={clearSelected} className="  cursor-pointer flex items-center gap-1   ">
+          <img className="size-4  opacity-40 " src="/assets/icons/uploader/TrashIcon.svg" />
+          <p className="text-sm text-gray-400">حذف همه</p>
+        </div>
       </div>
 
       <Swiper autoFit>

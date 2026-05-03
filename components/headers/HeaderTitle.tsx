@@ -22,7 +22,7 @@ const HeaderTitle = () => {
   } else if (pathname?.includes("/rooms/")) {
     return "جزئیات ملک";
   } else if (pathname?.includes("/blog/")) {
-    return "صفحه بلاگ";
+    return "مجله گردشگری جایاب";
   } else if (pathname?.includes("/checkout/")) {
     return "سبد خرید";
   } else if (pathname?.includes("/orders/")) {
