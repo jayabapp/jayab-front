@@ -1,8 +1,7 @@
 import React from "react";
 
-import NumberFlow from "@number-flow/react";
-import _STRINGS from "@/utils/LocalStrings";
 import { p2e } from "@/helpers/NumberConverter";
+import NumberFlow from "@number-flow/react";
 const Counter = ({
   value,
   setValue,
@@ -77,7 +76,7 @@ const Counter = ({
           inputMode="numeric"
           value={value}
           // onChange={(e) => setValue(Number(e.target.value))}
-          onInput={handleInput}
+          onChange={handleInput}
           disabled={!!items?.disableInput}
         />
         <NumberFlow

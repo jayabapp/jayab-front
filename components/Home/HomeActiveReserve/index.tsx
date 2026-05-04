@@ -25,7 +25,7 @@ const HomeActiveReserve = () => {
     refetch,
   } = useQuery({
     queryKey: [ReserveService?.RESERVE_CACHEKEY, isLogin],
-    queryFn: () => ReserveService?.userReserves({ type: "active" }),
+    queryFn: !!isLogin ? () => ReserveService?.userReserves({ type: "active" }) : () => null,
     staleTime: 0,
     gcTime: 0,
     enabled: isLogin,

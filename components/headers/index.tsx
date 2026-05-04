@@ -221,7 +221,7 @@ const Header = ({ scroll }: { scroll?: number }) => {
     queryKey: [ReserveService.RESERVE_ACTIVE_CACHEKEY, isLogin],
     enabled: isLogin,
 
-    queryFn: ReserveService.activeReserve,
+    queryFn: !!isLogin ? ReserveService.activeReserve : () => null,
   });
   const isHome = pathname == "/" ? true : false;
 

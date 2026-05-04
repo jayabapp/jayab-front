@@ -14,10 +14,11 @@ import { SocketIO } from "../../components/SocketIo";
 // import SideNav from "@/components/SideNav";
 // import DesktopHeader from "@/components/Home/HomeHeader/DesktopHeader";
 // import ConnectingBanner from "@/components/Headers/ConnectingBanner";
-import { useAuthStore, useStoreInit, useStoreParams, useStoreSocket } from "@/store";
-
 import { AuthService } from "@/api_services/auth/auth.service";
 import RotatePhone from "@/components/shared/Lotties/RotatePhone";
+import { useAuthStore, useStoreInit, useStoreParams, useStoreSocket } from "@/store";
+// @ts-ignore
+import { authorizeUser, init, onMetrixUserIdReceived, setCustomAttribute, setPhoneNumber } from "@metrixorg/websdk";
 import MobileFooter from "../../components/Footer/MobileFooter";
 import { headerBlackList, mobileFooterBlackList } from "../constantss";
 
@@ -56,6 +57,19 @@ const MainWrapper = ({ children }: mainWrapper) => {
   const [isLandscape, setIsLandscape] = useState(false);
 
   useEffect(() => {
+    try {
+      const appId = process.env.NEXT_PUBLIC_METRIX_APP_ID;
+      const appKey = process.env.NEXT_PUBLIC_METRIX_APP_KEY;
+
+      if (appId && appKey) {
+        init(appId, appKey);
+      } else {
+        console.warn("Metrix SDK: Missing credentials", { appId: !!appId, appKey: !!appKey });
+      }
+    } catch (error) {
+      console.error("Metrix SDK initialization error:", error);
+    }
+
     const isLogin = localStorage.getItem("isLogin");
     /**
      * admin panel sso
@@ -158,6 +172,13 @@ const MainWrapper = ({ children }: mainWrapper) => {
   useEffect(() => {
     if (!!profile) {
       setIsVisible(false);
+      authorizeUser(profile?.id);
+      setPhoneNumber(profile?.mobile_number);
+      setCustomAttribute("full_name", profile?.full_name);
+      setCustomAttribute("role", !!profile?.owner_id ? "owner" : !!profile?.advisor_id ? "advisor" : "customer");
+      onMetrixUserIdReceived().then((metrixUserId: string) => {
+        // todo
+      });
       useStoreInit.setState({ userInfo: profile });
     }
   }, [profile]);
