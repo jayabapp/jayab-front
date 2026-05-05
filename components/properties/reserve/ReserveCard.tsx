@@ -16,10 +16,10 @@ import { useEffect, useState } from "react";
 import LinearTextBlock from "../SinglePropertyAccards/LinearTextBlock";
 
 import { ChatService } from "@/api_services/chat/chat.service";
-import ConfirmModal from "@/components/Modal/ConfirmModal";
 import NumberFlow from "@number-flow/react";
 import { useRouter } from "next/navigation";
 import SinglePropContactInfoModal from "../SinglePropertyIntroduction/SinglePropContactInfoModal";
+import AdExpiredPop from "./AdExpiredPop";
 moment.loadPersian({ dialect: "persian-modern" });
 
 const ReserveCard = ({
@@ -417,17 +417,12 @@ const ReserveCard = ({
         data={data?.property}
         onHide={onContactClose}
       />
-      <ConfirmModal
-        onConfirm={() => {
-          router.push(`/profile/owner/properties/${data?.property?.id}/subscription`);
-        }}
+      <AdExpiredPop
+        data={data}
+        show={showSub}
         onHide={() => {
           setShowSub(false);
         }}
-        isVisible={showSub}
-        title="مهلت آگهی شما به اتمام رسیده"
-        text="برای فعال شدن امکان گفتگو و دریافت شماره میهمان و همچین نمایش شماره تماس شما به میهمانان اشتراک آگهی خود را تمدید کنید."
-        confirmText="تمدید اعتبار"
       />
     </div>
   );

@@ -442,6 +442,7 @@ const _STRINGS = {
   POOL_LESS: "بدون استخر",
   SUBMIT_DO: "اعمال",
   DELETE_CIIES: "حذف شهرها",
+  WATCH_ALL: "مشاهده بیشتر",
 };
 
 export default _STRINGS;

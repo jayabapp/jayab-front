@@ -1,5 +1,6 @@
 import BannersContainer from "@/components/Home/BannersContainer";
 import HomeActiveReserve from "@/components/Home/HomeActiveReserve";
+import HomeContentSection from "@/components/Home/HomeContentSection";
 import HomePropertyTypes from "@/components/Home/HomePropertyTypes";
 import MainFiltersContainer from "@/components/Home/MainFiltersContainer";
 import TheInstallPrompt from "@/components/InstallPrompt/TheInstallPrompt";
@@ -39,6 +40,7 @@ const Home = async () => {
     per_page: 12,
   });
   const { data: propertyTypes } = await serverCall(baseUrl + apiRoutes.USER_PROP_OPTIONS + "?group[]=PROPERTY_TYPE");
+  const { data: homeContent } = await serverCall(baseUrl + apiRoutes.CONTENT_BY_KEY("homeContent"));
   const devices = await deviceTypeDetector();
 
   return (
@@ -99,6 +101,7 @@ const Home = async () => {
       ) : (
         <></>
       )}
+      <HomeContentSection data={homeContent} />
     </div>
   );
 };

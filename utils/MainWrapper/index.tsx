@@ -177,6 +177,7 @@ const MainWrapper = ({ children }: mainWrapper) => {
       setCustomAttribute("full_name", profile?.full_name);
       setCustomAttribute("role", !!profile?.owner_id ? "owner" : !!profile?.advisor_id ? "advisor" : "customer");
       onMetrixUserIdReceived().then((metrixUserId: string) => {
+        console.log({ metrixUserId });
         // todo
       });
       useStoreInit.setState({ userInfo: profile });
