@@ -63,6 +63,10 @@ const MainWrapper = ({ children }: mainWrapper) => {
 
       if (appId && appKey) {
         init(appId, appKey);
+        onMetrixUserIdReceived().then((metrixUserId: string) => {
+          console.log({ metrixUserId });
+          // todo
+        });
       } else {
         console.warn("Metrix SDK: Missing credentials", { appId: !!appId, appKey: !!appKey });
       }
@@ -176,10 +180,7 @@ const MainWrapper = ({ children }: mainWrapper) => {
       setPhoneNumber(profile?.mobile_number);
       setCustomAttribute("full_name", profile?.full_name);
       setCustomAttribute("role", !!profile?.owner_id ? "owner" : !!profile?.advisor_id ? "advisor" : "customer");
-      onMetrixUserIdReceived().then((metrixUserId: string) => {
-        console.log({ metrixUserId });
-        // todo
-      });
+
       useStoreInit.setState({ userInfo: profile });
     }
   }, [profile]);

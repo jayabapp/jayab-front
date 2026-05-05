@@ -12,11 +12,11 @@ const HomeContentSection = ({ data }: { data: ContentDto }) => {
     hasCount: true,
   });
   return (
-    <div className="flex w-full pt-12 padding-x items-center justify-center flex-col gap-4">
+    <div className="flex w-full pt-12 padding-x  md:px-[15%]  2xl:px-[20%] items-center justify-center flex-col gap-4">
       <p className="font-bold">{data?.small_text}</p>
       <div className={`  ${isOpen ? "is-opend    " : " "} accardion-class   rounded-b-md transition-all `}>
         <div
-          className={`   ${isOpen ? "  min-h-12 " : "h-12"}  transition-all  content  !text-justify `}
+          className={`   ${isOpen ? "  min-h-20 " : "h-20"}  transition-all  content  text-[0.8125rem] opacity-85  !text-justify `}
           dangerouslySetInnerHTML={{ __html: `${html}` }}
         />
       </div>
