@@ -50,7 +50,7 @@ const ReserveCard = ({
         setShowSub(true);
       } else {
         setShowCounter(false);
-        window.open(`call:${data?.guest_mobile}`, "_blank", "noopener,noreferrer");
+        window.open(`tel:${data?.guest_mobile}`, "_blank", "noopener,noreferrer");
         refetchCallBack?.();
       }
     },
