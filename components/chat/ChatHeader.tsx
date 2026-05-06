@@ -57,6 +57,15 @@ const ChatHeader = ({ image, description, name, offSetTop, is_recipient_online, 
     //   ? `/profile/owner/properties/${data?.property?.id}`
     //   :
     `/rooms/${data?.property?.slug}`;
+
+  const handleBackClick = () => {
+    // Check if there's history to go back to (external link case)
+    if (window.history.length <= 1) {
+      router.push("/");
+    } else {
+      router.back();
+    }
+  };
   return (
     <div
       // style={
@@ -75,7 +84,7 @@ const ChatHeader = ({ image, description, name, offSetTop, is_recipient_online, 
           onClick={(e) => {
             e.preventDefault();
             e.stopPropagation();
-            router.back();
+            handleBackClick();
           }}
           className=" dark:invert h-4 aspect-square w-4 -rotate-90  justify-start  "
         />
