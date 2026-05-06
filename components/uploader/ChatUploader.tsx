@@ -1,14 +1,13 @@
-import React, { useRef, useState, useCallback, ReactEventHandler, useEffect } from "react";
+import { ReactEventHandler, useRef, useState } from "react";
 
-import { UseMutateFunction, useMutation } from "@tanstack/react-query";
 import { AuthService } from "@/api_services/auth/auth.service";
 import _STRINGS from "@/utils/LocalStrings";
-import imageCompression from "browser-image-compression";
+import { UseMutateFunction, useMutation } from "@tanstack/react-query";
 
 import { toast } from "sonner";
+import Modal from "../Modal";
 import BtnLoading from "../shared/Button/BtnLoading";
 import FormInput from "../shared/Form/FormInput";
-import Modal from "../Modal";
 
 //For Slider
 const marks = {
@@ -107,17 +106,17 @@ const ChatUploader = ({
   const uploadTemp = async (file: Blob) => {
     setLoading(true);
 
-    const compressedBlob = await imageCompression(file as any, {
-      maxSizeMB: 1,
-      maxWidthOrHeight: 1240,
-      useWebWorker: true,
-    });
-    const compressedFile = new File([compressedBlob], "whatever", {
-      type: file.type,
-      lastModified: Date.now(),
-    });
+    // const compressedBlob = await imageCompression(file as any, {
+    //   maxSizeMB: 1,
+    //   maxWidthOrHeight: 1240,
+    //   useWebWorker: true,
+    // });
+    // const compressedFile = new File([compressedBlob], "whatever", {
+    //   type: file.type,
+    //   lastModified: Date.now(),
+    // });
     var formData = new FormData();
-    formData.append("file", compressedFile);
+    formData.append("file", file);
 
     mutate(
       { formData: formData, link: link },
@@ -130,7 +129,7 @@ const ChatUploader = ({
         onError: () => {
           setLoading(false);
         },
-      }
+      },
     );
   };
 
