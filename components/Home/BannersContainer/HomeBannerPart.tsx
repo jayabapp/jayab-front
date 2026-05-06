@@ -30,7 +30,7 @@ const HomeBannerPart = ({ banners, devices }: ImageCarouselTypes) => {
       <div className="w-full extra-padding-x  lg:!px-[28%] flex absolute m-auto left-0 right-0  bottom-[35%] lg:bottom-[30%] flex-col   z-10 lg:z-1  gap-20">
         <div className="flex z-5 !gap-2 lg:!gap-4 items-center justify-center flex-col">
           <img className=" !w-24 lg:!w-40" src="/assets/images/home/home_banner_logo.png" />
-          <h1 className="text-white font-bold !text-sm lg:!text-lg  text-center">{_STRINGS.HOME_TITLE}</h1>
+          <h2 className="text-white font-bold !text-sm lg:!text-lg  text-center">{_STRINGS.HOME_TITLE}</h2>
         </div>
       </div>
 

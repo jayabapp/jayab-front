@@ -194,6 +194,15 @@ const Header = ({ scroll }: { scroll?: number }) => {
     useStoreParams.setState({ getBackHome: false });
   };
 
+  const handleBackClick = () => {
+    // Check if there's history to go back to (external link case)
+    if (window.history.length <= 1) {
+      router.push("/");
+    } else {
+      router.back();
+    }
+  };
+
   /* -------------------------------------------------------------------------- */
   /*                               ADVISOR STATUS                               */
   /* -------------------------------------------------------------------------- */
@@ -345,7 +354,7 @@ transition-all ease-out  duration-300  header-content-container w-full mx-auto  
                     } else if (pathname == "/profile/orders" || (!!slug && !room_slug)) {
                       router.push("/");
                     } else {
-                      router.back();
+                      handleBackClick();
                     }
                   }}
                   className="cursor-pointer w-12 h-4      "
@@ -379,7 +388,7 @@ transition-all ease-out  duration-300  header-content-container w-full mx-auto  
                     } else if (pathname == "/profile/orders" || (!!slug && !room_slug)) {
                       router.push("/");
                     } else {
-                      router.back();
+                      handleBackClick();
                     }
                   }}
                   className="cursor-pointer w-12 h-4      "

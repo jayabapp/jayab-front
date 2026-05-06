@@ -15,10 +15,14 @@ type Props = {
 
 import { PlaceSchema, ProductSchema } from "@/components/SchemaGenerator/Schemas";
 import MehaHeaderHelper from "@/helpers/MetaHeaderHelper";
-import { notFound, redirect } from "next/navigation";
+import { redirect } from "next/navigation";
 export async function generateMetadata({ params }: Props, parent: ResolvingMetadata): Promise<Metadata> {
   const paramData = await params;
-  const { data: properyData } = await serverCall(baseUrl + apiRoutes.GET_SINGLEPROPERTY_SlUG(paramData?.room_slug));
+  const { data: properyData } = await serverCall(
+    baseUrl + apiRoutes.GET_SINGLEPROPERTY_SlUG(paramData?.room_slug),
+    null,
+    { redirect404: true, redirect410: true },
+  );
 
   return MehaHeaderHelper(properyData);
 }
@@ -32,11 +36,11 @@ const SinglePropertyPage = async ({
 }) => {
   const pageParams = await params;
 
-  const { data: properyData } = await serverCall(baseUrl + apiRoutes.GET_SINGLEPROPERTY_SlUG(pageParams?.room_slug));
-
-  if (!properyData) {
-    notFound();
-  }
+  const { data: properyData } = await serverCall(
+    baseUrl + apiRoutes.GET_SINGLEPROPERTY_SlUG(pageParams?.room_slug),
+    null,
+    { redirect404: true, redirect410: true },
+  );
 
   if (decodeURI(properyData?.slug) != decodeURI(pageParams?.room_slug)) {
     redirect(`/rooms/${encodeURI(properyData?.slug)}`);
