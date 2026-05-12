@@ -1,5 +1,5 @@
 import { usePathname, useRouter } from "next/navigation";
-import { useEffect, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 
 import { HomeService } from "@/api_services/home/home.service";
 import { PropertyListDto } from "@/api_services/property/property.interface";
@@ -251,6 +251,16 @@ function FilterdPropertiesPageOrianted({ sortType, setSortType, query }: Filterd
     },
   });
 
+  const shuffledBanners = useMemo(() => {
+    if (!Array.isArray(banners) || banners.length === 0) return [];
+    const arr = [...banners];
+    for (let i = arr.length - 1; i > 0; i--) {
+      const j = Math.floor(Math.random() * (i + 1));
+      [arr[i], arr[j]] = [arr[j], arr[i]];
+    }
+    return arr;
+  }, [banners]);
+
   return (
     <div className="w-full px-0  self-center">
       <div className=" w-full">
@@ -283,7 +293,7 @@ function FilterdPropertiesPageOrianted({ sortType, setSortType, query }: Filterd
             }
             className="grid   pb-8 pt-4 md:pt-2 px-3 lg:px-1  !overflow-hidden  grid-cols-1 gap-2 md:gap-4  md:grid-cols-2 xl:grid-cols-3 "
           >
-            {banners?.map((e: any, index: number) => (
+            {shuffledBanners?.map((e: any, index: number) => (
               <div
                 style={{ gridRowStart: (index + 1) * (isMobile ? 6 : 3) }}
                 key={`banner${e?.id}`}
