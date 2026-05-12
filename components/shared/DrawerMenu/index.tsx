@@ -128,8 +128,6 @@ const DrawerContent = ({ onSelect, isOpen, setIsOpen }: drawerMenuContentType) =
     );
   }
 
-  const isLogin = localStorage.getItem("isLogin");
-
   return (
     <div className="w-full h-full bg-white dark:bg-zinc-900">
       <img

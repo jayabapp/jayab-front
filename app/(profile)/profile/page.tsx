@@ -11,6 +11,7 @@ import { profileItems } from "@/utils/constantss";
 
 import _STRINGS from "@/utils/LocalStrings";
 import { useMutation, useQuery } from "@tanstack/react-query";
+import { deleteCookie } from "cookies-next/client";
 import isEmpty from "lodash/isEmpty";
 import dynamic from "next/dynamic";
 import { useRouter } from "next/navigation";
@@ -49,6 +50,7 @@ const Profile = () => {
     localStorage.removeItem("socket_token");
 
     localStorage.removeItem("isLogin");
+    deleteCookie("isLogin");
     localStorage.removeItem("is_registered");
 
     useAuthStore.setState({ isLogin: false });

@@ -30,6 +30,9 @@ export const footerBlacklist = [
   "/auth/register/success",
   "/profile",
 ];
+
+export const guardedDirectories = ["/chat/", "/profile/"];
+
 export const headerBlackList = [
   "/auth",
   "/new-post",

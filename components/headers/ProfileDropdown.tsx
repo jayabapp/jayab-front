@@ -10,6 +10,7 @@ import Link from "next/link";
 
 import { useAuthStore, useStoreInit, useStoreParams } from "@/store";
 import { profileDropDownItems } from "@/utils/constantss";
+import { deleteCookie } from "cookies-next/client";
 import AbsoluteBadge from "./AbsoluteBadge";
 
 const ProfileDropdown = ({ notifBadge, isHome }: { notifBadge?: number | string; isHome?: boolean }) => {
@@ -24,6 +25,7 @@ const ProfileDropdown = ({ notifBadge, isHome }: { notifBadge?: number | string;
     localStorage.removeItem("access_token");
 
     localStorage.removeItem("isLogin");
+    deleteCookie("isLogin");
     localStorage.removeItem("is_registered");
     useAuthStore.setState({ isLogin: false });
     useStoreInit.setState({ userInfo: null });

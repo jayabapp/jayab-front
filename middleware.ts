@@ -1,13 +1,28 @@
 import { md5 } from "js-md5";
+import { cookies } from "next/headers";
 import { NextRequest, NextResponse } from "next/server";
 import serverCall from "./helpers/serverCall";
+import { guardedDirectories } from "./utils/constantss";
 import { apiRoutes, baseUrl } from "./utils/urls";
-
 export async function middleware(request: NextRequest) {
   const headers = new Headers(request.headers);
   const PATH_NAME = request.nextUrl.pathname;
   const queryParams = request.nextUrl.searchParams;
   const queriesArray = Array.from(queryParams?.entries());
+  const cookiesState = await cookies();
+  const isLogin = cookiesState.get("isLogin")?.value;
+
+  /* -------------------------------------------------------------------------- */
+  /*                       REDIRECT GUARDED ROUTES TO AUTH                      */
+  /* -------------------------------------------------------------------------- */
+
+  if (!isLogin && !!guardedDirectories?.find((e) => PATH_NAME.includes(e))) {
+    const response = NextResponse.redirect(new URL(`/auth?redirect_url=${PATH_NAME}`, request.url), 307);
+    return response;
+  }
+
+  ////////////////////////////////
+
   const HREF = `${process.env.NEXT_PUBLIC_WEB_SITE}${PATH_NAME}${
     queriesArray?.length > 0
       ? "?" +

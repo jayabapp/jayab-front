@@ -15,6 +15,7 @@ import { useAuthStore, useStoreInit, useStoreParams } from "@/store";
 import { headerMobileSearchBlackList, headerWithFullSeach } from "@/utils/constantss";
 import { NEW_IMAGE_URL } from "@/utils/urls";
 import { useQuery } from "@tanstack/react-query";
+import { getCookie } from "cookies-next/client";
 import { throttle } from "lodash";
 import moment from "moment-jalaali";
 import HomeCityFilterCityPart from "../Home/HomeCityFilterContainer/HomeCityFilterCityPart";
@@ -106,7 +107,7 @@ const Header = ({ scroll }: { scroll?: number }) => {
   useEffect(() => {
     window?.addEventListener("scroll", handleScroll);
     const temp = localStorage.getItem("theme");
-    const isLoginTemp = localStorage.getItem("isLogin");
+    const isLoginTemp = getCookie("isLogin") || localStorage.getItem("isLogin");
     useAuthStore.setState({ isLogin: isLoginTemp === "true" ? true : false });
 
     return () => window?.removeEventListener("scroll", handleScroll);

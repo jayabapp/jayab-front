@@ -1,6 +1,7 @@
 import Notify from "@/components/shared/Toast";
 import { baseUrl, baseUrlV } from "@/utils/urls";
 import axios, { AxiosRequestConfig, AxiosRequestHeaders } from "axios";
+import { deleteCookie } from "cookies-next";
 
 type Methods = "POST" | "PUT" | "DELETE" | "PATCH" | "GET";
 
@@ -88,6 +89,7 @@ export async function apiCall<T, K>(
       localStorage?.removeItem("access_token");
       localStorage.removeItem("socket_token");
       localStorage?.removeItem("isLogin");
+      deleteCookie("isLogin");
       window?.location?.replace("/");
     }
     throw error?.response?.data || "Failed";

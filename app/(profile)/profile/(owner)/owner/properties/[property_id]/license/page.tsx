@@ -5,11 +5,10 @@ import FixedBottomContainer from "@/components/shared/FixedBottomContainer";
 import ProgressBar from "@/components/shared/progressbar";
 import StatusShower from "@/components/shared/StatusShower";
 import MainUploader from "@/components/uploader";
-import MultiUploader from "@/components/uploader/MultiUploader";
 import _STRINGS from "@/utils/LocalStrings";
 import { useMutation, useQuery } from "@tanstack/react-query";
 import { useParams, useRouter } from "next/navigation";
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 
 const Authorize = () => {
   const router = useRouter();

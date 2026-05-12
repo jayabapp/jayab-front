@@ -9,6 +9,7 @@ import { p2e } from "@/helpers/NumberConverter";
 import { useAuthStore } from "@/store";
 import _STRINGS from "@/utils/LocalStrings";
 import { useMutation } from "@tanstack/react-query";
+import { setCookie } from "cookies-next/client";
 import moment from "moment-jalaali";
 import Image from "next/image";
 import { useRouter, useSearchParams } from "next/navigation";
@@ -105,7 +106,8 @@ const OtpPageSignInComponent = ({
           router.replace(link);
         }, 2000);
       } else {
-        localStorage.setItem("isLogin", "true");
+        setCookie("isLogin", "true", { maxAge: 60 * 24 * 60 * 60 });
+        // localStorage.setItem("isLogin", "true");
 
         setTimeout(() => {
           router.replace(redirectUrl ? redirectUrl : `/`);

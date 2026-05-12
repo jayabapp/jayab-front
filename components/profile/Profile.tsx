@@ -6,6 +6,7 @@ import { useAuthStore, useStoreInit } from "@/store";
 import { profileItems } from "@/utils/constantss";
 import _STRINGS from "@/utils/LocalStrings";
 import { useMutation } from "@tanstack/react-query";
+import { deleteCookie } from "cookies-next/client";
 import { isMobile } from "react-device-detect";
 import ConfirmModal from "../Modal/ConfirmModal";
 import Button from "../shared/Button/Button";
@@ -23,6 +24,7 @@ const Profile = ({}) => {
     localStorage.removeItem("access_token");
 
     localStorage.removeItem("isLogin");
+    deleteCookie("isLogin");
     localStorage.removeItem("is_registered");
     useAuthStore.setState({ isLogin: false });
     useStoreInit.setState({ userInfo: null });

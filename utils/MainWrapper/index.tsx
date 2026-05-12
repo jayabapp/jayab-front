@@ -25,6 +25,7 @@ import { headerBlackList, mobileFooterBlackList } from "../constantss";
 import LoginModal from "@/components/Modal/LoginModal";
 import { getParameter } from "@/helpers/queryGet";
 import FingerprintJS from "@fingerprintjs/fingerprintjs";
+import { getCookie, setCookie } from "cookies-next/client";
 import FCM from "../FCM";
 function FallBack() {
   return <></>;
@@ -51,12 +52,14 @@ const MainWrapper = ({ children }: mainWrapper) => {
   const { isLogin, isAdminSso } = useAuthStore((state) => state);
   const [isVisible, setIsVisible] = useState(true);
 
-  const [accessChecked, setAccessChecked] = useState(false);
   const isAuthScreen = pathname.match("auth");
 
   const [isLandscape, setIsLandscape] = useState(false);
 
   useEffect(() => {
+    /* -------------------------------------------------------------------------- */
+    /*                                   METRIX                                   */
+    /* -------------------------------------------------------------------------- */
     try {
       const appId = process.env.NEXT_PUBLIC_METRIX_APP_ID;
       const appKey = process.env.NEXT_PUBLIC_METRIX_APP_KEY;
@@ -65,7 +68,6 @@ const MainWrapper = ({ children }: mainWrapper) => {
         init(appId, appKey);
         onMetrixUserIdReceived().then((metrixUserId: string) => {
           console.log({ metrixUserId });
-          // todo
         });
       } else {
         console.warn("Metrix SDK: Missing credentials", { appId: !!appId, appKey: !!appKey });
@@ -73,8 +75,14 @@ const MainWrapper = ({ children }: mainWrapper) => {
     } catch (error) {
       console.error("Metrix SDK initialization error:", error);
     }
+    //////////////////////////
 
-    const isLogin = localStorage.getItem("isLogin");
+    const isLoginLocal = localStorage.getItem("isLogin");
+    if (!!isLoginLocal) {
+      setCookie("isLogin", "true", { maxAge: 60 * 24 * 60 * 60 });
+    }
+    const isLogin = getCookie("isLogin") || isLoginLocal;
+
     /**
      * admin panel sso
      */
@@ -97,43 +105,19 @@ const MainWrapper = ({ children }: mainWrapper) => {
     if (ssoToken) {
       useAuthStore.setState({ isLogin: true });
       useAuthStore.setState({ isAdminSso: true });
-      localStorage.setItem("isLogin", "true");
+      // localStorage.setItem("isLogin", "true");
+      setCookie("isLogin", "true", { maxAge: 60 * 24 * 60 * 60 });
       localStorage.setItem("access_token", ssoToken);
       redirectUrl && router.push(redirectUrl);
     } else if (isLogin) {
       useAuthStore.setState({ isLogin: true });
-      // dispatch({ type: "IS_LOGIN", payload: true });
       if (isAuthScreen) {
         router.push("/");
-        hideSplashscreen();
       } else {
-        hideSplashscreen();
       }
     } else {
-      // router.push("/auth");
-      hideSplashscreen();
     }
   }, []);
-
-  // useQuery(
-  //   [AuthService?.SHARED_SALON_API_CACHEKEY],
-  //   () => {
-  //     return AuthService?.GetSaloon();
-  //   },
-  //   {
-  //     onSuccess: (e) => {
-  //       // useStoreInit.setState({ managerInfo: e });
-  //       // useStoreTheme.persist.getOptions()
-  //       useStoreTheme.setState({
-  //         color: e?.color_code,
-  //         logo: e?.logo_image,
-  //         title: e?.title,
-  //         splash: e?.splash_image,
-  //         background_color: e?.bg_color_code,
-  //       });
-  //     },
-  //   }
-  // );
 
   const { data: profile } = useQuery({
     queryKey: [AuthService.AU4_CACHEKEY, isLogin],
@@ -223,13 +207,6 @@ const MainWrapper = ({ children }: mainWrapper) => {
     });
   }, []);
 
-  const hideSplashscreen = () => {
-    if (!accessChecked)
-      setTimeout(() => {
-        setAccessChecked(true);
-      }, 1500);
-  };
-
   useEffect(() => {
     const myVisitor_id = localStorage.getItem("visitor_id");
     if (!myVisitor_id) {
@@ -248,7 +225,6 @@ const MainWrapper = ({ children }: mainWrapper) => {
     return <RotatePhone />;
   }
 
-  // if (!accessChecked) return <Splashscreen />;
   return (
     <div className={`app-background  app-text transition-opacity`}>
       {/* <DesktopHeader /> */}
