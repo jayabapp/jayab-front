@@ -5,7 +5,7 @@ import LottieLoading from "@/components/shared/Lotties/LottieLoading";
 import { DeviceInfo } from "@/helpers/device.detector";
 import { WeekDays } from "@/utils/constantss";
 import moment from "moment-jalaali";
-import { Fragment, useEffect, useState } from "react";
+import { Fragment, useEffect, useMemo, useState } from "react";
 import HomeProductsBannerItems from "./HomeProductsBannerItems";
 
 type HomePropertiesSsrPartType = {
@@ -37,6 +37,14 @@ function HomePropertiesSsrPart({ data, middleBanners, devices }: HomePropertiesS
 
     setWeek(weeks);
   }, []);
+
+  const randomMiddleBanner = useMemo(() => {
+    if (Array.isArray(middleBanners) && middleBanners.length > 0) {
+      const idx = Math.floor(Math.random() * middleBanners.length);
+      return middleBanners[idx];
+    }
+    return null;
+  }, [middleBanners]);
   return (
     <div className="w-full px-0  self-center">
       <div className=" w-full">
@@ -44,9 +52,9 @@ function HomePropertiesSsrPart({ data, middleBanners, devices }: HomePropertiesS
           <LottieLoading />
         ) : data?.length > 0 ? (
           <div className="grid   pb-8 pt-2 md:pt-2 grid-cols-1 gap-2 md:gap-4  md:grid-cols-2 xl:grid-cols-4 ">
-            {!!middleBanners?.[0] ? (
+            {!!randomMiddleBanner ? (
               <div className=" col-span-full row-start-7 lg:row-start-3  ">
-                <HomeProductsBannerItems devices={devices} bannerItem={middleBanners?.[0]} />
+                <HomeProductsBannerItems devices={devices} bannerItem={randomMiddleBanner} />
               </div>
             ) : (
               <></>

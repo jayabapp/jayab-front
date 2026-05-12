@@ -13,19 +13,18 @@ import numberWithCommas from "@/helpers/numberWithCommas";
 import _STRINGS from "@/utils/LocalStrings";
 import { useMutation, useQuery } from "@tanstack/react-query";
 import isEmpty from "lodash/isEmpty";
-import { useParams, useRouter } from "next/navigation";
+import { useParams, useRouter, useSearchParams } from "next/navigation";
 import { useEffect, useState } from "react";
 
 const Subscription = () => {
   const router = useRouter();
   const params = useParams();
   const { property_id } = params;
-
+  const searchParams = useSearchParams();
+  const GATE_WAY_REDIRECT_URL = searchParams?.get("GATE_WAY_REDIRECT_URL");
   const [selectedPlans, setSelectedPlans] = useState<PropertySubsDto[]>([]);
   const [price, setPrice] = useState(0);
-  const [promoteItemId, setPromoteItemId] = useState<number | undefined>(
-    undefined,
-  );
+  const [promoteItemId, setPromoteItemId] = useState<number | undefined>(undefined);
   const [canPromote, setCanPromote] = useState(false);
 
   /* -------------------------------------------------------------------------- */
@@ -64,10 +63,7 @@ const Subscription = () => {
   /* -------------------------------------------------------------------------- */
 
   const { data: statsData, isLoading: statsLoading } = useQuery({
-    queryKey: [
-      PropertyService.SINGLE_OWNER_PROPERTY_STATS_CACHEKEY,
-      property_id,
-    ],
+    queryKey: [PropertyService.SINGLE_OWNER_PROPERTY_STATS_CACHEKEY, property_id],
     queryFn: () => {
       if (property_id) {
         return PropertyService.getPropertyStatistics({
@@ -141,10 +137,7 @@ const Subscription = () => {
   /* -------------------------------------------------------------------------- */
 
   useEffect(() => {
-    const total = selectedPlans.reduce(
-      (acc, cur) => acc + (cur.price_with_discount || cur.price),
-      0,
-    );
+    const total = selectedPlans.reduce((acc, cur) => acc + (cur.price_with_discount || cur.price), 0);
     setPrice(total);
   }, [selectedPlans]);
 
@@ -152,12 +145,11 @@ const Subscription = () => {
     const subId = selectedPlans.find((e) => !e.is_promote)?.id;
     const promotId = selectedPlans.find((e) => e.is_promote)?.id;
 
-    if (!subId && !promotId)
-      return Notify({ type: "warn", body: "لطفا پلن مورد نظر را انتخاب کنید" });
+    if (!subId && !promotId) return Notify({ type: "warn", body: "لطفا پلن مورد نظر را انتخاب کنید" });
 
     mutate({
       gateway: "ZARINPAL",
-      redirect_url: window.origin + `/profile/owner/properties/${property_id}`,
+      redirect_url: window.origin + (GATE_WAY_REDIRECT_URL ?? `/profile/owner/properties/${property_id}`),
       property_id: `${property_id}`,
       subscription_id: subId,
       promote_id: promotId,
@@ -176,10 +168,7 @@ const Subscription = () => {
             key={e.id}
             item={{
               disabled: !canPromote && e.id === promoteItemId,
-              hint:
-                !canPromote && e.id === promoteItemId
-                  ? "نردبان، پس از فعال شدن آگهی قابل خرید می‌باشد."
-                  : "",
+              hint: !canPromote && e.id === promoteItemId ? "نردبان، پس از فعال شدن آگهی قابل خرید می‌باشد." : "",
             }}
             isChecked={selectedPlans.some((_) => _.id === e.id)}
             onSelect={() => onSelect(e)}
@@ -187,9 +176,7 @@ const Subscription = () => {
             description={e.description}
           >
             <div className="flex gap-2">
-              <p className="font-bold text-sm text-primary-700">
-                {_STRINGS.COST} :
-              </p>
+              <p className="font-bold text-sm text-primary-700">{_STRINGS.COST} :</p>
               <AddCardPricePart
                 ribbon={e}
                 containerClass="flex gap-2 text-primary-700"
@@ -222,8 +209,7 @@ const Subscription = () => {
       <FixedBottomContainer>
         <div className="w-full flex items-center justify-between p-2 md:px-4">
           <p className="text-sm">
-            {_STRINGS.PAYABLE_AMOUNT} : {numberWithCommas(price)}{" "}
-            {_STRINGS.TOMAN}
+            {_STRINGS.PAYABLE_AMOUNT} : {numberWithCommas(price)} {_STRINGS.TOMAN}
           </p>
           <Button
             loading={isPending}

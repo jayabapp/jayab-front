@@ -6,8 +6,11 @@ import LottieLoading from "@/components/shared/Lotties/LottieLoading";
 import { NEW_IMAGE_URL } from "@/utils/urls";
 import { useQuery } from "@tanstack/react-query";
 import Link from "next/link";
+import { usePathname } from "next/navigation";
 
 const AdExpiredPop = ({ show, onHide, data }: { onHide: () => void | null; show: boolean; data: ReserveListDto }) => {
+  const pathname = usePathname();
+
   const { data: maxReserveContent, isLoading } = useQuery({
     queryKey: [HomeService?.CONTENT_BY_KEY_CACHEKEY, "ad-expired-content", show],
     queryFn: () => {
@@ -33,7 +36,7 @@ const AdExpiredPop = ({ show, onHide, data }: { onHide: () => void | null; show:
               </div>
 
               <Link
-                href={`/profile/owner/properties/${data?.property?.id}/subscription`}
+                href={`/profile/owner/properties/${data?.property?.id}/subscription?GATE_WAY_REDIRECT_URL=${pathname}`}
                 className=" w-full"
                 prefetch={false}
               >
