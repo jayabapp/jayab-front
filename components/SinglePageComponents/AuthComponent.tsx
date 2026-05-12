@@ -41,14 +41,14 @@ const AuthPageComponent = () => {
               ? `/auth/otp?redirect_url=${redirectUrl}&mobile_number=${mobile_number}`
               : `/auth/otp?mobile_number=${mobile_number}`;
 
-            router.push(link);
+            router.replace(link);
             useAuthStore.setState({ authCodeExpire: moment().add(3, "minute") });
           },
           onError: () => {
             setLoading(false);
             console.log("err");
           },
-        }
+        },
       );
     } else {
       Notify({

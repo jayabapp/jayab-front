@@ -192,7 +192,7 @@ object-contain
               <div
                 className="flex items-center gap-2"
                 onClick={() => {
-                  router.back();
+                  router.replace("/");
                 }}
               >
                 <p className="text-base font-medium">{mobile_number} </p>
@@ -203,7 +203,7 @@ object-contain
             <div className="flex items-center justify-between">
               <div
                 onClick={() => {
-                  router.back();
+                  router.replace("/");
                 }}
                 className=" cursor-pointer flex items-center gap-1 "
               >
