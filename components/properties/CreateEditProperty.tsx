@@ -87,7 +87,7 @@ const CreateEditProperty = ({
           maxLength: 55,
           containerClass: "w-full  relative ",
           extraElement: <FormCounter max={55} value={values?.title || ""} containerClass=" top-0  !bottom-auto" />,
-          disabled: status == 30 || status == 31,
+          // disabled: status == 30 || status == 31,
         }}
         value={values?.title || ""}
         onChangeText={(e) => {
