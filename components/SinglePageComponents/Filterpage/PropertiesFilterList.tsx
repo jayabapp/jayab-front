@@ -7,7 +7,7 @@ import type { Swiper } from "swiper";
 import { SwiperSlide } from "swiper/react";
 
 import { ProvienceTypesDto } from "@/api_services/property/property.interface";
-import EmptyList from "@/components/shared/Lotties/EmptyList";
+import BtnLoading from "@/components/shared/Button/BtnLoading";
 import SwiperWithNavigation from "@/components/SwiperWithNavigation";
 import queryBuilder from "@/helpers/queryBuilder";
 import { usePathname, useRouter } from "next/navigation";
@@ -45,9 +45,9 @@ function PropertiesFilterList({
   return (
     <div className={` w-full noSelect   select-none   relative rounded-20 flex gap-4 flex-col items-center`}>
       {isEmpty(data) ? (
-        <div className=" min-h-[30dvh] w-full flex items-center justify-center">
+        <div className="  w-full flex items-center justify-center">
           {" "}
-          <EmptyList />
+          <BtnLoading />
         </div>
       ) : (
         <SwiperWithNavigation

@@ -443,6 +443,7 @@ const _STRINGS = {
   SUBMIT_DO: "اعمال",
   DELETE_CIIES: "حذف شهرها",
   WATCH_ALL: "مشاهده بیشتر",
+  TOMAN_PER_NIGHT: "تومان/شب",
 };
 
 export default _STRINGS;

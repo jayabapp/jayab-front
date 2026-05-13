@@ -19,6 +19,7 @@ import SpecialFilterButtons from "@/components/Filters/SpecialFilterButtons";
 import Modal from "@/components/Modal";
 import ModalHeaderPart from "@/components/Modal/ModalHeaderPart";
 import Button from "@/components/shared/Button/Button";
+import { DeviceInfo } from "@/helpers/device.detector";
 import queryBuilder from "@/helpers/queryBuilder";
 import useQueryGet from "@/helpers/queryGet";
 import { useStoreParams } from "@/store";
@@ -36,7 +37,7 @@ export interface PostPageQuery {
 }
 type sortTypeType = { id?: string; title?: string };
 
-const Filterpage = () => {
+const Filterpage = ({ devices }: { devices: DeviceInfo }) => {
   const [showRegions, setShowRegions] = useState(false);
 
   const [cityWithRegions, setCityWithRegions] = useState<ChildCities | null>(null);
@@ -226,7 +227,12 @@ const Filterpage = () => {
 
           {/* LEFT SIDE */}
 
-          <FilterdPropertiesPageOrianted sortType={sortType} setSortType={setSortType} query={queries} />
+          <FilterdPropertiesPageOrianted
+            devices={devices}
+            sortType={sortType}
+            setSortType={setSortType}
+            query={queries}
+          />
           {/* </div> */}
         </div>
       </div>

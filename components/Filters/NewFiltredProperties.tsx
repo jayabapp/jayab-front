@@ -6,6 +6,7 @@ import { PropertyListDto } from "@/api_services/property/property.interface";
 import { PropertyService } from "@/api_services/property/property.service";
 import { BannerPosition } from "@/enum/banners.enum";
 import { FiltersEnum } from "@/enum/filters.enum";
+import { DeviceInfo } from "@/helpers/device.detector";
 import queryBuilder from "@/helpers/queryBuilder";
 import { WeekDays } from "@/utils/constantss";
 import { useQuery } from "@tanstack/react-query";
@@ -59,9 +60,10 @@ type FilterdPropertiesTypePageOrianted = {
   sortType?: { id?: string };
   setSortType: (e: { id?: string; title?: string }) => void | null;
   query: catQueryTypes;
+  devices: DeviceInfo;
 };
 
-function FilterdPropertiesPageOrianted({ sortType, setSortType, query }: FilterdPropertiesTypePageOrianted) {
+function FilterdPropertiesPageOrianted({ sortType, setSortType, query, devices }: FilterdPropertiesTypePageOrianted) {
   const router = useRouter();
   const [hasPaginate, setHasPaginate] = useState(false);
   const [week, setWeek] = useState<any[]>([]);
@@ -299,7 +301,7 @@ function FilterdPropertiesPageOrianted({ sortType, setSortType, query }: Filterd
                 key={`banner${e?.id}`}
                 className={` col-span-full  `}
               >
-                <HomeProductsBannerItems bannerItem={e} />
+                <HomeProductsBannerItems devices={devices} bannerItem={e} />
               </div>
             ))}
             {data?.map((i) => (

@@ -2,19 +2,18 @@
 import { PricingPropertySendDto } from "@/api_services/property/property.interface";
 import { PropertyService } from "@/api_services/property/property.service";
 import TitleCounter from "@/components/properties/TitleCounter";
-import PageHeaders from "@/components/headers/PageHeader";
 import Button from "@/components/shared/Button/Button";
 import FixedBottomContainer from "@/components/shared/FixedBottomContainer";
 import FormInputWithExternalUnit from "@/components/shared/Form/FormInputWithExternalUnit";
 import RangeWithTitle from "@/components/shared/Form/RangeWithTitle";
+import LottieLoading from "@/components/shared/Lotties/LottieLoading";
 import StepShower from "@/components/shared/StepShower";
+import numberWithCommas from "@/helpers/numberWithCommas";
 import { createPropertySteps } from "@/utils/constantss";
 import _STRINGS from "@/utils/LocalStrings";
 import { useMutation, useQuery } from "@tanstack/react-query";
 import { useParams, usePathname, useRouter, useSearchParams } from "next/navigation";
-import React, { useEffect, useState } from "react";
-import numberWithCommas from "@/helpers/numberWithCommas";
-import LottieLoading from "@/components/shared/Lotties/LottieLoading";
+import { useEffect, useState } from "react";
 
 const CreatePropertyPricing = () => {
   const router = useRouter();
@@ -164,8 +163,9 @@ const CreatePropertyPricing = () => {
                 keyboard: "number",
                 convertToText: true,
                 direction: "ltr",
+                placeholder: _STRINGS.TOMAN_PER_NIGHT,
               }}
-              value={numberWithCommas(values?.normal || "") || ""}
+              value={!!values?.normal ? numberWithCommas(values?.normal || "") || "" : ""}
               onChangeText={(e) => {
                 let pureVal = e?.replaceAll(",", "").replaceAll(",", "").replaceAll(" ", "");
 
@@ -181,8 +181,9 @@ const CreatePropertyPricing = () => {
                 keyboard: "number",
                 convertToText: true,
                 direction: "ltr",
+                placeholder: _STRINGS.TOMAN_PER_NIGHT,
               }}
-              value={numberWithCommas(values?.wednesday || "")}
+              value={!!values?.wednesday ? numberWithCommas(values?.wednesday || "") : ""}
               onChangeText={(e) => {
                 let pureVal = e?.replaceAll(",", "").replaceAll(",", "").replaceAll(" ", "");
                 if (!isNaN(pureVal)) onChange(pureVal, "wednesday");
@@ -197,8 +198,9 @@ const CreatePropertyPricing = () => {
                 keyboard: "number",
                 convertToText: true,
                 direction: "ltr",
+                placeholder: _STRINGS.TOMAN_PER_NIGHT,
               }}
-              value={numberWithCommas(values?.thursday || "")}
+              value={!!values?.thursday ? numberWithCommas(values?.thursday || "") : ""}
               onChangeText={(e) => {
                 let pureVal = e?.replaceAll(",", "").replaceAll(",", "").replaceAll(" ", "");
                 if (!isNaN(pureVal)) onChange(pureVal, "thursday");
@@ -213,8 +215,9 @@ const CreatePropertyPricing = () => {
                 keyboard: "number",
                 convertToText: true,
                 direction: "ltr",
+                placeholder: _STRINGS.TOMAN_PER_NIGHT,
               }}
-              value={numberWithCommas(values?.friday || "")}
+              value={!!values?.friday ? numberWithCommas(values?.friday || "") : ""}
               onChangeText={(e) => {
                 let pureVal = e?.replaceAll(",", "").replaceAll(",", "").replaceAll(" ", "");
 
@@ -230,8 +233,9 @@ const CreatePropertyPricing = () => {
                 keyboard: "number",
                 convertToText: true,
                 direction: "ltr",
+                placeholder: _STRINGS.TOMAN_PER_NIGHT,
               }}
-              value={numberWithCommas(values?.peak || "")}
+              value={!!values?.peak ? numberWithCommas(values?.peak || "") : ""}
               onChangeText={(e) => {
                 let pureVal = e?.replaceAll(",", "").replaceAll(",", "").replaceAll(" ", "");
                 if (!isNaN(pureVal)) onChange(pureVal, "peak");
@@ -262,8 +266,9 @@ const CreatePropertyPricing = () => {
                 keyboard: "number",
                 convertToText: true,
                 direction: "ltr",
+                placeholder: _STRINGS.TOMAN_PER_NIGHT,
               }}
-              value={numberWithCommas(values?.additional_person || "")}
+              value={!!values?.additional_person ? numberWithCommas(values?.additional_person || "") : ""}
               onChangeText={(e) => {
                 let pureVal = e?.replaceAll(",", "").replaceAll(",", "").replaceAll(" ", "");
                 if (!isNaN(pureVal)) onChange(pureVal, "additional_person");

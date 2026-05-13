@@ -33,9 +33,11 @@ export interface CreateProperyStepOne {
 const CreateEditProperty = ({
   values,
   onChange,
+  status,
 }: {
   values: CreateProperyStepOne;
   onChange: (value: string | number | null | boolean, key: string) => void;
+  status?: number;
 }) => {
   const { data: propertyTypes } = useQuery({
     queryFn: () =>
@@ -85,6 +87,7 @@ const CreateEditProperty = ({
           maxLength: 55,
           containerClass: "w-full  relative ",
           extraElement: <FormCounter max={55} value={values?.title || ""} containerClass=" top-0  !bottom-auto" />,
+          disabled: status == 30 || status == 31,
         }}
         value={values?.title || ""}
         onChangeText={(e) => {

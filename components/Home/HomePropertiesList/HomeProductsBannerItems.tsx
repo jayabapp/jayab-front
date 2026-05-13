@@ -12,6 +12,7 @@ const HomeProductsBannerItems = ({ bannerItem, devices }: { bannerItem: any; dev
   };
 
   const isPhone = devices?.isMobile;
+
   return (
     <>
       {isPhone && !bannerItem?.image_sm ? (

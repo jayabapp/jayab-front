@@ -72,7 +72,7 @@ export const mobileFooterBlackList = [
   // "/profile/",
 ];
 
-export const footerHiddenBlackList = ["/chat/", "/auth"];
+export const footerHiddenBlackList = ["/chat/", "/auth", "/profile/owner/properties/"];
 
 export const createPropertySteps = (id?: null | number) => [
   {

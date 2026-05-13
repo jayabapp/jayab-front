@@ -138,7 +138,11 @@ const CreateProperty = () => {
         <StepShower steps={createPropertySteps(initPropData?.id) || []} value={1} />
       </div>
 
-      {isLoading ? <LottieLoading /> : <CreateEditProperty onChange={onChange} values={values} />}
+      {isLoading ? (
+        <LottieLoading />
+      ) : (
+        <CreateEditProperty status={initPropData?.status} onChange={onChange} values={values} />
+      )}
 
       <FixedBottomContainer>
         <Button
