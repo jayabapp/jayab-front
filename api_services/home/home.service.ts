@@ -42,7 +42,7 @@ export class HomeService {
           bannerId?: number | string;
         },
         unknown
-      >("POST", apiRoutes.BANNER_VIEW_COUNT(body.bannerId), body);
+      >("PATCH", apiRoutes.BANNER_VIEW_COUNT(body.bannerId), body);
       return result;
     } catch (e) {
       throw e;
