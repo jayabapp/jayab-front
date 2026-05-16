@@ -1,12 +1,12 @@
-"use client";
-
 import AdvisorsPageHelper from "@/components/Advisor/AdvisorsPageHelper";
+import deviceTypeDetector from "@/helpers/device.detector";
 import { Suspense } from "react";
 
-const AdvisorsListPage = () => {
+const AdvisorsListPage = async () => {
+  const devices = await deviceTypeDetector();
   return (
     <Suspense>
-      <AdvisorsPageHelper />
+      <AdvisorsPageHelper devices={devices} />
     </Suspense>
   );
 };

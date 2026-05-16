@@ -92,6 +92,10 @@ export async function apiCall<T, K>(
       deleteCookie("isLogin");
       window?.location?.replace("/");
     }
+    if (error?.response?.status == 410) {
+      window?.location?.replace("/");
+      return;
+    }
     throw error?.response?.data || "Failed";
   }
 }

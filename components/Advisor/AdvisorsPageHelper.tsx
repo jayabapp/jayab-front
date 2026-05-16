@@ -22,12 +22,13 @@ import { Suspense, useEffect, useState } from "react";
 import InfiniteScroll from "react-infinite-scroll-component";
 
 import { BannerPosition } from "@/enum/banners.enum";
+import { DeviceInfo } from "@/helpers/device.detector";
 import dynamic from "next/dynamic";
 const HomeAdvisorSub = dynamic(() => import("@/components/Home/HomeAdvisorSub"));
 
 const BannersContainer = dynamic(() => import("@/components/Home/BannersContainer"));
 const SearchBox = dynamic(() => import("@/components/SearchBoxComp"));
-const AdvisorsPageHelper = () => {
+const AdvisorsPageHelper = ({ devices }: { devices: DeviceInfo }) => {
   const router = useRouter();
   const queriesParams = useQueryGet<any>();
   const pathname = usePathname();
@@ -133,7 +134,7 @@ const AdvisorsPageHelper = () => {
     <div className=" w-full container ">
       <Breadcrumbs />
       <div className="w-full flex flex-col gap-4 md:gap-8">
-        <BannersContainer banners={banners} />
+        <BannersContainer banners={banners} devices={devices} />
 
         <div className="w-full flex flex-col  md:flex-row gap-4">
           <Suspense>

@@ -19,13 +19,19 @@ const ImageCarousel = ({ list, item, devices }: ImageCarouselTypes) => {
   //   e.target.src = "/assets/images/home/image_placeholder.png";
   // };
 
+  const isPhone = devices?.isMobile;
+
+  const mobile_filteredBanners = list?.filter((e) => !!e?.image_sm);
+  const desktop_filteredBanners = list?.filter((e) => !e?.image_sm);
+
+  const final_banenrs = isPhone ? mobile_filteredBanners : desktop_filteredBanners;
   return (
-    <div className="h-full  col-span-full  px-4 md:pl-0 md:pr-0  py-0">
+    <div className="h-full  col-span-full   py-0">
       <Swiper
         pagination
         autoplay
         spaceBetween={!!devices?.isMobile || !!devices?.isTablet ? 2 : 5}
-        slidesPerView={!!devices?.isMobile || !!devices?.isTablet ? 1 : 3}
+        slidesPerView={!!devices?.isMobile || !!devices?.isTablet ? 1 : 1}
         viewportClassName=" !px-0 md:!px-4"
         breakPoints={{
           320: {
@@ -42,18 +48,18 @@ const ImageCarousel = ({ list, item, devices }: ImageCarouselTypes) => {
             spaceBetween: 2,
           },
           1024: {
-            slidesPerView: 3,
+            slidesPerView: 1,
             spaceBetween: 5,
           },
           1600: {
-            slidesPerView: 3,
+            slidesPerView: 1,
             spaceBetween: 5,
           },
         }}
         options={{ align: "center", direction: "rtl", dragFree: false, loop: true, skipSnaps: false }}
       >
         {" "}
-        {list?.map((e, i) => (
+        {final_banenrs?.map((e, i) => (
           <SwiperSlide key={`${e.id}banners`}>
             <Link
               aria-label={e?.image?.alt || e?.title}
@@ -67,7 +73,7 @@ const ImageCarousel = ({ list, item, devices }: ImageCarouselTypes) => {
                 contentId={e?.id}
                 // // href={e?.link ? e?.link : undefined}
                 // target={e?.link ? "_blank" : ""}
-                className={` focus:outline-none w-full px-0  aspect-[1.5]  md:aspect-[2.5]   ${
+                className={` focus:outline-none w-full px-0    aspect-[1.5] md:aspect-[6]   ${
                   e?.link || e?.category || e?.product || e?.brand_id ? "cursor-pointer" : ""
                 } transition-all duration-300 ease-in-out   relative`}
               >
@@ -80,7 +86,7 @@ const ImageCarousel = ({ list, item, devices }: ImageCarouselTypes) => {
                   alt={e?.image?.alt}
                   // src={true ? "saf" : IMAGE_URL(e?.image_location)}
                   src={NEW_IMAGE_URL(e?.image)}
-                  className={`w-full object-cover rounded-20 hidden  md:flex aspect-[1.5] md:aspect-[2.5]   align-middle  ${
+                  className={`w-full object-cover rounded-20 hidden  md:flex  aspect-[1.5] md:aspect-[6]   align-middle  ${
                     item?.imageClasses ? item?.imageClasses : ""
                   }   `}
                 />
@@ -92,7 +98,7 @@ const ImageCarousel = ({ list, item, devices }: ImageCarouselTypes) => {
                   alt={e?.image?.alt}
                   // src={true ? "saf" : IMAGE_URL(e?.image_location)}
                   src={NEW_IMAGE_URL(e?.image_sm ? e?.image_sm : e?.image)}
-                  className={`w-full object-cover rounded-20 flex  md:hidden aspect-[1.5]  md:aspect-[2.5] align-middle  ${
+                  className={`w-full object-cover rounded-20 flex  md:hidden   aspect-[1.5] md:aspect-[6] align-middle  ${
                     item?.imageClasses ? item?.imageClasses : ""
                   }   `}
                 />
