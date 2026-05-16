@@ -22,6 +22,7 @@ const HomeProductsBannerItems = ({ bannerItem, devices }: { bannerItem: any; dev
       ) : (
         <Editable
           isBanner
+          key={bannerItem?.id}
           contentId={bannerItem?.id}
           className={`group   aspect-[1.5] md:aspect-[6]  focus:outline-none w-full px-0 relative overflow-hidden rounded-md   ${
             bannerItem?.brand_id || bannerItem?.link || bannerItem?.category || bannerItem?.product
@@ -35,6 +36,7 @@ const HomeProductsBannerItems = ({ bannerItem, devices }: { bannerItem: any; dev
           // }}
         >
           <Link
+            key={bannerItem?.id}
             prefetch={false}
             href={bannerItem?.property?.slug ? `/rooms/${bannerItem?.property?.slug}` : bannerItem?.link}
             className="w-full h-full   rounded-20 object-cover overflow-hidden align-middle"
