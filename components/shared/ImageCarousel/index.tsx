@@ -3,9 +3,11 @@ import { NEW_IMAGE_URL } from "../../../utils/urls";
 import Editable from "@/components/Editable";
 import Image from "next/image";
 
+import { HomeService } from "@/api_services/home/home.service";
 import Swiper from "@/components/embelaCarousel/Swiper";
 import SwiperSlide from "@/components/embelaCarousel/SwiperSlide";
 import { DeviceInfo } from "@/helpers/device.detector";
+import { useMutation } from "@tanstack/react-query";
 import Link from "next/link";
 
 type ImageCarouselTypes = {
@@ -25,6 +27,11 @@ const ImageCarousel = ({ list, item, devices }: ImageCarouselTypes) => {
   const desktop_filteredBanners = list?.filter((e) => !e?.image_sm);
 
   const final_banenrs = isPhone ? mobile_filteredBanners : desktop_filteredBanners;
+
+  const { mutate } = useMutation({
+    mutationFn: HomeService.updateBannerViewCount,
+  });
+
   return (
     <div className="h-full  col-span-full   py-0">
       <Swiper
@@ -62,6 +69,9 @@ const ImageCarousel = ({ list, item, devices }: ImageCarouselTypes) => {
         {final_banenrs?.map((e, i) => (
           <SwiperSlide key={`${e.id}banners`}>
             <Link
+              onClick={() => {
+                mutate({ bannerId: e?.id });
+              }}
               aria-label={e?.image?.alt || e?.title}
               href={e?.property?.slug ? `/rooms/${e?.property?.slug}` : e?.link ? e?.link : ""}
               prefetch={false}

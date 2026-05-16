@@ -1,16 +1,16 @@
 "use client";
+import { HomeService } from "@/api_services/home/home.service";
 import Editable from "@/components/Editable";
 import { DeviceInfo } from "@/helpers/device.detector";
 import { NEW_IMAGE_URL } from "@/utils/urls";
+import { useMutation } from "@tanstack/react-query";
 import Image from "next/image";
 import Link from "next/link";
-import { useRouter } from "next/navigation";
 
 const HomeProductsBannerItems = ({ bannerItem, devices }: { bannerItem: any; devices?: DeviceInfo }) => {
-  const router = useRouter();
-  const pusher = (link: string) => {
-    router.push(link);
-  };
+  const { mutate } = useMutation({
+    mutationFn: HomeService.updateBannerViewCount,
+  });
 
   const isPhone = devices?.isMobile;
   return (
@@ -36,6 +36,9 @@ const HomeProductsBannerItems = ({ bannerItem, devices }: { bannerItem: any; dev
           // }}
         >
           <Link
+            onClick={() => {
+              mutate({ bannerId: bannerItem?.id });
+            }}
             key={bannerItem?.id}
             prefetch={false}
             href={bannerItem?.property?.slug ? `/rooms/${bannerItem?.property?.slug}` : bannerItem?.link}

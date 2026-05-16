@@ -35,6 +35,21 @@ export class HomeService {
     }
   }
 
+  static async updateBannerViewCount(body: { bannerId: number | string }) {
+    try {
+      const result = await apiCall<
+        {
+          bannerId?: number | string;
+        },
+        unknown
+      >("POST", apiRoutes.BANNER_VIEW_COUNT(body.bannerId), body);
+      return result;
+    } catch (e) {
+      throw e;
+    }
+  }
+
+  //////////////////////////////
   static async getLandings() {
     try {
       const result = await apiCall<any, MostVisitedPlaces>("GET", apiRoutes.USER_LANDING_PAGES);
