@@ -247,9 +247,9 @@ function FilterdPropertiesPageOrianted({ sortType, setSortType, query, devices }
   }, [query?.page]);
 
   const { data: banners } = useQuery({
-    queryKey: [HomeService.BANNERS_RANDOM_CACHEKEY, BannerPosition.ROOMS_1],
+    queryKey: [HomeService.BANNERS_RANDOM_CACHEKEY, BannerPosition.MAIN_2],
     queryFn: () => {
-      return HomeService.GetBanners({ position: BannerPosition.ROOMS_1 });
+      return HomeService.GetBanners({ position: BannerPosition.MAIN_2 });
     },
   });
 

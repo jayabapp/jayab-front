@@ -498,6 +498,44 @@ button {
   );
 }
 
+.half-striped-top {
+  position: relative;
+}
+
+.half-striped-top::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: repeating-linear-gradient(
+    -45deg,
+    transparent,
+    transparent 4px,
+    hsla(0, 0%, 60%, 0.8) 6px,
+    hsla(0, 0%, 0%, 0.8) 0
+  );
+  clip-path: polygon(0 0, 100% 0, 0 100%);
+  z-index: -1;
+}
+
+.half-striped-bottom {
+  position: relative;
+}
+
+.half-striped-bottom::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: repeating-linear-gradient(
+    -45deg,
+    transparent,
+    transparent 4px,
+    hsla(0, 0%, 60%, 0.8) 6px,
+    hsla(0, 0%, 0%, 0.8) 0
+  );
+  clip-path: polygon(100% 0, 100% 100%, 0 100%);
+  z-index: -1;
+}
+
 .swiper > .swiper-wrapper {
   @apply flex items-center;
 }
