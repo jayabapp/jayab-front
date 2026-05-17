@@ -3,9 +3,9 @@
 import Button from "@/components/shared/Button/Button";
 import { DeviceInfo } from "@/helpers/device.detector";
 import _STRINGS from "@/utils/LocalStrings";
-import { chunk, isEmpty } from "lodash";
+import { isEmpty } from "lodash";
 import Link from "next/link";
-import { useMemo, useState } from "react";
+import { useState } from "react";
 import HomePropertiesClientPart from "./HomePropertiesClientPart";
 import HomePropertiesSsrPart from "./HomePropertiesSsrPart";
 
@@ -19,9 +19,6 @@ const HomePropertiesList = ({
   devices?: DeviceInfo;
 }) => {
   const [page, setPage] = useState(1);
-  const bannerGroup = useMemo(() => {
-    if (!!middleBanners) return chunk(middleBanners, 2);
-  }, [middleBanners]);
 
   return (
     <div className="w-full  padding-x ">

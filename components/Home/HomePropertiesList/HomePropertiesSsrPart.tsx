@@ -1,9 +1,12 @@
 "use client";
+import { HomeService } from "@/api_services/home/home.service";
 import PropertyCard from "@/components/properties/PropertyCard";
 import EmptyList from "@/components/shared/Lotties/EmptyList";
 import LottieLoading from "@/components/shared/Lotties/LottieLoading";
+import { BannerPosition } from "@/enum/banners.enum";
 import { DeviceInfo } from "@/helpers/device.detector";
 import { WeekDays } from "@/utils/constantss";
+import { useQuery } from "@tanstack/react-query";
 import moment from "moment-jalaali";
 import { Fragment, useEffect, useMemo, useState } from "react";
 import HomeProductsBannerItems from "./HomeProductsBannerItems";
@@ -38,13 +41,30 @@ function HomePropertiesSsrPart({ data, middleBanners, devices }: HomePropertiesS
     setWeek(weeks);
   }, []);
 
+  const { data: banners } = useQuery({
+    queryKey: [HomeService.BANNERS_RANDOM_CACHEKEY, BannerPosition.MAIN_2],
+    queryFn: () => {
+      return HomeService.GetBanners({ position: BannerPosition.MAIN_2 });
+    },
+  });
+
+  // const shuffledBanners = useMemo(() => {
+  //   if (!Array.isArray(banners) || banners.length === 0) return [];
+  //   const arr = [...banners];
+  //   for (let i = arr.length - 1; i > 0; i--) {
+  //     const j = Math.floor(Math.random() * (i + 1));
+  //     [arr[i], arr[j]] = [arr[j], arr[i]];
+  //   }
+  //   return arr;
+  // }, [banners]);
+
   const randomMiddleBanner = useMemo(() => {
-    if (Array.isArray(middleBanners) && middleBanners.length > 0) {
-      const idx = Math.floor(Math.random() * middleBanners.length);
-      return middleBanners[idx];
+    if (Array.isArray(banners) && banners.length > 0) {
+      const idx = Math.floor(Math.random() * banners.length);
+      return banners[idx];
     }
     return null;
-  }, [middleBanners]);
+  }, [banners]);
   return (
     <div className="w-full px-0  self-center">
       <div className=" w-full">

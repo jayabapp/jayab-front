@@ -26,7 +26,7 @@ export class HomeService {
 
   static async GetBanners(dto: { position: BannerPosition }) {
     try {
-      const result = await apiCall<{ position: BannerPosition }, unknown[]>("GET", apiRoutes.BANNERS, {
+      const result = await apiCall<{ position: BannerPosition }, any[]>("GET", apiRoutes.BANNERS, {
         position: dto?.position,
       });
       return result;

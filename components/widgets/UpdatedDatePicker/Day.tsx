@@ -82,6 +82,24 @@ const Day = memo(
       [forbiden_dates],
     );
 
+    // Helper function to check if a range contains forbidden dates
+    // EXCLUDING a specific date (used for isForbiddenSpanStart — the date itself is allowed)
+    const hasOtherForbiddenInRange = useCallback(
+      (startDate: moment.Moment, endDate: moment.Moment, excludeDate: moment.Moment): boolean => {
+        if (!forbiden_dates?.length) return false;
+
+        const minDate = startDate.clone().startOf("day");
+        const maxDate = endDate.clone().startOf("day");
+        const excludeDay = excludeDate.clone().startOf("day");
+
+        return forbiden_dates.some((forbiddenDate) => {
+          const forbidden = moment(forbiddenDate).startOf("day");
+          return forbidden.isBetween(minDate, maxDate, "day", "[]") && !forbidden.isSame(excludeDay, "day");
+        });
+      },
+      [forbiden_dates],
+    );
+
     // Helper function to find the nearest valid date when selection includes forbidden dates
     const findNearestValidEndDate = useCallback(
       (startDate: moment.Moment, clickedDate: moment.Moment): moment.Moment | null => {
@@ -89,12 +107,11 @@ const Day = memo(
 
         const isMovingForward = clickedDate.isAfter(startDate);
         let currentDate = clickedDate.clone();
-        let step = isMovingForward ? -1 : 1; // Move backwards if going forward, forwards if going backwards
+        let step = isMovingForward ? -1 : 1;
 
-        // Find the nearest date that doesn't create a span with forbidden dates
         let foundValid = false;
         let attempts = 0;
-        const maxAttempts = 365; // Prevent infinite loop
+        const maxAttempts = 365;
 
         while (!foundValid && attempts < maxAttempts) {
           const minDate = isMovingForward ? startDate : currentDate;
@@ -108,11 +125,9 @@ const Day = memo(
           currentDate.add(step, "days");
           attempts++;
 
-          // Don't go before start date
           if (isMovingForward && currentDate.isBefore(startDate)) {
             return null;
           }
-          // Don't go after clicked date when moving backwards
           if (!isMovingForward && currentDate.isAfter(clickedDate)) {
             return null;
           }
@@ -197,38 +212,54 @@ const Day = memo(
         isSpanStart = current.isSame(start, "day");
         isInSpan = isSpanStart;
 
+        // Determine the range between start and current
+        const rangeStart = current.isBefore(start) ? current : start;
+        const rangeEnd = current.isBefore(start) ? start : current;
+
         // Check if this date would exceed maxSpanLength when selected as end
         if (maxSpanLength) {
           const daysBetween = Math.abs(current.diff(start, "days"));
           isExceedsMaxSpan = daysBetween + 1 > maxSpanLength;
 
-          // Check if selecting this date would include forbidden dates
-          const wouldIncludeForbidden =
-            !current.isSame(start, "day") &&
-            hasForbiddenInRange(current.isBefore(start) ? current : start, current.isBefore(start) ? start : current);
+          // Check if the range contains forbidden dates
+          // For isForbiddenSpanStart: exclude the date itself from the check
+          // (it's allowed as an end boundary, but other forbidden dates in between are NOT)
+          let wouldIncludeForbidden = false;
+          if (!current.isSame(start, "day")) {
+            if (isForbiddenSpanStart) {
+              wouldIncludeForbidden = hasOtherForbiddenInRange(rangeStart, rangeEnd, current);
+            } else {
+              wouldIncludeForbidden = hasForbiddenInRange(rangeStart, rangeEnd);
+            }
+          }
 
           // Day is valid for selection if:
           // 1. Doesn't exceed maxSpanLength
           // 2. Not the same as start
           // 3. Not before today
-          // 4. NOT FORBIDDEN
-          // 5. Would NOT include any forbidden dates in the range
+          // 4. NOT FORBIDDEN (unless it's a forbidden span start — allowed as end boundary)
+          // 5. Would NOT include OTHER forbidden dates in the range
           isValidForSelection =
             !isExceedsMaxSpan &&
             !current.isSame(start, "day") &&
             !current.isBefore(moment(new Date()), "day") &&
-            !isForbidden &&
+            (!isForbidden || isForbiddenSpanStart) &&
             !wouldIncludeForbidden;
         } else {
-          // If no maxSpanLength, all days are valid (except start date, past dates, and forbidden dates)
-          const wouldIncludeForbidden =
-            !current.isSame(start, "day") &&
-            hasForbiddenInRange(current.isBefore(start) ? current : start, current.isBefore(start) ? start : current);
+          // If no maxSpanLength
+          let wouldIncludeForbidden = false;
+          if (!current.isSame(start, "day")) {
+            if (isForbiddenSpanStart) {
+              wouldIncludeForbidden = hasOtherForbiddenInRange(rangeStart, rangeEnd, current);
+            } else {
+              wouldIncludeForbidden = hasForbiddenInRange(rangeStart, rangeEnd);
+            }
+          }
 
           isValidForSelection =
             !current.isSame(start, "day") &&
             !current.isBefore(moment(new Date()), "day") &&
-            !isForbidden &&
+            (!isForbidden || isForbiddenSpanStart) &&
             !wouldIncludeForbidden;
         }
       }
@@ -265,18 +296,20 @@ const Day = memo(
       maxSpanLength,
       isDateForbidden,
       hasForbiddenInRange,
+      hasOtherForbiddenInRange,
     ]);
 
     // Handle date span selection with forbidden dates validation
     const handleSpanSelection = useCallback(() => {
       if (!setDateSpan || !dateInfo.jsDate) return;
 
-      // Prevent selection if date is forbidden
-      if (dateInfo.isForbidden) return;
+      // Prevent selection if date is forbidden (unless it's a forbidden span start used as end boundary)
+      if (dateInfo.isForbidden && !dateInfo.isForbiddenSpanStart) return;
 
       setDateSpan((prev) => {
-        // If no start date, set start
+        // If no start date, set start (forbidden span start cannot be a start)
         if (!prev.start) {
+          if (dateInfo.isForbiddenSpanStart) return prev;
           return { start: dateInfo.jsDate, end: null };
         }
 
@@ -293,10 +326,17 @@ const Day = memo(
           const rangeStart = clickedMoment.isBefore(startMoment) ? clickedMoment : startMoment;
           const rangeEnd = clickedMoment.isBefore(startMoment) ? startMoment : clickedMoment;
 
-          // Check if the range contains any forbidden dates
-          const containsForbidden = hasForbiddenInRange(rangeStart, rangeEnd);
+          // Check if the range contains forbidden dates
+          // For isForbiddenSpanStart: exclude the clicked date itself from the forbidden check
+          // (it's allowed as an end boundary, but other forbidden dates in between are NOT)
+          let containsForbidden: boolean;
+          if (dateInfo.isForbiddenSpanStart) {
+            containsForbidden = hasOtherForbiddenInRange(rangeStart, rangeEnd, clickedMoment);
+          } else {
+            containsForbidden = hasForbiddenInRange(rangeStart, rangeEnd);
+          }
 
-          // If range contains forbidden dates, try to find a valid end date
+          // If range contains forbidden dates, reject selection
           if (containsForbidden) {
             return { start: prev.start, end: null };
           }
@@ -314,26 +354,29 @@ const Day = memo(
             return { start: dateInfo.jsDate, end: prev.start };
           }
 
-          // Otherwise set as end
+          // Otherwise set as end (including forbidden span start as end)
           return { start: prev.start, end: dateInfo.jsDate };
         }
 
         // If both exist, reset with clicked date as start
+        // Forbidden span start cannot be a start
+        if (dateInfo.isForbiddenSpanStart) return prev;
         return { start: dateInfo.jsDate, end: null };
       });
     }, [
       setDateSpan,
       dateInfo.jsDate,
       dateInfo.isForbidden,
+      dateInfo.isForbiddenSpanStart,
       maxSpanLength,
       hasForbiddenInRange,
-      findNearestValidEndDate,
+      hasOtherForbiddenInRange,
     ]);
 
     // Combine click handlers
     const handleClick = useCallback(() => {
-      // Don't allow clicking on forbidden dates
-      if (dateInfo.isForbidden) return;
+      // Don't allow clicking on forbidden dates (unless it's a forbidden span start used as end boundary)
+      if (dateInfo.isForbidden && !(!!dateSpan?.start && !!dateInfo?.isForbiddenSpanStart)) return;
       if (!dateInfo.jsDate || (dateInfo.isBefore && !dateInfo?.isToday)) return;
 
       // If span selection is enabled, handle that first
@@ -354,6 +397,8 @@ const Day = memo(
       setDateSpan,
       handleSpanSelection,
       dateInfo.isForbidden,
+      dateInfo.isForbiddenSpanStart,
+      dateSpan?.start,
     ]);
 
     // Memoize dynamic class names including forbidden styles
@@ -361,16 +406,14 @@ const Day = memo(
       const baseClasses = "aspect-square m-0.5 md:m-1 rounded-lg relative overflow-hidden";
 
       let bgClass = "bg-white border border-primary-border";
-
-      if (dateInfo.isForbidden) {
+      if (dateInfo.isForbidden && !dateInfo?.isSpanEnd) {
         if (dateInfo.isForbiddenSpanStart) {
-          // First date of forbidden span: no full "striped" — half-down overlay handles it
-          bgClass = " opacity-60  half-striped-top ";
+          if (!!dateSpan?.start && !dateSpan?.end && dateInfo?.isValidForSelection) {
+            bgClass = "bg-green-100/20 border border-green-300";
+          } else bgClass = " opacity-60  half-striped-top ";
         } else {
           bgClass = " striped opacity-60";
         }
-      } else if (dateInfo.isPartOfForbiddenSpan) {
-        bgClass = "bg-red-50 border-red-200 opacity-50";
       } else if (dateInfo.isBefore && !dateInfo.isToday) {
         bgClass = "bg-neutral-300 opacity-50";
       } else if (dateInfo.isValidForSelection) {
@@ -389,8 +432,10 @@ const Day = memo(
         bgClass = " opacity-60  half-striped-bottom ";
       }
 
+      const canBeSpanEnd =
+        dateInfo.isForbiddenSpanStart && !!dateSpan?.start && !dateSpan?.end && dateInfo.isValidForSelection;
       const cursorClass =
-        (onSelect || setDateSpan) && !dateInfo.isForbidden && !dateInfo.isPartOfForbiddenSpan
+        (onSelect || setDateSpan) && (!dateInfo.isForbidden || canBeSpanEnd) && !dateInfo.isPartOfForbiddenSpan
           ? "cursor-pointer"
           : "cursor-not-allowed";
 
@@ -412,6 +457,7 @@ const Day = memo(
       dateInfo.isForbiddenSpanStart,
       dateInfo.isAfterForbiddenSpan,
       dateInfo.isPartOfForbiddenSpan,
+      dateSpan,
       onSelect,
       setDateSpan,
     ]);
@@ -447,10 +493,8 @@ const Day = memo(
         classes.push("text-base");
       }
 
-      if (dateInfo.isForbidden) {
+      if (dateInfo.isForbidden && !dateInfo?.isSpanEnd) {
         classes.push("text-gray-500");
-      } else if (dateInfo.isPartOfForbiddenSpan) {
-        classes.push("text-red-400 line-through");
       } else if (dateInfo.isFriday) {
         classes.push("text-red-700");
       } else if (dateInfo.isBefore && !dateInfo.isToday) {
@@ -545,14 +589,6 @@ const Day = memo(
           {/* Today indicator */}
           {dateInfo.isToday && !dateInfo.isForbidden && !dateInfo.isPartOfForbiddenSpan && (
             <div className="absolute top-0.5 md:top-1 w-1.5 h-1.5 bg-primary-700 rounded-full" />
-          )}
-
-          {/* Part of forbidden span indicator */}
-          {dateInfo.isPartOfForbiddenSpan && !dateInfo.isForbidden && (
-            <div className="absolute inset-0 flex items-center justify-center">
-              <div className="w-full h-0.5 bg-red-300 rotate-45 absolute opacity-50" />
-              <div className="w-full h-0.5 bg-red-300 -rotate-45 absolute opacity-50" />
-            </div>
           )}
 
           {/* Memo indicator */}
