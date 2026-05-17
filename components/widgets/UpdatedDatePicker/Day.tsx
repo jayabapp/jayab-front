@@ -372,7 +372,7 @@ const Day = memo(
       } else if (dateInfo.isPartOfForbiddenSpan) {
         bgClass = "bg-red-50 border-red-200 opacity-50";
       } else if (dateInfo.isBefore && !dateInfo.isToday) {
-        bgClass = "bg-primary-300 opacity-50";
+        bgClass = "bg-neutral-300 opacity-50";
       } else if (dateInfo.isValidForSelection) {
         bgClass = "bg-green-100/20 border border-green-300";
       } else if (dateInfo.isExceedsMaxSpan) {
