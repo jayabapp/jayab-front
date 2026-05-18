@@ -44,7 +44,7 @@ function HomePropertiesSsrPart({ data, middleBanners, devices }: HomePropertiesS
   const { data: banners } = useQuery({
     queryKey: [HomeService.BANNERS_RANDOM_CACHEKEY, BannerPosition.MAIN_2],
     queryFn: () => {
-      return HomeService.GetBanners({ position: BannerPosition.MAIN_2 });
+      return HomeService.GetBanners({ positions: [BannerPosition.MAIN_2] });
     },
   });
 
@@ -59,9 +59,11 @@ function HomePropertiesSsrPart({ data, middleBanners, devices }: HomePropertiesS
   // }, [banners]);
 
   const randomMiddleBanner = useMemo(() => {
-    if (Array.isArray(banners) && banners.length > 0) {
-      const idx = Math.floor(Math.random() * banners.length);
-      return banners[idx];
+    const bannersList = banners?.[BannerPosition.MAIN_2];
+
+    if (Array.isArray(bannersList) && bannersList.length > 0) {
+      const idx = Math.floor(Math.random() * bannersList.length);
+      return bannersList[idx];
     }
     return null;
   }, [banners]);

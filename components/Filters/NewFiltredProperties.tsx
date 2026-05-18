@@ -249,13 +249,15 @@ function FilterdPropertiesPageOrianted({ sortType, setSortType, query, devices }
   const { data: banners } = useQuery({
     queryKey: [HomeService.BANNERS_RANDOM_CACHEKEY, BannerPosition.MAIN_2],
     queryFn: () => {
-      return HomeService.GetBanners({ position: BannerPosition.MAIN_2 });
+      return HomeService.GetBanners({ positions: [BannerPosition.MAIN_2] });
     },
   });
 
   const shuffledBanners = useMemo(() => {
-    if (!Array.isArray(banners) || banners.length === 0) return [];
-    const arr = [...banners];
+    const bannersList = banners?.[BannerPosition.MAIN_2];
+
+    if (!Array.isArray(bannersList) || bannersList.length === 0) return [];
+    const arr = [...bannersList];
     for (let i = arr.length - 1; i > 0; i--) {
       const j = Math.floor(Math.random() * (i + 1));
       [arr[i], arr[j]] = [arr[j], arr[i]];

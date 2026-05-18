@@ -1,3 +1,5 @@
+import Notify from "@/components/shared/Toast";
+import _STRINGS from "@/utils/LocalStrings";
 import moment from "moment-jalaali";
 import { Dispatch, memo, SetStateAction, useCallback, useMemo } from "react";
 import DayPricePart from "./DayPricePart";
@@ -376,7 +378,11 @@ const Day = memo(
     // Combine click handlers
     const handleClick = useCallback(() => {
       // Don't allow clicking on forbidden dates (unless it's a forbidden span start used as end boundary)
-      if (dateInfo.isForbidden && !(!!dateSpan?.start && !!dateInfo?.isForbiddenSpanStart)) return;
+      if (dateInfo.isForbidden && !(!!dateSpan?.start && !!dateInfo?.isForbiddenSpanStart)) {
+        Notify({ body: _STRINGS.DATE_IS_FILLED, type: "warn" });
+
+        return;
+      }
       if (!dateInfo.jsDate || (dateInfo.isBefore && !dateInfo?.isToday)) return;
 
       // If span selection is enabled, handle that first
@@ -406,7 +412,10 @@ const Day = memo(
       const baseClasses = "aspect-square m-0.5 md:m-1 rounded-lg relative overflow-hidden";
 
       let bgClass = "bg-white border border-primary-border";
-      if (dateInfo.isForbidden && !dateInfo?.isSpanEnd) {
+
+      if (dateInfo.isBefore && !dateInfo.isToday) {
+        bgClass = "bg-neutral-300 opacity-50";
+      } else if (dateInfo.isForbidden && !dateInfo?.isSpanEnd) {
         if (dateInfo.isForbiddenSpanStart) {
           if (!!dateSpan?.start && !dateSpan?.end && dateInfo?.isValidForSelection) {
             bgClass = "bg-green-100/20 border border-green-300";
@@ -414,8 +423,6 @@ const Day = memo(
         } else {
           bgClass = " striped opacity-60";
         }
-      } else if (dateInfo.isBefore && !dateInfo.isToday) {
-        bgClass = "bg-neutral-300 opacity-50";
       } else if (dateInfo.isValidForSelection) {
         bgClass = "bg-green-100/20 border border-green-300";
       } else if (dateInfo.isExceedsMaxSpan) {

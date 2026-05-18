@@ -6,7 +6,6 @@ import { isMobile, isTablet } from "react-device-detect";
 import LinearTextBlock from "./LinearTextBlock";
 
 const GuestAccard = ({ data }: { data: SinglePropDto }) => {
-  console.log(isTablet, isMobile);
   return (
     <SimpleAccordion
       isOpenFirst={isMobile || isTablet}

@@ -24,11 +24,16 @@ export class HomeService {
   static SEARCH_KEY = "SEARCH";
   static USER_LANDING_PAGES_KEY = "USER_LANDING_PAGES";
 
-  static async GetBanners(dto: { position: BannerPosition }) {
+  static async GetBanners(dto: { positions: BannerPosition[] }) {
     try {
-      const result = await apiCall<{ position: BannerPosition }, any[]>("GET", apiRoutes.BANNERS, {
-        position: dto?.position,
-      });
+      const result = await apiCall<{ positions: BannerPosition[] }, { [key: string]: any[] }>(
+        "GET",
+        apiRoutes.BANNERS,
+        {
+          positions: dto?.positions,
+        },
+        { version: "v2" },
+      );
       return result;
     } catch (e) {
       throw e;

@@ -43,7 +43,7 @@ const AdvisorsPageHelper = ({ devices }: { devices: DeviceInfo }) => {
   const { data: banners } = useQuery({
     queryKey: [HomeService.BANNERS_RANDOM_CACHEKEY, BannerPosition.Advisor],
     queryFn: () => {
-      return HomeService.GetBanners({ position: BannerPosition.Advisor });
+      return HomeService.GetBanners({ positions: [BannerPosition.Advisor] });
     },
   });
 
@@ -134,7 +134,7 @@ const AdvisorsPageHelper = ({ devices }: { devices: DeviceInfo }) => {
     <div className=" w-full container ">
       <Breadcrumbs />
       <div className="w-full flex flex-col gap-4 md:gap-8">
-        <BannersContainer banners={banners} devices={devices} />
+        <BannersContainer banners={banners?.[BannerPosition.Advisor]} devices={devices} />
 
         <div className="w-full flex flex-col  md:flex-row gap-4">
           <Suspense>

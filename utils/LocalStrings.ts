@@ -444,6 +444,7 @@ const _STRINGS = {
   DELETE_CIIES: "حذف شهرها",
   WATCH_ALL: "مشاهده بیشتر",
   TOMAN_PER_NIGHT: "تومان/شب",
+  DATE_IS_FILLED: "این تاریخ پر است.",
 };
 
 export default _STRINGS;
