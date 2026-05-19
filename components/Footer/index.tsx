@@ -185,7 +185,7 @@ const Footer = () => {
       <div className="bg-white   padding-x  w-full  mx-auto  shadow-md    h-fit   lg:h-20 flex flex-col  py-2 md:py-0 gap-4 lg:flex-row   items-center justify-between  ">
         <div className="  flex    items-center gap-4">
           <div className="w-full   dark:text-zinc-100  text-center text-sm  ">
-            تمامی حقوق مادی و معنوی این وبسایت متعلق به شرکت .
+            تمامی حقوق مادی و معنوی این وبسایت متعلق به شرکت
             <a className="text-blue-500 underline underline-offset-2" href="/">
               &nbsp; جایاب &nbsp;
             </a>

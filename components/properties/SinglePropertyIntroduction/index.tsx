@@ -111,6 +111,7 @@ const SinglePropertyIntroduction = ({ data }: { data: SinglePropDto }) => {
   };
 
   const OwnerPart = () => {
+    console.log(data, "datadata");
     return (
       <div className="flex flex-row items-center gap-2 ">
         <img
@@ -121,14 +122,18 @@ const SinglePropertyIntroduction = ({ data }: { data: SinglePropDto }) => {
         <div className="flex flex-col  items-start gap-1">
           <p className="text-sm font-bold text-primary-700">{_STRINGS.HOST}</p>
           {/* <p className=" text-sm  text-primary-700 font-medium ">{data?.owner_info?.full_name}</p> */}
-          <div className="w-36 relative">
-            <AutoFitText
-              maxFontSize={14}
-              minFontSize={10}
-              className="text-sm   w-36  text-primary-700 font-medium "
-              text={`${data?.owner_info?.full_name}`}
-            />
-          </div>
+          {!!data?.owner_info?.full_name ? (
+            <div className="w-36 relative">
+              <AutoFitText
+                maxFontSize={14}
+                minFontSize={10}
+                className="text-sm   w-36  text-primary-700 font-medium "
+                text={`${data?.owner_info?.full_name}`}
+              />
+            </div>
+          ) : (
+            <></>
+          )}
         </div>
       </div>
     );

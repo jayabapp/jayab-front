@@ -80,14 +80,12 @@ function FilterdPropertiesPageOrianted({ sortType, setSortType, query, devices }
     router.replace(
       `${pathname}?${queryBuilder({
         ...temp,
-
         // sort_type: query.sort_type ? query.sort_type : sortType?.id,
       })}`,
     );
   }, [
     sortType,
     query.max_price,
-
     query.sort_type,
     query?.property_type,
     query?.pool_type,
@@ -160,32 +158,6 @@ function FilterdPropertiesPageOrianted({ sortType, setSortType, query, devices }
       return PropertyService?.GetProperties({
         page: Number(page),
         per_page: 30,
-        // min_price: Number(query.min_price) || undefined,
-        // max_price: Number(query.max_price) || undefined,
-        // max_building_area: Number(query.max_building_area) || undefined,
-        // min_building_area: Number(query.min_building_area) || undefined,
-        // min_commission: Number(query.min_commission) || undefined,
-        // max_commission: Number(query.max_commission) || undefined,
-        // cities: query?.cities || undefined,
-        // regions: query?.regions || undefined,
-        // code: query?.code || undefined,
-        // entertainment: query?.entertainment || undefined,
-        // has_pool: query?.has_pool || undefined,
-        // is_premium: query?.is_premium || undefined,
-        // total_guests: query?.total_guests || undefined,
-        // start_day: query?.start_day || undefined,
-        // num_days: query?.num_days || undefined,
-        // total_bedrooms: query?.total_bedrooms || undefined,
-        // property_type: query?.property_type || undefined,
-        // pool_type: query?.pool_type || undefined,
-        // has_discount: query?.has_discount || undefined,
-        // province_id: query?.province_id || undefined,
-        // title: query?.title || undefined,
-        // sort_type: query?.sort_type || undefined,
-        // checkout: query?.checkout || undefined,
-        // checkin: query?.checkin || undefined,
-        // q: query?.q || undefined,
-        // party: query?.party || undefined,
         ...(query as any),
       });
     },
@@ -237,6 +209,7 @@ function FilterdPropertiesPageOrianted({ sortType, setSortType, query, devices }
       setHasPaginate(true);
     }
   }, []);
+
   useEffect(() => {
     if (query?.page) {
       setPage(Number(query?.page));
@@ -264,6 +237,14 @@ function FilterdPropertiesPageOrianted({ sortType, setSortType, query, devices }
     }
     return arr;
   }, [banners]);
+
+  // --- NEW LOGIC: Limit banners based on data length ---
+  // Show 1 banner per 6 properties (adjust ITEMS_PER_BANNER if needed).
+  // If data is empty, show 0 banners.
+  const ITEMS_PER_BANNER = 6;
+  const maxBanners = data.length > 0 ? Math.ceil(data.length / ITEMS_PER_BANNER) : 0;
+  const visibleBanners = shuffledBanners.slice(0, maxBanners);
+  // -----------------------------------------------------
 
   return (
     <div className="w-full px-0  self-center">
@@ -297,9 +278,10 @@ function FilterdPropertiesPageOrianted({ sortType, setSortType, query, devices }
             }
             className="grid   pb-8 pt-4 md:pt-2 px-3 lg:px-1  !overflow-hidden  grid-cols-1 gap-2 md:gap-4  md:grid-cols-2 xl:grid-cols-3 "
           >
-            {shuffledBanners?.map((e: any, index: number) => (
+            {/* UPDATED: Map over visibleBanners instead of shuffledBanners */}
+            {visibleBanners?.map((e: any, index: number) => (
               <div
-                style={{ gridRowStart: (index + 1) * (isMobile ? 6 : 3) }}
+                style={{ gridRowStart: (index + 1) * (isMobile ? 7 : 3) }}
                 key={`banner${e?.id}`}
                 className={` col-span-full  `}
               >
