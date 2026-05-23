@@ -316,7 +316,7 @@ const PopSearchbox = ({
             }}
           />
         </Suspense>
-        <SearchBoxPopularPlaces />
+        <SearchBoxPopularPlaces setShowPop={setShowPop} />
 
         <SeachBoxCitySelector
           onSubmitCB={() => {

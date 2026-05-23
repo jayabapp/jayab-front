@@ -61,7 +61,7 @@ export default async function PropertiesPage({
     ((await !isEmpty(searchParamsData)) || (await !isEmpty(defaults))) && !searchParamsData?.page
       ? await serverCall(baseUrl + apiRoutes.GET_PROPERTIES, {
           page: 1,
-          per_page: 51,
+          per_page: 30,
           ...defaults,
           ...searchParamsData,
         })

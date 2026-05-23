@@ -140,6 +140,7 @@ const CityModal = ({
         );
       }
     } else {
+      setSelectedCities([]);
       if (!!setTitle) setTitle("");
     }
   }, [defaultCitiesData, JSON.stringify(queries), defaultProvienceCities]);

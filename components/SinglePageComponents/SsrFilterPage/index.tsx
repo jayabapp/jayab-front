@@ -275,7 +275,7 @@ const SsrFilterPage = ({ landings, firstData }: { firstData: { data: any[] }; la
             {firstData?.data ? <SsrPartFilter firstData={firstData?.data} /> : <></>}
             {(queriesParams?.page == 1 || !queriesParams?.page) &&
             !isEmpty(firstData?.data) &&
-            firstData?.data?.length % 51 == 0 ? (
+            firstData?.data?.length % 30 == 0 ? (
               <Button
                 onClick={() => {
                   let temp = { ...queries };

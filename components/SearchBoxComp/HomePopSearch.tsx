@@ -260,7 +260,7 @@ const HomePopSearch = ({
             }}
           />
         </Suspense>
-        <SearchBoxPopularPlaces />
+        <SearchBoxPopularPlaces setShowPop={setShowPop} />
         <SeachBoxCitySelector
           onSubmitCB={() => {
             setShowPop(false);

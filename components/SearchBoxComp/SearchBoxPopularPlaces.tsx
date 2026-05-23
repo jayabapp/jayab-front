@@ -3,7 +3,7 @@ import _STRINGS from "@/utils/LocalStrings";
 import { useQuery } from "@tanstack/react-query";
 import { useRouter } from "next/navigation";
 
-const SearchBoxPopularPlaces = () => {
+const SearchBoxPopularPlaces = ({ setShowPop }: { setShowPop: React.Dispatch<React.SetStateAction<boolean>> }) => {
   const { push } = useRouter();
 
   const { data } = useQuery({
@@ -11,6 +11,7 @@ const SearchBoxPopularPlaces = () => {
     queryFn: HomeService.getLandings,
   });
   const onLandingClick = (url: string) => {
+    setShowPop(false);
     push(url);
   };
   return (
@@ -20,7 +21,9 @@ const SearchBoxPopularPlaces = () => {
         <div className=" flex items-center justify-start gap-3 ">
           {data?.popular_city?.slice(0, 4)?.map((e) => (
             <div
-              onClick={() => {
+              onClick={(x) => {
+                x.stopPropagation();
+                x.preventDefault();
                 onLandingClick(e?.url);
               }}
               key={`${e?.url}landings`}

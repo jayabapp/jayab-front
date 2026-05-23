@@ -268,7 +268,7 @@ const SearchBoxDropDown = ({
                   }}
                 />
               </Suspense>
-              <SearchBoxPopularPlaces />
+              <SearchBoxPopularPlaces setShowPop={setShowResults} />
               <SeachBoxCitySelector
                 onSubmitCB={() => {
                   setShowResults(false);
