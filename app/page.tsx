@@ -7,6 +7,7 @@ import TheInstallPrompt from "@/components/InstallPrompt/TheInstallPrompt";
 import { OrganizationSchema, SearchboxSchema } from "@/components/SchemaGenerator/Schemas";
 import { BannerPosition } from "@/enum/banners.enum";
 import deviceTypeDetector from "@/helpers/device.detector";
+import MehaHeaderHelper from "@/helpers/MetaHeaderHelper";
 import serverCall from "@/helpers/serverCall";
 import _STRINGS from "@/utils/LocalStrings";
 import { apiRoutes, baseUrl, baseUrlV } from "@/utils/urls";
@@ -14,17 +15,13 @@ import isEmpty from "lodash/isEmpty";
 import { Metadata } from "next";
 import dynamic from "next/dynamic";
 import { Suspense } from "react";
-
 const HomeBannerPart = dynamic(() => import("@/components/Home/BannersContainer/HomeBannerPart"));
 const HomeCityFilterContainer = dynamic(() => import("@/components/Home/HomeCityFilterContainer"));
 const HomePropertiesList = dynamic(() => import("@/components/Home/HomePropertiesList"));
 
 export async function generateMetadata(): Promise<Metadata> {
-  return {
-    title: " اجاره ویلا و سوییت تمیز و امن در شمال و سراسر ایران ",
-    description:
-      "رزرو آنی ویلا و سوییت در شمال و سراسر ایران؛ اجاره ویلا بدون کمیسیون و بی‌ واسطه با آدرس و شماره مستقیم میزبان. بیش از هزار اقامتگاه تمیز و امن | جایاب",
-  };
+  const { data: homeContent } = await serverCall(baseUrl + apiRoutes.CONTENT_BY_KEY("homeContent"));
+  return MehaHeaderHelper(homeContent);
 }
 
 const Home = async () => {
