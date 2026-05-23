@@ -151,7 +151,7 @@ const CreatePropertyImages = () => {
                 <div
                   className={` ${
                     !!primaryImageId && primaryImageId == e?.data?.id ? "opacity-100" : "opacity-0"
-                  } transition-all absolute text-xxs h-7 bottom-0 w-full flex items-center justify-center bg-white/60  text-gray-700`}
+                  } transition-all absolute text-xxs h-7 bottom-0 w-full flex items-center justify-center bg-white/60   z-5 text-gray-700`}
                 >
                   {_STRINGS.PRIMARY_IMAGE}
                 </div>

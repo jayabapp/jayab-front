@@ -1,30 +1,24 @@
-import React from "react";
-
 const ProgressBar = ({
-  step,
-  divs,
+  progress,
+  color = "#f87171",
+  trackColor = "#BEBEBE50",
 }: {
-  step: number | string;
-  divs: {
-    value: any;
-    id: any;
-    color: string;
-    width: number;
-  }[];
+  progress: number; // 0–100
+  color?: string;
+  trackColor?: string;
 }) => {
+  const clampedProgress = Math.max(0, Math.min(100, progress));
+
   return (
-    <div className="flex transition-all duration-200 ease-in-out items-center justify-between w-full gap-2">
-      <div
-        style={{ backgroundColor: "#BEBEBE50" }}
-        className={`w-full rounded-full h-1 relative transition-all duration-[1500ms] ease-in-out `}
-      >
+    <div className="flex items-center justify-between w-full gap-2">
+      <div style={{ backgroundColor: trackColor }} className="w-full rounded-full h-1 relative">
         <div
           style={{
-            backgroundColor: divs?.find((e) => e?.value == step)?.color,
-            width: `${divs?.find((e) => e?.value == step)?.width}%`,
+            backgroundColor: color,
+            width: `${clampedProgress}%`,
           }}
-          className={`absolute rounded-full left-0 h-1 transition-all duration-[1500ms] ease-in-out `}
-        ></div>
+          className="absolute rounded-full left-0 h-1 transition-all duration-500 ease-in-out"
+        />
       </div>
     </div>
   );

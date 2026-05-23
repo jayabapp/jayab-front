@@ -50,9 +50,16 @@ const Authorize = () => {
         property_id: `${property_id}`,
       });
     } else {
-      mutate({ docs: images?.map((e) => e?.id) || [], nc_image_id: nationalImage?.id, property_id: `${property_id}` });
+      mutate({
+        docs: images?.map((e) => e?.id) || [],
+        nc_image_id: nationalImage?.id,
+        property_id: `${property_id}`,
+      });
     }
   };
+
+  const isLocked = data?.status?.id === 100;
+  const uploadPercent = totalLength > 0 ? Math.round((uploadedImages / totalLength) * 100) : 0;
 
   useEffect(() => {
     if (!!data) {
@@ -64,32 +71,28 @@ const Authorize = () => {
   return (
     <div
       id="homeParent"
-      className="profile-container   items-center   transition-all duration-500 ease-in-out flex flex-col gap-6 "
+      className="profile-container items-center transition-all duration-500 ease-in-out flex flex-col gap-6"
     >
       <div className="w-full flex items-center justify-between">
-        {" "}
-        <p className=" font-bold  text-primary-700  text-start">{_STRINGS.AUTHORiZIATION_REQUEST}</p>
+        <p className="font-bold text-primary-700 text-start">{_STRINGS.AUTHORiZIATION_REQUEST}</p>
         <StatusShower data={data?.status} />
       </div>
-      <div
-        className="w-full flex items-center justify-center
- flex-col"
-      >
+
+      <div className="w-full flex items-center justify-center flex-col">
         <p className="w-full text-start">{_STRINGS.NATIONAL_CARD_IMAGE_AUTH} :</p>
 
         <MainUploader
           title={_STRINGS.IMAGE}
           withCrop
-          // isLogo
           link="/attachments?type=OWNER_PROPERTY_DOCS"
-          key={`uploader`}
-          containerClass={"my-3  w-full flex items-start justify-start "}
+          key="uploader-national"
+          containerClass="my-3 w-full flex items-start justify-start"
           item={nationalImage}
           onSelect={(file) => {
             setNationalImage(file);
           }}
           onDelete={
-            data?.status?.id != 100
+            !isLocked
               ? () => {
                   setNationalImage(null);
                 }
@@ -98,74 +101,68 @@ const Authorize = () => {
         />
       </div>
 
-      <div className=" flex items-start w-full flex-wrap gap-2">
+      <div className="flex items-start w-full flex-wrap gap-2">
         <p>{_STRINGS.DOCS_IMAGE_AUTH} :</p>
-        <div className=" w-full  min-h-8">
-          {!!totalLength && !!uploaderLoading && totalLength > 1 ? (
+
+        <div className="w-full min-h-8">
+          {uploaderLoading && totalLength > 1 && (
             <div className="flex flex-col gap-2 w-full">
-              <p className=" text-sm text-primary-700">
-                {" "}
+              <p className="text-sm text-primary-700">
                 {uploadedImages} از {totalLength}
               </p>
-              <ProgressBar
-                step={uploadedImages}
-                divs={Array.from({ length: totalLength }, (v, k) => k).map((e, index) => ({
-                  value: e,
-                  id: e,
-                  color: "#3886E5",
-                  width: (100 * (index + 1)) / totalLength,
-                }))}
-              />{" "}
+              <ProgressBar progress={uploadPercent} color="#3886E5" />
             </div>
-          ) : (
-            <></>
           )}
         </div>
 
-        {data?.status?.id != 100 ? (
+        {!isLocked && (
           <MainUploader
-            innerClasses={{ sizeClass: " w-24 aspect-square h-24", secontParentClass: "w-24" }}
-            title={"افزودن عکس"}
+            innerClasses={{
+              sizeClass: "w-24 aspect-square h-24",
+              secontParentClass: "w-24",
+            }}
+            title="افزودن عکس"
             link="/attachments?type=OWNER_PROPERTY_DOCS"
-            key={`uploader`}
-            containerClass={" w-24  "}
+            key="uploader-add"
+            containerClass="w-24"
             item={null}
             onSelect={(file) => {
-              setImages((e) => [...e, file]);
+              setImages((prev) => [...prev, file]);
             }}
             onDelete={() => {}}
           />
-        ) : (
-          <></>
         )}
+
         {images?.map((e) => (
           <MainUploader
-            innerClasses={{ sizeClass: " w-24 aspect-square h-24", secontParentClass: "w-24" }}
-            title={"افزودن عکس"}
+            innerClasses={{
+              sizeClass: "w-24 aspect-square h-24",
+              secontParentClass: "w-24",
+            }}
+            title="افزودن عکس"
             link="/attachments?type=OWNER_PROPERTY_DOCS"
-            key={`uploader${e?.id}`}
-            containerClass={" w-24  "}
+            key={`uploader-${e?.id}`}
+            containerClass="w-24"
             item={e}
-            onSelect={(file) => {}}
+            onSelect={() => {}}
             onDelete={
-              data?.status?.id != 100
+              !isLocked
                 ? () => {
-                    setImages(images?.filter((i) => e?.id !== i?.id));
+                    setImages((prev) => prev.filter((i) => e?.id !== i?.id));
                   }
                 : undefined
             }
           />
         ))}
       </div>
+
       <FixedBottomContainer>
         <Button
-          onClick={() => {
-            onSubmit();
-          }}
+          onClick={onSubmit}
           loading={isPending || editPendin}
           containerClass="w-full flex items-center justify-center"
           roundedClass="rounded-full"
-          width=" w-[90%] md:w-1/2"
+          width="w-[90%] md:w-1/2"
           title={_STRINGS.SUBMIT_REQUEST}
         />
       </FixedBottomContainer>
