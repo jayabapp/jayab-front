@@ -9,7 +9,6 @@ import _STRINGS from "@/utils/LocalStrings";
 import { AdvisorService } from "@/api_services/advisor/advisor.propery";
 import { ChatService } from "@/api_services/chat/chat.service";
 import { PropertyService } from "@/api_services/property/property.service";
-import { ReserveService } from "@/api_services/reserve/reserve.service";
 import { UserService } from "@/api_services/user/user.service";
 import { useAuthStore, useStoreInit, useStoreParams } from "@/store";
 import { headerMobileSearchBlackList, headerWithFullSeach } from "@/utils/constantss";
@@ -22,6 +21,7 @@ import HomeCityFilterCityPart from "../Home/HomeCityFilterContainer/HomeCityFilt
 import Button from "../shared/Button/Button";
 import DrawerMenu from "../shared/DrawerMenu";
 import AbsoluteBadge from "./AbsoluteBadge";
+import HeaderInitialQueriesSetter from "./HeaderInitialQueriesSetter";
 import HeaderTitle from "./HeaderTitle";
 import ProfileDropdown from "./ProfileDropdown";
 const PopSearchbox = dynamic(() => import("../SearchBoxComp/PopSearchbox"), {
@@ -48,10 +48,6 @@ const TextIcon = ({ item, isHome, visibleTopHeader }: textIconType) => {
       <Link prefetch={false} href={item?.route || ""} className={parentClass}>
         {item?.hasBadge ? <Pulser /> : <></>}
 
-        {/* <img
-      src={item?.icon}
-      className={`dark:invert  brightness-125 group-hover:brightness-100 group-hover:grayscale-0  grayscale `}
-    /> */}
         <p
           className={`${textColor}  text-sm lg:text-base transition-all  duration-100  shrink-0  font-medium  group-hover:brightness-100 group-hover:text-primary-700  `}
         >
@@ -64,10 +60,6 @@ const TextIcon = ({ item, isHome, visibleTopHeader }: textIconType) => {
       <div onClick={item?.cb} className={parentClass}>
         {item?.hasBadge ? <Pulser /> : <></>}
 
-        {/* <img
-      src={item?.icon}
-      className={`dark:invert  brightness-125 group-hover:brightness-100 group-hover:grayscale-0  grayscale `}
-    /> */}
         <p
           className={`${textColor} ${visibleTopHeader} shrink-0 text-sm lg:text-base   cursor-pointer ransition-all duration-100 font-medium  group-hover:brightness-100 group-hover:text-primary-700  `}
         >
@@ -101,9 +93,6 @@ const Header = ({ scroll }: { scroll?: number }) => {
 
   ////////////////
 
-  // const [visibleTopHeader, setVisibleTopHeader] = useState(true);
-  // const [theme, setTheme] = useState("dark");
-
   useEffect(() => {
     window?.addEventListener("scroll", handleScroll);
     const temp = localStorage.getItem("theme");
@@ -129,14 +118,10 @@ const Header = ({ scroll }: { scroll?: number }) => {
   const path = pathname;
   const isInSearch = path.includes("products?");
 
-  const pusher = (link: string) => {
-    router.push(link);
-  };
-
   const pathnameArray = pathname.split("/");
-  const isInProfile = pathnameArray?.includes("profile");
+  // const isInProfile = pathnameArray?.includes("profile");
 
-  const isInProducts = pathname.includes("/products/");
+  // const isInProducts = pathname.includes("/products/");
 
   ////////////////////////////
 
@@ -227,23 +212,18 @@ const Header = ({ scroll }: { scroll?: number }) => {
   /*                               ACTIVE RESERVE                               */
   /* -------------------------------------------------------------------------- */
 
-  const { data: activeReserve } = useQuery({
-    queryKey: [ReserveService.RESERVE_ACTIVE_CACHEKEY, isLogin],
-    enabled: isLogin,
+  // const { data: activeReserve } = useQuery({
+  //   queryKey: [ReserveService.RESERVE_ACTIVE_CACHEKEY, isLogin],
+  //   enabled: isLogin,
 
-    queryFn: !!isLogin ? ReserveService.activeReserve : () => null,
-  });
+  //   queryFn: !!isLogin ? ReserveService.activeReserve : () => null,
+  // });
   const isHome = pathname == "/" ? true : false;
 
   const isHeaderLight = isHome && topHeaderVisible;
 
   const MenuProfileItem = () => {
     return (
-      // <div
-      //   className={` flex items-center transition-all   rounded-full ${isHeaderLight ? "border-white " : "border-gray-500"} bg-white/40    border   p-1 pr-3  brightness-125 hover:brightness-100  justify-center col-span-1 gap-3 flex-row`}
-      // >
-      //   <MenuDropDown isHeaderLight={isHeaderLight} />
-      //   {isLogin ? (
       <div className=" flex items-center  gap-3 lg:gap-6">
         <Link
           href={!!isLogin ? "/profile" : "/auth"}
@@ -280,20 +260,6 @@ const Header = ({ scroll }: { scroll?: number }) => {
           <></>
         )}
       </div>
-      //   ) : (
-      //     <div className="flex shrink-0  items-center gap-2 pl-2">
-      //       <TextIcon
-      //         visibleTopHeader={topHeaderVisible}
-      //         isHome={isHome}
-      //         item={{
-      //           icon: "/assets/icons/header/adds_header_icon.svg",
-      //           title: `${_STRINGS?.ENTER} / ${_STRINGS?.REGISTER}`,
-      //           route: "/auth",
-      //         }}
-      //       />
-      //     </div>
-      //   )}
-      // </div>
     );
   };
 
@@ -345,22 +311,6 @@ transition-all ease-out  duration-300  header-content-container w-full mx-auto  
               </div>
             ) : (headerWithFullSeach.includes(pathname) && !room_slug && !slug) || (!!slug && !room_slug) ? (
               <div className="flex items-center w-full justify-between  gap-4">
-                {/* {" "}
-                <img
-                  src="/assets/icons/shared/chevron-right.svg"
-                  onClick={(e) => {
-                    if (!!getBackHome && (!!room_slug || !!chat_id)) {
-                      removeredirectRoomToHome();
-                      router.push("/");
-                    } else if (pathname == "/profile/orders" || (!!slug && !room_slug)) {
-                      router.push("/");
-                    } else {
-                      handleBackClick();
-                    }
-                  }}
-                  className="cursor-pointer w-12 h-4      "
-                  // src="/assets/icons/addresses/garbage.svg"
-                /> */}
                 <div className=" flex  w-full border  bg-white rounded-full items-center gap-2  pl-4">
                   <Suspense>
                     <PopSearchbox
@@ -393,7 +343,6 @@ transition-all ease-out  duration-300  header-content-container w-full mx-auto  
                     }
                   }}
                   className="cursor-pointer w-12 h-4      "
-                  // src="/assets/icons/addresses/garbage.svg"
                 />
                 <p className="font-bold text-base text-center">
                   <HeaderTitle />
@@ -512,14 +461,6 @@ transition-all ease-out  duration-300  header-content-container w-full mx-auto  
               isHome={isHome}
               item={{ title: _STRINGS.ADD_ADD, cb: onCreateAddClick }}
             />
-            {/* <Button
-              onClick={onCreateAddClick}
-              title={_STRINGS.ADD_ADD}
-              containerClass="w-fit shrink-0 "
-              width="w-full shrink-0"
-              roundedClass="rounded-full"
-              icon={<img className="ml-2" src="/assets/icons/shared/circular_plus.svg" />}
-            /> */}
           </div>
           <div className="hidden md:visible items-center  justify-between lg:flex flex-row  w-2/5">
             <div
@@ -539,28 +480,14 @@ transition-all ease-out  duration-300  header-content-container w-full mx-auto  
                           boxId={scroll ? "SEARCH_BOX_Modal" : "SEARCH_BOX"}
                           placeholder={_STRINGS?.SEARCH}
                           onSubmit={() => {}}
-                          onClear={() => {
-                            // setsearchText("");
-                            // router.replace(pathname);
-                          }}
+                          onClear={() => {}}
                           containerClass={" w-full mx-auto"}
                           item={{ bg: `!bg-transparent  !border-none ` }}
-                          // autofocus={isInSearch}
                         />
                       </Suspense>
                       <div className="w-[1px] h-8 bg-gray-300"></div>
                       <HomeCityFilterCityPart />
                     </div>
-                    {/* <PopSearchbox
-                      boxId={scroll ? "SEARCH_BOX_Modal" : "SEARCH_BOX"}
-                      placeholder={_STRINGS?.SEARCH}
-                      onSubmit={(text) => {}}
-                      onClear={() => {
-                        // router.replace(pathname);
-                      }}
-                      item={{ bg: `!bg-white/70 ${isHome ? "" : "!border"} ` }}
-                      autofocus={isInSearch}
-                    /> */}
                   </>
                 )}
               </Suspense>{" "}
@@ -580,6 +507,9 @@ transition-all ease-out  duration-300  header-content-container w-full mx-auto  
       </div>
 
       <DrawerMenu isOpen={isOpen} setIsOpen={setIsOpen} />
+      <Suspense>
+        <HeaderInitialQueriesSetter />
+      </Suspense>
     </header>
   );
 };

@@ -6,7 +6,7 @@ import Button from "@/components/shared/Button/Button";
 import Notify from "@/components/shared/Toast";
 import { calculateTimeLeft } from "@/helpers/calculateTimeLeft";
 import { p2e } from "@/helpers/NumberConverter";
-import { useAuthStore } from "@/store";
+import { useAuthQueriesStore, useAuthStore } from "@/store";
 import _STRINGS from "@/utils/LocalStrings";
 import { useMutation } from "@tanstack/react-query";
 import { setCookie } from "cookies-next/client";
@@ -29,12 +29,12 @@ const OtpPageSignInComponent = ({
   const params = useSearchParams();
   const mobile_number = params.get("mobile_number");
   const redirectUrl = params.get("redirect_url");
-  // const role = params.get("role");
 
   const [disable, setDisable] = useState<boolean>(false);
   const [otp, setOtp] = useState<string>("");
   const { authCodeExpire } = useAuthStore((state) => state);
   const [countdown, setCountdown] = useState<{ minutes: string; seconds: string }>({ minutes: "00", seconds: "00" });
+  const { auth_queries } = useAuthQueriesStore();
 
   const router = useRouter();
 
@@ -97,7 +97,7 @@ const OtpPageSignInComponent = ({
       socket?.on("client-connected", (e: any) => {
         console.log("client-connected", e);
       });
-
+      useAuthQueriesStore.setState({ auth_queries: null });
       localStorage.setItem("access_token", data?.access_token || data?.auth_token || "");
       localStorage.setItem("socket_token", data?.socket_token || "");
       if (data?.auth_token) {
@@ -135,8 +135,12 @@ const OtpPageSignInComponent = ({
     const body = {
       mobile_number: mobile_number,
       code: numericCode,
+      query_params: auth_queries,
     };
 
+    if (!!redirectUrl) {
+      body.query_params = { redirect_url: redirectUrl, ...auth_queries };
+    }
     if (!disable) mutate(body);
   }
 

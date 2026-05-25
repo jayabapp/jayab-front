@@ -1,29 +1,26 @@
 import { apiRoutes } from "@/utils/urls";
+import { apiCall } from "../common/apicall.helper";
 import {
+  ConfirmForgetOtpDto,
+  GetProfileDto,
+  InitDto,
+  OwnerProfileDto,
+  RegisterDto,
+  SendForgetOtpDto,
   SendOtpDto,
   SendOtpType,
   SendOtpVerify,
   SendOtpVerifyResponse,
-  SetPasswordResponse,
+  SetNewPassword,
   SetPassword,
+  SetPasswordResponse,
   SignInDTO,
   SignInResponseDTO,
-  ForgetasswordListDto,
-  SendForgetOtpDto,
-  ConfirmForgetOtpDto,
-  SetNewPassword,
-  GetProfileDto,
   UpdateProfileDto,
-  RegisterDto,
-  CitiesDto,
-  OwnerProfileDto,
-  InitDto,
 } from "./auth.interface";
-import { apiCall } from "../common/apicall.helper";
 
-import { sendOtpSchema } from "./auth.schema";
 import { YupValidator } from "@/utils/YupValidator";
-import { ProvienceTypesDto } from "../property/property.interface";
+import { sendOtpSchema } from "./auth.schema";
 
 export class AuthService {
   static ADMIN_EDIT_VALIDATE_CACHEKEY = "HET_PROFILE";
@@ -87,6 +84,7 @@ export class AuthService {
       const result = await apiCall<SendOtpVerify, SendOtpVerifyResponse>("POST", apiRoutes.AU2, {
         mobile_number: dto.mobile_number,
         code: dto.code,
+        query_params: dto?.query_params,
       });
       return result;
     } catch (e) {

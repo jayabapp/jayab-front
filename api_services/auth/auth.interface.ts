@@ -25,7 +25,7 @@ export type ConfirmForgetOtpDto = {
   code: string | null;
 };
 export type SendOtpType = { code: number };
-export type SendOtpVerify = { mobile_number: number | null | string; code: number | null | string };
+export type SendOtpVerify = { mobile_number: number | null | string; code: number | null | string; query_params?: any };
 export type SendOtpVerifyResponse = { auth_token?: string; access_token?: string; socket_token?: string };
 export type CheckUserName = { username: string };
 export type CheckUserNameResponse = any;

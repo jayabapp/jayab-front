@@ -8,6 +8,7 @@ import { persist } from "zustand/middleware";
 
 export type AuthStore = {
   isLogin: boolean;
+
   isAdminSso: boolean;
   authCodeExpire: Moment | string | number | null;
 };
@@ -17,6 +18,23 @@ export const useAuthStore = create<AuthStore>(() => ({
   isAdminSso: false,
   authCodeExpire: null,
 }));
+
+/* -------------------------------------------------------------------------- */
+/*                                AUTH QUERIES                                */
+/* -------------------------------------------------------------------------- */
+export type AuthQueriesStore = {
+  auth_queries: any | null;
+};
+export const useAuthQueriesStore = create<AuthQueriesStore, any>(
+  persist(
+    (set, get) => ({
+      auth_queries: "",
+    }),
+    {
+      name: "auth-queries-storage",
+    },
+  ),
+);
 
 /* -------------------------------------------------------------------------- */
 /* PARAMS */
