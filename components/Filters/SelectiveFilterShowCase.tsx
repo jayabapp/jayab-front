@@ -1,4 +1,5 @@
 import queryBuilder from "@/helpers/queryBuilder";
+import useQueryGet from "@/helpers/queryGet";
 import { useModalVisible } from "@/hooks/modal.hook";
 import _STRINGS from "@/utils/LocalStrings";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
@@ -25,11 +26,12 @@ const SelectiveFilterShowCase = ({
   const { replace } = useRouter();
   const pathname = usePathname();
   const [filters, setFilters] = useState({});
-  const slectedCount = query?.[queryKey]?.split(",")?.filter((e: any) => !!e)?.length;
+  const queriesParams = useQueryGet<any>();
+  const slectedCount = queriesParams?.[queryKey]?.split(",")?.filter((e: any) => !!e)?.length;
   const searchParams = useSearchParams();
   useEffect(() => {
-    if (!!query) {
-      setFilters(query);
+    if (!!queriesParams) {
+      setFilters(queriesParams);
     }
   }, [searchParams]);
 
@@ -40,8 +42,10 @@ const SelectiveFilterShowCase = ({
     delete body.categories;
     delete body.page;
     _onHide();
+
     replace(`${pathname}?${queryBuilder(body)}`);
   };
+
   return (
     <>
       <div
@@ -83,7 +87,7 @@ const SelectiveFilterShowCase = ({
             list={list}
             queryKey={queryKey}
             isMulty
-            query={query}
+            query={queriesParams}
           />
 
           <Button

@@ -7,7 +7,7 @@ import { useCitiesStore } from "@/store";
 import _STRINGS from "@/utils/LocalStrings";
 import { useQuery } from "@tanstack/react-query";
 import isEmpty from "lodash/isEmpty";
-import { usePathname, useRouter } from "next/navigation";
+import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import { useEffect, useState } from "react";
 import Modal from "../Modal";
 import Button from "../shared/Button/Button";
@@ -45,6 +45,7 @@ const CityModal = ({
 }) => {
   const router = useRouter();
   const pathname = usePathname();
+  const searchParams = useSearchParams();
   const queriesParams = useQueryGet<any>();
   const [queries, setQueries] = useState<{ [key: string]: any }>({});
   const [selectedProv, setSelectedProv] = useState<NewCitiesListDto | null>(null);
@@ -56,7 +57,7 @@ const CityModal = ({
     if (!!customeValues) {
       setQueries(customeValues);
     } else setQueries(queriesParams);
-  }, [customeValues, queriesParams?.cities, queriesParams?.provinces]);
+  }, [customeValues, searchParams]);
 
   const { data: provinces, isLoading: provLoading } = useQuery({
     queryFn: () => CityService.GetAllCities({ is_parent: 1 }),
