@@ -10,9 +10,10 @@ import { apiRoutes, baseUrl } from "@/utils/urls";
 import { Metadata, ResolvingMetadata } from "next";
 import Link from "next/link";
 
+import { BlogSchema, ContentFAQSchema } from "@/components/SchemaGenerator/Schemas";
+import { convertHtmlToReact } from "@/helpers/convertHTMLtoReact";
 import MehaHeaderHelper from "@/helpers/MetaHeaderHelper";
 import { Suspense } from "react";
-import { BlogSchema } from "@/components/SchemaGenerator/Schemas";
 type Props = {
   params: Promise<{ id: string; blog_id: string }>;
   searchParams: Promise<{ [key: string]: string | string[] | undefined }>;
@@ -30,10 +31,10 @@ const SingleBlogPage = async ({ params }: Props) => {
   const { data }: { data: ContentDto } = await serverCall(
     baseUrl + apiRoutes.SINGLE_CONTENT_WITH_SLUG(blog_id),
     undefined,
-    { redirect404: true }
+    { redirect404: true },
   );
 
-  const { html, headings, timeToRead, wordCount } = HTMLGenerator(data?.html || "", {
+  const { html, headings, timeToRead, wordCount, faqData } = HTMLGenerator(data?.html || "", {
     hasHeading: true,
     hasCount: true,
   });
@@ -41,6 +42,7 @@ const SingleBlogPage = async ({ params }: Props) => {
   return (
     <div className="app-container relative !pt-24 flex flex-col !gap-6  !overflow-visible">
       <BlogSchema data={data} timeToRead={timeToRead || 0} wordCount={wordCount || 0} />
+      <ContentFAQSchema faqData={faqData || []} />
       {!data ? null : (
         <SingleProductBreadCrumb
           dataArray={[
@@ -72,7 +74,7 @@ const SingleBlogPage = async ({ params }: Props) => {
       </Suspense>
       <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
         <div className="rounded-10 content w-full md:shadow-md md:bg-white md:p-4 col-span-1 md:col-span-2">
-          <div className="break-words" dangerouslySetInnerHTML={{ __html: `${html}` }} />
+          <div className="break-words content">{convertHtmlToReact(html)} </div>
           <ContentQuestions
             containerClass="!px-0 border-t !rounded-none !mb-0"
             title="نظر خود را در مورد این مطلب بنویسید:"

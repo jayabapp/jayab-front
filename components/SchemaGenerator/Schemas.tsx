@@ -2,6 +2,8 @@ import { Category, ContentDto } from "@/api_services/home/home.interface";
 import { SinglePropDto } from "@/api_services/property/property.interface";
 import serverCall from "@/helpers/serverCall";
 import { apiRoutes, baseUrl, NEW_IMAGE_URL } from "@/utils/urls";
+import { isEmpty } from "lodash";
+import { FC } from "react";
 import type {
   Article,
   BlogPosting,
@@ -31,7 +33,7 @@ export const FaqSchema = async () => {
 
 export const ServiceSchema = async ({ service }: { service: Category }) => {
   const { data: contactUs }: { data: { data: ContentDto[] } } = await serverCall(
-    baseUrl + apiRoutes.CONTENTS + `?key=${"contactUs"}&per_page=20&page=${1}`
+    baseUrl + apiRoutes.CONTENTS + `?key=${"contactUs"}&per_page=20&page=${1}`,
   );
   const tels = contactUs?.data?.filter((i) => i?.fields?.key == "tel");
   const address = contactUs?.data?.find((i) => i?.fields?.key == "address");
@@ -75,7 +77,7 @@ export const SearchboxSchema = () => {
 
 export const OrganizationSchema = async () => {
   const { data: contactUs }: { data: { data: ContentDto[] } } = await serverCall(
-    baseUrl + apiRoutes.CONTENTS + `?key=${"contactUs"}&per_page=20&page=${1}`
+    baseUrl + apiRoutes.CONTENTS + `?key=${"contactUs"}&per_page=20&page=${1}`,
   );
   const { data: aboutUs }: { data: ContentDto } = await serverCall(baseUrl + apiRoutes.CONTENT_BY_KEY("aboutUs"));
   const socials = contactUs?.data?.filter((e) => e?.fields?.key == "social");
@@ -110,7 +112,7 @@ export const OrganizationSchema = async () => {
 };
 export const LocalBusinessSchema = async () => {
   const { data: contactUs }: { data: { data: ContentDto[] } } = await serverCall(
-    baseUrl + apiRoutes.CONTENTS + `?key=${"contactUs"}&per_page=20&page=${1}`
+    baseUrl + apiRoutes.CONTENTS + `?key=${"contactUs"}&per_page=20&page=${1}`,
   );
   const socials = contactUs?.data?.filter((e) => e?.fields?.key == "social");
   const tels = contactUs?.data?.filter((i) => i?.fields?.key == "tel");
@@ -256,11 +258,25 @@ export const BreadCrumbSchema = ({
             ? e?.route
             : "/" + e?.route
           : e?.link
-          ? e?.link?.startsWith("/")
-            ? e?.link
-            : "/" + e?.link
-          : "/"
+            ? e?.link?.startsWith("/")
+              ? e?.link
+              : "/" + e?.link
+            : "/"
       }`,
+    })),
+  });
+};
+
+export const ContentFAQSchema: FC<{ faqData: { title: string; innerText: string }[] }> = async ({ faqData }) => {
+  if (isEmpty(faqData)) return;
+  return JsonLd<FAQPage>({
+    "@context": "https://schema.org",
+    "@type": "FAQPage",
+    url: `${process.env.NEXT_PUBLIC_WEB_SITE}/faq`,
+    mainEntity: faqData?.map((e: any) => ({
+      name: e?.title,
+      acceptedAnswer: { text: e?.innerText || e?.innerText, "@type": "Answer" },
+      "@type": "Question",
     })),
   });
 };

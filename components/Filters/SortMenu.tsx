@@ -32,9 +32,10 @@ const SortMenu = ({ query }: SortMenuType) => {
 
   const setTag = (id: string | number | null | undefined) => {
     let temp = { ...query };
-
+    delete temp.page;
     if (id == null) {
       delete temp.sort_type;
+
       router.replace(
         `${pathname}?${queryBuilder({
           ...temp,
