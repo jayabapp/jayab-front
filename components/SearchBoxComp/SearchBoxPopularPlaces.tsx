@@ -1,4 +1,5 @@
 import { HomeService } from "@/api_services/home/home.service";
+import { LandingsPlacements } from "@/enum/landings.enum";
 import _STRINGS from "@/utils/LocalStrings";
 import { useQuery } from "@tanstack/react-query";
 import { useRouter } from "next/navigation";
@@ -7,8 +8,8 @@ const SearchBoxPopularPlaces = ({ setShowPop }: { setShowPop: React.Dispatch<Rea
   const { push } = useRouter();
 
   const { data } = useQuery({
-    queryKey: [HomeService.USER_LANDING_PAGES_KEY],
-    queryFn: HomeService.getLandings,
+    queryKey: [HomeService.USER_LANDING_PAGES_KEY, LandingsPlacements.HOME],
+    queryFn: () => HomeService.getLandings({ placement: LandingsPlacements.HOME }),
   });
   const onLandingClick = (url: string) => {
     setShowPop(false);

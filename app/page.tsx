@@ -6,6 +6,7 @@ import MainFiltersContainer from "@/components/Home/MainFiltersContainer";
 import TheInstallPrompt from "@/components/InstallPrompt/TheInstallPrompt";
 import { OrganizationSchema, SearchboxSchema } from "@/components/SchemaGenerator/Schemas";
 import { BannerPosition } from "@/enum/banners.enum";
+import { LandingsPlacements } from "@/enum/landings.enum";
 import deviceTypeDetector from "@/helpers/device.detector";
 import MehaHeaderHelper from "@/helpers/MetaHeaderHelper";
 import serverCall from "@/helpers/serverCall";
@@ -31,7 +32,9 @@ const Home = async () => {
       `?positions[]=${BannerPosition.MAIN_1}&positions[]=${BannerPosition.MAIN_2}&positions[]=${BannerPosition.MAIN_3}`,
   );
 
-  const { data: landings } = await serverCall(baseUrl + apiRoutes.USER_LANDING_PAGES);
+  const { data: landings } = await serverCall(
+    baseUrl + apiRoutes.USER_LANDING_PAGES + `?placement=${LandingsPlacements.HOME}`,
+  );
   const { data: propertyData } = await serverCall(baseUrl + apiRoutes.GET_PROPERTIES, {
     page: 1,
     per_page: 12,

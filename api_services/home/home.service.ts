@@ -1,4 +1,5 @@
 import { BannerPosition } from "@/enum/banners.enum";
+import { LandingsPlacements } from "@/enum/landings.enum";
 import { apiRoutes } from "@/utils/urls";
 import { Meta } from "../chat/chat.interface";
 import { apiCall } from "../common/apicall.helper";
@@ -55,9 +56,13 @@ export class HomeService {
   }
 
   //////////////////////////////
-  static async getLandings() {
+  static async getLandings(dto?: { placement?: LandingsPlacements }) {
     try {
-      const result = await apiCall<any, MostVisitedPlaces>("GET", apiRoutes.USER_LANDING_PAGES);
+      const result = await apiCall<{ placement?: LandingsPlacements }, MostVisitedPlaces>(
+        "GET",
+        apiRoutes.USER_LANDING_PAGES,
+        dto,
+      );
       return result;
     } catch (e) {
       throw e;

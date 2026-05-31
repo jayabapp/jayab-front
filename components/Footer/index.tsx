@@ -3,6 +3,7 @@
 import { NEW_IMAGE_URL } from "../../utils/urls";
 
 import { HomeService } from "@/api_services/home/home.service";
+import { LandingsPlacements } from "@/enum/landings.enum";
 import { footerHiddenBlackList, footerLinks } from "@/utils/constantss";
 import _STRINGS from "@/utils/LocalStrings";
 import { useQuery } from "@tanstack/react-query";
@@ -12,6 +13,14 @@ import ContactuUItem from "../contactus/ContactuUItem";
 import CallBox from "./CallBox";
 
 const Footer = () => {
+  const { data: footerLandings } = useQuery({
+    queryKey: [HomeService.USER_LANDING_PAGES_KEY, LandingsPlacements.FOOTER],
+
+    queryFn: () => HomeService.getLandings({ placement: LandingsPlacements.FOOTER }),
+  });
+
+  console.log(footerLandings, "footerLandings");
+
   const pathname = usePathname();
   /* --------------------------- SUMMARY DESCRIPTION -------------------------- */
 
