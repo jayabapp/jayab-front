@@ -111,7 +111,6 @@ const SinglePropertyIntroduction = ({ data }: { data: SinglePropDto }) => {
   };
 
   const OwnerPart = () => {
-    console.log(data, "datadata");
     return (
       <div className="flex flex-row items-center gap-2 ">
         <img

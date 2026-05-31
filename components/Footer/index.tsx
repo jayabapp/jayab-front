@@ -4,6 +4,7 @@ import { NEW_IMAGE_URL } from "../../utils/urls";
 
 import { HomeService } from "@/api_services/home/home.service";
 import { LandingsPlacements } from "@/enum/landings.enum";
+import { chunkArray } from "@/helpers/chunk-array.helper";
 import { footerHiddenBlackList, footerLinks } from "@/utils/constantss";
 import _STRINGS from "@/utils/LocalStrings";
 import { useQuery } from "@tanstack/react-query";
@@ -13,14 +14,6 @@ import ContactuUItem from "../contactus/ContactuUItem";
 import CallBox from "./CallBox";
 
 const Footer = () => {
-  const { data: footerLandings } = useQuery({
-    queryKey: [HomeService.USER_LANDING_PAGES_KEY, LandingsPlacements.FOOTER],
-
-    queryFn: () => HomeService.getLandings({ placement: LandingsPlacements.FOOTER }),
-  });
-
-  console.log(footerLandings, "footerLandings");
-
   const pathname = usePathname();
   /* --------------------------- SUMMARY DESCRIPTION -------------------------- */
 
@@ -57,12 +50,51 @@ const Footer = () => {
   const others = data?.data?.filter((e) => e?.fields?.key !== "social");
   const PHONE_NUMBER = others?.find((i) => i?.fields?.key == "tel" || i?.key == "tel");
   const isHome = pathname == "/";
+
+  /* -------------------------------------------------------------------------- */
+  /*                               FOOTER LANDINGS                              */
+  /* -------------------------------------------------------------------------- */
+
+  const { data: footerLandings } = useQuery({
+    queryKey: [HomeService.USER_LANDING_PAGES_KEY, LandingsPlacements.FOOTER],
+
+    queryFn: () => HomeService.getLandings({ placement: LandingsPlacements.FOOTER }),
+  });
+
+  const chunkedLandings = chunkArray(footerLandings?.popular_city || [], 8);
+
   return (
     <footer
       className={`  ${isHome ? "" : "  hidden lg:flex"} ${!!footerHiddenBlackList.find((e) => pathname?.includes(e)) ? "hidden lg:hidden" : ""} w-full  z-2   bg-primary-1000/40   flex   flex-col items-center justify-center bg-dark-500  bg-no-repeat bg-cover  relative  pt-[28rem] lg:pt-[6rem] `}
     >
       <CallBox />
-
+      {/* QUICK SEARCHS */}
+      <div className=" pb-8  px-0 md:px-[10%]  gap-4  w-full  flex flex-col  ">
+        <p className="  text-lg font-bold  px-4 md:px-0    ">{_STRINGS.FAST_SEARCH}</p>
+        <div className="    w-full px-4   md:px-0  flex flex-row lg:grid lg:grid-cols-8 overflow-x-scroll  gap-1.5 md:gap-2.5   ">
+          {chunkedLandings?.map((chunk, index) => (
+            <div
+              className=" w-1/3 md:w-1/4 lg:w-full shrink-0  lg:auto flex flex-col gap-1.5 md:gap-2.5 "
+              key={`${index}chunk`}
+            >
+              {chunk?.map((e) => (
+                <Link
+                  key={e?.title}
+                  href={e?.url}
+                  prefetch={false}
+                  id={e?.title}
+                  className="  bg-white    border  custome-shadow-card  relative  rounded-20 h-8 flex items-center justify-start  pr-4 shrink-0  font-medium text-xs  text-start"
+                >
+                  {e?.title}
+                </Link>
+              ))}
+            </div>
+          ))}
+        </div>
+        {/* <div className="w-full ">
+          <Divider moreClass=" w-full !border-primary-700 opacity-30  " />
+        </div> */}
+      </div>
       {!!PHONE_NUMBER && (
         <Link
           href={PHONE_NUMBER?.link || `tel:${PHONE_NUMBER?.full_text || PHONE_NUMBER?.small_text || ""}`}
@@ -189,7 +221,8 @@ const Footer = () => {
           )}
         </div>
       </div>
-      {/* SECTION 4 */}
+
+      {/* BOTTOM WARNINGS */}
 
       <div className="bg-white   padding-x  w-full  mx-auto  shadow-md    h-fit   lg:h-20 flex flex-col  py-2 md:py-0 gap-4 lg:flex-row   items-center justify-between  ">
         <div className="  flex    items-center gap-4">

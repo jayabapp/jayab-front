@@ -804,3 +804,10 @@ ul {
 .footer-plus-shadow {
   box-shadow: 0px 3.64px 10.93px 0px rgba(53, 130, 224, 0.35);
 }
+
+.footer-quick-search-shadow-box-top {
+  box-shadow: -1px 1px 0px 0px rgba(255, 255, 255, 1) inset;
+}
+.footer-quick-search-shadow-box-bottom {
+  box-shadow: 1px -1px 0px 0px rgba(255, 255, 255, 1) inset;
+}
