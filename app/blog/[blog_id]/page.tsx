@@ -39,21 +39,22 @@ const SingleBlogPage = async ({ params }: Props) => {
     hasCount: true,
   });
 
+  const breadcrumb = [
+    { title: "خانه", link: "/" },
+    { title: data?.category?.title || "", link: `/blog` },
+    { title: data?.title || "", link: `#` },
+  ];
   return (
     <div className="app-container relative !pt-24 flex flex-col !gap-6  !overflow-visible">
       <BlogSchema data={data} timeToRead={timeToRead || 0} wordCount={wordCount || 0} />
       <ContentFAQSchema faqData={faqData || []} />
       {!data ? null : (
-        <SingleProductBreadCrumb
-          dataArray={[
-            { title: "خانه", link: "/" },
-            { title: data?.category?.title || "", link: `/blog` },
-            { title: data?.title || "", link: `#` },
-          ]}
-        />
+        <div className="w-full md:flex hidden">
+          <SingleProductBreadCrumb dataArray={breadcrumb} />
+        </div>
       )}
       <Suspense>
-        <MainImageTextBlock data={data} timeToRead={timeToRead}>
+        <MainImageTextBlock breadcrumb={breadcrumb} data={data} timeToRead={timeToRead}>
           <div className={` w-full scrollbar   overflow-y-scroll   relative`}>
             {headings?.map((i, index) => (
               <div key={`HEADING${index}`} className={`text-xs! my-4  md:my-6`}>

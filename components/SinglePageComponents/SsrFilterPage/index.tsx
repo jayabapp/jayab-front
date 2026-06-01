@@ -190,7 +190,7 @@ const SsrFilterPage = ({ landings, firstData }: { firstData: { data: any[] }; la
    
             md:mt-0 `}
         >
-          <div className=" hidden     z-1 w-full xl:flex flex-col xl:flex-row items-center justify-between ">
+          <div className=" hidden  mb-2    z-1 w-full xl:flex flex-col xl:flex-row items-center justify-between ">
             <SingleProductBreadCrumb dataArray={breadCrumbs} />
           </div>
           <div className="mb-3  w-full flex items-center justify-between">

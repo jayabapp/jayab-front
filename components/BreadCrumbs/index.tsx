@@ -1,7 +1,7 @@
 "use client";
 import { allRoutes } from "@/utils/constantss";
-import { useRouter, usePathname } from "next/navigation";
-import React, { useEffect, useState } from "react";
+import { usePathname, useRouter } from "next/navigation";
+import { useEffect, useState } from "react";
 import { BreadCrumbSchema } from "../SchemaGenerator/Schemas";
 
 const Breadcrumbs = () => {
@@ -45,19 +45,19 @@ const Breadcrumbs = () => {
     return finalPath || "/";
   };
   return (
-    <div id="BREADCRUMB" className="pr-4 mt-4 mb-3 w-full  hidden md:flex ">
+    <div id="BREADCRUMB" className="  md:pr-4 md:mt-4 mb-3 w-full   ">
       <BreadCrumbSchema breadcrumbs={crumbs} />
       <div className="flex w-11/12 flex-wrap">
         {crumbs?.map((e, i, arr) => (
           <a
             href={i + 1 !== arr?.length ? _createRouteATag(e) : ""}
             key={i}
-            className={`  flex flex-row items-center my-1 `}
+            className={`  flex flex-row items-center `}
           >
             <div
               className={`${
-                i == crumbs?.length - 1 ? "  bg-primary-700/10" : " opacity-50"
-              } justify-center  cursor-pointer gap-2 flex py-1 px-2  rounded-md  bg-primary-500 text-black`}
+                i == crumbs?.length - 1 ? "  " : " opacity-50"
+              } justify-center  cursor-pointer gap-2 flex   rounded-md   text-black`}
             >
               {" "}
               {!!e?.icon ? <img src={e?.icon} className="w-4 aspect-square h-4 opacity-60 " /> : <></>}{" "}

@@ -3,10 +3,12 @@
 import { ContentDto } from "@/api_services/home/home.interface";
 
 import DOMPurify from "isomorphic-dompurify";
+import { isEmpty } from "lodash";
 import moment from "moment-jalaali";
 import Image from "next/image";
 import { Fragment } from "react";
 import { NEW_IMAGE_URL } from "../../utils/urls";
+import SingleProductBreadCrumb from "../BreadCrumbs/SingleProductBreadCrumb";
 import BlogShare from "./BlogShare";
 import SmoothScroll from "./smooth-scroll";
 
@@ -14,9 +16,13 @@ export interface ImageTextDTO {
   data?: ContentDto;
   children?: any;
   timeToRead?: number;
+  breadcrumb?: {
+    title: string;
+    link: string;
+  }[];
 }
 
-const MainImageTextBlock = ({ data, children, timeToRead }: ImageTextDTO) => {
+const MainImageTextBlock = ({ data, children, timeToRead, breadcrumb }: ImageTextDTO) => {
   let item;
   if (data)
     item = {
@@ -41,6 +47,14 @@ const MainImageTextBlock = ({ data, children, timeToRead }: ImageTextDTO) => {
             alt={item?.title}
           />
         </div>
+        {!isEmpty(breadcrumb) && !!breadcrumb ? (
+          <div className="w-full md:hidden flex">
+            <SingleProductBreadCrumb dataArray={breadcrumb} />
+          </div>
+        ) : (
+          <></>
+        )}
+
         <div className="w-full md:!aspect-[3/2] gap-1.5 md:gap-16 flex flex-col">
           <div className="flex flex-col w-full h-fit md:aspect-[2] ">
             <h1> {item?.title}</h1>

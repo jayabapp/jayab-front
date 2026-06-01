@@ -10,13 +10,13 @@ const SingleProductBreadCrumb = ({ dataArray }: { dataArray: { title: string; li
   };
 
   return (
-    <div id="BREADCRUMB" className={`pr-4 md:pr-0 z-5  w-[90vw]  hidden md:flex  `}>
+    <div id="BREADCRUMB" className={`pr-0 md:pr-0 z-5  w-[90vw]   `}>
       <BreadCrumbSchema breadcrumbs={dataArray} />
-      <div className="flex w-11/12 flex-wrap">
+      <div className="flex w-11/12 gap-1 md:gap-2 flex-wrap">
         {dataArray?.map((e, index, arr) => (
           <a
             key={e?.link}
-            className="flex flex-row items-center my-1"
+            className="flex flex-row items-center  gap-1 md:gap-2 "
             href={e?.link}
             // onClick={() => {
             //   if (index + 1 !== arr?.length) _createRoute(e?.link);
@@ -25,8 +25,8 @@ const SingleProductBreadCrumb = ({ dataArray }: { dataArray: { title: string; li
             {" "}
             <div
               className={`${
-                index == arr?.length - 1 ? "  bg-primary-700/10" : " opacity-50"
-              } justify-center  cursor-pointer gap-2 flex py-1 px-2  rounded-md  bg-primary-500 text-black`}
+                index == arr?.length - 1 ? "  " : " opacity-50"
+              } justify-center  cursor-pointer gap-2 flex  rounded-md   text-black`}
             >
               {e?.link == "/" ? (
                 // <img src={"/assets/icons/shared/breadcrumb_home.svg"} className="w-4 opacity-60 aspect-square h-4" />
@@ -35,7 +35,7 @@ const SingleProductBreadCrumb = ({ dataArray }: { dataArray: { title: string; li
                 <></>
               )}{" "}
               <p
-                className={`text-sm text-dark-700  transition-all   dark:hover:text-primary-800 dark:text-gray-400 ${
+                className={`  text-xxs md:text-sm text-dark-700  transition-all   dark:hover:text-primary-800 dark:text-gray-400 ${
                   index == arr?.length - 1 ? "font-normal hover:text-primary-800 " : " hover:opacity-100 opacity-50"
                 }`}
               >
@@ -45,7 +45,7 @@ const SingleProductBreadCrumb = ({ dataArray }: { dataArray: { title: string; li
             {index < arr?.length - 1 && (
               <svg
                 width="8"
-                className="mx-2.5  "
+                className="  w-[6px] h-[12px] md:w-2 md:h-[14px]  mx-0.5 md:mx-2.5  "
                 height="14"
                 viewBox="0 0 8 14"
                 fill="none"

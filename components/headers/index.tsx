@@ -329,9 +329,7 @@ transition-all ease-out  duration-300  header-content-container w-full mx-auto  
               </div>
             ) : (
               <div className="flex items-center w-full justify-between  gap-4">
-                {" "}
-                <img
-                  src="/assets/icons/shared/chevron-right.svg"
+                <div
                   onClick={(e) => {
                     if (!!getBackHome && (!!room_slug || !!chat_id)) {
                       removeredirectRoomToHome();
@@ -343,7 +341,9 @@ transition-all ease-out  duration-300  header-content-container w-full mx-auto  
                     }
                   }}
                   className="cursor-pointer w-12 h-4      "
-                />
+                >
+                  <img src="/assets/icons/shared/chevron-right.svg" className="     " />
+                </div>
                 <p className="font-bold text-base text-center">
                   <HeaderTitle />
                 </p>
