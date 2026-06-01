@@ -312,7 +312,7 @@ const _STRINGS = {
   PPL_COUNT: "تعداد نفرات",
   HAS_DISCOUNT: "تخفیف دار",
   PERMIUM_PROPS: "ملک های ویژه",
-  FAST_SEARCH: "جست و جوی سریع",
+  FAST_SEARCH: "جستجوی سریع",
   MOST_VISITED_CITIES: "شهر های پربازدید",
   MOST_VISITED_DESTINATIONS: "مقاصد پرطرفدار",
 

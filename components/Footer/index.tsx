@@ -61,7 +61,7 @@ const Footer = () => {
     queryFn: () => HomeService.getLandings({ placement: LandingsPlacements.FOOTER }),
   });
 
-  const chunkedLandings = chunkArray(footerLandings?.popular_city || [], 8);
+  const chunkedLandings = chunkArray(footerLandings?.popular_city || [], 6);
 
   return (
     <footer
@@ -69,12 +69,12 @@ const Footer = () => {
     >
       <CallBox />
       {/* QUICK SEARCHS */}
-      <div className=" pb-8  px-0 md:px-[10%]  gap-4  w-full  flex flex-col  ">
-        <p className="  text-lg font-bold  px-4 md:px-0    ">{_STRINGS.FAST_SEARCH}</p>
-        <div className="    w-full px-4   md:px-0  flex flex-row lg:grid lg:grid-cols-8 overflow-x-scroll  gap-1.5 md:gap-2.5   ">
+      <div className=" pb-6  px-0 md:px-[10%]  gap-4 md:gap-4  w-full  flex flex-col  ">
+        <p className="  text-base md:text-lg font-bold  px-4 md:px-0    ">{_STRINGS.FAST_SEARCH}</p>
+        <div className="    w-full px-4 pb-2   md:px-0  flex flex-row lg:grid lg:grid-cols-6 overflow-x-scroll  gap-1.5 md:gap-2.5   ">
           {chunkedLandings?.map((chunk, index) => (
             <div
-              className=" w-1/3 md:w-1/4 lg:w-full shrink-0  lg:auto flex flex-col gap-1.5 md:gap-2.5 "
+              className=" w-[45%] md:w-1/4 lg:w-full shrink-0  lg:auto flex flex-col gap-1.5 md:gap-2.5 "
               key={`${index}chunk`}
             >
               {chunk?.map((e) => (
@@ -83,7 +83,7 @@ const Footer = () => {
                   href={e?.url}
                   prefetch={false}
                   id={e?.title}
-                  className="  bg-white    border  custome-shadow-card  relative  rounded-20 h-8 flex items-center justify-start  pr-4 shrink-0  font-medium text-xs  text-start"
+                  className="  bg-white    border   shadow-md  border-gray-300  relative  rounded-20 h-6 md:h-8 flex items-center justify-start  pr-4 shrink-0  font-medium text-xs   text-start"
                 >
                   {e?.title}
                 </Link>
@@ -155,7 +155,7 @@ const Footer = () => {
           key={`footerasfs`}
           className={`col-span-4 lg:col-span-1  gap-2 flex w-full flex-col justify-between h-fit order-2 lg:order-1 `}
         >
-          <p className=" text-lg font-bold  pb-4">{_STRINGS.FAST_ACCESS}</p>
+          <p className=" text-base md:text-lg font-bold  pb-4">{_STRINGS.FAST_ACCESS}</p>
           <div className=" lg:grid-cols-1  grid grid-cols-2 gap-2  grid-rows-2  lg:grid-rows-none ">
             {footerLinks?.map((e, index) => (
               <Link
@@ -182,7 +182,7 @@ const Footer = () => {
           className={`col-span-4 lg:col-span-2  flex w-full flex-col justify-between h-fit order-2 lg:order-1 `}
         >
           <div className="flex justify-center flex-col gap-4  mt-3 mb-4">
-            <p className=" text-lg font-bold  pb-0 lg:pb-4">{_STRINGS.COMUNICATION_WAYS}</p>
+            <p className=" text-base md:text-lg font-bold  pb-0 lg:pb-4">{_STRINGS.COMUNICATION_WAYS}</p>
             {others && others?.length > 0 ? (
               others?.map((e) => <ContactuUItem e={e} textClass=" !font-normal " key={`${e?.id}SocialcONT`} />)
             ) : (

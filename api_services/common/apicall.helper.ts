@@ -21,6 +21,10 @@ interface SuccessResponse<K> {
  * @param body
  * @returns
  */
+
+// Helper to detect if we're in a browser environment
+const isBrowser = typeof window !== "undefined";
+
 export async function apiCall<T, K>(
   method: Methods,
   url: string,
@@ -84,7 +88,7 @@ export async function apiCall<T, K>(
      * throw function
      * check auth
      */
-    handleError(error);
+    handleError(error, true);
     if (error?.response?.status == 401) {
       localStorage?.removeItem("access_token");
       localStorage.removeItem("socket_token");
@@ -126,18 +130,56 @@ const headerItems = (type?: "file", isSocketToken?: boolean, passedToken?: strin
  * find error message and notify
  * @param error
  */
-const handleError = (error: any) => {
-  const message =
-    error?.response?.data?.messages?.en ||
-    error?.response?.data?.messages?.fa ||
-    error?.response?.data?.message ||
-    error?.message;
+async function handleError(error: any, showNotifications: boolean, shouldRedirect?: boolean) {
+  // Determine error type and message
+  let message = "";
+  let title = "خطا";
 
-  if (error?.response?.data?.message_code !== "RESERVE6") {
+  // Network error (no response)
+  if (!error.response && (error.message === "Network Error" || error.code === "ECONNABORTED")) {
+    message = "خطا در ارتباط با سرور. لطفا اتصال اینترنت خود را بررسی کنید.";
+  }
+  // HTTP errors with status
+  else if (error.response) {
+    const status = error.response.status;
+
+    if (status === 401) {
+      message = "نشست شما منقضی شده است. لطفا دوباره وارد شوید.";
+      title = "نشست منقضی";
+    } else if (status === 500) {
+      message = "خطای داخلی سرور. لطفا بعدا دوباره تلاش کنید.";
+      title = "خطای سرور";
+    } else {
+      // Try to get message from response - handle both string and array
+      const responseData = error?.response?.data;
+      const errorMessage = responseData?.messages?.fa || responseData?.message;
+
+      if (Array.isArray(errorMessage)) {
+        message = errorMessage.join("، ");
+      } else {
+        message = errorMessage || error?.message || "خطایی رخ داده است";
+      }
+    }
+  } else {
+    message = error?.message || "خطایی رخ داده است";
+  }
+
+  // Handle redirect for 404/500 errors in SSR
+  if (shouldRedirect && !isBrowser) {
+    const status = error?.response?.status;
+    if (status === 404 || status === 500) {
+      const { notFound } = await import("next/navigation");
+      notFound();
+    }
+  }
+
+  // Only show notifications in browser and if enabled
+  if (showNotifications && isBrowser) {
+    const { default: Notify } = await import("@/components/shared/Toast");
     Notify({
       type: "error",
-      title: "خطا",
-      body: typeof message == "string" ? message : message[0],
+      title: title,
+      body: message,
     });
   }
-};
+}

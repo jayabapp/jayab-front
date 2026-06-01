@@ -1,6 +1,5 @@
 "use client";
-import React from "react";
-import { useRouter, usePathname } from "next/navigation";
+import { useRouter } from "next/navigation";
 import { BreadCrumbSchema } from "../SchemaGenerator/Schemas";
 
 const SingleProductBreadCrumb = ({ dataArray }: { dataArray: { title: string; link: string }[] }) => {
@@ -36,8 +35,8 @@ const SingleProductBreadCrumb = ({ dataArray }: { dataArray: { title: string; li
                 <></>
               )}{" "}
               <p
-                className={`text-sm text-dark-700  transition-all hover:scale-110 hover:text-primary-800 dark:hover:text-primary-800 dark:text-gray-400 ${
-                  index == arr?.length - 1 ? "font-normal " : " opacity-50"
+                className={`text-sm text-dark-700  transition-all   dark:hover:text-primary-800 dark:text-gray-400 ${
+                  index == arr?.length - 1 ? "font-normal hover:text-primary-800 " : " hover:opacity-100 opacity-50"
                 }`}
               >
                 {e.title}

@@ -10,6 +10,7 @@ import ProductSkeleton from "@/components/properties/ProductSkeleton";
 import { useQuery } from "@tanstack/react-query";
 import { usePathname } from "next/navigation";
 
+import SingleProductBreadCrumb from "@/components/BreadCrumbs/SingleProductBreadCrumb";
 import Footer from "@/components/Footer";
 import { Suspense } from "react";
 
@@ -72,6 +73,18 @@ export default function ModalClient({ params }: { params: { room_slug: string } 
           <ProductSkeleton />
         ) : !!properyData ? (
           <>
+            <div className=" w-full hidden md:flex col-span-full ">
+              <SingleProductBreadCrumb
+                dataArray={[
+                  { title: "خانه", link: "/" },
+                  { title: "آگهی ها", link: "/rooms" },
+                  {
+                    title: properyData?.title || "",
+                    link: "#",
+                  },
+                ]}
+              />
+            </div>
             <Suspense>
               <ProductImagesContainer productImageId={null} data={properyData} />
             </Suspense>
