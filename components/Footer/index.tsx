@@ -8,6 +8,7 @@ import { chunkArray } from "@/helpers/chunk-array.helper";
 import { footerHiddenBlackList, footerLinks } from "@/utils/constantss";
 import _STRINGS from "@/utils/LocalStrings";
 import { useQuery } from "@tanstack/react-query";
+import { isEmpty } from "lodash";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import ContactuUItem from "../contactus/ContactuUItem";
@@ -61,8 +62,8 @@ const Footer = () => {
     queryFn: () => HomeService.getLandings({ placement: LandingsPlacements.FOOTER }),
   });
 
-  const chunkedLandings = chunkArray(footerLandings?.popular_city || [], 6);
-
+  const chunkedLandingsDekstop = chunkArray(footerLandings?.popular_city || [], 9);
+  const chunkedLandingsMobile = chunkArray(footerLandings?.popular_city || [], 5);
   return (
     <footer
       className={`  ${isHome ? "" : "  hidden lg:flex"} ${!!footerHiddenBlackList.find((e) => pathname?.includes(e)) ? "hidden lg:hidden" : ""} w-full  z-2   bg-primary-1000/40   flex   flex-col items-center justify-center bg-dark-500  bg-no-repeat bg-cover  relative  pt-[28rem] lg:pt-[6rem] `}
@@ -71,25 +72,53 @@ const Footer = () => {
       {/* QUICK SEARCHS */}
       <div className=" pb-6  px-0 md:px-[10%]  gap-4 md:gap-4  w-full  flex flex-col  ">
         <p className="  text-base md:text-lg font-bold  px-4 md:px-0    ">{_STRINGS.FAST_SEARCH}</p>
-        <div className="    w-full px-4 pb-2   md:px-0  flex flex-row lg:grid lg:grid-cols-6 overflow-x-scroll  gap-1.5 md:gap-2.5   ">
-          {chunkedLandings?.map((chunk, index) => (
-            <div
-              className=" w-[45%] md:w-1/4 lg:w-full shrink-0  lg:auto flex flex-col gap-1.5 md:gap-2.5 "
-              key={`${index}chunk`}
-            >
-              {chunk?.map((e) => (
-                <Link
-                  key={e?.title}
-                  href={e?.url}
-                  prefetch={false}
-                  id={e?.title}
-                  className="  bg-white    border   shadow-md  border-gray-300  relative  rounded-20 h-6 md:h-8 flex items-center justify-start  pr-4 shrink-0  font-medium text-xs   text-start"
-                >
-                  {e?.title}
-                </Link>
-              ))}
-            </div>
-          ))}
+
+        {/* desktop part */}
+
+        <div className="   hidden md:flex  w-full px-4 pb-2   md:px-0   flex-row lg:grid lg:grid-cols-9 overflow-x-scroll  gap-1.5 md:gap-2.5   ">
+          {chunkedLandingsDekstop
+            ?.filter((e) => !isEmpty(e))
+            ?.map((chunk, index) => (
+              <div
+                className=" w-2/5 md:w-1/4 lg:w-full shrink-0  lg:auto flex flex-col gap-1.5 md:gap-2.5 "
+                key={`${index}chunk`}
+              >
+                {chunk?.map((e) => (
+                  <Link
+                    key={e?.title}
+                    href={e?.url}
+                    prefetch={false}
+                    id={e?.title}
+                    className="  bg-white    border   shadow-sm   shadow-black/10 border-gray-300  relative  rounded-20 h-6 md:h-8 flex items-center justify-start  pr-4 shrink-0  font-medium text-xs   text-start"
+                  >
+                    {e?.title}
+                  </Link>
+                ))}
+              </div>
+            ))}
+        </div>
+        {/* mobile part */}
+        <div className="    w-full px-4 pb-2   md:px-0  flex md:hidden flex-row  lg:hidden overflow-x-scroll  gap-1.5 md:gap-2.5   ">
+          {chunkedLandingsMobile
+            ?.filter((e) => !isEmpty(e))
+            ?.map((chunk, index) => (
+              <div
+                className=" w-2/5 md:w-1/4 lg:w-full shrink-0  lg:auto flex flex-col gap-1.5 md:gap-2.5 "
+                key={`${index}chunk`}
+              >
+                {chunk?.map((e) => (
+                  <Link
+                    key={e?.title}
+                    href={e?.url}
+                    prefetch={false}
+                    id={e?.title}
+                    className="  bg-white    border   shadow-sm   shadow-black/10 border-gray-300  relative  rounded-20 h-6 md:h-8 flex items-center justify-start  pr-4 shrink-0  font-medium text-xs   text-start"
+                  >
+                    {e?.title}
+                  </Link>
+                ))}
+              </div>
+            ))}
         </div>
         {/* <div className="w-full ">
           <Divider moreClass=" w-full !border-primary-700 opacity-30  " />
