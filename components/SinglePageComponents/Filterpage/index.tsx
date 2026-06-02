@@ -195,7 +195,7 @@ const Filterpage = ({ devices }: { devices: DeviceInfo }) => {
             <PropertiesFilterList propertyKey={"property_type"} data={propertyTypes?.PROPERTY_TYPE} query={queries} />
           </div>
           <div className="w-full grow-0 shrink-0 flex flex-row  px-3 xl:px-0 relative  justify-between">
-            <div className="flex  flex-row w-[90%]  gap-1 lg:w-full  items-center   justify-start ">
+            <div className="flex  flex-row w-fit md:w-[90%]  gap-1 lg:w-full  items-center   justify-start ">
               <div className=" flex lg:hidden ">
                 <SpecialFilterButtons query={queries} />
               </div>
@@ -218,7 +218,7 @@ const Filterpage = ({ devices }: { devices: DeviceInfo }) => {
                 propertyTypes={propertyTypes || {}}
               />
             </div>{" "}
-            <div className="w-1/3 items-center justify-end flex lg:hidden">
+            <div className=" w-fit md:w-1/3 items-center justify-end flex lg:hidden">
               <SortMenu query={queries} />
             </div>
           </div>

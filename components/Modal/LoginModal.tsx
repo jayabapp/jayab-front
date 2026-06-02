@@ -1,9 +1,9 @@
 "use client";
-import { useRouter } from "next/navigation";
+import { useStoreParams } from "@/store";
+import _STRINGS from "@/utils/LocalStrings";
+import { usePathname, useRouter } from "next/navigation";
 import React from "react";
 import Modal from ".";
-import _STRINGS from "@/utils/LocalStrings";
-import { useStoreParams } from "@/store";
 type LoginModalType = {
   visibleLoginModal: boolean;
   setvisibleLoginModal: (e: boolean) => void | null;
@@ -11,6 +11,7 @@ type LoginModalType = {
 
 const LoginModal = () => {
   const router = useRouter();
+  const pathname = usePathname();
   const replacer = (url: string) => {
     router.replace(url);
   };
@@ -43,7 +44,7 @@ const LoginModal = () => {
           <button
             className="bg-primary-700 dark:bg-primary-600  w-full hover:ring-4 hover:ring-primary-700/50 px-2 py-3 rounded-lg text-white"
             onClick={() => {
-              router.push(`/auth?redirect_url=${window?.location?.href}`);
+              router.push(`/auth?redirect_url=${pathname}`);
               closeDispatch();
             }}
           >

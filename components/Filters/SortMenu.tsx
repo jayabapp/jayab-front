@@ -4,6 +4,7 @@ import { Fragment, useEffect, useState } from "react";
 import queryBuilder from "@/helpers/queryBuilder";
 import { useStoreInit } from "@/store";
 import { SORT_TYPES } from "@/utils/constantss";
+import _STRINGS from "@/utils/LocalStrings";
 import { Menu, MenuButton, Transition } from "@headlessui/react";
 
 export interface SortMenuType {
@@ -76,10 +77,14 @@ const SortMenu = ({ query }: SortMenuType) => {
           leaveFrom="transform opacity-100 scale-100"
           leaveTo="transform opacity-0 scale-95"
         >
-          <div className="absolute top-0 md:top-auto left-0 z-20  mt-2 w-48 origin-top-center  rounded-20 bg-white dark:bg-zinc-800 custom-shadow ring-1 ring-black ring-opacity-5 focus:outline-none  overflow-scroll">
+          <div className="absolute  shadow-xl top-0 md:top-auto left-0 z-20  mt-2 w-48 origin-top-center  rounded-20 bg-white dark:bg-zinc-800 custom-shadow ring-1 ring-black ring-opacity-5 focus:outline-none  overflow-scroll">
             <div className="flex gap-2 px-3 items-center flex-col  py-2 border-b border-gray-275 dark:border-zinc-500 ">
-              {" "}
-              {sortTypes.map((e) => (
+              <div className=" w-full flex items-center justify-between  py-1">
+                <p className="text-sm">{_STRINGS.SORT_BY}</p>
+                <img src={"/assets/icons/adds/x_mark.svg"} className=" w-2.5 h-2.5   " />
+              </div>
+
+              {sortTypes.map((e, index) => (
                 <button
                   key={e.id}
                   className={`w-full pl-8  py-2 border-t first:border-t-0 pt-2 gap-2 flex items-center cursor-pointer relative`}
@@ -89,13 +94,13 @@ const SortMenu = ({ query }: SortMenuType) => {
                     } else setTag(e?.id);
                   }}
                 >
-                  {query?.sort_type == e?.id ? (
+                  {query?.sort_type == e?.id || (!query?.sort_type && index == 0) ? (
                     <img className="absolute left-2 " src="/assets/icons/adds/blue_tick.svg" />
                   ) : (
                     <></>
                   )}
-                  <img src={e?.icon} className=" w-4 h-4 aspect-square" />
-                  <p className="text-xs text-black dark:text-zinc-300 opacity-70"> {e?.title}</p>
+                  <img src={e?.icon} className=" w-5 h-5 aspect-square" />
+                  <p className="text-sm text-black dark:text-zinc-300 opacity-70"> {e?.title}</p>
                 </button>
               ))}
             </div>

@@ -173,13 +173,12 @@ export function convertHtmlToReact(htmlString: string) {
     /* ------------------------------ TABLE -------------------------------- */
     if (node.getAttribute?.("data-table") === "true") {
       const content = decodeURIComponent(node.getAttribute("data-content") || "");
-
       return (
         <div key={index} className="w-full my-4">
           <div className="w-full overflow-x-auto md:overflow-x-visible">
-            <div className="border border-primary-500 rounded-xl overflow-hidden min-w-full md:min-w-fit">
-              <div className="min-w-[600px] md:min-w-0">
-                <div className="w-full" dangerouslySetInnerHTML={{ __html: content }} />
+            <div className=" flex items-center justify-center rounded-xl overflow-hidden min-w-full md:min-w-fit">
+              <div className="min-w-[600px] md:min-w-0  overflow-x-scroll ">
+                <div className="w-full category_table " dangerouslySetInnerHTML={{ __html: content }} />
               </div>
             </div>
           </div>

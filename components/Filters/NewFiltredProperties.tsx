@@ -244,6 +244,7 @@ function FilterdPropertiesPageOrianted({ sortType, setSortType, query, devices }
   const ITEMS_PER_BANNER = 6;
   const maxBanners = data.length > 0 ? Math.ceil(data.length / ITEMS_PER_BANNER) : 0;
   const visibleBanners = shuffledBanners.slice(0, maxBanners);
+  const maxVisibleBanners = visibleBanners.splice(0, 2);
   // -----------------------------------------------------
 
   return (
@@ -279,7 +280,7 @@ function FilterdPropertiesPageOrianted({ sortType, setSortType, query, devices }
             className="grid   pb-8 pt-4 md:pt-2 px-3 lg:px-1  !overflow-hidden  grid-cols-1 gap-2 md:gap-4  md:grid-cols-2 xl:grid-cols-3 "
           >
             {/* UPDATED: Map over visibleBanners instead of shuffledBanners */}
-            {visibleBanners?.map((e: any, index: number) => (
+            {maxVisibleBanners?.map((e: any, index: number) => (
               <div
                 style={{ gridRowStart: (index + 1) * (isMobile ? 7 : 3) }}
                 key={`banner${e?.id}`}

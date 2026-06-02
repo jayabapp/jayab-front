@@ -12,7 +12,7 @@ const SpecialFilterButon = ({ item, isChecked, cb }: { item: any; isChecked: boo
       <div className="flex items-center gap-1">
         <img src={item?.img} className={`size-5 transition-all ${isChecked ? "" : "grayscale opacity-60"} `} />
 
-        <p className="text-xs pr-2">{item?.title} </p>
+        <p className="text-xs pr-2 shrink-0">{item?.title} </p>
       </div>
       {!!isChecked ? (
         <>

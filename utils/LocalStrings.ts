@@ -445,6 +445,7 @@ const _STRINGS = {
   WATCH_ALL: "مشاهده بیشتر",
   TOMAN_PER_NIGHT: "تومان/شب",
   DATE_IS_FILLED: "این تاریخ پر است.",
+  SORT_BY: "مرتب سازی",
 };
 
 export default _STRINGS;
