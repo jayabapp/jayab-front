@@ -164,7 +164,7 @@ const Footer = () => {
             referrerPolicy="no-referrer"
             className=" flex items-center gap-4 justify-start"
           >
-            <img src="/assets/icons/logo/header_logo.svg" alt={"footer_logo"} className="w-fit " />
+            <img src="/assets/icons/logo/header_logo.svg" alt={"footer_logo"} className="w-fit  max-w-52 " />
             {/* <div className=" font-bold text-primary-700 text-3xl ">{aboutUs ? aboutUs?.title : _STRINGS?.LOGO}</div> */}
           </Link>
 

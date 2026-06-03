@@ -15,7 +15,7 @@ const AboutUs = async () => {
       <Breadcrumbs />
 
       <div className="flex  flex-col items-center justify-center">
-        <img src="/assets/icons/logo/header_logo.svg" />
+        <img src="/assets/icons/logo/header_logo.svg" className=" max-w-52" />
         {!aboutUs ? (
           <LottieLoading />
         ) : aboutUs ? (

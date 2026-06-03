@@ -657,37 +657,28 @@ textarea {
 /* -------------------------------------------------------------------------- */
 
 h1 {
-  color: #083e5e;
-  font-size: 1.476rem;
-  @apply font-bold !leading-8;
+  @apply font-bold text-[1.3rem] lg:text-2xl !leading-8 text-[#083f5e];
 }
+
 h2 {
-  color: #0c5e8d;
-  font-size: 1.383rem;
-  @apply font-bold leading-7;
+  @apply font-bold leading-7 text-[1.2rem] lg:text-[1.3rem] text-[#083f5e];
 }
 
 h3 {
-  color: #0f76b2;
-  font-size: 1.296rem;
-  @apply font-bold leading-7;
-}
-h4 {
-  color: #107dbc;
-  font-size: 1.215rem;
-  @apply font-bold leading-7;
-}
-h5 {
-  color: #43b0ef;
-  font-size: 1.138rem;
-  @apply font-bold leading-7;
-}
-h6 {
-  color: #72c4f3;
-  font-size: 1.067rem;
-  @apply font-bold leading-7;
+  @apply font-bold leading-7 text-[1.15rem] lg:text-[1.25rem] text-[#083f5e];
 }
 
+h4 {
+  @apply font-bold leading-7 text-[1.1rem] lg:text-[1.2rem] text-[#083f5e];
+}
+
+h5 {
+  @apply font-bold leading-7 text-[1.1rem] lg:text-[1.15rem] text-[#083f5e];
+}
+
+h6 {
+  @apply font-bold leading-7 text-[1.1rem] lg:text-[1rem] text-[#083f5e];
+}
 .mce-float-left {
   float: left;
   margin: 0 10px 20px 10px;
