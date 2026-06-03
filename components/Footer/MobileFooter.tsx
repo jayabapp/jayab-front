@@ -107,7 +107,7 @@ const MobileFooter: React.FC = ({}) => {
       title: _STRINGS.MY_PROFILE,
       route: "/profile",
 
-      icon: "/assets/icons/navbar/my_jayab.svg",
+      icon: "/assets/icons/navbar/my_jayab_v2.svg",
     },
   ];
   const [focused, setFocused] = useState(footerItems?.find((i) => i?.route === route));
