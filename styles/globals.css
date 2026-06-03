@@ -401,9 +401,9 @@ input[type="number"] {
   background-position: top, bottom;
 }
 
-strong {
+/* strong {
   @apply font-bold text-xl;
-}
+} */
 p {
   @apply font-normal text-start;
 }
