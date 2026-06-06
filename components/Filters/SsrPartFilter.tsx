@@ -1,16 +1,23 @@
+import { HomeService } from "@/api_services/home/home.service";
+import { BannerPosition } from "@/enum/banners.enum";
+import { DeviceInfo } from "@/helpers/device.detector";
 import { WeekDays } from "@/utils/constantss";
+import { useQuery } from "@tanstack/react-query";
 import { isUndefined } from "lodash";
 import moment from "moment-jalaali";
-import { useEffect, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
+import { isMobile } from "react-device-detect";
+import HomeProductsBannerItems from "../Home/HomePropertiesList/HomeProductsBannerItems";
 import PropertyCard from "../properties/PropertyCard";
 import EmptyList from "../shared/Lotties/EmptyList";
 import LottieLoading from "../shared/Lotties/LottieLoading";
 
 type SsrPartFilterType = {
   firstData: any;
+  devices: DeviceInfo;
 };
 
-function SsrPartFilter({ firstData }: SsrPartFilterType) {
+function SsrPartFilter({ firstData, devices }: SsrPartFilterType) {
   const [week, setWeek] = useState<any[]>([]);
   useEffect(() => {
     const dayOfWeek = moment().day();
@@ -33,6 +40,33 @@ function SsrPartFilter({ firstData }: SsrPartFilterType) {
 
     setWeek(weeks);
   }, []);
+
+  const { data: banners } = useQuery({
+    queryKey: [HomeService.BANNERS_RANDOM_CACHEKEY, BannerPosition.MAIN_2],
+    queryFn: () => {
+      return HomeService.GetBanners({ positions: [BannerPosition.MAIN_2] });
+    },
+  });
+
+  const shuffledBanners = useMemo(() => {
+    const bannersList = banners?.[BannerPosition.MAIN_2];
+
+    if (!Array.isArray(bannersList) || bannersList.length === 0) return [];
+    const arr = [...bannersList];
+    for (let i = arr.length - 1; i > 0; i--) {
+      const j = Math.floor(Math.random() * (i + 1));
+      [arr[i], arr[j]] = [arr[j], arr[i]];
+    }
+    return arr;
+  }, [banners]);
+
+  // --- NEW LOGIC: Limit banners based on data length ---
+  // Show 1 banner per 6 properties (adjust ITEMS_PER_BANNER if needed).
+  // If data is empty, show 0 banners.
+  const ITEMS_PER_BANNER = 6;
+  const maxBanners = firstData.length > 0 ? Math.ceil(firstData.length / ITEMS_PER_BANNER) : 0;
+  const visibleBanners = shuffledBanners.slice(0, maxBanners);
+  const maxVisibleBanners = visibleBanners.splice(0, 2);
   return (
     <div className="w-full px-0  self-center">
       <div className=" w-full">
@@ -42,6 +76,15 @@ function SsrPartFilter({ firstData }: SsrPartFilterType) {
           <LottieLoading />
         ) : firstData?.length > 0 ? (
           <div className="grid   pb-2 pt-4 md:pt-2 px-1  !overflow-hidden  grid-cols-1 gap-2 md:gap-4  md:grid-cols-2 xl:grid-cols-3 ">
+            {maxVisibleBanners?.map((e: any, index: number) => (
+              <div
+                style={{ gridRowStart: (index + 1) * (isMobile ? 7 : 3) }}
+                key={`banner${e?.id}`}
+                className={` col-span-full  `}
+              >
+                <HomeProductsBannerItems devices={devices} bannerItem={e} />
+              </div>
+            ))}
             {firstData?.map((i: any) => (
               <PropertyCard week={week} data={i} key={`PRODUCT${i?.id}`} />
             ))}

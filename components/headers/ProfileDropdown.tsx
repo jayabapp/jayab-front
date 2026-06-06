@@ -11,11 +11,12 @@ import Link from "next/link";
 import { useAuthStore, useStoreInit, useStoreParams } from "@/store";
 import { profileDropDownItems } from "@/utils/constantss";
 import { deleteCookie } from "cookies-next/client";
+import { Pulser } from ".";
 import AbsoluteBadge from "./AbsoluteBadge";
 
 const ProfileDropdown = ({ notifBadge, isHome }: { notifBadge?: number | string; isHome?: boolean }) => {
   const { userInfo } = useStoreInit((data) => data);
-  const { isAdvisor } = useStoreParams((data) => data);
+  const { owmerActiveReservesCount } = useStoreParams((data) => data);
   const asPath = usePathname();
   const ref = useRef<HTMLButtonElement>(null);
   const [isVisible, setisVisible] = useState(false);
@@ -27,7 +28,7 @@ const ProfileDropdown = ({ notifBadge, isHome }: { notifBadge?: number | string;
     localStorage.removeItem("isLogin");
     deleteCookie("isLogin");
     localStorage.removeItem("is_registered");
-    useAuthStore.setState({ isLogin: false });
+    useAuthStore.setState({ isLogin: false, isAdminSso: false });
     useStoreInit.setState({ userInfo: null });
 
     router.push("/");
@@ -35,18 +36,9 @@ const ProfileDropdown = ({ notifBadge, isHome }: { notifBadge?: number | string;
 
   const _logout = () => {
     logoutProcess();
-
-    // dispatch({
-    //   type: "IS_LOGIN",
-    //   payload: false,
-    // });
-    // dispatch({
-    //   type: "USER_INFO",
-    //   payload: null,
-    // });
-    // router.replace("/");
-    // setisVisible(false);
   };
+
+  const HAS_BADGE = !!owmerActiveReservesCount;
 
   return (
     <div className="text-right ">
@@ -81,6 +73,7 @@ const ProfileDropdown = ({ notifBadge, isHome }: { notifBadge?: number | string;
             ref={ref}
             className={`flex items-center transition-all      justify-center col-span-1 gap-2 flex-row `}
           >
+            {!!HAS_BADGE ? <Pulser /> : <></>}
             {/* <img src="/assets/icons/navbar/my_jayab.svg" className="dark:invert" /> */}
             <p
               className={`  text-sm ${isHome ? "text-white" : " text-black "}  shrink-0 font-medium   group-hover:text-primary-700 `}
@@ -135,12 +128,12 @@ const ProfileDropdown = ({ notifBadge, isHome }: { notifBadge?: number | string;
                 <></>
               )}
               {!!userInfo?.owner_id ? (
-                <Link key={`myAdd2s`} className="" prefetch={false} href={`/profile/owner/reserves`}>
+                <Link key={`myReserveAdd`} className="" prefetch={false} href={`/profile/owner/reserves`}>
                   <div
                     className={` relative hover:bg-primary-700/80 dark:hover:bg-zinc-600  cursor-pointer hover:text-white text-gray-600 dark:text-gray-300 group flex w-full gap-2 items-center rounded-md px-2 py-2 text-sm font-light no-underline`}
                   >
                     <div className="relative">
-                      {" "}
+                      <AbsoluteBadge count={Number(owmerActiveReservesCount) || 0} />
                       <img
                         src={`/assets/icons/header/header_my_adds.svg`}
                         className={`w-6 h-6 aspect-square ${asPath.includes("notifications") ? " " : ""} dark:invert `}

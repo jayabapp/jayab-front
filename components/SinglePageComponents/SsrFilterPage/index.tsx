@@ -15,6 +15,7 @@ import SsrPartFilter from "@/components/Filters/SsrPartFilter";
 import Modal from "@/components/Modal";
 import ModalHeaderPart from "@/components/Modal/ModalHeaderPart";
 import Button from "@/components/shared/Button/Button";
+import { DeviceInfo } from "@/helpers/device.detector";
 import queryBuilder from "@/helpers/queryBuilder";
 import useQueryGet from "@/helpers/queryGet";
 import { SORT_TYPES } from "@/utils/constantss";
@@ -36,7 +37,15 @@ export interface PostPageQuery {
 }
 type sortTypeType = { id?: string; title?: string };
 
-const SsrFilterPage = ({ landings, firstData }: { firstData: { data: any[] }; landings: SingleLandingDto }) => {
+const SsrFilterPage = ({
+  landings,
+  firstData,
+  devices,
+}: {
+  firstData: { data: any[] };
+  landings: SingleLandingDto;
+  devices: DeviceInfo;
+}) => {
   const [showRegions, setShowRegions] = useState(false);
 
   const [cityWithRegions, setCityWithRegions] = useState<ChildCities | null>(null);
@@ -272,7 +281,7 @@ const SsrFilterPage = ({ landings, firstData }: { firstData: { data: any[] }; la
 
             {/* LEFT SIDE */}
 
-            {firstData?.data ? <SsrPartFilter firstData={firstData?.data} /> : <></>}
+            {firstData?.data ? <SsrPartFilter firstData={firstData?.data} devices={devices} /> : <></>}
             {(queriesParams?.page == 1 || !queriesParams?.page) &&
             !isEmpty(firstData?.data) &&
             firstData?.data?.length % 30 == 0 ? (

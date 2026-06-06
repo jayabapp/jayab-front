@@ -22,6 +22,7 @@ import { authorizeUser, init, onMetrixUserIdReceived, setCustomAttribute, setPho
 import MobileFooter from "../../components/Footer/MobileFooter";
 import { headerBlackList, mobileFooterBlackList } from "../constantss";
 
+import { ReserveService } from "@/api_services/reserve/reserve.service";
 import LoginModal from "@/components/Modal/LoginModal";
 import { getParameter } from "@/helpers/queryGet";
 import FingerprintJS from "@fingerprintjs/fingerprintjs";
@@ -48,7 +49,7 @@ const MainWrapper = ({ children }: mainWrapper) => {
   const router = useRouter();
   const pathname = usePathname();
   const { connecting } = useStoreSocket((state) => state);
-  const { isDark } = useStoreParams((state) => state);
+  const { isDark, setOwmerActiveReservesCount, owmerActiveReservesSocket } = useStoreParams((state) => state);
   const { isLogin, isAdminSso } = useAuthStore((state) => state);
   const [isVisible, setIsVisible] = useState(true);
 
@@ -103,8 +104,7 @@ const MainWrapper = ({ children }: mainWrapper) => {
 
     //if the url has sso_token query param
     if (ssoToken) {
-      useAuthStore.setState({ isLogin: true });
-      useAuthStore.setState({ isAdminSso: true });
+      useAuthStore.setState({ isLogin: true, isAdminSso: true });
       // localStorage.setItem("isLogin", "true");
       setCookie("isLogin", "true", { maxAge: 60 * 24 * 60 * 60 });
       localStorage.setItem("access_token", ssoToken);
@@ -132,6 +132,26 @@ const MainWrapper = ({ children }: mainWrapper) => {
     staleTime: 0,
     gcTime: 0,
   });
+
+  /* -------------------------------------------------------------------------- */
+  /*                        INITIAL OWNER ACTIVE RESERVES                       */
+  /* -------------------------------------------------------------------------- */
+
+  const { data: activeReserves } = useQuery({
+    queryKey: [ReserveService.OWNER_ACTIVE_RESERVE_COUNT_CACHEKEY, profile?.owner_id, owmerActiveReservesSocket],
+    queryFn: ReserveService.ownerActiveReserveCount,
+    enabled: !!profile?.owner_id,
+    staleTime: 0,
+    gcTime: 0,
+  });
+
+  useEffect(() => {
+    if (!!activeReserves) {
+      setOwmerActiveReservesCount(activeReserves);
+    } else {
+      setOwmerActiveReservesCount(null);
+    }
+  }, [activeReserves]);
 
   /* -------------------------------------------------------------------------- */
   /*                              SAVES LIKES DATA                              */
@@ -194,10 +214,6 @@ const MainWrapper = ({ children }: mainWrapper) => {
     }
 
     window.addEventListener("beforeinstallprompt", (e) => {
-      // dispatch({
-      //   type: "INSTALL_PROMPT",
-      //   payload: e,
-      // });
       useStoreParams.setState({ installPrompt: e });
       e.preventDefault();
     });

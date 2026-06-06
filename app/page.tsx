@@ -16,7 +16,7 @@ import isEmpty from "lodash/isEmpty";
 import { Metadata } from "next";
 import dynamic from "next/dynamic";
 import { Suspense } from "react";
-const HomeBannerPart = dynamic(() => import("@/components/Home/BannersContainer/HomeBannerPart"));
+const HomeBannerPart = dynamic(() => import("@/components/Home/BannersContainer/HomeBannerPart"), { ssr: true });
 const HomeCityFilterContainer = dynamic(() => import("@/components/Home/HomeCityFilterContainer"));
 const HomePropertiesList = dynamic(() => import("@/components/Home/HomePropertiesList"));
 

@@ -34,7 +34,7 @@ type textIconType = {
   visibleTopHeader?: boolean;
 };
 
-const Pulser = ({ className }: { className?: string }) => (
+export const Pulser = ({ className }: { className?: string }) => (
   <div
     className={`w-2 h-2 rounded-full  absolute -left-2 z-1 -top-0.5 bg-red-600 animate-pulse transition-all  ${className}`}
   ></div>
@@ -77,7 +77,7 @@ const Header = ({ scroll }: { scroll?: number }) => {
   const params = useParams();
   const { room_slug, slug, chat_id } = params;
   const { isLogin } = useAuthStore((state: any) => state);
-  const { getBackHome, topHeaderVisible } = useStoreParams((state: any) => state);
+  const { getBackHome, topHeaderVisible } = useStoreParams();
   const [isOpen, setIsOpen] = useState(false);
 
   /* -------------------------------------------------------------------------- */
@@ -304,7 +304,7 @@ transition-all ease-out  duration-300  header-content-container w-full mx-auto  
                     />
                     <img
                       className="w-10 h-10 aspect-square  shrink-0 "
-                      src="/assets/images/logo/header_mobile_logo.png"
+                      src="/assets/icons/logo/header_mobile_logo.svg"
                     />
                   </div>
                 </div>
@@ -498,7 +498,7 @@ transition-all ease-out  duration-300  header-content-container w-full mx-auto  
                     className={`w-16 ${topHeaderVisible && !!isHome ? "flex  grayscale brightness-[500]" : "hidden  lg:flex"} `}
                     src="/assets/icons/logo/just_title_logo.svg"
                   />
-                  <img className="w-10 h-10 aspect-square shrink-0" src="/assets/images/logo/header_mobile_logo.png" />
+                  <img className="w-10 h-10 aspect-square shrink-0" src="/assets/icons/logo/header_mobile_logo.svg" />
                 </div>
               </Link>
             </div>

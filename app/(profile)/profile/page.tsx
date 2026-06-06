@@ -6,7 +6,7 @@ import ConfirmModal from "@/components/Modal/ConfirmModal";
 import ProfileItem from "@/components/profile/ProfileItem";
 
 import Button from "@/components/shared/Button/Button";
-import { useAuthStore, useStoreInit } from "@/store";
+import { useAuthStore, useStoreInit, useStoreParams } from "@/store";
 import { profileItems } from "@/utils/constantss";
 
 import _STRINGS from "@/utils/LocalStrings";
@@ -22,7 +22,7 @@ const MainUploader = dynamic(() => import("@/components/uploader"));
 
 const Profile = () => {
   const [profileImage, setProfileImage] = useState<any>(null);
-
+  const { owmerActiveReservesCount } = useStoreParams();
   const router = useRouter();
   const [showLogout, setShowLogout] = useState(false);
   const { isLogin } = useAuthStore((state) => state);
@@ -53,7 +53,7 @@ const Profile = () => {
     deleteCookie("isLogin");
     localStorage.removeItem("is_registered");
 
-    useAuthStore.setState({ isLogin: false });
+    useAuthStore.setState({ isLogin: false, isAdminSso: false });
     useStoreInit.setState({ userInfo: null });
     router.push("/");
   };
@@ -145,6 +145,7 @@ const Profile = () => {
                   route: "/profile/owner/reserves",
                   title: "درخواست های رزرو",
                 }}
+                badgeCounter={owmerActiveReservesCount}
                 key={`profileItemowner`}
               />
             ) : (

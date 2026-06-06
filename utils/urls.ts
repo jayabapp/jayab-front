@@ -117,6 +117,8 @@ export const apiRoutes = {
 
   OWNER_RESERVE: "/owner/reserves",
 
+  OWNER_ACTIVE_RESERVE_COUNT: "/owner/reserves/badge-count",
+
   CANCEL_RESERVE: (propertyReserveId: string | number) => `/reserves/${propertyReserveId}`,
 
   OWNER_CALL_RESERVE_REQUEST: (propertyReserveId: string | number) =>

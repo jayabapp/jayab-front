@@ -4,6 +4,7 @@ import serverCall from "@/helpers/serverCall";
 import { apiRoutes, baseUrl } from "@/utils/urls";
 import { Metadata, ResolvingMetadata } from "next";
 
+import deviceTypeDetector from "@/helpers/device.detector";
 import { isArray } from "lodash";
 import { headers } from "next/headers";
 function Fallback() {
@@ -66,10 +67,10 @@ export default async function PropertiesPage({
           ...searchParamsData,
         })
       : null;
-
+  const devices = await deviceTypeDetector();
   return (
     <>
-      <SsrFilterPage firstData={data?.data ? data?.data : []} landings={landings} />
+      <SsrFilterPage devices={devices} firstData={data?.data ? data?.data : []} landings={landings} />
     </>
   );
 }

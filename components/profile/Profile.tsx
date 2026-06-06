@@ -2,7 +2,7 @@ import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 
 import { UserService } from "@/api_services/user/user.service";
-import { useAuthStore, useStoreInit } from "@/store";
+import { useAuthStore, useStoreInit, useStoreParams } from "@/store";
 import { profileItems } from "@/utils/constantss";
 import _STRINGS from "@/utils/LocalStrings";
 import { useMutation } from "@tanstack/react-query";
@@ -14,6 +14,7 @@ import MainUploader from "../uploader";
 import ProfileItem from "./ProfileItem";
 
 const Profile = ({}) => {
+  const { owmerActiveReservesCount } = useStoreParams();
   const [profileImage, setProfileImage] = useState<any>(null);
   const router = useRouter();
   const { isLogin } = useAuthStore((state) => state);
@@ -26,7 +27,7 @@ const Profile = ({}) => {
     localStorage.removeItem("isLogin");
     deleteCookie("isLogin");
     localStorage.removeItem("is_registered");
-    useAuthStore.setState({ isLogin: false });
+    useAuthStore.setState({ isLogin: false, isAdminSso: false });
     useStoreInit.setState({ userInfo: null });
     router.push("/");
   };
@@ -127,6 +128,7 @@ const Profile = ({}) => {
               title: "درخواست های رزرو",
             }}
             key={`profileItemownerReserve`}
+            badgeCounter={owmerActiveReservesCount}
           />
         ) : (
           <></>

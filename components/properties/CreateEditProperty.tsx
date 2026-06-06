@@ -1,6 +1,7 @@
 import { CityService } from "@/api_services/city/city.service";
 import { PropertyService } from "@/api_services/property/property.service";
 import FormInput from "@/components/shared/Form/FormInput";
+import { useAuthStore } from "@/store";
 import { randomeTitlePlaceholder } from "@/utils/constantss";
 import _STRINGS from "@/utils/LocalStrings";
 import { useQuery } from "@tanstack/react-query";
@@ -39,6 +40,7 @@ const CreateEditProperty = ({
   onChange: (value: string | number | null | boolean, key: string) => void;
   status?: number;
 }) => {
+  const { isAdminSso } = useAuthStore();
   const { data: propertyTypes } = useQuery({
     queryFn: () =>
       PropertyService.GetUserPropertyGroup({ group: ["PROPERTY_TYPE", "OWNERSHIP", "BUILDING_DIRECTION"] }),
@@ -87,7 +89,7 @@ const CreateEditProperty = ({
           maxLength: 55,
           containerClass: "w-full  relative ",
           extraElement: <FormCounter max={55} value={values?.title || ""} containerClass=" top-0  !bottom-auto" />,
-          // disabled: status == 30 || status == 31,
+          disabled: (status == 30 || status == 31) && !isAdminSso,
         }}
         value={values?.title || ""}
         onChangeText={(e) => {

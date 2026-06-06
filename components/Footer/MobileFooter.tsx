@@ -16,65 +16,12 @@ const MobileFooter: React.FC = ({}) => {
   const router = useRouter();
   const { isLogin } = useAuthStore((state: any) => state);
   const route = usePathname();
-
+  const { owmerActiveReservesCount } = useStoreParams((data) => data);
   const { data: initPropData, refetch } = useQuery({
     queryKey: [PropertyService.OWNER_PROP_INIT_CACHEKEY],
     queryFn: () => PropertyService.InitProperty({ property_id: undefined }),
     enabled: false,
   });
-
-  const footerItems = [
-    {
-      id: 2,
-      title: _STRINGS.HOME,
-      route: "/",
-
-      icon: "/assets/icons/navbar/home_nav.svg",
-    },
-    {
-      id: 242,
-      title: _STRINGS.ADDS,
-      route: "/rooms",
-
-      icon: "/assets/icons/navbar/adds_footer.svg",
-    },
-    {
-      id: 14242,
-      title: _STRINGS.CREATE_ADD,
-      route: "/profile/owner/properties",
-      callBack: () => {
-        useStoreParams.setState({ sideBarStatus: false });
-
-        if (!!userInfo) {
-          if (!userInfo?.owner_id) {
-            router.push(`/profile/edit`);
-          } else {
-            refetch().then((e) => {
-              if (!!e?.data) router.push(`/profile/owner/properties/${e?.data?.id}/edit/initials`);
-            });
-          }
-        } else {
-          useStoreParams.setState({ loginModal: true });
-        }
-      },
-
-      icon: "/assets/icons/navbar/add_footer.svg",
-    },
-    {
-      id: 142142,
-      title: _STRINGS.CONSULTAMCY,
-      route: "/advisors",
-
-      icon: "/assets/icons/navbar/footer_consultancy.svg",
-    },
-    {
-      id: 1442,
-      title: _STRINGS.MY_PROFILE,
-      route: "/profile",
-
-      icon: "/assets/icons/navbar/my_jayab.svg",
-    },
-  ];
 
   const rightFooterItems = [
     {
@@ -110,7 +57,6 @@ const MobileFooter: React.FC = ({}) => {
       icon: "/assets/icons/navbar/my_jayab_v2.svg",
     },
   ];
-  const [focused, setFocused] = useState(footerItems?.find((i) => i?.route === route));
 
   const isFocused = (key: string) => {
     return route === `${key}`;
@@ -188,6 +134,7 @@ const MobileFooter: React.FC = ({}) => {
     return () => window?.removeEventListener("scroll", handleScroll);
   }, []);
 
+  const MY_JAYAB_HAS_NOTIF = !!owmerActiveReservesCount;
   return (
     <AnimatePresence mode="sync">
       {!!isVisible && !footerHiddenBlackList.find((e) => route?.includes(e)) ? (
@@ -212,12 +159,11 @@ const MobileFooter: React.FC = ({}) => {
                   onClick={() => {
                     if (!isFocused(el?.route)) {
                       router.push(`${el?.route}`);
-                      setFocused(el);
                     }
                   }}
                   key={el?.id}
                 >
-                  {!!hasBadge && el?.route == "/advisors" ? (
+                  {!!hasBadge && el?.route == "/advisors" && !isFocused(el?.route) ? (
                     <div className="w-2 h-2 rounded-full  absolute left-2 z-1 -top-0.5 bg-red-600 animate-pulse transition-all"></div>
                   ) : (
                     <></>
@@ -271,12 +217,11 @@ const MobileFooter: React.FC = ({}) => {
                       useStoreParams.setState({ sideBarStatus: false });
 
                       router.push(`${el?.route}`);
-                      setFocused(el);
                     }
                   }}
                   key={el?.id}
                 >
-                  {!!hasBadge && el?.route == "/advisors" ? (
+                  {!!MY_JAYAB_HAS_NOTIF && el?.route == "/profile" && !isFocused(el?.route) ? (
                     <div className="w-2 h-2 rounded-full  absolute left-2 z-1 -top-0.5 bg-red-600 animate-pulse transition-all"></div>
                   ) : (
                     <></>

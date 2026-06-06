@@ -16,6 +16,7 @@ import CallBox from "./CallBox";
 
 const Footer = () => {
   const pathname = usePathname();
+
   /* --------------------------- SUMMARY DESCRIPTION -------------------------- */
 
   /* --------------------------- ABOUT US -------------------------- */
@@ -27,11 +28,6 @@ const Footer = () => {
     },
   });
 
-  const _findAction = (key: string, value: string, action: string) => {
-    if (!key) return;
-    if (action) window.open(`${action}${value}`, "_self");
-    else window.open(value, "_self");
-  };
   /* ----------------------------- DOWNLOAD LINKS ----------------------------- */
 
   const { data: downloadLink } = useQuery({
@@ -164,7 +160,7 @@ const Footer = () => {
             referrerPolicy="no-referrer"
             className=" flex items-center gap-4 justify-start"
           >
-            <img src="/assets/icons/logo/header_logo.svg" alt={"footer_logo"} className="w-fit  max-w-52 " />
+            <img src="/assets/icons/logo/header_logo.svg" alt={"footer_logo"} className="w-fit  max-w-32 " />
             {/* <div className=" font-bold text-primary-700 text-3xl ">{aboutUs ? aboutUs?.title : _STRINGS?.LOGO}</div> */}
           </Link>
 
@@ -255,7 +251,7 @@ const Footer = () => {
 
       <div className="bg-white   padding-x  w-full  mx-auto  shadow-md    h-fit   lg:h-20 flex flex-col  py-2 md:py-0 gap-4 lg:flex-row   items-center justify-between  ">
         <div className="  flex    items-center gap-4">
-          <div className="w-full   dark:text-zinc-100  text-center text-sm  ">
+          <div className="w-full   dark:text-zinc-100  text-center text-xxs md:text-sm  ">
             تمامی حقوق مادی و معنوی این وبسایت متعلق به شرکت
             <a className="text-blue-500 underline underline-offset-2" href="/">
               &nbsp; جایاب &nbsp;
@@ -273,7 +269,7 @@ const Footer = () => {
               referrerPolicy="no-referrer"
               prefetch={false}
             >
-              <img src={NEW_IMAGE_URL(e?.feature_image)} className=" h-10 aspect-[3] max-w-[120px] " />
+              <img src={NEW_IMAGE_URL(e?.feature_image)} className=" h-10  object-contain md:max-w-[120px] " />
             </Link>
           ))}
         </div>

@@ -1,4 +1,4 @@
-import { useAuthStore, useChatStore, useStoreSocket } from "@/store";
+import { useAuthStore, useChatStore, useStoreParams, useStoreSocket } from "@/store";
 import { Url } from "@/utils/urls";
 import { useRouter } from "next/navigation";
 import { useEffect } from "react";
@@ -48,6 +48,13 @@ export const SocketIO = () => {
         },
       });
     });
+
+    /* --------------------------------- RESERVE -------------------------------- */
+    socket.on("event:new-reserve", (e) => {
+      useStoreParams.setState({ owmerActiveReservesSocket: e });
+    });
+
+    /////////CHAT////////
     socket.on("chat:is-typing", (e) => {
       useChatStore.setState({ isTyping: e });
     });

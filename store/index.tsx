@@ -13,12 +13,21 @@ export type AuthStore = {
   authCodeExpire: Moment | string | number | null;
 };
 
-export const useAuthStore = create<AuthStore>(() => ({
-  isLogin: false,
-  isAdminSso: false,
-  authCodeExpire: null,
-}));
-
+export const useAuthStore = create<AuthStore>()(
+  persist(
+    (set) => ({
+      isLogin: false,
+      isAdminSso: false,
+      authCodeExpire: null,
+    }),
+    {
+      name: "zustand-auth-storage", // localStorage key
+      partialize: (state) => ({
+        isAdminSso: state.isAdminSso, // only this key is persisted
+      }),
+    },
+  ),
+);
 /* -------------------------------------------------------------------------- */
 /*                                AUTH QUERIES                                */
 /* -------------------------------------------------------------------------- */
@@ -53,6 +62,9 @@ export type ParamStore = {
   bookmarks: number[];
   ssrLikedProducts?: { [key: string]: number | string };
   setSsrLikedProducts: (s: { [key: string]: number | string }) => void;
+  owmerActiveReservesCount: number;
+  setOwmerActiveReservesCount: (a: number | null) => void;
+  owmerActiveReservesSocket: any;
 };
 
 export const useStoreParams = create<ParamStore>((set) => ({
@@ -69,6 +81,9 @@ export const useStoreParams = create<ParamStore>((set) => ({
   bookmarks: [],
   ssrLikedProducts: {},
   setSsrLikedProducts: (obj) => set(() => ({ ssrLikedProducts: obj })),
+  owmerActiveReservesCount: 0,
+  setOwmerActiveReservesCount: (values: any) => set(() => ({ owmerActiveReservesCount: values })),
+  owmerActiveReservesSocket: null,
 }));
 
 /* -------------------------------------------------------------------------- */
@@ -155,6 +170,9 @@ export const useStoreQuery = create<QueryStore>(() => ({
   client: null,
 }));
 
+/* -------------------------------------------------------------------------- */
+/*                                    CHAT                                    */
+/* -------------------------------------------------------------------------- */
 export type ChatStore = {
   isTyping: any;
   chatReply: any;
