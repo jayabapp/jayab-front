@@ -18,6 +18,16 @@ const ProfileItem = ({
 }) => {
   const asPath = usePathname();
   const selected = asPath.includes(item?.route);
+
+  const BadgePart = () =>
+    !!badgeCounter ? (
+      <div className="  aspect-square w-5 h-5  rounded-full   text-white border border-primary-100 bg-primary-150 flex  z-1 items-center justify-center text-[10px]">
+        {badgeCounter}
+      </div>
+    ) : (
+      <></>
+    );
+
   return (
     <Link
       prefetch={false}
@@ -29,16 +39,18 @@ const ProfileItem = ({
       <div className="flex items-center gap-3 md:gap-4 relative ">
         <img src={item?.imgSrc} className="dark:invert w-7 h-7 aspect-square" />
         <p className=" text-sm md:text-base  font-medium ">{item?.title}</p>
-
-        {!!badgeCounter ? (
-          <div className="  aspect-square w-5 h-5  rounded-full   text-white border border-primary-100 bg-primary-150 flex  z-1 items-center justify-center text-[10px]">
-            {badgeCounter}
-          </div>
-        ) : (
-          <></>
-        )}
       </div>{" "}
-      {!!disableArrow ? <></> : <img src="/assets/icons/shared/chevron.svg" className="rotate-90" />}
+      {!!disableArrow ? (
+        <>
+          <BadgePart />
+        </>
+      ) : (
+        <div className="flex items-center gap-1">
+          <BadgePart />
+
+          <img src="/assets/icons/shared/chevron.svg" className="rotate-90" />
+        </div>
+      )}
     </Link>
   );
 };
