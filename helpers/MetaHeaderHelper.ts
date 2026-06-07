@@ -21,6 +21,16 @@ const MetaHeaderHelper = async (data: any) => {
       description: description,
       url: canonicalUrl,
       image: ogImage || undefined,
+      images: ogImage
+        ? [
+            {
+              url: ogImage,
+              width: 1200,
+              height: 630,
+              alt: title,
+            },
+          ]
+        : [],
     },
   };
 };
