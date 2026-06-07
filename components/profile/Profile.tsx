@@ -96,9 +96,9 @@ const Profile = ({}) => {
           />
 
           <div className="flex flex-col justify-evenly">
-            <h1 className="text-left w-fit text-[14px] font-bold py-1 px-2  text-truncate">
+            <p className="text-left w-fit text-[14px] font-bold py-1 px-2  text-truncate">
               {userInfo?.full_name ? `${userInfo?.full_name}` : ""}
-            </h1>
+            </p>
             <p className="text-right font-light px-2 py-1 flex  text-truncate items-center">
               {userInfo?.mobile_number}
             </p>
