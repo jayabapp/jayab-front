@@ -96,9 +96,11 @@ const HomeBannerPart = ({ banners, devices }: ImageCarouselTypes) => {
           contentId={item?.id}
           // // href={item?.link ? item?.link : undefined}
           // target={item?.link ? "_blank" : ""}
-          className={` focus:outline-none w-full px-0  aspect-[1.5] max-h-[60dvh]  md:aspect-[3.029]   ${
-            item?.link || item?.category || item?.product || item?.brand_id ? "cursor-pointer" : ""
-          } transition-all duration-300 ease-in-out   relative`}
+          //     ${
+          //   item?.link || item?.category || item?.product || item?.brand_id ? "cursor-pointer" : ""
+          // }
+          className={` focus:outline-none w-full px-0  aspect-[1.5] max-h-[60dvh]  md:aspect-[3.029] 
+           transition-all duration-300 ease-in-out   relative`}
         >
           <Image
             // loading="lazy"

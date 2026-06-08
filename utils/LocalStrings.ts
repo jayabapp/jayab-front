@@ -446,6 +446,7 @@ const _STRINGS = {
   TOMAN_PER_NIGHT: "تومان/شب",
   DATE_IS_FILLED: "این تاریخ پر است.",
   SORT_BY: "مرتب سازی",
+  PLACE_DESC_MAND: "توضیحات درباره اقامتگاه الزامیست.",
 };
 
 export default _STRINGS;
