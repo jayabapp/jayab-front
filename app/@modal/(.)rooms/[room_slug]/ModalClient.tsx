@@ -88,6 +88,19 @@ export default function ModalClient({ params }: { params: { room_slug: string } 
             <Suspense>
               <ProductImagesContainer productImageId={null} data={properyData} />
             </Suspense>
+            <div className=" w-full col-span-full flex md:hidden ">
+              {" "}
+              <SingleProductBreadCrumb
+                dataArray={[
+                  { title: "خانه", link: "/" },
+                  { title: "آگهی ها", link: "/rooms" },
+                  {
+                    title: properyData?.title || "",
+                    link: "#",
+                  },
+                ]}
+              />
+            </div>
             <Suspense>
               <SinglePropertyIntroduction data={properyData} />
             </Suspense>

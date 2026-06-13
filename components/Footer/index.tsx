@@ -3,7 +3,6 @@
 import { NEW_IMAGE_URL } from "../../utils/urls";
 
 import { HomeService } from "@/api_services/home/home.service";
-import { LandingsPlacements } from "@/enum/landings.enum";
 import { chunkArray } from "@/helpers/chunk-array.helper";
 import { footerHiddenBlackList, footerLinks } from "@/utils/constantss";
 import _STRINGS from "@/utils/LocalStrings";
@@ -53,16 +52,22 @@ const Footer = () => {
   /* -------------------------------------------------------------------------- */
 
   const { data: footerLandings } = useQuery({
-    queryKey: [HomeService.USER_LANDING_PAGES_KEY, LandingsPlacements.FOOTER],
-
-    queryFn: () => HomeService.getLandings({ placement: LandingsPlacements.FOOTER }),
+    queryKey: [HomeService?.CONTENTS_CACHEKEY, "footer-quick-search-links", 1],
+    queryFn: () => {
+      return HomeService.GetContent({ key: "footer-quick-search-links", page: 1 });
+    },
   });
 
-  const chunkedLandingsDekstop = chunkArray(footerLandings?.popular_city || [], 9);
-  const chunkedLandingsMobile = chunkArray(footerLandings?.popular_city || [], 5);
+  // const { data: footerLandings } = useQuery({
+  //   queryKey: [HomeService.USER_LANDING_PAGES_KEY, LandingsPlacements.FOOTER],
+
+  //   queryFn: () => HomeService.getLandings({ placement: LandingsPlacements.FOOTER }),
+  // });
+  const chunkedLandingsDekstop = chunkArray(footerLandings?.data || [], 9);
+  const chunkedLandingsMobile = chunkArray(footerLandings?.data || [], 5);
   return (
     <footer
-      className={`  ${isHome ? "" : "  hidden lg:flex"} ${!!footerHiddenBlackList.find((e) => pathname?.includes(e)) ? "hidden lg:hidden" : ""} w-full  z-2   bg-primary-1000/40   flex   flex-col items-center justify-center bg-dark-500  bg-no-repeat bg-cover  relative  pt-[28rem] lg:pt-[6rem] `}
+      className={`   ${!!footerHiddenBlackList.find((e) => pathname?.includes(e)) ? "hidden lg:hidden" : ""} w-full  z-2   bg-primary-1000/40   flex   flex-col items-center justify-center bg-dark-500  bg-no-repeat bg-cover  relative  pt-[28rem] lg:pt-[6rem] `}
     >
       <CallBox />
       {/* QUICK SEARCHS */}
@@ -72,26 +77,26 @@ const Footer = () => {
         {/* desktop part */}
 
         <div className="   hidden md:flex  w-full px-4 pb-2   md:px-0   flex-row lg:grid lg:grid-cols-9 overflow-x-scroll  gap-1.5 md:gap-2.5   ">
-          {chunkedLandingsDekstop
-            ?.filter((e) => !isEmpty(e))
-            ?.map((chunk, index) => (
-              <div
-                className=" w-2/5 md:w-1/4 lg:w-full shrink-0  lg:auto flex flex-col gap-1.5 md:gap-2.5 "
-                key={`${index}chunk`}
-              >
-                {chunk?.map((e) => (
+          {chunkedLandingsDekstop?.map((chunk, index) => (
+            <div
+              className=" w-2/5 md:w-1/4 lg:w-full shrink-0  lg:auto flex flex-col gap-1.5 md:gap-2.5 "
+              key={`${index}chunk`}
+            >
+              {chunk?.map((e) => {
+                return (
                   <Link
                     key={e?.title}
-                    href={e?.url}
+                    href={e?.link || ""}
                     prefetch={false}
                     id={e?.title}
                     className="  bg-white    border   shadow-sm   shadow-black/10 border-gray-300  relative  rounded-20 h-6 md:h-8 flex items-center justify-start  pr-4 shrink-0  font-medium text-xs   text-start"
                   >
                     {e?.title}
                   </Link>
-                ))}
-              </div>
-            ))}
+                );
+              })}
+            </div>
+          ))}
         </div>
         {/* mobile part */}
         <div className="    w-full px-4 pb-2   md:px-0  flex md:hidden flex-row  lg:hidden overflow-x-scroll  gap-1.5 md:gap-2.5   ">
@@ -105,7 +110,7 @@ const Footer = () => {
                 {chunk?.map((e) => (
                   <Link
                     key={e?.title}
-                    href={e?.url}
+                    href={e?.link || ""}
                     prefetch={false}
                     id={e?.title}
                     className="  bg-white    border   shadow-sm   shadow-black/10 border-gray-300  relative  rounded-20 h-6 md:h-8 flex items-center justify-start  pr-4 shrink-0  font-medium text-xs   text-start"
