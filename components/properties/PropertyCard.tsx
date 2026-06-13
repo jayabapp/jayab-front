@@ -25,6 +25,7 @@ const PropertyCard = ({ data, isOwner, week }: { data: PropertyListDto; isOwner?
       <div className="w-full  grid grid-cols-5 gap-2   ">
         {/* INFO */}
         <Link
+          title={data.title}
           onClick={removeredirectRoomToHome}
           href={`${goToLink}`}
           prefetch={false}
@@ -129,6 +130,7 @@ const PropertyCard = ({ data, isOwner, week }: { data: PropertyListDto; isOwner?
         </Link>{" "}
         {/* IMAGE PART */}
         <Link
+          title={data.title}
           onClick={removeredirectRoomToHome}
           href={`${goToLink}`}
           prefetch={false}

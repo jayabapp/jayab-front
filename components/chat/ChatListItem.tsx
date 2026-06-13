@@ -13,6 +13,7 @@ const ChatListItem = ({ item, onClickCb }: { item: ChatListDto; onClickCb?: () =
 
   return (
     <Link
+      title={item?.property_title}
       onClick={() => {
         removeredirectRoomToHome();
         onClickCb?.();

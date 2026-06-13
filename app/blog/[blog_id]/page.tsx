@@ -58,7 +58,12 @@ const SingleBlogPage = async ({ params }: Props) => {
           <div className={` w-full scrollbar   overflow-y-scroll   relative`}>
             {headings?.map((i, index) => (
               <div key={`HEADING${index}`} className={`text-xs! my-4  md:my-6`}>
-                <Link href={`#${i?.id}`} replace className="flex  group flex-row items-center justify-start gap-2">
+                <Link
+                  title={"content"}
+                  href={`#${i?.id}`}
+                  replace
+                  className="flex  group flex-row items-center justify-start gap-2"
+                >
                   <img
                     src="/assets/icons/shared/blue_chevron_left.svg"
                     className=" w-3 h-3  grayscale group-hover:grayscale-0    group-hover:-rotate-90 transition-all "

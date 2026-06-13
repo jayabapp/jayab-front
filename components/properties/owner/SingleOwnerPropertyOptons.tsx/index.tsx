@@ -1,13 +1,13 @@
 import { SingleOwnerPropertyDto } from "@/api_services/property/property.interface";
 import { PropertyService } from "@/api_services/property/property.service";
+import ConfirmModal from "@/components/Modal/ConfirmModal";
 import _STRINGS from "@/utils/LocalStrings";
-import { QueryObserverResult, RefetchOptions, useMutation, useQuery } from "@tanstack/react-query";
+import { useMutation, useQuery } from "@tanstack/react-query";
 import Link from "next/link";
+import { useRouter } from "next/navigation";
 import React, { useState } from "react";
 import BadgeRequestModal from "./BadgeRequestModal";
 import ChangePropertyAllDaysCommissionModal from "./ChangePropertyAllDaysCommissionModal";
-import ConfirmModal from "@/components/Modal/ConfirmModal";
-import { useRouter } from "next/navigation";
 
 const SingleOwnerPropertyOptons = ({
   data,
@@ -64,6 +64,7 @@ const SingleOwnerPropertyOptons = ({
   return (
     <div className=" w-full  flex order-5   flex-col gap-4 ">
       <Link
+        title={_STRINGS.PROP_STATS}
         href={`/profile/owner/properties/${data?.id}/subscription`}
         className="w-full border-primary-200  flex items-center justify-between  px-4 py-3 rounded-10 border"
       >
@@ -80,6 +81,7 @@ const SingleOwnerPropertyOptons = ({
         <img className="rotate-90  " src="/assets/icons/shared/chevron.svg" />
       </div>
       <Link
+        title={_STRINGS.AUTHORiZIATION_REQUEST}
         href={`/profile/owner/properties/${data?.id}/license`}
         className=" cursor-pointer  w-full border-primary-200  flex items-center justify-between  px-4 py-3 rounded-10 border"
       >
@@ -105,6 +107,7 @@ const SingleOwnerPropertyOptons = ({
         <img className="rotate-90   " src="/assets/icons/shared/chevron.svg" />
       </div>
       <Link
+        title={_STRINGS.EDIT_INFO}
         href={`/profile/owner/properties/${data?.id}/edit`}
         className=" cursor-pointer  w-full border-primary-200  flex items-center justify-between  px-4 py-3 rounded-10 border"
       >
@@ -115,6 +118,7 @@ const SingleOwnerPropertyOptons = ({
         <img className="rotate-90  " src="/assets/icons/shared/chevron.svg" />
       </Link>
       <Link
+        title={_STRINGS.WEEKLY_INQUERY}
         href={`/profile/owner/properties/${data?.id}/inquery`}
         className=" cursor-pointer  w-full border-primary-200  flex items-center justify-between  px-4 py-3 rounded-10 border"
       >

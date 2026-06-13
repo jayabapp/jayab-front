@@ -1,6 +1,6 @@
 import { ContentDto } from "@/api_services/home/home.interface";
 import serverCall from "@/helpers/serverCall";
-import { apiRoutes, baseUrl, IMAGE_URL, NEW_IMAGE_URL } from "@/utils/urls";
+import { apiRoutes, baseUrl, NEW_IMAGE_URL } from "@/utils/urls";
 import moment from "moment-jalaali";
 import Image from "next/image";
 import Link from "next/link";
@@ -8,7 +8,7 @@ import { FC } from "react";
 
 const RelatedBlogs: FC<{ id: number }> = async ({ id }) => {
   const { data: blogs }: { data: { data: ContentDto[] } } = await serverCall(
-    baseUrl + apiRoutes.CONTENTS + `?key=blog&page=1&per_page=4`
+    baseUrl + apiRoutes.CONTENTS + `?key=blog&page=1&per_page=4`,
   );
   return (
     <div className="flex flex-col gap-4">
@@ -18,6 +18,7 @@ const RelatedBlogs: FC<{ id: number }> = async ({ id }) => {
         ?.filter((e) => e?.id !== id)
         ?.map((i) => (
           <Link
+            title={i?.title || ""}
             key={`/blog/${encodeURI(i?.slug || "")}`}
             href={`/blog/${encodeURI(i?.slug || "")}`}
             className="grid group grid-cols-4 hover:bg-primary-700/5 transition-all rounded-md items-center justify-start gap-2"

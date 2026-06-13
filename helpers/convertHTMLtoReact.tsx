@@ -227,6 +227,7 @@ export function convertHtmlToReact(htmlString: string) {
         >
           {products.map((product: any, idx: number) => (
             <Link
+              title={product?.title}
               href={product.href || ""}
               key={idx}
               className="embla__slide !no-underline p-2 bg-white  shadow-sm md:shadow-md rounded-xl gap-1 flex items-center flex-col justify-center relative"

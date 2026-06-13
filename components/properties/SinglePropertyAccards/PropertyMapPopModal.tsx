@@ -3,11 +3,9 @@ import ModalHeaderPart from "@/components/Modal/ModalHeaderPart";
 import Button from "@/components/shared/Button/Button";
 import mapRedirectHelper from "@/helpers/map.link";
 import _STRINGS from "@/utils/LocalStrings";
-import { parseUrl } from "next/dist/shared/lib/router/utils/parse-url";
 import dynamic from "next/dynamic";
 import Link from "next/link";
-import React, { useEffect, useMemo, useState } from "react";
-import { isAndroid, isIOS } from "react-device-detect";
+import { useMemo, useState } from "react";
 
 const PropertyMapPopModal = ({ data, show, onHide }: { data: any; show: boolean; onHide: () => void | null }) => {
   const MapPlaceShower = useMemo(
@@ -15,7 +13,7 @@ const PropertyMapPopModal = ({ data, show, onHide }: { data: any; show: boolean;
       dynamic(() => import("@/components/Map/MapPlaceShower"), {
         ssr: false,
       }),
-    []
+    [],
   );
   const [center, setCenter] = useState([51.37, 35.767]);
 
@@ -48,7 +46,7 @@ const PropertyMapPopModal = ({ data, show, onHide }: { data: any; show: boolean;
           )}
         </div>
       </div>
-      <Link href={mapRedirectHelper(data)} target="_blank">
+      <Link title={_STRINGS.NAVIGATE} href={mapRedirectHelper(data)} target="_blank">
         {" "}
         <Button containerClass="w-full  p-4 " width="w-full" title={_STRINGS.NAVIGATE} />
       </Link>

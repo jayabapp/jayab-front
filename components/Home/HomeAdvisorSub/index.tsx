@@ -4,10 +4,8 @@ import timeLeft from "@/helpers/timeLeft";
 import { useAuthStore } from "@/store";
 import _STRINGS from "@/utils/LocalStrings";
 import { useQuery } from "@tanstack/react-query";
-import _ from "lodash";
 import moment from "moment-jalaali";
 import Link from "next/link";
-import React from "react";
 
 const HomeAdvisorSub = () => {
   const { isLogin } = useAuthStore((state) => state);
@@ -59,6 +57,7 @@ const HomeAdvisorSub = () => {
           )}
           {advisorProfile?.status?.id == 20 && !isActive ? (
             <Link
+              title={!!advisorProfile?.subscription_expired_at ? _STRINGS.EXPIRED : _STRINGS.WAITING_FOR_PAYMENT}
               href={`/profile/advisor/subscription`}
               className="w-full md:w-[90%] lg:w-[30%] rounded-full flex items-center justify-center gap-4 h-10 bg-primary-150 "
             >

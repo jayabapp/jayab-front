@@ -24,7 +24,7 @@ const HomePropertiesList = ({
     <div className="w-full  padding-x ">
       <HomePropertiesSsrPart middleBanners={middleBanners || []} data={data} devices={devices} />
       {page == 1 && !isEmpty(data) && data?.length % 12 == 0 ? (
-        <Link className="w-full " href={"/rooms"} prefetch={false}>
+        <Link className="w-full " title={_STRINGS.SHOW_MORE} href={"/rooms"} prefetch={false}>
           <Button
             // onClick={() => {
             //   setPage(2);

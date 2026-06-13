@@ -30,6 +30,7 @@ const ProfileItem = ({
 
   return (
     <Link
+      title={item?.title}
       prefetch={false}
       href={item?.route}
       className={`   ${

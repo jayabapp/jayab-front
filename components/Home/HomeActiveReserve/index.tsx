@@ -48,7 +48,7 @@ const HomeActiveReserve = () => {
               </p>
               <div className=" size-2 mb-3  rounded-full bg-red-700 animate-pulse  duration-700" />
             </div>
-            <Link href="/profile/reserves" className="flex items-center gap-1.5">
+            <Link href="/profile/reserves" title={_STRINGS.WATCH} className="flex items-center gap-1.5">
               <p className="text-white lg:text-black !text-sm  lg:!text-base">{_STRINGS.WATCH} همه</p>
               <img className="w-4  lg:brightness-0 " src="/assets/icons/property/white_arrow_left.svg" />
             </Link>
@@ -66,6 +66,7 @@ const HomeActiveReserve = () => {
                 <div className="w-full  grid grid-cols-8 gap-2   ">
                   {/* INFO */}
                   <Link
+                    title={data?.property?.title}
                     onClick={removeredirectRoomToHome}
                     href={`${goToLink}`}
                     prefetch={false}

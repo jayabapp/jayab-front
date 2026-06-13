@@ -31,7 +31,7 @@ const NoMoreReservesPop = ({ show, onHide }: { onHide: () => void | null; show: 
                 </p>
               </div>
 
-              <Link href={"/profile/reserves"} className=" w-full" prefetch={false}>
+              <Link href={"/profile/reserves"} className=" w-full" title={"مشاهده رزرو های فعال"} prefetch={false}>
                 <Button variant="outline" title={"مشاهده رزرو های فعال"} containerClass="w-full" width="w-full" />
               </Link>
             </>

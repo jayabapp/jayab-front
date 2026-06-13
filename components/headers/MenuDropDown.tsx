@@ -52,6 +52,7 @@ const MenuDropDown = ({ isHeaderLight }: { isHeaderLight: boolean }) => {
                   }}
                   prefetch={false}
                   href={e?.route}
+                  title={e?.title}
                 >
                   <div
                     className={`hover:bg-primary-700/80 dark:hover:bg-zinc-600  cursor-pointer hover:text-white text-gray-600 dark:text-gray-300 group flex w-full gap-2 items-center rounded-md px-2 py-2 text-sm font-light no-underline`}

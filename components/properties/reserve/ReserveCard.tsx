@@ -120,6 +120,7 @@ const ReserveCard = ({
       <div className="w-full  grid grid-cols-8 gap-2   ">
         {/* INFO */}
         <Link
+          title={data?.property?.title}
           onClick={removeredirectRoomToHome}
           href={`${goToLink}`}
           prefetch={false}
@@ -180,6 +181,7 @@ const ReserveCard = ({
         </Link>{" "}
         {/* IMAGE PART */}
         <Link
+          title="whatever"
           onClick={removeredirectRoomToHome}
           href={`${goToLink}`}
           prefetch={false}

@@ -93,7 +93,7 @@ const ProfileDropdown = ({ notifBadge, isHome }: { notifBadge?: number | string;
         >
           <div className="absolute left-0  z-[60]  mt-2 w-48 origin-top-center  rounded-xl bg-white dark:bg-zinc-800 shadow-xl ring-1 ring-black ring-opacity-5 focus:outline-none  overflow-scroll">
             <div className="px-1 py-2 ">
-              <Link key={`safasfsafq`} className="" prefetch={false} href={`/notifications`}>
+              <Link key={`safasfsafq`} title={_STRINGS.MY_NOTIFS} className="" prefetch={false} href={`/notifications`}>
                 <div
                   className={` relative hover:bg-primary-700/80 dark:hover:bg-zinc-600  cursor-pointer hover:text-white text-gray-600 dark:text-gray-300 group flex w-full gap-2 items-center rounded-md px-2 py-2 text-sm font-light no-underline`}
                 >
@@ -110,7 +110,13 @@ const ProfileDropdown = ({ notifBadge, isHome }: { notifBadge?: number | string;
               </Link>
 
               {!!userInfo?.owner_id ? (
-                <Link key={`myAdd2s`} className="" prefetch={false} href={`/profile/owner/properties`}>
+                <Link
+                  key={`myAdd2s`}
+                  title={"آگهی های من"}
+                  className=""
+                  prefetch={false}
+                  href={`/profile/owner/properties`}
+                >
                   <div
                     className={` relative hover:bg-primary-700/80 dark:hover:bg-zinc-600  cursor-pointer hover:text-white text-gray-600 dark:text-gray-300 group flex w-full gap-2 items-center rounded-md px-2 py-2 text-sm font-light no-underline`}
                   >
@@ -128,7 +134,13 @@ const ProfileDropdown = ({ notifBadge, isHome }: { notifBadge?: number | string;
                 <></>
               )}
               {!!userInfo?.owner_id ? (
-                <Link key={`myReserveAdd`} className="" prefetch={false} href={`/profile/owner/reserves`}>
+                <Link
+                  title={"درخواست های رزرو"}
+                  key={`myReserveAdd`}
+                  className=""
+                  prefetch={false}
+                  href={`/profile/owner/reserves`}
+                >
                   <div
                     className={` relative hover:bg-primary-700/80 dark:hover:bg-zinc-600  cursor-pointer hover:text-white text-gray-600 dark:text-gray-300 group flex w-full gap-2 items-center rounded-md px-2 py-2 text-sm font-light no-underline`}
                   >
@@ -147,7 +159,13 @@ const ProfileDropdown = ({ notifBadge, isHome }: { notifBadge?: number | string;
               )}
 
               {!!userInfo?.advisor_id ? (
-                <Link key={`myAdds52`} className="" prefetch={false} href={`/profile/advisor/subscription`}>
+                <Link
+                  key={`myAdds52`}
+                  title={"بخش مشاور"}
+                  className=""
+                  prefetch={false}
+                  href={`/profile/advisor/subscription`}
+                >
                   <div
                     className={` relative hover:bg-primary-700/80 dark:hover:bg-zinc-600  cursor-pointer hover:text-white text-gray-600 dark:text-gray-300 group flex w-full gap-2 items-center rounded-md px-2 py-2 text-sm font-light no-underline`}
                   >
@@ -167,7 +185,7 @@ const ProfileDropdown = ({ notifBadge, isHome }: { notifBadge?: number | string;
                 <></>
               )}
               {profileDropDownItems.map((e) => (
-                <Link key={`${e.id}pItem`} prefetch={false} href={e?.route}>
+                <Link key={`${e.id}pItem`} title={e?.title} prefetch={false} href={e?.route}>
                   <div
                     key={e.id}
                     className={`hover:bg-primary-700/80 dark:hover:bg-zinc-600  cursor-pointer hover:text-white text-gray-600 dark:text-gray-300 group flex w-full gap-2 items-center rounded-md px-2 py-2 text-sm font-light no-underline`}

@@ -7,6 +7,7 @@ const CategoryItem = ({ item }: { item: HomeLandingDto }) => {
   return (
     <Link
       href={item?.url}
+      title={item?.title}
       id={item?.title}
       prefetch={false}
       // data-umami-event-id={item?.title}

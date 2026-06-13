@@ -69,6 +69,7 @@ const ImageCarousel = ({ list, item, devices }: ImageCarouselTypes) => {
         {final_banenrs?.map((e, i) => (
           <SwiperSlide key={`${e.id}banners`}>
             <Link
+              title={e?.title}
               onClick={() => {
                 mutate({ bannerId: e?.id });
               }}

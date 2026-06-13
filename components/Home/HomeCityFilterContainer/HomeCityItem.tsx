@@ -19,6 +19,7 @@ const HomeCityItem = ({ item }: { item: HomeLandingDto }) => {
       href={item?.url}
       prefetch={false}
       id={item?.title}
+      title={item?.title}
       // data-umami-event-id={item?.title}
       // data-umami-event={"Category Select"}
 

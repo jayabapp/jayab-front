@@ -1,7 +1,6 @@
 import { RelatedLandings } from "@/api_services/property/property.interface";
 import _STRINGS from "@/utils/LocalStrings";
 import Link from "next/link";
-import React from "react";
 
 const ContentRelatedTags = ({ data }: { data: RelatedLandings[] }) => {
   return (
@@ -13,6 +12,7 @@ const ContentRelatedTags = ({ data }: { data: RelatedLandings[] }) => {
       <div className=" flex flex-wrap gap-2 w-full">
         {data?.map((e) => (
           <Link
+            title={e?.title}
             key={`${e?.title}relatedContent`}
             prefetch={false}
             href={e?.url}

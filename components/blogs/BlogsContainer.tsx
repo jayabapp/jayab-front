@@ -116,6 +116,7 @@ function BlogsContainer({
       <div className="w-full  flex items-center justify-center mt-4">
         {" "}
         <Link
+          title={_STRINGS.SEE_ALL}
           prefetch={false}
           href={viewAllUrl}
           style={{ textDecoration: "none" }}

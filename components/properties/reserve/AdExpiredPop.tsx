@@ -36,6 +36,7 @@ const AdExpiredPop = ({ show, onHide, data }: { onHide: () => void | null; show:
               </div>
 
               <Link
+                title={"تمدید اعتبار"}
                 href={`/profile/owner/properties/${data?.property?.id}/subscription?GATE_WAY_REDIRECT_URL=${pathname}`}
                 className=" w-full"
                 prefetch={false}

@@ -178,6 +178,7 @@ const AdvisorsPageHelper = ({ devices }: { devices: DeviceInfo }) => {
               />
             ) : userInfo?.advisor_id && !userInfo?.advisor?.is_special ? (
               <Link
+                title={_STRINGS.REGISTER_AS_SPECIAL_AD}
                 href={`/profile/advisor/subscription/is-especial`}
                 className="w-full md:w-fit  px-12  md:col-span-4  rounded-full flex items-center justify-center gap-4 h-12 bg-primary-600 "
               >

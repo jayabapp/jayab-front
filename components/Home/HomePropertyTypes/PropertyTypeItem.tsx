@@ -5,6 +5,7 @@ import Link from "next/link";
 const PropertyTypeItem = ({ item }: { item: HomeLandingDto }) => {
   return (
     <Link
+      title={item?.title}
       href={`/rooms?property_type=${item?.id}`}
       className="flex  justify-center   rounded-2xl  border   aspect-square  flex-col   items-center gap-2"
     >

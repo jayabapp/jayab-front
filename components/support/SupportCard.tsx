@@ -6,6 +6,7 @@ import StatusShower from "../shared/StatusShower";
 const SupportCard = ({ item, type }: { item: TicketDatum; type?: "complain" }) => {
   return (
     <Link
+      title={item?.title}
       href={type == "complain" ? `/profile/complains/${item?.id}` : `/profile/support/${item?.id}`}
       className="flex flex-col  border  bg-white  custome-shadow-card rounded-20 dark:border dark:border-zinc-500 gap-4 p-4 "
     >

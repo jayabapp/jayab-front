@@ -99,6 +99,7 @@ const SingleOwnerPropertyIntroduction = ({ data }: { data: SingleOwnerPropertyDt
             prefetch={false}
             href={`/profile/owner/properties/${data?.id}/subscription`}
             className=" rounded-full text-xs text-white bg-primary-700 flex  items-center justify-center h-7 w-24 "
+            title={_STRINGS.EXTEND_SUBS}
           >
             {_STRINGS.EXTEND_SUBS}
           </Link>

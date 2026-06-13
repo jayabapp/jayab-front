@@ -5,7 +5,6 @@ import { NEW_IMAGE_URL } from "@/utils/urls";
 import moment from "moment-jalaali";
 import Image from "next/image";
 import Link from "next/link";
-import React from "react";
 import Editable from "../Editable";
 
 moment.loadPersian();
@@ -27,7 +26,11 @@ const LatestBlogCard = ({ item }: { item: ContentDto }) => {
           />
         </div>
       </Link>
-      <Link href={`/blog/${item?.slug}`} className=" gap-2 flex p-3 flex-col items-start w-full justify-center ">
+      <Link
+        title={item?.small_text || item?.full_text || ""}
+        href={`/blog/${item?.slug}`}
+        className=" gap-2 flex p-3 flex-col items-start w-full justify-center "
+      >
         <div className="w-full    font-normal  z-1 ">{moment(item?.created_at).format("jYYYY/jMM/jDD")}</div>
         <p className=" font-bold line-clamp-1 ">{item?.title}</p>
         <p className="line-clamp-2  whitespace-pre-wrap flex-1 min-h-[2.5rem] text-base">
@@ -36,7 +39,7 @@ const LatestBlogCard = ({ item }: { item: ContentDto }) => {
       </Link>
       <div className="w-full  pb-4">
         {" "}
-        <Link href={`/blog/${item?.slug}`} className=" ">
+        <Link title={_STRINGS?.WATCH} href={`/blog/${item?.slug}`} className=" ">
           {" "}
           <Button
             title={_STRINGS?.WATCH}

@@ -85,6 +85,7 @@ const Footer = () => {
               {chunk?.map((e) => {
                 return (
                   <Link
+                    title={e?.title}
                     key={e?.title}
                     href={e?.link || ""}
                     prefetch={false}
@@ -267,6 +268,7 @@ const Footer = () => {
         <div className="flex gap-2  items-center">
           {downloadLink?.data?.map((e) => (
             <Link
+              title={e?.title}
               key={`downloadLink${e?.id}`}
               target="_blank"
               href={e?.link || ""}

@@ -52,6 +52,7 @@ const CallBox = () => {
                 <p className="  text-sm  text-white "> {footerCallUs?.small_text} </p>
               </div>
               <Link
+                title={_STRINGS.BECOME_HOST}
                 href={isLogin ? footerCallUs?.link || "" : `/auth?redirect_url=${footerCallUs?.link}`}
                 className="shrink-0"
                 target="_blank"

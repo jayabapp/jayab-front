@@ -17,6 +17,7 @@ const PropertyCardOwnerPart = ({ data, goToLink }: { goToLink: string; data: Pro
             {!data?.remaining_days ? "بدون اعتبار" : `${data?.remaining_days} روز اعتبار`}
           </div>
           <Link
+            title={_STRINGS.EXTEND_SUBS}
             prefetch={false}
             href={`/profile/owner/properties/${data?.id}/subscription`}
             className=" rounded-full  !outline-none text-xs text-white bg-primary-700 flex  items-center justify-center h-7 w-24 "
@@ -29,6 +30,7 @@ const PropertyCardOwnerPart = ({ data, goToLink }: { goToLink: string; data: Pro
       <Link
         href={`/profile/owner/properties/${data?.id}/subscription`}
         prefetch={false}
+        title={_STRINGS.UPGRADE_ADD_DESC}
         className="w-full !outline-none flex  py-2  border-primary-200 items-center justify-between "
       >
         <p className="text-xs">{_STRINGS.UPGRADE_ADD_DESC} </p>
@@ -49,7 +51,7 @@ const PropertyCardOwnerPart = ({ data, goToLink }: { goToLink: string; data: Pro
         <AuthorizationStatus isAuthorized={data?.is_authorized} data={data} />
       </div>
 
-      <Link href={goToLink} className="w-full !outline-none " prefetch={false}>
+      <Link title={_STRINGS.PROP_CARD_C_DETAILS} href={goToLink} className="w-full !outline-none " prefetch={false}>
         {" "}
         <Button
           title={_STRINGS.PROP_CARD_C_DETAILS}

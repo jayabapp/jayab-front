@@ -105,7 +105,11 @@ const ChatHeader = ({ image, description, name, offSetTop, is_recipient_online, 
           ) : (
             <></>
           )}
-          <Link href={goToLink} className="flex h-full flex-col justify-around col-span-3">
+          <Link
+            href={goToLink}
+            title={name || _STRINGS.CHAT}
+            className="flex h-full flex-col justify-around col-span-3"
+          >
             {!!name || !!data?.recipient?.user_mobile_number ? (
               <>
                 {" "}
