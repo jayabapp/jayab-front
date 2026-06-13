@@ -54,7 +54,7 @@ const Footer = () => {
   const { data: footerLandings } = useQuery({
     queryKey: [HomeService?.CONTENTS_CACHEKEY, "footer-quick-search-links", 1],
     queryFn: () => {
-      return HomeService.GetContent({ key: "footer-quick-search-links", page: 1 });
+      return HomeService.GetContent({ key: "footer-quick-search-links", page: 1, per_page: 100 });
     },
   });
 
