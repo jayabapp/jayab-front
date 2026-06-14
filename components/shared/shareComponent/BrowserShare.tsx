@@ -1,11 +1,10 @@
 "use client";
 import { Transition, TransitionChild } from "@headlessui/react";
-import React, { Fragment, useEffect } from "react";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
-import Notify from "../Toast";
-import { isMobile } from "react-device-detect";
 import { shareLinks } from "@/utils/constantss";
+import { isMobile } from "react-device-detect";
+import Notify from "../Toast";
 
 const ShareLink = ({
   containerClass = "flex-row relative justify-start",
@@ -71,7 +70,7 @@ const ShareLink = ({
               leaveFrom="opacity-100 scale-100 translate-x-0"
               leaveTo="opacity-0 scale-75 -translate-x-10"
             >
-              <a href={e.link(url)} target="_blank" rel="noreferrer">
+              <a href={e.link(url)} title={"share"} target="_blank" rel="noreferrer">
                 <img
                   src={e.icon}
                   className={`w-5 h-5 mr-4 opacity-100 hover:opacity-40 cursor-pointer ${itemChildClass}`}

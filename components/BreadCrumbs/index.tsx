@@ -50,6 +50,7 @@ const Breadcrumbs = () => {
       <div className="flex w-11/12 flex-wrap">
         {crumbs?.map((e, i, arr) => (
           <a
+            title={e?.title}
             href={i + 1 !== arr?.length ? _createRouteATag(e) : ""}
             key={i}
             className={`  flex flex-row items-center `}

@@ -1,6 +1,6 @@
 "use client";
 import { getCookie } from "cookies-next";
-import React, { Children, useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 
 const Editable = ({ contentId, children, containerClass, isParent, editIconClass, isBanner, ...props }: any) => {
   const url = `${process?.env?.NEXT_PUBLIC_PANEL_URL}${
@@ -29,6 +29,7 @@ const Editable = ({ contentId, children, containerClass, isParent, editIconClass
       <div {...props}>
         {isAdmin ? (
           <a
+            title={"ویرایش"}
             target="_blank"
             referrerPolicy="no-referrer"
             href={url + contentId}

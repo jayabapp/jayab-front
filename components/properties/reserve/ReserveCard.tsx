@@ -181,7 +181,7 @@ const ReserveCard = ({
         </Link>{" "}
         {/* IMAGE PART */}
         <Link
-          title="whatever"
+          title={data?.property?.title}
           onClick={removeredirectRoomToHome}
           href={`${goToLink}`}
           prefetch={false}

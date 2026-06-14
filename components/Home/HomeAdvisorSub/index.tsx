@@ -44,6 +44,7 @@ const HomeAdvisorSub = () => {
           )} */}
           {advisorProfile?.status?.id == 20 && !!isActive && remainingDays <= 3 ? (
             <Link
+              title={!!advisorProfile?.subscription_expired_at ? _STRINGS.EXPIRED : _STRINGS.WAITING_FOR_PAYMENT}
               href={`/profile/advisor/subscription`}
               className="w-full md:w-[90%] lg:w-[30%] rounded-full flex items-center justify-center gap-4 h-10 bg-primary-350 "
             >

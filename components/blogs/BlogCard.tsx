@@ -15,7 +15,7 @@ const LatestBlogCard = ({ item }: { item: ContentDto }) => {
       containerClass={"h-full"}
       className={`  !h-full  overflow-clip aspect-auto  rounded-20 shadow-card  justify-between  hover:scale-102   bg-white   relative cursor-pointer transition-all duration-200 ease-in-out group    flex items-center  flex-col gap-1   `}
     >
-      <Link href={`/blog/${item?.slug}`} className="flex flex-col w-full">
+      <Link href={`/blog/${item?.slug}`} title={item?.title} className="flex flex-col w-full">
         {" "}
         <div className="  w-full   aspect-[2] relative">
           <Image

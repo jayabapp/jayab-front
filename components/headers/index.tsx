@@ -226,6 +226,7 @@ const Header = ({ scroll }: { scroll?: number }) => {
     return (
       <div className=" flex items-center  gap-3 lg:gap-6">
         <Link
+          title={_STRINGS.MY_PROFILE}
           href={!!isLogin ? "/profile" : "/auth"}
           prefetch={false}
           className={` ${!!isLogin ? "bg-white" : ""}  ${isHeaderLight ? "border-white " : "border-gray-500"} border  relative shrink-0  transition-all   rounded-full flex items-center justify-center`}
@@ -244,6 +245,7 @@ const Header = ({ scroll }: { scroll?: number }) => {
           <>
             {" "}
             <Link
+              title={"اعلانات"}
               prefetch={false}
               href={"/notifications"}
               className="relative w-5 h-5 transition-all   aspect-square  shrink-0 flex  "
@@ -370,6 +372,7 @@ transition-all ease-out  duration-300  header-content-container w-full mx-auto  
                           removeredirectRoomToHome();
                         }}
                         href={"/"}
+                        title="خانه"
                       >
                         <img
                           src="/assets/icons/navbar/home_nav.svg"
@@ -387,6 +390,7 @@ transition-all ease-out  duration-300  header-content-container w-full mx-auto  
                             }}
                             className="w-5 h-5 aspect-square"
                             href={"/"}
+                            title={"back"}
                           >
                             <img
                               src="/assets/icons/navbar/home_nav_black.svg"
@@ -491,7 +495,12 @@ transition-all ease-out  duration-300  header-content-container w-full mx-auto  
                   </>
                 )}
               </Suspense>{" "}
-              <Link prefetch={false} href={"/"} className=" flex items-center gap-1.5    shrink-0 h-10 ">
+              <Link
+                prefetch={false}
+                title={_STRINGS.JAYAB}
+                href={"/"}
+                className=" flex items-center gap-1.5    shrink-0 h-10 "
+              >
                 {" "}
                 <div className="flex items-center shrink-0 gap-1 justify-center">
                   <img

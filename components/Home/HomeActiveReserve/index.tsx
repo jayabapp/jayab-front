@@ -128,6 +128,7 @@ const HomeActiveReserve = () => {
                   </Link>{" "}
                   {/* IMAGE PART */}
                   <Link
+                    title={data?.property?.title}
                     onClick={removeredirectRoomToHome}
                     href={`${goToLink}`}
                     prefetch={false}

@@ -15,6 +15,7 @@ const SingleProductBreadCrumb = ({ dataArray }: { dataArray: { title: string; li
       <div className="flex w-11/12 gap-1 md:gap-2 flex-wrap">
         {dataArray?.map((e, index, arr) => (
           <a
+            title={e?.title}
             key={e?.link}
             className="flex flex-row items-center  gap-1 md:gap-2 "
             href={e?.link}

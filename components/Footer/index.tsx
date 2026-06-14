@@ -141,6 +141,7 @@ const Footer = () => {
       </div>
       {!!PHONE_NUMBER && (
         <Link
+          title="تماس"
           href={PHONE_NUMBER?.link || `tel:${PHONE_NUMBER?.full_text || PHONE_NUMBER?.small_text || ""}`}
           className="icon-parent hidden lg:flex fixed z-[100] w-16  items-center justify-center aspect-square rounded-full bg-primary-700   bottom-16 right-16"
         >
@@ -175,6 +176,7 @@ const Footer = () => {
         >
           <Link
             href={"/"}
+            title={_STRINGS.JAYAB}
             prefetch={false}
             referrerPolicy="no-referrer"
             className=" flex items-center gap-4 justify-start"
@@ -273,7 +275,7 @@ const Footer = () => {
         <div className="  flex    items-center gap-4">
           <div className="w-full   dark:text-zinc-100  text-center text-xxs md:text-sm  ">
             تمامی حقوق مادی و معنوی این وبسایت متعلق به شرکت
-            <a className="text-blue-500 underline underline-offset-2" href="/">
+            <a className="text-blue-500 underline underline-offset-2" title={_STRINGS.JAYAB} href="/">
               &nbsp; جایاب &nbsp;
             </a>
             میباشد

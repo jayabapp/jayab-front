@@ -75,6 +75,7 @@ const HomeProductsBannerItems = ({ bannerItem, devices }: { bannerItem: any; dev
       }`}
     >
       <Link
+        title={"بنر"}
         href={href}
         prefetch={false}
         onClick={() => {
