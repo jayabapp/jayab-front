@@ -45,7 +45,7 @@ const TextIcon = ({ item, isHome, visibleTopHeader }: textIconType) => {
   const textColor = isHome && visibleTopHeader ? "text-white" : "text-black";
   if (!!item?.route) {
     return (
-      <Link prefetch={false} href={item?.route || ""} className={parentClass}>
+      <Link title={item?.title} prefetch={false} href={item?.route || ""} className={parentClass}>
         {item?.hasBadge ? <Pulser /> : <></>}
 
         <p
