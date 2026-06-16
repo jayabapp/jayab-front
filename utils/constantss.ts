@@ -429,3 +429,5 @@ export const sortDynamicFiltersInOrder = [
   "KITCHEN",
   "OWNERSHIP",
 ];
+
+export const zero_filter_remove_keys = ["total_guests", "total_bedrooms"];

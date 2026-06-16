@@ -23,7 +23,7 @@ import { DeviceInfo } from "@/helpers/device.detector";
 import queryBuilder from "@/helpers/queryBuilder";
 import useQueryGet from "@/helpers/queryGet";
 import { useStoreParams } from "@/store";
-import { SORT_TYPES } from "@/utils/constantss";
+import { SORT_TYPES, zero_filter_remove_keys } from "@/utils/constantss";
 import { ParsedUrlQuery } from "querystring";
 import FiltersPart from "./FiltersPart";
 import PropertiesFilterList from "./PropertiesFilterList";
@@ -103,6 +103,11 @@ const Filterpage = ({ devices }: { devices: DeviceInfo }) => {
     };
     delete body.categories;
     delete body.page;
+    for (let index = 0; index < zero_filter_remove_keys.length; index++) {
+      if (body?.[zero_filter_remove_keys[index]] == 0) {
+        delete body?.[zero_filter_remove_keys[index]];
+      }
+    }
     setDefaultMobileFilters(body);
     router.replace(`${pathname}?${queryBuilder(body)}`);
   };

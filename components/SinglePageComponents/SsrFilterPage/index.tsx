@@ -18,7 +18,7 @@ import Button from "@/components/shared/Button/Button";
 import { DeviceInfo } from "@/helpers/device.detector";
 import queryBuilder from "@/helpers/queryBuilder";
 import useQueryGet from "@/helpers/queryGet";
-import { SORT_TYPES } from "@/utils/constantss";
+import { SORT_TYPES, zero_filter_remove_keys } from "@/utils/constantss";
 import _STRINGS from "@/utils/LocalStrings";
 import { useQuery } from "@tanstack/react-query";
 import { isArray, isEmpty, throttle } from "lodash";
@@ -125,7 +125,11 @@ const SsrFilterPage = ({
     };
     delete body.categories;
     removeKeyArray(hiddenFilters, body);
-
+    for (let index = 0; index < zero_filter_remove_keys.length; index++) {
+      if (body?.[zero_filter_remove_keys[index]] == 0) {
+        delete body?.[zero_filter_remove_keys[index]];
+      }
+    }
     setDefaultMobileFilters(body);
     router.replace(`${pathname}?${queryBuilder(body)}`);
     // router.replace(`rooms?${queryBuilder(body)}`);
