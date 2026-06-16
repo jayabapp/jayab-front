@@ -94,7 +94,7 @@ const FiltersPart = ({ queries, setFilters, filters, propertyTypes }: any) => {
         />
       </SimpleAccordion>
 
-      {!!userInfo?.advisor_id ? <DateFilter filters={filters} setFilters={setFilters} /> : <></>}
+      <DateFilter filters={filters} setFilters={setFilters} />
 
       <FilterCheck
         title={_STRINGS.HAS_DISCOUNT}
