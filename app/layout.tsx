@@ -44,7 +44,7 @@ const RootLayout = async ({
           name="viewport"
           content="width=device-width, initial-scale=1, minimum-scale=1, maximum-scale=1, user-scalable=no"
         />
-        <noscript
+        <script
           dangerouslySetInnerHTML={{
             __html: `<iframe src="https://www.googletagmanager.com/ns.html?id=${appSetting?.googleTagManagerId?.toString()}"
             height="0" width="0" style="display:none;visibility:hidden"></iframe>`,
