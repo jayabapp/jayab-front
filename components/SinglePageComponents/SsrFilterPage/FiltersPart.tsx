@@ -119,7 +119,7 @@ const FiltersPart = ({ queries, setFilters, filters, propertyTypes, hiddenFilter
         </SimpleAccordion>
       )}
 
-      {!!userInfo?.advisor_id ? <DateFilter filters={filters} setFilters={setFilters} /> : <></>}
+      <DateFilter filters={filters} setFilters={setFilters} />
 
       {isHiddenFilter("has_discount") ? (
         <></>
