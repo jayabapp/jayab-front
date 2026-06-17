@@ -10,9 +10,9 @@ import { Dispatch, SetStateAction, Suspense, useCallback, useEffect, useRef, use
 import SeachBoxCitySelector from "../Home/HomeCityFilterContainer/SeachBoxCitySelector";
 import SmallLoading from "../shared/Lotties/SmallLoading";
 import SearchBoxCitiesPart from "./SearchBoxCitiesPart";
-import SearchBoxPopularPlaces from "./SearchBoxPopularPlaces";
 import SuggestedPart from "./SuggestedPart";
 const HistorySuggPart = dynamic(() => import("./HistorySuggPart"), { ssr: true });
+const SearchBoxPopularPlaces = dynamic(() => import("./SearchBoxPopularPlaces"), { ssr: true });
 
 // Separate client component that uses useSearchParams
 const SearchParamExtractor = ({ onSearchParam }: { onSearchParam: (param: string | null) => void }) => {
@@ -260,7 +260,10 @@ const HomePopSearch = ({
             }}
           />
         </Suspense>
-        <SearchBoxPopularPlaces setShowPop={setShowPop} />
+        <Suspense>
+          {" "}
+          <SearchBoxPopularPlaces setShowPop={setShowPop} />
+        </Suspense>
         <SeachBoxCitySelector
           onSubmitCB={() => {
             setShowPop(false);

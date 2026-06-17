@@ -1,6 +1,5 @@
+"use client";
 import { AnimatePresence, motion } from "framer-motion";
-
-let initialized = false;
 
 const SplashScreen = ({ isVisible }: { isVisible: boolean }) => {
   return (
@@ -13,11 +12,7 @@ const SplashScreen = ({ isVisible }: { isVisible: boolean }) => {
           transition={{ duration: 0.5, ease: "easeInOut" }}
         >
           {/* Radial glow behind logo */}
-          <img className="md:hidden w-screen h-screen absolute inset-0 z-0" src="/assets/images/splash/Splash.png" />
-          <img
-            className="hidden md:block w-screen h-screen absolute inset-0 z-0"
-            src="/assets/images/splash/SplashDesktop.png"
-          />
+
           <div className="w-screen h-screen absolute inset-0 bg-primary-700 " />
           <motion.div
             className="absolute rounded-full bg-white/25 blur-3xl"

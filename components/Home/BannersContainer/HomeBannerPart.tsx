@@ -1,14 +1,15 @@
 "use client";
 import Editable from "@/components/Editable";
-import HomePopSearch from "@/components/SearchBoxComp/HomePopSearch";
-import SearchBoxDropDown from "@/components/SearchBoxComp/SearchBoxDropDown";
 import { DeviceInfo } from "@/helpers/device.detector";
 import _STRINGS from "@/utils/LocalStrings";
 import { NEW_IMAGE_URL } from "@/utils/urls";
 import { random } from "lodash";
+import dynamic from "next/dynamic";
 import Image from "next/image";
 import { Suspense, useState } from "react";
-import HomeCityFilterCityPart from "../HomeCityFilterContainer/HomeCityFilterCityPart";
+const SearchBoxDropDown = dynamic(() => import("@/components/SearchBoxComp/SearchBoxDropDown"));
+const HomePopSearch = dynamic(() => import("@/components/SearchBoxComp/HomePopSearch"));
+const HomeCityFilterCityPart = dynamic(() => import("../HomeCityFilterContainer/HomeCityFilterCityPart"));
 
 type ImageCarouselTypes = {
   banners?: any[];
@@ -36,10 +37,13 @@ const HomeBannerPart = ({ banners, devices }: ImageCarouselTypes) => {
 
       {/* HOME SEARCH PART  */}
       <div className=" flex backdrop-blur-md   shadow-card lg:shadow-none  lg:backdrop-blur-none  z-5   absolute bottom-0   lg:bottom-[12%]  w-[90%] lg:w-[40%]   left-0 right-0     mx-auto    h-11   lg:h-14 lg:bg-white rounded-full items-center  gap-1 lg:gap-2    p-[1px]   lg:pl-4">
-        <SearchBoxDropDown
-          placeholder={_STRINGS?.SEARCH}
-          containerClass="bg-transparent border   rounded-full lg:flex hidden    w-full dark:bg-zinc-600   justify-between items-center  !bg-white lg:bg-transparent !rounded-l-none  lg:!rounded-l-20  !border-none "
-        />
+        <Suspense>
+          {" "}
+          <SearchBoxDropDown
+            placeholder={_STRINGS?.SEARCH}
+            containerClass="bg-transparent border   rounded-full lg:flex hidden    w-full dark:bg-zinc-600   justify-between items-center  !bg-white lg:bg-transparent !rounded-l-none  lg:!rounded-l-20  !border-none "
+          />
+        </Suspense>
 
         <div
           onClick={() => {
@@ -64,13 +68,16 @@ const HomeBannerPart = ({ banners, devices }: ImageCarouselTypes) => {
         </div>
 
         <div className="w-[1px] h-8 bg-gray-300 lg:flex hidden"></div>
-        <HomeCityFilterCityPart
-          isHome
-          options={{
-            cotainerClass:
-              " h-10  px-2 shrink-0  w-fit  rounded-l-20 lg:rounded-l-0 lg:px-0  justify-between  bg-white   lg:h-auto lg:bg-transparent",
-          }}
-        />
+        <Suspense>
+          {" "}
+          <HomeCityFilterCityPart
+            isHome
+            options={{
+              cotainerClass:
+                " h-10  px-2 shrink-0  w-fit  rounded-l-20 lg:rounded-l-0 lg:px-0  justify-between  bg-white   lg:h-auto lg:bg-transparent",
+            }}
+          />
+        </Suspense>
       </div>
       <Suspense>
         <HomePopSearch
