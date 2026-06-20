@@ -250,7 +250,7 @@ const MainWrapper = ({ children }: mainWrapper) => {
         <div style={{ minHeight: "100dvh" }} className="  mx-auto h-full   w-full   ">
           {children}
         </div>
-        {/* <SplashScreen isVisible={isVisible} /> */}
+        <SplashScreen isVisible={isVisible} />
         <Suspense fallback={<FallBack />}>
           {" "}
           {!mobileFooterBlackList.find((e) => pathname?.includes(e)) && <Footer />}
