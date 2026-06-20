@@ -284,6 +284,7 @@ const Footer = () => {
         <div className="flex gap-2  items-center">
           {downloadLink?.data?.map((e) => (
             <Link
+              rel="nofollow noopener noreferrer"
               title={e?.title}
               key={`downloadLink${e?.id}`}
               target="_blank"

@@ -69,7 +69,7 @@ const SimpleAccordion = ({ title, children, ExtraElement, item, isOpenFirst, tit
           isOpen ? "is-opend  pt-2 " : ""
         } accardion-class   rounded-b-md transition-all `}
       >
-        <div className="text-justify  font-light text-sm  ">{children}</div>
+        <div className="text-justify   text-sm  ">{children}</div>
       </div>
     </div>
   );

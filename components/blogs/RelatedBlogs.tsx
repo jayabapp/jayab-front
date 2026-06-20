@@ -32,7 +32,7 @@ const RelatedBlogs: FC<{ id: number }> = async ({ id }) => {
               />
             </div>
             <div className="flex flex-col  col-span-3 h-full">
-              <p className="text-xs  text-right font-light mb-1">{moment(i?.created_at)?.format("jYYYY/jMM/jDD")}</p>
+              <p className="text-xs  text-right font-black  mb-1">{moment(i?.created_at)?.format("jYYYY/jMM/jDD")}</p>
               <p className="font-bold group-hover:text-primary-700 transition-all text-right line-clamp-1">
                 {i?.title}
               </p>

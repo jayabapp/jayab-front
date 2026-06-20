@@ -45,13 +45,13 @@ const PrimaryAccard = ({ data }: { data: SinglePropDto }) => {
         )}
 
         <div className="flex flex-col gap-1 w-full ">
-          <p className="text-sm font-light">{_STRINGS.PROP_EXACT_ADDRESS} </p>
+          <p className="text-sm font-medium ">{_STRINGS.PROP_EXACT_ADDRESS} </p>
           <p className="font-medium">{data?.address}</p>
         </div>
 
         {!!data?.property_descriptions?.ad_dscr || data?.property_descriptions?.property_dscr ? (
           <div className="flex flex-col gap-1 w-full ">
-            <p className="text-sm font-light">{_STRINGS.PROP_DESC} </p>
+            <p className="text-sm font-medium ">{_STRINGS.PROP_DESC} </p>
             <p className="font-medium whitespace-pre-wrap">
               {data?.property_descriptions?.ad_dscr || data?.property_descriptions?.property_dscr}
             </p>

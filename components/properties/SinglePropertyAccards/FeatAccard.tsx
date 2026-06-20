@@ -37,7 +37,7 @@ const FeatAccard = ({ data }: { data: SinglePropDto }) => {
 
         {data?.property_descriptions?.facility_dscr ? (
           <div className=" flex w-full flex-col items-start justify-start gap-2">
-            <p className="text-sm font-light">{_STRINGS.OTHER_ACCS}</p>
+            <p className="text-sm font-medium ">{_STRINGS.OTHER_ACCS}</p>
             <p className="font-medium"> {data?.property_descriptions?.facility_dscr}</p>
           </div>
         ) : (

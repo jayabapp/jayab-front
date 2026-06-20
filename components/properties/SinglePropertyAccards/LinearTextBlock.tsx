@@ -13,10 +13,10 @@ const LinearTextBlock = ({
 }) => {
   return (
     <div className="flex items-center gap-4 justify-between w-full ">
-      <p className={`text-sm font-light  ${options?.title_class} ${dots ? "shrink-0" : ""}`}>{title}</p>
+      <p className={`text-sm font-medium   ${options?.title_class} ${dots ? "shrink-0" : ""}`}>{title}</p>
       {!!dots ? <div className="w-full h-[1px] border-t border-dashed"> </div> : <></>}
       <p className={`font-semibold ${options?.value_class}  ${dots ? "shrink-0" : ""}`}>
-        {value} <span className="font-light">{unit}</span>
+        {value} <span className="font-medium ">{unit}</span>
       </p>
     </div>
   );

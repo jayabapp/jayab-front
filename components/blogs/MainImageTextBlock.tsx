@@ -64,17 +64,17 @@ const MainImageTextBlock = ({ data, children, timeToRead, breadcrumb }: ImageTex
             <div className="grid grid-cols-1 md:grid-cols-3 gap-4 md:gap-0  md:gap-y-4">
               <div className="flex col-span-1 flex-row items-center gap-1.5">
                 <img src="/assets/icons/blogs/calendar.svg" className="w-5 h-5" alt="calendar" />
-                <p className="text-sm font-light">تاریخ انتشار: {moment(data?.created_at)?.format("jYYYY/jMM/jDD")}</p>
+                <p className="text-sm font-black ">تاریخ انتشار: {moment(data?.created_at)?.format("jYYYY/jMM/jDD")}</p>
               </div>
               {!!data?.fields?.author && (
                 <div className="flex col-span-1 flex-row items-center gap-1.5">
                   <img src="/assets/icons/blogs/author.svg" className="w-5 h-5" alt="calendar" />
-                  <p className="text-sm font-light">نویسنده: {data?.fields?.author}</p>
+                  <p className="text-sm font-black ">نویسنده: {data?.fields?.author}</p>
                 </div>
               )}
               <div className="flex col-span-1 md:col-start-3 flex-row items-center gap-1.5">
                 <img src="/assets/icons/blogs/time.svg" className="w-5 h-5" alt="calendar" />
-                <p className="text-sm shrink-0 font-light">زمان تقریبی مطالعه: {timeToRead} دقیقه</p>
+                <p className="text-sm shrink-0 font-black ">زمان تقریبی مطالعه: {timeToRead} دقیقه</p>
               </div>
               <BlogShare data={data as ContentDto} />
             </div>

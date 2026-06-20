@@ -27,7 +27,7 @@ const RulesAccardion = ({ data }: { data: SinglePropDto }) => {
       title={_STRINGS.PROP_TERMS}
     >
       <div className="w-full h-full flex flex-col items-start justify-start gap-4 bg-white   md:rounded-md">
-        <p className=" text-sm font-light">{_STRINGS.PROP_TERMS_PROLUGE}</p>
+        <p className=" text-sm font-medium ">{_STRINGS.PROP_TERMS_PROLUGE}</p>
         <div className="flex flex-col gap-2">
           <p className=" text-sm font-bold">{_STRINGS.CANCENLATION_DESC}</p>
           <p className="text-sm whitespace-pre-wrap  text-justify content ">{selectedRule?.small_text}</p>

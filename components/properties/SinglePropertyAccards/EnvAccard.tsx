@@ -17,12 +17,12 @@ const EnvAccard = ({ data }: { data: SinglePropDto }) => {
         <LinearTextBlock title={_STRINGS.ENV_PATTERN} value={data?.options?.pattern} />
         <LinearTextBlock title={_STRINGS.ACCESS_ROUTE} value={data?.options?.access} />
         <div className=" flex w-full flex-col items-start justify-start gap-2">
-          <p className="text-sm font-light">{_STRINGS.ACCSESS_ROUTE_DESC}</p>
+          <p className="text-sm font-medium ">{_STRINGS.ACCSESS_ROUTE_DESC}</p>
           <p className="font-medium whitespace-pre-wrap "> {data?.property_descriptions?.pattern_dscr}</p>
         </div>
         <LinearTextBlock title={_STRINGS.PROP_NEIGHTBOUR} value={data?.options?.neighborhood} />
         <div className=" flex w-full flex-col items-start justify-start gap-2">
-          <p className="text-sm font-light">{_STRINGS.DISTANCETO_POINT}</p>
+          <p className="text-sm font-medium ">{_STRINGS.DISTANCETO_POINT}</p>
           <p className="font-medium whitespace-pre-wrap"> {data?.property_descriptions?.distance_dscr}</p>
         </div>
       </div>
