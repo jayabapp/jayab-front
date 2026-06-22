@@ -28,7 +28,7 @@ const HeaderTitle = () => {
   } else if (pathname?.includes("/orders/")) {
     return "سفارش";
   } else if (pathname?.includes("/support/")) {
-    return "تیکت ";
+    return "پشتیبانی ";
   } else if (pathname?.includes("/chat/")) {
     return "پیام ";
   } else if (pathname?.includes("/owner/properties/")) {

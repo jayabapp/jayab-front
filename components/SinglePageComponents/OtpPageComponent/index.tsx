@@ -135,12 +135,12 @@ const OtpPageSignInComponent = ({
     const body = {
       mobile_number: mobile_number,
       code: numericCode,
-      query_params: auth_queries,
+      query_params: { redirectUrl: redirectUrl || undefined, ...auth_queries },
     };
 
-    if (!!redirectUrl) {
-      body.query_params = { redirect_url: redirectUrl, ...auth_queries };
-    }
+    // if (!!redirectUrl) {
+    //   body.query_params = { redirect_url: redirectUrl, ...auth_queries };
+    // }
     if (!disable) mutate(body);
   }
 

@@ -21,7 +21,6 @@ import HomeCityFilterCityPart from "../Home/HomeCityFilterContainer/HomeCityFilt
 import Button from "../shared/Button/Button";
 import DrawerMenu from "../shared/DrawerMenu";
 import AbsoluteBadge from "./AbsoluteBadge";
-import HeaderInitialQueriesSetter from "./HeaderInitialQueriesSetter";
 import HeaderTitle from "./HeaderTitle";
 import ProfileDropdown from "./ProfileDropdown";
 const PopSearchbox = dynamic(() => import("../SearchBoxComp/PopSearchbox"), {
@@ -516,9 +515,6 @@ transition-all ease-out  duration-300  header-content-container w-full mx-auto  
       </div>
 
       <DrawerMenu isOpen={isOpen} setIsOpen={setIsOpen} />
-      <Suspense>
-        <HeaderInitialQueriesSetter />
-      </Suspense>
     </header>
   );
 };

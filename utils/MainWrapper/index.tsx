@@ -16,7 +16,7 @@ import { SocketIO } from "../../components/SocketIo";
 // import ConnectingBanner from "@/components/Headers/ConnectingBanner";
 import { AuthService } from "@/api_services/auth/auth.service";
 import RotatePhone from "@/components/shared/Lotties/RotatePhone";
-import { useAuthStore, useStoreInit, useStoreParams, useStoreSocket } from "@/store";
+import { useAuthStore, useStoreInit, useStoreParams } from "@/store";
 // @ts-ignore
 import { authorizeUser, init, onMetrixUserIdReceived, setCustomAttribute, setPhoneNumber } from "@metrixorg/websdk";
 import MobileFooter from "../../components/Footer/MobileFooter";
@@ -45,10 +45,12 @@ const SplashScreen = dynamic(() => import("@/components/SplashScreen"), {
 const Headers = dynamic(() => import("@/components/headers"), {
   ssr: true,
 });
+const HeaderInitialQueriesSetter = dynamic(() => import("@/components/headers/HeaderInitialQueriesSetter"), {
+  ssr: true,
+});
 const MainWrapper = ({ children }: mainWrapper) => {
   const router = useRouter();
   const pathname = usePathname();
-  const { connecting } = useStoreSocket((state) => state);
   const { isDark, setOwmerActiveReservesCount, owmerActiveReservesSocket } = useStoreParams((state) => state);
   const { isLogin, isAdminSso } = useAuthStore((state) => state);
   const [isVisible, setIsVisible] = useState(true);
@@ -244,6 +246,9 @@ const MainWrapper = ({ children }: mainWrapper) => {
   return (
     <div className={`app-background  app-text transition-opacity`}>
       {/* <DesktopHeader /> */}
+      <Suspense>
+        <HeaderInitialQueriesSetter />
+      </Suspense>
       {!headerBlackList.includes(pathname) && <Headers />}
       <div className="app-size relative " style={{ background: pathname == "/" && !isDark ? "" : "" }}>
         {/* {connecting && pathname.includes("/chat") ? <ConnectingBanner /> : <></>} */}

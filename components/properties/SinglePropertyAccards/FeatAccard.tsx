@@ -25,7 +25,7 @@ const FeatAccard = ({ data }: { data: SinglePropDto }) => {
           <></>
         )}
         {!!data?.options?.kitchen ? (
-          <div className="flex w-full flex-col  gap-3">
+          <div className="flex w-full flex-col   gap-3">
             <p className=" font-bold">{_STRINGS.KITCHEN_ACC}</p>
             {data?.options?.kitchen?.map((e) => (
               <PropertySelectedOptions title={e} key={`${e}poolType`} />

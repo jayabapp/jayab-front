@@ -2,7 +2,7 @@ import { md5 } from "js-md5";
 import { cookies } from "next/headers";
 import { NextRequest, NextResponse } from "next/server";
 import serverCall from "./helpers/serverCall";
-import { guardedDirectories } from "./utils/constantss";
+import { guardedDirectories, guardedDirectoriesExceptions } from "./utils/constantss";
 import { apiRoutes, baseUrl } from "./utils/urls";
 export async function middleware(request: NextRequest) {
   const headers = new Headers(request.headers);
@@ -16,7 +16,11 @@ export async function middleware(request: NextRequest) {
   /*                       REDIRECT GUARDED ROUTES TO AUTH                      */
   /* -------------------------------------------------------------------------- */
 
-  if (!isLogin && !!guardedDirectories?.find((e) => PATH_NAME.includes(e))) {
+  if (
+    !isLogin &&
+    !!guardedDirectories?.find((e) => PATH_NAME.includes(e)) &&
+    !guardedDirectoriesExceptions.includes(PATH_NAME)
+  ) {
     const response = NextResponse.redirect(new URL(`/auth?redirect_url=${PATH_NAME}`, request.url), 307);
     return response;
   }

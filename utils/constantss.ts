@@ -32,6 +32,7 @@ export const footerBlacklist = [
 ];
 
 export const guardedDirectories = ["/chat/", "/profile/"];
+export const guardedDirectoriesExceptions = ["/profile/support"];
 
 export const headerBlackList = [
   "/auth",
@@ -177,7 +178,7 @@ export const allRoutes: { [key: string]: string } = {
   requests: "درخواست ها",
   edit: "اطلاعات شخصی",
 
-  support: "تیکت ",
+  support: "پشتیبانی ",
 
   profile: "پروفایل",
   products: "محصولات",
@@ -295,7 +296,7 @@ export const profileItems = [
     title: "پشتیبانی",
     route: "/profile/support",
     imgSrc: "/assets/icons/header/header_support.svg",
-    guard: true,
+    guard: false,
     isMobile: false,
   },
   {

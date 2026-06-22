@@ -442,11 +442,14 @@ const _STRINGS = {
   POOL_LESS: "بدون استخر",
   SUBMIT_DO: "اعمال",
   DELETE_CIIES: "حذف شهرها",
-  WATCH_ALL: "مشاهده بیشتر",
+  WATCH_ALL: "نمایش  بیشتر",
+  SEE_LESS: "نمایش  کمتر",
   TOMAN_PER_NIGHT: "تومان/شب",
   DATE_IS_FILLED: "این تاریخ پر است.",
   SORT_BY: "مرتب سازی",
   PLACE_DESC_MAND: "توضیحات درباره اقامتگاه الزامیست.",
+  FOR_SUPPORT_LOGIN: "برای درخواست پشتیبانی وارد حساب کاربری خود شوید.",
+  HI: "سلام",
 };
 
 export default _STRINGS;
