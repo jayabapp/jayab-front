@@ -24,7 +24,7 @@ const LandingsContentSection = ({ data, options }: { data: Content; options: { p
   return (
     <div
       id={`content${data?.id}`}
-      className={`flex w-full  relative ${options?.parentPadding ?? "pt-12   padding-x  md:px-[15%]  2xl:px-[20%] "}  items-center justify-center flex-col gap-4`}
+      className={`flex w-full  scroll-mt-40  relative ${options?.parentPadding ?? "pt-12   padding-x  md:px-[15%]  2xl:px-[20%] "}  items-center justify-center flex-col gap-4`}
     >
       <div className={`  ${isOpen ? "is-opend    " : " "} accardion-class   rounded-b-md transition-all `}>
         <div
@@ -33,7 +33,7 @@ const LandingsContentSection = ({ data, options }: { data: Content; options: { p
         />
       </div>
       <div
-        className={` absolute  z-1 !rounded-b-10 md:!rounded-b-20 ${isOpen ? "-bottom-8" : "bottom-0"}  left-0 right-0 w-full py-4 md:py-8 bg-gradient-to-b from-white/0 via-white/80 to-white/100 flex items-center justify-center`}
+        className={` absolute  z-1 !rounded-b-10 md:!rounded-b-20 ${isOpen ? "-bottom-12" : "bottom-0"}  left-0 right-0 w-full py-8 md:py-8 bg-gradient-to-b from-white/0 via-white/80 to-white/100 flex items-center justify-center`}
       >
         <div onClick={onOpenClick} className={` cursor-pointer flex items-center gap-2  transition-all`}>
           <p className="text-sm font-medium">{isOpen ? _STRINGS.SEE_LESS : _STRINGS.WATCH_ALL}</p>

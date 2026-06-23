@@ -23,7 +23,7 @@ const HomeContentSection = ({ data, options }: { data: ContentDto; options?: { p
   return (
     <div
       id={`content${data?.id}`}
-      className={`flex w-full  ${options?.parentPadding ?? "pt-12   padding-x  md:px-[15%]  2xl:px-[20%] "}  items-center justify-center flex-col gap-4`}
+      className={`flex w-full scroll-mt-40  ${options?.parentPadding ?? "pt-12   padding-x  md:px-[15%]  2xl:px-[20%] "}  items-center justify-center flex-col gap-4`}
     >
       <h1 className="">{data?.small_text}</h1>
       <div className={`  ${isOpen ? "is-opend    " : " "} accardion-class   rounded-b-md transition-all `}>
