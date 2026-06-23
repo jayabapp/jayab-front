@@ -120,7 +120,7 @@ const ChangePriceModal = ({
 
       const selectedTime = moment(
         `${selectedDateData?.year}/${selectedDateData?.month}/${selectedDateData?.day}`,
-        "jYYYY/jMM/jD"
+        "jYYYY/jMM/jD",
       ).format("YYYY/MM/DD");
 
       if (selectedDateData && moment().isSame(selectedTime, "day")) {
@@ -145,15 +145,16 @@ const ChangePriceModal = ({
   }, [selectedDateData]);
 
   const onSubmit = () => {
-    if (discontPrice > price) {
+    if (discontPrice > price || discontPrice == price) {
       Notify({ body: _STRINGS.DISCOUNT_BIGGER_THAN_PRICE, type: "warn" });
     } else {
+      const discounted_price = !!hasDiscount && !!discontPrice && discontPrice != 0 ? discontPrice : undefined;
       mutate({
         property_id: data?.id,
         month: Number(selectedDateData?.month),
         year: Number(selectedDateData?.year),
         day: Number(selectedDateData?.day),
-        discounted_price: !!hasDiscount ? discontPrice : undefined,
+        discounted_price: discounted_price,
         price: price,
       });
     }
@@ -180,7 +181,7 @@ const ChangePriceModal = ({
         <div className="flex flex-col gap-3 text-primary-700 pt-6 pb-10">
           <div className="flex items-center justify-between">
             <span>
-              قیمت {selectedDateData?.day}/{selectedDateData?.month}/{selectedDateData?.year}
+              قیمت {selectedDateData?.year}/{selectedDateData?.month}/{selectedDateData?.day}
             </span>
             <span>{numberWithCommas(price)}</span>
           </div>
@@ -206,7 +207,7 @@ const ChangePriceModal = ({
           <div className="flex flex-col gap-3 text-primary-700 pt-6 pb-10">
             <div className="flex items-center justify-between">
               <span>
-                قیمت با تخفیف {selectedDateData?.day}/{selectedDateData?.month}/{selectedDateData?.year}
+                قیمت با تخفیف {selectedDateData?.year}/{selectedDateData?.month}/{selectedDateData?.day}
               </span>
               <span>{numberWithCommas(discontPrice)}</span>
             </div>

@@ -178,195 +178,40 @@ const SsrFilterPage = ({
     else setShowShadow(false);
   }, 100);
   return (
-    <div className="app-container  !pt-[7.5rem]  lg:!pt-20  !relative z-2 ">
-      <div className="grid grid-cols-12  col-span-12 ">
-        <div
-          style={{ height: `${stickyHeight}px` }}
-          className="hidden   justify-between   overflow-y-hidden    gap-4 lg:sticky lg:top-20 lg:flex  flex-col items-center rounded-10  border col-span-3 "
-        >
-          <div className=" w-full flex flex-col gap-4 overflow-y-scroll">
-            <FiltersPart propertyTypes={propertyTypes} filters={filters} setFilters={setFilters} queries={queries} />
-          </div>
-          <Button
-            title={_STRINGS?.DO_THE_FILTERING}
-            onClick={() => {
-              queryMaker(filters);
-              // router.replace(`${pathname}?${queryBuilder(specs)}`);
-              setFilterModalShow(false);
-            }}
-            width="w-full"
-            containerClass="w-full flex items-center flex-col px-2 pb-2 pt-0"
-          />
-        </div>{" "}
-        <div
-          className={`col-span-12  md:col-span-12 lg:col-span-9 px-0 md:pr-4 md:pl-0  
-   
-            md:mt-0 `}
-        >
-          <div className=" hidden  mb-2    z-1 w-full xl:flex flex-col xl:flex-row items-center justify-between ">
-            <SingleProductBreadCrumb dataArray={breadCrumbs} />
-          </div>
-          <div className="mb-3  w-full flex items-center justify-between">
-            <h2 className=" text-lg font-medium text-black">{landings?.content?.title}</h2>
-            <div className="w-fit   items-center justify-end  hidden lg:flex">
-              <SpecialFilterButtons query={queries} />
-              <SortMenu query={queries} />
-            </div>
-          </div>
-
-          <div
-            className={`flex fixed  ${
-              !!showShadow ? "shadow-md" : ""
-            }  md:shadow-none pt-1 transition-all duration-300 xl:hidden h-16 right-0  items-center justify-center   z-10 xl:z-1  top-[3rem] xl:top-auto left-0 xl:left-auto bg-white xl:bg-transparent xl:relative flex-col w-full xl:gap-2  `}
-          >
-            {" "}
-            <div className=" flex  order-1  xl:hidden  relative w-full">
-              <div className=" z-1  pr-2  relative  w-full items-center gap-1 justify-between  ">
-                <div className=" !col-span-9 ">
-                  {" "}
-                  <FiltersSelectedFiltersShowcase
-                    setShowRegions={setShowRegions}
-                    cityWithRegions={cityWithRegions}
-                    hiddenFilters={hiddenFilters}
-                    setFilterModalShow={setFilterModalShow}
-                    query={queries}
-                    propertyTypes={propertyTypes || {}}
-                  />
-                </div>{" "}
-              </div>
-            </div>
-          </div>
-
-          <div className="w-full grow-0 shrink-0 flex flex-row  px-1 xl:px-0 relative  justify-between">
-            <div className="flex  flex-row   items-center justify-start  gap-1 ">
-              <div className=" flex lg:hidden ">
-                {" "}
-                <SpecialFilterButtons containerClass=" !w-full   lg:!w-fit" query={queries} />
-              </div>
-              {(!hiddenFilters?.includes("cities") || !!cityWithRegions) && !hiddenFilters?.includes("provinces") ? (
-                <FilterPageCitiesTitle
-                  cityWithRegions={cityWithRegions}
-                  queries={queries}
-                  setShowRegions={setShowRegions}
-                  showRegions={showRegions}
-                  title={cityButtonTItle}
-                  hideCityPart
-                  // hideCityPart={
-                  //   !!hiddenFilters?.includes("cities") &&
-                  //   !!cityWithRegions?.child &&
-                  //   !hiddenFilters?.includes("provinces")
-                  // }
-                  cb={showCityModalFunc}
-                />
-              ) : (
-                <div> </div>
-              )}
+    <>
+      {/* FIlters shoCasE */}
+      <div
+        className={`flex fixed  ${
+          !!showShadow ? "shadow-md" : ""
+        }  md:shadow-none pt-1 transition-all duration-300 xl:hidden h-16 right-0  items-center justify-center   z-10 xl:z-1  top-[3rem] xl:top-auto left-0 xl:left-auto bg-white xl:bg-transparent xl:relative flex-col w-full xl:gap-2  `}
+      >
+        {" "}
+        <div className=" flex  order-1  xl:hidden  relative w-full">
+          <div className=" z-1  pr-2  relative  w-full items-center gap-1 justify-between  ">
+            <div className=" !col-span-9 ">
+              {" "}
               <FiltersSelectedFiltersShowcase
-                cityWithRegions={cityWithRegions}
                 setShowRegions={setShowRegions}
+                cityWithRegions={cityWithRegions}
                 hiddenFilters={hiddenFilters}
-                containerClass="   !hidden md:!contents "
                 setFilterModalShow={setFilterModalShow}
-                query={(() => {
-                  let temp = { ...queries };
-                  removeKeyArray(hiddenFilters, temp);
-
-                  return temp;
-                })()}
+                query={queries}
                 propertyTypes={propertyTypes || {}}
               />
             </div>{" "}
-            <div className="w-fit flex lg:hidden">
-              <SortMenu query={queries} />
-            </div>
           </div>
-          <div className="  min-h-[80dvh] mb-12 xl:mb-20">
-            {/* SIDEBAR */}
-
-            {/* LEFT SIDE */}
-
-            {firstData?.data ? <SsrPartFilter firstData={firstData?.data} devices={devices} /> : <></>}
-            {(queriesParams?.page == 1 || !queriesParams?.page) &&
-            !isEmpty(firstData?.data) &&
-            firstData?.data?.length % 30 == 0 ? (
-              <Button
-                onClick={() => {
-                  let temp = { ...queries };
-                  removeKeyArray(hiddenFilters, temp);
-                  window?.history?.replaceState(
-                    {},
-                    "",
-                    `${pathname}?${queryBuilder({
-                      ...temp,
-                      page: 2,
-                    })}`,
-                  );
-                }}
-                title={_STRINGS.SHOW_MORE}
-                containerClass="w-full mt-6 flex items-center justify-center"
-              />
-            ) : (
-              <></>
-            )}
-            <SsrClinetPartFilterProperties
-              pageQuery={queriesParams?.page}
-              sortType={sortType}
-              query={queries}
-              hiddenFilters={hiddenFilters}
-            />
-          </div>
-          <SsrFilterPageContents data={landings} />
         </div>
-        {/*  CONTENT PART */}
       </div>
-      {/* <=======================================================================MODALS ================================================================> */}
-      <Modal
-        options={{
-          containerClass:
-            "mx-auto  my-0 xl:my-10  h-full   w-full xl:w-1/2 xl:w-1/3 2xl:w-1/4 rounded-0 overflow-y-scroll  bg-white pb-32  dark:bg-zinc-800",
-        }}
-        show={filterModalShow && !showCityModal}
-        onHide={() => {
-          setFilters(defaultMobileFilters);
-          setFilterModalShow(false);
-        }}
-      >
-        {/* HEADER */}
-        <ModalHeaderPart
-          title={_STRINGS.FILTERS}
-          onHide={() => {
-            setFilters(defaultMobileFilters);
-            setFilterModalShow(false);
-          }}
-        />
-
-        {/* BODY */}
-        <div className="w-[90%] mx-auto">
-          <div className=" w-full  pt-4 pb-8  ">
-            {(!hiddenFilters?.includes("cities") || !!cityWithRegions) && !hiddenFilters?.includes("provinces") ? (
-              <FilterPageCitiesTitle
-                cityWithRegions={cityWithRegions}
-                setShowRegions={setShowRegions}
-                showRegions={showRegions}
-                queries={queries}
-                title={cityButtonTItle}
-                hideCityPart
-                cb={showCityModalFunc}
-              />
-            ) : (
-              <div> </div>
-            )}
-
-            <FiltersPart
-              hiddenFilters={hiddenFilters}
-              propertyTypes={propertyTypes}
-              filters={filters}
-              setFilters={setFilters}
-              queries={queries}
-            />
-          </div>
-          <div className=" w-full   pb-6 fixed bottom-0 right-0 bg-white z-1 border-t  ">
-            {" "}
+      {/* ////////////////////////////////// */}
+      <div className="app-container  !pt-[7.5rem]  lg:!pt-20  !relative z-2 ">
+        <div className="grid grid-cols-12  col-span-12 ">
+          <div
+            style={{ height: `${stickyHeight}px` }}
+            className="hidden   justify-between   overflow-y-hidden    gap-4 lg:sticky lg:top-20 lg:flex  flex-col items-center rounded-10  border col-span-3 "
+          >
+            <div className=" w-full flex flex-col gap-4 overflow-y-scroll">
+              <FiltersPart propertyTypes={propertyTypes} filters={filters} setFilters={setFilters} queries={queries} />
+            </div>
             <Button
               title={_STRINGS?.DO_THE_FILTERING}
               onClick={() => {
@@ -375,29 +220,187 @@ const SsrFilterPage = ({
                 setFilterModalShow(false);
               }}
               width="w-full"
-              containerClass="w-full flex items-center flex-col px-2 pb-2 pt-6"
-            />{" "}
+              containerClass="w-full flex items-center flex-col px-2 pb-2 pt-0"
+            />
+          </div>{" "}
+          <div
+            className={`col-span-12  md:col-span-12 lg:col-span-9 px-0 md:pr-4 md:pl-0  
+   
+            md:mt-0 `}
+          >
+            <div className=" hidden  mb-2    z-1 w-full xl:flex flex-col xl:flex-row items-center justify-between ">
+              <SingleProductBreadCrumb dataArray={breadCrumbs} />
+            </div>
+            <div className="mb-3  w-full flex items-center justify-between">
+              <h2 className=" text-lg font-medium text-black">{landings?.content?.title}</h2>
+              <div className="w-fit   items-center justify-end  hidden lg:flex">
+                <SpecialFilterButtons query={queries} />
+                <SortMenu query={queries} />
+              </div>
+            </div>
+
+            <div className="w-full grow-0 shrink-0 flex flex-row  px-1 xl:px-0 relative  justify-between">
+              <div className="flex  flex-row   items-center justify-start  gap-1 ">
+                <div className=" flex lg:hidden ">
+                  {" "}
+                  <SpecialFilterButtons containerClass=" !w-full   lg:!w-fit" query={queries} />
+                </div>
+                {(!hiddenFilters?.includes("cities") || !!cityWithRegions) && !hiddenFilters?.includes("provinces") ? (
+                  <FilterPageCitiesTitle
+                    cityWithRegions={cityWithRegions}
+                    queries={queries}
+                    setShowRegions={setShowRegions}
+                    showRegions={showRegions}
+                    title={cityButtonTItle}
+                    hideCityPart
+                    // hideCityPart={
+                    //   !!hiddenFilters?.includes("cities") &&
+                    //   !!cityWithRegions?.child &&
+                    //   !hiddenFilters?.includes("provinces")
+                    // }
+                    cb={showCityModalFunc}
+                  />
+                ) : (
+                  <div> </div>
+                )}
+                <FiltersSelectedFiltersShowcase
+                  cityWithRegions={cityWithRegions}
+                  setShowRegions={setShowRegions}
+                  hiddenFilters={hiddenFilters}
+                  containerClass="   !hidden md:!contents "
+                  setFilterModalShow={setFilterModalShow}
+                  query={(() => {
+                    let temp = { ...queries };
+                    removeKeyArray(hiddenFilters, temp);
+
+                    return temp;
+                  })()}
+                  propertyTypes={propertyTypes || {}}
+                />
+              </div>{" "}
+              <div className="w-fit flex lg:hidden">
+                <SortMenu query={queries} />
+              </div>
+            </div>
+            <div className="  min-h-[80dvh] mb-12 xl:mb-20">
+              {/* SIDEBAR */}
+
+              {/* LEFT SIDE */}
+
+              {firstData?.data ? <SsrPartFilter firstData={firstData?.data} devices={devices} /> : <></>}
+              {(queriesParams?.page == 1 || !queriesParams?.page) &&
+              !isEmpty(firstData?.data) &&
+              firstData?.data?.length % 30 == 0 ? (
+                <Button
+                  onClick={() => {
+                    let temp = { ...queries };
+                    removeKeyArray(hiddenFilters, temp);
+                    window?.history?.replaceState(
+                      {},
+                      "",
+                      `${pathname}?${queryBuilder({
+                        ...temp,
+                        page: 2,
+                      })}`,
+                    );
+                  }}
+                  title={_STRINGS.SHOW_MORE}
+                  containerClass="w-full mt-6 flex items-center justify-center"
+                />
+              ) : (
+                <></>
+              )}
+              <SsrClinetPartFilterProperties
+                pageQuery={queriesParams?.page}
+                sortType={sortType}
+                query={queries}
+                hiddenFilters={hiddenFilters}
+              />
+            </div>
+            <SsrFilterPageContents data={landings} />
           </div>
+          {/*  CONTENT PART */}
         </div>
-      </Modal>
-      <CityModal
-        setRegionsCb={setCityWithRegions}
-        passedUrl={pathname}
-        onSubmitCustomeCB={!!filterModalShow ? setFilters : undefined}
-        customeValues={filters}
-        // customeValues={!!filterModalShow ? filters : false}
-        show={showCityModal}
-        onHide={hideCityModal}
-        setTitle={setCityTitleButton}
-      />
-      <RegionModal
-        cityWithRegions={cityWithRegions}
-        show={showRegions}
-        onHide={() => {
-          setShowRegions(false);
-        }}
-      />{" "}
-    </div>
+        {/* <=======================================================================MODALS ================================================================> */}
+        <Modal
+          options={{
+            containerClass:
+              "mx-auto  my-0 xl:my-10  h-full   w-full xl:w-1/2 xl:w-1/3 2xl:w-1/4 rounded-0 overflow-y-scroll  bg-white pb-32  dark:bg-zinc-800",
+          }}
+          show={filterModalShow && !showCityModal}
+          onHide={() => {
+            setFilters(defaultMobileFilters);
+            setFilterModalShow(false);
+          }}
+        >
+          {/* HEADER */}
+          <ModalHeaderPart
+            title={_STRINGS.FILTERS}
+            onHide={() => {
+              setFilters(defaultMobileFilters);
+              setFilterModalShow(false);
+            }}
+          />
+
+          {/* BODY */}
+          <div className="w-[90%] mx-auto">
+            <div className=" w-full  pt-4 pb-8  ">
+              {(!hiddenFilters?.includes("cities") || !!cityWithRegions) && !hiddenFilters?.includes("provinces") ? (
+                <FilterPageCitiesTitle
+                  cityWithRegions={cityWithRegions}
+                  setShowRegions={setShowRegions}
+                  showRegions={showRegions}
+                  queries={queries}
+                  title={cityButtonTItle}
+                  hideCityPart
+                  cb={showCityModalFunc}
+                />
+              ) : (
+                <div> </div>
+              )}
+
+              <FiltersPart
+                hiddenFilters={hiddenFilters}
+                propertyTypes={propertyTypes}
+                filters={filters}
+                setFilters={setFilters}
+                queries={queries}
+              />
+            </div>
+            <div className=" w-full   pb-6 fixed bottom-0 right-0 bg-white z-1 border-t  ">
+              {" "}
+              <Button
+                title={_STRINGS?.DO_THE_FILTERING}
+                onClick={() => {
+                  queryMaker(filters);
+                  // router.replace(`${pathname}?${queryBuilder(specs)}`);
+                  setFilterModalShow(false);
+                }}
+                width="w-full"
+                containerClass="w-full flex items-center flex-col px-2 pb-2 pt-6"
+              />{" "}
+            </div>
+          </div>
+        </Modal>
+        <CityModal
+          setRegionsCb={setCityWithRegions}
+          passedUrl={pathname}
+          onSubmitCustomeCB={!!filterModalShow ? setFilters : undefined}
+          customeValues={filters}
+          // customeValues={!!filterModalShow ? filters : false}
+          show={showCityModal}
+          onHide={hideCityModal}
+          setTitle={setCityTitleButton}
+        />
+        <RegionModal
+          cityWithRegions={cityWithRegions}
+          show={showRegions}
+          onHide={() => {
+            setShowRegions(false);
+          }}
+        />{" "}
+      </div>{" "}
+    </>
   );
 };
 
