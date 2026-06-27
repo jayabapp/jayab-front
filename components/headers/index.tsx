@@ -48,7 +48,7 @@ const TextIcon = ({ item, isHome, visibleTopHeader }: textIconType) => {
         {item?.hasBadge ? <Pulser /> : <></>}
 
         <p
-          className={`${textColor}  text-sm lg:text-base transition-all  duration-100  shrink-0  font-medium  group-hover:brightness-100 group-hover:text-primary-700  `}
+          className={`${textColor}  text-sm xl:text-base transition-all  duration-100  shrink-0  font-medium  group-hover:brightness-100 group-hover:text-primary-700  `}
         >
           {item?.title}
         </p>
@@ -60,7 +60,7 @@ const TextIcon = ({ item, isHome, visibleTopHeader }: textIconType) => {
         {item?.hasBadge ? <Pulser /> : <></>}
 
         <p
-          className={`${textColor} ${visibleTopHeader} shrink-0 text-sm lg:text-base   cursor-pointer ransition-all duration-100 font-medium  group-hover:brightness-100 group-hover:text-primary-700  `}
+          className={`${textColor} ${visibleTopHeader} shrink-0 text-sm xl:text-base   cursor-pointer ransition-all duration-100 font-medium  group-hover:brightness-100 group-hover:text-primary-700  `}
         >
           {item?.title}
         </p>
@@ -223,7 +223,7 @@ const Header = ({ scroll }: { scroll?: number }) => {
 
   const MenuProfileItem = () => {
     return (
-      <div className=" flex items-center  gap-3 lg:gap-6">
+      <div className=" flex items-center  gap-3 xl:gap-6">
         <Link
           title={_STRINGS.MY_PROFILE}
           href={!!isLogin ? "/profile" : "/auth"}
@@ -236,7 +236,7 @@ const Header = ({ scroll }: { scroll?: number }) => {
                 ? NEW_IMAGE_URL(userInfo?.profile_image)
                 : "/assets/icons/header/new-face/user.svg"
             }
-            className={` ${isLogin && !userInfo?.profile_image ? " lg:brightness-0" : !isLogin && !isHeaderLight ? " brightness-0" : ""}  shrink-0  size-6  rounded-full transform-gpu transition-all `}
+            className={` ${isLogin && !userInfo?.profile_image ? " xl:brightness-0" : !isLogin && !isHeaderLight ? " brightness-0" : ""}  shrink-0  size-6  rounded-full transform-gpu transition-all `}
           />
         </Link>
 
@@ -276,14 +276,14 @@ transition-all ease-out  duration-300  header-content-container w-full mx-auto  
       >
         {/* ROW 1 */}
         <div
-          className={`flex justify-between  transition-all items-center  xl:gap-[10%]    duration-300  padding-x  py-2 lg:py-4   ${isHeaderLight ? "    bg-transparent " : topHeaderVisible ? "   bg-white   " : `   bg-white    ${headerWithFullSeach.includes(pathname) || !!params?.slug ? " border-b  lg:border-b-0  lg:shadow-lg" : "shadow-lg"}  `} `}
+          className={`flex justify-between  transition-all items-center  xl:gap-[10%]    duration-300  padding-x  py-2 xl:py-4   ${isHeaderLight ? "    bg-transparent " : topHeaderVisible ? "   bg-white   " : `   bg-white    ${headerWithFullSeach.includes(pathname) || !!params?.slug ? " border-b  xl:border-b-0  xl:shadow-lg" : "shadow-lg"}  `} `}
         >
-          <div className=" lg:hidden flex w-full  ">
+          <div className=" xl:hidden flex w-full  ">
             {isHome ? (
-              <div className="w-full flex items-center  py-1  rounded-full justify-between pl-2 pr-1.5 gap-3 lg:gap-6">
+              <div className="w-full flex items-center  py-1  rounded-full justify-between pl-2 pr-1.5 gap-3 xl:gap-6">
                 <MenuProfileItem />
 
-                <div className="flex items-center gap-3 lg:gap-6 w-full justify-end">
+                <div className="flex items-center gap-3 xl:gap-6 w-full justify-end">
                   <div className={` ${topHeaderVisible ? "hidden" : "  flex"} transition-all   w-full `}>
                     <Suspense>
                       <PopSearchbox
@@ -300,7 +300,7 @@ transition-all ease-out  duration-300  header-content-container w-full mx-auto  
 
                   <div className="flex items-center gap-1 shrink-0 justify-center">
                     <img
-                      className={`w-16 ${topHeaderVisible && !!isHome ? "flex  grayscale brightness-[500]" : "hidden  lg:flex"} `}
+                      className={`w-16 ${topHeaderVisible && !!isHome ? "flex  grayscale brightness-[500]" : "hidden  xl:flex"} `}
                       src="/assets/icons/logo/just_title_logo.svg"
                     />
                     <img
@@ -417,7 +417,7 @@ transition-all ease-out  duration-300  header-content-container w-full mx-auto  
             )}
           </div>
           <div
-            className={` text-xs   lg:text-md   gap-8 font-medium flex-row hidden lg:flex w-[50%] transition-all  ease-in-out duration-1000 items-center `}
+            className={` text-xs   xl:text-md   gap-8 font-medium flex-row hidden xl:flex w-[50%] transition-all  ease-in-out duration-1000 items-center `}
           >
             <MenuProfileItem />
 
@@ -465,7 +465,7 @@ transition-all ease-out  duration-300  header-content-container w-full mx-auto  
               item={{ title: _STRINGS.ADD_ADD, cb: onCreateAddClick }}
             />
           </div>
-          <div className="hidden md:visible items-center  justify-between lg:flex flex-row  w-2/5">
+          <div className="hidden md:visible items-center  justify-between xl:flex flex-row  w-2/5">
             <div
               key={`heaeder
             
@@ -503,7 +503,7 @@ transition-all ease-out  duration-300  header-content-container w-full mx-auto  
                 {" "}
                 <div className="flex items-center shrink-0 gap-1 justify-center">
                   <img
-                    className={`w-16 ${topHeaderVisible && !!isHome ? "flex  grayscale brightness-[500]" : "hidden  lg:flex"} `}
+                    className={`w-16 ${topHeaderVisible && !!isHome ? "flex  grayscale brightness-[500]" : "hidden  xl:flex"} `}
                     src="/assets/icons/logo/just_title_logo.svg"
                   />
                   <img className="w-10 h-10 aspect-square shrink-0" src="/assets/icons/logo/header_mobile_logo.svg" />

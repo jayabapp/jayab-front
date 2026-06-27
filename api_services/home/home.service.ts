@@ -80,15 +80,14 @@ export class HomeService {
 
   static async GetContent(dto: { key: string; page: number; per_page?: number }) {
     try {
-      const result = await apiCall<{ key: string; page: number; per_page?: number }, { data: ContentDto[]; meta: any }>(
-        "GET",
-        apiRoutes.CONTENTS,
-        {
-          key: dto?.key,
-          page: dto?.page,
-          per_page: dto?.per_page,
-        },
-      );
+      const result = await apiCall<
+        { key: string; page: number; per_page?: number },
+        { data: ContentDto[]; meta: Meta }
+      >("GET", apiRoutes.CONTENTS, {
+        key: dto?.key,
+        page: dto?.page,
+        per_page: dto?.per_page,
+      });
       return result;
     } catch (e) {
       throw e;

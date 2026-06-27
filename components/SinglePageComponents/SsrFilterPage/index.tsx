@@ -267,7 +267,7 @@ const SsrFilterPage = ({
                   cityWithRegions={cityWithRegions}
                   setShowRegions={setShowRegions}
                   hiddenFilters={hiddenFilters}
-                  containerClass="   !hidden md:!contents "
+                  containerClass="   !hidden xl:!contents "
                   setFilterModalShow={setFilterModalShow}
                   query={(() => {
                     let temp = { ...queries };

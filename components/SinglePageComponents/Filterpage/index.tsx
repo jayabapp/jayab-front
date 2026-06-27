@@ -143,7 +143,7 @@ const Filterpage = ({ devices }: { devices: DeviceInfo }) => {
 
   const { topHeaderVisible } = useStoreParams((state: any) => state);
   return (
-    <div className="app-container !px-0 md:!px-10  2xl:px-[9%] !pt-[7.5rem]  lg:!pt-20  xl: z-2  flex flex-col !gap-2 ">
+    <div className="app-container !px-0 md:!px-10  2xl:px-[9%] !pt-[7.5rem]  xl:!pt-20  xl: z-2  flex flex-col !gap-2 ">
       {/* <div className="app-container !px-0 xl:!px-10 lg:!px-12 2xl:!px-[5%] !pt-32  lg:!pt-20  xl: z-2  flex flex-col !gap-2 "> */}
       <div className="grid grid-cols-12  col-span-12 ">
         <div
