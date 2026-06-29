@@ -155,11 +155,17 @@ export const BlogSchema = ({
   data,
   wordCount,
   timeToRead,
+  rate,
+  rate_count,
 }: {
   data: ContentDto;
   wordCount: number;
   timeToRead: number;
+  rate_count: number;
+  rate: number;
 }) => {
+  const hasRating = rate != null && Number(rate_count) > 0;
+
   return JsonLd<BlogPosting | Article>({
     "@context": "https://schema.org",
     "@type": !!data?.fields?.type?.length ? "BlogPosting" : "Article",
@@ -168,12 +174,28 @@ export const BlogSchema = ({
     url: `${process.env.NEXT_PUBLIC_WEB_SITE}/blog/${data?.slug}`,
     name: data?.title,
     headline: data?.title,
-    author: { "@type": "Person", name: data?.fields?.author, url: process.env.NEXT_PUBLIC_WEB_SITE },
+    author: {
+      "@type": "Person",
+      name: data?.fields?.author,
+      url: process.env.NEXT_PUBLIC_WEB_SITE,
+    },
     image: [NEW_IMAGE_URL(data?.feature_image)],
     description: data?.small_text,
     dateCreated: data?.created_at,
     dateModified: data?.updated_at,
     datePublished: data?.created_at,
+
+    ...(hasRating
+      ? {
+          aggregateRating: {
+            "@type": "AggregateRating",
+            ratingValue: Number(rate),
+            bestRating: 5,
+            worstRating: 1,
+            ratingCount: Number(rate_count),
+          },
+        }
+      : {}),
   });
 };
 

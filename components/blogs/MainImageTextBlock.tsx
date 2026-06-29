@@ -45,6 +45,7 @@ const MainImageTextBlock = ({ data, children, timeToRead, breadcrumb }: ImageTex
             className="w-full !aspect-[3/2] !rounded-20 object-cover "
             src={NEW_IMAGE_URL(item?.image)}
             alt={item?.title}
+            title={item?.title}
           />
         </div>
         {!isEmpty(breadcrumb) && !!breadcrumb ? (

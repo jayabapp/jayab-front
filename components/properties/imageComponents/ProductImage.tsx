@@ -1,5 +1,4 @@
 import { NEW_IMAGE_URL } from "@/utils/urls";
-import React from "react";
 
 type ProductImageType = {
   item: any;
@@ -7,12 +6,15 @@ type ProductImageType = {
   imageSize?: "name" | "thumbnail" | "medium" | undefined;
   onClick: () => void | null;
   id: string | null;
+  alt?: string | null;
 };
 
-function ProductImage({ item, moreClass, onClick, id = null, imageSize }: ProductImageType) {
+function ProductImage({ item, moreClass, onClick, id = null, imageSize, alt }: ProductImageType) {
   return (
     <>
       <img
+        alt={alt || ""}
+        title={alt || ""}
         id={id ? `${id}` : "15"}
         // src={item}
         loading="lazy"

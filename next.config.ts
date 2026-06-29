@@ -189,7 +189,7 @@ const nextConfig: NextConfig = {
         new webpack.IgnorePlugin({
           resourceRegExp: /^\.\/locale$/,
           contextRegExp: /moment$/,
-        })
+        }),
       );
 
       // Add Gzip compression (always enabled)
@@ -201,7 +201,7 @@ const nextConfig: NextConfig = {
           threshold: 10240,
           minRatio: 0.8,
           deleteOriginalAssets: false,
-        })
+        }),
       );
 
       // Add Brotli compression conditionally
@@ -215,7 +215,7 @@ const nextConfig: NextConfig = {
             threshold: 10240,
             minRatio: 0.8,
             deleteOriginalAssets: false,
-          })
+          }),
         );
       }
     }
@@ -233,6 +233,10 @@ const nextConfig: NextConfig = {
       {
         source: "/robots.txt",
         destination: "/api/robots",
+      },
+      {
+        source: "/llms.txt",
+        destination: "/api/llms",
       },
       {
         source: "/sitemap.xml",

@@ -63,9 +63,13 @@ export const apiRoutes = {
 
   CONTENTS_QUESTIONS: `/content-questions`,
 
+  CONTENTS_QUESTIONS_RATE: `/content-questions/rate`,
+
   SETTING_SITEMAP: `/settings/sitemap`,
 
   SETTING_ROBOTS: `/settings/robots`,
+
+  SETTING_LLMS: `/settings/llms`,
 
   SEARCH_SUGGS: `/user/properties/search/suggestions`,
 

@@ -70,6 +70,7 @@ function ProductImagesContainer({
   productImageId: number | null;
   attsImagesArray?: any[] | number[];
 }) {
+  const imagesDefautAlt = data?.title;
   const [currentIndex, setCurrentIndex] = useState(0);
 
   const { userInfo } = useStoreInit((data) => data);
@@ -86,11 +87,11 @@ function ProductImagesContainer({
     [...data?.images];
   const [addImages, setAddImages] = useState<(any | undefined)[]>(
     // data?.video ? [data?.feature_image, ...data?.images, data?.video] :
-    [...data?.images]
+    [...data?.images],
   );
   const allImagesIds = difference(
     defaultImages?.map((e) => e?.id),
-    attsImagesArray || []
+    attsImagesArray || [],
   );
 
   // Here we filter out images with diffrent tag ids.  only the selectd tags image and default ones
@@ -131,6 +132,7 @@ function ProductImagesContainer({
               {true ? (
                 <div className={` rounded-10 overflow-clip  ${index == 3 ? " blur-sm " : " "}`}>
                   <ProductImage
+                    alt={imagesDefautAlt}
                     imageSize="thumbnail"
                     id={`${e?.id}`}
                     item={e}
@@ -155,7 +157,12 @@ function ProductImagesContainer({
         </div>
       </div>
       {modalProps.isVisible && (
-        <RoomImageModalPart addImages={addImages} modalProps={modalProps} setModalProps={setModalProps} />
+        <RoomImageModalPart
+          alt={imagesDefautAlt}
+          addImages={addImages}
+          modalProps={modalProps}
+          setModalProps={setModalProps}
+        />
       )}
       {/* ${!data?.cheapest_price ? "grayscale" : ""}  */}
       <div
@@ -195,7 +202,8 @@ function ProductImagesContainer({
                       className={`w-full h-full !p-0  transform-gpu !overflow-clip  bg-white  transition-all 
                   
                       rounded-20 duration-500 aspect-square !object-cover `}
-                      alt={`${i?.alt || ""}`}
+                      alt={`${i?.alt || imagesDefautAlt || ""}`}
+                      title={imagesDefautAlt}
                     />
                   </div>
                 </SwiperSlide>

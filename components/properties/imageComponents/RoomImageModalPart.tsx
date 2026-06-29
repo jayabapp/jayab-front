@@ -1,22 +1,24 @@
 "use client";
-import { useCallback, useEffect, useRef, useState } from "react";
-import { ImageSlideType } from "./PropertiesImagesPart";
 import Modal from "@/components/Modal";
-import _STRINGS from "@/utils/LocalStrings";
+import { useEffect, useRef, useState } from "react";
+import { ImageSlideType } from "./PropertiesImagesPart";
 
 import SmallLoading from "@/components/shared/Lotties/SmallLoading";
 import { NEW_IMAGE_URL } from "@/utils/urls";
 
 import SwiperWithThumnails from "@/components/embelaCarousel/SwiperWithThumnails";
-import { TransformWrapper, TransformComponent } from "react-zoom-pan-pinch";
+import { TransformComponent, TransformWrapper } from "react-zoom-pan-pinch";
 const RoomImageModalPart = ({
   modalProps,
   setModalProps,
   addImages,
+  alt,
 }: {
   addImages?: (any | undefined)[];
   modalProps?: ImageSlideType;
   setModalProps: (e?: ImageSlideType | null | any) => void | null | undefined;
+
+  alt?: string;
 }) => {
   const [isVisible, setisVisible] = useState(false);
   const [activeIndex, setActiveIndex] = useState(modalProps?.currentIndex);
@@ -43,8 +45,8 @@ const RoomImageModalPart = ({
     modalProps?.data?.video && !!addImages
       ? [...addImages, modalProps?.data?.video]
       : !!addImages
-      ? [...addImages]
-      : [];
+        ? [...addImages]
+        : [];
 
   return (
     <Modal
@@ -87,6 +89,8 @@ const RoomImageModalPart = ({
                   <TransformWrapper panning={{ disabled: true }} disablePadding limitToBounds>
                     <TransformComponent>
                       <img
+                        alt={alt || ""}
+                        title={alt || ""}
                         className="w-fit  embla__slide  object-contain  h-full rounded-md  !max-h-[60dvh]  "
                         src={NEW_IMAGE_URL(i)}
                       />

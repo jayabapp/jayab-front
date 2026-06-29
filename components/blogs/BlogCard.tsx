@@ -13,7 +13,7 @@ const LatestBlogCard = ({ item }: { item: ContentDto }) => {
     <Editable
       contentId={item?.id}
       containerClass={"h-full"}
-      className={`  !h-full  overflow-clip aspect-auto  rounded-20 shadow-card  justify-between  hover:scale-95   bg-white   relative cursor-pointer transition-all duration-200 ease-in-out group    flex items-center  flex-col gap-1   `}
+      className={`  !h-full  overflow-clip aspect-auto  rounded-20 shadow-card  justify-between  hover:scale-98   bg-white   relative cursor-pointer transition-all duration-200 ease-in-out group    flex items-center  flex-col gap-1   `}
     >
       <Link href={`/blog/${item?.slug}`} title={item?.title} className="flex flex-col w-full">
         {" "}

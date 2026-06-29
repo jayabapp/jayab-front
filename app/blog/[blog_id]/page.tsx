@@ -34,6 +34,17 @@ const SingleBlogPage = async ({ params }: Props) => {
     { redirect404: true },
   );
 
+  /* -------------------------------------------------------------------------- */
+  /*                                    RATE                                    */
+  /* -------------------------------------------------------------------------- */
+  const { data: rateData }: { data: { rate: number; rate_count: number } } = await serverCall(
+    baseUrl + apiRoutes.CONTENTS_QUESTIONS_RATE,
+    {
+      content_id: data?.id,
+    },
+  );
+
+  //////////////////////////////////////////////////////////////
   const { html, headings, timeToRead, wordCount, faqData } = HTMLGenerator(data?.html || "", {
     hasHeading: true,
     hasCount: true,
@@ -44,9 +55,16 @@ const SingleBlogPage = async ({ params }: Props) => {
     { title: data?.category?.title || "", link: `/blog` },
     { title: data?.title || "", link: `#` },
   ];
+
   return (
     <div className="app-container relative !pt-24 flex flex-col !gap-6  !overflow-visible">
-      <BlogSchema data={data} timeToRead={timeToRead || 0} wordCount={wordCount || 0} />
+      <BlogSchema
+        rate={rateData?.rate}
+        rate_count={rateData?.rate_count}
+        data={data}
+        timeToRead={timeToRead || 0}
+        wordCount={wordCount || 0}
+      />
       <ContentFAQSchema faqData={faqData || []} />
       {!data ? null : (
         <div className="w-full md:flex hidden">
