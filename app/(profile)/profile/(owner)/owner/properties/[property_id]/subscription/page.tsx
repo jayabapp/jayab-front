@@ -26,7 +26,7 @@ const Subscription = () => {
   const [price, setPrice] = useState(0);
   const [promoteItemId, setPromoteItemId] = useState<number | undefined>(undefined);
   const [canPromote, setCanPromote] = useState(false);
-
+  const [shownPlans, setShownPlans] = useState<PropertySubsDto[]>([]);
   /* -------------------------------------------------------------------------- */
   /*                              SUBSCRIPTIONS                                 */
   /* -------------------------------------------------------------------------- */
@@ -57,6 +57,30 @@ const Subscription = () => {
       setCanPromote(subscriptionPlans.can_promote);
     }
   }, [subscriptionPlans]);
+
+  /* -------------------------------------------------------------------------- */
+  /*                              FILTERS SUB PLANS                             */
+  /* -------------------------------------------------------------------------- */
+
+  const { data, isLoading } = useQuery({
+    queryKey: [PropertyService.OWNER_PROPERTIES_CACHEKEY, property_id],
+    queryFn: () => {
+      if (!!property_id) {
+        return PropertyService.GetSingleOwnerProperty({ property_id: `${property_id}` });
+      } else return null;
+    },
+  });
+
+  useEffect(() => {
+    const ONE_DAY_PLAN_ID = 1;
+
+    let filterdOnes = subscriptionPlans?.list;
+    if (!!data?.remaining_days || !canPromote) {
+      filterdOnes = subscriptionPlans?.list?.filter((e) => e?.id != ONE_DAY_PLAN_ID);
+    }
+
+    setShownPlans(filterdOnes || []);
+  }, [subscriptionPlans, data, canPromote]);
 
   /* -------------------------------------------------------------------------- */
   /*                                PROPERTY STATS                               */
@@ -163,7 +187,7 @@ const Subscription = () => {
   return (
     <div className="profile-container flex flex-col gap-6">
       <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-        {subscriptionPlans?.list?.map((e) => (
+        {shownPlans?.map((e) => (
           <CheckboxCardContainer
             key={e.id}
             item={{
