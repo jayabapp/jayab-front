@@ -837,3 +837,11 @@ ul {
   /* 0.7s duration, using the exact cubic-bezier from your Framer Motion config */
   animation: logo-pop 0.7s cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
 }
+
+.new-tag {
+  background: linear-gradient(180deg, #ff535f 0%, #ed333f 50%, #dd323d 100%);
+
+  box-shadow: 0px 2px 3px 0px rgba(255, 255, 255, 0.4) inset;
+
+  box-shadow: 0px -2px 3.4px 0px rgba(168, 40, 47, 1) inset;
+}

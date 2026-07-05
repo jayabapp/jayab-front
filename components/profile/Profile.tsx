@@ -138,7 +138,7 @@ const Profile = ({}) => {
             disableArrow
             item={{
               id: 1215,
-              imgSrc: "/assets/icons/property/upscale_icon.svg",
+              imgSrc: "/assets/icons/adds/header_upgrade_image.svg",
               route: "/profile/owner/photo-upgrade-requests",
               title: "درخواست های بهینه سازی تصویر",
             }}

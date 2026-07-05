@@ -71,6 +71,8 @@ export const apiRoutes = {
 
   SETTING_LLMS: `/settings/llms`,
 
+  SETTING: `/settings`,
+
   SEARCH_SUGGS: `/user/properties/search/suggestions`,
 
   SEARCH: `/user/properties/search/extract`,

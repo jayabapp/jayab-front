@@ -154,7 +154,7 @@ const PropertyCard = ({
               alt={data?.feature_image?.alt || ""}
               src={
                 !!data?.feature_image
-                  ? NEW_IMAGE_URL(data?.feature_image, "medium")
+                  ? NEW_IMAGE_URL(data?.feature_image)
                   : "/assets/icons/shared/image_placeholder.svg"
               }
               className=" w-full rounded-2xl  h-full  object-cover aspect-square"
@@ -206,7 +206,7 @@ const PropertyCard = ({
             onClick={() => onPhotoUpgradeClick?.(data)}
             className="flex w-full items-center justify-center gap-2 rounded-10 border border-primary-700/30 bg-primary-700/10 px-3 py-2 text-sm font-medium text-primary-700 transition-all hover:bg-primary-700/15"
           >
-            <img src="/assets/icons/property/upscale_icon.svg" alt="" className="h-5 w-5" />
+            <img src="/assets/icons/header/upgrade_image.svg" alt="" className="h-5 w-5" />
             اصلاح تصویر
           </button>
           <PropertyCardOwnerPart goToLink={goToLink} data={data} />

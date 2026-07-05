@@ -1,9 +1,12 @@
 "use client";
 
+import { ImageDto } from "@/api_services/auth/auth.interface";
 import { PhotoUpgradeRequestItemDto } from "@/api_services/photo-upgrade/photo-upgrade.interface";
 import StatusShower from "@/components/shared/StatusShower";
-import { ImageDto } from "@/api_services/auth/auth.interface";
+import FullscreenImage from "@/components/uploader/FullScreenImage";
 import { NEW_IMAGE_URL } from "@/utils/urls";
+import Link from "next/link";
+import { useState } from "react";
 
 const getOldImage = (item: PhotoUpgradeRequestItemDto): ImageDto | null =>
   item?.original_attachment ||
@@ -14,22 +17,20 @@ const getOldImage = (item: PhotoUpgradeRequestItemDto): ImageDto | null =>
   null;
 
 const getNewImage = (item: PhotoUpgradeRequestItemDto): ImageDto | null =>
-  item?.optimized_attachment ||
-  item?.new_attachment ||
-  item?.attachment ||
-  item?.image ||
-  null;
+  item?.optimized_attachment || item?.new_attachment || item?.attachment || item?.image || null;
 
 const ImageBox = ({
   title,
   image,
   emptyTitle = "عکسی ثبت نشده",
+  cb,
 }: {
   title: string;
   image?: ImageDto | null;
   emptyTitle?: string;
+  cb?: () => void | null;
 }) => (
-  <div className="flex min-w-0 flex-col gap-2">
+  <div onClick={cb} className="flex min-w-0 flex-col gap-2">
     {image ? (
       <div className="relative overflow-hidden rounded-10 border border-gray-100 bg-gray-50">
         <img
@@ -40,6 +41,16 @@ const ImageBox = ({
         <span className="absolute right-2 top-2 rounded-10 bg-black/55 px-2 py-1 text-xxs font-medium text-white backdrop-blur">
           {title}
         </span>
+
+        <Link
+          onClick={(e) => {
+            e.stopPropagation();
+          }}
+          href={NEW_IMAGE_URL(image, "medium") || ""}
+          className="absolute left-2 bottom-2  bg-primary-700/50 rounded-md   px-2 py-1 text-xxs font-medium text-white backdrop-blur "
+        >
+          دانلود
+        </Link>
       </div>
     ) : (
       <div className="relative flex aspect-[4/3] w-full items-center justify-center rounded-10 border border-dashed border-gray-300 bg-gray-50 px-2 text-center text-xxs text-gray-400 md:text-xs">
@@ -52,13 +63,8 @@ const ImageBox = ({
   </div>
 );
 
-const PhotoUpgradeImagePair = ({
-  item,
-  index,
-}: {
-  item: PhotoUpgradeRequestItemDto;
-  index: number;
-}) => {
+const PhotoUpgradeImagePair = ({ item, index }: { item: PhotoUpgradeRequestItemDto; index: number }) => {
+  const [image, selectedImage] = useState<ImageDto | null>(null);
   const oldImage = getOldImage(item);
   const newImage = getNewImage(item);
   const hasDistinctNewImage = !!newImage && newImage?.id !== oldImage?.id;
@@ -67,20 +73,33 @@ const PhotoUpgradeImagePair = ({
     <div className="property-card-shadow flex flex-col gap-3 rounded-20 bg-white p-3">
       <div className="flex items-center justify-between gap-3">
         <p className="text-sm font-medium">عکس {index + 1}</p>
-        {item?.status ? (
-          <StatusShower data={item.status} containerClass="!px-2 !py-1" />
-        ) : (
-          <></>
-        )}
+        {item?.status ? <StatusShower data={item.status} containerClass="!px-2 !py-1" /> : <></>}
       </div>
       <div className="grid grid-cols-2 gap-2 md:gap-3">
-        <ImageBox title="عکس قبلی" image={oldImage} />
         <ImageBox
+          cb={() => {
+            selectedImage(oldImage);
+          }}
+          title="عکس قبلی"
+          image={oldImage}
+        />
+        <ImageBox
+          cb={() => {
+            if (!hasDistinctNewImage) return;
+            selectedImage(newImage);
+          }}
           title="عکس جدید"
           image={hasDistinctNewImage ? newImage : null}
           emptyTitle="هنوز آماده نشده"
         />
       </div>
+      <FullscreenImage
+        show={!!image}
+        src={NEW_IMAGE_URL(image)}
+        setShow={() => {
+          selectedImage(null);
+        }}
+      />
     </div>
   );
 };

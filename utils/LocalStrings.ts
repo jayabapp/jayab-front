@@ -450,6 +450,7 @@ const _STRINGS = {
   PLACE_DESC_MAND: "توضیحات درباره اقامتگاه الزامیست.",
   FOR_SUPPORT_LOGIN: "برای درخواست پشتیبانی وارد حساب کاربری خود شوید.",
   HI: "سلام",
+  NEW: "جدید",
 };
 
 export default _STRINGS;

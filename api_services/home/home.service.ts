@@ -24,6 +24,7 @@ export class HomeService {
   static CONTENT_QUESTIONS_KEY = "CONTENTQUESTIONSKEY";
   static SEARCH_KEY = "SEARCH";
   static USER_LANDING_PAGES_KEY = "USER_LANDING_PAGES";
+  static SETTING_KEY = "SETTING";
 
   static async GetBanners(dto: { positions: BannerPosition[] }) {
     try {
@@ -196,6 +197,19 @@ export class HomeService {
         },
         unknown
       >("POST", apiRoutes.CONTENTS_QUESTIONS, body);
+      return result;
+    } catch (e) {
+      throw e;
+    }
+  }
+
+  /* -------------------------------------------------------------------------- */
+  /*                                  SETTINGS                                  */
+  /* -------------------------------------------------------------------------- */
+
+  static async getSettings() {
+    try {
+      const result = await apiCall<unknown, { photo_upgrade_price: string }>("GET", apiRoutes.SETTING);
       return result;
     } catch (e) {
       throw e;

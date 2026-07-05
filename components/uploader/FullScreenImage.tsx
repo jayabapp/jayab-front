@@ -1,4 +1,4 @@
-import React from "react";
+import { useEffect, useState } from "react";
 import Modal from "../Modal";
 
 function FullscreenImage({
@@ -14,6 +14,13 @@ function FullscreenImage({
   onDelete?: () => void | null;
   isNew?: boolean;
 }) {
+  const [srcHelper, setSrcHelper] = useState("");
+
+  useEffect(() => {
+    if (src) {
+      setSrcHelper(src);
+    }
+  }, [src]);
   return (
     <Modal show={show} onHide={() => setShow(false)}>
       <div className="h-full w-full flex flex-col p-2 gap-2  justify-center items-center bg-white  dark:bg-dark-700 ">
@@ -40,9 +47,9 @@ function FullscreenImage({
           alt="img"
           src={
             isNew
-              ? src
-              : //  NEW_IMAGE_URL(src)
-                src
+              ? srcHelper
+              : //  NEW_IMAGE_URL(srcHelper)
+                srcHelper
           }
           className="object-cover  w-full bg-gradient-to-b aspect-auto max-w-max  rounded-xl"
         />

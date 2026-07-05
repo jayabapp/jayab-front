@@ -19,6 +19,8 @@ const HeaderTitle = () => {
     return allRoutes[lastPart];
   } else if (pathname?.includes("/products/")) {
     return "صفحه محصول";
+  } else if (pathname?.includes("/photo-upgrade-requests/")) {
+    return "درخواست های بهینه سازی ";
   } else if (pathname?.includes("/rooms/")) {
     return "جزئیات ملک";
   } else if (pathname?.includes("/blog/")) {

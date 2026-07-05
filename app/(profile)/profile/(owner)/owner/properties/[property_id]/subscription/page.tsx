@@ -2,6 +2,7 @@
 
 import { PropertySubsDto } from "@/api_services/property/property.interface";
 import { PropertyService } from "@/api_services/property/property.service";
+import OwnerPhotoUpgradeModal from "@/components/profile/photo-upgrade/OwnerPhotoUpgradeModal";
 import AddCardPricePart from "@/components/properties/AddCardPricePart";
 import Button from "@/components/shared/Button/Button";
 import FixedBottomContainer from "@/components/shared/FixedBottomContainer";
@@ -27,6 +28,8 @@ const Subscription = () => {
   const [promoteItemId, setPromoteItemId] = useState<number | undefined>(undefined);
   const [canPromote, setCanPromote] = useState(false);
   const [shownPlans, setShownPlans] = useState<PropertySubsDto[]>([]);
+  const [showUpgradeImage, setShowUpgradeImage] = useState(false);
+
   /* -------------------------------------------------------------------------- */
   /*                              SUBSCRIPTIONS                                 */
   /* -------------------------------------------------------------------------- */
@@ -238,7 +241,8 @@ const Subscription = () => {
           <Button
             loading={isPending}
             onClick={() => {
-              onSubmit();
+              // onSubmit();
+              setShowUpgradeImage(true);
             }}
             roundedClass="rounded-full"
             width="!py-1.5 !px-10 md:!px-8"
@@ -246,6 +250,26 @@ const Subscription = () => {
           />
         </div>
       </FixedBottomContainer>
+      {!!data ? (
+        <OwnerPhotoUpgradeModal
+          property={showUpgradeImage ? data : null}
+          onHide={() => {
+            setShowUpgradeImage(false);
+          }}
+          onHideClick={() => {
+            setShowUpgradeImage(false);
+            onSubmit();
+          }}
+          mutationOptions={{
+            redirect_url: window.origin + (GATE_WAY_REDIRECT_URL ?? `/profile/owner/properties/${property_id}`),
+            promote_id: selectedPlans.find((e) => e.is_promote)?.id,
+            subscription_id: selectedPlans.find((e) => !e.is_promote)?.id,
+          }}
+          extraPrice={price}
+        />
+      ) : (
+        <></>
+      )}
     </div>
   );
 };
