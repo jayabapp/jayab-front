@@ -123,6 +123,11 @@ export const apiRoutes = {
 
   OWNER_ACTIVE_RESERVE_COUNT: "/owner/reserves/badge-count",
 
+  OWNER_PROPERTY_PHOTO_UPGRADE_REQUESTS: "/owner/property-photo-upgrade-requests",
+
+  OWNER_PROPERTY_PHOTO_UPGRADE_REQUEST: (requestId: string | number) =>
+    `/owner/property-photo-upgrade-requests/${requestId}`,
+
   CANCEL_RESERVE: (propertyReserveId: string | number) => `/reserves/${propertyReserveId}`,
 
   OWNER_CALL_RESERVE_REQUEST: (propertyReserveId: string | number) =>

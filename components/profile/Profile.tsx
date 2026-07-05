@@ -133,6 +133,20 @@ const Profile = ({}) => {
         ) : (
           <></>
         )}
+        {!!userInfo?.owner_id ? (
+          <ProfileItem
+            disableArrow
+            item={{
+              id: 1215,
+              imgSrc: "/assets/icons/property/upscale_icon.svg",
+              route: "/profile/owner/photo-upgrade-requests",
+              title: "درخواست های بهینه سازی تصویر",
+            }}
+            key={`profileItemownerPhotoUpgradeRequests`}
+          />
+        ) : (
+          <></>
+        )}
         {/* {!!userInfo?.owner_id ? (
           <ProfileItem
             disableArrow

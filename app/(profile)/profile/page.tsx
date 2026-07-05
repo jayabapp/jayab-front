@@ -151,6 +151,19 @@ const Profile = () => {
             ) : (
               <></>
             )}
+            {!isEmpty(PersonalProfileItems) && !!data?.owner_id ? (
+              <ProfileItem
+                item={{
+                  id: 1215,
+                  imgSrc: "/assets/icons/property/upscale_icon.svg",
+                  route: "/profile/owner/photo-upgrade-requests",
+                  title: "درخواست های بهینه سازی تصویر",
+                }}
+                key={`profileItemownerPhotoUpgradeRequests`}
+              />
+            ) : (
+              <></>
+            )}
             {/* {!isEmpty(PersonalProfileItems) && !!data?.owner_id ? (
               <ProfileItem
                 item={{
