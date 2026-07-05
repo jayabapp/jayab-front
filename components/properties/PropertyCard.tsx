@@ -12,7 +12,17 @@ import DaysOfTheWeekStatus from "./DaysOfTheWeekStatus";
 import PropertycardFeaturePart from "./PropertyCardFeaturesPart";
 import PropertyCardOwnerPart from "./PropertyCardOwnerPart";
 
-const PropertyCard = ({ data, isOwner, week }: { data: PropertyListDto; isOwner?: boolean; week?: string[] }) => {
+const PropertyCard = ({
+  data,
+  isOwner,
+  week,
+  onPhotoUpgradeClick,
+}: {
+  data: PropertyListDto;
+  isOwner?: boolean;
+  week?: string[];
+  onPhotoUpgradeClick?: (property: PropertyListDto) => void;
+}) => {
   const { likes, ssrLikedProducts } = useStoreParams((state) => state);
   const goToLink = !!isOwner ? `/profile/owner/properties/${data?.id}` : `/rooms/${data?.slug}`;
 
@@ -189,7 +199,21 @@ const PropertyCard = ({ data, isOwner, week }: { data: PropertyListDto; isOwner?
           </div>
         </Link>
       </div>
-      {isOwner ? <PropertyCardOwnerPart goToLink={goToLink} data={data} /> : <></>}
+      {isOwner ? (
+        <div className="flex flex-col gap-2">
+          <button
+            type="button"
+            onClick={() => onPhotoUpgradeClick?.(data)}
+            className="flex w-full items-center justify-center gap-2 rounded-10 border border-primary-700/30 bg-primary-700/10 px-3 py-2 text-sm font-medium text-primary-700 transition-all hover:bg-primary-700/15"
+          >
+            <img src="/assets/icons/property/upscale_icon.svg" alt="" className="h-5 w-5" />
+            اصلاح تصویر
+          </button>
+          <PropertyCardOwnerPart goToLink={goToLink} data={data} />
+        </div>
+      ) : (
+        <></>
+      )}
       {/* DESCRIPTION */}
       <div className="w-full pt-1.5 ">
         <PropertycardFeaturePart data={data} />

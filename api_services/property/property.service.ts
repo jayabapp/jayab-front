@@ -118,6 +118,9 @@ export class PropertyService {
         apiRoutes.OWNER_PROPERTIES_PAY_SUBS(dto?.property_id),
         {
           gateway: dto.gateway,
+          photo_upgrade_enabled: dto.photo_upgrade_enabled,
+          photo_upgrade_image_ids: dto.photo_upgrade_image_ids,
+          photo_upgrade_property_id: dto.photo_upgrade_property_id,
           promote_id: dto.promote_id,
           redirect_url: dto.redirect_url,
           subscription_id: dto.subscription_id,

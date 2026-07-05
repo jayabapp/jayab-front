@@ -239,6 +239,9 @@ export interface PayPropertySubSendDto {
   promote_id?: number;
   redirect_url: string;
   gateway: string;
+  photo_upgrade_enabled?: boolean;
+  photo_upgrade_property_id?: number | string;
+  photo_upgrade_image_ids?: number[];
 }
 
 export interface SinglePropDto {
