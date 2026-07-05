@@ -11,9 +11,50 @@ import numberWithCommas from "@/helpers/numberWithCommas";
 import { NEW_IMAGE_URL } from "@/utils/urls";
 import { useMutation, useQuery } from "@tanstack/react-query";
 import isEmpty from "lodash/isEmpty";
-import { useMemo, useState } from "react";
+import { memo, useCallback, useMemo, useState } from "react";
 
 const PHOTO_UPGRADE_PRICE = 50000;
+
+const SelectableImageItem = memo(
+  ({
+    image,
+    isSelected,
+    onToggle,
+  }: {
+    image: ImageDto;
+    isSelected: boolean;
+    onToggle: (imageId: number) => void;
+  }) => {
+    return (
+      <button
+        type="button"
+        onClick={() => onToggle(image.id)}
+        className={`relative aspect-square overflow-hidden rounded-10 border transition-all ${
+          isSelected
+            ? "border-primary-700 ring-2 ring-primary-700/30"
+            : "border-gray-200"
+        }`}
+      >
+        <img
+          src={NEW_IMAGE_URL(image)}
+          alt={image?.alt || ""}
+          className="h-full w-full object-cover"
+        />
+        <span
+          className={`absolute left-2 top-2 flex h-6 w-6 items-center justify-center rounded-md border text-sm font-bold ${
+            isSelected
+              ? "border-primary-700 bg-primary-700 text-white"
+              : "border-white bg-black/40 text-white"
+          }`}
+        >
+          {isSelected ? "✓" : ""}
+        </span>
+      </button>
+    );
+  },
+);
+
+SelectableImageItem.displayName = "SelectableImageItem";
 
 const OwnerPhotoUpgradeModal = ({
   property,
@@ -58,13 +99,13 @@ const OwnerPhotoUpgradeModal = ({
     },
   });
 
-  const toggleImage = (imageId: number) => {
+  const toggleImage = useCallback((imageId: number) => {
     setSelectedImageIds((prev) =>
       prev.includes(imageId)
         ? prev.filter((id) => id !== imageId)
         : [...prev, imageId],
     );
-  };
+  }, []);
 
   const onSubmit = () => {
     if (!property?.id) return;
@@ -82,37 +123,6 @@ const OwnerPhotoUpgradeModal = ({
       photo_upgrade_property_id: property.id,
       photo_upgrade_image_ids: selectedImageIds,
     });
-  };
-
-  const ImageItem = ({ image }: { image: ImageDto }) => {
-    const isSelected = selectedImageIds.includes(image.id);
-
-    return (
-      <button
-        type="button"
-        onClick={() => toggleImage(image.id)}
-        className={`relative aspect-square overflow-hidden rounded-10 border transition-all ${
-          isSelected
-            ? "border-primary-700 ring-2 ring-primary-700/30"
-            : "border-gray-200"
-        }`}
-      >
-        <img
-          src={NEW_IMAGE_URL(image)}
-          alt={image?.alt || ""}
-          className="h-full w-full object-cover"
-        />
-        <span
-          className={`absolute left-2 top-2 flex h-6 w-6 items-center justify-center rounded-md border text-sm font-bold ${
-            isSelected
-              ? "border-primary-700 bg-primary-700 text-white"
-              : "border-white bg-black/40 text-white"
-          }`}
-        >
-          {isSelected ? "✓" : ""}
-        </span>
-      </button>
-    );
   };
 
   return (
@@ -163,8 +173,10 @@ const OwnerPhotoUpgradeModal = ({
         ) : (
           <div className="grid grid-cols-3 gap-2 sm:grid-cols-4">
             {images.map((image) => (
-              <ImageItem
+              <SelectableImageItem
                 image={image}
+                isSelected={selectedImageIds.includes(image.id)}
+                onToggle={toggleImage}
                 key={`photoUpgradeSelectableImage${image.id}`}
               />
             ))}
