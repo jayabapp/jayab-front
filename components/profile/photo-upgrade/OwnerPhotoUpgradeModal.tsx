@@ -2,14 +2,7 @@
 
 import { ImageDto } from "@/api_services/auth/auth.interface";
 import { HomeService } from "@/api_services/home/home.service";
-<<<<<<< HEAD
 import { PropertyListDto, PropertySubsDto, SingleOwnerPropertyDto } from "@/api_services/property/property.interface";
-=======
-import {
-  PropertyListDto,
-  SingleOwnerPropertyDto,
-} from "@/api_services/property/property.interface";
->>>>>>> 80226f7fd11027123f781926566d7490b0149494
 import { PropertyService } from "@/api_services/property/property.service";
 import Swiper from "@/components/embelaCarousel/Swiper";
 import SwiperSlide from "@/components/embelaCarousel/SwiperSlide";
@@ -25,35 +18,19 @@ import { chunk } from "lodash";
 import isEmpty from "lodash/isEmpty";
 import { memo, useCallback, useMemo, useState } from "react";
 const SelectableImageItem = memo(
-  ({
-    image,
-    isSelected,
-    onToggle,
-  }: {
-    image: ImageDto;
-    isSelected: boolean;
-    onToggle: (imageId: number) => void;
-  }) => {
+  ({ image, isSelected, onToggle }: { image: ImageDto; isSelected: boolean; onToggle: (imageId: number) => void }) => {
     return (
       <button
         type="button"
         onClick={() => onToggle(image.id)}
         className={`relative aspect-square overflow-hidden rounded-10 border transition-all ${
-          isSelected
-            ? "border-primary-700 ring-2 ring-primary-700/30"
-            : "border-gray-200"
+          isSelected ? "border-primary-700 ring-2 ring-primary-700/30" : "border-gray-200"
         }`}
       >
-        <img
-          src={NEW_IMAGE_URL(image)}
-          alt={image?.alt || ""}
-          className="h-full w-full object-cover"
-        />
+        <img src={NEW_IMAGE_URL(image)} alt={image?.alt || ""} className="h-full w-full object-cover" />
         <span
           className={`absolute left-1 top-1 flex h-5 w-5 items-center justify-center rounded-md border text-xs font-bold ${
-            isSelected
-              ? "border-primary-700 bg-primary-700 text-white"
-              : "border-white bg-black/40 text-white"
+            isSelected ? "border-primary-700 bg-primary-700 text-white" : "border-white bg-black/40 text-white"
           }`}
         >
           {isSelected ? "✓" : ""}
@@ -84,7 +61,7 @@ const OwnerPhotoUpgradeModal = ({
     redirect_url?: string;
     subscription_id?: number;
   };
-  selectedPlans: PropertySubsDto[];
+  selectedPlans?: PropertySubsDto[];
 }) => {
   const [selectedImageIds, setSelectedImageIds] = useState<number[]>([]);
 
@@ -99,11 +76,7 @@ const OwnerPhotoUpgradeModal = ({
   const PHOTO_UPGRADE_PRICE = Number(settings?.photo_upgrade_price);
 
   const { data, isLoading } = useQuery({
-    queryKey: [
-      PropertyService.OWNER_PROPERTIES_CACHEKEY,
-      "photo-upgrade",
-      property?.id,
-    ],
+    queryKey: [PropertyService.OWNER_PROPERTIES_CACHEKEY, "photo-upgrade", property?.id],
     queryFn: () => {
       if (property?.id) {
         return PropertyService.GetSingleOwnerProperty({
@@ -133,11 +106,7 @@ const OwnerPhotoUpgradeModal = ({
   });
 
   const toggleImage = useCallback((imageId: number) => {
-    setSelectedImageIds((prev) =>
-      prev.includes(imageId)
-        ? prev.filter((id) => id !== imageId)
-        : [...prev, imageId],
-    );
+    setSelectedImageIds((prev) => (prev.includes(imageId) ? prev.filter((id) => id !== imageId) : [...prev, imageId]));
   }, []);
 
   const onSubmit = () => {
@@ -149,9 +118,7 @@ const OwnerPhotoUpgradeModal = ({
 
     mutate({
       gateway: process.env.NEXT_PUBLIC_PAYMENT_GATEWAY || "",
-      redirect_url:
-        mutationOptions?.redirect_url ??
-        `${window.origin}/profile/owner/photo-upgrade-requests`,
+      redirect_url: mutationOptions?.redirect_url ?? `${window.origin}/profile/owner/photo-upgrade-requests`,
       property_id: property.id,
       photo_upgrade_enabled: true,
       photo_upgrade_property_id: property.id,
@@ -162,11 +129,7 @@ const OwnerPhotoUpgradeModal = ({
   };
 
   const { data: upgradeContent, isLoading: contentLoading } = useQuery({
-    queryKey: [
-      HomeService?.CONTENT_BY_KEY_CACHEKEY,
-      "upgrade-image-content",
-      property,
-    ],
+    queryKey: [HomeService?.CONTENT_BY_KEY_CACHEKEY, "upgrade-image-content", property],
     queryFn: () => {
       return HomeService.GetContentByKey({ key: "upgrade-image-content" });
     },
@@ -190,36 +153,19 @@ const OwnerPhotoUpgradeModal = ({
         <div className="flex items-center sticky top-0 bg-white py-2 justify-center gap-3">
           <div className="min-w-0">
             <div className="flex items-center gap-2">
-<<<<<<< HEAD
               <p className="text-base text-center font-bold text-primary-700">سرویس بهبود تصویر</p>
               <div className="new-tag   rotate-[-9deg] text-xs font-bold  text-white rounded-lg  h-6 w-11 flex items-center justify-center ">
                 {_STRINGS.NEW}
               </div>
             </div>
             <p className="mt-1 line-clamp-1 text-center text-xs text-gray-500">{property?.title}</p>
-=======
-              <p className="text-base font-bold text-primary-700">
-                سرویس اصلاح تصویر
-              </p>
-              <div className="new-tag  rotate-[-9deg] text-xs font-bold  text-white rounded-lg  h-6 w-11 flex items-center justify-center ">
-                {_STRINGS.NEW}
-              </div>
-            </div>
-            <p className="mt-1 line-clamp-1 text-xs text-gray-500">
-              {property?.title}
-            </p>
->>>>>>> 80226f7fd11027123f781926566d7490b0149494
           </div>
           <button
             type="button"
             onClick={onHide}
             className="flex h-9 absolute left-0  top-2  w-9 shrink-0 items-center justify-center rounded-full bg-gray-100"
           >
-            <img
-              src="/assets/icons/shared/close.svg"
-              alt="بستن"
-              className="h-4 w-4"
-            />
+            <img src="/assets/icons/shared/close.svg" alt="بستن" className="h-4 w-4" />
           </button>
         </div>
         {!!contentLoading ? (
@@ -227,20 +173,13 @@ const OwnerPhotoUpgradeModal = ({
         ) : !!upgradeContent ? (
           <div className="w-full flex flex-col items-center justify-center gap-4 ">
             {!!upgradeContent?.feature_image ? (
-              <img
-                src={NEW_IMAGE_URL(upgradeContent?.feature_image)}
-                className=" object-contain   max-h-[150px] "
-              />
+              <img src={NEW_IMAGE_URL(upgradeContent?.feature_image)} className=" object-contain   max-h-[150px] " />
             ) : (
               <></>
             )}
             <div className="w-full items-center justify-center flex flex-col gap-1">
-              <p className="text-base font-medium text-center">
-                {upgradeContent?.small_text}
-              </p>
-              <p className="text-sm   text-center ">
-                {upgradeContent?.full_text}
-              </p>
+              <p className="text-base font-medium text-center">{upgradeContent?.small_text}</p>
+              <p className="text-sm   text-center ">{upgradeContent?.full_text}</p>
             </div>
           </div>
         ) : (
@@ -324,25 +263,12 @@ const OwnerPhotoUpgradeModal = ({
             <span className="font-medium">{selectedImageIds.length} عکس</span>
           </div>
           <div className="flex items-center justify-between gap-2">
-<<<<<<< HEAD
             <span className="text-gray-500">هزینه بهبود هر تصویر</span>
             <span className="font-medium">{numberWithCommas(PHOTO_UPGRADE_PRICE)} تومان</span>
           </div>
           <div className="flex items-center justify-between gap-2 border-t pt-2 text-primary-700">
             <span className="font-medium">هزینه نهایی بهبود تصویر</span>
             <span className="font-bold">{numberWithCommas(totalAmount)} تومان</span>
-=======
-            <span className="text-gray-500">قیمت اصلاح هر تصویر</span>
-            <span className="font-medium">
-              {numberWithCommas(PHOTO_UPGRADE_PRICE)} تومان
-            </span>
-          </div>
-          <div className="flex items-center justify-between gap-2 border-t pt-2 text-primary-700">
-            <span className="font-medium">هزینه نهایی اصلاح تصویر</span>
-            <span className="font-bold">
-              {numberWithCommas(totalAmount)} تومان
-            </span>
->>>>>>> 80226f7fd11027123f781926566d7490b0149494
           </div>
           {!isEmpty(selectedPlans) ? (
             selectedPlans?.map((e) => (
