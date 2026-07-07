@@ -207,7 +207,7 @@ const PropertyCard = ({
             className="flex w-full items-center justify-center gap-2 rounded-10 border border-primary-700/30 bg-primary-700/10 px-3 py-2 text-sm font-medium text-primary-700 transition-all hover:bg-primary-700/15"
           >
             <img src="/assets/icons/header/upgrade_image.svg" alt="" className="h-5 w-5" />
-            اصلاح تصویر
+            بهبودتصویر
           </button>
           <PropertyCardOwnerPart goToLink={goToLink} data={data} />
         </div>

@@ -2,7 +2,7 @@
 
 import { ImageDto } from "@/api_services/auth/auth.interface";
 import { HomeService } from "@/api_services/home/home.service";
-import { PropertyListDto, SingleOwnerPropertyDto } from "@/api_services/property/property.interface";
+import { PropertyListDto, PropertySubsDto, SingleOwnerPropertyDto } from "@/api_services/property/property.interface";
 import { PropertyService } from "@/api_services/property/property.service";
 import Swiper from "@/components/embelaCarousel/Swiper";
 import SwiperSlide from "@/components/embelaCarousel/SwiperSlide";
@@ -14,7 +14,6 @@ import numberWithCommas from "@/helpers/numberWithCommas";
 import _STRINGS from "@/utils/LocalStrings";
 import { NEW_IMAGE_URL } from "@/utils/urls";
 import { useMutation, useQuery } from "@tanstack/react-query";
-import DOMPurify from "isomorphic-dompurify";
 import { chunk } from "lodash";
 import isEmpty from "lodash/isEmpty";
 import { memo, useCallback, useMemo, useState } from "react";
@@ -49,9 +48,12 @@ const OwnerPhotoUpgradeModal = ({
   onHideClick,
   mutationOptions,
   extraPrice,
+  selectedPlans,
+  noImageSubmit,
 }: {
   property: PropertyListDto | SingleOwnerPropertyDto | null;
   onHide: () => void;
+  noImageSubmit?: () => void;
   onHideClick?: () => void;
   extraPrice?: number;
   mutationOptions?: {
@@ -59,6 +61,7 @@ const OwnerPhotoUpgradeModal = ({
     redirect_url?: string;
     subscription_id?: number;
   };
+  selectedPlans: PropertySubsDto[];
 }) => {
   const [selectedImageIds, setSelectedImageIds] = useState<number[]>([]);
 
@@ -148,20 +151,20 @@ const OwnerPhotoUpgradeModal = ({
       // }}
     >
       <div className="flex flex-col gap-4 p-3 pt-0">
-        <div className="flex items-center sticky top-0 bg-white py-2 justify-between gap-3">
+        <div className="flex items-center sticky top-0 bg-white py-2 justify-center gap-3">
           <div className="min-w-0">
             <div className="flex items-center gap-2">
-              <p className="text-base font-bold text-primary-700">سرویس اصلاح تصویر</p>
-              <div className="new-tag  rotate-[-9deg] text-xs font-bold  text-white rounded-lg  h-6 w-11 flex items-center justify-center ">
+              <p className="text-base text-center font-bold text-primary-700">سرویس بهبود تصویر</p>
+              <div className="new-tag   rotate-[-9deg] text-xs font-bold  text-white rounded-lg  h-6 w-11 flex items-center justify-center ">
                 {_STRINGS.NEW}
               </div>
             </div>
-            <p className="mt-1 line-clamp-1 text-xs text-gray-500">{property?.title}</p>
+            <p className="mt-1 line-clamp-1 text-center text-xs text-gray-500">{property?.title}</p>
           </div>
           <button
             type="button"
             onClick={onHide}
-            className="flex h-9 w-9 shrink-0 items-center justify-center rounded-full bg-gray-100"
+            className="flex h-9 absolute left-0  top-2  w-9 shrink-0 items-center justify-center rounded-full bg-gray-100"
           >
             <img src="/assets/icons/shared/close.svg" alt="بستن" className="h-4 w-4" />
           </button>
@@ -185,7 +188,7 @@ const OwnerPhotoUpgradeModal = ({
         )}
 
         {/* <div className="rounded-10 bg-primary-700/10 px-3 py-2 text-sm text-primary-700">
-          هر بهینه سازی {numberWithCommas(PHOTO_UPGRADE_PRICE)} تومان است.
+          هر  بهبود  {numberWithCommas(PHOTO_UPGRADE_PRICE)} تومان است.
         </div> */}
 
         {isLoading ? (
@@ -222,12 +225,12 @@ const OwnerPhotoUpgradeModal = ({
               },
             }}
           >
-            {chunckedImages?.map((e) => (
-              <SwiperSlide className="flex  flex-col gap-1 ">
-                {e.map((chunk) => (
+            {chunckedImages?.map((e, index) => (
+              <SwiperSlide key={`${index}swiper`} className="flex  flex-col gap-1 ">
+                {e.map((chunk, index) => (
                   <>
-                    <div className=" w-full  grid grid-cols-4 gap-1">
-                      {chunk?.map((image) => (
+                    <div key={`group${index}`} className=" w-full  grid grid-cols-4 gap-1">
+                      {chunk?.map((image, index) => (
                         <SelectableImageItem
                           image={image}
                           isSelected={selectedImageIds.includes(image.id)}
@@ -243,12 +246,14 @@ const OwnerPhotoUpgradeModal = ({
           </Swiper>
         )}
         {!!upgradeContent?.html ? (
-          <div
-            className="text-primary-700  text-sm text-start"
-            dangerouslySetInnerHTML={{
-              __html: DOMPurify.sanitize(upgradeContent?.html || ""),
-            }}
-          />
+          <p
+            className="text-primary-700  w-full text-sm text-center "
+            // dangerouslySetInnerHTML={{
+            //   __html: DOMPurify.sanitize(upgradeContent?.html || ""),
+            // }}
+          >
+            تصاویر بهینه شده بعد از 24 ساعت جایگزین میشوند
+          </p>
         ) : (
           <></>
         )}
@@ -259,31 +264,48 @@ const OwnerPhotoUpgradeModal = ({
             <span className="font-medium">{selectedImageIds.length} عکس</span>
           </div>
           <div className="flex items-center justify-between gap-2">
-            <span className="text-gray-500">قیمت اصلاح هر تصویر</span>
+            <span className="text-gray-500">هزینه بهبود هر تصویر</span>
             <span className="font-medium">{numberWithCommas(PHOTO_UPGRADE_PRICE)} تومان</span>
           </div>
           <div className="flex items-center justify-between gap-2 border-t pt-2 text-primary-700">
-            <span className="font-medium">هزینه نهایی اصلاح تصویر</span>
+            <span className="font-medium">هزینه نهایی بهبود تصویر</span>
             <span className="font-bold">{numberWithCommas(totalAmount)} تومان</span>
           </div>
+          {!isEmpty(selectedPlans) ? (
+            selectedPlans?.map((e) => (
+              <div
+                key={`slectedPlan${e?.id}`}
+                className="flex items-center justify-between gap-2 border-t pt-2 text-primary-700"
+              >
+                <span className="font-medium">{e?.title}</span>
+                <span className="font-bold">{numberWithCommas(e?.price_with_discount || e?.price)} تومان</span>
+              </div>
+            ))
+          ) : (
+            <></>
+          )}
         </div>
 
         <div className="w-full grid  sticky bottom-0 grid-cols-3 items-center gap-2 ">
           <Button
             loading={isPending}
-            disabled={isEmpty(selectedImageIds) || isLoading || !totalAmount}
-            onClick={onSubmit}
+            disabled={(isEmpty(selectedImageIds) || isLoading || !totalAmount) && !extraPrice}
+            onClick={!!extraPrice && !totalAmount && !!noImageSubmit ? noImageSubmit : onSubmit}
             width="w-full"
-            containerClass={` col-span-2 `}
-            title={`پرداخت ${totalAmount ? `${numberWithCommas(totalAmount + Number(extraPrice || 0))} ${_STRINGS.TOMAN}` : ""} `}
+            containerClass={`${extraPrice ? "col-span-3" : "col-span-2"}  `}
+            title={`پرداخت ${totalAmount || !!extraPrice ? `${numberWithCommas(totalAmount + Number(extraPrice || 0))} ${_STRINGS.TOMAN}` : ""} `}
           />
-          <Button
-            color="danger"
-            onClick={onHideClick ?? onHide}
-            width="w-full !text-white "
-            containerClass={` `}
-            title={_STRINGS.NOW_NOW}
-          />
+          {!!extraPrice ? (
+            <></>
+          ) : (
+            <Button
+              color="danger"
+              onClick={onHideClick ?? onHide}
+              width="w-full !text-white "
+              containerClass={` `}
+              title={_STRINGS.NOW_NOW}
+            />
+          )}
         </div>
       </div>
     </ModalBottomSheet>

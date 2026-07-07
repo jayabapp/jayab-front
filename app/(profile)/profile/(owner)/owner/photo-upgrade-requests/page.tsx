@@ -18,7 +18,7 @@ const OwnerPhotoUpgradeRequestsPage = () => {
   return (
     <div id="homeParent" className="profile-container flex flex-col gap-4 transition-all duration-500 ease-in-out">
       <div className="flex flex-col gap-1">
-        <h1 className="text-base font-medium md:text-xl">درخواست های بهینه سازی تصویر</h1>
+        <h1 className="text-base font-medium md:text-xl">درخواست های بهبود تصویر</h1>
         <p className="text-xs text-gray-500 md:text-sm">وضعیت درخواست ها و نتیجه ویرایش هر تصویر را اینجا ببینید.</p>
       </div>
       {isLoading ? (

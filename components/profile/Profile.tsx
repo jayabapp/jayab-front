@@ -140,7 +140,7 @@ const Profile = ({}) => {
               id: 1215,
               imgSrc: "/assets/icons/adds/header_upgrade_image.svg",
               route: "/profile/owner/photo-upgrade-requests",
-              title: "درخواست های بهینه سازی تصویر",
+              title: "درخواست های بهبود تصویر",
             }}
             key={`profileItemownerPhotoUpgradeRequests`}
           />

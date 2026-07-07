@@ -258,6 +258,9 @@ const Subscription = () => {
           }}
           onHideClick={() => {
             setShowUpgradeImage(false);
+            // onSubmit();
+          }}
+          noImageSubmit={() => {
             onSubmit();
           }}
           mutationOptions={{
@@ -266,6 +269,7 @@ const Subscription = () => {
             subscription_id: selectedPlans.find((e) => !e.is_promote)?.id,
           }}
           extraPrice={price}
+          selectedPlans={selectedPlans}
         />
       ) : (
         <></>

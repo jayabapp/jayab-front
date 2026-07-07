@@ -184,7 +184,7 @@ export const allRoutes: { [key: string]: string } = {
   products: "محصولات",
   addresses: "آدرس ها",
   "contact-us": "تماس با ما",
-  "photo-upgrade-requests": "درخواست های بهینه سازی ",
+  "photo-upgrade-requests": "درخواست های بهبود ",
   "categories-list": "دسته بندی ها",
   "legal-request": "ثبت درخواست حقوقی",
   "meeting-request": "درخواست ملاقات حضوری",

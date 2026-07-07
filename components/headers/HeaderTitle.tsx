@@ -20,7 +20,7 @@ const HeaderTitle = () => {
   } else if (pathname?.includes("/products/")) {
     return "صفحه محصول";
   } else if (pathname?.includes("/photo-upgrade-requests/")) {
-    return "درخواست های بهینه سازی ";
+    return "درخواست های بهبود ";
   } else if (pathname?.includes("/rooms/")) {
     return "جزئیات ملک";
   } else if (pathname?.includes("/blog/")) {
