@@ -112,7 +112,7 @@ const AdvisorRegister = () => {
           : subscriptionPlans?.list?.find((x) => !x?.is_special)?.id;
       if (!!planId) {
         payMutate({
-          gateway: "ZARINPAL",
+          gateway: process.env.NEXT_PUBLIC_PAYMENT_GATEWAY || "",
           plan_id: planId,
           redirect_url: `${window.origin}/profile/advisor/subscription`,
         });
@@ -142,7 +142,8 @@ const AdvisorRegister = () => {
               {/* انقضا : {moment(advisorProfile?.subscription_expired_at)?.format("jYYYY/jMM/jDD")} */}
               <p className=" text-sm"> تعداد روز باقیمانده از اعتبار :</p>
               <div className=" rounded-full text-xs md:text-sm text-primary-700 bg-primary-400 flex  items-center justify-center h-5 md:h-6 w-16 md:w-20 ">
-                {advisorProfile?.subscription_expired_at && moment(advisorProfile?.subscription_expired_at).isAfter()
+                {advisorProfile?.subscription_expired_at &&
+                moment(advisorProfile?.subscription_expired_at).isAfter()
                   ? `${moment(advisorProfile?.subscription_expired_at).diff(moment(), "days")} روز `
                   : `اعتبار ندارد`}
               </div>
@@ -190,7 +191,9 @@ const AdvisorRegister = () => {
 
       {!!advisorProfile?.admin_description ? (
         <div className=" w-full flex items-center justify-center  ">
-          <p className="text-sm text-primary-150">توضیحات ادمین : {advisorProfile?.admin_description} </p>
+          <p className="text-sm text-primary-150">
+            توضیحات ادمین : {advisorProfile?.admin_description}{" "}
+          </p>
         </div>
       ) : (
         <></>
@@ -199,7 +202,13 @@ const AdvisorRegister = () => {
         {subscriptionPlans?.list?.map((e) => (
           <AdvisorPlansCard
             setShowConfirm={setShowConfirmRegister}
-            subscriptionType={!!advisorProfile ? (advisorProfile?.is_special ? "is-especial" : "normal") : null}
+            subscriptionType={
+              !!advisorProfile
+                ? advisorProfile?.is_special
+                  ? "is-especial"
+                  : "normal"
+                : null
+            }
             data={e}
             key={e?.id}
           />

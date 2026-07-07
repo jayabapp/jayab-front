@@ -37,26 +37,30 @@ export class PropertyService {
   static USER_SUBSCRIPTION_PLANS_CACHEKEY = "USER_SUBSCRIPTION_PLANS";
   static GET_SINGLEPROPERTY_SlUG_CACHEKEY = "GET_SINGLEPROPERTY_SlUG";
   static OWNER_PROPERTIES_CACHEKEY = "OWNER_PROPERTIES";
-  static OWNER_PROPERTIES_SINGLE_BADGE_CACHEKEY = "OWNER_PROPERTIES_SINGLE_BADGE";
+  static OWNER_PROPERTIES_SINGLE_BADGE_CACHEKEY =
+    "OWNER_PROPERTIES_SINGLE_BADGE";
   static OWNER_PROPERTIES_SINGLE_AUTH_CACHEKEY = "OWNER_PROPERTIES_SINGLE_AUTH";
   static BOOKMARKS_CACHEKEY = "BOOKMARKS";
   static SINGLE_OWNER_PROPERTY_STATS_CACHEKEY = "SINGLE_OWNER_PROPERTY_STATS";
   static SINGLE_PROPERTY_UPDATE_VIEW_CACHEKEY = "SINGLE_PROPERTY_UPDATE_VIEW";
   static SINGLE_PROPERTY_CONTACT_INFO_CACHEKEY = "SINGLE_PROPERTY_CONTACT_INFO";
   static GET_SINGLEPROPERTY_CALLENDER_CACHEKEY = "GET_SINGLEPROPERTY_CALLENDER";
-  static SINGLE_PROPERTY_ADVISOR_SHARE_CACHEKEY = "SINGLE_PROPERTY_ADVISOR_SHARE";
+  static SINGLE_PROPERTY_ADVISOR_SHARE_CACHEKEY =
+    "SINGLE_PROPERTY_ADVISOR_SHARE";
   static PROPERTY_RESERVED_DATES_CACHEKEY = "PROPERTY_RESERVED_DATES";
-  static OWNER_PROPERTIES_PRICE_RANGE_UPDATE_CACHEKEY = "OWNER_PROPERTIES_PRICE_RANGE_UPDATE";
+  static OWNER_PROPERTIES_PRICE_RANGE_UPDATE_CACHEKEY =
+    "OWNER_PROPERTIES_PRICE_RANGE_UPDATE";
 
-  static async GetUserPropertyGroup(dto: { group: (keyof typeof PropertyOptionGroup)[] }) {
+  static async GetUserPropertyGroup(dto: {
+    group: (keyof typeof PropertyOptionGroup)[];
+  }) {
     try {
-      const result = await apiCall<{ group: string[] }, { [key: string]: ProvienceTypesDto[] }>(
-        "GET",
-        apiRoutes.USER_PROP_OPTIONS,
-        {
-          group: dto.group,
-        },
-      );
+      const result = await apiCall<
+        { group: string[] },
+        { [key: string]: ProvienceTypesDto[] }
+      >("GET", apiRoutes.USER_PROP_OPTIONS, {
+        group: dto.group,
+      });
       return result;
     } catch (e) {
       throw e;
@@ -67,19 +71,31 @@ export class PropertyService {
   /*                            PROPERTY CONTACT INFO                           */
   /* -------------------------------------------------------------------------- */
 
-  static async getSinglePropertyContactInfo(dto: { propertySlug: string | number | null; action: string | number }) {
+  static async getSinglePropertyContactInfo(dto: {
+    propertySlug: string | number | null;
+    action: string | number;
+  }) {
     try {
       const result = await apiCall<
         { action: string | number },
-        { list: PropertyContactIInfDto[]; owner: { selfie_image: ImageDto }; isPropertyExpired?: boolean }
-      >("GET", apiRoutes.SINGLE_PROPERTY_CONTACT_INFO(dto.propertySlug), { action: dto?.action });
+        {
+          list: PropertyContactIInfDto[];
+          owner: { selfie_image: ImageDto };
+          isPropertyExpired?: boolean;
+        }
+      >("GET", apiRoutes.SINGLE_PROPERTY_CONTACT_INFO(dto.propertySlug), {
+        action: dto?.action,
+      });
       return result;
     } catch (e) {
       throw e;
     }
   }
 
-  static async getSingleAdvisorShare(dto: { propertyId: string | number | null; elements: string }) {
+  static async getSingleAdvisorShare(dto: {
+    propertyId: string | number | null;
+    elements: string;
+  }) {
     try {
       const result = await apiCall<{ elements: string }, string>(
         "GET",
@@ -96,7 +112,10 @@ export class PropertyService {
   /*                              SUBSCRIPTION PART                             */
   /* -------------------------------------------------------------------------- */
 
-  static async GetPropertySubscriptionPlans(dto?: { type?: "ADVISOR" | "PROPERTY"; property_id?: string | number }) {
+  static async GetPropertySubscriptionPlans(dto?: {
+    type?: "ADVISOR" | "PROPERTY";
+    property_id?: string | number;
+  }) {
     try {
       const result = await apiCall<
         { type?: "ADVISOR" | "PROPERTY"; property_id?: string | number },
@@ -111,7 +130,9 @@ export class PropertyService {
     }
   }
 
-  static async PayPropetySubscription(dto: PayPropertySubSendDto & { property_id: string | number | null }) {
+  static async PayPropetySubscription(
+    dto: PayPropertySubSendDto & { property_id: string | number | null },
+  ) {
     try {
       const result = await apiCall<PayPropertySubSendDto, string>(
         "PUT",
@@ -136,7 +157,9 @@ export class PropertyService {
   /*                          GET OWNER SINGLE PROPERTY                         */
   /* -------------------------------------------------------------------------- */
 
-  static async GetSingleOwnerProperty(dto: { property_id: string | number | null }) {
+  static async GetSingleOwnerProperty(dto: {
+    property_id: string | number | null;
+  }) {
     try {
       const result = await apiCall<unknown, SingleOwnerPropertyDto>(
         "GET",
@@ -179,7 +202,11 @@ export class PropertyService {
   }) {
     try {
       const result = await apiCall<
-        { year: string | number | null; month: string | number | null; day: string | number | null },
+        {
+          year: string | number | null;
+          month: string | number | null;
+          day: string | number | null;
+        },
         SingleOwnerPropertyDto
       >("POST", apiRoutes.OWNER_PROPERTIES_STATUS_UPDATE(dto?.property_id), {
         day: dto.day,
@@ -200,13 +227,21 @@ export class PropertyService {
   }) {
     try {
       const result = await apiCall<
-        { year: string | number | null; month: string | number | null; day: string | number | null },
+        {
+          year: string | number | null;
+          month: string | number | null;
+          day: string | number | null;
+        },
         OwnerPropsRangeDto
-      >("GET", apiRoutes.OWNER_PROPERTIES_PRICE_RANGE_UPDATE(dto?.property_id), {
-        year: dto.year,
-        month: dto.month,
-        day: dto.day,
-      });
+      >(
+        "GET",
+        apiRoutes.OWNER_PROPERTIES_PRICE_RANGE_UPDATE(dto?.property_id),
+        {
+          year: dto.year,
+          month: dto.month,
+          day: dto.day,
+        },
+      );
       return result;
     } catch (e) {
       throw e;
@@ -260,12 +295,16 @@ export class PropertyService {
           advisor_commission: string | number | null;
         },
         SingleOwnerPropertyDto
-      >("POST", apiRoutes.OWNER_PROPERTIES_COMMISSION_UPDATE(dto?.property_id), {
-        day: dto.day,
-        month: dto.month,
-        year: dto.year,
-        advisor_commission: dto.advisor_commission,
-      });
+      >(
+        "POST",
+        apiRoutes.OWNER_PROPERTIES_COMMISSION_UPDATE(dto?.property_id),
+        {
+          day: dto.day,
+          month: dto.month,
+          year: dto.year,
+          advisor_commission: dto.advisor_commission,
+        },
+      );
       return result;
     } catch (e) {
       throw e;
@@ -283,9 +322,13 @@ export class PropertyService {
           advisor_commission: string | number | null;
         },
         number
-      >("PUT", apiRoutes.OWNER_PROPERTIES_ALL_DAYS_COMMISSION_UPDATE(dto?.property_id), {
-        advisor_commission: dto.advisor_commission,
-      });
+      >(
+        "PUT",
+        apiRoutes.OWNER_PROPERTIES_ALL_DAYS_COMMISSION_UPDATE(dto?.property_id),
+        {
+          advisor_commission: dto.advisor_commission,
+        },
+      );
       return result;
     } catch (e) {
       throw e;
@@ -308,12 +351,16 @@ export class PropertyService {
           note: string | number | null;
         },
         SingleOwnerPropertyDto
-      >("POST", apiRoutes.OWNER_PROPERTIES_CALLENDARE_NOTE_UPDATE(dto?.property_id), {
-        day: dto.day,
-        month: dto.month,
-        year: dto.year,
-        note: dto.note,
-      });
+      >(
+        "POST",
+        apiRoutes.OWNER_PROPERTIES_CALLENDARE_NOTE_UPDATE(dto?.property_id),
+        {
+          day: dto.day,
+          month: dto.month,
+          year: dto.year,
+          note: dto.note,
+        },
+      );
       return result;
     } catch (e) {
       throw e;
@@ -324,7 +371,9 @@ export class PropertyService {
   /*                            OWNER PROPERTY BADGE                            */
   /* -------------------------------------------------------------------------- */
 
-  static async GetSingleOwnerPropertyBadgeStatus(dto: { property_id: string | number | null }) {
+  static async GetSingleOwnerPropertyBadgeStatus(dto: {
+    property_id: string | number | null;
+  }) {
     try {
       const result = await apiCall<unknown, GetPropBadgeDto>(
         "GET",
@@ -336,9 +385,14 @@ export class PropertyService {
     }
   }
 
-  static async RequestSingleOwnerPropertyBadge(dto: { property_id: string | number | null }) {
+  static async RequestSingleOwnerPropertyBadge(dto: {
+    property_id: string | number | null;
+  }) {
     try {
-      const result = await apiCall<unknown, unknown>("POST", apiRoutes.OWNER_PROPERTIES_SINGLE_BADGE(dto?.property_id));
+      const result = await apiCall<unknown, unknown>(
+        "POST",
+        apiRoutes.OWNER_PROPERTIES_SINGLE_BADGE(dto?.property_id),
+      );
       return result;
     } catch (e) {
       throw e;
@@ -348,7 +402,9 @@ export class PropertyService {
   /*                            OWNER PROPERTY AUTHORIZATION                              */
   /* -------------------------------------------------------------------------- */
 
-  static async GetSingleOwnerPropertyAuthStatus(dto: { property_id: string | number | null }) {
+  static async GetSingleOwnerPropertyAuthStatus(dto: {
+    property_id: string | number | null;
+  }) {
     try {
       const result = await apiCall<unknown, OwnerSinglePropertyAuthdata>(
         "GET",
@@ -412,37 +468,41 @@ export class PropertyService {
 
   static async InitProperty(dto: { property_id?: string | number | null }) {
     try {
-      const result = await apiCall<unknown, PropInitDto>("GET", apiRoutes.OWNER_PROP_INIT(dto?.property_id));
+      const result = await apiCall<unknown, PropInitDto>(
+        "GET",
+        apiRoutes.OWNER_PROP_INIT(dto?.property_id),
+      );
       return result;
     } catch (e) {
       throw e;
     }
   }
 
-  static async CreatePropertyStepOne(dto: CreatePropertyStepOneDto & { propertyId: string | number | null }) {
+  static async CreatePropertyStepOne(
+    dto: CreatePropertyStepOneDto & { propertyId: string | number | null },
+  ) {
     try {
-      const result = await apiCall<CreatePropertyStepOneDto, ProvienceTypesDto[]>(
-        "PUT",
-        apiRoutes.OWNER_PROPERTIES(dto.propertyId),
-        {
-          address: dto.address,
-          building_area: dto.building_area,
-          building_direction: dto.building_direction,
-          city_id: dto.city_id,
-          construction_year: dto.construction_year,
-          floor: dto.floor,
-          floors: dto.floors,
-          is_chat_enabled: dto.is_chat_enabled,
-          is_location_visible: dto.is_location_visible,
-          land_area: dto.land_area,
-          ownership: dto.ownership,
-          property_type: dto.property_type,
-          province_id: dto.province_id,
-          region_id: dto.region_id,
-          title: dto.title,
-          unit_per_floor: dto.unit_per_floor,
-        },
-      );
+      const result = await apiCall<
+        CreatePropertyStepOneDto,
+        ProvienceTypesDto[]
+      >("PUT", apiRoutes.OWNER_PROPERTIES(dto.propertyId), {
+        address: dto.address,
+        building_area: dto.building_area,
+        building_direction: dto.building_direction,
+        city_id: dto.city_id,
+        construction_year: dto.construction_year,
+        floor: dto.floor,
+        floors: dto.floors,
+        is_chat_enabled: dto.is_chat_enabled,
+        is_location_visible: dto.is_location_visible,
+        land_area: dto.land_area,
+        ownership: dto.ownership,
+        property_type: dto.property_type,
+        province_id: dto.province_id,
+        region_id: dto.region_id,
+        title: dto.title,
+        unit_per_floor: dto.unit_per_floor,
+      });
       return result;
     } catch (e) {
       throw e;
@@ -455,14 +515,13 @@ export class PropertyService {
     lat: string | number | null;
   }) {
     try {
-      const result = await apiCall<{ lng: string | number | null; lat: string | number | null }, ProvienceTypesDto[]>(
-        "PUT",
-        apiRoutes.OWNER_PROPERTIES_LOC_UPDATE(dto.propertyId),
-        {
-          lat: dto.lat,
-          lng: dto.lng,
-        },
-      );
+      const result = await apiCall<
+        { lng: string | number | null; lat: string | number | null },
+        ProvienceTypesDto[]
+      >("PUT", apiRoutes.OWNER_PROPERTIES_LOC_UPDATE(dto.propertyId), {
+        lat: dto.lat,
+        lng: dto.lng,
+      });
       return result;
     } catch (e) {
       throw e;
@@ -475,13 +534,16 @@ export class PropertyService {
     feature_image_id: string | number | null;
   }) {
     try {
-      await YupValidator<{ images: (string | number | null)[]; feature_image_id: string | number | null }>(
-        dto,
-        sendMediaSchema,
-      );
+      await YupValidator<{
+        images: (string | number | null)[];
+        feature_image_id: string | number | null;
+      }>(dto, sendMediaSchema);
 
       const result = await apiCall<
-        { images: (string | number | null)[]; feature_image_id: string | number | null },
+        {
+          images: (string | number | null)[];
+          feature_image_id: string | number | null;
+        },
         ProvienceTypesDto[]
       >("PUT", apiRoutes.OWNER_PROPERTIES_MEDIA_UPDATE(dto.propertyId), {
         feature_image_id: dto.feature_image_id,
@@ -662,11 +724,10 @@ export class PropertyService {
 
   static async GetProperties(dto: GetPropertiesPlusFilters) {
     try {
-      const result = await apiCall<GetPropertiesPlusFilters, { data: PropertyListDto[]; meta: PageMetaDto }>(
-        "GET",
-        apiRoutes.GET_PROPERTIES,
-        dto,
-      );
+      const result = await apiCall<
+        GetPropertiesPlusFilters,
+        { data: PropertyListDto[]; meta: PageMetaDto }
+      >("GET", apiRoutes.GET_PROPERTIES, dto);
       return result;
     } catch (e) {
       throw e;
@@ -675,7 +736,10 @@ export class PropertyService {
 
   static async GetSinglePropertyWithSlug(dto: { Property_slug: string }) {
     try {
-      const result = await apiCall<unknown, SinglePropDto>("GET", apiRoutes.GET_SINGLEPROPERTY_SlUG(dto.Property_slug));
+      const result = await apiCall<unknown, SinglePropDto>(
+        "GET",
+        apiRoutes.GET_SINGLEPROPERTY_SlUG(dto.Property_slug),
+      );
       return result;
     } catch (e) {
       throw e;
@@ -688,7 +752,10 @@ export class PropertyService {
 
   static async GetOwnerPropertiesList() {
     try {
-      const result = await apiCall<unknown, PropertyListDto[]>("GET", apiRoutes.OWNER_PROPERTIES_LIST);
+      const result = await apiCall<unknown, PropertyListDto[]>(
+        "GET",
+        apiRoutes.OWNER_PROPERTIES_LIST,
+      );
       return result;
     } catch (e) {
       throw e;
@@ -717,7 +784,10 @@ export class PropertyService {
 
   static async getBookMarks() {
     try {
-      const result = await apiCall<unknown, PropertyListDto[]>("GET", apiRoutes.BOOKMARKS);
+      const result = await apiCall<unknown, PropertyListDto[]>(
+        "GET",
+        apiRoutes.BOOKMARKS,
+      );
       return result;
     } catch (e) {
       throw e;
@@ -745,10 +815,10 @@ export class PropertyService {
   /* -------------------------------------------------------------------------- */
   static async deleteProperty(dto: { propertyId: string | number | null }) {
     try {
-      const result = await apiCall<{ lng: string | number | null; lat: string | number | null }, ProvienceTypesDto[]>(
-        "DELETE",
-        apiRoutes.SINGLE_OWNER_PROPERTY(dto.propertyId),
-      );
+      const result = await apiCall<
+        { lng: string | number | null; lat: string | number | null },
+        ProvienceTypesDto[]
+      >("DELETE", apiRoutes.SINGLE_OWNER_PROPERTY(dto.propertyId));
       return result;
     } catch (e) {
       throw e;
@@ -759,7 +829,9 @@ export class PropertyService {
   /*                               GET PROPERTY STATISTICS                               */
   /* -------------------------------------------------------------------------- */
 
-  static async getPropertyStatistics(dto: { propertyId: string | number | null }) {
+  static async getPropertyStatistics(dto: {
+    propertyId: string | number | null;
+  }) {
     try {
       const result = await apiCall<unknown, PropertyStatsDto>(
         "GET",
@@ -771,15 +843,17 @@ export class PropertyService {
     }
   }
 
-  static async updatePropertyView(dto: { propertyId: string | number | null; fingerprint: string | number | null }) {
+  static async updatePropertyView(dto: {
+    propertyId: string | number | null;
+    fingerprint: string | number | null;
+  }) {
     try {
-      const result = await apiCall<{ fingerprint: string | number | null }, unknown>(
-        "PUT",
-        apiRoutes.SINGLE_PROPERTY_UPDATE_VIEW(dto.propertyId),
-        {
-          fingerprint: dto.fingerprint,
-        },
-      );
+      const result = await apiCall<
+        { fingerprint: string | number | null },
+        unknown
+      >("PUT", apiRoutes.SINGLE_PROPERTY_UPDATE_VIEW(dto.propertyId), {
+        fingerprint: dto.fingerprint,
+      });
       return result || null;
     } catch (e) {
       throw e;
@@ -809,7 +883,11 @@ export class PropertyService {
   /*                                 REPORT PROPERTY                                */
   /* -------------------------------------------------------------------------- */
 
-  static async reportPost(dto: { post_id: string | number; title: string; description: string }) {
+  static async reportPost(dto: {
+    post_id: string | number;
+    title: string;
+    description: string;
+  }) {
     try {
       const result = await apiCall<
         {
@@ -833,7 +911,10 @@ export class PropertyService {
 
   static async propertyReservedDates(dto: { post_id: string | number }) {
     try {
-      const result = await apiCall<unknown, Date[]>("GET", apiRoutes.PROPERTY_RESERVED_DATES(dto.post_id));
+      const result = await apiCall<unknown, Date[]>(
+        "GET",
+        apiRoutes.PROPERTY_RESERVED_DATES(dto.post_id),
+      );
       return result;
     } catch (e) {
       throw e;

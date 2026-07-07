@@ -27,14 +27,16 @@ const AdvisorPlansCard = ({
   });
   const onClick = () => {
     if (!subscriptionType) {
-      router.push(`/profile/advisor/subscription/${!!data?.is_special ? "is-especial" : "is-not-especial"}`);
+      router.push(
+        `/profile/advisor/subscription/${!!data?.is_special ? "is-especial" : "is-not-especial"}`,
+      );
     } else if (!!subscriptionType)
       if (subscriptionType == "normal" && !!data?.is_special) {
         setShowConfirm(true);
       } else {
         [
           mutate({
-            gateway: "ZARINPAL",
+            gateway: process.env.NEXT_PUBLIC_PAYMENT_GATEWAY || "",
             plan_id: data?.id,
             redirect_url: `${window.origin}/profile/advisor/subscription`,
           }),
@@ -44,7 +46,9 @@ const AdvisorPlansCard = ({
 
   return (
     <div className="bg-primary-100 flex  justify-between py-2 px-3 flex-col gap-2 rounded-20 w-full ">
-      <p className="font-medium text-sm md:text-base  w-full text-center ">{data?.title}</p>
+      <p className="font-medium text-sm md:text-base  w-full text-center ">
+        {data?.title}
+      </p>
 
       <div className="flex flex-col  gap-2 pt-2 w-full items-start ">
         <p className="text-sm  whitespace-pre-wrap ">{data?.description}</p>
