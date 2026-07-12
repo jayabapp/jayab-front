@@ -11,6 +11,7 @@ import type {
   FAQPage,
   LocalBusiness,
   Organization,
+  Place,
   Product,
   SearchAction,
   Service,
@@ -240,7 +241,7 @@ export const ProductSchema = ({ data }: { data: SinglePropDto }) => {
 /*                                    PLACE                                   */
 /* -------------------------------------------------------------------------- */
 export const PlaceSchema = ({ data }: { data: SinglePropDto }) => {
-  return JsonLd<any>({
+  return JsonLd<Place>({
     "@context": "https://schema.org",
     "@type": "Room",
     url: `${process.env.NEXT_PUBLIC_WEB_SITE}/rooms/${data?.slug}`,
@@ -256,18 +257,18 @@ export const PlaceSchema = ({ data }: { data: SinglePropDto }) => {
     //   reviewCount: data?.rate_count,
     // },
 
-    offers: {
-      "@type": "Offer",
-      priceCurrency: "IRR",
-      price: data?.daily_price?.today_offer || data?.daily_price?.normal,
-      priceValidUntil: getTomorrowDateISO(), // ← الزامی
-      availability: !!data?.daily_price?.today_offer ? "https://schema.org/InStock" : "https://schema.org/OutOfStock",
-      url: `${process.env.NEXT_PUBLIC_WEB_SITE}/rooms/${data?.slug}`,
-      seller: {
-        "@type": "Organization",
-        name: "جایاب",
-      },
-    },
+    // offers: {
+    //   "@type": "Offer",
+    //   priceCurrency: "IRR",
+    //   price: data?.daily_price?.today_offer || data?.daily_price?.normal,
+    //   priceValidUntil: getTomorrowDateISO(), // ← الزامی
+    //   availability: !!data?.daily_price?.today_offer ? "https://schema.org/InStock" : "https://schema.org/OutOfStock",
+    //   url: `${process.env.NEXT_PUBLIC_WEB_SITE}/rooms/${data?.slug}`,
+    //   seller: {
+    //     "@type": "Organization",
+    //     name: "جایاب",
+    //   },
+    // },
   });
 };
 
