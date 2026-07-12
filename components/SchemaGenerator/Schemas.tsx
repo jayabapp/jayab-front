@@ -11,7 +11,6 @@ import type {
   FAQPage,
   LocalBusiness,
   Organization,
-  Place,
   Product,
   SearchAction,
   Service,
@@ -221,13 +220,19 @@ export const ProductSchema = ({ data }: { data: SinglePropDto }) => {
     //   reviewCount: data?.rate_count,
     // },
 
-    offers: [
-      {
-        "@type": "Offer",
-        priceCurrency: "IRR",
-        price: data?.daily_price?.today_offer || data?.daily_price?.normal,
+    offers: {
+      "@type": "Offer",
+      priceCurrency: "IRR",
+      price: data?.daily_price?.today_offer || data?.daily_price?.normal,
+      priceValidUntil: getTomorrowDateISO(), // ← الزامی: تاریخ اعتبار قیمت
+      availability: data?.daily_price ? "https://schema.org/InStock" : "https://schema.org/OutOfStock",
+      itemCondition: "https://schema.org/NewCondition",
+      url: `${process.env.NEXT_PUBLIC_WEB_SITE}/rooms/${data?.slug}`,
+      seller: {
+        "@type": "Organization",
+        name: "جایاب",
       },
-    ],
+    },
   });
 };
 
@@ -235,7 +240,7 @@ export const ProductSchema = ({ data }: { data: SinglePropDto }) => {
 /*                                    PLACE                                   */
 /* -------------------------------------------------------------------------- */
 export const PlaceSchema = ({ data }: { data: SinglePropDto }) => {
-  return JsonLd<Place>({
+  return JsonLd<any>({
     "@context": "https://schema.org",
     "@type": "Room",
     url: `${process.env.NEXT_PUBLIC_WEB_SITE}/rooms/${data?.slug}`,
@@ -251,16 +256,34 @@ export const PlaceSchema = ({ data }: { data: SinglePropDto }) => {
     //   reviewCount: data?.rate_count,
     // },
 
-    // offers: [
-    //   {
-    //     "@type": "Offer",
-    //     priceCurrency: "IRR",
-    //     price: data?.cheapest_price?.discounted_price || data?.cheapest_price?.price,
-    //     availability: data?.cheapest_price ? "InStock" : "OutOfStock",
-    //   },
-    // ],
+    offers: {
+      "@type": "Offer",
+      priceCurrency: "IRR",
+      price: data?.daily_price?.today_offer || data?.daily_price?.normal,
+      priceValidUntil: getTomorrowDateISO(), // ← الزامی
+      availability: !!data?.daily_price?.today_offer ? "https://schema.org/InStock" : "https://schema.org/OutOfStock",
+      url: `${process.env.NEXT_PUBLIC_WEB_SITE}/rooms/${data?.slug}`,
+      seller: {
+        "@type": "Organization",
+        name: "جایاب",
+      },
+    },
   });
 };
+
+/* -------------------------------------------------------------------------- */
+/*                               HELPER                                       */
+/* -------------------------------------------------------------------------- */
+
+/**
+ * برمی‌گرداند فردا به فرمت ISO
+ * گوگل برای priceValidUntil حتماً به یک تاریخ آینده نیاز دارد
+ */
+function getTomorrowDateISO(): string {
+  const tomorrow = new Date();
+  tomorrow.setDate(tomorrow.getDate() + 1);
+  return tomorrow.toISOString().split("T")[0]; // "2026-07-12"
+}
 
 export const BreadCrumbSchema = ({
   breadcrumbs,
