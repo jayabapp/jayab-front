@@ -20,7 +20,11 @@ async function serverCall(
     const response = await fetch(`${url}${params ? `?${queryBuilder(params)}` : ""}`, {
       method: "GET",
       headers,
-      next: { revalidate: MinMaxRandom(), tags: [url] },
+      next: {
+        revalidate: MinMaxRandom(),
+
+        // tags: [url]
+      },
     });
 
     if (!response.ok) {
