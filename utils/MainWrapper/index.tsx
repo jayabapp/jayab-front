@@ -25,7 +25,7 @@ import { headerBlackList, mobileFooterBlackList } from "../constantss";
 import { ReserveService } from "@/api_services/reserve/reserve.service";
 import LoginModal from "@/components/Modal/LoginModal";
 import { getParameter } from "@/helpers/queryGet";
-import FingerprintJS from "@fingerprintjs/fingerprintjs";
+// import FingerprintJS from "@fingerprintjs/fingerprintjs";
 import { getCookie, setCookie } from "cookies-next/client";
 import FCM from "../FCM";
 function FallBack() {
@@ -225,19 +225,19 @@ const MainWrapper = ({ children }: mainWrapper) => {
     });
   }, []);
 
-  useEffect(() => {
-    const myVisitor_id = localStorage.getItem("visitor_id");
-    if (!myVisitor_id) {
-      const setFp = async () => {
-        const fp = await FingerprintJS.load();
+  // useEffect(() => {
+  //   const myVisitor_id = localStorage.getItem("visitor_id");
+  //   if (!myVisitor_id) {
+  //     const setFp = async () => {
+  //       const fp = await FingerprintJS.load();
 
-        const { visitorId } = await fp.get();
-        localStorage.setItem("visitor_id", visitorId);
-      };
+  //       const { visitorId } = await fp.get();
+  //       localStorage.setItem("visitor_id", visitorId);
+  //     };
 
-      setFp();
-    }
-  }, []);
+  //     setFp();
+  //   }
+  // }, []);
 
   if (isLandscape) {
     return <RotatePhone />;

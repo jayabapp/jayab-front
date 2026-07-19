@@ -11,6 +11,7 @@ const MetaHeaderHelper = async (data: any) => {
   const ogImage = NEW_IMAGE_URL(data?.feature_image) || "";
 
   return {
+    metadataBase: new URL(process.env.NEXT_PUBLIC_WEBSITE_URL || "https://jayab.app"),
     title,
     description,
     alternates: {
@@ -20,7 +21,6 @@ const MetaHeaderHelper = async (data: any) => {
       title: title,
       description: description,
       url: canonicalUrl,
-      image: ogImage || undefined,
       images: ogImage
         ? [
             {

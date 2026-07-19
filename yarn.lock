@@ -189,13 +189,6 @@
   resolved "https://mirror2.chabokan.net/npm/@exodus%2Fbytes/-/bytes-1.15.0.tgz#54479e0f406cbad024d6fe1c3190ecca4468df3b"
   integrity sha512-UY0nlA+feH81UGSHv92sLEPLCeZFjXOuHhrIo0HQydScuQc8s0A7kL/UdgwgDq8g8ilksmuoF35YVTNphV2aBQ==
 
-"@fingerprintjs/fingerprintjs@^4.5.1":
-  version "4.6.2"
-  resolved "https://mirror2.chabokan.net/npm/@fingerprintjs%2Ffingerprintjs/-/fingerprintjs-4.6.2.tgz#50ba7b82dc8e8d9a9d50db55447142e798afe2db"
-  integrity sha512-g8mXuqcFKbgH2CZKwPfVtsUJDHyvcgIABQI7Y0tzWEFXpGxJaXuAuzlifT2oTakjDBLTK4Gaa9/5PERDhqUjtw==
-  dependencies:
-    tslib "^2.4.1"
-
 "@firebase/analytics-compat@0.2.14":
   version "0.2.14"
   resolved "https://mirror2.chabokan.net/npm/@firebase%2Fanalytics-compat/-/analytics-compat-0.2.14.tgz#7e85a245317394a36523d08bccf5dd5bbe91b72d"
@@ -5176,7 +5169,7 @@ tsconfig-paths@^3.15.0:
     minimist "^1.2.6"
     strip-bom "^3.0.0"
 
-tslib@^2.0.0, tslib@^2.1.0, tslib@^2.4.0, tslib@^2.4.1, tslib@^2.8.0:
+tslib@^2.0.0, tslib@^2.1.0, tslib@^2.4.0, tslib@^2.8.0:
   version "2.8.1"
   resolved "https://mirror2.chabokan.net/npm/tslib/-/tslib-2.8.1.tgz#612efe4ed235d567e8aba5f2a5fab70280ade83f"
   integrity sha512-oJFu94HQb+KVduSUQL7wnpmqnfmLsOA/nAh6b6EH0wCEoK0/mPeXU6c3wKDV83MkOuHPRHtSXKKU99IBazS/2w==

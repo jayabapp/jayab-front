@@ -44,9 +44,9 @@ const SinglePropertyIntroduction = ({ data }: { data: SinglePropDto }) => {
   useQuery({
     queryKey: [PropertyService.SINGLE_PROPERTY_UPDATE_VIEW_CACHEKEY, data?.id],
     queryFn: () => {
-      const fingerprint = localStorage.getItem("visitor_id");
-      if (!!fingerprint) {
-        return PropertyService.updatePropertyView({ fingerprint: fingerprint, propertyId: data?.id });
+      // const fingerprint = localStorage.getItem("visitor_id");
+      if (!!true) {
+        return PropertyService.updatePropertyView({ fingerprint: 1, propertyId: data?.id });
       } else return null;
     },
   });
