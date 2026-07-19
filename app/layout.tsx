@@ -1,8 +1,11 @@
 // app/layout.tsx
-import type { Metadata } from "next";
 import "swiper/css";
 import "swiper/css/pagination";
 import "../styles/globals.css";
+
+import type { Metadata, Viewport } from "next";
+import Script from "next/script";
+import type { ReactNode } from "react";
 
 import { InnitSettingsDto } from "@/api_services/home/home.interface";
 import serverCall from "@/helpers/serverCall";
@@ -10,18 +13,58 @@ import { apiRoutes, baseUrl } from "@/utils/urls";
 import { x_Iransans } from "./fonts/x_iran/x_Iransans";
 import LayoutProvider from "./layout-provider";
 
-import Script from "next/script";
-import type { ReactNode } from "react";
+export const metadata: Metadata = {
+  metadataBase: new URL(process.env.NEXT_PUBLIC_SITE_URL || "https://jayaab.com"),
 
-export function generateMetadata(): Metadata {
-  return {
-    title: {
-      template: "%s | جایاب",
-      default: "جایاب",
-    },
+  title: {
+    default: "جایاب",
+    template: "%s | جایاب",
+  },
+
+  description: "جایاب",
+
+  keywords: ["جایاب"],
+
+  applicationName: "جایاب",
+
+  openGraph: {
+    title: "جایاب",
     description: "جایاب",
-  };
-}
+    type: "website",
+    locale: "fa_IR",
+  },
+
+  icons: {
+    icon: [
+      {
+        url: "/favicon-96x96.png",
+        sizes: "96x96",
+        type: "image/png",
+      },
+      {
+        url: "/favicon.svg",
+        type: "image/svg+xml",
+      },
+    ],
+    apple: "/apple-touch-icon.png",
+  },
+
+  manifest: "/manifest.json",
+
+  appleWebApp: {
+    capable: true,
+    statusBarStyle: "black-translucent",
+    title: "جایاب",
+  },
+};
+
+export const viewport: Viewport = {
+  width: "device-width",
+  initialScale: 1,
+  minimumScale: 1,
+  maximumScale: 1,
+  userScalable: false,
+};
 
 const RootLayout = async ({
   children,
@@ -30,43 +73,42 @@ const RootLayout = async ({
   children: ReactNode;
   modal: ReactNode;
 }>) => {
-  // server-side fetch
   const { data: appSetting }: { data: InnitSettingsDto } = await serverCall(baseUrl + apiRoutes.APP_SETTINGS);
 
-  // safe defaults for LayoutProvider (root layout doesn't receive params/modal)
-  // const modal: ReactNode = null;
+  const gtmId = appSetting?.googleTagManagerId?.toString() || "";
 
   return (
     <html lang="fa" dir="rtl">
-      <head>
-        <meta charSet="utf-8" />
-        <meta
-          name="viewport"
-          content="width=device-width, initial-scale=1, minimum-scale=1, maximum-scale=1, user-scalable=no"
-        />
-        <script
-          dangerouslySetInnerHTML={{
-            __html: `<iframe src="https://www.googletagmanager.com/ns.html?id=${appSetting?.googleTagManagerId?.toString()}"
-            height="0" width="0" style="display:none;visibility:hidden"></iframe>`,
-          }}
-        />
+      <body className={x_Iransans.className}>
+        <LayoutProvider modal={modal}>{children}</LayoutProvider>
 
-        <Script
-          id="gtm"
-          strategy="afterInteractive"
-          dangerouslySetInnerHTML={{
-            __html: `(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
+        <footer>
+          <Script
+            id="gtm"
+            strategy="afterInteractive"
+            dangerouslySetInnerHTML={{
+              __html: `(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
 new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
 j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
 'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
-})(window,document,'script','dataLayer','${appSetting?.googleTagManagerId?.toString()}');`,
-          }}
-        />
-        <Script
-          id="yekta"
-          strategy="afterInteractive"
-          dangerouslySetInnerHTML={{
-            __html: `!function (t, e, n) {
+})(window,document,'script','dataLayer','${gtmId}');`,
+            }}
+          />
+
+          <noscript>
+            <iframe
+              src={`https://www.googletagmanager.com/ns.html?id=${gtmId}`}
+              height="0"
+              width="0"
+              style={{ display: "none", visibility: "hidden" }}
+            />
+          </noscript>
+
+          <Script
+            id="yekta"
+            strategy="afterInteractive"
+            dangerouslySetInnerHTML={{
+              __html: `!function (t, e, n) {
 t.yektanetAnalyticsObject = n, t[n] = t[n] || function () {
 t[n].q.push(arguments)
 }, t[n].q = t[n].q || [];
@@ -76,17 +118,9 @@ s.id = "ua-script-Sfsc56h6"; s.dataset.analyticsobject = n;
 s.async = 1; s.type = "text/javascript";
 s.src = "https://cdn.yektanet.com/rg_woebegone/scripts_v3/Sfsc56h6/rg.complete.js?v=" + r, c.parentNode.insertBefore(s, c)
 }(window, document, "yektanet");`,
-          }}
-        />
-        <meta name="keywords" content="جایاب" />
-        <link rel="icon" type="image/png" href="/favicon-96x96.png" sizes="96x96" />
-        <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
-        <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png" />
-        <meta name="apple-mobile-web-app-title" content="جایاب" />
-        <link rel="manifest" href="/manifest.json" />
-      </head>
-      <body className={`${x_Iransans.className}`}>
-        <LayoutProvider modal={modal}>{children}</LayoutProvider>
+            }}
+          />
+        </footer>
       </body>
     </html>
   );

@@ -1,7 +1,5 @@
 import type { NextConfig } from "next";
 
-const CompressionPlugin = require("compression-webpack-plugin");
-
 const nextConfig: NextConfig = {
   images: {
     qualities: [75, 100],
@@ -33,17 +31,14 @@ const nextConfig: NextConfig = {
     removeConsole: process.env.NODE_ENV === "production",
     reactRemoveProperties: process.env.NODE_ENV === "production" ? { properties: ["^data-test"] } : false,
   },
-  eslint: {
-    dirs: ["*"],
-  },
   productionBrowserSourceMaps: false,
 
   experimental: {
-    scrollRestoration: true,
     optimizeCss: true,
   },
 
   compress: true,
+
   async rewrites() {
     return [
       {
@@ -62,4 +57,4 @@ const nextConfig: NextConfig = {
   },
 };
 
-module.exports = nextConfig;
+export default nextConfig;

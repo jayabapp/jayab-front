@@ -4,7 +4,7 @@ import { NextRequest, NextResponse } from "next/server";
 import serverCall from "./helpers/serverCall";
 import { guardedDirectories, guardedDirectoriesExceptions } from "./utils/constantss";
 import { apiRoutes, baseUrl } from "./utils/urls";
-export async function middleware(request: NextRequest) {
+export async function proxy(request: NextRequest) {
   const headers = new Headers(request.headers);
   const PATH_NAME = request.nextUrl.pathname;
   const queryParams = request.nextUrl.searchParams;
