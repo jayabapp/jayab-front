@@ -8,8 +8,11 @@ const MetaHeaderHelper = async (data: any, options?: { descriptionLimit?: number
   const title = data?.seo?.metaTitle || data?.title;
 
   // Get the raw description
-  let description =
-    data?.property_descriptions?.property_dscr || data?.seo?.metaDescription || data?.full_text || data?.title;
+  let description = data?.property_descriptions?.property_dscr
+    ? `${data?.title}-${data?.property_descriptions?.property_dscr}`
+    : data?.seo?.metaDescription || data?.full_text || data?.title;
+
+  description = description?.replace(/\n/g, " ")?.replace(/\r/g, "");
 
   // Trim description if limit is provided
   if (options?.descriptionLimit && description && description.length > options.descriptionLimit) {
