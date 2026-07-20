@@ -1,5 +1,6 @@
 "use client";
 import { AdvisorService } from "@/api_services/advisor/advisor.propery";
+import { ChatService } from "@/api_services/chat/chat.service";
 import { PropertyService } from "@/api_services/property/property.service";
 import { useAuthStore, useStoreInit, useStoreParams } from "@/store";
 import { footerHiddenBlackList } from "@/utils/constantss";
@@ -11,7 +12,13 @@ import { usePathname, useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 import { isIOS } from "react-device-detect";
 import _STRINGS from "../../utils/LocalStrings";
+
+export const Pulser = () => (
+  <div className="w-2 h-2 rounded-full  absolute left-2 z-1 -top-0.5 bg-red-600 animate-pulse transition-all"></div>
+);
+
 const MobileFooter: React.FC = ({}) => {
+  const pathname = usePathname();
   const { userInfo } = useStoreInit((data) => data);
   const router = useRouter();
   const { isLogin } = useAuthStore((state: any) => state);
@@ -135,6 +142,22 @@ const MobileFooter: React.FC = ({}) => {
   }, []);
 
   const MY_JAYAB_HAS_NOTIF = !!owmerActiveReservesCount;
+
+  /* -------------------------------------------------------------------------- */
+  /*                                 CHAT BADGE                                 */
+  /* -------------------------------------------------------------------------- */
+
+  const { data: chaNotifBadge } = useQuery({
+    queryKey: [ChatService.UNREAD_CHAT_COUNT_CACHEKEY, isLogin, pathname],
+    queryFn: () => ChatService.getUnreadChatCount(),
+
+    refetchOnWindowFocus: true,
+    enabled: !!isLogin && (pathname == "/" || pathname == "/chat"),
+    staleTime: 300,
+    gcTime: 300,
+  });
+
+  const CHAT_HAS_NOTIF = !!chaNotifBadge?.unread_count;
   return (
     <AnimatePresence mode="sync">
       {!!isVisible && !footerHiddenBlackList.find((e) => route?.includes(e)) ? (
@@ -221,8 +244,9 @@ const MobileFooter: React.FC = ({}) => {
                   }}
                   key={el?.id}
                 >
-                  {!!MY_JAYAB_HAS_NOTIF && el?.route == "/profile" && !isFocused(el?.route) ? (
-                    <div className="w-2 h-2 rounded-full  absolute left-2 z-1 -top-0.5 bg-red-600 animate-pulse transition-all"></div>
+                  {((!!MY_JAYAB_HAS_NOTIF && el?.route == "/profile") || (!!CHAT_HAS_NOTIF && el?.route == "/chat")) &&
+                  !isFocused(el?.route) ? (
+                    <Pulser />
                   ) : (
                     <></>
                   )}

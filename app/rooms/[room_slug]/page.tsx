@@ -24,8 +24,7 @@ export async function generateMetadata({ params }: Props, parent: ResolvingMetad
     null,
     { redirect404: true, redirect410: true },
   );
-
-  const metaHeaders = await MehaHeaderHelper(properyData);
+  const metaHeaders = await MehaHeaderHelper(properyData, { descriptionLimit: 160 });
   return metaHeaders;
 }
 

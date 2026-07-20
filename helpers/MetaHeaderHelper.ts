@@ -1,12 +1,27 @@
 import { NEW_IMAGE_URL } from "@/utils/urls";
 import { headers } from "next/headers";
 
-const MetaHeaderHelper = async (data: any) => {
+const MetaHeaderHelper = async (data: any, options?: { descriptionLimit?: number }) => {
   const requestHeaders = await headers();
   const xCanonical = await requestHeaders?.get("x-canonical");
 
   const title = data?.seo?.metaTitle || data?.title;
-  const description = data?.seo?.metaDescription || data?.full_text || data?.title;
+
+  // Get the raw description
+  let description =
+    data?.property_descriptions?.property_dscr || data?.seo?.metaDescription || data?.full_text || data?.title;
+
+  // Trim description if limit is provided
+  if (options?.descriptionLimit && description && description.length > options.descriptionLimit) {
+    // Find the last space within the limit to avoid cutting words
+    const trimmed = description.substring(0, options.descriptionLimit);
+    const lastSpaceIndex = trimmed.lastIndexOf(" ");
+
+    // If there's a space, cut there, otherwise cut at the limit
+    const cutIndex = lastSpaceIndex > 0 ? lastSpaceIndex : options.descriptionLimit;
+    description = description.substring(0, cutIndex).trim() + "...";
+  }
+
   const canonicalUrl = data?.seo?.canonicalURL || xCanonical;
   const ogImage = NEW_IMAGE_URL(data?.feature_image) || "";
 

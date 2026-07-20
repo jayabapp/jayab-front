@@ -143,14 +143,18 @@ const Header = ({ scroll }: { scroll?: number }) => {
       }
     },
   });
+  /* -------------------------------------------------------------------------- */
+  /*                                 CHAT BADGE                                 */
+  /* -------------------------------------------------------------------------- */
+
   const { data: chaNotifBadge } = useQuery({
     queryKey: [ChatService.UNREAD_CHAT_COUNT_CACHEKEY, isLogin, pathname],
-    queryFn: () => {
-      if (!!isLogin && (pathname == "/" || pathname == "/chat")) {
-        return ChatService.getUnreadChatCount();
-      } else return null;
-    },
+    queryFn: () => ChatService.getUnreadChatCount(),
+
     refetchOnWindowFocus: true,
+    enabled: !!isLogin && (pathname == "/" || pathname == "/chat"),
+    staleTime: 300,
+    gcTime: 300,
   });
 
   const onCreateAddClick = () => {
