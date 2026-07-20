@@ -185,17 +185,17 @@ export const BlogSchema = ({
     dateModified: data?.updated_at,
     datePublished: data?.created_at,
 
-    ...(hasRating
-      ? {
-          aggregateRating: {
-            "@type": "AggregateRating",
-            ratingValue: Number(rate),
-            bestRating: 5,
-            worstRating: 1,
-            ratingCount: Number(rate_count),
-          },
-        }
-      : {}),
+    // ...(hasRating
+    //   ? {
+    //       aggregateRating: {
+    //         "@type": "AggregateRating",
+    //         ratingValue: Number(rate),
+    //         bestRating: 5,
+    //         worstRating: 1,
+    //         ratingCount: Number(rate_count),
+    //       },
+    //     }
+    //   : {}),
   });
 };
 
