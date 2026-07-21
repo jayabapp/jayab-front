@@ -31,7 +31,7 @@ const RoomAccard = ({ data }: { data: SinglePropDto }) => {
         />
         <LinearTextBlock
           title={_STRINGS.SOFA_BED}
-          value={!!data?.bedrooms?.additional_bed ? _STRINGS.HAS : _STRINGS.DOSE_NOT_HAVE}
+          value={!!data?.bedrooms?.sofa_bed ? _STRINGS.HAS : _STRINGS.DOSE_NOT_HAVE}
         />
       </div>
     </SimpleAccordion>
