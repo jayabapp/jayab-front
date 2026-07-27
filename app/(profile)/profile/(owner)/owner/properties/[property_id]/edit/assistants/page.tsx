@@ -16,6 +16,7 @@ import { useMutation, useQuery } from "@tanstack/react-query";
 import { useParams, usePathname, useRouter, useSearchParams } from "next/navigation";
 import React, { useEffect, useState } from "react";
 import LottieLoading from "@/components/shared/Lotties/LottieLoading";
+import Notify from "@/components/shared/Toast";
 
 const CreatePropertyAssistance = () => {
   const searchParams = useSearchParams();
@@ -70,6 +71,14 @@ const CreatePropertyAssistance = () => {
     },
   });
   const onSubmit = () => {
+    const needsAssistantContact = [2, 3].includes(Number(values?.show_mobile_type));
+    if (needsAssistantContact && !`${values?.assistant_full_name || ""}`.trim()) {
+      return Notify({ type: "warn", body: "نام دستیار را وارد کنید" });
+    }
+    if (needsAssistantContact && !`${values?.assistant_mobile || ""}`.trim()) {
+      return Notify({ type: "warn", body: "شماره تماس دستیار را وارد کنید" });
+    }
+
     if (!!initPropData?.id) {
       mutate({
         assistant_full_name: values?.assistant_full_name || undefined,
