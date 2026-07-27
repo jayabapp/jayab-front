@@ -32,6 +32,8 @@ export const SocketIO = () => {
     });
     socket.on("event:new-notification", (e) => {
       useStoreSocket.setState({ notification: e });
+
+      useStoreParams.setState((e) => ({ notificationsCount: (e?.notificationsCount || 0) + 1 }));
       Notify({
         body: e?.body,
         title: "پیام جدید",

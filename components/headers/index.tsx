@@ -76,7 +76,7 @@ const Header = ({ scroll }: { scroll?: number }) => {
   const params = useParams();
   const { room_slug, slug, chat_id } = params;
   const { isLogin } = useAuthStore((state: any) => state);
-  const { getBackHome, topHeaderVisible } = useStoreParams();
+  const { getBackHome, topHeaderVisible, notificationsCount } = useStoreParams();
   const [isOpen, setIsOpen] = useState(false);
 
   /* -------------------------------------------------------------------------- */
@@ -134,15 +134,21 @@ const Header = ({ scroll }: { scroll?: number }) => {
   /*                                 NOTIF BADGE                                */
   /* -------------------------------------------------------------------------- */
   const { data: notifBadge } = useQuery({
-    queryKey: [UserService.NOTIFS_BADGE_CACHEKEY, isLogin, pathname],
+    queryKey: [UserService.NOTIFS_BADGE_CACHEKEY, isLogin],
     queryFn: () => {
-      if (!!isLogin && pathname == "/") {
+      if (!!isLogin) {
         return UserService.userNotifBadge();
       } else {
         return null;
       }
     },
   });
+  useEffect(() => {
+    if (!!notifBadge) {
+      useStoreParams.setState({ notificationsCount: notifBadge });
+    }
+  }, [notifBadge]);
+
   /* -------------------------------------------------------------------------- */
   /*                                 CHAT BADGE                                 */
   /* -------------------------------------------------------------------------- */
@@ -232,7 +238,7 @@ const Header = ({ scroll }: { scroll?: number }) => {
           title={_STRINGS.MY_PROFILE}
           href={!!isLogin ? "/profile" : "/auth"}
           prefetch={false}
-          className={` ${!!isLogin ? "bg-white" : ""}  ${isHeaderLight ? "border-white " : "border-gray-500"} border  relative shrink-0  transition-all   rounded-full flex items-center justify-center`}
+          className={` ${!!isLogin ? "" : ""}   py-1.5 backdrop-blur-[2px] px-2.5 flex items-center gap-3   ${isHeaderLight ? " bg-white/40  " : " "}   relative shrink-0  transition-all   rounded-full flex items-center justify-center`}
         >
           <img
             src={
@@ -240,8 +246,16 @@ const Header = ({ scroll }: { scroll?: number }) => {
                 ? NEW_IMAGE_URL(userInfo?.profile_image)
                 : "/assets/icons/header/new-face/user.svg"
             }
-            className={` ${isLogin && !userInfo?.profile_image ? " xl:brightness-0" : !isLogin && !isHeaderLight ? " brightness-0" : ""}  shrink-0  size-6  rounded-full transform-gpu transition-all `}
+            className={` ${isLogin && !userInfo?.profile_image ? " xl:brightness-0" : !isLogin && !isHeaderLight ? " brightness-0" : ""} ${isHeaderLight ? "border-white" : "border-gray-500 "} border  shrink-0  size-6  rounded-full transform-gpu transition-all `}
           />
+          {!isLogin ? (
+            <p className={`text-xs pl-1  transition-all  ${!isHeaderLight ? " " : " text-white"}`}>{_STRINGS.ENTER}</p>
+          ) : (
+            <img
+              className={` size-5  pl-1 transition-all ${isHeaderLight ? " invert brightness-200" : ""}`}
+              src={"/assets/icons/header/new-face/dots-three-vertical.svg"}
+            />
+          )}
         </Link>
 
         {isLogin ? (
@@ -253,7 +267,7 @@ const Header = ({ scroll }: { scroll?: number }) => {
               href={"/notifications"}
               className="relative w-5 h-5 transition-all   aspect-square  shrink-0 flex  "
             >
-              <AbsoluteBadge count={notifBadge || 0} />
+              <AbsoluteBadge count={notificationsCount || 0} />
               <img
                 alt="notificatons"
                 src="/assets/icons/header/white_bell.svg"
@@ -437,7 +451,7 @@ transition-all ease-out  duration-300  header-content-container w-full mx-auto  
             />
             {!!isLogin ? (
               <div className="relative ">
-                <ProfileDropdown isHome={isHeaderLight} notifBadge={notifBadge || 0} />
+                <ProfileDropdown isHome={isHeaderLight} notifBadge={notificationsCount || 0} />
               </div>
             ) : (
               <></>

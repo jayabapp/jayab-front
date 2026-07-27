@@ -148,9 +148,11 @@ const PropertyCard = ({
         >
           <div className=" aspect-square w-full h-full relative">
             <Image
+              priority
+              fetchPriority="high"
               fill
-              loading="lazy"
-              quality={100}
+              loading="eager"
+              quality={60}
               alt={data?.feature_image?.alt || ""}
               src={
                 !!data?.feature_image

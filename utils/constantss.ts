@@ -71,6 +71,7 @@ export const headerWithFullSeach = ["/rooms"];
 export const mobileFooterBlackList = [
   // "/chat/",
   "/profile/edit",
+  "/profile/support/",
 ];
 
 export const footerHiddenBlackList = ["/chat/", "/auth", "/profile/owner/properties/"];

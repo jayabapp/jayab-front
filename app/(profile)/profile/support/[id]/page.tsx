@@ -74,7 +74,7 @@ const TicketsPage = () => {
           </div>
 
           {/* {data?.status == 20 && ( */}
-          <div className="  fixed translate-x-1/2 md:translate-x-1/4  bg-white md:bg-transparent  border-t md:border-none  right-1/2  bottom-[4.5rem] lg:bottom-0  w-full p-4 responsive-width z-40 flex flex-col items-center  ">
+          <div className="  fixed translate-x-1/2 md:translate-x-1/4  bg-white md:bg-transparent  border-t md:border-none  right-1/2  bottom-0 lg:bottom-0  w-full p-4 responsive-width z-40 flex flex-col items-center  ">
             <Button
               disabled={data?.status == 100}
               title={data?.status == 100 ? _STRINGS.TICKET_CLOSED : _STRINGS.ANSWER_MESSAGE}

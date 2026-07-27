@@ -1,16 +1,15 @@
 "use client";
 
-import { useQuery } from "@tanstack/react-query";
-import { isEmpty, last } from "lodash";
-import React, { useEffect, useState } from "react";
-import InfiniteScroll from "react-infinite-scroll-component";
-import _STRINGS from "../../utils/LocalStrings";
-import { useStoreSocket } from "@/store";
 import { UserService } from "@/api_services/user/user.service";
-import LottieLoading from "@/components/shared/Lotties/LottieLoading";
+import NotifCard from "@/components/notification/NotifCard";
 import BtnLoading from "@/components/shared/Button/BtnLoading";
 import EmptyList from "@/components/shared/Lotties/EmptyList";
-import NotifCard from "@/components/notification/NotifCard";
+import LottieLoading from "@/components/shared/Lotties/LottieLoading";
+import { useStoreParams, useStoreSocket } from "@/store";
+import { useQuery } from "@tanstack/react-query";
+import { isEmpty, last } from "lodash";
+import { useEffect, useState } from "react";
+import InfiniteScroll from "react-infinite-scroll-component";
 
 const Notifications = () => {
   const [cursor, setCursor] = useState(0);
@@ -19,6 +18,7 @@ const Notifications = () => {
   const { notification } = useStoreSocket((state) => state);
 
   useEffect(() => {
+    useStoreParams.setState({ notificationsCount: 0 });
     if (!!notification) {
       setRefresher((e) => !e);
       setCursor(0);

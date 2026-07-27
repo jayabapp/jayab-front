@@ -65,6 +65,7 @@ export type ParamStore = {
   owmerActiveReservesCount: number;
   setOwmerActiveReservesCount: (a: number | null) => void;
   owmerActiveReservesSocket: any;
+  notificationsCount: number | null;
 };
 
 export const useStoreParams = create<ParamStore>((set) => ({
@@ -84,6 +85,7 @@ export const useStoreParams = create<ParamStore>((set) => ({
   owmerActiveReservesCount: 0,
   setOwmerActiveReservesCount: (values: any) => set(() => ({ owmerActiveReservesCount: values })),
   owmerActiveReservesSocket: null,
+  notificationsCount: 0,
 }));
 
 /* -------------------------------------------------------------------------- */
