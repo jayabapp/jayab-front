@@ -233,12 +233,12 @@ const Header = ({ scroll }: { scroll?: number }) => {
 
   const MenuProfileItem = () => {
     return (
-      <div className=" flex items-center  gap-3 xl:gap-6">
+      <div className=" flex items-center  gap-3 xl:gap-6  shrink-0 ">
         <Link
           title={_STRINGS.MY_PROFILE}
           href={!!isLogin ? "/profile" : "/auth"}
           prefetch={false}
-          className={` ${!!isLogin ? "" : ""}   py-1.5 backdrop-blur-[2px] px-2.5 flex items-center gap-3   ${isHeaderLight ? " bg-white/40  " : " "}   relative shrink-0  transition-all   rounded-full flex items-center justify-center`}
+          className={` ${!!isLogin ? "" : ""}   py-1.5 backdrop-blur-[2px] px-2.5 flex items-center gap-3   ${isHeaderLight ? " bg-white/40   border-transparent" : "    "} border  relative shrink-0  transition-all   rounded-full flex items-center justify-center`}
         >
           <img
             src={
