@@ -41,13 +41,18 @@ const Home = async () => {
   });
   const { data: propertyTypes } = await serverCall(baseUrl + apiRoutes.USER_PROP_OPTIONS + "?group[]=PROPERTY_TYPE");
   const { data: homeContent } = await serverCall(baseUrl + apiRoutes.CONTENT_BY_KEY("homeContent"));
+
   const devices = await deviceTypeDetector();
   return (
     <div style={{ minHeight: "100dvh" }} id="homeParent" className="home-container  !px-0 !pt-0   flex flex-col gap-0 ">
       <SearchboxSchema />
       <OrganizationSchema />
       {!!banners?.[BannerPosition.MAIN_1] && !isEmpty(banners?.[BannerPosition.MAIN_1]) ? (
-        <HomeBannerPart devices={devices} banners={banners?.[BannerPosition.MAIN_1] || []} />
+        <HomeBannerPart
+          title={homeContent?.full_text}
+          devices={devices}
+          banners={banners?.[BannerPosition.MAIN_1] || []}
+        />
       ) : (
         <></>
       )}

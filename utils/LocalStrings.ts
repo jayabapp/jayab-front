@@ -186,6 +186,7 @@ const _STRINGS = {
 
   PROP_DESC: "درباره اقامتـگاه",
   OTHER_DESC: "سایر توضیحات",
+  CANCEL_OTHER_DESC: "توضیحات لغو رزرو (کنسلی)",
   CANCELATIONS_TITLE: "انتخاب نوع قوانین لغو درخواست میهمان (کنسلی)",
   SUBMIT_PROPERTY: "ثبت ملک",
   UR_PROP_REGISTERED: "اطلاعات ملک شما ثبت شد!",

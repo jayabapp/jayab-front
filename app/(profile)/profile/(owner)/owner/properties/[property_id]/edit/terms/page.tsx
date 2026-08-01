@@ -323,7 +323,7 @@ ${_STRINGS.ABOUT_PROPERTY_DESCRIPTION}`,
       />
       <MultiLineFormInput
         item={{
-          title: _STRINGS.OTHER_DESC,
+          title: _STRINGS.CANCEL_OTHER_DESC,
           placeholder: _STRINGS.DESCRIPTION_DOTS,
           containerClass: "w-full relative col-span-full",
           rows: 3,

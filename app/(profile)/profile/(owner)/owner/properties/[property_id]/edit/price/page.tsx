@@ -2,6 +2,7 @@
 import { PricingPropertySendDto } from "@/api_services/property/property.interface";
 import { PropertyService } from "@/api_services/property/property.service";
 import TitleCounter from "@/components/properties/TitleCounter";
+import WeWontChargeYouOnReservePop from "@/components/properties/WeWontChargeYouOnReservePop";
 import Button from "@/components/shared/Button/Button";
 import FixedBottomContainer from "@/components/shared/FixedBottomContainer";
 import FormInputWithExternalUnit from "@/components/shared/Form/FormInputWithExternalUnit";
@@ -18,6 +19,7 @@ import { useEffect, useState } from "react";
 const CreatePropertyPricing = () => {
   const router = useRouter();
   const pathname = usePathname();
+
   const searchParams = useSearchParams();
   const edit_mode = searchParams.get("edit_mode");
   const params = useParams();
@@ -39,6 +41,7 @@ const CreatePropertyPricing = () => {
 
   useEffect(() => {
     if (!!initPropData?.daily_price) {
+      setPreventer(true);
       setValues({
         additional_person: initPropData?.daily_price?.additional_person || 0,
 
@@ -88,6 +91,28 @@ const CreatePropertyPricing = () => {
     }
   };
 
+  /* -------------------------------------------------------------------------- */
+  /*                                  NOTIFY PART                                 */
+  /* -------------------------------------------------------------------------- */
+
+  const [showNotifyPop, setShowNotifyPop] = useState(false);
+  const [preventer, setPreventer] = useState(false);
+
+  const onHideNotify = () => {
+    setPreventer(true);
+    setShowNotifyPop(false);
+  };
+
+  const onShowNotify = () => {
+    if (!!preventer) return;
+    setShowNotifyPop(true);
+  };
+
+  useEffect(() => {
+    if (!edit_mode) return;
+    setPreventer(true);
+  }, [edit_mode]);
+  ///////////////////////////
   return (
     <div
       id="homeParent"
@@ -150,7 +175,7 @@ const CreatePropertyPricing = () => {
               />
             </div>
           </div>
-          <div className=" flex flex-col gap-2    pb-4 w-full">
+          <div onClick={onShowNotify} className=" flex flex-col gap-2    pb-4 w-full">
             <p className="font-bold w-full text-start  text-sm md:text-base text-primary-700  ">
               {_STRINGS.REND_DAYLI_PRICE}
             </p>{" "}
@@ -290,6 +315,8 @@ const CreatePropertyPricing = () => {
           title={_STRINGS.SUBMIT_MOVE_ON}
         />
       </FixedBottomContainer>
+
+      <WeWontChargeYouOnReservePop show={showNotifyPop} onHide={onHideNotify} />
     </div>
   );
 };
