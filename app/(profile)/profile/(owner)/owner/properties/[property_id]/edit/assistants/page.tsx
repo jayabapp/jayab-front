@@ -48,10 +48,12 @@ const CreatePropertyAssistance = () => {
   });
   useEffect(() => {
     if (!!initPropData?.contact_type) {
+      const assistant = initPropData.assistants?.find((contact) => contact.is_owner === false);
+
       setValues({
-        show_mobile_type: initPropData?.contact_type,
-        assistant_full_name: initPropData?.assistants?.[0]?.assistant_full_name || "",
-        assistant_mobile: initPropData?.assistants?.[0]?.assistant_mobile_number || "",
+        show_mobile_type: Number(initPropData.contact_type),
+        assistant_full_name: assistant?.assistant_full_name ?? "",
+        assistant_mobile: assistant?.assistant_mobile_number ?? "",
       });
     }
   }, [initPropData]);
