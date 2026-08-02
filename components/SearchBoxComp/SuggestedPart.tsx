@@ -89,7 +89,7 @@ const SuggestedPart = ({
               ))}
             </div>
           ) : (
-            <> </>
+            null
           )}
           {!isEmpty(data?.cities) ? (
             <div className="w-full flex flex-col gap-3">
@@ -117,7 +117,7 @@ const SuggestedPart = ({
               ))}
             </div>
           ) : (
-            <> </>
+            null
           )}
           {!isEmpty(data?.landings) ? (
             <div className="w-full flex flex-col gap-2">
@@ -137,7 +137,7 @@ const SuggestedPart = ({
               ))}
             </div>
           ) : (
-            <> </>
+            null
           )}
         </>
       )}

@@ -151,6 +151,7 @@ const PropertyCard = ({
               priority
               fetchPriority="high"
               fill
+              sizes="(max-width: 768px) 40vw, (max-width: 1280px) 25vw, 20vw"
               loading="eager"
               quality={60}
               alt={data?.feature_image?.alt || ""}
