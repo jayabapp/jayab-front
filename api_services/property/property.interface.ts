@@ -76,6 +76,7 @@ export interface AssistantsDto {
   assistant_full_name: string;
   assistant_mobile_number: string;
   owner_mobile_number: null;
+  is_owner: boolean;
 }
 
 export interface DayliPriceDto {

@@ -10,6 +10,7 @@
 !.yarn/releases
 /.yarn-cache/
 !.yarn/versions
+/.yarn-cache/
 
 # testing
 /coverage
