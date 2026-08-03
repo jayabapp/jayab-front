@@ -79,7 +79,7 @@ const RootLayout = async ({
 
   return (
     <html lang="fa" dir="rtl">
-      <body className={x_Iransans.className}>
+      <body className={x_Iransans.className} suppressHydrationWarning>
         <LayoutProvider modal={modal}>{children}</LayoutProvider>
 
         <footer>
