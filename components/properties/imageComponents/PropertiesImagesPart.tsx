@@ -189,9 +189,8 @@ function ProductImagesContainer({
           {!!userInfo?.advisor_id && data?.advisor_commission ? (
             <div className="w-24 gap-0.5  h-7 rounded-20 transition-all  py-[0.2rem]   bg-black/50 text-white absolute z-1 left-2 flex-row top-2 aspect-square flex items-center justify-center">
               <p className="  text-sm   ">
-                {" "}
                 کمیسیون: {data.advisor_commission}%
-              </p>{" "}
+              </p>
             </div>
           ) : (
             <></>
@@ -235,17 +234,13 @@ function ProductImagesContainer({
                         currentIndex == index ? "name" : "thumbnail",
                       )}
                       fill
-                      // Full-bleed on mobile, 4/5 of the row next to the thumbnail rail on desktop.
-                      sizes="(max-width: 768px) 100vw, 80vw"
-                      // The first slide is the hero/LCP element; the rest are off-screen
-                      // carousel slides and should not compete with it for bandwidth.
                       priority={index === 0}
-                      loading={index === 0 ? "eager" : "lazy"}
-                      className={`w-full h-full !p-0  transform-gpu !overflow-clip  bg-white  transition-all
-
-                      rounded-20 duration-500 aspect-square !object-cover `}
-                      alt={`${i?.alt || imagesDefautAlt || ""}`}
                       title={imagesDefautAlt}
+                      sizes="(max-width: 768px) 100vw, 80vw"
+                      loading={index === 0 ? "eager" : "lazy"}
+                      alt={`${i?.alt || imagesDefautAlt || ""}`}
+                      className={`w-full h-full !p-0  transform-gpu !overflow-clip  bg-white  transition-all
+                      rounded-20 duration-500 aspect-square !object-cover `}
                     />
                   </div>
                 </SwiperSlide>

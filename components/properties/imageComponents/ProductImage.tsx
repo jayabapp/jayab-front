@@ -4,24 +4,23 @@ import Image from "next/image";
 
 type ProductImageType = {
   item: any;
+  sizes?: string;
   moreClass: string;
-  imageSize?: "name" | "thumbnail" | "medium" | undefined;
-  onClick: () => void | null;
   id: string | null;
   alt?: string | null;
-  /** Rendered-width hint for srcset selection. Defaults to the gallery thumbnail column. */
-  sizes?: string;
+  onClick: () => void | null;
+  imageSize?: "name" | "thumbnail" | "medium" | undefined;
 };
 
 const INTRINSIC = 320;
 
 function ProductImage({
+  alt,
   item,
-  moreClass,
   onClick,
+  moreClass,
   id = null,
   imageSize,
-  alt,
   sizes = "(min-width: 768px) 20vw, 25vw",
 }: ProductImageType) {
   return (
