@@ -4,6 +4,7 @@ import FilterCheck from "@/components/Filters/FilterCheck";
 import FilterCounter from "@/components/Filters/FilterCounter";
 import PriceRange from "@/components/Filters/PriceRange";
 import ProductModels from "@/components/Filters/ProductModelx";
+import PropertyRulesFilter from "@/components/Filters/PropertyRulesFilter";
 import SimpleAccordion from "@/components/shared/SimpleAccorion";
 import numberWithCommas from "@/helpers/numberWithCommas";
 import { useStoreInit } from "@/store";
@@ -166,6 +167,13 @@ const FiltersPart = ({ queries, setFilters, filters, propertyTypes }: any) => {
           query={queries}
         />
       </SimpleAccordion>
+
+      <PropertyRulesFilter
+        propertyTypes={propertyTypes}
+        filters={filters}
+        setFilters={setFilters}
+        queries={queries}
+      />
 
       {/* COMMISION RANGE  */}
 

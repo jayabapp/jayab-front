@@ -104,6 +104,8 @@ const SsrFilterPage = ({
           "COOL_HEAT",
           "WELFARE",
           "PATTERN",
+          "PARTY",
+          "PET",
         ],
       }),
     queryKey: [
@@ -116,6 +118,8 @@ const SsrFilterPage = ({
       "COOL_HEAT",
       "WELFARE",
       "PATTERN",
+      "PARTY",
+      "PET",
     ],
   });
 

@@ -48,6 +48,7 @@ export interface catQueryTypes {
   q: string | null | undefined;
   page: string | null | undefined;
   party: string | null | undefined;
+  pet: string | null | undefined;
   has_discount: string | null | undefined;
   max_commission: string | null | undefined;
   min_commission: string | null | undefined;
@@ -108,6 +109,7 @@ function FilterdPropertiesPageOrianted({ sortType, setSortType, query, devices }
     query?.checkout,
     query?.checkin,
     query?.party,
+    query?.pet,
     query?.ownership,
     query?.kitchen,
     query?.cool_heat,
@@ -146,6 +148,7 @@ function FilterdPropertiesPageOrianted({ sortType, setSortType, query, devices }
       query?.checkout,
       query?.checkin,
       query?.party,
+      query?.pet,
       query?.ownership,
       query?.kitchen,
       query?.cool_heat,

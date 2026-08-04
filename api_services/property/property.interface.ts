@@ -542,6 +542,7 @@ export interface GetPropertiesPlusFilters {
   q?: any;
   entertainment?: any;
   party?: any;
+  pet?: any;
   has_discount?: any;
   has_pool?: any;
   is_premium?: any;
