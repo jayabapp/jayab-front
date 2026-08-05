@@ -1,7 +1,6 @@
 import { SinglePropDto } from "@/api_services/property/property.interface";
 import EnvAccard from "./EnvAccard";
 import FeatAccard from "./FeatAccard";
-import GeneralFeatAccard from "./GeneralFeatAccard";
 import GuestAccard from "./GuestAccard";
 import MapPopupPart from "./MapPopupPart";
 import PrimaryAccard from "./PrimaryAccard";
@@ -17,7 +16,6 @@ const SinglePorpertyAccards = ({ data }: { data: SinglePropDto }) => {
       <EnvAccard data={data} />
       <RoomAccard data={data} />
       <FeatAccard data={data} />
-      <GeneralFeatAccard data={data} />
       <RulesAccardion data={data} />
       {!!data?.latitude ? <MapPopupPart data={data} /> : <></>}
       {/* <RulesPopPart data={data} /> */}

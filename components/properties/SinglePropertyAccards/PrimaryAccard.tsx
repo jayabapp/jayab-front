@@ -4,7 +4,6 @@ import LinearTextBlock from "@/components/properties/SinglePropertyAccards/Linea
 import SimpleAccordion from "@/components/shared/SimpleAccorion";
 import numberWithCommas from "@/helpers/numberWithCommas";
 import _STRINGS from "@/utils/LocalStrings";
-import PropertySelectedOptions from "./PropertySelectedOptions";
 const PrimaryAccard = ({ data }: { data: SinglePropDto }) => {
   return (
     <SimpleAccordion
@@ -31,19 +30,6 @@ const PrimaryAccard = ({ data }: { data: SinglePropDto }) => {
         <LinearTextBlock title={_STRINGS.ROOM_COUNTS} value={data?.bedrooms?.total_bedrooms} unit={_STRINGS.ROOM} />
         <LinearTextBlock title={_STRINGS.CREATED_AT_YEAR} value={data?.construction_year} />
         <LinearTextBlock title={_STRINGS.BUILDING_DIRECTION} value={data?.options?.building_direction} />
-        <LinearTextBlock title={_STRINGS.POOL_STATUS} value={data?.has_pool ? _STRINGS.HAS_POOL : "ندارد"} />
-
-        {!!data?.has_pool ? (
-          <div className="flex w-full flex-col  gap-3">
-            <p className="text-primary-700 font-bold">{_STRINGS.POOL_TYPE}</p>
-            {data?.options?.pool_type?.map((e) => (
-              <PropertySelectedOptions title={e} key={`${e}poolType`} />
-            ))}
-          </div>
-        ) : (
-          <></>
-        )}
-
         <div className="flex flex-col gap-1 w-full ">
           <p className="text-sm font-medium ">{_STRINGS.PROP_EXACT_ADDRESS} </p>
           <p className="font-medium">{data?.address}</p>

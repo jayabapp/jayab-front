@@ -11,7 +11,7 @@ const RoomAccard = ({ data }: { data: SinglePropDto }) => {
       item={{
         parenClass: " bg-white border border-gray-300 !mt-0  rounded-10 w-full",
       }}
-      title="اطلاعات اتاق و رخت خواب"
+      title={_STRINGS.ROOMS_INFO}
     >
       <div className="flex items-center flex-col gap-4">
         <LinearTextBlock title={_STRINGS.ROOM_COUNTS} value={data?.bedrooms?.total_bedrooms} unit={_STRINGS.ROOM} />
@@ -33,6 +33,34 @@ const RoomAccard = ({ data }: { data: SinglePropDto }) => {
           title={_STRINGS.SOFA_BED}
           value={!!data?.bedrooms?.sofa_bed ? _STRINGS.HAS : _STRINGS.DOSE_NOT_HAVE}
         />
+        <div className="flex w-full flex-col gap-3">
+          <p className="font-bold">{_STRINGS.WC}</p>
+          <LinearTextBlock title={_STRINGS.WC_IR} value={data?.bedrooms?.wc} unit={_STRINGS.ADAD} />
+          <LinearTextBlock title={_STRINGS.WC_INTERNATIONAL} value={data?.bedrooms?.wc_ir} unit={_STRINGS.ADAD} />
+        </div>
+        <div className="flex w-full flex-col gap-3">
+          <p className="font-bold">{_STRINGS.SHOWER}</p>
+          <LinearTextBlock
+            title={_STRINGS.ALL_SHOWER}
+            value={data?.bedrooms?.bathroom_general}
+            unit={_STRINGS.ADAD}
+          />
+          <LinearTextBlock
+            title={_STRINGS.TUB_SHOWER}
+            value={data?.bedrooms?.bathroom_tub}
+            unit={_STRINGS.ADAD}
+          />
+          <LinearTextBlock
+            title={_STRINGS.SHOWE_IN_WC}
+            value={data?.bedrooms?.bathroom_in_wc}
+            unit={_STRINGS.ADAD}
+          />
+          <LinearTextBlock
+            title={_STRINGS.MASTER_SHOWER}
+            value={data?.bedrooms?.bathroom_master}
+            unit={_STRINGS.ADAD}
+          />
+        </div>
       </div>
     </SimpleAccordion>
   );
