@@ -1,23 +1,23 @@
 "use client";
+
 import { Suspense, useEffect, useState } from "react";
-
+import { SingleOwnerPropertyDto } from "@/api_services/property/property.interface";
+import { difference, isEmpty } from "lodash";
+import { SinglePropDto } from "@/api_services/property/property.interface";
 import { NEW_IMAGE_URL } from "../../../utils/urls";
-// import Modal from "../shared/Modal";
-
+import { useStoreInit } from "@/store";
 import { ImageDto } from "@/api_services/auth/auth.interface";
 
-import { SingleOwnerPropertyDto, SinglePropDto } from "@/api_services/property/property.interface";
-import { difference, isEmpty } from "lodash";
-import ProductImage from "./ProductImage";
 import RoomImageModalPart from "./RoomImageModalPart";
+import ProductImage from "./ProductImage";
 
-import { useStoreInit } from "@/store";
 import dynamic from "next/dynamic";
+import Image from "next/image";
+
 const Swiper = dynamic(() => import("@/components/embelaCarousel/Swiper"));
-const SwiperSlide = dynamic(() => import("@/components/embelaCarousel/SwiperSlide"));
-// const ProductOptionsContainer = dynamic(() => import("./ProductOptionsContainer"), {
-//   ssr: false,
-// });
+const SwiperSlide = dynamic(
+  () => import("@/components/embelaCarousel/SwiperSlide"),
+);
 
 export type ProductDataType = {
   image: ImageDto;
@@ -98,8 +98,14 @@ function ProductImagesContainer({
 
   useEffect(() => {
     if (productImageId) {
-      const activeImages = [productImageId].concat(allImagesIds).map((e) => defaultImages?.find((x) => x?.id == e));
-      if (!!activeImages && !isEmpty(activeImages) && activeImages?.every((e) => !!e)) {
+      const activeImages = [productImageId]
+        .concat(allImagesIds)
+        .map((e) => defaultImages?.find((x) => x?.id == e));
+      if (
+        !!activeImages &&
+        !isEmpty(activeImages) &&
+        activeImages?.every((e) => !!e)
+      ) {
         setAddImages(activeImages);
       }
     }
@@ -120,7 +126,13 @@ function ProductImagesContainer({
         >
           {addImages?.slice(0, 4)?.map((e, index) => (
             <div
-              onClick={() => setModalProps({ isVisible: true, data: data, currentIndex: index })}
+              onClick={() =>
+                setModalProps({
+                  isVisible: true,
+                  data: data,
+                  currentIndex: index,
+                })
+              }
               key={index}
               className={` relative over   p-0.5 rounded-20   w-full  first:mr-0 last:ml-0  flex flex-col items-center justify-center  cursor-pointer select-none aspect-square`}
             >
@@ -130,14 +142,18 @@ function ProductImagesContainer({
                 </div>
               ) : null}
               {true ? (
-                <div className={` rounded-10 overflow-clip  ${index == 3 ? " blur-sm " : " "}`}>
+                <div
+                  className={` rounded-10 overflow-clip  ${index == 3 ? " blur-sm " : " "}`}
+                >
                   <ProductImage
+                    item={e}
+                    id={`${e?.id}`}
                     alt={imagesDefautAlt}
                     imageSize="thumbnail"
-                    id={`${e?.id}`}
-                    item={e}
                     moreClass={"w-full bg-white aspect-square object-cover"}
-                    onClick={() => setModalProps({ isVisible: false, currentImage: e })}
+                    onClick={() =>
+                      setModalProps({ isVisible: false, currentImage: e })
+                    }
                   />
                 </div>
               ) : (
@@ -172,7 +188,9 @@ function ProductImagesContainer({
         <div className="block  relative rounded-10 !aspect-square p-0 md:p-0.5 ">
           {!!userInfo?.advisor_id && data?.advisor_commission ? (
             <div className="w-24 gap-0.5  h-7 rounded-20 transition-all  py-[0.2rem]   bg-black/50 text-white absolute z-1 left-2 flex-row top-2 aspect-square flex items-center justify-center">
-              <p className="  text-sm   "> کمیسیون: {data.advisor_commission}%</p>{" "}
+              <p className="  text-sm   ">
+                کمیسیون: {data.advisor_commission}%
+              </p>
             </div>
           ) : (
             <></>
@@ -183,7 +201,11 @@ function ProductImagesContainer({
               slidesWidth={{ def: "100%", md: "100%" }}
               options={{ align: "center", direction: "rtl", dragFree: false }}
               onShowCountClick={(activeIndex: any) => {
-                setModalProps({ isVisible: true, data: data, currentIndex: activeIndex });
+                setModalProps({
+                  isVisible: true,
+                  data: data,
+                  currentIndex: activeIndex,
+                });
                 setCurrentIndex(activeIndex);
               }}
               selectedIndexCb={(e) => {
@@ -191,19 +213,34 @@ function ProductImagesContainer({
               }}
             >
               {addImages?.map((i, index: number) => (
-                <SwiperSlide key={index} className={`w-full  !h-auto    cursor-pointer select-none `}>
+                <SwiperSlide
+                  key={index}
+                  className={`w-full  !h-auto    cursor-pointer select-none `}
+                >
                   <div
-                    onClick={() => setModalProps({ isVisible: true, data: data, currentIndex: index })}
+                    onClick={() =>
+                      setModalProps({
+                        isVisible: true,
+                        data: data,
+                        currentIndex: index,
+                      })
+                    }
                     className={`w-full    h-full  aspect-square relative  rounded-20 `}
                   >
                     {" "}
-                    <img
-                      src={NEW_IMAGE_URL(i || "", currentIndex == index ? "name" : "thumbnail")}
-                      className={`w-full h-full !p-0  transform-gpu !overflow-clip  bg-white  transition-all 
-                  
-                      rounded-20 duration-500 aspect-square !object-cover `}
-                      alt={`${i?.alt || imagesDefautAlt || ""}`}
+                    <Image
+                      src={NEW_IMAGE_URL(
+                        i || "",
+                        currentIndex == index ? "name" : "thumbnail",
+                      )}
+                      fill
+                      priority={index === 0}
                       title={imagesDefautAlt}
+                      sizes="(max-width: 768px) 100vw, 80vw"
+                      loading={index === 0 ? "eager" : "lazy"}
+                      alt={`${i?.alt || imagesDefautAlt || ""}`}
+                      className={`w-full h-full !p-0  transform-gpu !overflow-clip  bg-white  transition-all
+                      rounded-20 duration-500 aspect-square !object-cover `}
                     />
                   </div>
                 </SwiperSlide>
