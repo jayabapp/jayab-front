@@ -51,6 +51,28 @@ const PropertyCardOwnerPart = ({ data, goToLink }: { goToLink: string; data: Pro
         <AuthorizationStatus isAuthorized={data?.is_authorized} data={data} />
       </div>
 
+      <Divider moreClass="my-1" />
+      <div className="grid w-full grid-cols-2 gap-2 py-2">
+        <Link
+          title={_STRINGS.EDIT_PRICES}
+          href={`/profile/owner/properties/${data?.id}/edit/price?edit_mode=true`}
+          prefetch={false}
+          className="flex min-h-10 items-center justify-center gap-2 rounded-full border border-primary-700 px-2 text-xs font-medium text-primary-700 !outline-none md:text-sm"
+        >
+          <img className="h-5 w-5" src="/assets/icons/property/price_label.svg" alt="" />
+          <span>{_STRINGS.EDIT_PRICES}</span>
+        </Link>
+        <Link
+          title={_STRINGS.EDIT_CALENDAR}
+          href={`/profile/owner/properties/${data?.id}#owner-calendar`}
+          prefetch={false}
+          className="flex min-h-10 items-center justify-center gap-2 rounded-full border border-primary-700 px-2 text-xs font-medium text-primary-700 !outline-none md:text-sm"
+        >
+          <img className="h-5 w-5" src="/assets/icons/reserve/blue_calendar_reserve.svg" alt="" />
+          <span>{_STRINGS.EDIT_CALENDAR}</span>
+        </Link>
+      </div>
+
       <Link title={_STRINGS.PROP_CARD_C_DETAILS} href={goToLink} className="w-full !outline-none " prefetch={false}>
         {" "}
         <Button

@@ -63,6 +63,16 @@ const SingleOwnerPropertycallender = ({
     }
   }, [callendarData]);
 
+  useEffect(() => {
+    if (window.location.hash !== "#owner-calendar") return;
+
+    const animationFrame = window.requestAnimationFrame(() => {
+      document.getElementById("owner-calendar")?.scrollIntoView({ behavior: "smooth", block: "start" });
+    });
+
+    return () => window.cancelAnimationFrame(animationFrame);
+  }, []);
+
   /* -------------------------------------------------------------------------- */
   /*                       FINDING THE SELECTED DATE DATA                       */
   /* -------------------------------------------------------------------------- */
@@ -78,7 +88,7 @@ const SingleOwnerPropertycallender = ({
   }, [callenderselectedDate, callendarDataState]);
 
   return (
-    <div className=" order-3 md:order-4 flex flex-col gap-4 ">
+    <div id="owner-calendar" className="order-3 scroll-mt-24 md:order-4 flex flex-col gap-4">
       {" "}
       <Callender
         setChosenDateState={setCallenderSelectedSpan}
