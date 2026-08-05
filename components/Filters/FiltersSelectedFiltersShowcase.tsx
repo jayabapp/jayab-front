@@ -133,7 +133,9 @@ const FiltersSelectedFiltersShowcase = ({
   /* -------------------------------------------------------------------------- */
   // const dynamicPropsInQueryKeys = Object.keys(propertyTypes)?.filter((e) => query?.[e?.toLowerCase()]);
   const dynamicPropsInQueryKeys = Object.keys(propertyTypes);
-  const filteredDynamicPropsInQueryKeys = dynamicPropsInQueryKeys?.filter((e) => !isHiddenFilter(e?.toLowerCase()));
+  const filteredDynamicPropsInQueryKeys = dynamicPropsInQueryKeys?.filter(
+    (e) => !["PARTY", "PET"].includes(e) && !isHiddenFilter(e?.toLowerCase()),
+  );
   const sortFilteredDynamicPropsInQueryKeys = filteredDynamicPropsInQueryKeys
     .sort((a, b) => (indexOf(sortDynamicFiltersInOrder, a) > indexOf(sortDynamicFiltersInOrder, b) ? 1 : -1))
     .sort((a, b) => (!!query[a.toLowerCase()] ? -1 : 1));
@@ -394,6 +396,25 @@ const FiltersSelectedFiltersShowcase = ({
         </SwiperSlide>
       ) : (
         <></>
+      )}
+
+      {[
+        { key: "party", title: _STRINGS.PARTY },
+        { key: "pet", title: _STRINGS.PET },
+      ].map((rule) =>
+        !isHiddenFilter(rule.key) && query?.[rule.key] ? (
+          <SwiperSlide key={`selected-${rule.key}`} className="!w-auto">
+            <div className="rounded-full !w-auto gap-4 py-1 h-[1.625rem] px-1 flex items-center justify-center border border-primary-700 bg-primary-700/5 text-primary-700 text-xs">
+              <p className="text-xs pr-2">{rule.title}</p>
+              <div
+                onClick={() => removeFiltersKeys([rule.key])}
+                className="cursor-pointer w-4 h-4 aspect-square rounded-full border border-primary-700 flex items-center justify-center"
+              >
+                <img src="/assets/icons/adds/blue_plus.svg" className="w-2 h-2 rotate-45 aspect-square" />
+              </div>
+            </div>
+          </SwiperSlide>
+        ) : null,
       )}
 
       {sortFilteredDynamicPropsInQueryKeys?.map((key, index) => {

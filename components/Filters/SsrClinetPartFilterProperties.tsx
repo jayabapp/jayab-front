@@ -38,6 +38,7 @@ export interface catQueryTypes {
   max_commission: string | null | undefined;
   min_commission: string | null | undefined;
   party: string | null | undefined;
+  pet: string | null | undefined;
   pattern: string | null | undefined;
   page: string | null | undefined;
   q: string | null | undefined;
@@ -109,6 +110,7 @@ function SsrClinetPartFilterProperties({
     query?.checkout,
     query?.checkin,
     query?.party,
+    query?.pet,
     query?.ownership,
     query?.kitchen,
     query?.cool_heat,
@@ -139,6 +141,7 @@ function SsrClinetPartFilterProperties({
       query.min_commission,
       query.max_commission,
       query.party,
+      query.pet,
       query?.q,
       query?.ownership,
       query?.kitchen,

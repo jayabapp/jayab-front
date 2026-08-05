@@ -82,6 +82,8 @@ const Filterpage = ({ devices }: { devices: DeviceInfo }) => {
           "COOL_HEAT",
           "WELFARE",
           "PATTERN",
+          "PARTY",
+          "PET",
         ],
       }),
     queryKey: [
@@ -94,6 +96,8 @@ const Filterpage = ({ devices }: { devices: DeviceInfo }) => {
       "COOL_HEAT",
       "WELFARE",
       "PATTERN",
+      "PARTY",
+      "PET",
     ],
   });
 
