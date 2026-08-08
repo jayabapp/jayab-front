@@ -1,20 +1,22 @@
-// app/layout.tsx
-import "swiper/css";
-import "swiper/css/pagination";
-import "../styles/globals.css";
-
-import type { Metadata, Viewport } from "next";
-import Script from "next/script";
-import type { ReactNode } from "react";
-
-import { InnitSettingsDto } from "@/api_services/home/home.interface";
-import serverCall from "@/helpers/serverCall";
+import { Metadata, Viewport } from "next";
 import { apiRoutes, baseUrl } from "@/utils/urls";
+import { InnitSettingsDto } from "@/api_services/home/home.interface";
 import { x_Iransans } from "./fonts/x_iran/x_Iransans";
+import { ReactNode } from "react";
+
 import LayoutProvider from "./layout-provider";
+import SplashScreen from "@/components/SplashScreen";
+import serverCall from "@/helpers/serverCall";
+import Script from "next/script";
+
+import "../styles/globals.css";
+import "swiper/css/pagination";
+import "swiper/css";
 
 export const metadata: Metadata = {
-  metadataBase: new URL(process.env.NEXT_PUBLIC_SITE_URL || "https://jayaab.com"),
+  metadataBase: new URL(
+    process.env.NEXT_PUBLIC_SITE_URL || "https://jayaab.com",
+  ),
 
   title: {
     default: "جایاب",
@@ -73,13 +75,19 @@ const RootLayout = async ({
   children: ReactNode;
   modal: ReactNode;
 }>) => {
-  const { data: appSetting }: { data: InnitSettingsDto } = await serverCall(baseUrl + apiRoutes.APP_SETTINGS);
+  const { data: appSetting }: { data: InnitSettingsDto } = await serverCall(
+    baseUrl + apiRoutes.APP_SETTINGS,
+  );
 
   const gtmId = appSetting?.googleTagManagerId?.toString() || "";
 
   return (
     <html lang="fa" dir="rtl">
       <body className={x_Iransans.className} suppressHydrationWarning>
+        {/* First in the stream so it paints immediately, and outside LayoutProvider
+            so it owes nothing to the app's hydration. */}
+        <SplashScreen />
+
         <LayoutProvider modal={modal}>{children}</LayoutProvider>
 
         <footer>
