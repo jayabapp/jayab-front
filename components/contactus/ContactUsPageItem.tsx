@@ -1,8 +1,16 @@
-import { ContentDto } from "@/api_services/home/home.interface";
 import { NEW_IMAGE_URL } from "@/utils/urls";
-import Link from "next/link";
+import { ContentDto } from "@/api_services/home/home.interface";
+
 import Editable from "../Editable";
-const ContactUsPageItem = ({ e, disableText = false }: { e: ContentDto; disableText?: boolean }) => {
+import Link from "next/link";
+
+const ContactUsPageItem = ({
+  e,
+  disableText = false,
+}: {
+  e: ContentDto;
+  disableText?: boolean;
+}) => {
   const link = () => {
     let link = "";
     if (e?.key == "tel" || e?.fields?.key == "tel") {
@@ -27,7 +35,9 @@ const ContactUsPageItem = ({ e, disableText = false }: { e: ContentDto; disableT
         referrerPolicy="no-referrer"
         target="_blank"
         className={`flex items-center gap-4  rounded-20  border  ${
-          (e?.link || e?.small_text) && e?.key !== "address" ? "cursor-pointer" : ""
+          (e?.link || e?.small_text) && e?.key !== "address"
+            ? "cursor-pointer"
+            : ""
         }`}
       >
         {!!e?.attachments[0]?.attachment ? (
@@ -42,7 +52,7 @@ const ContactUsPageItem = ({ e, disableText = false }: { e: ContentDto; disableT
         {disableText ? (
           <></>
         ) : (
-          <p className="text-base text-left bg-white px-2 py-2  rounded-full w-full font-medium dark:text-zinc-100">
+          <p className="text-base bg-white px-2 py-2  rounded-full w-full font-medium dark:text-zinc-100">
             {e?.small_text}
           </p>
         )}
