@@ -39,6 +39,42 @@ const nextConfig: NextConfig = {
 
   compress: true,
 
+  async headers() {
+    return [
+      {
+        // Everything under public/assets (icons, images, lotties). These
+        // filenames are NOT content-hashed — a designer can overwrite
+        // `logo.svg` in place — so `immutable` would strand clients on the old
+        // file for a year. 30 days of hard caching plus a week of
+        // stale-while-revalidate gets the PageSpeed win while still letting a
+        // replaced asset propagate. Switch to `immutable, max-age=31536000`
+        // only once these filenames carry a content hash.
+        source: "/assets/:path*",
+        headers: [
+          {
+            key: "Cache-Control",
+            value: "public, max-age=2592000, stale-while-revalidate=604800",
+          },
+        ],
+      },
+      {
+        // Favicons and PWA icons at the root of public/. Same reasoning.
+        source: "/:file(favicon.ico|favicon.svg|favicon-96x96.png|apple-touch-icon.png|web-app-manifest-192x192.png|web-app-manifest-512x512.png)",
+        headers: [
+          {
+            key: "Cache-Control",
+            value: "public, max-age=2592000, stale-while-revalidate=604800",
+          },
+        ],
+      },
+      {
+        // A service worker must stay revalidated or clients pin an old build.
+        source: "/firebase-messaging-sw.js",
+        headers: [{ key: "Cache-Control", value: "public, max-age=0, must-revalidate" }],
+      },
+    ];
+  },
+
   async rewrites() {
     return [
       {

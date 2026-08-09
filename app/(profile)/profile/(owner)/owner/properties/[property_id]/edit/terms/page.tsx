@@ -1,30 +1,32 @@
 "use client";
-import { HomeService } from "@/api_services/home/home.service";
+
+import { useParams, useRouter, useSearchParams } from "next/navigation";
+import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { PropertyTermsSendDto } from "@/api_services/property/property.interface";
-import { PropertyService } from "@/api_services/property/property.service";
-import FormCounter from "@/components/properties/FormCounter";
-import SuccessAddModal from "@/components/properties/SuccessAddModal";
-import PropTermItem from "@/components/properties/TermItem";
-import Button from "@/components/shared/Button/Button";
-import FixedBottomContainer from "@/components/shared/FixedBottomContainer";
-import Checkbox from "@/components/shared/Form/Checkbox";
-import FormInput from "@/components/shared/Form/FormInput";
-import MultiLineFormInput from "@/components/shared/Form/MultiLineFormInput";
-import LottieLoading from "@/components/shared/Lotties/LottieLoading";
-import StepShower from "@/components/shared/StepShower";
-import Notify from "@/components/shared/Toast";
+import { GC_TIME, STALE_TIME } from "@/helpers/queryCache";
 import { createPropertySteps } from "@/utils/constantss";
-import _STRINGS from "@/utils/LocalStrings";
-import { useMutation, useQuery } from "@tanstack/react-query";
-import { isArray } from "lodash";
-import { useParams, usePathname, useRouter, useSearchParams } from "next/navigation";
 import { useEffect, useState } from "react";
+import { PropertyService } from "@/api_services/property/property.service";
+import { HomeService } from "@/api_services/home/home.service";
+import { isArray } from "lodash";
+
+import FixedBottomContainer from "@/components/shared/FixedBottomContainer";
+import MultiLineFormInput from "@/components/shared/Form/MultiLineFormInput";
+import SuccessAddModal from "@/components/properties/SuccessAddModal";
+import LottieLoading from "@/components/shared/Lotties/LottieLoading";
+import PropTermItem from "@/components/properties/TermItem";
+import FormCounter from "@/components/properties/FormCounter";
+import StepShower from "@/components/shared/StepShower";
+import FormInput from "@/components/shared/Form/FormInput";
+import Checkbox from "@/components/shared/Form/Checkbox";
+import Button from "@/components/shared/Button/Button";
+import Notify from "@/components/shared/Toast";
+import _STRINGS from "@/utils/LocalStrings";
 
 const CreatePropertyTerms = () => {
   const router = useRouter();
   const searchParams = useSearchParams();
   const edit_mode = searchParams.get("edit_mode");
-  const pathname = usePathname();
   const [showSucces, setShowSucces] = useState(false);
   const params = useParams();
   const { property_id } = params;
@@ -36,18 +38,15 @@ const CreatePropertyTerms = () => {
     },
   });
 
-  /* -------------------------------------------------------------------------- */
-  /*                             INIT PROP CREATION                             */
-  /* -------------------------------------------------------------------------- */
   const { data: initPropData } = useQuery({
     queryKey: [PropertyService.OWNER_PROP_INIT_CACHEKEY, property_id],
     queryFn: () => {
-      if (!!property_id) {
+      if (!!property_id)
         return PropertyService.InitProperty({ property_id: `${property_id}` });
-      } else return null;
+      else return null;
     },
-    gcTime: 0,
-    staleTime: 0,
+    staleTime: STALE_TIME.MEDIUM,
+    gcTime: GC_TIME.LONG,
   });
 
   const { data: propertyTypes } = useQuery({
@@ -55,7 +54,12 @@ const CreatePropertyTerms = () => {
       PropertyService.GetUserPropertyGroup({
         group: ["PARTY", "PET", "GUEST_TYPE"],
       }),
-    queryKey: [PropertyService.USER_PROP_OPTIONS_CACHEKEY, "PARTY", "PET", "GUEST_TYPE"],
+    queryKey: [
+      PropertyService.USER_PROP_OPTIONS_CACHEKEY,
+      "PARTY",
+      "PET",
+      "GUEST_TYPE",
+    ],
   });
 
   const [values, setValues] = useState<PropertyTermsSendDto>({
@@ -87,10 +91,16 @@ const CreatePropertyTerms = () => {
         check_in_hour: initPropData?.check_in_hour,
         check_out_hour: initPropData?.check_out_hour,
         guest_type:
-          initPropData?.property_options?.filter((e) => e?.option?.group == "GUEST_TYPE")?.map((e) => e?.option_id) ||
-          [],
-        party: initPropData?.property_options?.find((e) => e?.option?.group == "PARTY")?.option_id || "",
-        pet: initPropData?.property_options?.find((e) => e?.option?.group == "PET")?.option_id || "",
+          initPropData?.property_options
+            ?.filter((e) => e?.option?.group == "GUEST_TYPE")
+            ?.map((e) => e?.option_id) || [],
+        party:
+          initPropData?.property_options?.find(
+            (e) => e?.option?.group == "PARTY",
+          )?.option_id || "",
+        pet:
+          initPropData?.property_options?.find((e) => e?.option?.group == "PET")
+            ?.option_id || "",
       });
     }
   }, [initPropData]);
@@ -99,26 +109,35 @@ const CreatePropertyTerms = () => {
     setValues((e) => ({ ...e, [key]: value }));
   };
 
+  const queryClient = useQueryClient();
+
   const { mutate, isPending } = useMutation({
     mutationFn: PropertyService.CreatePropertySetTerms,
     onSuccess: () => {
-      if (!!edit_mode) {
+      queryClient.invalidateQueries({
+        queryKey: [PropertyService.OWNER_PROP_INIT_CACHEKEY, property_id],
+      });
+      if (!!edit_mode)
         router.replace(`/profile/owner/properties/${property_id}/edit`);
-      } else if (!initPropData?.canceling_type) setShowSucces(true);
+      else if (!initPropData?.canceling_type) setShowSucces(true);
     },
   });
   const onSubmit = () => {
-    if (!values?.property_dscr) return Notify({ body: _STRINGS.PLACE_DESC_MAND, type: "warn" });
-    if (!!initPropData?.id) {
-      mutate({ ...values, propertyId: initPropData?.id });
-    }
+    if (!values?.property_dscr)
+      return Notify({ body: _STRINGS.PLACE_DESC_MAND, type: "warn" });
+    if (!!initPropData?.id) mutate({ ...values, propertyId: initPropData?.id });
   };
 
-  const onChangeMulty = (value: string | number | null, key: keyof PropertyTermsSendDto) => {
+  const onChangeMulty = (
+    value: string | number | null,
+    key: keyof PropertyTermsSendDto,
+  ) => {
     if (isArray(values?.[key]) && values?.[key]?.includes(value)) {
       setValues((e) => ({
         ...e,
-        [key]: isArray(values?.[key]) ? values?.[key]?.filter((e) => e != value) : [],
+        [key]: isArray(values?.[key])
+          ? values?.[key]?.filter((e) => e != value)
+          : [],
       }));
     } else {
       setValues((e) => ({
@@ -147,9 +166,12 @@ const CreatePropertyTerms = () => {
       ) : (
         <div className=" flex flex-col gap-2 w-full">
           <p className="font-bold w-full text-start  text-sm md:text-base text-primary-700  ">
-            {propertyRules?.data?.[0]?.category?.title || _STRINGS.CANCELATIONS_TITLE}
+            {propertyRules?.data?.[0]?.category?.title ||
+              _STRINGS.CANCELATIONS_TITLE}
           </p>
-          <p className="text-xs md:text-sm">{propertyRules?.data?.[0]?.category?.description || _STRINGS.LOREM}</p>
+          <p className="text-xs md:text-sm">
+            {propertyRules?.data?.[0]?.category?.description || _STRINGS.LOREM}
+          </p>
 
           <div className="flex flex-col my-2 gap-3">
             <PropTermItem
@@ -161,20 +183,20 @@ const CreatePropertyTerms = () => {
               isChecked={values?.canceling_type == "STRICT"}
             />
             <PropTermItem
+              desc={normaltData?.small_text || ""}
+              isChecked={values?.canceling_type == "NORMAL"}
+              title={normaltData?.title || _STRINGS.NORMAL_RULER}
               onSelect={() => {
                 onChange("NORMAL", "canceling_type");
               }}
-              title={normaltData?.title || _STRINGS.NORMAL_RULER}
-              desc={normaltData?.small_text || ""}
-              isChecked={values?.canceling_type == "NORMAL"}
             />
             <PropTermItem
+              desc={easyData?.small_text || ""}
+              isChecked={values?.canceling_type == "EASY"}
+              title={easyData?.title || _STRINGS.EASY_RULER}
               onSelect={() => {
                 onChange("EASY", "canceling_type");
               }}
-              title={easyData?.title || _STRINGS.EASY_RULER}
-              desc={easyData?.small_text || ""}
-              isChecked={values?.canceling_type == "EASY"}
             />
           </div>
         </div>
@@ -201,7 +223,9 @@ const CreatePropertyTerms = () => {
             placeholder: _STRINGS.DESCRIPTION_DOTS,
             rows: 3,
             maxLength: 1024,
-            extraElement: <FormCounter max={1024} value={values?.guest_dscr || ""} />,
+            extraElement: (
+              <FormCounter max={1024} value={values?.guest_dscr || ""} />
+            ),
           }}
           value={values?.guest_dscr || ""}
           onChangeText={(e) => {
@@ -210,7 +234,9 @@ const CreatePropertyTerms = () => {
         />
       </div>
       <div className=" flex flex-col gap-2   w-full">
-        <p className="font-bold w-full text-start  text-sm md:text-base text-primary-700  ">{_STRINGS.ANIMAL_RULES}</p>
+        <p className="font-bold w-full text-start  text-sm md:text-base text-primary-700  ">
+          {_STRINGS.ANIMAL_RULES}
+        </p>
         {propertyTypes?.["PET"]?.map((e) => (
           <Checkbox
             key={`KITCHEN${e?.id}`}
@@ -229,7 +255,9 @@ const CreatePropertyTerms = () => {
             placeholder: _STRINGS.DESCRIPTION_DOTS,
             rows: 3,
             maxLength: 1024,
-            extraElement: <FormCounter max={1024} value={values?.pet_dscr || ""} />,
+            extraElement: (
+              <FormCounter max={1024} value={values?.pet_dscr || ""} />
+            ),
           }}
           value={values?.pet_dscr || ""}
           onChangeText={(e) => {
@@ -238,7 +266,9 @@ const CreatePropertyTerms = () => {
         />
       </div>
       <div className=" flex flex-col gap-2   w-full">
-        <p className="font-bold w-full text-start  text-sm md:text-base text-primary-700  ">{_STRINGS.PARTY_RULES}</p>
+        <p className="font-bold w-full text-start  text-sm md:text-base text-primary-700  ">
+          {_STRINGS.PARTY_RULES}
+        </p>
         {propertyTypes?.["PARTY"]?.map((e) => (
           <Checkbox
             key={`KITCHEN${e?.id}`}
@@ -257,7 +287,9 @@ const CreatePropertyTerms = () => {
             placeholder: _STRINGS.DESCRIPTION_DOTS,
             rows: 3,
             maxLength: 1024,
-            extraElement: <FormCounter max={1024} value={values?.party_dscr || ""} />,
+            extraElement: (
+              <FormCounter max={1024} value={values?.party_dscr || ""} />
+            ),
           }}
           value={values?.party_dscr || ""}
           onChangeText={(e) => {
@@ -297,7 +329,9 @@ const CreatePropertyTerms = () => {
           rows: 3,
           placeholder: _STRINGS.DESCRIPTION_DOTS,
           maxLength: 1024,
-          extraElement: <FormCounter max={1024} value={values?.doc_dscr || ""} />,
+          extraElement: (
+            <FormCounter max={1024} value={values?.doc_dscr || ""} />
+          ),
           isMandatory: true,
         }}
         value={values?.doc_dscr || ""}
@@ -313,7 +347,9 @@ ${_STRINGS.ABOUT_PROPERTY_DESCRIPTION}`,
           containerClass: "w-full relative col-span-full",
           rows: 6,
           maxLength: 1024,
-          extraElement: <FormCounter max={1024} value={values?.property_dscr || ""} />,
+          extraElement: (
+            <FormCounter max={1024} value={values?.property_dscr || ""} />
+          ),
           isMandatory: true,
         }}
         value={values?.property_dscr || ""}
@@ -328,7 +364,9 @@ ${_STRINGS.ABOUT_PROPERTY_DESCRIPTION}`,
           containerClass: "w-full relative col-span-full",
           rows: 3,
           maxLength: 1024,
-          extraElement: <FormCounter max={1024} value={values?.other_dscr || ""} />,
+          extraElement: (
+            <FormCounter max={1024} value={values?.other_dscr || ""} />
+          ),
         }}
         value={values?.other_dscr || ""}
         onChangeText={(e) => {
@@ -345,7 +383,11 @@ ${_STRINGS.ABOUT_PROPERTY_DESCRIPTION}`,
           containerClass="w-full flex items-center justify-center"
           roundedClass="rounded-full"
           width=" w-[90%] md:w-1/2"
-          title={!!initPropData?.canceling_type ? _STRINGS.EDIT : _STRINGS.SUBMIT_PROPERTY}
+          title={
+            !!initPropData?.canceling_type
+              ? _STRINGS.EDIT
+              : _STRINGS.SUBMIT_PROPERTY
+          }
         />
       </FixedBottomContainer>
 

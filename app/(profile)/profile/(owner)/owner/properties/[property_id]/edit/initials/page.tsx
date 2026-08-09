@@ -1,39 +1,36 @@
 "use client";
-import { PropertyService } from "@/api_services/property/property.service";
-import CreateEditProperty, { CreateProperyStepOne } from "@/components/properties/CreateEditProperty";
-import Button from "@/components/shared/Button/Button";
-import FixedBottomContainer from "@/components/shared/FixedBottomContainer";
-import StepShower from "@/components/shared/StepShower";
-import { p2e } from "@/helpers/NumberConverter";
-import { useStoreInit } from "@/store";
-import { createPropertySteps } from "@/utils/constantss";
-import _STRINGS from "@/utils/LocalStrings";
-import { useMutation, useQuery } from "@tanstack/react-query";
 
-import LottieLoading from "@/components/shared/Lotties/LottieLoading";
-import { useParams, usePathname, useRouter, useSearchParams } from "next/navigation";
+import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
+import { useParams, useRouter, useSearchParams } from "next/navigation";
+import { CreateProperyStepOne } from "@/components/properties/CreateEditProperty";
+import { createPropertySteps } from "@/utils/constantss";
+import { GC_TIME, STALE_TIME } from "@/helpers/queryCache";
 import { useEffect, useState } from "react";
+import { PropertyService } from "@/api_services/property/property.service";
+import { p2e } from "@/helpers/NumberConverter";
+
+import FixedBottomContainer from "@/components/shared/FixedBottomContainer";
+import CreateEditProperty from "@/components/properties/CreateEditProperty";
+import LottieLoading from "@/components/shared/Lotties/LottieLoading";
+import StepShower from "@/components/shared/StepShower";
+import _STRINGS from "@/utils/LocalStrings";
+import Button from "@/components/shared/Button/Button";
 
 const CreateProperty = () => {
   const router = useRouter();
   const searchParams = useSearchParams();
   const edit_mode = searchParams.get("edit_mode");
-  const pathname = usePathname();
-  const { userInfo } = useStoreInit((data) => data);
   const params = useParams();
   const { property_id } = params;
-  /* -------------------------------------------------------------------------- */
-  /*                             INIT PROP CREATION                             */
-  /* -------------------------------------------------------------------------- */
   const { data: initPropData, isLoading } = useQuery({
     queryKey: [PropertyService.OWNER_PROP_INIT_CACHEKEY, property_id],
     queryFn: () => {
-      if (!!property_id) {
+      if (!!property_id)
         return PropertyService.InitProperty({ property_id: `${property_id}` });
-      } else return null;
+      else return null;
     },
-    gcTime: 0,
-    staleTime: 0,
+    staleTime: STALE_TIME.MEDIUM,
+    gcTime: GC_TIME.LONG,
   });
 
   const [values, setValues] = useState<CreateProperyStepOne>({
@@ -55,16 +52,6 @@ const CreateProperty = () => {
     location_access: false,
   });
 
-  // useEffect(() => {
-  //   if (!!userInfo) {
-  //     if (!userInfo?.owner_id) {
-  //       router.push(`/profile/edit?redirect_url=${pathname}`);
-  //     } else {
-  //       refetch();
-  //     }
-  //   }
-  // }, [userInfo]);
-
   useEffect(() => {
     if (!!initPropData) {
       setValues({
@@ -75,14 +62,21 @@ const CreateProperty = () => {
         region: initPropData?.region_id,
         construction_year: initPropData?.construction_year,
         direction:
-          initPropData?.property_options?.find((e) => e?.option?.group == "BUILDING_DIRECTION")?.option_id || null,
+          initPropData?.property_options?.find(
+            (e) => e?.option?.group == "BUILDING_DIRECTION",
+          )?.option_id || null,
         floor: initPropData?.floor,
         floor_count: initPropData?.floors,
         land_area: initPropData?.land_area,
         location_access: initPropData?.is_location_visible,
-        owenershp_type: initPropData?.property_options?.find((e) => e?.option?.group == "OWNERSHIP")?.option_id || null,
+        owenershp_type:
+          initPropData?.property_options?.find(
+            (e) => e?.option?.group == "OWNERSHIP",
+          )?.option_id || null,
         property_type:
-          initPropData?.property_options?.find((e) => e?.option?.group == "PROPERTY_TYPE")?.option_id || null,
+          initPropData?.property_options?.find(
+            (e) => e?.option?.group == "PROPERTY_TYPE",
+          )?.option_id || null,
         province: initPropData?.province_id,
         title: initPropData?.title,
         units_in_floor: initPropData?.unit_per_floor,
@@ -94,14 +88,18 @@ const CreateProperty = () => {
     setValues((e) => ({ ...e, [key]: value }));
   };
 
+  const queryClient = useQueryClient();
+
   const { mutate, isPending } = useMutation({
     mutationFn: PropertyService.CreatePropertyStepOne,
     onSuccess: () => {
-      if (!!edit_mode) {
+      queryClient.invalidateQueries({
+        queryKey: [PropertyService.OWNER_PROP_INIT_CACHEKEY, property_id],
+      });
+      if (!!edit_mode)
         router.replace(`/profile/owner/properties/${property_id}/edit`);
-      } else {
+      else
         router.push(`/profile/owner/properties/${property_id}/edit/location`);
-      }
     },
   });
   const onSubmit = () => {
@@ -135,25 +133,32 @@ const CreateProperty = () => {
     >
       <div className="w-full pb-4 px-4 pt-8">
         {" "}
-        <StepShower steps={createPropertySteps(initPropData?.id) || []} value={1} />
+        <StepShower
+          steps={createPropertySteps(initPropData?.id) || []}
+          value={1}
+        />
       </div>
 
       {isLoading ? (
         <LottieLoading />
       ) : (
-        <CreateEditProperty status={initPropData?.status} onChange={onChange} values={values} />
+        <CreateEditProperty
+          status={initPropData?.status}
+          onChange={onChange}
+          values={values}
+        />
       )}
 
       <FixedBottomContainer>
         <Button
+          loading={isPending}
+          width=" w-[90%] md:w-1/2"
+          roundedClass="rounded-full"
+          title={_STRINGS.ENTER_AND_MOVE_ON}
+          containerClass="w-full flex items-center justify-center"
           onClick={() => {
             onSubmit();
           }}
-          loading={isPending}
-          containerClass="w-full flex items-center justify-center"
-          roundedClass="rounded-full"
-          width=" w-[90%] md:w-1/2"
-          title={_STRINGS.ENTER_AND_MOVE_ON}
         />
       </FixedBottomContainer>
     </div>

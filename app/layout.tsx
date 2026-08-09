@@ -1,6 +1,7 @@
 import { Metadata, Viewport } from "next";
 import { apiRoutes, baseUrl } from "@/utils/urls";
 import { InnitSettingsDto } from "@/api_services/home/home.interface";
+import { REVALIDATE } from "@/helpers/revalidate";
 import { x_Iransans } from "./fonts/x_iran/x_Iransans";
 import { ReactNode } from "react";
 
@@ -77,6 +78,8 @@ const RootLayout = async ({
 }>) => {
   const { data: appSetting }: { data: InnitSettingsDto } = await serverCall(
     baseUrl + apiRoutes.APP_SETTINGS,
+    undefined,
+    { revalidate: REVALIDATE.APP_SETTINGS },
   );
 
   const gtmId = appSetting?.googleTagManagerId?.toString() || "";
@@ -84,12 +87,8 @@ const RootLayout = async ({
   return (
     <html lang="fa" dir="rtl">
       <body className={x_Iransans.className} suppressHydrationWarning>
-        {/* First in the stream so it paints immediately, and outside LayoutProvider
-            so it owes nothing to the app's hydration. */}
         <SplashScreen />
-
         <LayoutProvider modal={modal}>{children}</LayoutProvider>
-
         <footer>
           <Script
             id="gtm"

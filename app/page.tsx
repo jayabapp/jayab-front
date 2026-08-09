@@ -1,11 +1,10 @@
-import {
-  OrganizationSchema,
-  SearchboxSchema,
-} from "@/components/SchemaGenerator/Schemas";
 import { apiRoutes, baseUrl, baseUrlV } from "@/utils/urls";
+import { OrganizationSchema } from "@/components/SchemaGenerator/Schemas";
 import { LandingsPlacements } from "@/enum/landings.enum";
+import { SearchboxSchema } from "@/components/SchemaGenerator/Schemas";
 import { cache, Suspense } from "react";
 import { BannerPosition } from "@/enum/banners.enum";
+import { REVALIDATE } from "@/helpers/revalidate";
 import { Metadata } from "next";
 
 import MainFiltersContainer from "@/components/Home/MainFiltersContainer";
@@ -33,7 +32,9 @@ const HomePropertiesList = dynamic(
 );
 
 const getHomeContent = cache(() =>
-  serverCall(baseUrl + apiRoutes.CONTENT_BY_KEY("homeContent")),
+  serverCall(baseUrl + apiRoutes.CONTENT_BY_KEY("homeContent"), undefined, {
+    revalidate: REVALIDATE.CMS_PAGE,
+  }),
 );
 
 const getBanners = () =>
@@ -41,6 +42,8 @@ const getBanners = () =>
     baseUrlV("v2") +
       apiRoutes.BANNERS +
       `?positions[]=${BannerPosition.MAIN_1}&positions[]=${BannerPosition.MAIN_2}&positions[]=${BannerPosition.MAIN_3}`,
+    undefined,
+    { revalidate: REVALIDATE.BANNERS },
   );
 
 const getLandings = () =>
@@ -48,13 +51,23 @@ const getLandings = () =>
     baseUrl +
       apiRoutes.USER_LANDING_PAGES +
       `?placement=${LandingsPlacements.HOME}`,
+    undefined,
+    { revalidate: REVALIDATE.LANDINGS },
   );
 
 const getProperties = () =>
-  serverCall(baseUrl + apiRoutes.GET_PROPERTIES, { page: 1, per_page: 12 });
+  serverCall(
+    baseUrl + apiRoutes.GET_PROPERTIES,
+    { page: 1, per_page: 12 },
+    { revalidate: REVALIDATE.PROPERTY_LIST },
+  );
 
 const getPropertyTypes = () =>
-  serverCall(baseUrl + apiRoutes.USER_PROP_OPTIONS + "?group[]=PROPERTY_TYPE");
+  serverCall(
+    baseUrl + apiRoutes.USER_PROP_OPTIONS + "?group[]=PROPERTY_TYPE",
+    undefined,
+    { revalidate: REVALIDATE.PROPERTY_OPTIONS },
+  );
 
 export async function generateMetadata(): Promise<Metadata> {
   const { data: homeContent } = await getHomeContent();

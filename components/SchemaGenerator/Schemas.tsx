@@ -1,9 +1,12 @@
+import { apiRoutes, baseUrl, NEW_IMAGE_URL } from "@/utils/urls";
 import { Category, ContentDto } from "@/api_services/home/home.interface";
 import { SinglePropDto } from "@/api_services/property/property.interface";
-import serverCall from "@/helpers/serverCall";
-import { apiRoutes, baseUrl, NEW_IMAGE_URL } from "@/utils/urls";
+import { REVALIDATE } from "@/helpers/revalidate";
 import { isEmpty } from "lodash";
+import { JsonLd } from ".";
 import { FC } from "react";
+
+import serverCall from "@/helpers/serverCall";
 import type {
   Article,
   BlogPosting,
@@ -16,25 +19,39 @@ import type {
   SearchAction,
   Service,
 } from "schema-dts";
-import { JsonLd } from ".";
+
 export const FaqSchema = async () => {
-  const { data: faqData } = await serverCall(baseUrl + apiRoutes.CONTENTS + `?key=faq&per_page=20&page=1`);
+  const { data: faqData } = await serverCall(
+    baseUrl + apiRoutes.CONTENTS + `?key=faq&per_page=20&page=1`,
+    undefined,
+    {
+      revalidate: REVALIDATE.CMS_PAGE,
+    },
+  );
   return JsonLd<FAQPage>({
     "@context": "https://schema.org",
     "@type": "FAQPage",
     url: `${process.env.NEXT_PUBLIC_WEB_SITE}/faq`,
     mainEntity: faqData?.data?.map((e: ContentDto) => ({
       name: e?.title,
-      acceptedAnswer: { text: e?.full_text || e?.small_text, "@type": "Answer" },
+      acceptedAnswer: {
+        text: e?.full_text || e?.small_text,
+        "@type": "Answer",
+      },
       "@type": "Question",
     })),
   });
 };
 
 export const ServiceSchema = async ({ service }: { service: Category }) => {
-  const { data: contactUs }: { data: { data: ContentDto[] } } = await serverCall(
-    baseUrl + apiRoutes.CONTENTS + `?key=${"contactUs"}&per_page=20&page=${1}`,
-  );
+  const { data: contactUs }: { data: { data: ContentDto[] } } =
+    await serverCall(
+      baseUrl +
+        apiRoutes.CONTENTS +
+        `?key=${"contactUs"}&per_page=20&page=${1}`,
+      undefined,
+      { revalidate: REVALIDATE.CMS_PAGE },
+    );
   const tels = contactUs?.data?.filter((i) => i?.fields?.key == "tel");
   const address = contactUs?.data?.find((i) => i?.fields?.key == "address");
 
@@ -76,10 +93,21 @@ export const SearchboxSchema = () => {
 };
 
 export const OrganizationSchema = async () => {
-  const { data: contactUs }: { data: { data: ContentDto[] } } = await serverCall(
-    baseUrl + apiRoutes.CONTENTS + `?key=${"contactUs"}&per_page=20&page=${1}`,
+  const { data: contactUs }: { data: { data: ContentDto[] } } =
+    await serverCall(
+      baseUrl +
+        apiRoutes.CONTENTS +
+        `?key=${"contactUs"}&per_page=20&page=${1}`,
+      undefined,
+      { revalidate: REVALIDATE.CMS_PAGE },
+    );
+  const { data: aboutUs }: { data: ContentDto } = await serverCall(
+    baseUrl + apiRoutes.CONTENT_BY_KEY("aboutUs"),
+    undefined,
+    {
+      revalidate: REVALIDATE.CMS_PAGE,
+    },
   );
-  const { data: aboutUs }: { data: ContentDto } = await serverCall(baseUrl + apiRoutes.CONTENT_BY_KEY("aboutUs"));
   const socials = contactUs?.data?.filter((e) => e?.fields?.key == "social");
   const tels = contactUs?.data?.filter((i) => i?.fields?.key == "tel");
   const email = contactUs?.data?.find((i) => i?.fields?.key == "email");
@@ -111,9 +139,14 @@ export const OrganizationSchema = async () => {
   });
 };
 export const LocalBusinessSchema = async () => {
-  const { data: contactUs }: { data: { data: ContentDto[] } } = await serverCall(
-    baseUrl + apiRoutes.CONTENTS + `?key=${"contactUs"}&per_page=20&page=${1}`,
-  );
+  const { data: contactUs }: { data: { data: ContentDto[] } } =
+    await serverCall(
+      baseUrl +
+        apiRoutes.CONTENTS +
+        `?key=${"contactUs"}&per_page=20&page=${1}`,
+      undefined,
+      { revalidate: REVALIDATE.CMS_PAGE },
+    );
   const socials = contactUs?.data?.filter((e) => e?.fields?.key == "social");
   const tels = contactUs?.data?.filter((i) => i?.fields?.key == "tel");
   const email = contactUs?.data?.find((i) => i?.fields?.key == "email");
@@ -146,10 +179,6 @@ export const LocalBusinessSchema = async () => {
     },
   });
 };
-
-/* -------------------------------------------------------------------------- */
-/*                                    BLOG                                    */
-/* -------------------------------------------------------------------------- */
 
 export const BlogSchema = ({
   data,
@@ -184,24 +213,8 @@ export const BlogSchema = ({
     dateCreated: data?.created_at,
     dateModified: data?.updated_at,
     datePublished: data?.created_at,
-
-    // ...(hasRating
-    //   ? {
-    //       aggregateRating: {
-    //         "@type": "AggregateRating",
-    //         ratingValue: Number(rate),
-    //         bestRating: 5,
-    //         worstRating: 1,
-    //         ratingCount: Number(rate_count),
-    //       },
-    //     }
-    //   : {}),
   });
 };
-
-/* -------------------------------------------------------------------------- */
-/*                                    PRODUCT                                    */
-/* -------------------------------------------------------------------------- */
 
 export const ProductSchema = ({ data }: { data: SinglePropDto }) => {
   return JsonLd<Product>({
@@ -210,23 +223,14 @@ export const ProductSchema = ({ data }: { data: SinglePropDto }) => {
     url: `${process.env.NEXT_PUBLIC_WEB_SITE}/rooms/${data?.slug}`,
     image: [NEW_IMAGE_URL(data?.feature_image)],
     name: data?.title,
-
-    // description: data?.,
-    // alternateName: data?.title_en || "",
-    // brand: data?.category?.title,
-
-    // aggregateRating: {
-    //   "@type": "AggregateRating",
-    //   ratingValue: data?.rate,
-    //   reviewCount: data?.rate_count,
-    // },
-
     offers: {
       "@type": "Offer",
       priceCurrency: "IRR",
       price: data?.daily_price?.today_offer || data?.daily_price?.normal,
-      priceValidUntil: getTomorrowDateISO(), // ← الزامی: تاریخ اعتبار قیمت
-      availability: data?.daily_price ? "https://schema.org/InStock" : "https://schema.org/OutOfStock",
+      priceValidUntil: getTomorrowDateISO(),
+      availability: data?.daily_price
+        ? "https://schema.org/InStock"
+        : "https://schema.org/OutOfStock",
       itemCondition: "https://schema.org/NewCondition",
       url: `${process.env.NEXT_PUBLIC_WEB_SITE}/rooms/${data?.slug}`,
       seller: {
@@ -237,9 +241,6 @@ export const ProductSchema = ({ data }: { data: SinglePropDto }) => {
   });
 };
 
-/* -------------------------------------------------------------------------- */
-/*                                    PLACE                                   */
-/* -------------------------------------------------------------------------- */
 export const PlaceSchema = ({ data }: { data: SinglePropDto }) => {
   return JsonLd<Place>({
     "@context": "https://schema.org",
@@ -247,39 +248,9 @@ export const PlaceSchema = ({ data }: { data: SinglePropDto }) => {
     url: `${process.env.NEXT_PUBLIC_WEB_SITE}/rooms/${data?.slug}`,
     image: [NEW_IMAGE_URL(data?.feature_image)],
     name: data?.title,
-    // description: data?.,
-    // alternateName: data?.title_en || "",
-    // brand: data?.category?.title,
-
-    // aggregateRating: {
-    //   "@type": "AggregateRating",
-    //   ratingValue: data?.rate,
-    //   reviewCount: data?.rate_count,
-    // },
-
-    // offers: {
-    //   "@type": "Offer",
-    //   priceCurrency: "IRR",
-    //   price: data?.daily_price?.today_offer || data?.daily_price?.normal,
-    //   priceValidUntil: getTomorrowDateISO(), // ← الزامی
-    //   availability: !!data?.daily_price?.today_offer ? "https://schema.org/InStock" : "https://schema.org/OutOfStock",
-    //   url: `${process.env.NEXT_PUBLIC_WEB_SITE}/rooms/${data?.slug}`,
-    //   seller: {
-    //     "@type": "Organization",
-    //     name: "جایاب",
-    //   },
-    // },
   });
 };
 
-/* -------------------------------------------------------------------------- */
-/*                               HELPER                                       */
-/* -------------------------------------------------------------------------- */
-
-/**
- * برمی‌گرداند فردا به فرمت ISO
- * گوگل برای priceValidUntil حتماً به یک تاریخ آینده نیاز دارد
- */
 function getTomorrowDateISO(): string {
   const tomorrow = new Date();
   tomorrow.setDate(tomorrow.getDate() + 1);
@@ -313,7 +284,9 @@ export const BreadCrumbSchema = ({
   });
 };
 
-export const ContentFAQSchema: FC<{ faqData: { title: string; innerText: string }[] }> = async ({ faqData }) => {
+export const ContentFAQSchema: FC<{
+  faqData: { title: string; innerText: string }[];
+}> = async ({ faqData }) => {
   if (isEmpty(faqData)) return;
   return JsonLd<FAQPage>({
     "@context": "https://schema.org",

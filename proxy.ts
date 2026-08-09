@@ -1,9 +1,13 @@
-import { md5 } from "js-md5";
-import { cookies } from "next/headers";
+import { guardedDirectoriesExceptions } from "./utils/constantss";
 import { NextRequest, NextResponse } from "next/server";
-import serverCall from "./helpers/serverCall";
-import { guardedDirectories, guardedDirectoriesExceptions } from "./utils/constantss";
+import { guardedDirectories } from "./utils/constantss";
 import { apiRoutes, baseUrl } from "./utils/urls";
+import { REVALIDATE } from "./helpers/revalidate";
+import { cookies } from "next/headers";
+import { md5 } from "js-md5";
+
+import serverCall from "./helpers/serverCall";
+
 export async function proxy(request: NextRequest) {
   const headers = new Headers(request.headers);
   const PATH_NAME = request.nextUrl.pathname;
@@ -12,20 +16,17 @@ export async function proxy(request: NextRequest) {
   const cookiesState = await cookies();
   const isLogin = cookiesState.get("isLogin")?.value;
 
-  /* -------------------------------------------------------------------------- */
-  /*                       REDIRECT GUARDED ROUTES TO AUTH                      */
-  /* -------------------------------------------------------------------------- */
-
   if (
     !isLogin &&
     !!guardedDirectories?.find((e) => PATH_NAME.includes(e)) &&
     !guardedDirectoriesExceptions.includes(PATH_NAME)
   ) {
-    const response = NextResponse.redirect(new URL(`/auth?redirect_url=${PATH_NAME}`, request.url), 307);
+    const response = NextResponse.redirect(
+      new URL(`/auth?redirect_url=${PATH_NAME}`, request.url),
+      307,
+    );
     return response;
   }
-
-  ////////////////////////////////
 
   const HREF = `${process.env.NEXT_PUBLIC_WEB_SITE}${PATH_NAME}${
     queriesArray?.length > 0
@@ -45,20 +46,24 @@ export async function proxy(request: NextRequest) {
   ) {
     if (PATH_NAME != "/") {
       const HASHED = md5(decodeURI(HREF));
-
-      const { data } = await serverCall(baseUrl + apiRoutes.REDIRECT_CHECK(HASHED) + `?href=${HREF}`);
+      const { data } = await serverCall(
+        baseUrl + apiRoutes.REDIRECT_CHECK(HASHED) + `?href=${HREF}`,
+        undefined,
+        {
+          revalidate: REVALIDATE.REDIRECTS,
+        },
+      );
       if (!!data) {
-        const response = NextResponse.redirect(new URL(data?.destination, request.url), data?.permanent ? 308 : 307);
+        const response = NextResponse.redirect(
+          new URL(data?.destination, request.url),
+          data?.permanent ? 308 : 307,
+        );
 
         response.headers.set("x-canonical", encodeURI(data?.destination));
         return response;
       }
     }
-    // headers.set("is-refresh", "1");
-  } else {
-    // headers.set("is-refresh", "0");
   }
-
   return NextResponse.next({ headers });
 }
 

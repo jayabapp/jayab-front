@@ -1,42 +1,41 @@
 "use client";
+
+import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
+import { useRouter, useSearchParams } from "next/navigation";
 import { FacilitiesValuesDto } from "@/api_services/property/property.interface";
-import { PropertyService } from "@/api_services/property/property.service";
-import Button from "@/components/shared/Button/Button";
-import FixedBottomContainer from "@/components/shared/FixedBottomContainer";
-import Checkbox from "@/components/shared/Form/Checkbox";
-import MultiLineFormInput from "@/components/shared/Form/MultiLineFormInput";
-import MultyPopUpSelect from "@/components/shared/Form/MultiSelectPopUpSelect";
-import StepShower from "@/components/shared/StepShower";
 import { createPropertySteps } from "@/utils/constantss";
-import _STRINGS from "@/utils/LocalStrings";
-import { useMutation, useQuery } from "@tanstack/react-query";
+import { GC_TIME, STALE_TIME } from "@/helpers/queryCache";
+import { useEffect, useState } from "react";
+import { PropertyService } from "@/api_services/property/property.service";
+import { useParams } from "next/navigation";
 import { isArray } from "lodash";
 
-import FormCounter from "@/components/properties/FormCounter";
+import FixedBottomContainer from "@/components/shared/FixedBottomContainer";
+import MultiLineFormInput from "@/components/shared/Form/MultiLineFormInput";
+import MultyPopUpSelect from "@/components/shared/Form/MultiSelectPopUpSelect";
 import LottieLoading from "@/components/shared/Lotties/LottieLoading";
-import { useParams, usePathname, useRouter, useSearchParams } from "next/navigation";
-import { useEffect, useState } from "react";
+import FormCounter from "@/components/properties/FormCounter";
+import StepShower from "@/components/shared/StepShower";
+import Checkbox from "@/components/shared/Form/Checkbox";
+import _STRINGS from "@/utils/LocalStrings";
+import Button from "@/components/shared/Button/Button";
 
 const CreatePropertyFacility = () => {
   const router = useRouter();
   const searchParams = useSearchParams();
-  const pathname = usePathname();
   const edit_mode = searchParams.get("edit_mode");
   const params = useParams();
   const { property_id } = params;
 
-  /* -------------------------------------------------------------------------- */
-  /*                             INIT PROP CREATION                             */
-  /* -------------------------------------------------------------------------- */
   const { data: initPropData, isLoading } = useQuery({
     queryKey: [PropertyService.OWNER_PROP_INIT_CACHEKEY, property_id],
     queryFn: () => {
-      if (!!property_id) {
+      if (!!property_id)
         return PropertyService.InitProperty({ property_id: `${property_id}` });
-      } else return null;
+      else return null;
     },
-    gcTime: 0,
-    staleTime: 0,
+    staleTime: STALE_TIME.MEDIUM,
+    gcTime: GC_TIME.LONG,
   });
 
   const [values, setValues] = useState<FacilitiesValuesDto>({
@@ -52,7 +51,13 @@ const CreatePropertyFacility = () => {
   const { data: propertyTypes } = useQuery({
     queryFn: () =>
       PropertyService.GetUserPropertyGroup({
-        group: ["POOL_TYPE", "ENTERTAINMENT", "KITCHEN", "COOL_HEAT", "WELFARE"],
+        group: [
+          "POOL_TYPE",
+          "ENTERTAINMENT",
+          "KITCHEN",
+          "COOL_HEAT",
+          "WELFARE",
+        ],
       }),
     queryKey: [
       PropertyService.USER_PROP_OPTIONS_CACHEKEY,
@@ -68,54 +73,71 @@ const CreatePropertyFacility = () => {
     if (!!initPropData) {
       setValues({
         welfare:
-          initPropData?.property_options?.filter((e) => e?.option?.group == "WELFARE")?.map((e) => e?.option_id) || [],
+          initPropData?.property_options
+            ?.filter((e) => e?.option?.group == "WELFARE")
+            ?.map((e) => e?.option_id) || [],
         cool_heat:
-          initPropData?.property_options?.filter((e) => e?.option?.group == "COOL_HEAT")?.map((e) => e?.option_id) ||
-          [],
+          initPropData?.property_options
+            ?.filter((e) => e?.option?.group == "COOL_HEAT")
+            ?.map((e) => e?.option_id) || [],
         entertainment:
           initPropData?.property_options
             ?.filter((e) => e?.option?.group == "ENTERTAINMENT")
             ?.map((e) => e?.option_id) || [],
         pool_type:
-          initPropData?.property_options?.filter((e) => e?.option?.group == "POOL_TYPE")?.map((e) => e?.option_id) ||
-          [],
+          initPropData?.property_options
+            ?.filter((e) => e?.option?.group == "POOL_TYPE")
+            ?.map((e) => e?.option_id) || [],
         kitchen:
-          initPropData?.property_options?.filter((e) => e?.option?.group == "KITCHEN")?.map((e) => e?.option_id) || [],
+          initPropData?.property_options
+            ?.filter((e) => e?.option?.group == "KITCHEN")
+            ?.map((e) => e?.option_id) || [],
         facility_dscr: initPropData?.description?.facility_dscr,
         has_pool: initPropData?.has_pool,
       });
     }
   }, [initPropData]);
 
+  const queryClient = useQueryClient();
+
   const { mutate, isPending } = useMutation({
     mutationFn: PropertyService.CreatePropertySetFacility,
     onSuccess: () => {
-      if (!!edit_mode) {
+      queryClient.invalidateQueries({
+        queryKey: [PropertyService.OWNER_PROP_INIT_CACHEKEY, property_id],
+      });
+      if (!!edit_mode)
         router.replace(`/profile/owner/properties/${property_id}/edit`);
-      } else {
-        router.push(`/profile/owner/properties/${property_id}/edit/price`);
-      }
+      else router.push(`/profile/owner/properties/${property_id}/edit/price`);
     },
   });
   const onSubmit = () => {
-    if (!!initPropData?.id) {
-      mutate({ ...values, propertyId: initPropData?.id });
-    }
+    if (!!initPropData?.id) mutate({ ...values, propertyId: initPropData?.id });
   };
 
-  /* -------------------------------------------------------------------------- */
-  /*                               ONCHANGE FUNCS                               */
-  /* -------------------------------------------------------------------------- */
-
-  const onChange = (value: boolean | string | number | null | number[], key: string) => {
+  const onChange = (
+    value: boolean | string | number | null | number[],
+    key: string,
+  ) => {
     setValues((e) => ({ ...e, [key]: value }));
   };
 
-  const onChangeMulty = (value: string | number | null, key: keyof FacilitiesValuesDto) => {
+  const onChangeMulty = (
+    value: string | number | null,
+    key: keyof FacilitiesValuesDto,
+  ) => {
     if (isArray(values?.[key]) && values?.[key]?.includes(value)) {
-      setValues((e) => ({ ...e, [key]: isArray(values?.[key]) ? values?.[key]?.filter((e) => e != value) : [] }));
+      setValues((e) => ({
+        ...e,
+        [key]: isArray(values?.[key])
+          ? values?.[key]?.filter((e) => e != value)
+          : [],
+      }));
     } else {
-      setValues((e) => ({ ...e, [key]: isArray(values?.[key]) ? [...values?.[key], value] : [] }));
+      setValues((e) => ({
+        ...e,
+        [key]: isArray(values?.[key]) ? [...values?.[key], value] : [],
+      }));
     }
   };
   return (
@@ -137,20 +159,20 @@ const CreatePropertyFacility = () => {
               {_STRINGS.POOL_STATUS}
             </p>
             <Checkbox
+              title={"استخر دارد"}
               rounded="rounded-full"
+              isChecked={values?.has_pool}
               onSelect={() => {
                 onChange(true, "has_pool");
               }}
-              isChecked={values?.has_pool}
-              title={"استخر دارد"}
             />
             <Checkbox
+              title={"استخر ندارد"}
               rounded="rounded-full"
+              isChecked={!values?.has_pool}
               onSelect={() => {
                 onChange(false, "has_pool");
               }}
-              isChecked={!values?.has_pool}
-              title={"استخر ندارد"}
             />
 
             {!!values?.has_pool ? (
@@ -191,15 +213,15 @@ const CreatePropertyFacility = () => {
             </p>
             {propertyTypes?.["KITCHEN"]?.map((e, index) => (
               <Checkbox
-                key={`KITCHEN${e?.id}`}
+                title={e?.title}
                 rounded="rounded-md"
+                key={`KITCHEN${e?.id}`}
                 titleClass="  !text-xs  "
-                containerClass={` ${(index + 1) % 2 == 0 ? "col-span-1" : "col-span-1"}`}
+                isChecked={!!values?.kitchen?.includes(e?.id)}
+                containerClass={` ${(index + 1) % 2 == 0 ? `col-span-1` : "col-span-1"}`}
                 onSelect={() => {
                   onChangeMulty(e?.id, "kitchen");
                 }}
-                isChecked={!!values?.kitchen?.includes(e?.id)}
-                title={e?.title}
               />
             ))}
           </div>
@@ -207,7 +229,9 @@ const CreatePropertyFacility = () => {
             item={{
               title: _STRINGS.OTHER_ACCESSES,
               containerClass: "w-full  relative col-span-full",
-              extraElement: <FormCounter max={1024} value={values?.facility_dscr || ""} />,
+              extraElement: (
+                <FormCounter max={1024} value={values?.facility_dscr || ""} />
+              ),
               rows: 3,
               maxLength: 1024,
             }}
@@ -240,15 +264,15 @@ const CreatePropertyFacility = () => {
             </p>
             {propertyTypes?.["WELFARE"]?.map((e, index) => (
               <Checkbox
-                titleClass="  !text-xs  "
-                containerClass={` ${(index + 1) % 2 == 0 ? "col-span-1" : "col-span-1"}`}
-                key={`WELFARE${e?.id}`}
+                title={e?.title}
                 rounded="rounded-md"
+                key={`WELFARE${e?.id}`}
+                titleClass="!text-xs "
+                containerClass={` ${(index + 1) % 2 == 0 ? "col-span-1" : "col-span-1"}`}
+                isChecked={!!values?.welfare?.includes(e?.id)}
                 onSelect={() => {
                   onChangeMulty(e?.id, "welfare");
                 }}
-                isChecked={!!values?.welfare?.includes(e?.id)}
-                title={e?.title}
               />
             ))}{" "}
           </div>
@@ -256,14 +280,14 @@ const CreatePropertyFacility = () => {
       )}
       <FixedBottomContainer>
         <Button
+          loading={isPending}
+          width=" w-[90%] md:w-1/2"
+          roundedClass="rounded-full"
+          title={_STRINGS.SUBMIT_MOVE_ON}
+          containerClass="w-full flex items-center justify-center"
           onClick={() => {
             onSubmit();
           }}
-          loading={isPending}
-          containerClass="w-full flex items-center justify-center"
-          roundedClass="rounded-full"
-          width=" w-[90%] md:w-1/2"
-          title={_STRINGS.SUBMIT_MOVE_ON}
         />
       </FixedBottomContainer>
     </div>
