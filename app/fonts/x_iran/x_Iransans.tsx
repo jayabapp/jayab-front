@@ -4,33 +4,33 @@ export const x_Iransans = localFont({
   display: "swap",
   src: [
     {
-      path: "./IRANSansX-Light.ttf",
+      path: "./IRANSansX-Light.woff2",
       weight: "200",
       style: "normal",
     },
     {
-      path: "./IRANSansX-Thin.ttf",
+      path: "./IRANSansX-Thin.woff2",
       weight: "300",
       style: "normal",
     },
     {
-      path: "./IRANSansX-Regular.ttf",
+      path: "./IRANSansX-Regular.woff2",
       weight: "400",
       style: "normal",
     },
     {
-      path: "./IRANSansX-Medium.ttf",
+      path: "./IRANSansX-Medium.woff2",
       weight: "500",
       style: "normal",
     },
     {
-      path: "./IRANSansX-DemiBold.ttf",
+      path: "./IRANSansX-DemiBold.woff2",
       weight: "600",
       style: "normal",
     },
 
     {
-      path: "./IRANSansX-Bold.ttf",
+      path: "./IRANSansX-Bold.woff2",
       weight: "700",
       style: "normal",
     },
