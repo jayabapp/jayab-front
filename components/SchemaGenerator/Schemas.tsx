@@ -2,11 +2,12 @@ import { apiRoutes, baseUrl, NEW_IMAGE_URL } from "@/utils/urls";
 import { Category, ContentDto } from "@/api_services/home/home.interface";
 import { SinglePropDto } from "@/api_services/property/property.interface";
 import { REVALIDATE } from "@/helpers/revalidate";
-import { isEmpty } from "lodash";
 import { JsonLd } from ".";
 import { FC } from "react";
 
 import serverCall from "@/helpers/serverCall";
+import isEmpty from "lodash/isEmpty";
+
 import type {
   Article,
   BlogPosting,
@@ -184,8 +185,6 @@ export const BlogSchema = ({
   data,
   wordCount,
   timeToRead,
-  rate,
-  rate_count,
 }: {
   data: ContentDto;
   wordCount: number;
@@ -193,8 +192,6 @@ export const BlogSchema = ({
   rate_count: number;
   rate: number;
 }) => {
-  const hasRating = rate != null && Number(rate_count) > 0;
-
   return JsonLd<BlogPosting | Article>({
     "@context": "https://schema.org",
     "@type": !!data?.fields?.type?.length ? "BlogPosting" : "Article",

@@ -8,7 +8,6 @@ import { createPropertySteps } from "@/utils/constantss";
 import { useEffect, useState } from "react";
 import { PropertyService } from "@/api_services/property/property.service";
 import { HomeService } from "@/api_services/home/home.service";
-import { isArray } from "lodash";
 
 import FixedBottomContainer from "@/components/shared/FixedBottomContainer";
 import MultiLineFormInput from "@/components/shared/Form/MultiLineFormInput";
@@ -19,9 +18,10 @@ import FormCounter from "@/components/properties/FormCounter";
 import StepShower from "@/components/shared/StepShower";
 import FormInput from "@/components/shared/Form/FormInput";
 import Checkbox from "@/components/shared/Form/Checkbox";
+import _STRINGS from "@/utils/LocalStrings";
+import isArray from "lodash/isArray";
 import Button from "@/components/shared/Button/Button";
 import Notify from "@/components/shared/Toast";
-import _STRINGS from "@/utils/LocalStrings";
 
 const CreatePropertyTerms = () => {
   const router = useRouter();
@@ -396,7 +396,6 @@ ${_STRINGS.ABOUT_PROPERTY_DESCRIPTION}`,
         onHIde={() => {}}
         callBack={() => {
           router.push(`/profile/owner/properties/${property_id}/subscription`);
-          // router.push(`/profile/owner/properties`);
         }}
       />
     </div>

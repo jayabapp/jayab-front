@@ -1,17 +1,14 @@
-import { difference, last } from "lodash";
-import { useRouter, usePathname } from "next/navigation";
-import { Dispatch, SetStateAction, useEffect, useState } from "react";
-
-import InfiniteScroll from "react-infinite-scroll-component";
-import { useQuery } from "@tanstack/react-query";
+import { useEffect, useState } from "react";
 import { PropertyService } from "@/api_services/property/property.service";
 import { PropertyListDto } from "@/api_services/property/property.interface";
+import { weekFromToday } from "@/helpers/weekFromToday";
+import { useQuery } from "@tanstack/react-query";
+
 import LottieLoading from "@/components/shared/Lotties/LottieLoading";
+import InfiniteScroll from "react-infinite-scroll-component";
 import BtnLoading from "@/components/shared/Button/BtnLoading";
 import PropertyCard from "@/components/properties/PropertyCard";
 import EmptyList from "@/components/shared/Lotties/EmptyList";
-import moment from "moment-jalaali";
-import { WeekDays } from "@/utils/constantss";
 
 export interface catQueryTypes {
   code: string | null | undefined;
@@ -22,34 +19,17 @@ type HomePropertiesClientPartType = {
   setPage: React.Dispatch<React.SetStateAction<number>>;
 };
 
-function HomePropertiesClientPart({ setPage, page }: HomePropertiesClientPartType) {
-  const router = useRouter();
-  const pathname = usePathname();
+function HomePropertiesClientPart({
+  setPage,
+  page,
+}: HomePropertiesClientPartType) {
   const [week, setWeek] = useState<any[]>([]);
   const [refetcherBoolean, setRefetcherBoolean] = useState(false);
 
   const [data, setData] = useState<PropertyListDto[]>([]);
 
   useEffect(() => {
-    const dayOfWeek = moment().day();
-
-    const weeks = [];
-    for (let index = dayOfWeek; index < dayOfWeek + 7; index++) {
-      const item = WeekDays?.find((e) => {
-        if (index >= 7) {
-          return e?.id == index - 7;
-        } else {
-          return e?.id == index;
-        }
-      });
-      if (index < 7) {
-        weeks.push(item);
-      } else {
-        weeks.push(item);
-      }
-    }
-
-    setWeek(weeks);
+    setWeek(weekFromToday());
   }, []);
 
   const {
@@ -61,7 +41,6 @@ function HomePropertiesClientPart({ setPage, page }: HomePropertiesClientPartTyp
     queryFn: () => {
       return PropertyService?.GetProperties({
         page: Number(page || 2),
-
         per_page: 30,
       });
     },
@@ -72,9 +51,8 @@ function HomePropertiesClientPart({ setPage, page }: HomePropertiesClientPartTyp
 
   useEffect(() => {
     if (!!propQueryData?.data) {
-      if (Number(page) == 1 || page == 1) {
-        setData([]);
-      } else setData((x) => [...x, ...propQueryData?.data]);
+      if (Number(page) == 1 || page == 1) setData([]);
+      else setData((x) => [...x, ...propQueryData?.data]);
     }
   }, [propQueryData]);
 
@@ -86,14 +64,12 @@ function HomePropertiesClientPart({ setPage, page }: HomePropertiesClientPartTyp
     <div className="w-full px-0  self-center">
       {page != 1 ? (
         <div className=" w-full">
-          {/* <SortContainer query={query} /> */}
-
           {isLoading && data?.length == 0 ? (
             <LottieLoading />
           ) : data && data?.length > 0 ? (
             <InfiniteScroll
               scrollThreshold={0.5}
-              dataLength={data?.length} //This is important field to render the next data
+              dataLength={data?.length}
               next={() => {
                 setPage(propQueryData?.meta?.next || 1);
               }}

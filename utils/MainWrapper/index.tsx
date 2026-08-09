@@ -14,19 +14,11 @@ import { SocketIO } from "../../components/SocketIo";
 import { Toaster } from "sonner";
 
 import MobileFooter from "../../components/Footer/MobileFooter";
-import RotatePhone from "@/components/shared/Lotties/RotatePhone";
 import LoginModal from "@/components/Modal/LoginModal";
 import dynamic from "next/dynamic";
 import FCM from "../FCM";
 
-import {
-  authorizeUser,
-  init,
-  onMetrixUserIdReceived,
-  setCustomAttribute,
-  setPhoneNumber,
-  // @ts-ignore -- package ships types that its "exports" map does not expose
-} from "@metrixorg/websdk";
+import { initMetrix, withMetrix } from "../metrix";
 
 function FallBack() {
   return <></>;
@@ -47,6 +39,11 @@ const HeaderInitialQueriesSetter = dynamic(
     ssr: true,
   },
 );
+
+const RotatePhone = dynamic(
+  () => import("@/components/shared/Lotties/RotatePhone"),
+  { ssr: false },
+);
 const MainWrapper = ({ children }: mainWrapper) => {
   const router = useRouter();
   const pathname = usePathname();
@@ -57,23 +54,12 @@ const MainWrapper = ({ children }: mainWrapper) => {
   const [isLandscape, setIsLandscape] = useState(false);
 
   useEffect(() => {
-    try {
-      const appId = process.env.NEXT_PUBLIC_METRIX_APP_ID;
-      const appKey = process.env.NEXT_PUBLIC_METRIX_APP_KEY;
-      if (appId && appKey) {
-        init(appId, appKey);
-        onMetrixUserIdReceived().then((metrixUserId: string) => {
-          console.log({ metrixUserId });
-        });
-      } else {
-        console.warn("Metrix SDK: Missing credentials", {
-          appId: !!appId,
-          appKey: !!appKey,
-        });
-      }
-    } catch (error) {
-      console.error("Metrix SDK initialization error:", error);
-    }
+    initMetrix();
+    withMetrix((sdk) =>
+      sdk.onMetrixUserIdReceived().then((metrixUserId: string) => {
+        console.log({ metrixUserId });
+      }),
+    );
     const isLoginLocal = localStorage.getItem("isLogin");
     if (!!isLoginLocal)
       setCookie("isLogin", "true", { maxAge: 60 * 24 * 60 * 60 });
@@ -138,17 +124,19 @@ const MainWrapper = ({ children }: mainWrapper) => {
 
   useEffect(() => {
     if (!!profile) {
-      authorizeUser(profile?.id);
-      setPhoneNumber(profile?.mobile_number);
-      setCustomAttribute("full_name", profile?.full_name);
-      setCustomAttribute(
-        "role",
-        !!profile?.owner_id
-          ? "owner"
-          : !!profile?.advisor_id
-            ? "advisor"
-            : "customer",
-      );
+      withMetrix((sdk) => {
+        sdk.authorizeUser(profile?.id);
+        sdk.setPhoneNumber(profile?.mobile_number);
+        sdk.setCustomAttribute("full_name", profile?.full_name);
+        sdk.setCustomAttribute(
+          "role",
+          !!profile?.owner_id
+            ? "owner"
+            : !!profile?.advisor_id
+              ? "advisor"
+              : "customer",
+        );
+      });
       useStoreInit.setState({ userInfo: profile });
     }
   }, [profile]);

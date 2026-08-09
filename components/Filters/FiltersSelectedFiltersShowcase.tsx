@@ -1,31 +1,31 @@
-import { ChildCities } from "@/api_services/city/city.interface";
-import { ProvienceTypesDto } from "@/api_services/property/property.interface";
-import numberWithCommas from "@/helpers/numberWithCommas";
-import queryBuilder from "@/helpers/queryBuilder";
+import { Dispatch, Fragment, SetStateAction } from "react";
 import { sortDynamicFiltersInOrder } from "@/utils/constantss";
-import _STRINGS from "@/utils/LocalStrings";
-import { indexOf, isEmpty } from "lodash";
-import moment from "moment-jalaali";
 import { usePathname, useRouter } from "next/navigation";
-import React, { Dispatch, SetStateAction, useMemo } from "react";
-import RegionButton from "../CityModal/RegionButton";
-import Swiper from "../embelaCarousel/Swiper";
-import SwiperSlide from "../embelaCarousel/SwiperSlide";
+import { ProvienceTypesDto } from "@/api_services/property/property.interface";
+import { ChildCities } from "@/api_services/city/city.interface";
+
 import SelectiveFilterShowCase from "./SelectiveFilterShowCase";
+import numberWithCommas from "@/helpers/numberWithCommas";
+import RegionButton from "../CityModal/RegionButton";
+import queryBuilder from "@/helpers/queryBuilder";
+import SwiperSlide from "../embelaCarousel/SwiperSlide";
+import _STRINGS from "@/utils/LocalStrings";
+import indexOf from "lodash/indexOf";
+import isEmpty from "lodash/isEmpty";
+import moment from "moment-jalaali";
+import Swiper from "../embelaCarousel/Swiper";
 
 const FiltersSelectedFiltersShowcase = ({
   query,
   propertyTypes,
-  setFilterModalShow,
-  hiddenFilters,
   containerClass,
-  cityWithRegions,
   setShowRegions,
+  cityWithRegions,
+  setFilterModalShow,
 }: {
   propertyTypes: {
     [key: string]: ProvienceTypesDto[];
   };
-
   query: any;
   setFilterModalShow: Dispatch<SetStateAction<boolean>>;
   hiddenFilters?: string[];
@@ -35,74 +35,17 @@ const FiltersSelectedFiltersShowcase = ({
 }) => {
   const router = useRouter();
   const pathname = usePathname();
-  const regionsIds = query?.regions
-    ?.split(",")
-
-    ?.filter((f: any) => !!f);
-  // const finalizzedKeys = Object.keys(propertyTypes)
-  //   ?.filter((e) => !!query?.[e.toLowerCase()])
-  //   ?.map((e) => e?.toLowerCase());
-  // const valueObjects = finalizzedKeys?.map((e) =>
-  //   query?.[e]?.split(",")?.map((x) => propertyTypes[e.toUpperCase()]?.find((z) => z?.id == x))
-  // );
-
-  const finallizedSelectedOptions = useMemo(() => {
-    let data: any = {};
-    if (!!propertyTypes && query) {
-      let objectKeys = Object.keys(propertyTypes)
-        ?.map((e) => e?.toLowerCase())
-        ?.filter((e) => !!e);
-
-      for (let index = 0; index < objectKeys.length; index++) {
-        const element = objectKeys[index];
-        if (!!query?.[element]) {
-          data[element] = query?.[element]
-            ?.split(",")
-            ?.filter((e: any) => !!e)
-            ?.map((x: any) => propertyTypes[element.toUpperCase()]?.find((z) => z?.id == x));
-        }
-      }
-    }
-    return data;
-  }, [propertyTypes, query]);
-
-  ///////////////////////////
-  const queryMakerArray = (items: any[], queryKey: string) => {
-    let temp = { ...query };
-    const body = {
-      ...temp,
-    };
-
-    if (!!items) {
-      body[queryKey] = items?.map((e) => e?.id);
-    } else {
-      delete body[queryKey];
-    }
-    delete body.page;
-    router.replace(`${pathname}?${queryBuilder(body)}`);
-  };
+  const regionsIds = query?.regions?.split(",")?.filter((f: any) => !!f);
 
   const queryMakerItem = (item: any, queryKey: string) => {
     let temp = { ...query };
     const body = {
       ...temp,
     };
-
-    if (!!item) {
-      body[queryKey] = item;
-    } else {
-      delete body[queryKey];
-    }
+    if (!!item) body[queryKey] = item;
+    else delete body[queryKey];
     delete body.page;
     router.replace(`${pathname}?${queryBuilder(body)}`);
-  };
-
-  /////////////////////////
-  const onFilterRemoveClick = (i: any, key: string) => {
-    let array: any = [];
-
-    array = finallizedSelectedOptions?.[key]?.filter((it: any) => it?.id != `${i?.id}`);
-    queryMakerArray(array, key);
   };
 
   const onFilterAddClick = (value: any, key: string) => {
@@ -111,7 +54,6 @@ const FiltersSelectedFiltersShowcase = ({
 
   const removeFiltersKeys = (array: string[]) => {
     let temp = { ...query };
-
     for (let index = 0; index < array.length; index++) {
       const element = array[index];
       delete temp[element];
@@ -121,35 +63,32 @@ const FiltersSelectedFiltersShowcase = ({
       ...temp,
     };
     router.replace(`${pathname}?${queryBuilder(body)}`);
-    // router.replace(`/rooms?${queryBuilder(body)}`);
   };
-  const isHiddenFilter = (key: string) => {
+  // Always false for now, but the six call sites still pass the filter key they
+  // are asking about, and `hiddenFilters` is still on the props type — so keep
+  // accepting it rather than stripping the argument from every caller.
+  const isHiddenFilter = (key?: string) => {
     return false;
-    return hiddenFilters?.includes(key);
   };
 
-  /* -------------------------------------------------------------------------- */
-  /*                             DYNAMiC QUERY KEYS                             */
-  /* -------------------------------------------------------------------------- */
-  // const dynamicPropsInQueryKeys = Object.keys(propertyTypes)?.filter((e) => query?.[e?.toLowerCase()]);
   const dynamicPropsInQueryKeys = Object.keys(propertyTypes);
   const filteredDynamicPropsInQueryKeys = dynamicPropsInQueryKeys?.filter(
     (e) => !["PARTY", "PET"].includes(e) && !isHiddenFilter(e?.toLowerCase()),
   );
   const sortFilteredDynamicPropsInQueryKeys = filteredDynamicPropsInQueryKeys
-    .sort((a, b) => (indexOf(sortDynamicFiltersInOrder, a) > indexOf(sortDynamicFiltersInOrder, b) ? 1 : -1))
+    .sort((a, b) =>
+      indexOf(sortDynamicFiltersInOrder, a) >
+      indexOf(sortDynamicFiltersInOrder, b)
+        ? 1
+        : -1,
+    )
     .sort((a, b) => (!!query[a.toLowerCase()] ? -1 : 1));
-  const dynamicKeysLenght = sortFilteredDynamicPropsInQueryKeys?.filter((e) => !!query[e?.toLowerCase()])?.length;
+  const dynamicKeysLenght = sortFilteredDynamicPropsInQueryKeys?.filter(
+    (e) => !!query[e?.toLowerCase()],
+  )?.length;
 
   return (
-    <Swiper
-      parentClass={containerClass}
-      // grid={{
-      //   rows: 2,
-      //   fill: "row",
-      // }}
-      autoFit
-    >
+    <Swiper autoFit parentClass={containerClass}>
       <SwiperSlide className=" z-5  flex lg:hidden !w-auto  ">
         <div
           onClick={() => {
@@ -157,67 +96,26 @@ const FiltersSelectedFiltersShowcase = ({
           }}
           className=" col-span-3 flex   w-fit px-3  h-[1.625rem]  rounded-full   bg-primary-700 items-center gap-2 "
         >
-          <img src="/assets/icons/property/white_filter_icon.svg" className="   cursor-pointer w-3 h-3 shrink-0" />
+          <img
+            src="/assets/icons/property/white_filter_icon.svg"
+            className="   cursor-pointer w-3 h-3 shrink-0"
+          />
           <p className="text-white  text-xs">{`سایر ${_STRINGS.FILTERS}`}</p>
         </div>
       </SwiperSlide>
 
-      {/* REGION PART */}
-
       {!isEmpty(cityWithRegions?.child) ? (
         <SwiperSlide className="!w-auto flex lg:hidden ">
           <RegionButton
-            regionsIds={regionsIds}
-            removeFiltersKeys={removeFiltersKeys}
-            setShowRegions={setShowRegions}
             containerClass=""
+            regionsIds={regionsIds}
+            setShowRegions={setShowRegions}
+            removeFiltersKeys={removeFiltersKeys}
           />
         </SwiperSlide>
       ) : (
         <></>
       )}
-      {/* DYNAMIC FILTERS */}
-      {/* {!isHiddenFilter("property_type") &&
-        finallizedSelectedOptions?.["property_type"]?.map((e: any, index: number) => (
-          <SwiperSlide key={`selectedItems${e?.id}`} className="!w-auto    ">
-            <div className="rounded-full !w-auto   gap-4 py-1 h-[1.625rem] px-1 flex items-center justify-center border border-primary-700  bg-primary-700/5 text-primary-700  text-xs ">
-              <p className="text-xs pr-2">{e?.title} </p>
-              <div
-                onClick={() => {
-                  onFilterRemoveClick(e, "property_type");
-                }}
-                className=" cursor-pointer w-4 h-4 aspect-square rounded-full border border-primary-700 flex items-center justify-center"
-              >
-                <img src="/assets/icons/adds/blue_plus.svg" className="w-2 h-2 rotate-45 aspect-square " />
-              </div>
-            </div>
-          </SwiperSlide>
-        ))} */}
-      {/*  HAS POOL */}
-      {/* {!isHiddenFilter("has_pool") && !!query?.has_pool && query?.has_pool != "2" ? ( */}
-      {/* {!isHiddenFilter("has_pool") && !!query?.has_pool ? ( */}
-
-      {/* ) : (
-        <></>
-      )} */}
-      {/* DYNAMIC FILTERS */}
-      {/* {!isHiddenFilter("pool_type") &&
-        finallizedSelectedOptions?.["pool_type"]?.map((e: any, index: number) => (
-          <SwiperSlide key={`selectedItems${e?.id}`} className="!w-auto    ">
-            <div className="rounded-full !w-auto   gap-4 py-1 h-[1.625rem] px-1 flex items-center justify-center border border-primary-700  bg-primary-700/5 text-primary-700  text-xs ">
-              <p className="text-xs pr-2">{e?.title} </p>
-              <div
-                onClick={() => {
-                  onFilterRemoveClick(e, "pool_type");
-                }}
-                className=" cursor-pointer w-4 h-4 aspect-square rounded-full border border-primary-700 flex items-center justify-center"
-              >
-                <img src="/assets/icons/adds/blue_plus.svg" className="w-2 h-2 rotate-45 aspect-square " />
-              </div>
-            </div>
-          </SwiperSlide>
-        ))} */}
-      {/*  BEDROOMS */}
       {!isHiddenFilter("total_bedrooms") && !!query?.total_bedrooms ? (
         <SwiperSlide key={`selecRooms`} className="!w-auto    ">
           <div className="rounded-full !w-auto   gap-4 py-1 h-[1.625rem] px-1 flex items-center justify-center border border-primary-700  bg-primary-700/5 text-primary-700  text-xs ">
@@ -230,7 +128,10 @@ const FiltersSelectedFiltersShowcase = ({
               }}
               className=" cursor-pointer w-4 h-4 aspect-square rounded-full border border-primary-700 flex items-center justify-center"
             >
-              <img src="/assets/icons/adds/blue_plus.svg" className="w-2 h-2 rotate-45 aspect-square " />
+              <img
+                src="/assets/icons/adds/blue_plus.svg"
+                className="w-2 h-2 rotate-45 aspect-square "
+              />
             </div>
           </div>
         </SwiperSlide>
@@ -250,39 +151,22 @@ const FiltersSelectedFiltersShowcase = ({
               }}
               className=" cursor-pointer w-4 h-4 aspect-square rounded-full border border-primary-700 flex items-center justify-center"
             >
-              <img src="/assets/icons/adds/blue_plus.svg" className="w-2 h-2 rotate-45 aspect-square " />
+              <img
+                src="/assets/icons/adds/blue_plus.svg"
+                className="w-2 h-2 rotate-45 aspect-square "
+              />
             </div>
           </div>
         </SwiperSlide>
       ) : (
         <></>
       )}
-      {/* DYNAMIC FILTERS */}
-
-      {/* {!isHiddenFilter("entertainment") &&
-        finallizedSelectedOptions?.["entertainment"]?.map((e: any, index: number) => (
-          <SwiperSlide key={`selectedItems${e?.id}`} className="!w-auto    ">
-            <div className="rounded-full !w-auto   gap-4 py-1 h-[1.625rem] px-1 flex items-center justify-center border border-primary-700  bg-primary-700/5 text-primary-700  text-xs ">
-              <p className="text-xs pr-2">{e?.title} </p>
-              <div
-                onClick={() => {
-                  onFilterRemoveClick(e, "entertainment");
-                }}
-                className=" cursor-pointer w-4 h-4 aspect-square rounded-full border border-primary-700 flex items-center justify-center"
-              >
-                <img src="/assets/icons/adds/blue_plus.svg" className="w-2 h-2 rotate-45 aspect-square " />
-              </div>
-            </div>
-          </SwiperSlide>
-        ))} */}
-
-      {/* START END DATE */}
       {!!query?.checkout && !!query?.checkin ? (
         <SwiperSlide key={`selecDATE`} className="!w-auto    ">
           <div className="rounded-full !w-auto   gap-4 py-1 h-[1.625rem] px-1 flex items-center justify-center border border-primary-700  bg-primary-700/5 text-primary-700  text-xs ">
             <p className="text-xs pr-2">
-              {_STRINGS.FROM} {moment(query?.checkin).format("jDD/jMMMM/jYYYY")} {_STRINGS.TO}{" "}
-              {moment(query?.checkout).format("jDD/jMMMM/jYYYY")}
+              {_STRINGS.FROM} {moment(query?.checkin).format("jDD/jMMMM/jYYYY")}{" "}
+              {_STRINGS.TO} {moment(query?.checkout).format("jDD/jMMMM/jYYYY")}
             </p>
             <div
               onClick={() => {
@@ -290,7 +174,10 @@ const FiltersSelectedFiltersShowcase = ({
               }}
               className=" cursor-pointer w-4 h-4 aspect-square rounded-full border border-primary-700 flex items-center justify-center"
             >
-              <img src="/assets/icons/adds/blue_plus.svg" className="w-2 h-2 rotate-45 aspect-square " />
+              <img
+                src="/assets/icons/adds/blue_plus.svg"
+                className="w-2 h-2 rotate-45 aspect-square "
+              />
             </div>
           </div>
         </SwiperSlide>
@@ -302,7 +189,8 @@ const FiltersSelectedFiltersShowcase = ({
         <SwiperSlide key={`selecCommiss`} className="!w-auto    ">
           <div className="rounded-full !w-auto   gap-4 py-1 h-[1.625rem] px-1 flex items-center justify-center border border-primary-700  bg-primary-700/5 text-primary-700  text-xs ">
             <p className="text-xs pr-2">
-              {_STRINGS.COMMIS_JUST_PERC} {_STRINGS.FROM} {numberWithCommas(query?.min_commission)}% {_STRINGS.TO}{" "}
+              {_STRINGS.COMMIS_JUST_PERC} {_STRINGS.FROM}{" "}
+              {numberWithCommas(query?.min_commission)}% {_STRINGS.TO}{" "}
               {numberWithCommas(query?.max_commission)}%
             </p>
             <div
@@ -311,7 +199,10 @@ const FiltersSelectedFiltersShowcase = ({
               }}
               className=" cursor-pointer w-4 h-4 aspect-square rounded-full border border-primary-700 flex items-center justify-center"
             >
-              <img src="/assets/icons/adds/blue_plus.svg" className="w-2 h-2 rotate-45 aspect-square " />
+              <img
+                src="/assets/icons/adds/blue_plus.svg"
+                className="w-2 h-2 rotate-45 aspect-square "
+              />
             </div>
           </div>
         </SwiperSlide>
@@ -323,7 +214,8 @@ const FiltersSelectedFiltersShowcase = ({
         <SwiperSlide key={`selecPRICE`} className="!w-auto    ">
           <div className="rounded-full !w-auto   gap-4 py-1 h-[1.625rem] px-1 flex items-center justify-center border border-primary-700  bg-primary-700/5 text-primary-700  text-xs ">
             <p className="text-xs pr-2">
-              {_STRINGS.PRICE} {_STRINGS.FROM} {numberWithCommas(query?.min_price)} {_STRINGS.TO}{" "}
+              {_STRINGS.PRICE} {_STRINGS.FROM}{" "}
+              {numberWithCommas(query?.min_price)} {_STRINGS.TO}{" "}
               {numberWithCommas(query?.max_price)} {_STRINGS.TOMAN}
             </p>
             <div
@@ -332,7 +224,10 @@ const FiltersSelectedFiltersShowcase = ({
               }}
               className=" cursor-pointer w-4 h-4 aspect-square rounded-full border border-primary-700 flex items-center justify-center"
             >
-              <img src="/assets/icons/adds/blue_plus.svg" className="w-2 h-2 rotate-45 aspect-square " />
+              <img
+                src="/assets/icons/adds/blue_plus.svg"
+                className="w-2 h-2 rotate-45 aspect-square "
+              />
             </div>
           </div>
         </SwiperSlide>
@@ -344,8 +239,8 @@ const FiltersSelectedFiltersShowcase = ({
         <SwiperSlide key={`selecAREA`} className="!w-auto    ">
           <div className="rounded-full !w-auto   gap-4 py-1 h-[1.625rem] px-1 flex items-center justify-center border border-primary-700  bg-primary-700/5 text-primary-700  text-xs ">
             <p className="text-xs pr-2">
-              {_STRINGS.ROOM_SIZE} {_STRINGS.FROM} {query?.min_building_area} {_STRINGS.TO} {query?.max_building_area}{" "}
-              {_STRINGS.METER}
+              {_STRINGS.ROOM_SIZE} {_STRINGS.FROM} {query?.min_building_area}{" "}
+              {_STRINGS.TO} {query?.max_building_area} {_STRINGS.METER}
             </p>
             <div
               onClick={() => {
@@ -353,7 +248,10 @@ const FiltersSelectedFiltersShowcase = ({
               }}
               className=" cursor-pointer w-4 h-4 aspect-square rounded-full border border-primary-700 flex items-center justify-center"
             >
-              <img src="/assets/icons/adds/blue_plus.svg" className="w-2 h-2 rotate-45 aspect-square " />
+              <img
+                src="/assets/icons/adds/blue_plus.svg"
+                className="w-2 h-2 rotate-45 aspect-square "
+              />
             </div>
           </div>
         </SwiperSlide>
@@ -361,7 +259,9 @@ const FiltersSelectedFiltersShowcase = ({
         <></>
       )}
       {/*  HAS DISCOUNT */}
-      {!isHiddenFilter("has_discount") && !!query?.has_discount && query?.has_discount == "1" ? (
+      {!isHiddenFilter("has_discount") &&
+      !!query?.has_discount &&
+      query?.has_discount == "1" ? (
         <SwiperSlide key={`selecDiscount`} className="!w-auto    ">
           <div className="rounded-full !w-auto   gap-4 py-1 h-[1.625rem] px-1 flex items-center justify-center border border-primary-700  bg-primary-700/5 text-primary-700  text-xs ">
             <p className="text-xs pr-2">{_STRINGS.HAS_DISCOUNT}</p>
@@ -371,7 +271,10 @@ const FiltersSelectedFiltersShowcase = ({
               }}
               className=" cursor-pointer w-4 h-4 aspect-square rounded-full border border-primary-700 flex items-center justify-center"
             >
-              <img src="/assets/icons/adds/blue_plus.svg" className="w-2 h-2 rotate-45 aspect-square " />
+              <img
+                src="/assets/icons/adds/blue_plus.svg"
+                className="w-2 h-2 rotate-45 aspect-square "
+              />
             </div>
           </div>
         </SwiperSlide>
@@ -380,7 +283,9 @@ const FiltersSelectedFiltersShowcase = ({
       )}
 
       {/*  HAS DISCOUNT */}
-      {!isHiddenFilter("is_premium") && !!query?.is_premium && query?.is_premium == "1" ? (
+      {!isHiddenFilter("is_premium") &&
+      !!query?.is_premium &&
+      query?.is_premium == "1" ? (
         <SwiperSlide key={`selecPermium`} className="!w-auto    ">
           <div className="rounded-full !w-auto   gap-4 py-1 h-[1.625rem] px-1 flex items-center justify-center border border-primary-700  bg-primary-700/5 text-primary-700  text-xs ">
             <p className="text-xs pr-2">{_STRINGS.PERMIUM_PROPS}</p>
@@ -390,7 +295,10 @@ const FiltersSelectedFiltersShowcase = ({
               }}
               className=" cursor-pointer w-4 h-4 aspect-square rounded-full border border-primary-700 flex items-center justify-center"
             >
-              <img src="/assets/icons/adds/blue_plus.svg" className="w-2 h-2 rotate-45 aspect-square " />
+              <img
+                src="/assets/icons/adds/blue_plus.svg"
+                className="w-2 h-2 rotate-45 aspect-square "
+              />
             </div>
           </div>
         </SwiperSlide>
@@ -410,7 +318,10 @@ const FiltersSelectedFiltersShowcase = ({
                 onClick={() => removeFiltersKeys([rule.key])}
                 className="cursor-pointer w-4 h-4 aspect-square rounded-full border border-primary-700 flex items-center justify-center"
               >
-                <img src="/assets/icons/adds/blue_plus.svg" className="w-2 h-2 rotate-45 aspect-square" />
+                <img
+                  src="/assets/icons/adds/blue_plus.svg"
+                  className="w-2 h-2 rotate-45 aspect-square"
+                />
               </div>
             </div>
           </SwiperSlide>
@@ -421,18 +332,19 @@ const FiltersSelectedFiltersShowcase = ({
         const STRINGS: any = { ..._STRINGS };
 
         return (
-          <React.Fragment key={`wrapper${key}`}>
-            <SwiperSlide key={`selectedItems${key}`} className={`   !w-auto    `}>
+          <Fragment key={`wrapper${key}`}>
+            <SwiperSlide className={`!w-auto`} key={`selectedItems${key}`}>
               <SelectiveFilterShowCase
-                title={STRINGS?.[key?.toUpperCase()] || ""}
-                list={propertyTypes?.[key?.toUpperCase()]}
-                queryKey={key?.toLowerCase()}
                 query={query}
+                queryKey={key?.toLowerCase()}
                 removeFiltersKeys={removeFiltersKeys}
+                list={propertyTypes?.[key?.toUpperCase()]}
+                title={STRINGS?.[key?.toUpperCase()] || ""}
               />
             </SwiperSlide>
 
-            {(!!dynamicKeysLenght && dynamicKeysLenght - 1 == index) || (!dynamicKeysLenght && index == 0) ? (
+            {(!!dynamicKeysLenght && dynamicKeysLenght - 1 == index) ||
+            (!dynamicKeysLenght && index == 0) ? (
               <SwiperSlide key={`hasPool`} className={`!w-auto  `}>
                 <div
                   onClick={() => {
@@ -441,7 +353,6 @@ const FiltersSelectedFiltersShowcase = ({
                   className={` cursor-pointer ${!!query?.has_pool ? "" : " grayscale opacity-70"} rounded-full !w-auto   gap-0 py-1 h-[1.625rem] px-1 flex items-center justify-center border border-primary-700  bg-primary-700/5 text-primary-700  text-xs `}
                 >
                   <p className="text-xs px-2">
-                    {/*   {_STRINGS.POOL_STATUS} : */}
                     {query?.has_pool == "0" ? "بدون استخر" : "  استخردار"}
                   </p>
                   {!!query?.has_pool ? (
@@ -453,7 +364,10 @@ const FiltersSelectedFiltersShowcase = ({
                       }}
                       className=" cursor-pointer w-4 h-4 aspect-square rounded-full border border-primary-700 flex items-center justify-center"
                     >
-                      <img src="/assets/icons/adds/blue_plus.svg" className="w-2 h-2 rotate-45 aspect-square " />
+                      <img
+                        src="/assets/icons/adds/blue_plus.svg"
+                        className="w-2 h-2 rotate-45 aspect-square "
+                      />
                     </div>
                   ) : (
                     <></>
@@ -463,27 +377,9 @@ const FiltersSelectedFiltersShowcase = ({
             ) : (
               <></>
             )}
-          </React.Fragment>
+          </Fragment>
         );
       })}
-
-      {/* {finallizedSelectedOptions?.map((oneRow) => {
-        return oneRow?.map((e: any, index: number) => (
-          <SwiperSlide key={`selectedItems${e?.id}`} className="!w-auto    ">
-            <div className="rounded-full !w-auto   gap-4 py-1 h-[1.625rem] px-1 flex items-center justify-center border border-primary-700  bg-primary-700/5 text-primary-700  text-xs ">
-              <p className="text-xs pr-2">{e?.title} </p>
-              <div
-                onClick={() => {
-                  onFilterClick(e, oneRow);
-                }}
-                className=" cursor-pointer w-4 h-4 aspect-square rounded-full border border-primary-700 flex items-center justify-center"
-              >
-                <img src="/assets/icons/adds/blue_plus.svg" className="w-2 h-2 rotate-45 aspect-square " />
-              </div>
-            </div>
-          </SwiperSlide>
-        ));
-      })} */}
     </Swiper>
   );
 };

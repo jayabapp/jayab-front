@@ -1,71 +1,51 @@
-import { useRouter, usePathname } from "next/navigation";
-import Slider from "rc-slider";
-import "rc-slider/assets/index.css";
-import React, { CSSProperties, Dispatch, useEffect, useState } from "react";
-import Button from "../shared/Button/Button";
-import _STRINGS from "@/utils/LocalStrings";
+import { CSSProperties, Dispatch, useEffect, useState } from "react";
 
-import queryBuilder from "@/helpers/queryBuilder";
-import { isNaN } from "lodash";
-import numberWithCommas from "@/helpers/numberWithCommas";
+import Slider from "rc-slider";
+
+import "rc-slider/assets/index.css";
 
 type PriceRangeType = {
   query?: any;
-  lowLimit?: number;
-  steps?: number;
-  higherKey: string;
-  lowerKey: string;
-  upLimit?: number;
-  setFilters?: Dispatch<any>;
   filters?: any;
+  steps?: number;
+  upLimit?: number;
+  lowerKey: string;
+  lowLimit?: number;
+  higherKey: string;
+  setFilters?: Dispatch<any>;
   marks?: { [key: string]: { label: number | string; style: CSSProperties } };
 };
 
-const PriceRange = ({ filters, setFilters, query, lowLimit, upLimit, steps, higherKey, lowerKey }: PriceRangeType) => {
-  const pathname = usePathname();
-  const { min_price, max_price, tag_ids, categories } = query || {};
-  const router = useRouter();
+const PriceRange = ({
+  steps,
+  upLimit,
+  filters,
+  lowLimit,
+  lowerKey,
+  higherKey,
+  setFilters,
+}: PriceRangeType) => {
   const [lowerBound, SetlowerBound] = useState(lowLimit || 0);
   const [upperBound, SetupperBound] = useState(upLimit || 100000000);
-  const [marks, setMarks] = useState<{ [key: number]: { style: {}; label: number } }>([]);
+  const [marks, setMarks] = useState<{
+    [key: number]: { style: {}; label: number };
+  }>([]);
 
   useEffect(() => {
-    if (upLimit) {
-      SetupperBound(upLimit);
-    }
-    if (lowLimit) {
-      SetlowerBound(lowLimit);
-    }
+    if (upLimit) SetupperBound(upLimit);
+    if (lowLimit) SetlowerBound(lowLimit);
   }, [lowLimit, upLimit]);
-
-  // useEffect(() => {
-  //   setValue([Number(lowerBound), Number(upperBound)]);
-  // }, [lowerBound, upperBound]);
-
-  // useQuery(
-  //   [ProductsServices?.PRODUCT_PRICE_RANGE_CACHEKEY, businessId, categories, tag_ids],
-  //   () =>
-  //     ProductsServices?.GetBusinessProductPriceRange({
-  //       business_id: businessId,
-  //       tag_id: tag_ids ? [tag_ids] : undefined,
-  //       category_id: categories ? (typeof categories == "string" ? categories : categories[0]) : undefined,
-  //     }),
-  //   {
-  //     onSuccess: (e) => {
-  //       if (e) {
-  //         SetupperBound(e?.max_price);
-  //         SetlowerBound(e?.min_price);
-  //         !min_price && setValue([e?.min_price, e?.max_price]);
-  //       }
-  //     },
-  //   }
-  // );
 
   useEffect(() => {
     var list: { [key: number]: { style: {}; label: number } } = {};
-
-    list[lowerBound] = { style: { color: "#3886E5", bottom: "-2rem" }, label: lowerBound };
-    list[upperBound] = { style: { color: "#3886E5", bottom: "-2rem" }, label: upperBound };
+    list[lowerBound] = {
+      style: { color: "#3886E5", bottom: "-2rem" },
+      label: lowerBound,
+    };
+    list[upperBound] = {
+      style: { color: "#3886E5", bottom: "-2rem" },
+      label: upperBound,
+    };
     setMarks(list);
   }, [lowerBound, upperBound]);
 
@@ -90,14 +70,12 @@ const PriceRange = ({ filters, setFilters, query, lowLimit, upLimit, steps, high
   return (
     <div className="mx-2">
       <Slider
-        reverse
         range
+        reverse
         min={lowerBound}
         max={upperBound}
         step={steps || 100000}
-        // marks={marks}
         railStyle={{ backgroundColor: "#d1d5db", height: 4 }}
-        // reverse
         trackStyle={{ backgroundColor: "#0088CC", height: 4 }}
         handleStyle={{
           backgroundColor: "#3886E5",
@@ -125,7 +103,10 @@ const PriceRange = ({ filters, setFilters, query, lowLimit, upLimit, steps, high
           bottom: -20,
           visibility: true ? "visible" : "hidden",
         }}
-        value={[filters?.[lowerKey] || lowerBound, filters?.[higherKey] || upperBound]}
+        value={[
+          filters?.[lowerKey] || lowerBound,
+          filters?.[higherKey] || upperBound,
+        ]}
         onChange={(e) => {
           onChangeFunc(e);
         }}

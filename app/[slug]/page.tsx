@@ -1,17 +1,13 @@
-import { Metadata, ResolvingMetadata } from "next";
 import { apiRoutes, baseUrl } from "@/utils/urls";
 import { REVALIDATE } from "@/helpers/revalidate";
+import { Metadata } from "next";
 import { headers } from "next/headers";
-import { isArray } from "lodash";
 
 import deviceTypeDetector from "@/helpers/device.detector";
-import LottieLoading from "@/components/shared/Lotties/LottieLoading";
 import SsrFilterPage from "@/components/SinglePageComponents/SsrFilterPage";
 import serverCall from "@/helpers/serverCall";
+import isArray from "lodash/isArray";
 
-function Fallback() {
-  return <LottieLoading />;
-}
 function isEmpty(value: any) {
   return (
     Boolean(value && typeof value === "object") && !Object.keys(value).length
@@ -22,10 +18,7 @@ type Props = {
   searchParams: Promise<{ [key: string]: string | string[] | undefined }>;
 };
 
-export async function generateMetadata(
-  { params }: Props,
-  parent: ResolvingMetadata,
-): Promise<Metadata> {
+export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const paramData = await params;
   const requestHeaders = await headers();
   const xCanonical = await requestHeaders?.get("x-canonical");
@@ -68,9 +61,9 @@ export default async function PropertiesPage({
   let defaults: any = {};
   if (!!landings?.query) {
     Object.keys(landings?.query)?.map((e) => {
-      if (isArray(landings?.query?.[e])) {
+      if (isArray(landings?.query?.[e]))
         return (defaults[e] = `${landings?.query?.[e]?.map((x) => x)}`);
-      } else return (defaults[e] = landings?.query?.[e]);
+      else return (defaults[e] = landings?.query?.[e]);
     });
   }
 
@@ -93,8 +86,8 @@ export default async function PropertiesPage({
     <>
       <SsrFilterPage
         devices={devices}
-        firstData={data?.data ? data?.data : []}
         landings={landings}
+        firstData={data?.data ? data?.data : []}
       />
     </>
   );

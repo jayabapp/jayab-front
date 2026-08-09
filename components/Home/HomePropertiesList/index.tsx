@@ -2,11 +2,11 @@
 
 import { DeviceInfo } from "@/helpers/device.detector";
 import { useState } from "react";
-import { isEmpty } from "lodash";
 
 import HomePropertiesClientPart from "./HomePropertiesClientPart";
 import HomePropertiesSsrPart from "./HomePropertiesSsrPart";
 import _STRINGS from "@/utils/LocalStrings";
+import isEmpty from "lodash/isEmpty";
 import Button from "@/components/shared/Button/Button";
 import Link from "next/link";
 

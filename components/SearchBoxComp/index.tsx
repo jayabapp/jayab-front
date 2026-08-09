@@ -1,23 +1,25 @@
 "use client";
-import { debounce } from "lodash";
-import { useSearchParams } from "next/navigation";
+
 import { ReactNode, useCallback, useEffect, useRef, useState } from "react";
+import { useSearchParams } from "next/navigation";
+
 import SmallLoading from "../shared/Lotties/SmallLoading";
+import debounce from "lodash/debounce";
+
 interface props {
-  initValue?: string | undefined;
-  placeholder?: string;
+  boxId?: string;
   cancelText?: string;
+  passedText?: string;
+  autofocus?: boolean;
+  children?: ReactNode;
+  placeholder?: string;
   containerClass?: string;
   passedQuerykey?: string;
-  autofocus?: boolean;
   disableTypeing?: boolean;
-  boxId?: string;
-  passedText?: string;
-  children?: ReactNode;
-
-  onSubmit: (e: string | null) => void | null;
   onClear: () => void | null;
+  initValue?: string | undefined;
   errors?: { [key: string]: string[] };
+  onSubmit: (e: string | null) => void | null;
   item?: {
     bg?: string;
     disable_cancel?: boolean;
@@ -65,9 +67,7 @@ const SearchBox = ({
 
   useEffect(() => {
     if (!isTyping) {
-      // inputRef.current.blur();
       typeof onSubmit == "function" && element && onSubmit(element.value);
-
       setLoading(true);
       setTimeout(() => {
         setLoading(false);
@@ -115,11 +115,11 @@ const SearchBox = ({
             id={boxId}
             ref={inputRef}
             placeholder={placeholder}
+            value={passedText || text}
             className={`bg-transparent dark:bg-slate-800 py-1 pl-0.5 pr-3 outline-none placeholder:text-gray-400 w-full ${item?.bg} `}
             onChange={(v) => {
               if (!disableTypeing) handleChange(v.target.value);
             }}
-            value={passedText || text}
           />
         </div>
         {(!!loading || element?.value) && !item?.disable_cancel ? (
@@ -131,7 +131,10 @@ const SearchBox = ({
             )}
 
             {element?.value && (
-              <div className="text-primary-700 text-xs mr-2 cursor-pointer " onClick={cancelSearch}>
+              <div
+                className="text-primary-700 text-xs mr-2 cursor-pointer "
+                onClick={cancelSearch}
+              >
                 {cancelText}
               </div>
             )}

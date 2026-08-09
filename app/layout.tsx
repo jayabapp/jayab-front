@@ -11,8 +11,6 @@ import serverCall from "@/helpers/serverCall";
 import Script from "next/script";
 
 import "../styles/globals.css";
-import "swiper/css/pagination";
-import "swiper/css";
 
 export const metadata: Metadata = {
   metadataBase: new URL(

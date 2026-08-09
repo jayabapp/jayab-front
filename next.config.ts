@@ -34,7 +34,24 @@ const nextConfig: NextConfig = {
   productionBrowserSourceMaps: false,
 
   experimental: {
-    optimizeCss: true,
+    // `optimizeCss` (critters) was measured on this app and inlined no critical
+    // CSS at all: same two render-blocking <link rel="stylesheet"> tags, same
+    // CSS bytes, same HTML size with it on and off. critters is also deprecated
+    // and unmaintained, so it was removed rather than kept as a no-op on the
+    // build's critical path. `critters` can come out of devDependencies too.
+    //
+    // Rewrites barrel imports (`import { motion } from "framer-motion"`) into
+    // deep imports so unused exports are dropped. Next already does this for a
+    // built-in list that covers @headlessui/react and recharts; these are the
+    // barrel packages this app uses that are not on it.
+    optimizePackageImports: [
+      "lodash",
+      "framer-motion",
+      "motion",
+      "react-device-detect",
+      "react-tooltip",
+      "sonner",
+    ],
   },
 
   compress: true,

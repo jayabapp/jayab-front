@@ -8,7 +8,6 @@ import { GC_TIME, STALE_TIME } from "@/helpers/queryCache";
 import { useEffect, useState } from "react";
 import { PropertyService } from "@/api_services/property/property.service";
 import { useParams } from "next/navigation";
-import { isArray } from "lodash";
 
 import FixedBottomContainer from "@/components/shared/FixedBottomContainer";
 import MultiLineFormInput from "@/components/shared/Form/MultiLineFormInput";
@@ -18,6 +17,7 @@ import FormCounter from "@/components/properties/FormCounter";
 import StepShower from "@/components/shared/StepShower";
 import Checkbox from "@/components/shared/Form/Checkbox";
 import _STRINGS from "@/utils/LocalStrings";
+import isArray from "lodash/isArray";
 import Button from "@/components/shared/Button/Button";
 
 const CreatePropertyFacility = () => {
@@ -216,7 +216,7 @@ const CreatePropertyFacility = () => {
                 title={e?.title}
                 rounded="rounded-md"
                 key={`KITCHEN${e?.id}`}
-                titleClass="  !text-xs  "
+                titleClass="!text-xs"
                 isChecked={!!values?.kitchen?.includes(e?.id)}
                 containerClass={` ${(index + 1) % 2 == 0 ? `col-span-1` : "col-span-1"}`}
                 onSelect={() => {
@@ -246,15 +246,15 @@ const CreatePropertyFacility = () => {
             </p>
             {propertyTypes?.["COOL_HEAT"]?.map((e, index) => (
               <Checkbox
-                titleClass="  !text-xs  "
-                containerClass={` ${(index + 1) % 2 == 0 ? "col-span-1" : "col-span-1"}`}
-                key={`COOL_HEAT${e?.id}`}
+                title={e?.title}
                 rounded="rounded-md"
+                titleClass="!text-xs"
+                key={`COOL_HEAT${e?.id}`}
+                isChecked={!!values?.cool_heat?.includes(e?.id)}
+                containerClass={` ${(index + 1) % 2 == 0 ? `col-span-1` : "col-span-1"}`}
                 onSelect={() => {
                   onChangeMulty(e?.id, "cool_heat");
                 }}
-                isChecked={!!values?.cool_heat?.includes(e?.id)}
-                title={e?.title}
               />
             ))}{" "}
           </div>
@@ -266,10 +266,10 @@ const CreatePropertyFacility = () => {
               <Checkbox
                 title={e?.title}
                 rounded="rounded-md"
+                titleClass="!text-xs"
                 key={`WELFARE${e?.id}`}
-                titleClass="!text-xs "
-                containerClass={` ${(index + 1) % 2 == 0 ? "col-span-1" : "col-span-1"}`}
                 isChecked={!!values?.welfare?.includes(e?.id)}
+                containerClass={` ${(index + 1) % 2 == 0 ? `col-span-1` : "col-span-1"}`}
                 onSelect={() => {
                   onChangeMulty(e?.id, "welfare");
                 }}

@@ -5,13 +5,13 @@ import { useStoreSocket } from "@/store";
 import { HomeService } from "@/api_services/home/home.service";
 import { STALE_TIME } from "@/helpers/queryCache";
 import { useQuery } from "@tanstack/react-query";
-import { isEmpty } from "lodash";
 
 import LatestBlogCard from "@/components/blogs/BlogCard";
 import InfiniteScroll from "react-infinite-scroll-component";
 import LottieLoading from "@/components/shared/Lotties/LottieLoading";
 import BtnLoading from "@/components/shared/Button/BtnLoading";
 import EmptyList from "@/components/shared/Lotties/EmptyList";
+import isEmpty from "lodash/isEmpty";
 
 const BlogsClientPageComponent = () => {
   const [page, setPage] = useState(1);

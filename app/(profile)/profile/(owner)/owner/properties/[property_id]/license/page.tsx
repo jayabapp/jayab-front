@@ -1,14 +1,18 @@
 "use client";
-import { PropertyService } from "@/api_services/property/property.service";
-import Button from "@/components/shared/Button/Button";
-import FixedBottomContainer from "@/components/shared/FixedBottomContainer";
-import ProgressBar from "@/components/shared/progressbar";
-import StatusShower from "@/components/shared/StatusShower";
-import MainUploader from "@/components/uploader";
-import _STRINGS from "@/utils/LocalStrings";
+
 import { useMutation, useQuery } from "@tanstack/react-query";
 import { useParams, useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
+import { PropertyService } from "@/api_services/property/property.service";
+
+import FixedBottomContainer from "@/components/shared/FixedBottomContainer";
+import StatusShower from "@/components/shared/StatusShower";
+import ProgressBar from "@/components/shared/progressbar";
+import _STRINGS from "@/utils/LocalStrings";
+import Button from "@/components/shared/Button/Button";
+import dynamic from "next/dynamic";
+
+const MainUploader = dynamic(() => import("@/components/uploader"));
 
 const Authorize = () => {
   const router = useRouter();
@@ -21,11 +25,16 @@ const Authorize = () => {
   const [images, setImages] = useState<any[]>([]);
 
   const { isLoading, data } = useQuery({
-    queryKey: [PropertyService.OWNER_PROPERTIES_SINGLE_AUTH_CACHEKEY, property_id],
+    queryKey: [
+      PropertyService.OWNER_PROPERTIES_SINGLE_AUTH_CACHEKEY,
+      property_id,
+    ],
     queryFn: () => {
-      if (!!property_id) {
-        return PropertyService.GetSingleOwnerPropertyAuthStatus({ property_id: `${property_id}` });
-      } else return null;
+      if (!!property_id)
+        return PropertyService.GetSingleOwnerPropertyAuthStatus({
+          property_id: `${property_id}`,
+        });
+      else return null;
     },
   });
 
@@ -59,7 +68,8 @@ const Authorize = () => {
   };
 
   const isLocked = data?.status?.id === 100;
-  const uploadPercent = totalLength > 0 ? Math.round((uploadedImages / totalLength) * 100) : 0;
+  const uploadPercent =
+    totalLength > 0 ? Math.round((uploadedImages / totalLength) * 100) : 0;
 
   useEffect(() => {
     if (!!data) {
@@ -74,20 +84,24 @@ const Authorize = () => {
       className="profile-container items-center transition-all duration-500 ease-in-out flex flex-col gap-6"
     >
       <div className="w-full flex items-center justify-between">
-        <p className="font-bold text-primary-700 text-start">{_STRINGS.AUTHORiZIATION_REQUEST}</p>
+        <p className="font-bold text-primary-700 text-start">
+          {_STRINGS.AUTHORiZIATION_REQUEST}
+        </p>
         <StatusShower data={data?.status} />
       </div>
 
       <div className="w-full flex items-center justify-center flex-col">
-        <p className="w-full text-start">{_STRINGS.NATIONAL_CARD_IMAGE_AUTH} :</p>
+        <p className="w-full text-start">
+          {_STRINGS.NATIONAL_CARD_IMAGE_AUTH} :
+        </p>
 
         <MainUploader
-          title={_STRINGS.IMAGE}
           withCrop
-          link="/attachments?type=OWNER_PROPERTY_DOCS"
-          key="uploader-national"
-          containerClass="my-3 w-full flex items-start justify-start"
           item={nationalImage}
+          title={_STRINGS.IMAGE}
+          key="uploader-national"
+          link="/attachments?type=OWNER_PROPERTY_DOCS"
+          containerClass="my-3 w-full flex items-start justify-start"
           onSelect={(file) => {
             setNationalImage(file);
           }}
@@ -159,11 +173,11 @@ const Authorize = () => {
       <FixedBottomContainer>
         <Button
           onClick={onSubmit}
+          width="w-[90%] md:w-1/2"
+          roundedClass="rounded-full"
+          title={_STRINGS.SUBMIT_REQUEST}
           loading={isPending || editPendin}
           containerClass="w-full flex items-center justify-center"
-          roundedClass="rounded-full"
-          width="w-[90%] md:w-1/2"
-          title={_STRINGS.SUBMIT_REQUEST}
         />
       </FixedBottomContainer>
     </div>

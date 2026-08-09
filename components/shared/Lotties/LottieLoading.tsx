@@ -1,8 +1,12 @@
 "use client";
 
-import React from "react";
-import Lottie from "react-lottie";
 import LottieAnimation from "@/public/assets/lotties/loading.json";
+import dynamic from "next/dynamic";
+
+const Lottie = dynamic(() => import("react-lottie"), {
+  ssr: false,
+  loading: () => <div className="w-full aspect-square" />,
+});
 const LottieLoading = ({ margin }: { margin?: string }) => {
   return (
     <div className={`flex flex-col items-center ${margin || ""}`}>

@@ -1,26 +1,27 @@
-import queryBuilder from "@/helpers/queryBuilder";
-import { isArray } from "lodash";
 import { usePathname, useRouter } from "next/navigation";
 import { Dispatch } from "react";
+
+import queryBuilder from "@/helpers/queryBuilder";
 import Checkbox from "../shared/Form/Checkbox";
+import isArray from "lodash/isArray";
 
 type ProductModelsType = {
   query?: any;
-  queryKey: number | string;
-  list: any[] | undefined;
   isMulty?: boolean;
-  setMobileFilters?: Dispatch<any>;
   mobileFilters?: any;
+  list: any[] | undefined;
+  queryKey: number | string;
   onClickCb?: () => void | null;
+  setMobileFilters?: Dispatch<any>;
 };
 const ProductModels = ({
-  query,
-  queryKey,
   list,
+  query,
   isMulty,
-  setMobileFilters,
-  mobileFilters,
+  queryKey,
   onClickCb,
+  mobileFilters,
+  setMobileFilters,
 }: ProductModelsType) => {
   const router = useRouter();
   const pathname = usePathname();
@@ -43,27 +44,18 @@ const ProductModels = ({
       delete body.specifications;
       delete body.categories;
     }
-    if (temp[queryKey] == items) {
-      delete body[queryKey];
-    }
+    if (temp[queryKey] == items) delete body[queryKey];
     delete body.page;
-    if (!!setMobileFilters) {
-      setMobileFilters(body);
-    } else {
-      router.replace(`${pathname}?${queryBuilder(body)}`);
-    }
+    if (!!setMobileFilters) setMobileFilters(body);
+    else router.replace(`${pathname}?${queryBuilder(body)}`);
   };
 
   const checkifSelected = (i: any) => {
-    if (isMulty && queyData) {
+    if (isMulty && queyData)
       return queyData?.some((it: string) => it == `${i?.id}`);
-    } else if (!!mobileFilters) {
-      return mobileFilters[queryKey] == i?.id;
-    } else if (query[queryKey] == i?.id) {
-      return true;
-    } else {
-      return false;
-    }
+    else if (!!mobileFilters) return mobileFilters[queryKey] == i?.id;
+    else if (query[queryKey] == i?.id) return true;
+    else return false;
   };
 
   return (
@@ -75,31 +67,23 @@ const ProductModels = ({
           onClick={() => {
             let temp: any = queyData;
             if (isArray(queyData) && isMulty) {
-              if (queyData?.some((it: string) => it == `${i?.id}`)) {
+              if (queyData?.some((it: string) => it == `${i?.id}`))
                 temp = queyData?.filter((it: string) => it != `${i?.id}`);
-              } else {
-                temp = [...queyData, `${i?.id}`];
-                // temp = [i];
-              }
+              else temp = [...queyData, `${i?.id}`];
             } else {
               if (queyData && isMulty) temp = [queyData, `${i?.id}`];
-              else {
-                temp = `${i?.id}`;
-              }
+              else temp = `${i?.id}`;
             }
-
             queryMaker(temp);
-
             onClickCb?.();
           }}
         >
           <Checkbox
             onSelect={() => {}}
-            isChecked={checkifSelected(i)}
             containerClass="w-fit"
+            isChecked={checkifSelected(i)}
             rounded={isMulty ? "rounded-md" : "rounded-full"}
           />
-
           <p className="dark:text-neutral-200 text-sm">{i?.title}</p>
         </div>
       ))}
