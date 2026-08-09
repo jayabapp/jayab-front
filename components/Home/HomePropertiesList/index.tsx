@@ -1,42 +1,47 @@
 "use client";
 
-import Button from "@/components/shared/Button/Button";
 import { DeviceInfo } from "@/helpers/device.detector";
-import _STRINGS from "@/utils/LocalStrings";
-import { isEmpty } from "lodash";
-import Link from "next/link";
 import { useState } from "react";
+import { isEmpty } from "lodash";
+
 import HomePropertiesClientPart from "./HomePropertiesClientPart";
 import HomePropertiesSsrPart from "./HomePropertiesSsrPart";
+import _STRINGS from "@/utils/LocalStrings";
+import Button from "@/components/shared/Button/Button";
+import Link from "next/link";
 
 const HomePropertiesList = ({
   data,
-  middleBanners,
   devices,
+  middleBanner,
 }: {
   data: any[];
-  middleBanners: any[];
+  middleBanner?: any;
   devices?: DeviceInfo;
 }) => {
   const [page, setPage] = useState(1);
 
   return (
     <div className="w-full  padding-x ">
-      <HomePropertiesSsrPart middleBanners={middleBanners || []} data={data} devices={devices} />
-      {page == 1 && !isEmpty(data) && data?.length % 12 == 0 ? (
-        <Link className="w-full " title={_STRINGS.SHOW_MORE} href={"/rooms"} prefetch={false}>
+      <HomePropertiesSsrPart
+        data={data}
+        devices={devices}
+        middleBanner={middleBanner}
+      />
+      {page === 1 && !isEmpty(data) && data?.length % 12 === 0 && (
+        <Link
+          href="/rooms"
+          prefetch={false}
+          className="w-full"
+          title={_STRINGS.SHOW_MORE}
+        >
           <Button
-            // onClick={() => {
-            //   setPage(2);
-            // }}
             title={_STRINGS.SHOW_MORE}
             containerClass="w-full flex items-center justify-center"
           />
         </Link>
-      ) : (
-        <></>
       )}
-      {page == 1 ? <></> : <HomePropertiesClientPart page={page} setPage={setPage} />}
+      {page !== 1 && <HomePropertiesClientPart page={page} setPage={setPage} />}
     </div>
   );
 };

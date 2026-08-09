@@ -15,6 +15,7 @@ import HomeActiveReserve from "@/components/Home/HomeActiveReserve";
 import BannersContainer from "@/components/Home/BannersContainer";
 import TheInstallPrompt from "@/components/InstallPrompt/TheInstallPrompt";
 import MehaHeaderHelper from "@/helpers/MetaHeaderHelper";
+import pickBanner from "@/helpers/pickBanner";
 import serverCall from "@/helpers/serverCall";
 import _STRINGS from "@/utils/LocalStrings";
 import isEmpty from "lodash/isEmpty";
@@ -90,6 +91,14 @@ const Home = async () => {
     getHomeContent(),
     deviceTypeDetector(),
   ]);
+
+  const heroBanner = pickBanner(banners?.[BannerPosition.MAIN_1]);
+  const middleBanner = pickBanner(
+    banners?.[BannerPosition.MAIN_2]?.filter(
+      (banner: any) => !!(devices?.isMobile ? banner?.image_sm : banner?.image),
+    ),
+  );
+
   return (
     <div
       style={{ minHeight: "100dvh" }}
@@ -98,12 +107,11 @@ const Home = async () => {
     >
       <SearchboxSchema />
       <OrganizationSchema />
-      {!!banners?.[BannerPosition.MAIN_1] &&
-      !isEmpty(banners?.[BannerPosition.MAIN_1]) ? (
+      {!!heroBanner ? (
         <HomeBannerPart
           title={homeContent?.full_text}
           devices={devices}
-          banners={banners?.[BannerPosition.MAIN_1] || []}
+          banner={heroBanner}
         />
       ) : (
         <></>
@@ -141,8 +149,8 @@ const Home = async () => {
         />
         <HomePropertiesList
           devices={devices}
+          middleBanner={middleBanner}
           data={propertyData?.data || []}
-          middleBanners={banners?.[BannerPosition.MAIN_2] || []}
         />{" "}
       </section>
       <TheInstallPrompt />

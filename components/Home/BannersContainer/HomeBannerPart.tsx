@@ -3,7 +3,6 @@
 import { Suspense, useState } from "react";
 import { NEW_IMAGE_URL } from "@/utils/urls";
 import { DeviceInfo } from "@/helpers/device.detector";
-import { random } from "lodash";
 
 import Editable from "@/components/Editable";
 import _STRINGS from "@/utils/LocalStrings";
@@ -21,14 +20,16 @@ const HomeCityFilterCityPart = dynamic(
 );
 
 type ImageCarouselTypes = {
-  banners?: any[];
-  devices?: DeviceInfo;
+  banner?: any;
   title?: string;
+  devices?: DeviceInfo;
 };
 
-const HomeBannerPart = ({ banners, devices, title }: ImageCarouselTypes) => {
-  const randomeNumber = random(0, (banners?.length || 1) - 1, false);
-  const item = banners?.[Math.floor(randomeNumber)];
+const HomeBannerPart = ({
+  banner: item,
+  devices,
+  title,
+}: ImageCarouselTypes) => {
   const [showPop, setShowPop] = useState(false);
   const isPhone = !!devices?.isMobile;
   return (
@@ -38,7 +39,6 @@ const HomeBannerPart = ({ banners, devices, title }: ImageCarouselTypes) => {
     relative
        w-full h-full  md:gap-3 lg:grid-cols-3  px-0  `}
     >
-      {/* HOME TITLE PART */}
       <div className="w-full extra-padding-x  lg:!px-[28%] flex absolute m-auto left-0 right-0  bottom-[35%] lg:bottom-[30%] flex-col   z-10 lg:z-1  gap-20">
         <div className="flex z-5 !gap-2 lg:!gap-4 items-center justify-center flex-col">
           <Image
@@ -58,7 +58,6 @@ const HomeBannerPart = ({ banners, devices, title }: ImageCarouselTypes) => {
       {/* HOME SEARCH PART  */}
       <div className=" flex backdrop-blur-md   shadow-card lg:shadow-none  lg:backdrop-blur-none  z-5   absolute bottom-0   lg:bottom-[12%]  w-[90%] lg:w-[40%]   left-0 right-0     mx-auto    h-11   lg:h-14 lg:bg-white rounded-full items-center  gap-1 lg:gap-2    p-[1px]   lg:pl-4">
         <Suspense>
-          {" "}
           <SearchBoxDropDown
             placeholder={_STRINGS?.SEARCH}
             containerClass="bg-transparent border   rounded-full lg:flex hidden    w-full dark:bg-zinc-600   justify-between items-center  !bg-white lg:bg-transparent !rounded-l-none  lg:!rounded-l-20  !border-none "
@@ -109,9 +108,9 @@ const HomeBannerPart = ({ banners, devices, title }: ImageCarouselTypes) => {
       <div aria-label={item?.image?.alt || item?.title}>
         {" "}
         <Editable
-          editIconClass=" !top-auto  !bottom-0"
           isBanner
           contentId={item?.id}
+          editIconClass="!top-auto !bottom-0"
           className={` focus:outline-none w-full px-0  aspect-[1.5] max-h-[60dvh]  md:aspect-[3.029] 
            transition-all duration-300 ease-in-out   relative`}
         >
