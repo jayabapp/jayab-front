@@ -1,20 +1,21 @@
 "use client";
 
+import { useRouter, useSearchParams } from "next/navigation";
+import { useMutation, useQuery } from "@tanstack/react-query";
+import { useEffect, useState } from "react";
+import { useAuthStore } from "../../store";
 import { AuthService } from "@/api_services/auth/auth.service";
 import { HomeService } from "@/api_services/home/home.service";
 import { p2e } from "@/helpers/NumberConverter";
-import _STRINGS from "@/utils/LocalStrings";
-import { useMutation, useQuery } from "@tanstack/react-query";
-import moment from "moment-jalaali";
-import Image from "next/image";
-import { useRouter, useSearchParams } from "next/navigation";
-import { useEffect, useState } from "react";
-import { useAuthStore } from "../../store";
-import Terms from "../auth/Terms";
+
 import AuthHeader from "../headers/AuthHeader";
-import Button from "../shared/Button/Button";
 import FormInput from "../shared/Form/FormInput";
+import _STRINGS from "@/utils/LocalStrings";
+import Button from "../shared/Button/Button";
 import Notify from "../shared/Toast";
+import Image from "next/image";
+import Terms from "../auth/Terms";
+
 const AuthPageComponent = () => {
   const { isLogin } = useAuthStore((state) => state);
   const router = useRouter();
@@ -33,16 +34,12 @@ const AuthPageComponent = () => {
         { mobile_number: mobile_number || null },
         {
           onSuccess: (data) => {
-            if (data) {
-              Notify({ type: "success", title: "", body: `${data}` || "" });
-            }
-
             const link = redirectUrl
-              ? `/auth/otp?redirect_url=${redirectUrl}&mobile_number=${mobile_number}`
-              : `/auth/otp?mobile_number=${mobile_number}`;
+              ? `/auth/otp?redirect_url=${redirectUrl}`
+              : `/auth/otp`;
 
             router.replace(link);
-            useAuthStore.setState({ authCodeExpire: moment().add(3, "minute") });
+            useAuthStore.setState({ authCodeExpire: data?.expires_at ?? null });
           },
           onError: () => {
             setLoading(false);
@@ -75,16 +72,13 @@ const AuthPageComponent = () => {
   }, [signUp]);
 
   function _onKeyDown(e: KeyboardEvent) {
-    if (e.code == "Enter") {
-      return signUp();
-    }
+    if (e.code == "Enter") return signUp();
   }
 
   useEffect(() => {
-    if (!!isLogin) {
-      router.replace("/");
-    }
+    if (!!isLogin) router.replace("/");
   }, [isLogin]);
+
   return (
     <div className="auth-container bg-cover    min-h-screen h-fit flex flex-col gap-8 items-center  md:!pb-8   relative">
       <AuthHeader title={_STRINGS.ENTER} />
@@ -93,15 +87,10 @@ const AuthPageComponent = () => {
           {" "}
           <div className="flex relative z-1  w-28 flex-col items-center  gap-2 h-fit aspect-square">
             <Image
-              alt="logo"
               fill
+              alt="logo"
               src={`/assets/icons/logo/logo.svg`}
-              className=" 
-        w-full
-   aspect-square
-rounded-md
-object-contain
-"
+              className="w-full aspect-square rounded-md object-contain"
             />
           </div>
         </div>
@@ -116,7 +105,6 @@ object-contain
                 title: _STRINGS.ENTER_TOUR_MOBILE_NUMBER,
                 direction: "ltr",
                 containerClass: "w-full  relative",
-
                 autoFocus: false,
                 maxLength: 11,
               }}
@@ -139,20 +127,20 @@ object-contain
             </div>
 
             <Button
-              roundedClass="rounded-full"
-              loading={loading}
-              containerClass="w-full  mt-20"
               width="w-full"
-              title={_STRINGS?.ENTER_AND_MOVE_ON}
               onClick={signUp}
+              loading={loading}
+              roundedClass="rounded-full"
+              containerClass="w-full  mt-20"
+              title={_STRINGS?.ENTER_AND_MOVE_ON}
             />
           </div>
         </div>
 
         <Terms
-          setvisibleTermsModal={setvisibleTermsModal}
           termsLoading={termsLoading}
           visibleTermsModal={visibleTermsModal}
+          setvisibleTermsModal={setvisibleTermsModal}
           termsContent={terms ? terms : { full_text: "", html: "" }}
         />
       </div>

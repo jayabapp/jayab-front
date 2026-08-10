@@ -5,6 +5,7 @@ import {
   ConfirmForgetOtpDto,
   GetProfileDto,
   InitDto,
+  OtpChallengeDto,
   OwnerProfileDto,
   RegisterDto,
   SendForgetOtpDto,
@@ -12,6 +13,7 @@ import {
   SendOtpType,
   SendOtpVerify,
   SendOtpVerifyResponse,
+  SendOtpVerifyWithMobile,
   SetNewPassword,
   SetPassword,
   SetPasswordResponse,
@@ -19,6 +21,12 @@ import {
   SignInResponseDTO,
   UpdateProfileDto,
 } from "./auth.interface";
+
+/** This app's own auth routes, as opposed to backend paths in `apiRoutes`. */
+const LOCAL_AUTH_ROUTES = {
+  OTP: "/api/auth/otp",
+  OTP_VERIFY: "/api/auth/otp/verify",
+} as const;
 
 export class AuthService {
   static ADMIN_EDIT_VALIDATE_CACHEKEY = "HET_PROFILE";
@@ -30,6 +38,7 @@ export class AuthService {
   static GET_OWNER_PROFILE_CACHEKEY = "GET_OWNER_PROFILE";
   static CITIES_CHILDEREN_CACHEKEY = "CITIES_CHILDEREN";
   static AUTH_INIT_CACHEKEY = "AUTH_INIT";
+  static OTP_CHALLENGE_CACHEKEY = "OTP_CHALLENGE";
 
   static async SignIn(dto: SignInDTO) {
     try {
@@ -47,20 +56,46 @@ export class AuthService {
     }
   }
 
-  static async sendOtp(dto: SendOtpDto) {
+  static async sendOtp(dto?: SendOtpDto) {
     try {
-      const { sendOtpSchema } = await import("./auth.schema");
-      await YupValidator<SendOtpDto>(dto, sendOtpSchema);
-      const result = await apiCall<SendOtpDto, SendOtpType>(
+      if (dto?.mobile_number) {
+        const { sendOtpSchema } = await import("./auth.schema");
+        await YupValidator<SendOtpDto>(dto, sendOtpSchema);
+      }
+      const result = await apiCall<SendOtpDto, OtpChallengeDto>(
         "POST",
-        apiRoutes.AU1,
-        {
-          mobile_number: dto.mobile_number,
-        },
+        LOCAL_AUTH_ROUTES.OTP,
+        { mobile_number: dto?.mobile_number ?? null },
+        { localRoute: true },
       );
       return result;
     } catch (e) {
       throw e;
+    }
+  }
+
+  /** Masked state of the in-flight OTP challenge; `undefined` when there is none. */
+  static async getOtpChallenge() {
+    try {
+      return await apiCall<unknown, OtpChallengeDto>(
+        "GET",
+        LOCAL_AUTH_ROUTES.OTP,
+        undefined,
+        {
+          localRoute: true,
+        },
+      );
+    } catch {
+      // A 404 here just means "no challenge in flight" — the caller redirects.
+      return undefined;
+    }
+  }
+
+  static async clearOtpChallenge() {
+    try {
+      await fetch(LOCAL_AUTH_ROUTES.OTP, { method: "DELETE" });
+    } catch {
+      // Best effort; the cookie expires on its own.
     }
   }
 
@@ -84,12 +119,12 @@ export class AuthService {
     try {
       const result = await apiCall<SendOtpVerify, SendOtpVerifyResponse>(
         "POST",
-        apiRoutes.AU2,
+        LOCAL_AUTH_ROUTES.OTP_VERIFY,
         {
-          mobile_number: dto.mobile_number,
           code: dto.code,
           query_params: dto?.query_params,
         },
+        { localRoute: true },
       );
       return result;
     } catch (e) {
@@ -114,16 +149,15 @@ export class AuthService {
     }
   }
 
-  static async confirmOtpRegister(dto: SendOtpVerify) {
+  static async confirmOtpRegister(dto: SendOtpVerifyWithMobile) {
     try {
-      const result = await apiCall<SendOtpVerify, SendOtpVerifyResponse>(
-        "POST",
-        apiRoutes.AU10,
-        {
-          mobile_number: dto.mobile_number,
-          code: dto.code,
-        },
-      );
+      const result = await apiCall<
+        SendOtpVerifyWithMobile,
+        SendOtpVerifyResponse
+      >("POST", apiRoutes.AU10, {
+        mobile_number: dto.mobile_number,
+        code: dto.code,
+      });
       return result;
     } catch (e) {
       throw e;

@@ -6,7 +6,6 @@ import { headerBlackList, mobileFooterBlackList } from "../constantss";
 import { usePathname, useRouter } from "next/navigation";
 import { getCookie, setCookie } from "cookies-next/client";
 import { ReserveService } from "@/api_services/reserve/reserve.service";
-import { getParameter } from "@/helpers/queryGet";
 import { AuthService } from "@/api_services/auth/auth.service";
 import { isMobile } from "react-device-detect";
 import { useQuery } from "@tanstack/react-query";
@@ -64,15 +63,12 @@ const MainWrapper = ({ children }: mainWrapper) => {
     if (!!isLoginLocal)
       setCookie("isLogin", "true", { maxAge: 60 * 24 * 60 * 60 });
     const isLogin = getCookie("isLogin") || isLoginLocal;
-    const ssoToken = getParameter("sso_token");
-    const redirectUrl = getParameter("__next")?.replaceAll("|", "/");
-    if (ssoToken) {
-      useAuthStore.setState({ isLogin: true, isAdminSso: true });
-      setCookie("isLogin", "true", { maxAge: 60 * 24 * 60 * 60 });
-      localStorage.setItem("access_token", ssoToken);
-      redirectUrl && router.push(redirectUrl);
-    } else if (isLogin) {
-      useAuthStore.setState({ isLogin: true });
+
+    if (isLogin) {
+      useAuthStore.setState({
+        isLogin: true,
+        isAdminSso: getCookie("is_admin_sso") === "true",
+      });
       if (isAuthScreen) router.push("/");
     }
   }, []);

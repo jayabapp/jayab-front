@@ -1,12 +1,53 @@
 import { guardedDirectoriesExceptions } from "./utils/constantss";
 import { NextRequest, NextResponse } from "next/server";
+import { setAccessTokenCookie } from "./utils/sessionCookie";
 import { guardedDirectories } from "./utils/constantss";
 import { apiRoutes, baseUrl } from "./utils/urls";
+import { safeInternalPath } from "./helpers/safeRedirect";
 import { REVALIDATE } from "./helpers/revalidate";
 import { cookies } from "next/headers";
 import { md5 } from "js-md5";
 
 import serverCall from "./helpers/serverCall";
+
+const LOGIN_COOKIE_MAX_AGE = 60 * 24 * 60 * 60;
+
+function consumeSsoToken(request: NextRequest) {
+  const ssoToken = request.nextUrl.searchParams.get("sso_token");
+  if (!ssoToken) return null;
+  const target = request.nextUrl.clone();
+  target.searchParams.delete("sso_token");
+
+  const nextParam = target.searchParams.get("__next");
+  if (nextParam) {
+    target.searchParams.delete("__next");
+    const destination = safeInternalPath(nextParam.replaceAll("|", "/"));
+    if (destination) {
+      const resolved = new URL(destination, request.url);
+      target.pathname = resolved.pathname;
+      resolved.searchParams.forEach((value, key) =>
+        target.searchParams.set(key, value),
+      );
+      target.hash = resolved.hash;
+    }
+  }
+
+  const response = NextResponse.redirect(target, 307);
+  setAccessTokenCookie(response, ssoToken);
+  response.cookies.set("isLogin", "true", {
+    path: "/",
+    maxAge: LOGIN_COOKIE_MAX_AGE,
+    sameSite: "lax",
+  });
+  response.cookies.set("is_admin_sso", "true", {
+    path: "/",
+    maxAge: LOGIN_COOKIE_MAX_AGE,
+    sameSite: "lax",
+  });
+  response.headers.set("Cache-Control", "no-store");
+  response.headers.set("Referrer-Policy", "no-referrer");
+  return response;
+}
 
 export async function proxy(request: NextRequest) {
   const headers = new Headers(request.headers);
@@ -15,7 +56,8 @@ export async function proxy(request: NextRequest) {
   const queriesArray = Array.from(queryParams?.entries());
   const cookiesState = await cookies();
   const isLogin = cookiesState.get("isLogin")?.value;
-
+  const ssoRedirect = consumeSsoToken(request);
+  if (ssoRedirect) return ssoRedirect;
   if (
     !isLogin &&
     !!guardedDirectories?.find((e) => PATH_NAME.includes(e)) &&
