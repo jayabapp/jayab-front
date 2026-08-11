@@ -1,8 +1,8 @@
 "use client";
 
-import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { ReactNode, useEffect, useState } from "react";
-import { GC_TIME, STALE_TIME } from "@/helpers/queryCache";
+import { QueryClientProvider } from "@tanstack/react-query";
+import { makeQueryClient } from "@/api_services/common/get-query-client";
 import { useStoreQuery } from "@/store";
 
 import MainWrapper from "../utils/MainWrapper";
@@ -13,19 +13,7 @@ interface Layout {
 }
 
 const LayoutProvider = (props: Layout) => {
-  const [queryClient] = useState(
-    () =>
-      new QueryClient({
-        defaultOptions: {
-          queries: {
-            gcTime: GC_TIME.DEFAULT,
-            staleTime: STALE_TIME.DEFAULT,
-            refetchOnWindowFocus: false,
-            retry: false,
-          },
-        },
-      }),
-  );
+  const [queryClient] = useState(makeQueryClient);
 
   useEffect(() => {
     useStoreQuery.setState({

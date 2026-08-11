@@ -1,18 +1,16 @@
-"use client";
-
 import { PropertyListDto } from "@/api_services/property/property.interface";
-import { useStoreParams } from "@/store";
 import { NEW_IMAGE_URL } from "@/utils/urls";
 
 import PropertycardFeaturePart from "./PropertyCardFeaturesPart";
 import PropertyCardOwnerPart from "./PropertyCardOwnerPart";
 import DaysOfTheWeekStatus from "./DaysOfTheWeekStatus";
 import AddCardPricePart from "./AddCardPricePart";
+import PropertyCardLikes from "./PropertyCardLikes";
+import PropertyCardLink from "./PropertyCardLink";
 import StatusShower from "../shared/StatusShower";
 import _STRINGS from "@/utils/LocalStrings";
 import isEmpty from "lodash/isEmpty";
 import Image from "next/image";
-import Link from "next/link";
 
 const PropertyCard = ({
   data,
@@ -25,24 +23,17 @@ const PropertyCard = ({
   week?: string[];
   onPhotoUpgradeClick?: (property: PropertyListDto) => void;
 }) => {
-  const { likes, ssrLikedProducts } = useStoreParams((state) => state);
   const goToLink = !!isOwner
     ? `/profile/owner/properties/${data?.id}`
     : `/rooms/${data?.slug}`;
-
-  const removeredirectRoomToHome = () => {
-    useStoreParams.setState({ getBackHome: false });
-  };
 
   return (
     <div className="w-full property-card-shadow   rounded-20    justify-between flex flex-col  p-3   gap-2  ">
       <div className="w-full  grid grid-cols-5 gap-2   ">
         {/* INFO */}
-        <Link
-          prefetch={false}
+        <PropertyCardLink
           title={data.title}
           href={`${goToLink}`}
-          onClick={removeredirectRoomToHome}
           className="col-span-3  !outline-none order-1  flex flex-col justify-between gap-1"
         >
           {/* TITLE */}
@@ -104,20 +95,10 @@ const PropertyCard = ({
             <div className="bg-gray-200 font-normal rounded-full text-xs  text-black  px-2 h-5  leading-4  flex items-center justify-center">
               کد {data.code}
             </div>{" "}
-            <div className="flex items-center gap-1">
-              <img
-                alt={`heart${data?.id}`}
-                className="w-4 h-4 aspect-square"
-                src={
-                  likes?.includes(data?.id)
-                    ? "/assets/icons/adds/filled_heart.svg"
-                    : "/assets/icons/adds/empty_heart.svg"
-                }
-              />
-              <p className="text-xxs  opacity-60">
-                {ssrLikedProducts?.[data?.id] || data?.favorite_count}
-              </p>
-            </div>
+            <PropertyCardLikes
+              propertyId={data?.id}
+              favoriteCount={data?.favorite_count}
+            />
           </div>
           {/* PRICING */}
 
@@ -140,7 +121,6 @@ const PropertyCard = ({
           {!!isOwner ? (
             <div className="flex items-center w-full gap-2">
               <StatusShower data={data?.status} />
-
               {!!data?.is_promoted ? (
                 <p className="  font-bold  text-primary-700  shrink-0  text-xs  pr-1 border-r">
                   {_STRINGS.LADDERED}
@@ -152,13 +132,10 @@ const PropertyCard = ({
           ) : (
             <></>
           )}
-        </Link>{" "}
-        {/* IMAGE PART */}
-        <Link
-          prefetch={false}
+        </PropertyCardLink>
+        <PropertyCardLink
           title={data.title}
           href={`${goToLink}`}
-          onClick={removeredirectRoomToHome}
           className=" flex h-fit !outline-none items-start  justify-start w-full col-span-2  order-2 "
         >
           <div className=" aspect-square w-full h-full relative">
@@ -210,7 +187,7 @@ const PropertyCard = ({
               <></>
             )}
           </div>
-        </Link>
+        </PropertyCardLink>
       </div>
       {isOwner ? (
         <div className="flex flex-col gap-2">
@@ -239,8 +216,8 @@ const PropertyCard = ({
         <div className="w-full pt-1 border-t">
           {" "}
           <DaysOfTheWeekStatus
-            week={week || []}
             isCard={true}
+            week={week || []}
             data={data?.reserve_days}
           />
         </div>

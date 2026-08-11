@@ -1,7 +1,10 @@
-import axios, { AxiosRequestConfig, AxiosRequestHeaders } from "axios";
+import { AxiosRequestConfig, AxiosRequestHeaders } from "axios";
+import { readServerAccessToken } from "./server-token";
 import { baseUrl, baseUrlV } from "@/utils/urls";
 import { endSession } from "@/helpers/session";
 import { notify } from "@/components/shared/Toast/notify";
+
+import axios from "axios";
 
 type Methods = "POST" | "PUT" | "DELETE" | "PATCH" | "GET";
 
@@ -23,10 +26,21 @@ export async function apiCall<T, K>(
     passedToken?: string;
     version?: string;
     localRoute?: boolean;
+    /**
+     * Server-side only. Set to false for calls that must stay cacheable —
+     * reading the auth cookie opts the surrounding route into dynamic
+     * rendering. Ignored in the browser, where the proxy attaches the token.
+     */
+    serverAuth?: boolean;
   },
 ): Promise<K | undefined> {
   try {
     const IS_FORM_DATA = !!body && body instanceof FormData;
+    const token =
+      options?.passedToken ??
+      (isBrowser || options?.isSocketToken || options?.serverAuth === false
+        ? undefined
+        : await readServerAccessToken());
     const config: AxiosRequestConfig = {
       method,
       url: options?.localRoute
@@ -39,7 +53,7 @@ export async function apiCall<T, K>(
       headers: headerItems(
         IS_FORM_DATA ? "file" : undefined,
         options?.isSocketToken,
-        options?.passedToken,
+        token,
       ),
       data: body,
       onUploadProgress: options?.progressCallBack,

@@ -1,16 +1,24 @@
 "use client";
-import { HomeService } from "@/api_services/home/home.service";
+
 import { LandingsPlacements } from "@/enum/landings.enum";
-import _STRINGS from "@/utils/LocalStrings";
-import { useQuery } from "@tanstack/react-query";
+import { HomeService } from "@/api_services/home/home.service";
+import { STALE_TIME } from "@/helpers/queryCache";
 import { useRouter } from "next/navigation";
+import { useQuery } from "@tanstack/react-query";
 
-const SearchBoxPopularPlaces = ({ setShowPop }: { setShowPop: React.Dispatch<React.SetStateAction<boolean>> }) => {
+import _STRINGS from "@/utils/LocalStrings";
+
+const SearchBoxPopularPlaces = ({
+  setShowPop,
+}: {
+  setShowPop: React.Dispatch<React.SetStateAction<boolean>>;
+}) => {
   const { push } = useRouter();
-
   const { data } = useQuery({
     queryKey: [HomeService.USER_LANDING_PAGES_KEY, LandingsPlacements.HOME],
-    queryFn: () => HomeService.getLandings({ placement: LandingsPlacements.HOME }),
+    queryFn: () =>
+      HomeService.getLandings({ placement: LandingsPlacements.HOME }),
+    staleTime: STALE_TIME.MEDIUM,
   });
   const onLandingClick = (url: string) => {
     setShowPop(false);
@@ -19,7 +27,9 @@ const SearchBoxPopularPlaces = ({ setShowPop }: { setShowPop: React.Dispatch<Rea
   return (
     <div className=" flex flex-col items-start  w-full px-4   pb-2 justify-start gap-2">
       <div className="flex flex-col items-start w-full justify-start gap-2 mt-2 pt-2 border-t ">
-        <p className="  text-sm md:text-base md:font-medium ">{_STRINGS.MOST_VISITED_DESTINATIONS}</p>
+        <p className="  text-sm md:text-base md:font-medium ">
+          {_STRINGS.MOST_VISITED_DESTINATIONS}
+        </p>
         <div className=" flex items-center justify-start gap-3 ">
           {data?.popular_city?.slice(0, 4)?.map((e) => (
             <div

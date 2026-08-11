@@ -1,9 +1,6 @@
-"use client";
-
+import { weekFromToday } from "@/helpers/weekFromToday";
 import { DeviceInfo } from "@/helpers/device.detector";
-import { useState } from "react";
 
-import HomePropertiesClientPart from "./HomePropertiesClientPart";
 import HomePropertiesSsrPart from "./HomePropertiesSsrPart";
 import _STRINGS from "@/utils/LocalStrings";
 import isEmpty from "lodash/isEmpty";
@@ -19,16 +16,17 @@ const HomePropertiesList = ({
   middleBanner?: any;
   devices?: DeviceInfo;
 }) => {
-  const [page, setPage] = useState(1);
+  const week = weekFromToday();
 
   return (
     <div className="w-full  padding-x ">
       <HomePropertiesSsrPart
         data={data}
+        week={week}
         devices={devices}
         middleBanner={middleBanner}
       />
-      {page === 1 && !isEmpty(data) && data?.length % 12 === 0 && (
+      {!isEmpty(data) && data?.length % 12 === 0 && (
         <Link
           href="/rooms"
           prefetch={false}
@@ -41,7 +39,6 @@ const HomePropertiesList = ({
           />
         </Link>
       )}
-      {page !== 1 && <HomePropertiesClientPart page={page} setPage={setPage} />}
     </div>
   );
 };

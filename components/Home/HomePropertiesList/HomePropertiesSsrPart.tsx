@@ -1,8 +1,5 @@
-"use client";
-
-import { Fragment, useEffect, useState } from "react";
-import { weekFromToday } from "@/helpers/weekFromToday";
 import { DeviceInfo } from "@/helpers/device.detector";
+import { Fragment } from "react";
 
 import HomeProductsBannerItems from "./HomeProductsBannerItems";
 import LottieLoading from "@/components/shared/Lotties/LottieLoading";
@@ -11,20 +8,17 @@ import EmptyList from "@/components/shared/Lotties/EmptyList";
 
 type HomePropertiesSsrPartType = {
   data: any;
+  week: any[];
   middleBanner?: any;
   devices?: DeviceInfo;
 };
 
 function HomePropertiesSsrPart({
   data,
+  week,
   devices,
   middleBanner,
 }: HomePropertiesSsrPartType) {
-  const [week, setWeek] = useState<any[]>([]);
-  useEffect(() => {
-    setWeek(weekFromToday());
-  }, []);
-
   return (
     <div className="w-full px-0  self-center">
       <div className=" w-full">
