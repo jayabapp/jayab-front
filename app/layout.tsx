@@ -1,10 +1,13 @@
 import { Metadata, Viewport } from "next";
 import { apiRoutes, baseUrl } from "@/utils/urls";
 import { InnitSettingsDto } from "@/api_services/home/home.interface";
+import { seedCmsContent } from "@/api_services/home/cms-content.server";
 import { REVALIDATE } from "@/helpers/revalidate";
 import { x_Iransans } from "./fonts/x_iran/x_Iransans";
+import { dehydrate } from "@tanstack/react-query";
 import { ReactNode } from "react";
 
+import getQueryClient from "@/api_services/common/get-query-client";
 import LayoutProvider from "./layout-provider";
 import SplashScreen from "@/components/SplashScreen";
 import serverCall from "@/helpers/serverCall";
@@ -12,22 +15,19 @@ import Script from "next/script";
 
 import "../styles/globals.css";
 
+const LAYOUT_CMS_KEYS = ["aboutUs", "footerCallUs"];
+
 export const metadata: Metadata = {
   metadataBase: new URL(
     process.env.NEXT_PUBLIC_SITE_URL || "https://jayaab.com",
   ),
-
   title: {
     default: "جایاب",
     template: "%s | جایاب",
   },
-
   description: "جایاب",
-
   keywords: ["جایاب"],
-
   applicationName: "جایاب",
-
   openGraph: {
     title: "جایاب",
     description: "جایاب",
@@ -49,9 +49,7 @@ export const metadata: Metadata = {
     ],
     apple: "/apple-touch-icon.png",
   },
-
   manifest: "/manifest.json",
-
   appleWebApp: {
     capable: true,
     statusBarStyle: "black-translucent",
@@ -74,11 +72,15 @@ const RootLayout = async ({
   children: ReactNode;
   modal: ReactNode;
 }>) => {
-  const { data: appSetting }: { data: InnitSettingsDto } = await serverCall(
-    baseUrl + apiRoutes.APP_SETTINGS,
-    undefined,
-    { revalidate: REVALIDATE.APP_SETTINGS },
-  );
+  const queryClient = getQueryClient();
+
+  const [{ data: appSetting }]: [{ data: InnitSettingsDto }, void] =
+    await Promise.all([
+      serverCall(baseUrl + apiRoutes.APP_SETTINGS, undefined, {
+        revalidate: REVALIDATE.APP_SETTINGS,
+      }),
+      seedCmsContent(queryClient, LAYOUT_CMS_KEYS),
+    ]);
 
   const gtmId = appSetting?.googleTagManagerId?.toString() || "";
 
@@ -86,7 +88,9 @@ const RootLayout = async ({
     <html lang="fa" dir="rtl">
       <body className={x_Iransans.className} suppressHydrationWarning>
         <SplashScreen />
-        <LayoutProvider modal={modal}>{children}</LayoutProvider>
+        <LayoutProvider modal={modal} dehydratedState={dehydrate(queryClient)}>
+          {children}
+        </LayoutProvider>
         <footer>
           <Script
             id="gtm"

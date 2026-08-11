@@ -1,21 +1,14 @@
-import { apiRoutes, baseUrl, NEW_IMAGE_URL } from "@/utils/urls";
 import { LocalBusinessSchema } from "@/components/SchemaGenerator/Schemas";
-import { REVALIDATE } from "@/helpers/revalidate";
+import { NEW_IMAGE_URL } from "@/utils/urls";
+import { getCmsContent } from "@/api_services/home/cms-content.server";
 
 import LottieLoading from "@/components/shared/Lotties/LottieLoading";
 import Breadcrumbs from "@/components/BreadCrumbs";
-import serverCall from "@/helpers/serverCall";
 import DOMPurify from "isomorphic-dompurify";
 import Editable from "@/components/Editable";
 
 const AboutUs = async () => {
-  const { data: aboutUs } = await serverCall(
-    baseUrl + apiRoutes.CONTENT_BY_KEY("aboutUs"),
-    undefined,
-    {
-      revalidate: REVALIDATE.CMS_PAGE,
-    },
-  );
+  const aboutUs = await getCmsContent("aboutUs");
   return (
     <div
       id="homeParent"

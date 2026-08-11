@@ -1,14 +1,13 @@
 import { SingleChatDetailsDto } from "@/api_services/chat/chat.interface";
-import { ContentByKeyDto } from "@/api_services/home/home.interface";
-import { HomeService } from "@/api_services/home/home.service";
-import _STRINGS from "@/utils/LocalStrings";
 import { NEW_IMAGE_URL } from "@/utils/urls";
-import { useQuery } from "@tanstack/react-query";
 import { useRouter } from "next/navigation";
-import { useEffect, useState } from "react";
-import Modal from "../Modal";
-import Button from "../shared/Button/Button";
+
 import LottieLoading from "../shared/Lotties/LottieLoading";
+import useCmsContent from "@/hooks/useCmsContent";
+import _STRINGS from "@/utils/LocalStrings";
+import CmsText from "../shared/CmsText";
+import Button from "../shared/Button/Button";
+import Modal from "../Modal";
 
 const ExpiredPropertyModal = ({
   visibleModal,
@@ -20,28 +19,20 @@ const ExpiredPropertyModal = ({
   singleChatData: SingleChatDetailsDto | undefined;
 }) => {
   const { push } = useRouter();
-  const [data, setData] = useState<ContentByKeyDto | null>(null);
   const onHideFunc = () => {
     setVisibleModal(false);
   };
 
   const goExtend = () => {
-    push(`/profile/owner/properties/${singleChatData?.property?.id}/subscription`);
+    push(
+      `/profile/owner/properties/${singleChatData?.property?.id}/subscription`,
+    );
   };
 
-  const { data: addExpireMessage, isLoading } = useQuery({
-    queryKey: [HomeService?.CONTENT_BY_KEY_CACHEKEY, "addExpireMessage", 1, visibleModal],
-    queryFn: () => {
-      return HomeService.GetContentByKey({ key: "addExpireMessage" });
-    },
+  const { content: data, isLoading } = useCmsContent("addExpireMessage", {
     enabled: visibleModal,
   });
 
-  useEffect(() => {
-    if (!!addExpireMessage) {
-      setData(addExpireMessage);
-    }
-  }, [addExpireMessage]);
   return (
     <Modal
       options={{
@@ -57,20 +48,27 @@ const ExpiredPropertyModal = ({
         ) : (
           <>
             <img src={NEW_IMAGE_URL(data?.feature_image)} className="w-60  " />
-
             <div className="flex flex-col w-full gap-2 items-center justify-center">
-              <p className=" font-medium">{data?.small_text || _STRINGS.ROOM_EXPIRED_NOTICE}</p>
-              <p className="  opacity-65  text-sm whitespace-pre-line text-center  ">{data?.full_text}</p>
+              <CmsText className=" font-medium">
+                {data?.small_text || _STRINGS.ROOM_EXPIRED_NOTICE}
+              </CmsText>
+              <CmsText className="  opacity-65  text-sm text-center  ">
+                {data?.full_text}
+              </CmsText>
             </div>
-
             <div className="w-full flex justify-between items-center gap-4 ">
-              <Button title={_STRINGS.EXTEND_SUBS} width="w-full" containerClass="w-full" onClick={goExtend} />
               <Button
-                title={_STRINGS.LATER}
-                variant="outline"
+                title={_STRINGS.EXTEND_SUBS}
                 width="w-full"
                 containerClass="w-full"
+                onClick={goExtend}
+              />
+              <Button
+                width="w-full"
+                variant="outline"
                 onClick={onHideFunc}
+                title={_STRINGS.LATER}
+                containerClass="w-full"
               />
             </div>
           </>

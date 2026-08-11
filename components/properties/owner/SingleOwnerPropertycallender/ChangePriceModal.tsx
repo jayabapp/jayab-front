@@ -1,20 +1,24 @@
 "use client";
-import { HomeService } from "@/api_services/home/home.service";
-import { OwnerCallendarItemDto, SingleOwnerPropertyDto } from "@/api_services/property/property.interface";
+
+import { SingleOwnerPropertyDto } from "@/api_services/property/property.interface";
+import { OwnerCallendarItemDto } from "@/api_services/property/property.interface";
+import { useMutation, useQuery } from "@tanstack/react-query";
+import { useEffect, useState } from "react";
 import { PropertyService } from "@/api_services/property/property.service";
-import Modal from "@/components/Modal";
-import Button from "@/components/shared/Button/Button";
+import { produce } from "immer";
 import { Divider } from "@/components/shared/Divider";
-import Checkbox from "@/components/shared/Form/Checkbox";
+
+import numberWithCommas from "@/helpers/numberWithCommas";
 import RangeWithTitle from "@/components/shared/Form/RangeWithTitle";
 import SmallLoading from "@/components/shared/Lotties/SmallLoading";
-import Notify from "@/components/shared/Toast";
-import numberWithCommas from "@/helpers/numberWithCommas";
+import useCmsContent from "@/hooks/useCmsContent";
+import Checkbox from "@/components/shared/Form/Checkbox";
 import _STRINGS from "@/utils/LocalStrings";
-import { useMutation, useQuery } from "@tanstack/react-query";
-import { produce } from "immer";
+import CmsText from "@/components/shared/CmsText";
+import Button from "@/components/shared/Button/Button";
+import Notify from "@/components/shared/Toast";
+import Modal from "@/components/Modal";
 import moment from "moment-jalaali";
-import React, { useEffect, useState } from "react";
 
 const ChangePriceModal = ({
   show,
@@ -27,7 +31,9 @@ const ChangePriceModal = ({
   show: boolean;
   onHide: () => void | null;
   selectedDateData?: OwnerCallendarItemDto;
-  setCallendarDataState: React.Dispatch<React.SetStateAction<OwnerCallendarItemDto[]>>;
+  setCallendarDataState: React.Dispatch<
+    React.SetStateAction<OwnerCallendarItemDto[]>
+  >;
   data: SingleOwnerPropertyDto;
   setRefresh: React.Dispatch<React.SetStateAction<boolean>>;
 }) => {
@@ -52,22 +58,18 @@ const ChangePriceModal = ({
     },
   });
 
-  /* -------------------------------------------------------------------------- */
-  /*                             RANGE PRICE LIMITS                             */
-  /* -------------------------------------------------------------------------- */
   const { data: priceLimits } = useQuery({
     queryKey: [
-      PropertyService.OWNER_PROPERTIES_PRICE_RANGE_UPDATE_CACHEKEY,
       data?.id,
       selectedDateData?.day,
-      selectedDateData?.month,
       selectedDateData?.year,
+      selectedDateData?.month,
+      PropertyService.OWNER_PROPERTIES_PRICE_RANGE_UPDATE_CACHEKEY,
     ],
     queryFn: () => {
       if (!!data?.id && !!selectedDateData?.month) {
         return PropertyService.ownerPropertyPriceRangeLimits({
           property_id: data?.id,
-
           day: selectedDateData?.day,
           month: selectedDateData?.month,
           year: selectedDateData?.year,
@@ -102,31 +104,32 @@ const ChangePriceModal = ({
     }
   }, [priceLimits]);
 
-  ////////////////////////////
   const { mutate, isPending } = useMutation({
     mutationFn: PropertyService.UpdatePropertyPrice,
     onSuccess: () => {
       setCallendarDataState((e) => {
         const next = produce(e, (draft) => {
-          const index = e.findIndex((i) => i.month == selectedDateData?.month && i.day === selectedDateData?.day);
-          const x = { ...draft[index], price: price, discounted_price: !!hasDiscount ? discontPrice : 0 };
+          const index = e.findIndex(
+            (i) =>
+              i.month == selectedDateData?.month &&
+              i.day === selectedDateData?.day,
+          );
+          const x = {
+            ...draft[index],
+            price: price,
+            discounted_price: !!hasDiscount ? discontPrice : 0,
+          };
           draft[index] = x;
         });
-
         return next;
       });
-
-      /* -------------------------------- IF TODAY -------------------------------- */
 
       const selectedTime = moment(
         `${selectedDateData?.year}/${selectedDateData?.month}/${selectedDateData?.day}`,
         "jYYYY/jMM/jD",
       ).format("YYYY/MM/DD");
-
-      if (selectedDateData && moment().isSame(selectedTime, "day")) {
+      if (selectedDateData && moment().isSame(selectedTime, "day"))
         setRefresh((e) => !e);
-      }
-
       onHide();
     },
   });
@@ -134,10 +137,9 @@ const ChangePriceModal = ({
   useEffect(() => {
     if (!!selectedDateData) {
       setPrice(selectedDateData?.price || 0);
-      setHasDiscount(!!selectedDateData?.discounted_price ? true : false);
       setdiscontPrice(selectedDateData?.discounted_price || 0);
+      setHasDiscount(!!selectedDateData?.discounted_price ? true : false);
     }
-
     return () => {
       setdiscontPrice(0);
       setPrice(0);
@@ -148,7 +150,10 @@ const ChangePriceModal = ({
     if (discontPrice > price || discontPrice == price) {
       Notify({ body: _STRINGS.DISCOUNT_BIGGER_THAN_PRICE, type: "warn" });
     } else {
-      const discounted_price = !!hasDiscount && !!discontPrice && discontPrice != 0 ? discontPrice : undefined;
+      const discounted_price =
+        !!hasDiscount && !!discontPrice && discontPrice != 0
+          ? discontPrice
+          : undefined;
       mutate({
         property_id: data?.id,
         month: Number(selectedDateData?.month),
@@ -160,38 +165,46 @@ const ChangePriceModal = ({
     }
   };
 
-  /* -------------------------------------------------------------------------- */
-  /*                                   CONTENT                                  */
-  /* -------------------------------------------------------------------------- */
-  const { data: fastPriceChangeMessage, isLoading } = useQuery({
-    queryKey: [HomeService?.CONTENT_BY_KEY_CACHEKEY, "fastPriceChangeMessage", 1, show],
-    queryFn: () => {
-      if (show) return HomeService.GetContentByKey({ key: "fastPriceChangeMessage" });
-      else return null;
+  const { content: fastPriceChangeMessage, isLoading } = useCmsContent(
+    "fastPriceChangeMessage",
+    {
+      enabled: !!show,
     },
-  });
+  );
 
   return (
     <Modal show={show} onHide={onHide}>
       <div className="flex flex-col gap-4 p-4 bg-white rounded-20 ">
-        <img className="w-9 h-9 aspect-square" src="/assets/icons/property/price_label.svg" />
-        <p className="text-sm font-bold text-primary-700">{_STRINGS.IMMEDIATE_CHANGE}</p>
-        <p className="text-xs">{isLoading ? <SmallLoading /> : fastPriceChangeMessage?.small_text || ""}</p>
+        <img
+          className="w-9 h-9 aspect-square"
+          src="/assets/icons/property/price_label.svg"
+        />
+        <p className="text-sm font-bold text-primary-700">
+          {_STRINGS.IMMEDIATE_CHANGE}
+        </p>
+        {isLoading ? (
+          <SmallLoading />
+        ) : (
+          <CmsText className="text-xs">
+            {fastPriceChangeMessage?.small_text || ""}
+          </CmsText>
+        )}
 
         <div className="flex flex-col gap-3 text-primary-700 pt-6 pb-10">
           <div className="flex items-center justify-between">
             <span>
-              قیمت {selectedDateData?.year}/{selectedDateData?.month}/{selectedDateData?.day}
+              قیمت {selectedDateData?.year}/{selectedDateData?.month}/
+              {selectedDateData?.day}
             </span>
             <span>{numberWithCommas(price)}</span>
           </div>
           <RangeWithTitle
+            marks={marks}
             value={price}
             setValue={setPrice}
-            max={priceLimits?.max_price || 20000000}
             min={priceLimits?.min_price || 0}
             step={priceLimits?.step || 100000}
-            marks={marks}
+            max={priceLimits?.max_price || 20000000}
           />
         </div>
 
@@ -207,17 +220,18 @@ const ChangePriceModal = ({
           <div className="flex flex-col gap-3 text-primary-700 pt-6 pb-10">
             <div className="flex items-center justify-between">
               <span>
-                قیمت با تخفیف {selectedDateData?.year}/{selectedDateData?.month}/{selectedDateData?.day}
+                قیمت با تخفیف {selectedDateData?.year}/{selectedDateData?.month}
+                /{selectedDateData?.day}
               </span>
               <span>{numberWithCommas(discontPrice)}</span>
             </div>
             <RangeWithTitle
+              marks={marks}
               value={discontPrice}
               setValue={setdiscontPrice}
-              max={priceLimits?.max_price || 20000000}
-              min={priceLimits?.min_price || 0}
               step={priceLimits?.step || 100000}
-              marks={marks}
+              min={priceLimits?.min_price || 0}
+              max={priceLimits?.max_price || 20000000}
             />
           </div>
         ) : (
@@ -225,12 +239,12 @@ const ChangePriceModal = ({
         )}
         <Divider moreClass="w-full " />
         <Button
-          onClick={onSubmit}
-          title={_STRINGS.RECORD_CHANGES}
-          loading={isPending}
-          roundedClass="rounded-full"
-          containerClass="w-full"
           width="w-full"
+          onClick={onSubmit}
+          loading={isPending}
+          containerClass="w-full"
+          roundedClass="rounded-full"
+          title={_STRINGS.RECORD_CHANGES}
         />
       </div>
     </Modal>

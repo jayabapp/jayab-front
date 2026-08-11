@@ -1,18 +1,18 @@
 "use client";
 
-import {
-  PropertyListDto,
-  PropertySubsDto,
-  SingleOwnerPropertyDto,
-} from "@/api_services/property/property.interface";
 import { memo, useCallback, useMemo, useState } from "react";
+import { SingleOwnerPropertyDto } from "@/api_services/property/property.interface";
 import { useMutation, useQuery } from "@tanstack/react-query";
+import { PropertySubsDto } from "@/api_services/property/property.interface";
+import { PropertyListDto } from "@/api_services/property/property.interface";
 import { PropertyService } from "@/api_services/property/property.service";
 import { NEW_IMAGE_URL } from "@/utils/urls";
 import { HomeService } from "@/api_services/home/home.service";
 import { ImageDto } from "@/api_services/auth/auth.interface";
 
 import ModalBottomSheet from "@/components/Modal/ModalBottomSheet";
+import CmsText from "@/components/shared/CmsText";
+import useCmsContent from "@/hooks/useCmsContent";
 import numberWithCommas from "@/helpers/numberWithCommas";
 import LottieLoading from "@/components/shared/Lotties/LottieLoading";
 import SwiperSlide from "@/components/embelaCarousel/SwiperSlide";
@@ -160,17 +160,10 @@ const OwnerPhotoUpgradeModal = ({
     });
   };
 
-  const { data: upgradeContent, isLoading: contentLoading } = useQuery({
-    queryKey: [
-      HomeService?.CONTENT_BY_KEY_CACHEKEY,
-      "upgrade-image-content",
-      property,
-    ],
-    queryFn: () => {
-      return HomeService.GetContentByKey({ key: "upgrade-image-content" });
-    },
-    enabled: !!property,
-  });
+  const { content: upgradeContent, isLoading: contentLoading } = useCmsContent(
+    "upgrade-image-content",
+    { enabled: !!property },
+  );
 
   const chunckedImages = chunk(images, 8)?.map((e) => chunk(e, 4));
 
@@ -220,12 +213,12 @@ const OwnerPhotoUpgradeModal = ({
               <></>
             )}
             <div className="w-full items-center justify-center flex flex-col gap-1">
-              <p className="text-base font-medium text-center">
+              <CmsText className="text-base font-medium text-center">
                 {upgradeContent?.small_text}
-              </p>
-              <p className="text-sm   text-center ">
+              </CmsText>
+              <CmsText className="text-sm   text-center ">
                 {upgradeContent?.full_text}
-              </p>
+              </CmsText>
             </div>
           </div>
         ) : (

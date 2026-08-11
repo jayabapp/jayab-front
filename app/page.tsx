@@ -3,14 +3,15 @@ import { dehydrate, HydrationBoundary } from "@tanstack/react-query";
 import { OrganizationSchema } from "@/components/SchemaGenerator/Schemas";
 import { LandingsPlacements } from "@/enum/landings.enum";
 import { SearchboxSchema } from "@/components/SchemaGenerator/Schemas";
-import { cache, Suspense } from "react";
 import { BannerPosition } from "@/enum/banners.enum";
+import { getCmsContent } from "@/api_services/home/cms-content.server";
 import { HomeService } from "@/api_services/home/home.service";
 import { REVALIDATE } from "@/helpers/revalidate";
+import { Suspense } from "react";
 import { Metadata } from "next";
 
-import HomePropertiesList from "@/components/Home/HomePropertiesList";
 import MainFiltersContainer from "@/components/Home/MainFiltersContainer";
+import HomePropertiesList from "@/components/Home/HomePropertiesList";
 import HomeContentSection from "@/components/Home/HomeContentSection";
 import deviceTypeDetector from "@/helpers/device.detector";
 import HomePropertyTypes from "@/components/Home/HomePropertyTypes";
@@ -31,12 +32,6 @@ const HomeBannerPart = dynamic(
 );
 const HomeCityFilterContainer = dynamic(
   () => import("@/components/Home/HomeCityFilterContainer"),
-);
-
-const getHomeContent = cache(() =>
-  serverCall(baseUrl + apiRoutes.CONTENT_BY_KEY("homeContent"), undefined, {
-    revalidate: REVALIDATE.CMS_PAGE,
-  }),
 );
 
 const getBanners = () =>
@@ -72,8 +67,7 @@ const getPropertyTypes = () =>
   );
 
 export async function generateMetadata(): Promise<Metadata> {
-  const { data: homeContent } = await getHomeContent();
-  return MehaHeaderHelper(homeContent);
+  return MehaHeaderHelper(await getCmsContent("homeContent"));
 }
 
 const Home = async () => {
@@ -82,14 +76,14 @@ const Home = async () => {
     { data: landings },
     { data: propertyData },
     { data: propertyTypes },
-    { data: homeContent },
+    homeContent,
     devices,
   ] = await Promise.all([
     getBanners(),
     getLandings(),
     getProperties(),
     getPropertyTypes(),
-    getHomeContent(),
+    getCmsContent("homeContent"),
     deviceTypeDetector(),
   ]);
 

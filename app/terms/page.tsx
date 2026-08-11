@@ -1,34 +1,18 @@
-import { apiRoutes, baseUrl } from "@/utils/urls";
-import { REVALIDATE } from "@/helpers/revalidate";
+import { getCmsContent } from "@/api_services/home/cms-content.server";
 import { Metadata } from "next";
 
 import MehaHeaderHelper from "@/helpers/MetaHeaderHelper";
 import LottieLoading from "@/components/shared/Lotties/LottieLoading";
 import Breadcrumbs from "@/components/BreadCrumbs";
-import serverCall from "@/helpers/serverCall";
 import DOMPurify from "isomorphic-dompurify";
 import _STRINGS from "@/utils/LocalStrings";
 
 export async function generateMetadata(): Promise<Metadata> {
-  const { data: aboutUsWebsite } = await serverCall(
-    baseUrl + apiRoutes.CONTENT_BY_KEY("terms"),
-    undefined,
-    {
-      revalidate: REVALIDATE.CMS_PAGE,
-    },
-  );
-
-  return MehaHeaderHelper(aboutUsWebsite);
+  return MehaHeaderHelper(await getCmsContent("terms"));
 }
 
 const Terms = async () => {
-  const { data: aboutUsWebsite } = await serverCall(
-    baseUrl + apiRoutes.CONTENT_BY_KEY("terms"),
-    undefined,
-    {
-      revalidate: REVALIDATE.CMS_PAGE,
-    },
-  );
+  const aboutUsWebsite = await getCmsContent("terms");
 
   return (
     <div className="container  !overflow-visible">

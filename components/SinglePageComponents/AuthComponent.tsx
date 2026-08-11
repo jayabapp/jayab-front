@@ -1,13 +1,13 @@
 "use client";
 
 import { useRouter, useSearchParams } from "next/navigation";
-import { useMutation, useQuery } from "@tanstack/react-query";
 import { useEffect, useState } from "react";
 import { useAuthStore } from "../../store";
+import { useMutation } from "@tanstack/react-query";
 import { AuthService } from "@/api_services/auth/auth.service";
-import { HomeService } from "@/api_services/home/home.service";
 import { p2e } from "@/helpers/NumberConverter";
 
+import useCmsContent from "@/hooks/useCmsContent";
 import AuthHeader from "../headers/AuthHeader";
 import FormInput from "../shared/Form/FormInput";
 import _STRINGS from "@/utils/LocalStrings";
@@ -57,12 +57,7 @@ const AuthPageComponent = () => {
     }
   };
 
-  const { data: terms, isLoading: termsLoading } = useQuery({
-    queryKey: [HomeService?.CONTENT_BY_KEY_CACHEKEY, "terms"],
-    queryFn: () => {
-      return HomeService.GetContentByKey({ key: "terms" });
-    },
-  });
+  const { content: terms, isLoading: termsLoading } = useCmsContent("terms");
 
   useEffect(() => {
     document.addEventListener("keydown", _onKeyDown);

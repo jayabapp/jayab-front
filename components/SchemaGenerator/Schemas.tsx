@@ -1,6 +1,7 @@
 import { apiRoutes, baseUrl, NEW_IMAGE_URL } from "@/utils/urls";
 import { Category, ContentDto } from "@/api_services/home/home.interface";
 import { SinglePropDto } from "@/api_services/property/property.interface";
+import { getCmsContent } from "@/api_services/home/cms-content.server";
 import { REVALIDATE } from "@/helpers/revalidate";
 import { JsonLd } from ".";
 import { FC } from "react";
@@ -102,13 +103,7 @@ export const OrganizationSchema = async () => {
       undefined,
       { revalidate: REVALIDATE.CMS_PAGE },
     );
-  const { data: aboutUs }: { data: ContentDto } = await serverCall(
-    baseUrl + apiRoutes.CONTENT_BY_KEY("aboutUs"),
-    undefined,
-    {
-      revalidate: REVALIDATE.CMS_PAGE,
-    },
-  );
+  const aboutUs = await getCmsContent("aboutUs");
   const socials = contactUs?.data?.filter((e) => e?.fields?.key == "social");
   const tels = contactUs?.data?.filter((i) => i?.fields?.key == "tel");
   const email = contactUs?.data?.find((i) => i?.fields?.key == "email");

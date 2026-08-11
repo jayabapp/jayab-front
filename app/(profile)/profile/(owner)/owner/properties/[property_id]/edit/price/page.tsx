@@ -8,12 +8,12 @@ import { GC_TIME, STALE_TIME } from "@/helpers/queryCache";
 import { createPropertySteps } from "@/utils/constantss";
 import { PropertyService } from "@/api_services/property/property.service";
 
-import WeWontChargeYouOnReservePop from "@/components/properties/WeWontChargeYouOnReservePop";
 import FormInputWithExternalUnit from "@/components/shared/Form/FormInputWithExternalUnit";
 import FixedBottomContainer from "@/components/shared/FixedBottomContainer";
 import numberWithCommas from "@/helpers/numberWithCommas";
 import RangeWithTitle from "@/components/shared/Form/RangeWithTitle";
 import LottieLoading from "@/components/shared/Lotties/LottieLoading";
+import CmsInfoPopup from "@/components/shared/CmsInfoPopup";
 import TitleCounter from "@/components/properties/TitleCounter";
 import StepShower from "@/components/shared/StepShower";
 import _STRINGS from "@/utils/LocalStrings";
@@ -351,14 +351,19 @@ const CreatePropertyPricing = () => {
             onSubmit();
           }}
           loading={isPending}
-          containerClass="w-full flex items-center justify-center"
-          roundedClass="rounded-full"
           width=" w-[90%] md:w-1/2"
+          roundedClass="rounded-full"
           title={_STRINGS.SUBMIT_MOVE_ON}
+          containerClass="w-full flex items-center justify-center"
         />
       </FixedBottomContainer>
 
-      <WeWontChargeYouOnReservePop show={showNotifyPop} onHide={onHideNotify} />
+      <CmsInfoPopup
+        show={showNotifyPop}
+        onHide={onHideNotify}
+        contentKey="no-reserve-commission"
+        action={{ title: _STRINGS.UNDERSTOOD, onClick: onHideNotify }}
+      />
     </div>
   );
 };

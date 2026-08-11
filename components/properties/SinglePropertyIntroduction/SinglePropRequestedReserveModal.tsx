@@ -1,22 +1,24 @@
 "use client";
-import { ChatService } from "@/api_services/chat/chat.service";
-import { SinglePropDto } from "@/api_services/property/property.interface";
+
+import { ReserveUserAction } from "@/enum/reserve.enum";
 import { ReserveListDto } from "@/api_services/reserve/reserve.interface";
 import { ReserveService } from "@/api_services/reserve/reserve.service";
-import ModalBottomSheet from "@/components/Modal/ModalBottomSheet";
-import Button from "@/components/shared/Button/Button";
-import Notify from "@/components/shared/Toast";
-import { ReserveUserAction } from "@/enum/reserve.enum";
-import _STRINGS from "@/utils/LocalStrings";
+import { SinglePropDto } from "@/api_services/property/property.interface";
 import { NEW_IMAGE_URL } from "@/utils/urls";
+import { ChatService } from "@/api_services/chat/chat.service";
 import { useMutation } from "@tanstack/react-query";
-import moment from "moment-jalaali";
-import Image from "next/image";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
-import ActiveReservePop from "../reserve/ActiveReservePop";
-import NoMoreReservesPop from "../reserve/NoMoreReservesPop";
+
 import SinglePropContactInfoModal from "./SinglePropContactInfoModal";
+import ModalBottomSheet from "@/components/Modal/ModalBottomSheet";
+import ActiveReservePop from "../reserve/ActiveReservePop";
+import CmsInfoPopup from "@/components/shared/CmsInfoPopup";
+import _STRINGS from "@/utils/LocalStrings";
+import Button from "@/components/shared/Button/Button";
+import Notify from "@/components/shared/Toast";
+import moment from "moment-jalaali";
+import Image from "next/image";
 
 const SinglePropRequestedReserveModal = ({
   data,
@@ -39,7 +41,9 @@ const SinglePropRequestedReserveModal = ({
   const [contactType, setContactType] = useState<"call" | "sms" | "">("");
   const [loading, setLoading] = useState(false);
   const [showMax, setShowMax] = useState(false);
-  const [activeReserve, setActiveReserve] = useState<ReserveListDto | null>(null);
+  const [activeReserve, setActiveReserve] = useState<ReserveListDto | null>(
+    null,
+  );
   const { mutate: createFindChat } = useMutation({
     mutationFn: ChatService.StartOrFindChat,
     onSuccess: (e) => {
@@ -75,16 +79,6 @@ const SinglePropRequestedReserveModal = ({
       },
       {
         onSuccess: (e) => {
-          // if (user_action == 1) {
-          //   setLoading(false);
-          //   onContactClick("tel");
-          // } else if (user_action == 2) {
-          //   setLoading(false);
-          //   onContactClick("sms");
-          // } else if (user_action == 3) {
-          //   onCreateChat();
-          // } else
-
           if (!!e) {
             setLoading(false);
             onHide();
@@ -93,12 +87,9 @@ const SinglePropRequestedReserveModal = ({
           } else if (user_action == 4) {
             router.push("/profile/reserves");
           }
-          // onHide();
         },
         onError: (e: any) => {
-          if (e?.message_code == "RESERVE6") {
-            setShowMax(true);
-          }
+          if (e?.message_code == "RESERVE6") setShowMax(true);
           setLoading(false);
         },
       },
@@ -117,28 +108,26 @@ const SinglePropRequestedReserveModal = ({
         <div className="w-full flex flex-col   p-4 rounded-2xl     gap-4">
           <div className="w-full  grid grid-cols-5 lg:grid-cols-9 gap-2   ">
             {/* INFO */}
-            <div className={`col-span-4  xl:col-span-8 !outline-none   order-2   flex flex-col gap-1  justify-center `}>
+            <div
+              className={`col-span-4  xl:col-span-8 !outline-none   order-2   flex flex-col gap-1  justify-center `}
+            >
               {/* TITLE */}
               <div className="flex items-start gap-2">
-                <p className="text-sm line-clamp-1  text-right font-semibold">درخواست رزرو برای {data?.title} </p>
+                <p className="text-sm line-clamp-1  text-right font-semibold">
+                  درخواست رزرو برای {data?.title}{" "}
+                </p>
               </div>
 
               <div className="w-full flex flex-col  gap-2">
                 <>
                   {/* LOCATION */}
                   <div className="flex w-full  items-center gap-1">
-                    {/* {!!data?.is_promoted ? (
-                      <p className="  font-bold  text-primary-700  shrink-0  text-xs  pl-1 border-l">
-                        {_STRINGS.LADDERED}
-                      </p>
-                    ) : (
-                      <></>
-                    )} */}
-
                     <p className="text-xs  flex items-center line-clamp-1 text-center gap-0.5 ">
                       {data?.city}{" "}
                       <span className="text-xs ">
-                        {data?.province || data?.region ? `(${data?.region || data?.province})` : ``}
+                        {data?.province || data?.region
+                          ? `(${data?.region || data?.province})`
+                          : ``}
                       </span>
                     </p>
                   </div>
@@ -146,7 +135,9 @@ const SinglePropRequestedReserveModal = ({
               </div>
             </div>{" "}
             {/* IMAGE PART */}
-            <div className={` flex h-fit !outline-none items-start  justify-start w-full  order-1  `}>
+            <div
+              className={` flex h-fit !outline-none items-start  justify-start w-full  order-1  `}
+            >
               <div className=" aspect-square w-full h-full relative">
                 <Image
                   fill
@@ -166,16 +157,25 @@ const SinglePropRequestedReserveModal = ({
 
           {/* DATE DETAILS */}
           <div className="w-full flex items-center  gap-2 ">
-            <img className="size-5 " src="/assets/icons/reserve/blue_calendar_reserve.svg" />
+            <img
+              className="size-5 "
+              src="/assets/icons/reserve/blue_calendar_reserve.svg"
+            />
             {/* ENTER */}
             <p className="flex   gap-1 items-center">
               <span className="text-xs text-primary-1000  ">ورود</span>{" "}
-              <span className="text-sm "> {moment(startDate, "jYYYY/jMM/jD").format("jDD jMMMM")} </span>{" "}
+              <span className="text-sm ">
+                {" "}
+                {moment(startDate, "jYYYY/jMM/jD").format("jDD jMMMM")}{" "}
+              </span>{" "}
             </p>
             {/* EXIT */}
             <p className="flex gap-1 items-center">
               <span className="text-xs text-primary-1000 ">خروج</span>{" "}
-              <span className="text-sm "> {moment(endDate, "jYYYY/jMM/jD").format("jDD jMMMM")} </span>{" "}
+              <span className="text-sm ">
+                {" "}
+                {moment(endDate, "jYYYY/jMM/jD").format("jDD jMMMM")}{" "}
+              </span>{" "}
             </p>
             {/* TOTAL */}
             <p className="text-sm ">
@@ -187,7 +187,10 @@ const SinglePropRequestedReserveModal = ({
           {/* PPL COUNT */}
           <div className=" w-full flex items-center justify-between">
             <div className="flex  items-center  gap-1  ">
-              <img className="size-5 " src="/assets/icons/reserve/blue_persons.svg" />
+              <img
+                className="size-5 "
+                src="/assets/icons/reserve/blue_persons.svg"
+              />
               <p className="text-sm ">{`${!!`${count}`.includes("+") ? `بیشتر از  ${count}`.replace("+", "") : count} نفر`}</p>
             </div>
 
@@ -212,45 +215,6 @@ const SinglePropRequestedReserveModal = ({
           <p className="text-sm text-primary-1300 ">
             با انتخاب یکی از روش‌های زیر، درخواست شما برای میزبان ارسال می‌شود.
           </p>
-          {/* <div className="w-full flex flex-col items-center justify-center gap-2">
-            <LinearTextBlock
-              dots
-              title={_STRINGS.PPL_COUNT}
-              value={`${!!`${count}`.includes("+") ? `بیشتر از  ${count}`.replace("+", "") : count} نفر`}
-              options={{ title_class: " !font-normal" }}
-            />
-            <LinearTextBlock
-              dots
-              options={{ title_class: " !font-normal" }}
-              title={_STRINGS.START_DATE}
-              value={` ${moment(startDate, "jYYYY/jMM/jD").format("ddd")} - ${startDate}`}
-            />
-            <LinearTextBlock
-              dots
-              title={_STRINGS.EXIT_DATE}
-              value={`${moment(endDate, "jYYYY/jMM/jD").format("ddd")} - ${endDate} `}
-              options={{ title_class: " !font-normal" }}
-            />
-            <LinearTextBlock
-              dots
-              title={_STRINGS.DURATION}
-              value={` ${moment(endDate, "jYYYY/jMM/jD").diff(moment(startDate, "jYYYY/jMM/jD"), "days")} شب`}
-              options={{ title_class: " !font-normal !text-sm", value_class: "!text-sm" }}
-            /> */}
-          {/* <Button
-              title={`${_STRINGS.EDIT} تاریخ و نفرات`}
-              variant="Faded"
-              width="  !bg-orange-500  !text-white w-full lg:w-full  !py-1.5"
-              roundedClass=" rounded-xl"
-              icon={
-                <img className=" size-4 ml-1  brightness-200 grayscale " src="/assets/icons/shared/edit-pencel.svg" />
-              }
-              containerClass=" w-full   flex items-center justify-center "
-              onClick={() => {
-                setShowEdit(true);
-              }}
-            /> */}
-          {/* </div> */}
           {/* <Divider /> */}
           <div className="w-full flex flex-col items-center justify-center gap-3">
             {!!isExpired ? (
@@ -281,7 +245,6 @@ const SinglePropRequestedReserveModal = ({
                   variant="outline"
                   onClick={() => {
                     onContactClick("sms");
-                    // onActionsClick(ReserveUserAction.SMS);
                   }}
                   width={`w-full h-12 !border-none !text-black !font-normal !py-2 !bg-primary-1100   !text-sm ${isExpired ? "  !text-gray-400" : ""} `}
                   containerClass="w-full lg:w-1/2  "
@@ -313,7 +276,6 @@ const SinglePropRequestedReserveModal = ({
                   src="/assets/icons/reserve/blue_reserve_icon.svg"
                 />
               }
-              // icon={<img className="w-4 h-4  aspect-square" src="/assets/icons/advisor/blue_phone.svg" />}
             />
 
             {data?.is_chat_enabled ? (
@@ -330,7 +292,6 @@ const SinglePropRequestedReserveModal = ({
                   />
                 }
                 onClick={() => {
-                  // onActionsClick(ReserveUserAction.CHAT);
                   onCreateChat();
                 }}
                 loading={loading}
@@ -338,13 +299,6 @@ const SinglePropRequestedReserveModal = ({
             ) : (
               <></>
             )}
-            {/* {!!data?.remaining_days ? (
-              <> */}
-
-            {/* </>
-            ) : (
-              <></>
-            )} */}
           </div>
           <p className="text-sm text-primary-700 text-center w-full">
             «رزرو شما پس از هماهنگی با میزبان نهایی خواهد شد.»
@@ -352,7 +306,12 @@ const SinglePropRequestedReserveModal = ({
         </div>
       </ModalBottomSheet>
 
-      <SinglePropContactInfoModal type={contactType} show={!!contactType} data={data} onHide={onContactClose} />
+      <SinglePropContactInfoModal
+        data={data}
+        type={contactType}
+        show={!!contactType}
+        onHide={onContactClose}
+      />
 
       <ActiveReservePop
         data={activeReserve}
@@ -361,7 +320,9 @@ const SinglePropRequestedReserveModal = ({
           setActiveReserve(null);
         }}
       />
-      <NoMoreReservesPop
+      <CmsInfoPopup
+        contentKey="max-reserve-content"
+        action={{ title: "مشاهده رزرو های فعال", href: "/profile/reserves" }}
         show={showMax}
         onHide={() => {
           setShowMax(false);
