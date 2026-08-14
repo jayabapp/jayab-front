@@ -62,6 +62,7 @@ const CityModal = ({
   const { data: provinces, isLoading: provLoading } = useQuery({
     queryFn: () => CityService.GetAllCities({ is_parent: 1 }),
     queryKey: [CityService.GET_ALL_CITIES_CACHEKEY],
+    enabled: show,
   });
 
   /* -------------------------------------------------------------------------- */
