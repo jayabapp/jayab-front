@@ -2,7 +2,7 @@
 import { EmblaOptionsType, EmblaPluginType } from "embla-carousel";
 import Autoplay from "embla-carousel-autoplay";
 import useEmblaCarousel from "embla-carousel-react";
-import React, { ReactNode, useLayoutEffect, useMemo, useState } from "react";
+import React, { ReactNode, useMemo, useState } from "react";
 import { NextButton, PrevButton, usePrevNextButtons } from "./EmblaCarouselArrowButtons";
 import { DotButton, useDotButton } from "./EmblaCarouselDotButton";
 
@@ -28,45 +28,7 @@ type PropType = {
 };
 
 const Swiper: React.FC<PropType> = (props) => {
-  const [innerWidth, setInnerWidth] = useState<number | null>(null);
-  const isClient = typeof window !== "undefined";
-
-  // FIX: read width before paint & avoid first-render flash
-  useLayoutEffect(() => {
-    if (!isClient) return;
-
-    const checkSize = () => {
-      setInnerWidth(window.innerWidth);
-    };
-
-    checkSize(); // before paint
-    window.addEventListener("resize", checkSize);
-
-    return () => window.removeEventListener("resize", checkSize);
-  }, [isClient]);
-
-  // Prevent carousel render until width is known
-
   const BREAKPOINTS = props?.breakPoints ? Object.entries(props?.breakPoints) : undefined;
-
-  const perViewOptions: any = useMemo(() => {
-    if (!innerWidth) return { slidesPerView: props?.slidesPerView || 1, spaceBetween: props?.spaceBetween || 0 };
-
-    return (
-      BREAKPOINTS?.map(([size, options], index) => {
-        const WINDOW_WIDTH = innerWidth;
-        const IS_LAST = index == BREAKPOINTS?.length - 1;
-        const TEMP =
-          WINDOW_WIDTH >= Number(size) && (IS_LAST ? true : WINDOW_WIDTH < Number(BREAKPOINTS?.[index + 1]?.[0]));
-
-        if (TEMP) return options;
-        return undefined;
-      })?.find((i) => !!i) || {
-        slidesPerView: props?.slidesPerView || 1,
-        spaceBetween: props?.spaceBetween || 0,
-      }
-    );
-  }, [innerWidth]);
 
   const {
     options = { align: "start", direction: "rtl", dragFree: true },
@@ -95,21 +57,44 @@ const Swiper: React.FC<PropType> = (props) => {
 
   const [emblaRef, emblaApi] = useEmblaCarousel(options, extraOptions);
 
-  const sizeStyle: any = useMemo(
-    () =>
-      autoFit
-        ? {
-            "--slide-spacing": props?.spaceBetween ?? "0.5rem",
-            "--slide-size": `auto`,
-          }
-        : {
-            "--slide-spacing": perViewOptions?.spaceBetween
-              ? `${perViewOptions?.spaceBetween}px`
-              : (props?.spaceBetween ?? "0rem"),
-            "--slide-size": `${100 / (perViewOptions?.slidesPerView || props?.slidesPerView || 1)}%`,
-          },
-    [perViewOptions, autoFit, props?.spaceBetween],
-  );
+  // `--slide-size` used to be resolved in JS from `window.innerWidth`, which is
+  // only readable after hydration. The server therefore emitted the width implied
+  // by the `slidesPerView` prop and the client swapped in the matching
+  // breakpoint's width once hydrated. Slides are aspect-ratio constrained, so
+  // that width change was also a height change, and every row below the carousel
+  // moved — the single 0.233 layout shift on the homepage.
+  //
+  // The same breakpoint table is emitted as plain CSS media queries instead.
+  // CSS is applied at first paint, so the server-rendered layout and the
+  // hydrated layout are dimensionally identical and nothing moves. The values
+  // below reproduce the previous expressions exactly; only *when* they are
+  // resolved has changed. Embla is unaffected — it measures slide widths from
+  // the DOM and never received these options.
+  const instanceId = React.useId().replace(/[^a-zA-Z0-9]/g, "");
+
+  const slideVarsCss = useMemo(() => {
+    const sel = `[data-embla-id="${instanceId}"]`;
+
+    if (autoFit) {
+      return `${sel}{--slide-spacing:${props?.spaceBetween ?? "0.5rem"};--slide-size:auto}`;
+    }
+
+    // Matches the old `!innerWidth` fallback branch.
+    let css =
+      `${sel}{--slide-spacing:${props?.spaceBetween ?? "0rem"};` +
+      `--slide-size:${100 / (props?.slidesPerView || 1)}%}`;
+
+    // Object.entries orders integer-like keys ascending, so emitting each
+    // breakpoint as a min-width query reproduces the old "last matching range
+    // wins" lookup through normal cascade order.
+    for (const [size, bp] of BREAKPOINTS ?? []) {
+      const spacing = bp?.spaceBetween ? `${bp.spaceBetween}px` : (props?.spaceBetween ?? "0rem");
+      const slideSize = `${100 / (bp?.slidesPerView || props?.slidesPerView || 1)}%`;
+      css += `@media(min-width:${Number(size)}px){${sel}{--slide-spacing:${spacing};--slide-size:${slideSize}}}`;
+    }
+
+    return css;
+  }, [instanceId, autoFit, props?.spaceBetween, props?.slidesPerView, props?.breakPoints]);
 
   // const { autoplayIsPlaying, toggleAutoplay, onAutoplayButtonClick } = useAutoplay(emblaApi);
 
@@ -127,7 +112,8 @@ const Swiper: React.FC<PropType> = (props) => {
   //   emblaApi?.reInit();
   // }, [children, emblaApi]);
   return (
-    <section style={sizeStyle} className={`embla relative ${parentClass}`} dir={dir}>
+    <section data-embla-id={instanceId} className={`embla relative ${parentClass}`} dir={dir}>
+      <style>{slideVarsCss}</style>
       <div className={`embla__viewport ${viewportClassName}`} ref={emblaRef}>
         <div className="embla__container">{children}</div>
 
