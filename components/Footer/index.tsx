@@ -212,6 +212,7 @@ const Footer = () => {
                 >
                   <img
                     referrerPolicy="origin"
+                    loading="lazy"
                     className="w-16 h-16"
                     src={`https://trustseal.enamad.ir/logo.aspx?id=${process.env.NEXT_PUBLIC_ENAMAD_ID}&Code=${process.env.NEXT_PUBLIC_ENAMAD_CODE}`}
                     alt=""
