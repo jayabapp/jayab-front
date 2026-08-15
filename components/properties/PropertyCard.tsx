@@ -143,7 +143,7 @@ const PropertyCard = ({
               fill
               quality={60}
               loading="lazy"
-              sizes="(max-width: 768px) 40vw, (max-width: 1280px) 25vw, 20vw"
+              sizes="(min-width: 1536px) calc(8.2vw - 19px), (min-width: 1280px) calc(10vw - 27px), (min-width: 768px) calc(20vw - 34px), calc(40vw - 24px)"
               alt={data?.feature_image?.alt || ""}
               src={
                 !!data?.feature_image
