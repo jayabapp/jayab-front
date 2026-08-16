@@ -34,6 +34,13 @@ const AuthPageComponent = () => {
         { mobile_number: mobile_number || null },
         {
           onSuccess: (data) => {
+            if (data?.sandbox_otp_code) {
+              Notify({
+                type: "info",
+                body: `کد ورود سندباکس: ${data.sandbox_otp_code}`,
+              });
+            }
+
             const link = redirectUrl
               ? `/auth/otp?redirect_url=${redirectUrl}`
               : `/auth/otp`;
