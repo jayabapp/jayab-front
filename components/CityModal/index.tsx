@@ -246,10 +246,14 @@ const CityModal = ({
   const provienceAndCitiesSearchEngine = (
     e: NewCitiesListDto | ProvienceTypesDto,
   ) => {
-    let foundOne = false;
-    if (e?.title.includes(search)) foundOne = true;
-    else if (!!e?.child?.find((x) => x?.title == search)) foundOne = true;
-    return foundOne;
+    const normalizedSearch = search.trim();
+
+    if (!normalizedSearch) return true;
+
+    return (
+      e?.title.includes(normalizedSearch) ||
+      !!e?.child?.some((child) => child?.title.includes(normalizedSearch))
+    );
   };
 
   const clearSelected = () => {
@@ -311,8 +315,13 @@ const CityModal = ({
               ?.map((e) => (
                 <ProvienceCard
                   callback={() => {
+                    const normalizedSearch = search.trim();
+                    const hasMatchingCity = e?.child?.some((city) =>
+                      city?.title.includes(normalizedSearch),
+                    );
+
                     setSelectedProv(e);
-                    setSearch("");
+                    if (!hasMatchingCity) setSearch("");
                   }}
                   item={e}
                   key={`prov${e?.id}${e?.title}`}
