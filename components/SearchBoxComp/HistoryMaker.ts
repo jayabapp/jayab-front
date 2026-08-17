@@ -1,5 +1,3 @@
-import moment from "moment-jalaali";
-
 const HistoryMaker = (search: string) => {
   const localHistory = localStorage?.getItem("search_history");
   const history = localHistory ? JSON.parse(localHistory || "[]") : [];
@@ -8,7 +6,7 @@ const HistoryMaker = (search: string) => {
       history?.length == 0 ||
       (history?.length > 0 && history?.findIndex((e: { title: string }) => e?.title == search) == -1)
     ) {
-      const newArray = [...history, { title: search, id: moment().format("x") }];
+      const newArray = [...history, { title: search, id: Date.now().toString() }];
       if (newArray?.length > 5) {
         newArray?.shift();
       }

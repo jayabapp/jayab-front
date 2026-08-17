@@ -9,8 +9,8 @@ import { dehydrate } from "@tanstack/react-query";
 import { ReactNode } from "react";
 
 import getQueryClient from "@/api_services/common/get-query-client";
-import LayoutProvider from "./layout-provider";
 import SplashScreen from "@/components/SplashScreen";
+import LayoutProvider from "./layout-provider";
 import serverCall from "@/helpers/serverCall";
 import Script from "next/script";
 
@@ -127,7 +127,7 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
 
           <Script
             id="yekta"
-            strategy="afterInteractive"
+            strategy="lazyOnload"
             dangerouslySetInnerHTML={{
               __html: `!function (t, e, n) {
 t.yektanetAnalyticsObject = n, t[n] = t[n] || function () {

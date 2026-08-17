@@ -26,6 +26,7 @@ import throttle from "lodash/throttle";
 import dynamic from "next/dynamic";
 import Button from "../shared/Button/Button";
 import Link from "next/link";
+import Script from "next/script";
 
 const PopSearchbox = dynamic(() => import("../SearchBoxComp/PopSearchbox"), {
   ssr: true,
@@ -259,11 +260,11 @@ const Header = ({ scroll }: { scroll?: number }) => {
 
   return (
     <header className="relative">
-      <script
-        type="text/javascript"
+      <Script
+        id="mediaad-retargeting"
         src="https://s1.mediaad.org/serve/118386/retargeting.js"
-        async
-      ></script>
+        strategy="lazyOnload"
+      />
       <div
         id="headerContainer"
         className={`

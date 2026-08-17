@@ -3,13 +3,13 @@ import { persist } from "zustand/middleware";
 import { Moment } from "moment-jalaali";
 import { create } from "zustand";
 
-export type AuthStore = {
+export type TAuthStore = {
   isLogin: boolean;
   isAdminSso: boolean;
   authCodeExpire: Moment | string | number | null;
 };
 
-export const useAuthStore = create<AuthStore>()(
+export const useAuthStore = create<TAuthStore>()(
   persist(
     (set) => ({
       isLogin: false,
