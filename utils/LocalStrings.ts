@@ -453,7 +453,7 @@ const _STRINGS = {
   WATCH_ALL: "نمایش  بیشتر",
   SEE_LESS: "نمایش  کمتر",
   TOMAN_PER_NIGHT: "تومان/شب",
-  DATE_IS_FILLED: "این تاریخ پر است.",
+  DATE_IS_FILLED: "این تاریخ رزرو شده.",
   SORT_BY: "مرتب سازی",
   PLACE_DESC_MAND: "توضیحات درباره اقامتگاه الزامیست.",
   FOR_SUPPORT_LOGIN: "برای درخواست پشتیبانی وارد حساب کاربری خود شوید.",
