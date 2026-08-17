@@ -4,6 +4,7 @@ import { setAccessTokenCookie } from "./utils/sessionCookie";
 import { guardedDirectories } from "./utils/constantss";
 import { apiRoutes, baseUrl } from "./utils/urls";
 import { safeInternalPath } from "./helpers/safeRedirect";
+import { isNoIndexRequest } from "./helpers/indexingPolicy";
 import { REVALIDATE } from "./helpers/revalidate";
 import { cookies } from "next/headers";
 import { md5 } from "js-md5";
@@ -11,13 +12,23 @@ import { md5 } from "js-md5";
 import serverCall from "./helpers/serverCall";
 
 const LOGIN_COOKIE_MAX_AGE = 60 * 24 * 60 * 60;
+const MAIN_SITE_URL =
+  process.env.NEXT_PUBLIC_MAIN_SITE_URL || "https://jayab.app";
+
+const applyIndexingPolicy = (
+  response: NextResponse,
+  indexingDisabled: boolean,
+) => {
+  if (indexingDisabled)
+    response.headers.set("X-Robots-Tag", "noindex, nofollow");
+  return response;
+};
 
 function consumeSsoToken(request: NextRequest) {
   const ssoToken = request.nextUrl.searchParams.get("sso_token");
   if (!ssoToken) return null;
   const target = request.nextUrl.clone();
   target.searchParams.delete("sso_token");
-
   const nextParam = target.searchParams.get("__next");
   if (nextParam) {
     target.searchParams.delete("__next");
@@ -50,6 +61,7 @@ function consumeSsoToken(request: NextRequest) {
 }
 
 export async function proxy(request: NextRequest) {
+  const indexingDisabled = isNoIndexRequest(request);
   const headers = new Headers(request.headers);
   const PATH_NAME = request.nextUrl.pathname;
   const queryParams = request.nextUrl.searchParams;
@@ -57,7 +69,7 @@ export async function proxy(request: NextRequest) {
   const cookiesState = await cookies();
   const isLogin = cookiesState.get("isLogin")?.value;
   const ssoRedirect = consumeSsoToken(request);
-  if (ssoRedirect) return ssoRedirect;
+  if (ssoRedirect) return applyIndexingPolicy(ssoRedirect, indexingDisabled);
   if (
     !isLogin &&
     !!guardedDirectories?.find((e) => PATH_NAME.includes(e)) &&
@@ -67,7 +79,7 @@ export async function proxy(request: NextRequest) {
       new URL(`/auth?redirect_url=${PATH_NAME}`, request.url),
       307,
     );
-    return response;
+    return applyIndexingPolicy(response, indexingDisabled);
   }
 
   const HREF = `${process.env.NEXT_PUBLIC_WEB_SITE}${PATH_NAME}${
@@ -80,7 +92,10 @@ export async function proxy(request: NextRequest) {
       : ""
   }`;
   headers.set("x-pathname", HREF);
-  headers.set("x-canonical", `${process.env.NEXT_PUBLIC_WEB_SITE}${PATH_NAME}`);
+  headers.set(
+    "x-canonical",
+    `${indexingDisabled ? MAIN_SITE_URL : process.env.NEXT_PUBLIC_WEB_SITE}${PATH_NAME}`,
+  );
 
   if (
     !headers.get("referer")?.includes("localhost") &&
@@ -102,11 +117,14 @@ export async function proxy(request: NextRequest) {
         );
 
         response.headers.set("x-canonical", encodeURI(data?.destination));
-        return response;
+        return applyIndexingPolicy(response, indexingDisabled);
       }
     }
   }
-  return NextResponse.next({ headers });
+  return applyIndexingPolicy(
+    NextResponse.next({ request: { headers } }),
+    indexingDisabled,
+  );
 }
 
 export const config = {

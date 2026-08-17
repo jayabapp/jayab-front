@@ -1,3 +1,4 @@
+import { isNoIndexDeployment } from "@/helpers/indexingPolicy";
 import { Metadata, Viewport } from "next";
 import { apiRoutes, baseUrl } from "@/utils/urls";
 import { InnitSettingsDto } from "@/api_services/home/home.interface";
@@ -16,6 +17,7 @@ import Script from "next/script";
 import "../styles/globals.css";
 
 const LAYOUT_CMS_KEYS = ["aboutUs", "footerCallUs"];
+const indexingDisabled = isNoIndexDeployment();
 
 export const metadata: Metadata = {
   metadataBase: new URL(
@@ -28,6 +30,16 @@ export const metadata: Metadata = {
   description: "جایاب",
   keywords: ["جایاب"],
   applicationName: "جایاب",
+  robots: indexingDisabled
+    ? {
+        index: false,
+        follow: false,
+        googleBot: {
+          index: false,
+          follow: false,
+        },
+      }
+    : undefined,
   openGraph: {
     title: "جایاب",
     description: "جایاب",
