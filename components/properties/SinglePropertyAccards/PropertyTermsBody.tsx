@@ -85,12 +85,6 @@ const PropertyTermsBody = ({
           {data?.property_descriptions?.doc_dscr}
         </CmsText>
       </div>
-      <div className="flex flex-col gap-2">
-        <p className=" text-sm font-bold">{_STRINGS.PROP_DESC}</p>
-        <CmsText className="text-sm text-justify content  ">
-          {data?.property_descriptions?.property_dscr}
-        </CmsText>
-      </div>
       {!!data?.property_descriptions?.other_dscr ? (
         <div className="flex flex-col gap-2">
           <p className=" text-sm font-bold">{_STRINGS.OTHER_TERMS}</p>
