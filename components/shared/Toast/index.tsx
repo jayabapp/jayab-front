@@ -12,15 +12,28 @@ import infoIcon from "@/public/assets/lotties/notif/Info.json";
 import dynamic from "next/dynamic";
 
 const Lottie = dynamic(() => import("react-lottie"), { ssr: false });
-interface props {
+
+type TNotifyProps = {
   body?: string;
   title?: string;
+  loop?: boolean;
+  duration?: number;
+  id?: string | number;
   children?: ReactNode;
   cb?: () => void | null;
   type?: "success" | "error" | "warn" | "info";
-}
-const Notify = (props: props) => {
-  const { type = "info", body, cb, children } = props || {};
+};
+
+const Notify = (props: TNotifyProps) => {
+  const {
+    cb,
+    body,
+    children,
+    loop = true,
+    type = "info",
+    duration = 8000,
+    id = type,
+  } = props || {};
 
   const _findTypeData = () => {
     switch (type) {
@@ -52,7 +65,7 @@ const Notify = (props: props) => {
       >
         <div className="w-14 h-14">
           <LottieHelper
-            options={{ animationData: _findTypeData()?.icon, loop: true }}
+            options={{ animationData: _findTypeData()?.icon, loop }}
           />
         </div>
         <div className={`mr-3   app-text  ${x_Iransans.className}  `}>
@@ -64,8 +77,8 @@ const Notify = (props: props) => {
       </div>
     ),
     {
-      id: type,
-      duration: 8000,
+      id,
+      duration,
       className: " left-0  md:left-4",
       position: isMobile ? "top-center" : "bottom-left",
     },
