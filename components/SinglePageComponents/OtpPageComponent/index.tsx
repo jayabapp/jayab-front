@@ -82,6 +82,13 @@ const OtpPageSignInComponent = ({
   const { mutate: onResend } = useMutation({
     mutationFn: () => AuthService.sendOtp(),
     onSuccess: (data) => {
+      if (data?.sandbox_otp_code) {
+        Notify({
+          type: "info",
+          body: `کد ورود سندباکس: ${data.sandbox_otp_code}`,
+        });
+      }
+
       setReset(!reset);
       useAuthStore.setState({ authCodeExpire: data?.expires_at ?? null });
       queryClient.setQueryData([AuthService.OTP_CHALLENGE_CACHEKEY], data);
@@ -207,9 +214,9 @@ const OtpPageSignInComponent = ({
           <div className="w-full flex flex-col gap-8">
             <div className="px-1 lg:px-4 2xl:px-8 flex  items-start justify-center  flex-col gap-1">
               <div className="flex items-center gap-2" onClick={editNumber}>
-                <p className="text-base font-medium">
+                <bdi dir="ltr" className="inline-block text-base font-medium">
                   {challenge?.masked_mobile}{" "}
-                </p>
+                </bdi>
               </div>
               <p className=" text-xs">{_STRINGS?.ENTER_FOUR_DIGITS}</p>
               <OtpInput setValue={setOtp} refresh={reset} />

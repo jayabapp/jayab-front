@@ -29,7 +29,11 @@ export type ConfirmForgetOtpDto = {
 };
 export type SendOtpType = { code: number };
 
-export type OtpChallengeDto = { masked_mobile: string; expires_at: string };
+export type OtpChallengeDto = {
+  masked_mobile: string;
+  expires_at: string;
+  sandbox_otp_code?: string;
+};
 
 export type SendOtpVerify = {
   code: number | null | string;

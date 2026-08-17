@@ -50,8 +50,19 @@ export async function POST(request: NextRequest) {
   }
 
   let messageFa: string | null = null;
+  let sandboxOtpCode: string | undefined;
   try {
-    messageFa = JSON.parse(raw)?.messages?.fa ?? null;
+    const backendResponse = JSON.parse(raw);
+    messageFa = backendResponse?.messages?.fa ?? null;
+
+    const backendOtpCode = backendResponse?.data?.code;
+    const normalizedOtpCode = `${backendOtpCode ?? ""}`;
+    if (
+      process.env.SANDBOX_MODE === "1" &&
+      /^\d{4,6}$/.test(normalizedOtpCode)
+    ) {
+      sandboxOtpCode = normalizedOtpCode;
+    }
   } catch {
     // A non-JSON success body is unexpected but not worth failing the login over.
   }
@@ -61,6 +72,7 @@ export async function POST(request: NextRequest) {
     envelope("successful", typeof messageFa === "string" ? messageFa : null, {
       masked_mobile: maskMobile(mobile),
       expires_at: new Date(expiresAt).toISOString(),
+      ...(sandboxOtpCode ? { sandbox_otp_code: sandboxOtpCode } : {}),
     }),
   );
   setOtpChallenge(response, { mobile, expiresAt });
