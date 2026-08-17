@@ -1,6 +1,7 @@
 "use client";
 
 import { useAuthStore, useStoreParams } from "@/store";
+import { useEffect, useMemo, useState } from "react";
 import { ReserveService } from "@/api_services/reserve/reserve.service";
 import { NEW_IMAGE_URL } from "@/utils/urls";
 import { useQuery } from "@tanstack/react-query";
@@ -12,7 +13,7 @@ import Link from "next/link";
 
 const HomeActiveReserve = () => {
   const { isLogin } = useAuthStore((state) => state);
-  const { data: reserves } = useQuery({
+  const { data: reserves, dataUpdatedAt } = useQuery({
     queryKey: [ReserveService?.RESERVE_CACHEKEY, isLogin],
     queryFn: !!isLogin
       ? () => ReserveService?.userReserves({ type: "active" })
@@ -22,12 +23,35 @@ const HomeActiveReserve = () => {
     enabled: isLogin,
   });
 
+  const [now, setNow] = useState(() => Date.now());
+
+  const activeReserves = useMemo(() => {
+    return (reserves ?? []).filter((item) => {
+      if (!!item?.is_answer_deadline_passed) return false;
+      return dataUpdatedAt + (item?.ttl_seconds ?? 0) * 1000 > now;
+    });
+  }, [reserves, dataUpdatedAt, now]);
+
+  useEffect(() => {
+    if (isEmpty(activeReserves)) return;
+    const nextDeadline = Math.min(
+      ...activeReserves.map(
+        (item) => dataUpdatedAt + (item?.ttl_seconds ?? 0) * 1000,
+      ),
+    );
+    const timer = setTimeout(
+      () => setNow(Date.now()),
+      Math.max(nextDeadline - Date.now(), 0) + 100,
+    );
+    return () => clearTimeout(timer);
+  }, [activeReserves, dataUpdatedAt]);
+
   const removeredirectRoomToHome = () => {
     useStoreParams.setState({ getBackHome: false });
   };
   return (
     <>
-      {isEmpty(reserves) ? (
+      {isEmpty(activeReserves) ? (
         <> </>
       ) : (
         <div className=" w-full grid   padding-x  bg-gradient-to-t   lg:to-white from-white  from-[10%] rounded-t-20 lg:rounded-t-none to-primary-350   p-4 -mt-4 pt-10 lg:mt-0  lg:grid-cols-3  gap-2 lg:gap-3 ">
@@ -35,7 +59,7 @@ const HomeActiveReserve = () => {
             <div className="flex  items-center gap-1">
               <p className=" font-semibold !text-sm  lg:text-black text-white lg:!text-base ">
                 {" "}
-                {reserves?.length} درخواست رزرو فعال
+                {activeReserves?.length} درخواست رزرو فعال
               </p>
               <div className=" size-2 mb-3  rounded-full bg-red-700 animate-pulse  duration-700" />
             </div>
@@ -54,7 +78,7 @@ const HomeActiveReserve = () => {
             </Link>
           </div>
 
-          {reserves?.map((data) => {
+          {activeReserves?.map((data) => {
             const goToLink = "/profile/reserves";
             return (
               <div

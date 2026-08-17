@@ -2,34 +2,35 @@ import { ImageDto } from "../auth/auth.interface";
 import { Status } from "../property/property.interface";
 
 export interface CreateReserveDto {
-  property_id: number;
-  guests_count: string;
   check_in: string;
   check_out: string;
+  property_id: number;
+  guests_count: string;
   user_action: number;
 }
 
 export interface ReserveListDto {
   id: number;
-  property_id: number;
+  check_in: Date;
   status: Status;
   user_id: number;
-  check_in: Date;
-  is_subscription_expired: boolean;
   check_out: Date;
-  guests_count: string;
-  owner_seen_at: null;
-  show_counter: boolean;
-  canceled_at: null;
   expired_at: null;
-  description: null;
-  owner_clicked_guest_mobile: number;
   created_at: Date;
   updated_at: Date;
+  canceled_at: null;
+  description: null;
   property: Property;
+  property_id: number;
+  owner_seen_at: null;
   ttl_seconds: number;
+  guests_count: string;
   guest_mobile: number;
+  show_counter: boolean;
   is_chat_enabled: boolean;
+  is_subscription_expired: boolean;
+  owner_clicked_guest_mobile: number;
+  is_answer_deadline_passed: boolean;
 }
 
 export interface Property {
@@ -84,9 +85,9 @@ export interface Property {
 export interface AdminDescription {
   status: string;
   admin_id: number;
+  created_at: Date;
   admin_name: string;
   admin_role: string;
-  created_at: Date;
   description: string;
 }
 
@@ -117,9 +118,9 @@ export interface ActiveReserveDto {
 export interface AdminDescription {
   status: string;
   admin_id: number;
+  created_at: Date;
   admin_name: string;
   admin_role: string;
-  created_at: Date;
   description: string;
 }
 

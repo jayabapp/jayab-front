@@ -427,6 +427,8 @@ const _STRINGS = {
   SELECT_DATE: "انتخاب تاریخ",
   SELECT_DATE_SPAN: "انتخاب بازه تاریخی",
   RESERVEE_EXPIRE: "اعتبار رزرو",
+  RESERVE_ANSWER_DEADLINE_PASSED:
+    "مهلت پاسخ میزبان به پایان رسیده است؛ درخواست شما تا ۲۴ ساعت فعال می‌ماند.",
   REQUEST_STATUS: "وضعیت درخواست",
   YOUR_CALL_CLICKS: " تعداد کیلیک روی دکمه تماس",
   OWNER_PLZ_CALL_MSG: "میزبان گرامی ; تمامی رزرو ها پس از ارتباط و تماس مستقیم با میهمان قطعی میگردد.",

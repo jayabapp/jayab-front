@@ -177,6 +177,10 @@ const ReserveCard = ({
           {" "}
           زمان شما برای پاسخ به این درخواست به اتمام رسیده است.
         </p>
+      ) : !isOwner && !!data?.is_answer_deadline_passed ? (
+        <p className=" text-center text-sm">
+          {_STRINGS.RESERVE_ANSWER_DEADLINE_PASSED}
+        </p>
       ) : !!showCounter ? (
         <>
           <div className=" w-full flex items-center flex-col pb-1 gap-2 justify-center">
@@ -198,7 +202,7 @@ const ReserveCard = ({
                   format={{ useGrouping: false }}
                   aria-hidden
                   animated={true}
-                  className={`pointer-events-none pt-1  text-lg !font-medium !space-x-14    w-12  h-12  flex items-center justify-center aspect-square rounded-lg bg-black text-white !tracking-[0.15rem] `}
+                  className={`pointer-events-none pt-1  text-lg !font-medium !space-x-14 w-12 h-12  flex items-center justify-center aspect-square rounded-lg bg-black text-white !tracking-[0.15rem] `}
                   willChange
                 />{" "}
               </div>
@@ -210,7 +214,7 @@ const ReserveCard = ({
                   format={{ useGrouping: false }}
                   aria-hidden
                   animated={true}
-                  className={`pointer-events-none pt-1 text-lg !font-medium !space-x-14    w-12  h-12  flex items-center justify-center aspect-square rounded-lg bg-black text-white !tracking-[0.15rem] `}
+                  className={`pointer-events-none pt-1 text-lg !font-medium !space-x-14 w-12 h-12 flex items-center justify-center aspect-square rounded-lg bg-black text-white !tracking-[0.15rem] `}
                   willChange
                 />
               </div>
@@ -293,7 +297,7 @@ const ReserveCard = ({
               onClick={() => {
                 setSelectedCancel?.(data);
               }}
-              className=" cursor-pointer bg-neutral-100 border     w-fit flex items-center gap-2 px-3 py-2 rounded-xl text-xxs  md:text-sm font-medium"
+              className=" cursor-pointer bg-neutral-100 border w-fit flex items-center gap-2 px-3 py-2 rounded-xl text-xxs md:text-sm font-medium"
             >
               لغو رزرو
               <img
