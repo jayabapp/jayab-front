@@ -9,17 +9,19 @@ import _STRINGS from "@/utils/LocalStrings";
 import Checkbox from "@/components/shared/Form/Checkbox";
 import CmsText from "@/components/shared/CmsText";
 
-const PropertyTermsBody = ({
-  data,
-  enabled = true,
-  className = "",
-  prologueClass = " text-sm font-medium ",
-}: {
+type TPropertyTermsBodyProps = {
   data: SinglePropDto;
   enabled?: boolean;
   className?: string;
   prologueClass?: string;
-}) => {
+};
+
+const PropertyTermsBody = ({
+  data,
+  className = "",
+  enabled = true,
+  prologueClass = " text-sm font-medium ",
+}: TPropertyTermsBodyProps) => {
   const { data: propertyRules } = useQuery({
     queryKey: [HomeService.CONTENTS_CACHEKEY, "propertyRules", 1],
     queryFn: () => HomeService.GetContent({ key: "propertyRules", page: 1 }),
@@ -83,12 +85,6 @@ const PropertyTermsBody = ({
         <p className=" text-sm font-bold">{_STRINGS.REQUIRED_DOCS}</p>
         <CmsText className="text-sm">
           {data?.property_descriptions?.doc_dscr}
-        </CmsText>
-      </div>
-      <div className="flex flex-col gap-2">
-        <p className=" text-sm font-bold">{_STRINGS.PROP_DESC}</p>
-        <CmsText className="text-sm text-justify content  ">
-          {data?.property_descriptions?.property_dscr}
         </CmsText>
       </div>
       {!!data?.property_descriptions?.other_dscr ? (
