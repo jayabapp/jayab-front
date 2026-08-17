@@ -9,17 +9,19 @@ import _STRINGS from "@/utils/LocalStrings";
 import Checkbox from "@/components/shared/Form/Checkbox";
 import CmsText from "@/components/shared/CmsText";
 
-const PropertyTermsBody = ({
-  data,
-  enabled = true,
-  className = "",
-  prologueClass = " text-sm font-medium ",
-}: {
+type TPropertyTermsBodyProps = {
   data: SinglePropDto;
   enabled?: boolean;
   className?: string;
   prologueClass?: string;
-}) => {
+};
+
+const PropertyTermsBody = ({
+  data,
+  className = "",
+  enabled = true,
+  prologueClass = " text-sm font-medium ",
+}: TPropertyTermsBodyProps) => {
   const { data: propertyRules } = useQuery({
     queryKey: [HomeService.CONTENTS_CACHEKEY, "propertyRules", 1],
     queryFn: () => HomeService.GetContent({ key: "propertyRules", page: 1 }),
