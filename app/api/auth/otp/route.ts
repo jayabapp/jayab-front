@@ -55,7 +55,8 @@ export async function POST(request: NextRequest) {
     const backendResponse = JSON.parse(raw);
     messageFa = backendResponse?.messages?.fa ?? null;
 
-    const backendOtpCode = backendResponse?.data?.code;
+    // TransformInterceptor بکند کد را مستقیم داخل data میگذارد (data = result)
+    const backendOtpCode = backendResponse?.data?.code ?? backendResponse?.data;
     const normalizedOtpCode = `${backendOtpCode ?? ""}`;
     if (
       process.env.SANDBOX_MODE === "1" &&
