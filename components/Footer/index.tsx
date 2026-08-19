@@ -1,31 +1,21 @@
 "use client";
 
-import { NEW_IMAGE_URL } from "../../utils/urls";
-
-import { HomeService } from "@/api_services/home/home.service";
 import { footerHiddenBlackList, footerLinks } from "@/utils/constantss";
-import _STRINGS from "@/utils/LocalStrings";
-import { useQuery } from "@tanstack/react-query";
-import Link from "next/link";
+import { NEW_IMAGE_URL } from "../../utils/urls";
+import { HomeService } from "@/api_services/home/home.service";
 import { usePathname } from "next/navigation";
+import { useQuery } from "@tanstack/react-query";
+
+import useCmsContent from "@/hooks/useCmsContent";
 import ContactuUItem from "../contactus/ContactuUItem";
+import _STRINGS from "@/utils/LocalStrings";
+import CmsText from "../shared/CmsText";
 import CallBox from "./CallBox";
+import Link from "next/link";
 
 const Footer = () => {
   const pathname = usePathname();
-
-  /* --------------------------- SUMMARY DESCRIPTION -------------------------- */
-
-  /* --------------------------- ABOUT US -------------------------- */
-
-  const { data: aboutUs, isLoading } = useQuery({
-    queryKey: [HomeService?.CONTENT_BY_KEY_CACHEKEY, "aboutUs_footer", 1],
-    queryFn: () => {
-      return HomeService.GetContentByKey({ key: "aboutUs" });
-    },
-  });
-
-  /* ----------------------------- DOWNLOAD LINKS ----------------------------- */
+  const { content: aboutUs } = useCmsContent("aboutUs");
 
   const { data: downloadLink } = useQuery({
     queryKey: [HomeService?.CONTENTS_CACHEKEY, "downloadLinks", 1],
@@ -42,45 +32,40 @@ const Footer = () => {
   });
   const socials = data?.data?.filter((e: any) => e?.fields?.key == "social");
   const others = data?.data?.filter((e) => e?.fields?.key !== "social");
-  const PHONE_NUMBER = others?.find((i) => i?.fields?.key == "tel" || i?.key == "tel");
-  const isHome = pathname == "/";
-
-  /* -------------------------------------------------------------------------- */
-  /*                               FOOTER LANDINGS                              */
-  /* -------------------------------------------------------------------------- */
+  const PHONE_NUMBER = others?.find(
+    (i) => i?.fields?.key == "tel" || i?.key == "tel",
+  );
 
   const { data: footerLandings } = useQuery({
     queryKey: [HomeService?.CONTENTS_CACHEKEY, "footer-quick-search-links", 1],
     queryFn: () => {
-      return HomeService.GetContent({ key: "footer-quick-search-links", page: 1, per_page: 100 });
+      return HomeService.GetContent({
+        key: "footer-quick-search-links",
+        page: 1,
+        per_page: 100,
+      });
     },
   });
-
-  // const { data: footerLandings } = useQuery({
-  //   queryKey: [HomeService.USER_LANDING_PAGES_KEY, LandingsPlacements.FOOTER],
-
-  //   queryFn: () => HomeService.getLandings({ placement: LandingsPlacements.FOOTER }),
-  // });
-  // const chunkedLandingsDekstop = chunkArray(footerLandings?.data || [], 8);
-  // const chunkedLandingsMobile = chunkArray(footerLandings?.data || [], 5);
   return (
     <footer
-      className={`   ${!!footerHiddenBlackList.find((e) => pathname?.includes(e)) ? "hidden lg:hidden" : ""} w-full  z-2   bg-primary-1000/40   flex   flex-col items-center justify-center bg-dark-500  bg-no-repeat bg-cover  relative  pt-[28rem] md:pt-[16rem]  lg:pt-[6rem] `}
+      className={`${!!footerHiddenBlackList.find((e) => pathname?.includes(e)) ? "hidden lg:hidden" : ""} w-full  z-2   bg-primary-1000/40   flex   flex-col items-center justify-center bg-dark-500  bg-no-repeat bg-cover  relative  pt-[28rem] md:pt-[16rem]  lg:pt-[6rem] `}
     >
       <CallBox />
       {/* QUICK SEARCHS */}
       <div className=" pb-6  px-0 md:px-[10%]  gap-4 md:gap-4  w-full  flex flex-col  ">
-        <p className="  text-base md:text-lg font-bold  px-4 md:px-0    ">{_STRINGS.FAST_SEARCH}</p>
+        <p className="  text-base md:text-lg font-bold  px-4 md:px-0    ">
+          {_STRINGS.FAST_SEARCH}
+        </p>
         <div className="overflow-x-scroll   w-full">
           <div className="     w-full px-4 pb-2   md:px-0  min-w-[180dvw]  md:min-w-full flex-row grid grid-cols-4 lg:grid-cols-6 xl:grid-cols-7 2xl:grid-cols-8 gap-1.5 md:gap-2.5   ">
-            {footerLandings?.data?.map((e, index) => (
+            {footerLandings?.data?.map((e) => (
               <Link
-                title={e?.title}
-                key={e?.title}
-                href={e?.link || ""}
-                prefetch={false}
                 id={e?.title}
-                className="  bg-white    border   shadow-sm  min-w-[140px]  shrink-0  shadow-black/10 border-gray-300  relative  rounded-20 h-6 md:h-8 flex items-center justify-start  pr-4  font-medium text-xs   text-start"
+                key={e?.title}
+                prefetch={false}
+                title={e?.title}
+                href={e?.link || ""}
+                className="bg-white border shadow-sm min-w-[140px] shrink-0 shadow-black/10 border-gray-300 relative rounded-20 h-6 md:h-8 flex items-center justify-start pr-4 font-medium text-xs text-start"
               >
                 {e?.title}
               </Link>
@@ -88,64 +73,23 @@ const Footer = () => {
           </div>
         </div>
         {/* desktop part */}
-
-        {/* <div className="   hidden md:flex  w-full px-4 pb-2   md:px-0   flex-row lg:grid lg:grid-cols-8 overflow-x-scroll  gap-1.5 md:gap-2.5   ">
-          {chunkedLandingsDekstop?.map((chunk, index) => (
-            <div
-              className=" w-2/5 md:w-1/4 lg:w-full shrink-0  lg:auto flex flex-col gap-1.5 md:gap-2.5 "
-              key={`${index}chunk`}
-            >
-              {chunk?.map((e) => {
-                return (
-                  <Link
-                    title={e?.title}
-                    key={e?.title}
-                    href={e?.link || ""}
-                    prefetch={false}
-                    id={e?.title}
-                    className="  bg-white    border   shadow-sm   shadow-black/10 border-gray-300  relative  rounded-20 h-6 md:h-8 flex items-center justify-start  pr-4 shrink-0  font-medium text-xs   text-start"
-                  >
-                    {e?.title}
-                  </Link>
-                );
-              })}
-            </div>
-          ))}
-        </div> */}
-        {/* mobile part */}
-        {/* <div className="    w-full px-4 pb-2   md:px-0  flex md:hidden flex-row  lg:hidden overflow-x-scroll  gap-1.5 md:gap-2.5   ">
-          {chunkedLandingsMobile
-            ?.filter((e) => !isEmpty(e))
-            ?.map((chunk, index) => (
-              <div
-                className=" w-2/5 md:w-1/4 lg:w-full shrink-0  lg:auto flex flex-col gap-1.5 md:gap-2.5 "
-                key={`${index}chunk`}
-              >
-                {chunk?.map((e) => (
-                  <Link
-                    key={e?.title}
-                    href={e?.link || ""}
-                    prefetch={false}
-                    id={e?.title}
-                    className="  bg-white    border   shadow-sm   shadow-black/10 border-gray-300  relative  rounded-20 h-6 md:h-8 flex items-center justify-start  pr-4 shrink-0  font-medium text-xs   text-start"
-                  >
-                    {e?.title}
-                  </Link>
-                ))}
-              </div>
-            ))}
-        </div> */}
-        {/* <div className="w-full ">
-          <Divider moreClass=" w-full !border-primary-700 opacity-30  " />
-        </div> */}
       </div>
       {!!PHONE_NUMBER && (
         <Link
           title="تماس"
-          href={PHONE_NUMBER?.link || `tel:${PHONE_NUMBER?.full_text || PHONE_NUMBER?.small_text || ""}`}
+          href={
+            PHONE_NUMBER?.link ||
+            `tel:${PHONE_NUMBER?.full_text || PHONE_NUMBER?.small_text || ""}`
+          }
           className="icon-parent hidden lg:flex fixed z-[100] w-16  items-center justify-center aspect-square rounded-full bg-primary-700   bottom-16 right-16"
         >
-          <svg width="40" height="40" viewBox="0 0 40 40" className="" fill="none">
+          <svg
+            width="40"
+            height="40"
+            viewBox="0 0 40 40"
+            className=""
+            fill="none"
+          >
             <path
               className="shake-on-hover"
               fillRule="evenodd"
@@ -181,16 +125,29 @@ const Footer = () => {
             referrerPolicy="no-referrer"
             className=" flex items-center gap-4 justify-start"
           >
-            <img src="/assets/icons/logo/header_logo.svg" alt={"footer_logo"} className="w-fit  max-w-32 " />
-            {/* <div className=" font-bold text-primary-700 text-3xl ">{aboutUs ? aboutUs?.title : _STRINGS?.LOGO}</div> */}
+            <img
+              src="/assets/icons/logo/header_logo.svg"
+              alt={"footer_logo"}
+              className="w-fit  max-w-32 "
+            />
           </Link>
 
-          <p className=" break-words  text-sm dark:text-zinc-100 leading-6 opacity-100  line-clamp-4">
+          <CmsText
+            whitespace="normal"
+            className=" break-words  text-sm dark:text-zinc-100 leading-6 opacity-100  line-clamp-4"
+          >
             {!!aboutUs ? aboutUs?.small_text || aboutUs?.full_text : ""}
-          </p>
+          </CmsText>
           <div className=" hidden md:flex justify-center md:justify-start mt-3 gap-2 mb-4">
             {socials && socials?.length > 0 ? (
-              socials?.map((e) => <ContactuUItem isShiny e={e} key={`${e?.id}SocialcONT`} disableText={true} />)
+              socials?.map((e) => (
+                <ContactuUItem
+                  isShiny
+                  e={e}
+                  disableText={true}
+                  key={`${e?.id}SocialcONT`}
+                />
+              ))
             ) : (
               <></>
             )}
@@ -201,23 +158,22 @@ const Footer = () => {
           key={`footerasfs`}
           className={`col-span-4 lg:col-span-1  gap-2 flex w-full flex-col justify-between h-fit order-2 lg:order-1 `}
         >
-          <p className=" text-base md:text-lg font-bold  pb-4">{_STRINGS.FAST_ACCESS}</p>
+          <p className=" text-base md:text-lg font-bold  pb-4">
+            {_STRINGS.FAST_ACCESS}
+          </p>
           <div className=" lg:grid-cols-1  grid grid-cols-2 gap-2  grid-rows-2  lg:grid-rows-none ">
             {footerLinks?.map((e, index) => (
               <Link
                 title={e?.title}
                 prefetch={false}
-                key={`FOOTER@${e.id}${index}`}
                 href={e.route || "#"}
+                key={`FOOTER@${e.id}${index}`}
                 style={{ textDecoration: "none" }}
                 className="flex items-center gap-2 mb-2"
               >
-                {/* <img
-                src="/assets/icons/footer/footer_bullet.svg"
-                alt={`${e?.title}dot`}
-                className="w-4 aspect-square h-4 "
-              /> */}
-                <p className=" text-sm  cursor-pointer  opacity-100 hover:text-primary-700">{e?.title}</p>
+                <p className=" text-sm  cursor-pointer  opacity-100 hover:text-primary-700">
+                  {e?.title}
+                </p>
               </Link>
             ))}
           </div>
@@ -229,32 +185,42 @@ const Footer = () => {
           className={`col-span-4 lg:col-span-2  flex w-full flex-col justify-between h-fit order-2 lg:order-1 `}
         >
           <div className="flex justify-center flex-col gap-4  mt-3 mb-4">
-            <p className=" text-base md:text-lg font-bold  pb-0 lg:pb-4">{_STRINGS.COMUNICATION_WAYS}</p>
+            <p className=" text-base md:text-lg font-bold  pb-0 lg:pb-4">
+              {_STRINGS.COMUNICATION_WAYS}
+            </p>
             {others && others?.length > 0 ? (
-              others?.map((e) => <ContactuUItem e={e} textClass=" !font-normal " key={`${e?.id}SocialcONT`} />)
+              others?.map((e) => (
+                <ContactuUItem
+                  e={e}
+                  textClass=" !font-normal "
+                  key={`${e?.id}SocialcONT`}
+                />
+              ))
             ) : (
               <></>
             )}
           </div>
 
-          {process.env.NEXT_PUBLIC_ENAMAD_ID && process.env.NEXT_PUBLIC_ENAMAD_CODE && (
-            <div className="flex flex-row w-fit  items-center justify-center gap-5">
-              <a
-                referrerPolicy="origin"
-                className="w-16 h-16"
-                target="_blank"
-                href={`https://trustseal.enamad.ir/?id=${process.env.NEXT_PUBLIC_ENAMAD_ID}&Code=${process.env.NEXT_PUBLIC_ENAMAD_CODE}`}
-              >
-                <img
+          {process.env.NEXT_PUBLIC_ENAMAD_ID &&
+            process.env.NEXT_PUBLIC_ENAMAD_CODE && (
+              <div className="flex flex-row w-fit  items-center justify-center gap-5">
+                <a
                   referrerPolicy="origin"
                   className="w-16 h-16"
-                  src={`https://trustseal.enamad.ir/logo.aspx?id=${process.env.NEXT_PUBLIC_ENAMAD_ID}&Code=${process.env.NEXT_PUBLIC_ENAMAD_CODE}`}
-                  alt=""
-                  id={process.env.NEXT_PUBLIC_ENAMAD_CODE}
-                />
-              </a>
-            </div>
-          )}
+                  target="_blank"
+                  href={`https://trustseal.enamad.ir/?id=${process.env.NEXT_PUBLIC_ENAMAD_ID}&Code=${process.env.NEXT_PUBLIC_ENAMAD_CODE}`}
+                >
+                  <img
+                    referrerPolicy="origin"
+                    loading="lazy"
+                    className="w-16 h-16"
+                    src={`https://trustseal.enamad.ir/logo.aspx?id=${process.env.NEXT_PUBLIC_ENAMAD_ID}&Code=${process.env.NEXT_PUBLIC_ENAMAD_CODE}`}
+                    alt=""
+                    id={process.env.NEXT_PUBLIC_ENAMAD_CODE}
+                  />
+                </a>
+              </div>
+            )}
         </div>
         {/* SOCIALS */}
       </div>
@@ -262,7 +228,13 @@ const Footer = () => {
       <div className="md:hidden flex flex-col gap-2 items-center justify-center">
         <div className=" flex justify-center md:justify-start mt-3 mb-4 gap-2">
           {socials && socials?.length > 0 ? (
-            socials?.map((e) => <ContactuUItem e={e} key={`${e?.id}SocialcONT`} disableText={true} />)
+            socials?.map((e) => (
+              <ContactuUItem
+                e={e}
+                disableText={true}
+                key={`${e?.id}SocialcONT`}
+              />
+            ))
           ) : (
             <></>
           )}
@@ -275,7 +247,11 @@ const Footer = () => {
         <div className="  flex    items-center gap-4">
           <div className="w-full   dark:text-zinc-100  text-center text-xxs md:text-sm  ">
             تمامی حقوق مادی و معنوی این وبسایت متعلق به شرکت
-            <a className="text-blue-500 underline underline-offset-2" title={_STRINGS.JAYAB} href="/">
+            <a
+              className="text-blue-500 underline underline-offset-2"
+              title={_STRINGS.JAYAB}
+              href="/"
+            >
               &nbsp; جایاب &nbsp;
             </a>
             میباشد
@@ -284,16 +260,19 @@ const Footer = () => {
         <div className="flex gap-2  items-center">
           {downloadLink?.data?.map((e) => (
             <Link
-              rel="nofollow noopener noreferrer"
-              title={e?.title}
-              key={`downloadLink${e?.id}`}
               target="_blank"
-              href={e?.link || ""}
-              className="aspect-[3] max-w-[120px] "
-              referrerPolicy="no-referrer"
+              title={e?.title}
               prefetch={false}
+              href={e?.link || ""}
+              referrerPolicy="no-referrer"
+              key={`downloadLink${e?.id}`}
+              rel="nofollow noopener noreferrer"
+              className="aspect-[3] max-w-[120px] "
             >
-              <img src={NEW_IMAGE_URL(e?.feature_image)} className=" h-10  object-contain md:max-w-[120px] " />
+              <img
+                src={NEW_IMAGE_URL(e?.feature_image)}
+                className=" h-10  object-contain md:max-w-[120px] "
+              />
             </Link>
           ))}
         </div>

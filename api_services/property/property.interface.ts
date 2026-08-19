@@ -638,10 +638,17 @@ export interface PropertyContactIInfDto {
   is_owner: boolean;
 }
 
+export interface JalaaliDayDto {
+  day: number;
+  month: number;
+  year: number;
+}
+
 export interface OwnerPropsRangeDto {
   max_price: number;
   min_price: number;
   step: number;
+  base_price: number;
 }
 export interface PageMetaDto {
   total: number;

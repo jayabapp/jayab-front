@@ -1,41 +1,37 @@
 "use client";
-import { PropertyService } from "@/api_services/property/property.service";
-import CreateEditProperty, { CreateProperyStepOne } from "@/components/properties/CreateEditProperty";
-import CreateEditPropertyEnvInfo, { CreateProperyStepThree } from "@/components/properties/CreateEditPropertyEnvInfo";
-import PageHeaders from "@/components/headers/PageHeader";
-import Button from "@/components/shared/Button/Button";
-import FixedBottomContainer from "@/components/shared/FixedBottomContainer";
-import StepShower from "@/components/shared/StepShower";
-import { p2e } from "@/helpers/NumberConverter";
-import { useStoreInit } from "@/store";
-import { createPropertySteps } from "@/utils/constantss";
-import _STRINGS from "@/utils/LocalStrings";
-import { useMutation, useQuery } from "@tanstack/react-query";
 
-import { useParams, usePathname, useRouter, useSearchParams } from "next/navigation";
-import React, { useEffect, useState } from "react";
+import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
+import { useRouter, useSearchParams } from "next/navigation";
+import { CreateProperyStepThree } from "@/components/properties/CreateEditPropertyEnvInfo";
+import { GC_TIME, STALE_TIME } from "@/helpers/queryCache";
+import { createPropertySteps } from "@/utils/constantss";
+import { useEffect, useState } from "react";
+import { PropertyService } from "@/api_services/property/property.service";
+import { useParams } from "next/navigation";
+
+import CreateEditPropertyEnvInfo from "@/components/properties/CreateEditPropertyEnvInfo";
+import FixedBottomContainer from "@/components/shared/FixedBottomContainer";
 import LottieLoading from "@/components/shared/Lotties/LottieLoading";
+import StepShower from "@/components/shared/StepShower";
+import _STRINGS from "@/utils/LocalStrings";
+import Button from "@/components/shared/Button/Button";
 
 const CreateProperty = () => {
   const router = useRouter();
-  const pathname = usePathname();
-  const { userInfo } = useStoreInit((data) => data);
   const searchParams = useSearchParams();
   const edit_mode = searchParams.get("edit_mode");
   const params = useParams();
   const { property_id } = params;
-  /* -------------------------------------------------------------------------- */
-  /*                             INIT PROP CREATION                             */
-  /* -------------------------------------------------------------------------- */
+
   const { data: initPropData, isLoading } = useQuery({
     queryKey: [PropertyService.OWNER_PROP_INIT_CACHEKEY, property_id],
     queryFn: () => {
-      if (!!property_id) {
+      if (!!property_id)
         return PropertyService.InitProperty({ property_id: `${property_id}` });
-      } else return null;
+      else return null;
     },
-    gcTime: 0,
-    staleTime: 0,
+    staleTime: STALE_TIME.MEDIUM,
+    gcTime: GC_TIME.LONG,
   });
 
   const [values, setValues] = useState<CreateProperyStepThree>({
@@ -49,10 +45,18 @@ const CreateProperty = () => {
   useEffect(() => {
     if (!!initPropData) {
       setValues({
-        access: initPropData?.property_options?.find((e) => e?.option?.group == "ACCESS")?.option_id || null,
+        access:
+          initPropData?.property_options?.find(
+            (e) => e?.option?.group == "ACCESS",
+          )?.option_id || null,
         neighborhood:
-          initPropData?.property_options?.find((e) => e?.option?.group == "NEIGHBORHOOD")?.option_id || null,
-        pattern: initPropData?.property_options?.find((e) => e?.option?.group == "PATTERN")?.option_id || null,
+          initPropData?.property_options?.find(
+            (e) => e?.option?.group == "NEIGHBORHOOD",
+          )?.option_id || null,
+        pattern:
+          initPropData?.property_options?.find(
+            (e) => e?.option?.group == "PATTERN",
+          )?.option_id || null,
         distance_dscr: initPropData?.description?.distance_dscr,
         pattern_dscr: initPropData?.description?.pattern_dscr,
       });
@@ -63,20 +67,21 @@ const CreateProperty = () => {
     setValues((e) => ({ ...e, [key]: value }));
   };
 
+  const queryClient = useQueryClient();
+
   const { mutate, isPending } = useMutation({
     mutationFn: PropertyService.CreatePropertySetEnv,
     onSuccess: () => {
-      if (!!edit_mode) {
+      queryClient.invalidateQueries({
+        queryKey: [PropertyService.OWNER_PROP_INIT_CACHEKEY, property_id],
+      });
+      if (!!edit_mode)
         router.replace(`/profile/owner/properties/${property_id}/edit`);
-      } else {
-        router.push(`/profile/owner/properties/${property_id}/edit/bedroom`);
-      }
+      else router.push(`/profile/owner/properties/${property_id}/edit/bedroom`);
     },
   });
   const onSubmit = () => {
-    if (!!initPropData?.id) {
-      mutate({ ...values, propertyId: initPropData?.id });
-    }
+    if (!!initPropData?.id) mutate({ ...values, propertyId: initPropData?.id });
   };
 
   return (
@@ -89,18 +94,22 @@ const CreateProperty = () => {
         <StepShower steps={createPropertySteps(initPropData?.id)} value={4} />
       </div>
 
-      {isLoading ? <LottieLoading /> : <CreateEditPropertyEnvInfo onChange={onChange} values={values} />}
+      {isLoading ? (
+        <LottieLoading />
+      ) : (
+        <CreateEditPropertyEnvInfo onChange={onChange} values={values} />
+      )}
 
       <FixedBottomContainer>
         <Button
+          loading={isPending}
+          width=" w-[90%] md:w-1/2"
+          roundedClass="rounded-full"
+          title={_STRINGS.SUBMIT_MOVE_ON}
+          containerClass="w-full flex items-center justify-center"
           onClick={() => {
             onSubmit();
           }}
-          loading={isPending}
-          containerClass="w-full flex items-center justify-center"
-          roundedClass="rounded-full"
-          width=" w-[90%] md:w-1/2"
-          title={_STRINGS.SUBMIT_MOVE_ON}
         />
       </FixedBottomContainer>
     </div>

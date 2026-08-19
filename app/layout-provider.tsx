@@ -1,27 +1,24 @@
 "use client";
-import { useStoreQuery } from "@/store";
-import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
+
+import {
+  DehydratedState,
+  HydrationBoundary,
+  QueryClientProvider,
+} from "@tanstack/react-query";
 import { ReactNode, useEffect, useState } from "react";
+import { makeQueryClient } from "@/api_services/common/get-query-client";
+import { useStoreQuery } from "@/store";
+
 import MainWrapper from "../utils/MainWrapper";
+
 interface Layout {
-  children: ReactNode;
   modal: ReactNode;
+  children: ReactNode;
+  dehydratedState?: DehydratedState;
 }
 
 const LayoutProvider = (props: Layout) => {
-  const [queryClient] = useState(
-    () =>
-      new QueryClient({
-        defaultOptions: {
-          queries: {
-            gcTime: 0,
-            staleTime: 0,
-            refetchOnWindowFocus: false,
-            retry: false,
-          },
-        },
-      }),
-  );
+  const [queryClient] = useState(makeQueryClient);
 
   useEffect(() => {
     useStoreQuery.setState({
@@ -31,13 +28,12 @@ const LayoutProvider = (props: Layout) => {
 
   return (
     <QueryClientProvider client={queryClient}>
-      {/* <Suspense fallback={<></>}> */}
-      <MainWrapper>
-        {" "}
-        {props?.children}
-        {props?.modal}
-      </MainWrapper>
-      {/* </Suspense> */}
+      <HydrationBoundary state={props?.dehydratedState}>
+        <MainWrapper>
+          {props?.children}
+          {props?.modal}
+        </MainWrapper>
+      </HydrationBoundary>
     </QueryClientProvider>
   );
 };

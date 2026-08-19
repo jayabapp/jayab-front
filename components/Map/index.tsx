@@ -1,21 +1,22 @@
 "use client";
-import React, { useCallback, useEffect, useMemo, useRef, useState } from "react";
+
+import { useCallback, useEffect, useRef, useState } from "react";
+
+import CreateMarker from "./CreateMarker";
+import nmp_mapboxgl from "@neshan-maps-platform/mapbox-gl";
+import getAddress from "./GetAddress";
+import debounce from "lodash/debounce";
 
 import "@neshan-maps-platform/mapbox-gl/dist/NeshanMapboxGl.css";
-import nmp_mapboxgl from "@neshan-maps-platform/mapbox-gl";
-import { debounce } from "lodash";
-import getAddress from "./GetAddress";
-import CreateMarker from "./CreateMarker";
-type mapType = {
-  setCenterAddressLoading?: (e: boolean) => void | null;
-  setCenterAddress?: (e: string) => void | null;
 
+type mapType = {
+  center: number[];
   disableCenter?: boolean;
   containerClass?: string;
-
-  center: number[];
   setCenter?: (e: number[]) => void | null;
+  setCenterAddress?: (e: string) => void | null;
   setMarkers?: (e: (x: any[]) => any[]) => void | null;
+  setCenterAddressLoading?: (e: boolean) => void | null;
   jumpToState?: {
     lat: string | number;
     lng: string | number;
@@ -23,33 +24,26 @@ type mapType = {
 };
 
 const Map = ({
-  setCenterAddress,
-  setCenterAddressLoading,
-
   center,
   setCenter,
   setMarkers,
+  jumpToState,
   disableCenter,
   containerClass,
-  jumpToState,
+  setCenterAddress,
+  setCenterAddressLoading,
 }: mapType) => {
   const initialMap = useRef<any>(null);
   const map = initialMap;
   const mapContainer = useRef<HTMLDivElement>(null);
-
-  // const map = useRef<any>(null);
-
   const [isMoving, setIsMoving] = useState(false);
   const [zoom] = useState(15);
   const [API_KEY] = useState("web.4c0887bbd32f4ab2ba1adcc36243b6a2");
-  const [refExists, setRefExists] = useState(false);
-  // const [center, setCenter] = useState([lng, lat]);
-
   const checkTyping = useCallback(
     debounce(() => {
       setIsMoving(false);
     }, 1000),
-    []
+    [],
   );
 
   useEffect(() => {
@@ -62,14 +56,13 @@ const Map = ({
             setCenterAddress: setCenterAddress,
             setCenterAddressLoading: setCenterAddressLoading,
           }),
-        1000
+        1000,
       );
     }
   }, [center, isMoving]);
 
   useEffect(() => {
-    if (map.current) return; // stops map from intializing more than once
-
+    if (map.current) return;
     map.current = new nmp_mapboxgl.Map({
       mapType: nmp_mapboxgl.Map.mapTypes.neshanRaster,
       container: mapContainer.current || "map",
@@ -80,7 +73,6 @@ const Map = ({
       trackResize: true,
       mapKey: API_KEY,
       poi: true,
-
       traffic: false,
       mapTypeControllerOptions: {
         show: false,
@@ -94,13 +86,12 @@ const Map = ({
           enableHighAccuracy: true,
         },
         trackUserLocation: true,
-      })
+      }),
     );
     map.current.addControl(new nmp_mapboxgl.NavigationControl(), "top-right");
     map.current.on("move", () => {
-      if (setCenter) {
+      if (setCenter)
         setCenter([map.current.getCenter().lng, map.current.getCenter().lat]);
-      }
       setIsMoving(true);
       checkTyping();
     });
@@ -108,7 +99,10 @@ const Map = ({
 
   useEffect(() => {
     if (!!jumpToState) {
-      map.current.jumpTo({ center: [jumpToState?.lng, jumpToState?.lat] }, 2000);
+      map.current.jumpTo(
+        { center: [jumpToState?.lng, jumpToState?.lat] },
+        2000,
+      );
     }
   }, [jumpToState]);
 

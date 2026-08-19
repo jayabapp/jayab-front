@@ -1,20 +1,28 @@
-import { OwnerCallendarItemDto, SingleOwnerPropertyDto } from "@/api_services/property/property.interface";
-import Button from "@/components/shared/Button/Button";
-import _STRINGS from "@/utils/LocalStrings";
-import React, { useState } from "react";
+import { SingleOwnerPropertyDto } from "@/api_services/property/property.interface";
+import { OwnerCallendarItemDto } from "@/api_services/property/property.interface";
+import { useState } from "react";
+
 import ChangeCallendarNoteModal from "./ChangeCallendarNoteModal";
+import _STRINGS from "@/utils/LocalStrings";
+import Button from "@/components/shared/Button/Button";
+import Notify from "@/components/shared/Toast";
+
+export type TChangeCallendarNoteProps = {
+  isDisabled?: boolean;
+  data: SingleOwnerPropertyDto;
+  callenderselectedDate: string;
+  selectedDateData?: OwnerCallendarItemDto;
+  setCallendarDataState: React.Dispatch<
+    React.SetStateAction<OwnerCallendarItemDto[]>
+  >;
+};
 
 const ChangeCallendarNote = ({
   data,
-  callenderselectedDate,
-  setCallendarDataState,
+  isDisabled,
   selectedDateData,
-}: {
-  callenderselectedDate: string;
-  selectedDateData?: OwnerCallendarItemDto;
-  data: SingleOwnerPropertyDto;
-  setCallendarDataState: React.Dispatch<React.SetStateAction<OwnerCallendarItemDto[]>>;
-}) => {
+  setCallendarDataState,
+}: TChangeCallendarNoteProps) => {
   const [showPriceRange, setShowPricerange] = useState(false);
 
   const onHide = () => {
@@ -26,21 +34,24 @@ const ChangeCallendarNote = ({
       {" "}
       <Button
         onClick={() => {
+          if (!!isDisabled) {
+            Notify({ body: _STRINGS.SELECT_ONE_DAY_ONLY, type: "warn" });
+            return;
+          }
           setShowPricerange(true);
         }}
-        disabled={!selectedDateData}
-        // loading={isPending}
+        title={_STRINGS.MEMO}
         containerClass="w-full"
         width="w-full !py-1.5"
         roundedClass="rounded-full"
-        title={_STRINGS.MEMO}
+        disabled={!selectedDateData}
       />
       <ChangeCallendarNoteModal
         data={data}
-        setCallendarDataState={setCallendarDataState}
-        selectedDateData={selectedDateData}
         onHide={onHide}
         show={showPriceRange}
+        selectedDateData={selectedDateData}
+        setCallendarDataState={setCallendarDataState}
       />
     </div>
   );

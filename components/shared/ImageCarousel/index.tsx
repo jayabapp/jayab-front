@@ -1,33 +1,27 @@
 import { NEW_IMAGE_URL } from "../../../utils/urls";
-
-import Editable from "@/components/Editable";
-import Image from "next/image";
-
-import { HomeService } from "@/api_services/home/home.service";
-import Swiper from "@/components/embelaCarousel/Swiper";
-import SwiperSlide from "@/components/embelaCarousel/SwiperSlide";
-import { DeviceInfo } from "@/helpers/device.detector";
 import { useMutation } from "@tanstack/react-query";
+import { HomeService } from "@/api_services/home/home.service";
+import { DeviceInfo } from "@/helpers/device.detector";
+
+import SwiperSlide from "@/components/embelaCarousel/SwiperSlide";
+import Editable from "@/components/Editable";
+import Swiper from "@/components/embelaCarousel/Swiper";
+import Image from "next/image";
 import Link from "next/link";
 
 type ImageCarouselTypes = {
   list: any[];
-  item?: { parentClass?: string; showCount?: number; imageClasses?: string };
   devices?: DeviceInfo;
+  item?: { parentClass?: string; showCount?: number; imageClasses?: string };
 };
 
 const ImageCarousel = ({ list, item, devices }: ImageCarouselTypes) => {
-  // const onImageError = (e: any) => {
-  //   e.target.src = "/assets/images/home/image_placeholder.png";
-  // };
-
   const isPhone = devices?.isMobile;
-
   const mobile_filteredBanners = list?.filter((e) => !!e?.image_sm);
   const desktop_filteredBanners = list?.filter((e) => !e?.image_sm);
-
-  const final_banenrs = isPhone ? mobile_filteredBanners : desktop_filteredBanners;
-
+  const final_banenrs = isPhone
+    ? mobile_filteredBanners
+    : desktop_filteredBanners;
   const { mutate } = useMutation({
     mutationFn: HomeService.updateBannerViewCount,
   });
@@ -35,11 +29,11 @@ const ImageCarousel = ({ list, item, devices }: ImageCarouselTypes) => {
   return (
     <div className="h-full  col-span-full   py-0">
       <Swiper
-        pagination
         autoplay
+        pagination
+        viewportClassName=" !px-0 md:!px-4"
         spaceBetween={!!devices?.isMobile || !!devices?.isTablet ? 2 : 5}
         slidesPerView={!!devices?.isMobile || !!devices?.isTablet ? 1 : 1}
-        viewportClassName=" !px-0 md:!px-4"
         breakPoints={{
           320: {
             slidesPerView: 1,
@@ -49,7 +43,6 @@ const ImageCarousel = ({ list, item, devices }: ImageCarouselTypes) => {
             slidesPerView: 1,
             spaceBetween: 2,
           },
-          // when window width is >= 768px
           768: {
             slidesPerView: 1,
             spaceBetween: 2,
@@ -63,7 +56,13 @@ const ImageCarousel = ({ list, item, devices }: ImageCarouselTypes) => {
             spaceBetween: 5,
           },
         }}
-        options={{ align: "center", direction: "rtl", dragFree: false, loop: true, skipSnaps: false }}
+        options={{
+          align: "center",
+          direction: "rtl",
+          dragFree: false,
+          loop: true,
+          skipSnaps: false,
+        }}
       >
         {" "}
         {final_banenrs?.map((e, i) => (
@@ -74,45 +73,49 @@ const ImageCarousel = ({ list, item, devices }: ImageCarouselTypes) => {
                 mutate({ bannerId: e?.id });
               }}
               aria-label={e?.image?.alt || e?.title}
-              href={e?.property?.slug ? `/rooms/${e?.property?.slug}` : e?.link ? e?.link : ""}
+              href={
+                e?.property?.slug
+                  ? `/rooms/${e?.property?.slug}`
+                  : e?.link
+                    ? e?.link
+                    : ""
+              }
               prefetch={false}
             >
               {" "}
               <Editable
-                editIconClass=" !top-auto  !bottom-0"
                 isBanner
                 contentId={e?.id}
-                // // href={e?.link ? e?.link : undefined}
-                // target={e?.link ? "_blank" : ""}
+                editIconClass=" !top-auto  !bottom-0"
                 className={` focus:outline-none w-full px-0    aspect-[1.5] md:aspect-[6]   ${
-                  e?.link || e?.category || e?.product || e?.brand_id ? "cursor-pointer" : ""
+                  e?.link || e?.category || e?.product || e?.brand_id
+                    ? "cursor-pointer"
+                    : ""
                 } transition-all duration-300 ease-in-out   relative`}
               >
-                <Image
-                  // loading="lazy"
-                  fetchPriority="high"
-                  fill
-                  priority={true}
-                  // onError={onImageError}
-                  alt={e?.image?.alt}
-                  // src={true ? "saf" : IMAGE_URL(e?.image_location)}
-                  src={NEW_IMAGE_URL(e?.image)}
-                  className={`w-full object-cover rounded-20 hidden  md:flex  aspect-[1.5] md:aspect-[6]   align-middle  ${
-                    item?.imageClasses ? item?.imageClasses : ""
-                  }   `}
-                />
-                <Image
-                  fill
-                  fetchPriority="high"
-                  priority={true}
-                  // onError={onImageError}
-                  alt={e?.image?.alt}
-                  // src={true ? "saf" : IMAGE_URL(e?.image_location)}
-                  src={NEW_IMAGE_URL(e?.image_sm ? e?.image_sm : e?.image)}
-                  className={`w-full object-cover rounded-20 flex  md:hidden   aspect-[1.5] md:aspect-[6] align-middle  ${
-                    item?.imageClasses ? item?.imageClasses : ""
-                  }   `}
-                />
+                {isPhone ? (
+                  <Image
+                    fill
+                    sizes="100vw"
+                    loading="lazy"
+                    alt={e?.image?.alt}
+                    src={NEW_IMAGE_URL(e?.image_sm ? e?.image_sm : e?.image)}
+                    className={`w-full object-cover rounded-20 flex  aspect-[1.5] align-middle  ${
+                      item?.imageClasses ? item?.imageClasses : ""
+                    }   `}
+                  />
+                ) : (
+                  <Image
+                    fill
+                    sizes="100vw"
+                    loading="lazy"
+                    alt={e?.image?.alt}
+                    src={NEW_IMAGE_URL(e?.image)}
+                    className={`w-full object-cover rounded-20 flex  aspect-[6]   align-middle  ${
+                      item?.imageClasses ? item?.imageClasses : ""
+                    }   `}
+                  />
+                )}
               </Editable>
             </Link>
           </SwiperSlide>

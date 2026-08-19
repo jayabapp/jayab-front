@@ -803,41 +803,6 @@ ul {
   box-shadow: 1px -1px 0px 0px rgba(255, 255, 255, 1) inset;
 }
 
-@keyframes glow-pulse {
-  0% {
-    width: 0;
-    height: 0;
-    opacity: 0;
-  }
-  100% {
-    width: 300px;
-    height: 300px;
-    opacity: 1;
-  }
-}
-
-@keyframes logo-pop {
-  0% {
-    opacity: 0;
-    transform: scale(0.4);
-  }
-  100% {
-    opacity: 1;
-    transform: scale(1);
-  }
-}
-
-/* Custom Animation Classes */
-.animate-glow-pulse {
-  /* 1s duration, ease-out, alternating reverse 10 times (like Framer Motion) */
-  animation: glow-pulse 1s ease-out alternate 10;
-}
-
-.animate-logo-pop {
-  /* 0.7s duration, using the exact cubic-bezier from your Framer Motion config */
-  animation: logo-pop 0.7s cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
-}
-
 .new-tag {
   background: linear-gradient(180deg, #ff535f 0%, #ed333f 50%, #dd323d 100%);
 

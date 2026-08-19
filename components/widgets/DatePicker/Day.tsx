@@ -18,11 +18,11 @@ type dataTypes = {
   today?: { day: number; month: string; year: string };
   month?: string;
   year?: string;
-
   showTimeOfTheDay?: boolean;
   freeDaysOfMonth?: boolean;
   smallerDateFonts?: boolean;
   disableClick?: boolean;
+  isMultiSelected?: boolean;
 };
 
 const Day = ({
@@ -35,13 +35,21 @@ const Day = ({
   today,
   smallerDateFonts,
   disableClick,
+  isMultiSelected,
 }: dataTypes) => {
   const isBefore = !!freeDaysOfMonth
     ? false
     : moment(moment(`${year}/${month}/${data?.id}`, "jYYYY/jMM/jD")).isBefore();
-  const isFriday = moment(moment(`${year}/${month}/${data?.id}`, "jYYYY/jMM/jD")).day() == 5;
-  const isToday = today?.day == data?.id && today?.month == month && today?.year == year;
-  const isSelected = selectedDayId?.day == data?.id && selectedDayId?.month == month && selectedDayId?.year == year;
+  const isFriday =
+    moment(moment(`${year}/${month}/${data?.id}`, "jYYYY/jMM/jD")).day() == 5;
+  const isToday =
+    today?.day == data?.id && today?.month == month && today?.year == year;
+  const isSelected =
+    isMultiSelected !== undefined
+      ? isMultiSelected
+      : selectedDayId?.day == data?.id &&
+        selectedDayId?.month == month &&
+        selectedDayId?.year == year;
 
   return (
     <div
@@ -49,7 +57,12 @@ const Day = ({
         onSelect && !disableClick ? "cursor-pointer" : ""
       } `}
       onClick={() => {
-        if (!disableClick && onSelect && !!data?.year && (!isBefore || !!isToday)) {
+        if (
+          !disableClick &&
+          onSelect &&
+          !!data?.year &&
+          (!isBefore || !!isToday)
+        ) {
           onSelect(data);
         }
       }}
@@ -82,7 +95,9 @@ const Day = ({
           <></>
         )}
 
-        <p className={`z-1 ${smallerDateFonts ? "font-medium" : "font-bold"}  ${!!isFriday ? "text-red-700" : ""} `}>
+        <p
+          className={`z-1 ${smallerDateFonts ? "font-medium" : "font-bold"}  ${!!isFriday ? "text-red-700" : ""} `}
+        >
           {" "}
           {data?.id}
         </p>

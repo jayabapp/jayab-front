@@ -1,32 +1,45 @@
-// app/layout.tsx
-import "swiper/css";
-import "swiper/css/pagination";
+import { isNoIndexDeployment } from "@/helpers/indexingPolicy";
+import { Metadata, Viewport } from "next";
+import { apiRoutes, baseUrl } from "@/utils/urls";
+import { InnitSettingsDto } from "@/api_services/home/home.interface";
+import { seedCmsContent } from "@/api_services/home/cms-content.server";
+import { REVALIDATE } from "@/helpers/revalidate";
+import { x_Iransans } from "./fonts/x_iran/x_Iransans";
+import { dehydrate } from "@tanstack/react-query";
+import { ReactNode } from "react";
+
+import getQueryClient from "@/api_services/common/get-query-client";
+import SplashScreen from "@/components/SplashScreen";
+import LayoutProvider from "./layout-provider";
+import serverCall from "@/helpers/serverCall";
+import Script from "next/script";
+
 import "../styles/globals.css";
 
-import type { Metadata, Viewport } from "next";
-import Script from "next/script";
-import type { ReactNode } from "react";
-
-import { InnitSettingsDto } from "@/api_services/home/home.interface";
-import serverCall from "@/helpers/serverCall";
-import { apiRoutes, baseUrl } from "@/utils/urls";
-import { x_Iransans } from "./fonts/x_iran/x_Iransans";
-import LayoutProvider from "./layout-provider";
+const LAYOUT_CMS_KEYS = ["aboutUs", "footerCallUs"];
+const indexingDisabled = isNoIndexDeployment();
 
 export const metadata: Metadata = {
-  metadataBase: new URL(process.env.NEXT_PUBLIC_SITE_URL || "https://jayaab.com"),
-
+  metadataBase: new URL(
+    process.env.NEXT_PUBLIC_SITE_URL || "https://jayaab.com",
+  ),
   title: {
     default: "جایاب",
     template: "%s | جایاب",
   },
-
   description: "جایاب",
-
   keywords: ["جایاب"],
-
   applicationName: "جایاب",
-
+  robots: indexingDisabled
+    ? {
+        index: false,
+        follow: false,
+        googleBot: {
+          index: false,
+          follow: false,
+        },
+      }
+    : undefined,
   openGraph: {
     title: "جایاب",
     description: "جایاب",
@@ -48,9 +61,7 @@ export const metadata: Metadata = {
     ],
     apple: "/apple-touch-icon.png",
   },
-
   manifest: "/manifest.json",
-
   appleWebApp: {
     capable: true,
     statusBarStyle: "black-translucent",
@@ -73,15 +84,25 @@ const RootLayout = async ({
   children: ReactNode;
   modal: ReactNode;
 }>) => {
-  const { data: appSetting }: { data: InnitSettingsDto } = await serverCall(baseUrl + apiRoutes.APP_SETTINGS);
+  const queryClient = getQueryClient();
+
+  const [{ data: appSetting }]: [{ data: InnitSettingsDto }, void] =
+    await Promise.all([
+      serverCall(baseUrl + apiRoutes.APP_SETTINGS, undefined, {
+        revalidate: REVALIDATE.APP_SETTINGS,
+      }),
+      seedCmsContent(queryClient, LAYOUT_CMS_KEYS),
+    ]);
 
   const gtmId = appSetting?.googleTagManagerId?.toString() || "";
 
   return (
     <html lang="fa" dir="rtl">
       <body className={x_Iransans.className} suppressHydrationWarning>
-        <LayoutProvider modal={modal}>{children}</LayoutProvider>
-
+        <SplashScreen />
+        <LayoutProvider modal={modal} dehydratedState={dehydrate(queryClient)}>
+          {children}
+        </LayoutProvider>
         <footer>
           <Script
             id="gtm"
@@ -106,7 +127,7 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
 
           <Script
             id="yekta"
-            strategy="afterInteractive"
+            strategy="lazyOnload"
             dangerouslySetInnerHTML={{
               __html: `!function (t, e, n) {
 t.yektanetAnalyticsObject = n, t[n] = t[n] || function () {

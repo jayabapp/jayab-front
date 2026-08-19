@@ -1,6 +1,6 @@
 import { isRedirectError } from "next/dist/client/components/redirect-error";
 import { notFound, redirect } from "next/navigation";
-import MinMaxRandom from "./MinMaxRandom";
+import { REVALIDATE } from "./revalidate";
 import queryBuilder from "./queryBuilder";
 
 async function serverCall(
@@ -9,19 +9,28 @@ async function serverCall(
   options?: {
     redirect404?: boolean;
     redirect410?: boolean;
+    /**
+     * Cache lifetime in seconds. Pass a named entry from `REVALIDATE` so the
+     * TTL is tied to how often that endpoint's data actually changes.
+     */
+    revalidate?: number;
   },
 ) {
   try {
+    const origin = process.env.NEXT_PUBLIC_WEB_SITE;
+    if (!origin) throw new Error("NEXT_PUBLIC_WEB_SITE is not configured");
+
     const headers = {
       Accept: "application/json",
       "Content-Type": "application/json",
+      Origin: origin,
     };
 
     const response = await fetch(`${url}${params ? `?${queryBuilder(params)}` : ""}`, {
       method: "GET",
       headers,
       next: {
-        revalidate: MinMaxRandom(),
+        revalidate: options?.revalidate ?? REVALIDATE.DEFAULT,
 
         // tags: [url]
       },

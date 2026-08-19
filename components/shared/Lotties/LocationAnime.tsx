@@ -1,8 +1,9 @@
 "use client";
 
-import React from "react";
-import Lottie from "react-lottie";
 import LottieAnimation from "@/public/assets/lotties/location.json";
+import dynamic from "next/dynamic";
+
+const Lottie = dynamic(() => import("react-lottie"), { ssr: false });
 
 const LocationAnime = ({ margin }: { margin?: string }) => {
   return (

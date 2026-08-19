@@ -1,14 +1,15 @@
-import { p2e } from "@/helpers/NumberConverter";
-import { apiRoutes } from "@/utils/urls";
 import { YupValidator } from "@/utils/YupValidator";
+import { apiRoutes } from "@/utils/urls";
 import { ImageDto } from "../auth/auth.interface";
 import { apiCall } from "../common/apicall.helper";
+import { p2e } from "@/helpers/NumberConverter";
 import {
   AssistantSendDto,
   CreatePropertyStepOneDto,
   FacilitiesValuesDto,
   GetPropBadgeDto,
   GetPropertiesPlusFilters,
+  JalaaliDayDto,
   OwnerCallendarItemDto,
   OwnerPropsRangeDto,
   OwnerSinglePropertyAuthdata,
@@ -27,7 +28,6 @@ import {
   SingleOwnerPropertyDto,
   SinglePropDto,
 } from "./property.interface";
-import { sendMediaSchema } from "./property.schema";
 
 export class PropertyService {
   static USER_PROP_OPTIONS_CACHEKEY = "USER_PROP_OPTIONS";
@@ -67,10 +67,6 @@ export class PropertyService {
     }
   }
 
-  /* -------------------------------------------------------------------------- */
-  /*                            PROPERTY CONTACT INFO                           */
-  /* -------------------------------------------------------------------------- */
-
   static async getSinglePropertyContactInfo(dto: {
     propertySlug: string | number | null;
     action: string | number;
@@ -107,10 +103,6 @@ export class PropertyService {
       throw e;
     }
   }
-
-  /* -------------------------------------------------------------------------- */
-  /*                              SUBSCRIPTION PART                             */
-  /* -------------------------------------------------------------------------- */
 
   static async GetPropertySubscriptionPlans(dto?: {
     type?: "ADVISOR" | "PROPERTY";
@@ -153,10 +145,6 @@ export class PropertyService {
     }
   }
 
-  /* -------------------------------------------------------------------------- */
-  /*                          GET OWNER SINGLE PROPERTY                         */
-  /* -------------------------------------------------------------------------- */
-
   static async GetSingleOwnerProperty(dto: {
     property_id: string | number | null;
   }) {
@@ -190,10 +178,6 @@ export class PropertyService {
     }
   }
 
-  /* -------------------------------------------------------------------------- */
-  /*                        OWNER PROPERTY UPDATE STATUSES                        */
-  /* -------------------------------------------------------------------------- */
-
   static async UpdatePropertyStatus(dto: {
     property_id: string | number | null;
     year: string | number | null;
@@ -213,6 +197,29 @@ export class PropertyService {
         month: dto.month,
         year: dto.year,
       });
+      return result;
+    } catch (e) {
+      throw e;
+    }
+  }
+
+  static async updatePropertyStatusOfManyDays(dto: {
+    property_id: string | number | null;
+    days: JalaaliDayDto[];
+    is_reserved: boolean;
+  }) {
+    try {
+      const result = await apiCall<
+        { days: JalaaliDayDto[]; is_reserved: boolean },
+        OwnerCallendarItemDto[]
+      >(
+        "POST",
+        apiRoutes.OWNER_PROPERTIES_BULK_STATUS_UPDATE(dto?.property_id),
+        {
+          days: dto.days,
+          is_reserved: dto.is_reserved,
+        },
+      );
       return result;
     } catch (e) {
       throw e;
@@ -273,6 +280,36 @@ export class PropertyService {
         discounted_price: dto.discounted_price,
         price: dto.price,
       });
+      return result;
+    } catch (e) {
+      throw e;
+    }
+  }
+
+  /** تغییر قیمت چند روز با هم */
+  static async updatePropertyPriceOfManyDays(dto: {
+    property_id: string | number | null;
+    days: JalaaliDayDto[];
+    price: string | number | null;
+    discounted_price?: string | number | null;
+  }) {
+    try {
+      const result = await apiCall<
+        {
+          days: JalaaliDayDto[];
+          price: string | number | null;
+          discounted_price?: string | number | null;
+        },
+        OwnerCallendarItemDto[]
+      >(
+        "POST",
+        apiRoutes.OWNER_PROPERTIES_BULK_PRICE_UPDATE(dto?.property_id),
+        {
+          days: dto.days,
+          discounted_price: dto.discounted_price,
+          price: dto.price,
+        },
+      );
       return result;
     } catch (e) {
       throw e;
@@ -534,6 +571,7 @@ export class PropertyService {
     feature_image_id: string | number | null;
   }) {
     try {
+      const { sendMediaSchema } = await import("./property.schema");
       await YupValidator<{
         images: (string | number | null)[];
         feature_image_id: string | number | null;

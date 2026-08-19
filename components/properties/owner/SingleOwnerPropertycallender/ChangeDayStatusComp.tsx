@@ -1,57 +1,67 @@
-import { produce } from "immer";
-import { OwnerCallendarItemDto, SingleOwnerPropertyDto } from "@/api_services/property/property.interface";
+import { SingleOwnerPropertyDto } from "@/api_services/property/property.interface";
+import { OwnerCallendarItemDto } from "@/api_services/property/property.interface";
 import { PropertyService } from "@/api_services/property/property.service";
-import ConfirmModal from "@/components/Modal/ConfirmModal";
-import Button from "@/components/shared/Button/Button";
-import _STRINGS from "@/utils/LocalStrings";
+import { toJalaaliDays } from "./jalaaliDays";
 import { useMutation } from "@tanstack/react-query";
+import { useState } from "react";
+import { produce } from "immer";
+
+import ConfirmModal from "@/components/Modal/ConfirmModal";
+import _STRINGS from "@/utils/LocalStrings";
+import Button from "@/components/shared/Button/Button";
 import moment from "moment-jalaali";
-import React, { useState } from "react";
+
+export type TChangeDayStatusProps = {
+  callenderselectedDates: string[];
+  selectedDatesData: OwnerCallendarItemDto[];
+  data: SingleOwnerPropertyDto;
+  setCallendarDataState: React.Dispatch<
+    React.SetStateAction<OwnerCallendarItemDto[]>
+  >;
+  setRefresh: React.Dispatch<React.SetStateAction<boolean>>;
+};
 
 const ChangeDayStatusComp = ({
   data,
-  callenderselectedDate,
-  setCallendarDataState,
-  selectedDateData,
   setRefresh,
-}: {
-  callenderselectedDate: string;
-  selectedDateData?: OwnerCallendarItemDto;
-  data: SingleOwnerPropertyDto;
-  setCallendarDataState: React.Dispatch<React.SetStateAction<OwnerCallendarItemDto[]>>;
-  setRefresh: React.Dispatch<React.SetStateAction<boolean>>;
-}) => {
+  selectedDatesData,
+  setCallendarDataState,
+  callenderselectedDates,
+}: TChangeDayStatusProps) => {
   const [showConfirm, setShowConfirm] = useState(false);
+
+  const selectedDays = toJalaaliDays(callenderselectedDates);
+
+  const isEveryDayReserved =
+    selectedDays.length > 0 &&
+    selectedDays.length === selectedDatesData.length &&
+    selectedDatesData.every((e) => !!e?.is_reserved);
+  const nextReservedStatus = !isEveryDayReserved;
+
   const { mutate, isPending } = useMutation({
-    mutationFn: PropertyService.UpdatePropertyStatus,
+    mutationFn: PropertyService.updatePropertyStatusOfManyDays,
     onSuccess: () => {
       setCallendarDataState((e) => {
         const next = produce(e, (draft) => {
-          const index = e.findIndex(
-            (i) =>
-              i.month == Number(moment(callenderselectedDate, "jYYYY/jMM/jD").format("jMM")) &&
-              i.day === Number(moment(callenderselectedDate, "jYYYY/jMM/jD").format("jD"))
-          );
-          const x = { ...draft[index], is_reserved: !draft[index].is_reserved };
-          draft[index] = x;
+          for (const day of selectedDays) {
+            const index = draft.findIndex(
+              (i) =>
+                i.month == day.month && i.day === day.day && i.year == day.year,
+            );
+            if (index < 0) continue;
+            draft[index] = { ...draft[index], is_reserved: nextReservedStatus };
+          }
         });
-
-        // const index = e.findIndex((i) => i.day === Number(moment(callenderselectedDate, "jYYYY/jMM/jD").format("jD")));
-        // e[index].is_reserved = !e[index].is_reserved;
-
         return next;
       });
 
-      /* -------------------------------- IF TODAY -------------------------------- */
-
-      const selectedTime = moment(
-        `${selectedDateData?.year}/${selectedDateData?.month}/${selectedDateData?.day}`,
-        "jYYYY/jMM/jD"
-      ).format("YYYY/MM/DD");
-
-      if (selectedDateData && moment().isSame(selectedTime, "day")) {
-        setRefresh((e) => !e);
-      }
+      const hasToday = callenderselectedDates.some((selectedDate) =>
+        moment().isSame(
+          moment(selectedDate, "jYYYY/jMM/jD").format("YYYY/MM/DD"),
+          "day",
+        ),
+      );
+      if (hasToday) setRefresh((e) => !e);
       onHide();
     },
   });
@@ -59,14 +69,18 @@ const ChangeDayStatusComp = ({
   const onSubmit = () => {
     mutate({
       property_id: data?.id,
-      month: Number(moment(callenderselectedDate, "jYYYY/jMM/jD").format("jMM")),
-      year: Number(moment(callenderselectedDate, "jYYYY/jMM/jD").format("jYYYY")),
-      day: Number(moment(callenderselectedDate, "jYYYY/jMM/jD").format("jD")),
+      days: selectedDays,
+      is_reserved: nextReservedStatus,
     });
   };
   const onHide = () => {
     setShowConfirm(false);
   };
+
+  const confirmText =
+    selectedDays.length > 1
+      ? `آیا از ${nextReservedStatus ? "رزرو" : "خالی"} کردن ${selectedDays.length} ${_STRINGS.SELECTED_DAYS_COUNT} اطمینان دارید؟`
+      : `آیا از ${nextReservedStatus ? "رزرو" : "خالی"} کردن روز ${callenderselectedDates[0]} اطمینان دارید؟`;
 
   return (
     <div className="w-full">
@@ -75,12 +89,12 @@ const ChangeDayStatusComp = ({
         onClick={() => {
           setShowConfirm(true);
         }}
-        disabled={!selectedDateData}
         loading={isPending}
-        containerClass="w-full"
         width="w-full !py-1.5"
+        containerClass="w-full"
         roundedClass="rounded-full"
         title={_STRINGS.EMPTY_FULL}
+        disabled={selectedDays.length === 0}
       />
       <ConfirmModal
         isLoading={isPending}
@@ -88,9 +102,7 @@ const ChangeDayStatusComp = ({
         onConfirm={() => {
           onSubmit();
         }}
-        text={`آیا از ${
-          selectedDateData?.is_reserved ? "خالی" : "رزرو"
-        } کردن روز ${callenderselectedDate} اطمینان دارید؟`}
+        text={confirmText}
         onHide={onHide}
       />
     </div>

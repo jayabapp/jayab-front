@@ -1,17 +1,18 @@
-import React, { useCallback, useEffect, useRef, useState } from "react";
-
+import { useCallback, useEffect, useRef, useState } from "react";
+import { useChatStore, useStoreSocket } from "@/store";
 import { SingleChatDetailsDto } from "@/api_services/chat/chat.interface";
 import { ChatService } from "@/api_services/chat/chat.service";
-import { useChatStore, useStoreSocket } from "@/store";
 import { useMutation } from "@tanstack/react-query";
-import { debounce } from "lodash";
-import dynamic from "next/dynamic";
 import { isIOS } from "react-device-detect";
-import BtnLoading from "../shared/Button/BtnLoading";
-import ChatUploader from "../uploader/ChatUploader";
-import ChatInput from "./ChatInput";
-import ChatReply from "./ChatReply";
+
 import ExpiredPropertyModal from "./ExpiredPropertyModal";
+import ChatUploader from "../uploader/ChatUploader";
+import BtnLoading from "../shared/Button/BtnLoading";
+import ChatInput from "./ChatInput";
+import debounce from "lodash/debounce";
+import dynamic from "next/dynamic";
+import ChatReply from "./ChatReply";
+
 const EmojiPicker = dynamic(
   () => {
     return import("emoji-picker-react");
@@ -19,17 +20,17 @@ const EmojiPicker = dynamic(
   { ssr: true },
 );
 export interface ChatFooterTypes {
-  showProduct: boolean;
   keyoard: boolean;
-  chatId: string | number;
+  showProduct: boolean;
   product?: any | null;
-  cancleButton?: () => void | null;
+  chatId: string | number;
   callback?: () => void | null;
-  setKeyboard: (e: boolean) => void | null;
+  cancleButton?: () => void | null;
   scrollToBottom: () => void | null;
-  setRefresher: (e: (e: boolean) => boolean) => void | null;
   singleChatData?: SingleChatDetailsDto;
   setCursor: (e: number) => void | null;
+  setKeyboard: (e: boolean) => void | null;
+  setRefresher: (e: (e: boolean) => boolean) => void | null;
   setData: React.Dispatch<React.SetStateAction<[] | any[]>>;
 }
 
@@ -38,8 +39,6 @@ const ChatFooter = ({
   cancleButton,
   chatId,
   showProduct,
-  setCursor,
-  setRefresher,
   scrollToBottom,
   setKeyboard,
   keyoard,
@@ -62,44 +61,15 @@ const ChatFooter = ({
     onSuccess: (d) => {
       setText("");
       inputRef?.current?.blur();
-      // setCursor(0);
-      // setRefresher((e) => !e);
-      if (!!d?.message) {
-        setData((e) => [...e, d?.message]);
-      }
-      if (keyoard) {
-        scrollToBottom();
-      }
-      if (product && cancleButton) {
-        cancleButton();
-      }
-
-      if (!!callback) {
-        callback();
-      }
+      if (!!d?.message) setData((e) => [...e, d?.message]);
+      if (keyoard) scrollToBottom();
+      if (product && cancleButton) cancleButton();
+      if (!!callback) callback();
     },
     onError: (e: any) => {
-      if (e?.message_code == "CHAT10") {
-        setShowExpired(true);
-      }
+      if (e?.message_code == "CHAT10") setShowExpired(true);
     },
   });
-
-  // const checkTyping = useCallback(
-  //   debounce(() => {
-  //     setisTyping("false");
-  //   }, 3000),
-  //   []
-  // );
-
-  // useEffect(() => {
-  //   if (!!text) {
-  //     setisTyping("true");
-  //     checkTyping();
-  //   } else {
-  //     setisTyping("false");
-  //   }
-  // }, [text]);
 
   const checkIsTyping = useCallback(
     debounce(() => {
@@ -118,36 +88,18 @@ const ChatFooter = ({
     }
   }, [isTyping, socket, !!chatId]);
 
-  // useEffect(() => {
-  //   if (!!socket && singleChatData) {
-  //     if (!!text && isTyping == "true") {
-  //       socket.emit("chat:is-typing", {
-  //         chatroom_id: chatId,
-  //         is_typing: true,
-  //         participant_id: singleChatData?.self?.participant_id,
-  //       });
-  //     } else if (isTyping == "false") {
-  //       socket.emit("chat:is-typing", {
-  //         chatroom_id: chatId,
-  //         is_typing: false,
-  //         participant_id: singleChatData?.self?.participant_id,
-  //       });
-  //     }
-  //   }
-  // }, [isTyping, socket, !!singleChatData]);
-
   const submit = () => {
     if (
       !!singleChatData?.property?.is_expired &&
       singleChatData?.self?.user_id == singleChatData?.property?.owner?.user?.id
     )
       return setShowExpired(true);
-
     if ((text || !!image) && chatId) {
-      const body: { id: string | number; text: string; media_id?: number } = { id: chatId, text };
-      if (!!image) {
-        body.media_id = Number(image?.id);
-      }
+      const body: { id: string | number; text: string; media_id?: number } = {
+        id: chatId,
+        text,
+      };
+      if (!!image) body.media_id = Number(image?.id);
       sendMessage(body);
     }
   };
@@ -160,15 +112,11 @@ const ChatFooter = ({
   }, []);
 
   const _onKeyDown = (e: KeyboardEvent) => {
-    if (e?.code == "Enter") {
-      return submit();
-    }
+    if (e?.code == "Enter") return submit();
   };
 
   useEffect(() => {
-    if (keyoard) {
-      scrollToBottom();
-    }
+    if (keyoard) scrollToBottom();
   }, [keyoard]);
 
   const cancelReply = () => {
@@ -193,7 +141,11 @@ const ChatFooter = ({
         product && showProduct ? " pb-4 !h-36 bottom-0" : ""
       }`}
     >
-      {chatReply ? <ChatReply data={chatReply} cancleButton={cancelReply} /> : <></>}
+      {chatReply ? (
+        <ChatReply data={chatReply} cancleButton={cancelReply} />
+      ) : (
+        <></>
+      )}
       <div
         className={` ${isIOS ? "!h-16" : ""} flex   bg-white  dark:bg-dark-700  w-full   h-full  items-center gap-1  `}
       >
@@ -226,14 +178,14 @@ const ChatFooter = ({
         </div>
 
         <ChatInput
+          value={text}
           inputRef={inputRef}
+          onChangeText={handleTextChange}
+          maxRows={product && showProduct ? 1 : 4}
           onFocus={() => {
             setShowEmojiPicker(false);
             if (callback) callback();
           }}
-          maxRows={product && showProduct ? 1 : 4}
-          onChangeText={handleTextChange}
-          value={text}
         />
 
         <div className="flex shrink-0 items-center gap-1">
@@ -254,40 +206,42 @@ const ChatFooter = ({
           )}
           <ChatUploader
             withCrop
-            chatId={chatId}
-            link={"/attachments?type=CHAT"}
-            containerClass={"my-3"}
             item={image}
+            chatId={chatId}
+            containerClass={"my-3"}
+            sendMessage={sendMessage}
+            link={"/attachments?type=CHAT"}
             onSelect={(file) => {
               setImage(file);
             }}
             onDelete={() => {
               setImage(null);
             }}
-            sendMessage={sendMessage}
           />{" "}
         </div>
       </div>
 
-      <div className={`  ${showEmojiPicker ? " is-opend " : ""} accardion-class    ease-in-out w-full duration-500 `}>
+      <div
+        className={`  ${showEmojiPicker ? " is-opend " : ""} accardion-class    ease-in-out w-full duration-500 `}
+      >
         <div>
           <EmojiPicker
-            previewConfig={{ showPreview: false }}
+            open={true}
+            searchDisabled
             height={`50dvh`}
+            lazyLoadEmojis={true}
             skinTonesDisabled={true}
+            previewConfig={{ showPreview: false }}
+            className={"!w-full !p-0 !border-none !bg-transparent"}
             onEmojiClick={(e) => {
               setText((t) => `${t}${e?.emoji}`);
             }}
-            lazyLoadEmojis={true}
-            searchDisabled
-            className={"!w-full     !p-0 !border-none !bg-transparent"}
-            open={true}
           />
         </div>
       </div>
       <ExpiredPropertyModal
-        singleChatData={singleChatData}
         visibleModal={showExpired}
+        singleChatData={singleChatData}
         setVisibleModal={setShowExpired}
       />
     </div>

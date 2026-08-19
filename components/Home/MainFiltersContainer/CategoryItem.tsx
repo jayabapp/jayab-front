@@ -25,7 +25,10 @@ const CategoryItem = ({ item }: { item: HomeLandingDto }) => {
       >
         {" "}
         <Image
-          loading="eager"
+          // Same `fill`-without-`sizes` problem as HomeCityItem. This icon is a
+          // fixed size in CSS - `size-8` (32px) below md, `size-16` (64px) at md
+          // and above - so the widths are exact rather than viewport-relative.
+          sizes="(min-width: 768px) 64px, 32px"
           // src={imageError ? DefaultIcon : IMAGE_URL(data?.cover_location)}
           src={item?.image ? NEW_IMAGE_URL(item?.image) : "/assets/icons/shared/image_placeholder.svg"}
           alt={`icatImages${item?.title}`}

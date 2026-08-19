@@ -1,35 +1,27 @@
 "use client";
-import { RoomInfosDto } from "@/api_services/property/property.interface";
-import { PropertyService } from "@/api_services/property/property.service";
-import CreateEditProperty, { CreateProperyStepOne } from "@/components/properties/CreateEditProperty";
-import CreateEditPropertyEnvInfo, { CreateProperyStepThree } from "@/components/properties/CreateEditPropertyEnvInfo";
-import TitleCounter from "@/components/properties/TitleCounter";
-import PageHeaders from "@/components/headers/PageHeader";
-import Button from "@/components/shared/Button/Button";
-import FixedBottomContainer from "@/components/shared/FixedBottomContainer";
-import Counter from "@/components/shared/Form/Counter";
-import StepShower from "@/components/shared/StepShower";
-import { p2e } from "@/helpers/NumberConverter";
-import { useStoreInit } from "@/store";
-import { createPropertySteps } from "@/utils/constantss";
-import _STRINGS from "@/utils/LocalStrings";
-import { useMutation, useQuery } from "@tanstack/react-query";
-import { remove } from "lodash";
 
-import { useParams, usePathname, useRouter, useSearchParams } from "next/navigation";
-import React, { useEffect, useState } from "react";
+import { useParams, useRouter, useSearchParams } from "next/navigation";
+import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
+import { createPropertySteps } from "@/utils/constantss";
+import { useEffect, useState } from "react";
+import { GC_TIME, STALE_TIME } from "@/helpers/queryCache";
+import { PropertyService } from "@/api_services/property/property.service";
+import { RoomInfosDto } from "@/api_services/property/property.interface";
+
+import FixedBottomContainer from "@/components/shared/FixedBottomContainer";
 import LottieLoading from "@/components/shared/Lotties/LottieLoading";
+import TitleCounter from "@/components/properties/TitleCounter";
+import StepShower from "@/components/shared/StepShower";
+import _STRINGS from "@/utils/LocalStrings";
+import Button from "@/components/shared/Button/Button";
 
 const CreateProperty = () => {
   const searchParams = useSearchParams();
   const edit_mode = searchParams.get("edit_mode");
   const router = useRouter();
-
   const params = useParams();
   const { property_id } = params;
-  /* -------------------------------------------------------------------------- */
-  /*                             INIT PROP CREATION                             */
-  /* -------------------------------------------------------------------------- */
+
   const { data: initPropData, isLoading } = useQuery({
     queryKey: [PropertyService.OWNER_PROP_INIT_CACHEKEY, property_id],
     queryFn: () => {
@@ -37,8 +29,8 @@ const CreateProperty = () => {
         return PropertyService.InitProperty({ property_id: `${property_id}` });
       } else return null;
     },
-    gcTime: 0,
-    staleTime: 0,
+    staleTime: STALE_TIME.MEDIUM,
+    gcTime: GC_TIME.LONG,
   });
 
   const [values, setValues] = useState<RoomInfosDto>({
@@ -59,7 +51,6 @@ const CreateProperty = () => {
       const defaultData = initPropData?.bedrooms;
       setValues({
         additional_bed: defaultData?.additional_bed || 0,
-
         bathroom_general: defaultData?.bathroom_general || 0,
         bathroom_in_wc: defaultData?.bathroom_in_wc || 0,
         bathroom_master: defaultData?.bathroom_master || 0,
@@ -73,25 +64,23 @@ const CreateProperty = () => {
     }
   }, [initPropData]);
 
+  const queryClient = useQueryClient();
+
   const { mutate, isPending } = useMutation({
     mutationFn: PropertyService.CreatePropertySetBedroom,
     onSuccess: () => {
-      if (!!edit_mode) {
+      queryClient.invalidateQueries({
+        queryKey: [PropertyService.OWNER_PROP_INIT_CACHEKEY, property_id],
+      });
+      if (!!edit_mode)
         router.replace(`/profile/owner/properties/${property_id}/edit`);
-      } else {
+      else
         router.push(`/profile/owner/properties/${property_id}/edit/facility`);
-      }
     },
   });
   const onSubmit = () => {
-    if (!!initPropData?.id) {
-      mutate({ ...values, propertyId: initPropData?.id });
-    }
+    if (!!initPropData?.id) mutate({ ...values, propertyId: initPropData?.id });
   };
-
-  /* -------------------------------------------------------------------------- */
-  /*                               ONCHANGE FUNCS                               */
-  /* -------------------------------------------------------------------------- */
 
   const onChange = (value: string | number | null | number[], key: string) => {
     setValues((e) => ({ ...e, [key]: value }));
@@ -99,18 +88,17 @@ const CreateProperty = () => {
 
   const addRemoveRoom = (e: number) => {
     const length = values?.bedrooms?.length;
-    if (e > length) {
-      onChange([...values?.bedrooms, 0], "bedrooms");
-    } else {
+    if (e > length) onChange([...values?.bedrooms, 0], "bedrooms");
+    else
       onChange(
-        values?.bedrooms?.filter((e, index) => index != values?.bedrooms?.length - 1),
-        "bedrooms"
+        values?.bedrooms?.filter(
+          (e, index) => index != values?.bedrooms?.length - 1,
+        ),
+        "bedrooms",
       );
-    }
   };
   const updateRoom = (e: number, index: number) => {
     values.bedrooms[index] = e;
-
     onChange([...values?.bedrooms], "bedrooms");
   };
 
@@ -127,7 +115,9 @@ const CreateProperty = () => {
       ) : (
         <>
           {" "}
-          <p className="font-bold w-full text-start  text-sm md:text-base text-primary-700  ">{_STRINGS.ROOMS_INFO}</p>
+          <p className="font-bold w-full text-start  text-sm md:text-base text-primary-700  ">
+            {_STRINGS.ROOMS_INFO}
+          </p>
           <div className=" flex flex-col gap-2  border-b pb-4 w-full">
             {" "}
             <TitleCounter
@@ -197,7 +187,9 @@ const CreateProperty = () => {
             />
           </div>
           <div className=" flex flex-col gap-2  border-b pb-4 w-full">
-            <p className="font-bold w-full text-start  text-sm md:text-base text-primary-700  ">{_STRINGS.SHOWER}</p>
+            <p className="font-bold w-full text-start  text-sm md:text-base text-primary-700  ">
+              {_STRINGS.SHOWER}
+            </p>
             <TitleCounter
               disableInput={true}
               value={values?.bathroom_master}
@@ -235,14 +227,14 @@ const CreateProperty = () => {
       )}
       <FixedBottomContainer>
         <Button
+          loading={isPending}
+          width=" w-[90%] md:w-1/2"
+          roundedClass="rounded-full"
+          title={_STRINGS.SUBMIT_MOVE_ON}
+          containerClass="w-full flex items-center justify-center"
           onClick={() => {
             onSubmit();
           }}
-          loading={isPending}
-          containerClass="w-full flex items-center justify-center"
-          roundedClass="rounded-full"
-          width=" w-[90%] md:w-1/2"
-          title={_STRINGS.SUBMIT_MOVE_ON}
         />
       </FixedBottomContainer>
     </div>
