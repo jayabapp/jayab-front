@@ -1,9 +1,10 @@
-import { SinglePropDto } from "@/api_services/property/property.interface";
-import SimpleAccordion from "@/components/shared/SimpleAccorion";
-import numberWithCommas from "@/helpers/numberWithCommas";
-import _STRINGS from "@/utils/LocalStrings";
 import { isMobile, isTablet } from "react-device-detect";
+import { SinglePropDto } from "@/api_services/property/property.interface";
+
+import numberWithCommas from "@/helpers/numberWithCommas";
+import SimpleAccordion from "@/components/shared/SimpleAccorion";
 import LinearTextBlock from "./LinearTextBlock";
+import _STRINGS from "@/utils/LocalStrings";
 
 const GuestAccard = ({ data }: { data: SinglePropDto }) => {
   return (
@@ -12,57 +13,42 @@ const GuestAccard = ({ data }: { data: SinglePropDto }) => {
       item={{
         parenClass: " bg-white border border-gray-300 !mt-0  rounded-10 w-full",
       }}
-      title="تعداد نفرات و قیمت ها"
+      title={_STRINGS.GUEST_CAP_AND_EXTRA_COSTS}
     >
       <div className="flex items-center flex-col gap-4">
         <div className="flex w-full flex-col  gap-3">
           <p className=" font-bold">{_STRINGS.GUEST_CAP}</p>
 
-          <LinearTextBlock title={_STRINGS.STANDARD_GUEST_CAP} value={data?.std_capacity} unit={_STRINGS.NAFAR} />
-          <LinearTextBlock title={_STRINGS.MAX_GUEST_CAP} value={data?.max_capacity} unit={_STRINGS.NAFAR} />
+          <LinearTextBlock
+            unit={_STRINGS.NAFAR}
+            value={data?.std_capacity}
+            title={_STRINGS.STANDARD_GUEST_CAP}
+          />
+          <LinearTextBlock
+            unit={_STRINGS.NAFAR}
+            value={data?.max_capacity}
+            title={_STRINGS.MAX_GUEST_CAP}
+          />
+        </div>
+        <div className="flex w-full flex-col  gap-3">
+          <p className=" font-bold">{_STRINGS.EXTRA_COSTS}</p>
+
+          <LinearTextBlock
+            unit={_STRINGS.TOMAN}
+            title={_STRINGS.EXTRA_GUEST_PRICE}
+            value={numberWithCommas(data?.daily_price?.additional_person)}
+          />
+          <LinearTextBlock
+            unit={_STRINGS.TOMAN}
+            title={_STRINGS.CLEANING_PRiCE}
+            value={numberWithCommas(data?.daily_price?.cleaning)}
+          />
         </div>
         <div className="flex w-full flex-col  gap-3">
           <p className=" font-bold">{_STRINGS.RENT_TYPE}</p>
-
-          <LinearTextBlock title={_STRINGS.PROP_RENT_TYPE} value={data?.rent_type == "DAILY" ? _STRINGS.DAILY : ""} />
-        </div>
-        <div className="flex w-full flex-col  gap-3">
-          <p className=" font-bold">{_STRINGS.DAYLI_RENT_PRICE}</p>
-
           <LinearTextBlock
-            title={_STRINGS.WEEK_STARTER_DAYS_PRICE}
-            value={numberWithCommas(data?.daily_price?.normal)}
-            unit={_STRINGS.TOMAN}
-          />
-          <LinearTextBlock
-            title={_STRINGS.WEEK_WENSDAY_PRICE}
-            value={numberWithCommas(data?.daily_price.wednesday)}
-            unit={_STRINGS.TOMAN}
-          />
-          <LinearTextBlock
-            title={_STRINGS.WEEK_THURSDAY_PRICE}
-            value={numberWithCommas(data?.daily_price.thursday)}
-            unit={_STRINGS.TOMAN}
-          />
-          <LinearTextBlock
-            title={_STRINGS.WEEK_FRIDAY_PRICE}
-            value={numberWithCommas(data?.daily_price.friday)}
-            unit={_STRINGS.TOMAN}
-          />
-          <LinearTextBlock
-            title={_STRINGS.WEEK_PEAK_PRICE}
-            value={numberWithCommas(data?.daily_price.peak)}
-            unit={_STRINGS.TOMAN}
-          />
-          <LinearTextBlock
-            title={_STRINGS.CLEANING_PRiCE}
-            value={numberWithCommas(data?.daily_price.cleaning)}
-            unit={_STRINGS.TOMAN}
-          />
-          <LinearTextBlock
-            title={_STRINGS.EXTRA_GUEST_PRICE}
-            value={numberWithCommas(data?.daily_price.additional_person)}
-            unit={_STRINGS.TOMAN}
+            title={_STRINGS.PROP_RENT_TYPE}
+            value={data?.rent_type == "DAILY" ? _STRINGS.DAILY : ""}
           />
         </div>
       </div>

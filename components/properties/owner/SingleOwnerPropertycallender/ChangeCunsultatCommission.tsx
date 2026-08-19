@@ -1,26 +1,28 @@
-import { produce } from "immer";
-import { OwnerCallendarItemDto, SingleOwnerPropertyDto } from "@/api_services/property/property.interface";
-import { PropertyService } from "@/api_services/property/property.service";
-import ConfirmModal from "@/components/Modal/ConfirmModal";
-import Button from "@/components/shared/Button/Button";
-import _STRINGS from "@/utils/LocalStrings";
-import { useMutation } from "@tanstack/react-query";
-import moment from "moment-jalaali";
-import React, { useState } from "react";
-import ChangePriceModal from "./ChangePriceModal";
-import ChangeCommissionModal from "./ChangeCommissionModal";
+import { SingleOwnerPropertyDto } from "@/api_services/property/property.interface";
+import { OwnerCallendarItemDto } from "@/api_services/property/property.interface";
+import { useState } from "react";
 
-const ChangeCunsultatCommission = ({
-  data,
-  callenderselectedDate,
-  setCallendarDataState,
-  selectedDateData,
-}: {
+import ChangeCommissionModal from "./ChangeCommissionModal";
+import _STRINGS from "@/utils/LocalStrings";
+import Button from "@/components/shared/Button/Button";
+import Notify from "@/components/shared/Toast";
+
+export type TChangeCunsultatProps = {
   callenderselectedDate: string;
   selectedDateData?: OwnerCallendarItemDto;
   data: SingleOwnerPropertyDto;
-  setCallendarDataState: React.Dispatch<React.SetStateAction<OwnerCallendarItemDto[]>>;
-}) => {
+  setCallendarDataState: React.Dispatch<
+    React.SetStateAction<OwnerCallendarItemDto[]>
+  >;
+  isDisabled?: boolean;
+};
+
+const ChangeCunsultatCommission = ({
+  data,
+  isDisabled,
+  selectedDateData,
+  setCallendarDataState,
+}: TChangeCunsultatProps) => {
   const [showPriceRange, setShowPricerange] = useState(false);
 
   const onHide = () => {
@@ -32,21 +34,24 @@ const ChangeCunsultatCommission = ({
       {" "}
       <Button
         onClick={() => {
+          if (!!isDisabled) {
+            Notify({ body: _STRINGS.SELECT_ONE_DAY_ONLY, type: "warn" });
+            return;
+          }
           setShowPricerange(true);
         }}
-        disabled={!selectedDateData}
-        // loading={isPending}
         containerClass="w-full"
-        width="w-full  !text-base !px-0 md:!px-auto md:!text-base  !py-1.5"
-        roundedClass="rounded-full"
         title={_STRINGS.COMMISSION}
+        roundedClass="rounded-full"
+        disabled={!selectedDateData}
+        width="w-full  !text-base !px-0 md:!px-auto md:!text-base  !py-1.5"
       />
       <ChangeCommissionModal
         data={data}
-        setCallendarDataState={setCallendarDataState}
-        selectedDateData={selectedDateData}
         onHide={onHide}
         show={showPriceRange}
+        selectedDateData={selectedDateData}
+        setCallendarDataState={setCallendarDataState}
       />
     </div>
   );

@@ -1,28 +1,28 @@
-import { produce } from "immer";
-import { OwnerCallendarItemDto, SingleOwnerPropertyDto } from "@/api_services/property/property.interface";
-import { PropertyService } from "@/api_services/property/property.service";
-import ConfirmModal from "@/components/Modal/ConfirmModal";
-import Button from "@/components/shared/Button/Button";
-import _STRINGS from "@/utils/LocalStrings";
-import { useMutation, useQuery } from "@tanstack/react-query";
-import moment from "moment-jalaali";
-import React, { useState } from "react";
+import { SingleOwnerPropertyDto } from "@/api_services/property/property.interface";
+import { OwnerCallendarItemDto } from "@/api_services/property/property.interface";
+import { useState } from "react";
+
 import ChangePriceModal from "./ChangePriceModal";
-import { HomeService } from "@/api_services/home/home.service";
+import _STRINGS from "@/utils/LocalStrings";
+import Button from "@/components/shared/Button/Button";
+
+export type TChangePriceProps = {
+  callenderselectedDates: string[];
+  selectedDatesData: OwnerCallendarItemDto[];
+  data: SingleOwnerPropertyDto;
+  setCallendarDataState: React.Dispatch<
+    React.SetStateAction<OwnerCallendarItemDto[]>
+  >;
+  setRefresh: React.Dispatch<React.SetStateAction<boolean>>;
+};
 
 const ChangePriceComp = ({
   data,
-  callenderselectedDate,
-  setCallendarDataState,
-  selectedDateData,
   setRefresh,
-}: {
-  callenderselectedDate: string;
-  selectedDateData?: OwnerCallendarItemDto;
-  data: SingleOwnerPropertyDto;
-  setCallendarDataState: React.Dispatch<React.SetStateAction<OwnerCallendarItemDto[]>>;
-  setRefresh: React.Dispatch<React.SetStateAction<boolean>>;
-}) => {
+  selectedDatesData,
+  setCallendarDataState,
+  callenderselectedDates,
+}: TChangePriceProps) => {
   const [showPriceRange, setShowPricerange] = useState(false);
 
   const onHide = () => {
@@ -36,20 +36,20 @@ const ChangePriceComp = ({
         onClick={() => {
           setShowPricerange(true);
         }}
-        disabled={!selectedDateData}
-        // loading={isPending}
-        containerClass="w-full"
         width="w-full !py-1.5"
+        containerClass="w-full"
         roundedClass="rounded-full"
         title={_STRINGS.CHANGE_PRICE}
+        disabled={callenderselectedDates.length === 0}
       />
       <ChangePriceModal
         data={data}
-        setRefresh={setRefresh}
-        setCallendarDataState={setCallendarDataState}
-        selectedDateData={selectedDateData}
         onHide={onHide}
         show={showPriceRange}
+        setRefresh={setRefresh}
+        selectedDatesData={selectedDatesData}
+        setCallendarDataState={setCallendarDataState}
+        callenderselectedDates={callenderselectedDates}
       />
     </div>
   );

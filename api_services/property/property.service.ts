@@ -9,6 +9,7 @@ import {
   FacilitiesValuesDto,
   GetPropBadgeDto,
   GetPropertiesPlusFilters,
+  JalaaliDayDto,
   OwnerCallendarItemDto,
   OwnerPropsRangeDto,
   OwnerSinglePropertyAuthdata,
@@ -202,6 +203,29 @@ export class PropertyService {
     }
   }
 
+  static async updatePropertyStatusOfManyDays(dto: {
+    property_id: string | number | null;
+    days: JalaaliDayDto[];
+    is_reserved: boolean;
+  }) {
+    try {
+      const result = await apiCall<
+        { days: JalaaliDayDto[]; is_reserved: boolean },
+        OwnerCallendarItemDto[]
+      >(
+        "POST",
+        apiRoutes.OWNER_PROPERTIES_BULK_STATUS_UPDATE(dto?.property_id),
+        {
+          days: dto.days,
+          is_reserved: dto.is_reserved,
+        },
+      );
+      return result;
+    } catch (e) {
+      throw e;
+    }
+  }
+
   static async ownerPropertyPriceRangeLimits(dto: {
     property_id: string | number | null;
     year: string | number | null;
@@ -256,6 +280,36 @@ export class PropertyService {
         discounted_price: dto.discounted_price,
         price: dto.price,
       });
+      return result;
+    } catch (e) {
+      throw e;
+    }
+  }
+
+  /** تغییر قیمت چند روز با هم */
+  static async updatePropertyPriceOfManyDays(dto: {
+    property_id: string | number | null;
+    days: JalaaliDayDto[];
+    price: string | number | null;
+    discounted_price?: string | number | null;
+  }) {
+    try {
+      const result = await apiCall<
+        {
+          days: JalaaliDayDto[];
+          price: string | number | null;
+          discounted_price?: string | number | null;
+        },
+        OwnerCallendarItemDto[]
+      >(
+        "POST",
+        apiRoutes.OWNER_PROPERTIES_BULK_PRICE_UPDATE(dto?.property_id),
+        {
+          days: dto.days,
+          discounted_price: dto.discounted_price,
+          price: dto.price,
+        },
+      );
       return result;
     } catch (e) {
       throw e;

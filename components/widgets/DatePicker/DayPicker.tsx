@@ -1,8 +1,11 @@
-import { OwnerCallendarItemDto } from "@/api_services/property/property.interface";
-import moment from "moment-jalaali";
 import { useEffect, useMemo, useState } from "react";
+import { OwnerCallendarItemDto } from "@/api_services/property/property.interface";
+
+import moment from "moment-jalaali";
 import Day from "./Day";
+
 moment.loadPersian({ dialect: "persian-modern" });
+
 type props = {
   callenderData?: OwnerCallendarItemDto[] | undefined;
   month: string;
@@ -13,11 +16,35 @@ type props = {
   smallerDateFonts?: boolean;
   selectedDate?: string | number;
   setSelectedDay?: (e: any | null) => void | null;
-  options?: { valueType?: "persian" | "global"; showTimeOfTheDay?: boolean; disableDaySelect?: boolean };
+  options?: {
+    valueType?: "persian" | "global";
+    showTimeOfTheDay?: boolean;
+    disableDaySelect?: boolean;
+  };
   freeDaysOfMonth?: boolean;
+  multiSelect?: boolean;
+  selectedDays?: string[];
+  onToggleDay?: (date: string) => void;
 };
-const DAYS_OF_WEEK_ISO: { [key: string]: any } = { "1": 2, "2": 3, "3": 4, "4": 5, "5": 6, "6": 0, "7": 1 } as const;
-const daysOfOurLives = ["شنبه", "یک‌شنبه", "دوشنبه", "سه‌شنبه", "چهارشنبه", "پنج‌شنبه", "جمعه"];
+
+const DAYS_OF_WEEK_ISO: { [key: string]: any } = {
+  "1": 2,
+  "2": 3,
+  "3": 4,
+  "4": 5,
+  "5": 6,
+  "6": 0,
+  "7": 1,
+} as const;
+const daysOfOurLives = [
+  "شنبه",
+  "یک‌شنبه",
+  "دوشنبه",
+  "سه‌شنبه",
+  "چهارشنبه",
+  "پنج‌شنبه",
+  "جمعه",
+];
 const DayPicker = ({
   month,
   year,
@@ -29,8 +56,15 @@ const DayPicker = ({
   callenderData,
   active_days,
   smallerDateFonts,
+  multiSelect,
+  selectedDays,
+  onToggleDay,
 }: props) => {
-  const today = { day: Number(moment().format("jD")), month: moment().format("jMM"), year: moment().format("jYYYY") };
+  const today = {
+    day: Number(moment().format("jD")),
+    month: moment().format("jMM"),
+    year: moment().format("jYYYY"),
+  };
 
   const [selectedDayId, setSelectedDayId] = useState(
     !!selectedDate
@@ -41,14 +75,24 @@ const DayPicker = ({
         }
       : { day: moment().jDate(), month: month, year: year },
   );
-  const [numberOfDays, setNumberOfDays] = useState(moment.jDaysInMonth(Number(year), Number(month) - 1));
-
-  const [numberOfDaysLast, setNumberOfDaysLast] = useState(moment.jDaysInMonth(Number(year), Number(month) - 2));
-  const [startOfMonth, setStartOfMonth] = useState(
-    DAYS_OF_WEEK_ISO[`${moment(date, "jYYYY/jMM/jDD").startOf("jMonth").isoWeekday()}`],
+  const [numberOfDays, setNumberOfDays] = useState(
+    moment.jDaysInMonth(Number(year), Number(month) - 1),
   );
-  const [lastDaysData, setLastDaysData] = useState<{ [key: string]: any }[] | []>([]);
-  const [nextDaysData, setNextDaysData] = useState<{ [key: string]: any }[] | []>([]);
+
+  const [numberOfDaysLast, setNumberOfDaysLast] = useState(
+    moment.jDaysInMonth(Number(year), Number(month) - 2),
+  );
+  const [startOfMonth, setStartOfMonth] = useState(
+    DAYS_OF_WEEK_ISO[
+      `${moment(date, "jYYYY/jMM/jDD").startOf("jMonth").isoWeekday()}`
+    ],
+  );
+  const [lastDaysData, setLastDaysData] = useState<
+    { [key: string]: any }[] | []
+  >([]);
+  const [nextDaysData, setNextDaysData] = useState<
+    { [key: string]: any }[] | []
+  >([]);
 
   const [daysData, setDaysData] = useState(
     Array.from({ length: numberOfDays }, (e, i) => {
@@ -65,11 +109,15 @@ const DayPicker = ({
             month: month,
             year: year,
             price: callenderData?.find((e) => e?.day == i + 1)?.price,
-            is_reserved: callenderData?.find((e) => e?.day == i + 1)?.is_reserved,
-            discounted_price: callenderData?.find((e) => e?.day == i + 1)?.discounted_price,
+            is_reserved: callenderData?.find((e) => e?.day == i + 1)
+              ?.is_reserved,
+            discounted_price: callenderData?.find((e) => e?.day == i + 1)
+              ?.discounted_price,
             has_memo: !!callenderData?.find((e) => e?.day == i + 1)?.note,
             is_peak: !!callenderData?.find((e) => e?.day == i + 1)?.is_peak,
-            isActive: !!active_days.includes(moment(`${year}/${month}/${i + 1}`, `jYYYY/jMM/jD`).day()),
+            isActive: !!active_days.includes(
+              moment(`${year}/${month}/${i + 1}`, `jYYYY/jMM/jD`).day(),
+            ),
           };
         }),
       );
@@ -79,19 +127,12 @@ const DayPicker = ({
     setNumberOfDays(moment.jDaysInMonth(Number(year), Number(month) - 1));
 
     setNumberOfDaysLast(moment.jDaysInMonth(Number(year), Number(month) - 2));
-    setStartOfMonth(DAYS_OF_WEEK_ISO[`${moment(date, "jYYYY/jMM/jDD").startOf("jMonth").isoWeekday()}`]);
+    setStartOfMonth(
+      DAYS_OF_WEEK_ISO[
+        `${moment(date, "jYYYY/jMM/jDD").startOf("jMonth").isoWeekday()}`
+      ],
+    );
   }, [month, year, date]);
-
-  // useEffect(() => {
-  //   const lengthOfBefore = daysOfOurLives?.findIndex((e) => e == startOfMonth);
-  //   let lasts = numberOfDaysLast + 1;
-  //   setLastDaysData(
-  //     Array.from({ length: lengthOfBefore }, (e, i) => {
-  //       lasts = lasts - 1;
-  //       return { id: lasts };
-  //     }).reverse()
-  //   );
-  // }, [startOfMonth]);
 
   const lastDaysMemos = useMemo(() => {
     const lengthOfBefore = startOfMonth;
@@ -119,44 +160,30 @@ const DayPicker = ({
     );
   }, [lastDaysData, daysOfOurLives, daysData]);
 
-  // useEffect(() => {
-  //   const lengthOfBefore = daysOfOurLives?.findIndex((e) => e == startOfMonth);
-  //   setNextDaysData(
-  //     Array.from(
-  //       {
-  //         length:
-  //           lengthOfBefore == -1
-  //             ? 35 - daysData?.length
-  //             : lengthOfBefore > 4
-  //             ? 42 - (lengthOfBefore + daysData?.length)
-  //             : 35 - (lengthOfBefore + daysData?.length),
-  //       },
-  //       (e, i) => {
-  //         return { id: i + 1 };
-  //       }
-  //     )
-  //   );
-  // }, [lastDaysData]);
+  const persianDate = (dayId?: number | string) =>
+    moment(`${year}/${month}/${dayId}`, "jYYYY/jMM/jD").format("jYYYY/jMM/jD");
 
-  const selectADate = (e: { id?: number | string; reserved?: number | string }) => {
+  const selectADate = (e: {
+    id?: number | string;
+    reserved?: number | string;
+  }) => {
+    if (!!multiSelect) {
+      if (onToggleDay && e?.id) onToggleDay(persianDate(e?.id));
+      return;
+    }
     if (setSelectedDay && options?.valueType == "persian") {
-      setSelectedDay(moment(`${year}/${month}/${e?.id}`, "jYYYY/jMM/jD").format("jYYYY/jMM/jD"));
+      setSelectedDay(persianDate(e?.id));
     } else if (setSelectedDay && options?.valueType == "global") {
       setSelectedDay(`${year}/${month}/${e?.id}`);
     }
-    if (e?.id) {
+    if (e?.id)
       setSelectedDayId({ day: Number(e?.id), month: month, year: year });
-    }
   };
-  // useEffect(()=>{
-
-  // },[])
 
   return (
     <div className="grid grid-cols-7   transition-all duration-500 ease-in-out gap-y-1 md:gap-y-2 items-center">
       {" "}
       {lastDaysMemos?.map((e, i) => (
-        // <Day data={e} key={i} />
         <div key={`${i}start`}> </div>
       ))}
       {daysData?.map((e, i) => (
@@ -168,6 +195,11 @@ const DayPicker = ({
           key={i}
           onSelect={selectADate}
           selectedDayId={selectedDayId}
+          isMultiSelected={
+            !!multiSelect
+              ? !!selectedDays?.includes(persianDate(e?.id))
+              : undefined
+          }
           year={year}
           month={month}
           showTimeOfTheDay={options?.showTimeOfTheDay}
