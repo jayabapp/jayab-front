@@ -1,0 +1,57 @@
+name: CI
+
+on:
+  pull_request:
+    branches: [main]
+  push:
+    branches: [main]
+
+concurrency:
+  group: ci-${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+permissions:
+  contents: read
+
+jobs:
+  ci:
+    name: Typecheck, lint & build
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+
+    env:
+      # Build-time placeholders only. The build must not depend on the live
+      # API, so these point nowhere on purpose -- verified that the build
+      # completes with an unreachable NEXT_PUBLIC_BASE_URL.
+      NEXT_PUBLIC_BASE_URL: http://localhost:3000/api
+      NEXT_PUBLIC_SITE_URL: http://localhost:3037
+      NEXT_PUBLIC_WEBSITE_URL: http://localhost:3037
+      NEXT_PUBLIC_WEB_SITE: http://localhost:3037
+      NEXT_PUBLIC_TITLE: Jayab
+      NEXT_PUBLIC_PAYMENT_GATEWAY: zarinpal
+      SANDBOX_MODE: '1'
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: '24'
+          cache: yarn
+
+      - name: Install dependencies
+        run: yarn install --frozen-lockfile
+
+      - name: Typecheck
+        run: npx tsc --noEmit
+
+      # Non-blocking for now: the existing codebase has 512 eslint errors.
+      # Flip to a blocking step once those are cleaned up.
+      - name: Lint
+        continue-on-error: true
+        run: npx eslint .
+
+      - name: Build
+        run: npx next build
