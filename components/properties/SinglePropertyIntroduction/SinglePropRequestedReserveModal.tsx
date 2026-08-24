@@ -142,7 +142,8 @@ const SinglePropRequestedReserveModal = ({
                 <Image
                   fill
                   loading="lazy"
-                  quality={100}
+                  sizes="(min-width: 1024px) 6vw, 20vw"
+                  quality={75}
                   alt={data?.feature_image?.alt || ""}
                   src={
                     !!data?.feature_image

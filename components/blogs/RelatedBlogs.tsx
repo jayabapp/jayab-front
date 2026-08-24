@@ -30,6 +30,7 @@ const RelatedBlogs: FC<{ id: number }> = async ({ id }) => {
             <div className="cols-span-1 relative w-full aspect-square rounded-md overflow-clip">
               <Image
                 fill
+                sizes="(min-width: 768px) 7vw, 23vw"
                 className="w-full h-full group-hover:scale-110 transition-all object-cover rounded-md"
                 src={NEW_IMAGE_URL(i?.feature_image)}
                 alt={i?.title}

@@ -15,6 +15,7 @@ const ProvienceCard = ({ item, callback }: { item: NewCitiesListDto; callback: (
         <Image
           className=" rounded-md"
           fill
+          sizes="40px"
           src={!!item?.image ? NEW_IMAGE_URL(item?.image) : "/assets/icons/logo/mobile_header_logo.svg"}
           alt={item?.title}
         />

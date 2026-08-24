@@ -92,6 +92,7 @@ const PropertyInquery = () => {
               <div className="w-full  aspect-square relative ">
                 <Image
                   fill
+                  sizes="(min-width: 768px) 40vw, 96vw"
                   alt={selectedImage?.alt || ""}
                   className=" rounded-2xl  w-full object-cover aspect-square"
                   src={NEW_IMAGE_URL(selectedImage)}
