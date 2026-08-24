@@ -133,7 +133,8 @@ const HomeActiveReserve = () => {
                       <Image
                         fill
                         loading="lazy"
-                        quality={100}
+                        sizes="(min-width: 1024px) 8vw, 23vw"
+                        quality={75}
                         alt={data?.property?.feature_image?.alt || ""}
                         src={
                           !!data?.property?.feature_image

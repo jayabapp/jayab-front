@@ -90,6 +90,7 @@ const AuthPageComponent = () => {
           <div className="flex relative z-1  w-28 flex-col items-center  gap-2 h-fit aspect-square">
             <Image
               fill
+              unoptimized
               alt="logo"
               src={`/assets/icons/logo/logo.svg`}
               className="w-full aspect-square rounded-md object-contain"

@@ -159,7 +159,8 @@ const ReserveCard = ({
             <Image
               fill
               loading="lazy"
-              quality={100}
+              sizes="(min-width: 1024px) 10vw, 25vw"
+              quality={75}
               alt={data?.property?.feature_image?.alt || ""}
               src={
                 !!data?.property?.feature_image

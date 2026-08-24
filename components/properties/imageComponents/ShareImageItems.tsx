@@ -19,7 +19,13 @@ const ShareImageItems = ({
         isSelected ? " border-primary-700" : ""
       } `}
     >
-      <Image fill alt={image?.alt || ""} className="  w-full object-cover aspect-square" src={NEW_IMAGE_URL(image)} />
+      <Image
+        fill
+        sizes="(min-width: 768px) 10vw, 22vw"
+        alt={image?.alt || ""}
+        className="  w-full object-cover aspect-square"
+        src={NEW_IMAGE_URL(image)}
+      />
     </div>
   );
 };

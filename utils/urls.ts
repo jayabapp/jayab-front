@@ -3,14 +3,30 @@ export const baseUrl = `${Url}/api/v1`;
 
 export const baseUrlV = (v: string) => `${Url}/api/${v}`;
 export const imageUrl = `${Url}/`;
+/**
+ * Builds the public S3 URL for an attachment.
+ *
+ * `keyValue` selects a derivative (`medium` ~= half the stored width, `thumbnail`
+ * ~= a quarter). Both columns are nullable and are only populated for uploads made
+ * after derivative generation was restored, so a requested derivative that is
+ * absent falls back to the full-size `name` rather than producing a URL ending in
+ * `/null`. Callers can therefore always ask for the derivative they want.
+ */
 export const NEW_IMAGE_URL = (
-  item?: { bucket: string; end_point: string; path: string; name: string; thumbnail: string; medium: string } | null,
+  item?: {
+    bucket: string;
+    end_point: string;
+    path: string;
+    name: string;
+    thumbnail?: string | null;
+    medium?: string | null;
+  } | null,
   keyValue?: "name" | "thumbnail" | "medium",
 ) => {
-  if (item?.bucket && item?.bucket != null)
-    // return `https://${item?.bucket}.${item?.end_point}/${item?.path}/${keyValue ? item[keyValue] : item?.name}`;
-    return `https://${item?.bucket}.${item?.end_point}/${item?.path}/${item?.name}`;
-  else return "/assets/icons/logo/logo.svg";
+  if (item?.bucket && item?.bucket != null) {
+    const fileName = (keyValue && keyValue !== "name" ? item[keyValue] : null) || item?.name;
+    return `https://${item?.bucket}.${item?.end_point}/${item?.path}/${fileName}`;
+  } else return "/assets/icons/logo/logo.svg";
 };
 export const imageUrlBase = `${Url}/images/contents/`;
 export const IMAGE_URL = (path: string) => `${Url}/${path}`;
