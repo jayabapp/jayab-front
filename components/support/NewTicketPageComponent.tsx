@@ -1,78 +1,60 @@
 "use client";
 
-import React, { useState } from "react";
-import _STRINGS from "@/utils/LocalStrings";
-
-import { useMutation } from "@tanstack/react-query";
+import { useCreateSupportTicket } from "@features/support/hooks/useCreateSupportTicket";
 import { useRouter } from "next/navigation";
-import Button from "../shared/Button/Button";
-import FormInput from "../shared/Form/FormInput";
-import { SupportService } from "@/api_services/support/support.service";
-import MultiLineFormInput from "../shared/Form/MultiLineFormInput";
-const NewTicketPageComponent = ({ dataKey }: { dataKey: "SUGGESTION" | "TICKET" }) => {
+import { useState } from "react";
+
+import type { NewTicketFormProps } from "@/types/features/support/components";
+
+import MultiLineFormInput from "@/components/shared/Form/MultiLineFormInput";
+import FormInput from "@/components/shared/Form/FormInput";
+import _STRINGS from "@/utils/LocalStrings";
+import Button from "@/components/shared/Button/Button";
+
+const NewTicketPageComponent = ({ dataKey }: NewTicketFormProps) => {
   const router = useRouter();
   const [title, setTitle] = useState("");
-  const [message, setmessage] = useState("");
-  const [issue, setIssue] = useState<{ [key: string]: any }>({});
-
-  const { mutate, isPending } = useMutation({
-    mutationFn: SupportService.AddTicket,
-    onSuccess: () => {
-      if (dataKey == "SUGGESTION") router.replace("/profile/complains");
-      else {
-        router.replace("/profile/support");
-      }
-    },
+  const [message, setMessage] = useState("");
+  const { mutate, isPending } = useCreateSupportTicket(() => {
+    router.replace(
+      dataKey === "SUGGESTION" ? "/profile/complains" : "/profile/support",
+    );
   });
 
   return (
-    <div id="homeParent" className=" profile-container   transition-all duration-500 ease-in-out ">
-      <div className="flex mt-6 flex-col gap-5">
+    <div
+      id="homeParent"
+      className="profile-container transition-all duration-500 ease-in-out"
+    >
+      <div className="mt-6 flex flex-col gap-5">
         <FormInput
           item={{
             keyboard: "text",
-
             title: _STRINGS.TICKET_TITLE,
-            containerClass: "w-full ",
+            containerClass: "w-full",
             titleClass: "",
-            inputClass: "!rounded-md  ",
+            inputClass: "!rounded-md",
             autoFocus: false,
           }}
-          onChangeText={(v: string) => {
-            setTitle(v);
-          }}
+          onChangeText={setTitle}
           value={title}
-        />{" "}
-        {/* <TitleAnimatedFormSelect
-            title={_STRINGS?.C76}
-            item={{ placeholder: _STRINGS?.C76 }}
-            value={issue}
-            parentClass="w-full my-2"
-            onSelect={(e) => setIssue(e)}
-            list={formSelectList}
-          /> */}
+        />
         <MultiLineFormInput
           item={{
             keyboard: "text",
-
             title: _STRINGS.TICKET_TEXT,
-            containerClass: "w-full  ",
-
+            containerClass: "w-full",
             titleClass: "",
             rows: 7,
           }}
-          onChangeText={(v: string) => {
-            setmessage(v);
-          }}
+          onChangeText={setMessage}
           value={message}
         />
         <Button
-          containerClass="w-full flex items-center justify-end"
           loading={isPending}
-          onClick={() => {
-            mutate({ message, title, type: "TICKET" });
-          }}
-          title={_STRINGS?.SEND_TICKET}
+          title={_STRINGS.SEND_TICKET}
+          containerClass="flex w-full items-center justify-end"
+          onClick={() => mutate({ message, title, type: dataKey })}
         />
       </div>
     </div>

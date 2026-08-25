@@ -46,6 +46,48 @@ const eslintConfig = [
       ],
     },
   },
+  {
+    files: [
+      "components/elements/**/*.{ts,tsx}",
+      "components/support/**/*.{ts,tsx}",
+      "features/**/*.{ts,tsx}",
+      "hooks/useDebouncedValue.ts",
+      "lib/**/*.{ts,tsx}",
+      "types/**/*.ts",
+    ],
+    rules: {
+      "@typescript-eslint/consistent-type-imports": ["error", { prefer: "type-imports" }],
+      "react/function-component-definition": [
+        "error",
+        { namedComponents: "arrow-function", unnamedComponents: "arrow-function" },
+      ],
+      "no-restricted-imports": [
+        "error",
+        {
+          paths: [
+            {
+              name: "lodash",
+              message: 'Import the function directly instead, e.g. import debounce from "lodash/debounce".',
+            },
+          ],
+          patterns: [
+            {
+              group: ["../../*", "../../../*", "../../../../*"],
+              message: "Use a configured @ alias outside the current feature/module.",
+            },
+          ],
+        },
+      ],
+    },
+  },
+  {
+    // Orval bundles this mutator config with esbuild before TypeScript path
+    // aliases are available, so this one boundary intentionally stays relative.
+    files: ["lib/api/generated-client.ts"],
+    rules: {
+      "no-restricted-imports": "off",
+    },
+  },
 ];
 
 export default eslintConfig;

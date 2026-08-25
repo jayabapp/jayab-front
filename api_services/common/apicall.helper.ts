@@ -8,6 +8,17 @@ import axios from "axios";
 
 type Methods = "POST" | "PUT" | "DELETE" | "PATCH" | "GET";
 
+export type ApiCallOptions = {
+  version?: string;
+  passedToken?: string;
+  localRoute?: boolean;
+  signal?: AbortSignal;
+  serverAuth?: boolean;
+  isSocketToken?: boolean;
+  showErrorNotification?: boolean;
+  progressCallBack?: (e: unknown) => void | null;
+};
+
 interface SuccessResponse<K> {
   data: K;
   status: "successful" | "failed";
@@ -20,19 +31,7 @@ export async function apiCall<T, K>(
   method: Methods,
   url: string,
   body?: T,
-  options?: {
-    progressCallBack?: (e: any) => void | null;
-    isSocketToken?: boolean;
-    passedToken?: string;
-    version?: string;
-    localRoute?: boolean;
-    /**
-     * Server-side only. Set to false for calls that must stay cacheable —
-     * reading the auth cookie opts the surrounding route into dynamic
-     * rendering. Ignored in the browser, where the proxy attaches the token.
-     */
-    serverAuth?: boolean;
-  },
+  options?: ApiCallOptions,
 ): Promise<K | undefined> {
   try {
     const IS_FORM_DATA = !!body && body instanceof FormData;
@@ -56,6 +55,7 @@ export async function apiCall<T, K>(
         token,
       ),
       data: body,
+      signal: options?.signal,
       onUploadProgress: options?.progressCallBack,
     };
     if (method == "GET") {
@@ -84,7 +84,8 @@ export async function apiCall<T, K>(
     }
     return undefined;
   } catch (error: any) {
-    handleError(error, true);
+    if (axios.isCancel(error)) throw error;
+    handleError(error, options?.showErrorNotification !== false);
     if (error?.response?.status == 401 && isBrowser) {
       await endSession();
       window?.location?.replace("/");

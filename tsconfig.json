@@ -22,10 +22,21 @@
         "name": "next"
       }
     ],
+    "baseUrl": ".",
     "paths": {
       "@/*": [
         "./*"
-      ]
+      ],
+      "@app/*": ["./app/*"],
+      "@elements/*": ["./components/elements/*"],
+      "@features/*": ["./features/*"],
+      "@generated/*": ["./generated/*"],
+      "@hooks/*": ["./hooks/*"],
+      "@layouts/*": ["./components/layouts/*"],
+      "@lib/*": ["./lib/*"],
+      "@modules/*": ["./components/modules/*"],
+      "@templates/*": ["./components/templates/*"],
+      "@utils/*": ["./utils/*"]
     }
   },
   "include": [

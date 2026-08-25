@@ -1,92 +1,94 @@
 "use client";
-import { useMutation, useQuery } from "@tanstack/react-query";
-import { useParams } from "next/navigation";
-import { useEffect, useState } from "react";
 
-import { SupportService } from "@/api_services/support/support.service";
-import Modal from "@/components/Modal";
-import Button from "@/components/shared/Button/Button";
-import MultiLineFormInput from "@/components/shared/Form/MultiLineFormInput";
-import LottieLoading from "@/components/shared/Lotties/LottieLoading";
-import Notify from "@/components/shared/Toast";
-import Message from "@/components/support/Message";
+import { useEffect, useState } from "react";
+import { useSupportTicket } from "@features/support/hooks/useSupportTicket";
 import { useStoreSocket } from "@/store";
+import { useParams } from "next/navigation";
+
+import TicketDetailsSkeleton from "@/components/support/TicketDetailsSkeleton";
+import MultiLineFormInput from "@/components/shared/Form/MultiLineFormInput";
 import _STRINGS from "@/utils/LocalStrings";
+import Message from "@/components/support/Message";
+import Button from "@/components/shared/Button/Button";
+import Notify from "@/components/shared/Toast";
+import Modal from "@/components/Modal";
 
 const TicketsPage = () => {
-  const { notification } = useStoreSocket((e) => e);
-  const params = useParams();
-  const [message, setMessage] = useState<string>("");
-  const [disabled, setDisabled] = useState(false);
-
+  const params = useParams<{ id: string }>();
+  const { notification } = useStoreSocket((state) => state);
+  const [message, setMessage] = useState("");
   const [visibleModal, setVisibleModal] = useState(false);
-  const { data, refetch, isLoading } = useQuery({
-    queryKey: [SupportService?.SINGLE_TICKET_GET_CACHEKEY, params?.id],
-    queryFn: () => SupportService.GetSingleTicket({ id: `${params?.id}` }),
-    gcTime: 0,
-    staleTime: 0,
-  });
+  const { data, isPending, isReplyPending, refresh, reply } = useSupportTicket(
+    params.id,
+  );
 
-  const { mutate, isPending } = useMutation({
-    mutationFn: SupportService.ReplySingleTicket,
-    onSuccess: () => {
-      setDisabled(false);
-      setVisibleModal(false);
-      // setTitle("");
-      setMessage("");
-      refetch();
-    },
-    onError: () => {
-      setDisabled(false);
-    },
-  });
+  const handleSubmitMessage = () => {
+    if (!message.trim()) {
+      Notify({
+        type: "warn",
+        title: "تکمیل فرم",
+        body: "لطفا متن پیام را وارد نمایید",
+      });
+      return;
+    }
 
-  async function handleSubmitMessage() {
-    if (!message) return Notify({ type: "warn", title: "تکمیل فرم", body: "لطفا متن پیام را وارد نمایید" });
-    setDisabled(true);
-
-    mutate({ message, id: `${params?.id}` });
-  }
+    reply(
+      { id: params.id, message: message.trim() },
+      {
+        onSuccess: () => {
+          setVisibleModal(false);
+          setMessage("");
+        },
+      },
+    );
+  };
 
   useEffect(() => {
-    if (notification?.eventData?.event_type == "NewTicket" && notification?.eventData?.event_id == params?.id) {
-      refetch();
+    const eventData = notification?.eventData;
+    if (
+      eventData?.event_type === "NewTicket" &&
+      String(eventData.event_id) === params.id
+    ) {
+      void refresh();
     }
-  }, [notification]);
+  }, [notification, params.id, refresh]);
+
   return (
     <div
       id="homeParent"
-      className=" profile-container flex flex-col gap-4   !pb-24 transition-all duration-500 ease-in-out "
+      className="profile-container flex flex-col gap-4 !pb-24 transition-all duration-500 ease-in-out"
     >
-      {isLoading ? (
-        <LottieLoading />
+      {isPending ? (
+        <TicketDetailsSkeleton />
       ) : (
         <>
           <div className="w-full">
             <Message item={data} />
           </div>
-          <div className="mt-4 w-full flex flex-col gap-y-4">
-            {data?.replies?.map((e: any) => (
-              <div key={e?.id} className={` flex ${!!e?.by_admin ? "justify-end" : "justify-start"} `}>
-                <Message item={e} />
+          <div className="mt-4 flex w-full flex-col gap-y-4">
+            {data?.replies.map((ticketReply) => (
+              <div
+                key={ticketReply.id}
+                className={`flex ${ticketReply.by_admin ? "justify-end" : "justify-start"}`}
+              >
+                <Message item={ticketReply} />
               </div>
             ))}
           </div>
-
-          {/* {data?.status == 20 && ( */}
-          <div className="  fixed translate-x-1/2 md:translate-x-1/4  bg-white md:bg-transparent  border-t md:border-none  right-1/2  bottom-0 lg:bottom-0  w-full p-4 responsive-width z-40 flex flex-col items-center  ">
+          <div className="responsive-width fixed bottom-0 right-1/2 z-40 flex w-full translate-x-1/2 flex-col items-center border-t bg-white p-4 md:translate-x-1/4 md:border-none md:bg-transparent">
             <Button
-              disabled={data?.status == 100}
-              title={data?.status == 100 ? _STRINGS.TICKET_CLOSED : _STRINGS.ANSWER_MESSAGE}
+              disabled={data?.status === 100}
+              title={
+                data?.status === 100
+                  ? _STRINGS.TICKET_CLOSED
+                  : _STRINGS.ANSWER_MESSAGE
+              }
               onClick={() => setVisibleModal(true)}
-              width=" !border !border-white  !w-full   "
-              containerClass=" w-1/2 md:w-1/3"
-
-              // icon={<ChatBubbleLeftEllipsisIcon className="w-6 ml-2" />}
+              width="!w-full !border !border-white"
+              containerClass="w-1/2 md:w-1/3"
             />
-
             <Modal show={visibleModal} onHide={() => setVisibleModal(false)}>
-              <div className=" py-5 flex-col gap-4 flex px-3">
+              <div className="flex flex-col gap-4 px-3 py-5">
                 <MultiLineFormInput
                   item={{
                     title: _STRINGS.MESSAGE_TEXT,
@@ -95,14 +97,18 @@ const TicketsPage = () => {
                     maxLength: 500,
                     rows: 6,
                   }}
-                  onChangeText={(v: string) => setMessage(v)}
+                  onChangeText={setMessage}
                   value={message}
                 />
-                <Button loading={disabled} title={_STRINGS.SEND} width="w-full" onClick={handleSubmitMessage} />
+                <Button
+                  loading={isReplyPending}
+                  title={_STRINGS.SEND}
+                  width="w-full"
+                  onClick={handleSubmitMessage}
+                />
               </div>
             </Modal>
           </div>
-          {/* )} */}
         </>
       )}
     </div>
