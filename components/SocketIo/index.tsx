@@ -1,5 +1,7 @@
 import { useAuthStore, useChatStore, useStoreSocket } from "@/store";
+import { notificationKeys } from "@features/notifications/api/notification.keys";
 import { useStoreParams } from "@/store";
+import { useQueryClient } from "@tanstack/react-query";
 import { useRouter } from "next/navigation";
 import { useEffect } from "react";
 import { notify } from "../shared/Toast/notify";
@@ -9,6 +11,7 @@ import { io } from "socket.io-client";
 export const SocketIO = () => {
   const { isLogin } = useAuthStore((state) => state);
   const router = useRouter();
+  const queryClient = useQueryClient();
   useEffect(() => {
     const socketToken: string = localStorage.getItem("socket_token") || "";
     if (!isLogin) return;
@@ -28,9 +31,7 @@ export const SocketIO = () => {
     });
     socket.on("event:new-notification", (e) => {
       useStoreSocket.setState({ notification: e });
-      useStoreParams.setState((e) => ({
-        notificationsCount: (e?.notificationsCount || 0) + 1,
-      }));
+      void queryClient.invalidateQueries({ queryKey: notificationKeys.all });
       void notify({
         body: e?.body,
         title: "پیام جدید",
@@ -71,5 +72,8 @@ export const SocketIO = () => {
       useStoreSocket.setState({ connecting: true });
       console.log("-------disconect-------");
     });
-  }, [isLogin]);
+    return () => {
+      socket.disconnect();
+    };
+  }, [isLogin, queryClient, router]);
 };

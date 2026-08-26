@@ -2,13 +2,13 @@
 
 import { useAuthStore, useStoreInit, useStoreParams } from "@/store";
 import { Suspense, useEffect, useState } from "react";
-import { useMutation, useQuery } from "@tanstack/react-query";
+import { useUpdateProfileImage } from "@features/notifications/hooks/useUpdateProfileImage";
 import { isMobile, isTablet } from "react-device-detect";
+import { useLogoutUser } from "@features/notifications/hooks/useLogoutUser";
 import { profileItems } from "@/utils/constantss";
 import { AuthService } from "@/api_services/auth/auth.service";
-import { UserService } from "@/api_services/user/user.service";
-import { endSession } from "@/helpers/session";
 import { useRouter } from "next/navigation";
+import { useQuery } from "@tanstack/react-query";
 
 import ConfirmModal from "@/components/Modal/ConfirmModal";
 import ProfileItem from "@/components/profile/ProfileItem";
@@ -41,12 +41,7 @@ const Profile = () => {
     }
   }, [data]);
 
-  const logoutProcess = async () => {
-    await endSession();
-    useAuthStore.setState({ isLogin: false, isAdminSso: false });
-    useStoreInit.setState({ userInfo: null });
-    router.push("/");
-  };
+  const logoutProcess = useLogoutUser();
 
   const _logout = () => {
     void logoutProcess();
@@ -65,12 +60,7 @@ const Profile = () => {
     : [];
   const SharedProfileItems = platformProfileList?.filter((e) => !e?.guard);
 
-  const { mutate } = useMutation({
-    mutationFn: UserService.updateProfileImage,
-    onSuccess: (e) => {
-      if (!!e) useStoreInit.setState({ userInfo: e });
-    },
-  });
+  const { mutate } = useUpdateProfileImage();
 
   return (
     <div

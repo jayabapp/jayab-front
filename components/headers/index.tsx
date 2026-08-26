@@ -1,18 +1,16 @@
 "use client";
 
-import {
-  headerMobileSearchBlackList,
-  headerWithFullSeach,
-} from "@/utils/constantss";
 import { useAuthStore, useStoreInit, useStoreParams } from "@/store";
+import { memo, Suspense, useEffect, useState } from "react";
 import { useParams, usePathname, useRouter } from "next/navigation";
-import React, { Suspense, useEffect, useState } from "react";
+import { headerMobileSearchBlackList } from "@/utils/constantss";
+import { useNotificationBadge } from "@features/notifications/hooks/useNotificationBadge";
+import { headerWithFullSeach } from "@/utils/constantss";
 import { subscriptionStatus } from "@/helpers/subscriptionStatus";
 import { PropertyService } from "@/api_services/property/property.service";
 import { AdvisorService } from "@/api_services/advisor/advisor.propery";
 import { NEW_IMAGE_URL } from "@/utils/urls";
 import { ChatService } from "@/api_services/chat/chat.service";
-import { UserService } from "@/api_services/user/user.service";
 import { getCookie } from "cookies-next/client";
 import { useQuery } from "@tanstack/react-query";
 
@@ -24,9 +22,9 @@ import DrawerMenu from "../shared/DrawerMenu";
 import _STRINGS from "@/utils/LocalStrings";
 import throttle from "lodash/throttle";
 import dynamic from "next/dynamic";
+import Script from "next/script";
 import Button from "../shared/Button/Button";
 import Link from "next/link";
-import Script from "next/script";
 
 const PopSearchbox = dynamic(() => import("../SearchBoxComp/PopSearchbox"), {
   ssr: true,
@@ -93,8 +91,7 @@ const Header = ({ scroll }: { scroll?: number }) => {
   const params = useParams();
   const { room_slug, slug, chat_id } = params;
   const { isLogin } = useAuthStore((state: any) => state);
-  const { getBackHome, topHeaderVisible, notificationsCount } =
-    useStoreParams();
+  const { getBackHome, topHeaderVisible } = useStoreParams();
   const [isOpen, setIsOpen] = useState(false);
 
   const showTopHeader = () => {
@@ -132,17 +129,9 @@ const Header = ({ scroll }: { scroll?: number }) => {
     enabled: false,
   });
 
-  const { data: notifBadge } = useQuery({
-    queryKey: [UserService.NOTIFS_BADGE_CACHEKEY, isLogin],
-    queryFn: () => {
-      if (!!isLogin) return UserService.userNotifBadge();
-      else return null;
-    },
-  });
-  useEffect(() => {
-    if (!!notifBadge)
-      useStoreParams.setState({ notificationsCount: notifBadge });
-  }, [notifBadge]);
+  const { data: notificationsCount = 0 } = useNotificationBadge(
+    Boolean(isLogin),
+  );
 
   const { data: chaNotifBadge } = useQuery({
     queryKey: [ChatService.UNREAD_CHAT_COUNT_CACHEKEY, isLogin, pathname],
@@ -547,4 +536,4 @@ transition-all ease-out  duration-300  header-content-container w-full mx-auto d
   );
 };
 
-export default React.memo(Header);
+export default memo(Header);

@@ -1,9 +1,8 @@
 import { useAuthStore, useStoreInit, useStoreParams } from "@/store";
+import { useUpdateProfileImage } from "@features/notifications/hooks/useUpdateProfileImage";
 import { useEffect, useState } from "react";
+import { useLogoutUser } from "@features/notifications/hooks/useLogoutUser";
 import { profileItems } from "@/utils/constantss";
-import { UserService } from "@/api_services/user/user.service";
-import { useMutation } from "@tanstack/react-query";
-import { endSession } from "@/helpers/session";
 import { useRouter } from "next/navigation";
 import { isMobile } from "react-device-detect";
 
@@ -21,12 +20,7 @@ const Profile = ({}) => {
   const [isVisible, setisVisible] = useState(false);
   const { userInfo } = useStoreInit((state) => state);
 
-  const logoutProcess = async () => {
-    await endSession();
-    useAuthStore.setState({ isLogin: false, isAdminSso: false });
-    useStoreInit.setState({ userInfo: null });
-    router.push("/");
-  };
+  const logoutProcess = useLogoutUser();
 
   const _logout = () => {
     void logoutProcess();
@@ -41,30 +35,23 @@ const Profile = ({}) => {
   };
 
   useEffect(() => {
-    if (!!userInfo) {
-      setProfileImage(userInfo?.profile_image);
-    }
+    if (!!userInfo) setProfileImage(userInfo?.profile_image);
   }, [userInfo]);
 
-  const { mutate } = useMutation({
-    mutationFn: UserService.updateProfileImage,
-    onSuccess: (e) => {
-      if (!!e) useStoreInit.setState({ userInfo: e });
-    },
-  });
+  const { mutate } = useUpdateProfileImage();
 
   return (
     <div className="  z-5 w-full">
       {isVisible && (
         <ConfirmModal
-          text={_STRINGS.LOG_OUT_MESSAGE}
-          isVisible={isVisible}
           isLoading={false}
-          title={_STRINGS.LOGGING_OUT}
-          onHide={() => setisVisible(false)}
-          confirmText={_STRINGS.YES}
-          hideText={_STRINGS.NO}
           onConfirm={_logout}
+          isVisible={isVisible}
+          hideText={_STRINGS.NO}
+          confirmText={_STRINGS.YES}
+          title={_STRINGS.LOGGING_OUT}
+          text={_STRINGS.LOG_OUT_MESSAGE}
+          onHide={() => setisVisible(false)}
         />
       )}
       <div className=" bg-white    rounded-20  flex flex-col gap-2 pb-10 overflow-scroll    dark:border dark:border-zinc-600 dark:shadow-none ">

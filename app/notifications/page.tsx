@@ -1,75 +1,63 @@
 "use client";
 
-import { useStoreParams, useStoreSocket } from "@/store";
-import { useEffect, useState } from "react";
-import { UserService } from "@/api_services/user/user.service";
-import { useQuery } from "@tanstack/react-query";
+import { useNotifications } from "@features/notifications/hooks/useNotifications";
 
+import NotificationCardSkeleton from "@/components/notification/NotificationCardSkeleton";
 import InfiniteScroll from "react-infinite-scroll-component";
-import LottieLoading from "@/components/shared/Lotties/LottieLoading";
-import BtnLoading from "@/components/shared/Button/BtnLoading";
 import NotifCard from "@/components/notification/NotifCard";
 import EmptyList from "@/components/shared/Lotties/EmptyList";
-import isEmpty from "lodash/isEmpty";
-import last from "lodash/last";
+
+const NotificationSkeletonGrid = ({ count = 4 }: { count?: number }) => (
+  <div
+    className="grid grid-cols-1 gap-4 pb-4 md:grid-cols-2 md:p-4"
+    role="status"
+    aria-label="در حال دریافت اعلان‌ها"
+  >
+    {Array.from({ length: count }, (_, index) => (
+      <NotificationCardSkeleton key={index} />
+    ))}
+  </div>
+);
 
 const Notifications = () => {
-  const [cursor, setCursor] = useState(0);
-  const [notifs, setNotifs] = useState<any[]>([]);
-  const [refresher, setRefresher] = useState(false);
-  const { notification } = useStoreSocket((state) => state);
+  const {
+    notifications,
+    fetchNextPage,
+    hasNextPage,
+    isFetchingNextPage,
+    isPending,
+    isError,
+  } = useNotifications();
 
-  useEffect(() => {
-    useStoreParams.setState({ notificationsCount: 0 });
-    if (!!notification) {
-      setRefresher((e) => !e);
-      setCursor(0);
-    }
-  }, [notification]);
-  const { data: solidData, isLoading } = useQuery({
-    queryKey: [UserService?.NOTIFS_CACHEKEY, cursor, refresher],
-    queryFn: () => UserService?.userNotifs({ cursor }),
-    staleTime: 0,
-    gcTime: 0,
-  });
-
-  useEffect(() => {
-    if (solidData?.data)
-      if (cursor == 0) setNotifs((x) => solidData?.data);
-      else setNotifs((x) => [...x, ...solidData?.data]);
-  }, [solidData]);
+  if (isPending) return <NotificationSkeletonGrid />;
 
   return (
     <div
       id="homeParent"
-      className="  container   transition-all duration-500 ease-in-out "
+      className="container transition-all duration-500 ease-in-out"
     >
-      {!!isLoading && isEmpty(notifs) ? (
-        <LottieLoading />
+      {isError ? (
+        <div
+          role="alert"
+          className="rounded-lg bg-red-50 p-4 text-sm text-red-700"
+        >
+          دریافت اعلان‌ها با خطا مواجه شد.
+        </div>
+      ) : notifications.length === 0 ? (
+        <EmptyList />
       ) : (
         <InfiniteScroll
-          dataLength={notifs?.length} //This is important field to render the next data
-          next={() => {
-            setCursor(last(notifs)?.id || 0);
-          }}
-          hasMore={!isEmpty(solidData?.data) ? true : false}
-          className=" grid  grid-cols-1 md:grid-cols-2 gap-4 pb-4  md:p-4"
+          hasMore={Boolean(hasNextPage)}
+          dataLength={notifications.length}
+          next={() => void fetchNextPage()}
+          className="grid grid-cols-1 gap-4 pb-4 md:grid-cols-2 md:p-4"
           loader={
-            <div className="flex  col-span-2 flex-col gap-4 p-4">
-              <BtnLoading />
-            </div>
+            isFetchingNextPage ? <NotificationSkeletonGrid count={2} /> : null
           }
         >
-          {notifs?.length == 0 ? (
-            <div className="col-span-2">
-              {" "}
-              <EmptyList />
-            </div>
-          ) : (
-            notifs?.map((e) => (
-              <NotifCard item={e} key={`accouncments${e?.title}`} />
-            ))
-          )}
+          {notifications.map((notification) => (
+            <NotifCard item={notification} key={notification.id} />
+          ))}
         </InfiniteScroll>
       )}
     </div>
