@@ -21,40 +21,10 @@ const nextConfig: NextConfig = {
         hostname: "jayab-s3.hot.ir-central1.arvanstorage.ir",
       },
     ],
-    // WebP only. Every source in this app is already stored as WebP (the backend
-    // re-encodes on upload), so emitting AVIF as well doubled the number of
-    // on-disk cache entries per (url, width, quality) triple for a payload that
-    // is only marginally smaller. One format, one entry.
-    formats: ["image/webp"],
-
-    // Sources are capped at upload time by `resizeWidth`: 1024 for property /
-    // content / chat images, 512 for profiles, 256 for categories, 2048-2880 for
-    // banners. `optimizeImage` resizes with `withoutEnlargement: true`, so Next
-    // never upscales -- any requested width above the source width returns the
-    // source-sized image under a *separate* cache key. With the old ladder,
-    // w=1080, w=1200, w=1920, w=2048 and w=3840 all produced byte-identical
-    // output for a 1024px source: five cache entries for one payload.
-    //
-    // 1024 is here because it is the exact source ceiling for property and
-    // content images, which is the bulk of the corpus -- it gives them one
-    // canonical top variant instead of several interchangeable ones.
-    //
-    // 1200 and 1920 exist only for the banner sources, which really are wider
-    // than 1024. Dropping 1200 was tried and reverted: it left a 1024-1920 gap,
-    // and a DPR3 phone asking for a ~1170px slot fell through to w=1920 and pulled
-    // 682KB where w=1200 serves 277KB. For every <=1024 source, 1200 and 1920 are
-    // still clamped down to 1024 -- that costs an extra cache key, never extra bytes,
-    // and `maximumDiskCacheSize` below caps what those keys can add up to.
-    deviceSizes: [640, 750, 828, 1024, 1200, 1920],
+    formats: ["image/avif", "image/webp"],
+    deviceSizes: [640, 750, 828, 1080, 1200, 1920, 2048, 3840],
     imageSizes: [16, 32, 48, 64, 96, 128, 256, 384],
     minimumCacheTTL: 60 * 60 * 24,
-
-    // Without this Next falls back to `statfs(cacheDir).bavail * bsize / 2`, i.e.
-    // HALF THE FREE DISK, so the LRU never evicts in practice and
-    // `.next/cache/images` grows unbounded (360MB in 8h in production). The cost
-    // is not only disk: `initCacheEntries` reads every entry's full buffer at
-    // boot to size the LRU, so a large cache also inflates RSS on every restart.
-    maximumDiskCacheSize: 200 * 1024 * 1024,
     contentSecurityPolicy: "default-src 'self'; script-src 'none'; sandbox;",
   },
   compiler: {

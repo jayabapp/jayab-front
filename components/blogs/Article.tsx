@@ -13,7 +13,6 @@ const Article = ({ data, item }: { data: ContentDto; item?: { customeImageClass?
             <Image
               src={NEW_IMAGE_URL(data?.feature_image)}
               fill
-              sizes="(min-width: 768px) 30vw, 92vw"
               className={`aspect-square    rounded-[1.25rem] !object-contain ${item?.customeImageClass} !w-full`}
               alt={data?.feature_image?.alt || ""}
             />

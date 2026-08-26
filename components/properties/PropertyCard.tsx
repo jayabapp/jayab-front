@@ -141,9 +141,9 @@ const PropertyCard = ({
           <div className=" aspect-square w-full h-full relative">
             <Image
               fill
-              quality={75}
+              quality={60}
               loading="lazy"
-              sizes="(min-width: 1536px) 10vw, (min-width: 1280px) 12vw, (min-width: 768px) 18vw, 37vw"
+              sizes="(min-width: 1536px) calc(8.2vw - 19px), (min-width: 1280px) calc(10vw - 27px), (min-width: 768px) calc(20vw - 34px), calc(40vw - 24px)"
               alt={data?.feature_image?.alt || ""}
               src={
                 !!data?.feature_image

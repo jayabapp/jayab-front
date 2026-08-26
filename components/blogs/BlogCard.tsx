@@ -21,7 +21,6 @@ const LatestBlogCard = ({ item }: { item: ContentDto }) => {
           <Image
             src={NEW_IMAGE_URL(item?.feature_image, "medium")}
             fill
-            sizes="(min-width: 1536px) 26vw, (min-width: 768px) 30vw, 92vw"
             className=" object-cover  aspect-[2] "
             alt={item?.feature_image?.alt || item?.title}
           />

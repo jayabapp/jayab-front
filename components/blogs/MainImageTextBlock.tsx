@@ -46,7 +46,6 @@ const MainImageTextBlock = ({
         >
           <Image
             fill
-            sizes="(min-width: 1536px) 40vw, (min-width: 768px) 45vw, 92vw"
             alt={item?.title}
             title={item?.title}
             src={NEW_IMAGE_URL(item?.image)}

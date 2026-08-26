@@ -16,7 +16,6 @@ const GalleryItem: FC<{ item: ImageDto; _onPress: () => void }> = ({ item, _onPr
       <Image
         className="w-full h-full rounded-md object-cover"
         fill
-        sizes="(min-width: 768px) 9vw, 28vw"
         alt={item?.alt as string}
         src={NEW_IMAGE_URL(item)}
       />

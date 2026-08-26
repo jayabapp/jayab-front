@@ -98,7 +98,6 @@ const MiddleBanners = ({
                     isMobile && e?.image_sm ? e?.image_sm : e?.image,
                   )}
                   fill
-                  sizes="100vw"
                   alt={`${e?.id}`}
                   className="w-full h-full rounded-20 !object-cover overflow-hidden align-middle img-dark"
                 />

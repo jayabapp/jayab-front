@@ -156,7 +156,6 @@ export function convertHtmlToReact(htmlString: string) {
                 quality={75}
                 src={img.src}
                 loading="lazy"
-                sizes="(min-width: 1600px) 20vw, (min-width: 1024px) 30vw, (min-width: 768px) 48vw, 74vw"
                 alt={img.alt || ""}
                 title={img.title || ""}
                 width={img.width || undefined}
@@ -241,7 +240,6 @@ export function convertHtmlToReact(htmlString: string) {
                 src={product.img}
                 fill
                 quality={75}
-                sizes="(min-width: 1600px) 10vw, (min-width: 1024px) 15vw, (min-width: 768px) 34vw, 50vw"
                 alt={product?.title}
                 title={product?.title}
                 className="rounded-lg object-cover !aspect-square w-full"
