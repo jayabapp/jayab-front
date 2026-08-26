@@ -1,10 +1,11 @@
 "use client";
+/* eslint-disable react-hooks/set-state-in-effect */
 
-import { useMutation, useQuery } from "@tanstack/react-query";
 import { useParams, useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
-import { PropertyService } from "@/api_services/property/property.service";
+import { usePropertyAuthorization } from "@features/owner-property/hooks/usePropertyAuthorization";
 
+import PropertyEditStepSkeleton from "@features/owner-property/steps/PropertyEditStepSkeleton";
 import FixedBottomContainer from "@/components/shared/FixedBottomContainer";
 import StatusShower from "@/components/shared/StatusShower";
 import ProgressBar from "@/components/shared/progressbar";
@@ -19,51 +20,36 @@ const Authorize = () => {
   const params = useParams();
   const { property_id } = params;
   const [nationalImage, setNationalImage] = useState<any>(null);
-  const [totalLength, setTotalLength] = useState(0);
-  const [uploadedImages, setUploadedImages] = useState(0);
-  const [uploaderLoading, setUploaderLoading] = useState(false);
+  const [totalLength] = useState(0);
+  const [uploadedImages] = useState(0);
+  const [uploaderLoading] = useState(false);
   const [images, setImages] = useState<any[]>([]);
 
-  const { isLoading, data } = useQuery({
-    queryKey: [
-      PropertyService.OWNER_PROPERTIES_SINGLE_AUTH_CACHEKEY,
-      property_id,
-    ],
-    queryFn: () => {
-      if (!!property_id)
-        return PropertyService.GetSingleOwnerPropertyAuthStatus({
-          property_id: `${property_id}`,
-        });
-      else return null;
-    },
-  });
-
-  const { mutate, isPending } = useMutation({
-    mutationFn: PropertyService.RequestSingleOwnerPropertyAuth,
-    onSuccess: () => {
-      router.back();
-    },
-  });
-  const { mutate: editMutate, isPending: editPendin } = useMutation({
-    mutationFn: PropertyService.EditRequestSingleOwnerPropertyAuth,
-    onSuccess: () => {
-      router.back();
-    },
-  });
+  const propertyId = `${property_id ?? ""}`;
+  const { isLoading, data, request, edit } =
+    usePropertyAuthorization(propertyId);
+  const { mutate, isPending } = request;
+  const { mutate: editMutate, isPending: editPendin } = edit;
 
   const onSubmit = () => {
     if (data?.status) {
-      editMutate({
-        docs: images?.map((e) => e?.id) || [],
-        nc_image_id: nationalImage?.id,
-        property_id: `${property_id}`,
-      });
+      editMutate(
+        {
+          docs: images?.map((e) => e?.id) || [],
+          nc_image_id: nationalImage?.id,
+          property_id: `${property_id}`,
+        },
+        { onSuccess: () => router.back() },
+      );
     } else {
-      mutate({
-        docs: images?.map((e) => e?.id) || [],
-        nc_image_id: nationalImage?.id,
-        property_id: `${property_id}`,
-      });
+      mutate(
+        {
+          docs: images?.map((e) => e?.id) || [],
+          nc_image_id: nationalImage?.id,
+          property_id: `${property_id}`,
+        },
+        { onSuccess: () => router.back() },
+      );
     }
   };
 
@@ -77,6 +63,8 @@ const Authorize = () => {
       setImages(data?.docs || []);
     }
   }, [data]);
+
+  if (isLoading) return <PropertyEditStepSkeleton variant="media" />;
 
   return (
     <div

@@ -1,16 +1,17 @@
 "use client";
 
-import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
+/* eslint-disable react-hooks/set-state-in-effect */
+
 import { useRouter, useSearchParams } from "next/navigation";
-import { useParams, usePathname } from "next/navigation";
+import { usePropertyDraftStep } from "@features/owner-property/hooks/usePropertyDraftStep";
 import { createPropertySteps } from "@/utils/constantss";
-import { GC_TIME, STALE_TIME } from "@/helpers/queryCache";
 import { useEffect, useState } from "react";
 import { AssistantSendDto } from "@/api_services/property/property.interface";
-import { PropertyService } from "@/api_services/property/property.service";
+import { usePropertyDraft } from "@features/owner-property/hooks/usePropertyDraft";
+import { useParams } from "next/navigation";
 
 import FixedBottomContainer from "@/components/shared/FixedBottomContainer";
-import LottieLoading from "@/components/shared/Lotties/LottieLoading";
+import PropertyEditStepSkeleton from "@features/owner-property/steps/PropertyEditStepSkeleton";
 import StepShower from "@/components/shared/StepShower";
 import FormInput from "@/components/shared/Form/FormInput";
 import Checkbox from "@/components/shared/Form/Checkbox";
@@ -25,16 +26,8 @@ const CreatePropertyAssistance = () => {
   const params = useParams();
   const { property_id } = params;
 
-  const { data: initPropData, isLoading } = useQuery({
-    queryKey: [PropertyService.OWNER_PROP_INIT_CACHEKEY, property_id],
-    queryFn: () => {
-      if (!!property_id)
-        return PropertyService.InitProperty({ property_id: `${property_id}` });
-      else return null;
-    },
-    staleTime: STALE_TIME.MEDIUM,
-    gcTime: GC_TIME.LONG,
-  });
+  const propertyId = `${property_id ?? ""}`;
+  const { data: initPropData, isLoading } = usePropertyDraft(propertyId);
 
   const [values, setValues] = useState<AssistantSendDto>({
     assistant_full_name: "",
@@ -57,19 +50,15 @@ const CreatePropertyAssistance = () => {
     setValues((e) => ({ ...e, [key]: value }));
   };
 
-  const queryClient = useQueryClient();
-
-  const { mutate, isPending } = useMutation({
-    mutationFn: PropertyService.CreatePropertySetAssistant,
-    onSuccess: () => {
-      queryClient.invalidateQueries({
-        queryKey: [PropertyService.OWNER_PROP_INIT_CACHEKEY, property_id],
-      });
+  const { mutate, isPending } = usePropertyDraftStep(
+    "assistants",
+    propertyId,
+    () => {
       if (!!edit_mode)
         router.replace(`/profile/owner/properties/${property_id}/edit`);
       else router.push(`/profile/owner/properties/${property_id}/edit/terms`);
     },
-  });
+  );
   const onSubmit = () => {
     const needsAssistantContact = [2, 3].includes(
       Number(values?.show_mobile_type),
@@ -101,7 +90,7 @@ const CreatePropertyAssistance = () => {
         <StepShower steps={createPropertySteps(initPropData?.id)} value={8} />
       </div>
       {isLoading ? (
-        <LottieLoading />
+        <PropertyEditStepSkeleton variant="form" />
       ) : (
         <>
           <div className="flex flex-col gap-2 w-full">

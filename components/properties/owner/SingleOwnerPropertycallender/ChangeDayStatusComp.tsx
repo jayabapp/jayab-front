@@ -1,8 +1,7 @@
 import { SingleOwnerPropertyDto } from "@/api_services/property/property.interface";
 import { OwnerCallendarItemDto } from "@/api_services/property/property.interface";
-import { PropertyService } from "@/api_services/property/property.service";
+import { useUpdateDayStatus } from "@features/owner-property/hooks/useUpdateDayStatus";
 import { toJalaaliDays } from "./jalaaliDays";
-import { useMutation } from "@tanstack/react-query";
 import { useState } from "react";
 import { produce } from "immer";
 
@@ -38,9 +37,8 @@ const ChangeDayStatusComp = ({
     selectedDatesData.every((e) => !!e?.is_reserved);
   const nextReservedStatus = !isEveryDayReserved;
 
-  const { mutate, isPending } = useMutation({
-    mutationFn: PropertyService.updatePropertyStatusOfManyDays,
-    onSuccess: () => {
+  const { mutate, isPending } = useUpdateDayStatus(data?.id ?? "");
+  const submitStatus = (variables: Parameters<typeof mutate>[0]) => mutate(variables, { onSuccess: () => {
       setCallendarDataState((e) => {
         const next = produce(e, (draft) => {
           for (const day of selectedDays) {
@@ -63,11 +61,10 @@ const ChangeDayStatusComp = ({
       );
       if (hasToday) setRefresh((e) => !e);
       onHide();
-    },
-  });
+    }});
 
   const onSubmit = () => {
-    mutate({
+    submitStatus({
       property_id: data?.id,
       days: selectedDays,
       is_reserved: nextReservedStatus,

@@ -1,19 +1,19 @@
 "use client";
+/* eslint-disable react-hooks/set-state-in-effect */
 
-import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { useParams, useRouter, useSearchParams } from "next/navigation";
+import { usePropertyDraftStep } from "@features/owner-property/hooks/usePropertyDraftStep";
 import { createPropertySteps } from "@/utils/constantss";
-import { GC_TIME, STALE_TIME } from "@/helpers/queryCache";
 import { useEffect, useState } from "react";
-import { PropertyService } from "@/api_services/property/property.service";
+import { usePropertyDraft } from "@features/owner-property/hooks/usePropertyDraft";
 import { NEW_IMAGE_URL } from "@/utils/urls";
 import { ImageDto } from "@/api_services/auth/auth.interface";
 
+import PropertyEditStepSkeleton from "@features/owner-property/steps/PropertyEditStepSkeleton";
 import FixedBottomContainer from "@/components/shared/FixedBottomContainer";
 import UploadedItemShowCase from "@/components/uploader/UploadedItemShowCase";
 import FullscreenImage from "@/components/uploader/FullScreenImage";
 import NewMultUploader from "@/components/uploader/NewMultUploader";
-import LottieLoading from "@/components/shared/Lotties/LottieLoading";
 import StepShower from "@/components/shared/StepShower";
 import _STRINGS from "@/utils/LocalStrings";
 import isEmpty from "lodash/isEmpty";
@@ -37,25 +37,13 @@ const CreatePropertyImages = () => {
   const [primaryImageId, setPrimaryImageId] = useState<string | number>(0);
   const params = useParams();
   const { property_id } = params;
-  const { data: initPropData, isLoading } = useQuery({
-    queryKey: [PropertyService.OWNER_PROP_INIT_CACHEKEY, property_id],
-    queryFn: () => {
-      if (!!property_id) {
-        return PropertyService.InitProperty({ property_id: `${property_id}` });
-      } else return null;
-    },
-    staleTime: STALE_TIME.MEDIUM,
-    gcTime: GC_TIME.LONG,
-  });
+  const propertyId = `${property_id ?? ""}`;
+  const { data: initPropData, isLoading } = usePropertyDraft(propertyId);
 
-  const queryClient = useQueryClient();
-
-  const { mutate, isPending } = useMutation({
-    mutationFn: PropertyService.CreatePropertySetMdia,
-    onSuccess: () => {
-      queryClient.invalidateQueries({
-        queryKey: [PropertyService.OWNER_PROP_INIT_CACHEKEY, property_id],
-      });
+  const { mutate, isPending } = usePropertyDraftStep(
+    "media",
+    propertyId,
+    () => {
       if (!!edit_mode)
         router.replace(`/profile/owner/properties/${property_id}/edit`);
       else
@@ -63,7 +51,7 @@ const CreatePropertyImages = () => {
           `/profile/owner/properties/${property_id}/edit/environment`,
         );
     },
-  });
+  );
 
   useEffect(() => {
     if (!!initPropData?.feature_image_id) {
@@ -116,9 +104,7 @@ const CreatePropertyImages = () => {
           </p>
         </div>
         {isLoading ? (
-          <div className="w-full flex items-center justify-center">
-            <LottieLoading margin="w-full" />
-          </div>
+          <PropertyEditStepSkeleton variant="media" />
         ) : (
           <>
             <NewMultUploader

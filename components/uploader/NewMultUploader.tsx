@@ -1,13 +1,15 @@
 "use client";
-import React, { ReactEventHandler, useEffect, useRef, useState } from "react";
-import "react-advanced-cropper/dist/style.css";
 
+import { ReactEventHandler, useEffect, useRef, useState } from "react";
 import { AuthService } from "@/api_services/auth/auth.service";
 import { useMutation } from "@tanstack/react-query";
 import { toast } from "sonner";
+
+import FullscreenImage from "./FullScreenImage";
 import BtnLoading from "../shared/Button/BtnLoading";
 import Notify from "../shared/Toast";
-import FullscreenImage from "./FullScreenImage";
+
+import "react-advanced-cropper/dist/style.css";
 
 type props = {
   type?: string;
@@ -57,22 +59,24 @@ const NewMultUploader = ({
   images,
 }: props) => {
   const imagePickerRef = useRef<HTMLDivElement>(null);
+  const blobUrlsRef = useRef(new Set<string>());
+  const uploadControllersRef = useRef(
+    new Map<string | number, AbortController>(),
+  );
   const [show, setShow] = useState(false);
   const [showImage, setShowImage] = useState<any>("");
-  const [uploadingImages, setUploadingImages] = useState<any[]>([]);
   const { mutateAsync, isPending } = useMutation({
     mutationFn: AuthService.UploadUsersImage,
     mutationKey: [setImages],
     gcTime: 0,
 
     onSuccess: (data) => {
-      setImages((e) =>
-        e?.map((x) => {
-          if (x?.id == data?.id) {
-            x.data = data?.result;
-            return x;
-          } else return x;
-        }),
+      setImages((current) =>
+        current.some((image) => image?.id === data?.id)
+          ? current.map((image) =>
+              image?.id === data?.id ? { ...image, data: data.result } : image,
+            )
+          : current,
       );
     },
 
@@ -83,46 +87,31 @@ const NewMultUploader = ({
   });
 
   useEffect(() => {
-    if (!!imagesLoadings && !isPending) {
-      if (Object.keys(imagesLoadings).every((e) => imagesLoadings?.[e] == 1)) {
+    if (!!imagesLoadings && !isPending)
+      if (Object.keys(imagesLoadings).every((e) => imagesLoadings?.[e] == 1))
         setLoading(false);
-      }
-    }
   }, [imagesLoadings, isPending]);
 
-  // cleanup blob URLs on unmount
   useEffect(() => {
     return () => {
-      images.forEach((img) => {
-        if (img?.url?.startsWith("blob:")) {
-          URL.revokeObjectURL(img.url);
-        }
-      });
+      uploadControllersRef.current.forEach((controller) => controller.abort());
+      blobUrlsRef.current.forEach((url) => URL.revokeObjectURL(url));
+      blobUrlsRef.current.clear();
     };
-  }, [images]);
+  }, []);
 
-  const uploadTemp = async (file: Blob, id: number | string, isLast?: boolean) => {
+  const uploadTemp = async (file: Blob, id: number | string) => {
     console.log("try1");
     try {
-      // const compressedBlob = await imageCompression(file as any, {
-      //   maxSizeMB: 1,
-      //   maxWidthOrHeight: 1240,
-      //   useWebWorker: true,
-      //   maxIteration: 5,
-      // });
-
-      // const compressedFile = new File([compressedBlob], file.type || "image", {
-      //   type: file.type,
-      //   lastModified: Date.now(),
-      // });
-
       const formData = new FormData();
       formData.append("file", file);
-
+      const controller = new AbortController();
+      uploadControllersRef.current.set(id, controller);
       await mutateAsync({
         id,
         formData,
         link,
+        signal: controller.signal,
         onProgressCallBack: (p) => {
           setimagesLoadings((e) => ({
             ...e,
@@ -134,7 +123,7 @@ const NewMultUploader = ({
       setimagesLoadings((e) => ({ ...e, [id]: 1 }));
       setImages((e) => e?.filter((x) => x?.id != id));
     } finally {
-      // drop file reference
+      uploadControllersRef.current.delete(id);
       file = null as any;
     }
   };
@@ -143,8 +132,6 @@ const NewMultUploader = ({
     const target = e.target as HTMLInputElement;
     const files = target?.files ? target?.files : null;
     if (!files) return;
-
-    // Hard cap total images
     if (images.length + files.length > MAX_TOTAL_IMAGES) {
       return Notify({
         type: "error",
@@ -162,12 +149,9 @@ const NewMultUploader = ({
     const loadingsObj: { [key: string | number]: any } = {};
     setLoading(true);
     let filesUploding = [];
-    // const trimedFiles=files?.filter(e=>)
-
     for (let i = 0; i < files.length; i++) {
       let file = files?.[i];
       const id = `id_${file.lastModified}_${Math.random().toString(36).slice(2)}`;
-
       if (type === "image" && !file.type.includes("image/")) {
         toast.error("لطفا از فایل تصویر استفاده نمایید");
         continue;
@@ -179,23 +163,22 @@ const NewMultUploader = ({
       loadingsObj[id] = 0;
       filesUploding.push({ id, file });
       const objectUrl = URL.createObjectURL(file);
+      blobUrlsRef.current.add(objectUrl);
       setImages((prev) => [...prev, { url: objectUrl, id }]);
     }
-
     setimagesLoadings(loadingsObj);
-
-    // if (filesUploding?.length == files?.length) {
     for (let i = 0; i < filesUploding.length; i++) {
       let file = filesUploding?.[i];
-      await uploadTemp(file?.file, file?.id, i + 1 === filesUploding.length).finally(() => {
+      await uploadTemp(file?.file, file?.id).finally(() => {
         file = null as any;
       });
     }
-    // }
   };
   return (
     <div className={`flex w-fit ${containerClass}`} style={{ zIndex: 4 }}>
-      <div className={`flex w-fit flex-col items-center justify-start rounded-20 ${innerClasses?.secontParentClass}`}>
+      <div
+        className={`flex w-fit flex-col items-center justify-start rounded-20 ${innerClasses?.secontParentClass}`}
+      >
         <input
           multiple
           className="hidden"
@@ -279,7 +262,9 @@ const NewMultUploader = ({
                 onClick={() => {
                   if (item?.url?.startsWith("blob:")) {
                     URL.revokeObjectURL(item.url);
+                    blobUrlsRef.current.delete(item.url);
                   }
+                  uploadControllersRef.current.get(item?.id)?.abort();
                   onDelete();
                 }}
               >

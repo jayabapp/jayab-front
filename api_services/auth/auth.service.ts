@@ -203,6 +203,7 @@ export class AuthService {
     formData: FormData;
     link: string;
     id?: string | number;
+    signal?: AbortSignal;
     onProgressCallBack?: (e: any) => void | null;
   }) {
     try {
@@ -212,6 +213,7 @@ export class AuthService {
         dto.formData,
         {
           progressCallBack: dto.onProgressCallBack,
+          signal: dto.signal,
         },
       );
       return { result, id: dto?.id };

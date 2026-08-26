@@ -1,7 +1,6 @@
 import { SingleOwnerPropertyDto } from "@/api_services/property/property.interface";
 import { GetPropBadgeDto } from "@/api_services/property/property.interface";
-import { PropertyService } from "@/api_services/property/property.service";
-import { useMutation } from "@tanstack/react-query";
+import { usePropertyBadge } from "@features/owner-property/hooks/usePropertyBadge";
 
 import useCmsContent from "@/hooks/useCmsContent";
 import SmallLoading from "@/components/shared/Lotties/SmallLoading";
@@ -12,29 +11,35 @@ import Button from "@/components/shared/Button/Button";
 import Modal from "@/components/Modal";
 import React from "react";
 
-const BadgeRequestModal = ({
-  show,
-  onHide,
-  data,
-  badgeData,
-  setRefresh,
-}: {
-  data: SingleOwnerPropertyDto;
+type TBadgeRequestModalProps = {
   show: boolean;
   onHide: () => void | null;
+  data: SingleOwnerPropertyDto;
   badgeData: GetPropBadgeDto | null | undefined;
   setRefresh: React.Dispatch<React.SetStateAction<boolean>>;
-}) => {
-  const { mutate, isPending } = useMutation({
-    mutationFn: PropertyService.RequestSingleOwnerPropertyBadge,
-    onSuccess: () => {
-      if (!!setRefresh) setRefresh((e) => !e);
-      onHide();
-    },
-  });
+};
 
+const BadgeRequestModal = ({
+  show,
+  data,
+  onHide,
+  badgeData,
+  setRefresh,
+}: TBadgeRequestModalProps) => {
+  const {
+    request: { mutate, isPending },
+  } = usePropertyBadge(data?.id ?? "");
   const onRequest = () => {
-    if (data?.id) mutate({ property_id: data?.id });
+    if (data?.id)
+      mutate(
+        { property_id: data.id },
+        {
+          onSuccess: () => {
+            if (!!setRefresh) setRefresh((e) => !e);
+            onHide();
+          },
+        },
+      );
   };
 
   const { content: badgeContent, isLoading } = useCmsContent("badgeContent", {

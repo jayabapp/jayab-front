@@ -1,16 +1,23 @@
 "use client";
+
+/* eslint-disable react-hooks/set-state-in-effect */
 import { SingleOwnerPropertyDto } from "@/api_services/property/property.interface";
+import { useEffect, useState } from "react";
+import { useRouter } from "next/navigation";
+
+import SinglePropertyPricePart from "../../SinglePropertyPricePart";
+import VerifyPropertyModal from "../../VerifyPropertyModal";
+import AuthorizationStatus from "../../AuthorizationStatus";
 import StatusShower from "@/components/shared/StatusShower";
 import ShareLink from "@/components/shared/shareComponent/BrowserShare";
 import _STRINGS from "@/utils/LocalStrings";
 import Link from "next/link";
-import { useRouter } from "next/navigation";
-import { useEffect, useState } from "react";
-import AuthorizationStatus from "../../AuthorizationStatus";
-import SinglePropertyPricePart from "../../SinglePropertyPricePart";
-import VerifyPropertyModal from "../../VerifyPropertyModal";
 
-const SingleOwnerPropertyIntroduction = ({ data }: { data: SingleOwnerPropertyDto }) => {
+const SingleOwnerPropertyIntroduction = ({
+  data,
+}: {
+  data: SingleOwnerPropertyDto;
+}) => {
   const router = useRouter();
   const [showVerify, setShowVerify] = useState(false);
   const [propShownList, setPropShownList] = useState([]);
@@ -23,14 +30,12 @@ const SingleOwnerPropertyIntroduction = ({ data }: { data: SingleOwnerPropertyDt
       ? JSON.parse(localStorage?.getItem("VERIFY_MODAL_LIST") || "[]")
       : [];
     setPropShownList(alreadyShownModal);
-    if (!data?.is_authorized && !alreadyShownModal.includes(data?.id)) {
+    if (!data?.is_authorized && !alreadyShownModal.includes(data?.id))
       setShowVerify(true);
-    }
   }, [data]);
 
   const onHideVVerify = () => {
     const newArray = [...propShownList, data?.id];
-
     localStorage.setItem("VERIFY_MODAL_LIST", JSON.stringify(newArray));
     setShowVerify(false);
   };
@@ -38,7 +43,6 @@ const SingleOwnerPropertyIntroduction = ({ data }: { data: SingleOwnerPropertyDt
   const verifyCallBack = () => {
     const newArray = [...propShownList, data?.id];
     newArray?.shift();
-
     localStorage.setItem("VERIFY_MODAL_LIST", JSON.stringify(newArray));
     pusher(`/profile/owner/properties/${data?.id}/license`);
   };
@@ -47,23 +51,27 @@ const SingleOwnerPropertyIntroduction = ({ data }: { data: SingleOwnerPropertyDt
     <div className=" flex w-full  flex-col relative  gap-2">
       <div className="w-full flex items-start md:items-center justify-between gap-2">
         {" "}
-        <p className=" font-medium text-lg w-3/5 md:w-full md:text-2xl ">{data?.title}</p>
+        <p className=" font-medium text-lg w-3/5 md:w-full md:text-2xl ">
+          {data?.title}
+        </p>
         <AuthorizationStatus isAuthorized={data?.is_authorized} data={data} />
       </div>
       <div className=" w-full flex items-center justify-between">
         <div className="flex items-center gap-4">
           <div className="bg-black/10 rounded-md text-base  px-2 py-1  flex items-center justify-center">
             کد {data.code}
-          </div>{" "}
-          {/* <div className="flex items-center gap-1">
-          <img className="w-5 h-5 aspect-square" src="/assets/icons/adds/filled_heart.svg" />
-          <p className="text-base  opacity-60">{data?.favorites_count || 0}</p>
-        </div> */}
-          <ShareLink passedHref={process.env.NEXT_PUBLIC_WEBSITE_URL + `/rooms/${data?.code}`} />
+          </div>
+          <ShareLink
+            passedHref={
+              process.env.NEXT_PUBLIC_WEBSITE_URL + `/rooms/${data?.code}`
+            }
+          />
         </div>
 
         {!!data?.is_promoted ? (
-          <p className="  font-bold  text-primary-700  shrink-0  text-xs ">{_STRINGS.LADDERED}</p>
+          <p className="  font-bold  text-primary-700  shrink-0  text-xs ">
+            {_STRINGS.LADDERED}
+          </p>
         ) : (
           <></>
         )}
@@ -78,14 +86,20 @@ const SingleOwnerPropertyIntroduction = ({ data }: { data: SingleOwnerPropertyDt
       <div className="w-full flex  flex-row  items-center gap-2 justify-start">
         {" "}
         <p className="text-sm  shrink-0 ">{_STRINGS.TODAY_STATUS} :</p>
-        <p className={` text-sm font-bold ${!!data?.is_today_reserved ? " text-red-500 " : " text-primary-700 "} `}>
+        <p
+          className={` text-sm font-bold ${!!data?.is_today_reserved ? " text-red-500 " : " text-primary-700 "} `}
+        >
           {!!data?.is_today_reserved ? _STRINGS.OCCUPIED : _STRINGS.EMPTY}{" "}
         </p>
       </div>
       <div className="flex w-full gap-1">
-        <img src="/assets/icons/adds/pin_point_location.svg" className="w-5 h-5 aspect-square" />
+        <img
+          src="/assets/icons/adds/pin_point_location.svg"
+          className="w-5 h-5 aspect-square"
+        />
         <p className="text-xs mt-1">
-          {data?.province} - {data?.city} {data?.region ? ` - ${data?.region}` : ""}
+          {data?.province} - {data?.city}{" "}
+          {data?.region ? ` - ${data?.region}` : ""}
         </p>
       </div>
       <div className="w-full flex  py-2  border-primary-200 items-center justify-between ">
@@ -93,7 +107,9 @@ const SingleOwnerPropertyIntroduction = ({ data }: { data: SingleOwnerPropertyDt
 
         <div className=" flex items-center  gap-2">
           <div className=" rounded-full text-sm text-primary-700 bg-primary-400 flex  items-center justify-center h-7 w-24 ">
-            {data?.remaining_days ? `${data?.remaining_days} روز اعتبار` : `اعتبار ندارد`}
+            {data?.remaining_days
+              ? `${data?.remaining_days} روز اعتبار`
+              : `اعتبار ندارد`}
           </div>
           <Link
             prefetch={false}
@@ -106,7 +122,11 @@ const SingleOwnerPropertyIntroduction = ({ data }: { data: SingleOwnerPropertyDt
         </div>
       </div>
       <StatusShower data={data?.status} />
-      <VerifyPropertyModal callBack={verifyCallBack} show={showVerify} onHIde={onHideVVerify} />
+      <VerifyPropertyModal
+        show={showVerify}
+        onHIde={onHideVVerify}
+        callBack={verifyCallBack}
+      />
     </div>
   );
 };

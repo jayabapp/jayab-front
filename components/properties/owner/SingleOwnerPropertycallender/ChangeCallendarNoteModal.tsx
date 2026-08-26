@@ -1,61 +1,70 @@
 "use client";
-import { OwnerCallendarItemDto, SingleOwnerPropertyDto } from "@/api_services/property/property.interface";
-import { PropertyService } from "@/api_services/property/property.service";
-import Modal from "@/components/Modal";
-import Button from "@/components/shared/Button/Button";
-import { Divider } from "@/components/shared/Divider";
-import MultiLineFormInput from "@/components/shared/Form/MultiLineFormInput";
-import RangeWithTitle from "@/components/shared/Form/RangeWithTitle";
-import numberWithCommas from "@/helpers/numberWithCommas";
-import _STRINGS from "@/utils/LocalStrings";
-import { useMutation } from "@tanstack/react-query";
-import { produce } from "immer";
-import moment from "moment-jalaali";
-import React, { useEffect, useState } from "react";
 
-const ChangeCommissionModal = ({
-  show,
-  onHide,
-  selectedDateData,
-  setCallendarDataState,
-  data,
-}: {
+/* eslint-disable react-hooks/set-state-in-effect */
+
+import { useOwnerCalendarActions } from "@features/owner-property/hooks/useOwnerCalendarActions";
+import { SingleOwnerPropertyDto } from "@/api_services/property/property.interface";
+import { OwnerCallendarItemDto } from "@/api_services/property/property.interface";
+import { useEffect, useState } from "react";
+import { Divider } from "@/components/shared/Divider";
+import { produce } from "immer";
+
+import MultiLineFormInput from "@/components/shared/Form/MultiLineFormInput";
+import _STRINGS from "@/utils/LocalStrings";
+import Button from "@/components/shared/Button/Button";
+import Modal from "@/components/Modal";
+
+type TChangeCommissionModalProps = {
   show: boolean;
   onHide: () => void | null;
   selectedDateData?: OwnerCallendarItemDto;
-  setCallendarDataState: React.Dispatch<React.SetStateAction<OwnerCallendarItemDto[]>>;
+  setCallendarDataState: React.Dispatch<
+    React.SetStateAction<OwnerCallendarItemDto[]>
+  >;
   data: SingleOwnerPropertyDto;
-}) => {
+};
+
+const ChangeCommissionModal = ({
+  show,
+  data,
+  onHide,
+  selectedDateData,
+  setCallendarDataState,
+}: TChangeCommissionModalProps) => {
   const [note, setNote] = useState("");
 
-  const { mutate, isPending } = useMutation({
-    mutationFn: PropertyService.UpdateCallendarNote,
-    onSuccess: () => {
-      setCallendarDataState((e) => {
-        const next = produce(e, (draft) => {
-          const index = e.findIndex((i) => i.month == selectedDateData?.month && i.day === selectedDateData?.day);
-          const x = { ...draft[index], note: note };
-          draft[index] = x;
-        });
+  const {
+    note: { mutate, isPending },
+  } = useOwnerCalendarActions(data?.id ?? "");
+  const submitNote = (variables: Parameters<typeof mutate>[0]) =>
+    mutate(variables, {
+      onSuccess: () => {
+        setCallendarDataState((e) => {
+          const next = produce(e, (draft) => {
+            const index = e.findIndex(
+              (i) =>
+                i.month == selectedDateData?.month &&
+                i.day === selectedDateData?.day,
+            );
+            const x = { ...draft[index], note: note };
+            draft[index] = x;
+          });
 
-        return next;
-      });
-      onHide();
-    },
-  });
+          return next;
+        });
+        onHide();
+      },
+    });
 
   useEffect(() => {
-    if (!!selectedDateData) {
-      setNote(selectedDateData?.note || "");
-    }
-
+    if (!!selectedDateData) setNote(selectedDateData?.note || "");
     return () => {
       setNote("");
     };
   }, [selectedDateData]);
 
   const onSubmit = () => {
-    mutate({
+    submitNote({
       property_id: data?.id,
       month: Number(selectedDateData?.month),
       year: Number(selectedDateData?.year),
@@ -78,12 +87,12 @@ const ChangeCommissionModal = ({
 
         <Divider moreClass="w-full " />
         <Button
-          onClick={onSubmit}
-          title={_STRINGS.RECORD_CHANGES}
-          loading={isPending}
-          roundedClass="rounded-full"
-          containerClass="w-full"
           width="w-full"
+          onClick={onSubmit}
+          loading={isPending}
+          containerClass="w-full"
+          roundedClass="rounded-full"
+          title={_STRINGS.RECORD_CHANGES}
         />
       </div>
     </Modal>

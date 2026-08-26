@@ -1,18 +1,18 @@
 "use client";
+/* eslint-disable react-hooks/set-state-in-effect */
 
 import { useParams, useRouter, useSearchParams } from "next/navigation";
-import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { PricingPropertySendDto } from "@/api_services/property/property.interface";
+import { usePropertyDraftStep } from "@features/owner-property/hooks/usePropertyDraftStep";
 import { useEffect, useState } from "react";
-import { GC_TIME, STALE_TIME } from "@/helpers/queryCache";
 import { createPropertySteps } from "@/utils/constantss";
-import { PropertyService } from "@/api_services/property/property.service";
+import { usePropertyDraft } from "@features/owner-property/hooks/usePropertyDraft";
 
 import FormInputWithExternalUnit from "@/components/shared/Form/FormInputWithExternalUnit";
+import PropertyEditStepSkeleton from "@features/owner-property/steps/PropertyEditStepSkeleton";
 import FixedBottomContainer from "@/components/shared/FixedBottomContainer";
 import numberWithCommas from "@/helpers/numberWithCommas";
 import RangeWithTitle from "@/components/shared/Form/RangeWithTitle";
-import LottieLoading from "@/components/shared/Lotties/LottieLoading";
 import CmsInfoPopup from "@/components/shared/CmsInfoPopup";
 import TitleCounter from "@/components/properties/TitleCounter";
 import StepShower from "@/components/shared/StepShower";
@@ -27,34 +27,8 @@ const CreatePropertyPricing = () => {
   const params = useParams();
   const { property_id } = params;
 
-  const { data: initPropData, isLoading } = useQuery({
-    queryKey: [PropertyService.OWNER_PROP_INIT_CACHEKEY, property_id],
-    queryFn: () => {
-      if (!!property_id)
-        return PropertyService.InitProperty({ property_id: `${property_id}` });
-      else return null;
-    },
-    staleTime: STALE_TIME.MEDIUM,
-    gcTime: GC_TIME.LONG,
-  });
-
-  useEffect(() => {
-    if (!!initPropData?.daily_price) {
-      setPreventer(true);
-      setValues({
-        additional_person: initPropData?.daily_price?.additional_person || 0,
-        advisor_commission: initPropData?.advisor_commission || 0,
-        cleaning: initPropData?.daily_price?.cleaning || 0,
-        friday: initPropData?.daily_price?.friday || 0,
-        max_capacity: initPropData?.max_capacity || 0,
-        normal: initPropData?.daily_price?.normal || 0,
-        peak: initPropData?.daily_price?.peak || 0,
-        std_capacity: initPropData?.std_capacity || 0,
-        thursday: initPropData?.daily_price?.thursday || 0,
-        wednesday: initPropData?.daily_price?.wednesday,
-      });
-    }
-  }, [initPropData]);
+  const propertyId = `${property_id ?? ""}`;
+  const { data: initPropData, isLoading } = usePropertyDraft(propertyId);
 
   const [values, setValues] = useState<PricingPropertySendDto>({
     additional_person: "",
@@ -68,31 +42,44 @@ const CreatePropertyPricing = () => {
     thursday: "",
     wednesday: "",
   });
+  const [showNotifyPop, setShowNotifyPop] = useState(false);
+  const [preventer, setPreventer] = useState(false);
+
+  useEffect(() => {
+    if (!!initPropData?.daily_price) {
+      setPreventer(true);
+      setValues({
+        additional_person: initPropData.daily_price.additional_person || 0,
+        advisor_commission: initPropData.advisor_commission || 0,
+        cleaning: initPropData.daily_price.cleaning || 0,
+        friday: initPropData.daily_price.friday || 0,
+        max_capacity: initPropData.max_capacity || 0,
+        normal: initPropData.daily_price.normal || 0,
+        peak: initPropData.daily_price.peak || 0,
+        std_capacity: initPropData.std_capacity || 0,
+        thursday: initPropData.daily_price.thursday || 0,
+        wednesday: initPropData.daily_price.wednesday,
+      });
+    }
+  }, [initPropData]);
 
   const onChange = (value: string | number | null | number[], key: string) => {
     setValues((e) => ({ ...e, [key]: value }));
   };
 
-  const queryClient = useQueryClient();
-
-  const { mutate, isPending } = useMutation({
-    mutationFn: PropertyService.CreatePropertySetPrice,
-    onSuccess: () => {
-      queryClient.invalidateQueries({
-        queryKey: [PropertyService.OWNER_PROP_INIT_CACHEKEY, property_id],
-      });
+  const { mutate, isPending } = usePropertyDraftStep(
+    "price",
+    propertyId,
+    () => {
       if (!!!!edit_mode)
         router.replace(`/profile/owner/properties/${property_id}/edit`);
       else
         router.push(`/profile/owner/properties/${property_id}/edit/assistants`);
     },
-  });
+  );
   const onSubmit = () => {
     if (!!initPropData?.id) mutate({ ...values, propertyId: initPropData?.id });
   };
-
-  const [showNotifyPop, setShowNotifyPop] = useState(false);
-  const [preventer, setPreventer] = useState(false);
 
   const onHideNotify = () => {
     setPreventer(true);
@@ -119,7 +106,7 @@ const CreatePropertyPricing = () => {
         <StepShower steps={createPropertySteps(initPropData?.id)} value={7} />
       </div>
       {isLoading ? (
-        <LottieLoading />
+        <PropertyEditStepSkeleton variant="form" />
       ) : (
         <>
           {" "}

@@ -1,21 +1,24 @@
 "use client";
+/* eslint-disable react-hooks/set-state-in-effect */
 
-import { PropertySubsDto } from "@/api_services/property/property.interface";
-import { PropertyService } from "@/api_services/property/property.service";
-import OwnerPhotoUpgradeModal from "@/components/profile/photo-upgrade/OwnerPhotoUpgradeModal";
-import AddCardPricePart from "@/components/properties/AddCardPricePart";
-import Button from "@/components/shared/Button/Button";
-import FixedBottomContainer from "@/components/shared/FixedBottomContainer";
-import CheckboxCardContainer from "@/components/shared/Form/Checkbox/CheckboxCardContainer";
-import LottieLoading from "@/components/shared/Lotties/LottieLoading";
-import Notify from "@/components/shared/Toast";
-import SimpleBarChart from "@/components/widgets/chart/SimpleBarChart";
-import numberWithCommas from "@/helpers/numberWithCommas";
-import _STRINGS from "@/utils/LocalStrings";
-import { useMutation, useQuery } from "@tanstack/react-query";
-import isEmpty from "lodash/isEmpty";
 import { useParams, useRouter, useSearchParams } from "next/navigation";
+import { useOwnerSubscriptionPlans } from "@features/owner-property/hooks/useOwnerSubscription";
+import { usePayOwnerSubscription } from "@features/owner-property/hooks/useOwnerSubscription";
+import { usePropertyStatistics } from "@features/owner-property/hooks/usePropertyStatistics";
 import { useEffect, useState } from "react";
+import { useOwnerProperty } from "@features/owner-property/hooks/useOwnerProperty";
+import { PropertySubsDto } from "@/api_services/property/property.interface";
+
+import OwnerPhotoUpgradeModal from "@/components/profile/photo-upgrade/OwnerPhotoUpgradeModal";
+import CheckboxCardContainer from "@/components/shared/Form/Checkbox/CheckboxCardContainer";
+import FixedBottomContainer from "@/components/shared/FixedBottomContainer";
+import AddCardPricePart from "@/components/properties/AddCardPricePart";
+import numberWithCommas from "@/helpers/numberWithCommas";
+import SimpleBarChart from "@/components/widgets/chart/SimpleBarChart";
+import _STRINGS from "@/utils/LocalStrings";
+import isEmpty from "lodash/isEmpty";
+import Button from "@/components/shared/Button/Button";
+import Notify from "@/components/shared/Toast";
 
 const Subscription = () => {
   const router = useRouter();
@@ -25,30 +28,15 @@ const Subscription = () => {
   const GATE_WAY_REDIRECT_URL = searchParams?.get("GATE_WAY_REDIRECT_URL");
   const [selectedPlans, setSelectedPlans] = useState<PropertySubsDto[]>([]);
   const [price, setPrice] = useState(0);
-  const [promoteItemId, setPromoteItemId] = useState<number | undefined>(undefined);
+  const [promoteItemId, setPromoteItemId] = useState<number | undefined>(
+    undefined,
+  );
   const [canPromote, setCanPromote] = useState(false);
   const [shownPlans, setShownPlans] = useState<PropertySubsDto[]>([]);
   const [showUpgradeImage, setShowUpgradeImage] = useState(false);
 
-  /* -------------------------------------------------------------------------- */
-  /*                              SUBSCRIPTIONS                                 */
-  /* -------------------------------------------------------------------------- */
-
-  const { data: subscriptionPlans } = useQuery({
-    queryKey: [PropertyService.USER_SUBSCRIPTION_PLANS_CACHEKEY, property_id],
-    queryFn: () => {
-      if (property_id) {
-        return PropertyService.GetPropertySubscriptionPlans({
-          type: "PROPERTY",
-          property_id: `${property_id}`,
-        });
-      }
-    },
-  });
-
-  /* -------------------------------------------------------------------------- */
-  /*                         PRE SELECT PROMOTE PLAN                             */
-  /* -------------------------------------------------------------------------- */
+  const propertyId = `${property_id ?? ""}`;
+  const { data: subscriptionPlans } = useOwnerSubscriptionPlans(propertyId);
 
   useEffect(() => {
     if (subscriptionPlans && !isEmpty(subscriptionPlans?.list)) {
@@ -61,61 +49,30 @@ const Subscription = () => {
     }
   }, [subscriptionPlans]);
 
-  /* -------------------------------------------------------------------------- */
-  /*                              FILTERS SUB PLANS                             */
-  /* -------------------------------------------------------------------------- */
-
-  const { data, isLoading } = useQuery({
-    queryKey: [PropertyService.OWNER_PROPERTIES_CACHEKEY, property_id],
-    queryFn: () => {
-      if (!!property_id) {
-        return PropertyService.GetSingleOwnerProperty({
-          property_id: `${property_id}`,
-        });
-      } else return null;
-    },
-  });
+  const { data } = useOwnerProperty(propertyId);
 
   useEffect(() => {
     const ONE_DAY_PLAN_ID = 1;
-
     let filterdOnes = subscriptionPlans?.list;
     if (!!data?.remaining_days || !canPromote) {
-      filterdOnes = subscriptionPlans?.list?.filter((e) => e?.id != ONE_DAY_PLAN_ID);
+      filterdOnes = subscriptionPlans?.list?.filter(
+        (e) => e?.id != ONE_DAY_PLAN_ID,
+      );
     }
 
     setShownPlans(filterdOnes || []);
   }, [subscriptionPlans, data, canPromote]);
 
-  /* -------------------------------------------------------------------------- */
-  /*                                PROPERTY STATS                               */
-  /* -------------------------------------------------------------------------- */
-
-  const { data: statsData, isLoading: statsLoading } = useQuery({
-    queryKey: [PropertyService.SINGLE_OWNER_PROPERTY_STATS_CACHEKEY, property_id],
-    queryFn: () => {
-      if (property_id) {
-        return PropertyService.getPropertyStatistics({
-          propertyId: `${property_id}`,
-        });
-      }
-    },
-  });
-
-  /* -------------------------------------------------------------------------- */
-  /*                     FILL MISSING DAYS WITH ZERO                             */
-  /* -------------------------------------------------------------------------- */
+  const { data: statsData, isLoading: statsLoading } =
+    usePropertyStatistics(propertyId);
 
   const getFilledStats = () => {
     if (isEmpty(statsData?.statistics)) return [];
-
     const map = new Map<string, number>();
-
     statsData?.statistics?.forEach((e) => {
       const key = new Date(e.date).toISOString().split("T")[0];
       map.set(key, e.view_count);
     });
-
     const dates = Array.from(map.keys()).map((d) => new Date(d));
     const minDate = new Date(Math.min(...dates.map((d) => d.getTime())));
     const maxDate = new Date(Math.max(...dates.map((d) => d.getTime())));
@@ -124,7 +81,6 @@ const Subscription = () => {
 
     for (let d = new Date(minDate); d <= maxDate; d.setDate(d.getDate() + 1)) {
       const key = d.toISOString().split("T")[0];
-
       result.push({
         date: new Date(d),
         name: key,
@@ -135,59 +91,48 @@ const Subscription = () => {
     return result;
   };
 
-  /* -------------------------------------------------------------------------- */
-  /*                                 PAYMENT                                    */
-  /* -------------------------------------------------------------------------- */
-
-  const { mutate, isPending } = useMutation({
-    mutationFn: PropertyService.PayPropetySubscription,
-    onSuccess: (e) => {
-      if (e) router.push(e);
-    },
-  });
+  const { mutate, isPending } = usePayOwnerSubscription();
 
   const onSelect = (plan: PropertySubsDto) => {
     const isPromote = plan.is_promote;
     let arr = [...selectedPlans];
-
-    if (arr.find((e) => e.id === plan.id)) {
+    if (arr.find((e) => e.id === plan.id))
       arr = arr.filter((e) => e.id !== plan.id);
-    } else if (isPromote) {
-      arr = arr.filter((e) => !e.is_promote).concat(plan);
-    } else {
-      arr = arr.filter((e) => e.is_promote).concat(plan);
-    }
-
+    else if (isPromote) arr = arr.filter((e) => !e.is_promote).concat(plan);
+    else arr = arr.filter((e) => e.is_promote).concat(plan);
     setSelectedPlans(arr);
   };
 
-  /* -------------------------------------------------------------------------- */
-  /*                            FINAL PRICE CALCULATION                          */
-  /* -------------------------------------------------------------------------- */
-
   useEffect(() => {
-    const total = selectedPlans.reduce((acc, cur) => acc + (cur.price_with_discount || cur.price), 0);
+    const total = selectedPlans.reduce(
+      (acc, cur) => acc + (cur.price_with_discount || cur.price),
+      0,
+    );
     setPrice(total);
   }, [selectedPlans]);
 
   const onSubmit = () => {
     const subId = selectedPlans.find((e) => !e.is_promote)?.id;
     const promotId = selectedPlans.find((e) => e.is_promote)?.id;
-
-    if (!subId && !promotId) return Notify({ type: "warn", body: "لطفا پلن مورد نظر را انتخاب کنید" });
-
-    mutate({
-      gateway: process.env.NEXT_PUBLIC_PAYMENT_GATEWAY || "",
-      redirect_url: window.origin + (GATE_WAY_REDIRECT_URL ?? `/profile/owner/properties/${property_id}`),
-      property_id: `${property_id}`,
-      subscription_id: subId,
-      promote_id: promotId,
-    });
+    if (!subId && !promotId)
+      return Notify({ type: "warn", body: "لطفا پلن مورد نظر را انتخاب کنید" });
+    mutate(
+      {
+        gateway: process.env.NEXT_PUBLIC_PAYMENT_GATEWAY || "",
+        redirect_url:
+          window.origin +
+          (GATE_WAY_REDIRECT_URL ?? `/profile/owner/properties/${property_id}`),
+        property_id: `${property_id}`,
+        subscription_id: subId,
+        promote_id: promotId,
+      },
+      {
+        onSuccess: (url) => {
+          if (url) router.push(url);
+        },
+      },
+    );
   };
-
-  /* -------------------------------------------------------------------------- */
-  /*                                   UI                                       */
-  /* -------------------------------------------------------------------------- */
 
   return (
     <div className="profile-container flex flex-col gap-6">
@@ -197,7 +142,10 @@ const Subscription = () => {
             key={e.id}
             item={{
               disabled: !canPromote && e.id === promoteItemId,
-              hint: !canPromote && e.id === promoteItemId ? "نردبان، پس از فعال شدن آگهی قابل خرید می‌باشد." : "",
+              hint:
+                !canPromote && e.id === promoteItemId
+                  ? "نردبان، پس از فعال شدن آگهی قابل خرید می‌باشد."
+                  : "",
             }}
             isChecked={selectedPlans.some((_) => _.id === e.id)}
             onSelect={() => onSelect(e)}
@@ -205,7 +153,9 @@ const Subscription = () => {
             description={e.description}
           >
             <div className="flex gap-2">
-              <p className="font-bold text-sm text-primary-700">{_STRINGS.COST} :</p>
+              <p className="font-bold text-sm text-primary-700">
+                {_STRINGS.COST} :
+              </p>
               <AddCardPricePart
                 ribbon={e}
                 containerClass="flex gap-2 text-primary-700"
@@ -222,9 +172,7 @@ const Subscription = () => {
       {statsLoading ? (
         <>
           <p className="font-bold">{_STRINGS.VIEW_STATS}</p>
-          <div className="h-96">
-            <LottieLoading />
-          </div>
+          <div className="h-96 w-full animate-pulse rounded-2xl bg-zinc-200" />
         </>
       ) : !isEmpty(statsData?.statistics) ? (
         <div className="w-full">
@@ -238,7 +186,8 @@ const Subscription = () => {
       <FixedBottomContainer>
         <div className="w-full flex items-center justify-between p-2 md:px-4">
           <p className="text-sm">
-            {_STRINGS.PAYABLE_AMOUNT} : {numberWithCommas(price)} {_STRINGS.TOMAN}
+            {_STRINGS.PAYABLE_AMOUNT} : {numberWithCommas(price)}{" "}
+            {_STRINGS.TOMAN}
           </p>
           <Button
             disabled={isEmpty(selectedPlans)}
@@ -261,13 +210,15 @@ const Subscription = () => {
           }}
           onHideClick={() => {
             setShowUpgradeImage(false);
-            // onSubmit();
           }}
           noImageSubmit={() => {
             onSubmit();
           }}
           mutationOptions={{
-            redirect_url: window.origin + (GATE_WAY_REDIRECT_URL ?? `/profile/owner/properties/${property_id}`),
+            redirect_url:
+              window.origin +
+              (GATE_WAY_REDIRECT_URL ??
+                `/profile/owner/properties/${property_id}`),
             promote_id: selectedPlans.find((e) => e.is_promote)?.id,
             subscription_id: selectedPlans.find((e) => !e.is_promote)?.id,
           }}

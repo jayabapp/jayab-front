@@ -1,18 +1,19 @@
 "use client";
+/* eslint-disable react-hooks/set-state-in-effect */
 
-import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { useRouter, useSearchParams } from "next/navigation";
+import { useOwnerPropertyOptions } from "@features/owner-property/hooks/useOwnerPropertyOptions";
+import { usePropertyDraftStep } from "@features/owner-property/hooks/usePropertyDraftStep";
 import { FacilitiesValuesDto } from "@/api_services/property/property.interface";
 import { createPropertySteps } from "@/utils/constantss";
-import { GC_TIME, STALE_TIME } from "@/helpers/queryCache";
 import { useEffect, useState } from "react";
-import { PropertyService } from "@/api_services/property/property.service";
+import { usePropertyDraft } from "@features/owner-property/hooks/usePropertyDraft";
 import { useParams } from "next/navigation";
 
+import PropertyEditStepSkeleton from "@features/owner-property/steps/PropertyEditStepSkeleton";
 import FixedBottomContainer from "@/components/shared/FixedBottomContainer";
 import MultiLineFormInput from "@/components/shared/Form/MultiLineFormInput";
 import MultyPopUpSelect from "@/components/shared/Form/MultiSelectPopUpSelect";
-import LottieLoading from "@/components/shared/Lotties/LottieLoading";
 import FormCounter from "@/components/properties/FormCounter";
 import StepShower from "@/components/shared/StepShower";
 import Checkbox from "@/components/shared/Form/Checkbox";
@@ -27,16 +28,8 @@ const CreatePropertyFacility = () => {
   const params = useParams();
   const { property_id } = params;
 
-  const { data: initPropData, isLoading } = useQuery({
-    queryKey: [PropertyService.OWNER_PROP_INIT_CACHEKEY, property_id],
-    queryFn: () => {
-      if (!!property_id)
-        return PropertyService.InitProperty({ property_id: `${property_id}` });
-      else return null;
-    },
-    staleTime: STALE_TIME.MEDIUM,
-    gcTime: GC_TIME.LONG,
-  });
+  const propertyId = `${property_id ?? ""}`;
+  const { data: initPropData, isLoading } = usePropertyDraft(propertyId);
 
   const [values, setValues] = useState<FacilitiesValuesDto>({
     cool_heat: [],
@@ -48,26 +41,13 @@ const CreatePropertyFacility = () => {
     welfare: [],
   });
 
-  const { data: propertyTypes } = useQuery({
-    queryFn: () =>
-      PropertyService.GetUserPropertyGroup({
-        group: [
-          "POOL_TYPE",
-          "ENTERTAINMENT",
-          "KITCHEN",
-          "COOL_HEAT",
-          "WELFARE",
-        ],
-      }),
-    queryKey: [
-      PropertyService.USER_PROP_OPTIONS_CACHEKEY,
-      "POOL_TYPE",
-      "ENTERTAINMENT",
-      "KITCHEN",
-      "COOL_HEAT",
-      "WELFARE",
-    ],
-  });
+  const { data: propertyTypes } = useOwnerPropertyOptions([
+    "POOL_TYPE",
+    "ENTERTAINMENT",
+    "KITCHEN",
+    "COOL_HEAT",
+    "WELFARE",
+  ]);
 
   useEffect(() => {
     if (!!initPropData) {
@@ -98,19 +78,15 @@ const CreatePropertyFacility = () => {
     }
   }, [initPropData]);
 
-  const queryClient = useQueryClient();
-
-  const { mutate, isPending } = useMutation({
-    mutationFn: PropertyService.CreatePropertySetFacility,
-    onSuccess: () => {
-      queryClient.invalidateQueries({
-        queryKey: [PropertyService.OWNER_PROP_INIT_CACHEKEY, property_id],
-      });
+  const { mutate, isPending } = usePropertyDraftStep(
+    "facility",
+    propertyId,
+    () => {
       if (!!edit_mode)
         router.replace(`/profile/owner/properties/${property_id}/edit`);
       else router.push(`/profile/owner/properties/${property_id}/edit/price`);
     },
-  });
+  );
   const onSubmit = () => {
     if (!!initPropData?.id) mutate({ ...values, propertyId: initPropData?.id });
   };
@@ -150,7 +126,7 @@ const CreatePropertyFacility = () => {
       </div>
 
       {isLoading ? (
-        <LottieLoading />
+        <PropertyEditStepSkeleton variant="form" />
       ) : (
         <>
           {" "}

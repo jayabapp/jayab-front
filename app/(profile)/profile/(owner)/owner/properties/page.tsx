@@ -1,29 +1,29 @@
 "use client";
+
+import { useOwnerProperties } from "@features/owner-property/hooks/useOwnerProperties";
 import { PropertyListDto } from "@/api_services/property/property.interface";
-import { PropertyService } from "@/api_services/property/property.service";
-import OwnerPhotoUpgradeModal from "@/components/profile/photo-upgrade/OwnerPhotoUpgradeModal";
-import PropertyCard from "@/components/properties/PropertyCard";
-import EmptyList from "@/components/shared/Lotties/EmptyList";
-import LottieLoading from "@/components/shared/Lotties/LottieLoading";
-import { useQuery } from "@tanstack/react-query";
-import isEmpty from "lodash/isEmpty";
 import { useState } from "react";
 
+import OwnerPhotoUpgradeModal from "@/components/profile/photo-upgrade/OwnerPhotoUpgradeModal";
+import PropertyCardSkeleton from "@/components/properties/PropertyCardSkeleton";
+import PropertyCard from "@/components/properties/PropertyCard";
+import EmptyList from "@/components/shared/Lotties/EmptyList";
+import isEmpty from "lodash/isEmpty";
+
 const Properties = () => {
-  const [selectedPhotoUpgradeProperty, setSelectedPhotoUpgradeProperty] = useState<PropertyListDto | null>(null);
+  const [selectedPhotoUpgradeProperty, setSelectedPhotoUpgradeProperty] =
+    useState<PropertyListDto | null>(null);
 
-  const { data: properties, isLoading } = useQuery({
-    queryKey: [PropertyService.OWNER_PROPERTIES_LIST_CACHEKEY],
-
-    queryFn: () => {
-      return PropertyService.GetOwnerPropertiesList();
-    },
-  });
+  const { data: properties, isLoading } = useOwnerProperties();
 
   return (
     <div className=" profile-container    ">
       {isLoading ? (
-        <LottieLoading />
+        <div className="grid w-full grid-cols-1 gap-4 p-2 md:grid-cols-2">
+          {Array.from({ length: 4 }, (_, index) => (
+            <PropertyCardSkeleton key={index} />
+          ))}
+        </div>
       ) : isEmpty(properties) ? (
         <EmptyList />
       ) : (

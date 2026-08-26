@@ -1,15 +1,15 @@
 "use client";
+/* eslint-disable react-hooks/set-state-in-effect */
 
 import { useParams, useRouter, useSearchParams } from "next/navigation";
-import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
+import { usePropertyDraftStep } from "@features/owner-property/hooks/usePropertyDraftStep";
 import { createPropertySteps } from "@/utils/constantss";
 import { useEffect, useState } from "react";
-import { GC_TIME, STALE_TIME } from "@/helpers/queryCache";
-import { PropertyService } from "@/api_services/property/property.service";
+import { usePropertyDraft } from "@features/owner-property/hooks/usePropertyDraft";
 import { RoomInfosDto } from "@/api_services/property/property.interface";
 
+import PropertyEditStepSkeleton from "@features/owner-property/steps/PropertyEditStepSkeleton";
 import FixedBottomContainer from "@/components/shared/FixedBottomContainer";
-import LottieLoading from "@/components/shared/Lotties/LottieLoading";
 import TitleCounter from "@/components/properties/TitleCounter";
 import StepShower from "@/components/shared/StepShower";
 import _STRINGS from "@/utils/LocalStrings";
@@ -22,16 +22,8 @@ const CreateProperty = () => {
   const params = useParams();
   const { property_id } = params;
 
-  const { data: initPropData, isLoading } = useQuery({
-    queryKey: [PropertyService.OWNER_PROP_INIT_CACHEKEY, property_id],
-    queryFn: () => {
-      if (!!property_id) {
-        return PropertyService.InitProperty({ property_id: `${property_id}` });
-      } else return null;
-    },
-    staleTime: STALE_TIME.MEDIUM,
-    gcTime: GC_TIME.LONG,
-  });
+  const propertyId = `${property_id ?? ""}`;
+  const { data: initPropData, isLoading } = usePropertyDraft(propertyId);
 
   const [values, setValues] = useState<RoomInfosDto>({
     bedrooms: [],
@@ -64,20 +56,16 @@ const CreateProperty = () => {
     }
   }, [initPropData]);
 
-  const queryClient = useQueryClient();
-
-  const { mutate, isPending } = useMutation({
-    mutationFn: PropertyService.CreatePropertySetBedroom,
-    onSuccess: () => {
-      queryClient.invalidateQueries({
-        queryKey: [PropertyService.OWNER_PROP_INIT_CACHEKEY, property_id],
-      });
+  const { mutate, isPending } = usePropertyDraftStep(
+    "bedroom",
+    propertyId,
+    () => {
       if (!!edit_mode)
         router.replace(`/profile/owner/properties/${property_id}/edit`);
       else
         router.push(`/profile/owner/properties/${property_id}/edit/facility`);
     },
-  });
+  );
   const onSubmit = () => {
     if (!!initPropData?.id) mutate({ ...values, propertyId: initPropData?.id });
   };
@@ -98,8 +86,12 @@ const CreateProperty = () => {
       );
   };
   const updateRoom = (e: number, index: number) => {
-    values.bedrooms[index] = e;
-    onChange([...values?.bedrooms], "bedrooms");
+    onChange(
+      values.bedrooms.map((room, roomIndex) =>
+        roomIndex === index ? e : room,
+      ),
+      "bedrooms",
+    );
   };
 
   return (
@@ -111,7 +103,7 @@ const CreateProperty = () => {
         <StepShower steps={createPropertySteps(initPropData?.id)} value={5} />
       </div>
       {isLoading ? (
-        <LottieLoading />
+        <PropertyEditStepSkeleton variant="form" />
       ) : (
         <>
           {" "}

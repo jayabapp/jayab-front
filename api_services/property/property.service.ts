@@ -147,11 +147,11 @@ export class PropertyService {
 
   static async GetSingleOwnerProperty(dto: {
     property_id: string | number | null;
-  }) {
+  }, signal?: AbortSignal) {
     try {
       const result = await apiCall<unknown, SingleOwnerPropertyDto>(
         "GET",
-        apiRoutes.OWNER_PROPERTIES(dto?.property_id),
+        apiRoutes.OWNER_PROPERTIES(dto?.property_id), undefined, { signal },
       );
       return result;
     } catch (e) {
@@ -163,7 +163,7 @@ export class PropertyService {
     property_id: string | number | null;
     year: string | number | null;
     month: string | number | null;
-  }) {
+  }, signal?: AbortSignal) {
     try {
       const result = await apiCall<
         { year: string | number | null; month: string | number | null },
@@ -171,7 +171,7 @@ export class PropertyService {
       >("GET", apiRoutes.OWNER_PROPERTIES_SINGLE_CALLENDAR(dto?.property_id), {
         month: dto.month,
         year: dto.year,
-      });
+      }, { signal });
       return result;
     } catch (e) {
       throw e;
@@ -231,7 +231,7 @@ export class PropertyService {
     year: string | number | null;
     month: string | number | null;
     day: string | number | null;
-  }) {
+  }, signal?: AbortSignal) {
     try {
       const result = await apiCall<
         {
@@ -248,6 +248,7 @@ export class PropertyService {
           month: dto.month,
           day: dto.day,
         },
+        { signal },
       );
       return result;
     } catch (e) {
@@ -410,11 +411,11 @@ export class PropertyService {
 
   static async GetSingleOwnerPropertyBadgeStatus(dto: {
     property_id: string | number | null;
-  }) {
+  }, signal?: AbortSignal) {
     try {
       const result = await apiCall<unknown, GetPropBadgeDto>(
         "GET",
-        apiRoutes.OWNER_PROPERTIES_SINGLE_BADGE(dto?.property_id),
+        apiRoutes.OWNER_PROPERTIES_SINGLE_BADGE(dto?.property_id), undefined, { signal },
       );
       return result;
     } catch (e) {
@@ -441,11 +442,11 @@ export class PropertyService {
 
   static async GetSingleOwnerPropertyAuthStatus(dto: {
     property_id: string | number | null;
-  }) {
+  }, signal?: AbortSignal) {
     try {
       const result = await apiCall<unknown, OwnerSinglePropertyAuthdata>(
         "GET",
-        apiRoutes.OWNER_PROPERTIES_SINGLE_AUTH(dto?.property_id),
+        apiRoutes.OWNER_PROPERTIES_SINGLE_AUTH(dto?.property_id), undefined, { signal },
       );
       return result;
     } catch (e) {
@@ -503,11 +504,11 @@ export class PropertyService {
   /*                            CREATE AND EDIT PROP                            */
   /* -------------------------------------------------------------------------- */
 
-  static async InitProperty(dto: { property_id?: string | number | null }) {
+  static async InitProperty(dto: { property_id?: string | number | null }, signal?: AbortSignal) {
     try {
       const result = await apiCall<unknown, PropInitDto>(
         "GET",
-        apiRoutes.OWNER_PROP_INIT(dto?.property_id),
+        apiRoutes.OWNER_PROP_INIT(dto?.property_id), undefined, { signal },
       );
       return result;
     } catch (e) {
@@ -790,11 +791,11 @@ export class PropertyService {
   /*                            GET OWNER PORPERTIES                            */
   /* -------------------------------------------------------------------------- */
 
-  static async GetOwnerPropertiesList() {
+  static async GetOwnerPropertiesList(signal?: AbortSignal) {
     try {
       const result = await apiCall<unknown, PropertyListDto[]>(
         "GET",
-        apiRoutes.OWNER_PROPERTIES_LIST,
+        apiRoutes.OWNER_PROPERTIES_LIST, undefined, { signal },
       );
       return result;
     } catch (e) {
@@ -873,11 +874,11 @@ export class PropertyService {
 
   static async getPropertyStatistics(dto: {
     propertyId: string | number | null;
-  }) {
+  }, signal?: AbortSignal) {
     try {
       const result = await apiCall<unknown, PropertyStatsDto>(
         "GET",
-        apiRoutes.SINGLE_OWNER_PROPERTY_STATS(dto.propertyId),
+        apiRoutes.SINGLE_OWNER_PROPERTY_STATS(dto.propertyId), undefined, { signal },
       );
       return result;
     } catch (e) {

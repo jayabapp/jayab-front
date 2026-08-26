@@ -1,10 +1,10 @@
 "use client";
+/* eslint-disable react-hooks/set-state-in-effect */
 
+import { useOwnerCalendarActions } from "@features/owner-property/hooks/useOwnerCalendarActions";
 import { SingleOwnerPropertyDto } from "@/api_services/property/property.interface";
 import { OwnerCallendarItemDto } from "@/api_services/property/property.interface";
 import { useEffect, useState } from "react";
-import { PropertyService } from "@/api_services/property/property.service";
-import { useMutation } from "@tanstack/react-query";
 import { Divider } from "@/components/shared/Divider";
 import { produce } from "immer";
 
@@ -16,13 +16,7 @@ import CmsText from "@/components/shared/CmsText";
 import Button from "@/components/shared/Button/Button";
 import Modal from "@/components/Modal";
 
-const ChangeCommissionModal = ({
-  show,
-  onHide,
-  selectedDateData,
-  setCallendarDataState,
-  data,
-}: {
+type TChangeCommissionModalProps = {
   show: boolean;
   onHide: () => void | null;
   selectedDateData?: OwnerCallendarItemDto;
@@ -30,28 +24,39 @@ const ChangeCommissionModal = ({
     React.SetStateAction<OwnerCallendarItemDto[]>
   >;
   data: SingleOwnerPropertyDto;
-}) => {
+};
+
+const ChangeCommissionModal = ({
+  show,
+  data,
+  onHide,
+  selectedDateData,
+  setCallendarDataState,
+}: TChangeCommissionModalProps) => {
   const [commission, setCommission] = useState(0);
 
-  const { mutate, isPending } = useMutation({
-    mutationFn: PropertyService.UpdateAdvisorCommission,
-    onSuccess: () => {
-      setCallendarDataState((e) => {
-        const next = produce(e, (draft) => {
-          const index = e.findIndex(
-            (i) =>
-              i.month == selectedDateData?.month &&
-              i.day === selectedDateData?.day,
-          );
-          const x = { ...draft[index], advisor_commission: commission };
-          draft[index] = x;
-        });
+  const {
+    commission: { mutate, isPending },
+  } = useOwnerCalendarActions(data?.id ?? "");
+  const submitCommission = (variables: Parameters<typeof mutate>[0]) =>
+    mutate(variables, {
+      onSuccess: () => {
+        setCallendarDataState((e) => {
+          const next = produce(e, (draft) => {
+            const index = e.findIndex(
+              (i) =>
+                i.month == selectedDateData?.month &&
+                i.day === selectedDateData?.day,
+            );
+            const x = { ...draft[index], advisor_commission: commission };
+            draft[index] = x;
+          });
 
-        return next;
-      });
-      onHide();
-    },
-  });
+          return next;
+        });
+        onHide();
+      },
+    });
 
   useEffect(() => {
     if (!!selectedDateData)
@@ -62,7 +67,7 @@ const ChangeCommissionModal = ({
   }, [selectedDateData]);
 
   const onSubmit = () => {
-    mutate({
+    submitCommission({
       property_id: data?.id,
       advisor_commission: commission,
       day: Number(selectedDateData?.day),

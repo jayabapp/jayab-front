@@ -1,18 +1,19 @@
 "use client";
+/* eslint-disable react-hooks/set-state-in-effect */
 
 import { useParams, useRouter, useSearchParams } from "next/navigation";
-import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
+import { useOwnerPropertyOptions } from "@features/owner-property/hooks/useOwnerPropertyOptions";
 import { PropertyTermsSendDto } from "@/api_services/property/property.interface";
-import { GC_TIME, STALE_TIME } from "@/helpers/queryCache";
+import { usePropertyDraftStep } from "@features/owner-property/hooks/usePropertyDraftStep";
 import { createPropertySteps } from "@/utils/constantss";
 import { useEffect, useState } from "react";
-import { PropertyService } from "@/api_services/property/property.service";
-import { HomeService } from "@/api_services/home/home.service";
+import { usePropertyDraft } from "@features/owner-property/hooks/usePropertyDraft";
+import { usePropertyRules } from "@features/owner-property/hooks/usePropertyRules";
 
+import PropertyEditStepSkeleton from "@features/owner-property/steps/PropertyEditStepSkeleton";
 import FixedBottomContainer from "@/components/shared/FixedBottomContainer";
 import MultiLineFormInput from "@/components/shared/Form/MultiLineFormInput";
 import SuccessAddModal from "@/components/properties/SuccessAddModal";
-import LottieLoading from "@/components/shared/Lotties/LottieLoading";
 import PropTermItem from "@/components/properties/TermItem";
 import FormCounter from "@/components/properties/FormCounter";
 import StepShower from "@/components/shared/StepShower";
@@ -31,36 +32,16 @@ const CreatePropertyTerms = () => {
   const params = useParams();
   const { property_id } = params;
 
-  const { data: propertyRules, isLoading: rulesLoading } = useQuery({
-    queryKey: [HomeService?.CONTENTS_CACHEKEY, "propertyRules", 1],
-    queryFn: () => {
-      return HomeService.GetContent({ key: "propertyRules", page: 1 });
-    },
-  });
+  const { data: propertyRules, isLoading: rulesLoading } = usePropertyRules();
 
-  const { data: initPropData } = useQuery({
-    queryKey: [PropertyService.OWNER_PROP_INIT_CACHEKEY, property_id],
-    queryFn: () => {
-      if (!!property_id)
-        return PropertyService.InitProperty({ property_id: `${property_id}` });
-      else return null;
-    },
-    staleTime: STALE_TIME.MEDIUM,
-    gcTime: GC_TIME.LONG,
-  });
+  const propertyId = `${property_id ?? ""}`;
+  const { data: initPropData } = usePropertyDraft(propertyId);
 
-  const { data: propertyTypes } = useQuery({
-    queryFn: () =>
-      PropertyService.GetUserPropertyGroup({
-        group: ["PARTY", "PET", "GUEST_TYPE"],
-      }),
-    queryKey: [
-      PropertyService.USER_PROP_OPTIONS_CACHEKEY,
-      "PARTY",
-      "PET",
-      "GUEST_TYPE",
-    ],
-  });
+  const { data: propertyTypes } = useOwnerPropertyOptions([
+    "PARTY",
+    "PET",
+    "GUEST_TYPE",
+  ]);
 
   const [values, setValues] = useState<PropertyTermsSendDto>({
     ad_dscr: "",
@@ -109,19 +90,15 @@ const CreatePropertyTerms = () => {
     setValues((e) => ({ ...e, [key]: value }));
   };
 
-  const queryClient = useQueryClient();
-
-  const { mutate, isPending } = useMutation({
-    mutationFn: PropertyService.CreatePropertySetTerms,
-    onSuccess: () => {
-      queryClient.invalidateQueries({
-        queryKey: [PropertyService.OWNER_PROP_INIT_CACHEKEY, property_id],
-      });
+  const { mutate, isPending } = usePropertyDraftStep(
+    "terms",
+    propertyId,
+    () => {
       if (!!edit_mode)
         router.replace(`/profile/owner/properties/${property_id}/edit`);
       else if (!initPropData?.canceling_type) setShowSucces(true);
     },
-  });
+  );
   const onSubmit = () => {
     if (!values?.property_dscr)
       return Notify({ body: _STRINGS.PLACE_DESC_MAND, type: "warn" });
@@ -162,7 +139,7 @@ const CreatePropertyTerms = () => {
       </div>
 
       {rulesLoading ? (
-        <LottieLoading />
+        <PropertyEditStepSkeleton variant="form" />
       ) : (
         <div className=" flex flex-col gap-2 w-full">
           <p className="font-bold w-full text-start  text-sm md:text-base text-primary-700  ">

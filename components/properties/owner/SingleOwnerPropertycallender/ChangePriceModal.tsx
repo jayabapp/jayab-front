@@ -1,10 +1,11 @@
 "use client";
+/* eslint-disable react-hooks/set-state-in-effect */
 
 import { useEffect, useMemo, useState } from "react";
 import { SingleOwnerPropertyDto } from "@/api_services/property/property.interface";
 import { OwnerCallendarItemDto } from "@/api_services/property/property.interface";
-import { useMutation, useQuery } from "@tanstack/react-query";
-import { PropertyService } from "@/api_services/property/property.service";
+import { useOwnerPriceLimits } from "@features/owner-property/hooks/useOwnerPriceLimits";
+import { useUpdateDayPrice } from "@features/owner-property/hooks/useUpdateDayPrice";
 import { toJalaaliDays } from "./jalaaliDays";
 import { produce } from "immer";
 import { Divider } from "@/components/shared/Divider";
@@ -58,27 +59,12 @@ const ChangePriceModal = ({
   const firstSelectedDay = selectedDays[0];
   const firstSelectedData = selectedDatesData[0];
 
-  const { data: priceLimits } = useQuery({
-    queryKey: [
-      data?.id,
-      firstSelectedDay?.day,
-      firstSelectedDay?.year,
-      firstSelectedDay?.month,
-      PropertyService.OWNER_PROPERTIES_PRICE_RANGE_UPDATE_CACHEKEY,
-    ],
-    queryFn: () => {
-      if (!!data?.id && !!firstSelectedDay?.month) {
-        return PropertyService.ownerPropertyPriceRangeLimits({
-          property_id: data?.id,
-          day: firstSelectedDay?.day,
-          month: firstSelectedDay?.month,
-          year: firstSelectedDay?.year,
-        });
-      } else {
-        return null;
-      }
-    },
-  });
+  const { data: priceLimits } = useOwnerPriceLimits(
+    data?.id ?? "",
+    firstSelectedDay?.day ?? "",
+    firstSelectedDay?.month ?? "",
+    firstSelectedDay?.year ?? "",
+  );
 
   const step = priceLimits?.step || DEFAULT_STEP;
   const minPrice = priceLimits?.min_price || 0;
@@ -96,37 +82,40 @@ const ChangePriceModal = ({
     setHighestEnteredPrice((prev) => Math.max(prev, next));
   };
 
-  const { mutate, isPending } = useMutation({
-    mutationFn: PropertyService.updatePropertyPriceOfManyDays,
-    onSuccess: () => {
-      setCallendarDataState((e) => {
-        const next = produce(e, (draft) => {
-          for (const day of selectedDays) {
-            const index = draft.findIndex(
-              (i) =>
-                i.month == day.month && i.day === day.day && i.year == day.year,
-            );
-            if (index < 0) continue;
-            draft[index] = {
-              ...draft[index],
-              price: price,
-              discounted_price: !!hasDiscount ? discontPrice : 0,
-            };
-          }
+  const { mutate, isPending } = useUpdateDayPrice(data?.id ?? "");
+  const submitPrice = (variables: Parameters<typeof mutate>[0]) =>
+    mutate(variables, {
+      onSuccess: () => {
+        setCallendarDataState((e) => {
+          const next = produce(e, (draft) => {
+            for (const day of selectedDays) {
+              const index = draft.findIndex(
+                (i) =>
+                  i.month == day.month &&
+                  i.day === day.day &&
+                  i.year == day.year,
+              );
+              if (index < 0) continue;
+              draft[index] = {
+                ...draft[index],
+                price: price,
+                discounted_price: !!hasDiscount ? discontPrice : 0,
+              };
+            }
+          });
+          return next;
         });
-        return next;
-      });
 
-      const hasToday = callenderselectedDates.some((selectedDate) =>
-        moment().isSame(
-          moment(selectedDate, "jYYYY/jMM/jD").format("YYYY/MM/DD"),
-          "day",
-        ),
-      );
-      if (hasToday) setRefresh((e) => !e);
-      onHide();
-    },
-  });
+        const hasToday = callenderselectedDates.some((selectedDate) =>
+          moment().isSame(
+            moment(selectedDate, "jYYYY/jMM/jD").format("YYYY/MM/DD"),
+            "day",
+          ),
+        );
+        if (hasToday) setRefresh((e) => !e);
+        onHide();
+      },
+    });
 
   useEffect(() => {
     if (!!firstSelectedData) {
@@ -155,7 +144,7 @@ const ChangePriceModal = ({
         !!hasDiscount && !!discontPrice && discontPrice != 0
           ? discontPrice
           : undefined;
-      mutate({
+      submitPrice({
         property_id: data?.id,
         days: selectedDays,
         discounted_price: discounted_price,
@@ -198,12 +187,12 @@ const ChangePriceModal = ({
         )}
 
         <PriceRangeField
-          title={`قیمت ${selectedDaysTitle}`}
+          step={step}
           value={price}
-          setValue={(e) => applyPrice(e, setPrice)}
           min={minPrice}
           max={sliderCeiling}
-          step={step}
+          title={`قیمت ${selectedDaysTitle}`}
+          setValue={(e) => applyPrice(e, setPrice)}
         />
 
         <Divider moreClass="w-full " />
@@ -232,12 +221,12 @@ const ChangePriceModal = ({
         />
         {!!hasDiscount ? (
           <PriceRangeField
-            title={`${_STRINGS.DISCOUNTED_PRICE_TITLE} ${selectedDaysTitle}`}
-            value={discontPrice}
-            setValue={(e) => applyPrice(e, setdiscontPrice)}
+            step={step}
             min={minPrice}
             max={sliderCeiling}
-            step={step}
+            value={discontPrice}
+            setValue={(e) => applyPrice(e, setdiscontPrice)}
+            title={`${_STRINGS.DISCOUNTED_PRICE_TITLE} ${selectedDaysTitle}`}
           />
         ) : (
           <></>

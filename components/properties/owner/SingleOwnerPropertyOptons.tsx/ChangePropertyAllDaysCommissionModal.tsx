@@ -1,9 +1,10 @@
 "use client";
 
+/* eslint-disable react-hooks/set-state-in-effect */
+
+import { useOwnerCalendarActions } from "@features/owner-property/hooks/useOwnerCalendarActions";
 import { SingleOwnerPropertyDto } from "@/api_services/property/property.interface";
 import { useEffect, useState } from "react";
-import { PropertyService } from "@/api_services/property/property.service";
-import { useMutation } from "@tanstack/react-query";
 import { Divider } from "@/components/shared/Divider";
 
 import RangeWithTitle from "@/components/shared/Form/RangeWithTitle";
@@ -15,28 +16,27 @@ import Button from "@/components/shared/Button/Button";
 import Modal from "@/components/Modal";
 
 const ChangePropertyAllDaysCommissionModal = ({
+  data,
   show,
   onHide,
-
-  data,
 }: {
   show: boolean;
   onHide: () => void | null;
-
   data: SingleOwnerPropertyDto;
 }) => {
   const [commission, setCommission] = useState(0);
   const [defaultCommission, setDefaultCommission] = useState(0);
 
-  const { mutate, isPending } = useMutation({
-    mutationFn: PropertyService.UpdatePropertyAllDaysAdvisorCommission,
-    onSuccess: (e) => {
-      if (!!e) {
-        setDefaultCommission(e);
-      }
-      onHide();
-    },
-  });
+  const {
+    allDaysCommission: { mutate, isPending },
+  } = useOwnerCalendarActions(data?.id ?? "");
+  const submitCommission = (variables: Parameters<typeof mutate>[0]) =>
+    mutate(variables, {
+      onSuccess: (e) => {
+        if (!!e) setDefaultCommission(e);
+        onHide();
+      },
+    });
 
   useEffect(() => {
     if (!!data && !defaultCommission)
@@ -49,7 +49,7 @@ const ChangePropertyAllDaysCommissionModal = ({
   }, [defaultCommission, show]);
 
   const onSubmit = () => {
-    mutate({
+    submitCommission({
       property_id: data?.id,
       advisor_commission: commission,
     });

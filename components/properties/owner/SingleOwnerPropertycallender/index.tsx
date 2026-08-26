@@ -1,10 +1,10 @@
 "use client";
+/* eslint-disable react-hooks/set-state-in-effect */
 
 import { useEffect, useMemo, useState } from "react";
 import { SingleOwnerPropertyDto } from "@/api_services/property/property.interface";
 import { OwnerCallendarItemDto } from "@/api_services/property/property.interface";
-import { PropertyService } from "@/api_services/property/property.service";
-import { useQuery } from "@tanstack/react-query";
+import { useOwnerCalendar } from "@features/owner-property/hooks/useOwnerCalendar";
 
 import ChangeCunsultatCommission from "./ChangeCunsultatCommission";
 import ChangeDayStatusComp from "./ChangeDayStatusComp";
@@ -36,28 +36,9 @@ const SingleOwnerPropertycallender = ({
     OwnerCallendarItemDto[]
   >([]);
 
-  const { data: callendarData } = useQuery({
-    queryKey: [
-      PropertyService.OWNER_PROPERTIES_CACHEKEY,
-      Number(moment(callenderselectedSpan, "jYYYY/jMM/jD").format("jMM")),
-      Number(moment(callenderselectedSpan, "jYYYY/jMM/jD").format("jYYYY")),
-      ,
-      data?.id,
-    ],
-    queryFn: () => {
-      if (!!data?.id && !!callenderselectedSpan) {
-        return PropertyService.GetSingleOwnerPropertyCallendar({
-          property_id: `${data?.id}`,
-          month: Number(
-            moment(callenderselectedSpan, "jYYYY/jMM/jD").format("jMM"),
-          ),
-          year: Number(
-            moment(callenderselectedSpan, "jYYYY/jMM/jD").format("jYYYY"),
-          ),
-        });
-      } else return null;
-    },
-  });
+  const calendarMonth = Number(moment(callenderselectedSpan, "jYYYY/jMM/jD").format("jMM"));
+  const calendarYear = Number(moment(callenderselectedSpan, "jYYYY/jMM/jD").format("jYYYY"));
+  const { data: callendarData } = useOwnerCalendar(data?.id ?? "", calendarYear, calendarMonth);
 
   useEffect(() => {
     if (!!callendarData) {

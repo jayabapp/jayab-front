@@ -1,34 +1,29 @@
 "use client";
+/* eslint-disable react-hooks/set-state-in-effect */
 
-import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { useParams, useRouter, useSearchParams } from "next/navigation";
-import { useEffect, useMemo, useState } from "react";
+import { usePropertyDraftStep } from "@features/owner-property/hooks/usePropertyDraftStep";
+import { useEffect, useState } from "react";
 import { createPropertySteps } from "@/utils/constantss";
-import { GC_TIME, STALE_TIME } from "@/helpers/queryCache";
-import { PropertyService } from "@/api_services/property/property.service";
+import { usePropertyDraft } from "@features/owner-property/hooks/usePropertyDraft";
 
+import PropertyEditStepSkeleton from "@features/owner-property/steps/PropertyEditStepSkeleton";
 import FixedBottomContainer from "@/components/shared/FixedBottomContainer";
 import SearchPlaceModal from "@/components/Map/SearchPlaceModal";
-import LottieLoading from "@/components/shared/Lotties/LottieLoading";
-import SearchBox from "@/components/SearchBoxComp";
-import Button from "@/components/shared/Button/Button";
 import StepShower from "@/components/shared/StepShower";
+import SearchBox from "@/components/SearchBoxComp";
 import _STRINGS from "@/utils/LocalStrings";
 import dynamic from "next/dynamic";
+import Button from "@/components/shared/Button/Button";
+
+const Map = dynamic(() => import("@/components/Map"), { ssr: false });
 
 const CreateProperty = () => {
-  const Map = useMemo(
-    () =>
-      dynamic(() => import("@/components/Map"), {
-        ssr: false,
-      }),
-    [],
-  );
   const searchParams = useSearchParams();
   const edit_mode = searchParams.get("edit_mode");
   const [showSearch, setShowSearch] = useState(false);
   const [center, setCenter] = useState([51.37, 35.767]);
-  const [centerAddressLoading, setCenterAddressLoading] = useState(false);
+  const [, setCenterAddressLoading] = useState(false);
   const [centerAddress, setCenterAddress] = useState("");
 
   const [jompTo, setJumpTo] = useState<{
@@ -39,16 +34,8 @@ const CreateProperty = () => {
   const router = useRouter();
   const params = useParams();
   const { property_id } = params;
-  const { data: initPropData, isLoading } = useQuery({
-    queryKey: [PropertyService.OWNER_PROP_INIT_CACHEKEY, property_id],
-    queryFn: () => {
-      if (!!property_id)
-        return PropertyService.InitProperty({ property_id: `${property_id}` });
-      else return null;
-    },
-    staleTime: STALE_TIME.MEDIUM,
-    gcTime: GC_TIME.LONG,
-  });
+  const propertyId = `${property_id ?? ""}`;
+  const { data: initPropData, isLoading } = usePropertyDraft(propertyId);
 
   useEffect(() => {
     if (!!initPropData?.lat) {
@@ -59,19 +46,15 @@ const CreateProperty = () => {
     }
   }, [initPropData]);
 
-  const queryClient = useQueryClient();
-
-  const { mutate, isPending } = useMutation({
-    mutationFn: PropertyService.CreatePropertySetLocation,
-    onSuccess: () => {
-      queryClient.invalidateQueries({
-        queryKey: [PropertyService.OWNER_PROP_INIT_CACHEKEY, property_id],
-      });
+  const { mutate, isPending } = usePropertyDraftStep(
+    "location",
+    propertyId,
+    () => {
       if (!!!!edit_mode)
         router.replace(`/profile/owner/properties/${property_id}/edit`);
       else router.push(`/profile/owner/properties/${property_id}/edit/media`);
     },
-  });
+  );
 
   const onSubmit = () => {
     if (initPropData?.id)
@@ -94,7 +77,7 @@ const CreateProperty = () => {
         />
       </div>
       {isLoading ? (
-        <LottieLoading />
+        <PropertyEditStepSkeleton variant="map" />
       ) : (
         <div className="w-full  h-[70dvh] relative">
           <div
