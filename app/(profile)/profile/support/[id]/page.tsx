@@ -1,6 +1,10 @@
 "use client";
 
+import { useReplyToSupportTicket } from "@features/support/hooks/useReplyToSupportTicket";
+import { type SupportFormErrors } from "@features/support/model/support.schema";
+import { getSupportFormErrors } from "@features/support/model/support.schema";
 import { useEffect, useState } from "react";
+import { supportReplySchema } from "@features/support/model/support.schema";
 import { useSupportTicket } from "@features/support/hooks/useSupportTicket";
 import { useStoreSocket } from "@/store";
 import { useParams } from "next/navigation";
@@ -10,25 +14,25 @@ import MultiLineFormInput from "@/components/shared/Form/MultiLineFormInput";
 import _STRINGS from "@/utils/LocalStrings";
 import Message from "@/components/support/Message";
 import Button from "@/components/shared/Button/Button";
-import Notify from "@/components/shared/Toast";
 import Modal from "@/components/Modal";
 
 const TicketsPage = () => {
   const params = useParams<{ id: string }>();
   const { notification } = useStoreSocket((state) => state);
   const [message, setMessage] = useState("");
+  const [errors, setErrors] = useState<SupportFormErrors>({});
   const [visibleModal, setVisibleModal] = useState(false);
-  const { data, isPending, isReplyPending, refresh, reply } = useSupportTicket(
+  const { ticket, isPending, isError, refresh } = useSupportTicket(params.id);
+  const { mutate: reply, isPending: isReplyPending } = useReplyToSupportTicket(
     params.id,
   );
 
   const handleSubmitMessage = () => {
-    if (!message.trim()) {
-      Notify({
-        type: "warn",
-        title: "تکمیل فرم",
-        body: "لطفا متن پیام را وارد نمایید",
-      });
+    try {
+      supportReplySchema.validateSync({ message }, { abortEarly: false });
+      setErrors({});
+    } catch (error) {
+      setErrors(getSupportFormErrors(error));
       return;
     }
 
@@ -53,23 +57,30 @@ const TicketsPage = () => {
     }
   }, [notification, params.id, refresh]);
 
+  if (isPending) return <TicketDetailsSkeleton />;
+
   return (
     <div
       id="homeParent"
       className="profile-container flex flex-col gap-4 !pb-24 transition-all duration-500 ease-in-out"
     >
-      {isPending ? (
-        <TicketDetailsSkeleton />
+      {isError ? (
+        <div
+          role="alert"
+          className="rounded-lg bg-red-50 p-4 text-sm text-red-700"
+        >
+          دریافت اطلاعات تیکت با خطا مواجه شد.
+        </div>
       ) : (
         <>
           <div className="w-full">
-            <Message item={data} />
+            <Message item={ticket} />
           </div>
           <div className="mt-4 flex w-full flex-col gap-y-4">
-            {data?.replies.map((ticketReply) => (
+            {ticket?.replies.map((ticketReply) => (
               <div
                 key={ticketReply.id}
-                className={`flex ${ticketReply.by_admin ? "justify-end" : "justify-start"}`}
+                className={`flex ${ticketReply.by_admin ? "justify-end" : "justify-start"} ${ticketReply.isOptimistic ? "opacity-60" : ""}`}
               >
                 <Message item={ticketReply} />
               </div>
@@ -77,9 +88,9 @@ const TicketsPage = () => {
           </div>
           <div className="responsive-width fixed bottom-0 right-1/2 z-40 flex w-full translate-x-1/2 flex-col items-center border-t bg-white p-4 md:translate-x-1/4 md:border-none md:bg-transparent">
             <Button
-              disabled={data?.status === 100}
+              disabled={ticket?.status === 100}
               title={
-                data?.status === 100
+                ticket?.status === 100
                   ? _STRINGS.TICKET_CLOSED
                   : _STRINGS.ANSWER_MESSAGE
               }
@@ -94,16 +105,22 @@ const TicketsPage = () => {
                     title: _STRINGS.MESSAGE_TEXT,
                     placeholder: _STRINGS.WRITE_MESSAGE_TEXT,
                     isMandatory: true,
-                    maxLength: 500,
+                    maxLength: 5000,
                     rows: 6,
                   }}
                   onChangeText={setMessage}
                   value={message}
+                  errors={errors}
+                  errorKey="message"
                 />
+                {errors.message?.[0] ? (
+                  <p className="text-xs text-red-600">{errors.message[0]}</p>
+                ) : null}
                 <Button
-                  loading={isReplyPending}
-                  title={_STRINGS.SEND}
                   width="w-full"
+                  title={_STRINGS.SEND}
+                  loading={isReplyPending}
+                  disabled={isReplyPending}
                   onClick={handleSubmitMessage}
                 />
               </div>

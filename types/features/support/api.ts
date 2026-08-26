@@ -8,6 +8,7 @@ export type TicketReply = {
   by_admin: boolean;
   created_at: string;
   title?: string;
+  isOptimistic?: boolean;
 };
 
 export type TicketListItem = {

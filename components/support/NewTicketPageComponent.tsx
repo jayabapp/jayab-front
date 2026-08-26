@@ -1,6 +1,9 @@
 "use client";
 
 import { useCreateSupportTicket } from "@features/support/hooks/useCreateSupportTicket";
+import { type SupportFormErrors } from "@features/support/model/support.schema";
+import { getSupportFormErrors } from "@features/support/model/support.schema";
+import { supportTicketSchema } from "@features/support/model/support.schema";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
 
@@ -15,11 +18,25 @@ const NewTicketPageComponent = ({ dataKey }: NewTicketFormProps) => {
   const router = useRouter();
   const [title, setTitle] = useState("");
   const [message, setMessage] = useState("");
+  const [errors, setErrors] = useState<SupportFormErrors>({});
   const { mutate, isPending } = useCreateSupportTicket(() => {
     router.replace(
       dataKey === "SUGGESTION" ? "/profile/complains" : "/profile/support",
     );
   });
+
+  const submit = () => {
+    try {
+      const input = supportTicketSchema.validateSync(
+        { message, title },
+        { abortEarly: false, stripUnknown: true },
+      );
+      setErrors({});
+      mutate({ ...input, type: dataKey });
+    } catch (error) {
+      setErrors(getSupportFormErrors(error));
+    }
+  };
 
   return (
     <div
@@ -38,7 +55,12 @@ const NewTicketPageComponent = ({ dataKey }: NewTicketFormProps) => {
           }}
           onChangeText={setTitle}
           value={title}
+          errors={errors}
+          errorKey="title"
         />
+        {errors.title?.[0] ? (
+          <p className="text-xs text-red-600">{errors.title[0]}</p>
+        ) : null}
         <MultiLineFormInput
           item={{
             keyboard: "text",
@@ -49,12 +71,18 @@ const NewTicketPageComponent = ({ dataKey }: NewTicketFormProps) => {
           }}
           onChangeText={setMessage}
           value={message}
+          errors={errors}
+          errorKey="message"
         />
+        {errors.message?.[0] ? (
+          <p className="text-xs text-red-600">{errors.message[0]}</p>
+        ) : null}
         <Button
+          onClick={submit}
           loading={isPending}
+          disabled={isPending}
           title={_STRINGS.SEND_TICKET}
           containerClass="flex w-full items-center justify-end"
-          onClick={() => mutate({ message, title, type: dataKey })}
         />
       </div>
     </div>

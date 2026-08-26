@@ -52,7 +52,7 @@ export class SupportService {
   }
 
   static async ReplySingleTicket(dto: ReplyTicketInput) {
-    return apiCall<{ message: string }, TicketDetails>(
+    return apiCall<{ message: string }, unknown>(
       "POST",
       `${apiRoutes.TICKETS}/${dto.id}`,
       {
