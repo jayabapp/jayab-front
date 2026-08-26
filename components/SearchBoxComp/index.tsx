@@ -1,10 +1,8 @@
 "use client";
 
-import { ReactNode, useCallback, useEffect, useRef, useState } from "react";
+import { ReactNode, useEffect, useRef, useState } from "react";
+import { useDebouncedValue } from "@hooks/useDebouncedValue";
 import { useSearchParams } from "next/navigation";
-
-import SmallLoading from "../shared/Lotties/SmallLoading";
-import debounce from "lodash/debounce";
 
 interface props {
   boxId?: string;
@@ -47,60 +45,37 @@ const SearchBox = ({
 
   const [text, setText] = useState(initValue || "");
 
-  const [isTyping, setisTyping] = useState(true);
-  const [loading, setLoading] = useState(false);
-  const [element, setElement] = useState<HTMLInputElement | null>(null);
-  useEffect(() => {
-    setElement(document.getElementById(boxId) as HTMLInputElement);
-  }, []);
+  const debouncedText = useDebouncedValue(text, 400);
+  const initialRender = useRef(true);
 
   useEffect(() => {
     autofocus && inputRef?.current?.focus();
-  }, []);
+  }, [autofocus]);
 
   useEffect(() => {
     if (searchParam) {
+      // eslint-disable-next-line react-hooks/set-state-in-effect
       setText(searchParam);
       typeof onSubmit == "function" && onSubmit(searchParam);
     }
-  }, [searchParam]);
+  }, [onSubmit, searchParam]);
 
   useEffect(() => {
-    if (!isTyping) {
-      typeof onSubmit == "function" && element && onSubmit(element.value);
-      setLoading(true);
-      setTimeout(() => {
-        setLoading(false);
-      }, 1000);
+    if (initialRender.current) {
+      initialRender.current = false;
+      return;
     }
-  }, [isTyping]);
-
-  const checkTyping = useCallback(
-    debounce(() => {
-      setisTyping(false);
-    }, 500),
-    [],
-  );
-  useEffect(() => {
-    if (!element?.value && !searchParam) {
-      onSubmit("");
-      cancelSearch();
-    }
-  }, [searchParam]);
+    if (!disableTypeing && !searchParam) onSubmit(debouncedText);
+  }, [debouncedText, disableTypeing, onSubmit, searchParam]);
 
   function handleChange(text: string) {
     setText(text);
-    setisTyping(true);
-    checkTyping();
   }
 
   const cancelSearch = () => {
-    if (element) {
-      setText("");
-      element.value = "";
-      typeof onSubmit == "function" && onSubmit("");
-      onClear();
-    }
+    setText("");
+    typeof onSubmit == "function" && onSubmit("");
+    onClear();
   };
   return (
     <div className={containerClass}>
@@ -122,15 +97,9 @@ const SearchBox = ({
             }}
           />
         </div>
-        {(!!loading || element?.value) && !item?.disable_cancel ? (
+        {!!text && !item?.disable_cancel ? (
           <div className="inline-flex w-1/4 justify-end">
-            {loading && (
-              <div className="ml-2">
-                <SmallLoading />
-              </div>
-            )}
-
-            {element?.value && (
+            {!!text && (
               <div
                 className="text-primary-700 text-xs mr-2 cursor-pointer "
                 onClick={cancelSearch}

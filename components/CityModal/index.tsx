@@ -1,17 +1,16 @@
-import { usePathname, useRouter, useSearchParams } from "next/navigation";
-import { useEffect, useState } from "react";
-import { ProvienceTypesDto } from "@/api_services/property/property.interface";
+import { useEffect, useMemo, useState } from "react";
+import { normalizePersianSearchText } from "@features/search/lib/normalize-persian-search-text";
+import { usePathname, useRouter } from "next/navigation";
 import { NewCitiesListDto } from "@/api_services/city/city.interface";
+import { CityRowSkeleton } from "./CityRowSkeleton";
 import { useCitiesStore } from "@/store";
 import { ChildCities } from "@/api_services/city/city.interface";
-import { CityService } from "@/api_services/city/city.service";
-import { useQuery } from "@tanstack/react-query";
+import { useCityTree } from "@features/search/hooks/useCityTree";
 
 import CityModalAllCitiesButton from "./CityModalAllCitiesButton";
 import CityModalSelectedSwiper from "./CityModalSelectedSwiper";
 import CityModalHeaderPart from "./CityModalHeaderPart";
 import CityModalSearchPart from "./CityModalSearchPart";
-import LottieLoading from "../shared/Lotties/LottieLoading";
 import ProvienceCard from "./ProvienceCard";
 import queryBuilder from "@/helpers/queryBuilder";
 import useQueryGet from "@/helpers/queryGet";
@@ -49,69 +48,48 @@ const CityModal = ({
 }: TCityModal) => {
   const router = useRouter();
   const pathname = usePathname();
-  const searchParams = useSearchParams();
   const queriesParams = useQueryGet<any>();
-  const [queries, setQueries] = useState<{ [key: string]: any }>({});
+  const queries = customeValues ?? queriesParams;
   const [selectedProv, setSelectedProv] = useState<NewCitiesListDto | null>(
     null,
   );
   const [selectedCities, setSelectedCities] = useState<ChildCities[]>([]);
-  const [defaultProvienceCities, setDefaultProvienceCities] = useState<
-    ChildCities[]
-  >([]);
   const [search, setSearch] = useState("");
 
-  useEffect(() => {
-    if (!!customeValues) setQueries(customeValues);
-    else setQueries(queriesParams);
-  }, [customeValues, searchParams]);
+  const { data: provinces, isLoading: provLoading } = useCityTree(show);
 
-  const { data: provinces, isLoading: provLoading } = useQuery({
-    queryFn: () => CityService.GetAllCities({ is_parent: 1 }),
-    queryKey: [CityService.GET_ALL_CITIES_CACHEKEY],
-    enabled: show,
-  });
+  const defaultCitiesData = useMemo(() => {
+    const ids = String(queries?.cities ?? "")
+      .split(",")
+      .filter(Boolean)
+      .map(Number);
+    if (ids.length === 0) return [];
+    return (provinces ?? [])
+      .flatMap((province) => province.child ?? [])
+      .filter((city) => ids.includes(city.id));
+  }, [provinces, queries?.cities]);
 
-  const { data: defaultCitiesData } = useQuery({
-    queryFn: () => {
-      if (!!queries?.cities)
-        return CityService.GetAllCities({
-          cities: JSON.stringify(queries?.cities),
-        });
-      else return null;
-    },
-    queryKey: [CityService.GET_ALL_CITIES_CACHEKEY, queries?.cities],
-  });
-
-  useEffect(() => {
+  const defaultProvienceCities = useMemo(() => {
     if (!isEmpty(provinces) && queries?.provinces) {
       const queryProvincesIds = queries?.provinces?.split(",");
-      const ProvincesCities = provinces
-        ?.filter((e) => queryProvincesIds?.includes(`${e?.id}`))
-        ?.flatMap((e) => e?.child);
-      setDefaultProvienceCities(ProvincesCities || []);
-    } else {
-      setDefaultProvienceCities([]);
+      return (
+        provinces
+          ?.filter((e) => queryProvincesIds?.includes(`${e?.id}`))
+          ?.flatMap((e) => e?.child) ?? []
+      );
     }
+    return [];
   }, [provinces, queries?.provinces]);
 
-  const { data: cities } = useQuery({
-    queryFn: () => {
-      if (!!selectedProv?.id)
-        return CityService.GetCities({ parentId: selectedProv?.id });
-      else return [];
-    },
-    queryKey: [CityService.CITIES_CHILDEREN_CACHEKEY, selectedProv?.id],
-  });
+  const cities = selectedProv?.child ?? [];
 
   useEffect(() => {
-    if (
-      !!defaultCitiesData ||
-      (!!defaultProvienceCities && !isEmpty(defaultProvienceCities))
-    ) {
-      const allDefaultCities = !!defaultCitiesData
+    if (!isEmpty(defaultCitiesData) || !isEmpty(defaultProvienceCities)) {
+      const allDefaultCities = !isEmpty(defaultCitiesData)
         ? [...defaultCitiesData, ...defaultProvienceCities]
         : defaultProvienceCities;
+      // URL/cache data initializes the modal's editable selection.
+      // eslint-disable-next-line react-hooks/set-state-in-effect
       setSelectedCities(allDefaultCities);
       if (!!setRegionsCb) {
         if (
@@ -243,16 +221,19 @@ const CityModal = ({
     onHide();
   };
 
-  const provienceAndCitiesSearchEngine = (
-    e: NewCitiesListDto | ProvienceTypesDto,
-  ) => {
-    const normalizedSearch = search.trim();
+  const provienceAndCitiesSearchEngine = (e: {
+    title: string;
+    child?: ChildCities[];
+  }) => {
+    const normalizedSearch = normalizePersianSearchText(search);
 
     if (!normalizedSearch) return true;
 
     return (
-      e?.title.includes(normalizedSearch) ||
-      !!e?.child?.some((child) => child?.title.includes(normalizedSearch))
+      normalizePersianSearchText(e?.title).includes(normalizedSearch) ||
+      !!e?.child?.some((child) =>
+        normalizePersianSearchText(child?.title).includes(normalizedSearch),
+      )
     );
   };
 
@@ -305,7 +286,7 @@ const CityModal = ({
         )}
 
         {provLoading ? (
-          <LottieLoading />
+          <CityRowSkeleton />
         ) : !selectedProv ? (
           isEmpty(provinces) ? (
             <EmptyList />
@@ -315,9 +296,11 @@ const CityModal = ({
               ?.map((e) => (
                 <ProvienceCard
                   callback={() => {
-                    const normalizedSearch = search.trim();
+                    const normalizedSearch = normalizePersianSearchText(search);
                     const hasMatchingCity = e?.child?.some((city) =>
-                      city?.title.includes(normalizedSearch),
+                      normalizePersianSearchText(city?.title).includes(
+                        normalizedSearch,
+                      ),
                     );
 
                     setSelectedProv(e);

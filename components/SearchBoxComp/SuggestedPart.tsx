@@ -1,24 +1,27 @@
-import { CitySuggestDto, SearchSuggDto } from "@/api_services/home/home.interface";
+import { SuggestionRowSkeleton } from "./SuggestionRowSkeleton";
 import { CitiesSuggestTypes } from "@/enum/cities_suggest.enum";
+import { CitySuggestDto } from "@/api_services/home/home.interface";
 import { useCitiesStore } from "@/store";
+import { SearchSuggDto } from "@/api_services/home/home.interface";
+import { useRouter } from "next/navigation";
+
+import HistoryMaker from "./HistoryMaker";
 import _STRINGS from "@/utils/LocalStrings";
 import isEmpty from "lodash/isEmpty";
-import { useRouter } from "next/navigation";
-import React from "react";
-import BtnLoading from "../shared/Button/BtnLoading";
-import HistoryMaker from "./HistoryMaker";
+
+type TSuggestedProps = {
+  isLoading: boolean;
+  searchedText: string;
+  data?: SearchSuggDto | undefined | null;
+  setShowPop: React.Dispatch<React.SetStateAction<boolean>>;
+};
+
 const SuggestedPart = ({
   data,
   isLoading,
-  searchedText,
   setShowPop,
-}: {
-  searchedText: string;
-  isLoading: boolean;
-  data?: SearchSuggDto | undefined | null;
-  setShowPop: React.Dispatch<React.SetStateAction<boolean>>;
-}) => {
-  const { locationsData } = useCitiesStore();
+  searchedText,
+}: TSuggestedProps) => {
   const router = useRouter();
 
   const onCityClick = (city: CitySuggestDto) => {
@@ -26,20 +29,18 @@ const SuggestedPart = ({
     const body: any = {};
     if (city?.level == CitiesSuggestTypes?.CITY) {
       body.cities = [{ title: city?.title, id: city?.id }];
-
       link = `/rooms?cities=${city?.id}`;
     }
     if (city?.level == CitiesSuggestTypes?.PROVINCE) {
       link = `/rooms?provinces=${city?.id}`;
-
       body.provinces = [{ id: city?.id, title: city?.title }];
     }
+
     if (city?.level == CitiesSuggestTypes?.REGION) {
       body.cities = [{ title: city?.parent_title, id: city?.parent_id }];
       body.regions = [city];
       link = `/rooms?cities=${city?.parent_id}&regions=${city?.id}`;
     }
-
     useCitiesStore.setState({
       locationsData: body,
     });
@@ -49,13 +50,12 @@ const SuggestedPart = ({
 
   const onLandingClick = (slug: string | number) => {
     let link = `/${slug}`;
-
     setShowPop(false);
     router.push(link);
   };
+
   const onPropClick = (slug: string | number) => {
     let link = `/rooms/${slug}`;
-
     setShowPop(false);
     router.push(link);
   };
@@ -63,12 +63,11 @@ const SuggestedPart = ({
   return (
     <div className=" flex items-start flex-col w-full py-4 justify-start px-4 gap-2">
       {isLoading ? (
-        <div className=" w-full flex items-center justify-center  ">
-          {" "}
-          <BtnLoading />{" "}
-        </div>
-      ) : !!data && isEmpty(data?.cities) && isEmpty(data?.properties) && isEmpty(data?.landings) ? (
-        // <p>{_STRINGS.CANT_FIND}</p>
+        <SuggestionRowSkeleton />
+      ) : !!data &&
+        isEmpty(data?.cities) &&
+        isEmpty(data?.properties) &&
+        isEmpty(data?.landings) ? (
         <></>
       ) : (
         <>
@@ -83,17 +82,19 @@ const SuggestedPart = ({
                   key={`${e?.id}properties`}
                   className="flex cursor-pointer flex-row  grayscale transition-all  hover:grayscale-0 items-center gap-2"
                 >
-                  <img className="w-4  transition-all h-4 aspect-square" src="/assets/icons/edit/magnifier.svg" />{" "}
-                  <p className=" text-primary-700 text-sm md:text-base transition-all">{e?.title} </p>
+                  <img
+                    className="w-4  transition-all h-4 aspect-square"
+                    src="/assets/icons/edit/magnifier.svg"
+                  />{" "}
+                  <p className=" text-primary-700 text-sm md:text-base transition-all">
+                    {e?.title}{" "}
+                  </p>
                 </div>
               ))}
             </div>
-          ) : (
-            null
-          )}
+          ) : null}
           {!isEmpty(data?.cities) ? (
             <div className="w-full flex flex-col gap-3">
-              {/* <p className="font-medium">{_STRINGS.CITIES}</p> */}
               {data?.cities?.map((e) => (
                 <div
                   onClick={() => {
@@ -103,12 +104,23 @@ const SuggestedPart = ({
                   key={`${e?.id}CITIES`}
                   className="flex cursor-pointer flex-row  grayscale transition-all  hover:grayscale-0 items-center gap-2"
                 >
-                  <img className="w-4  transition-all h-4 aspect-square" src="/assets/icons/home/literly_map.svg" />{" "}
+                  <img
+                    className="w-4  transition-all h-4 aspect-square"
+                    src="/assets/icons/home/literly_map.svg"
+                  />{" "}
                   <p className=" text-primary-700 text-sm md:text-base transition-all">
                     {" "}
-                    {e?.level == "province" ? _STRINGS.PROVINCE : e?.level == "city" ? _STRINGS.CITY : ""} {e?.title}{" "}
+                    {e?.level == "province"
+                      ? _STRINGS.PROVINCE
+                      : e?.level == "city"
+                        ? _STRINGS.CITY
+                        : ""}{" "}
+                    {e?.title}{" "}
                     {e?.level == "region" ? (
-                      <span className="  opacity-70 text-xs "> {`(${e?.parent_title})`} </span>
+                      <span className="  opacity-70 text-xs ">
+                        {" "}
+                        {`(${e?.parent_title})`}{" "}
+                      </span>
                     ) : (
                       ""
                     )}{" "}
@@ -116,9 +128,7 @@ const SuggestedPart = ({
                 </div>
               ))}
             </div>
-          ) : (
-            null
-          )}
+          ) : null}
           {!isEmpty(data?.landings) ? (
             <div className="w-full flex flex-col gap-2">
               <p className="font-medium">{_STRINGS.RELATED_RESULTS}</p>
@@ -131,14 +141,17 @@ const SuggestedPart = ({
                   key={`${e?.id}landings`}
                   className="flex cursor-pointer flex-row  grayscale transition-all  hover:grayscale-0 items-center gap-2"
                 >
-                  <img className="w-4  transition-all h-4 aspect-square" src="/assets/icons/edit/magnifier.svg" />{" "}
-                  <p className=" text-primary-700 text-sm md:text-base transition-all">{e?.title} </p>
+                  <img
+                    className="w-4  transition-all h-4 aspect-square"
+                    src="/assets/icons/edit/magnifier.svg"
+                  />{" "}
+                  <p className=" text-primary-700 text-sm md:text-base transition-all">
+                    {e?.title}{" "}
+                  </p>
                 </div>
               ))}
             </div>
-          ) : (
-            null
-          )}
+          ) : null}
         </>
       )}
     </div>

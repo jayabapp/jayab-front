@@ -1,19 +1,11 @@
 "use client";
 
-import {
-  Fragment,
-  Suspense,
-  useCallback,
-  useEffect,
-  useRef,
-  useState,
-} from "react";
 import { Menu, MenuItem, MenuItems, Transition } from "@headlessui/react";
-import { useMutation, useQuery } from "@tanstack/react-query";
-import { CitiesSuggestTypes } from "@/enum/cities_suggest.enum";
+import { Fragment, useRef, useState } from "react";
+import { useSearchSuggestions } from "@features/search/hooks/useSearchSuggestions";
+import { Suspense, useEffect } from "react";
+import { usePropertySearch } from "@features/search/hooks/usePropertySearch";
 import { useCitiesStore } from "@/store";
-import { HomeService } from "@/api_services/home/home.service";
-import { useRouter } from "next/navigation";
 
 import SearchBoxPopularPlaces from "./SearchBoxPopularPlaces";
 import SeachBoxCitySelector from "../Home/HomeCityFilterContainer/SeachBoxCitySelector";
@@ -21,7 +13,6 @@ import SearchBoxCitiesPart from "./SearchBoxCitiesPart";
 import HistorySuggPart from "./HistorySuggPart";
 import SuggestedPart from "./SuggestedPart";
 import SmallLoading from "../shared/Lotties/SmallLoading";
-import debounce from "lodash/debounce";
 import isEmpty from "lodash/isEmpty";
 interface props {
   boxId?: string;
@@ -38,132 +29,46 @@ interface props {
 }
 
 const SearchBoxDropDown = ({
-  placeholder = "search...",
-  onSubmit,
-  initValue,
-  onClear,
-  containerClass = "w-[90%] mx-auto",
   item,
+  initValue,
+  placeholder = "search...",
+  containerClass = "w-[90%] mx-auto",
   boxId = "SEARCH_BOX",
 }: props) => {
-  const { push } = useRouter();
   const [showResults, setShowResults] = useState(false);
-  const [searchParam, setSearchParam] = useState<string | null>(null);
   const { locationsData } = useCitiesStore();
   const inputRef = useRef<HTMLInputElement>(null);
   const primeInputRef = useRef<HTMLInputElement>(null);
 
   const [text, setText] = useState(initValue || "");
 
-  const [isTyping, setisTyping] = useState(true);
-  const [loading, setLoading] = useState(false);
-  const [element, setElement] = useState<HTMLInputElement | null>(null);
-  const { data: suggsData, isLoading } = useQuery({
-    queryKey: [HomeService.SEARCH_SUGGS_CACHEKEY, element?.value, isTyping],
-    queryFn: () => {
-      if (!isTyping) {
-        if (!!element?.value)
-          return HomeService.GetSearchSuggs({ q: element.value });
-        else return null;
-      } else return null;
-    },
-  });
-
-  useEffect(() => {
-    setElement(document.getElementById(`${boxId}`) as HTMLInputElement);
-  }, []);
+  const {
+    data: suggsData,
+    isLoading,
+    isDebouncing,
+  } = useSearchSuggestions(text, showResults);
 
   useEffect(() => {
     if (!!showResults) {
-      setTimeout(() => {
+      const timeout = setTimeout(() => {
         primeInputRef?.current?.focus();
-      }, 1000);
+      }, 100);
+      return () => clearTimeout(timeout);
     }
   }, [showResults]);
-
-  useEffect(() => {
-    if (searchParam) {
-      setText(searchParam);
-      if (typeof onSubmit == "function") {
-        onSubmit(searchParam);
-        setShowResults(false);
-      }
-    }
-  }, [searchParam]);
-
-  useEffect(() => {
-    if (!isTyping) {
-      if (element) element.value = text;
-      setLoading(true);
-      setTimeout(() => {
-        setLoading(false);
-      }, 1000);
-    }
-  }, [isTyping]);
-
-  const checkTyping = useCallback(
-    debounce(() => {
-      setisTyping(false);
-    }, 200),
-    [],
-  );
-  useEffect(() => {
-    if (!element?.value && !searchParam) {
-      onSubmit?.("");
-      cancelSearch();
-      setShowResults(false);
-    }
-  }, [searchParam]);
 
   function handleChange(text: string) {
     setText(text);
-    setisTyping(true);
-    checkTyping();
   }
 
-  const cancelSearch = () => {
-    if (element) {
-      setText("");
-      element.value = "";
-      if (typeof onSubmit == "function") {
-        setShowResults(false);
-        onSubmit("");
-      }
-      onClear?.();
-    }
-  };
-
   useEffect(() => {
-    !!showResults
-      ? (document.body.style.overflow = "hidden")
-      : (document.body.style.overflow = "auto");
+    document.body.style.overflow = showResults ? "hidden" : "auto";
+    return () => {
+      document.body.style.overflow = "auto";
+    };
   }, [showResults]);
 
-  const { mutate, isPending } = useMutation({
-    mutationKey: [HomeService.SEARCH_KEY],
-    mutationFn: HomeService.Search,
-    onSuccess: (data) => {
-      if (!data?.client_query) return;
-      useCitiesStore.setState({
-        locationsData: {
-          cities: data?.cities_list?.filter(
-            (e) => e?.level == CitiesSuggestTypes.CITY,
-          ),
-          provinces: data?.cities_list?.filter(
-            (e) => e?.level == CitiesSuggestTypes.PROVINCE,
-          ),
-          regions: data?.cities_list?.filter(
-            (e) => e?.level == CitiesSuggestTypes.REGION,
-          ),
-        },
-      });
-      const createdQuery = Object.keys(data?.client_query)
-        ?.map((e) => `${e}=${data?.client_query?.[e]}`)
-        .join("&");
-      const link = `/rooms?${createdQuery}`;
-      push(link);
-    },
-  });
+  const { mutate, isPending } = usePropertySearch(() => setShowResults(false));
 
   return (
     <div className={containerClass}>
@@ -235,7 +140,7 @@ const SearchBoxDropDown = ({
             >
               {!isEmpty(locationsData?.regions) ||
               !isEmpty(locationsData?.cities) ||
-              !isEmpty(locationsData?.province) ? (
+              !isEmpty(locationsData?.provinces) ? (
                 <MenuItem>
                   <SearchBoxCitiesPart setShowPop={setShowResults} />
                 </MenuItem>
@@ -244,9 +149,9 @@ const SearchBoxDropDown = ({
               )}
               <SuggestedPart
                 data={suggsData}
+                searchedText={text}
                 setShowPop={setShowResults}
-                isLoading={isLoading || loading}
-                searchedText={element?.value || ""}
+                isLoading={isLoading || isDebouncing}
               />
               <Suspense>
                 {" "}

@@ -111,7 +111,7 @@ export class HomeService {
     }
   }
 
-  static async GetSearchSuggs(dto: { q?: string }) {
+  static async GetSearchSuggs(dto: { q?: string }, signal?: AbortSignal) {
     try {
       const result = await apiCall<{ q?: string }, SearchSuggDto>(
         "GET",
@@ -119,7 +119,7 @@ export class HomeService {
         {
           q: dto?.q,
         },
-        { version: "v2" },
+        { version: "v2", signal },
       );
       return result;
     } catch (e) {

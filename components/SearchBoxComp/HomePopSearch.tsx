@@ -1,25 +1,16 @@
 "use client";
 
-import {
-  Dispatch,
-  SetStateAction,
-  Suspense,
-  useCallback,
-  useEffect,
-  useRef,
-  useState,
-} from "react";
-import { useRouter, useSearchParams } from "next/navigation";
-import { useMutation, useQuery } from "@tanstack/react-query";
-import { CitiesSuggestTypes } from "@/enum/cities_suggest.enum";
+import { useCallback, useEffect, useRef, useState } from "react";
+import { Dispatch, SetStateAction, Suspense } from "react";
+import { useSearchSuggestions } from "@features/search/hooks/useSearchSuggestions";
+import { usePropertySearch } from "@features/search/hooks/usePropertySearch";
+import { useSearchParams } from "next/navigation";
 import { useCitiesStore } from "@/store";
-import { HomeService } from "@/api_services/home/home.service";
 
 import SeachBoxCitySelector from "../Home/HomeCityFilterContainer/SeachBoxCitySelector";
 import SearchBoxCitiesPart from "./SearchBoxCitiesPart";
 import SuggestedPart from "./SuggestedPart";
 import SmallLoading from "../shared/Lotties/SmallLoading";
-import debounce from "lodash/debounce";
 import isEmpty from "lodash/isEmpty";
 import dynamic from "next/dynamic";
 
@@ -65,129 +56,57 @@ const HomePopSearch = ({
   placeholder = "search...",
   onSubmit,
   initValue,
-  onClear,
   containerClass = " w-full md:w-[80%] mx-auto",
   boxId = "SEARCH_BOX",
   setShowPop,
   showPop,
 }: props) => {
-  const { push } = useRouter();
-  const [searchParam, setSearchParam] = useState<string | null>(null);
   const primeInputRef = useRef<HTMLInputElement>(null);
   const { locationsData } = useCitiesStore();
   const [text, setText] = useState(initValue || "");
 
-  const [isTyping, setisTyping] = useState(true);
-  const [loading, setLoading] = useState(false);
-  const [element, setElement] = useState<HTMLInputElement | null>(null);
-  const { data: suggsData, isLoading } = useQuery({
-    queryKey: [HomeService.SEARCH_SUGGS_CACHEKEY, element?.value, isTyping],
-    enabled: !!element?.value && !isTyping,
-    queryFn: () => {
-      return HomeService.GetSearchSuggs({ q: element!.value });
-    },
-  });
-
-  useEffect(() => {
-    setElement(document.getElementById(`${boxId}prime`) as HTMLInputElement);
-  }, []);
+  const {
+    data: suggsData,
+    isLoading,
+    isDebouncing,
+  } = useSearchSuggestions(text, showPop);
 
   useEffect(() => {
     if (!!showPop) {
-      setTimeout(() => {
+      const timeout = setTimeout(() => {
         primeInputRef?.current?.focus();
-      }, 1000);
+      }, 100);
+      return () => clearTimeout(timeout);
     }
   }, [showPop]);
 
-  useEffect(() => {
-    if (searchParam) {
-      setText(searchParam);
-      if (typeof onSubmit == "function") {
-        onSubmit(searchParam);
-        setShowPop(false);
-      }
-    }
-  }, [searchParam]);
-
-  useEffect(() => {
-    if (!isTyping) {
-      if (element) element.value = text;
-      setLoading(true);
-      setTimeout(() => {
-        setLoading(false);
-      }, 1000);
-    }
-  }, [isTyping]);
-
-  const checkTyping = useCallback(
-    debounce(() => {
-      setisTyping(false);
-    }, 600),
-    [],
-  );
-  useEffect(() => {
-    if (!element?.value && !searchParam) {
-      onSubmit("");
-      cancelSearch();
+  const handleSearchParam = useCallback(
+    (param: string | null) => {
+      if (!param) return;
+      setText(param);
+      onSubmit(param);
       setShowPop(false);
-    }
-  }, [searchParam]);
+    },
+    [onSubmit, setShowPop],
+  );
 
   function handleChange(text: string) {
     setText(text);
-    setisTyping(true);
-    checkTyping();
   }
 
-  const cancelSearch = () => {
-    if (element) {
-      setText("");
-      element.value = "";
-      if (typeof onSubmit == "function") {
-        setShowPop(false);
-        onSubmit("");
-      }
-      onClear();
-    }
-  };
-
   useEffect(() => {
-    !!showPop
-      ? (document.body.style.overflow = "hidden")
-      : (document.body.style.overflow = "auto");
+    document.body.style.overflow = showPop ? "hidden" : "auto";
+    return () => {
+      document.body.style.overflow = "auto";
+    };
   }, [showPop]);
 
-  const { mutate, isPending } = useMutation({
-    mutationKey: [HomeService.SEARCH_KEY],
-    mutationFn: HomeService.Search,
-    onSuccess: (data) => {
-      if (!data?.client_query) return;
-      useCitiesStore.setState({
-        locationsData: {
-          cities: data?.cities_list?.filter(
-            (e) => e?.level == CitiesSuggestTypes.CITY,
-          ),
-          provinces: data?.cities_list?.filter(
-            (e) => e?.level == CitiesSuggestTypes.PROVINCE,
-          ),
-          regions: data?.cities_list?.filter(
-            (e) => e?.level == CitiesSuggestTypes.REGION,
-          ),
-        },
-      });
-      const createdQuery = Object.keys(data?.client_query)
-        ?.map((e) => `${e}=${data?.client_query?.[e]}`)
-        .join("&");
-      const link = `/rooms?${createdQuery}`;
-      push(link);
-    },
-  });
+  const { mutate, isPending } = usePropertySearch(() => setShowPop(false));
 
   return (
     <div className={`${containerClass}  relative`}>
       <Suspense>
-        <SearchParamExtractor onSearchParam={setSearchParam} />
+        <SearchParamExtractor onSearchParam={handleSearchParam} />
       </Suspense>
 
       <div
@@ -232,16 +151,16 @@ const HomePopSearch = ({
 
         {!isEmpty(locationsData?.regions) ||
         !isEmpty(locationsData?.cities) ||
-        !isEmpty(locationsData?.province) ? (
+        !isEmpty(locationsData?.provinces) ? (
           <SearchBoxCitiesPart setShowPop={setShowPop} />
         ) : (
           <></>
         )}
         <SuggestedPart
           data={suggsData}
+          searchedText={text}
           setShowPop={setShowPop}
-          isLoading={isLoading || loading}
-          searchedText={element?.value || ""}
+          isLoading={isLoading || isDebouncing}
         />
         <Suspense>
           {" "}

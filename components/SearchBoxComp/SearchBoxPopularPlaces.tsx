@@ -1,10 +1,7 @@
 "use client";
 
-import { LandingsPlacements } from "@/enum/landings.enum";
-import { HomeService } from "@/api_services/home/home.service";
-import { STALE_TIME } from "@/helpers/queryCache";
+import { useHomeLandings } from "@features/search/hooks/useHomeLandings";
 import { useRouter } from "next/navigation";
-import { useQuery } from "@tanstack/react-query";
 
 import _STRINGS from "@/utils/LocalStrings";
 
@@ -14,12 +11,7 @@ const SearchBoxPopularPlaces = ({
   setShowPop: React.Dispatch<React.SetStateAction<boolean>>;
 }) => {
   const { push } = useRouter();
-  const { data } = useQuery({
-    queryKey: [HomeService.USER_LANDING_PAGES_KEY, LandingsPlacements.HOME],
-    queryFn: () =>
-      HomeService.getLandings({ placement: LandingsPlacements.HOME }),
-    staleTime: STALE_TIME.MEDIUM,
-  });
+  const { data } = useHomeLandings();
   const onLandingClick = (url: string) => {
     setShowPop(false);
     push(url);
