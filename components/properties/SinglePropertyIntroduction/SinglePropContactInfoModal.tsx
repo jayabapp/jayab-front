@@ -1,43 +1,34 @@
 "use client";
-import { PropertyContactIInfDto, SinglePropDto } from "@/api_services/property/property.interface";
-import { PropertyService } from "@/api_services/property/property.service";
+
+import { usePropertyContact } from "@features/properties/hooks/usePropertyContact";
+import { SinglePropDto } from "@/api_services/property/property.interface";
+import { useEffect } from "react";
+
+import PropertyContactInfoItem from "./PropertyContactInfoItem";
 import ModalBottomSheet from "@/components/Modal/ModalBottomSheet";
+import LinearSkeleton from "../ProductSkeleton/LinearSkeleton";
 import ModalHeaderPart from "@/components/Modal/ModalHeaderPart";
 import _STRINGS from "@/utils/LocalStrings";
-import { useQuery } from "@tanstack/react-query";
 import isEmpty from "lodash/isEmpty";
-import { useEffect, useState } from "react";
-import LinearSkeleton from "../ProductSkeleton/LinearSkeleton";
-import PropertyContactInfoItem from "./PropertyContactInfoItem";
 
-const SinglePropContactInfoModal = ({
-  data,
-  show,
-  onHide,
-  type,
-}: {
+type TSinglePopContact = {
   data: SinglePropDto | any;
   show: boolean;
   onHide: () => void | null;
   type: "call" | "sms" | "";
-}) => {
-  const [state, setState] = useState<PropertyContactIInfDto[] | null>();
-  const { data: contactInfo, isPending } = useQuery({
-    queryKey: [PropertyService.SINGLE_PROPERTY_CONTACT_INFO_CACHEKEY, data?.slug, show],
-    queryFn: () => {
-      if (!!data?.slug && !!show) {
-        return PropertyService.getSinglePropertyContactInfo({ propertySlug: data?.slug, action: "view" });
-      } else return null;
-    },
-    staleTime: 300,
-    gcTime: 300,
-  });
+};
+
+const SinglePropContactInfoModal = ({
+  data,
+  type,
+  show,
+  onHide,
+}: TSinglePopContact) => {
+  const { data: contactInfo, isPending, mutate } = usePropertyContact();
 
   useEffect(() => {
-    if (!!contactInfo) {
-      setState(contactInfo?.list);
-    }
-  }, [contactInfo]);
+    if (data?.slug && show) mutate({ propertySlug: data.slug, action: "view" });
+  }, [data?.slug, mutate, show]);
 
   return (
     <>
@@ -48,7 +39,11 @@ const SinglePropContactInfoModal = ({
         onHide={onHide}
         show={show}
       >
-        <ModalHeaderPart hideArrow title={_STRINGS.CONTACT_INFO} onHide={onHide} />
+        <ModalHeaderPart
+          hideArrow
+          onHide={onHide}
+          title={_STRINGS.CONTACT_INFO}
+        />
 
         <div className="w-full p-4 flex flex-col">
           {isPending ? (
@@ -59,15 +54,15 @@ const SinglePropContactInfoModal = ({
           ) : isEmpty(contactInfo) ? (
             <p className="w-full text-center">{_STRINGS?.EMPTY_CONTACT_LIST}</p>
           ) : (
-            state?.map((e) => (
+            contactInfo?.list?.map((e) => (
               <PropertyContactInfoItem
-                type={type}
-                isPropertyExpired={contactInfo?.isPropertyExpired}
-                image={contactInfo?.owner?.selfie_image}
-                onHide={onHide}
-                key={`contactItem${e?.assistant_full_name}`}
                 data={e}
+                type={type}
+                onHide={onHide}
                 propertySlug={data?.slug}
+                image={contactInfo?.owner?.selfie_image}
+                key={`contactItem${e?.assistant_full_name}`}
+                isPropertyExpired={contactInfo?.isPropertyExpired}
               />
             ))
           )}

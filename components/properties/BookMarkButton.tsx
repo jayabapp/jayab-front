@@ -1,22 +1,15 @@
-import { SinglePropDto } from "@/api_services/property/property.interface";
-import { PropertyService } from "@/api_services/property/property.service";
 import { useAuthStore, useStoreParams } from "@/store";
-import { useMutation } from "@tanstack/react-query";
-import React, { useState } from "react";
+import { useTogglePropertyBookmark } from "@features/properties/hooks/useTogglePropertyBookmark";
+import { SinglePropDto } from "@/api_services/property/property.interface";
 
 const BookMarkButton = ({ data }: { data: SinglePropDto }) => {
   const { bookmarks } = useStoreParams((state) => state);
   const { isLogin } = useAuthStore((state) => state);
-  const { mutate, isPending } = useMutation({
-    mutationFn: PropertyService.BookmarkProperty,
-    onSuccess: (e) => {
-      useStoreParams.setState({ bookmarks: e?.bookmarks });
-    },
-  });
+  const { mutate, isPending } = useTogglePropertyBookmark(data.id);
 
   const onSave = () => {
     if (!!isLogin) {
-      mutate({ property_id: data?.id });
+      mutate();
     } else {
       useStoreParams.setState({ loginModal: true });
     }

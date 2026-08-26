@@ -1,8 +1,6 @@
-import { SinglePropDto } from "@/api_services/property/property.interface";
-import { PropertyService } from "@/api_services/property/property.service";
 import { useAuthStore, useStoreParams } from "@/store";
-import { useMutation } from "@tanstack/react-query";
-import React, { useEffect, useState } from "react";
+import { useTogglePropertyLike } from "@features/properties/hooks/useTogglePropertyLike";
+import { SinglePropDto } from "@/api_services/property/property.interface";
 
 const FavButton = ({
   data,
@@ -11,47 +9,26 @@ const FavButton = ({
   data: SinglePropDto;
   setFavCount: React.Dispatch<React.SetStateAction<number>>;
 }) => {
-  const { likes, ssrLikedProducts, setSsrLikedProducts } = useStoreParams((state) => state);
+  const { likes } = useStoreParams((state) => state);
   const { isLogin } = useAuthStore((state) => state);
-  const [like, setLike] = useState(false);
-  const { mutate, isPending } = useMutation({
-    mutationFn: PropertyService.LikeProperty,
-    onSuccess: (e) => {
-      if (!!setFavCount) {
-        setFavCount((e) => {
-          setSsrLikedProducts({ ...ssrLikedProducts, [data?.id]: !!like ? e + 1 : e - 1 });
-          // useStoreParams.setState({ ssrLikedProducts: { ...ssrLikedProducts, [data?.id]: !!like ? e + 1 : e - 1 } });
-
-          return !!like ? e + 1 : e - 1;
-        });
-      }
-      useStoreParams.setState({ likes: e?.favorites });
-    },
-    onError: (e) => {
-      setLike((e) => !e);
-    },
-  });
+  const like = likes.includes(data.id);
+  const { mutate, isPending } = useTogglePropertyLike(data.id);
 
   const onLike = () => {
     if (!!isLogin) {
-      mutate({ property_id: data?.id });
+      const delta = like ? -1 : 1;
+      setFavCount((count) => Math.max(0, count + delta));
+      mutate(undefined, {
+        onError: () => setFavCount((count) => Math.max(0, count - delta)),
+      });
     } else {
       useStoreParams.setState({ loginModal: true });
     }
   };
 
-  useEffect(() => {
-    if (likes?.includes(data?.id)) {
-      setLike(true);
-    }
-  }, [likes, data]);
-
   const onClick = () => {
     if (!!isLogin) {
-      if (!isPending) {
-        setLike((e) => !e);
-        onLike();
-      }
+      if (!isPending) onLike();
     } else {
       useStoreParams.setState({ loginModal: true });
     }
@@ -63,7 +40,11 @@ const FavButton = ({
         onClick();
       }}
       className="  w-5 cursor-pointer h-5 aspect-square"
-      src={like ? "/assets/icons/adds/filled_heart.svg" : "/assets/icons/adds/empty_heart.svg"}
+      src={
+        like
+          ? "/assets/icons/adds/filled_heart.svg"
+          : "/assets/icons/adds/empty_heart.svg"
+      }
     />
   );
 };

@@ -1,27 +1,30 @@
 "use client";
+
+import { Dispatch, SetStateAction, useState } from "react";
+import { useReservedDates } from "@features/properties/hooks/useReservedDates";
 import { SinglePropDto } from "@/api_services/property/property.interface";
-import { PropertyService } from "@/api_services/property/property.service";
+
+import SinglePropRequestedReserveModal from "./SinglePropRequestedReserveModal";
+import SinglePopUpSelect from "@/components/shared/Form/SingleSelectPopUpSelect";
 import ModalBottomSheet from "@/components/Modal/ModalBottomSheet";
 import ModalHeaderPart from "@/components/Modal/ModalHeaderPart";
-import Button from "@/components/shared/Button/Button";
-import SinglePopUpSelect from "@/components/shared/Form/SingleSelectPopUpSelect";
-import Notify from "@/components/shared/Toast";
 import DateSpanPicker from "@/components/widgets/UpdatedDatePicker/DateSpanPicker";
 import _STRINGS from "@/utils/LocalStrings";
-import { useQuery } from "@tanstack/react-query";
+import Button from "@/components/shared/Button/Button";
+import Notify from "@/components/shared/Toast";
 import moment from "moment-jalaali";
-import { Dispatch, SetStateAction, useState } from "react";
-import SinglePropRequestedReserveModal from "./SinglePropRequestedReserveModal";
+
+type TSinglePropReserveProps = {
+  show: boolean;
+  data: SinglePropDto;
+  setShow: Dispatch<SetStateAction<boolean>>;
+};
 
 const SinglePropReservePop = ({
   data,
   show,
   setShow,
-}: {
-  data: SinglePropDto;
-  show: boolean;
-  setShow: Dispatch<SetStateAction<boolean>>;
-}) => {
+}: TSinglePropReserveProps) => {
   const [dates, setDates] = useState<{ start?: Date; end?: Date }>();
   const [count, setCount] = useState<number | string>("");
   const [showReserveReq, setShowReserveReq] = useState(false);
@@ -54,47 +57,7 @@ const SinglePropReservePop = ({
     setDates({});
   };
 
-  // const generateRandomDates = () => {
-  //   const startDate = moment(); // Current Jalali date
-  //   const endDate = moment().add(2, "jMonth"); // 2 months later in Jalali
-  //   const totalDays = endDate.diff(startDate, "days");
-
-  //   const dates = [];
-  //   const dateSet = new Set();
-
-  //   // Generate 10 unique random dates
-  //   while (dates.length < 10 && dateSet.size < totalDays + 1) {
-  //     const randomDays = Math.floor(Math.random() * (totalDays + 1));
-  //     // Create the random date by adding days to the start date
-  //     const randomDate = startDate.clone().add(randomDays, "days");
-  //     const dateKey = randomDate.format("jYYYY/jMM/jD"); // Key for uniqueness check
-
-  //     if (!dateSet.has(dateKey)) {
-  //       dateSet.add(dateKey);
-  //       dates.push({
-  //         id: dates.length,
-  //         // Jalali Formatting
-  //         date: randomDate.toDate(),
-  //         jalaliDate: randomDate.format("jYYYY/jMM/jD"),
-  //         fullJalali: randomDate.format("jMMMM jD, jYYYY"), // e.g., "مرداد 5, 1403"
-  //         weekday: randomDate.format("dddd"), // Weekday name (depends on locale)
-  //         // Gregorian equivalent (optional, for reference)
-  //         gregorian: randomDate.format("YYYY/MM/DD"),
-  //       });
-  //     }
-  //   }
-
-  //   // Sort chronologically (Jalali dates sort correctly if formatted as YYYY/MM/DD)
-  //   dates.sort((a, b) => a.jalaliDate.localeCompare(b.jalaliDate));
-
-  //   return dates;
-  // };
-
-  const { data: reserveDates } = useQuery({
-    queryKey: [PropertyService.PROPERTY_RESERVED_DATES_CACHEKEY, data?.id, show],
-    queryFn: () => PropertyService.propertyReservedDates({ post_id: data?.id }),
-    enabled: !!data?.id && !!show,
-  });
+  const { data: reserveDates } = useReservedDates(show ? data.id : "");
 
   return (
     <>
@@ -120,20 +83,11 @@ const SinglePropReservePop = ({
             <p className=" ">{_STRINGS.TRIP_DATE}</p>
 
             <div className="flex w-full items-center justify-between gap-4">
-              {/* <DatePickerModal
-                // minDate={moment().format("x")}
-                title={_STRINGS.START_DATE}
-                date={startDate}
-                setDate={setStartDate}
+              <DateSpanPicker
+                dates={dates}
+                setDates={setDates}
+                forbiden_dates={reserveDates || []}
               />
-              <DatePickerModal
-                title={_STRINGS.EXIT_DATE}
-                // minDate={moment().format("x")}
-                date={endDate}
-                setDate={setEndDate}
-              /> */}
-
-              <DateSpanPicker forbiden_dates={reserveDates || []} dates={dates} setDates={setDates} />
             </div>
           </div>
           <div className="w-full flex flex-col gap-2">
@@ -161,23 +115,23 @@ const SinglePropReservePop = ({
 
             <Button
               onClick={onReserveClick}
-              width={`w-full ${!!dates && !!count ? "" : " text-white "} `}
-              disabled={!dates || !count}
-              containerClass={` ${dates && !!count ? "w-full" : "w-1/2"}  items-center  justify-center`}
               roundedClass="rounded-full"
+              disabled={!dates || !count}
               title={_STRINGS.ENTER_AND_MOVE_ON}
+              width={`w-full ${!!dates && !!count ? "" : " text-white "} `}
+              containerClass={` ${dates && !!count ? "w-full" : "w-1/2"}  items-center  justify-center`}
             />
           </div>
         </div>
       </ModalBottomSheet>
       <SinglePropRequestedReserveModal
+        data={data}
         count={count}
         setShowEdit={setShow}
         onHide={onCloseReserveReq}
         show={showReserveReq && !show}
-        startDate={moment(dates?.start).format("jYYYY/jMM/jDD")}
-        data={data}
         endDate={moment(dates?.end).format("jYYYY/jMM/jDD")}
+        startDate={moment(dates?.start).format("jYYYY/jMM/jDD")}
       />
     </>
   );

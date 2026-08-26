@@ -760,23 +760,25 @@ export class PropertyService {
   /*                             GET PROPERTIES PART                            */
   /* -------------------------------------------------------------------------- */
 
-  static async GetProperties(dto: GetPropertiesPlusFilters) {
+  static async GetProperties(dto: GetPropertiesPlusFilters, signal?: AbortSignal) {
     try {
       const result = await apiCall<
         GetPropertiesPlusFilters,
         { data: PropertyListDto[]; meta: PageMetaDto }
-      >("GET", apiRoutes.GET_PROPERTIES, dto);
+      >("GET", apiRoutes.GET_PROPERTIES, dto, { signal });
       return result;
     } catch (e) {
       throw e;
     }
   }
 
-  static async GetSinglePropertyWithSlug(dto: { Property_slug: string }) {
+  static async GetSinglePropertyWithSlug(dto: { Property_slug: string }, signal?: AbortSignal) {
     try {
       const result = await apiCall<unknown, SinglePropDto>(
         "GET",
         apiRoutes.GET_SINGLEPROPERTY_SlUG(dto.Property_slug),
+        undefined,
+        { signal },
       );
       return result;
     } catch (e) {
@@ -820,11 +822,13 @@ export class PropertyService {
     }
   }
 
-  static async getBookMarks() {
+  static async getBookMarks(signal?: AbortSignal) {
     try {
       const result = await apiCall<unknown, PropertyListDto[]>(
         "GET",
         apiRoutes.BOOKMARKS,
+        undefined,
+        { signal },
       );
       return result;
     } catch (e) {
@@ -902,7 +906,7 @@ export class PropertyService {
     property_id: string | number | null;
     year: string | number | null;
     month: string | number | null;
-  }) {
+  }, signal?: AbortSignal) {
     try {
       const result = await apiCall<
         { year: string | number | null; month: string | number | null },
@@ -910,7 +914,7 @@ export class PropertyService {
       >("GET", apiRoutes.GET_SINGLEPROPERTY_CALLENDER(dto?.property_id), {
         month: dto.month,
         year: dto.year,
-      });
+      }, { signal });
       return result;
     } catch (e) {
       throw e;
@@ -947,11 +951,13 @@ export class PropertyService {
   /*                             PROPERTY rESERVEDDATES                               */
   /* -------------------------------------------------------------------------- */
 
-  static async propertyReservedDates(dto: { post_id: string | number }) {
+  static async propertyReservedDates(dto: { post_id: string | number }, signal?: AbortSignal) {
     try {
       const result = await apiCall<unknown, Date[]>(
         "GET",
         apiRoutes.PROPERTY_RESERVED_DATES(dto.post_id),
+        undefined,
+        { signal },
       );
       return result;
     } catch (e) {

@@ -1,5 +1,4 @@
-import { PropertyService } from "@/api_services/property/property.service";
-import { useMutation } from "@tanstack/react-query";
+import { useReportProperty } from "@features/properties/hooks/useReportProperty";
 import { useState } from "react";
 
 import MultiLineFormInput from "@/components/shared/Form/MultiLineFormInput";
@@ -10,15 +9,13 @@ import useCmsContent from "@/hooks/useCmsContent";
 import _STRINGS from "@/utils/LocalStrings";
 import Button from "@/components/shared/Button/Button";
 
-const ReportPop = ({
-  show,
-  setShow,
-  postId,
-}: {
-  postId: number;
+type TReportPop = {
   show: boolean;
+  postId: number;
   setShow: (value: boolean) => void;
-}) => {
+};
+
+const ReportPop = ({ show, setShow, postId }: TReportPop) => {
   const [reportTitle, setReportTitle] = useState<any>("");
   const [report, setReport] = useState("");
   const onHide = () => {
@@ -28,15 +25,13 @@ const ReportPop = ({
     setReportTitle("");
   };
 
-  const { mutate, isPending } = useMutation({
-    mutationFn: PropertyService.reportPost,
-    onSuccess: () => {
-      onHide();
-    },
-  });
+  const { mutate, isPending } = useReportProperty();
 
   const onSubmit = () => {
-    mutate({ description: report, title: reportTitle, post_id: postId });
+    mutate(
+      { description: report, title: reportTitle, post_id: postId },
+      { onSuccess: onHide },
+    );
   };
 
   const { content: reportTitles } = useCmsContent("reportTitles", {

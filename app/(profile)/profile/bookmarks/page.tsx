@@ -1,24 +1,23 @@
 "use client";
-import { PropertyService } from "@/api_services/property/property.service";
+
+import { usePropertyBookmarks } from "@features/properties/hooks/usePropertyBookmarks";
+
+import PropertyCardSkeleton from "@/components/properties/PropertyCardSkeleton";
 import PropertyCard from "@/components/properties/PropertyCard";
 import EmptyList from "@/components/shared/Lotties/EmptyList";
-import LottieLoading from "@/components/shared/Lotties/LottieLoading";
-import { useQuery } from "@tanstack/react-query";
 import isEmpty from "lodash/isEmpty";
 
 const BookMarks = () => {
-  const { data: properties, isLoading } = useQuery({
-    queryKey: [PropertyService.BOOKMARKS_CACHEKEY],
-
-    queryFn: () => {
-      return PropertyService.getBookMarks();
-    },
-  });
+  const { data: properties, isLoading } = usePropertyBookmarks();
 
   return (
     <div className=" profile-container    ">
       {isLoading ? (
-        <LottieLoading />
+        <div className="grid w-full grid-cols-1 gap-4 p-2 md:grid-cols-2">
+          {Array.from({ length: 4 }, (_, index) => (
+            <PropertyCardSkeleton key={index} />
+          ))}
+        </div>
       ) : isEmpty(properties) ? (
         <EmptyList />
       ) : (

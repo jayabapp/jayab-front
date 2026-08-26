@@ -1,14 +1,16 @@
-import { Metadata, ResolvingMetadata } from "next";
+import { dehydrate, HydrationBoundary } from "@tanstack/react-query";
+import { propertyDetailOptions } from "@features/properties/api/property.options";
 import { apiRoutes, baseUrl } from "@/utils/urls";
 import { ProductSchema } from "@/components/SchemaGenerator/Schemas";
 import { PlaceSchema } from "@/components/SchemaGenerator/Schemas";
 import { REVALIDATE } from "@/helpers/revalidate";
 import { redirect } from "next/navigation";
+import { Metadata } from "next";
 
 import SingleProductBreadCrumb from "@/components/BreadCrumbs/SingleProductBreadCrumb";
 import MehaHeaderHelper from "@/helpers/MetaHeaderHelper";
-
 import ProductSkeleton from "@/components/properties/ProductSkeleton";
+import getQueryClient from "@lib/query/query-client";
 import serverCall from "@/helpers/serverCall";
 import dynamic from "next/dynamic";
 
@@ -29,10 +31,7 @@ type Props = {
   searchParams: Promise<{ [key: string]: string | string[] | undefined }>;
 };
 
-export async function generateMetadata(
-  { params }: Props,
-  parent: ResolvingMetadata,
-): Promise<Metadata> {
+export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const paramData = await params;
   const { data: properyData } = await serverCall(
     baseUrl + apiRoutes.GET_SINGLEPROPERTY_SlUG(paramData?.room_slug),
@@ -69,47 +68,55 @@ const SinglePropertyPage = async ({
   if (decodeURI(properyData?.slug) != decodeURI(pageParams?.room_slug))
     redirect(`/rooms/${encodeURI(properyData?.slug)}`);
 
+  const queryClient = getQueryClient();
+  queryClient.setQueryData(
+    propertyDetailOptions(pageParams.room_slug).queryKey,
+    properyData,
+  );
+
   return (
-    <div className=" !pb-48 lg:!pb-36   gap-4 justify-start items-start container grid grid-cols-1  md:grid-cols-2  !h-auto   !overflow-x-visible">
-      <div className=" w-full col-span-full hidden md:flex ">
-        {" "}
-        <SingleProductBreadCrumb
-          dataArray={[
-            { title: "خانه", link: "/" },
-            { title: "آگهی ها", link: "/rooms" },
-            {
-              title: properyData?.title || "",
-              link: "#",
-            },
-          ]}
-        />
+    <HydrationBoundary state={dehydrate(queryClient)}>
+      <div className=" !pb-48 lg:!pb-36   gap-4 justify-start items-start container grid grid-cols-1  md:grid-cols-2  !h-auto   !overflow-x-visible">
+        <div className=" w-full col-span-full hidden md:flex ">
+          {" "}
+          <SingleProductBreadCrumb
+            dataArray={[
+              { title: "خانه", link: "/" },
+              { title: "آگهی ها", link: "/rooms" },
+              {
+                title: properyData?.title || "",
+                link: "#",
+              },
+            ]}
+          />
+        </div>
+        {!!properyData ? (
+          <>
+            <ProductSchema data={properyData} />
+            <PlaceSchema data={properyData} />
+            <ProductImagesContainer productImageId={null} data={properyData} />
+            <div className=" w-full col-span-full flex md:hidden ">
+              {" "}
+              <SingleProductBreadCrumb
+                dataArray={[
+                  { title: "خانه", link: "/" },
+                  { title: "آگهی ها", link: "/rooms" },
+                  {
+                    title: properyData?.title || "",
+                    link: "#",
+                  },
+                ]}
+              />
+            </div>
+            <SinglePropertyIntroduction data={properyData} />
+            <SinglePorpertyAccards data={properyData} />
+            <SinglePropertycallender data={properyData} />
+          </>
+        ) : (
+          <ProductSkeleton />
+        )}{" "}
       </div>
-      {!!properyData ? (
-        <>
-          <ProductSchema data={properyData} />
-          <PlaceSchema data={properyData} />
-          <ProductImagesContainer productImageId={null} data={properyData} />
-          <div className=" w-full col-span-full flex md:hidden ">
-            {" "}
-            <SingleProductBreadCrumb
-              dataArray={[
-                { title: "خانه", link: "/" },
-                { title: "آگهی ها", link: "/rooms" },
-                {
-                  title: properyData?.title || "",
-                  link: "#",
-                },
-              ]}
-            />
-          </div>
-          <SinglePropertyIntroduction data={properyData} />
-          <SinglePorpertyAccards data={properyData} />
-          <SinglePropertycallender data={properyData} />
-        </>
-      ) : (
-        <ProductSkeleton />
-      )}{" "}
-    </div>
+    </HydrationBoundary>
   );
 };
 

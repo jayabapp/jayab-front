@@ -1,77 +1,33 @@
 "use client";
-import { OwnerCallendarItemDto } from "@/api_services/property/property.interface";
-import { PropertyService } from "@/api_services/property/property.service";
-import Callender from "@/components/widgets/DatePicker/callender";
+
+import { usePropertyCalendar } from "@features/properties/hooks/usePropertyCalendar";
 import { useStoreInit } from "@/store";
-import { useQuery } from "@tanstack/react-query";
-import moment from "moment-jalaali";
-import { useEffect, useState } from "react";
+import { useState } from "react";
+
 import OwnerCallemdarGuide from "../owner/SingleOwnerPropertycallender/OwnerCallemdarGuide";
+import Callender from "@/components/widgets/DatePicker/callender";
+import moment from "moment-jalaali";
 
 const SinglePropertycallender = ({ data }: { data: any }) => {
   const { userInfo } = useStoreInit((data) => data);
-  /* -------------------------------------------------------------------------- */
-  /*                             SELECTED DATE STATE                            */
-  /* -------------------------------------------------------------------------- */
-  const [callenderselectedDate, setCallenderSelectedDate] = useState<string>(moment().format("jYYYY/jMM/jD"));
-  /* -------------------------------------------------------------------------- */
-  /*                             SELECTED TIME SPAN                             */
-  /* -------------------------------------------------------------------------- */
-  const [callenderselectedSpan, setCallenderSelectedSpan] = useState<string>(moment().format("jYYYY/jMM/jD"));
+  const [callenderselectedDate, setCallenderSelectedDate] = useState<string>(
+    moment().format("jYYYY/jMM/jD"),
+  );
+  const [callenderselectedSpan, setCallenderSelectedSpan] = useState<string>(
+    moment().format("jYYYY/jMM/jD"),
+  );
 
-  /* -------------------------------------------------------------------------- */
-  /*                       INCOMING SELECTED TIMESPAN DATA                      */
-  /* -------------------------------------------------------------------------- */
-  const [callendarDataState, setCallendarDataState] = useState<OwnerCallendarItemDto[]>([]);
-
-  /* -------------------------------------------------------------------------- */
-  /*                            TIME SPAN DATA FETCH                            */
-  /* -------------------------------------------------------------------------- */
-
-  const { data: callendarData, isLoading } = useQuery({
-    queryKey: [
-      PropertyService.GET_SINGLEPROPERTY_CALLENDER_CACHEKEY,
-      Number(moment(callenderselectedSpan, "jYYYY/jMM/jD").format("jMM")),
-      Number(moment(callenderselectedSpan, "jYYYY/jMM/jD").format("jYYYY")),
-      ,
-      data?.id,
-    ],
-    queryFn: () => {
-      if (!!data?.id && !!callenderselectedSpan) {
-        return PropertyService.GetSingleUserPropertyCallendar({
-          property_id: `${data?.id}`,
-          month: Number(moment(callenderselectedSpan, "jYYYY/jMM/jD").format("jMM")),
-          year: Number(moment(callenderselectedSpan, "jYYYY/jMM/jD").format("jYYYY")),
-        });
-      } else return null;
-    },
+  const { data: callendarData } = usePropertyCalendar(data?.id, {
+    month: Number(moment(callenderselectedSpan, "jYYYY/jMM/jD").format("jMM")),
+    year: Number(moment(callenderselectedSpan, "jYYYY/jMM/jD").format("jYYYY")),
   });
-
-  useEffect(() => {
-    if (!!callendarData) {
-      setCallendarDataState(callendarData);
-    }
-  }, [callendarData]);
-
-  /* -------------------------------------------------------------------------- */
-  /*                       FINDING THE SELECTED DATE DATA                       */
-  /* -------------------------------------------------------------------------- */
-
-  const selectedDateData = callendarDataState?.find((e) => {
-    return (
-      `${e?.day}` == moment(callenderselectedDate, "jYYYY/jMM/jD").format("jD") &&
-      `${e?.month}` == moment(callenderselectedDate, "jYYYY/jMM/jD").format("jMM") &&
-      `${e?.year}` == moment(callenderselectedDate, "jYYYY/jMM/jD").format("jYYYY")
-    );
-  });
-
   return (
     <div className=" order-3  flex flex-col gap-4 md:order-4 ">
       {" "}
       <Callender
         setChosenDateState={setCallenderSelectedSpan}
         active_days={[]}
-        callenderData={callendarDataState || []}
+        callenderData={callendarData || []}
         setSelectedDay={(e) => {
           setCallenderSelectedDate(e);
         }}
@@ -79,7 +35,10 @@ const SinglePropertycallender = ({ data }: { data: any }) => {
         disablePrevMonths
         options={{ disableDaySelect: true }}
       />
-      <OwnerCallemdarGuide isAdvisor={!!userInfo?.advisor_id} isCustomer={!!userInfo?.advisor_id ? false : true} />
+      <OwnerCallemdarGuide
+        isAdvisor={!!userInfo?.advisor_id}
+        isCustomer={!!userInfo?.advisor_id ? false : true}
+      />
     </div>
   );
 };

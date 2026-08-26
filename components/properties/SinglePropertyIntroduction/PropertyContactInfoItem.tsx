@@ -1,36 +1,37 @@
 "use client";
-import { ImageDto } from "@/api_services/auth/auth.interface";
+
 import { PropertyContactIInfDto } from "@/api_services/property/property.interface";
-import { PropertyService } from "@/api_services/property/property.service";
-import Button from "@/components/shared/Button/Button";
-import Notify from "@/components/shared/Toast";
+import { usePropertyContact } from "@features/properties/hooks/usePropertyContact";
+import { isMacOs, isWindows } from "react-device-detect";
+import { NEW_IMAGE_URL } from "@/utils/urls";
+import { useState } from "react";
+import { ImageDto } from "@/api_services/auth/auth.interface";
+
 import maskPhoneNumber from "@/helpers/maskPhoneNumber";
 import _STRINGS from "@/utils/LocalStrings";
-import { NEW_IMAGE_URL } from "@/utils/urls";
-import { useMutation } from "@tanstack/react-query";
-import { useState } from "react";
-import { isMacOs, isWindows } from "react-device-detect";
+import Button from "@/components/shared/Button/Button";
+import Notify from "@/components/shared/Toast";
+
+type TPropertyContact = {
+  image?: ImageDto;
+  propertySlug?: string;
+  type: "call" | "sms" | "";
+  onHide: () => void | null;
+  isPropertyExpired?: boolean;
+  data: PropertyContactIInfDto;
+};
 
 const PropertyContactInfoItem = ({
   data,
-  onHide,
-  image,
-  isPropertyExpired,
   type,
+  image,
+  onHide,
   propertySlug,
-}: {
-  onHide: () => void | null;
-  data: PropertyContactIInfDto;
-  image?: ImageDto;
-  isPropertyExpired?: boolean;
-  propertySlug?: string;
-  type: "call" | "sms" | "";
-}) => {
+  isPropertyExpired,
+}: TPropertyContact) => {
   const [showNumber, setShowNumber] = useState(false);
 
-  const { mutate, isPending: mutatePending } = useMutation({
-    mutationFn: PropertyService.getSinglePropertyContactInfo,
-  });
+  const { mutate } = usePropertyContact();
 
   const action = () => {
     mutate({ propertySlug: propertySlug || "", action: type });
@@ -59,21 +60,32 @@ const PropertyContactInfoItem = ({
     <div className="w-full py-3 border-t first:border-t-0   flex flex-row items-center justify-between  ">
       <div className="flex flex-row items-center gap-3 ">
         <img
-          src={!!image && !!data?.is_owner ? NEW_IMAGE_URL(image) : "/assets/images/add/wall_e_lover.png"}
+          src={
+            !!image && !!data?.is_owner
+              ? NEW_IMAGE_URL(image)
+              : "/assets/images/add/wall_e_lover.png"
+          }
           className={` w-10 h-10  md:w-14 md:h-14 aspect-square rounded-full ${
             !!image && !!data?.is_owner ? "border border-primary-700" : ""
           } `}
         />
         <div className="flex flex-col items-start gap-2">
           <p className=" text-xs md:text-sm ">
-            {!!data?.is_owner ? _STRINGS.HOST : _STRINGS.OWNER_ASSIST} : {data?.assistant_full_name}
+            {!!data?.is_owner ? _STRINGS.HOST : _STRINGS.OWNER_ASSIST} :{" "}
+            {data?.assistant_full_name}
           </p>
-          <p className=" text-xs   md:text-sm  ">{maskPhoneNumber(data?.assistant_mobile_number)}</p>
+          <p className=" text-xs   md:text-sm  ">
+            {maskPhoneNumber(data?.assistant_mobile_number)}
+          </p>
         </div>
       </div>
       {!!isWindows || !!isMacOs ? (
         <Button
-          title={!!showNumber ? data?.assistant_mobile_number : _STRINGS.SHOW_FULL_NUMBER}
+          title={
+            !!showNumber
+              ? data?.assistant_mobile_number
+              : _STRINGS.SHOW_FULL_NUMBER
+          }
           width={`  ${
             showNumber
               ? " !bg-transparent  !px-0 !text-primary-700 font-semibold    !text-base  tracking-wider "
@@ -105,19 +117,26 @@ const PropertyContactInfoItem = ({
         <div className="flex flex-row items-center justify-center gap-4">
           {type == "call" ? (
             <div className="flex justify-center items-center gap-2">
-              <p className="text-sm font-medium text-primary-700">{_STRINGS.CALL}</p>
+              <p className="text-sm font-medium text-primary-700">
+                {_STRINGS.CALL}
+              </p>
               <div
                 onClick={() => {
                   onActionButtinsClick("call");
                 }}
                 className=" w-9 h-9  bg-primary-700 aspect-square rounded-full flex items-center justify-center "
               >
-                <img className="w-4 h-4  aspect-square" src="/assets/icons/advisor/white_phone.svg" />
+                <img
+                  className="w-4 h-4  aspect-square"
+                  src="/assets/icons/advisor/white_phone.svg"
+                />
               </div>
             </div>
           ) : (
             <div className="flex justify-center items-center gap-2">
-              <p className="text-sm font-medium text-primary-700">{_STRINGS.SMS}</p>
+              <p className="text-sm font-medium text-primary-700">
+                {_STRINGS.SMS}
+              </p>
               <div
                 onClick={() => {
                   if (!!isPropertyExpired) return;
@@ -127,7 +146,10 @@ const PropertyContactInfoItem = ({
                   isPropertyExpired ? " grayscale opacity-60 " : ""
                 }  w-9 h-9  bg-white border border-primary-700 aspect-square rounded-full flex items-center justify-center `}
               >
-                <img className="w-4 h-4  aspect-square" src="/assets/icons/advisor/blue_sms.svg" />
+                <img
+                  className="w-4 h-4  aspect-square"
+                  src="/assets/icons/advisor/blue_sms.svg"
+                />
               </div>{" "}
             </div>
           )}

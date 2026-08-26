@@ -1,61 +1,38 @@
 "use client";
 
-import { PropertyService } from "@/api_services/property/property.service";
-import Headers from "@/components/headers";
-import AnimationlessModal from "@/components/Modal/AnimationlessModal";
-import dynamic from "next/dynamic";
-
-import ProductSkeleton from "@/components/properties/ProductSkeleton";
-
-import { useQuery } from "@tanstack/react-query";
+import { usePropertyDetails } from "@features/properties/hooks/usePropertyDetails";
 import { usePathname } from "next/navigation";
-
-import SingleProductBreadCrumb from "@/components/BreadCrumbs/SingleProductBreadCrumb";
-import Footer from "@/components/Footer";
 import { Suspense } from "react";
 
-const ProductImagesContainer = dynamic(() => import("@/components/properties/imageComponents/PropertiesImagesPart"));
-const SinglePropertyIntroduction = dynamic(() => import("@/components/properties/SinglePropertyIntroduction"));
-const SinglePropertycallender = dynamic(() => import("@/components/properties/SinglePropertycallender"));
-const SinglePorpertyAccards = dynamic(() => import("@/components/properties/SinglePropertyAccards"));
+import SingleProductBreadCrumb from "@/components/BreadCrumbs/SingleProductBreadCrumb";
+import AnimationlessModal from "@/components/Modal/AnimationlessModal";
+import ProductSkeleton from "@/components/properties/ProductSkeleton";
+import Headers from "@/components/headers";
+import dynamic from "next/dynamic";
+import Footer from "@/components/Footer";
 
-export default function ModalClient({ params }: { params: { room_slug: string } }) {
-  const incomingParams = params;
+const ProductImagesContainer = dynamic(
+  () => import("@/components/properties/imageComponents/PropertiesImagesPart"),
+);
+const SinglePropertyIntroduction = dynamic(
+  () => import("@/components/properties/SinglePropertyIntroduction"),
+);
+const SinglePropertycallender = dynamic(
+  () => import("@/components/properties/SinglePropertycallender"),
+);
+const SinglePorpertyAccards = dynamic(
+  () => import("@/components/properties/SinglePropertyAccards"),
+);
+
+export default function ModalClient({
+  params,
+}: {
+  params: { room_slug: string };
+}) {
   const pathname = usePathname();
-
-  const { data: properyData, isPending } = useQuery({
-    queryKey: [PropertyService?.GET_SINGLEPROPERTY_SlUG_CACHEKEY, incomingParams?.room_slug],
-    queryFn: () => {
-      if (incomingParams?.room_slug)
-        return PropertyService?.GetSinglePropertyWithSlug({ Property_slug: incomingParams?.room_slug });
-      else {
-        return null;
-      }
-    },
-  });
-
-  //   useEffect(() => {
-  //     if (!properyData) return;
-
-  //     const prevTitle = document.title;
-  //     const descMeta = document.querySelector('meta[name="description"]') as HTMLMetaElement | null;
-  //     const prevDesc = descMeta?.getAttribute("content") || "";
-
-  //     document.title = properyData?.title || prevTitle;
-
-  //     let meta = descMeta;
-  //     if (!meta) {
-  //       meta = document.createElement("meta");
-  //       meta.setAttribute("name", "description");
-  //       document.head.appendChild(meta);
-  //     }
-  //     meta.setAttribute("content", properyData?.title || "");
-
-  //     return () => {
-  //       document.title = prevTitle;
-  //       if (meta) meta.setAttribute("content", prevDesc);
-  //     };
-  //   }, [properyData]);
+  const { property: properyData, isPending } = usePropertyDetails(
+    params.room_slug,
+  );
 
   return (
     <AnimationlessModal
@@ -86,7 +63,10 @@ export default function ModalClient({ params }: { params: { room_slug: string } 
               />
             </div>
             <Suspense>
-              <ProductImagesContainer productImageId={null} data={properyData} />
+              <ProductImagesContainer
+                productImageId={null}
+                data={properyData}
+              />
             </Suspense>
             <div className=" w-full col-span-full flex md:hidden ">
               {" "}

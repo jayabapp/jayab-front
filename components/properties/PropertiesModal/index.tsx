@@ -1,33 +1,20 @@
 "use client";
 
-import { PropertyService } from "@/api_services/property/property.service";
-import Headers from "@/components/headers";
-import Modal from "@/components/Modal";
-import ProductImagesContainer from "@/components/properties/imageComponents/PropertiesImagesPart";
-import ProductSkeleton from "@/components/properties/ProductSkeleton";
-import SinglePorpertyAccards from "@/components/properties/SinglePropertyAccards";
-import SinglePropertycallender from "@/components/properties/SinglePropertycallender";
-import SinglePropertyIntroduction from "@/components/properties/SinglePropertyIntroduction";
-import LottieLoading from "@/components/shared/Lotties/LottieLoading";
-
-import _STRINGS from "@/utils/LocalStrings";
-import { useQuery } from "@tanstack/react-query";
+import { usePropertyDetails } from "@features/properties/hooks/usePropertyDetails";
 import { usePathname } from "next/navigation";
 
-import React, { useState, use } from "react";
+import SinglePropertyIntroduction from "@/components/properties/SinglePropertyIntroduction";
+import SinglePropertycallender from "@/components/properties/SinglePropertycallender";
+import ProductImagesContainer from "@/components/properties/imageComponents/PropertiesImagesPart";
+import SinglePorpertyAccards from "@/components/properties/SinglePropertyAccards";
+import ProductSkeleton from "@/components/properties/ProductSkeleton";
+import Headers from "@/components/headers";
+import Modal from "@/components/Modal";
 
 const PropertiesModal = ({ room_slug }: { room_slug: string }) => {
   const pathname = usePathname();
 
-  const { data: properyData, isPending } = useQuery({
-    queryKey: [PropertyService?.GET_SINGLEPROPERTY_SlUG_CACHEKEY, room_slug],
-    queryFn: () => {
-      if (room_slug) return PropertyService?.GetSinglePropertyWithSlug({ Property_slug: room_slug });
-      else {
-        return null;
-      }
-    },
-  });
+  const { property: properyData, isPending } = usePropertyDetails(room_slug);
 
   return (
     <Modal
@@ -47,7 +34,6 @@ const PropertiesModal = ({ room_slug }: { room_slug: string }) => {
           <>
             <ProductImagesContainer productImageId={null} data={properyData} />
             <SinglePropertyIntroduction data={properyData} />
-            {/* <SingleMobilePropertyIntroductions data={properyData} /> */}
             <SinglePorpertyAccards data={properyData} />
             <SinglePropertycallender data={properyData} />
           </>

@@ -1,34 +1,13 @@
 "use client";
+
 import { SinglePropDto } from "@/api_services/property/property.interface";
-import _STRINGS from "@/utils/LocalStrings";
 import { useState } from "react";
 
-import { PropertyService } from "@/api_services/property/property.service";
-import { useMutation } from "@tanstack/react-query";
 import ReportPop from "./ReportPop";
+import _STRINGS from "@/utils/LocalStrings";
 
 const ReportRoom = ({ data }: { data: SinglePropDto }) => {
-  // const [reportTitle, setReportTitle] = useState("");
-  // const [report, setReport] = useState("");
   const [show, setShow] = useState(false);
-
-  const onHide = () => {
-    setShow(false);
-
-    // setReport("");
-    // setReportTitle("");
-  };
-
-  const { mutate, isPending } = useMutation({
-    mutationFn: PropertyService.reportPost,
-    onSuccess: () => {
-      onHide();
-    },
-  });
-
-  // const onSubmit = () => {
-  //   mutate({ description: report, title: reportTitle, post_id: data?.id });
-  // };
 
   const onShowReport = () => {
     setShow(true);
@@ -48,7 +27,11 @@ const ReportRoom = ({ data }: { data: SinglePropDto }) => {
           className={` object-contain transition-all   w-4 aspect-square  `}
         />
       </div>
-      {!!show ? <ReportPop postId={data?.id} setShow={setShow} show={show} /> : <></>}
+      {!!show ? (
+        <ReportPop postId={data?.id} setShow={setShow} show={show} />
+      ) : (
+        <></>
+      )}
     </>
   );
 };
