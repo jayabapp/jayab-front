@@ -1,8 +1,6 @@
-"use client";
-
-import { SingleOwnerPropertyDto } from "@/api_services/property/property.interface";
-import { PropertyListDto } from "@/api_services/property/property.interface";
+import { PropertyListDto, SingleOwnerPropertyDto } from "@/api_services/property/property.interface";
 import { useRouter } from "next/navigation";
+import React from "react";
 
 const AuthorizationStatus = ({
   isAuthorized,
@@ -16,9 +14,11 @@ const AuthorizationStatus = ({
   const pusher = (link: string) => {
     router.push(link);
   };
+
   const onClickFunc = () => {
-    if (!!data?.id && !isAuthorized)
+    if (!!data?.id && !isAuthorized) {
       pusher(`/profile/owner/properties/${data?.id}/license`);
+    }
   };
 
   return (
@@ -31,14 +31,10 @@ const AuthorizationStatus = ({
       <img
         className=" rounded-full w-4 h-4 "
         src={
-          isAuthorized
-            ? "/assets/icons/property/green_circled_tick.svg"
-            : "/assets/icons/property/red_exclmation.svg"
+          isAuthorized ? "/assets/icons/property/green_circled_tick.svg" : "/assets/icons/property/red_exclmation.svg"
         }
       />
-      <p
-        className={`${isAuthorized ? "" : "text-primary-900"}  shrink-0 text-xs `}
-      >
+      <p className={`${isAuthorized ? "" : "text-primary-900"}  shrink-0 text-xs `}>
         {" "}
         {isAuthorized ? "احراز شده" : "احراز نشده"}
       </p>

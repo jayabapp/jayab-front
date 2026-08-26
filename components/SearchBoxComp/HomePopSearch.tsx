@@ -1,61 +1,43 @@
 "use client";
-
-import {
-  Dispatch,
-  SetStateAction,
-  Suspense,
-  useCallback,
-  useEffect,
-  useRef,
-  useState,
-} from "react";
-import { useRouter, useSearchParams } from "next/navigation";
-import { useMutation, useQuery } from "@tanstack/react-query";
+import { HomeService } from "@/api_services/home/home.service";
 import { CitiesSuggestTypes } from "@/enum/cities_suggest.enum";
 import { useCitiesStore } from "@/store";
-import { HomeService } from "@/api_services/home/home.service";
-
+import { useMutation, useQuery } from "@tanstack/react-query";
+import { debounce, isEmpty } from "lodash";
+import dynamic from "next/dynamic";
+import { useRouter, useSearchParams } from "next/navigation";
+import { Dispatch, SetStateAction, Suspense, useCallback, useEffect, useRef, useState } from "react";
 import SeachBoxCitySelector from "../Home/HomeCityFilterContainer/SeachBoxCitySelector";
+import SmallLoading from "../shared/Lotties/SmallLoading";
 import SearchBoxCitiesPart from "./SearchBoxCitiesPart";
 import SuggestedPart from "./SuggestedPart";
-import SmallLoading from "../shared/Lotties/SmallLoading";
-import debounce from "lodash/debounce";
-import isEmpty from "lodash/isEmpty";
-import dynamic from "next/dynamic";
+const HistorySuggPart = dynamic(() => import("./HistorySuggPart"), { ssr: true });
+const SearchBoxPopularPlaces = dynamic(() => import("./SearchBoxPopularPlaces"), { ssr: true });
 
-const HistorySuggPart = dynamic(() => import("./HistorySuggPart"), {
-  ssr: true,
-});
-const SearchBoxPopularPlaces = dynamic(
-  () => import("./SearchBoxPopularPlaces"),
-  { ssr: true },
-);
-
-const SearchParamExtractor = ({
-  onSearchParam,
-}: {
-  onSearchParam: (param: string | null) => void;
-}) => {
+// Separate client component that uses useSearchParams
+const SearchParamExtractor = ({ onSearchParam }: { onSearchParam: (param: string | null) => void }) => {
   const searchParam = useSearchParams().get("q");
+
   useEffect(() => {
     onSearchParam(searchParam);
   }, [searchParam, onSearchParam]);
+
   return null;
 };
 
 interface props {
-  boxId?: string;
-  showPop: boolean;
-  justIcon?: boolean;
-  autofocus?: boolean;
-  cancelText?: string;
-  placeholder?: string;
-  containerClass?: string;
-  onClear: () => void | null;
   initValue?: string | undefined;
-  errors?: { [key: string]: string[] };
-  onSubmit: (e: string | null) => void | null;
+  placeholder?: string;
+  cancelText?: string;
+  containerClass?: string;
+  boxId?: string;
+  autofocus?: boolean;
+  justIcon?: boolean;
+  showPop: boolean;
   setShowPop: Dispatch<SetStateAction<boolean>>;
+  onSubmit: (e: string | null) => void | null;
+  onClear: () => void | null;
+  errors?: { [key: string]: string[] };
   item?: {
     bg?: string;
   };
@@ -63,16 +45,21 @@ interface props {
 
 const HomePopSearch = ({
   placeholder = "search...",
+  cancelText = "لغو",
   onSubmit,
+  autofocus = true,
   initValue,
   onClear,
   containerClass = " w-full md:w-[80%] mx-auto",
+  item,
   boxId = "SEARCH_BOX",
+  justIcon = false,
   setShowPop,
   showPop,
 }: props) => {
   const { push } = useRouter();
   const [searchParam, setSearchParam] = useState<string | null>(null);
+  const inputRef = useRef<HTMLInputElement>(null);
   const primeInputRef = useRef<HTMLInputElement>(null);
   const { locationsData } = useCitiesStore();
   const [text, setText] = useState(initValue || "");
@@ -105,6 +92,7 @@ const HomePopSearch = ({
       setText(searchParam);
       if (typeof onSubmit == "function") {
         onSubmit(searchParam);
+        // HistoryMaker(searchParam);
         setShowPop(false);
       }
     }
@@ -113,6 +101,12 @@ const HomePopSearch = ({
   useEffect(() => {
     if (!isTyping) {
       if (element) element.value = text;
+      if (typeof onSubmit == "function" && element) {
+        // onSubmit(element.value);
+        // HistoryMaker(element?.value);
+        // setShowPop(false);
+      }
+
       setLoading(true);
       setTimeout(() => {
         setLoading(false);
@@ -153,33 +147,37 @@ const HomePopSearch = ({
   };
 
   useEffect(() => {
-    !!showPop
-      ? (document.body.style.overflow = "hidden")
-      : (document.body.style.overflow = "auto");
+    !!showPop ? (document.body.style.overflow = "hidden") : (document.body.style.overflow = "auto");
   }, [showPop]);
 
+  ////////////////////////////////////////////
   const { mutate, isPending } = useMutation({
     mutationKey: [HomeService.SEARCH_KEY],
     mutationFn: HomeService.Search,
     onSuccess: (data) => {
       if (!data?.client_query) return;
+
+      /* -------------------------------------------------------------------------- */
+      /*                              CITY STORE SETTER                             */
+      /* -------------------------------------------------------------------------- */
+
       useCitiesStore.setState({
         locationsData: {
-          cities: data?.cities_list?.filter(
-            (e) => e?.level == CitiesSuggestTypes.CITY,
-          ),
-          provinces: data?.cities_list?.filter(
-            (e) => e?.level == CitiesSuggestTypes.PROVINCE,
-          ),
-          regions: data?.cities_list?.filter(
-            (e) => e?.level == CitiesSuggestTypes.REGION,
-          ),
+          cities: data?.cities_list?.filter((e) => e?.level == CitiesSuggestTypes.CITY),
+          provinces: data?.cities_list?.filter((e) => e?.level == CitiesSuggestTypes.PROVINCE),
+          regions: data?.cities_list?.filter((e) => e?.level == CitiesSuggestTypes.REGION),
         },
       });
+
+      /* -------------------------------------------------------------------------- */
+      /*                                 QUERY MAKER                                */
+      /* -------------------------------------------------------------------------- */
+
       const createdQuery = Object.keys(data?.client_query)
         ?.map((e) => `${e}=${data?.client_query?.[e]}`)
         .join("&");
       const link = `/rooms?${createdQuery}`;
+
       push(link);
     },
   });
@@ -197,16 +195,24 @@ const HomePopSearch = ({
             : ` top-[-200dvh]  xl:top-0  -z-50  xl:hidden  h-0 xl:opacity-0`
         } transition-all   flex flex-col items-center justify-between pb-4  fixed  overflow-y-scroll    rounded-b-10 border shadow-card  left-0 w-full -top-2  duration-500 z-50  bg-white `}
       >
+        {/* <img
+          src="/assets/icons/adds/x_mark.svg"
+          className={`w-3  mt-4 mr-4 cursor-pointer  h-3 dark:invert`}
+          alt=""
+          onClick={() => {
+            setShowPop(false);
+          }}
+        /> */}
         <div className="flex px-4  pt-4 items-center relative w-full gap-2 flex-row ">
           <div className=" relative flex items-center rounded-full border-primary-200 dark:bg-transparent  w-full py-1.5   gap-1 px-1.5 pr-3   border-2 ">
             {" "}
             <input
-              value={text}
-              ref={primeInputRef}
               id={`${boxId}prime`}
+              ref={primeInputRef}
               placeholder={placeholder}
-              onChange={(v) => handleChange(v.target.value)}
               className={`bg-transparent w-full placeholder:text-sm `}
+              onChange={(v) => handleChange(v.target.value)}
+              value={text}
             />
             <div
               onClick={
@@ -230,24 +236,24 @@ const HomePopSearch = ({
           </div>
         </div>
 
-        {!isEmpty(locationsData?.regions) ||
-        !isEmpty(locationsData?.cities) ||
-        !isEmpty(locationsData?.province) ? (
+        {!isEmpty(locationsData?.regions) || !isEmpty(locationsData?.cities) || !isEmpty(locationsData?.province) ? (
           <SearchBoxCitiesPart setShowPop={setShowPop} />
         ) : (
           <></>
         )}
         <SuggestedPart
-          data={suggsData}
           setShowPop={setShowPop}
-          isLoading={isLoading || loading}
           searchedText={element?.value || ""}
+          isLoading={isLoading || loading}
+          data={suggsData}
         />
         <Suspense>
           {" "}
           <HistorySuggPart
             handleChange={(e) => {
+              // setShowPop(false);
               handleChange(e);
+              // onSubmit(e);
             }}
           />
         </Suspense>

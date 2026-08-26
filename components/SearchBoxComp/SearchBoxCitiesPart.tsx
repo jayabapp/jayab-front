@@ -1,33 +1,26 @@
 "use client";
 
-import { Dispatch, SetStateAction } from "react";
-import { usePathname, useRouter } from "next/navigation";
-import { useCitiesStore } from "@/store";
-
-import SearchBoxCitiesPartCarts from "./SearchBoxCitiesPartCarts";
 import queryBuilder from "@/helpers/queryBuilder";
 import useQueryGet from "@/helpers/queryGet";
-import isArray from "lodash/isArray";
-import isEmpty from "lodash/isEmpty";
+import { useCitiesStore } from "@/store";
+import { isArray, isEmpty } from "lodash";
+import { usePathname, useRouter } from "next/navigation";
+import { Dispatch, SetStateAction } from "react";
+import SearchBoxCitiesPartCarts from "./SearchBoxCitiesPartCarts";
 
-const SearchBoxCitiesPart = ({
-  setShowPop,
-}: {
-  setShowPop: Dispatch<SetStateAction<boolean>>;
-}) => {
+/* -------------------------------------------------------------------------- */
+/*                                 CITIES PART                                */
+/* -------------------------------------------------------------------------- */
+
+const SearchBoxCitiesPart = ({ setShowPop }: { setShowPop: Dispatch<SetStateAction<boolean>> }) => {
   const { locationsData } = useCitiesStore();
   const queriesParams = useQueryGet<any>();
   const pathname = usePathname();
   const router = useRouter();
-  const queyProvincesData = queriesParams["provinces"]
-    ? `${queriesParams["provinces"]}`?.split(",")
-    : "";
-  const queyCityData = queriesParams["cities"]
-    ? `${queriesParams["cities"]}`?.split(",")
-    : "";
-  const queyRegionsData = queriesParams["regions"]
-    ? `${queriesParams["regions"]}`?.split(",")
-    : "";
+
+  const queyProvincesData = queriesParams["provinces"] ? `${queriesParams["provinces"]}`?.split(",") : "";
+  const queyCityData = queriesParams["cities"] ? `${queriesParams["cities"]}`?.split(",") : "";
+  const queyRegionsData = queriesParams["regions"] ? `${queriesParams["regions"]}`?.split(",") : "";
 
   const queryMaker = (items: any[], queryKey: string) => {
     let temp = !!queriesParams ? { ...queriesParams } : {};
@@ -36,23 +29,27 @@ const SearchBoxCitiesPart = ({
 
       [queryKey]: items,
     };
-    if (isEmpty(items)) delete body[queryKey];
+    if (isEmpty(items)) {
+      delete body[queryKey];
+    }
     delete body.page;
-    if (queryKey == "cities" || queryKey == "provinces") delete body.regions;
+    if (queryKey == "cities" || queryKey == "provinces") {
+      delete body.regions;
+    }
     setShowPop(false);
     router.replace(`${pathname}?${queryBuilder(body)}`);
   };
-
+  ///////////////////////////
   const onClickCity = (i: any) => {
     let temp: any = queyCityData || [];
     if (isArray(queyCityData)) {
-      if (queyCityData?.some((it: string) => it == `${i?.id}`))
+      if (queyCityData?.some((it: string) => it == `${i?.id}`)) {
         temp = queyCityData?.filter((it: string) => it != `${i?.id}`);
-      else temp = [...queyCityData, `${i?.id}`];
+      } else {
+        temp = [...queyCityData, `${i?.id}`];
+      }
     }
-    const newStoredCities = temp?.map((e: any) =>
-      locationsData?.cities?.find((x: any) => x?.id == e),
-    );
+    const newStoredCities = temp?.map((e: any) => locationsData?.cities?.find((x: any) => x?.id == e));
 
     useCitiesStore.setState({
       locationsData: {
@@ -62,17 +59,20 @@ const SearchBoxCitiesPart = ({
     });
     queryMaker(temp, "cities");
   };
-
+  ////////////////////////////////
   const onClickRegion = (i: any) => {
     let temp: any = queyRegionsData || [];
     if (isArray(queyRegionsData)) {
-      if (queyRegionsData?.some((it: string) => it == `${i?.id}`))
+      if (queyRegionsData?.some((it: string) => it == `${i?.id}`)) {
         temp = queyRegionsData?.filter((it: string) => it != `${i?.id}`);
-      else temp = [...queyRegionsData, `${i?.id}`];
+      } else {
+        temp = [...queyRegionsData, `${i?.id}`];
+      }
     }
     const newStoredRegions = temp
       ?.map((e: any) => locationsData?.regions?.find((x: any) => x?.id == e))
       ?.filter((e: any) => !!e);
+
     useCitiesStore.setState({
       locationsData: {
         cities: locationsData?.cities,
@@ -82,22 +82,25 @@ const SearchBoxCitiesPart = ({
     });
     queryMaker(temp, "regions");
   };
+  ////////////////////////////////
   const onProvinceCity = (p: any) => {
     let temp: any = queyProvincesData || [];
     if (isArray(queyProvincesData)) {
-      if (queyProvincesData?.some((it: string) => it == `${p?.id}`))
+      if (queyProvincesData?.some((it: string) => it == `${p?.id}`)) {
         temp = queyProvincesData?.filter((it: string) => it != `${p?.id}`);
-      else temp = [...queyProvincesData, `${p?.id}`];
+      } else {
+        temp = [...queyProvincesData, `${p?.id}`];
+      }
     }
-    const newStoredProvinces = temp?.map((e: any) =>
-      locationsData?.provinces?.find((x: any) => x?.id == e),
-    );
+    const newStoredProvinces = temp?.map((e: any) => locationsData?.provinces?.find((x: any) => x?.id == e));
+
     useCitiesStore.setState({
       locationsData: {
         cities: locationsData?.cities,
         provinces: newStoredProvinces,
       },
     });
+
     queryMaker(temp, "provinces");
   };
   return (

@@ -1,39 +1,29 @@
-import { Metadata, ResolvingMetadata } from "next";
-import { apiRoutes, baseUrl } from "@/utils/urls";
-import { convertHtmlToReact } from "@/helpers/convertHTMLtoReact";
-import { ContentFAQSchema } from "@/components/SchemaGenerator/Schemas";
+import { ContentDto } from "@/api_services/home/home.interface";
+import Gallery from "@/components/blogs/Gallery";
+import MainImageTextBlock from "@/components/blogs/MainImageTextBlock";
+import RelatedBlogs from "@/components/blogs/RelatedBlogs";
+import SingleProductBreadCrumb from "@/components/BreadCrumbs/SingleProductBreadCrumb";
 import { ContentQuestions } from "@/components/ContentQuestions";
 import { HTMLGenerator } from "@/helpers/html.generator";
-import { BlogSchema } from "@/components/SchemaGenerator/Schemas";
-import { ContentDto } from "@/api_services/home/home.interface";
-import { REVALIDATE } from "@/helpers/revalidate";
-import { Suspense } from "react";
-
-import SingleProductBreadCrumb from "@/components/BreadCrumbs/SingleProductBreadCrumb";
-import MainImageTextBlock from "@/components/blogs/MainImageTextBlock";
-import MehaHeaderHelper from "@/helpers/MetaHeaderHelper";
-import RelatedBlogs from "@/components/blogs/RelatedBlogs";
 import serverCall from "@/helpers/serverCall";
-import Gallery from "@/components/blogs/Gallery";
+import { apiRoutes, baseUrl } from "@/utils/urls";
+import { Metadata, ResolvingMetadata } from "next";
 import Link from "next/link";
 
+import { BlogSchema, ContentFAQSchema } from "@/components/SchemaGenerator/Schemas";
+import { convertHtmlToReact } from "@/helpers/convertHTMLtoReact";
+import MehaHeaderHelper from "@/helpers/MetaHeaderHelper";
+import { Suspense } from "react";
 type Props = {
   params: Promise<{ id: string; blog_id: string }>;
   searchParams: Promise<{ [key: string]: string | string[] | undefined }>;
 };
 
-export async function generateMetadata(
-  { params, searchParams }: Props,
-  parent: ResolvingMetadata,
-): Promise<Metadata> {
+export async function generateMetadata({ params, searchParams }: Props, parent: ResolvingMetadata): Promise<Metadata> {
   const { blog_id } = await params;
-  const { data: blogData } = await serverCall(
-    baseUrl + apiRoutes.SINGLE_CONTENT_WITH_SLUG(blog_id),
-    undefined,
-    {
-      revalidate: REVALIDATE.BLOG,
-    },
-  );
+
+  const { data: blogData } = await serverCall(baseUrl + apiRoutes.SINGLE_CONTENT_WITH_SLUG(blog_id));
+
   return MehaHeaderHelper(blogData);
 }
 const SingleBlogPage = async ({ params }: Props) => {
@@ -41,24 +31,24 @@ const SingleBlogPage = async ({ params }: Props) => {
   const { data }: { data: ContentDto } = await serverCall(
     baseUrl + apiRoutes.SINGLE_CONTENT_WITH_SLUG(blog_id),
     undefined,
-    { redirect404: true, revalidate: REVALIDATE.BLOG },
+    { redirect404: true },
   );
 
-  const { data: rateData }: { data: { rate: number; rate_count: number } } =
-    await serverCall(
-      baseUrl + apiRoutes.CONTENTS_QUESTIONS_RATE,
-      {
-        content_id: data?.id,
-      },
-      { revalidate: REVALIDATE.CONTENT_RATE },
-    );
-  const { html, headings, timeToRead, wordCount, faqData } = HTMLGenerator(
-    data?.html || "",
+  /* -------------------------------------------------------------------------- */
+  /*                                    RATE                                    */
+  /* -------------------------------------------------------------------------- */
+  const { data: rateData }: { data: { rate: number; rate_count: number } } = await serverCall(
+    baseUrl + apiRoutes.CONTENTS_QUESTIONS_RATE,
     {
-      hasHeading: true,
-      hasCount: true,
+      content_id: data?.id,
     },
   );
+
+  //////////////////////////////////////////////////////////////
+  const { html, headings, timeToRead, wordCount, faqData } = HTMLGenerator(data?.html || "", {
+    hasHeading: true,
+    hasCount: true,
+  });
 
   const breadcrumb = [
     { title: "خانه", link: "/" },
@@ -69,11 +59,11 @@ const SingleBlogPage = async ({ params }: Props) => {
   return (
     <div className="app-container relative !pt-24 flex flex-col !gap-6  !overflow-visible">
       <BlogSchema
-        data={data}
         rate={rateData?.rate}
-        wordCount={wordCount || 0}
-        timeToRead={timeToRead || 0}
         rate_count={rateData?.rate_count}
+        data={data}
+        timeToRead={timeToRead || 0}
+        wordCount={wordCount || 0}
       />
       <ContentFAQSchema faqData={faqData || []} />
       {!data ? null : (
@@ -82,18 +72,14 @@ const SingleBlogPage = async ({ params }: Props) => {
         </div>
       )}
       <Suspense>
-        <MainImageTextBlock
-          data={data}
-          timeToRead={timeToRead}
-          breadcrumb={breadcrumb}
-        >
+        <MainImageTextBlock breadcrumb={breadcrumb} data={data} timeToRead={timeToRead}>
           <div className={` w-full scrollbar   overflow-y-scroll   relative`}>
             {headings?.map((i, index) => (
               <div key={`HEADING${index}`} className={`text-xs! my-4  md:my-6`}>
                 <Link
-                  replace
                   title={"content"}
                   href={`#${i?.id}`}
+                  replace
                   className="flex  group flex-row items-center justify-start gap-2"
                 >
                   <img
@@ -116,15 +102,14 @@ const SingleBlogPage = async ({ params }: Props) => {
           <ContentQuestions
             containerClass="!px-0 border-t !rounded-none !mb-0"
             title="نظر خود را در مورد این مطلب بنویسید:"
+            // showRate={false}
             contentId={data?.id}
           />
         </div>
         <div className="md:p-4 rounded-10 md:shadow-md md:bg-white sticky h-fit top-28 self-start flex flex-col gap-8">
           <RelatedBlogs id={data?.id as number} />
           <Suspense>
-            <Gallery
-              images={data?.attachments?.map((i) => i?.attachment) as []}
-            />
+            <Gallery images={data?.attachments?.map((i) => i?.attachment) as []} />
           </Suspense>
         </div>
       </div>

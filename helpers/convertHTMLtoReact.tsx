@@ -1,16 +1,16 @@
-import { isMobile } from "react-device-detect";
-
-import numberWithCommas from "./numberWithCommas";
-import SimpleAccordion from "@/components/shared/SimpleAccorion";
-import HTMLParser from "node-html-parser";
-import DOMPurify from "isomorphic-dompurify";
 import Swiper from "@/components/embelaCarousel/Swiper";
+import SimpleAccordion from "@/components/shared/SimpleAccorion";
+
 import Button from "@/components/shared/Button/Button";
 import Image from "next/image";
 import Link from "next/link";
+import HTMLParser from "node-html-parser";
+import { isMobile } from "react-device-detect";
+import numberWithCommas from "./numberWithCommas";
 
-const sanitize = (html: string) =>
-  DOMPurify.sanitize(html, { FORCE_BODY: true, SANITIZE_DOM: true });
+/* -------------------------------------------------------------------------- */
+/*                         STANDALONE LINK CARD                                */
+/* -------------------------------------------------------------------------- */
 
 const StandaloneLinkCard = ({
   href,
@@ -27,27 +27,38 @@ const StandaloneLinkCard = ({
 }) => {
   return (
     <Link
-      href={href}
       className="link w-full"
+      href={href}
+      target={target || "_self"}
       rel={rel || undefined}
       title={title || undefined}
-      target={target || "_self"}
     >
       <div className="flex flex-row items-center justify-between w-full rounded-10 bg-gray-100">
         <div className="flex w-full items-center justify-start gap-2 p-4">
+          {/* <LinkSimpleIcon className="size-6 text-secondary-500" weight="bold" /> */}
           <div>{title || text}</div>
         </div>
+        {/* <CaretLeftIcon className="size-6 ml-4 text-secondary-500" /> */}
       </div>
     </Link>
   );
 };
+
+/* -------------------------------------------------------------------------- */
+/*                       HTML → REACT CONVERTER                                */
+/* -------------------------------------------------------------------------- */
 
 export function convertHtmlToReact(htmlString: string) {
   const root = HTMLParser.parse(htmlString);
   const children = root.childNodes;
 
   const renderNode = (node: any, index: number): any => {
-    if (node.nodeType === 3) return node.rawText;
+    /* ---------------------------- TEXT NODE ------------------------------- */
+    if (node.nodeType === 3) {
+      return node.rawText;
+    }
+
+    /* ---------------------------- ACCORDION ------------------------------- */
     if (node.getAttribute?.("data-accordion") === "true") {
       const title = decodeURIComponent(node.getAttribute("data-title") || "");
       const isOpen = node.getAttribute("data-open") === "true";
@@ -55,19 +66,23 @@ export function convertHtmlToReact(htmlString: string) {
       return (
         <SimpleAccordion
           key={index}
+          // passedId={`FAQ${index}`}
           title={title}
           isOpenFirst={isOpen}
+          // titleIcon={<img className="w-7 h-7" alt="q_mark" src="/assets/icons/shared/q_mark.svg" />}
           item={{
+            // noBorder: true,
             parenClass: "bg-white rounded-xl shadow-md my-2",
           }}
         >
-          <div dangerouslySetInnerHTML={{ __html: sanitize(node.innerHTML) }} />
+          <div dangerouslySetInnerHTML={{ __html: node.innerHTML }} />
         </SimpleAccordion>
       );
     }
-
+    /* ------------------------------ QUOTE -------------------------------- */
     if (node.getAttribute?.("data-quote") === "true") {
       const text = decodeURIComponent(node.getAttribute("data-text") || "");
+
       return (
         <div
           key={index}
@@ -86,7 +101,7 @@ export function convertHtmlToReact(htmlString: string) {
         </div>
       );
     }
-
+    /* ------------------------ STANDALONE LINK ----------------------------- */
     if (node.getAttribute?.("data-standalone-link") === "true") {
       const href = decodeURIComponent(node.getAttribute("data-href") || "");
       const text = decodeURIComponent(node.getAttribute("data-text") || "");
@@ -94,22 +109,11 @@ export function convertHtmlToReact(htmlString: string) {
       const rel = decodeURIComponent(node.getAttribute("data-rel") || "");
       const title = decodeURIComponent(node.getAttribute("data-title") || "");
 
-      return (
-        <StandaloneLinkCard
-          key={index}
-          href={href}
-          text={text}
-          target={target}
-          rel={rel}
-          title={title}
-        />
-      );
+      return <StandaloneLinkCard key={index} href={href} text={text} target={target} rel={rel} title={title} />;
     }
-
+    /* ------------------------------ SWIPER -------------------------------- */
     if (node.getAttribute?.("data-swiper") === "true") {
-      const images = JSON.parse(
-        decodeURIComponent(node.getAttribute("data-images") || "[]"),
-      );
+      const images = JSON.parse(decodeURIComponent(node.getAttribute("data-images") || "[]"));
 
       if (!images.length) return null;
 
@@ -148,20 +152,17 @@ export function convertHtmlToReact(htmlString: string) {
           parentClass="my-6"
         >
           {images.map((img: any, idx: number) => (
-            <div
-              key={idx}
-              className="embla__slide flex items-center justify-center relative"
-            >
+            <div key={idx} className="embla__slide flex items-center justify-center relative">
               <Image
-                quality={75}
                 src={img.src}
-                loading="lazy"
+                fill={!img.width && !img?.height}
+                quality={75}
                 alt={img.alt || ""}
                 title={img.title || ""}
                 width={img.width || undefined}
-                fill={!img.width && !img?.height}
                 height={img.height || undefined}
                 className="rounded-xl object-contain max-h-[480px] w-full"
+                loading="lazy"
               />
             </div>
           ))}
@@ -171,18 +172,13 @@ export function convertHtmlToReact(htmlString: string) {
 
     /* ------------------------------ TABLE -------------------------------- */
     if (node.getAttribute?.("data-table") === "true") {
-      const content = decodeURIComponent(
-        node.getAttribute("data-content") || "",
-      );
+      const content = decodeURIComponent(node.getAttribute("data-content") || "");
       return (
         <div key={index} className="w-full my-4">
           <div className="w-full overflow-x-auto md:overflow-x-scroll">
             <div className=" flex items-center justify-center rounded-xl overflow-hidden min-w-full md:min-w-fit">
               <div className=" min-w-[100%] md:min-w-0  overflow-x-scroll ">
-                <div
-                  className="w-full category_table "
-                  dangerouslySetInnerHTML={{ __html: sanitize(content) }}
-                />
+                <div className="w-full category_table " dangerouslySetInnerHTML={{ __html: content }} />
               </div>
             </div>
           </div>
@@ -190,11 +186,11 @@ export function convertHtmlToReact(htmlString: string) {
       );
     }
 
+    /* ------------------------------ PRODUCTS -------------------------------- */
     if (node.getAttribute?.("data-product-swiper") === "true") {
-      const products = JSON.parse(
-        decodeURIComponent(node.getAttribute("data-products") || "[]"),
-      );
+      const products = JSON.parse(decodeURIComponent(node.getAttribute("data-products") || "[]"));
       if (!products.length) return null;
+
       return (
         <Swiper
           key={`PRODUCTS${index}`}
@@ -245,32 +241,24 @@ export function convertHtmlToReact(htmlString: string) {
                 className="rounded-lg object-cover !aspect-square w-full"
                 loading="lazy"
               />
-              <h3 className="!no-underline !font-bold !text-black text-right">
-                {product.title}
-              </h3>
-              <p className="!no-underline text-sm !text-black text-right ">
-                {numberWithCommas(product.price)} تومان
-              </p>
-              <Button
-                title={"مشاهده"}
-                variant="solid"
-                containerClass="w-full"
-              />
+              <h3 className="!no-underline !font-bold !text-black text-right">{product.title}</h3>
+              <p className="!no-underline text-sm !text-black text-right ">{numberWithCommas(product.price)} تومان</p>
+              <Button title={"مشاهده"} variant="solid" containerClass="w-full" />
             </Link>
           ))}
         </Swiper>
       );
     }
 
-    return (
-      <div
-        key={index}
-        dangerouslySetInnerHTML={{ __html: sanitize(node.outerHTML) }}
-      />
-    );
+    /* ------------------------ DEFAULT FALLBACK ----------------------------- */
+    return <div key={index} dangerouslySetInnerHTML={{ __html: node.outerHTML }} />;
   };
 
   return children.map((node, idx) => renderNode(node, idx));
 }
+
+/* -------------------------------------------------------------------------- */
+/*                                  VERSION                                   */
+/* -------------------------------------------------------------------------- */
 
 convertHtmlToReact.Version = "1.3.0";

@@ -1,37 +1,28 @@
 "use client";
-
-import {
-  Fragment,
-  Suspense,
-  useCallback,
-  useEffect,
-  useRef,
-  useState,
-} from "react";
-import { Menu, MenuItem, MenuItems, Transition } from "@headlessui/react";
-import { useMutation, useQuery } from "@tanstack/react-query";
+import { HomeService } from "@/api_services/home/home.service";
 import { CitiesSuggestTypes } from "@/enum/cities_suggest.enum";
 import { useCitiesStore } from "@/store";
-import { HomeService } from "@/api_services/home/home.service";
+import { Menu, MenuItem, MenuItems, Transition } from "@headlessui/react";
+import { useMutation, useQuery } from "@tanstack/react-query";
+import { debounce, isEmpty } from "lodash";
 import { useRouter } from "next/navigation";
-
-import SearchBoxPopularPlaces from "./SearchBoxPopularPlaces";
+import { Fragment, Suspense, useCallback, useEffect, useRef, useState } from "react";
 import SeachBoxCitySelector from "../Home/HomeCityFilterContainer/SeachBoxCitySelector";
-import SearchBoxCitiesPart from "./SearchBoxCitiesPart";
-import HistorySuggPart from "./HistorySuggPart";
-import SuggestedPart from "./SuggestedPart";
 import SmallLoading from "../shared/Lotties/SmallLoading";
-import debounce from "lodash/debounce";
-import isEmpty from "lodash/isEmpty";
+import HistorySuggPart from "./HistorySuggPart";
+import SearchBoxCitiesPart from "./SearchBoxCitiesPart";
+import SearchBoxPopularPlaces from "./SearchBoxPopularPlaces";
+import SuggestedPart from "./SuggestedPart";
 interface props {
-  boxId?: string;
-  color?: string;
+  initValue?: string | undefined;
   placeholder?: string;
   containerClass?: string;
-  onClear?: () => void | null;
-  initValue?: string | undefined;
-  errors?: { [key: string]: string[] };
+  boxId?: string;
+  color?: string;
+
   onSubmit?: (e: string | null) => void | null;
+  onClear?: () => void | null;
+  errors?: { [key: string]: string[] };
   item?: {
     bg?: string;
   };
@@ -62,9 +53,9 @@ const SearchBoxDropDown = ({
     queryKey: [HomeService.SEARCH_SUGGS_CACHEKEY, element?.value, isTyping],
     queryFn: () => {
       if (!isTyping) {
-        if (!!element?.value)
+        if (!!element?.value) {
           return HomeService.GetSearchSuggs({ q: element.value });
-        else return null;
+        } else return null;
       } else return null;
     },
   });
@@ -86,6 +77,7 @@ const SearchBoxDropDown = ({
       setText(searchParam);
       if (typeof onSubmit == "function") {
         onSubmit(searchParam);
+        // HistoryMaker(searchParam);
         setShowResults(false);
       }
     }
@@ -94,6 +86,12 @@ const SearchBoxDropDown = ({
   useEffect(() => {
     if (!isTyping) {
       if (element) element.value = text;
+      if (typeof onSubmit == "function" && element) {
+        // onSubmit(element.value);
+        // HistoryMaker(element?.value);
+        // setShowPop(false);
+      }
+
       setLoading(true);
       setTimeout(() => {
         setLoading(false);
@@ -134,33 +132,37 @@ const SearchBoxDropDown = ({
   };
 
   useEffect(() => {
-    !!showResults
-      ? (document.body.style.overflow = "hidden")
-      : (document.body.style.overflow = "auto");
+    !!showResults ? (document.body.style.overflow = "hidden") : (document.body.style.overflow = "auto");
   }, [showResults]);
 
+  ////////////////////////////////////////////
   const { mutate, isPending } = useMutation({
     mutationKey: [HomeService.SEARCH_KEY],
     mutationFn: HomeService.Search,
     onSuccess: (data) => {
       if (!data?.client_query) return;
+
+      /* -------------------------------------------------------------------------- */
+      /*                              CITY STORE SETTER                             */
+      /* -------------------------------------------------------------------------- */
+
       useCitiesStore.setState({
         locationsData: {
-          cities: data?.cities_list?.filter(
-            (e) => e?.level == CitiesSuggestTypes.CITY,
-          ),
-          provinces: data?.cities_list?.filter(
-            (e) => e?.level == CitiesSuggestTypes.PROVINCE,
-          ),
-          regions: data?.cities_list?.filter(
-            (e) => e?.level == CitiesSuggestTypes.REGION,
-          ),
+          cities: data?.cities_list?.filter((e) => e?.level == CitiesSuggestTypes.CITY),
+          provinces: data?.cities_list?.filter((e) => e?.level == CitiesSuggestTypes.PROVINCE),
+          regions: data?.cities_list?.filter((e) => e?.level == CitiesSuggestTypes.REGION),
         },
       });
+
+      /* -------------------------------------------------------------------------- */
+      /*                                 QUERY MAKER                                */
+      /* -------------------------------------------------------------------------- */
+
       const createdQuery = Object.keys(data?.client_query)
         ?.map((e) => `${e}=${data?.client_query?.[e]}`)
         .join("&");
       const link = `/rooms?${createdQuery}`;
+
       push(link);
     },
   });
@@ -187,11 +189,11 @@ const SearchBoxDropDown = ({
           <div className="flex items-center w-full">
             <input
               id={boxId}
-              value={text}
               ref={inputRef}
               placeholder={placeholder}
-              onChange={(v) => handleChange(v.target.value)}
               className={`bg-transparent dark:bg-slate-800 py-1 pl-0.5 pr-3 outline-none  w-full ${item?.bg} `}
+              onChange={(v) => handleChange(v.target.value)}
+              value={text}
             />
           </div>
           <div className="inline-flex w-1/4 justify-end">
@@ -216,11 +218,17 @@ const SearchBoxDropDown = ({
                 />
               )}
             </div>
-          </div>
+
+            {/* {element?.value && (
+              <div className="text-primary-700 text-xs mr-2 cursor-pointer " onClick={cancelSearch}>
+                {cancelText}
+              </div>
+            )} */}
+          </div>{" "}
         </div>
         <Transition
-          as={Fragment}
           show={showResults}
+          as={Fragment}
           enter="transition ease-out duration-100"
           enterFrom="transform opacity-0 scale-95"
           enterTo="transform opacity-100 scale-100"
@@ -230,7 +238,9 @@ const SearchBoxDropDown = ({
         >
           <MenuItems className="absolute w-full  pb-2 md:top-auto left-0 z-20  mt-2  origin-top-center  rounded-20   bg-white dark:bg-zinc-800 custome-shadow-card focus:outline-none  overflow-scroll">
             <div
-              onMouseLeave={() => {}}
+              onMouseLeave={() => {
+                // setShowResults(false);
+              }}
               className="flex gap-2   w-full items-center flex-col px-2 py-2  border-gray-275 dark:border-zinc-500 "
             >
               {!isEmpty(locationsData?.regions) ||
@@ -243,16 +253,18 @@ const SearchBoxDropDown = ({
                 <></>
               )}
               <SuggestedPart
-                data={suggsData}
                 setShowPop={setShowResults}
-                isLoading={isLoading || loading}
                 searchedText={element?.value || ""}
+                isLoading={isLoading || loading}
+                data={suggsData}
               />
               <Suspense>
                 {" "}
                 <HistorySuggPart
                   handleChange={(e) => {
+                    // setShowPop(false);
                     handleChange(e);
+                    // onSubmit(e);
                   }}
                 />
               </Suspense>

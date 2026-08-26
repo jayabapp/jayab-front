@@ -1,21 +1,20 @@
 "use client";
 
+import { AuthService } from "@/api_services/auth/auth.service";
+import { HomeService } from "@/api_services/home/home.service";
+import { p2e } from "@/helpers/NumberConverter";
+import _STRINGS from "@/utils/LocalStrings";
+import { useMutation, useQuery } from "@tanstack/react-query";
+import moment from "moment-jalaali";
+import Image from "next/image";
 import { useRouter, useSearchParams } from "next/navigation";
 import { useEffect, useState } from "react";
 import { useAuthStore } from "../../store";
-import { useMutation } from "@tanstack/react-query";
-import { AuthService } from "@/api_services/auth/auth.service";
-import { p2e } from "@/helpers/NumberConverter";
-
-import useCmsContent from "@/hooks/useCmsContent";
-import AuthHeader from "../headers/AuthHeader";
-import FormInput from "../shared/Form/FormInput";
-import _STRINGS from "@/utils/LocalStrings";
-import Button from "../shared/Button/Button";
-import Notify from "../shared/Toast";
-import Image from "next/image";
 import Terms from "../auth/Terms";
-
+import AuthHeader from "../headers/AuthHeader";
+import Button from "../shared/Button/Button";
+import FormInput from "../shared/Form/FormInput";
+import Notify from "../shared/Toast";
 const AuthPageComponent = () => {
   const { isLogin } = useAuthStore((state) => state);
   const router = useRouter();
@@ -34,19 +33,16 @@ const AuthPageComponent = () => {
         { mobile_number: mobile_number || null },
         {
           onSuccess: (data) => {
-            if (data?.sandbox_otp_code) {
-              Notify({
-                type: "info",
-                body: `کد ورود سندباکس: ${data.sandbox_otp_code}`,
-              });
+            if (data) {
+              Notify({ type: "success", title: "", body: `${data}` || "" });
             }
 
             const link = redirectUrl
-              ? `/auth/otp?redirect_url=${redirectUrl}`
-              : `/auth/otp`;
+              ? `/auth/otp?redirect_url=${redirectUrl}&mobile_number=${mobile_number}`
+              : `/auth/otp?mobile_number=${mobile_number}`;
 
             router.replace(link);
-            useAuthStore.setState({ authCodeExpire: data?.expires_at ?? null });
+            useAuthStore.setState({ authCodeExpire: moment().add(3, "minute") });
           },
           onError: () => {
             setLoading(false);
@@ -64,7 +60,12 @@ const AuthPageComponent = () => {
     }
   };
 
-  const { content: terms, isLoading: termsLoading } = useCmsContent("terms");
+  const { data: terms, isLoading: termsLoading } = useQuery({
+    queryKey: [HomeService?.CONTENT_BY_KEY_CACHEKEY, "terms"],
+    queryFn: () => {
+      return HomeService.GetContentByKey({ key: "terms" });
+    },
+  });
 
   useEffect(() => {
     document.addEventListener("keydown", _onKeyDown);
@@ -74,13 +75,16 @@ const AuthPageComponent = () => {
   }, [signUp]);
 
   function _onKeyDown(e: KeyboardEvent) {
-    if (e.code == "Enter") return signUp();
+    if (e.code == "Enter") {
+      return signUp();
+    }
   }
 
   useEffect(() => {
-    if (!!isLogin) router.replace("/");
+    if (!!isLogin) {
+      router.replace("/");
+    }
   }, [isLogin]);
-
   return (
     <div className="auth-container bg-cover    min-h-screen h-fit flex flex-col gap-8 items-center  md:!pb-8   relative">
       <AuthHeader title={_STRINGS.ENTER} />
@@ -89,10 +93,15 @@ const AuthPageComponent = () => {
           {" "}
           <div className="flex relative z-1  w-28 flex-col items-center  gap-2 h-fit aspect-square">
             <Image
-              fill
               alt="logo"
+              fill
               src={`/assets/icons/logo/logo.svg`}
-              className="w-full aspect-square rounded-md object-contain"
+              className=" 
+        w-full
+   aspect-square
+rounded-md
+object-contain
+"
             />
           </div>
         </div>
@@ -107,6 +116,7 @@ const AuthPageComponent = () => {
                 title: _STRINGS.ENTER_TOUR_MOBILE_NUMBER,
                 direction: "ltr",
                 containerClass: "w-full  relative",
+
                 autoFocus: false,
                 maxLength: 11,
               }}
@@ -129,20 +139,20 @@ const AuthPageComponent = () => {
             </div>
 
             <Button
-              width="w-full"
-              onClick={signUp}
-              loading={loading}
               roundedClass="rounded-full"
+              loading={loading}
               containerClass="w-full  mt-20"
+              width="w-full"
               title={_STRINGS?.ENTER_AND_MOVE_ON}
+              onClick={signUp}
             />
           </div>
         </div>
 
         <Terms
+          setvisibleTermsModal={setvisibleTermsModal}
           termsLoading={termsLoading}
           visibleTermsModal={visibleTermsModal}
-          setvisibleTermsModal={setvisibleTermsModal}
           termsContent={terms ? terms : { full_text: "", html: "" }}
         />
       </div>

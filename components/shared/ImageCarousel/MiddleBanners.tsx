@@ -1,17 +1,14 @@
 "use client";
-
-import { Swiper, SwiperSlide } from "swiper/react";
-import { NEW_IMAGE_URL } from "../../../utils/urls";
-import { useRouter } from "next/navigation";
-import { Autoplay } from "swiper/modules";
-import { isMobile } from "react-device-detect";
-import { useRef } from "react";
-
-import Editable from "@/components/Editable";
 import Image from "next/image";
 
-import "swiper/css";
-import "swiper/css/pagination";
+import { useRouter } from "next/navigation";
+import React, { useRef } from "react";
+
+import { Swiper, SwiperSlide } from "swiper/react";
+import { IMAGE_URL, NEW_IMAGE_URL } from "../../../utils/urls";
+import { Autoplay } from "swiper/modules";
+import { isMobile } from "react-device-detect";
+import Editable from "@/components/Editable";
 
 const MiddleBanners = ({
   list,
@@ -26,12 +23,10 @@ const MiddleBanners = ({
   const ref = useRef(null) as any;
 
   return (
-    <div
-      className={`w-full   overflow-hidden px-0 py-0  relative ${containerClass} `}
-    >
+    <div className={`w-full   overflow-hidden px-0 py-0  relative ${containerClass} `}>
       <Swiper
-        navigation
         spaceBetween={10}
+        navigation
         slidesPerView={"auto"}
         onBeforeInit={(swiper) => {
           ref.current = swiper;
@@ -40,9 +35,11 @@ const MiddleBanners = ({
           320: {
             slidesPerView: 1.2,
           },
+          // when window width is >= 640px
           640: {
             slidesPerView: 1.2,
           },
+          // when window width is >= 768px
           768: {
             slidesPerView: list?.length == 1 ? 1 : cols,
             spaceBetween: 15,
@@ -65,15 +62,9 @@ const MiddleBanners = ({
               isBanner
               contentId={e?.id}
               className={`group ${
-                cols > 1 && cols <= 2
-                  ? "aspect-[2] "
-                  : cols == 3
-                    ? "aspect-[1.4] "
-                    : "aspect-[3] "
+                cols > 1 && cols <= 2 ? "aspect-[2] " : cols == 3 ? "aspect-[1.4] " : "aspect-[3] "
               } focus:outline-none w-full px-0 relative overflow-hidden rounded-md   ${
-                e?.brand_id || e?.link || e?.category || e?.product
-                  ? "cursor-pointer"
-                  : ""
+                e?.brand_id || e?.link || e?.category || e?.product ? "cursor-pointer" : ""
               } `}
               onClick={() => {
                 if (e?.brand_id) {
@@ -82,9 +73,7 @@ const MiddleBanners = ({
                   router.push(`/products/${e?.product?.slug}`);
                 } else if (e?.category) {
                   if (e?.category?.parent?.id) {
-                    router.push(
-                      `/products?parent_category=${e?.category?.parent?.id}&categories=${e?.category?.id}`,
-                    );
+                    router.push(`/products?parent_category=${e?.category?.parent?.id}&categories=${e?.category?.id}`);
                   } else if (e?.category?.id) {
                     router.push(`/products?parent_category=${e?.category?.id}`);
                   }
@@ -94,9 +83,7 @@ const MiddleBanners = ({
               <div className="invisible">sd</div>
               <div className="w-full h-full rounded-20 object-cover overflow-hidden align-middle">
                 <Image
-                  src={NEW_IMAGE_URL(
-                    isMobile && e?.image_sm ? e?.image_sm : e?.image,
-                  )}
+                  src={NEW_IMAGE_URL(isMobile && e?.image_sm ? e?.image_sm : e?.image)}
                   fill
                   alt={`${e?.id}`}
                   className="w-full h-full rounded-20 !object-cover overflow-hidden align-middle img-dark"

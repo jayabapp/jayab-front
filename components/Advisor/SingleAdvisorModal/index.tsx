@@ -1,16 +1,14 @@
+import Modal from "@/components/Modal";
+import ModalHeaderPart from "@/components/Modal/ModalHeaderPart";
+import _STRINGS from "@/utils/LocalStrings";
+import React, { useEffect, useState } from "react";
+import AdvisorCard from "../AdvisorCard";
+import Button from "@/components/shared/Button/Button";
+import AdvisorCircularProgresCard from "../AdvisorCircularProgressPart/AdvisorCircularProgresCard";
+import RatePop from "./RatePop";
 import { useMutation, useQuery } from "@tanstack/react-query";
 import { AdvisorService } from "@/api_services/advisor/advisor.propery";
-import { STALE_TIME } from "@/helpers/queryCache";
-import { useState } from "react";
-
-import AdvisorCircularProgresCard from "../AdvisorCircularProgressPart/AdvisorCircularProgresCard";
-import ModalHeaderPart from "@/components/Modal/ModalHeaderPart";
 import LottieLoading from "@/components/shared/Lotties/LottieLoading";
-import AdvisorCard from "../AdvisorCard";
-import _STRINGS from "@/utils/LocalStrings";
-import RatePop from "./RatePop";
-import Button from "@/components/shared/Button/Button";
-import Modal from "@/components/Modal";
 
 const SingleAdvisorModal = ({
   show,
@@ -23,6 +21,15 @@ const SingleAdvisorModal = ({
 }) => {
   const [showRate, setShowRate] = useState(false);
   const [refresher, setRefresher] = useState(false);
+
+  // useEffect(() => {
+  //   if (!!selectedAdvisor) {
+  //     setData(selectedAdvisor);
+  //   } else {
+  //     setData(null);
+  //   }
+  // }, [selectedAdvisor]);
+
   const onHideRate = () => {
     setShowRate(false);
   };
@@ -31,22 +38,21 @@ const SingleAdvisorModal = ({
   };
 
   const { data, isPending } = useQuery({
-    queryKey: [
-      AdvisorService.SINGLE_ADVISOR_CACHEKEY,
-      selectedAdvisor?.id,
-      refresher,
-    ],
+    queryKey: [AdvisorService.SINGLE_ADVISOR_CACHEKEY, selectedAdvisor?.id, refresher],
     queryFn: () => {
-      if (selectedAdvisor?.id)
+      if (selectedAdvisor?.id) {
         return AdvisorService.singleAdvisor({ advisorId: selectedAdvisor?.id });
-      else return null;
+      } else return null;
     },
-    staleTime: STALE_TIME.DEFAULT,
+    staleTime: 0,
+    gcTime: 0,
   });
 
-  const { mutate, isPending: contactLoading } = useMutation({
-    mutationFn: AdvisorService.singleAdvisorInitContact,
-  });
+  /* -------------------------------------------------------------------------- */
+  /*                                INIT CONTACT                                */
+  /* -------------------------------------------------------------------------- */
+
+  const { mutate, isPending: contactLoading } = useMutation({ mutationFn: AdvisorService.singleAdvisorInitContact });
 
   const onActionButtinsClick = (type: "tel" | "sms") => {
     mutate(
@@ -54,17 +60,21 @@ const SingleAdvisorModal = ({
       {
         onSuccess: () => {
           setRefresher((e) => !e);
+          /* -------------------------------------------------------------------------- */
+          /*                           CREATE LINK AND OPEN IT                          */
+          /* -------------------------------------------------------------------------- */
           var linkElement = document.createElement("a");
           linkElement.id = "link";
           window.document.body.appendChild(linkElement);
           var menuAddress = `${type}:${data?.user?.mobile_number}`;
+
           var link = document.getElementById("link");
           if (!!link) {
             link.setAttribute("href", menuAddress);
             link.click();
           }
         },
-      },
+      }
     );
   };
 
@@ -87,12 +97,12 @@ const SingleAdvisorModal = ({
               key="singleCard"
               isSingle
               data={{
-                id: data?.id || null,
-                user: data?.user || null,
                 cities: data?.cities || [],
                 created_at: data?.created_at || "",
-                users_satisfaction: data?.users_satisfaction || 100,
+                id: data?.id || null,
                 owners_satisfaction: data?.owners_satisfaction || 100,
+                user: data?.user || null,
+                users_satisfaction: data?.users_satisfaction || 100,
                 work_history_in_month: data?.work_history_in_month || 100,
               }}
             />
@@ -107,12 +117,7 @@ const SingleAdvisorModal = ({
                 width="w-full"
                 title={_STRINGS.CALL}
                 roundedClass="rounded-full"
-                icon={
-                  <img
-                    className="w-4 h-4 ml-2 aspect-square"
-                    src="/assets/icons/advisor/white_phone.svg"
-                  />
-                }
+                icon={<img className="w-4 h-4 ml-2 aspect-square" src="/assets/icons/advisor/white_phone.svg" />}
               />
               <Button
                 loading={contactLoading}
@@ -124,55 +129,29 @@ const SingleAdvisorModal = ({
                 variant="outline"
                 title={_STRINGS.MESSAGE}
                 roundedClass="rounded-full"
-                icon={
-                  <img
-                    className="w-4 h-4 ml-2 aspect-square"
-                    src="/assets/icons/advisor/blue_message.svg"
-                  />
-                }
+                icon={<img className="w-4 h-4 ml-2 aspect-square" src="/assets/icons/advisor/blue_message.svg" />}
               />
             </div>
             <div className="flex items-center justify-between">
               <AdvisorCircularProgresCard
                 containerClass=" w-full "
-                pStyles={{
-                  pathColor: "#34C759",
-                  textColor: "#000",
-                  textSize: "1.3rem",
-                }}
+                pStyles={{ pathColor: "#34C759", textColor: "#000", textSize: "1.3rem" }}
                 data={{ value: data?.advisor_behavior || 100 }}
-                item={{
-                  title: _STRINGS.CONSULTANT_APPROACHES,
-                  title_class: " !text-sm",
-                }}
+                item={{ title: _STRINGS.CONSULTANT_APPROACHES, title_class: " !text-sm" }}
               />
               <AdvisorCircularProgresCard
                 containerClass=" w-full "
-                pStyles={{
-                  pathColor: "#34C759",
-                  textColor: "#000",
-                  textSize: "1.3rem",
-                }}
+                pStyles={{ pathColor: "#34C759", textColor: "#000", textSize: "1.3rem" }}
                 data={{ value: data?.advisor_responsibility || 100 }}
-                item={{
-                  title: _STRINGS.CONSULTANT_RESPONSIBILITY,
-                  title_class: " !text-sm",
-                }}
+                item={{ title: _STRINGS.CONSULTANT_RESPONSIBILITY, title_class: " !text-sm" }}
               />
             </div>
             <div className="flex items-center justify-between">
               <AdvisorCircularProgresCard
                 containerClass=" w-full "
-                pStyles={{
-                  pathColor: "#34C759",
-                  textColor: "#000",
-                  textSize: "1.3rem",
-                }}
+                pStyles={{ pathColor: "#34C759", textColor: "#000", textSize: "1.3rem" }}
                 data={{ value: data?.response_speed_and_followup || 100 }}
-                item={{
-                  title: _STRINGS.FOLLOWUP_SPEED_RESPONSE,
-                  title_class: " !text-sm",
-                }}
+                item={{ title: _STRINGS.FOLLOWUP_SPEED_RESPONSE, title_class: " !text-sm" }}
               />
             </div>
 

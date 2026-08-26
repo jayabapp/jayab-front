@@ -1,17 +1,15 @@
 "use client";
 
-import { useStoreParams, useStoreSocket } from "@/store";
-import { useEffect, useState } from "react";
 import { UserService } from "@/api_services/user/user.service";
-import { useQuery } from "@tanstack/react-query";
-
-import InfiniteScroll from "react-infinite-scroll-component";
-import LottieLoading from "@/components/shared/Lotties/LottieLoading";
-import BtnLoading from "@/components/shared/Button/BtnLoading";
 import NotifCard from "@/components/notification/NotifCard";
+import BtnLoading from "@/components/shared/Button/BtnLoading";
 import EmptyList from "@/components/shared/Lotties/EmptyList";
-import isEmpty from "lodash/isEmpty";
-import last from "lodash/last";
+import LottieLoading from "@/components/shared/Lotties/LottieLoading";
+import { useStoreParams, useStoreSocket } from "@/store";
+import { useQuery } from "@tanstack/react-query";
+import { isEmpty, last } from "lodash";
+import { useEffect, useState } from "react";
+import InfiniteScroll from "react-infinite-scroll-component";
 
 const Notifications = () => {
   const [cursor, setCursor] = useState(0);
@@ -35,15 +33,15 @@ const Notifications = () => {
 
   useEffect(() => {
     if (solidData?.data)
-      if (cursor == 0) setNotifs((x) => solidData?.data);
-      else setNotifs((x) => [...x, ...solidData?.data]);
+      if (cursor == 0) {
+        setNotifs((x) => solidData?.data);
+      } else {
+        setNotifs((x) => [...x, ...solidData?.data]);
+      }
   }, [solidData]);
 
   return (
-    <div
-      id="homeParent"
-      className="  container   transition-all duration-500 ease-in-out "
-    >
+    <div id="homeParent" className="  container   transition-all duration-500 ease-in-out ">
       {!!isLoading && isEmpty(notifs) ? (
         <LottieLoading />
       ) : (
@@ -66,9 +64,7 @@ const Notifications = () => {
               <EmptyList />
             </div>
           ) : (
-            notifs?.map((e) => (
-              <NotifCard item={e} key={`accouncments${e?.title}`} />
-            ))
+            notifs?.map((e) => <NotifCard item={e} key={`accouncments${e?.title}`} />)
           )}
         </InfiniteScroll>
       )}

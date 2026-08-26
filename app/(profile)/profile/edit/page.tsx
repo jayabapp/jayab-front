@@ -1,17 +1,15 @@
 "use client";
-
-import { useRouter, useSearchParams } from "next/navigation";
-import { useMutation, useQuery } from "@tanstack/react-query";
-import { useEffect, useState } from "react";
-import { safeInternalPath } from "@/helpers/safeRedirect";
-import { PropertyService } from "@/api_services/property/property.service";
-import { useAuthStore } from "@/store";
 import { AuthService } from "@/api_services/auth/auth.service";
-
+import { PropertyService } from "@/api_services/property/property.service";
+import PageHeaders from "@/components/headers/PageHeader";
+import Button from "@/components/shared/Button/Button";
 import FixedBottomContainer from "@/components/shared/FixedBottomContainer";
 import EditCreateUserPage from "@/components/SinglePageComponents/EditCreateUserPage";
+import { useAuthStore } from "@/store";
 import _STRINGS from "@/utils/LocalStrings";
-import Button from "@/components/shared/Button/Button";
+import { useMutation, useQuery } from "@tanstack/react-query";
+import { useRouter, useSearchParams } from "next/navigation";
+import React, { useEffect, useState } from "react";
 
 const EditCreateProfile = () => {
   const router = useRouter();
@@ -45,30 +43,23 @@ const EditCreateProfile = () => {
   const { mutate, isPending } = useMutation({
     mutationFn: AuthService.RegisterOwner,
     onSuccess: () => {
-      const safeRedirect = safeInternalPath(redirect_url);
-      if (!!safeRedirect) {
-        router.push(safeRedirect);
+      if (!!redirect_url) {
+        router.push(redirect_url);
       } else {
         refetch().then((e) => {
-          if (!!e?.data)
-            router.push(
-              `/profile/owner/properties/${e?.data?.id}/edit/initials`,
-            );
+          if (!!e?.data) router.push(`/profile/owner/properties/${e?.data?.id}/edit/initials`);
         });
       }
     },
   });
 
   const onSubmit = () => {
-    mutate({
-      full_name: values.name,
-      national_code: values.national_code,
-      selfie_image_id: values.image?.id,
-    });
+    mutate({ full_name: values.name, national_code: values.national_code, selfie_image_id: values.image?.id });
   };
 
   const { data } = useQuery({
     queryKey: [AuthService.GET_OWNER_PROFILE_CACHEKEY],
+
     queryFn: AuthService.GetOwnerProfile,
     staleTime: 0,
   });
@@ -107,11 +98,11 @@ const EditCreateProfile = () => {
           onClick={() => {
             onSubmit();
           }}
-          width="w-[90%] md:w-1/2"
-          roundedClass="rounded-full"
           loading={isPending || isLoading}
-          title={_STRINGS.CHECK_CREDENTIOALS}
           containerClass="w-full flex items-center justify-center"
+          roundedClass="rounded-full"
+          width=" w-[90%] md:w-1/2"
+          title={_STRINGS.CHECK_CREDENTIOALS}
         />
       </FixedBottomContainer>
     </div>

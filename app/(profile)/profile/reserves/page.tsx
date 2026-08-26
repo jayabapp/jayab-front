@@ -1,20 +1,15 @@
 "use client";
-
-import { useMutation, useQuery } from "@tanstack/react-query";
 import { ReserveListDto } from "@/api_services/reserve/reserve.interface";
 import { ReserveService } from "@/api_services/reserve/reserve.service";
-import { useState } from "react";
-
-import LottieLoading from "@/components/shared/Lotties/LottieLoading";
 import ConfirmModal from "@/components/Modal/ConfirmModal";
 import ReserveCard from "@/components/properties/reserve/ReserveCard";
 import EmptyList from "@/components/shared/Lotties/EmptyList";
-import isEmpty from "lodash/isEmpty";
-
+import LottieLoading from "@/components/shared/Lotties/LottieLoading";
+import { useMutation, useQuery } from "@tanstack/react-query";
+import { isEmpty } from "lodash";
+import { useState } from "react";
 const UserReserves = () => {
-  const [selectedCancel, setSelectedCancel] = useState<ReserveListDto | null>(
-    null,
-  );
+  const [selectedCancel, setSelectedCancel] = useState<ReserveListDto | null>(null);
   const {
     data: reserves,
     isLoading,
@@ -26,9 +21,24 @@ const UserReserves = () => {
     gcTime: 0,
   });
 
+  /* -------------------------------------------------------------------------- */
+  /*                              REFETCH INTERVAL                              */
+  /* -------------------------------------------------------------------------- */
+
+  // useEffect(() => {
+  //   const interval = setInterval(() => {
+  //     setCursor(0);
+  //     refetch();
+  //   }, 1800000);
+  //   return () => clearInterval(interval);
+  // }, []);
+
   const refetchCallBack = () => {
     refetch();
   };
+  /* -------------------------------------------------------------------------- */
+  /*                                   CANCEL                                   */
+  /* -------------------------------------------------------------------------- */
 
   const { mutate } = useMutation({
     mutationFn: ReserveService.cancelReserve,
@@ -60,10 +70,10 @@ const UserReserves = () => {
           ) : (
             reserves?.map((e) => (
               <ReserveCard
-                data={e}
-                key={`reserve${e?.id}`}
                 refetchCallBack={refetchCallBack}
+                data={e}
                 setSelectedCancel={setSelectedCancel}
+                key={`reserve${e?.id}`}
               />
             ))
           )}
@@ -71,9 +81,9 @@ const UserReserves = () => {
       )}
 
       <ConfirmModal
-        onConfirm={onConfirmCancel}
         isVisible={!!selectedCancel}
         text={`از کنسل کردن رزرو ${selectedCancel?.property?.title} مطمئنید ؟`}
+        onConfirm={onConfirmCancel}
         onHide={() => {
           setSelectedCancel(null);
         }}

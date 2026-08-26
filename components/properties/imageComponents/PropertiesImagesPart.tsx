@@ -2,15 +2,15 @@
 
 import { Suspense, useEffect, useState } from "react";
 import { SingleOwnerPropertyDto } from "@/api_services/property/property.interface";
-import { NEW_IMAGE_URL } from "../../../utils/urls";
+import { difference, isEmpty } from "lodash";
 import { SinglePropDto } from "@/api_services/property/property.interface";
+import { NEW_IMAGE_URL } from "../../../utils/urls";
 import { useStoreInit } from "@/store";
 import { ImageDto } from "@/api_services/auth/auth.interface";
 
 import RoomImageModalPart from "./RoomImageModalPart";
 import ProductImage from "./ProductImage";
-import difference from "lodash/difference";
-import isEmpty from "lodash/isEmpty";
+
 import dynamic from "next/dynamic";
 import Image from "next/image";
 
@@ -20,44 +20,45 @@ const SwiperSlide = dynamic(
 );
 
 export type ProductDataType = {
-  title: string;
-  rate: number;
-  price: number;
-  gender: number;
   image: ImageDto;
-  in_cart: number;
-  category: string;
-  colors: string[];
-  full_title: string;
-  rate_count: number;
-  descripton: string;
-  images: ImageDto[];
   id: string | number;
-  is_favorite: boolean;
-  discount_price: number;
   status: string | number;
+  title: string;
+  category: string;
+  full_title: string;
+  descripton: string;
+  colors: string[];
+
+  price: number;
   discount_percent: number;
+  in_cart: number;
+  discount_price: number;
+  gender: number;
+  rate_count: number;
+  rate: number;
+  images: ImageDto[];
+  is_favorite: boolean;
   tags: {
-    id: number;
     title: string;
+    id: number;
     image: string;
   }[];
   properties: {
-    id: number;
     value: string;
     title: string;
+    id: number;
   }[];
   selected_color: {
-    id: number;
     color: string;
     title: string;
+    id: number;
   };
 };
 export type ImageSlideType = {
+  currentIndex?: number | null;
+  isVisible?: boolean;
   data?: any;
   currentImage?: any;
-  isVisible?: boolean;
-  currentIndex?: number | null;
 };
 
 function ProductImagesContainer({
@@ -73,19 +74,27 @@ function ProductImagesContainer({
   const [currentIndex, setCurrentIndex] = useState(0);
 
   const { userInfo } = useStoreInit((data) => data);
+  // const ref = useRef<SwiperTyype>(null);
   const [modalProps, setModalProps] = useState<ImageSlideType>({
     data: data,
     isVisible: false,
     currentIndex: null,
   });
-  const defaultImages = [...data?.images];
-  const [addImages, setAddImages] = useState<(any | undefined)[]>([
-    ...data?.images,
-  ]);
+  const defaultImages =
+    //  data?.video
+    //   ? [data?.feature_image, ...data?.images, data?.video]
+    //   :
+    [...data?.images];
+  const [addImages, setAddImages] = useState<(any | undefined)[]>(
+    // data?.video ? [data?.feature_image, ...data?.images, data?.video] :
+    [...data?.images],
+  );
   const allImagesIds = difference(
     defaultImages?.map((e) => e?.id),
     attsImagesArray || [],
   );
+
+  // Here we filter out images with diffrent tag ids.  only the selectd tags image and default ones
 
   useEffect(() => {
     if (productImageId) {
@@ -101,6 +110,11 @@ function ProductImagesContainer({
       }
     }
   }, [productImageId]);
+  // useEffect(() => {
+  //   if (productImageId) {
+  //     ref.current?.slideTo(productImageId ? addImages?.findIndex((e) => e?.id == productImageId) : 0);
+  //   }
+  // }, [addImages]);
   if (!data) return null;
 
   return (
@@ -147,6 +161,7 @@ function ProductImagesContainer({
                   className={` relative flex-1 md:flex-none w-full !aspect-square   rounded-20   cursor-pointer transition-all ease-in-out duration-300  `}
                 >
                   <img
+                    // src={e?.cover}
                     className={`  ${
                       e?.type != 1 ? " blur-sm" : ""
                     } w-full !aspect-square object-contain     rounded-20  `}
@@ -165,7 +180,11 @@ function ProductImagesContainer({
           setModalProps={setModalProps}
         />
       )}
-      <div className={`relative w-full md:w-4/5 h-fit `}>
+      {/* ${!data?.cheapest_price ? "grayscale" : ""}  */}
+      <div
+        className={`relative 
+  w-full       md:w-4/5 h-fit `}
+      >
         <div className="block  relative rounded-10 !aspect-square p-0 md:p-0.5 ">
           {!!userInfo?.advisor_id && data?.advisor_commission ? (
             <div className="w-24 gap-0.5  h-7 rounded-20 transition-all  py-[0.2rem]   bg-black/50 text-white absolute z-1 left-2 flex-row top-2 aspect-square flex items-center justify-center">

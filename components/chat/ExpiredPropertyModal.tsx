@@ -1,13 +1,14 @@
 import { SingleChatDetailsDto } from "@/api_services/chat/chat.interface";
-import { NEW_IMAGE_URL } from "@/utils/urls";
-import { useRouter } from "next/navigation";
-
-import LottieLoading from "../shared/Lotties/LottieLoading";
-import useCmsContent from "@/hooks/useCmsContent";
+import { ContentByKeyDto } from "@/api_services/home/home.interface";
+import { HomeService } from "@/api_services/home/home.service";
 import _STRINGS from "@/utils/LocalStrings";
-import CmsText from "../shared/CmsText";
-import Button from "../shared/Button/Button";
+import { NEW_IMAGE_URL } from "@/utils/urls";
+import { useQuery } from "@tanstack/react-query";
+import { useRouter } from "next/navigation";
+import { useEffect, useState } from "react";
 import Modal from "../Modal";
+import Button from "../shared/Button/Button";
+import LottieLoading from "../shared/Lotties/LottieLoading";
 
 const ExpiredPropertyModal = ({
   visibleModal,
@@ -19,20 +20,28 @@ const ExpiredPropertyModal = ({
   singleChatData: SingleChatDetailsDto | undefined;
 }) => {
   const { push } = useRouter();
+  const [data, setData] = useState<ContentByKeyDto | null>(null);
   const onHideFunc = () => {
     setVisibleModal(false);
   };
 
   const goExtend = () => {
-    push(
-      `/profile/owner/properties/${singleChatData?.property?.id}/subscription`,
-    );
+    push(`/profile/owner/properties/${singleChatData?.property?.id}/subscription`);
   };
 
-  const { content: data, isLoading } = useCmsContent("addExpireMessage", {
+  const { data: addExpireMessage, isLoading } = useQuery({
+    queryKey: [HomeService?.CONTENT_BY_KEY_CACHEKEY, "addExpireMessage", 1, visibleModal],
+    queryFn: () => {
+      return HomeService.GetContentByKey({ key: "addExpireMessage" });
+    },
     enabled: visibleModal,
   });
 
+  useEffect(() => {
+    if (!!addExpireMessage) {
+      setData(addExpireMessage);
+    }
+  }, [addExpireMessage]);
   return (
     <Modal
       options={{
@@ -48,27 +57,20 @@ const ExpiredPropertyModal = ({
         ) : (
           <>
             <img src={NEW_IMAGE_URL(data?.feature_image)} className="w-60  " />
+
             <div className="flex flex-col w-full gap-2 items-center justify-center">
-              <CmsText className=" font-medium">
-                {data?.small_text || _STRINGS.ROOM_EXPIRED_NOTICE}
-              </CmsText>
-              <CmsText className="  opacity-65  text-sm text-center  ">
-                {data?.full_text}
-              </CmsText>
+              <p className=" font-medium">{data?.small_text || _STRINGS.ROOM_EXPIRED_NOTICE}</p>
+              <p className="  opacity-65  text-sm whitespace-pre-line text-center  ">{data?.full_text}</p>
             </div>
+
             <div className="w-full flex justify-between items-center gap-4 ">
+              <Button title={_STRINGS.EXTEND_SUBS} width="w-full" containerClass="w-full" onClick={goExtend} />
               <Button
-                title={_STRINGS.EXTEND_SUBS}
-                width="w-full"
-                containerClass="w-full"
-                onClick={goExtend}
-              />
-              <Button
-                width="w-full"
-                variant="outline"
-                onClick={onHideFunc}
                 title={_STRINGS.LATER}
+                variant="outline"
+                width="w-full"
                 containerClass="w-full"
+                onClick={onHideFunc}
               />
             </div>
           </>

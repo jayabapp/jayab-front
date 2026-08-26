@@ -1,41 +1,42 @@
 "use client";
-
-import { useParams, useRouter, useSearchParams } from "next/navigation";
-import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { PricingPropertySendDto } from "@/api_services/property/property.interface";
-import { useEffect, useState } from "react";
-import { GC_TIME, STALE_TIME } from "@/helpers/queryCache";
-import { createPropertySteps } from "@/utils/constantss";
 import { PropertyService } from "@/api_services/property/property.service";
-
-import FormInputWithExternalUnit from "@/components/shared/Form/FormInputWithExternalUnit";
+import TitleCounter from "@/components/properties/TitleCounter";
+import WeWontChargeYouOnReservePop from "@/components/properties/WeWontChargeYouOnReservePop";
+import Button from "@/components/shared/Button/Button";
 import FixedBottomContainer from "@/components/shared/FixedBottomContainer";
-import numberWithCommas from "@/helpers/numberWithCommas";
+import FormInputWithExternalUnit from "@/components/shared/Form/FormInputWithExternalUnit";
 import RangeWithTitle from "@/components/shared/Form/RangeWithTitle";
 import LottieLoading from "@/components/shared/Lotties/LottieLoading";
-import CmsInfoPopup from "@/components/shared/CmsInfoPopup";
-import TitleCounter from "@/components/properties/TitleCounter";
 import StepShower from "@/components/shared/StepShower";
+import numberWithCommas from "@/helpers/numberWithCommas";
+import { createPropertySteps } from "@/utils/constantss";
 import _STRINGS from "@/utils/LocalStrings";
-import Button from "@/components/shared/Button/Button";
+import { useMutation, useQuery } from "@tanstack/react-query";
+import { useParams, usePathname, useRouter, useSearchParams } from "next/navigation";
+import { useEffect, useState } from "react";
 
 const CreatePropertyPricing = () => {
   const router = useRouter();
+  const pathname = usePathname();
 
   const searchParams = useSearchParams();
   const edit_mode = searchParams.get("edit_mode");
   const params = useParams();
   const { property_id } = params;
 
+  /* -------------------------------------------------------------------------- */
+  /*                             INIT PROP CREATION                             */
+  /* -------------------------------------------------------------------------- */
   const { data: initPropData, isLoading } = useQuery({
     queryKey: [PropertyService.OWNER_PROP_INIT_CACHEKEY, property_id],
     queryFn: () => {
-      if (!!property_id)
+      if (!!property_id) {
         return PropertyService.InitProperty({ property_id: `${property_id}` });
-      else return null;
+      } else return null;
     },
-    staleTime: STALE_TIME.MEDIUM,
-    gcTime: GC_TIME.LONG,
+    gcTime: 0,
+    staleTime: 0,
   });
 
   useEffect(() => {
@@ -43,6 +44,7 @@ const CreatePropertyPricing = () => {
       setPreventer(true);
       setValues({
         additional_person: initPropData?.daily_price?.additional_person || 0,
+
         advisor_commission: initPropData?.advisor_commission || 0,
         cleaning: initPropData?.daily_price?.cleaning || 0,
         friday: initPropData?.daily_price?.friday || 0,
@@ -73,23 +75,25 @@ const CreatePropertyPricing = () => {
     setValues((e) => ({ ...e, [key]: value }));
   };
 
-  const queryClient = useQueryClient();
-
   const { mutate, isPending } = useMutation({
     mutationFn: PropertyService.CreatePropertySetPrice,
     onSuccess: () => {
-      queryClient.invalidateQueries({
-        queryKey: [PropertyService.OWNER_PROP_INIT_CACHEKEY, property_id],
-      });
-      if (!!!!edit_mode)
+      if (!!!!edit_mode) {
         router.replace(`/profile/owner/properties/${property_id}/edit`);
-      else
+      } else {
         router.push(`/profile/owner/properties/${property_id}/edit/assistants`);
+      }
     },
   });
   const onSubmit = () => {
-    if (!!initPropData?.id) mutate({ ...values, propertyId: initPropData?.id });
+    if (!!initPropData?.id) {
+      mutate({ ...values, propertyId: initPropData?.id });
+    }
   };
+
+  /* -------------------------------------------------------------------------- */
+  /*                                  NOTIFY PART                                 */
+  /* -------------------------------------------------------------------------- */
 
   const [showNotifyPop, setShowNotifyPop] = useState(false);
   const [preventer, setPreventer] = useState(false);
@@ -108,7 +112,7 @@ const CreatePropertyPricing = () => {
     if (!edit_mode) return;
     setPreventer(true);
   }, [edit_mode]);
-
+  ///////////////////////////
   return (
     <div
       id="homeParent"
@@ -124,24 +128,22 @@ const CreatePropertyPricing = () => {
         <>
           {" "}
           <div className=" flex flex-col gap-2 border-b   pb-4 w-full">
-            <p className="font-bold w-full text-start  text-sm md:text-base text-primary-700  ">
-              {_STRINGS.GUEST_CAP}
-            </p>
+            <p className="font-bold w-full text-start  text-sm md:text-base text-primary-700  ">{_STRINGS.GUEST_CAP}</p>
             <TitleCounter
               disableInput={true}
               value={values?.std_capacity}
-              title="ظرفیت استاندارد میهمان"
               onChange={(e) => {
                 onChange(e, "std_capacity");
               }}
+              title="ظرفیت استاندارد میهمان"
             />
             <TitleCounter
               disableInput={true}
-              title="حداکثر ظرفیت میهمان"
               value={values?.max_capacity}
               onChange={(e) => {
                 onChange(e, "max_capacity");
               }}
+              title="حداکثر ظرفیت میهمان"
             />
           </div>
           <div className=" flex flex-col gap-2 border-b   pb-8 w-full">
@@ -151,9 +153,7 @@ const CreatePropertyPricing = () => {
                 <p className="font-bold w-fit text-start  text-sm md:text-base text-primary-700  ">
                   {_STRINGS.COMITION_PERC} ( اختیاری )
                 </p>
-                <p className=" text-xs text-primary-800 md:text-sm">
-                  {_STRINGS.hOW_MUCH_DO_U_WANT_TO_COMM}
-                </p>
+                <p className=" text-xs text-primary-800 md:text-sm">{_STRINGS.hOW_MUCH_DO_U_WANT_TO_COMM}</p>
               </div>
               <p className="text-primary-700  shrink-0 text-sm">{` % ${values?.advisor_commission} `}</p>
             </div>
@@ -175,10 +175,7 @@ const CreatePropertyPricing = () => {
               />
             </div>
           </div>
-          <div
-            onClick={onShowNotify}
-            className=" flex flex-col gap-2    pb-4 w-full"
-          >
+          <div onClick={onShowNotify} className=" flex flex-col gap-2    pb-4 w-full">
             <p className="font-bold w-full text-start  text-sm md:text-base text-primary-700  ">
               {_STRINGS.REND_DAYLI_PRICE}
             </p>{" "}
@@ -193,16 +190,9 @@ const CreatePropertyPricing = () => {
                 direction: "ltr",
                 placeholder: _STRINGS.TOMAN_PER_NIGHT,
               }}
-              value={
-                !!values?.normal
-                  ? numberWithCommas(values?.normal || "") || ""
-                  : ""
-              }
+              value={!!values?.normal ? numberWithCommas(values?.normal || "") || "" : ""}
               onChangeText={(e) => {
-                let pureVal = e
-                  ?.replaceAll(",", "")
-                  .replaceAll(",", "")
-                  .replaceAll(" ", "");
+                let pureVal = e?.replaceAll(",", "").replaceAll(",", "").replaceAll(" ", "");
 
                 if (!isNaN(pureVal)) onChange(pureVal, "normal");
               }}
@@ -218,16 +208,9 @@ const CreatePropertyPricing = () => {
                 direction: "ltr",
                 placeholder: _STRINGS.TOMAN_PER_NIGHT,
               }}
-              value={
-                !!values?.wednesday
-                  ? numberWithCommas(values?.wednesday || "")
-                  : ""
-              }
+              value={!!values?.wednesday ? numberWithCommas(values?.wednesday || "") : ""}
               onChangeText={(e) => {
-                let pureVal = e
-                  ?.replaceAll(",", "")
-                  .replaceAll(",", "")
-                  .replaceAll(" ", "");
+                let pureVal = e?.replaceAll(",", "").replaceAll(",", "").replaceAll(" ", "");
                 if (!isNaN(pureVal)) onChange(pureVal, "wednesday");
               }}
             />
@@ -242,16 +225,9 @@ const CreatePropertyPricing = () => {
                 direction: "ltr",
                 placeholder: _STRINGS.TOMAN_PER_NIGHT,
               }}
-              value={
-                !!values?.thursday
-                  ? numberWithCommas(values?.thursday || "")
-                  : ""
-              }
+              value={!!values?.thursday ? numberWithCommas(values?.thursday || "") : ""}
               onChangeText={(e) => {
-                let pureVal = e
-                  ?.replaceAll(",", "")
-                  .replaceAll(",", "")
-                  .replaceAll(" ", "");
+                let pureVal = e?.replaceAll(",", "").replaceAll(",", "").replaceAll(" ", "");
                 if (!isNaN(pureVal)) onChange(pureVal, "thursday");
               }}
             />
@@ -266,14 +242,9 @@ const CreatePropertyPricing = () => {
                 direction: "ltr",
                 placeholder: _STRINGS.TOMAN_PER_NIGHT,
               }}
-              value={
-                !!values?.friday ? numberWithCommas(values?.friday || "") : ""
-              }
+              value={!!values?.friday ? numberWithCommas(values?.friday || "") : ""}
               onChangeText={(e) => {
-                let pureVal = e
-                  ?.replaceAll(",", "")
-                  .replaceAll(",", "")
-                  .replaceAll(" ", "");
+                let pureVal = e?.replaceAll(",", "").replaceAll(",", "").replaceAll(" ", "");
 
                 if (!isNaN(pureVal)) onChange(pureVal, "friday");
               }}
@@ -291,10 +262,7 @@ const CreatePropertyPricing = () => {
               }}
               value={!!values?.peak ? numberWithCommas(values?.peak || "") : ""}
               onChangeText={(e) => {
-                let pureVal = e
-                  ?.replaceAll(",", "")
-                  .replaceAll(",", "")
-                  .replaceAll(" ", "");
+                let pureVal = e?.replaceAll(",", "").replaceAll(",", "").replaceAll(" ", "");
                 if (!isNaN(pureVal)) onChange(pureVal, "peak");
               }}
             />
@@ -310,10 +278,7 @@ const CreatePropertyPricing = () => {
               }}
               value={numberWithCommas(values?.cleaning || "")}
               onChangeText={(e) => {
-                let pureVal = e
-                  ?.replaceAll(",", "")
-                  .replaceAll(",", "")
-                  .replaceAll(" ", "");
+                let pureVal = e?.replaceAll(",", "").replaceAll(",", "").replaceAll(" ", "");
                 if (!isNaN(pureVal)) onChange(pureVal, "cleaning");
               }}
             />
@@ -328,16 +293,9 @@ const CreatePropertyPricing = () => {
                 direction: "ltr",
                 placeholder: _STRINGS.TOMAN_PER_NIGHT,
               }}
-              value={
-                !!values?.additional_person
-                  ? numberWithCommas(values?.additional_person || "")
-                  : ""
-              }
+              value={!!values?.additional_person ? numberWithCommas(values?.additional_person || "") : ""}
               onChangeText={(e) => {
-                let pureVal = e
-                  ?.replaceAll(",", "")
-                  .replaceAll(",", "")
-                  .replaceAll(" ", "");
+                let pureVal = e?.replaceAll(",", "").replaceAll(",", "").replaceAll(" ", "");
                 if (!isNaN(pureVal)) onChange(pureVal, "additional_person");
               }}
             />
@@ -351,19 +309,14 @@ const CreatePropertyPricing = () => {
             onSubmit();
           }}
           loading={isPending}
-          width=" w-[90%] md:w-1/2"
-          roundedClass="rounded-full"
-          title={_STRINGS.SUBMIT_MOVE_ON}
           containerClass="w-full flex items-center justify-center"
+          roundedClass="rounded-full"
+          width=" w-[90%] md:w-1/2"
+          title={_STRINGS.SUBMIT_MOVE_ON}
         />
       </FixedBottomContainer>
 
-      <CmsInfoPopup
-        show={showNotifyPop}
-        onHide={onHideNotify}
-        contentKey="no-reserve-commission"
-        action={{ title: _STRINGS.UNDERSTOOD, onClick: onHideNotify }}
-      />
+      <WeWontChargeYouOnReservePop show={showNotifyPop} onHide={onHideNotify} />
     </div>
   );
 };

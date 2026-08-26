@@ -1,172 +1,112 @@
-import { apiRoutes, baseUrl, baseUrlV } from "@/utils/urls";
-import { dehydrate, HydrationBoundary } from "@tanstack/react-query";
-import { OrganizationSchema } from "@/components/SchemaGenerator/Schemas";
-import { LandingsPlacements } from "@/enum/landings.enum";
-import { SearchboxSchema } from "@/components/SchemaGenerator/Schemas";
-import { BannerPosition } from "@/enum/banners.enum";
-import { getCmsContent } from "@/api_services/home/cms-content.server";
-import { HomeService } from "@/api_services/home/home.service";
-import { REVALIDATE } from "@/helpers/revalidate";
-import { Suspense } from "react";
-import { Metadata } from "next";
-
-import MainFiltersContainer from "@/components/Home/MainFiltersContainer";
-import HomePropertiesList from "@/components/Home/HomePropertiesList";
-import HomeContentSection from "@/components/Home/HomeContentSection";
-import deviceTypeDetector from "@/helpers/device.detector";
-import HomePropertyTypes from "@/components/Home/HomePropertyTypes";
-import HomeActiveReserve from "@/components/Home/HomeActiveReserve";
 import BannersContainer from "@/components/Home/BannersContainer";
+import HomeActiveReserve from "@/components/Home/HomeActiveReserve";
+import HomeContentSection from "@/components/Home/HomeContentSection";
+import HomePropertyTypes from "@/components/Home/HomePropertyTypes";
+import MainFiltersContainer from "@/components/Home/MainFiltersContainer";
 import TheInstallPrompt from "@/components/InstallPrompt/TheInstallPrompt";
+import { OrganizationSchema, SearchboxSchema } from "@/components/SchemaGenerator/Schemas";
+import { BannerPosition } from "@/enum/banners.enum";
+import { LandingsPlacements } from "@/enum/landings.enum";
+import deviceTypeDetector from "@/helpers/device.detector";
 import MehaHeaderHelper from "@/helpers/MetaHeaderHelper";
-import getQueryClient from "@/api_services/common/get-query-client";
-import pickBanner from "@/helpers/pickBanner";
 import serverCall from "@/helpers/serverCall";
 import _STRINGS from "@/utils/LocalStrings";
+import { apiRoutes, baseUrl, baseUrlV } from "@/utils/urls";
 import isEmpty from "lodash/isEmpty";
+import { Metadata } from "next";
 import dynamic from "next/dynamic";
-
-const HomeBannerPart = dynamic(
-  () => import("@/components/Home/BannersContainer/HomeBannerPart"),
-  { ssr: true },
-);
-const HomeCityFilterContainer = dynamic(
-  () => import("@/components/Home/HomeCityFilterContainer"),
-);
-
-const getBanners = () =>
-  serverCall(
-    baseUrlV("v2") +
-      apiRoutes.BANNERS +
-      `?positions[]=${BannerPosition.MAIN_1}&positions[]=${BannerPosition.MAIN_2}&positions[]=${BannerPosition.MAIN_3}`,
-    undefined,
-    { revalidate: REVALIDATE.BANNERS },
-  );
-
-const getLandings = () =>
-  serverCall(
-    baseUrl +
-      apiRoutes.USER_LANDING_PAGES +
-      `?placement=${LandingsPlacements.HOME}`,
-    undefined,
-    { revalidate: REVALIDATE.LANDINGS },
-  );
-
-const getProperties = () =>
-  serverCall(
-    baseUrl + apiRoutes.GET_PROPERTIES,
-    { page: 1, per_page: 12 },
-    { revalidate: REVALIDATE.PROPERTY_LIST },
-  );
-
-const getPropertyTypes = () =>
-  serverCall(
-    baseUrl + apiRoutes.USER_PROP_OPTIONS + "?group[]=PROPERTY_TYPE",
-    undefined,
-    { revalidate: REVALIDATE.PROPERTY_OPTIONS },
-  );
+import { Suspense } from "react";
+const HomeBannerPart = dynamic(() => import("@/components/Home/BannersContainer/HomeBannerPart"), { ssr: true });
+const HomeCityFilterContainer = dynamic(() => import("@/components/Home/HomeCityFilterContainer"));
+const HomePropertiesList = dynamic(() => import("@/components/Home/HomePropertiesList"));
 
 export async function generateMetadata(): Promise<Metadata> {
-  return MehaHeaderHelper(await getCmsContent("homeContent"));
+  const { data: homeContent } = await serverCall(baseUrl + apiRoutes.CONTENT_BY_KEY("homeContent"));
+  return MehaHeaderHelper(homeContent);
 }
 
 const Home = async () => {
-  const [
-    { data: banners },
-    { data: landings },
-    { data: propertyData },
-    { data: propertyTypes },
-    homeContent,
-    devices,
-  ] = await Promise.all([
-    getBanners(),
-    getLandings(),
-    getProperties(),
-    getPropertyTypes(),
-    getCmsContent("homeContent"),
-    deviceTypeDetector(),
-  ]);
-
-  const heroBanner = pickBanner(banners?.[BannerPosition.MAIN_1]);
-  const middleBanner = pickBanner(
-    banners?.[BannerPosition.MAIN_2]?.filter(
-      (banner: any) => !!(devices?.isMobile ? banner?.image_sm : banner?.image),
-    ),
+  const { data: banners } = await serverCall(
+    baseUrlV("v2") +
+      apiRoutes.BANNERS +
+      `?positions[]=${BannerPosition.MAIN_1}&positions[]=${BannerPosition.MAIN_2}&positions[]=${BannerPosition.MAIN_3}`,
   );
 
-  const queryClient = getQueryClient();
-  queryClient.setQueryData(
-    [HomeService.USER_LANDING_PAGES_KEY, LandingsPlacements.HOME],
-    landings,
+  const { data: landings } = await serverCall(
+    baseUrl + apiRoutes.USER_LANDING_PAGES + `?placement=${LandingsPlacements.HOME}`,
   );
+  const { data: propertyData } = await serverCall(baseUrl + apiRoutes.GET_PROPERTIES, {
+    page: 1,
+    per_page: 12,
+  });
+  const { data: propertyTypes } = await serverCall(baseUrl + apiRoutes.USER_PROP_OPTIONS + "?group[]=PROPERTY_TYPE");
+  const { data: homeContent } = await serverCall(baseUrl + apiRoutes.CONTENT_BY_KEY("homeContent"));
 
+  const devices = await deviceTypeDetector();
   return (
-    <HydrationBoundary state={dehydrate(queryClient)}>
-      <div
-        id="homeParent"
-        style={{ minHeight: "100dvh" }}
-        className="home-container !px-0 !pt-0 flex flex-col gap-0 "
+    <div style={{ minHeight: "100dvh" }} id="homeParent" className="home-container  !px-0 !pt-0   flex flex-col gap-0 ">
+      <SearchboxSchema />
+      <OrganizationSchema />
+      {!!banners?.[BannerPosition.MAIN_1] && !isEmpty(banners?.[BannerPosition.MAIN_1]) ? (
+        <HomeBannerPart
+          title={homeContent?.full_text}
+          devices={devices}
+          banners={banners?.[BannerPosition.MAIN_1] || []}
+        />
+      ) : (
+        <></>
+      )}
+      {/* {!!middleBanners ? (
+        <MiddleBanners cols={2} containerClass="  pr-2 md:pr-0 py-4" list={middleBanners || []} />
+      ) : (
+        <></>
+      )} */}{" "}
+      <section
+        style={{
+          minHeight:
+            !!landings?.popular_city &&
+            !isEmpty(landings?.popular_city) &&
+            !!landings?.quick_search &&
+            !isEmpty(landings?.quick_search)
+              ? "30dvh"
+              : "0",
+        }}
+        className=" bg-white  rounded-t-20 mb-8  -mt-[1.375rem] md:mt-0  flex flex-col  relative gap-5 lg:gap-6  select-none  px-0  md:py-0 w-full"
       >
-        <SearchboxSchema />
-        <OrganizationSchema />
-        {!!heroBanner ? (
-          <HomeBannerPart
-            devices={devices}
-            banner={heroBanner}
-            title={homeContent?.full_text}
-          />
-        ) : (
+        <Suspense fallback={null}>
+          <div className="w-full   mt-3 lg:mt-0  px-0 ">
+            <HomeActiveReserve />
+          </div>
+        </Suspense>
+        <HomePropertyTypes title="نوع اقامتگاه" data={propertyTypes?.PROPERTY_TYPE} />{" "}
+        {/* {!!landings?.popular_city && !isEmpty(landings?.popular_city) ? ( */}
+        <HomeCityFilterContainer
+          devices={devices}
+          title={`${_STRINGS.MOST_VISITED_CITIES}`}
+          data={landings?.popular_city || []}
+        />
+        {/* ) : (
           <></>
-        )}
-        <section
-          style={{
-            minHeight:
-              !!landings?.popular_city &&
-              !isEmpty(landings?.popular_city) &&
-              !!landings?.quick_search &&
-              !isEmpty(landings?.quick_search)
-                ? "30dvh"
-                : "0",
-          }}
-          className=" bg-white  rounded-t-20 mb-8  -mt-[1.375rem] md:mt-0  flex flex-col  relative gap-5 lg:gap-6  select-none  px-0  md:py-0 w-full"
-        >
-          <Suspense fallback={null}>
-            <div className="w-full   mt-3 lg:mt-0  px-0 ">
-              <HomeActiveReserve />
-            </div>
-          </Suspense>
-          <HomePropertyTypes
-            title="نوع اقامتگاه"
-            data={propertyTypes?.PROPERTY_TYPE}
-          />{" "}
-          <HomeCityFilterContainer
-            devices={devices}
-            data={landings?.popular_city || []}
-            title={`${_STRINGS.MOST_VISITED_CITIES}`}
-          />
-          <MainFiltersContainer
-            devices={devices}
-            title={`${_STRINGS.FAST_SEARCH}`}
-            data={landings?.quick_search || []}
-          />
-          <HomePropertiesList
-            devices={devices}
-            middleBanner={middleBanner}
-            data={propertyData?.data || []}
-          />{" "}
-        </section>
-        <TheInstallPrompt />
-        {!!banners && !isEmpty(banners) ? (
-          <BannersContainer
-            devices={devices}
-            banners={banners?.[BannerPosition.MAIN_3] || []}
-          />
-        ) : (
+        )}{" "} */}
+        {/* {!!landings?.quick_search && !isEmpty(landings?.quick_search) ? ( */}
+        <MainFiltersContainer devices={devices} title={`${_STRINGS.FAST_SEARCH}`} data={landings?.quick_search || []} />
+        {/* ) : (
           <></>
-        )}
-        <HomeContentSection data={homeContent} />
-      </div>
-    </HydrationBoundary>
+        )}{" "} */}
+        <HomePropertiesList
+          middleBanners={banners?.[BannerPosition.MAIN_2] || []}
+          data={propertyData?.data || []}
+          devices={devices}
+        />{" "}
+      </section>
+      <TheInstallPrompt />
+      {!!banners && !isEmpty(banners) ? (
+        <BannersContainer devices={devices} banners={banners?.[BannerPosition.MAIN_3] || []} />
+      ) : (
+        <></>
+      )}
+      <HomeContentSection data={homeContent} />
+    </div>
   );
 };
 

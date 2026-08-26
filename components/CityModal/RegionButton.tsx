@@ -1,7 +1,6 @@
-import { Dispatch, SetStateAction } from "react";
-
 import _STRINGS from "@/utils/LocalStrings";
-import isEmpty from "lodash/isEmpty";
+import { isEmpty } from "lodash";
+import { Dispatch, SetStateAction } from "react";
 
 const RegionButton = ({
   setShowRegions,
@@ -27,15 +26,9 @@ const RegionButton = ({
           : "border-primary-700  bg-primary-700/5 text-primary-700"
       }  text-xs flex flex-row `}
     >
-      <p className="text-xs pr-1  shrink-0 ">
-        {!isEmpty(regionsIds) ? _STRINGS.LOCAL : _STRINGS.SELECT_LOCAL}{" "}
-      </p>
+      <p className="text-xs pr-1  shrink-0 ">{!isEmpty(regionsIds) ? _STRINGS.LOCAL : _STRINGS.SELECT_LOCAL} </p>
 
-      {!isEmpty(regionsIds) ? (
-        <p className="shrink-0"> {`(${regionsIds?.length} مورد) `} </p>
-      ) : (
-        ""
-      )}
+      {!isEmpty(regionsIds) ? <p className="shrink-0"> {`(${regionsIds?.length} مورد) `} </p> : ""}
       {!isEmpty(regionsIds) ? (
         <div
           onClick={(e) => {
@@ -45,10 +38,7 @@ const RegionButton = ({
           }}
           className=" cursor-pointer w-4   h-4 aspect-square rounded-full border border-primary-700 flex items-center justify-center"
         >
-          <img
-            src="/assets/icons/adds/blue_plus.svg"
-            className="w-2 h-2 rotate-45 aspect-square "
-          />
+          <img src="/assets/icons/adds/blue_plus.svg" className="w-2 h-2 rotate-45 aspect-square " />
         </div>
       ) : (
         ""

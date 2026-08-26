@@ -1,22 +1,17 @@
 "use client";
-
-import { useEffect, useMemo, useState } from "react";
-import { SingleOwnerPropertyDto } from "@/api_services/property/property.interface";
-import { OwnerCallendarItemDto } from "@/api_services/property/property.interface";
+import { OwnerCallendarItemDto, SingleOwnerPropertyDto } from "@/api_services/property/property.interface";
 import { PropertyService } from "@/api_services/property/property.service";
-import { useQuery } from "@tanstack/react-query";
-
-import ChangeCunsultatCommission from "./ChangeCunsultatCommission";
-import ChangeDayStatusComp from "./ChangeDayStatusComp";
-import OwnerCallemdarGuide from "./OwnerCallemdarGuide";
-import ChangeCallendarNote from "./ChangeCallendarNote";
-import ChangePriceComp from "./ChangePriceComp";
 import Callender from "@/components/widgets/DatePicker/callender";
-import _STRINGS from "@/utils/LocalStrings";
+import { useQuery } from "@tanstack/react-query";
 import moment from "moment-jalaali";
+import React, { useEffect, useMemo, useState } from "react";
+import OwnerCallemdarGuide from "./OwnerCallemdarGuide";
+import _STRINGS from "@/utils/LocalStrings";
 import Button from "@/components/shared/Button/Button";
-
-const MAX_SELECTABLE_DAYS = 62;
+import ChangeDayStatusComp from "./ChangeDayStatusComp";
+import ChangePriceComp from "./ChangePriceComp";
+import ChangeCunsultatCommission from "./ChangeCunsultatCommission";
+import ChangeCallendarNote from "./ChangeCallendarNote";
 
 const SingleOwnerPropertycallender = ({
   data,
@@ -25,18 +20,25 @@ const SingleOwnerPropertycallender = ({
   data: SingleOwnerPropertyDto;
   setRefresh: React.Dispatch<React.SetStateAction<boolean>>;
 }) => {
-  const [callenderselectedDates, setCallenderSelectedDates] = useState<
-    string[]
-  >([]);
-  const [callenderselectedSpan, setCallenderSelectedSpan] = useState<string>(
-    moment().format("jYYYY/jMM/jD"),
-  );
+  /* -------------------------------------------------------------------------- */
+  /*                             SELECTED DATE STATE                            */
+  /* -------------------------------------------------------------------------- */
+  const [callenderselectedDate, setCallenderSelectedDate] = useState<string>("");
+  /* -------------------------------------------------------------------------- */
+  /*                             SELECTED TIME SPAN                             */
+  /* -------------------------------------------------------------------------- */
+  const [callenderselectedSpan, setCallenderSelectedSpan] = useState<string>(moment().format("jYYYY/jMM/jD"));
 
-  const [callendarDataState, setCallendarDataState] = useState<
-    OwnerCallendarItemDto[]
-  >([]);
+  /* -------------------------------------------------------------------------- */
+  /*                       INCOMING SELECTED TIMESPAN DATA                      */
+  /* -------------------------------------------------------------------------- */
+  const [callendarDataState, setCallendarDataState] = useState<OwnerCallendarItemDto[]>([]);
 
-  const { data: callendarData } = useQuery({
+  /* -------------------------------------------------------------------------- */
+  /*                            TIME SPAN DATA FETCH                            */
+  /* -------------------------------------------------------------------------- */
+
+  const { data: callendarData, isLoading } = useQuery({
     queryKey: [
       PropertyService.OWNER_PROPERTIES_CACHEKEY,
       Number(moment(callenderselectedSpan, "jYYYY/jMM/jD").format("jMM")),
@@ -48,12 +50,8 @@ const SingleOwnerPropertycallender = ({
       if (!!data?.id && !!callenderselectedSpan) {
         return PropertyService.GetSingleOwnerPropertyCallendar({
           property_id: `${data?.id}`,
-          month: Number(
-            moment(callenderselectedSpan, "jYYYY/jMM/jD").format("jMM"),
-          ),
-          year: Number(
-            moment(callenderselectedSpan, "jYYYY/jMM/jD").format("jYYYY"),
-          ),
+          month: Number(moment(callenderselectedSpan, "jYYYY/jMM/jD").format("jMM")),
+          year: Number(moment(callenderselectedSpan, "jYYYY/jMM/jD").format("jYYYY")),
         });
       } else return null;
     },
@@ -67,105 +65,68 @@ const SingleOwnerPropertycallender = ({
 
   useEffect(() => {
     if (window.location.hash !== "#owner-calendar") return;
+
     const animationFrame = window.requestAnimationFrame(() => {
-      document
-        .getElementById("owner-calendar")
-        ?.scrollIntoView({ behavior: "smooth", block: "start" });
+      document.getElementById("owner-calendar")?.scrollIntoView({ behavior: "smooth", block: "start" });
     });
+
     return () => window.cancelAnimationFrame(animationFrame);
   }, []);
 
-  const selectedDatesData = useMemo(() => {
-    return callenderselectedDates
-      .map((selectedDate) =>
-        callendarDataState?.find((e) => {
-          return (
-            `${e?.day}` == moment(selectedDate, "jYYYY/jMM/jD").format("jD") &&
-            `${e?.month}` ==
-              moment(selectedDate, "jYYYY/jMM/jD").format("jM") &&
-            `${e?.year}` == moment(selectedDate, "jYYYY/jMM/jD").format("jYYYY")
-          );
-        }),
-      )
-      .filter((e): e is OwnerCallendarItemDto => !!e);
-  }, [callenderselectedDates, callendarDataState]);
+  /* -------------------------------------------------------------------------- */
+  /*                       FINDING THE SELECTED DATE DATA                       */
+  /* -------------------------------------------------------------------------- */
 
-  const selectedDateData = selectedDatesData[selectedDatesData.length - 1];
-
-  const onToggleDay = (date: string) => {
-    setCallenderSelectedDates((prev) => {
-      if (prev.includes(date)) return prev.filter((e) => e !== date);
-      if (prev.length >= MAX_SELECTABLE_DAYS) return prev;
-      return [...prev, date];
+  const selectedDateData = useMemo(() => {
+    return callendarDataState?.find((e) => {
+      return (
+        `${e?.day}` == moment(callenderselectedDate, "jYYYY/jMM/jD").format("jD") &&
+        `${e?.month}` == moment(callenderselectedDate, "jYYYY/jMM/jD").format("jM") &&
+        `${e?.year}` == moment(callenderselectedDate, "jYYYY/jMM/jD").format("jYYYY")
+      );
     });
-  };
-
-  const clearSelectedDays = () => setCallenderSelectedDates([]);
+  }, [callenderselectedDate, callendarDataState]);
 
   return (
-    <div
-      id="owner-calendar"
-      className="order-3 scroll-mt-24 md:order-4 flex flex-col gap-4"
-    >
+    <div id="owner-calendar" className="order-3 scroll-mt-24 md:order-4 flex flex-col gap-4">
       {" "}
       <Callender
-        multiSelect
-        active_days={[]}
-        onToggleDay={onToggleDay}
-        selectedDays={callenderselectedDates}
-        callenderData={callendarDataState || []}
         setChosenDateState={setCallenderSelectedSpan}
-        selectedDate={
-          callenderselectedDates[callenderselectedDates.length - 1] || ""
-        }
+        active_days={[]}
+        callenderData={callendarDataState || []}
+        setSelectedDay={(e) => {
+          setCallenderSelectedDate(e);
+        }}
+        selectedDate={callenderselectedDate}
       />
       <OwnerCallemdarGuide />
-      <div className="w-full flex items-center justify-between gap-2">
-        <p className="text-xs">{_STRINGS.SELECT_DAYS_TO_GO_ON}</p>
-        {callenderselectedDates.length > 0 ? (
-          <Button
-            variant="outline"
-            width="!py-1 !px-3"
-            onClick={clearSelectedDays}
-            roundedClass="rounded-full"
-            title={`${_STRINGS.CLEAR_SELECTION} (${callenderselectedDates.length})`}
-          />
-        ) : (
-          <></>
-        )}
-      </div>
+      <p className="text-xs">{_STRINGS.SELECT_DAY_TO_GO_ON}</p>
       <div className="w-full grid gap-2 grid-cols-2">
         <ChangeDayStatusComp
-          data={data}
           setRefresh={setRefresh}
-          selectedDatesData={selectedDatesData}
+          selectedDateData={selectedDateData}
           setCallendarDataState={setCallendarDataState}
-          callenderselectedDates={callenderselectedDates}
+          data={data}
+          callenderselectedDate={callenderselectedDate}
         />
         <ChangePriceComp
-          data={data}
           setRefresh={setRefresh}
-          selectedDatesData={selectedDatesData}
+          selectedDateData={selectedDateData}
           setCallendarDataState={setCallendarDataState}
-          callenderselectedDates={callenderselectedDates}
+          data={data}
+          callenderselectedDate={callenderselectedDate}
         />
         <ChangeCunsultatCommission
-          data={data}
           selectedDateData={selectedDateData}
           setCallendarDataState={setCallendarDataState}
-          isDisabled={callenderselectedDates.length > 1}
-          callenderselectedDate={
-            callenderselectedDates[callenderselectedDates.length - 1] || ""
-          }
+          data={data}
+          callenderselectedDate={callenderselectedDate}
         />
         <ChangeCallendarNote
-          data={data}
           selectedDateData={selectedDateData}
           setCallendarDataState={setCallendarDataState}
-          isDisabled={callenderselectedDates.length > 1}
-          callenderselectedDate={
-            callenderselectedDates[callenderselectedDates.length - 1] || ""
-          }
+          data={data}
+          callenderselectedDate={callenderselectedDate}
         />
       </div>
     </div>

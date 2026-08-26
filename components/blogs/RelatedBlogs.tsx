@@ -1,18 +1,14 @@
-import { apiRoutes, baseUrl, NEW_IMAGE_URL } from "@/utils/urls";
 import { ContentDto } from "@/api_services/home/home.interface";
-import { REVALIDATE } from "@/helpers/revalidate";
-import { FC } from "react";
-
 import serverCall from "@/helpers/serverCall";
+import { apiRoutes, baseUrl, NEW_IMAGE_URL } from "@/utils/urls";
 import moment from "moment-jalaali";
 import Image from "next/image";
 import Link from "next/link";
+import { FC } from "react";
 
 const RelatedBlogs: FC<{ id: number }> = async ({ id }) => {
   const { data: blogs }: { data: { data: ContentDto[] } } = await serverCall(
     baseUrl + apiRoutes.CONTENTS + `?key=blog&page=1&per_page=4`,
-    undefined,
-    { revalidate: REVALIDATE.BLOG },
   );
   return (
     <div className="flex flex-col gap-4">
@@ -36,15 +32,11 @@ const RelatedBlogs: FC<{ id: number }> = async ({ id }) => {
               />
             </div>
             <div className="flex flex-col  col-span-3 h-full">
-              <p className="text-xs  text-right font-black  mb-1">
-                {moment(i?.created_at)?.format("jYYYY/jMM/jDD")}
-              </p>
+              <p className="text-xs  text-right font-black  mb-1">{moment(i?.created_at)?.format("jYYYY/jMM/jDD")}</p>
               <p className="font-bold group-hover:text-primary-700 transition-all text-right line-clamp-1">
                 {i?.title}
               </p>
-              <p className="font-regular  text-sm  text-right line-clamp-2">
-                {i?.small_text}
-              </p>
+              <p className="font-regular  text-sm  text-right line-clamp-2">{i?.small_text}</p>
             </div>
           </Link>
         ))}

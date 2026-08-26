@@ -1,11 +1,9 @@
-import { YupValidator } from "@/utils/YupValidator";
 import { apiRoutes } from "@/utils/urls";
 import { apiCall } from "../common/apicall.helper";
 import {
   ConfirmForgetOtpDto,
   GetProfileDto,
   InitDto,
-  OtpChallengeDto,
   OwnerProfileDto,
   RegisterDto,
   SendForgetOtpDto,
@@ -13,7 +11,6 @@ import {
   SendOtpType,
   SendOtpVerify,
   SendOtpVerifyResponse,
-  SendOtpVerifyWithMobile,
   SetNewPassword,
   SetPassword,
   SetPasswordResponse,
@@ -22,11 +19,8 @@ import {
   UpdateProfileDto,
 } from "./auth.interface";
 
-/** This app's own auth routes, as opposed to backend paths in `apiRoutes`. */
-const LOCAL_AUTH_ROUTES = {
-  OTP: "/api/auth/otp",
-  OTP_VERIFY: "/api/auth/otp/verify",
-} as const;
+import { YupValidator } from "@/utils/YupValidator";
+import { sendOtpSchema } from "./auth.schema";
 
 export class AuthService {
   static ADMIN_EDIT_VALIDATE_CACHEKEY = "HET_PROFILE";
@@ -38,77 +32,47 @@ export class AuthService {
   static GET_OWNER_PROFILE_CACHEKEY = "GET_OWNER_PROFILE";
   static CITIES_CHILDEREN_CACHEKEY = "CITIES_CHILDEREN";
   static AUTH_INIT_CACHEKEY = "AUTH_INIT";
-  static OTP_CHALLENGE_CACHEKEY = "OTP_CHALLENGE";
 
   static async SignIn(dto: SignInDTO) {
     try {
-      const result = await apiCall<SignInDTO, SignInResponseDTO>(
-        "POST",
-        apiRoutes.AU9,
-        {
-          password: dto.password,
-          auth_param: dto.auth_param,
-        },
-      );
+      const result = await apiCall<SignInDTO, SignInResponseDTO>("POST", apiRoutes.AU9, {
+        password: dto.password,
+        auth_param: dto.auth_param,
+      });
       return result;
     } catch (e) {
       throw e;
     }
   }
 
-  static async sendOtp(dto?: SendOtpDto) {
+  static async sendOtp(dto: SendOtpDto) {
     try {
-      if (dto?.mobile_number) {
-        const { sendOtpSchema } = await import("./auth.schema");
-        await YupValidator<SendOtpDto>(dto, sendOtpSchema);
-      }
-      const result = await apiCall<SendOtpDto, OtpChallengeDto>(
-        "POST",
-        LOCAL_AUTH_ROUTES.OTP,
-        { mobile_number: dto?.mobile_number ?? null },
-        { localRoute: true },
-      );
+      await YupValidator<SendOtpDto>(dto, sendOtpSchema);
+
+      const result = await apiCall<SendOtpDto, SendOtpType>("POST", apiRoutes.AU1, {
+        mobile_number: dto.mobile_number,
+      });
       return result;
     } catch (e) {
       throw e;
     }
   }
 
-  /** Masked state of the in-flight OTP challenge; `undefined` when there is none. */
-  static async getOtpChallenge() {
-    try {
-      return await apiCall<unknown, OtpChallengeDto>(
-        "GET",
-        LOCAL_AUTH_ROUTES.OTP,
-        undefined,
-        {
-          localRoute: true,
-        },
-      );
-    } catch {
-      // A 404 here just means "no challenge in flight" — the caller redirects.
-      return undefined;
-    }
-  }
-
-  static async clearOtpChallenge() {
-    try {
-      await fetch(LOCAL_AUTH_ROUTES.OTP, { method: "DELETE" });
-    } catch {
-      // Best effort; the cookie expires on its own.
-    }
-  }
+  // static async GetGuestToken() {
+  //   try {
+  //     const result = await apiCall<unknown, { access_token: string }>("POST", apiRoutes.GUEST_TOKEN);
+  //     return result;
+  //   } catch (e) {
+  //     throw e;
+  //   }
+  // }
 
   static async sendForgetOtp(dto: SendForgetOtpDto) {
     try {
-      const result = await apiCall<SendForgetOtpDto, SendOtpType>(
-        "POST",
-        apiRoutes.AU12,
-        {
-          auth_param: dto.auth_param,
-          forget_type: dto.forget_type,
-        },
-      );
+      const result = await apiCall<SendForgetOtpDto, SendOtpType>("POST", apiRoutes.AU12, {
+        auth_param: dto.auth_param,
+        forget_type: dto.forget_type,
+      });
       return result;
     } catch (e) {
       throw e;
@@ -117,15 +81,11 @@ export class AuthService {
 
   static async confirmOtp(dto: SendOtpVerify) {
     try {
-      const result = await apiCall<SendOtpVerify, SendOtpVerifyResponse>(
-        "POST",
-        LOCAL_AUTH_ROUTES.OTP_VERIFY,
-        {
-          code: dto.code,
-          query_params: dto?.query_params,
-        },
-        { localRoute: true },
-      );
+      const result = await apiCall<SendOtpVerify, SendOtpVerifyResponse>("POST", apiRoutes.AU2, {
+        mobile_number: dto.mobile_number,
+        code: dto.code,
+        query_params: dto?.query_params,
+      });
       return result;
     } catch (e) {
       throw e;
@@ -134,27 +94,20 @@ export class AuthService {
 
   static async confirmForgetOtp(dto: ConfirmForgetOtpDto) {
     try {
-      const result = await apiCall<ConfirmForgetOtpDto, SendOtpVerifyResponse>(
-        "POST",
-        apiRoutes.AU13,
-        {
-          auth_param: dto.auth_param,
-          forget_type: dto.forget_type,
-          code: dto.code,
-        },
-      );
+      const result = await apiCall<ConfirmForgetOtpDto, SendOtpVerifyResponse>("POST", apiRoutes.AU13, {
+        auth_param: dto.auth_param,
+        forget_type: dto.forget_type,
+        code: dto.code,
+      });
       return result;
     } catch (e) {
       throw e;
     }
   }
 
-  static async confirmOtpRegister(dto: SendOtpVerifyWithMobile) {
+  static async confirmOtpRegister(dto: SendOtpVerify) {
     try {
-      const result = await apiCall<
-        SendOtpVerifyWithMobile,
-        SendOtpVerifyResponse
-      >("POST", apiRoutes.AU10, {
+      const result = await apiCall<SendOtpVerify, SendOtpVerifyResponse>("POST", apiRoutes.AU10, {
         mobile_number: dto.mobile_number,
         code: dto.code,
       });
@@ -166,14 +119,10 @@ export class AuthService {
 
   static async SetUserPass(dto: SetPassword) {
     try {
-      const result = await apiCall<SetPassword, SetPasswordResponse>(
-        "POST",
-        apiRoutes.AU8,
-        {
-          password: dto?.password,
-          password_confirm: dto?.password_confirm,
-        },
-      );
+      const result = await apiCall<SetPassword, SetPasswordResponse>("POST", apiRoutes.AU8, {
+        password: dto?.password,
+        password_confirm: dto?.password_confirm,
+      });
       return result;
     } catch (e) {
       throw e;
@@ -182,17 +131,13 @@ export class AuthService {
 
   static async SetUsersNewPass(dto: SetNewPassword) {
     try {
-      const result = await apiCall<SetNewPassword, SetPasswordResponse>(
-        "POST",
-        apiRoutes.AU14,
-        {
-          password: dto?.password,
-          password_confirm: dto?.password_confirm,
-          auth_param: dto.auth_param,
-          code: dto.code,
-          forget_type: dto.forget_type,
-        },
-      );
+      const result = await apiCall<SetNewPassword, SetPasswordResponse>("POST", apiRoutes.AU14, {
+        password: dto?.password,
+        password_confirm: dto?.password_confirm,
+        auth_param: dto.auth_param,
+        code: dto.code,
+        forget_type: dto.forget_type,
+      });
       return result;
     } catch (e) {
       throw e;
@@ -206,14 +151,9 @@ export class AuthService {
     onProgressCallBack?: (e: any) => void | null;
   }) {
     try {
-      const result = await apiCall<FormData, SetPasswordResponse>(
-        "POST",
-        dto.link,
-        dto.formData,
-        {
-          progressCallBack: dto.onProgressCallBack,
-        },
-      );
+      const result = await apiCall<FormData, SetPasswordResponse>("POST", dto.link, dto.formData, {
+        progressCallBack: dto.onProgressCallBack,
+      });
       return { result, id: dto?.id };
     } catch (e: any) {
       e.id = dto.id;
@@ -221,12 +161,38 @@ export class AuthService {
     }
   }
 
+  // static async SendZipCodes(dto: { zip_codes: string[] | number[] }) {
+  //   try {
+  //     const result = await apiCall<{ zip_codes: string[] | number[] }, unknown>("PUT", apiRoutes.USER_ZIP_CODE, {
+  //       zip_codes: dto?.zip_codes,
+  //     });
+  //     return result;
+  //   } catch (e) {
+  //     throw e;
+  //   }
+  // }
+
+  // static async ForgotPasswordList(dto: { param: string | number }) {
+  //   try {
+  //     const result = await apiCall<{ param: string | number }, ForgetasswordListDto>("GET", apiRoutes.AU11(dto?.param));
+  //     return result;
+  //   } catch (e) {
+  //     throw e;
+  //   }
+  // }
+
+  // static async GetAppSettings() {
+  //   try {
+  //     const result = await apiCall<unknown, InnitSettingsDto>("GET", apiRoutes.APP_SETTINGS);
+  //     return result;
+  //   } catch (e) {
+  //     throw e;
+  //   }
+  // }
+
   static async GetProfile() {
     try {
-      const result = await apiCall<unknown, GetProfileDto>(
-        "GET",
-        apiRoutes.AU4,
-      );
+      const result = await apiCall<unknown, GetProfileDto>("GET", apiRoutes.AU4);
       return result;
     } catch (e) {
       throw e;
@@ -234,25 +200,47 @@ export class AuthService {
   }
   static async GetOwnerProfile() {
     try {
-      const result = await apiCall<unknown, OwnerProfileDto>(
-        "GET",
-        apiRoutes.GET_OWNER_PROFILE,
-      );
+      const result = await apiCall<unknown, OwnerProfileDto>("GET", apiRoutes.GET_OWNER_PROFILE);
       return result;
     } catch (e) {
       throw e;
     }
   }
 
+  // static async GetProvince() {
+  //   try {
+  //     const result = await apiCall<unknown, ProvienceTypesDto[]>("GET", apiRoutes.CITIES);
+  //     return result;
+  //   } catch (e) {
+  //     throw e;
+  //   }
+  // }
+
+  // static async GetCities(dto: { parentId: string | number }) {
+  //   try {
+  //     const result = await apiCall<unknown, ProvienceTypesDto[]>("GET", apiRoutes.CITIES_CHILDEREN(dto.parentId));
+  //     return result;
+  //   } catch (e) {
+  //     throw e;
+  //   }
+  // }
+
+  // static async RegisterProfile(dto: UpdateProfileDto) {
+  //   try {
+  //     const result = await apiCall<UpdateProfileDto, RegisterDto>("PUT", apiRoutes.REGISTER_PROFILE, {
+  //       full_name: dto?.full_name,
+  //     });
+  //     return result;
+  //   } catch (e) {
+  //     throw e;
+  //   }
+  // }
+
   static async EditProfile(dto: UpdateProfileDto) {
     try {
-      const result = await apiCall<UpdateProfileDto, unknown>(
-        "PUT",
-        apiRoutes.AU4,
-        {
-          full_name: dto?.full_name,
-        },
-      );
+      const result = await apiCall<UpdateProfileDto, unknown>("PUT", apiRoutes.AU4, {
+        full_name: dto?.full_name,
+      });
       return result;
     } catch (e) {
       throw e;
@@ -261,15 +249,11 @@ export class AuthService {
 
   static async RegisterOwner(dto: RegisterDto) {
     try {
-      const result = await apiCall<RegisterDto, unknown>(
-        "PUT",
-        apiRoutes.REGISTER_OWNER,
-        {
-          full_name: dto.full_name,
-          national_code: dto.national_code,
-          selfie_image_id: dto.selfie_image_id,
-        },
-      );
+      const result = await apiCall<RegisterDto, unknown>("PUT", apiRoutes.REGISTER_OWNER, {
+        full_name: dto.full_name,
+        national_code: dto.national_code,
+        selfie_image_id: dto.selfie_image_id,
+      });
       return result;
     } catch (e) {
       throw e;
@@ -277,13 +261,23 @@ export class AuthService {
   }
   static async initCall() {
     try {
-      const result = await apiCall<unknown, InitDto>(
-        "GET",
-        apiRoutes.AUTH_INIT,
-      );
+      const result = await apiCall<unknown, InitDto>("GET", apiRoutes.AUTH_INIT);
       return result;
     } catch (e) {
       throw e;
     }
   }
+  // static async UpdateProfile(dto: UpdateProfileDto) {
+  //   try {
+  //     const result = await apiCall<UpdateProfileDto, unknown>("PUT", apiRoutes.UPDATE_PROFILE, {
+  //       full_name: dto?.full_name,
+  //       father_name: dto?.father_name,
+  //       gender: dto?.gender,
+  //       is_show: dto?.is_show,
+  //     });
+  //     return result;
+  //   } catch (e) {
+  //     throw e;
+  //   }
+  // }
 }

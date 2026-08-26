@@ -1,15 +1,8 @@
 "use client";
-
-import { useEffect, useState } from "react";
-
+import React, { useEffect, useState } from "react";
+import Lottie from "react-lottie";
 import LottieAnimationDark from "../../../public/assets/lotties/emptyDark.json";
 import _STRINGS from "@/utils/LocalStrings";
-import dynamic from "next/dynamic";
-
-const Lottie = dynamic(() => import("react-lottie"), {
-  ssr: false,
-  loading: () => <div className="w-1/2 aspect-square" />,
-});
 
 const EmptyList = ({ title }: { title?: string }) => {
   const [theme, setTheme] = useState("dark");
@@ -28,9 +21,7 @@ const EmptyList = ({ title }: { title?: string }) => {
           width={"50%"}
         />
 
-        <p className="text-center -mt-2 dark:text-zinc-400 text-gray-300 ">
-          {title || _STRINGS?.EMPTY_LIST}
-        </p>
+        <p className="text-center -mt-2 dark:text-zinc-400 text-gray-300 ">{title || _STRINGS?.EMPTY_LIST}</p>
       </div>
     </div>
   );

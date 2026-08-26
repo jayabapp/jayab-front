@@ -1,17 +1,17 @@
-import { useAuthStore, useStoreInit, useStoreParams } from "@/store";
-import { useEffect, useState } from "react";
-import { profileItems } from "@/utils/constantss";
-import { UserService } from "@/api_services/user/user.service";
-import { useMutation } from "@tanstack/react-query";
-import { endSession } from "@/helpers/session";
 import { useRouter } from "next/navigation";
-import { isMobile } from "react-device-detect";
+import { useEffect, useState } from "react";
 
-import MainUploader from "../uploader";
-import ConfirmModal from "../Modal/ConfirmModal";
-import ProfileItem from "./ProfileItem";
+import { UserService } from "@/api_services/user/user.service";
+import { useAuthStore, useStoreInit, useStoreParams } from "@/store";
+import { profileItems } from "@/utils/constantss";
 import _STRINGS from "@/utils/LocalStrings";
+import { useMutation } from "@tanstack/react-query";
+import { deleteCookie } from "cookies-next/client";
+import { isMobile } from "react-device-detect";
+import ConfirmModal from "../Modal/ConfirmModal";
 import Button from "../shared/Button/Button";
+import MainUploader from "../uploader";
+import ProfileItem from "./ProfileItem";
 
 const Profile = ({}) => {
   const { owmerActiveReservesCount } = useStoreParams();
@@ -21,20 +21,22 @@ const Profile = ({}) => {
   const [isVisible, setisVisible] = useState(false);
   const { userInfo } = useStoreInit((state) => state);
 
-  const logoutProcess = async () => {
-    await endSession();
+  const logoutProcess = () => {
+    localStorage.removeItem("access_token");
+
+    localStorage.removeItem("isLogin");
+    deleteCookie("isLogin");
+    localStorage.removeItem("is_registered");
     useAuthStore.setState({ isLogin: false, isAdminSso: false });
     useStoreInit.setState({ userInfo: null });
     router.push("/");
   };
 
   const _logout = () => {
-    void logoutProcess();
+    logoutProcess();
   };
 
-  const platformProfileList = isMobile
-    ? profileItems
-    : profileItems?.filter((e) => !e?.isMobile);
+  const platformProfileList = isMobile ? profileItems : profileItems?.filter((e) => !e?.isMobile);
 
   const goToLogin = () => {
     router.push("/auth");
@@ -77,16 +79,19 @@ const Profile = ({}) => {
             }}
             title={_STRINGS.IMAGE}
             withCrop
+            // isLogo
             link="/attachments?type=PROFILE"
             key={`uploader`}
-            containerClass={
-              "my-3  relative w-fit flex items-start justify-start "
-            }
+            containerClass={"my-3  relative w-fit flex items-start justify-start "}
             item={profileImage}
             onSelect={(file) => {
               mutate({ profile_image_id: file?.id });
               setProfileImage(file);
             }}
+            // onDelete={() => {
+            //   setProfileImage(null);
+            // }}
+
             showCamera={true}
           />
 
@@ -142,6 +147,22 @@ const Profile = ({}) => {
         ) : (
           <></>
         )}
+        {/* {!!userInfo?.owner_id ? (
+          <ProfileItem
+            disableArrow
+            item={{
+              id: 1214,
+              imgSrc: "/assets/icons/header/header_my_adds.svg",
+              route: "/profile/owner/call-logs",
+
+              title: "تماس های من",
+            }}
+            key={`mycalls`}
+          />
+        ) : (
+          <></>
+        )} */}
+
         {!!userInfo?.advisor_id ? (
           <ProfileItem
             disableArrow
@@ -190,14 +211,8 @@ const Profile = ({}) => {
             }}
             className="py-5 flex   items-center w-full gap-3 md:gap-4 cursor-pointer hover:scale-102 transition-all"
           >
-            <img
-              src="/assets/icons/header/header_logout.svg"
-              className="w-6 h-6  aspect-square "
-            />{" "}
-            <p className="text-base font-medium text-primary-150 ">
-              {" "}
-              {_STRINGS?.LOGOUT_TITLE}
-            </p>
+            <img src="/assets/icons/header/header_logout.svg" className="w-6 h-6  aspect-square " />{" "}
+            <p className="text-base font-medium text-primary-150 "> {_STRINGS?.LOGOUT_TITLE}</p>
           </div>
         )}
       </div>

@@ -1,23 +1,12 @@
 import { LocalBusinessSchema } from "@/components/SchemaGenerator/Schemas";
-import { apiRoutes, baseUrl } from "@/utils/urls";
-import { REVALIDATE } from "@/helpers/revalidate";
-import { Suspense } from "react";
-
-import serverCall from "@/helpers/serverCall";
+import React, { Suspense } from "react";
 import dynamic from "next/dynamic";
+import { apiRoutes, baseUrl } from "@/utils/urls";
+import serverCall from "@/helpers/serverCall";
 
-const ContactUsPageHelper = dynamic(
-  () => import("@/components/contactus/ContactUsPageHelper"),
-  { ssr: true },
-);
+const ContactUsPageHelper = dynamic(() => import("@/components/contactus/ContactUsPageHelper"), { ssr: true });
 const ContactUsPage = async () => {
-  const { data } = await serverCall(
-    baseUrl + apiRoutes.CONTENTS + `?key=${"contactUs"}&per_page=20&page=1`,
-    undefined,
-    {
-      revalidate: REVALIDATE.CMS_PAGE,
-    },
-  );
+  const { data } = await serverCall(baseUrl + apiRoutes.CONTENTS + `?key=${"contactUs"}&per_page=20&page=1`);
 
   return (
     <>

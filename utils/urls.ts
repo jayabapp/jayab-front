@@ -163,17 +163,11 @@ export const apiRoutes = {
   OWNER_PROPERTIES_STATUS_UPDATE: (propertyId: string | number | null) =>
     `/owner/properties/${propertyId}/calendar/reserves`,
 
-  OWNER_PROPERTIES_BULK_STATUS_UPDATE: (propertyId: string | number | null) =>
-    `/owner/properties/${propertyId}/calendar/reserves/bulk`,
-
   OWNER_PROPERTIES_PRICE_RANGE_UPDATE: (propertyId: string | number | null) =>
     `/owner/properties/${propertyId}/calendar/price`,
 
   OWNER_PROPERTIES_PRICE_UPDATE: (propertyId: string | number | null) =>
     `/owner/properties/${propertyId}/calendar/price`,
-
-  OWNER_PROPERTIES_BULK_PRICE_UPDATE: (propertyId: string | number | null) =>
-    `/owner/properties/${propertyId}/calendar/price/bulk`,
 
   OWNER_PROPERTIES_ALL_DAYS_COMMISSION_UPDATE: (propertyId: string | number | null) =>
     `/owner/properties/${propertyId}/commission`,

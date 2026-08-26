@@ -1,31 +1,47 @@
 "use client";
-
-import { Messaging } from "firebase/messaging";
+import { initializeApp } from "firebase/app";
+import { getMessaging, getToken, Messaging, onMessage } from "firebase/messaging";
 import { apiRoutes } from "@/utils/urls";
 import { apiCall } from "@/api_services/common/apicall.helper";
-
+import Notify from "@/components/shared/Toast";
+import { useEffect } from "react";
 import firebaseConfig from "./firebase.config";
 
 class FCM {
   static messagingInstance: Messaging;
+
   static async init() {
+    /**
+     * Check and request permission
+     */
     if (typeof window !== "undefined" && "serviceWorker" in navigator) {
       const granted = await this.requestPermission();
       if (!granted) return;
+
       if (!this.messagingInstance) {
-        const [{ initializeApp }, { getMessaging, getToken }] =
-          await Promise.all([
-            import("firebase/app"),
-            import("firebase/messaging"),
-          ]);
         const app = initializeApp(firebaseConfig);
+        // Initialize Firebase Cloud Messaging and get a reference to the service
         this.messagingInstance = getMessaging(app);
+
+        // Add the public key generated from the console here.
         const token = await getToken(this.messagingInstance, {
-          vapidKey:
-            "BPRAmYzDUfXAtV_qBO7LVT0Z_NXdqNShQoYFTgmzOOX6y31HE1O0G2GIpctidLffF79gd7X6ViHXEVcj4peaZzE",
+          vapidKey: "BPRAmYzDUfXAtV_qBO7LVT0Z_NXdqNShQoYFTgmzOOX6y31HE1O0G2GIpctidLffF79gd7X6ViHXEVcj4peaZzE",
         });
-        if (token) this.updateFcm(token);
-        else await this.requestPermission();
+
+        // onMessage(this.messagingInstance, (payload) => {
+        //   console.log("incoming transmition", payload?.notification?.body);
+        //   // if (!window.location.pathname.includes("chat")) {
+        //   // Notify({ body: payload?.notification?.body, title: payload?.notification?.title });
+        //   // }
+        // });
+
+        // meesaging();
+
+        if (token) {
+          this.updateFcm(token);
+        } else {
+          await this.requestPermission();
+        }
       }
     }
   }
@@ -33,6 +49,7 @@ class FCM {
   static async requestPermission(): Promise<boolean> {
     console.log("Requesting permission...");
     const permission = await Notification.requestPermission();
+
     if (permission === "granted") {
       console.log("Notification permission granted.");
       return true;

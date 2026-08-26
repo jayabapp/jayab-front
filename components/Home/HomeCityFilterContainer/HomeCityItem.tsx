@@ -28,14 +28,7 @@ const HomeCityItem = ({ item }: { item: HomeLandingDto }) => {
       <div id={`${item?.title || "fake"}CatImage`} className="w-full  col-span-2  relative rounded-10  aspect-square ">
         {" "}
         <Image
-          // Without `sizes`, a `fill` image is treated as 100vw and next/image
-          // builds its srcset from deviceSizes alone (smallest 640), so a 412px
-          // viewport downloaded w=750 for a thumbnail that renders at 84px.
-          // Declaring `sizes` also brings imageSizes (16-384) into the srcset.
-          // Widths come from the carousel: 4.25 slides below 1024px and 8 above,
-          // inside a `padding-x` viewport, i.e. ~20vw then ~11vw. Rounded up so
-          // the candidate is never smaller than the slot at any DPR.
-          sizes="(min-width: 1024px) 12vw, 21vw"
+          loading="eager"
           // src={imageError ? DefaultIcon : IMAGE_URL(data?.cover_location)}
           src={item?.image ? NEW_IMAGE_URL(item?.image) : "/assets/icons/shared/image_placeholder.svg"}
           alt={`icatImages${item?.title}`}

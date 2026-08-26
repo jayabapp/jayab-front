@@ -1,58 +1,36 @@
 "use client";
 
-import { memo, useCallback, useMemo, useState } from "react";
-import { SingleOwnerPropertyDto } from "@/api_services/property/property.interface";
-import { useMutation, useQuery } from "@tanstack/react-query";
-import { PropertySubsDto } from "@/api_services/property/property.interface";
-import { PropertyListDto } from "@/api_services/property/property.interface";
-import { PropertyService } from "@/api_services/property/property.service";
-import { NEW_IMAGE_URL } from "@/utils/urls";
-import { HomeService } from "@/api_services/home/home.service";
 import { ImageDto } from "@/api_services/auth/auth.interface";
-
-import ModalBottomSheet from "@/components/Modal/ModalBottomSheet";
-import CmsText from "@/components/shared/CmsText";
-import useCmsContent from "@/hooks/useCmsContent";
-import numberWithCommas from "@/helpers/numberWithCommas";
-import LottieLoading from "@/components/shared/Lotties/LottieLoading";
-import SwiperSlide from "@/components/embelaCarousel/SwiperSlide";
-import _STRINGS from "@/utils/LocalStrings";
-import isEmpty from "lodash/isEmpty";
+import { HomeService } from "@/api_services/home/home.service";
+import { PropertyListDto, PropertySubsDto, SingleOwnerPropertyDto } from "@/api_services/property/property.interface";
+import { PropertyService } from "@/api_services/property/property.service";
 import Swiper from "@/components/embelaCarousel/Swiper";
+import SwiperSlide from "@/components/embelaCarousel/SwiperSlide";
+import ModalBottomSheet from "@/components/Modal/ModalBottomSheet";
 import Button from "@/components/shared/Button/Button";
+import LottieLoading from "@/components/shared/Lotties/LottieLoading";
 import Notify from "@/components/shared/Toast";
-import chunk from "lodash/chunk";
-
+import numberWithCommas from "@/helpers/numberWithCommas";
+import _STRINGS from "@/utils/LocalStrings";
+import { NEW_IMAGE_URL } from "@/utils/urls";
+import { useMutation, useQuery } from "@tanstack/react-query";
+import { chunk } from "lodash";
+import isEmpty from "lodash/isEmpty";
+import { memo, useCallback, useMemo, useState } from "react";
 const SelectableImageItem = memo(
-  ({
-    image,
-    isSelected,
-    onToggle,
-  }: {
-    image: ImageDto;
-    isSelected: boolean;
-    onToggle: (imageId: number) => void;
-  }) => {
+  ({ image, isSelected, onToggle }: { image: ImageDto; isSelected: boolean; onToggle: (imageId: number) => void }) => {
     return (
       <button
         type="button"
         onClick={() => onToggle(image.id)}
         className={`relative aspect-square overflow-hidden rounded-10 border transition-all ${
-          isSelected
-            ? "border-primary-700 ring-2 ring-primary-700/30"
-            : "border-gray-200"
+          isSelected ? "border-primary-700 ring-2 ring-primary-700/30" : "border-gray-200"
         }`}
       >
-        <img
-          src={NEW_IMAGE_URL(image)}
-          alt={image?.alt || ""}
-          className="h-full w-full object-cover"
-        />
+        <img src={NEW_IMAGE_URL(image)} alt={image?.alt || ""} className="h-full w-full object-cover" />
         <span
           className={`absolute left-1 top-1 flex h-5 w-5 items-center justify-center rounded-md border text-xs font-bold ${
-            isSelected
-              ? "border-primary-700 bg-primary-700 text-white"
-              : "border-white bg-black/40 text-white"
+            isSelected ? "border-primary-700 bg-primary-700 text-white" : "border-white bg-black/40 text-white"
           }`}
         >
           {isSelected ? "✓" : ""}
@@ -98,11 +76,7 @@ const OwnerPhotoUpgradeModal = ({
   const PHOTO_UPGRADE_PRICE = Number(settings?.photo_upgrade_price);
 
   const { data, isLoading } = useQuery({
-    queryKey: [
-      PropertyService.OWNER_PROPERTIES_CACHEKEY,
-      "photo-upgrade",
-      property?.id,
-    ],
+    queryKey: [PropertyService.OWNER_PROPERTIES_CACHEKEY, "photo-upgrade", property?.id],
     queryFn: () => {
       if (property?.id) {
         return PropertyService.GetSingleOwnerProperty({
@@ -132,11 +106,7 @@ const OwnerPhotoUpgradeModal = ({
   });
 
   const toggleImage = useCallback((imageId: number) => {
-    setSelectedImageIds((prev) =>
-      prev.includes(imageId)
-        ? prev.filter((id) => id !== imageId)
-        : [...prev, imageId],
-    );
+    setSelectedImageIds((prev) => (prev.includes(imageId) ? prev.filter((id) => id !== imageId) : [...prev, imageId]));
   }, []);
 
   const onSubmit = () => {
@@ -148,9 +118,7 @@ const OwnerPhotoUpgradeModal = ({
 
     mutate({
       gateway: process.env.NEXT_PUBLIC_PAYMENT_GATEWAY || "",
-      redirect_url:
-        mutationOptions?.redirect_url ??
-        `${window.origin}/profile/owner/photo-upgrade-requests`,
+      redirect_url: mutationOptions?.redirect_url ?? `${window.origin}/profile/owner/photo-upgrade-requests`,
       property_id: property.id,
       photo_upgrade_enabled: true,
       photo_upgrade_property_id: property.id,
@@ -160,10 +128,13 @@ const OwnerPhotoUpgradeModal = ({
     });
   };
 
-  const { content: upgradeContent, isLoading: contentLoading } = useCmsContent(
-    "upgrade-image-content",
-    { enabled: !!property },
-  );
+  const { data: upgradeContent, isLoading: contentLoading } = useQuery({
+    queryKey: [HomeService?.CONTENT_BY_KEY_CACHEKEY, "upgrade-image-content", property],
+    queryFn: () => {
+      return HomeService.GetContentByKey({ key: "upgrade-image-content" });
+    },
+    enabled: !!property,
+  });
 
   const chunckedImages = chunk(images, 8)?.map((e) => chunk(e, 4));
 
@@ -172,32 +143,29 @@ const OwnerPhotoUpgradeModal = ({
       show={!!property}
       onHide={onHide}
       options={{ containerClass: " !max-h-[99dvh] md:!max-h-[85dvh] " }}
+      // options={{
+      //   parentClass: "justify-end md:justify-center",
+      //   containerClass:
+      //     "mx-auto w-full max-h-[92dvh] overflow-y-scroll rounded-t-20 bg-white dark:bg-zinc-900 md:w-1/2 md:max-w-[560px] md:rounded-20",
+      // }}
     >
       <div className="flex flex-col gap-4 p-3 pt-0">
         <div className="flex items-center sticky top-0 bg-white py-2 justify-center gap-3">
           <div className="min-w-0">
             <div className="flex items-center gap-2">
-              <p className="text-base text-center font-bold text-primary-700">
-                سرویس بهبود تصویر
-              </p>
+              <p className="text-base text-center font-bold text-primary-700">سرویس بهبود تصویر</p>
               <div className="new-tag   rotate-[-9deg] text-xs font-bold  text-white rounded-lg  h-6 w-11 flex items-center justify-center ">
                 {_STRINGS.NEW}
               </div>
             </div>
-            <p className="mt-1 line-clamp-1 text-center text-xs text-gray-500">
-              {property?.title}
-            </p>
+            <p className="mt-1 line-clamp-1 text-center text-xs text-gray-500">{property?.title}</p>
           </div>
           <button
             type="button"
             onClick={onHide}
             className="flex h-9 absolute left-0  top-2  w-9 shrink-0 items-center justify-center rounded-full bg-gray-100"
           >
-            <img
-              src="/assets/icons/shared/close.svg"
-              alt="بستن"
-              className="h-4 w-4"
-            />
+            <img src="/assets/icons/shared/close.svg" alt="بستن" className="h-4 w-4" />
           </button>
         </div>
         {!!contentLoading ? (
@@ -205,25 +173,22 @@ const OwnerPhotoUpgradeModal = ({
         ) : !!upgradeContent ? (
           <div className="w-full flex flex-col items-center justify-center gap-4 ">
             {!!upgradeContent?.feature_image ? (
-              <img
-                src={NEW_IMAGE_URL(upgradeContent?.feature_image)}
-                className=" object-contain   max-h-[150px] "
-              />
+              <img src={NEW_IMAGE_URL(upgradeContent?.feature_image)} className=" object-contain   max-h-[150px] " />
             ) : (
               <></>
             )}
             <div className="w-full items-center justify-center flex flex-col gap-1">
-              <CmsText className="text-base font-medium text-center">
-                {upgradeContent?.small_text}
-              </CmsText>
-              <CmsText className="text-sm   text-center ">
-                {upgradeContent?.full_text}
-              </CmsText>
+              <p className="text-base font-medium text-center">{upgradeContent?.small_text}</p>
+              <p className="text-sm   text-center ">{upgradeContent?.full_text}</p>
             </div>
           </div>
         ) : (
           <></>
         )}
+
+        {/* <div className="rounded-10 bg-primary-700/10 px-3 py-2 text-sm text-primary-700">
+          هر  بهبود  {numberWithCommas(PHOTO_UPGRADE_PRICE)} تومان است.
+        </div> */}
 
         {isLoading ? (
           <div className="h-48">
@@ -260,22 +225,16 @@ const OwnerPhotoUpgradeModal = ({
             }}
           >
             {chunckedImages?.map((e, index) => (
-              <SwiperSlide
-                key={`${index}swiper`}
-                className="flex  flex-col gap-1 "
-              >
+              <SwiperSlide key={`${index}swiper`} className="flex  flex-col gap-1 ">
                 {e.map((chunk, index) => (
                   <>
-                    <div
-                      key={`group${index}`}
-                      className=" w-full  grid grid-cols-4 gap-1"
-                    >
-                      {chunk?.map((image) => (
+                    <div key={`group${index}`} className=" w-full  grid grid-cols-4 gap-1">
+                      {chunk?.map((image, index) => (
                         <SelectableImageItem
                           image={image}
+                          isSelected={selectedImageIds.includes(image.id)}
                           onToggle={toggleImage}
                           key={`photoUpgradeSelectableImage${image.id}`}
-                          isSelected={selectedImageIds.includes(image.id)}
                         />
                       ))}
                     </div>
@@ -286,7 +245,12 @@ const OwnerPhotoUpgradeModal = ({
           </Swiper>
         )}
         {!!upgradeContent?.html ? (
-          <p className="text-primary-700  w-full text-sm text-center ">
+          <p
+            className="text-primary-700  w-full text-sm text-center "
+            // dangerouslySetInnerHTML={{
+            //   __html: DOMPurify.sanitize(upgradeContent?.html || ""),
+            // }}
+          >
             تصاویر بهینه شده بعد از 24 ساعت جایگزین میشوند
           </p>
         ) : (
@@ -300,15 +264,11 @@ const OwnerPhotoUpgradeModal = ({
           </div>
           <div className="flex items-center justify-between gap-2">
             <span className="text-gray-500">هزینه بهبود هر تصویر</span>
-            <span className="font-medium">
-              {numberWithCommas(PHOTO_UPGRADE_PRICE)} تومان
-            </span>
+            <span className="font-medium">{numberWithCommas(PHOTO_UPGRADE_PRICE)} تومان</span>
           </div>
           <div className="flex items-center justify-between gap-2 border-t pt-2 text-primary-700">
             <span className="font-medium">هزینه نهایی بهبود تصویر</span>
-            <span className="font-bold">
-              {numberWithCommas(totalAmount)} تومان
-            </span>
+            <span className="font-bold">{numberWithCommas(totalAmount)} تومان</span>
           </div>
           {!isEmpty(selectedPlans) ? (
             selectedPlans?.map((e) => (
@@ -317,9 +277,7 @@ const OwnerPhotoUpgradeModal = ({
                 className="flex items-center justify-between gap-2 border-t pt-2 text-primary-700"
               >
                 <span className="font-medium">{e?.title}</span>
-                <span className="font-bold">
-                  {numberWithCommas(e?.price_with_discount || e?.price)} تومان
-                </span>
+                <span className="font-bold">{numberWithCommas(e?.price_with_discount || e?.price)} تومان</span>
               </div>
             ))
           ) : (
@@ -330,15 +288,8 @@ const OwnerPhotoUpgradeModal = ({
         <div className="w-full grid  sticky bottom-0 grid-cols-3 items-center gap-2 ">
           <Button
             loading={isPending}
-            disabled={
-              (isEmpty(selectedImageIds) || isLoading || !totalAmount) &&
-              !extraPrice
-            }
-            onClick={
-              !!extraPrice && !totalAmount && !!noImageSubmit
-                ? noImageSubmit
-                : onSubmit
-            }
+            disabled={(isEmpty(selectedImageIds) || isLoading || !totalAmount) && !extraPrice}
+            onClick={!!extraPrice && !totalAmount && !!noImageSubmit ? noImageSubmit : onSubmit}
             width="w-full"
             containerClass={`${extraPrice ? "col-span-3" : "col-span-2"}  `}
             title={`پرداخت ${totalAmount || !!extraPrice ? `${numberWithCommas(totalAmount + Number(extraPrice || 0))} ${_STRINGS.TOMAN}` : ""} `}
@@ -348,10 +299,10 @@ const OwnerPhotoUpgradeModal = ({
           ) : (
             <Button
               color="danger"
+              onClick={onHideClick ?? onHide}
+              width="w-full !text-white "
               containerClass={` `}
               title={_STRINGS.NOW_NOW}
-              width="w-full !text-white "
-              onClick={onHideClick ?? onHide}
             />
           )}
         </div>

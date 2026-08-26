@@ -1,19 +1,22 @@
 "use client";
-
-import { NEW_IMAGE_URL } from "@/utils/urls";
+import { HomeService } from "@/api_services/home/home.service";
 import { useAuthStore } from "@/store";
-
-import useCmsContent from "@/hooks/useCmsContent";
-import BtnLoading from "../shared/Button/BtnLoading";
-import Editable from "../Editable";
 import _STRINGS from "@/utils/LocalStrings";
-import CmsText from "../shared/CmsText";
-import Button from "../shared/Button/Button";
+import { NEW_IMAGE_URL } from "@/utils/urls";
+import { useQuery } from "@tanstack/react-query";
 import Link from "next/link";
+import Editable from "../Editable";
+import BtnLoading from "../shared/Button/BtnLoading";
+import Button from "../shared/Button/Button";
 
 const CallBox = () => {
   const { isLogin } = useAuthStore((state) => state);
-  const { content: footerCallUs, isLoading } = useCmsContent("footerCallUs");
+  const { data: footerCallUs, isLoading } = useQuery({
+    queryKey: [HomeService?.CONTENT_BY_KEY_CACHEKEY, "footerCallUs"],
+    queryFn: () => {
+      return HomeService.GetContentByKey({ key: "footerCallUs" });
+    },
+  });
 
   const onImageError = (e: any) => {
     e.target.src = "/assets/images/home/footer_car.png";
@@ -45,21 +48,12 @@ const CallBox = () => {
             >
               <div className="flex flex-col gap-4 ">
                 {" "}
-                <p className=" font-bold text-white  text-base md:text-xl ">
-                  {" "}
-                  {footerCallUs?.title}{" "}
-                </p>
-                <CmsText whitespace="normal" className="  text-sm  text-white ">
-                  {footerCallUs?.small_text}
-                </CmsText>
+                <p className=" font-bold text-white  text-base md:text-xl "> {footerCallUs?.title} </p>
+                <p className="  text-sm  text-white "> {footerCallUs?.small_text} </p>
               </div>
               <Link
                 title={_STRINGS.BECOME_HOST}
-                href={
-                  isLogin
-                    ? footerCallUs?.link || ""
-                    : `/auth?redirect_url=${footerCallUs?.link}`
-                }
+                href={isLogin ? footerCallUs?.link || "" : `/auth?redirect_url=${footerCallUs?.link}`}
                 className="shrink-0"
                 target="_blank"
                 referrerPolicy="no-referrer"
@@ -68,8 +62,9 @@ const CallBox = () => {
                 <Button
                   color="themeLight"
                   roundedClass="rounded-full"
-                  title={_STRINGS.BECOME_HOST}
+                  // containerClass="min-w-[10rem]"
                   width="w-fit !px-12 !text-primary-700"
+                  title={_STRINGS.BECOME_HOST}
                 />
               </Link>
             </Editable>

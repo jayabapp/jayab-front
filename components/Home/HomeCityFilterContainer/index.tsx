@@ -1,14 +1,13 @@
-const SwiperEm = dynamic(() => import("@/components/embelaCarousel/Swiper"), {
-  ssr: true,
-});
+const SwiperEm = dynamic(() => import("@/components/embelaCarousel/Swiper"), { ssr: true });
+// const SwiperSlide = dynamic(() => import("@/components/embelaCarousel/SwiperSlide"), { ssr: true });
+// import SwiperEm from "@/components/embelaCarousel/Swiper";
+import SwiperSlide from "@/components/embelaCarousel/SwiperSlide";
 
 import { HomeLandingDto } from "@/api_services/home/home.interface";
 import { DeviceInfo } from "@/helpers/device.detector";
-
-import HomeCityItem from "./HomeCityItem";
-import SwiperSlide from "@/components/embelaCarousel/SwiperSlide";
+import { chunk } from "lodash";
 import dynamic from "next/dynamic";
-import chunk from "lodash/chunk";
+import HomeCityItem from "./HomeCityItem";
 
 function HomeCityFilterContainer({
   data,
@@ -21,13 +20,10 @@ function HomeCityFilterContainer({
 }) {
   const chunckedData = chunk(data || [], 2);
   return (
-    <div
-      className={` w-full noSelect   select-none  gap-4  md:gap-2 relative rounded-20 flex flex-col items-center`}
-    >
+    <div className={` w-full noSelect   select-none  gap-4  md:gap-2 relative rounded-20 flex flex-col items-center`}>
       <div className="w-full hidden lg:flex  padding-x items-center justify-between ">
-        <p className=" font-bold     shrink-0 text-center md:text-start  text-base  lg:text-xl  ">
-          {title}
-        </p>
+        <p className=" font-bold     shrink-0 text-center md:text-start  text-base  lg:text-xl  ">{title}</p>
+        {/* <HomeCityFilterCityPart /> */}
       </div>{" "}
       <SwiperEm
         viewportClassName="padding-x"
@@ -42,6 +38,7 @@ function HomeCityFilterContainer({
             slidesPerView: 4.25,
             spaceBetween: 10,
           },
+          // when window width is >= 768px
           768: {
             slidesPerView: 4.25,
             spaceBetween: 10,
@@ -56,34 +53,17 @@ function HomeCityFilterContainer({
           },
         }}
         slidesWidth={{ def: "25%", md: "10%" }}
-        options={{
-          align: "start",
-          direction: "rtl",
-          dragFree: true,
-          loop: false,
-        }}
+        options={{ align: "start", direction: "rtl", dragFree: true, loop: false }}
       >
         {chunckedData?.map((i, index: number) => {
           const firstItem = i?.[0];
           const secondItem = i?.[1];
+
           return (
-            <SwiperSlide
-              key={index}
-              className={`w-full  !h-auto   p-0 md:py-2 cursor-pointer select-none md:px-2`}
-            >
+            <SwiperSlide key={index} className={`w-full  !h-auto   p-0 md:py-2 cursor-pointer select-none md:px-2`}>
               <div className="flex flex-col gap-2.5 lg:gap-3 ">
-                <HomeCityItem
-                  item={firstItem}
-                  key={`${firstItem?.title}${index}cat`}
-                />
-                {!!secondItem ? (
-                  <HomeCityItem
-                    item={secondItem}
-                    key={`${secondItem?.title}${index}cat`}
-                  />
-                ) : (
-                  <></>
-                )}
+                <HomeCityItem item={firstItem} key={`${firstItem?.title}${index}cat`} />
+                {!!secondItem ? <HomeCityItem item={secondItem} key={`${secondItem?.title}${index}cat`} /> : <></>}
               </div>
             </SwiperSlide>
           );

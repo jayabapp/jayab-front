@@ -1,40 +1,40 @@
 "use client";
 
-import { SORT_TYPES, zero_filter_remove_keys } from "@/utils/constantss";
-import { usePathname, useRouter } from "next/navigation";
-import { useEffect, useState } from "react";
+import { ChildCities } from "@/api_services/city/city.interface";
 import { SingleLandingDto } from "@/api_services/property/property.interface";
 import { PropertyService } from "@/api_services/property/property.service";
-import { removeKeyArray } from "@/components/Filters/SsrClinetPartFilterProperties";
-import { ChildCities } from "@/api_services/city/city.interface";
-import { DeviceInfo } from "@/helpers/device.detector";
-import { useQuery } from "@tanstack/react-query";
-
-import FiltersSelectedFiltersShowcase from "@/components/Filters/FiltersSelectedFiltersShowcase";
-import SsrClinetPartFilterProperties from "@/components/Filters/SsrClinetPartFilterProperties";
 import SingleProductBreadCrumb from "@/components/BreadCrumbs/SingleProductBreadCrumb";
-import FilterPageCitiesTitle from "@/components/CityModal/FilterPageCitiesTitle";
-import SsrFilterPageContents from "./SsrFilterPageContents";
-import SpecialFilterButtons from "@/components/Filters/SpecialFilterButtons";
-import ModalHeaderPart from "@/components/Modal/ModalHeaderPart";
-import SsrPartFilter from "@/components/Filters/SsrPartFilter";
-import queryBuilder from "@/helpers/queryBuilder";
-import FiltersPart from "./FiltersPart";
-import RegionModal from "@/components/CityModal/RegionModal";
-import useQueryGet from "@/helpers/queryGet";
 import CityModal from "@/components/CityModal";
+import FilterPageCitiesTitle from "@/components/CityModal/FilterPageCitiesTitle";
+import RegionModal from "@/components/CityModal/RegionModal";
+import FiltersSelectedFiltersShowcase from "@/components/Filters/FiltersSelectedFiltersShowcase";
 import SortMenu from "@/components/Filters/SortMenu";
-import _STRINGS from "@/utils/LocalStrings";
-import throttle from "lodash/throttle";
-import isEmpty from "lodash/isEmpty";
-import isArray from "lodash/isArray";
-import Button from "@/components/shared/Button/Button";
+import SpecialFilterButtons from "@/components/Filters/SpecialFilterButtons";
+import SsrClinetPartFilterProperties, { removeKeyArray } from "@/components/Filters/SsrClinetPartFilterProperties";
+import SsrPartFilter from "@/components/Filters/SsrPartFilter";
 import Modal from "@/components/Modal";
+import ModalHeaderPart from "@/components/Modal/ModalHeaderPart";
+import Button from "@/components/shared/Button/Button";
+import { DeviceInfo } from "@/helpers/device.detector";
+import queryBuilder from "@/helpers/queryBuilder";
+import useQueryGet from "@/helpers/queryGet";
+import { SORT_TYPES, zero_filter_remove_keys } from "@/utils/constantss";
+import _STRINGS from "@/utils/LocalStrings";
+import { useQuery } from "@tanstack/react-query";
+import { isArray, isEmpty, throttle } from "lodash";
+import { usePathname, useRouter, useSearchParams } from "next/navigation";
+import { ParsedUrlQuery } from "querystring";
+import { useEffect, useState } from "react";
+import FiltersPart from "./FiltersPart";
+import SsrFilterPageContents from "./SsrFilterPageContents";
+
+interface OtpQuery extends ParsedUrlQuery {
+  id: string;
+}
 
 export interface PostPageQuery {
   params: { id: string };
 }
-
 type sortTypeType = { id?: string; title?: string };
 
 const SsrFilterPage = ({
@@ -48,9 +48,7 @@ const SsrFilterPage = ({
 }) => {
   const [showRegions, setShowRegions] = useState(false);
 
-  const [cityWithRegions, setCityWithRegions] = useState<ChildCities | null>(
-    null,
-  );
+  const [cityWithRegions, setCityWithRegions] = useState<ChildCities | null>(null);
   const [hiddenFilters, setHiddenFilters] = useState<string[]>([]);
   const [stickyHeight, setStickyHeight] = useState(600);
   const [showCityModal, setShowCiyModal] = useState(false);
@@ -58,10 +56,9 @@ const SsrFilterPage = ({
   const pathname = usePathname();
   const [filters, setFilters] = useState({});
   const router = useRouter();
+  const searchParams = useSearchParams();
   const [cityButtonTItle, setCityTitleButton] = useState("");
-  const [breadCrumbs, setBreadCrumbs] = useState<
-    { title: string; link: string }[]
-  >([
+  const [breadCrumbs, setBreadCrumbs] = useState<{ title: string; link: string }[]>([
     { title: "خانه", link: "/" },
     { title: landings?.content?.title || "آگهی ها", link: "" },
   ]);
@@ -78,15 +75,20 @@ const SsrFilterPage = ({
         } else return (defaults[e] = landings?.query?.[e]);
       });
     }
+
+    /* -------------------------------------------------------------------------- */
+    /*                        FILTERD KEYS COMING FROM SLUG                       */
+    /* -------------------------------------------------------------------------- */
+
+    // setHiddenFilters(Object.keys(landings?.query));
+    /////////
     setQueries({ ...defaults, ...queriesParams });
     setDefaultMobileFilters({ ...defaults, ...queriesParams });
     setFilters({ ...defaults, ...queriesParams });
   }, [landings?.query]);
 
   const [sortType, setSortType] = useState<sortTypeType | undefined>(
-    queries?.sort_type
-      ? SORT_TYPES?.find((i) => i?.id == queries?.sort_type)
-      : SORT_TYPES[0],
+    queries?.sort_type ? SORT_TYPES?.find((i) => i?.id == queries?.sort_type) : SORT_TYPES[0],
   );
   const [filterModalShow, setFilterModalShow] = useState(false);
 
@@ -128,11 +130,13 @@ const SsrFilterPage = ({
     delete body.categories;
     removeKeyArray(hiddenFilters, body);
     for (let index = 0; index < zero_filter_remove_keys.length; index++) {
-      if (body?.[zero_filter_remove_keys[index]] == 0)
+      if (body?.[zero_filter_remove_keys[index]] == 0) {
         delete body?.[zero_filter_remove_keys[index]];
+      }
     }
     setDefaultMobileFilters(body);
     router.replace(`${pathname}?${queryBuilder(body)}`);
+    // router.replace(`rooms?${queryBuilder(body)}`);
   };
 
   const hideCityModal = () => {
@@ -142,24 +146,44 @@ const SsrFilterPage = ({
     setShowCiyModal(true);
   };
 
+  /* -------------------------------------------------------------------------- */
+  /*                               FILTER REMOVAL                               */
+  /* -------------------------------------------------------------------------- */
+
+  const removeExtraFilters = () => {
+    const body = {
+      sort_type: queries?.sort_type,
+      cities: queries.cities,
+      q: queries?.q,
+    };
+
+    setFilterModalShow(false);
+    router.replace(`${pathname}?${queryBuilder(body)}`);
+  };
+
   useEffect(() => {
     setStickyHeight((window.visualViewport?.height || 700) - 90);
   }, []);
+
+  /* -------------------------------------------------------------------------- */
+  /*                                  SCROLL Y                                  */
+  /* -------------------------------------------------------------------------- */
 
   const [showShadow, setShowShadow] = useState(false);
 
   useEffect(() => {
     window?.addEventListener("scroll", handleScroll);
+
     return () => window?.removeEventListener("scroll", handleScroll);
   }, []);
 
-  const handleScroll = throttle(() => {
+  const handleScroll = throttle((event) => {
     if (window?.scrollY > 20) setShowShadow(true);
     else setShowShadow(false);
   }, 100);
-
   return (
     <>
+      {/* FIlters shoCasE */}
       <div
         className={`flex fixed  ${
           !!showShadow ? "shadow-md" : ""
@@ -171,17 +195,18 @@ const SsrFilterPage = ({
             <div className=" !col-span-9 ">
               {" "}
               <FiltersSelectedFiltersShowcase
-                query={queries}
-                hiddenFilters={hiddenFilters}
                 setShowRegions={setShowRegions}
                 cityWithRegions={cityWithRegions}
-                propertyTypes={propertyTypes || {}}
+                hiddenFilters={hiddenFilters}
                 setFilterModalShow={setFilterModalShow}
+                query={queries}
+                propertyTypes={propertyTypes || {}}
               />
             </div>{" "}
           </div>
         </div>
       </div>
+      {/* ////////////////////////////////// */}
       <div className="app-container  !pt-[7.5rem]  lg:!pt-20  !relative z-2 ">
         <div className="grid grid-cols-12  col-span-12 ">
           <div
@@ -189,17 +214,13 @@ const SsrFilterPage = ({
             className="hidden   justify-between   overflow-y-hidden    gap-4 lg:sticky lg:top-20 lg:flex  flex-col items-center rounded-10  border col-span-3 "
           >
             <div className=" w-full flex flex-col gap-4 overflow-y-scroll">
-              <FiltersPart
-                queries={queries}
-                filters={filters}
-                setFilters={setFilters}
-                propertyTypes={propertyTypes}
-              />
+              <FiltersPart propertyTypes={propertyTypes} filters={filters} setFilters={setFilters} queries={queries} />
             </div>
             <Button
               title={_STRINGS?.DO_THE_FILTERING}
               onClick={() => {
                 queryMaker(filters);
+                // router.replace(`${pathname}?${queryBuilder(specs)}`);
                 setFilterModalShow(false);
               }}
               width="w-full"
@@ -207,15 +228,15 @@ const SsrFilterPage = ({
             />
           </div>{" "}
           <div
-            className={`col-span-12  md:col-span-12 lg:col-span-9 px-0 md:pr-4 md:pl-0 md:mt-0 `}
+            className={`col-span-12  md:col-span-12 lg:col-span-9 px-0 md:pr-4 md:pl-0  
+   
+            md:mt-0 `}
           >
             <div className=" hidden  mb-2    z-1 w-full xl:flex flex-col xl:flex-row items-center justify-between ">
               <SingleProductBreadCrumb dataArray={breadCrumbs} />
             </div>
             <div className="mb-3  w-full flex items-center justify-between">
-              <h2 className=" text-lg font-medium text-black">
-                {landings?.content?.title}
-              </h2>
+              <h2 className=" text-lg font-medium text-black">{landings?.content?.title}</h2>
               <div className="w-fit   items-center justify-end  hidden lg:flex">
                 <SpecialFilterButtons query={queries} />
                 <SortMenu query={queries} />
@@ -226,49 +247,51 @@ const SsrFilterPage = ({
               <div className="flex  flex-row   items-center justify-start  gap-1 ">
                 <div className=" flex lg:hidden ">
                   {" "}
-                  <SpecialFilterButtons
-                    query={queries}
-                    containerClass=" !w-full   lg:!w-fit"
-                  />
+                  <SpecialFilterButtons containerClass=" !w-full   lg:!w-fit" query={queries} />
                 </div>
-                {(!hiddenFilters?.includes("cities") || !!cityWithRegions) &&
-                !hiddenFilters?.includes("provinces") ? (
+                {(!hiddenFilters?.includes("cities") || !!cityWithRegions) && !hiddenFilters?.includes("provinces") ? (
                   <FilterPageCitiesTitle
-                    hideCityPart
-                    queries={queries}
-                    cb={showCityModalFunc}
-                    title={cityButtonTItle}
-                    showRegions={showRegions}
-                    setShowRegions={setShowRegions}
                     cityWithRegions={cityWithRegions}
+                    queries={queries}
+                    setShowRegions={setShowRegions}
+                    showRegions={showRegions}
+                    title={cityButtonTItle}
+                    hideCityPart
+                    // hideCityPart={
+                    //   !!hiddenFilters?.includes("cities") &&
+                    //   !!cityWithRegions?.child &&
+                    //   !hiddenFilters?.includes("provinces")
+                    // }
+                    cb={showCityModalFunc}
                   />
                 ) : (
-                  <> </>
+                  <div> </div>
                 )}
                 <FiltersSelectedFiltersShowcase
-                  hiddenFilters={hiddenFilters}
-                  setShowRegions={setShowRegions}
                   cityWithRegions={cityWithRegions}
-                  setFilterModalShow={setFilterModalShow}
+                  setShowRegions={setShowRegions}
+                  hiddenFilters={hiddenFilters}
                   containerClass="   !hidden xl:!contents "
+                  setFilterModalShow={setFilterModalShow}
                   query={(() => {
                     let temp = { ...queries };
                     removeKeyArray(hiddenFilters, temp);
+
                     return temp;
                   })()}
                   propertyTypes={propertyTypes || {}}
                 />
-              </div>
+              </div>{" "}
               <div className="w-fit flex lg:hidden">
                 <SortMenu query={queries} />
               </div>
             </div>
             <div className="  min-h-[80dvh] mb-12 xl:mb-20">
-              {firstData?.data ? (
-                <SsrPartFilter firstData={firstData?.data} devices={devices} />
-              ) : (
-                <></>
-              )}
+              {/* SIDEBAR */}
+
+              {/* LEFT SIDE */}
+
+              {firstData?.data ? <SsrPartFilter firstData={firstData?.data} devices={devices} /> : <></>}
               {(queriesParams?.page == 1 || !queriesParams?.page) &&
               !isEmpty(firstData?.data) &&
               firstData?.data?.length % 30 == 0 ? (
@@ -292,16 +315,17 @@ const SsrFilterPage = ({
                 <></>
               )}
               <SsrClinetPartFilterProperties
-                query={queries}
-                sortType={sortType}
-                hiddenFilters={hiddenFilters}
                 pageQuery={queriesParams?.page}
+                sortType={sortType}
+                query={queries}
+                hiddenFilters={hiddenFilters}
               />
             </div>
             <SsrFilterPageContents data={landings} />
           </div>
           {/*  CONTENT PART */}
         </div>
+        {/* <=======================================================================MODALS ================================================================> */}
         <Modal
           options={{
             containerClass:
@@ -325,27 +349,26 @@ const SsrFilterPage = ({
           {/* BODY */}
           <div className="w-[90%] mx-auto">
             <div className=" w-full  pt-4 pb-8  ">
-              {(!hiddenFilters?.includes("cities") || !!cityWithRegions) &&
-              !hiddenFilters?.includes("provinces") ? (
+              {(!hiddenFilters?.includes("cities") || !!cityWithRegions) && !hiddenFilters?.includes("provinces") ? (
                 <FilterPageCitiesTitle
-                  hideCityPart
-                  queries={queries}
-                  cb={showCityModalFunc}
-                  title={cityButtonTItle}
-                  showRegions={showRegions}
-                  setShowRegions={setShowRegions}
                   cityWithRegions={cityWithRegions}
+                  setShowRegions={setShowRegions}
+                  showRegions={showRegions}
+                  queries={queries}
+                  title={cityButtonTItle}
+                  hideCityPart
+                  cb={showCityModalFunc}
                 />
               ) : (
                 <div> </div>
               )}
 
               <FiltersPart
-                filters={filters}
-                queries={queries}
-                setFilters={setFilters}
                 hiddenFilters={hiddenFilters}
                 propertyTypes={propertyTypes}
+                filters={filters}
+                setFilters={setFilters}
+                queries={queries}
               />
             </div>
             <div className=" w-full   pb-6 fixed bottom-0 right-0 bg-white z-1 border-t  ">
@@ -354,6 +377,7 @@ const SsrFilterPage = ({
                 title={_STRINGS?.DO_THE_FILTERING}
                 onClick={() => {
                   queryMaker(filters);
+                  // router.replace(`${pathname}?${queryBuilder(specs)}`);
                   setFilterModalShow(false);
                 }}
                 width="w-full"
@@ -363,13 +387,14 @@ const SsrFilterPage = ({
           </div>
         </Modal>
         <CityModal
+          setRegionsCb={setCityWithRegions}
           passedUrl={pathname}
+          onSubmitCustomeCB={!!filterModalShow ? setFilters : undefined}
+          customeValues={filters}
+          // customeValues={!!filterModalShow ? filters : false}
           show={showCityModal}
           onHide={hideCityModal}
-          customeValues={filters}
           setTitle={setCityTitleButton}
-          setRegionsCb={setCityWithRegions}
-          onSubmitCustomeCB={!!filterModalShow ? setFilters : undefined}
         />
         <RegionModal
           cityWithRegions={cityWithRegions}

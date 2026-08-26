@@ -1,39 +1,22 @@
 "use client";
-
 import { x_Iransans } from "@/app/fonts/x_iran/x_Iransans";
-import { ReactNode } from "react";
-import { isMobile } from "react-device-detect";
-import { toast } from "sonner";
-
-import successIcon from "@/public/assets/lotties/notif/Success.json";
-import warningIcon from "@/public/assets/lotties/notif/Warning.json";
 import errorIcon from "@/public/assets/lotties/notif/Error.json";
 import infoIcon from "@/public/assets/lotties/notif/Info.json";
-import dynamic from "next/dynamic";
-
-const Lottie = dynamic(() => import("react-lottie"), { ssr: false });
-
-type TNotifyProps = {
-  body?: string;
-  title?: string;
-  loop?: boolean;
-  duration?: number;
-  id?: string | number;
-  children?: ReactNode;
-  cb?: () => void | null;
+import successIcon from "@/public/assets/lotties/notif/Success.json";
+import warningIcon from "@/public/assets/lotties/notif/Warning.json";
+import { ReactNode } from "react";
+import { isMobile } from "react-device-detect";
+import Lottie from "react-lottie";
+import { toast } from "sonner";
+interface props {
   type?: "success" | "error" | "warn" | "info";
-};
-
-const Notify = (props: TNotifyProps) => {
-  const {
-    cb,
-    body,
-    children,
-    loop = true,
-    type = "info",
-    duration = 8000,
-    id = type,
-  } = props || {};
+  title?: string;
+  body?: string;
+  cb?: () => void | null;
+  children?: ReactNode;
+}
+const Notify = (props: props) => {
+  const { type = "info", title, body, cb, children } = props || {};
 
   const _findTypeData = () => {
     switch (type) {
@@ -45,6 +28,7 @@ const Notify = (props: TNotifyProps) => {
         return { icon: warningIcon, border: "border-r-yellow-400" };
       case "info":
         return { icon: infoIcon, border: "border-r-sky-400" };
+
       default:
         return { icon: infoIcon, border: "border-r-sky-400" };
     }
@@ -58,30 +42,24 @@ const Notify = (props: TNotifyProps) => {
         border-r-8 dark:border-r-8 ${_findTypeData().border} shadow-lg
         transform-gpu translate-y-0 hover:translate-y-1  relative transition-all duration-500 ease-in-out 
         `}
+        // ${t.visible ? "top-0" : "-top-96"}
         onClick={() => {
           toast.dismiss(t);
           typeof cb == "function" && cb();
         }}
       >
         <div className="w-14 h-14">
-          <LottieHelper
-            options={{ animationData: _findTypeData()?.icon, loop }}
-          />
+          <LottieHelper options={{ animationData: _findTypeData()?.icon, loop: true }} />
         </div>
         <div className={`mr-3   app-text  ${x_Iransans.className}  `}>
-          <p className="font-light w-full text-[13px]  app-text  md:font-normal md:text-sm mx-2">
-            {body}
-          </p>
+          {/* <h1 className="font-bold text-sm mx-2">{title}</h1> */}
+          <p className="font-light w-full text-[13px]  app-text  md:font-normal md:text-sm mx-2">{body}</p>
           {children}
         </div>
+        {/* <div className="absolute left-3 ">{closeIcon}</div> */}
       </div>
     ),
-    {
-      id,
-      duration,
-      className: " left-0  md:left-4",
-      position: isMobile ? "top-center" : "bottom-left",
-    },
+    { id: type, position: isMobile ? "top-center" : "bottom-left", duration: 8000, className: " left-0  md:left-4" },
   );
 };
 

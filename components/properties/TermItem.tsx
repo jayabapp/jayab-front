@@ -1,5 +1,5 @@
+import React from "react";
 import Checkbox from "../shared/Form/Checkbox";
-import CmsText from "../shared/CmsText";
 
 const PropTermItem = ({
   isChecked,
@@ -14,13 +14,9 @@ const PropTermItem = ({
 }) => {
   return (
     <div className="flex flex-col gap-3 border  rounded-10  p-2">
-      <Checkbox
-        title={title}
-        onSelect={onSelect}
-        isChecked={isChecked}
-        rounded="rounded-full"
-      />
-      <CmsText className="text-xs md:text-sm">{desc}</CmsText>
+      <Checkbox isChecked={isChecked} onSelect={onSelect} title={title} rounded="rounded-full" />
+
+      <p className="text-xs md:text-sm">{desc}</p>
     </div>
   );
 };

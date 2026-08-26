@@ -1,21 +1,22 @@
 "use client";
 
-import { useAuthStore, useStoreInit, useStoreParams } from "@/store";
-import { Suspense, useEffect, useState } from "react";
-import { useMutation, useQuery } from "@tanstack/react-query";
-import { isMobile, isTablet } from "react-device-detect";
-import { profileItems } from "@/utils/constantss";
 import { AuthService } from "@/api_services/auth/auth.service";
 import { UserService } from "@/api_services/user/user.service";
-import { endSession } from "@/helpers/session";
-import { useRouter } from "next/navigation";
-
 import ConfirmModal from "@/components/Modal/ConfirmModal";
 import ProfileItem from "@/components/profile/ProfileItem";
+
+import Button from "@/components/shared/Button/Button";
+import { useAuthStore, useStoreInit, useStoreParams } from "@/store";
+import { profileItems } from "@/utils/constantss";
+
 import _STRINGS from "@/utils/LocalStrings";
+import { useMutation, useQuery } from "@tanstack/react-query";
+import { deleteCookie } from "cookies-next/client";
 import isEmpty from "lodash/isEmpty";
 import dynamic from "next/dynamic";
-import Button from "@/components/shared/Button/Button";
+import { useRouter } from "next/navigation";
+import { Suspense, useEffect, useState } from "react";
+import { isMobile, isTablet } from "react-device-detect";
 
 const MainUploader = dynamic(() => import("@/components/uploader"));
 
@@ -26,11 +27,14 @@ const Profile = () => {
   const [showLogout, setShowLogout] = useState(false);
   const { isLogin } = useAuthStore((state) => state);
 
-  const { data } = useQuery({
+  // const GetProfile = useSelector((state: { init: { userInfo: GetProfileDto } }) => state.init.userInfo);
+  const { data, isLoading } = useQuery({
     queryKey: [AuthService?.GET_PROFILE_CACHEKEY, "profile_page", isLogin],
     queryFn: () => {
       if (isLogin) return AuthService?.GetProfile();
-      else return null;
+      else {
+        return null;
+      }
     },
   });
 
@@ -41,28 +45,29 @@ const Profile = () => {
     }
   }, [data]);
 
-  const logoutProcess = async () => {
-    await endSession();
+  const logoutProcess = () => {
+    localStorage.removeItem("access_token");
+    localStorage.removeItem("socket_token");
+
+    localStorage.removeItem("isLogin");
+    deleteCookie("isLogin");
+    localStorage.removeItem("is_registered");
+
     useAuthStore.setState({ isLogin: false, isAdminSso: false });
     useStoreInit.setState({ userInfo: null });
     router.push("/");
   };
 
   const _logout = () => {
-    void logoutProcess();
+    logoutProcess();
   };
 
   const goToLogin = () => {
     router.push("/auth");
   };
 
-  const platformProfileList =
-    isMobile || isTablet
-      ? profileItems
-      : profileItems?.filter((e) => !e?.isMobile);
-  const PersonalProfileItems = isLogin
-    ? platformProfileList?.filter((e) => !!e?.guard)
-    : [];
+  const platformProfileList = isMobile || isTablet ? profileItems : profileItems?.filter((e) => !e?.isMobile);
+  const PersonalProfileItems = isLogin ? platformProfileList?.filter((e) => !!e?.guard) : [];
   const SharedProfileItems = platformProfileList?.filter((e) => !e?.guard);
 
   const { mutate } = useMutation({
@@ -73,10 +78,7 @@ const Profile = () => {
   });
 
   return (
-    <div
-      id="homeParent"
-      className="  profile-container  flex flex-col gap-4  transition-all duration-500 ease-in-out "
-    >
+    <div id="homeParent" className="  profile-container  flex flex-col gap-4  transition-all duration-500 ease-in-out ">
       {!isMobile && !isTablet ? (
         <div className="w-full flex gap-4 items-center justify-center flex-col pt-8 opacity-40">
           <img src="/assets/icons/logo/logo.svg" className="w-1/5" />
@@ -85,7 +87,10 @@ const Profile = () => {
       ) : (
         <div className="flex flex-col mt-0 lg:mt-4 ">
           {!!data ? (
-            <div className="flex items-center gap-2">
+            <div
+              className="
+          flex items-center gap-2"
+            >
               <Suspense>
                 <MainUploader
                   innerClasses={{
@@ -95,15 +100,19 @@ const Profile = () => {
                   }}
                   title={_STRINGS.IMAGE}
                   withCrop
-                  key={`uploader`}
-                  item={profileImage}
+                  // isLogo
                   link="/attachments?type=PROFILE"
+                  key={`uploader`}
                   containerClass={"my-3  w-fit flex items-start justify-start "}
+                  item={profileImage}
                   onSelect={(file) => {
                     mutate({ profile_image_id: file?.id });
                     setProfileImage(file);
                   }}
                   showCamera
+                  // onDelete={() => {
+                  //   setProfileImage(null);
+                  // }}
                 />
               </Suspense>
               <div className="flex flex-col gap-3">
@@ -155,6 +164,19 @@ const Profile = () => {
             ) : (
               <></>
             )}
+            {/* {!isEmpty(PersonalProfileItems) && !!data?.owner_id ? (
+              <ProfileItem
+                item={{
+                  id: 1214,
+                  imgSrc: "/assets/icons/header/header_my_adds.svg",
+                  route: "/profile/owner/call-logs",
+                  title: "تماس های من",
+                }}
+                key={`profileItemowner`}
+              />
+            ) : (
+              <></>
+            )} */}
             {!!data?.advisor_id ? (
               <ProfileItem
                 item={{
@@ -182,9 +204,7 @@ const Profile = () => {
               <></>
             )}
             {!isEmpty(PersonalProfileItems) ? (
-              PersonalProfileItems?.map((e) => (
-                <ProfileItem item={e} key={`profileItem${e?.id}`} />
-              ))
+              PersonalProfileItems?.map((e) => <ProfileItem item={e} key={`profileItem${e?.id}`} />)
             ) : (
               <></>
             )}{" "}
@@ -207,28 +227,23 @@ const Profile = () => {
                 }}
                 className="py-5 flex   items-center w-full gap-3 xl:gap-6 cursor-pointer hover:scale-102 transition-all"
               >
-                <img
-                  src="/assets/icons/header/header_logout.svg"
-                  className="w-6 h-6  aspect-square "
-                />{" "}
-                <p className=" text-sm xl:text-base  font-medium text-primary-150 ">
-                  {" "}
-                  {_STRINGS?.LOGOUT_TITLE}
-                </p>
+                <img src="/assets/icons/header/header_logout.svg" className="w-6 h-6  aspect-square " />{" "}
+                <p className=" text-sm xl:text-base  font-medium text-primary-150 "> {_STRINGS?.LOGOUT_TITLE}</p>
               </div>
             )}
           </div>{" "}
         </div>
       )}{" "}
+      {/* {isLoading ? <BtnLoading /> : <ProfileInfo item={data} />} */}
       <ConfirmModal
-        isLoading={false}
-        onConfirm={_logout}
-        isVisible={showLogout}
-        hideText={_STRINGS.NO}
-        confirmText={_STRINGS.YES}
-        title={_STRINGS.LOGGING_OUT}
         text={_STRINGS.LOG_OUT_MESSAGE}
+        isVisible={showLogout}
+        isLoading={false}
+        title={_STRINGS.LOGGING_OUT}
         onHide={() => setShowLogout(false)}
+        confirmText={_STRINGS.YES}
+        hideText={_STRINGS.NO}
+        onConfirm={_logout}
       />
     </div>
   );
