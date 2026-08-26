@@ -1,4 +1,5 @@
 import { apiRoutes, baseUrl } from "@/utils/urls";
+import { getServerLanding } from "@features/home/server/home.server";
 import { REVALIDATE } from "@/helpers/revalidate";
 import { Metadata } from "next";
 import { headers } from "next/headers";
@@ -23,13 +24,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const requestHeaders = await headers();
   const xCanonical = await requestHeaders?.get("x-canonical");
 
-  const { data: landings } = await serverCall(
-    baseUrl + apiRoutes.SINGLE_USER_LANDING_PAGE(paramData?.slug),
-    undefined,
-    {
-      revalidate: REVALIDATE.LANDINGS,
-    },
-  );
+  const { data: landings } = await getServerLanding(paramData.slug);
 
   return {
     title: landings?.content?.seo?.metaTitle || landings?.content?.title,
@@ -50,13 +45,7 @@ export default async function PropertiesPage({
 }) {
   const paramData = await params;
   const searchParamsData = await searchParams;
-  const { data: landings } = await serverCall(
-    baseUrl + apiRoutes.SINGLE_USER_LANDING_PAGE(paramData?.slug),
-    undefined,
-    {
-      revalidate: REVALIDATE.LANDINGS,
-    },
-  );
+  const { data: landings } = await getServerLanding(paramData.slug);
 
   let defaults: any = {};
   if (!!landings?.query) {

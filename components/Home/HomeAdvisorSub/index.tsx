@@ -1,9 +1,7 @@
 "use client";
 
-import { AdvisorService } from "@/api_services/advisor/advisor.propery";
+import { useHomeAdvisorProfile } from "@features/home/hooks/useHomeAdvisorProfile";
 import { useAuthStore } from "@/store";
-import { STALE_TIME } from "@/helpers/queryCache";
-import { useQuery } from "@tanstack/react-query";
 
 import _STRINGS from "@/utils/LocalStrings";
 import timeLeft from "@/helpers/timeLeft";
@@ -13,14 +11,7 @@ import Link from "next/link";
 const HomeAdvisorSub = () => {
   const { isLogin } = useAuthStore((state) => state);
 
-  const { data: advisorProfile } = useQuery({
-    queryKey: [AdvisorService.USER_ADVISORS_PROFILE_CACHEKEY, isLogin],
-    queryFn: () => {
-      if (!!isLogin) return AdvisorService.userAdvisorsProfile();
-      else return null;
-    },
-    staleTime: STALE_TIME.DEFAULT,
-  });
+  const { data: advisorProfile } = useHomeAdvisorProfile(isLogin);
   const isActive = moment().isBefore(advisorProfile?.subscription_expired_at);
   const remainingDays = moment(advisorProfile?.subscription_expired_at).diff(
     moment(),

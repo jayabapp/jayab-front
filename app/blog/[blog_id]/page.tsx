@@ -1,4 +1,4 @@
-import { Metadata, ResolvingMetadata } from "next";
+import { getServerContentBySlug } from "@features/home/server/home.server";
 import { apiRoutes, baseUrl } from "@/utils/urls";
 import { convertHtmlToReact } from "@/helpers/convertHTMLtoReact";
 import { ContentFAQSchema } from "@/components/SchemaGenerator/Schemas";
@@ -7,6 +7,7 @@ import { HTMLGenerator } from "@/helpers/html.generator";
 import { BlogSchema } from "@/components/SchemaGenerator/Schemas";
 import { ContentDto } from "@/api_services/home/home.interface";
 import { REVALIDATE } from "@/helpers/revalidate";
+import { Metadata } from "next";
 import { Suspense } from "react";
 
 import SingleProductBreadCrumb from "@/components/BreadCrumbs/SingleProductBreadCrumb";
@@ -22,27 +23,14 @@ type Props = {
   searchParams: Promise<{ [key: string]: string | string[] | undefined }>;
 };
 
-export async function generateMetadata(
-  { params, searchParams }: Props,
-  parent: ResolvingMetadata,
-): Promise<Metadata> {
+export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const { blog_id } = await params;
-  const { data: blogData } = await serverCall(
-    baseUrl + apiRoutes.SINGLE_CONTENT_WITH_SLUG(blog_id),
-    undefined,
-    {
-      revalidate: REVALIDATE.BLOG,
-    },
-  );
+  const { data: blogData } = await getServerContentBySlug(blog_id);
   return MehaHeaderHelper(blogData);
 }
 const SingleBlogPage = async ({ params }: Props) => {
   const { blog_id } = await params;
-  const { data }: { data: ContentDto } = await serverCall(
-    baseUrl + apiRoutes.SINGLE_CONTENT_WITH_SLUG(blog_id),
-    undefined,
-    { redirect404: true, revalidate: REVALIDATE.BLOG },
-  );
+  const { data }: { data: ContentDto } = await getServerContentBySlug(blog_id);
 
   const { data: rateData }: { data: { rate: number; rate_count: number } } =
     await serverCall(

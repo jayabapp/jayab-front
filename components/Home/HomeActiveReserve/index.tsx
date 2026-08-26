@@ -1,10 +1,8 @@
 "use client";
 
 import { useAuthStore, useStoreParams } from "@/store";
-import { useEffect, useMemo, useState } from "react";
-import { ReserveService } from "@/api_services/reserve/reserve.service";
+import { useHomeActiveReserves } from "@features/home/hooks/useHomeActiveReserves";
 import { NEW_IMAGE_URL } from "@/utils/urls";
-import { useQuery } from "@tanstack/react-query";
 
 import _STRINGS from "@/utils/LocalStrings";
 import isEmpty from "lodash/isEmpty";
@@ -13,38 +11,7 @@ import Link from "next/link";
 
 const HomeActiveReserve = () => {
   const { isLogin } = useAuthStore((state) => state);
-  const { data: reserves, dataUpdatedAt } = useQuery({
-    queryKey: [ReserveService?.RESERVE_CACHEKEY, isLogin],
-    queryFn: !!isLogin
-      ? () => ReserveService?.userReserves({ type: "active" })
-      : () => null,
-    staleTime: 0,
-    gcTime: 0,
-    enabled: isLogin,
-  });
-
-  const [now, setNow] = useState(() => Date.now());
-
-  const activeReserves = useMemo(() => {
-    return (reserves ?? []).filter((item) => {
-      if (!!item?.is_answer_deadline_passed) return false;
-      return dataUpdatedAt + (item?.ttl_seconds ?? 0) * 1000 > now;
-    });
-  }, [reserves, dataUpdatedAt, now]);
-
-  useEffect(() => {
-    if (isEmpty(activeReserves)) return;
-    const nextDeadline = Math.min(
-      ...activeReserves.map(
-        (item) => dataUpdatedAt + (item?.ttl_seconds ?? 0) * 1000,
-      ),
-    );
-    const timer = setTimeout(
-      () => setNow(Date.now()),
-      Math.max(nextDeadline - Date.now(), 0) + 100,
-    );
-    return () => clearTimeout(timer);
-  }, [activeReserves, dataUpdatedAt]);
+  const { activeReserves } = useHomeActiveReserves(isLogin);
 
   const removeredirectRoomToHome = () => {
     useStoreParams.setState({ getBackHome: false });

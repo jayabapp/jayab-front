@@ -1,8 +1,8 @@
+import { PropertyGridSkeleton } from "./PropertyGridSkeleton";
 import { DeviceInfo } from "@/helpers/device.detector";
 import { Fragment } from "react";
 
 import HomeProductsBannerItems from "./HomeProductsBannerItems";
-import LottieLoading from "@/components/shared/Lotties/LottieLoading";
 import PropertyCard from "@/components/properties/PropertyCard";
 import EmptyList from "@/components/shared/Lotties/EmptyList";
 
@@ -23,7 +23,7 @@ function HomePropertiesSsrPart({
     <div className="w-full px-0  self-center">
       <div className=" w-full">
         {!data ? (
-          <LottieLoading />
+          <PropertyGridSkeleton />
         ) : data?.length > 0 ? (
           <div className="grid   pb-8 pt-2 md:pt-2 grid-cols-1 gap-2 md:gap-4  md:grid-cols-2 xl:grid-cols-4 ">
             {!!middleBanner ? (

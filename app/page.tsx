@@ -1,12 +1,14 @@
-import { apiRoutes, baseUrl, baseUrlV } from "@/utils/urls";
 import { dehydrate, HydrationBoundary } from "@tanstack/react-query";
+import { getServerPropertyTypes } from "@features/home/server/home.server";
+import { getServerPropertyList } from "@features/home/server/home.server";
 import { OrganizationSchema } from "@/components/SchemaGenerator/Schemas";
 import { LandingsPlacements } from "@/enum/landings.enum";
+import { getServerLandings } from "@features/home/server/home.server";
+import { getServerBanners } from "@features/home/server/home.server";
 import { SearchboxSchema } from "@/components/SchemaGenerator/Schemas";
 import { BannerPosition } from "@/enum/banners.enum";
 import { getCmsContent } from "@/api_services/home/cms-content.server";
-import { HomeService } from "@/api_services/home/home.service";
-import { REVALIDATE } from "@/helpers/revalidate";
+import { homeKeys } from "@features/home/api/home.keys";
 import { Suspense } from "react";
 import { Metadata } from "next";
 
@@ -21,7 +23,6 @@ import TheInstallPrompt from "@/components/InstallPrompt/TheInstallPrompt";
 import MehaHeaderHelper from "@/helpers/MetaHeaderHelper";
 import getQueryClient from "@/api_services/common/get-query-client";
 import pickBanner from "@/helpers/pickBanner";
-import serverCall from "@/helpers/serverCall";
 import _STRINGS from "@/utils/LocalStrings";
 import isEmpty from "lodash/isEmpty";
 import dynamic from "next/dynamic";
@@ -34,37 +35,11 @@ const HomeCityFilterContainer = dynamic(
   () => import("@/components/Home/HomeCityFilterContainer"),
 );
 
-const getBanners = () =>
-  serverCall(
-    baseUrlV("v2") +
-      apiRoutes.BANNERS +
-      `?positions[]=${BannerPosition.MAIN_1}&positions[]=${BannerPosition.MAIN_2}&positions[]=${BannerPosition.MAIN_3}`,
-    undefined,
-    { revalidate: REVALIDATE.BANNERS },
-  );
-
-const getLandings = () =>
-  serverCall(
-    baseUrl +
-      apiRoutes.USER_LANDING_PAGES +
-      `?placement=${LandingsPlacements.HOME}`,
-    undefined,
-    { revalidate: REVALIDATE.LANDINGS },
-  );
-
-const getProperties = () =>
-  serverCall(
-    baseUrl + apiRoutes.GET_PROPERTIES,
-    { page: 1, per_page: 12 },
-    { revalidate: REVALIDATE.PROPERTY_LIST },
-  );
-
-const getPropertyTypes = () =>
-  serverCall(
-    baseUrl + apiRoutes.USER_PROP_OPTIONS + "?group[]=PROPERTY_TYPE",
-    undefined,
-    { revalidate: REVALIDATE.PROPERTY_OPTIONS },
-  );
+const HOME_BANNER_POSITIONS = [
+  BannerPosition.MAIN_1,
+  BannerPosition.MAIN_2,
+  BannerPosition.MAIN_3,
+];
 
 export async function generateMetadata(): Promise<Metadata> {
   return MehaHeaderHelper(await getCmsContent("homeContent"));
@@ -79,10 +54,10 @@ const Home = async () => {
     homeContent,
     devices,
   ] = await Promise.all([
-    getBanners(),
-    getLandings(),
-    getProperties(),
-    getPropertyTypes(),
+    getServerBanners(HOME_BANNER_POSITIONS),
+    getServerLandings(LandingsPlacements.HOME),
+    getServerPropertyList(1, 12),
+    getServerPropertyTypes(),
     getCmsContent("homeContent"),
     deviceTypeDetector(),
   ]);
@@ -96,7 +71,7 @@ const Home = async () => {
 
   const queryClient = getQueryClient();
   queryClient.setQueryData(
-    [HomeService.USER_LANDING_PAGES_KEY, LandingsPlacements.HOME],
+    homeKeys.landings(LandingsPlacements.HOME),
     landings,
   );
 

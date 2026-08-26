@@ -1,42 +1,48 @@
 "use client";
-import { HomeService } from "@/api_services/home/home.service";
+
+import { FC, Fragment, useEffect, useState } from "react";
+import { useSubmitContentQuestion } from "@features/home/hooks/useContentQuestions";
+import { useRecaptchaGenerator } from "@/helpers/captcha.helper";
+import { useStoreInit } from "@/store";
 import { p2e } from "@/helpers/NumberConverter";
-import _STRINGS from "@/utils/LocalStrings";
-import { useMutation } from "@tanstack/react-query";
-import { FC, Fragment, useEffect, useRef, useState } from "react";
-import Button from "../shared/Button/Button";
+
+import MultiLineFormInput from "../shared/Form/MultiLineFormInput";
 import FormInput from "../shared/Form/FormInput";
+import _STRINGS from "@/utils/LocalStrings";
+import Button from "../shared/Button/Button";
 import Notify from "../shared/Toast";
 
-import { useStoreInit } from "@/store";
-import { recaptchaGenerator } from "@/helpers/captcha.helper";
-import MultiLineFormInput from "../shared/Form/MultiLineFormInput";
-export const QuestionForm: FC<{ contentId?: string | number; productId?: string | number; captchaKey?: string }> = ({
-  contentId,
-  productId,
-  captchaKey,
-}) => {
+export const QuestionForm: FC<{
+  contentId?: string | number;
+  productId?: string | number;
+  captchaKey?: string;
+}> = ({ contentId, productId, captchaKey }) => {
   const { userInfo } = useStoreInit((data) => data);
   const [author_name, setauthor_name] = useState(``);
-  const [mobile_number, setmobile_number] = useState(userInfo?.mobile_number || "");
+  const [mobile_number, setmobile_number] = useState(
+    userInfo?.mobile_number || "",
+  );
   const [question, setquestion] = useState("");
   const [rate, setRate] = useState(3);
   const [recaptcha, setRecaptcha] = useState("");
-  const { regenerate, validateCaptcha } = recaptchaGenerator(5, 5, 30, captchaKey);
-  const { mutate, isPending: isSending } = useMutation({
-    mutationFn: HomeService.SendQuestion,
-    onSuccess: () => {
-      setquestion("");
-      setmobile_number("");
-      setauthor_name("");
-      setRecaptcha("");
-    },
+  const { regenerate, validateCaptcha } = useRecaptchaGenerator(
+    5,
+    5,
+    30,
+    captchaKey,
+  );
+  const { mutate, isPending: isSending } = useSubmitContentQuestion(() => {
+    setquestion("");
+    setmobile_number("");
+    setauthor_name("");
+    setRecaptcha("");
   });
   useEffect(() => {
-    setTimeout(() => {
+    const timeout = setTimeout(() => {
       regenerate();
     }, 10);
-  }, []);
+    return () => clearTimeout(timeout);
+  }, [regenerate]);
   const onSendClick = () => {
     if (!validateCaptcha(recaptcha)) {
       Notify({ body: _STRINGS.RECAPTHCA_ERROR });
@@ -150,12 +156,12 @@ export const QuestionForm: FC<{ contentId?: string | number; productId?: string 
           />
         </div>
         <Button
+          width="w-full"
           loading={isSending}
           onClick={onSendClick}
-          containerClass="w-full md:w-fit self-start"
-          width="w-full"
           roundedClass="rounded-full"
           title={_STRINGS.ASK_QUESTION_SUBMIT}
+          containerClass="w-full md:w-fit self-start"
         />
       </div>
     </Fragment>

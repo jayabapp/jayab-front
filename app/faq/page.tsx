@@ -1,21 +1,15 @@
-import { apiRoutes, baseUrl } from "@/utils/urls";
+import { getServerContentList } from "@features/home/server/home.server";
 import { chunkArray } from "@/helpers/chunk-array.helper";
 import { ContentDto } from "@/api_services/home/home.interface";
-import { REVALIDATE } from "@/helpers/revalidate";
 import { FaqSchema } from "@/components/SchemaGenerator/Schemas";
 
 import SimpleAccordion from "@/components/shared/SimpleAccorion";
-import LottieLoading from "@/components/shared/Lotties/LottieLoading";
 import Breadcrumbs from "@/components/BreadCrumbs";
-import serverCall from "@/helpers/serverCall";
 import Editable from "@/components/Editable";
 
 const RepetitiveQuestions = async () => {
-  const { data: faqData }: { data: { data: ContentDto[] } } = await serverCall(
-    baseUrl + apiRoutes.CONTENTS + `?key=${"faq"}&per_page=20&page=${1}`,
-    undefined,
-    { revalidate: REVALIDATE.CMS_PAGE },
-  );
+  const { data: faqData }: { data: { data: ContentDto[] } } =
+    await getServerContentList("faq", 1, 20);
 
   const faqChunckedData = chunkArray(faqData?.data || [], 2);
 
@@ -27,9 +21,7 @@ const RepetitiveQuestions = async () => {
       <FaqSchema />
       <Breadcrumbs />
 
-      {!faqData ? (
-        <LottieLoading />
-      ) : (
+      {faqData ? (
         <div className="grid grid-cols-1 md:grid-cols-2  mt-2 gap-3">
           {faqChunckedData?.map((item, index) => (
             <div key={`chunlk${index}`} className="grid gap-3 h-fit">
@@ -62,7 +54,7 @@ const RepetitiveQuestions = async () => {
             </div>
           ))}
         </div>
-      )}
+      ) : null}
     </div>
   );
 };

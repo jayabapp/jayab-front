@@ -1,8 +1,9 @@
 "use client";
 
-import { ContentDto } from "@/api_services/home/home.interface";
 import { FC, useEffect, useState } from "react";
+import { ContentDto } from "@/api_services/home/home.interface";
 import { isMobile } from "react-device-detect";
+
 import Button from "../shared/Button/Button";
 import Notify from "../shared/Toast";
 
@@ -19,13 +20,15 @@ const BlogShare: FC<{ data: ContentDto }> = ({ data }) => {
 
   const onShare = async () => {
     const title = process.env.NEXT_PUBLIC_TITLE || "";
-    const text = "";
+    const text = data?.title || "";
     if (isMobile) {
       const shareDetails = { url, title, text };
       if (navigator.share) {
         try {
-          await navigator.share(shareDetails).then(() => console.log("Your content was shared"));
-        } catch (error) {}
+          await navigator
+            .share(shareDetails)
+            .then(() => console.log("Your content was shared"));
+        } catch {}
       }
     } else {
       copyLink();
@@ -48,7 +51,13 @@ const BlogShare: FC<{ data: ContentDto }> = ({ data }) => {
       </div>
       <Button
         roundedClass="rounded-full"
-        icon={<img className="w-7 h-7 md:w-6 md:h-6" alt="share" src="/assets/icons/blogs/share.svg" />}
+        icon={
+          <img
+            className="w-7 h-7 md:w-6 md:h-6"
+            alt="share"
+            src="/assets/icons/blogs/share.svg"
+          />
+        }
         onClick={onShare}
       />
     </div>

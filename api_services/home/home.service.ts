@@ -1,17 +1,12 @@
+import { ContentDto, QuestionDto, SearchSuggDto } from "./home.interface";
+import { CitySuggestDto, ContentByKeyDto } from "./home.interface";
 import { CMS_CONTENT_CACHE_KEY } from "./cms-content";
 import { LandingsPlacements } from "@/enum/landings.enum";
+import { MostVisitedPlaces } from "./home.interface";
 import { BannerPosition } from "@/enum/banners.enum";
 import { apiRoutes } from "@/utils/urls";
 import { apiCall } from "../common/apicall.helper";
 import { Meta } from "../chat/chat.interface";
-import {
-  CitySuggestDto,
-  ContentByKeyDto,
-  ContentDto,
-  MostVisitedPlaces,
-  QuestionDto,
-  SearchSuggDto,
-} from "./home.interface";
 
 export class HomeService {
   static BANNERS_RANDOM_CACHEKEY = "BANNERS_RANDOM";
@@ -23,7 +18,10 @@ export class HomeService {
   static USER_LANDING_PAGES_KEY = "USER_LANDING_PAGES";
   static SETTING_KEY = "SETTING";
 
-  static async GetBanners(dto: { positions: BannerPosition[] }) {
+  static async GetBanners(
+    dto: { positions: BannerPosition[] },
+    signal?: AbortSignal,
+  ) {
     try {
       const result = await apiCall<
         { positions: BannerPosition[] },
@@ -34,7 +32,7 @@ export class HomeService {
         {
           positions: dto?.positions,
         },
-        { version: "v2" },
+        { version: "v2", signal },
       );
       return result;
     } catch (e) {
@@ -56,43 +54,56 @@ export class HomeService {
     }
   }
 
-  static async getLandings(dto?: { placement?: LandingsPlacements }) {
+  static async getLandings(
+    dto?: { placement?: LandingsPlacements },
+    signal?: AbortSignal,
+  ) {
     try {
       const result = await apiCall<
         { placement?: LandingsPlacements },
         MostVisitedPlaces
-      >("GET", apiRoutes.USER_LANDING_PAGES, dto);
+      >("GET", apiRoutes.USER_LANDING_PAGES, dto, { signal });
       return result;
     } catch (e) {
       throw e;
     }
   }
 
-  static async GetContent(dto: {
-    key: string;
-    page: number;
-    per_page?: number;
-  }) {
+  static async GetContent(
+    dto: {
+      key: string;
+      page: number;
+      per_page?: number;
+    },
+    signal?: AbortSignal,
+  ) {
     try {
       const result = await apiCall<
         { key: string; page: number; per_page?: number },
         { data: ContentDto[]; meta: Meta }
-      >("GET", apiRoutes.CONTENTS, {
-        key: dto?.key,
-        page: dto?.page,
-        per_page: dto?.per_page,
-      });
+      >(
+        "GET",
+        apiRoutes.CONTENTS,
+        {
+          key: dto?.key,
+          page: dto?.page,
+          per_page: dto?.per_page,
+        },
+        { signal },
+      );
       return result;
     } catch (e) {
       throw e;
     }
   }
 
-  static async GetContentByKey(dto: { key: string }) {
+  static async GetContentByKey(dto: { key: string }, signal?: AbortSignal) {
     try {
       const result = await apiCall<unknown, ContentByKeyDto>(
         "GET",
         apiRoutes.CONTENT_BY_KEY(dto?.key),
+        undefined,
+        { signal },
       );
       return result;
     } catch (e) {
@@ -137,7 +148,7 @@ export class HomeService {
       content_id?: number | string;
       product_id?: number | string;
     },
-    callback?: (a?: { data: QuestionDto[]; meta: Meta } | null) => void,
+    signal?: AbortSignal,
   ) {
     try {
       const result = await apiCall<
@@ -148,8 +159,7 @@ export class HomeService {
           product_id?: number | string;
         },
         { data: QuestionDto[]; meta: Meta } | null
-      >("GET", apiRoutes.CONTENTS_QUESTIONS, dto);
-      if (!!callback) callback(result);
+      >("GET", apiRoutes.CONTENTS_QUESTIONS, dto, { signal });
       return result || null;
     } catch (e) {
       throw e;

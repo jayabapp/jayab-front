@@ -1,39 +1,50 @@
 "use client";
-import { IMAGE_URL, NEW_IMAGE_URL } from "@/utils/urls";
-import Image from "next/image";
-import { FC, Fragment, useState } from "react";
 
-import dynamic from "next/dynamic";
-import SwiperSlide from "../embelaCarousel/SwiperSlide";
-import Modal from "../Modal";
+import { FC, Fragment, useState } from "react";
+import { NEW_IMAGE_URL } from "@/utils/urls";
 import { ImageDto } from "@/api_services/auth/auth.interface";
+
+import SwiperSlide from "../embelaCarousel/SwiperSlide";
+import dynamic from "next/dynamic";
+import Image from "next/image";
+import Modal from "../Modal";
 
 const Swiper = dynamic(() => import("../embelaCarousel/Swiper"), { ssr: true });
 
-const GalleryItem: FC<{ item: ImageDto; _onPress: () => void }> = ({ item, _onPress }) => {
+const GalleryItem: FC<{ item: ImageDto; _onPress: () => void }> = ({
+  item,
+  _onPress,
+}) => {
   return (
-    <div className="col-span-1 w-full aspect-square relative cursor-pointer" onClick={_onPress}>
+    <div
+      className="col-span-1 w-full aspect-square relative cursor-pointer"
+      onClick={_onPress}
+    >
       <Image
-        className="w-full h-full rounded-md object-cover"
         fill
-        sizes="(min-width: 768px) 9vw, 28vw"
         alt={item?.alt as string}
         src={NEW_IMAGE_URL(item)}
+        sizes="(min-width: 768px) 9vw, 28vw"
+        className="w-full h-full rounded-md object-cover"
       />
     </div>
   );
 };
 
-const GalleryModal: FC<{ isVisible: number; _onHide: () => void; images: ImageDto[] }> = ({
-  isVisible,
-  _onHide,
-  images,
-}) => {
+const GalleryModal: FC<{
+  isVisible: number;
+  _onHide: () => void;
+  images: ImageDto[];
+}> = ({ isVisible, _onHide, images }) => {
   return (
     <Modal show={isVisible > 0} onHide={_onHide} type="bottom-sheet">
       {isVisible > 0 && (
         <Swiper
-          options={{ startIndex: isVisible - 1, align: "start", direction: "rtl" }}
+          options={{
+            startIndex: isVisible - 1,
+            align: "start",
+            direction: "rtl",
+          }}
           withArrows
           slidesWidth={{ def: "100%", md: "100%" }}
         >
@@ -70,7 +81,11 @@ const Gallery: FC<{ images: ImageDto[] }> = ({ images }) => {
         <div className="grid grid-cols-3 gap-4">
           <p className="col-span-3">گالری تصاویر</p>
           {images?.map((i, index) => (
-            <GalleryItem item={i} _onPress={() => _onPress(index)} key={i?.id} />
+            <GalleryItem
+              item={i}
+              _onPress={() => _onPress(index)}
+              key={i?.id}
+            />
           ))}
         </div>
         <GalleryModal images={images} isVisible={isVisible} _onHide={_onHide} />
