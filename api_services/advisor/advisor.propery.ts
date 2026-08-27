@@ -2,7 +2,6 @@ import { apiRoutes } from "@/utils/urls";
 import { apiCall } from "../common/apicall.helper";
 import {
   AddRateDto,
-  AdvisorListDto,
   AdvisorPageListDto,
   AdvisorProfileDto,
   CreateAdvisorDto,
@@ -39,7 +38,7 @@ export class AdvisorService {
     q?: string;
     cities?: (number | string)[];
     province_id?: string | number;
-  }) {
+  }, signal?: AbortSignal) {
     try {
       const result = await apiCall<
         { per_page: number; cursor: number; q?: string; cities?: (number | string)[]; province_id?: string | number },
@@ -50,25 +49,25 @@ export class AdvisorService {
         q: dto.q,
         cities: dto.cities,
         province_id: dto.province_id,
-      });
+      }, { signal });
       return result;
     } catch (e) {
       throw e;
     }
   }
 
-  static async userAdvisorsProfile() {
+  static async userAdvisorsProfile(signal?: AbortSignal) {
     try {
-      const result = await apiCall<unknown, AdvisorProfileDto | null>("GET", apiRoutes.USER_ADVISORS_PROFILE);
+      const result = await apiCall<unknown, AdvisorProfileDto | null>("GET", apiRoutes.USER_ADVISORS_PROFILE, undefined, { signal });
       return result;
     } catch (e) {
       throw e;
     }
   }
 
-  static async singleAdvisor(dto: { advisorId: string | number }) {
+  static async singleAdvisor(dto: { advisorId: string | number }, signal?: AbortSignal) {
     try {
-      const result = await apiCall<unknown, SingleAdvisorDto | null>("GET", apiRoutes.SINGLE_ADVISOR(dto.advisorId));
+      const result = await apiCall<unknown, SingleAdvisorDto | null>("GET", apiRoutes.SINGLE_ADVISOR(dto.advisorId), undefined, { signal });
       return result;
     } catch (e) {
       throw e;

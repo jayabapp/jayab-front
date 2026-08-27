@@ -1,16 +1,17 @@
-import { useMutation, useQuery } from "@tanstack/react-query";
-import { AdvisorService } from "@/api_services/advisor/advisor.propery";
-import { STALE_TIME } from "@/helpers/queryCache";
 import { useState } from "react";
 
 import AdvisorCircularProgresCard from "../AdvisorCircularProgressPart/AdvisorCircularProgresCard";
 import ModalHeaderPart from "@/components/Modal/ModalHeaderPart";
-import LottieLoading from "@/components/shared/Lotties/LottieLoading";
 import AdvisorCard from "../AdvisorCard";
 import _STRINGS from "@/utils/LocalStrings";
 import RatePop from "./RatePop";
 import Button from "@/components/shared/Button/Button";
 import Modal from "@/components/Modal";
+import Image from "next/image";
+import { useAdvisorDetails } from "@features/advisors/hooks/useAdvisorDetails";
+import { useStartAdvisorContact } from "@features/advisors/hooks/useStartAdvisorContact";
+import AdvisorDetailSkeleton from "@features/advisors/components/AdvisorDetailSkeleton";
+import type { AdvisorPageListDto } from "@/api_services/advisor/advisor.interface";
 
 const SingleAdvisorModal = ({
   show,
@@ -19,10 +20,9 @@ const SingleAdvisorModal = ({
 }: {
   show: boolean;
   onHide: () => void | null;
-  selectedAdvisor: any;
+  selectedAdvisor: AdvisorPageListDto | null;
 }) => {
   const [showRate, setShowRate] = useState(false);
-  const [refresher, setRefresher] = useState(false);
   const onHideRate = () => {
     setShowRate(false);
   };
@@ -30,39 +30,15 @@ const SingleAdvisorModal = ({
     setShowRate(true);
   };
 
-  const { data, isPending } = useQuery({
-    queryKey: [
-      AdvisorService.SINGLE_ADVISOR_CACHEKEY,
-      selectedAdvisor?.id,
-      refresher,
-    ],
-    queryFn: () => {
-      if (selectedAdvisor?.id)
-        return AdvisorService.singleAdvisor({ advisorId: selectedAdvisor?.id });
-      else return null;
-    },
-    staleTime: STALE_TIME.DEFAULT,
-  });
-
-  const { mutate, isPending: contactLoading } = useMutation({
-    mutationFn: AdvisorService.singleAdvisorInitContact,
-  });
+  const { data, isPending } = useAdvisorDetails(selectedAdvisor?.id ?? undefined);
+  const { mutate, isPending: contactLoading } = useStartAdvisorContact();
 
   const onActionButtinsClick = (type: "tel" | "sms") => {
     mutate(
-      { advisorId: data?.id || selectedAdvisor?.id },
+      { advisorId: data?.id ?? selectedAdvisor?.id ?? null },
       {
         onSuccess: () => {
-          setRefresher((e) => !e);
-          var linkElement = document.createElement("a");
-          linkElement.id = "link";
-          window.document.body.appendChild(linkElement);
-          var menuAddress = `${type}:${data?.user?.mobile_number}`;
-          var link = document.getElementById("link");
-          if (!!link) {
-            link.setAttribute("href", menuAddress);
-            link.click();
-          }
+          window.location.href = `${type}:${data?.user?.mobile_number}`;
         },
       },
     );
@@ -80,14 +56,14 @@ const SingleAdvisorModal = ({
       >
         <ModalHeaderPart onHide={onHide} title={_STRINGS.CONSULTANT_INFO} />
         {isPending ? (
-          <LottieLoading />
+          <AdvisorDetailSkeleton />
         ) : (
           <div className=" w-full p-4 rounded-10 bg-white flex flex-col gap-4 ">
             <AdvisorCard
               key="singleCard"
               isSingle
               data={{
-                id: data?.id || null,
+                id: data?.id ?? null,
                 user: data?.user || null,
                 cities: data?.cities || [],
                 created_at: data?.created_at || "",
@@ -108,9 +84,12 @@ const SingleAdvisorModal = ({
                 title={_STRINGS.CALL}
                 roundedClass="rounded-full"
                 icon={
-                  <img
+                  <Image
                     className="w-4 h-4 ml-2 aspect-square"
                     src="/assets/icons/advisor/white_phone.svg"
+                    alt=""
+                    width={16}
+                    height={16}
                   />
                 }
               />
@@ -125,9 +104,12 @@ const SingleAdvisorModal = ({
                 title={_STRINGS.MESSAGE}
                 roundedClass="rounded-full"
                 icon={
-                  <img
+                  <Image
                     className="w-4 h-4 ml-2 aspect-square"
                     src="/assets/icons/advisor/blue_message.svg"
+                    alt=""
+                    width={16}
+                    height={16}
                   />
                 }
               />
@@ -188,12 +170,10 @@ const SingleAdvisorModal = ({
         )}
       </Modal>
       <RatePop
+        key={data?.id ?? "advisor-rate"}
         show={!!showRate}
         onHide={onHideRate}
         data={data}
-        onSuccessCb={() => {
-          setRefresher((e) => !e);
-        }}
       />
     </>
   );

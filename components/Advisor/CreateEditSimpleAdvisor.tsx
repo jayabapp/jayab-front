@@ -4,8 +4,6 @@ import _STRINGS from "@/utils/LocalStrings";
 import { CreateAdvisorDto } from "@/api_services/advisor/advisor.interface";
 
 import MainUploader from "../uploader";
-import FixedBottomContainer from "../shared/FixedBottomContainer";
-import Button from "../shared/Button/Button";
 
 const CreateEditSimpleAdvisor = ({
   values,

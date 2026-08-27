@@ -1,10 +1,11 @@
 "use client";
 import _STRINGS from "@/utils/LocalStrings";
-import React, { useEffect, useState } from "react";
+import { useMemo } from "react";
 import AdvisorCircularProgresCard from "./AdvisorCircularProgressPart/AdvisorCircularProgresCard";
-import { AdvisorListDto, AdvisorPageListDto } from "@/api_services/advisor/advisor.interface";
+import { AdvisorPageListDto } from "@/api_services/advisor/advisor.interface";
 import { NEW_IMAGE_URL } from "@/utils/urls";
 import timeLeft from "@/helpers/timeLeft";
+import Image from "next/image";
 
 const AdvisorCard = ({
   data,
@@ -15,15 +16,10 @@ const AdvisorCard = ({
   callback?: () => void | null;
   isSingle?: boolean;
 }) => {
-  const [cities, setCities] = useState<string[]>([]);
-
-  useEffect(() => {
-    if (!isSingle) {
-      setCities([...data?.cities]?.splice(0, 4));
-    } else {
-      setCities(data?.cities);
-    }
-  }, [isSingle, data]);
+  const cities = useMemo(
+    () => isSingle ? data?.cities ?? [] : (data?.cities ?? []).slice(0, 4),
+    [data?.cities, isSingle],
+  );
 
   return (
     <div onClick={callback} className=" rounded-2xl gap-2   shadow-card  p-4  w-full  flex flex-col items-center ">
@@ -32,14 +28,16 @@ const AdvisorCard = ({
         <div className=" flex flex-col gap-2 h-full justify-between w-1/4  lg:w-1/5 2xl:w-1/4">
           <div className="relative w-full  aspect-square ">
             {" "}
-            <img
+            <Image
               src={
                 !!data?.user?.profile_image
                   ? NEW_IMAGE_URL(data?.user?.profile_image)
                   : "/assets/icons/shared/image_placeholder.svg"
               }
-              alt={data?.user?.profile_image?.alt || ""}
-              className="rounded-full aspect-square w-full h-full"
+              alt={data?.user?.profile_image?.alt || data?.user?.full_name || "تصویر مشاور"}
+              fill
+              sizes="(max-width: 768px) 25vw, 120px"
+              className="rounded-full object-cover"
             />
           </div>
           <div className=" shrink-0 text-xs md:text-xs flex items-center justify-center px-1 md:px-2 py-1 rounded-md  bg-primary-700 text-white ">

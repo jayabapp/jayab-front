@@ -107,7 +107,7 @@ export class PropertyService {
   static async GetPropertySubscriptionPlans(dto?: {
     type?: "ADVISOR" | "PROPERTY";
     property_id?: string | number;
-  }) {
+  }, signal?: AbortSignal) {
     try {
       const result = await apiCall<
         { type?: "ADVISOR" | "PROPERTY"; property_id?: string | number },
@@ -115,7 +115,7 @@ export class PropertyService {
       >("GET", apiRoutes.USER_SUBSCRIPTION_PLANS, {
         type: dto?.type,
         property_id: dto?.property_id,
-      });
+      }, { signal });
       return result;
     } catch (e) {
       throw e;

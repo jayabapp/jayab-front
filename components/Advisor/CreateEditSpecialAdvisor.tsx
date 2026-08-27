@@ -1,6 +1,4 @@
 import { CreateAdvisorDto } from "@/api_services/advisor/advisor.interface";
-import { CityService } from "@/api_services/city/city.service";
-import { useQuery } from "@tanstack/react-query";
 
 import MultiLineFormInput from "../shared/Form/MultiLineFormInput";
 import SinglePopUpSelect from "../shared/Form/SingleSelectPopUpSelect";
@@ -9,6 +7,7 @@ import MainUploader from "../uploader";
 import FormInput from "../shared/Form/FormInput";
 import _STRINGS from "@/utils/LocalStrings";
 import isArray from "lodash/isArray";
+import { useAdvisorLocations } from "@features/advisors/hooks/useAdvisorLocations";
 
 const CreateEditSpecialAdvisor = ({
   values,
@@ -31,19 +30,7 @@ const CreateEditSpecialAdvisor = ({
     >
   >;
 }) => {
-  const { data: provinces } = useQuery({
-    queryFn: () => CityService.GetAllCities({ is_parent: "1" }),
-    queryKey: [CityService.CITIES_CHILDEREN_CACHEKEY, "is_parent"],
-  });
-
-  const { data: cities } = useQuery({
-    queryFn: () => {
-      if (!!values?.province)
-        return CityService.GetCities({ parentId: values?.province });
-      else return [];
-    },
-    queryKey: [CityService.CITIES_CHILDEREN_CACHEKEY, values?.province],
-  });
+  const { provinces, cities } = useAdvisorLocations(values?.province);
 
   const onChangeMulty = (
     value: { id: string | number },

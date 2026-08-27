@@ -1,12 +1,9 @@
-import React, { useState } from "react";
 import Button from "../shared/Button/Button";
 import _STRINGS from "@/utils/LocalStrings";
 import { PropertySubsDto } from "@/api_services/property/property.interface";
 import numberWithCommas from "@/helpers/numberWithCommas";
 import { useRouter } from "next/navigation";
-import { useMutation } from "@tanstack/react-query";
-import { AdvisorService } from "@/api_services/advisor/advisor.propery";
-import ConfirmModal from "../Modal/ConfirmModal";
+import { usePurchaseAdvisorPlan } from "@features/advisors/hooks/useAdvisorSubscription";
 
 const AdvisorPlansCard = ({
   data,
@@ -19,12 +16,7 @@ const AdvisorPlansCard = ({
 }) => {
   const router = useRouter();
 
-  const { mutate, isPending } = useMutation({
-    mutationFn: AdvisorService.payAdvisorPlan,
-    onSuccess: (e) => {
-      if (!!e) router.push(e);
-    },
-  });
+  const { mutate, isPending } = usePurchaseAdvisorPlan();
   const onClick = () => {
     if (!subscriptionType) {
       router.push(
@@ -34,13 +26,11 @@ const AdvisorPlansCard = ({
       if (subscriptionType == "normal" && !!data?.is_special) {
         setShowConfirm(true);
       } else {
-        [
-          mutate({
+        mutate({
             gateway: process.env.NEXT_PUBLIC_PAYMENT_GATEWAY || "",
             plan_id: data?.id,
             redirect_url: `${window.origin}/profile/advisor/subscription`,
-          }),
-        ];
+          });
       }
   };
 

@@ -1,42 +1,32 @@
 import { SingleAdvisorDto } from "@/api_services/advisor/advisor.interface";
-import { AdvisorService } from "@/api_services/advisor/advisor.propery";
 import ModalBottomSheet from "@/components/Modal/ModalBottomSheet";
-import PopUpDown from "@/components/PopUpDown";
 import Button from "@/components/shared/Button/Button";
 import RangeWithTitle from "@/components/shared/Form/RangeWithTitle";
 import { easyRatingItems } from "@/utils/constantss";
 import _STRINGS from "@/utils/LocalStrings";
-import { useMutation } from "@tanstack/react-query";
-import React, { useEffect, useState } from "react";
+import { useState } from "react";
+import { useRateAdvisor } from "@features/advisors/hooks/useRateAdvisor";
 
 const RatePop = ({
   show,
   onHide,
   data,
-  onSuccessCb,
 }: {
   show: boolean;
   onHide: () => void | null;
-  onSuccessCb: () => void | null;
   data: SingleAdvisorDto | null | undefined;
 }) => {
-  const [values, setValues] = useState<{ [key: string]: any }>({
-    response_speed_and_followup: 50,
-    advisor_behavior: 50,
-    advisor_responsibility: 50,
-  });
+  const [values, setValues] = useState(() => ({
+    response_speed_and_followup: data?.user_rate?.response_speed_and_followup ?? 50,
+    advisor_behavior: data?.user_rate?.advisor_behavior ?? 50,
+    advisor_responsibility: data?.user_rate?.advisor_responsibility ?? 50,
+  }));
 
   const onChange = (value: string | number | null | number[], key: string) => {
     setValues((e) => ({ ...e, [key]: value }));
   };
 
-  const { mutate: rateFunc, isPending: rateLoading } = useMutation({
-    mutationFn: AdvisorService.singleAdvisorRate,
-    onSuccess: () => {
-      onSuccessCb();
-      onHide();
-    },
-  });
+  const { mutate: rateFunc, isPending: rateLoading } = useRateAdvisor();
 
   const onSubmit = () => {
     if (data?.id)
@@ -45,18 +35,8 @@ const RatePop = ({
         advisor_behavior: values?.advisor_behavior,
         advisor_responsibility: values?.advisor_responsibility,
         response_speed_and_followup: values?.response_speed_and_followup,
-      });
+      }, { onSuccess: onHide });
   };
-
-  useEffect(() => {
-    if (!!data?.user_rate) {
-      setValues({
-        response_speed_and_followup: data?.user_rate?.response_speed_and_followup || 50,
-        advisor_behavior: data?.user_rate?.advisor_behavior || 50,
-        advisor_responsibility: data?.user_rate?.advisor_responsibility || 50,
-      });
-    }
-  }, [data]);
 
   return (
     <ModalBottomSheet

@@ -2,28 +2,26 @@
 
 import { useAuthStore, useStoreInit, useStoreParams } from "@/store";
 import { Suspense, useMemo, useState } from "react";
-import { useInfiniteQuery, useQuery } from "@tanstack/react-query";
 import { usePathname, useRouter } from "next/navigation";
-import { AdvisorService } from "@/api_services/advisor/advisor.propery";
 import { BannerPosition } from "@/enum/banners.enum";
-import { HomeService } from "@/api_services/home/home.service";
 import { DeviceInfo } from "@/helpers/device.detector";
 
 import SingleAdvisorModal from "@/components/Advisor/SingleAdvisorModal";
 import InfiniteScroll from "react-infinite-scroll-component";
-import LottieLoading from "@/components/shared/Lotties/LottieLoading";
 import queryBuilder from "@/helpers/queryBuilder";
 import AdvisorCard from "@/components/Advisor/AdvisorCard";
 import Breadcrumbs from "@/components/BreadCrumbs";
 import useQueryGet from "@/helpers/queryGet";
-import BtnLoading from "@/components/shared/Button/BtnLoading";
 import CityModal from "@/components/CityModal";
 import EmptyList from "@/components/shared/Lotties/EmptyList";
 import _STRINGS from "@/utils/LocalStrings";
 import dynamic from "next/dynamic";
 import Button from "@/components/shared/Button/Button";
-import last from "lodash/last";
 import Link from "next/link";
+import Image from "next/image";
+import { useAdvisors } from "@features/advisors/hooks/useAdvisors";
+import { useAdvisorBanners } from "@features/advisors/hooks/useAdvisorBanners";
+import AdvisorCardSkeleton from "@features/advisors/components/AdvisorCardSkeleton";
 
 const HomeAdvisorSub = dynamic(
   () => import("@/components/Home/HomeAdvisorSub"),
@@ -42,48 +40,19 @@ const AdvisorsPageHelper = ({ devices }: { devices: DeviceInfo }) => {
   const [showCityModal, setShowCiyModal] = useState(false);
   const [selectedAdvisor, setSelectedAdvisor] = useState<any>(null);
   const [cityTitle, setCityTitle] = useState("");
-  const { data: banners } = useQuery({
-    queryKey: [HomeService.BANNERS_RANDOM_CACHEKEY, BannerPosition.Advisor],
-    queryFn: () => {
-      return HomeService.GetBanners({ positions: [BannerPosition.Advisor] });
-    },
-  });
+  const { data: banners } = useAdvisorBanners();
 
   const {
     isLoading,
-    data: advisorPages,
     hasNextPage,
     isFetchingNextPage,
     fetchNextPage,
-  } = useInfiniteQuery({
-    queryKey: [
-      AdvisorService?.USER_ADVISORS_CACHEKEY,
-      queriesParams?.cities,
-      queriesParams?.province_id,
-      queriesParams.search,
-    ],
-    initialPageParam: 0,
-    queryFn: ({ pageParam }) => {
-      return AdvisorService?.userAdvisorsList({
-        cursor: Number(pageParam),
-        per_page: 20,
-        q: queriesParams.search,
-        cities: !!queriesParams?.cities ? queriesParams?.cities : undefined,
-        province_id: !!queriesParams?.province_id
-          ? queriesParams?.province_id
-          : undefined,
-      });
-    },
-    getNextPageParam: (lastPage) =>
-      lastPage?.length ? last(lastPage)?.id : undefined,
-    gcTime: 0,
-    staleTime: 0,
-  });
-
-  const data = useMemo(
-    () => advisorPages?.pages.flatMap((page) => page ?? []) ?? [],
-    [advisorPages],
-  );
+    advisors: data,
+  } = useAdvisors(useMemo(() => ({
+    q: queriesParams.search,
+    cities: queriesParams?.cities,
+    province_id: queriesParams?.province_id,
+  }), [queriesParams.search, queriesParams?.cities, queriesParams?.province_id]));
 
   const hideCityModal = () => {
     setShowCiyModal(false);
@@ -160,9 +129,12 @@ const AdvisorsPageHelper = ({ devices }: { devices: DeviceInfo }) => {
                 href={`/profile/advisor/subscription/is-especial`}
                 className="w-full md:w-fit  px-12  md:col-span-4  rounded-full flex items-center justify-center gap-4 h-12 bg-primary-600 "
               >
-                <img
+                <Image
                   className="w-5 h-5 aspect-square"
                   src="/assets/icons/home/white_star_tick.svg"
+                  alt=""
+                  width={20}
+                  height={20}
                 />
                 <p className="text-white">{_STRINGS.REGISTER_AS_SPECIAL_AD}</p>
               </Link>
@@ -174,7 +146,9 @@ const AdvisorsPageHelper = ({ devices }: { devices: DeviceInfo }) => {
         <HomeAdvisorSub />
 
         {isLoading && data?.length == 0 ? (
-          <LottieLoading />
+          <div className="grid grid-cols-1 gap-4 md:grid-cols-2 2xl:grid-cols-3">
+            {Array.from({ length: 6 }, (_, index) => <AdvisorCardSkeleton key={index} />)}
+          </div>
         ) : data && data?.length > 0 ? (
           <InfiniteScroll
             dataLength={data?.length}
@@ -183,8 +157,8 @@ const AdvisorsPageHelper = ({ devices }: { devices: DeviceInfo }) => {
             }}
             hasMore={hasNextPage}
             loader={
-              <div className="w-full mt-8 flex items-center justify-center">
-                <BtnLoading />
+              <div className="col-span-full grid grid-cols-1 gap-4 md:grid-cols-2 2xl:grid-cols-3">
+                <AdvisorCardSkeleton /><AdvisorCardSkeleton /><AdvisorCardSkeleton />
               </div>
             }
             className="grid px-1   pb-8 pt-4 !overflow-hidden  grid-cols-1 gap-2 md:gap-4  md:grid-cols-2 2xl:grid-cols-3 "

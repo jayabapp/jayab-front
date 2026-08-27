@@ -1,43 +1,28 @@
 "use client";
-import { AdvisorService } from "@/api_services/advisor/advisor.propery";
 import { AuthService } from "@/api_services/auth/auth.service";
-import { PropertyService } from "@/api_services/property/property.service";
 import AdvisorPlansCard from "@/components/Advisor/AdvisorPlansCard";
 import ConfirmModal from "@/components/Modal/ConfirmModal";
 import Button from "@/components/shared/Button/Button";
 import StatusShower from "@/components/shared/StatusShower";
 import { useStoreInit } from "@/store";
 import _STRINGS from "@/utils/LocalStrings";
-import { useMutation, useQuery } from "@tanstack/react-query";
+import { useQuery } from "@tanstack/react-query";
 import isEmpty from "lodash/isEmpty";
 import moment from "moment-jalaali";
 import { useRouter, useSearchParams } from "next/navigation";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
+import { useAdvisorProfile } from "@features/advisors/hooks/useAdvisorProfile";
+import { useAdvisorPlans } from "@features/advisors/hooks/useAdvisorPlans";
+import { useCancelAdvisorSubscription, usePurchaseAdvisorPlan } from "@features/advisors/hooks/useAdvisorSubscription";
 
 const AdvisorRegister = () => {
   const router = useRouter();
   const searchParams = useSearchParams();
   const pay_key = searchParams.get("pay_key");
-  const { userInfo } = useStoreInit((data) => data);
   const [showEndSub, setShowEndSub] = useState(false);
   const [showConfirmRegister, setShowConfirmRegister] = useState(false);
-  const { data: subscriptionPlans } = useQuery({
-    queryKey: [PropertyService.USER_SUBSCRIPTION_PLANS_CACHEKEY],
-
-    queryFn: () => {
-      return PropertyService.GetPropertySubscriptionPlans({ type: "ADVISOR" });
-    },
-  });
-
-  const { data: advisorProfile, refetch: refetchAdvvisorProfile } = useQuery({
-    queryKey: [AdvisorService.USER_ADVISORS_PROFILE_CACHEKEY],
-
-    queryFn: () => {
-      return AdvisorService.userAdvisorsProfile();
-    },
-    staleTime: 0,
-    gcTime: 0,
-  });
+  const { data: subscriptionPlans, isPending: plansPending } = useAdvisorPlans();
+  const { data: advisorProfile, isPending: profilePending } = useAdvisorProfile();
   const isActive = moment().isBefore(advisorProfile?.subscription_expired_at);
 
   const hideRegisterModa = () => {
@@ -71,17 +56,12 @@ const AdvisorRegister = () => {
     }
   }, [profile]);
 
-  const { mutate, isPending } = useMutation({
-    mutationFn: AdvisorService.deleteAdvisorSub,
-    onSuccess: (e) => {
-      refetch();
-      refetchAdvvisorProfile();
-      hideEndSub();
-    },
-  });
-
+  const { mutate, isPending } = useCancelAdvisorSubscription();
   const onDelete = () => {
-    mutate();
+    mutate(undefined, { onSuccess: () => {
+      void refetch();
+      hideEndSub();
+    }});
   };
 
   const goToEdit = () => {
@@ -97,28 +77,36 @@ const AdvisorRegister = () => {
   /* -------------------------------------------------------------------------- */
   /*                                  AUTO PAY                                  */
   /* -------------------------------------------------------------------------- */
-  const { mutate: payMutate } = useMutation({
-    mutationFn: AdvisorService.payAdvisorPlan,
-    onSuccess: (e) => {
-      if (!!e) router.push(e);
-    },
-  });
+  const { mutate: payMutate, isPending: paymentPending } = usePurchaseAdvisorPlan();
+  const paymentStarted = useRef(false);
 
   useEffect(() => {
-    if (!!pay_key && !isEmpty(subscriptionPlans?.list)) {
+    if (!!pay_key && !isEmpty(subscriptionPlans?.list) && !paymentStarted.current) {
+      const paymentKey = `advisor-payment:${pay_key}`;
+      const lastStartedAt = Number(sessionStorage.getItem(paymentKey));
+      if (lastStartedAt && Date.now() - lastStartedAt < 2 * 60_000) return;
       const planId =
         pay_key == "is-especial"
           ? subscriptionPlans?.list?.find((x) => !!x?.is_special)?.id
           : subscriptionPlans?.list?.find((x) => !x?.is_special)?.id;
       if (!!planId) {
+        paymentStarted.current = true;
+        sessionStorage.setItem(paymentKey, String(Date.now()));
         payMutate({
           gateway: process.env.NEXT_PUBLIC_PAYMENT_GATEWAY || "",
           plan_id: planId,
           redirect_url: `${window.origin}/profile/advisor/subscription`,
-        });
+        }, { onError: () => {
+          paymentStarted.current = false;
+          sessionStorage.removeItem(paymentKey);
+        }});
       }
     }
-  }, [pay_key, subscriptionPlans]);
+  }, [payMutate, pay_key, subscriptionPlans]);
+
+  if ((plansPending || profilePending) && !advisorProfile && !subscriptionPlans) {
+    return <div className="profile-container animate-pulse"><div className="h-24 rounded-xl bg-neutral-100" /><div className="mt-4 grid grid-cols-1 gap-3 md:grid-cols-2"><div className="h-52 rounded-2xl bg-neutral-100" /><div className="h-52 rounded-2xl bg-neutral-100" /></div></div>;
+  }
 
   return (
     <div className=" profile-container  flex flex-col gap-4 ">
@@ -225,6 +213,7 @@ const AdvisorRegister = () => {
         confirmText={"ادامه"}
         hideText="برگشت"
       />
+      {paymentPending ? <div className="fixed inset-x-0 bottom-0 z-50 h-1 animate-pulse bg-primary-600" /> : null}
       <ConfirmModal
         confirmTextClassName=" !bg-primary-900 text-white !rounded-full "
         hideTextClassName=" !border-primary-900 border !bg-white !text-primary-900 !rounded-full "
