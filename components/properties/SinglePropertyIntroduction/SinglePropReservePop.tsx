@@ -1,7 +1,7 @@
 "use client";
 
 import { Dispatch, SetStateAction, useState } from "react";
-import { useReservedDates } from "@features/properties/hooks/useReservedDates";
+import { useReservationAvailability } from "@features/reservations/hooks/useReservationAvailability";
 import { SinglePropDto } from "@/api_services/property/property.interface";
 
 import SinglePropRequestedReserveModal from "./SinglePropRequestedReserveModal";
@@ -57,7 +57,10 @@ const SinglePropReservePop = ({
     setDates({});
   };
 
-  const { data: reserveDates } = useReservedDates(show ? data.id : "");
+  const checkIn = dates?.start ? moment(dates.start).format("YYYY-MM-DD") : "";
+  const checkOut = dates?.end ? moment(dates.end).format("YYYY-MM-DD") : "";
+  const { data: reserveDates, isFetching: isCheckingAvailability } =
+    useReservationAvailability(data.id, checkIn, checkOut, String(count), show);
 
   return (
     <>
@@ -89,6 +92,7 @@ const SinglePropReservePop = ({
                 forbiden_dates={reserveDates || []}
               />
             </div>
+            {isCheckingAvailability ? <div className="h-1 w-full animate-pulse rounded bg-primary-200" /> : null}
           </div>
           <div className="w-full flex flex-col gap-2">
             <p className=" ">{_STRINGS.PPL_COUNT}</p>

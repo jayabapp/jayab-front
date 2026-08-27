@@ -1,8 +1,9 @@
 "use client";
 
+import { useCreateReservation } from "@features/reservations/hooks/useCreateReservation";
+import { jalaliDateToApiDate } from "@features/reservations/mappers/reservation-dates";
 import { ReserveUserAction } from "@/enum/reserve.enum";
 import { ReserveListDto } from "@/api_services/reserve/reserve.interface";
-import { ReserveService } from "@/api_services/reserve/reserve.service";
 import { SinglePropDto } from "@/api_services/property/property.interface";
 import { NEW_IMAGE_URL } from "@/utils/urls";
 import { ChatService } from "@/api_services/chat/chat.service";
@@ -11,8 +12,8 @@ import { useRouter } from "next/navigation";
 import { useState } from "react";
 
 import SinglePropContactInfoModal from "./SinglePropContactInfoModal";
-import ModalBottomSheet from "@/components/Modal/ModalBottomSheet";
 import ActiveReservePop from "../reserve/ActiveReservePop";
+import ModalBottomSheet from "@/components/Modal/ModalBottomSheet";
 import CmsInfoPopup from "@/components/shared/CmsInfoPopup";
 import _STRINGS from "@/utils/LocalStrings";
 import Button from "@/components/shared/Button/Button";
@@ -20,37 +21,35 @@ import Notify from "@/components/shared/Toast";
 import moment from "moment-jalaali";
 import Image from "next/image";
 
+type TSinglePropRequestedReserveProps = {
+  show: boolean;
+  endDate: string;
+  startDate: string;
+  data: SinglePropDto;
+  count: string | number;
+  onHide: () => void | null;
+  setShowEdit: (e: boolean) => void | null;
+};
+
 const SinglePropRequestedReserveModal = ({
   data,
   show,
-  onHide,
-  startDate,
   count,
+  onHide,
   endDate,
+  startDate,
   setShowEdit,
-}: {
-  data: SinglePropDto;
-  show: boolean;
-  onHide: () => void | null;
-  setShowEdit: (e: boolean) => void | null;
-  endDate: string;
-  startDate: string;
-  count: string | number;
-}) => {
+}: TSinglePropRequestedReserveProps) => {
   const router = useRouter();
   const [contactType, setContactType] = useState<"call" | "sms" | "">("");
-  const [loading, setLoading] = useState(false);
   const [showMax, setShowMax] = useState(false);
   const [activeReserve, setActiveReserve] = useState<ReserveListDto | null>(
     null,
   );
-  const { mutate: createFindChat } = useMutation({
+  const { mutate: createFindChat, isPending: isCreatingChat } = useMutation({
     mutationFn: ChatService.StartOrFindChat,
     onSuccess: (e) => {
       router.push(`/chat/${e?.chatroom_id}`);
-    },
-    onError: () => {
-      setLoading(false);
     },
   });
 
@@ -65,14 +64,13 @@ const SinglePropRequestedReserveModal = ({
     setContactType("");
   };
 
-  const { mutate } = useMutation({ mutationFn: ReserveService.createReserve });
+  const { mutate, isPending } = useCreateReservation();
 
   const onActionsClick = (user_action: number) => {
-    setLoading(true);
     mutate(
       {
-        check_in: moment(startDate, "jYYYY/jMM/jD").format("YYYY-MM-DD"),
-        check_out: moment(endDate, "jYYYY/jMM/jD").format("YYYY-MM-DD"),
+        check_in: jalaliDateToApiDate(startDate),
+        check_out: jalaliDateToApiDate(endDate),
         guests_count: `${count}`,
         property_id: data?.id,
         user_action: user_action,
@@ -80,7 +78,6 @@ const SinglePropRequestedReserveModal = ({
       {
         onSuccess: (e) => {
           if (!!e) {
-            setLoading(false);
             onHide();
             setActiveReserve(e);
             Notify({ body: _STRINGS.CANT_RESERVE_MESSAGE, type: "warn" });
@@ -90,7 +87,6 @@ const SinglePropRequestedReserveModal = ({
         },
         onError: (e: any) => {
           if (e?.message_code == "RESERVE6") setShowMax(true);
-          setLoading(false);
         },
       },
     );
@@ -223,7 +219,7 @@ const SinglePropRequestedReserveModal = ({
             ) : (
               <>
                 <Button
-                  disabled={!!isExpired}
+                  disabled={isExpired || isPending}
                   onClick={() => {
                     // onActionsClick(ReserveUserAction.CALL);
                     onContactClick("call");
@@ -233,7 +229,7 @@ const SinglePropRequestedReserveModal = ({
                   roundedClass=" rounded-xl"
                   title={_STRINGS.CALL}
                   variant="outline"
-                  loading={loading}
+                  loading={isPending}
                   icon={
                     <img
                       className={`w-4 h-4   absolute right-3 top-0 bottom-0 my-auto aspect-square ${isExpired ? "  opacity-50  grayscale" : ""} `}
@@ -242,7 +238,7 @@ const SinglePropRequestedReserveModal = ({
                   }
                 />
                 <Button
-                  disabled={!!isExpired}
+                  disabled={isExpired || isPending}
                   variant="outline"
                   onClick={() => {
                     onContactClick("sms");
@@ -257,7 +253,7 @@ const SinglePropRequestedReserveModal = ({
                       src="/assets/icons/advisor/blue_sms.svg"
                     />
                   }
-                  loading={loading}
+                  loading={isPending}
                 />
               </>
             )}
@@ -270,7 +266,8 @@ const SinglePropRequestedReserveModal = ({
               roundedClass=" rounded-xl"
               title={_STRINGS.SUBMIT_RESERVE}
               variant="outline"
-              loading={loading}
+              loading={isPending}
+              disabled={isPending}
               icon={
                 <img
                   className={`w-4 h-4  aspect-square  absolute right-3 top-0 bottom-0 my-auto  `}
@@ -295,7 +292,8 @@ const SinglePropRequestedReserveModal = ({
                 onClick={() => {
                   onCreateChat();
                 }}
-                loading={loading}
+                loading={isCreatingChat}
+                disabled={isCreatingChat}
               />
             ) : (
               <></>

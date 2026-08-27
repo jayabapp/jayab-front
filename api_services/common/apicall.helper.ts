@@ -9,6 +9,7 @@ import axios from "axios";
 type Methods = "POST" | "PUT" | "DELETE" | "PATCH" | "GET";
 
 export type ApiCallOptions = {
+  headers?: Record<string, string>;
   version?: string;
   passedToken?: string;
   localRoute?: boolean;
@@ -49,11 +50,10 @@ export async function apiCall<T, K>(
           : !!options?.version
             ? baseUrlV(options.version) + url
             : baseUrl + url,
-      headers: headerItems(
-        IS_FORM_DATA ? "file" : undefined,
-        options?.isSocketToken,
-        token,
-      ),
+      headers: {
+        ...headerItems(IS_FORM_DATA ? "file" : undefined, options?.isSocketToken, token),
+        ...options?.headers,
+      },
       data: body,
       signal: options?.signal,
       onUploadProgress: options?.progressCallBack,

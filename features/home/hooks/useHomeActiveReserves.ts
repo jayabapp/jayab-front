@@ -1,16 +1,10 @@
 "use client";
 
 import { useEffect, useMemo, useState } from "react";
-import { ReserveService } from "@/api_services/reserve/reserve.service";
-import { useQuery } from "@tanstack/react-query";
+import { useUserReservations } from "@features/reservations/hooks/useUserReservations";
 
 export const useHomeActiveReserves = (isLogin: boolean) => {
-  const query = useQuery({
-    queryKey: ["home", "active-reserves", isLogin],
-    queryFn: () => ReserveService.userReserves({ type: "active" }),
-    enabled: isLogin,
-    staleTime: 0,
-  });
+  const query = useUserReservations("active", isLogin);
   const [now, setNow] = useState(() => Date.now());
   const activeReserves = useMemo(
     () =>

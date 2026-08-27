@@ -1,11 +1,11 @@
 "use client";
 
-import { useMutation, useQuery } from "@tanstack/react-query";
+import { useCancelReservation } from "@features/reservations/hooks/useCancelReservation";
+import { useUserReservations } from "@features/reservations/hooks/useUserReservations";
 import { ReserveListDto } from "@/api_services/reserve/reserve.interface";
-import { ReserveService } from "@/api_services/reserve/reserve.service";
 import { useState } from "react";
 
-import LottieLoading from "@/components/shared/Lotties/LottieLoading";
+import ReservationCardSkeleton from "@features/reservations/components/ReservationCardSkeleton";
 import ConfirmModal from "@/components/Modal/ConfirmModal";
 import ReserveCard from "@/components/properties/reserve/ReserveCard";
 import EmptyList from "@/components/shared/Lotties/EmptyList";
@@ -15,32 +15,17 @@ const UserReserves = () => {
   const [selectedCancel, setSelectedCancel] = useState<ReserveListDto | null>(
     null,
   );
-  const {
-    data: reserves,
-    isLoading,
-    refetch,
-  } = useQuery({
-    queryKey: [ReserveService?.RESERVE_CACHEKEY],
-    queryFn: () => ReserveService?.userReserves({ type: "active" }),
-    staleTime: 0,
-    gcTime: 0,
-  });
-
-  const refetchCallBack = () => {
-    refetch();
-  };
-
-  const { mutate } = useMutation({
-    mutationFn: ReserveService.cancelReserve,
-    onSuccess: () => {
-      setSelectedCancel(null);
-      refetchCallBack();
-    },
-  });
+  const { data: reserves, isLoading } = useUserReservations("active");
+  const { mutate, isPending: isCancelling } = useCancelReservation(
+    selectedCancel?.property_id,
+  );
 
   const onConfirmCancel = () => {
     if (!selectedCancel) return;
-    mutate({ propertyReserveId: selectedCancel?.id });
+    mutate(
+      { propertyReserveId: selectedCancel.id },
+      { onSuccess: () => setSelectedCancel(null) },
+    );
   };
 
   return (
@@ -49,7 +34,11 @@ const UserReserves = () => {
       className="   profile-container flex flex-col gap-4   transition-all duration-500 ease-in-out "
     >
       {!!isLoading && isEmpty(reserves) ? (
-        <LottieLoading />
+        <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
+          {Array.from({ length: 4 }, (_, index) => (
+            <ReservationCardSkeleton key={index} />
+          ))}
+        </div>
       ) : (
         <div className=" grid  grid-cols-1 lg:grid-cols-2 gap-4 pb-4  md:p-4">
           {reserves?.length == 0 ? (
@@ -62,7 +51,6 @@ const UserReserves = () => {
               <ReserveCard
                 data={e}
                 key={`reserve${e?.id}`}
-                refetchCallBack={refetchCallBack}
                 setSelectedCancel={setSelectedCancel}
               />
             ))
@@ -72,6 +60,7 @@ const UserReserves = () => {
 
       <ConfirmModal
         onConfirm={onConfirmCancel}
+        isLoading={isCancelling}
         isVisible={!!selectedCancel}
         text={`از کنسل کردن رزرو ${selectedCancel?.property?.title} مطمئنید ؟`}
         onHide={() => {

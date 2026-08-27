@@ -3,9 +3,10 @@
 import { useAuthStore, useStoreInit, useStoreParams } from "@/store";
 import { ReactNode, Suspense, useEffect, useState } from "react";
 import { headerBlackList, mobileFooterBlackList } from "../constantss";
+import { useOwnerActiveReservationCount } from "@features/reservations/hooks/useOwnerActiveReservationCount";
 import { usePathname, useRouter } from "next/navigation";
+import { initMetrix, withMetrix } from "../metrix";
 import { getCookie, setCookie } from "cookies-next/client";
-import { ReserveService } from "@/api_services/reserve/reserve.service";
 import { AuthService } from "@/api_services/auth/auth.service";
 import { isMobile } from "react-device-detect";
 import { useQuery } from "@tanstack/react-query";
@@ -16,8 +17,6 @@ import MobileFooter from "../../components/Footer/MobileFooter";
 import LoginModal from "@/components/Modal/LoginModal";
 import dynamic from "next/dynamic";
 import FCM from "../FCM";
-
-import { initMetrix, withMetrix } from "../metrix";
 
 function FallBack() {
   return <></>;
@@ -83,17 +82,13 @@ const MainWrapper = ({ children }: mainWrapper) => {
     gcTime: 0,
   });
 
-  const { data: activeReserves } = useQuery({
-    queryKey: [
-      ReserveService.OWNER_ACTIVE_RESERVE_COUNT_CACHEKEY,
-      profile?.owner_id,
-      owmerActiveReservesSocket,
-    ],
-    queryFn: ReserveService.ownerActiveReserveCount,
-    enabled: !!profile?.owner_id,
-    staleTime: 0,
-    gcTime: 0,
-  });
+  const { data: activeReserves, refetch: refetchActiveReserveCount } =
+    useOwnerActiveReservationCount(Boolean(profile?.owner_id));
+
+  useEffect(() => {
+    if (profile?.owner_id && owmerActiveReservesSocket)
+      void refetchActiveReserveCount();
+  }, [owmerActiveReservesSocket, profile?.owner_id, refetchActiveReserveCount]);
 
   useEffect(() => {
     if (!!activeReserves) setOwmerActiveReservesCount(activeReserves);

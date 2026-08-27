@@ -1,10 +1,10 @@
 "use client";
 
 import { usePathname, useRouter } from "next/navigation";
+import { useOwnerContactRequest } from "@features/reservations/hooks/useOwnerContactRequest";
 import { useEffect, useState } from "react";
 import { calculateTimeLeft } from "@/helpers/calculateTimeLeft";
 import { ReserveListDto } from "@/api_services/reserve/reserve.interface";
-import { ReserveService } from "@/api_services/reserve/reserve.service";
 import { useStoreParams } from "@/store";
 import { NEW_IMAGE_URL } from "@/utils/urls";
 import { useMutation } from "@tanstack/react-query";
@@ -24,21 +24,25 @@ import Link from "next/link";
 
 moment.loadPersian({ dialect: "persian-modern" });
 
+type TReserveCard = {
+  isOwner?: boolean;
+  data: ReserveListDto;
+  refetchCallBack?: () => void | null;
+  setSelectedCancel?: (e: ReserveListDto) => void | null;
+};
+
 const ReserveCard = ({
   data,
   isOwner,
-  setSelectedCancel,
   refetchCallBack,
-}: {
-  data: ReserveListDto;
-  isOwner?: boolean;
-  setSelectedCancel?: (e: ReserveListDto) => void | null;
-  refetchCallBack?: () => void | null;
-}) => {
-  const startMoment = moment().add(data?.ttl_seconds, "seconds").toString();
+  setSelectedCancel,
+}: TReserveCard) => {
+  const [startMoment] = useState(() =>
+    moment().add(data?.ttl_seconds, "seconds").toString(),
+  );
   const router = useRouter();
   const pathname = usePathname();
-  const [showCounter, setShowCounter] = useState(false);
+  const [showCounter, setShowCounter] = useState(data?.show_counter ?? false);
   const [showSub, setShowSub] = useState(false);
   const goToLink = `/rooms/${data?.property?.slug}`;
   const [countdown, setCountdown] = useState<{
@@ -49,25 +53,29 @@ const ReserveCard = ({
     useStoreParams.setState({ getBackHome: false });
   };
 
-  const { mutate, isPending } = useMutation({
-    mutationFn: ReserveService.ownerMobileClick,
-    onSuccess: () => {
-      if (data?.is_subscription_expired) {
-        setShowSub(true);
-      } else {
-        setShowCounter(false);
-        window.open(
-          `tel:${data?.guest_mobile}`,
-          "_blank",
-          "noopener,noreferrer",
-        );
-        refetchCallBack?.();
-      }
-    },
-  });
+  const { mutate, isPending } = useOwnerContactRequest();
+  const submitContactRequest = () =>
+    mutate(
+      { id: data.id },
+      {
+        onSuccess: () => {
+          if (data?.is_subscription_expired) {
+            setShowSub(true);
+          } else {
+            setShowCounter(false);
+            window.open(
+              `tel:${data?.guest_mobile}`,
+              "_blank",
+              "noopener,noreferrer",
+            );
+            refetchCallBack?.();
+          }
+        },
+      },
+    );
 
   const onCallClick = () => {
-    mutate({ id: data?.id });
+    submitContactRequest();
   };
 
   useEffect(() => {
@@ -80,7 +88,7 @@ const ReserveCard = ({
       }
     }, 1000);
     return () => clearInterval(interval);
-  }, [data, isOwner, refetchCallBack]);
+  }, [data?.ttl_seconds, isOwner, refetchCallBack, startMoment]);
 
   useEffect(() => {
     if (countdown?.minutes == "00" && countdown?.seconds == "01") {
@@ -89,10 +97,6 @@ const ReserveCard = ({
       }, 4000);
     }
   }, [countdown, refetchCallBack]);
-
-  useEffect(() => {
-    if (data) setShowCounter(data?.show_counter);
-  }, [data]);
 
   const [contactType, setContactType] = useState<"call" | "sms" | "">("");
 
@@ -158,9 +162,9 @@ const ReserveCard = ({
           <div className=" aspect-square w-full h-full relative">
             <Image
               fill
+              quality={75}
               loading="lazy"
               sizes="(min-width: 1024px) 10vw, 25vw"
-              quality={75}
               alt={data?.property?.feature_image?.alt || ""}
               src={
                 !!data?.property?.feature_image
@@ -175,7 +179,6 @@ const ReserveCard = ({
       <Divider moreClass=" border-dashed  " />{" "}
       {isOwner && !showCounter ? (
         <p className=" text-center text-sm">
-          {" "}
           زمان شما برای پاسخ به این درخواست به اتمام رسیده است.
         </p>
       ) : !isOwner && !!data?.is_answer_deadline_passed ? (
@@ -199,24 +202,24 @@ const ReserveCard = ({
               <div className="flex flex-col gap-1">
                 <p className="w-full text-center text-sm">{_STRINGS.SECONDS}</p>
                 <NumberFlow
-                  value={`${countdown?.seconds || "00"}` as any}
-                  format={{ useGrouping: false }}
+                  willChange
                   aria-hidden
                   animated={true}
+                  format={{ useGrouping: false }}
+                  value={`${countdown?.seconds || "00"}` as any}
                   className={`pointer-events-none pt-1  text-lg !font-medium !space-x-14 w-12 h-12  flex items-center justify-center aspect-square rounded-lg bg-black text-white !tracking-[0.15rem] `}
-                  willChange
                 />{" "}
               </div>
               <p className="text-black pt-6 font-bold text-lg">{`:`}</p>
               <div className="flex flex-col gap-1">
                 <p className="w-full text-center text-sm">{_STRINGS.MINUTE}</p>
                 <NumberFlow
-                  value={`${countdown?.minutes || "00"}` as any}
-                  format={{ useGrouping: false }}
+                  willChange
                   aria-hidden
                   animated={true}
+                  format={{ useGrouping: false }}
+                  value={`${countdown?.minutes || "00"}` as any}
                   className={`pointer-events-none pt-1 text-lg !font-medium !space-x-14 w-12 h-12 flex items-center justify-center aspect-square rounded-lg bg-black text-white !tracking-[0.15rem] `}
-                  willChange
                 />
               </div>
             </div>
@@ -301,8 +304,11 @@ const ReserveCard = ({
               className=" cursor-pointer bg-neutral-100 border w-fit flex items-center gap-2 px-3 py-2 rounded-xl text-xxs md:text-sm font-medium"
             >
               لغو رزرو
-              <img
+              <Image
                 src="/assets/icons/adds/x_mark.svg"
+                alt=""
+                width={8}
+                height={8}
                 className=" w-2 h-2  md:w-2 cursor-pointer opacity-60 md:h-2"
               />
             </div>
@@ -313,9 +319,12 @@ const ReserveCard = ({
               loading={isPending}
               title={`${`${data?.guest_mobile}`?.includes("*") ? " تماس با میهمان" : data?.guest_mobile}`}
               icon={
-                <img
+                <Image
                   className="w-4 h-4  aspect-square"
                   src="/assets/icons/advisor/white_phone.svg"
+                  alt=""
+                  width={16}
+                  height={16}
                 />
               }
             />
@@ -346,9 +355,12 @@ const ReserveCard = ({
                   title={_STRINGS.CALL}
                   variant="outline"
                   icon={
-                    <img
+                    <Image
                       className={`w-4 h-4   absolute right-3 top-0 bottom-0 my-auto aspect-square ${isExpired ? "  opacity-50  grayscale" : ""} `}
                       src="/assets/icons/advisor/blue_phone.svg"
+                      alt=""
+                      width={16}
+                      height={16}
                     />
                   }
                 />
@@ -363,9 +375,12 @@ const ReserveCard = ({
                   roundedClass=" rounded-xl"
                   title={_STRINGS.SMS}
                   icon={
-                    <img
+                    <Image
                       className={`w-4 h-4  absolute right-3 top-0 bottom-0 my-auto ${isExpired ? "  opacity-50  grayscale" : ""}   ml-1 aspect-square`}
                       src="/assets/icons/advisor/blue_sms.svg"
+                      alt=""
+                      width={16}
+                      height={16}
                     />
                   }
                 />
@@ -379,9 +394,12 @@ const ReserveCard = ({
                 roundedClass=" rounded-xl"
                 title={_STRINGS.CHAT_IN_JAYAB}
                 icon={
-                  <img
+                  <Image
                     className="w-4 h-4  absolute right-3 top-0 bottom-0 my-auto  ml-1 aspect-square"
                     src="/assets/icons/reserve/blue_chat_reserve.svg"
+                    alt=""
+                    width={16}
+                    height={16}
                   />
                 }
                 onClick={() => {
