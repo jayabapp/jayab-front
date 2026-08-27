@@ -3,12 +3,11 @@
 import { usePathname, useRouter } from "next/navigation";
 import { useOwnerContactRequest } from "@features/reservations/hooks/useOwnerContactRequest";
 import { useEffect, useState } from "react";
+import { useStartOrFindChat } from "@features/chat/hooks/useStartOrFindChat";
 import { calculateTimeLeft } from "@/helpers/calculateTimeLeft";
 import { ReserveListDto } from "@/api_services/reserve/reserve.interface";
 import { useStoreParams } from "@/store";
 import { NEW_IMAGE_URL } from "@/utils/urls";
-import { useMutation } from "@tanstack/react-query";
-import { ChatService } from "@/api_services/chat/chat.service";
 import { Divider } from "@/components/shared/Divider";
 
 import SinglePropContactInfoModal from "../SinglePropertyIntroduction/SinglePropContactInfoModal";
@@ -100,16 +99,16 @@ const ReserveCard = ({
 
   const [contactType, setContactType] = useState<"call" | "sms" | "">("");
 
-  const { mutate: createFindChat, isPending: chatLoading } = useMutation({
-    mutationFn: ChatService.StartOrFindChat,
-    onSuccess: (e) => {
-      router.push(`/chat/${e?.chatroom_id}`);
-    },
-    onError: () => {},
-  });
+  const { mutate: createFindChat, isPending: chatLoading } =
+    useStartOrFindChat();
 
   const onCreateChat = () => {
-    createFindChat({ property_id: data?.property?.id || data?.property_id });
+    createFindChat(
+      { property_id: data?.property?.id || data?.property_id },
+      {
+        onSuccess: (response) => router.push(`/chat/${response?.chatroom_id}`),
+      },
+    );
   };
 
   const onContactClick = (type: "sms" | "call") => {

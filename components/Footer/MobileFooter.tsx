@@ -5,10 +5,10 @@ import { AnimatePresence, motion } from "framer-motion";
 import { usePathname, useRouter } from "next/navigation";
 import { footerHiddenBlackList } from "@/utils/constantss";
 import { useEffect, useState } from "react";
+import { useUnreadChatCount } from "@features/chat/hooks/useUnreadChatCount";
 import { subscriptionStatus } from "@/helpers/subscriptionStatus";
 import { PropertyService } from "@/api_services/property/property.service";
 import { AdvisorService } from "@/api_services/advisor/advisor.propery";
-import { ChatService } from "@/api_services/chat/chat.service";
 import { useQuery } from "@tanstack/react-query";
 import { isIOS } from "react-device-detect";
 
@@ -129,14 +129,9 @@ const MobileFooter: React.FC = ({}) => {
 
   const MY_JAYAB_HAS_NOTIF = !!owmerActiveReservesCount;
 
-  const { data: chaNotifBadge } = useQuery({
-    queryKey: [ChatService.UNREAD_CHAT_COUNT_CACHEKEY, isLogin, pathname],
-    queryFn: () => ChatService.getUnreadChatCount(),
-    refetchOnWindowFocus: true,
-    enabled: !!isLogin && (pathname == "/" || pathname == "/chat"),
-    staleTime: 300,
-    gcTime: 300,
-  });
+  const { data: chaNotifBadge } = useUnreadChatCount(
+    !!isLogin && (pathname == "/" || pathname == "/chat"),
+  );
 
   const CHAT_HAS_NOTIF = !!chaNotifBadge?.unread_count;
   return (
@@ -227,7 +222,7 @@ const MobileFooter: React.FC = ({}) => {
             </div>
 
             {/* LEFT PART  */}
-            {lefttFooterItems?.map((el, i) => {
+            {lefttFooterItems?.map((el) => {
               return (
                 <div
                   className={` w-full   relative cursor-pointer select-none flex flex-col items-center gap-1 justify-center transition-all duration-1000	ease-in-out  `}

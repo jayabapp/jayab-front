@@ -1,4 +1,9 @@
 const _STRINGS = {
+  TRY_AGAIN: "تلاش دوباره",
+  ERROR: "خطایی رخ داده است",
+  MESSAGE_SENDING: "در حال ارسال",
+  MESSAGE_SEND_FAILED: "ارسال ناموفق",
+  CHAT_RECONNECTING: "در حال اتصال مجدد...",
   CURRENCY: "تومان",
   IMAGE: "تصویر",
   RETURN: "بازگشت",

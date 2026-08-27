@@ -2,12 +2,11 @@
 
 import { useCreateReservation } from "@features/reservations/hooks/useCreateReservation";
 import { jalaliDateToApiDate } from "@features/reservations/mappers/reservation-dates";
+import { useStartOrFindChat } from "@features/chat/hooks/useStartOrFindChat";
 import { ReserveUserAction } from "@/enum/reserve.enum";
 import { ReserveListDto } from "@/api_services/reserve/reserve.interface";
 import { SinglePropDto } from "@/api_services/property/property.interface";
 import { NEW_IMAGE_URL } from "@/utils/urls";
-import { ChatService } from "@/api_services/chat/chat.service";
-import { useMutation } from "@tanstack/react-query";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
 
@@ -46,15 +45,16 @@ const SinglePropRequestedReserveModal = ({
   const [activeReserve, setActiveReserve] = useState<ReserveListDto | null>(
     null,
   );
-  const { mutate: createFindChat, isPending: isCreatingChat } = useMutation({
-    mutationFn: ChatService.StartOrFindChat,
-    onSuccess: (e) => {
-      router.push(`/chat/${e?.chatroom_id}`);
-    },
-  });
+  const { mutate: createFindChat, isPending: isCreatingChat } =
+    useStartOrFindChat();
 
   const onCreateChat = () => {
-    createFindChat({ property_id: data?.id });
+    createFindChat(
+      { property_id: data?.id },
+      {
+        onSuccess: (response) => router.push(`/chat/${response?.chatroom_id}`),
+      },
+    );
   };
 
   const onContactClick = (type: "sms" | "call") => {

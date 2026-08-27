@@ -1,17 +1,17 @@
-import { useCallback, useEffect, useRef, useState } from "react";
+import { useEffect, useEffectEvent, useMemo, useRef, useState } from "react";
 import { useChatStore, useStoreSocket } from "@/store";
 import { SingleChatDetailsDto } from "@/api_services/chat/chat.interface";
-import { ChatService } from "@/api_services/chat/chat.service";
-import { useMutation } from "@tanstack/react-query";
+import { useSendMessage } from "@features/chat/hooks/useSendMessage";
 import { isIOS } from "react-device-detect";
 
 import ExpiredPropertyModal from "./ExpiredPropertyModal";
 import ChatUploader from "../uploader/ChatUploader";
 import BtnLoading from "../shared/Button/BtnLoading";
 import ChatInput from "./ChatInput";
+import ChatReply from "./ChatReply";
 import debounce from "lodash/debounce";
 import dynamic from "next/dynamic";
-import ChatReply from "./ChatReply";
+import Image from "next/image";
 
 const EmojiPicker = dynamic(
   () => {
@@ -20,31 +20,19 @@ const EmojiPicker = dynamic(
   { ssr: true },
 );
 export interface ChatFooterTypes {
-  keyoard: boolean;
   showProduct: boolean;
   product?: any | null;
   chatId: string | number;
-  callback?: () => void | null;
   cancleButton?: () => void | null;
-  scrollToBottom: () => void | null;
   singleChatData?: SingleChatDetailsDto;
-  setCursor: (e: number) => void | null;
-  setKeyboard: (e: boolean) => void | null;
-  setRefresher: (e: (e: boolean) => boolean) => void | null;
-  setData: React.Dispatch<React.SetStateAction<[] | any[]>>;
 }
 
 const ChatFooter = ({
-  product,
-  cancleButton,
   chatId,
+  product,
   showProduct,
-  scrollToBottom,
-  setKeyboard,
-  keyoard,
-  callback,
+  cancleButton,
   singleChatData,
-  setData,
 }: ChatFooterTypes) => {
   const [showExpired, setShowExpired] = useState(false);
   const [isTyping, setIsTyping] = useState<boolean | null>(false);
@@ -54,29 +42,50 @@ const ChatFooter = ({
   const [showEmojiPicker, setShowEmojiPicker] = useState(false);
   const [image, setImage] = useState<any>(null);
   const inputRef = useRef<HTMLTextAreaElement>(null);
+  const submittingRef = useRef(false);
   const { connecting } = useStoreSocket((state) => state);
 
-  const { mutate: sendMessage, isPending: sedLoading } = useMutation({
-    mutationFn: ChatService.SendMessage,
-    onSuccess: (d) => {
-      setText("");
-      inputRef?.current?.blur();
-      if (!!d?.message) setData((e) => [...e, d?.message]);
-      if (keyoard) scrollToBottom();
-      if (product && cancleButton) cancleButton();
-      if (!!callback) callback();
-    },
-    onError: (e: any) => {
-      if (e?.message_code == "CHAT10") setShowExpired(true);
-    },
-  });
+  const sendMessageMutation = useSendMessage(
+    `${chatId}`,
+    singleChatData?.self?.participant_id,
+  );
+  const { mutate: sendMessage, isPending: sedLoading } = sendMessageMutation;
 
-  const checkIsTyping = useCallback(
-    debounce(() => {
-      setIsTyping(false);
-    }, 3000),
+  const typingDebounce = useMemo(
+    () =>
+      debounce(() => {
+        setIsTyping(false);
+      }, 3000),
     [],
   );
+
+  useEffect(() => () => typingDebounce.cancel(), [typingDebounce]);
+
+  useEffect(
+    () => () => {
+      if (socket && chatId) {
+        socket.emit("chat:is-typing", {
+          chatroom_id: chatId,
+          is_typing: false,
+          participant_id: singleChatData?.self?.participant_id,
+        });
+      }
+    },
+    [chatId, singleChatData?.self?.participant_id, socket],
+  );
+
+  const handleSendSuccess = () => {
+    submittingRef.current = false;
+    setText("");
+    setImage(null);
+    inputRef?.current?.blur();
+    if (product && cancleButton) cancleButton();
+  };
+
+  const handleSendError = (e: any) => {
+    submittingRef.current = false;
+    if (e?.message_code == "CHAT10") setShowExpired(true);
+  };
 
   useEffect(() => {
     if (!!socket && chatId) {
@@ -86,38 +95,44 @@ const ChatFooter = ({
         participant_id: singleChatData?.self?.participant_id,
       });
     }
-  }, [isTyping, socket, !!chatId]);
+  }, [chatId, isTyping, singleChatData?.self?.participant_id, socket]);
 
   const submit = () => {
+    if (submittingRef.current || connecting || sedLoading) return;
     if (
       !!singleChatData?.property?.is_expired &&
       singleChatData?.self?.user_id == singleChatData?.property?.owner?.user?.id
     )
       return setShowExpired(true);
-    if ((text || !!image) && chatId) {
+    const normalizedText = text.trim();
+    if ((normalizedText || !!image) && chatId) {
+      submittingRef.current = true;
       const body: { id: string | number; text: string; media_id?: number } = {
         id: chatId,
-        text,
+        text: normalizedText,
       };
       if (!!image) body.media_id = Number(image?.id);
-      sendMessage(body);
+      sendMessage(
+        { ...body, clientMessageId: crypto.randomUUID() },
+        { onSuccess: handleSendSuccess, onError: handleSendError },
+      );
     }
   };
 
+  const submitEvent = useEffectEvent(submit);
+
   useEffect(() => {
-    document.addEventListener("keydown", _onKeyDown);
+    const onKeyDown = (event: KeyboardEvent) => {
+      if (event.code === "Enter" && !event.shiftKey) {
+        event.preventDefault();
+        submitEvent();
+      }
+    };
+    document.addEventListener("keydown", onKeyDown);
     return () => {
-      document.removeEventListener("keydown", _onKeyDown);
+      document.removeEventListener("keydown", onKeyDown);
     };
   }, []);
-
-  const _onKeyDown = (e: KeyboardEvent) => {
-    if (e?.code == "Enter") return submit();
-  };
-
-  useEffect(() => {
-    if (keyoard) scrollToBottom();
-  }, [keyoard]);
 
   const cancelReply = () => {
     useChatStore.setState({ chatReply: null });
@@ -125,16 +140,10 @@ const ChatFooter = ({
   const handleTextChange = (e: string) => {
     setText(e);
     setIsTyping(true);
-    checkIsTyping();
+    typingDebounce();
   };
   return (
     <div
-      onClick={() => {
-        setKeyboard(true);
-      }}
-      onBlur={() => {
-        setKeyboard(false);
-      }}
       className={` flex px-2  flex-1 z-30 w-full left-0 border-b   ${
         isIOS ? " bottom-0   " : "bottom-[0]   pb-1"
       }  h-fit  transition-all duration-100 ease-in-out  absolute  overflow-clip     left-0   flex-col  bg-white  dark:bg-dark-700 ${
@@ -151,7 +160,7 @@ const ChatFooter = ({
       >
         <div
           onMouseDown={(e) => {
-            if (!sedLoading || !connecting) {
+            if (!sedLoading && !connecting) {
               e.preventDefault();
               submit();
             }
@@ -164,14 +173,19 @@ const ChatFooter = ({
           ) : (
             <div
               className={`w-8 ${
-                text && !connecting ? "opacity-100" : "opacity-50 grayscale "
+                (text.trim() || image) && !connecting
+                  ? "opacity-100"
+                  : "opacity-50 grayscale "
               }  aspect-square rounded-full flex items-center justify-center bg-primary-700  dark:invert`}
             >
               {" "}
-              <img
+              <Image
                 tabIndex={1}
                 className={`  transition-all  w-4 aspect-square   duration-200 ease-in-out text-lightBlue-100`}
                 src="/assets/icons/chat/chat_arrow_head.svg"
+                alt="ارسال"
+                width={16}
+                height={16}
               />
             </div>
           )}
@@ -184,22 +198,25 @@ const ChatFooter = ({
           maxRows={product && showProduct ? 1 : 4}
           onFocus={() => {
             setShowEmojiPicker(false);
-            if (callback) callback();
           }}
         />
 
         <div className="flex shrink-0 items-center gap-1">
           {showEmojiPicker ? (
-            <img
-              src="/assets/icons/chat/smily_face.svg"
+            <Image
+              width={24}
+              height={24}
               alt="XMarkIcon"
+              src="/assets/icons/chat/smily_face.svg"
               onClick={() => setShowEmojiPicker(false)}
               className="w-5 text-gray-500 h-5 md:!w-6 md:!h-6 "
             />
           ) : (
-            <img
-              src="/assets/icons/chat/smily_face.svg"
+            <Image
+              width={24}
+              height={24}
               alt="FaceSmileIcon"
+              src="/assets/icons/chat/smily_face.svg"
               onClick={() => setShowEmojiPicker(true)}
               className="w-5 text-gray-500 h-5  md:!w-6 md:!h-6 "
             />
@@ -209,7 +226,22 @@ const ChatFooter = ({
             item={image}
             chatId={chatId}
             containerClass={"my-3"}
-            sendMessage={sendMessage}
+            sendMessage={(body, options) =>
+              sendMessage(
+                { ...body, clientMessageId: crypto.randomUUID() },
+                {
+                  onSuccess: (response) => {
+                    submittingRef.current = false;
+                    handleSendSuccess();
+                    options?.onSuccess?.(response);
+                  },
+                  onError: (error) => {
+                    handleSendError(error);
+                    options?.onError?.(error);
+                  },
+                },
+              )
+            }
             link={"/attachments?type=CHAT"}
             onSelect={(file) => {
               setImage(file);

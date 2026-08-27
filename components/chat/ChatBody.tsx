@@ -1,89 +1,100 @@
-import { NewSingleChatDto, SingleChatDetailsDto } from "@/api_services/chat/chat.interface";
+"use client";
+
+import { SingleChatDetailsDto } from "@/api_services/chat/chat.interface";
+import { useEffect, useRef } from "react";
+import { NewSingleChatDto } from "@/api_services/chat/chat.interface";
 import { useChatStore } from "@/store";
-import React, { useEffect } from "react";
-import BtnLoading from "../shared/Button/BtnLoading";
-import LottieLoading from "../shared/Lotties/LottieLoading";
+
+import PrivateOthersMessage from "./PrivateOthersMessage";
 import IsTypingEffect from "./IsTypingEffect";
 import MyMessageItem from "./MyMessageItem";
-import PrivateOthersMessage from "./PrivateOthersMessage";
+
+interface ChatBodyProps {
+  hasNextPage: boolean;
+  data: NewSingleChatDto[];
+  isFetchingNextPage: boolean;
+  singleChatData: SingleChatDetailsDto;
+  fetchNextPage: () => Promise<unknown>;
+}
 
 const ChatBody = ({
   data,
-  firstTime,
-  setFirstTime,
-  refer,
-  scrollToBottom,
+  hasNextPage,
+  fetchNextPage,
   singleChatData,
-  isLoading,
-  nextIsLoading,
-}: {
-  data: NewSingleChatDto[];
-  firstTime: boolean;
-  setFirstTime: (e: boolean) => void | null;
-  scrollToBottom: () => void | null;
-  refer: React.RefObject<HTMLDivElement | null>;
-  singleChatData?: SingleChatDetailsDto;
-  isLoading: boolean;
-  nextIsLoading: boolean;
-}) => {
-  // const [firstTime, setFirstTime] = useState(true);
-  // const { userInfo } = useSelector((state: any) => state?.init);
-  const { isTyping } = useChatStore((state) => state);
-  const length = data?.length;
+  isFetchingNextPage,
+}: ChatBodyProps) => {
+  const isTyping = useChatStore((state) => state.isTyping);
+  const scrollContainerRef = useRef<HTMLDivElement>(null);
+  const previousLengthRef = useRef(0);
+  const initialScrollDoneRef = useRef(false);
 
   useEffect(() => {
-    if (data?.length > 0 && firstTime && !!singleChatData) {
-      scrollToBottom();
-      setFirstTime(false);
+    const container = scrollContainerRef.current;
+    if (!container) return;
+    if (!initialScrollDoneRef.current && data.length > 0) {
+      container.scrollTop = container.scrollHeight;
+      initialScrollDoneRef.current = true;
+    } else if (
+      data.length > previousLengthRef.current &&
+      container.scrollTop > container.scrollHeight - 500
+    ) {
+      container.scrollTop = container.scrollHeight;
     }
-  }, [data, singleChatData]);
+    previousLengthRef.current = data.length;
+  }, [data.length]);
+
+  const loadOlderMessages = async () => {
+    const container = scrollContainerRef.current;
+    if (!container || !hasNextPage || isFetchingNextPage) return;
+    const previousHeight = container.scrollHeight;
+    await fetchNextPage();
+    requestAnimationFrame(() => {
+      container.scrollTop = container.scrollHeight - previousHeight;
+    });
+  };
 
   return (
-    <div className="flex pb-4 md:mb-0   flex-1  overflow-y-hidden  items-end w-full  px-4">
-      <div className="grid h-fit max-h-[90dvh] gap-6 pt-24 md:pt-36 pb-4  w-full overflow-y-scroll  items-end justify-center grid-cols-3">
-        {!!nextIsLoading ? (
-          <div className=" flex items-center justify-center w-full col-span-full">
-            <BtnLoading />
+    <div className="flex flex-1 items-end overflow-y-hidden px-4 pb-4 md:mb-0">
+      <div
+        ref={scrollContainerRef}
+        onScroll={(event) => {
+          if (event.currentTarget.scrollTop < 80) void loadOlderMessages();
+        }}
+        className="grid max-h-[90dvh] w-full grid-cols-3 items-end justify-center gap-6 overflow-y-scroll pb-4 pt-24 md:pt-36"
+      >
+        {isFetchingNextPage ? (
+          <div
+            className="col-span-full flex flex-col gap-2"
+            aria-label="در حال دریافت پیام‌های قبلی"
+          >
+            <div className="h-12 w-1/2 animate-pulse rounded-xl bg-neutral-200" />
+            <div className="mr-auto h-12 w-2/5 animate-pulse rounded-xl bg-white" />
           </div>
         ) : (
           <></>
         )}
-        <div id="getNext" className="w-full  "></div>
-        {!!isLoading || !singleChatData ? (
-          <div className="col-span-full">
-            {" "}
-            <LottieLoading />
-          </div>
-        ) : (
-          data?.map((e, index) => {
-            if (singleChatData?.self?.participant_id == e?.participant_id) {
-              return (
-                <MyMessageItem data={e} index={index} length={length} key={`${e?.text}${e?.id}${e?.participant_id}`} />
-              );
-            } else
-              return (
-                <PrivateOthersMessage
-                  data={e}
-                  index={index}
-                  length={length}
-                  key={`${e?.text}${e?.id}${e?.participant_id}`}
-                />
-              );
-          })
+        {data.map((message) =>
+          singleChatData.self.participant_id === message.participant_id ? (
+            <MyMessageItem
+              data={message}
+              key={message.clientMessageId ?? message.id}
+            />
+          ) : (
+            <PrivateOthersMessage
+              data={message}
+              key={message.clientMessageId ?? message.id}
+            />
+          ),
         )}
-        {isTyping?.chatroom_id == singleChatData?.id && isTyping?.is_typing ? (
-          <div className="col-span-4 w-[100%]  relative  flex justify-end">
-            <IsTypingEffect />{" "}
+        {isTyping?.chatroom_id === singleChatData.id && isTyping?.is_typing ? (
+          <div className="col-span-4 flex w-full justify-end">
+            <IsTypingEffect />
           </div>
         ) : (
           <></>
         )}
-        <div
-          id="referer"
-          key={"referer"}
-          ref={refer}
-          className={`col-span-full h-12 md:!mt-12  bg-transparent dark:bg-dark-800 transition-all duration-300 ease-in-out`}
-        ></div>
+        <div className="col-span-full h-12 bg-transparent" />
       </div>
     </div>
   );

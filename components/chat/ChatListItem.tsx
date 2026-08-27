@@ -1,11 +1,17 @@
-// import { useRouter } from "next/router";
-import { ChatListDto } from "@/api_services/chat/chat.interface";
 import { useStoreParams } from "@/store";
 import { NEW_IMAGE_URL } from "@/utils/urls";
+import { ChatListDto } from "@/api_services/chat/chat.interface";
+
 import moment from "moment-jalaali";
 import Link from "next/link";
+import Image from "next/image";
 
-const ChatListItem = ({ item, onClickCb }: { item: ChatListDto; onClickCb?: () => void | null }) => {
+type TChatListProps = {
+  item: ChatListDto;
+  onClickCb?: () => void | null;
+};
+
+const ChatListItem = ({ item, onClickCb }: TChatListProps) => {
   moment.locale("fa", { useGregorianParser: true });
   const removeredirectRoomToHome = () => {
     useStoreParams.setState({ getBackHome: false });
@@ -23,16 +29,29 @@ const ChatListItem = ({ item, onClickCb }: { item: ChatListDto; onClickCb?: () =
       className="w-full flex  relative pb-3  border-b flex-col"
     >
       <div className="w-full  relative  flex items-start flex-row  gap-2">
-        <img
+        <Image
           className="w-12 aspect-square h-12 rounded-md "
           src={NEW_IMAGE_URL(item?.property_image, "medium")}
           alt={`${item?.property_title}`}
+          width={48}
+          height={48}
         />
         <div className=" w-full flex   flex-col   items-start gap-2 justify-between">
-          <p className=" font-medium  text-sm   w-full text-start md:w-fit "> {item?.property_title}</p>
+          <p className=" font-medium  text-sm   w-full text-start md:w-fit ">
+            {" "}
+            {item?.property_title}
+          </p>
           <div className="w-full flex items-center gap-0.5 ">
-            <img className="w-5 h-5" src="/assets/icons/chat/basil_user.svg" />
-            <p className="text-xs !leading-2 opacity-50 mt-1 ">{item?.other_side_mobile}</p>
+            <Image
+              className="w-5 h-5"
+              src="/assets/icons/chat/basil_user.svg"
+              alt="کاربر"
+              width={20}
+              height={20}
+            />
+            <p className="text-xs !leading-2 opacity-50 mt-1 ">
+              {item?.other_side_mobile}
+            </p>
           </div>
         </div>
       </div>

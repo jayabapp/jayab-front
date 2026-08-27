@@ -1,95 +1,94 @@
-import { ReactEventHandler, useRef, useState } from "react";
-
+import { ReactEventHandler, useEffect, useRef, useState } from "react";
 import { AuthService } from "@/api_services/auth/auth.service";
-import _STRINGS from "@/utils/LocalStrings";
-import { UseMutateFunction, useMutation } from "@tanstack/react-query";
-
+import { useMutation } from "@tanstack/react-query";
 import { toast } from "sonner";
-import Modal from "../Modal";
+
 import BtnLoading from "../shared/Button/BtnLoading";
 import FormInput from "../shared/Form/FormInput";
+import _STRINGS from "@/utils/LocalStrings";
+import Image from "next/image";
+import Modal from "../Modal";
 
-//For Slider
-const marks = {
-  "-180": "180°-",
-  "-90": "90°-",
-  0: <strong>0</strong>,
-  90: "90°",
-  180: "180°",
-};
 type props = {
-  type?: string;
-
   item: any;
+  link: string;
+  type?: string;
+  disabled?: boolean;
+  cropRatio?: number;
+  withCrop?: boolean;
+  chatId: string | number;
+  containerClass?: string;
   onDelete: () => void | null;
   onSelect: (e: any) => void | null;
-  containerClass?: string;
-
-  disabled?: boolean;
-  withCrop?: boolean;
-  cropRatio?: number;
-  link: string;
-  chatId: string | number;
-  sendMessage: UseMutateFunction<
-    unknown,
-    unknown,
-    {
+  sendMessage: (
+    body: {
       id: string | number;
       text: string;
       media_id?: number;
+      optimisticMedia?: any;
     },
-    unknown
-  >;
+    options?: {
+      onSuccess?: (response: unknown) => void;
+      onError?: (error: unknown) => void;
+    },
+  ) => void;
 };
 interface RefObject<T> {
   readonly current: T | null;
 }
 
 const ChatUploader = ({
-  item,
-  type = "image",
-
-  disabled,
-  onSelect,
-
-  onDelete,
-
-  containerClass,
-
-  withCrop = false,
-  cropRatio,
   link,
-  sendMessage,
+  item,
   chatId,
+  onSelect,
+  disabled,
+  sendMessage,
+  type = "image",
+  containerClass,
 }: props) => {
   const imagePickerRef = useRef<HTMLDivElement>(null);
-  /* ------------------------------- CROP STATES ------------------------------ */
   const [loading, setLoading] = useState(false);
   const [subLoading, setSubLoading] = useState(false);
-  const [newCrop, setNewCrop] = useState<any>();
+  const [, setNewCrop] = useState<any>();
   const [selectedFile, setselectedFile] = useState<File | null>(null);
   const [isCropping, setisCropping] = useState(false);
-  const [aspect, setAspect] = useState<number | undefined>(cropRatio);
   const imgRef = useRef<HTMLImageElement>(null);
-  const [completedCrop, setCompletedCrop] = useState<any>();
   const [caption, setCaption] = useState<string>("");
-  /* ------------------------------- END CROP STATES ------------------------------ */
-
-  /* ------------------------------ ON PICK FILE ------------------------------ */
-
+  const [previewUrl, setPreviewUrl] = useState("");
+  const uploadControllerRef = useRef<AbortController | null>(null);
   const { mutate } = useMutation({ mutationFn: AuthService.UploadUsersImage });
+
+  useEffect(
+    () => () => {
+      uploadControllerRef.current?.abort();
+      if (previewUrl) URL.revokeObjectURL(previewUrl);
+    },
+    [previewUrl],
+  );
 
   const submit = (image: any) => {
     if (chatId) {
-      const body: { id: string | number; text: string; media_id?: number } = { id: chatId, text: caption };
+      const body: {
+        id: string | number;
+        text: string;
+        media_id?: number;
+        optimisticMedia?: any;
+      } = {
+        id: chatId,
+        text: caption,
+      };
       if (!!image) {
         body.media_id = Number(image?.id);
+        body.optimisticMedia = image;
       }
 
       sendMessage(body, {
         onSuccess: () => {
           setLoading(false);
           setSubLoading(false);
+          if (previewUrl) URL.revokeObjectURL(previewUrl);
+          setPreviewUrl("");
           setselectedFile(null);
           setNewCrop(null);
           setCaption("");
@@ -105,28 +104,20 @@ const ChatUploader = ({
 
   const uploadTemp = async (file: Blob) => {
     setLoading(true);
-
-    // const compressedBlob = await imageCompression(file as any, {
-    //   maxSizeMB: 1,
-    //   maxWidthOrHeight: 1240,
-    //   useWebWorker: true,
-    // });
-    // const compressedFile = new File([compressedBlob], "whatever", {
-    //   type: file.type,
-    //   lastModified: Date.now(),
-    // });
+    uploadControllerRef.current?.abort();
+    const controller = new AbortController();
+    uploadControllerRef.current = controller;
     var formData = new FormData();
     formData.append("file", file);
-
     mutate(
-      { formData: formData, link: link },
+      { formData: formData, link: link, signal: controller.signal },
       {
         onSuccess: (e) => {
+          if (controller.signal.aborted) return;
           submit(e?.result);
-
-          // onSelect(e);
         },
         onError: () => {
+          if (controller.signal.aborted) return;
           setLoading(false);
         },
       },
@@ -136,48 +127,37 @@ const ChatUploader = ({
   const pick: ReactEventHandler = async (e) => {
     const target = e.target as HTMLInputElement;
     const file = target?.files ? target?.files[0] : null;
-
     if (!file) return;
-    if (type == "image" && !file.type?.includes("image/")) return toast.error("لطفا از فایل تصویر استفاده نمایید");
+    if (type == "image" && !file.type?.includes("image/"))
+      return toast.error("لطفا از فایل تصویر استفاده نمایید");
     if (type == "image" && file.name.split(".")[1] == "jfif")
       return toast.error("لطفا از فایل تصویر درست استفاده نمایید");
     else {
-      // const compressedBlob = await imageCompression(file as File, {
-      //   maxSizeMB: 1,
-      //   maxWidthOrHeight: 1400,
-      //   useWebWorker: true,
-      // });
-      // const compressedFile = new File([compressedBlob], file.name, {
-      //   type: file.type,
-      //   lastModified: file.lastModified,
-      // });
+      if (previewUrl) URL.revokeObjectURL(previewUrl);
+      setPreviewUrl(URL.createObjectURL(file));
       setselectedFile(file);
     }
   };
   async function uploadImage() {
     setSubLoading(true);
-    if (!!selectedFile) {
-      uploadTemp(selectedFile);
-    } else {
-      setSubLoading(false);
-    }
+    if (!!selectedFile) uploadTemp(selectedFile);
+    else setSubLoading(false);
   }
 
   const onHide = () => {
+    uploadControllerRef.current?.abort();
+    if (previewUrl) URL.revokeObjectURL(previewUrl);
+    setPreviewUrl("");
     setselectedFile(null);
     setisCropping(false);
   };
 
-  // useEffect(() => {
-  //   setDisable(true);
-  // }, [rotation]);
   return (
-    <div className={`flex w-fit  ${containerClass}`} style={{ zIndex: "4 !important" }}>
-      {/* <div id="myVIdeo"></div> */}
-      <div
-        className="flex  w-fit  flex-col     items-center justify-start   rounded-20"
-        // style={{ overflowX: "scroll" }}
-      >
+    <div
+      className={`flex w-fit  ${containerClass}`}
+      style={{ zIndex: "4 !important" }}
+    >
+      <div className="flex w-fit flex-col items-center justify-start rounded-20">
         <input
           className="  hidden "
           type="file"
@@ -198,13 +178,15 @@ const ChatUploader = ({
           ) : (
             <div className="  aspect-square shrink-0 md:w-6  items-center justify-center flex  text-gray-500   h-5 w-5 md:h-6">
               {" "}
-              <img
+              <Image
                 src="/assets/icons/chat/chat_clip.svg"
                 alt="PaperClipIcon"
                 className="  aspect-square shrink-0 md:w-6 text-gray-500   h-5 w-5 md:h-6"
                 onClick={() => {
                   !disabled ? imagePickerRef?.current?.click() : void null;
                 }}
+                width={24}
+                height={24}
               />{" "}
             </div>
           ))}
@@ -227,13 +209,15 @@ const ChatUploader = ({
           }}
         >
           {!!selectedFile && (
-            <img
-              ref={imgRef}
-              alt="Crop me"
-              src={URL.createObjectURL(selectedFile)}
-              //   style={{ transform: ` rotate(${rotation}deg)` }}
-              className=" object-contain   bg-slate-800   max-h-[60dvh] xl:max-h-[70dvh]"
-            />
+            <>
+              {/* eslint-disable-next-line @next/next/no-img-element */}
+              <img
+                ref={imgRef}
+                alt="پیش‌نمایش تصویر"
+                src={previewUrl}
+                className="max-h-[60dvh] bg-slate-800 object-contain xl:max-h-[70dvh]"
+              />
+            </>
           )}
         </div>
         <FormInput
@@ -261,30 +245,35 @@ const ChatUploader = ({
               </div>
             ) : (
               <>
-                {" "}
-                <img
-                  src="/assets/icons/shared/green_check_icon.svg"
+                <Image
+                  width={20}
+                  height={20}
                   alt="CheckIcon"
+                  src="/assets/icons/shared/green_check_icon.svg"
                   className=" items-center justify-center text-center text-green-600 border-green-600 w-5 dark:text-dark-green"
                 />
-                <p className="text-green-600 border-green-600  text-lg font-medium dark:text-dark-green">تایید</p>
+                <p className="text-green-600 border-green-600  text-lg font-medium dark:text-dark-green">
+                  تایید
+                </p>
               </>
             )}{" "}
           </div>
           <div
             onClick={() => {
-              if (!isCropping) {
-                onHide();
-              }
+              if (!isCropping) onHide();
             }}
             className="w-full py-1.5 cursor-pointer gap-3  border rounded-xl border-red-600 dark:border-dark-red flex items-center justify-center"
           >
-            <img
-              src="/assets/icons/adds/red_x_mark.svg"
+            <Image
+              width={20}
+              height={20}
               alt="XCircleIcon"
+              src="/assets/icons/adds/red_x_mark.svg"
               className="  text-red-600 w-5 dark:text-dark-red"
             />
-            <p className="text-red-600  text-lg font-medium dark:text-dark-red">بستن</p>
+            <p className="text-red-600  text-lg font-medium dark:text-dark-red">
+              بستن
+            </p>
           </div>
         </div>
 

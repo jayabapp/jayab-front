@@ -6,11 +6,11 @@ import { useParams, usePathname, useRouter } from "next/navigation";
 import { headerMobileSearchBlackList } from "@/utils/constantss";
 import { useNotificationBadge } from "@features/notifications/hooks/useNotificationBadge";
 import { headerWithFullSeach } from "@/utils/constantss";
+import { useUnreadChatCount } from "@features/chat/hooks/useUnreadChatCount";
 import { subscriptionStatus } from "@/helpers/subscriptionStatus";
 import { PropertyService } from "@/api_services/property/property.service";
 import { AdvisorService } from "@/api_services/advisor/advisor.propery";
 import { NEW_IMAGE_URL } from "@/utils/urls";
-import { ChatService } from "@/api_services/chat/chat.service";
 import { getCookie } from "cookies-next/client";
 import { useQuery } from "@tanstack/react-query";
 
@@ -55,13 +55,12 @@ const TextIcon = ({ item, isHome, visibleTopHeader }: textIconType) => {
   if (!!item?.route) {
     return (
       <Link
-        title={item?.title}
         prefetch={false}
-        href={item?.route || ""}
+        title={item?.title}
         className={parentClass}
+        href={item?.route || ""}
       >
         {item?.hasBadge ? <Pulser /> : <></>}
-
         <p
           className={`${textColor}  text-sm xl:text-base transition-all  duration-100  shrink-0  font-medium  group-hover:brightness-100 group-hover:text-primary-700  `}
         >
@@ -73,7 +72,6 @@ const TextIcon = ({ item, isHome, visibleTopHeader }: textIconType) => {
     return (
       <div onClick={item?.cb} className={parentClass}>
         {item?.hasBadge ? <Pulser /> : <></>}
-
         <p
           className={`${textColor} ${visibleTopHeader} shrink-0 text-sm xl:text-base   cursor-pointer ransition-all duration-100 font-medium  group-hover:brightness-100 group-hover:text-primary-700  `}
         >
@@ -133,14 +131,9 @@ const Header = ({ scroll }: { scroll?: number }) => {
     Boolean(isLogin),
   );
 
-  const { data: chaNotifBadge } = useQuery({
-    queryKey: [ChatService.UNREAD_CHAT_COUNT_CACHEKEY, isLogin, pathname],
-    queryFn: () => ChatService.getUnreadChatCount(),
-    refetchOnWindowFocus: true,
-    enabled: !!isLogin && (pathname == "/" || pathname == "/chat"),
-    staleTime: 300,
-    gcTime: 300,
-  });
+  const { data: chaNotifBadge } = useUnreadChatCount(
+    !!isLogin && (pathname == "/" || pathname == "/chat"),
+  );
 
   const onCreateAddClick = () => {
     if (!!userInfo) {
