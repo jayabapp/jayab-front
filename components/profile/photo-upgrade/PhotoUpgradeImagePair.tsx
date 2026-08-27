@@ -1,41 +1,46 @@
 "use client";
 
-import { ImageDto } from "@/api_services/auth/auth.interface";
 import { PhotoUpgradeRequestItemDto } from "@/api_services/photo-upgrade/photo-upgrade.interface";
 import StatusShower from "@/components/shared/StatusShower";
-import FullscreenImage from "@/components/uploader/FullScreenImage";
 import { NEW_IMAGE_URL } from "@/utils/urls";
-import Link from "next/link";
+import { ImageDto } from "@/api_services/auth/auth.interface";
 import { useState } from "react";
+
+import RemoteImageModal from "@features/photo-upgrade/components/RemoteImageModal";
+import Image from "next/image";
+import Link from "next/link";
 
 const getOldImage = (item: PhotoUpgradeRequestItemDto): ImageDto | null =>
   item?.original_attachment ||
-  item?.old_attachment ||
   item?.previous_attachment ||
   item?.attachment ||
-  item?.image ||
   null;
 
 const getNewImage = (item: PhotoUpgradeRequestItemDto): ImageDto | null =>
-  item?.optimized_attachment || item?.new_attachment || item?.attachment || item?.image || null;
+  item?.current_attachment || item?.attachment || null;
+
+type TImageBoxProps = {
+  title: string;
+  emptyTitle?: string;
+  cb?: () => void | null;
+  image?: ImageDto | null;
+};
 
 const ImageBox = ({
+  cb,
   title,
   image,
   emptyTitle = "عکسی ثبت نشده",
-  cb,
-}: {
-  title: string;
-  image?: ImageDto | null;
-  emptyTitle?: string;
-  cb?: () => void | null;
-}) => (
+}: TImageBoxProps) => (
   <div onClick={cb} className="flex min-w-0 flex-col gap-2">
     {image ? (
       <div className="relative overflow-hidden rounded-10 border border-gray-100 bg-gray-50">
-        <img
-          src={NEW_IMAGE_URL(image, "medium")}
+        <Image
+          width={640}
+          height={480}
           alt={image?.alt || title}
+          src={NEW_IMAGE_URL(image, "medium")}
+          sizes="(max-width: 1024px) 50vw, 320px"
           className="aspect-[4/3] w-full object-cover"
         />
         <span className="absolute right-2 top-2 rounded-10 bg-black/55 px-2 py-1 text-xxs font-medium text-white backdrop-blur">
@@ -63,7 +68,12 @@ const ImageBox = ({
   </div>
 );
 
-const PhotoUpgradeImagePair = ({ item, index }: { item: PhotoUpgradeRequestItemDto; index: number }) => {
+type TPhotoUpgradeImageProps = {
+  index: number;
+  item: PhotoUpgradeRequestItemDto;
+};
+
+const PhotoUpgradeImagePair = ({ item, index }: TPhotoUpgradeImageProps) => {
   const [image, selectedImage] = useState<ImageDto | null>(null);
   const oldImage = getOldImage(item);
   const newImage = getNewImage(item);
@@ -73,7 +83,16 @@ const PhotoUpgradeImagePair = ({ item, index }: { item: PhotoUpgradeRequestItemD
     <div className="property-card-shadow flex flex-col gap-3 rounded-20 bg-white p-3">
       <div className="flex items-center justify-between gap-3">
         <p className="text-sm font-medium">عکس {index + 1}</p>
-        {item?.status ? <StatusShower data={item.status} containerClass="!px-2 !py-1" /> : <></>}
+        {item?.status_title ? (
+          <StatusShower
+            data={{
+              id: item.status,
+              title: item.status_title,
+              hex: item.is_edited ? "#22c55e" : "#3b82f6",
+            }}
+            containerClass="!px-2 !py-1"
+          />
+        ) : null}
       </div>
       <div className="grid grid-cols-2 gap-2 md:gap-3">
         <ImageBox
@@ -93,12 +112,13 @@ const PhotoUpgradeImagePair = ({ item, index }: { item: PhotoUpgradeRequestItemD
           emptyTitle="هنوز آماده نشده"
         />
       </div>
-      <FullscreenImage
+      <RemoteImageModal
         show={!!image}
-        src={NEW_IMAGE_URL(image)}
-        setShow={() => {
-          selectedImage(null);
-        }}
+        src={
+          NEW_IMAGE_URL(image) || "/assets/icons/shared/image_placeholder.svg"
+        }
+        alt={image?.alt || `تصویر ${index + 1}`}
+        onHide={() => selectedImage(null)}
       />
     </div>
   );

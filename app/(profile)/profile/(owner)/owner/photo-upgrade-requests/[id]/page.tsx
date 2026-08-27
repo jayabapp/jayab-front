@@ -1,22 +1,22 @@
 "use client";
 
-import { PhotoUpgradeService } from "@/api_services/photo-upgrade/photo-upgrade.service";
-import PhotoUpgradeImagePair from "@/components/profile/photo-upgrade/PhotoUpgradeImagePair";
-import LottieLoading from "@/components/shared/Lotties/LottieLoading";
-import StatusShower from "@/components/shared/StatusShower";
-import numberWithCommas from "@/helpers/numberWithCommas";
+import { usePhotoUpgradeRequest } from "@features/photo-upgrade/hooks/usePhotoUpgradeRequest";
 import { NEW_IMAGE_URL } from "@/utils/urls";
-import { useQuery } from "@tanstack/react-query";
-import moment from "moment-jalaali";
 import { useParams } from "next/navigation";
 
-const SummaryItem = ({
-  title,
-  value,
-}: {
+import PhotoUpgradeDetailSkeleton from "@features/photo-upgrade/components/PhotoUpgradeDetailSkeleton";
+import PhotoUpgradeImagePair from "@/components/profile/photo-upgrade/PhotoUpgradeImagePair";
+import numberWithCommas from "@/helpers/numberWithCommas";
+import StatusShower from "@/components/shared/StatusShower";
+import moment from "moment-jalaali";
+import Image from "next/image";
+
+type TSummaryItemProps = {
   title: string;
   value: string | number;
-}) => (
+};
+
+const SummaryItem = ({ title, value }: TSummaryItemProps) => (
   <div className="flex items-center justify-between gap-2 rounded-10 bg-gray-50 px-3 py-2 text-xs md:text-sm">
     <span className="text-gray-500">{title}</span>
     <span className="font-medium text-primary-text">{value}</span>
@@ -25,32 +25,48 @@ const SummaryItem = ({
 
 const OwnerPhotoUpgradeRequestPage = () => {
   const params = useParams<{ id: string }>();
+  const requestId = Number(params.id);
 
-  const { data, isLoading } = useQuery({
-    queryKey: [
-      PhotoUpgradeService.OWNER_PHOTO_UPGRADE_REQUEST_CACHEKEY,
-      params.id,
-    ],
-    queryFn: () => PhotoUpgradeService.ownerRequest({ id: params.id }),
-    staleTime: 0,
-    gcTime: 0,
-  });
+  const { data, isPending, isError, refetch } =
+    usePhotoUpgradeRequest(requestId);
 
-  if (isLoading) return <LottieLoading />;
+  if (!Number.isInteger(requestId) || requestId <= 0)
+    return (
+      <div className="profile-container white-card text-center text-sm text-gray-500">
+        شناسه درخواست معتبر نیست.
+      </div>
+    );
+  if (isPending) return <PhotoUpgradeDetailSkeleton />;
+  if (isError || !data)
+    return (
+      <div className="profile-container white-card flex flex-col items-center gap-3 text-center text-sm text-gray-500">
+        <p>درخواست پیدا نشد یا اجازه مشاهده آن را ندارید.</p>
+        <button
+          type="button"
+          onClick={() => void refetch()}
+          className="text-primary-700"
+        >
+          تلاش دوباره
+        </button>
+      </div>
+    );
 
   return (
     <div
       id="homeParent"
       className="profile-container flex flex-col gap-4 transition-all duration-500 ease-in-out"
     >
-      {/* <Link prefetch={false} href="/profile/owner/photo-upgrade-requests" className="text-sm font-medium text-primary-700">
-        بازگشت به درخواست ها
-      </Link> */}
       <div className="white-card flex flex-col gap-4">
         <div className="flex items-start gap-3">
-          <img
-            src={NEW_IMAGE_URL(data?.property?.feature_image, "medium")}
+          <Image
+            src={
+              NEW_IMAGE_URL(data?.property?.feature_image, "medium") ||
+              "/assets/icons/shared/image_placeholder.svg"
+            }
             alt={data?.property?.title || ""}
+            width={80}
+            height={80}
+            sizes="80px"
             className="h-20 w-20 shrink-0 rounded-10 object-cover"
           />
           <div className="flex min-w-0 flex-1 flex-col gap-2">

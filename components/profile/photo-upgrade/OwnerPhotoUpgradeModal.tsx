@@ -1,38 +1,34 @@
 "use client";
 
 import { memo, useCallback, useMemo, useState } from "react";
+import { usePhotoUpgradeCheckout } from "@features/photo-upgrade/hooks/usePhotoUpgradeCheckout";
 import { SingleOwnerPropertyDto } from "@/api_services/property/property.interface";
-import { useMutation, useQuery } from "@tanstack/react-query";
 import { PropertySubsDto } from "@/api_services/property/property.interface";
 import { PropertyListDto } from "@/api_services/property/property.interface";
-import { PropertyService } from "@/api_services/property/property.service";
 import { NEW_IMAGE_URL } from "@/utils/urls";
-import { HomeService } from "@/api_services/home/home.service";
 import { ImageDto } from "@/api_services/auth/auth.interface";
 
 import ModalBottomSheet from "@/components/Modal/ModalBottomSheet";
-import CmsText from "@/components/shared/CmsText";
-import useCmsContent from "@/hooks/useCmsContent";
 import numberWithCommas from "@/helpers/numberWithCommas";
-import LottieLoading from "@/components/shared/Lotties/LottieLoading";
+import useCmsContent from "@/hooks/useCmsContent";
 import SwiperSlide from "@/components/embelaCarousel/SwiperSlide";
 import _STRINGS from "@/utils/LocalStrings";
+import CmsText from "@/components/shared/CmsText";
 import isEmpty from "lodash/isEmpty";
 import Swiper from "@/components/embelaCarousel/Swiper";
 import Button from "@/components/shared/Button/Button";
 import Notify from "@/components/shared/Toast";
 import chunk from "lodash/chunk";
+import Image from "next/image";
+
+type TSelectTableImageProps = {
+  image: ImageDto;
+  isSelected: boolean;
+  onToggle: (imageId: number) => void;
+};
 
 const SelectableImageItem = memo(
-  ({
-    image,
-    isSelected,
-    onToggle,
-  }: {
-    image: ImageDto;
-    isSelected: boolean;
-    onToggle: (imageId: number) => void;
-  }) => {
+  ({ image, isSelected, onToggle }: TSelectTableImageProps) => {
     return (
       <button
         type="button"
@@ -43,10 +39,15 @@ const SelectableImageItem = memo(
             : "border-gray-200"
         }`}
       >
-        <img
-          src={NEW_IMAGE_URL(image)}
-          alt={image?.alt || ""}
-          className="h-full w-full object-cover"
+        <Image
+          src={
+            NEW_IMAGE_URL(image, "medium") ||
+            "/assets/icons/shared/image_placeholder.svg"
+          }
+          alt={image?.alt || "تصویر اقامتگاه"}
+          fill
+          sizes="(max-width: 768px) 25vw, 160px"
+          className="object-cover"
         />
         <span
           className={`absolute left-1 top-1 flex h-5 w-5 items-center justify-center rounded-md border text-xs font-bold ${
@@ -64,15 +65,7 @@ const SelectableImageItem = memo(
 
 SelectableImageItem.displayName = "SelectableImageItem";
 
-const OwnerPhotoUpgradeModal = ({
-  property,
-  onHide,
-  onHideClick,
-  mutationOptions,
-  extraPrice,
-  selectedPlans,
-  noImageSubmit,
-}: {
+type TOwnerPhotoUpgradeProps = {
   property: PropertyListDto | SingleOwnerPropertyDto | null;
   onHide: () => void;
   noImageSubmit?: () => void;
@@ -84,52 +77,39 @@ const OwnerPhotoUpgradeModal = ({
     subscription_id?: number;
   };
   selectedPlans?: PropertySubsDto[];
-}) => {
+};
+
+const OwnerPhotoUpgradeModal = ({
+  onHide,
+  property,
+  extraPrice,
+  onHideClick,
+  noImageSubmit,
+  selectedPlans,
+  mutationOptions,
+}: TOwnerPhotoUpgradeProps) => {
   const [selectedImageIds, setSelectedImageIds] = useState<number[]>([]);
 
-  const { data: settings } = useQuery({
-    queryKey: [HomeService.SETTING_KEY, property],
-
-    queryFn: HomeService.getSettings,
-
-    enabled: !!property,
-  });
+  const {
+    settings,
+    property: propertyDetails,
+    isPropertyPending: isLoading,
+    checkout,
+  } = usePhotoUpgradeCheckout(property?.id);
 
   const PHOTO_UPGRADE_PRICE = Number(settings?.photo_upgrade_price);
 
-  const { data, isLoading } = useQuery({
-    queryKey: [
-      PropertyService.OWNER_PROPERTIES_CACHEKEY,
-      "photo-upgrade",
-      property?.id,
-    ],
-    queryFn: () => {
-      if (property?.id) {
-        return PropertyService.GetSingleOwnerProperty({
-          property_id: property.id,
-        });
-      }
-      return null;
-    },
-    enabled: !!property?.id,
-  });
-
   const images = useMemo(() => {
-    const propertyImages = data?.images || [];
+    const propertyImages = propertyDetails?.images || [];
     if (!isEmpty(propertyImages)) return propertyImages;
-    return data?.feature_image ? [data.feature_image] : [];
-  }, [data]);
+    return propertyDetails?.feature_image
+      ? [propertyDetails.feature_image]
+      : [];
+  }, [propertyDetails]);
 
   const totalAmount = selectedImageIds.length * PHOTO_UPGRADE_PRICE;
 
-  const { mutate, isPending } = useMutation({
-    mutationFn: PropertyService.PayPropetySubscription,
-    onSuccess: (link) => {
-      if (link) {
-        window.location.href = link;
-      }
-    },
-  });
+  const { mutate, isPending } = checkout;
 
   const toggleImage = useCallback((imageId: number) => {
     setSelectedImageIds((prev) =>
@@ -193,21 +173,30 @@ const OwnerPhotoUpgradeModal = ({
             onClick={onHide}
             className="flex h-9 absolute left-0  top-2  w-9 shrink-0 items-center justify-center rounded-full bg-gray-100"
           >
-            <img
-              src="/assets/icons/shared/close.svg"
+            <Image
+              width={16}
               alt="بستن"
+              height={16}
               className="h-4 w-4"
+              src="/assets/icons/shared/close.svg"
             />
           </button>
         </div>
         {!!contentLoading ? (
-          <LottieLoading />
+          <div className="h-36 w-full animate-pulse rounded-10 bg-neutral-100" />
         ) : !!upgradeContent ? (
           <div className="w-full flex flex-col items-center justify-center gap-4 ">
             {!!upgradeContent?.feature_image ? (
-              <img
-                src={NEW_IMAGE_URL(upgradeContent?.feature_image)}
-                className=" object-contain   max-h-[150px] "
+              <Image
+                src={
+                  NEW_IMAGE_URL(upgradeContent?.feature_image, "medium") ||
+                  "/assets/icons/shared/image_placeholder.svg"
+                }
+                alt="نمونه بهبود تصویر"
+                width={600}
+                height={150}
+                sizes="(max-width: 768px) 90vw, 600px"
+                className="h-auto max-h-[150px] w-auto object-contain"
               />
             ) : (
               <></>
@@ -226,8 +215,13 @@ const OwnerPhotoUpgradeModal = ({
         )}
 
         {isLoading ? (
-          <div className="h-48">
-            <LottieLoading />
+          <div className="grid grid-cols-4 gap-2">
+            {Array.from({ length: 8 }, (_, index) => (
+              <div
+                key={index}
+                className="aspect-square animate-pulse rounded-10 bg-neutral-100"
+              />
+            ))}
           </div>
         ) : isEmpty(images) ? (
           <div className="rounded-10 border border-dashed border-gray-300 p-6 text-center text-sm text-gray-500">
@@ -244,7 +238,6 @@ const OwnerPhotoUpgradeModal = ({
                 slidesPerView: 0.9,
                 spaceBetween: 4,
               },
-              // when window width is >= 768px
               768: {
                 slidesPerView: 1.5,
                 spaceBetween: 4,
