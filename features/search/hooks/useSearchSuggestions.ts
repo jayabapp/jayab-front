@@ -6,7 +6,7 @@ import { useDebouncedValue } from "@hooks/useDebouncedValue";
 import { useQuery } from "@tanstack/react-query";
 
 export const useSearchSuggestions = (term: string, enabled = true) => {
-  const normalizedTerm = normalizePersianSearchText(term);
+  const normalizedTerm = normalizePersianSearchText(term).slice(0, 80);
   const debouncedTerm = useDebouncedValue(normalizedTerm, 400);
   const query = useQuery({
     ...searchSuggestionsOptions(debouncedTerm),

@@ -81,6 +81,22 @@ export interface SearchSuggDto {
   properties: SearchPropDto[];
   cities: CitySuggestDto[];
   landings: LandingsDto[];
+  items?: SearchSuggestionItemDto[];
+}
+
+export type SearchSuggestionType =
+  | "property"
+  | "city"
+  | "region"
+  | "province"
+  | "landing";
+
+export interface SearchSuggestionItemDto {
+  type: SearchSuggestionType;
+  id: number;
+  label: string;
+  target: string;
+  parentLabel?: string;
 }
 
 export interface CitySuggestDto {

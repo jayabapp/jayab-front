@@ -13,7 +13,7 @@ export const usePropertySearch = (onNavigate?: () => void) => {
   const router = useRouter();
   return useMutation({
     mutationFn: ({ q }: { q: string }) =>
-      HomeService.Search({ q: normalizePersianSearchText(q) }),
+      HomeService.Search({ q: normalizePersianSearchText(q).slice(0, 80) }),
     onSuccess: (data) => {
       if (!data?.client_query) return;
       useCitiesStore.setState({
