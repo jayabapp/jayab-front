@@ -50,8 +50,8 @@ const Profile = ({}) => {
           onHide={() => setisVisible(false)}
         />
       )}
-      <div className=" bg-white    rounded-20  flex flex-col gap-2 pb-10 overflow-scroll    dark:border dark:border-zinc-600 dark:shadow-none ">
-        <div className="flex items-center px-2 py-2   dark:border-zinc-500 ">
+      <div className=" bg-white    rounded-20  flex flex-col gap-2 pb-10 overflow-scroll       ">
+        <div className="flex items-center px-2 py-2    ">
           <MainUploader
             innerClasses={{
               secontParentClass: "!rounded-full   !aspect-auto ",
@@ -179,7 +179,7 @@ const Profile = ({}) => {
               height={24}
               className="w-6 h-6  aspect-square "
             />{" "}
-            <p className="text-base font-medium text-primary-150 ">
+            <p className="text-base font-medium text-danger-500 ">
               {" "}
               {_STRINGS?.LOGOUT_TITLE}
             </p>

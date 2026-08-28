@@ -1,5 +1,7 @@
 "use client";
 
+import { colors } from "@/theme/colors";
+
 import { PhotoUpgradeRequestItemDto } from "@/api_services/photo-upgrade/photo-upgrade.interface";
 import StatusShower from "@/components/shared/StatusShower";
 import { NEW_IMAGE_URL } from "@/utils/urls";
@@ -34,7 +36,7 @@ const ImageBox = ({
 }: TImageBoxProps) => (
   <div onClick={cb} className="flex min-w-0 flex-col gap-2">
     {image ? (
-      <div className="relative overflow-hidden rounded-10 border border-gray-100 bg-gray-50">
+      <div className="relative overflow-hidden rounded-10 border border-neutral-100 bg-neutral-50">
         <Image
           width={640}
           height={480}
@@ -52,14 +54,14 @@ const ImageBox = ({
             e.stopPropagation();
           }}
           href={NEW_IMAGE_URL(image, "medium") || ""}
-          className="absolute left-2 bottom-2  bg-primary-700/50 rounded-md   px-2 py-1 text-xxs font-medium text-white backdrop-blur "
+          className="absolute left-2 bottom-2  bg-brand-600/50 rounded-md   px-2 py-1 text-xxs font-medium text-white backdrop-blur "
         >
           دانلود
         </Link>
       </div>
     ) : (
-      <div className="relative flex aspect-[4/3] w-full items-center justify-center rounded-10 border border-dashed border-gray-300 bg-gray-50 px-2 text-center text-xxs text-gray-400 md:text-xs">
-        <span className="absolute right-2 top-2 rounded-10 bg-white px-2 py-1 text-xxs font-medium text-gray-500">
+      <div className="relative flex aspect-[4/3] w-full items-center justify-center rounded-10 border border-dashed border-neutral-300 bg-neutral-50 px-2 text-center text-xxs text-neutral-400 md:text-xs">
+        <span className="absolute right-2 top-2 rounded-10 bg-white px-2 py-1 text-xxs font-medium text-neutral-500">
           {title}
         </span>
         {emptyTitle}
@@ -88,7 +90,7 @@ const PhotoUpgradeImagePair = ({ item, index }: TPhotoUpgradeImageProps) => {
             data={{
               id: item.status,
               title: item.status_title,
-              hex: item.is_edited ? "#22c55e" : "#3b82f6",
+              hex: item.is_edited ? colors.success[500] : colors.brand[500],
             }}
             containerClass="!px-2 !py-1"
           />

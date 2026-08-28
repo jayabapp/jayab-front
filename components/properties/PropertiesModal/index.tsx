@@ -22,7 +22,7 @@ const PropertiesModal = ({ room_slug }: { room_slug: string }) => {
       show={pathname.includes("rooms/") ? true : false}
       options={{
         containerClass:
-          " app-size app-text  relative  rounded-lg overflow-y-scroll  bg-white !rounded-none dark:bg-dark-900",
+          " app-size app-text  relative  rounded-lg overflow-y-scroll  bg-white !rounded-none ",
         parentClass: "bg-white",
       }}
     >

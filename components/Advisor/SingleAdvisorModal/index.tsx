@@ -1,3 +1,4 @@
+import { colors } from "@/theme/colors";
 import { useState } from "react";
 
 import AdvisorCircularProgresCard from "../AdvisorCircularProgressPart/AdvisorCircularProgresCard";
@@ -49,7 +50,7 @@ const SingleAdvisorModal = ({
       <Modal
         options={{
           containerClass:
-            "mx-auto !my-0 h-[100dvh] md:h-auto md:my-10 w-full md:w-1/2 xl:w-1/3 2xl:w-1/4  rounded-0  md:rounded-2xl overflow-y-scroll bg-white dark:bg-zinc-900",
+            "mx-auto !my-0 h-[100dvh] md:h-auto md:my-10 w-full md:w-1/2 xl:w-1/3 2xl:w-1/4  rounded-0  md:rounded-2xl overflow-y-scroll bg-white ",
         }}
         show={show}
         onHide={onHide}
@@ -118,8 +119,8 @@ const SingleAdvisorModal = ({
               <AdvisorCircularProgresCard
                 containerClass=" w-full "
                 pStyles={{
-                  pathColor: "#34C759",
-                  textColor: "#000",
+                  pathColor: colors.success[500],
+                  textColor: colors.neutral[900],
                   textSize: "1.3rem",
                 }}
                 data={{ value: data?.advisor_behavior || 100 }}
@@ -131,8 +132,8 @@ const SingleAdvisorModal = ({
               <AdvisorCircularProgresCard
                 containerClass=" w-full "
                 pStyles={{
-                  pathColor: "#34C759",
-                  textColor: "#000",
+                  pathColor: colors.success[500],
+                  textColor: colors.neutral[900],
                   textSize: "1.3rem",
                 }}
                 data={{ value: data?.advisor_responsibility || 100 }}
@@ -146,8 +147,8 @@ const SingleAdvisorModal = ({
               <AdvisorCircularProgresCard
                 containerClass=" w-full "
                 pStyles={{
-                  pathColor: "#34C759",
-                  textColor: "#000",
+                  pathColor: colors.success[500],
+                  textColor: colors.neutral[900],
                   textSize: "1.3rem",
                 }}
                 data={{ value: data?.response_speed_and_followup || 100 }}

@@ -5,9 +5,9 @@ export const ContentQuestionsSkeleton = () => (
   >
     {[0, 1, 2].map((item) => (
       <div className="flex flex-col gap-2 rounded-xl border p-4" key={item}>
-        <div className="h-4 w-1/3 rounded bg-gray-200" />
-        <div className="h-3 w-full rounded bg-gray-100" />
-        <div className="h-3 w-2/3 rounded bg-gray-100" />
+        <div className="h-4 w-1/3 rounded bg-neutral-200" />
+        <div className="h-3 w-full rounded bg-neutral-100" />
+        <div className="h-3 w-2/3 rounded bg-neutral-100" />
       </div>
     ))}
   </div>

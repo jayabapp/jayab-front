@@ -35,8 +35,8 @@ const SelectableImageItem = memo(
         onClick={() => onToggle(image.id)}
         className={`relative aspect-square overflow-hidden rounded-10 border transition-all ${
           isSelected
-            ? "border-primary-700 ring-2 ring-primary-700/30"
-            : "border-gray-200"
+            ? "border-brand-600 ring-2 ring-brand-600/30"
+            : "border-neutral-200"
         }`}
       >
         <Image
@@ -52,7 +52,7 @@ const SelectableImageItem = memo(
         <span
           className={`absolute left-1 top-1 flex h-5 w-5 items-center justify-center rounded-md border text-xs font-bold ${
             isSelected
-              ? "border-primary-700 bg-primary-700 text-white"
+              ? "border-brand-600 bg-brand-600 text-white"
               : "border-white bg-black/40 text-white"
           }`}
         >
@@ -157,21 +157,21 @@ const OwnerPhotoUpgradeModal = ({
         <div className="flex items-center sticky top-0 bg-white py-2 justify-center gap-3">
           <div className="min-w-0">
             <div className="flex items-center gap-2">
-              <p className="text-base text-center font-bold text-primary-700">
+              <p className="text-base text-center font-bold text-brand-600">
                 سرویس بهبود تصویر
               </p>
               <div className="new-tag   rotate-[-9deg] text-xs font-bold  text-white rounded-lg  h-6 w-11 flex items-center justify-center ">
                 {_STRINGS.NEW}
               </div>
             </div>
-            <p className="mt-1 line-clamp-1 text-center text-xs text-gray-500">
+            <p className="mt-1 line-clamp-1 text-center text-xs text-neutral-500">
               {property?.title}
             </p>
           </div>
           <button
             type="button"
             onClick={onHide}
-            className="flex h-9 absolute left-0  top-2  w-9 shrink-0 items-center justify-center rounded-full bg-gray-100"
+            className="flex h-9 absolute left-0  top-2  w-9 shrink-0 items-center justify-center rounded-full bg-neutral-100"
           >
             <Image
               width={16}
@@ -224,7 +224,7 @@ const OwnerPhotoUpgradeModal = ({
             ))}
           </div>
         ) : isEmpty(images) ? (
-          <div className="rounded-10 border border-dashed border-gray-300 p-6 text-center text-sm text-gray-500">
+          <div className="rounded-10 border border-dashed border-neutral-300 p-6 text-center text-sm text-neutral-500">
             تصویری برای این آگهی ثبت نشده است.
           </div>
         ) : (
@@ -279,25 +279,25 @@ const OwnerPhotoUpgradeModal = ({
           </Swiper>
         )}
         {!!upgradeContent?.html ? (
-          <p className="text-primary-700  w-full text-sm text-center ">
+          <p className="text-brand-600  w-full text-sm text-center ">
             تصاویر بهینه شده بعد از 24 ساعت جایگزین میشوند
           </p>
         ) : (
           <></>
         )}
 
-        <div className="flex flex-col gap-2 rounded-10 border border-gray-100 p-3 text-sm">
+        <div className="flex flex-col gap-2 rounded-10 border border-neutral-100 p-3 text-sm">
           <div className="flex items-center justify-between gap-2">
-            <span className="text-gray-500">تعداد تصاویر</span>
+            <span className="text-neutral-500">تعداد تصاویر</span>
             <span className="font-medium">{selectedImageIds.length} عکس</span>
           </div>
           <div className="flex items-center justify-between gap-2">
-            <span className="text-gray-500">هزینه بهبود هر تصویر</span>
+            <span className="text-neutral-500">هزینه بهبود هر تصویر</span>
             <span className="font-medium">
               {numberWithCommas(PHOTO_UPGRADE_PRICE)} تومان
             </span>
           </div>
-          <div className="flex items-center justify-between gap-2 border-t pt-2 text-primary-700">
+          <div className="flex items-center justify-between gap-2 border-t pt-2 text-brand-600">
             <span className="font-medium">هزینه نهایی بهبود تصویر</span>
             <span className="font-bold">
               {numberWithCommas(totalAmount)} تومان
@@ -307,7 +307,7 @@ const OwnerPhotoUpgradeModal = ({
             selectedPlans?.map((e) => (
               <div
                 key={`slectedPlan${e?.id}`}
-                className="flex items-center justify-between gap-2 border-t pt-2 text-primary-700"
+                className="flex items-center justify-between gap-2 border-t pt-2 text-brand-600"
               >
                 <span className="font-medium">{e?.title}</span>
                 <span className="font-bold">

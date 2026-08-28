@@ -31,7 +31,7 @@ const SearchBoxPopularPlaces = ({
                 onLandingClick(e?.url);
               }}
               key={`${e?.url}landings`}
-              className="flex px-3 cursor-pointer py-0.5 flex-row text-white   bg-primary-700 rounded-full transition-all  items-center gap-2"
+              className="flex px-3 cursor-pointer py-0.5 flex-row text-white   bg-brand-600 rounded-full transition-all  items-center gap-2"
             >
               <p className="  text-sm   transition-all">{e?.title} </p>
             </div>

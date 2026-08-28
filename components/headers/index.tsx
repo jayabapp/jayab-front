@@ -62,7 +62,7 @@ const TextIcon = ({ item, isHome, visibleTopHeader }: textIconType) => {
       >
         {item?.hasBadge ? <Pulser /> : <></>}
         <p
-          className={`${textColor}  text-sm xl:text-base transition-all  duration-100  shrink-0  font-medium  group-hover:brightness-100 group-hover:text-primary-700  `}
+          className={`${textColor}  text-sm xl:text-base transition-all  duration-100  shrink-0  font-medium  group-hover:brightness-100 group-hover:text-brand-600  `}
         >
           {item?.title}
         </p>
@@ -73,7 +73,7 @@ const TextIcon = ({ item, isHome, visibleTopHeader }: textIconType) => {
       <div onClick={item?.cb} className={parentClass}>
         {item?.hasBadge ? <Pulser /> : <></>}
         <p
-          className={`${textColor} ${visibleTopHeader} shrink-0 text-sm xl:text-base   cursor-pointer ransition-all duration-100 font-medium  group-hover:brightness-100 group-hover:text-primary-700  `}
+          className={`${textColor} ${visibleTopHeader} shrink-0 text-sm xl:text-base   cursor-pointer ransition-all duration-100 font-medium  group-hover:brightness-100 group-hover:text-brand-600  `}
         >
           {item?.title}
         </p>
@@ -204,7 +204,7 @@ const Header = ({ scroll }: { scroll?: number }) => {
                 ? NEW_IMAGE_URL(userInfo?.profile_image)
                 : "/assets/icons/header/new-face/user.svg"
             }
-            className={` ${isLogin && !userInfo?.profile_image ? " xl:brightness-0" : !isLogin && !isHeaderLight ? " brightness-0" : ""} ${isHeaderLight ? "border-white" : "border-gray-500 "} border  shrink-0  size-6  rounded-full transform-gpu transition-all `}
+            className={` ${isLogin && !userInfo?.profile_image ? " xl:brightness-0" : !isLogin && !isHeaderLight ? " brightness-0" : ""} ${isHeaderLight ? "border-white" : "border-neutral-500 "} border  shrink-0  size-6  rounded-full transform-gpu transition-all `}
           />
           {!isLogin ? (
             <p
@@ -255,7 +255,7 @@ const Header = ({ scroll }: { scroll?: number }) => {
         id="headerContainer"
         className={`
      ${isHome && topHeaderVisible ? "  bg-gradient-to-b     from-black/40 to-black/0  md:pb-24    " : topHeaderVisible ? "" : "   "}
-transition-all ease-out  duration-300  header-content-container w-full mx-auto dark:bg-dark-900`}
+transition-all ease-out  duration-300  header-content-container w-full mx-auto `}
       >
         {/* ROW 1 */}
         <div
@@ -318,7 +318,7 @@ transition-all ease-out  duration-300  header-content-container w-full mx-auto d
                       item={{ bg: `!bg-transparent  !border-none ` }}
                     />
                   </Suspense>
-                  <div className="w-[1px] h-8 bg-gray-300"></div>
+                  <div className="w-[1px] h-8 bg-neutral-300"></div>
                   <HomeCityFilterCityPart />
                 </div>
               </div>
@@ -499,7 +499,7 @@ transition-all ease-out  duration-300  header-content-container w-full mx-auto d
                           item={{ bg: `!bg-transparent  !border-none ` }}
                         />
                       </Suspense>
-                      <div className="w-[1px] h-8 bg-gray-300"></div>
+                      <div className="w-[1px] h-8 bg-neutral-300"></div>
                       <HomeCityFilterCityPart />
                     </div>
                   </>

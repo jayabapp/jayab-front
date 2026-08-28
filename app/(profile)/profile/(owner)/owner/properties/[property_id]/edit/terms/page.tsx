@@ -142,7 +142,7 @@ const CreatePropertyTerms = () => {
         <PropertyEditStepSkeleton variant="form" />
       ) : (
         <div className=" flex flex-col gap-2 w-full">
-          <p className="font-bold w-full text-start  text-sm md:text-base text-primary-700  ">
+          <p className="font-bold w-full text-start  text-sm md:text-base text-brand-600  ">
             {propertyRules?.data?.[0]?.category?.title ||
               _STRINGS.CANCELATIONS_TITLE}
           </p>
@@ -179,7 +179,7 @@ const CreatePropertyTerms = () => {
         </div>
       )}
       <div className=" flex flex-col gap-2   w-full">
-        <p className="font-bold w-full text-start  text-sm md:text-base text-primary-700  ">
+        <p className="font-bold w-full text-start  text-sm md:text-base text-brand-600  ">
           {_STRINGS.GUEST_TYPE_STATUS}
         </p>
         {propertyTypes?.["GUEST_TYPE"]?.map((e) => (
@@ -211,7 +211,7 @@ const CreatePropertyTerms = () => {
         />
       </div>
       <div className=" flex flex-col gap-2   w-full">
-        <p className="font-bold w-full text-start  text-sm md:text-base text-primary-700  ">
+        <p className="font-bold w-full text-start  text-sm md:text-base text-brand-600  ">
           {_STRINGS.ANIMAL_RULES}
         </p>
         {propertyTypes?.["PET"]?.map((e) => (
@@ -243,7 +243,7 @@ const CreatePropertyTerms = () => {
         />
       </div>
       <div className=" flex flex-col gap-2   w-full">
-        <p className="font-bold w-full text-start  text-sm md:text-base text-primary-700  ">
+        <p className="font-bold w-full text-start  text-sm md:text-base text-brand-600  ">
           {_STRINGS.PARTY_RULES}
         </p>
         {propertyTypes?.["PARTY"]?.map((e) => (

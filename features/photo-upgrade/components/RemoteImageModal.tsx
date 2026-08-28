@@ -11,7 +11,7 @@ type TRemoteImageProps = {
 
 const RemoteImageModal = ({ show, src, alt, onHide }: TRemoteImageProps) => (
   <Modal show={show} onHide={onHide}>
-    <div className="flex h-full w-full flex-col gap-2 bg-white p-2 dark:bg-dark-700">
+    <div className="flex h-full w-full flex-col gap-2 bg-white p-2 ">
       <button
         type="button"
         onClick={onHide}

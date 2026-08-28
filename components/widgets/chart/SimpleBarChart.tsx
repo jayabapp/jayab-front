@@ -1,3 +1,4 @@
+import { colors } from "@/theme/colors";
 import numberWithCommas from "@/helpers/numberWithCommas";
 import { chartSteps } from "@/utils/constantss";
 import moment from "moment-jalaali";
@@ -56,7 +57,7 @@ const SimpleBarChart = ({ data }: { data: any }) => {
           tickMargin={5}
           // tick={{ textAnchor: "start", }}
           // angle={-90}
-          stroke="#C8CBD0"
+          stroke={colors.neutral[300]}
           // textAnchor="middle"
           fontSize={12}
           textAnchor="middle"
@@ -73,7 +74,7 @@ const SimpleBarChart = ({ data }: { data: any }) => {
           tickMargin={5}
           // tickMargin={50}
           domain={Max ? [0, Max % 2 == 0 ? Max : Max + 1] : ["dataMin", "dataMax"]}
-          stroke="#C8CBD0"
+          stroke={colors.neutral[300]}
           className="bg-red-800"
 
           // tick={{ fontSize: 12, color: "red" }}
@@ -84,7 +85,7 @@ const SimpleBarChart = ({ data }: { data: any }) => {
         <Tooltip
           content={(e) => <CustomTooltip active={e?.active} label={e?.label} payload={e?.payload} key={e?.label} />}
         />
-        <Line dataKey="value" type={"linear"} fill="#3886E5" strokeWidth={"3px"} />
+        <Line dataKey="value" type={"linear"} fill={colors.brand[500]} strokeWidth={"3px"} />
       </LineChart>
     </ResponsiveContainer>
   );

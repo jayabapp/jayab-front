@@ -55,7 +55,7 @@ const HomeBannerPart = ({
         <Suspense>
           <SearchBoxDropDown
             placeholder={_STRINGS?.SEARCH}
-            containerClass="bg-transparent border   rounded-full lg:flex hidden    w-full dark:bg-zinc-600   justify-between items-center  !bg-white lg:bg-transparent !rounded-l-none  lg:!rounded-l-20  !border-none "
+            containerClass="bg-transparent border   rounded-full lg:flex hidden    w-full    justify-between items-center  !bg-white lg:bg-transparent !rounded-l-none  lg:!rounded-l-20  !border-none "
           />
         </Suspense>
 
@@ -63,20 +63,20 @@ const HomeBannerPart = ({
           onClick={() => {
             setShowPop(true);
           }}
-          className={`bg-transparent border  lg:hidden rounded-20  px-4 py-1.5  overflow-hidden w-full dark:bg-zinc-600  flex justify-between items-center  !bg-white lg:bg-transparent !rounded-l-none  lg:!rounded-l-20  !border-none `}
+          className={`bg-transparent border  lg:hidden rounded-20  px-4 py-1.5  overflow-hidden w-full   flex justify-between items-center  !bg-white lg:bg-transparent !rounded-l-none  lg:!rounded-l-20  !border-none `}
         >
           {" "}
           <div className="flex items-center gap-1 w-full">
             <div
               id={"HOME_SEARCH_BOX"}
-              className={`bg-transparent text-sm  dark:bg-transparent py-1 pl-3 pr-0.5  w-full opacity-50  `}
+              className={`bg-transparent text-sm   py-1 pl-3 pr-0.5  w-full opacity-50  `}
             >
               {_STRINGS?.SEARCH}
             </div>
           </div>{" "}
         </div>
 
-        <div className="w-[1px] h-8 bg-gray-300 lg:flex hidden"></div>
+        <div className="w-[1px] h-8 bg-neutral-300 lg:flex hidden"></div>
         <Suspense>
           {" "}
           <HomeCityFilterCityPart

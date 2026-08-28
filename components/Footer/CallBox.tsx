@@ -18,7 +18,7 @@ const CallBox = () => {
 
   return (
     <div className=" w-full   p-4 md:px-[10%]  -top-24 absolute">
-      <div className=" w-full min-h-[10rem] md:w-full px-6  py-6 md:py-0  gap-6  mx-auto bg-primary-700 rounded-20  relative flex flex-col md:flex-row items-center justify-between">
+      <div className=" w-full min-h-[10rem] md:w-full px-6  py-6 md:py-0  gap-6  mx-auto bg-brand-600 rounded-20  relative flex flex-col md:flex-row items-center justify-between">
         <ImageFallback
           src={
             !!footerCallUs?.feature_image
@@ -69,7 +69,7 @@ const CallBox = () => {
                   color="themeLight"
                   roundedClass="rounded-full"
                   title={_STRINGS.BECOME_HOST}
-                  width="w-fit !px-12 !text-primary-700"
+                  width="w-fit !px-12 !text-brand-600"
                 />
               </Link>
             </Editable>

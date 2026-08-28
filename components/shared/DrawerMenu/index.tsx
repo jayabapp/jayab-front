@@ -40,7 +40,7 @@ const DrawerMenu = ({ isOpen, setIsOpen }: DrawerMenuType) => {
           leaveTo="translate-x-full   "
         >
           <div
-            className={`fixed transition-all ease-in-out duration-500 top-0 bottom-0 right-0  h-screen   bg-white dark:bg-zinc-900 w-80 z-20 overflow-scroll`}
+            className={`fixed transition-all ease-in-out duration-500 top-0 bottom-0 right-0  h-screen   bg-white  w-80 z-20 overflow-scroll`}
           >
             <div className={`w-full  transition-all ease-in-out duration-500 h-full`}>
               <DrawerContent
@@ -76,12 +76,12 @@ const DrawerContent = ({ onSelect, isOpen, setIsOpen }: drawerMenuContentType) =
 
   if (pathname.includes("profile")) {
     return (
-      <div className="w-full h-full bg-white dark:bg-zinc-900 relative">
+      <div className="w-full h-full bg-white  relative">
         {pathname != "/" ? (
           <img
             src="/assets/icons/header/home.svg"
             alt="home"
-            className="w-6 absolute top-5 left-3 h-auto ml-2 dark:invert"
+            className="w-6 absolute top-5 left-3 h-auto ml-2 "
             onClick={() => {
               router.push("/");
               onSelect();
@@ -90,7 +90,7 @@ const DrawerContent = ({ onSelect, isOpen, setIsOpen }: drawerMenuContentType) =
         ) : (
           ""
         )}
-        <div className="w-full h-40 bg-gradient-to-r from-primary-700/10 to-primary-700/50 flex justify-center items-center transition-all duration-1000 ease-in-out">
+        <div className="w-full h-40 bg-gradient-to-r from-brand-600/10 to-brand-600/50 flex justify-center items-center transition-all duration-1000 ease-in-out">
           <img
             src="/assets/icons/logo/logo.svg"
             onClick={() => router?.replace("/")}
@@ -114,8 +114,8 @@ const DrawerContent = ({ onSelect, isOpen, setIsOpen }: drawerMenuContentType) =
                 <div
                   className={`text-md ml-3 ${
                     selected
-                      ? "text-primary-700 font-semibold  dark:text-primary-700"
-                      : "text-gray-900 dark:text-neutral-300"
+                      ? "text-brand-600 font-semibold  "
+                      : "text-neutral-900 "
                   }`}
                 >
                   {e?.title}
@@ -129,7 +129,7 @@ const DrawerContent = ({ onSelect, isOpen, setIsOpen }: drawerMenuContentType) =
   }
 
   return (
-    <div className="w-full h-full bg-white dark:bg-zinc-900">
+    <div className="w-full h-full bg-white ">
       <img
         onClick={() => {
           setIsOpen(false);
@@ -138,20 +138,20 @@ const DrawerContent = ({ onSelect, isOpen, setIsOpen }: drawerMenuContentType) =
         className="left-5 top-[1.58rem] w-6 h-6 absolute"
       />
 
-      <div className="w-full h-28 flex-col gap-6 my-8  from-primary-700/10 to-primary-700/50 flex justify-center items-center transition-all duration-1000 ease-in-out">
+      <div className="w-full h-28 flex-col gap-6 my-8  from-brand-600/10 to-brand-600/50 flex justify-center items-center transition-all duration-1000 ease-in-out">
         <img
           src="/assets/icons/logo/logo.svg"
           onClick={() => router?.replace("/")}
           alt="شاندیز"
-          className="w-36 h-auto dark:brightness-200 object-contain"
+          className="w-36 h-auto  object-contain"
         />
         <Divider moreClass={"w-[85%]"} />
       </div>
 
       {/* {headerLinks?.map((e) => (
-        <div key={`${e?.id}menuItem`} className="divide-y divide-gray-275 px-5 dark:divide-gray-500 divide-dashed">
+        <div key={`${e?.id}menuItem`} className="divide-y divide-neutral-200 px-5  divide-dashed">
           <Link
-            className="w-full text-black dark:text-gray-500 py-4 hover:text-primary-700 duration-200 ease-in-out transition-all flex items-center"
+            className="w-full text-black  py-4 hover:text-brand-600 duration-200 ease-in-out transition-all flex items-center"
             href={e?.link || ""}
           >
             {e?.title}

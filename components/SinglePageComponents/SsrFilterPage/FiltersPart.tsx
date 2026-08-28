@@ -20,7 +20,7 @@ const FiltersPart = ({ queries, setFilters, filters, propertyTypes, hiddenFilter
   };
 
   return (
-    <div className="  z-2 h-fit flex-col items-center p-3  bg-white dark:bg-zinc-800 rounded-xl w-full ">
+    <div className="  z-2 h-fit flex-col items-center p-3  bg-white  rounded-xl w-full ">
       <div className=" hidden md:flex items-center gap-2 mb-4 ">
         <img src="/assets/icons/property/filter_icon.svg" />
         <p className="font-medium  text-lg">{_STRINGS.FILTERS}</p>

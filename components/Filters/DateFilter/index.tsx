@@ -40,8 +40,8 @@ const DateFilter = ({
       >
         {!!filters?.checkin && !!filters?.checkout ? (
           <p className="  text-sm">
-            از <span className="text-primary-700">{moment(filters?.checkin).format("jD  jMMMM")}</span> تا{" "}
-            <span className="text-primary-700"> {moment(filters?.checkout).format("jD  jMMMM")}</span>
+            از <span className="text-brand-600">{moment(filters?.checkin).format("jD  jMMMM")}</span> تا{" "}
+            <span className="text-brand-600"> {moment(filters?.checkout).format("jD  jMMMM")}</span>
           </p>
         ) : (
           <p className="font-medium">انتخاب تاریخ بر حسب روز های خالی </p>

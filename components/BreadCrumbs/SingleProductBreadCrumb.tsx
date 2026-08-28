@@ -1,4 +1,6 @@
 "use client";
+
+import { colors } from "@/theme/colors";
 import { useRouter } from "next/navigation";
 import { BreadCrumbSchema } from "../SchemaGenerator/Schemas";
 
@@ -36,8 +38,8 @@ const SingleProductBreadCrumb = ({ dataArray }: { dataArray: { title: string; li
                 <></>
               )}{" "}
               <p
-                className={`  text-xxs md:text-sm text-dark-700  transition-all   dark:hover:text-primary-800 dark:text-gray-400 ${
-                  index == arr?.length - 1 ? "font-normal hover:text-primary-800 " : " hover:opacity-100 opacity-50"
+                className={`  text-xxs md:text-sm text-dark-700  transition-all     ${
+                  index == arr?.length - 1 ? "font-normal hover:text-neutral-500 " : " hover:opacity-100 opacity-50"
                 }`}
               >
                 {e.title}
@@ -54,7 +56,7 @@ const SingleProductBreadCrumb = ({ dataArray }: { dataArray: { title: string; li
               >
                 <path
                   d="M7.13395 1.58023L6.07295 0.520235L0.29395 6.29723C0.200796 6.3898 0.126867 6.49988 0.0764193 6.62113C0.0259713 6.74238 0 6.87241 0 7.00373C0 7.13506 0.0259713 7.26509 0.0764193 7.38634C0.126867 7.50759 0.200796 7.61767 0.29395 7.71023L6.07295 13.4902L7.13295 12.4302L1.70895 7.00523L7.13395 1.58023Z"
-                  fill="#DCDCDC"
+                  fill={colors.neutral[300]}
                 />
               </svg>
             )}

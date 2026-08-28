@@ -37,7 +37,7 @@ const AuthorizationStatus = ({
         }
       />
       <p
-        className={`${isAuthorized ? "" : "text-primary-900"}  shrink-0 text-xs `}
+        className={`${isAuthorized ? "" : "text-danger-500"}  shrink-0 text-xs `}
       >
         {" "}
         {isAuthorized ? "احراز شده" : "احراز نشده"}

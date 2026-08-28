@@ -21,7 +21,7 @@ const SuccessAddModal = ({
         <img className="w-64 aspect-square h-64" src="/assets/icons/adds/success_prop_add.svg" />
         <div className="flex flex-col items-center justify-center w-full gap-2">
           {" "}
-          <p className="text-primary-700 font-bold ">{_STRINGS.UR_PROP_REGISTERED}</p>
+          <p className="text-brand-600 font-bold ">{_STRINGS.UR_PROP_REGISTERED}</p>
           <p className="text-sm text-center">{_STRINGS.UR_PROP_REGISTERED_DESC}</p>
         </div>
         <div className="w-full flex items-center justify-center gap-4">

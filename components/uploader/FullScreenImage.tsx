@@ -19,7 +19,7 @@ const FullscreenImage = ({
 }: TFullScreenProps) => {
   return (
     <Modal show={show} onHide={() => setShow(false)}>
-      <div className="h-full w-full flex flex-col p-2 gap-2  justify-center items-center bg-white  dark:bg-dark-700 ">
+      <div className="h-full w-full flex flex-col p-2 gap-2  justify-center items-center bg-white   ">
         <div className="w-full h-8 flex items-center justify-between">
           <img
             src="/assets/icons/adds/x_mark.svg"

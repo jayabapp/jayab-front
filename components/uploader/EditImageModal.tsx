@@ -1,3 +1,4 @@
+import { colors } from "@/theme/colors";
 import { Cropper, CropperRef } from "react-advanced-cropper";
 //import "react-advanced-cropper/dist/style.css";
 import _STRINGS from "@/utils/LocalStrings";
@@ -78,7 +79,7 @@ const EditImageModal = ({ imageUrl, isUploading, onHide, onComplete, cropRatio }
     <Modal
       options={{
         containerClass:
-          " app-size app-text  !overflow-hidden flex flex-col items-center justify-center !bg-black  relative  rounded-lg overflow-y-scroll  bg-white !rounded-none dark:bg-dark-900",
+          " app-size app-text  !overflow-hidden flex flex-col items-center justify-center !bg-black  relative  rounded-lg overflow-y-scroll  bg-white !rounded-none ",
         parentClass: "bg-white",
       }}
       show={!!imageUrl}
@@ -130,7 +131,7 @@ const EditImageModal = ({ imageUrl, isUploading, onHide, onComplete, cropRatio }
               const Icon = e.icon;
               return (
                 <button className=" aspect-auto w-fit " key={i} onClick={() => setAspectRatio(e.value)}>
-                  <Icon color={aspectRatio === e.value ? "#61dafb" : "#ffffff"} />
+                  <Icon color={aspectRatio === e.value ? colors.brand[400] : "currentColor"} />
                 </button>
               );
             })}
@@ -139,12 +140,12 @@ const EditImageModal = ({ imageUrl, isUploading, onHide, onComplete, cropRatio }
           <img
             onClick={() => cropperRef?.current?.flipImage(true)}
             src={"/assets/icons/uploader/flip_icon.svg"}
-            className=" scale-[-1] rotate-90 cursor-pointer  dark:invert-0 "
+            className=" scale-[-1] rotate-90 cursor-pointer   "
           />
           <img
             onClick={() => cropperRef?.current?.rotateImage(90, { transitions: true, normalize: true })}
             src={"/assets/icons/uploader/rotate_icon.svg"}
-            className=" cursor-pointer   dark:invert-0 "
+            className=" cursor-pointer    "
           />
 
           <div className="text-white  text-xs">
@@ -156,11 +157,11 @@ const EditImageModal = ({ imageUrl, isUploading, onHide, onComplete, cropRatio }
           <img
             onClick={() => cropperRef?.current?.rotateImage(-90, { transitions: true, normalize: true })}
             src={"/assets/icons/uploader/rotate_icon.svg"}
-            className="  scale-x-[-1] cursor-pointer r dark:invert-0 "
+            className="  scale-x-[-1] cursor-pointer r  "
           />
           <img
             onClick={() => cropperRef?.current?.flipImage(false, true)}
-            className="   cursor-pointer ]  dark:invert-0 "
+            className="   cursor-pointer ]   "
             src={"/assets/icons/uploader/flip_icon.svg"}
           />
         </div>

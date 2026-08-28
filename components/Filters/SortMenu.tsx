@@ -54,11 +54,11 @@ const SortMenu = ({ query }: SortMenuType) => {
   };
 
   return (
-    <div className="w-fit flex lg:flex-row  shrink-0 gap-3 items-center justify-between rounded-10 dark:border-zinc-600 ">
+    <div className="w-fit flex lg:flex-row  shrink-0 gap-3 items-center justify-between rounded-10  ">
       <Menu as="div" className="relative  shrink-0 inline-block text-left mr-1">
         <div>
           <MenuButton className="  md:h-6.5  shrink-0 rounded-lg cursor-pointer flex justify-between items-center">
-            <div className="  gap-2  h-6.5 px-2  shrink-0 rounded-full bg-white border-primary-400 border  flex items-center justify-center  ">
+            <div className="  gap-2  h-6.5 px-2  shrink-0 rounded-full bg-white border-brand-200 border  flex items-center justify-center  ">
               {" "}
               <p className=" shrink-0 text-xs md:text-sm">
                 {" "}
@@ -77,8 +77,8 @@ const SortMenu = ({ query }: SortMenuType) => {
           leaveFrom="transform opacity-100 scale-100"
           leaveTo="transform opacity-0 scale-95"
         >
-          <div className="absolute  shadow-xl top-0 md:top-auto left-0 z-20  mt-2 w-48 origin-top-center  rounded-20 bg-white dark:bg-zinc-800 custom-shadow ring-1 ring-black ring-opacity-5 focus:outline-none  overflow-scroll">
-            <div className="flex gap-2 px-3 items-center flex-col  py-2 border-b border-gray-275 dark:border-zinc-500 ">
+          <div className="absolute  shadow-xl top-0 md:top-auto left-0 z-20  mt-2 w-48 origin-top-center  rounded-20 bg-white  custom-shadow ring-1 ring-black ring-opacity-5 focus:outline-none  overflow-scroll">
+            <div className="flex gap-2 px-3 items-center flex-col  py-2 border-b border-neutral-200  ">
               <div className=" w-full flex items-center justify-between  py-1">
                 <p className="text-sm">{_STRINGS.SORT_BY}</p>
                 <img src={"/assets/icons/adds/x_mark.svg"} className=" w-2.5 h-2.5   " />
@@ -100,7 +100,7 @@ const SortMenu = ({ query }: SortMenuType) => {
                     <></>
                   )}
                   <img src={e?.icon} className=" w-5 h-5 aspect-square" />
-                  <p className="text-sm text-black dark:text-zinc-300 opacity-70"> {e?.title}</p>
+                  <p className="text-sm text-black  opacity-70"> {e?.title}</p>
                 </button>
               ))}
             </div>

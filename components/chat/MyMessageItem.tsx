@@ -48,8 +48,8 @@ const MyMessageItem = ({ data }: itemType) => {
           setShow(true);
         }}
         className={` ${`my-anchor-element${data?.id}`}  ${
-          show ? "bg-primary-50/30 " : ""
-        }  w-[70%] md:w-[40%]  cursor-pointer text-black relative bg-[#d7f4be] dark:bg-gray-700 z-1 ${
+          show ? "bg-brand-50/30 " : ""
+        }  w-[70%] md:w-[40%]  cursor-pointer text-black relative bg-success-50  z-1 ${
           data?.media ? "p-1" : "p-4 pb-2 "
         }   rounded-xl   rounded-br-none h-fit`}
       >
@@ -79,7 +79,7 @@ const MyMessageItem = ({ data }: itemType) => {
         <p
           className={` ${
             isEmojisOnly(data?.text) ? "text-2xl " : " text-xs md:text-sm"
-          } whitespace-pre-line dark:text-gray-100  ${!data?.media && !data?.text ? "opacity-60" : ""}  font-medium`}
+          } whitespace-pre-line   ${!data?.media && !data?.text ? "opacity-60" : ""}  font-medium`}
         >
           {!data?.media && !data?.text ? _STRINGS.DELETED_MESSAGE : data?.text}
         </p>

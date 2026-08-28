@@ -11,7 +11,7 @@ type TProfileImageProps = {
 
 const ProfileImageModal = ({ src, onClose, onDelete }: TProfileImageProps) => (
   <Modal show onHide={onClose}>
-    <div className="flex h-full w-full flex-col gap-3 bg-white p-3 dark:bg-dark-700">
+    <div className="flex h-full w-full flex-col gap-3 bg-white p-3 ">
       <div className="flex justify-between">
         <button type="button" onClick={onClose} aria-label="بستن">
           ×

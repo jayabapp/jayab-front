@@ -28,7 +28,7 @@ const DaysOfTheWeekStatus = ({ isCard, data, week }: TDaysOfTheWeekProps) => {
         >
           <p
             style={{ textAlign: "center" }}
-            className={`text-xxs   !shrink-0  ${isCard ? "" : "md:text-xs"}   text-gray-400 `}
+            className={`text-xxs   !shrink-0  ${isCard ? "" : "md:text-xs"}   text-neutral-400 `}
           >
             {e?.title}
           </p>
@@ -37,8 +37,8 @@ const DaysOfTheWeekStatus = ({ isCard, data, week }: TDaysOfTheWeekProps) => {
             <div
               className={`  ${
                 data?.find((x) => x?.day_number == e?.id)?.is_reserved
-                  ? " bg-primary-700 border-primary-700  text-white "
-                  : "  bg-white  border-primary-250 text-gray-400"
+                  ? " bg-brand-600 border-brand-600  text-white "
+                  : "  bg-white  border-neutral-400 text-neutral-400"
               } text-xxs  border  min-w-9 rounded-full h-5   ${
                 isCard ? "" : " !h-6 md:text-sm  "
               } w-full  relative  flex items-center justify-center `}

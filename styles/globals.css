@@ -7,9 +7,9 @@ html,
 body {
   touch-action: pan-x pan-y;
   padding: 0;
-  color: #17191c;
+  color: theme("colors.neutral.900");
   margin: 0;
-  background: white !important;
+  background: white;
   font-feature-settings: "ss01";
   -moz-font-feature-settings: "ss01";
   -webkit-font-feature-settings: "ss01";
@@ -71,11 +71,11 @@ ul {
   @apply w-full md:w-full mx-auto lg:w-full  min-h-[100dvh];
 }
 .app-background {
-  @apply !bg-white dark:bg-transparent !h-full;
+  @apply !bg-white  !h-full;
 }
 
 .app-text {
-  @apply text-[#06182D]  font-normal;
+  @apply text-neutral-900 font-normal;
 }
 /* ---------------------------------- CARD ---------------------------------- */
 
@@ -89,24 +89,24 @@ ul {
 
 /* ---------------------------------- FORM ---------------------------------- */
 .form-control {
-  @apply bg-white     text-base  flex px-3 pt-2 pb-3 focus:outline-none     disabled:bg-neutral-200 dark:disabled:bg-zinc-800;
+  @apply bg-white text-base flex px-3 pt-2 pb-3 focus:outline-none disabled:bg-neutral-200;
 }
 
 /* --------------------------------- BUTTON --------------------------------- */
 .btn-primary {
-  @apply text-white   border-2 border-transparent   hover:ring-primary-700/50 dark:hover:ring-primary-700/50 cursor-pointer;
+  @apply text-white   border-2 border-transparent   hover:ring-brand-600/50  cursor-pointer;
 }
-.btn-primary-outlined {
-  @apply bg-transparent  text-primary-700 border-2 border-primary-700   hover:ring-primary-700/50 dark:hover:ring-primary-700/50 cursor-pointer;
+.btn-brand-outlined {
+  @apply bg-transparent  text-brand-600 border-2 border-brand-600   hover:ring-brand-600/50  cursor-pointer;
 }
-.btn-primary-faded {
-  @apply text-btnColor-primary bg-btnColor-light    hover:ring-primary-700/50 dark:hover:ring-primary-700/50 cursor-pointer;
+.btn-brand-faded {
+  @apply text-brand-600 bg-neutral-200/75    hover:ring-brand-600/50  cursor-pointer;
 }
-.btn-primary-flat {
-  @apply text-btnColor-primary bg-primary-400/50    hover:ring-primary-700/50 dark:hover:ring-primary-700/50 cursor-pointer;
+.btn-brand-flat {
+  @apply text-brand-600 bg-brand-200/50    hover:ring-brand-600/50  cursor-pointer;
 }
 .btn-outlined {
-  @apply bg-white dark:bg-zinc-800  text-black border-2 border-black  hover:ring-1 hover:ring-primary-700/50 dark:hover:ring-primary-700/50 cursor-pointer;
+  @apply bg-white   text-black border-2 border-black  hover:ring-1 hover:ring-brand-600/50  cursor-pointer;
 }
 
 /* ---------------------------------- AUTH ---------------------------------- */
@@ -130,7 +130,7 @@ ul {
   @apply !shadow-card border md:!w-1/2 md:!left-[20%] md:!right-[20%] mx-auto;
 }
 .list-container {
-  @apply w-full md:w-[70%] lg:w-[60%] xl:w-1/2 px-2 md:px-6 max-w-[580px]  overflow-x-hidden h-auto     mx-auto bg-white    dark:bg-zinc-900   pb-24  pt-[4.5rem]   md:rounded-20;
+  @apply w-full md:w-[70%] lg:w-[60%] xl:w-1/2 px-2 md:px-6 max-w-[580px]  overflow-x-hidden h-auto     mx-auto bg-white       pb-24  pt-[4.5rem]   md:rounded-20;
 }
 
 .chat-container {
@@ -154,10 +154,10 @@ ul {
   box-shadow: none !important;
 }
 [data-theme="dark"] {
-  --rsbs-bg: #27272a;
+  --rsbs-bg: theme("colors.neutral.800");
 }
 [data-theme="light"] {
-  --rsbs-bg: #fff;
+  --rsbs-bg: white;
 } */
 
 /* -------------------------------------------------------------------------- */
@@ -169,12 +169,12 @@ ul {
 /* -------------------------------------------------------------------------- */
 
 .Calendar {
-  @apply bg-white  dark:bg-zinc-800  dark:bg-zinc-900;
+  @apply bg-white;
   box-shadow: none !important;
 }
 
 .-activeBackground {
-  background: #0da1be !important;
+  background: theme("colors.brand.600") !important;
   color: white !important;
 }
 input::-webkit-outer-spin-button,
@@ -209,7 +209,7 @@ input[type="number"] {
   box-shadow: 0px 0px 11px 6px rgba(0, 0, 0, 0.06);
 } */
 .custom-header-Shadow {
-  box-shadow: -4px 9px 16px -7px #ccc;
+  box-shadow: -4px 9px 16px -7px rgb(11 21 36 / 20%);
 }
 
 .form-control:disabled {
@@ -249,10 +249,10 @@ input[type="number"] {
 } */
 
 .checkoutCards {
-  @apply bg-white  border  dark:bg-zinc-800 p-2 md:p-6 rounded-20     dark:shadow-none;
+  @apply bg-white border p-2 md:p-6 rounded-20;
 }
 .app-container-profile {
-  @apply h-full bg-transparent mx-auto min-h-[90vh]  dark:border-zinc-600   mt-4 rounded-20  p-4   px-0  md:px-3 lg:px-4 2xl:px-[5%] pt-12 md:pt-0  pb-32 lg:pb-16 overflow-x-scroll;
+  @apply h-full bg-transparent mx-auto min-h-[90vh]     mt-4 rounded-20  p-4   px-0  md:px-3 lg:px-4 2xl:px-[5%] pt-12 md:pt-0  pb-32 lg:pb-16 overflow-x-scroll;
 }
 
 .profile-grid-part {
@@ -306,7 +306,7 @@ input[type="number"] {
 }
 
 .card__inner {
-  color: #fff;
+  color: white;
   height: auto;
   position: absolute;
   transform: translateY(-100%);
@@ -315,7 +315,7 @@ input[type="number"] {
     rgb(0 0 0 / 5%) 0px -20px 20px,
     rgb(0 0 0 / 10%) 0px -6px 6px,
     rgb(0 0 0 / 3%) 0px -30px 30px;
-  background: #343434;
+  background: theme("colors.neutral.800");
   border-radius: 10px 10px 0 0;
   overflow: visible;
   top: -90px;
@@ -329,7 +329,7 @@ input[type="number"] {
 
 .card__inner::after {
   content: " ";
-  background: #343434;
+  background: theme("colors.neutral.800");
   width: 100%;
   height: 100%;
   top: 99%;
@@ -354,7 +354,7 @@ input[type="number"] {
 .indicator {
   height: 250x;
   width: 30px;
-  background: #d8d8d8;
+  background: theme("colors.neutral.300");
   border-radius: 0.3rem;
 }
 
@@ -390,7 +390,7 @@ input[type="number"] {
   @apply !h-2.5 !w-2.5 transition-all    bg-white/80  !rounded-full;
 }
 .swiper-pagination-bullet-active {
-  @apply !bg-gray-100/90      transition-all px-5;
+  @apply !bg-neutral-100/90      transition-all px-5;
 }
 .form-title-gradient {
   background: white;
@@ -423,7 +423,7 @@ select {
   height: 100vh;
   position: fixed;
   z-index: -1;
-  background: #1e1e1e;
+  background: theme("colors.neutral.900");
 }
 
 .accardion-class {
@@ -471,7 +471,7 @@ select {
 }
 
 .custome-shadow-card {
-  box-shadow: 0px 5px 12px -5px #ccc;
+  box-shadow: 0px 5px 12px -5px rgb(11 21 36 / 20%);
 }
 
 /* temperoray */
@@ -481,7 +481,7 @@ select {
 }
 .rc-slider-dot {
   bottom: -3px !important;
-  background-color: #fff !important;
+  background-color: white !important;
 }
 
 button {
@@ -599,7 +599,7 @@ button {
   align-items: center;
   justify-content: center;
   border-radius: 100%;
-  @apply !h-1.5 !w-1.5 transition-all    bg-gray-100/50 !rounded-full;
+  @apply !h-1.5 !w-1.5 transition-all    bg-neutral-100/50 !rounded-full;
 }
 /* .embla__dot:after {
   box-shadow: inset 0 0 0 0.2rem var(--detail-medium-contrast);
@@ -611,7 +611,7 @@ button {
   content: "";
 } */
 .embla__dot--selected {
-  @apply !bg-gray-100/90  !w-5   !h-1.5  transition-all;
+  @apply !bg-neutral-100/90  !w-5   !h-1.5  transition-all;
 }
 
 textarea {
@@ -648,7 +648,7 @@ textarea {
 .content {
   font-kerning: none;
   a {
-    @apply !text-primary-700 !underline !underline-offset-4;
+    @apply !text-brand-600 !underline !underline-offset-4;
   }
 }
 
@@ -657,27 +657,27 @@ textarea {
 /* -------------------------------------------------------------------------- */
 
 h1 {
-  @apply font-bold text-[1.3rem] lg:text-2xl !leading-8 text-[#083f5e];
+  @apply text-[1.3rem] font-bold !leading-8 text-brand-800 lg:text-2xl;
 }
 
 h2 {
-  @apply font-bold leading-7 text-[1.2rem] lg:text-[1.3rem] text-[#083f5e];
+  @apply text-[1.2rem] font-bold leading-7 text-brand-800 lg:text-[1.3rem];
 }
 
 h3 {
-  @apply font-bold leading-7 text-[1.15rem] lg:text-[1.25rem] text-[#083f5e];
+  @apply text-[1.15rem] font-bold leading-7 text-brand-800 lg:text-[1.25rem];
 }
 
 h4 {
-  @apply font-bold leading-7 text-[1.1rem] lg:text-[1.2rem] text-[#083f5e];
+  @apply text-[1.1rem] font-bold leading-7 text-brand-800 lg:text-[1.2rem];
 }
 
 h5 {
-  @apply font-bold leading-7 text-[1.1rem] lg:text-[1.15rem] text-[#083f5e];
+  @apply text-[1.1rem] font-bold leading-7 text-brand-800 lg:text-[1.15rem];
 }
 
 h6 {
-  @apply font-bold leading-7 text-[1.1rem] lg:text-[1rem] text-[#083f5e];
+  @apply text-[1.1rem] font-bold leading-7 text-brand-800 lg:text-[1rem];
 }
 .mce-float-left {
   float: left;
@@ -697,7 +697,7 @@ h6 {
 }
 
 .category_table tr:first-child td {
-  background: #0f76b2;
+  background: theme("colors.brand.600");
   color: white;
 }
 
@@ -719,7 +719,7 @@ table {
 }
 
 .blogBody a {
-  @apply text-primary-700;
+  @apply text-brand-600;
 }
 
 ul {
@@ -804,7 +804,11 @@ ul {
 }
 
 .new-tag {
-  background: linear-gradient(180deg, #ff535f 0%, #ed333f 50%, #dd323d 100%);
+  background: linear-gradient(
+    180deg,
+    theme("colors.danger.500") 0%,
+    theme("colors.danger.600") 100%
+  );
 
   box-shadow: 0px 2px 3px 0px rgba(255, 255, 255, 0.4) inset;
 

@@ -64,7 +64,7 @@ const Income = () => {
         {isPending ? (
           <div className="grid grid-cols-1 gap-4 lg:grid-cols-2" role="status">
             {Array.from({ length: 4 }, (_, index) => (
-              <div key={index} className="h-32 animate-pulse rounded-20 bg-zinc-200" />
+              <div key={index} className="h-32 animate-pulse rounded-20 bg-neutral-200" />
             ))}
           </div>
         ) : subscriptions.length > 0 ? (
@@ -74,7 +74,7 @@ const Income = () => {
             hasMore={Boolean(hasNextPage)}
             loader={
               isFetchingNextPage ? (
-                <div className="h-32 animate-pulse rounded-20 bg-zinc-200" />
+                <div className="h-32 animate-pulse rounded-20 bg-neutral-200" />
               ) : null
             }
             className="grid px-1   pb-8 pt-4 !overflow-hidden  grid-cols-1 gap-2 md:gap-4  lg:grid-cols-2 2xl:grid-cols-2 "

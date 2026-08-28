@@ -10,7 +10,7 @@ export const CommentComponent: FC<{ item: QuestionDto }> = ({ item }) => {
     <div className="w-full flex flex-col ">
       <div className=" w-full flex flex-col  gap-4 p-3  border border-secondary-400 rounded-xl">
         <div className="flex  flex-row items-center justify-between">
-          <div className=" flex items-center gap-1 border  border-primary-border  rounded-full pl-2 p-[1px]  ">
+          <div className=" flex items-center gap-1 border  border-neutral-200  rounded-full pl-2 p-[1px]  ">
             {" "}
             <img
               src="/assets/icons/profile/profile_holder.svg"
@@ -38,12 +38,12 @@ export const CommentComponent: FC<{ item: QuestionDto }> = ({ item }) => {
           />
           <div className="p-6 w-full flex flex-col gap-4 bg-secondary-200 rounded-10 ">
             <div className="flex flex-row   items-center justify-between">
-              <div className=" flex items-center gap-1 border  border-primary-border  rounded-full pl-2 p-[1px]  ">
+              <div className=" flex items-center gap-1 border  border-neutral-200  rounded-full pl-2 p-[1px]  ">
                 <img
                   src="/assets/icons/profile/profile_holder.svg"
                   className="w-6 h-6  opacity-60"
                 />
-                <p className="text-sm text-gray-400 ">پاسخ ادمین</p>
+                <p className="text-sm text-neutral-400 ">پاسخ ادمین</p>
               </div>
               <div className="  flex  items-center gap-2 ">
                 <img

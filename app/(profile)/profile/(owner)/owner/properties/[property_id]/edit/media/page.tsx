@@ -88,16 +88,16 @@ const CreatePropertyImages = () => {
       </div>
 
       <div className=" flex items-start w-full flex-wrap gap-4">
-        <div className=" bg-primary-350/5 border p-3  w-full  rounded-10 border-primary-350  flex flex-col gap-3">
-          <p className="text-xs text-primary-350">
+        <div className=" bg-warning-600/5 border p-3  w-full  rounded-10 border-warning-600  flex flex-col gap-3">
+          <p className="text-xs text-warning-600">
             1- حداکثر تعداد آپلود همزمان عکس 10 عدد میباشد.
           </p>
-          <p className="text-xs text-primary-350">
+          <p className="text-xs text-warning-600">
             {!isEmpty(images)
               ? "2- عکس اصلی خود را با ضربه زدن روی عکس مورد نظر انتخاب کنید."
               : ""}
           </p>
-          <p className="text-xs text-primary-350 content text-justify">
+          <p className="text-xs text-warning-600 content text-justify">
             3- در صورت بروز اختلال در شبکه اینترنت، میتوانید ابتدا یک عکس آپلود
             و پس از اتمام مراحل ثبت اقامتگاه، مجددا تصاویر بیشتری بارگذاری
             نمائید.
@@ -152,7 +152,7 @@ const CreatePropertyImages = () => {
                     !!primaryImageId && primaryImageId == e?.data?.id
                       ? "opacity-100"
                       : "opacity-0"
-                  } transition-all absolute text-xxs h-7 bottom-0 w-full flex items-center justify-center bg-white/60   z-5 text-gray-700`}
+                  } transition-all absolute text-xxs h-7 bottom-0 w-full flex items-center justify-center bg-white/60   z-5 text-neutral-600`}
                 >
                   {_STRINGS.PRIMARY_IMAGE}
                 </div>

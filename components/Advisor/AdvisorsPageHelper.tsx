@@ -127,7 +127,7 @@ const AdvisorsPageHelper = ({ devices }: { devices: DeviceInfo }) => {
               <Link
                 title={_STRINGS.REGISTER_AS_SPECIAL_AD}
                 href={`/profile/advisor/subscription/is-especial`}
-                className="w-full md:w-fit  px-12  md:col-span-4  rounded-full flex items-center justify-center gap-4 h-12 bg-primary-600 "
+                className="w-full md:w-fit  px-12  md:col-span-4  rounded-full flex items-center justify-center gap-4 h-12 bg-success-600 "
               >
                 <Image
                   className="w-5 h-5 aspect-square"

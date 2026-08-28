@@ -1,4 +1,6 @@
 "use client";
+
+import { colors } from "@/theme/colors";
 /* eslint-disable react-hooks/set-state-in-effect */
 
 import { useParams, useRouter, useSearchParams } from "next/navigation";
@@ -111,7 +113,7 @@ const CreatePropertyPricing = () => {
         <>
           {" "}
           <div className=" flex flex-col gap-2 border-b   pb-4 w-full">
-            <p className="font-bold w-full text-start  text-sm md:text-base text-primary-700  ">
+            <p className="font-bold w-full text-start  text-sm md:text-base text-brand-600  ">
               {_STRINGS.GUEST_CAP}
             </p>
             <TitleCounter
@@ -135,22 +137,22 @@ const CreatePropertyPricing = () => {
             <div className="w-full flex items-start justify-between ">
               {" "}
               <div className="flex flex-col gap-2">
-                <p className="font-bold w-fit text-start  text-sm md:text-base text-primary-700  ">
+                <p className="font-bold w-fit text-start  text-sm md:text-base text-brand-600  ">
                   {_STRINGS.COMITION_PERC} ( اختیاری )
                 </p>
-                <p className=" text-xs text-primary-800 md:text-sm">
+                <p className=" text-xs text-neutral-500 md:text-sm">
                   {_STRINGS.hOW_MUCH_DO_U_WANT_TO_COMM}
                 </p>
               </div>
-              <p className="text-primary-700  shrink-0 text-sm">{` % ${values?.advisor_commission} `}</p>
+              <p className="text-brand-600  shrink-0 text-sm">{` % ${values?.advisor_commission} `}</p>
             </div>
             <div className="flex px-4 items-center justify-center">
               {" "}
               <RangeWithTitle
                 className=" w-full md:w-1/2 "
                 marks={{
-                  0: { label: "0", style: { color: "#3886E5" } },
-                  50: { label: "50", style: { color: "#3886E5" } },
+                  0: { label: "0", style: { color: colors.brand[500] } },
+                  50: { label: "50", style: { color: colors.brand[500] } },
                 }}
                 max={50}
                 min={0}
@@ -166,7 +168,7 @@ const CreatePropertyPricing = () => {
             onClick={onShowNotify}
             className=" flex flex-col gap-2    pb-4 w-full"
           >
-            <p className="font-bold w-full text-start  text-sm md:text-base text-primary-700  ">
+            <p className="font-bold w-full text-start  text-sm md:text-base text-brand-600  ">
               {_STRINGS.REND_DAYLI_PRICE}
             </p>{" "}
             <FormInputWithExternalUnit

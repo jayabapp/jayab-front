@@ -146,7 +146,7 @@ const ChatFooter = ({
     <div
       className={` flex px-2  flex-1 z-30 w-full left-0 border-b   ${
         isIOS ? " bottom-0   " : "bottom-[0]   pb-1"
-      }  h-fit  transition-all duration-100 ease-in-out  absolute  overflow-clip     left-0   flex-col  bg-white  dark:bg-dark-700 ${
+      }  h-fit  transition-all duration-100 ease-in-out  absolute  overflow-clip     left-0   flex-col  bg-white   ${
         product && showProduct ? " pb-4 !h-36 bottom-0" : ""
       }`}
     >
@@ -156,7 +156,7 @@ const ChatFooter = ({
         <></>
       )}
       <div
-        className={` ${isIOS ? "!h-16" : ""} flex   bg-white  dark:bg-dark-700  w-full   h-full  items-center gap-1  `}
+        className={` ${isIOS ? "!h-16" : ""} flex   bg-white    w-full   h-full  items-center gap-1  `}
       >
         <div
           onMouseDown={(e) => {
@@ -176,7 +176,7 @@ const ChatFooter = ({
                 (text.trim() || image) && !connecting
                   ? "opacity-100"
                   : "opacity-50 grayscale "
-              }  aspect-square rounded-full flex items-center justify-center bg-primary-700  dark:invert`}
+              }  aspect-square rounded-full flex items-center justify-center bg-brand-600  `}
             >
               {" "}
               <Image
@@ -209,7 +209,7 @@ const ChatFooter = ({
               alt="XMarkIcon"
               src="/assets/icons/chat/smily_face.svg"
               onClick={() => setShowEmojiPicker(false)}
-              className="w-5 text-gray-500 h-5 md:!w-6 md:!h-6 "
+              className="w-5 text-neutral-500 h-5 md:!w-6 md:!h-6 "
             />
           ) : (
             <Image
@@ -218,7 +218,7 @@ const ChatFooter = ({
               alt="FaceSmileIcon"
               src="/assets/icons/chat/smily_face.svg"
               onClick={() => setShowEmojiPicker(true)}
-              className="w-5 text-gray-500 h-5  md:!w-6 md:!h-6 "
+              className="w-5 text-neutral-500 h-5  md:!w-6 md:!h-6 "
             />
           )}
           <ChatUploader

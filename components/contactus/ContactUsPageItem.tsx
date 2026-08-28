@@ -55,7 +55,7 @@ const ContactUsPageItem = ({ e, disableText = false }: TContactTest) => {
         {disableText ? (
           <></>
         ) : (
-          <p className="text-base bg-white px-2 py-2  rounded-full w-full font-medium dark:text-zinc-100">
+          <p className="text-base bg-white px-2 py-2  rounded-full w-full font-medium ">
             {e?.small_text}
           </p>
         )}

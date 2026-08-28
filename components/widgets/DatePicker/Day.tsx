@@ -53,7 +53,7 @@ const Day = ({
 
   return (
     <div
-      className={`aspect-square   ${!!data?.year && (!isBefore || !!isToday) ? "bg-primary-450" : " opacity-50 "} ${
+      className={`aspect-square   ${!!data?.year && (!isBefore || !!isToday) ? "bg-neutral-100" : " opacity-50 "} ${
         onSelect && !disableClick ? "cursor-pointer" : ""
       } `}
       onClick={() => {
@@ -71,15 +71,15 @@ const Day = ({
       <div
         key={data?.id}
         className={`text-center flex flex-col gap-0.5 ${data?.is_reserved ? "striped" : " "}   ${
-          isToday ? "  rounded-md bg-gray-200 border " : ""
+          isToday ? "  rounded-md bg-neutral-200 border " : ""
         }  relative  flex items-center ${!!data?.price ? "justify-start" : "justify-center"}  md:justify-center  aspect-square  ${
-          !!data?.isActive ? "border-b-2  border-primary-700" : ""
-        }  ${isSelected ? "!bg-primary-700  rounded-md text-white" : ""}`}
+          !!data?.isActive ? "border-b-2  border-brand-600" : ""
+        }  ${isSelected ? "!bg-brand-600  rounded-md text-white" : ""}`}
       >
         {!!data?.has_memo ? (
           <div
             className={` absolute left-1 top-1  w-1 h-1 aspect-square  ${
-              isSelected ? "bg-primary-900" : "bg-primary-700 "
+              isSelected ? "bg-danger-500" : "bg-brand-600 "
             }  !rounded-full`}
           >
             {" "}
@@ -88,7 +88,7 @@ const Day = ({
           <></>
         )}
         {!!data?.is_peak ? (
-          <div className="absolute left-0 right-0 mx-auto  bottom-0.5   h-1  w-1/2  bg-primary-900 !rounded-full">
+          <div className="absolute left-0 right-0 mx-auto  bottom-0.5   h-1  w-1/2  bg-danger-500 !rounded-full">
             {" "}
           </div>
         ) : (

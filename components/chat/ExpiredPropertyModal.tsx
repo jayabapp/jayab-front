@@ -40,7 +40,7 @@ const ExpiredPropertyModal = ({
     <Modal
       options={{
         containerClass:
-          "mx-auto my-20   w-11/12 md:w-1/2 xl:w-1/3 2xl:w-1/4 rounded-lg overflow-y-scroll  bg-white  dark:bg-zinc-800",
+          "mx-auto my-20   w-11/12 md:w-1/2 xl:w-1/3 2xl:w-1/4 rounded-lg overflow-y-scroll  bg-white  ",
       }}
       show={visibleModal}
       onHide={onHideFunc}

@@ -17,7 +17,7 @@ const EditHub = () => {
             title={e?.full_title}
             key={`items${e?.id}`}
             href={`${e?.link}`}
-            className="w-full border-primary-200  flex items-center justify-between  h-fit px-4 py-3 rounded-10 border"
+            className="w-full border-neutral-200  flex items-center justify-between  h-fit px-4 py-3 rounded-10 border"
           >
             <p className=" text-sm font-bold ">{e?.full_title}</p>
 

@@ -112,7 +112,7 @@ const PopSearchbox = ({
             setShowPop(true);
           }}
           width={20}
-          className="dark:invert"
+          className=""
           height={20}
         />
       ) : (
@@ -120,14 +120,14 @@ const PopSearchbox = ({
           onClick={() => {
             setShowPop(true);
           }}
-          className={`bg-transparent border rounded-20  px-4 py-1.5  overflow-hidden dark:bg-zinc-600  flex justify-between items-center  ${item?.bg}`}
+          className={`bg-transparent border rounded-20  px-4 py-1.5  overflow-hidden   flex justify-between items-center  ${item?.bg}`}
         >
           {" "}
           <div className="flex items-center gap-1 w-full">
             <div
               id={boxId}
               ref={inputRef}
-              className={`bg-transparent text-base lg:text-sm  line-clamp-1 dark:bg-transparent py-1 pl-3 pr-0.5  w-full ${!text ? "opacity-50" : ""}  `}
+              className={`bg-transparent text-base lg:text-sm  line-clamp-1  py-1 pl-3 pr-0.5  w-full ${!text ? "opacity-50" : ""}  `}
             >
               {text || placeholder}{" "}
             </div>
@@ -143,7 +143,7 @@ const PopSearchbox = ({
         } transition-all    fixed  flex flex-col items-center justify-between pb-4   overflow-y-scroll    rounded-b-10  border shadow-card  left-0 w-full -top-2  duration-500 z-50  bg-white `}
       >
         <div className="flex px-4  pt-4 items-center relative w-full gap-2 flex-row ">
-          <div className=" relative flex items-center rounded-full border-primary-200 dark:bg-transparent  w-full py-1.5   gap-1 px-1.5 pr-3   border-2 ">
+          <div className=" relative flex items-center rounded-full border-neutral-200   w-full py-1.5   gap-1 px-1.5 pr-3   border-2 ">
             {" "}
             <input
               value={text}
@@ -161,7 +161,7 @@ const PopSearchbox = ({
                       mutate({ q: text });
                     }
               }
-              className="  cursor-pointer h-8 w-8  flex items-center justify-center  p-2 absolute left-1 aspect-square rounded-full  bg-primary-700"
+              className="  cursor-pointer h-8 w-8  flex items-center justify-center  p-2 absolute left-1 aspect-square rounded-full  bg-brand-600"
             >
               {!!isPending ? (
                 <BtnLoading />

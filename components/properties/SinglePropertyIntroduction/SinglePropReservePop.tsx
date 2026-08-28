@@ -66,7 +66,7 @@ const SinglePropReservePop = ({
     <>
       <ModalBottomSheet
         options={{
-          containerClass: `mx-auto rounded-t-20 absolute pb-[1.5rem] lg:pb-4 bottom-0 lg:translate-x-1/2 lg:right-1/2 w-full lg:w-[calc(35svw)]  bg-white dark:bg-zinc-900 overflow-y-scroll  dark:bg-dark-700`,
+          containerClass: `mx-auto rounded-t-20 absolute pb-[1.5rem] lg:pb-4 bottom-0 lg:translate-x-1/2 lg:right-1/2 w-full lg:w-[calc(35svw)]  bg-white  overflow-y-scroll  `,
         }}
         onHide={() => {
           setShow(false);
@@ -92,7 +92,7 @@ const SinglePropReservePop = ({
                 forbiden_dates={reserveDates || []}
               />
             </div>
-            {isCheckingAvailability ? <div className="h-1 w-full animate-pulse rounded bg-primary-200" /> : null}
+            {isCheckingAvailability ? <div className="h-1 w-full animate-pulse rounded bg-neutral-200" /> : null}
           </div>
           <div className="w-full flex flex-col gap-2">
             <p className=" ">{_STRINGS.PPL_COUNT}</p>

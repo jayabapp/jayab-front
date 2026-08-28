@@ -49,13 +49,13 @@ export const PrevButton: React.FC<PropType> = (props) => {
 
   return (
     <button
-      className={` my-auto    flex bottom-0 top-5  items-center justify-center hover:scale-102 group hover:bg-primary-700 dark:hover:bg-primary-700 transition-all lg:flex md:flex-col absolute z-10 bg-white/40 dark:bg-zinc-800  rounded-full cursor-pointer h-10 w-10 left-4   right-auto  bg-gray-250 ${className}`}
+      className={` my-auto    flex bottom-0 top-5  items-center justify-center hover:scale-102 group hover:bg-brand-600  transition-all lg:flex md:flex-col absolute z-10 bg-white/40   rounded-full cursor-pointer h-10 w-10 left-4   right-auto ${className}`}
       type="button"
       {...restProps}
     >
       <img
         src="/assets/icons/shared/chevron.svg"
-        className="w-6 h-6  rotate-90 dark:opacity-50 dark:invert select-none group-hover:invert"
+        className="w-6 h-6  rotate-90   select-none group-hover:invert"
         alt="chvronSwiper"
       />
     </button>
@@ -67,13 +67,13 @@ export const NextButton: React.FC<PropType> = (props) => {
 
   return (
     <button
-      className={` my-auto    flex bottom-0 top-5   items-center justify-center hover:scale-102 group hover:bg-primary-700 dark:hover:bg-primary-700 transition-all lg:flex md:flex-col absolute z-10 bg-white/40 dark:bg-zinc-800  rounded-full cursor-pointer h-10 w-10 right-4   left-auto  bg-gray-250  ${className}`}
+      className={` my-auto    flex bottom-0 top-5   items-center justify-center hover:scale-102 group hover:bg-brand-600  transition-all lg:flex md:flex-col absolute z-10 bg-white/40   rounded-full cursor-pointer h-10 w-10 right-4   left-auto ${className}`}
       type="button"
       {...restProps}
     >
       <img
         src="/assets/icons/shared/chevron.svg"
-        className="w-6 h-6  -rotate-90 dark:opacity-50 dark:invert select-none group-hover:invert"
+        className="w-6 h-6  -rotate-90   select-none group-hover:invert"
         alt="chvronSwiper"
       />
     </button>

@@ -201,7 +201,7 @@ const NewMultUploader = ({
             onClick={() => {
               !disabled ? imagePickerRef?.current?.click() : void null;
             }}
-            className={`cursor-pointer flex flex-col items-center gap-1 border bg-white relative transition-all duration-150 ease-in-out hover:border-gray-600 justify-center rounded-20 aspect-square ${
+            className={`cursor-pointer flex flex-col items-center gap-1 border bg-white relative transition-all duration-150 ease-in-out hover:border-neutral-600 justify-center rounded-20 aspect-square ${
               innerClasses?.sizeClass || "h-24 w-24"
             }`}
           >
@@ -211,7 +211,7 @@ const NewMultUploader = ({
               sizes="40px"
               alt=""
               src="/assets/images/uploader/uploader_placeholder.png"
-              className="w-10 h-10 opacity-80 text-primary-700"
+              className="w-10 h-10 opacity-80 text-brand-600"
             />
             {title && <p className="text-xs opacity-70">{title}</p>}
             {loading && (
@@ -245,7 +245,7 @@ const NewMultUploader = ({
                   );
                 }
               }}
-              className={`cursor-pointer border bg-whiteGray-100 dark:bg-zinc-700 rounded-20 aspect-square relative ${
+              className={`cursor-pointer border bg-whiteGray-100  rounded-20 aspect-square relative ${
                 innerClasses?.sizeClass || "h-24 w-24"
               }`}
             >

@@ -7,12 +7,12 @@ const Message = ({ item }: TicketMessageProps) => (
   <div
     className={`w-full rounded-lg p-4 text-white ${
       item?.by_admin
-        ? "bg-primary-700/75 dark:border dark:border-zinc-300 dark:bg-zinc-700"
-        : "bg-zinc-200 !text-zinc-500 dark:bg-zinc-800 dark:text-zinc-200"
+        ? "bg-brand-600/75   "
+        : "bg-neutral-200 !text-neutral-500  "
     }`}
   >
     {item?.by_admin ? (
-      <p className="pb-2 text-sm text-gray-300">{_STRINGS.ADMIN_RESPOND}</p>
+      <p className="pb-2 text-sm text-neutral-300">{_STRINGS.ADMIN_RESPOND}</p>
     ) : null}
     <div className="flex items-center gap-2">
       <p className="text-sm font-light">

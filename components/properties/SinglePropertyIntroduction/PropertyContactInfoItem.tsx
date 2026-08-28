@@ -71,7 +71,7 @@ const PropertyContactInfoItem = ({
           sizes="(min-width: 768px) 56px, 40px"
           alt={data?.assistant_full_name || ""}
           className={` w-10 h-10  md:w-14 md:h-14 aspect-square rounded-full ${
-            !!image && !!data?.is_owner ? "border border-primary-700" : ""
+            !!image && !!data?.is_owner ? "border border-brand-600" : ""
           } `}
         />
         <div className="flex flex-col items-start gap-2">
@@ -93,7 +93,7 @@ const PropertyContactInfoItem = ({
           }
           width={`  ${
             showNumber
-              ? " !bg-transparent  !px-0 !text-primary-700 font-semibold    !text-base  tracking-wider "
+              ? " !bg-transparent  !px-0 !text-brand-600 font-semibold    !text-base  tracking-wider "
               : "  !text-sm"
           } `}
           endIcon={
@@ -122,14 +122,14 @@ const PropertyContactInfoItem = ({
         <div className="flex flex-row items-center justify-center gap-4">
           {type == "call" ? (
             <div className="flex justify-center items-center gap-2">
-              <p className="text-sm font-medium text-primary-700">
+              <p className="text-sm font-medium text-brand-600">
                 {_STRINGS.CALL}
               </p>
               <div
                 onClick={() => {
                   onActionButtinsClick("call");
                 }}
-                className=" w-9 h-9  bg-primary-700 aspect-square rounded-full flex items-center justify-center "
+                className=" w-9 h-9  bg-brand-600 aspect-square rounded-full flex items-center justify-center "
               >
                 <img
                   className="w-4 h-4  aspect-square"
@@ -139,7 +139,7 @@ const PropertyContactInfoItem = ({
             </div>
           ) : (
             <div className="flex justify-center items-center gap-2">
-              <p className="text-sm font-medium text-primary-700">
+              <p className="text-sm font-medium text-brand-600">
                 {_STRINGS.SMS}
               </p>
               <div
@@ -149,7 +149,7 @@ const PropertyContactInfoItem = ({
                 }}
                 className={`${
                   isPropertyExpired ? " grayscale opacity-60 " : ""
-                }  w-9 h-9  bg-white border border-primary-700 aspect-square rounded-full flex items-center justify-center `}
+                }  w-9 h-9  bg-white border border-brand-600 aspect-square rounded-full flex items-center justify-center `}
               >
                 <img
                   className="w-4 h-4  aspect-square"

@@ -62,14 +62,14 @@ const FormInput = ({
         rows={item?.rows || 3}
         className={`${!!item?.iconUrl ? " !pl-10" : ""}  ${!!item?.iconEndUrl ? " !pr-10" : ""} ${
           item?.direction ? item?.direction : "rtl"
-        }  text-right form-control !transform-none text-base font-normal  bg-white     border  focus:border-primary-700/30 py-4 px-4 w-full rounded-10 placeholder:text-gray-400 placeholder:text-right   placeholder:font-normal placeholder:text-sm placeholder:opacity-70   ${
+        }  text-right form-control !transform-none text-base font-normal  bg-white     border  focus:border-brand-600/30 py-4 px-4 w-full rounded-10 placeholder:text-neutral-400 placeholder:text-right   placeholder:font-normal placeholder:text-sm placeholder:opacity-70   ${
           item?.inputClass
         } ${
           item?.disableHover
             ? ""
             : !!errors && !!errors[errorKey]
               ? "border-red-100"
-              : " hover:border-gray-1150 focus:border-primary-700/30"
+              : " hover:border-neutral-300 focus:border-brand-600/30"
         } `}
         id={`${item?.id}`}
         placeholder={item?.placeholder || item?.title}
@@ -114,7 +114,7 @@ const FormInput = ({
       {!!item?.hint && (
         <div
           id={`${item?.id}`}
-          className={`text-xs font-light text-gray-400 mt-1 mr-5 `}
+          className={`text-xs font-light text-neutral-400 mt-1 mr-5 `}
         >
           {item?.hint}
         </div>

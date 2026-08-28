@@ -58,7 +58,7 @@ const PropertyCard = ({
               {" "}
               <p className="text-sm  shrink-0 ">{_STRINGS.TODAY_STATUS} :</p>
               <p
-                className={` text-sm font-bold ${!!data?.is_today_reserved ? " text-red-500 " : " text-primary-700 "} `}
+                className={` text-sm font-bold ${!!data?.is_today_reserved ? " text-red-500 " : " text-brand-600 "} `}
               >
                 {!!data?.is_today_reserved
                   ? _STRINGS.IS_RESERVED
@@ -71,7 +71,7 @@ const PropertyCard = ({
               {/* LOCATION */}
               <div className="flex w-full  items-center gap-1">
                 {!!data?.is_promoted ? (
-                  <p className="   font-bold    text-primary-700  shrink-0  text-xs  pl-1 border-l">
+                  <p className="   font-bold    text-brand-600  shrink-0  text-xs  pl-1 border-l">
                     {_STRINGS.LADDERED}
                   </p>
                 ) : (
@@ -92,7 +92,7 @@ const PropertyCard = ({
 
           {/* CODE  - LIKES */}
           <div className="flex items-center gap-2">
-            <div className="bg-gray-200 font-normal rounded-full text-xs  text-black  px-2 h-5  leading-4  flex items-center justify-center">
+            <div className="bg-neutral-200 font-normal rounded-full text-xs  text-black  px-2 h-5  leading-4  flex items-center justify-center">
               کد {data.code}
             </div>{" "}
             <PropertyCardLikes
@@ -122,7 +122,7 @@ const PropertyCard = ({
             <div className="flex items-center w-full gap-2">
               <StatusShower data={data?.status} />
               {!!data?.is_promoted ? (
-                <p className="  font-bold  text-primary-700  shrink-0  text-xs  pr-1 border-r">
+                <p className="  font-bold  text-brand-600  shrink-0  text-xs  pr-1 border-r">
                   {_STRINGS.LADDERED}
                 </p>
               ) : (
@@ -153,14 +153,14 @@ const PropertyCard = ({
               className=" w-full rounded-2xl  h-full  object-cover aspect-square"
             />
             {data?.advisor_commission || data?.advisor_commission == 0 ? (
-              <div className="w-16 gap-0.5  h-5 rounded-md transition-all  py-[0.2rem] backdrop-blur-[6px]   bg-primary-black/30 text-white absolute z-1 left-2 flex-row top-2 aspect-square flex items-center justify-center">
+              <div className="w-16 gap-0.5  h-5 rounded-md transition-all  py-[0.2rem] backdrop-blur-[6px]   bg-neutral-900/30 text-white absolute z-1 left-2 flex-row top-2 aspect-square flex items-center justify-center">
                 <p className="  text-xxs   ">
                   {" "}
                   کمیسیون: {data.advisor_commission}%
                 </p>{" "}
               </div>
             ) : data?.attachments_count ? (
-              <div className="w-12 gap-1.5  h-6 rounded-full transition-all  py-[0.2rem]  backdrop-blur-[6px]  bg-primary-black/30 text-white absolute z-1 left-2 flex-row top-2 aspect-square flex items-center justify-center">
+              <div className="w-12 gap-1.5  h-6 rounded-full transition-all  py-[0.2rem]  backdrop-blur-[6px]  bg-neutral-900/30 text-white absolute z-1 left-2 flex-row top-2 aspect-square flex items-center justify-center">
                 <p className="  text-xs font-medium   ">
                   {data.attachments_count}
                 </p>{" "}
@@ -174,7 +174,7 @@ const PropertyCard = ({
               <></>
             )}
             {data?.is_authorized ? (
-              <div className="  right-2 w-fit  h-7   absolute   pr-1 pl-2   backdrop-blur-[6px]  bg-primary-black/30 rounded-full flex items-center gap-2  mx-auto bottom-2">
+              <div className="  right-2 w-fit  h-7   absolute   pr-1 pl-2   backdrop-blur-[6px]  bg-neutral-900/30 rounded-full flex items-center gap-2  mx-auto bottom-2">
                 <img
                   alt={`tick${data?.id}`}
                   src="/assets/icons/adds/green_circular_tick.svg"
@@ -194,7 +194,7 @@ const PropertyCard = ({
           <button
             type="button"
             onClick={() => onPhotoUpgradeClick?.(data)}
-            className="flex w-full items-center justify-center gap-2 rounded-10 border border-primary-700/30 bg-primary-700/10 px-3 py-2 text-sm font-medium text-primary-700 transition-all hover:bg-primary-700/15"
+            className="flex w-full items-center justify-center gap-2 rounded-10 border border-brand-600/30 bg-brand-600/10 px-3 py-2 text-sm font-medium text-brand-600 transition-all hover:bg-brand-600/15"
           >
             <img
               src="/assets/icons/header/upgrade_image.svg"

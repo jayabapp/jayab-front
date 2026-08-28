@@ -57,7 +57,7 @@ const OtpInput = ({ setValue }: { setValue: (value: string) => void }) => {
           autoComplete={index === 0 ? "one-time-code" : "off"}
           autoFocus={index === 0}
           inputMode="numeric"
-          className={`h-14 w-16 rounded-10 border bg-white/80 text-center text-lg font-medium opacity-80 ${digit ? "border-primary-700 dark:border-zinc-400" : ""}`}
+          className={`h-14 w-16 rounded-10 border bg-white/80 text-center text-lg font-medium opacity-80 ${digit ? "border-brand-600 " : ""}`}
           type="text"
           maxLength={1}
           value={digit}

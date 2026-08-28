@@ -51,7 +51,7 @@ const Blogs = () => {
             src="/assets/icons/profile/close-icon.svg"
             width={20}
             height={20}
-            className={"dark:invert"}
+            className={""}
             onClick={() => {
               setFilterModalShow(false);
             }}

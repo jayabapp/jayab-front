@@ -134,7 +134,7 @@ const AuthUploader = ({
             onClick={() => {
               !disabled ? imagePickerRef?.current?.click() : void null;
             }}
-            className="cursor-pointer bg-neutral-100 flex flex-col items-center  gap-1      relative transition-all duration-150 ease-in-out  hover:border-primary-700  justify-center rounded-10  aspect-square  h-24 w-24"
+            className="cursor-pointer bg-neutral-100 flex flex-col items-center  gap-1      relative transition-all duration-150 ease-in-out  hover:border-brand-600  justify-center rounded-10  aspect-square  h-24 w-24"
           >
             <Image
               width={32}
@@ -163,7 +163,7 @@ const AuthUploader = ({
                 setShow(true);
                 setShowImage(resolveProfileImage(item));
               }}
-              className="cursor-pointer border   bg-whiteGray-100  dark:bg-zinc-700  rounded-20  aspect-square relative   h-24 w-24 "
+              className="cursor-pointer border   bg-whiteGray-100    rounded-20  aspect-square relative   h-24 w-24 "
             >
               <Image
                 width={96}
@@ -174,7 +174,7 @@ const AuthUploader = ({
               />
             </div>
             <div
-              className=" p-1 bg-white  dark:bg-zinc-700  rounded-lg cursor-pointer absolute bottom-4 left-4 "
+              className=" p-1 bg-white    rounded-lg cursor-pointer absolute bottom-4 left-4 "
               onClick={onDelete}
             >
               <Image

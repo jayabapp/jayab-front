@@ -21,7 +21,7 @@ const HomeActiveReserve = () => {
       {isEmpty(activeReserves) ? (
         <> </>
       ) : (
-        <div className=" w-full grid   padding-x  bg-gradient-to-t   lg:to-white from-white  from-[10%] rounded-t-20 lg:rounded-t-none to-primary-350   p-4 -mt-4 pt-10 lg:mt-0  lg:grid-cols-3  gap-2 lg:gap-3 ">
+        <div className=" w-full grid   padding-x  bg-gradient-to-t   lg:to-white from-white  from-[10%] rounded-t-20 lg:rounded-t-none to-warning-600   p-4 -mt-4 pt-10 lg:mt-0  lg:grid-cols-3  gap-2 lg:gap-3 ">
           <div className="col-span-full w-full flex items-center justify-between">
             <div className="flex  items-center gap-1">
               <p className=" font-semibold !text-sm  lg:text-black text-white lg:!text-base ">

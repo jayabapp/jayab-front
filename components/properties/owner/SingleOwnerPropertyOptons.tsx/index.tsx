@@ -56,7 +56,7 @@ const SingleOwnerPropertyOptons = ({
       <Link
         title={_STRINGS.PROP_STATS}
         href={`/profile/owner/properties/${data?.id}/subscription`}
-        className="w-full border-primary-200  flex items-center justify-between  px-4 py-3 rounded-10 border"
+        className="w-full border-neutral-200  flex items-center justify-between  px-4 py-3 rounded-10 border"
       >
         <p className=" text-sm font-bold ">{_STRINGS.PROP_STATS}</p>
 
@@ -64,7 +64,7 @@ const SingleOwnerPropertyOptons = ({
       </Link>
       <div
         onClick={showCommissFunc}
-        className="w-full cursor-pointer border-primary-200  flex items-center justify-between  px-4 py-3 rounded-10 border"
+        className="w-full cursor-pointer border-neutral-200  flex items-center justify-between  px-4 py-3 rounded-10 border"
       >
         <p className=" text-sm font-bold ">
           {_STRINGS.CHANGE_ADVISOR_COMMISSION}
@@ -75,7 +75,7 @@ const SingleOwnerPropertyOptons = ({
       <Link
         title={_STRINGS.AUTHORiZIATION_REQUEST}
         href={`/profile/owner/properties/${data?.id}/license`}
-        className=" cursor-pointer  w-full border-primary-200  flex items-center justify-between  px-4 py-3 rounded-10 border"
+        className=" cursor-pointer  w-full border-neutral-200  flex items-center justify-between  px-4 py-3 rounded-10 border"
       >
         <div className="flex items-center gap-2">
           {" "}
@@ -87,7 +87,7 @@ const SingleOwnerPropertyOptons = ({
       </Link>
       <div
         onClick={showBadgeReqFunc}
-        className=" cursor-pointer  w-full border-primary-200  flex items-center justify-between  px-4 py-3 rounded-10 border"
+        className=" cursor-pointer  w-full border-neutral-200  flex items-center justify-between  px-4 py-3 rounded-10 border"
       >
         <div className="flex items-center gap-2">
           {" "}
@@ -106,7 +106,7 @@ const SingleOwnerPropertyOptons = ({
       <Link
         title={_STRINGS.EDIT_INFO}
         href={`/profile/owner/properties/${data?.id}/edit`}
-        className=" cursor-pointer  w-full border-primary-200  flex items-center justify-between  px-4 py-3 rounded-10 border"
+        className=" cursor-pointer  w-full border-neutral-200  flex items-center justify-between  px-4 py-3 rounded-10 border"
       >
         <div className="flex items-center gap-2">
           {" "}
@@ -117,14 +117,14 @@ const SingleOwnerPropertyOptons = ({
       <Link
         title={_STRINGS.WEEKLY_INQUERY}
         href={`/profile/owner/properties/${data?.id}/inquery`}
-        className=" cursor-pointer  w-full border-primary-200  flex items-center justify-between  px-4 py-3 rounded-10 border"
+        className=" cursor-pointer  w-full border-neutral-200  flex items-center justify-between  px-4 py-3 rounded-10 border"
       >
         <div className="flex items-center gap-2">
           <img
             className=" w-6 h-6 aspect-square "
             src="/assets/icons/property/police_speaker.svg"
           />
-          <p className=" text-primary-700 text-sm font-bold ">
+          <p className=" text-brand-600 text-sm font-bold ">
             {_STRINGS.WEEKLY_INQUERY}
           </p>
         </div>
@@ -132,10 +132,10 @@ const SingleOwnerPropertyOptons = ({
       </Link>
       <div
         onClick={showDeleteFunc}
-        className=" cursor-pointer  w-full border-primary-150/50  flex items-center justify-between  px-4 py-3 rounded-10 border"
+        className=" cursor-pointer  w-full border-danger-500/50  flex items-center justify-between  px-4 py-3 rounded-10 border"
       >
         <div className="flex items-center gap-2">
-          <p className=" text-primary-150  text-sm font-bold ">
+          <p className=" text-danger-500  text-sm font-bold ">
             {_STRINGS.ARE_U_SURE_DELETE_PROPERTY_TITLE}
           </p>
         </div>
@@ -167,7 +167,7 @@ const SingleOwnerPropertyOptons = ({
         text={_STRINGS.ARE_U_SURE_DELETE_PROPERTY}
         hideTextClassName=" border !bg-white !rounded-full "
         headerImage={"/assets/images/shared/red_crossed_sheet.png"}
-        confirmTextClassName=" !bg-primary-900 text-white !rounded-full "
+        confirmTextClassName=" !bg-danger-500 text-white !rounded-full "
       />
     </div>
   );

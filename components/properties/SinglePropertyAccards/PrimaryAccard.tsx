@@ -9,7 +9,7 @@ const PrimaryAccard = ({ data }: { data: SinglePropDto }) => {
     <SimpleAccordion
       isOpenFirst
       item={{
-        parenClass: " bg-white border border-gray-300 !mt-0  rounded-10 w-full",
+        parenClass: " bg-white border border-neutral-300 !mt-0  rounded-10 w-full",
       }}
       title="اطلاعات اصلی ملک"
     >

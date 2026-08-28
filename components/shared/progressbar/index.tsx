@@ -1,7 +1,8 @@
+import { colors } from "@/theme/colors";
 const ProgressBar = ({
   progress,
-  color = "#f87171",
-  trackColor = "#BEBEBE50",
+  color = colors.danger[500],
+  trackColor = `${colors.neutral[300]}80`,
 }: {
   progress: number; // 0–100
   color?: string;

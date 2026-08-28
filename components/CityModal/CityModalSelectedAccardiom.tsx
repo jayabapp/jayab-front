@@ -44,9 +44,9 @@ const CityModalSelectedAccardiom = ({
               return (
                 <div
                   key={`selectedItemsPROv${val?.id || val}`}
-                  className="rounded-full gap-4 py-1 px-1 flex items-center justify-center border border-primary-700/30  bg-primary-700/5  text-xs "
+                  className="rounded-full gap-4 py-1 px-1 flex items-center justify-center border border-brand-600/30  bg-brand-600/5  text-xs "
                 >
-                  <p className="text-sm text-primary-text  font-medium  pr-2">
+                  <p className="text-sm text-neutral-900  font-medium  pr-2">
                     {" "}
                     {_STRINGS.PROVINCE} {val?.title}{" "}
                   </p>
@@ -54,11 +54,11 @@ const CityModalSelectedAccardiom = ({
                     onClick={() => {
                       onProvCancelClick(val);
                     }}
-                    className=" cursor-pointer w-4 h-4 aspect-square rounded-full border border-primary-700/30  flex items-center justify-center"
+                    className=" cursor-pointer w-4 h-4 aspect-square rounded-full border border-brand-600/30  flex items-center justify-center"
                   >
                     <img
                       src="/assets/icons/adds/x_mark.svg"
-                      className="w-2.5 h-2.5    opacity-30 p-0.5  text-primary-text aspect-square "
+                      className="w-2.5 h-2.5    opacity-30 p-0.5  text-neutral-900 aspect-square "
                     />
                   </div>
                 </div>
@@ -67,18 +67,18 @@ const CityModalSelectedAccardiom = ({
               return val?.child?.map((e) => (
                 <div
                   key={`selectedItems${e?.id || e?.title}`}
-                  className="rounded-full gap-4 py-1 px-1 flex items-center justify-center border border-primary-700/30  bg-primary-700/5  text-xs "
+                  className="rounded-full gap-4 py-1 px-1 flex items-center justify-center border border-brand-600/30  bg-brand-600/5  text-xs "
                 >
-                  <p className="text-sm text-primary-text   pr-2">{e?.title} </p>
+                  <p className="text-sm text-neutral-900   pr-2">{e?.title} </p>
                   <div
                     onClick={() => {
                       onCityClick(e);
                     }}
-                    className=" cursor-pointer w-4 h-4 aspect-square rounded-full border border-primary-700/30  flex items-center justify-center"
+                    className=" cursor-pointer w-4 h-4 aspect-square rounded-full border border-brand-600/30  flex items-center justify-center"
                   >
                     <img
                       src="/assets/icons/adds/x_mark.svg"
-                      className="w-2.5 h-2.5    opacity-30 p-0.5  text-primary-text aspect-square "
+                      className="w-2.5 h-2.5    opacity-30 p-0.5  text-neutral-900 aspect-square "
                     />
                   </div>
                 </div>

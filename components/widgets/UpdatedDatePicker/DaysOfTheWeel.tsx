@@ -1,6 +1,6 @@
 const DaysOfTheWeel = () => {
   return (
-    <div className="w-full gap-1 border-b border-primary-border/70 pb-2 items-center grid grid-cols-7">
+    <div className="w-full gap-1 border-b border-neutral-200/70 pb-2 items-center grid grid-cols-7">
       <p className="md:text-base text-sm truncate text-center  ">{/* شنبه */}ش</p>
       <p className="md:text-base text-sm truncate text-center  ">{/* یکشنبه */}ی</p>
       <p className="md:text-base text-sm truncate text-center  ">{/* دوشنبه */}د</p>

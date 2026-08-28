@@ -18,7 +18,7 @@ const HomeSearchPart = () => {
         item={{ bg: `!bg-white lg:bg-transparent !rounded-l-none  lg:!rounded-l-20  !border-none ` }}
         // autofocus={isInSearch}
       />
-      <div className="w-[1px] h-8 bg-gray-300 lg:flex hidden"></div>
+      <div className="w-[1px] h-8 bg-neutral-300 lg:flex hidden"></div>
       <HomeCityFilterCityPart
         options={{
           cotainerClass: " h-10  px-2  rounded-l-20 lg:rounded-l-0 lg:px-0   bg-white   lg:h-auto lg:bg-transparent",

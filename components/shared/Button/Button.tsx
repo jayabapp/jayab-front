@@ -2,15 +2,15 @@ import React, { JSX, LegacyRef, ReactNode } from "react";
 import BtnLoading from "./BtnLoading";
 enum BtnVariants {
   "solid" = "btn-primary",
-  "outline" = "btn-primary-outlined",
-  "Faded" = "btn-primary-faded",
-  "flat" = "btn-primary-flat",
+  "outline" = "btn-brand-outlined",
+  "Faded" = "btn-brand-faded",
+  "flat" = "btn-brand-flat",
 }
 enum BtnColors {
-  "primary" = "bg-btnColor-primary  !ring-btnColor-primary/50",
-  "danger" = "bg-btnColor-danger  !ring-btnColor-danger/50 !text-btnColor-danger !border-btnColor-danger ",
-  "light" = "bg-btnColor-light !ring-btnColor-light/50 ",
-  "themeLight" = "bg-btnColor-themeLight  !ring-btnColor-themeLight/50 ",
+  "primary" = "bg-brand-600  !ring-brand-600/50",
+  "danger" = "bg-danger-500  !ring-danger-500/50 !text-danger-500 !border-danger-500 ",
+  "light" = "bg-neutral-200/75 !ring-neutral-200/75/50 ",
+  "themeLight" = "bg-brand-100  !ring-brand-100/50 ",
 }
 
 type ButtonProps = {
@@ -51,8 +51,8 @@ const Button = ({
         type="button"
         className={` active:ring-4  flex items-center justify-center relative  transition-all font-medium text-base ${
           !disabled ? ` ${BtnVariants[variant]} ${BtnColors[color]}` : ""
-        } ${"px-7 disabled:bg-gray-300 py-2.5"}  ${roundedClass} ${width} ${
-          (disabled || loading) && "bg-neutral-200 dark:bg-zinc-400 border-gray-400 hover:ring-0"
+        } ${"px-7 disabled:bg-neutral-300 py-2.5"}  ${roundedClass} ${width} ${
+          (disabled || loading) && "bg-neutral-200  border-neutral-400 hover:ring-0"
         }`}
         onClick={typeof onClick == "function" ? onClick : void null}
       >

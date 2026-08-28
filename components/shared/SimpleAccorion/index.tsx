@@ -58,7 +58,7 @@ const SimpleAccordion = ({ title, children, ExtraElement, item, isOpenFirst, tit
           <img
             src="/assets/icons/shared/chevron.svg"
             className={` object-contain transition-all   w-4 aspect-square ${isOpen ? "rotate-180" : ""} ${
-              item?.invertIconDark ? "dark:invert" : ""
+              item?.invertIconDark ? "" : ""
             }`}
           />
         </div>

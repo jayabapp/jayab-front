@@ -75,7 +75,7 @@ const ChangeCommissionModal = ({
   return (
     <Modal show={show} onHide={onHide}>
       <div className="flex flex-col gap-4 p-4 bg-white rounded-20 ">
-        <p className="text-sm font-bold text-primary-700">
+        <p className="text-sm font-bold text-brand-600">
           {_STRINGS.EDIT} {_STRINGS.MEMO}
         </p>
 

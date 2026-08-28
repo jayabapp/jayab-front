@@ -35,13 +35,13 @@ const OwnerPart = ({ data }: { data: SinglePropDto }) => (
       className="size-10 aspect-square rounded-full md:size-12"
     />
     <div className="flex flex-col items-start gap-1">
-      <p className="text-sm font-bold text-primary-700">{_STRINGS.HOST}</p>
+      <p className="text-sm font-bold text-brand-600">{_STRINGS.HOST}</p>
       {data.owner_info?.full_name ? (
         <div className="relative w-36">
           <AutoFitText
             maxFontSize={14}
             minFontSize={10}
-            className="w-36 text-sm font-medium text-primary-700"
+            className="w-36 text-sm font-medium text-brand-600"
             text={data.owner_info.full_name}
           />
         </div>
@@ -118,7 +118,7 @@ const SinglePropertyIntroduction = ({ data }: { data: SinglePropDto }) => {
 
         <div className="flex  items-center gap-2">
           {!!data?.is_promoted ? (
-            <p className="  font-bold  text-primary-700  shrink-0  text-sm  hidden lg:flex ">
+            <p className="  font-bold  text-brand-600  shrink-0  text-sm  hidden lg:flex ">
               {_STRINGS.LADDERED}
             </p>
           ) : (
@@ -154,20 +154,20 @@ const SinglePropertyIntroduction = ({ data }: { data: SinglePropDto }) => {
       {/*                          */}
       <div className="flex items-center gap-4   py-0.5 w-full md:justify-between">
         <p className="w-20 md:text-sm text-xs ">{_STRINGS.ROOM_COUNTS} :</p>
-        <p className="font-bold text-sm md:text-base text-primary-700">
+        <p className="font-bold text-sm md:text-base text-brand-600">
           {data?.total_bedrooms} {_STRINGS.ROOM}
         </p>
       </div>{" "}
       {/*                          */}
       <div className="flex items-center gap-4   py-0.5 w-full md:justify-between">
         <p className="w-20 md:text-sm text-xs ">{_STRINGS.ROOM_SIZE} :</p>
-        <p className="font-bold text-sm md:text-base text-primary-700">
+        <p className="font-bold text-sm md:text-base text-brand-600">
           {data?.building_area} {_STRINGS.METER}
         </p>
       </div>
       <div className="flex items-center gap-2   py-0.5 w-full lg:justify-between">
         {data?.is_promoted && !!isMobile ? (
-          <p className="  font-bold  text-primary-700  shrink-0  text-xs lg:hidden  pl-1 border-l">
+          <p className="  font-bold  text-brand-600  shrink-0  text-xs lg:hidden  pl-1 border-l">
             {_STRINGS.LADDERED}
           </p>
         ) : (
@@ -181,7 +181,7 @@ const SinglePropertyIntroduction = ({ data }: { data: SinglePropDto }) => {
           </span>
         </p>
       </div>
-      <div className="w-full bg-primary-700/20  rounded-full p-2  hidden md:flex  items-center justify-between gap-4 ">
+      <div className="w-full bg-brand-600/20  rounded-full p-2  hidden md:flex  items-center justify-between gap-4 ">
         <OwnerPart data={data} />
         <Button
           onClick={onReserveClick}
@@ -195,7 +195,7 @@ const SinglePropertyIntroduction = ({ data }: { data: SinglePropDto }) => {
         <FixedBottomContainer>
           {" "}
           <div className="w-full flex  px-4">
-            <div className="w-full  bg-primary-700/20  rounded-full p-2   flex items-center justify-between gap-4 ">
+            <div className="w-full  bg-brand-600/20  rounded-full p-2   flex items-center justify-between gap-4 ">
               <OwnerPart data={data} />
               <Button
                 onClick={onReserveClick}

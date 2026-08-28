@@ -175,7 +175,7 @@ const ChangePriceModal = ({
           className="w-9 h-9 aspect-square"
           src="/assets/icons/property/price_label.svg"
         />
-        <p className="text-sm font-bold text-primary-700">
+        <p className="text-sm font-bold text-brand-600">
           {_STRINGS.IMMEDIATE_CHANGE}
         </p>
         {isLoading ? (
@@ -201,7 +201,7 @@ const ChangePriceModal = ({
           className="w-9 h-9 aspect-square"
           src="/assets/icons/property/discount_label.svg"
         />
-        <p className="text-sm font-bold text-primary-700">
+        <p className="text-sm font-bold text-brand-600">
           {_STRINGS.DISCOUNTED_PRICE_TITLE}
         </p>
         {isDiscountLoading ? (

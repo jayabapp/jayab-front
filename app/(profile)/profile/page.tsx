@@ -201,7 +201,7 @@ const Profile = () => {
                   height={24}
                   className="w-6 h-6  aspect-square "
                 />{" "}
-                <p className=" text-sm xl:text-base  font-medium text-primary-150 ">
+                <p className=" text-sm xl:text-base  font-medium text-danger-500 ">
                   {" "}
                   {_STRINGS?.LOGOUT_TITLE}
                 </p>

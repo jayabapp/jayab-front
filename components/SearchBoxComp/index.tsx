@@ -80,7 +80,7 @@ const SearchBox = ({
   return (
     <div className={containerClass}>
       <div
-        className={` rounded-full   overflow-hidden dark:bg-slate-800   pr-4 pl-2 py-2 bg-white  border flex justify-between items-center  ${item?.bg}`}
+        className={` rounded-full   overflow-hidden    pr-4 pl-2 py-2 bg-white  border flex justify-between items-center  ${item?.bg}`}
       >
         <div className={` md:mr-2  `}>
           <img src="/assets/icons/edit/magnifier.svg" width={30} height={30} />
@@ -91,7 +91,7 @@ const SearchBox = ({
             ref={inputRef}
             placeholder={placeholder}
             value={passedText || text}
-            className={`bg-transparent dark:bg-slate-800 py-1 pl-0.5 pr-3 outline-none placeholder:text-gray-400 w-full ${item?.bg} `}
+            className={`bg-transparent  py-1 pl-0.5 pr-3 outline-none placeholder:text-neutral-400 w-full ${item?.bg} `}
             onChange={(v) => {
               if (!disableTypeing) handleChange(v.target.value);
             }}
@@ -101,7 +101,7 @@ const SearchBox = ({
           <div className="inline-flex w-1/4 justify-end">
             {!!text && (
               <div
-                className="text-primary-700 text-xs mr-2 cursor-pointer "
+                className="text-brand-600 text-xs mr-2 cursor-pointer "
                 onClick={cancelSearch}
               >
                 {cancelText}

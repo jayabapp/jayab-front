@@ -49,7 +49,7 @@ const Footer = () => {
   });
   return (
     <footer
-      className={`${!!footerHiddenBlackList.find((e) => pathname?.includes(e)) ? "hidden lg:hidden" : ""} w-full  z-2   bg-primary-1000/40   flex   flex-col items-center justify-center bg-dark-500  bg-no-repeat bg-cover  relative  pt-[28rem] md:pt-[16rem]  lg:pt-[6rem] `}
+      className={`${!!footerHiddenBlackList.find((e) => pathname?.includes(e)) ? "hidden lg:hidden" : ""} w-full  z-2   bg-neutral-400/40   flex   flex-col items-center justify-center bg-dark-500  bg-no-repeat bg-cover  relative  pt-[28rem] md:pt-[16rem]  lg:pt-[6rem] `}
     >
       <CallBox />
       {/* QUICK SEARCHS */}
@@ -66,7 +66,7 @@ const Footer = () => {
                 prefetch={false}
                 title={e?.title}
                 href={e?.link || ""}
-                className="bg-white border shadow-sm min-w-[140px] shrink-0 shadow-black/10 border-gray-300 relative rounded-20 h-6 md:h-8 flex items-center justify-start pr-4 font-medium text-xs text-start"
+                className="bg-white border shadow-sm min-w-[140px] shrink-0 shadow-black/10 border-neutral-300 relative rounded-20 h-6 md:h-8 flex items-center justify-start pr-4 font-medium text-xs text-start"
               >
                 {e?.title}
               </Link>
@@ -82,7 +82,7 @@ const Footer = () => {
             PHONE_NUMBER?.link ||
             `tel:${PHONE_NUMBER?.full_text || PHONE_NUMBER?.small_text || ""}`
           }
-          className="icon-parent hidden lg:flex fixed z-[100] w-16  items-center justify-center aspect-square rounded-full bg-primary-700   bottom-16 right-16"
+          className="icon-parent hidden lg:flex fixed z-[100] w-16  items-center justify-center aspect-square rounded-full bg-brand-600   bottom-16 right-16"
         >
           <svg
             width="40"
@@ -135,7 +135,7 @@ const Footer = () => {
 
           <CmsText
             whitespace="normal"
-            className=" break-words  text-sm dark:text-zinc-100 leading-6 opacity-100  line-clamp-4"
+            className=" break-words  text-sm  leading-6 opacity-100  line-clamp-4"
           >
             {!!aboutUs ? aboutUs?.small_text || aboutUs?.full_text : ""}
           </CmsText>
@@ -172,7 +172,7 @@ const Footer = () => {
                 style={{ textDecoration: "none" }}
                 className="flex items-center gap-2 mb-2"
               >
-                <p className=" text-sm  cursor-pointer  opacity-100 hover:text-primary-700">
+                <p className=" text-sm  cursor-pointer  opacity-100 hover:text-brand-600">
                   {e?.title}
                 </p>
               </Link>
@@ -246,7 +246,7 @@ const Footer = () => {
 
       <div className="bg-white   padding-x  w-full  mx-auto  shadow-md    h-fit   lg:h-20 flex flex-col  py-2 md:py-0 gap-4 lg:flex-row   items-center justify-between  ">
         <div className="  flex    items-center gap-4">
-          <div className="w-full   dark:text-zinc-100  text-center text-xxs md:text-sm  ">
+          <div className="w-full     text-center text-xxs md:text-sm  ">
             تمامی حقوق مادی و معنوی این وبسایت متعلق به شرکت
             <a
               className="text-blue-500 underline underline-offset-2"

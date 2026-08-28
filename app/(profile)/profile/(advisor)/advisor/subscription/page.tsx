@@ -142,11 +142,11 @@ const AdvisorRegister = () => {
           </div>
 
           {!advisorProfile?.subscription_expired_at || !isActive ? (
-            <p className="text-primary-150 text-sm">(شما اشتراک فعال ندارید)</p>
+            <p className="text-danger-500 text-sm">(شما اشتراک فعال ندارید)</p>
           ) : moment().isBefore(advisorProfile?.subscription_expired_at) ? (
             <div className="flex items-center gap-2  justify-between  w-full  flex-row">
               <p className=" text-sm"> تعداد روز باقیمانده از اعتبار :</p>
-              <div className=" rounded-full text-xs md:text-sm text-primary-700 bg-primary-400 flex  items-center justify-center h-5 md:h-6 w-16 md:w-20 ">
+              <div className=" rounded-full text-xs md:text-sm text-brand-600 bg-brand-200 flex  items-center justify-center h-5 md:h-6 w-16 md:w-20 ">
                 {advisorProfile?.subscription_expired_at &&
                 moment(advisorProfile?.subscription_expired_at).isAfter()
                   ? `${moment(advisorProfile?.subscription_expired_at).diff(moment(), "days")} روز `
@@ -195,7 +195,7 @@ const AdvisorRegister = () => {
 
       {!!advisorProfile?.admin_description ? (
         <div className=" w-full flex items-center justify-center  ">
-          <p className="text-sm text-primary-150">
+          <p className="text-sm text-danger-500">
             توضیحات ادمین : {advisorProfile?.admin_description}{" "}
           </p>
         </div>
@@ -230,7 +230,7 @@ const AdvisorRegister = () => {
         hideText="برگشت"
       />
       {paymentPending ? (
-        <div className="fixed inset-x-0 bottom-0 z-50 h-1 animate-pulse bg-primary-600" />
+        <div className="fixed inset-x-0 bottom-0 z-50 h-1 animate-pulse bg-success-600" />
       ) : null}
       <ConfirmModal
         onHide={hideEndSub}
@@ -238,8 +238,8 @@ const AdvisorRegister = () => {
         isVisible={showEndSub}
         text={`آیا میخواهید اشتراک مشاور خود را لغو کنید؟`}
         headerImage={"/assets/images/shared/red_crossed_sheet.png"}
-        confirmTextClassName=" !bg-primary-900 text-white !rounded-full "
-        hideTextClassName=" !border-primary-900 border !bg-white !text-primary-900 !rounded-full "
+        confirmTextClassName=" !bg-danger-500 text-white !rounded-full "
+        hideTextClassName=" !border-danger-500 border !bg-white !text-danger-500 !rounded-full "
         onConfirm={() => {
           onDelete();
         }}

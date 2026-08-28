@@ -9,7 +9,7 @@ const IosPrompt = ({ callBack }: { callBack: () => void | null }) => {
       onClick={(e) => {
         callBack();
       }}
-      className="fixed pt-16 !bg-transparent  right-0 left-0 backdrop-brightness-50 bottom-0 app-text w-full mx-auto backdrop-blur-sm dark:bg-slate-800/40 custom-prompt-shadow  rounded-t-lg px-3  pb-6  z-30 cart-shadow  h-full flex flex-col gap-16"
+      className="fixed pt-16 !bg-transparent  right-0 left-0 backdrop-brightness-50 bottom-0 app-text w-full mx-auto backdrop-blur-sm  custom-prompt-shadow  rounded-t-lg px-3  pb-6  z-30 cart-shadow  h-full flex flex-col gap-16"
     >
       <div className="relative flex justify-center items-center w-full h-full">
         <div
@@ -40,7 +40,7 @@ const IosPrompt = ({ callBack }: { callBack: () => void | null }) => {
               </p>
             </div>
             <div className="flex items-start gap-4">
-              <p className="text-[#351CCD] font-normal w-6 h-6">Add</p>
+              <p className="text-brand-700 font-normal w-6 h-6">Add</p>
               <p>
                 3- در مرحله بعد در قسمت بالا روی <strong className="font-medium">Share</strong> بزنید.
               </p>

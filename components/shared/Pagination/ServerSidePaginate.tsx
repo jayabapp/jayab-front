@@ -42,28 +42,28 @@ const ServerSidePaginate = (props: paginationType) => {
   return (
     <div className="flex items-center ltr mt-16 justify-center mb-4">
       <div
-        className={`p-1 border border-gray-500 dark:border-zinc-400 dark:bg-zinc-500 rounded-md w-9 h-9 flex justify-center items-center ml-2 cursor-pointer transition-all hover:translate-x-2 ${
+        className={`p-1 border border-neutral-500   rounded-md w-9 h-9 flex justify-center items-center ml-2 cursor-pointer transition-all hover:translate-x-2 ${
           currentPage == 1 && "opacity-50"
         }`}
         onClick={() => (currentPage > 1 ? catPusher(Number(currentPage) - 1) : void null)}
       >
         <ChevronLeft />
       </div>
-      <div className="flex items-center   dark:bg-zinc-600 rounded-full  px-2">
+      <div className="flex items-center    rounded-full  px-2">
         {paginationRange?.map((e, i) => {
           if (e == DOTS)
             return (
               <div key={i} className="">
-                &#8230;
+                …
               </div>
             );
           return (
             <div
               key={i}
-              className={`w-9 h-9 flex justify-center items-center text-center font-medium mx-2 cursor-pointer border dark:border-0 border-gray-500 rounded-md ${
+              className={`w-9 h-9 flex justify-center items-center text-center font-medium mx-2 cursor-pointer border  border-neutral-500 rounded-md ${
                 currentPage == e
-                  ? " bg-primary-700 rounded-md text-white scale-[1.15] ease-in-out duration-300 transition-all border-0"
-                  : "hover:text-primary-700"
+                  ? " bg-brand-600 rounded-md text-white scale-[1.15] ease-in-out duration-300 transition-all border-0"
+                  : "hover:text-brand-600"
               }`}
               onClick={() => catPusher(e)}
             >
@@ -73,7 +73,7 @@ const ServerSidePaginate = (props: paginationType) => {
         })}
       </div>
       <div
-        className={`  p-1 border border-gray-500 dark:border-zinc-400 dark:bg-zinc-500 rounded-md w-9 h-9 flex justify-center items-center mr-2 cursor-pointer transition-all hover:-translate-x-2 ${
+        className={`  p-1 border border-neutral-500   rounded-md w-9 h-9 flex justify-center items-center mr-2 cursor-pointer transition-all hover:-translate-x-2 ${
           currentPage >= totalCount / pageSize && "opacity-50"
         }`}
         onClick={() => (currentPage < totalCount / pageSize ? catPusher(Number(currentPage) + 1) : void null)}

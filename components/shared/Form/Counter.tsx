@@ -51,7 +51,7 @@ const Counter = ({
             }
           } else setValue(value + (plusMinusNumber || 50000));
         }}
-        className="cursor-pointer  select-none shrink-0 rounded-md transition-all duration-150 ease-in-out  aspect-square flex bg-white border  border-primary-700  dark:bg-primary-600 w-5 h-5 items-center justify-center"
+        className="cursor-pointer  select-none shrink-0 rounded-md transition-all duration-150 ease-in-out  aspect-square flex bg-white border  border-brand-600   w-5 h-5 items-center justify-center"
       >
         {" "}
         <img src="/assets/icons/adds/blue_plus.svg" className="w-2 h-2 select-none" />
@@ -100,7 +100,7 @@ const Counter = ({
             setValue(0);
           } else setValue(value - (plusMinusNumber || 50000));
         }}
-        className="cursor-pointer  select-none shrink-0 rounded-md border transition-all duration-150 ease-in-out  aspect-square flex bg-white   border-primary-700  w-5 h-5 items-center justify-center"
+        className="cursor-pointer  select-none shrink-0 rounded-md border transition-all duration-150 ease-in-out  aspect-square flex bg-white   border-brand-600  w-5 h-5 items-center justify-center"
       >
         <img className="w-2 h-2 aspect-square select-none " src={"/assets/icons/adds/blue_minus.svg"} />
       </div>

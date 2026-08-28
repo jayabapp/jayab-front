@@ -40,7 +40,7 @@ function Accordion({ title = "Default Title", children }: AccordionProps) {
         transition={{ duration: 0.3, ease: "easeInOut" }}
         className="overflow-hidden"
       >
-        <div className="flex items-start gap-4 px-6 py-3 text-[#5F636D]">
+        <div className="flex items-start gap-4 px-6 py-3 text-neutral-600">
           <img
             src="/assets/icons/accordion/Group.svg"
             alt=""

@@ -10,11 +10,11 @@ export const PropertyGridSkeleton = ({ count = 8 }: { count?: number }) => (
       >
         <div className="grid grid-cols-5 gap-2">
           <div className="col-span-3 flex flex-col gap-3">
-            <div className="h-4 w-full rounded bg-gray-200" />
-            <div className="h-3 w-2/3 rounded bg-gray-100" />
-            <div className="h-5 w-1/3 rounded-full bg-gray-200" />
+            <div className="h-4 w-full rounded bg-neutral-200" />
+            <div className="h-3 w-2/3 rounded bg-neutral-100" />
+            <div className="h-5 w-1/3 rounded-full bg-neutral-200" />
           </div>
-          <div className="col-span-2 aspect-square rounded-2xl bg-gray-200" />
+          <div className="col-span-2 aspect-square rounded-2xl bg-neutral-200" />
         </div>
       </div>
     ))}

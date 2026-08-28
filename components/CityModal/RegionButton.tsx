@@ -23,8 +23,8 @@ const RegionButton = ({
       }}
       className={` ${containerClass} rounded-full  shrink-0 !w-auto  min-w-16 gap-2   py-1 h-6.5 px-1  items-center justify-center border ${
         isEmpty(regionsIds)
-          ? "border-gray-400  bg-gray-400/5 text-gray-400"
-          : "border-primary-700  bg-primary-700/5 text-primary-700"
+          ? "border-neutral-400  bg-neutral-400/5 text-neutral-400"
+          : "border-brand-600  bg-brand-600/5 text-brand-600"
       }  text-xs flex flex-row `}
     >
       <p className="text-xs pr-1  shrink-0 ">
@@ -43,7 +43,7 @@ const RegionButton = ({
             e.stopPropagation();
             removeFiltersKeys(["regions"]);
           }}
-          className=" cursor-pointer w-4   h-4 aspect-square rounded-full border border-primary-700 flex items-center justify-center"
+          className=" cursor-pointer w-4   h-4 aspect-square rounded-full border border-brand-600 flex items-center justify-center"
         >
           <img
             src="/assets/icons/adds/blue_plus.svg"

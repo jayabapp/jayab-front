@@ -47,7 +47,7 @@ const DatePickerqueryFilter = ({ query }: any) => {
     setShow(true);
   };
   return (
-    <div className="w-fit flex lg:flex-row  gap-3 items-center justify-between rounded-10 dark:border-zinc-600 ">
+    <div className="w-fit flex lg:flex-row  gap-3 items-center justify-between rounded-10  ">
       <div onClick={showModal} className="relative inline-block text-left mr-1">
         <div className=" h-11  rounded-10 cursor-pointer  flex justify-between items-center">
           <div className="flex bg-white/50 custome-shadow-card  border py-2 px-4 rounded-10 items-center gap-2">
@@ -66,7 +66,7 @@ const DatePickerqueryFilter = ({ query }: any) => {
               // <CallenderTimeShiftIcon className="mix-blend-multiply" />
               <></>
             )}
-            <p className="text-primary-500 font-medium text-sm"> {!!date ? date : "همه روز ها"}</p>
+            <p className="text-brand-50 font-medium text-sm"> {!!date ? date : "همه روز ها"}</p>
             {/* <ChevronArrow /> */}
           </div>
         </div>

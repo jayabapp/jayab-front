@@ -153,12 +153,12 @@ const Subscription = () => {
             description={e.description}
           >
             <div className="flex gap-2">
-              <p className="font-bold text-sm text-primary-700">
+              <p className="font-bold text-sm text-brand-600">
                 {_STRINGS.COST} :
               </p>
               <AddCardPricePart
                 ribbon={e}
-                containerClass="flex gap-2 text-primary-700"
+                containerClass="flex gap-2 text-brand-600"
                 data={{
                   price: e.price,
                   discounted_price: e.price_with_discount,
@@ -172,7 +172,7 @@ const Subscription = () => {
       {statsLoading ? (
         <>
           <p className="font-bold">{_STRINGS.VIEW_STATS}</p>
-          <div className="h-96 w-full animate-pulse rounded-2xl bg-zinc-200" />
+          <div className="h-96 w-full animate-pulse rounded-2xl bg-neutral-200" />
         </>
       ) : !isEmpty(statsData?.statistics) ? (
         <div className="w-full">

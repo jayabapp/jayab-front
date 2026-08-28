@@ -13,14 +13,14 @@ const CityModalHeaderPart = ({
   selectedProv: NewCitiesListDto | null;
 }) => {
   return (
-    <div className="app-text flex justify-between border-b items-center py-5 custome-shadow-card px-4 sticky top-0 bg-white dark:bg-zinc-800 z-10">
+    <div className="app-text flex justify-between border-b items-center py-5 custome-shadow-card px-4 sticky top-0 bg-white  z-10">
       <img
         onClick={removeSelectedProve}
         className={` -rotate-90 transition-all  ${!!selectedProv ? "" : "opacity-0"} `}
         src="/assets/icons/shared/chevron.svg"
       />{" "}
       <p className=" text-base font-semibold">{!selectedProv ? _STRINGS.SELECT_PROVE_CITY : _STRINGS.SELECT_CITY}</p>
-      <img src="/assets/icons/adds/x_mark.svg" className="w-3 h-3 dark:invert" alt="" onClick={onHide} />
+      <img src="/assets/icons/adds/x_mark.svg" className="w-3 h-3 " alt="" onClick={onHide} />
     </div>
   );
 };

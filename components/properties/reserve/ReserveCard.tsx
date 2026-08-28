@@ -225,7 +225,7 @@ const ReserveCard = ({
             {!!isOwner ? (
               <></>
             ) : (
-              <p className="text-sm text-gray-400 text-center w-full">
+              <p className="text-sm text-neutral-400 text-center w-full">
                 مدت زمان انتظار جهت بررسی میزبان
               </p>
             )}
@@ -348,7 +348,7 @@ const ReserveCard = ({
                   onClick={() => {
                     onContactClick("call");
                   }}
-                  width={`w-full h-12 !text-black !font-normal !border-none  !py-2   !bg-primary-1100  !text-sm ${isExpired ? "  !text-gray-400" : ""} `}
+                  width={`w-full h-12 !text-black !font-normal !border-none  !py-2   !bg-neutral-50  !text-sm ${isExpired ? "  !text-neutral-400" : ""} `}
                   containerClass="w-full lg:w-1/2 "
                   roundedClass=" rounded-xl"
                   title={_STRINGS.CALL}
@@ -369,7 +369,7 @@ const ReserveCard = ({
                   onClick={() => {
                     onContactClick("sms");
                   }}
-                  width={`w-full h-12 !border-none !text-black !font-normal !py-2 !bg-primary-1100   !text-sm ${isExpired ? "  !text-gray-400" : ""} `}
+                  width={`w-full h-12 !border-none !text-black !font-normal !py-2 !bg-neutral-50   !text-sm ${isExpired ? "  !text-neutral-400" : ""} `}
                   containerClass="w-full lg:w-1/2  "
                   roundedClass=" rounded-xl"
                   title={_STRINGS.SMS}
@@ -388,7 +388,7 @@ const ReserveCard = ({
             {!isOwner ? (
               <Button
                 variant="outline"
-                width="w-full h-12 !border-none !text-black !font-normal  !py-2 !bg-primary-1100  !text-sm "
+                width="w-full h-12 !border-none !text-black !font-normal  !py-2 !bg-neutral-50  !text-sm "
                 containerClass="w-full  lg:w-1/2 "
                 roundedClass=" rounded-xl"
                 title={_STRINGS.CHAT_IN_JAYAB}

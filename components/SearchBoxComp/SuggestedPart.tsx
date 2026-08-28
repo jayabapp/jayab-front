@@ -86,7 +86,7 @@ const SuggestedPart = ({
                     className="w-4  transition-all h-4 aspect-square"
                     src="/assets/icons/edit/magnifier.svg"
                   />{" "}
-                  <p className=" text-primary-700 text-sm md:text-base transition-all">
+                  <p className=" text-brand-600 text-sm md:text-base transition-all">
                     {e?.title}{" "}
                   </p>
                 </div>
@@ -108,7 +108,7 @@ const SuggestedPart = ({
                     className="w-4  transition-all h-4 aspect-square"
                     src="/assets/icons/home/literly_map.svg"
                   />{" "}
-                  <p className=" text-primary-700 text-sm md:text-base transition-all">
+                  <p className=" text-brand-600 text-sm md:text-base transition-all">
                     {" "}
                     {e?.level == "province"
                       ? _STRINGS.PROVINCE
@@ -145,7 +145,7 @@ const SuggestedPart = ({
                     className="w-4  transition-all h-4 aspect-square"
                     src="/assets/icons/edit/magnifier.svg"
                   />{" "}
-                  <p className=" text-primary-700 text-sm md:text-base transition-all">
+                  <p className=" text-brand-600 text-sm md:text-base transition-all">
                     {e?.title}{" "}
                   </p>
                 </div>

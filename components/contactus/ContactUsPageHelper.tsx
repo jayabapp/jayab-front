@@ -55,7 +55,7 @@ const ContactUsPageHelper = ({ data }: { data: any }) => {
         className={`grid grid-cols-1 ${hasMap ? "md:grid-cols-2" : ""}  items-start gap-8  `}
       >
         <div className="flex  col-span-full w-full items-center justify-center">
-          <p className=" text-primary-700 text-lg text-center font-extrabold  md:text-2xl">
+          <p className=" text-brand-600 text-lg text-center font-extrabold  md:text-2xl">
             {_STRINGS.CONTACT_US}
           </p>
         </div>

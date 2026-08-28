@@ -19,7 +19,7 @@ const LandingContentFaq = ({ data }: { data: Question[] }) => {
                   titleIcon={
                     <img className="w-7 h-7 aspect-square" src="/assets/icons/accordion/faq_question_mark.svg" />
                   }
-                  item={{ parenClass: " bg-white z-1 rounded-xl border dark:border-zinc-400" }}
+                  item={{ parenClass: " bg-white z-1 rounded-xl border " }}
                   key={e?.updated_at}
                   title={e?.question}
                 >

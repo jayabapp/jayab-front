@@ -16,8 +16,8 @@ type TInfoItem = {
 
 const InfoItem = ({ title, value }: TInfoItem) => (
   <div className="flex items-center justify-between gap-2 text-xs md:text-sm">
-    <span className="text-gray-500">{title}</span>
-    <span className="font-medium text-primary-text">{value}</span>
+    <span className="text-neutral-500">{title}</span>
+    <span className="font-medium text-neutral-900">{value}</span>
   </div>
 );
 
@@ -50,7 +50,7 @@ const PhotoUpgradeRequestCard = ({
               <p className="line-clamp-1 text-sm font-medium md:text-base">
                 {data?.property?.title || "اقامتگاه"}
               </p>
-              <p className="mt-1 text-xs text-gray-500">
+              <p className="mt-1 text-xs text-neutral-500">
                 کد {data?.property?.code || data?.property_id}
               </p>
             </div>

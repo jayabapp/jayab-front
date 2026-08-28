@@ -28,7 +28,7 @@ const ShowContactPop = ({ show, data, image, onHide }: TShowContactProps) => {
             sizes="(min-width: 768px) 56px, 40px"
             alt={data?.assistant_full_name || ""}
             className={` w-10 h-10  md:w-14 md:h-14 aspect-square rounded-full ${
-              !!image && !!data?.is_owner ? "border border-primary-700" : ""
+              !!image && !!data?.is_owner ? "border border-brand-600" : ""
             } `}
           />
           <div className="flex flex-col items-start gap-2">

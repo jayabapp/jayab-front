@@ -107,7 +107,7 @@ const CreateProperty = () => {
       ) : (
         <>
           {" "}
-          <p className="font-bold w-full text-start  text-sm md:text-base text-primary-700  ">
+          <p className="font-bold w-full text-start  text-sm md:text-base text-brand-600  ">
             {_STRINGS.ROOMS_INFO}
           </p>
           <div className=" flex flex-col gap-2  border-b pb-4 w-full">
@@ -158,7 +158,7 @@ const CreateProperty = () => {
             />
           </div>
           <div className=" flex flex-col gap-2  border-b pb-4 w-full">
-            <p className="font-bold w-full text-start  text-sm md:text-base text-primary-700  ">
+            <p className="font-bold w-full text-start  text-sm md:text-base text-brand-600  ">
               {_STRINGS.REST_ROOMS}
             </p>
             <TitleCounter
@@ -179,7 +179,7 @@ const CreateProperty = () => {
             />
           </div>
           <div className=" flex flex-col gap-2  border-b pb-4 w-full">
-            <p className="font-bold w-full text-start  text-sm md:text-base text-primary-700  ">
+            <p className="font-bold w-full text-start  text-sm md:text-base text-brand-600  ">
               {_STRINGS.SHOWER}
             </p>
             <TitleCounter

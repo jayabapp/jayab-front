@@ -25,7 +25,7 @@ const RelatedBlogs: FC<{ id: number }> = async ({ id }) => {
             title={i?.title || ""}
             key={`/blog/${encodeURI(i?.slug || "")}`}
             href={`/blog/${encodeURI(i?.slug || "")}`}
-            className="grid group grid-cols-4 hover:bg-primary-700/5 transition-all rounded-md items-center justify-start gap-2"
+            className="grid group grid-cols-4 hover:bg-brand-600/5 transition-all rounded-md items-center justify-start gap-2"
           >
             <div className="cols-span-1 relative w-full aspect-square rounded-md overflow-clip">
               <Image
@@ -40,7 +40,7 @@ const RelatedBlogs: FC<{ id: number }> = async ({ id }) => {
               <p className="text-xs  text-right font-black  mb-1">
                 {moment(i?.created_at)?.format("jYYYY/jMM/jDD")}
               </p>
-              <p className="font-bold group-hover:text-primary-700 transition-all text-right line-clamp-1">
+              <p className="font-bold group-hover:text-brand-600 transition-all text-right line-clamp-1">
                 {i?.title}
               </p>
               <p className="font-regular  text-sm  text-right line-clamp-2">

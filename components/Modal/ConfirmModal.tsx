@@ -50,7 +50,7 @@ const ConfirmModal = ({
       onHide={onHide}
       options={{
         containerClass:
-          "mx-auto my-20   w-11/12 md:w-1/2 xl:w-1/3 2xl:w-1/4 rounded-lg overflow-y-scroll  bg-white  dark:bg-zinc-800",
+          "mx-auto my-20   w-11/12 md:w-1/2 xl:w-1/3 2xl:w-1/4 rounded-lg overflow-y-scroll  bg-white  ",
       }}
     >
       <div
@@ -67,14 +67,14 @@ const ConfirmModal = ({
           <></>
         )}
         {title ? (
-          <p className="font-medium text-center text-base text-primary-700 dark:text-zinc-300 my-5">
+          <p className="font-medium text-center text-base text-brand-600  my-5">
             {title}
           </p>
         ) : (
           ""
         )}
         <p
-          className={`font-light text-center text-sm dark:text-neutral-200 my-5  ${messageClass}`}
+          className={`font-light text-center text-sm  my-5  ${messageClass}`}
         >
           {text}
         </p>
@@ -82,7 +82,7 @@ const ConfirmModal = ({
           <MultiLineFormInput
             item={{
               title: options?.inputTitle || _STRINGS.MESSAGE,
-              inputClass: "  !w-full !bg-primary-300",
+              inputClass: "  !w-full !bg-neutral-50",
               containerClass: "pb-4 w-full",
               rows: 4,
             }}
@@ -96,7 +96,7 @@ const ConfirmModal = ({
         )}
         <div className="flex flex-row w-full px-4  gap-4 justify-evenly mx-auto mb-4">
           <div
-            className={`bg-primary-700 dark:bg-primary-600 w-full hover:opacity-80 transition-all duration-200 ease-in-out text-white mx-2 text-center py-2.5 rounded-md cursor-pointer flex justify-center items-center ${confirmTextClassName} `}
+            className={`bg-brand-600  w-full hover:opacity-80 transition-all duration-200 ease-in-out text-white mx-2 text-center py-2.5 rounded-md cursor-pointer flex justify-center items-center ${confirmTextClassName} `}
             onClick={() => {
               if (!isLoading) {
                 onConfirm();
@@ -106,7 +106,7 @@ const ConfirmModal = ({
             {isLoading ? <BtnLoading /> : confirmText}
           </div>
           <div
-            className={`  bg-gray-300 hover:opacity-80 transition-all duration-200 ease-in-out w-full mx-2 text-center py-2.5 rounded-md cursor-pointer ${hideTextClassName}`}
+            className={`  bg-neutral-300 hover:opacity-80 transition-all duration-200 ease-in-out w-full mx-2 text-center py-2.5 rounded-md cursor-pointer ${hideTextClassName}`}
             onClick={() => {
               if (!isLoading) onHide();
             }}

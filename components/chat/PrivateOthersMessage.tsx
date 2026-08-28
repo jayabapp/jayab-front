@@ -53,13 +53,13 @@ const PrivateOthersMessage = ({ data }: itemType) => {
         onClick={() => {
           setShow(true);
         }}
-        className={`  ${`my-anchor-element${data?.id}`}   select-none bg-white dark:bg-dark-700 w-[70%] md:w-[40%] h-fit bg-white-200 ${
+        className={`  ${`my-anchor-element${data?.id}`}   select-none bg-white  w-[70%] md:w-[40%] h-fit bg-white-200 ${
           data?.media ? "p-1" : "p-4  pb-2"
-        } rounded-xl rounded-bl-none    ${show ? "!bg-primary-50/30 " : ""}  ${data?.media ? "pt-3" : ""} `}
+        } rounded-xl rounded-bl-none    ${show ? "!bg-brand-50/30 " : ""}  ${data?.media ? "pt-3" : ""} `}
       >
         {data?.media ? (
           <div
-            className={`flex items-center bg-white  dark:bg-dark-700 gap-4 ${
+            className={`flex items-center bg-white   gap-4 ${
               !!data?.text ? " mb-4" : ""
             } rounded-[10px] `}
           >
@@ -82,7 +82,7 @@ const PrivateOthersMessage = ({ data }: itemType) => {
         <p
           className={` ${
             isEmojisOnly(data?.text) ? "text-2xl " : " text-xs md:text-sm"
-          } dark:text-gray-100  font-medium  whitespace-pre-line ${!data?.media && !data?.text ? "opacity-60" : ""}`}
+          }   font-medium  whitespace-pre-line ${!data?.media && !data?.text ? "opacity-60" : ""}`}
         >
           {!data?.media && !data?.text ? _STRINGS.DELETED_MESSAGE : data?.text}
         </p>

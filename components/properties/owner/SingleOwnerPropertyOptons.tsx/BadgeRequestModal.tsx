@@ -53,7 +53,7 @@ const BadgeRequestModal = ({
           className="w-9 h-9 aspect-square"
           src="/assets/icons/property/request_badge.svg"
         />
-        <p className="text-sm text-primary-700 font-bold">
+        <p className="text-sm text-brand-600 font-bold">
           {_STRINGS.REQUEST_FOR_BADGE}
         </p>
         {isLoading ? (

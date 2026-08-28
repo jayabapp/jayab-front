@@ -73,7 +73,7 @@ const SearchPlaceModal = ({
           }}
         />
         {isFetching || isDebouncing ? (
-          <div className="h-1 w-full animate-pulse rounded bg-gray-200" />
+          <div className="h-1 w-full animate-pulse rounded bg-neutral-200" />
         ) : null}
         <div className="flex flex-col gap-4    items-center pb-8 ">
           {searchedAddresses?.length == 0 ? (

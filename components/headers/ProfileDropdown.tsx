@@ -62,7 +62,7 @@ const ProfileDropdown = ({ notifBadge, isHome }: TProfileDropProps) => {
           >
             {!!HAS_BADGE ? <Pulser /> : <></>}
             <p
-              className={`  text-sm ${isHome ? "text-white" : " text-black "}  shrink-0 font-medium   group-hover:text-primary-700 `}
+              className={`  text-sm ${isHome ? "text-white" : " text-black "}  shrink-0 font-medium   group-hover:text-brand-600 `}
             >
               {_STRINGS.MY_PROFILE}
             </p>
@@ -77,7 +77,7 @@ const ProfileDropdown = ({ notifBadge, isHome }: TProfileDropProps) => {
           leaveFrom="transform opacity-100 scale-100"
           leaveTo="transform opacity-0 scale-95"
         >
-          <div className="absolute left-0  z-[60]  mt-2 w-48 origin-top-center  rounded-xl bg-white dark:bg-zinc-800 shadow-xl ring-1 ring-black ring-opacity-5 focus:outline-none  overflow-scroll">
+          <div className="absolute left-0  z-[60]  mt-2 w-48 origin-top-center  rounded-xl bg-white  shadow-xl ring-1 ring-black ring-opacity-5 focus:outline-none  overflow-scroll">
             <div className="px-1 py-2 ">
               <Link
                 className=""
@@ -87,7 +87,7 @@ const ProfileDropdown = ({ notifBadge, isHome }: TProfileDropProps) => {
                 title={_STRINGS.MY_NOTIFS}
               >
                 <div
-                  className={` relative hover:bg-primary-700/80 dark:hover:bg-zinc-600  cursor-pointer hover:text-white text-gray-600 dark:text-gray-300 group flex w-full gap-2 items-center rounded-md px-2 py-2 text-sm font-light no-underline`}
+                  className={` relative hover:bg-brand-600/80   cursor-pointer hover:text-white text-neutral-600  group flex w-full gap-2 items-center rounded-md px-2 py-2 text-sm font-light no-underline`}
                 >
                   <div className="relative">
                     {" "}
@@ -97,7 +97,7 @@ const ProfileDropdown = ({ notifBadge, isHome }: TProfileDropProps) => {
                       alt=""
                       width={24}
                       height={24}
-                      className={`w-6 h-6 aspect-square ${asPath.includes("notifications") ? " " : ""} dark:invert `}
+                      className={`w-6 h-6 aspect-square ${asPath.includes("notifications") ? " " : ""}  `}
                     />
                   </div>
                   <p className="text-sm"> {_STRINGS.MY_NOTIFS}</p>
@@ -113,7 +113,7 @@ const ProfileDropdown = ({ notifBadge, isHome }: TProfileDropProps) => {
                   href={`/profile/owner/properties`}
                 >
                   <div
-                    className={` relative hover:bg-primary-700/80 dark:hover:bg-zinc-600  cursor-pointer hover:text-white text-gray-600 dark:text-gray-300 group flex w-full gap-2 items-center rounded-md px-2 py-2 text-sm font-light no-underline`}
+                    className={` relative hover:bg-brand-600/80   cursor-pointer hover:text-white text-neutral-600  group flex w-full gap-2 items-center rounded-md px-2 py-2 text-sm font-light no-underline`}
                   >
                     <div className="relative">
                       {" "}
@@ -122,7 +122,7 @@ const ProfileDropdown = ({ notifBadge, isHome }: TProfileDropProps) => {
                         alt=""
                         width={24}
                         height={24}
-                        className={`w-6 h-6 aspect-square ${asPath.includes("notifications") ? " " : ""} dark:invert `}
+                        className={`w-6 h-6 aspect-square ${asPath.includes("notifications") ? " " : ""}  `}
                       />
                     </div>
                     <p className="text-sm"> {"آگهی های من"}</p>
@@ -140,7 +140,7 @@ const ProfileDropdown = ({ notifBadge, isHome }: TProfileDropProps) => {
                   href={`/profile/owner/reserves`}
                 >
                   <div
-                    className={` relative hover:bg-primary-700/80 dark:hover:bg-zinc-600  cursor-pointer hover:text-white text-gray-600 dark:text-gray-300 group flex w-full gap-2 items-center rounded-md px-2 py-2 text-sm font-light no-underline`}
+                    className={` relative hover:bg-brand-600/80   cursor-pointer hover:text-white text-neutral-600  group flex w-full gap-2 items-center rounded-md px-2 py-2 text-sm font-light no-underline`}
                   >
                     <div className="relative">
                       <AbsoluteBadge
@@ -151,7 +151,7 @@ const ProfileDropdown = ({ notifBadge, isHome }: TProfileDropProps) => {
                         alt=""
                         width={24}
                         height={24}
-                        className={`w-6 h-6 aspect-square ${asPath.includes("notifications") ? " " : ""} dark:invert `}
+                        className={`w-6 h-6 aspect-square ${asPath.includes("notifications") ? " " : ""}  `}
                       />
                     </div>
                     <p className="text-sm"> {"درخواست های رزرو"}</p>
@@ -170,7 +170,7 @@ const ProfileDropdown = ({ notifBadge, isHome }: TProfileDropProps) => {
                   href={`/profile/advisor/subscription`}
                 >
                   <div
-                    className={` relative hover:bg-primary-700/80 dark:hover:bg-zinc-600  cursor-pointer hover:text-white text-gray-600 dark:text-gray-300 group flex w-full gap-2 items-center rounded-md px-2 py-2 text-sm font-light no-underline`}
+                    className={` relative hover:bg-brand-600/80   cursor-pointer hover:text-white text-neutral-600  group flex w-full gap-2 items-center rounded-md px-2 py-2 text-sm font-light no-underline`}
                   >
                     <div className="relative">
                       {" "}
@@ -183,7 +183,7 @@ const ProfileDropdown = ({ notifBadge, isHome }: TProfileDropProps) => {
                           asPath.includes("/profile/advisor/subscription")
                             ? " "
                             : ""
-                        } dark:invert `}
+                        }  `}
                       />
                     </div>
                     <p className="text-sm"> {"بخش مشاور"}</p>
@@ -201,14 +201,14 @@ const ProfileDropdown = ({ notifBadge, isHome }: TProfileDropProps) => {
                 >
                   <div
                     key={e.id}
-                    className={`hover:bg-primary-700/80 dark:hover:bg-zinc-600  cursor-pointer hover:text-white text-gray-600 dark:text-gray-300 group flex w-full gap-2 items-center rounded-md px-2 py-2 text-sm font-light no-underline`}
+                    className={`hover:bg-brand-600/80   cursor-pointer hover:text-white text-neutral-600  group flex w-full gap-2 items-center rounded-md px-2 py-2 text-sm font-light no-underline`}
                   >
                     <Image
                       src={e?.imgSrc}
                       alt=""
                       width={24}
                       height={24}
-                      className={`w-6 h-6 aspect-square ${asPath.includes(e?.route) ? " " : ""} dark:invert `}
+                      className={`w-6 h-6 aspect-square ${asPath.includes(e?.route) ? " " : ""}  `}
                     />
                     <p className="text-sm"> {e?.title}</p>
                   </div>
@@ -224,7 +224,7 @@ const ProfileDropdown = ({ notifBadge, isHome }: TProfileDropProps) => {
                   alt=""
                   width={24}
                   height={24}
-                  className={`w-6 h-6 aspect-square dark:invert `}
+                  className={`w-6 h-6 aspect-square  `}
                 />{" "}
                 {_STRINGS.LOGOUT_TITLE}
               </button>

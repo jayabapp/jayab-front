@@ -9,7 +9,7 @@ const RoomAccard = ({ data }: { data: SinglePropDto }) => {
     <SimpleAccordion
       isOpenFirst={isMobile || isTablet}
       item={{
-        parenClass: " bg-white border border-gray-300 !mt-0  rounded-10 w-full",
+        parenClass: " bg-white border border-neutral-300 !mt-0  rounded-10 w-full",
       }}
       title={_STRINGS.ROOMS_INFO}
     >

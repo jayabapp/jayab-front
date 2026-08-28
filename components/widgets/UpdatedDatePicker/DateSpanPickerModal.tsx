@@ -93,14 +93,14 @@ const DateSpanPickerModal = ({
       zIndex={40000000}
       options={{
         containerClass:
-          "mx-auto my-0 md:my-20 w-full md:w-1/2 xl:w-1/3 2xl:w-1/4  rounded-0 md:rounded-2xl overflow-y-hidden  bg-white   dark:bg-zinc-900  relative min-h-[90dvh]  min:min-h-[80dvh] ",
+          "mx-auto my-0 md:my-20 w-full md:w-1/2 xl:w-1/3 2xl:w-1/4  rounded-0 md:rounded-2xl overflow-y-hidden  bg-white     relative min-h-[90dvh]  min:min-h-[80dvh] ",
       }}
       onHide={onHide}
       show={!!show}
     >
       <img
         src="/assets/icons/adds/x_mark.svg"
-        className="absolute top-4 right-4  z-20 cursor-pointer text-gray-500 hover:text-gray-700"
+        className="absolute top-4 right-4  z-20 cursor-pointer text-neutral-500 hover:text-neutral-600"
         onClick={onHide}
       />
 
@@ -115,7 +115,7 @@ const DateSpanPickerModal = ({
               <BtnLoading />
             </div>
           }
-          endMessage={<p className="text-center py-4 text-gray-500">{/* Optional end message */}</p>}
+          endMessage={<p className="text-center py-4 text-neutral-500">{/* Optional end message */}</p>}
           scrollableTarget="modal-content"
           className="w-full flex pb-16 h-full flex-col gap-0 "
         >
@@ -135,8 +135,8 @@ const DateSpanPickerModal = ({
                 forbiden_dates={forbiden_dates}
               />
               {index == 0 ? (
-                <div className="flex lg:absolute right-12 bottom-2  px-4 md:px-0 text-primary-800 text-sm items-center gap-2 ">
-                  <div className="w-5 h-5 striped !bg-gray-100   rounded-md"></div>
+                <div className="flex lg:absolute right-12 bottom-2  px-4 md:px-0 text-neutral-500 text-sm items-center gap-2 ">
+                  <div className="w-5 h-5 striped !bg-neutral-100   rounded-md"></div>
                   <p className=" text-xs md:text-sm">{_STRINGS.RESERVED_DAYS}</p>
                 </div>
               ) : (

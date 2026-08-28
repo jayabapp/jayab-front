@@ -67,7 +67,7 @@ const Support = () => {
         </>
       ) : (
         <div className="flex w-full flex-col items-center justify-center gap-4">
-          <h2 className="text-primary-700">{_STRINGS.HI}!</h2>
+          <h2 className="text-brand-600">{_STRINGS.HI}!</h2>
           <p className="text-sm">{_STRINGS.FOR_SUPPORT_LOGIN}</p>
           <Button
             width="w-full"

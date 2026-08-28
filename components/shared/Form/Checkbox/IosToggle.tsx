@@ -18,7 +18,7 @@ function IosToggle({
   return (
     <div
       className={`relative border-2  !z-0 rounded-full w-[3.25rem] h-8 transition duration-200 ease-linear cursor-pointer ${
-        toggle === true ? ` bg-emerald-500 border-emerald-500 ` : " border-gray-400 bg-gray-400/10"
+        toggle === true ? ` bg-emerald-500 border-emerald-500 ` : " border-neutral-400 bg-neutral-400/10"
       }`}
       onClick={(e) => {
         e.preventDefault();
@@ -29,12 +29,12 @@ function IosToggle({
     >
       <label
         // for={`toggle${index}`}
-        className={`absolute flex items-center justify-center left-0.5   dark:bg-zinc-700   mt-0.5 w-6 h-6 rounded-full transition ${
+        className={`absolute flex items-center justify-center left-0.5      mt-0.5 w-6 h-6 rounded-full transition ${
           disableTransform ? "" : "transform"
         } duration-100 ease-linear cursor-pointer ${
           toggle === true
             ? `translate-x-[80%]  bg-white ${"border-emrabg-emerald-500"}`
-            : "translate-x-0 bg-gray-400 border-gray-300"
+            : "translate-x-0 bg-neutral-400 border-neutral-300"
         }`}
       >
         {/* {!!toggle ? (

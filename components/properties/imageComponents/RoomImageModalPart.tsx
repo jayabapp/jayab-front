@@ -37,19 +37,19 @@ const RoomImageModalPart = ({
     >
       {" "}
       <div className=" bg-white  md:py-[5%] gap-2 px-3  items-center justify-center md:px-3 lg:px-4 2xl:px-[10%]   w-full flex flex-col   h-full    relative">
-        <div className="flex fixed md:sticky   rounded-t-0 md:rounded-t-20 w-full z-[60]  dark:bg-zinc-800  gap-4 items-center h-12   top-4  col-span-5 px-4  ">
+        <div className="flex fixed md:sticky   rounded-t-0 md:rounded-t-20 w-full z-[60]    gap-4 items-center h-12   top-4  col-span-5 px-4  ">
           <div
             onClick={() => setModalProps({ ...modalProps, isVisible: false })}
             className="flex border  cursor-pointer bg-white p-2 rounded-10 justify-center aspect-square items-center "
           >
             <img
               src="/assets/icons/adds/x_mark.svg"
-              className={"w-4    h-auto mx-1 cursor-pointer dark:invert"}
+              className={"w-4    h-auto mx-1 cursor-pointer "}
             />
           </div>
           <div className="flex items-center gap-2">
             {" "}
-            <h2 className=" !text-base  !line-clamp-1 dark:text-neutral-300">
+            <h2 className=" !text-base  !line-clamp-1 ">
               {modalProps?.data?.title}
             </h2>
           </div>

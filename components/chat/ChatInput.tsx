@@ -35,7 +35,7 @@ const ChatInput = ({
         ref={inputRef}
         rows={1}
         placeholder={placeholder ?? _STRINGS.CHAT_INPUT_PLACEHOLDER}
-        className={`relative my-0 w-full rounded-lg border-0 bg-white ${padding ?? "p-2"} dark:bg-transparent`}
+        className={`relative my-0 w-full rounded-lg border-0 bg-white ${padding ?? "p-2"} `}
         onChange={(event) => onChangeText(event.target.value)}
         value={value}
         minRows={1}

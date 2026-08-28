@@ -176,12 +176,12 @@ const ChatUploader = ({
               <BtnLoading />{" "}
             </div>
           ) : (
-            <div className="  aspect-square shrink-0 md:w-6  items-center justify-center flex  text-gray-500   h-5 w-5 md:h-6">
+            <div className="  aspect-square shrink-0 md:w-6  items-center justify-center flex  text-neutral-500   h-5 w-5 md:h-6">
               {" "}
               <Image
                 src="/assets/icons/chat/chat_clip.svg"
                 alt="PaperClipIcon"
-                className="  aspect-square shrink-0 md:w-6 text-gray-500   h-5 w-5 md:h-6"
+                className="  aspect-square shrink-0 md:w-6 text-neutral-500   h-5 w-5 md:h-6"
                 onClick={() => {
                   !disabled ? imagePickerRef?.current?.click() : void null;
                 }}
@@ -196,7 +196,7 @@ const ChatUploader = ({
         show={!!selectedFile ? true : false}
         options={{
           containerClass:
-            "mx-auto my-0  bg-slate-800  !h-fit  w-11/12 md:w-1/2 xl:w-1/3 2xl:w-1/4 rounded-2xl overflow-y-scroll  ",
+            "mx-auto my-0  bg-neutral-800  !h-fit  w-11/12 md:w-1/2 xl:w-1/3 2xl:w-1/4 rounded-2xl overflow-y-scroll  ",
         }}
         onHide={onHide}
       >
@@ -218,7 +218,7 @@ const ChatUploader = ({
                 src={previewUrl}
                 alt="پیش‌نمایش تصویر"
                 sizes="(min-width: 1280px) 25vw, (min-width: 768px) 50vw, 92vw"
-                className="max-h-[60dvh] bg-slate-800 object-contain xl:max-h-[70dvh]"
+                className="max-h-[60dvh] bg-neutral-800 object-contain xl:max-h-[70dvh]"
               />
             </>
           )}
@@ -227,19 +227,19 @@ const ChatUploader = ({
           value={caption}
           onChangeText={(e) => setCaption(e)}
           item={{
-            inputClass: " !bg-slate-800 !text-white",
-            containerClass: " !bg-slate-800 px-4",
+            inputClass: " !bg-neutral-800 !text-white",
+            containerClass: " !bg-neutral-800 px-4",
             placeholder: _STRINGS.MESSAGE_TEXT,
           }}
         />
-        <div className=" w-full grid overflow-clip   p-2 gap-2 items-center  bg-slate-800  justify-center grid-cols-2 ">
+        <div className=" w-full grid overflow-clip   p-2 gap-2 items-center  bg-neutral-800  justify-center grid-cols-2 ">
           <div
             onClick={() => {
               if (!subLoading) {
                 uploadImage();
               }
             }}
-            className={`  transition-all  w-full cursor-pointer flex py-1.5  border rounded-xl border-green-600 dark:border-dark-green gap-3 items-center  border-l justify-center`}
+            className={`  transition-all  w-full cursor-pointer flex py-1.5  border rounded-xl border-green-600  gap-3 items-center  border-l justify-center`}
           >
             {subLoading ? (
               <div className=" flex items-center justify-center w-full min-h-[1.7rem]">
@@ -253,9 +253,9 @@ const ChatUploader = ({
                   height={20}
                   alt="CheckIcon"
                   src="/assets/icons/shared/green_check_icon.svg"
-                  className=" items-center justify-center text-center text-green-600 border-green-600 w-5 dark:text-dark-green"
+                  className=" items-center justify-center text-center text-green-600 border-green-600 w-5 "
                 />
-                <p className="text-green-600 border-green-600  text-lg font-medium dark:text-dark-green">
+                <p className="text-green-600 border-green-600  text-lg font-medium ">
                   تایید
                 </p>
               </>
@@ -265,16 +265,16 @@ const ChatUploader = ({
             onClick={() => {
               if (!isCropping) onHide();
             }}
-            className="w-full py-1.5 cursor-pointer gap-3  border rounded-xl border-red-600 dark:border-dark-red flex items-center justify-center"
+            className="w-full py-1.5 cursor-pointer gap-3  border rounded-xl border-red-600  flex items-center justify-center"
           >
             <Image
               width={20}
               height={20}
               alt="XCircleIcon"
               src="/assets/icons/adds/red_x_mark.svg"
-              className="  text-red-600 w-5 dark:text-dark-red"
+              className="  text-red-600 w-5 "
             />
-            <p className="text-red-600  text-lg font-medium dark:text-dark-red">
+            <p className="text-red-600  text-lg font-medium ">
               بستن
             </p>
           </div>

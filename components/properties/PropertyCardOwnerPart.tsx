@@ -9,18 +9,18 @@ const PropertyCardOwnerPart = ({ data, goToLink }: { goToLink: string; data: Pro
   return (
     <div className="w-full flex flex-col ">
       <Divider moreClass="my-1" />
-      <div className="w-full flex  py-2  border-primary-200 items-center justify-between ">
+      <div className="w-full flex  py-2  border-neutral-200 items-center justify-between ">
         <p className="text-xs">{_STRINGS.ADD_DURATION} :</p>
 
         <div className=" flex items-center  gap-2">
-          <div className=" rounded-full text-sm text-primary-700 bg-primary-400 flex  items-center justify-center h-7 w-24 ">
+          <div className=" rounded-full text-sm text-brand-600 bg-brand-200 flex  items-center justify-center h-7 w-24 ">
             {!data?.remaining_days ? "بدون اعتبار" : `${data?.remaining_days} روز اعتبار`}
           </div>
           <Link
             title={_STRINGS.EXTEND_SUBS}
             prefetch={false}
             href={`/profile/owner/properties/${data?.id}/subscription`}
-            className=" rounded-full  !outline-none text-xs text-white bg-primary-700 flex  items-center justify-center h-7 w-24 "
+            className=" rounded-full  !outline-none text-xs text-white bg-brand-600 flex  items-center justify-center h-7 w-24 "
           >
             {_STRINGS.EXTEND_SUBS}
           </Link>
@@ -31,7 +31,7 @@ const PropertyCardOwnerPart = ({ data, goToLink }: { goToLink: string; data: Pro
         href={`/profile/owner/properties/${data?.id}/subscription`}
         prefetch={false}
         title={_STRINGS.UPGRADE_ADD_DESC}
-        className="w-full !outline-none flex  py-2  border-primary-200 items-center justify-between "
+        className="w-full !outline-none flex  py-2  border-neutral-200 items-center justify-between "
       >
         <p className="text-xs">{_STRINGS.UPGRADE_ADD_DESC} </p>
 
@@ -40,7 +40,7 @@ const PropertyCardOwnerPart = ({ data, goToLink }: { goToLink: string; data: Pro
         </div>
       </Link>
       <Divider moreClass="my-1" />
-      <div className="w-full flex  py-2  border-primary-200 items-center justify-between ">
+      <div className="w-full flex  py-2  border-neutral-200 items-center justify-between ">
         <div className="flex w-full items-start gap-1">
           <img src="/assets/icons/adds/pin_point_location.svg" className="w-5 h-5 aspect-square" />
           <p className="text-sm mt-0.5">
@@ -57,7 +57,7 @@ const PropertyCardOwnerPart = ({ data, goToLink }: { goToLink: string; data: Pro
           title={_STRINGS.EDIT_PRICES}
           href={`/profile/owner/properties/${data?.id}/edit/price?edit_mode=true`}
           prefetch={false}
-          className="flex min-h-10 items-center justify-center gap-2 rounded-full border border-primary-700 px-2 text-xs font-medium text-primary-700 !outline-none md:text-sm"
+          className="flex min-h-10 items-center justify-center gap-2 rounded-full border border-brand-600 px-2 text-xs font-medium text-brand-600 !outline-none md:text-sm"
         >
           <img className="h-5 w-5" src="/assets/icons/property/price_label.svg" alt="" />
           <span>{_STRINGS.EDIT_PRICES}</span>
@@ -66,7 +66,7 @@ const PropertyCardOwnerPart = ({ data, goToLink }: { goToLink: string; data: Pro
           title={_STRINGS.EDIT_CALENDAR}
           href={`/profile/owner/properties/${data?.id}#owner-calendar`}
           prefetch={false}
-          className="flex min-h-10 items-center justify-center gap-2 rounded-full border border-primary-700 px-2 text-xs font-medium text-primary-700 !outline-none md:text-sm"
+          className="flex min-h-10 items-center justify-center gap-2 rounded-full border border-brand-600 px-2 text-xs font-medium text-brand-600 !outline-none md:text-sm"
         >
           <img className="h-5 w-5" src="/assets/icons/reserve/blue_calendar_reserve.svg" alt="" />
           <span>{_STRINGS.EDIT_CALENDAR}</span>

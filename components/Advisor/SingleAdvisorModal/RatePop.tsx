@@ -41,7 +41,7 @@ const RatePop = ({
   return (
     <ModalBottomSheet
       options={{
-        containerClass: `mx-auto rounded-t-20 absolute pb-[1.5rem] md:pb-10 bottom-0 md:translate-x-1/2 md:right-1/2 w-full md:w-[calc(50svw)]  overflow-y-scroll bg-white dark:bg-dark-700`,
+        containerClass: `mx-auto rounded-t-20 absolute pb-[1.5rem] md:pb-10 bottom-0 md:translate-x-1/2 md:right-1/2 w-full md:w-[calc(50svw)]  overflow-y-scroll bg-white `,
       }}
       onHide={onHide}
       show={!!show}
@@ -53,7 +53,7 @@ const RatePop = ({
         <p className="w-full text-center font-bold pb-3 border-b">{_STRINGS.RECORD_CONSULTANT_SCORE}</p>
         <div className="flex text-xs md:text-sm w-full flex-col gap-12 px-4 ">
           <p>
-            <span className="text-primary-700 font-bold">1.</span>میزان رضایت شما از سرعت پیگیری و نحوه پاسخگویی مشاور
+            <span className="text-brand-600 font-bold">1.</span>میزان رضایت شما از سرعت پیگیری و نحوه پاسخگویی مشاور
           </p>
 
           <RangeWithTitle
@@ -72,7 +72,7 @@ const RatePop = ({
         </div>
         <div className="flex text-xs md:text-sm  w-full flex-col gap-12 px-4 ">
           <p>
-            <span className="text-primary-700 font-bold">2.</span> میزان رضایت شما از مسئولیت پذیری و مشاوره صحیح مشاور
+            <span className="text-brand-600 font-bold">2.</span> میزان رضایت شما از مسئولیت پذیری و مشاوره صحیح مشاور
             در خصوص رزرو اقامتگاه
           </p>
           <RangeWithTitle
@@ -91,7 +91,7 @@ const RatePop = ({
         </div>
         <div className="flex w-full flex-col text-xs md:text-sm gap-12 px-4 ">
           <p>
-            <span className="text-primary-700 font-bold">3.</span>میزان رضایت شما از برخورد مشاور و پیگیری مراحل تا
+            <span className="text-brand-600 font-bold">3.</span>میزان رضایت شما از برخورد مشاور و پیگیری مراحل تا
             تحویل اقامتگاه
           </p>
           <RangeWithTitle

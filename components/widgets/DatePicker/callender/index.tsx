@@ -147,7 +147,7 @@ const Callender = ({
       draggable
     >
       <div
-        className={` hidden  text-primary-700 flex-col gap-1 items-start   transition-all ${
+        className={` hidden  text-brand-600 flex-col gap-1 items-start   transition-all ${
           !!selectedDate ? " h-[3.75rem]" : " opacity-0 h-0"
         }`}
       >

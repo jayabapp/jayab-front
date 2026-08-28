@@ -1,5 +1,7 @@
 "use client";
 
+import { colors } from "@/theme/colors";
+
 import { useAuthStore, useStoreInit, useStoreParams } from "@/store";
 import { useEffect, useMemo, useState } from "react";
 import { AnimatePresence, motion } from "framer-motion";
@@ -151,7 +153,7 @@ const MobileFooter: React.FC = ({}) => {
           initial={{ y: 120, opacity: 0 }}
           transition={{ duration: 0.28, ease: "easeInOut" }}
           style={{
-            filter: `drop-shadow(0px -4px 30px #030E2525)`,
+            filter: `drop-shadow(0px -4px 30px ${colors.neutral[900]}25)`,
           }}
           className={`    z-10     flex   max-w-[800px]  ${
             isIOS && getPWADisplayMode() == "standalone" ? "pb-8" : "pb-6"
@@ -193,7 +195,7 @@ const MobileFooter: React.FC = ({}) => {
                         !isFocused(el?.route) && el?.title
                           ? " opacity-60 grayscale brightness-90  "
                           : " "
-                      }   truncate text-xs  md:text-base  text-primary-700 select-none
+                      }   truncate text-xs  md:text-base  text-brand-600 select-none
             
                 `}
                     >
@@ -215,7 +217,7 @@ const MobileFooter: React.FC = ({}) => {
                 src="/assets/icons/navbar/footer_bump.svg"
               />
               <div className=" w-full h-full  aspect-square  absolute -top-[1.85rem] left-0 right-0 mx-auto rounded-full  bg-transparent flex items-center justify-center ">
-                <div className="footer-plus-shadow  flex items-center justify-center  size-[3.250rem] rounded-full border border-primary-1200 ">
+                <div className="footer-plus-shadow  flex items-center justify-center  size-[3.250rem] rounded-full border border-brand-300 ">
                   <img
                     className="size-[0.875rem]"
                     src="/assets/icons/navbar/footer_big_plus.svg"
@@ -223,7 +225,7 @@ const MobileFooter: React.FC = ({}) => {
                 </div>
               </div>
 
-              <p className=" truncate text-xs  absolute -bottom-[1.375rem] right-0 left-0 mx-auto md:text-base  text-center text-primary-700 select-none opacity-60 grayscale brightness-90  ">
+              <p className=" truncate text-xs  absolute -bottom-[1.375rem] right-0 left-0 mx-auto md:text-base  text-center text-brand-600 select-none opacity-60 grayscale brightness-90  ">
                 {_STRINGS.CREATE_ADD}
               </p>
             </div>
@@ -266,7 +268,7 @@ const MobileFooter: React.FC = ({}) => {
                         !isFocused(el?.route) && el?.title
                           ? " opacity-60 grayscale brightness-90  "
                           : " "
-                      }   truncate text-xs  md:text-base  text-primary-700 select-none`}
+                      }   truncate text-xs  md:text-base  text-brand-600 select-none`}
                     >
                       {el?.title}
                     </p>

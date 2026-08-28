@@ -50,7 +50,7 @@ const SelectiveFilterShowCase = ({
     <>
       <div
         onClick={_onShow}
-        className={`rounded-full !w-auto   ${!!slectedCount ? "" : " grayscale opacity-70"}  transition-all  cursor-pointer  gap-0   py-1 h-[1.625rem] pl-2 pr-1 flex items-center justify-center border    border-primary-700  bg-primary-700/5 text-primary-700  text-xs `}
+        className={`rounded-full !w-auto   ${!!slectedCount ? "" : " grayscale opacity-70"}  transition-all  cursor-pointer  gap-0   py-1 h-[1.625rem] pl-2 pr-1 flex items-center justify-center border    border-brand-600  bg-brand-600/5 text-brand-600  text-xs `}
       >
         <p className="text-xs pr-2">{title} </p>
         {!!slectedCount ? (
@@ -65,7 +65,7 @@ const SelectiveFilterShowCase = ({
                 e.stopPropagation();
                 removeFiltersKeys([queryKey]);
               }}
-              className=" cursor-pointer w-4 h-4  mr-2 aspect-square rounded-full border border-primary-700 flex items-center justify-center"
+              className=" cursor-pointer w-4 h-4  mr-2 aspect-square rounded-full border border-brand-600 flex items-center justify-center"
             >
               <img src="/assets/icons/adds/blue_plus.svg" className="w-2 h-2 rotate-45 aspect-square " />
             </div>

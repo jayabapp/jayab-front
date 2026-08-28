@@ -32,7 +32,7 @@ const HomeAdvisorSub = () => {
                   : _STRINGS.WAITING_FOR_PAYMENT
               }
               href={`/profile/advisor/subscription`}
-              className="w-full md:w-[90%] lg:w-[30%] rounded-full flex items-center justify-center gap-4 h-10 bg-primary-350 "
+              className="w-full md:w-[90%] lg:w-[30%] rounded-full flex items-center justify-center gap-4 h-10 bg-warning-600 "
             >
               <img
                 className="w-5   h-5 aspect-square"
@@ -54,7 +54,7 @@ const HomeAdvisorSub = () => {
                   : _STRINGS.WAITING_FOR_PAYMENT
               }
               href={`/profile/advisor/subscription`}
-              className="w-full md:w-[90%] lg:w-[30%] rounded-full flex items-center justify-center gap-4 h-10 bg-primary-150 "
+              className="w-full md:w-[90%] lg:w-[30%] rounded-full flex items-center justify-center gap-4 h-10 bg-danger-500 "
             >
               <img
                 className="w-5 h-5 aspect-square"

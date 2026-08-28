@@ -160,7 +160,7 @@ const CreateEditSpecialAdvisor = ({
           key={`uploader`}
           innerClasses={{
             sizeClass:
-              "!bg-white  !border !border-dashed   w-24 h-24 !border-gray-300 ",
+              "!bg-white  !border !border-dashed   w-24 h-24 !border-neutral-300 ",
           }}
           containerClass={"my-3  w-full flex items-start justify-start "}
           item={values?.document_image}
@@ -185,7 +185,7 @@ const CreateEditSpecialAdvisor = ({
           // isLogo
           innerClasses={{
             sizeClass:
-              "!bg-white  !border !border-dashed   w-24 h-24 !border-gray-300 ",
+              "!bg-white  !border !border-dashed   w-24 h-24 !border-neutral-300 ",
           }}
           link="/attachments?type=ADVISOR_NATIONAL_CARD_IMAGE"
           key={`uploader`}
@@ -215,7 +215,7 @@ const CreateEditSpecialAdvisor = ({
           key={`uploader`}
           innerClasses={{
             sizeClass:
-              "!bg-white  !border !border-dashed   w-24 h-24 !border-gray-300 ",
+              "!bg-white  !border !border-dashed   w-24 h-24 !border-neutral-300 ",
           }}
           containerClass={"my-3  !w-full flex items-start justify-start "}
           item={values?.profile_image}

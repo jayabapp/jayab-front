@@ -13,11 +13,11 @@ const SingleMobilePropertyIntroductions = ({ data }: { data: SinglePropDto }) =>
         <p className=" font-medium text-lg w-3/5 md:w-full md:text-2xl ">{data?.title}</p>
         <div className="  w-fit   shrink-0   p-1  rounded-full flex items-center gap-2 bg-black/10   bottom-1">
           <img src="/assets/icons/adds/green_circular_tick.svg" />
-          <p className="text-sm text-gray-400 ">{_STRINGS.VERIFIED}</p>
+          <p className="text-sm text-neutral-400 ">{_STRINGS.VERIFIED}</p>
         </div>
       </div>
       <div className="flex items-center gap-4">
-        <div className="bg-primary-700 rounded-md text-base  px-2 py-1 text-white flex items-center justify-center">
+        <div className="bg-brand-600 rounded-md text-base  px-2 py-1 text-white flex items-center justify-center">
           کد {data.code}
         </div>{" "}
         <div className="flex items-center gap-1">
@@ -27,13 +27,13 @@ const SingleMobilePropertyIntroductions = ({ data }: { data: SinglePropDto }) =>
       </div>
       <div className="flex items-center gap-4 border-t  py-2 w-full justify-between">
         <p>{_STRINGS.ROOM_COUNTS} :</p>
-        <p className="font-bold text-primary-700">
+        <p className="font-bold text-brand-600">
           {data?.total_bedrooms} {_STRINGS.ROOM}
         </p>
       </div>
       <div className="flex items-center gap-4 border-t  py-2 w-full justify-between">
         <p>{_STRINGS.ROOM_SIZE} :</p>
-        <p className="font-bold text-primary-700">
+        <p className="font-bold text-brand-600">
           {data?.building_area} {_STRINGS.METER}
         </p>
       </div>
@@ -49,7 +49,7 @@ const SingleMobilePropertyIntroductions = ({ data }: { data: SinglePropDto }) =>
       {/* 
       <div className="flex items-center gap-4 border-t  py-2 w-full justify-between">
         <p>{_STRINGS.TODAY_STATUS} :</p>
-        <p className="font-bold text-primary-700">
+        <p className="font-bold text-brand-600">
           {data?.room_count} 
         </p>
       </div> */}

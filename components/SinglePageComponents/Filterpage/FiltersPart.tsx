@@ -14,7 +14,7 @@ import _STRINGS from "@/utils/LocalStrings";
 const FiltersPart = ({ queries, setFilters, filters, propertyTypes }: any) => {
   const { userInfo } = useStoreInit((data) => data);
   return (
-    <div className="  z-2 h-fit flex-col items-center p-3  bg-white dark:bg-zinc-800 rounded-xl w-full ">
+    <div className="  z-2 h-fit flex-col items-center p-3  bg-white  rounded-xl w-full ">
       <div className=" flex items-center justify-between">
         <div className=" hidden md:flex   items-center gap-2 mb-2 ">
           <img src="/assets/icons/property/filter_icon.svg" />

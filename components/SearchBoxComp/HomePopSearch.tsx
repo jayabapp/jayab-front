@@ -117,7 +117,7 @@ const HomePopSearch = ({
         } transition-all   flex flex-col items-center justify-between pb-4  fixed  overflow-y-scroll    rounded-b-10 border shadow-card  left-0 w-full -top-2  duration-500 z-50  bg-white `}
       >
         <div className="flex px-4  pt-4 items-center relative w-full gap-2 flex-row ">
-          <div className=" relative flex items-center rounded-full border-primary-200 dark:bg-transparent  w-full py-1.5   gap-1 px-1.5 pr-3   border-2 ">
+          <div className=" relative flex items-center rounded-full border-neutral-200   w-full py-1.5   gap-1 px-1.5 pr-3   border-2 ">
             {" "}
             <input
               value={text}
@@ -135,7 +135,7 @@ const HomePopSearch = ({
                       mutate({ q: text });
                     }
               }
-              className="  cursor-pointer h-8 w-8  flex items-center justify-center  p-2 absolute left-0.5 aspect-square rounded-full  bg-primary-700"
+              className="  cursor-pointer h-8 w-8  flex items-center justify-center  p-2 absolute left-0.5 aspect-square rounded-full  bg-brand-600"
             >
               {!!isPending ? (
                 <BtnLoading />

@@ -157,7 +157,7 @@ const MainUploader = ({
             onClick={() => {
               !disabled ? imagePickerRef?.current?.click() : void null;
             }}
-            className={`cursor-pointer flex flex-col items-center  gap-1     relative transition-all duration-150 ease-in-out  hover:border-gray-600  justify-center bg-neutral-100 rounded-10 aspect-square   ${
+            className={`cursor-pointer flex flex-col items-center  gap-1     relative transition-all duration-150 ease-in-out  hover:border-neutral-600  justify-center bg-neutral-100 rounded-10 aspect-square   ${
               !!innerClasses?.sizeClass ? innerClasses?.sizeClass : "h-24 w-24"
             }  `}
           >
@@ -196,7 +196,7 @@ const MainUploader = ({
                     : item?.file_location || NEW_IMAGE_URL(item),
                 );
               }}
-              className={`cursor-pointer border   bg-whiteGray-100  dark:bg-zinc-700  rounded-20 aspect-square relative  ${
+              className={`cursor-pointer border   bg-whiteGray-100    rounded-20 aspect-square relative  ${
                 !!innerClasses?.sizeClass
                   ? innerClasses?.sizeClass
                   : "h-24 w-24"

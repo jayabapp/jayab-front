@@ -57,7 +57,7 @@ const DatePickerQueryWithDynamicKeyFilter = ({
     setShow(true);
   };
   return (
-    <div className="w-fit flex lg:flex-row  gap-3 items-center justify-between rounded-10 dark:border-zinc-600 ">
+    <div className="w-fit flex lg:flex-row  gap-3 items-center justify-between rounded-10  ">
       <div onClick={showModal} className="relative inline-block text-left mr-1">
         <div className=" h-11  rounded-10 cursor-pointer  flex justify-between items-center">
           <div
@@ -65,7 +65,7 @@ const DatePickerQueryWithDynamicKeyFilter = ({
               date ? "custome-shadow-card" : ""
             }   border py-2 px-4 rounded-10 items-center gap-2`}
           >
-            <p className={`  ${!!date ? "text-primary-700 font-medium" : "  opacity-60"}    text-sm`}>
+            <p className={`  ${!!date ? "text-brand-600 font-medium" : "  opacity-60"}    text-sm`}>
               {" "}
               {!!date ? date : placeholder || "انتخاب روز"}
             </p>

@@ -49,7 +49,7 @@ const ShareLink = ({
     <div className={`flex ${containerClass} items-center`} onClick={onShare}>
       {" "}
       <div
-        className={`flex items-center  rounded-md   justify-center    cursor-pointer     transition-all dark:bg-opacity-40 ${
+        className={`flex items-center  rounded-md   justify-center    cursor-pointer     transition-all  ${
           hasTitle && "bg-opacity-60"
         }`}
       >

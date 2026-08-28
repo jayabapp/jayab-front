@@ -32,9 +32,9 @@ const MultyPopUpSelect = ({
     <div className="relative inline-block w-full">
       <div>
         <div
-          className={` ${item?.disableHover ? "" : "hover:border-primary-200 focus:border-primary-200 "} w-full ${
+          className={` ${item?.disableHover ? "" : "hover:border-neutral-200 focus:border-neutral-200 "} w-full ${
             item?.disable ? "opacity-70" : ""
-          }  !bg-gray-1000 flex flex-col items-start gap-2 placeholder:!opacity-50  placeholder:!text-black border-transparent text-start px-2 py-3 rounded-xl `}
+          }  !bg-neutral-400 flex flex-col items-start gap-2 placeholder:!opacity-50  placeholder:!text-black border-transparent text-start px-2 py-3 rounded-xl `}
         >
           <div className="flex items-center gap-2">
             <p>{title}</p>
@@ -42,7 +42,7 @@ const MultyPopUpSelect = ({
               onClick={() => {
                 if (!item?.disable) setShow(true);
               }}
-              className=" w-6 h-6 aspect-square rounded-full border border-primary-700 flex items-center justify-center"
+              className=" w-6 h-6 aspect-square rounded-full border border-brand-600 flex items-center justify-center"
             >
               <img src="/assets/icons/adds/blue_plus.svg" className="w-2.5 h-2.5 aspect-square cursor-pointer " />
             </div>
@@ -53,14 +53,14 @@ const MultyPopUpSelect = ({
               ? value.map((val, index) => (
                   <div
                     key={`selectedItems${val?.id || val}`}
-                    className="rounded-full gap-4 py-1 px-1 flex items-center justify-center border border-primary-700  bg-primary-700/5 text-primary-700  text-xs "
+                    className="rounded-full gap-4 py-1 px-1 flex items-center justify-center border border-brand-600  bg-brand-600/5 text-brand-600  text-xs "
                   >
                     <p className="text-xs pr-2">{item?.list?.find((e) => e?.id == val)?.title || val?.title || ""} </p>
                     <div
                       onClick={() => {
                         onSelect(val);
                       }}
-                      className=" cursor-pointer w-4 h-4 aspect-square rounded-full border border-primary-700 flex items-center justify-center"
+                      className=" cursor-pointer w-4 h-4 aspect-square rounded-full border border-brand-600 flex items-center justify-center"
                     >
                       <img src="/assets/icons/adds/blue_plus.svg" className="w-2 h-2 rotate-45 aspect-square " />
                     </div>
@@ -69,7 +69,7 @@ const MultyPopUpSelect = ({
               : item?.placeholder}
           </div>
 
-          {/* <img src={"/assets/icons/chevron-down-thick.svg"} className="h-2 w-4 dark:invert" aria-hidden="true" /> */}
+          {/* <img src={"/assets/icons/chevron-down-thick.svg"} className="h-2 w-4 " aria-hidden="true" /> */}
         </div>
       </div>
       <PopUpDown setVisible={setShow} visible={show}>

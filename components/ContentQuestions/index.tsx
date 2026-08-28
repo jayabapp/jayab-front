@@ -53,7 +53,7 @@ export const ContentQuestions: FC<{
         <div className="w-full my-4 flex items-center justify-between">
           <p className=" !font-bold ">{title}</p>
           {!!meta?.total && meta?.total > 0 && (
-            <p className="  text-primary-700 text-base font-bold ">
+            <p className="  text-brand-600 text-base font-bold ">
               {meta?.total} {!!contentId ? "نظر" : "پرسش"}
             </p>
           )}

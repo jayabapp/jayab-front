@@ -37,7 +37,7 @@ const RepetitiveQuestions = async () => {
                     }
                     item={{
                       parenClass:
-                        " bg-white z-1 rounded-xl border dark:border-zinc-400",
+                        " bg-white z-1 rounded-xl border ",
                     }}
                     key={e?.id}
                     title={e?.title}

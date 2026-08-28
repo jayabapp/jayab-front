@@ -24,7 +24,7 @@ const Selecti = ({ item, value, onSelect, closeOnSelect, setShow, full_item }: S
           setShow(false);
         }
       }}
-      className={`  flex w-full items-center gap-4  border-t cursor-pointer border-gray-100 py-2 transition-all duration-700 ease-in-out`}
+      className={`  flex w-full items-center gap-4  border-t cursor-pointer border-neutral-100 py-2 transition-all duration-700 ease-in-out`}
     >
       <div className="transition-all duration-700 ease-in-out">
         <Checkbox

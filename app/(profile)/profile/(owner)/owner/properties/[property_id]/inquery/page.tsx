@@ -52,7 +52,7 @@ const PropertyInquery = () => {
       ) : !!data ? (
         <>
           <div className="w-full flex  order-2 md:order-1 flex-col gap-4">
-            <ElementToImage className=" p-4 rounded-2xl gap-3 bg-primary-500  w-full flex flex-col ">
+            <ElementToImage className=" p-4 rounded-2xl gap-3 bg-brand-50  w-full flex flex-col ">
               <div className="w-full  aspect-square relative ">
                 <Image
                   fill
@@ -83,7 +83,7 @@ const PropertyInquery = () => {
                     {_STRINGS.TODAY_STATUS} :
                   </p>
                   <p
-                    className={` font-bold ${!!data?.is_today_reserved ? " text-red-500 " : " text-primary-700 "} `}
+                    className={` font-bold ${!!data?.is_today_reserved ? " text-red-500 " : " text-brand-600 "} `}
                   >
                     {!!data?.is_today_reserved
                       ? _STRINGS.OCCUPIED

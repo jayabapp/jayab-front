@@ -25,7 +25,7 @@ const AuthPageComponent = () => {
   return (
     <div className="auth-container bg-cover    min-h-screen h-fit flex flex-col gap-8 items-center  md:!pb-8   relative">
       <AuthHeader title={_STRINGS.ENTER} />
-      <div className="w-full gap-8 flex flex-col items-center md:w-3/4 mx-auto relative lg:w-[35%] bg-white  md:shadow-lg md:border   dark:bg-zinc-900 rounded-2xl  pt-0 md:pt-8   pb-8 mt-8 ">
+      <div className="w-full gap-8 flex flex-col items-center md:w-3/4 mx-auto relative lg:w-[35%] bg-white  md:shadow-lg md:border    rounded-2xl  pt-0 md:pt-8   pb-8 mt-8 ">
         <div className="w-full items-center justify-center flex flex-col gap-4  ">
           {" "}
           <div className="flex relative z-1  w-28 flex-col items-center  gap-2 h-fit aspect-square">

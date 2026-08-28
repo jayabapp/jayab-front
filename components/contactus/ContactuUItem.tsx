@@ -58,7 +58,7 @@ const ContactuUItem = ({
       {disableText ? (
         <></>
       ) : (
-        <p className={`text-base font-medium dark:text-zinc-100 ${textClass}`}>
+        <p className={`text-base font-medium  ${textClass}`}>
           {e?.small_text}
         </p>
       )}

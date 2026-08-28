@@ -32,8 +32,8 @@ const OwnerReservationList = ({
 
   return (
     <div className="profile-container flex flex-col gap-4">
-      <div className="flex w-full flex-col gap-3 rounded-10 border border-primary-350 bg-primary-350/5 p-3">
-        <p className="text-xs text-primary-350">
+      <div className="flex w-full flex-col gap-3 rounded-10 border border-warning-600 bg-warning-600/5 p-3">
+        <p className="text-xs text-warning-600">
           {_STRINGS.OWNER_PLZ_CALL_MSG}
         </p>
       </div>

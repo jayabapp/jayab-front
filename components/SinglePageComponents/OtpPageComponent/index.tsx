@@ -25,7 +25,7 @@ const OtpPageSignInComponent = () => {
   return (
     <div className="auth-container flex min-h-screen h-fit flex-col items-center gap-8 bg-cover md:pb-8">
       <AuthHeader title={_STRINGS.CONFIRM_CODE} customeBackRoute="/auth" />
-      <div className="mt-8 flex w-full flex-col items-center gap-6 rounded-2xl pb-8 pt-0 md:w-3/4 md:border md:pt-8 md:shadow-lg lg:w-[35%] dark:bg-zinc-900">
+      <div className="mt-8 flex w-full flex-col items-center gap-6 rounded-2xl pb-8 pt-0 md:w-3/4 md:border md:pt-8 md:shadow-lg lg:w-[35%] ">
         <div className="relative z-1 flex size-28 flex-col items-center gap-2">
           <Image
             fill
@@ -58,7 +58,7 @@ const OtpPageSignInComponent = () => {
                   alt="ویرایش شماره"
                   src="/assets/icons/edit/blue_edit_pen.svg"
                 />
-                <span className="text-sm text-primary-700">
+                <span className="text-sm text-brand-600">
                   {_STRINGS.EDIT_NUMBER}
                 </span>
               </button>
@@ -67,7 +67,7 @@ const OtpPageSignInComponent = () => {
                   type="button"
                   disabled={isResending}
                   onClick={resendCode}
-                  className="cursor-pointer rounded-md py-1.5 text-sm text-primary-700 disabled:opacity-50"
+                  className="cursor-pointer rounded-md py-1.5 text-sm text-brand-600 disabled:opacity-50"
                 >
                   {_STRINGS.SEND_AGAIN}
                 </button>

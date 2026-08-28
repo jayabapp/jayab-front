@@ -89,7 +89,7 @@ const SingleBlogPage = async ({ params }: Props) => {
                     className=" w-3 h-3  grayscale group-hover:grayscale-0    group-hover:-rotate-90 transition-all "
                   />
                   <div
-                    className="text-[16px] !text-right !font-regular hover:!text-primary-700 transition duration-300 hover:font-bold"
+                    className="text-[16px] !text-right !font-regular hover:!text-brand-600 transition duration-300 hover:font-bold"
                     dangerouslySetInnerHTML={{ __html: i?.innerText }}
                   />
                 </Link>

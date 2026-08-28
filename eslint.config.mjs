@@ -78,6 +78,29 @@ const eslintConfig = [
           ],
         },
       ],
+      "no-restricted-syntax": [
+        "error",
+        {
+          selector:
+            "Literal[value=/dark:|(?:primary|btnColor)-|(?:gray|zinc|slate|stone)-(?:[0-9]+)/]",
+          message:
+            "Use the semantic brand, neutral, success, warning, or danger color tokens.",
+        },
+        {
+          selector:
+            "TemplateElement[value.raw=/dark:|(?:primary|btnColor)-|(?:gray|zinc|slate|stone)-(?:[0-9]+)/]",
+          message:
+            "Use the semantic brand, neutral, success, warning, or danger color tokens.",
+        },
+        {
+          selector: "Literal[value=/#[0-9a-fA-F]{3,8}/]",
+          message: "Import runtime colors from @/theme/colors instead of hardcoding hex values.",
+        },
+        {
+          selector: "TemplateElement[value.raw=/#[0-9a-fA-F]{3,8}/]",
+          message: "Import runtime colors from @/theme/colors instead of hardcoding hex values.",
+        },
+      ],
     },
   },
   {

@@ -38,7 +38,7 @@ const ChatItemMoreOptions = ({
       events={["click"]}
       isOpen={show}
       anchorSelect={`.my-anchor-element${data?.id}`}
-      className={`    mt-2   !rounded-xl !bg-white   dark:!bg-zinc-800  z-[50]  focus:outline-none  overflow-scroll`}
+      className={`    mt-2   !rounded-xl !bg-white     z-[50]  focus:outline-none  overflow-scroll`}
     >
       <div ref={refer} className="flex flex-col justify-center items-start ">
         {/* <div className="px-0.5 py-0.5 z-[100] w-full ">
@@ -48,7 +48,7 @@ const ChatItemMoreOptions = ({
               f.stopPropagation();
               replyMessage();
             }}
-            className={`hover:bg-primary-700/80   dark:hover:bg-zinc-600  cursor-pointer hover:text-white text-gray-600 dark:text-gray-300 group flex w-full gap-2 items-center rounded-md px-0.5 py-0.5 text-sm font-light no-underline`}
+            className={`hover:bg-brand-600/80     cursor-pointer hover:text-white text-neutral-600  group flex w-full gap-2 items-center rounded-md px-0.5 py-0.5 text-sm font-light no-underline`}
           >
             <ArrowUturnLeftIcon className={`w-6 h-6 aspect-square   `} />
             <p> {_STRINGS.REPLY}</p>
@@ -63,7 +63,7 @@ const ChatItemMoreOptions = ({
           className="px-0.5 py-0.5 z-[100] w-full "
         >
           <div
-            className={`hover:bg-primary-700/80   dark:hover:bg-zinc-600  cursor-pointer hover:text-white text-gray-600 dark:text-gray-300 group flex w-full gap-2 items-center rounded-md px-0.5 py-0.5 text-sm font-light no-underline`}
+            className={`hover:bg-brand-600/80     cursor-pointer hover:text-white text-neutral-600  group flex w-full gap-2 items-center rounded-md px-0.5 py-0.5 text-sm font-light no-underline`}
           >
             <img
               src="/assets/icons/chat/chat_copy.svg"
@@ -81,7 +81,7 @@ const ChatItemMoreOptions = ({
                 f.stopPropagation();
                 deleteMessage();
               }}
-              className={`hover:bg-primary-700/80   dark:hover:bg-zinc-600  cursor-pointer hover:text-white text-gray-600 dark:text-gray-300 group flex w-full gap-2 items-center rounded-md px-0.5 py-0.5 text-sm font-light no-underline`}
+              className={`hover:bg-brand-600/80     cursor-pointer hover:text-white text-neutral-600  group flex w-full gap-2 items-center rounded-md px-0.5 py-0.5 text-sm font-light no-underline`}
             >
               <img
                 src="/assets/icons/uploader/TrashIcon.svg"

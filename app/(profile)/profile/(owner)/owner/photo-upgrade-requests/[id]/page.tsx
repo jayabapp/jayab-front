@@ -17,9 +17,9 @@ type TSummaryItemProps = {
 };
 
 const SummaryItem = ({ title, value }: TSummaryItemProps) => (
-  <div className="flex items-center justify-between gap-2 rounded-10 bg-gray-50 px-3 py-2 text-xs md:text-sm">
-    <span className="text-gray-500">{title}</span>
-    <span className="font-medium text-primary-text">{value}</span>
+  <div className="flex items-center justify-between gap-2 rounded-10 bg-neutral-50 px-3 py-2 text-xs md:text-sm">
+    <span className="text-neutral-500">{title}</span>
+    <span className="font-medium text-neutral-900">{value}</span>
   </div>
 );
 
@@ -32,19 +32,19 @@ const OwnerPhotoUpgradeRequestPage = () => {
 
   if (!Number.isInteger(requestId) || requestId <= 0)
     return (
-      <div className="profile-container white-card text-center text-sm text-gray-500">
+      <div className="profile-container white-card text-center text-sm text-neutral-500">
         شناسه درخواست معتبر نیست.
       </div>
     );
   if (isPending) return <PhotoUpgradeDetailSkeleton />;
   if (isError || !data)
     return (
-      <div className="profile-container white-card flex flex-col items-center gap-3 text-center text-sm text-gray-500">
+      <div className="profile-container white-card flex flex-col items-center gap-3 text-center text-sm text-neutral-500">
         <p>درخواست پیدا نشد یا اجازه مشاهده آن را ندارید.</p>
         <button
           type="button"
           onClick={() => void refetch()}
-          className="text-primary-700"
+          className="text-brand-600"
         >
           تلاش دوباره
         </button>
@@ -75,7 +75,7 @@ const OwnerPhotoUpgradeRequestPage = () => {
                 <h1 className="line-clamp-1 text-base font-medium md:text-xl">
                   {data?.property?.title || "اقامتگاه"}
                 </h1>
-                <p className="mt-1 text-xs text-gray-500">
+                <p className="mt-1 text-xs text-neutral-500">
                   کد {data?.property?.code || data?.property_id}
                 </p>
               </div>
@@ -131,7 +131,7 @@ const OwnerPhotoUpgradeRequestPage = () => {
             />
           ))
         ) : (
-          <div className="white-card text-center text-sm text-gray-500">
+          <div className="white-card text-center text-sm text-neutral-500">
             تصویری برای این درخواست ثبت نشده است.
           </div>
         )}

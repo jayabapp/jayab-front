@@ -249,7 +249,7 @@ const Filterpage = ({ devices }: { devices: DeviceInfo }) => {
       <Modal
         options={{
           containerClass:
-            "mx-auto  my-0 xl:my-10  h-full   w-full xl:w-1/2 xl:w-1/3 2xl:w-1/4 rounded-0 overflow-y-scroll  bg-white pb-32  dark:bg-zinc-800",
+            "mx-auto  my-0 xl:my-10  h-full   w-full xl:w-1/2 xl:w-1/3 2xl:w-1/4 rounded-0 overflow-y-scroll  bg-white pb-32  ",
         }}
         show={filterModalShow && !showCityModal}
         onHide={() => {
@@ -258,12 +258,12 @@ const Filterpage = ({ devices }: { devices: DeviceInfo }) => {
         }}
       >
         {/* HEADER */}
-        {/* <div className="flex sticky  pb-4 pt-4   w-full z-[60] bg-white dark:bg-zinc-600 justify-between items-center    top-0  border-b border-b-neutral-300 dark:border-b-zinc-600 ">
+        {/* <div className="flex sticky  pb-4 pt-4   w-full z-[60] bg-white  justify-between items-center    top-0  border-b border-b-neutral-300  ">
           <img
             src="/assets/icons/shared/close.svg"
             width={20}
             height={20}
-            className={"dark:invert mr-4"}
+            className={" mr-4"}
             onClick={() => {
               setFilters(defaultMobileFilters);
               setFilterModalShow(false);
@@ -286,7 +286,7 @@ const Filterpage = ({ devices }: { devices: DeviceInfo }) => {
             }}
             className="absolute flex items-center gap-2 left-4 md:left-12"
           >
-            <p className=" text-sm text-primary-700">{_STRINGS.REMOVE_FILTERS}</p>
+            <p className=" text-sm text-brand-600">{_STRINGS.REMOVE_FILTERS}</p>
             <img src="/assets/icons/property/blue_trash_icon.svg" />
           </div>
         </ModalHeaderPart>

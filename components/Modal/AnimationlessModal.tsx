@@ -36,7 +36,7 @@ const AnimationlessModal = ({ children, show, onHide, options }: ModalProps): JS
               className={
                 options?.containerClass
                   ? options?.containerClass
-                  : "mx-auto my-20   w-11/12 md:w-1/2 xl:w-1/3 2xl:w-1/4 rounded-2xl overflow-y-scroll  bg-white   dark:bg-slate-800"
+                  : "mx-auto my-20   w-11/12 md:w-1/2 xl:w-1/3 2xl:w-1/4 rounded-2xl overflow-y-scroll  bg-white   "
               }
             >
               {children}

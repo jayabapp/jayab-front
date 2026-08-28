@@ -339,7 +339,7 @@ const Day = memo(
     const containerClasses = useMemo(() => {
       const baseClasses =
         "aspect-square m-0.5 md:m-1 rounded-lg relative overflow-hidden";
-      let bgClass = "bg-white border border-primary-border";
+      let bgClass = "bg-white border border-neutral-200";
       if (dateInfo.isBefore && !dateInfo.isToday) {
         bgClass = "bg-neutral-300 opacity-50";
       } else if (dateInfo.isForbidden && !dateInfo?.isSpanEnd) {
@@ -360,11 +360,11 @@ const Day = memo(
         bgClass = "cursor-pointer";
       } else if (dateInfo.isInSpan) {
         if (dateInfo.isSpanStart)
-          bgClass = "bg-primary-700 !m-0 !rounded-l-none";
+          bgClass = "bg-brand-600 !m-0 !rounded-l-none";
         else if (dateInfo.isSpanEnd)
-          bgClass = "bg-primary-700 !m-0 !rounded-r-none";
+          bgClass = "bg-brand-600 !m-0 !rounded-r-none";
         else if (dateInfo.isBetweenSpan)
-          bgClass = "!rounded-none bg-primary-700/10 !m-0";
+          bgClass = "!rounded-none bg-brand-600/10 !m-0";
       } else if (dateInfo.isAfterForbiddenSpan) {
         bgClass = " opacity-60  half-striped-bottom ";
       }
@@ -422,7 +422,7 @@ const Day = memo(
         !dateInfo.isForbidden &&
         !dateInfo.isPartOfForbiddenSpan
       ) {
-        classes.push("!bg-primary-800 rounded-lg");
+        classes.push("!bg-neutral-500 rounded-lg");
       }
 
       return classes.filter(Boolean).join(" ");
@@ -440,23 +440,23 @@ const Day = memo(
       if (smallerDateFonts) classes.push("text-sm");
       else classes.push("text-base");
       if (dateInfo.isForbidden && !dateInfo?.isSpanEnd) {
-        classes.push("text-gray-500");
+        classes.push("text-neutral-500");
       } else if (dateInfo.isFriday) {
         classes.push("text-red-700");
       } else if (dateInfo.isBefore && !dateInfo.isToday) {
-        classes.push("text-gray-500");
+        classes.push("text-neutral-500");
       } else if (dateInfo.isValidForSelection) {
         classes.push("text-green-800 font-semibold");
       } else if (dateInfo.isInSpan) {
         if (dateInfo.isSpanStart || dateInfo.isSpanEnd)
           classes.push("text-white font-bold");
-        else if (dateInfo.isBetweenSpan) classes.push("text-primary-text");
+        else if (dateInfo.isBetweenSpan) classes.push("text-neutral-900");
       } else if (dateInfo.isAfterForbiddenSpan) {
-        classes.push("text-gray-800");
+        classes.push("text-neutral-800");
       } else if (dateInfo.isSelected) {
         classes.push("text-white");
       } else {
-        classes.push("text-gray-800");
+        classes.push("text-neutral-800");
       }
 
       return classes.join(" ");
@@ -545,7 +545,7 @@ const Day = memo(
           {dateInfo.isToday &&
             !dateInfo.isForbidden &&
             !dateInfo.isPartOfForbiddenSpan && (
-              <div className="absolute top-0.5 md:top-1 w-1.5 h-1.5 bg-primary-700 rounded-full" />
+              <div className="absolute top-0.5 md:top-1 w-1.5 h-1.5 bg-brand-600 rounded-full" />
             )}
 
           {/* Memo indicator */}
@@ -560,7 +560,7 @@ const Day = memo(
                     ? "bg-white"
                     : dateInfo.isValidForSelection
                       ? "bg-green-600"
-                      : "bg-primary-600"
+                      : "bg-success-600"
                 }`}
                 aria-label="Has memo"
               />
@@ -574,7 +574,7 @@ const Day = memo(
             !dateInfo.isForbidden &&
             !dateInfo.isPartOfForbiddenSpan && (
               <div
-                className="absolute bottom-1 left-0 right-0 mx-auto h-1 w-2/3 bg-primary-800 rounded-full"
+                className="absolute bottom-1 left-0 right-0 mx-auto h-1 w-2/3 bg-neutral-500 rounded-full"
                 aria-label="Peak day"
               />
             )}

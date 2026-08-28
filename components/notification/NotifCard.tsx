@@ -17,13 +17,13 @@ const NotifCard = ({ item }: { item: UserNotification }) => {
           className=" w-4 h-4 md:h-5 md:w-5 aspect-square shrink-0"
         />
         <div className="flex flex-col gap-1">
-          <p className="font-semibold text-sm  text-primary-700">
+          <p className="font-semibold text-sm  text-brand-600">
             {item?.title}
           </p>
           <p className=" text-sm">{item?.body}</p>
         </div>
       </div>
-      <div className="flex flex-row w-full justify-end text-primary-700 gap-1">
+      <div className="flex flex-row w-full justify-end text-brand-600 gap-1">
         <p className="text-xxs md:text-xs text-end w-full">
           {" "}
           {moment(item?.created_at).format("HH:mm")}

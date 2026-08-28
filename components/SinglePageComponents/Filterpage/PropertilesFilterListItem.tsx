@@ -23,7 +23,7 @@ const PropertilesFilterListItem = ({
           cb();
         }
       }}
-      className={`flex justify-center rounded-2xl border w-full aspect-square flex-col items-center gap-2 ${isSelected ? "border-primary-700" : ""}`}
+      className={`flex justify-center rounded-2xl border w-full aspect-square flex-col items-center gap-2 ${isSelected ? "border-brand-600" : ""}`}
     >
       <ContentImage
         width={64}

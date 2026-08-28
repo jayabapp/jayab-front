@@ -44,7 +44,7 @@ const ChatRoomView = ({ chatId }: { chatId: string }) => {
       <div className="container flex min-h-[60dvh] flex-col items-center justify-center gap-4">
         <p>{_STRINGS.ERROR}</p>
         <button
-          className="rounded-xl bg-primary-700 px-6 py-2 text-white"
+          className="rounded-xl bg-brand-600 px-6 py-2 text-white"
           onClick={() =>
             void Promise.all([detailsQuery.refetch(), messagesQuery.refetch()])
           }

@@ -31,10 +31,10 @@ const PopUpDown = ({ item, visible, setVisible, children, containerClass }: popU
         ></Sheet.Backdrop>
         <Sheet.Container className=" pop-container !fixed bg-transparent bottom-0 ">
           <Sheet.Header className="pb-0 px-4 pt-6 relative">
-            <div className=" w-8 h-1 absolute left-0 mx-auto top-2 right-0 rounded-full bg-gray-300 "></div>
+            <div className=" w-8 h-1 absolute left-0 mx-auto top-2 right-0 rounded-full bg-neutral-300 "></div>
             {item?.title ? (
               <>
-                <div className="w-full text-center text-primary-700 font-bold"> {item?.title}</div>
+                <div className="w-full text-center text-brand-600 font-bold"> {item?.title}</div>
 
                 <img
                   src="/assets/icons/adds/x_mark.svg"

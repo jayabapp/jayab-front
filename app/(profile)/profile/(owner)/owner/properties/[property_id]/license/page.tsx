@@ -1,4 +1,6 @@
 "use client";
+
+import { colors } from "@/theme/colors";
 /* eslint-disable react-hooks/set-state-in-effect */
 
 import { useParams, useRouter } from "next/navigation";
@@ -72,7 +74,7 @@ const Authorize = () => {
       className="profile-container items-center transition-all duration-500 ease-in-out flex flex-col gap-6"
     >
       <div className="w-full flex items-center justify-between">
-        <p className="font-bold text-primary-700 text-start">
+        <p className="font-bold text-brand-600 text-start">
           {_STRINGS.AUTHORiZIATION_REQUEST}
         </p>
         <StatusShower data={data?.status} />
@@ -109,10 +111,10 @@ const Authorize = () => {
         <div className="w-full min-h-8">
           {uploaderLoading && totalLength > 1 && (
             <div className="flex flex-col gap-2 w-full">
-              <p className="text-sm text-primary-700">
+              <p className="text-sm text-brand-600">
                 {uploadedImages} از {totalLength}
               </p>
-              <ProgressBar progress={uploadPercent} color="#3886E5" />
+              <ProgressBar progress={uploadPercent} color={colors.brand[500]} />
             </div>
           )}
         </div>

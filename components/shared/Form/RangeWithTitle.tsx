@@ -1,3 +1,4 @@
+import { colors } from "@/theme/colors";
 import Slider from "rc-slider";
 import React, { CSSProperties, useEffect } from "react";
 import "rc-slider/assets/index.css";
@@ -10,7 +11,7 @@ const RangeWithTitle = ({
   marks,
   className,
   step,
-  item = { pathColor: "#E7E7E7", visibleDot: false },
+  item = { pathColor: colors.neutral[200], visibleDot: false },
   showMark,
 }: {
   max: number;
@@ -40,7 +41,7 @@ const RangeWithTitle = ({
       defaultValue={0}
       className={className}
       handleStyle={{
-        backgroundColor: "#3886E5",
+        backgroundColor: colors.brand[500],
         borderWidth: 0,
         width: 20,
         height: 20,
@@ -65,7 +66,7 @@ const RangeWithTitle = ({
         bottom: -20,
         visibility: item?.visibleDot ? "visible" : "hidden",
       }}
-      trackStyle={{ backgroundColor: "#3886E5", height: 6.5 }}
+      trackStyle={{ backgroundColor: colors.brand[500], height: 6.5 }}
       railStyle={{ backgroundColor: item?.pathColor, height: 6.5 }}
     />
   );

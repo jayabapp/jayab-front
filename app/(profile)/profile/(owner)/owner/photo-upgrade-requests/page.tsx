@@ -18,7 +18,7 @@ const OwnerPhotoUpgradeRequestsPage = () => {
         <h1 className="text-base font-medium md:text-xl">
           درخواست های بهبود تصویر
         </h1>
-        <p className="text-xs text-gray-500 md:text-sm">
+        <p className="text-xs text-neutral-500 md:text-sm">
           وضعیت درخواست ها و نتیجه ویرایش هر تصویر را اینجا ببینید.
         </p>
       </div>
@@ -29,12 +29,12 @@ const OwnerPhotoUpgradeRequestsPage = () => {
           ))}
         </div>
       ) : isError ? (
-        <div className="white-card flex flex-col items-center gap-3 text-sm text-gray-500">
+        <div className="white-card flex flex-col items-center gap-3 text-sm text-neutral-500">
           <p>دریافت درخواست‌ها ناموفق بود.</p>
           <button
             type="button"
             onClick={() => void refetch()}
-            className="text-primary-700"
+            className="text-brand-600"
           >
             تلاش دوباره
           </button>

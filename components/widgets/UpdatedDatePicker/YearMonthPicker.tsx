@@ -30,18 +30,18 @@ const YearMonthPicker = ({ date, setDate, month, year, prefix }: props) => {
               lastMonth();
             }}
           />
-          <p className="text-xs text-primary-300">{_STRINGS.LAST_MONTH}</p>
+          <p className="text-xs text-neutral-50">{_STRINGS.LAST_MONTH}</p>
         </div>
       ) : (
         <div> </div>
       )}
-      <p className={` ${setDate ? "text-primary-500 font-medium  " : "  font-bold mb-4 text-primary-text"} text-sm f`}>
+      <p className={` ${setDate ? "text-brand-50 font-medium  " : "  font-bold mb-4 text-neutral-900"} text-sm f`}>
         {prefix}
         {month} {"  "} {year}
       </p>
       {!!setDate ? (
         <div className="flex items-center gap-2">
-          <p className="text-xs text-primary-300 ">{_STRINGS.NEXT_MONTH}</p>
+          <p className="text-xs text-neutral-50 ">{_STRINGS.NEXT_MONTH}</p>
           <img
             alt="`"
             onClick={() => {

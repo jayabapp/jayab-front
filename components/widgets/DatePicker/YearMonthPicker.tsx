@@ -33,14 +33,14 @@ const YearMonthPicker = ({ date, setDate, month, year, prefix, disablePrevMonths
             lastMonth();
           }}
         />
-        <p className="text-xs text-primary-250">{_STRINGS.LAST_MONTH}</p>
+        <p className="text-xs text-neutral-400">{_STRINGS.LAST_MONTH}</p>
       </div>
-      <p className="text-primary-700 text-sm font-medium ">
+      <p className="text-brand-600 text-sm font-medium ">
         {prefix}
         {month} {"  "} {year}
       </p>
       <div className="flex items-center gap-2">
-        <p className="text-xs text-primary-250 ">{_STRINGS.NEXT_MONTH}</p>
+        <p className="text-xs text-neutral-400 ">{_STRINGS.NEXT_MONTH}</p>
         <img
           alt="`"
           onClick={() => {

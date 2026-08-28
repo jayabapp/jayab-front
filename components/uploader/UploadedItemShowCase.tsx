@@ -48,7 +48,7 @@ const UploadedItemShowCase = ({
         >
           <div
             onClick={cb}
-            className={`cursor-pointer border bg-whiteGray-100 dark:bg-zinc-700 rounded-20 aspect-square relative ${sizeClass}`}
+            className={`cursor-pointer border bg-whiteGray-100  rounded-20 aspect-square relative ${sizeClass}`}
           >
             {isError ? null : item?.data ? (
               <ContentImage

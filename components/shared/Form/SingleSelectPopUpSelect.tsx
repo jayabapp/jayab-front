@@ -77,13 +77,12 @@ const SinglePopUpSelect = ({
           </div>
           <img
             src="/assets/icons/shared/chevron.svg"
-            // color="#999999"
             className={`h-4 w-4   transition-all  ${show ? "rotate-180" : ""}`}
             // aria-hidden="true"
           />
           {/* <img
             src={"/assets/icons/shared/chevron-down.svg"}
-            className={`h-2 w-4 dark:invert  transition-all  ${show ? "rotate-180" : ""}`}
+            className={`h-2 w-4   transition-all  ${show ? "rotate-180" : ""}`}
             aria-hidden="true"
           /> */}
         </div>
@@ -92,7 +91,7 @@ const SinglePopUpSelect = ({
         options={{
           containerClass: `  ${
             item?.searcheable ? " min-h-[90dvh]" : ""
-          } mx-auto rounded-t-20 !h-[90dvh] md:!h-auto  max-h-[90dvh] absolute pb-[1.5rem] md:pb-10 bottom-0 md:translate-x-1/2 md:right-1/2 w-full md:w-[calc(50svw)]  overflow-y-scroll bg-white dark:bg-primary-background`,
+          } mx-auto rounded-t-20 !h-[90dvh] md:!h-auto  max-h-[90dvh] absolute pb-[1.5rem] md:pb-10 bottom-0 md:translate-x-1/2 md:right-1/2 w-full md:w-[calc(50svw)]  overflow-y-scroll bg-white `,
         }}
         onHide={() => {
           setShow(false);
@@ -102,7 +101,7 @@ const SinglePopUpSelect = ({
         <ModalHeaderPart
           hideArrow
           showX
-          titleClass="text-primary-700"
+          titleClass="text-brand-600"
           title={item?.title || item?.placeholder || ""}
           onHide={() => {
             setShow(false);
@@ -115,13 +114,13 @@ const SinglePopUpSelect = ({
                 value={search}
                 placeholder={`جستجوی ${item?.title}`}
                 onChange={(e) => setSearch(e.target.value)}
-                className={` !text-base !bg-neutral-100  dark:bg-slate-800 w-5/6 focus:border-primary-700 py-1 `}
+                className={` !text-base !bg-neutral-100   w-5/6 focus:border-brand-600 py-1 `}
               />
             </div>
           ) : (
             <></>
           )}
-          {/* <div className="w-full p-4 pt-0 flex items-center justify-center border-b border-primary-300">
+          {/* <div className="w-full p-4 pt-0 flex items-center justify-center border-b border-neutral-50">
             <p className="">{item?.title}</p>
           </div> */}
           {isEmpty(item?.list) ? (

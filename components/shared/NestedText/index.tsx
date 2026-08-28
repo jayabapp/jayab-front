@@ -62,7 +62,7 @@ const NestedText: FC<NestedTextProps> = ({
   titleIconContainerClassName = "flex flex-row items-center gap-1",
   valueUnitContainerClassName = "flex flex-row items-center gap-1",
   divider = "none",
-  dividerClassName = "border-gray-400",
+  dividerClassName = "border-neutral-400",
 }) => {
   const formattedValue = formatValue(value, formatNumber, locale, maximumFractionDigits);
   const formatTitle = (title: string) => (title.endsWith(":") ? title : `${title}:`);
@@ -70,9 +70,9 @@ const NestedText: FC<NestedTextProps> = ({
   if (variant === "inline") {
     const dividerStyle =
       divider === "solid"
-        ? "border-t border-gray-300"
+        ? "border-t border-neutral-300"
         : divider === "dashed"
-          ? "border-t border-dashed border-gray-300"
+          ? "border-t border-dashed border-neutral-300"
           : "";
 
     return (

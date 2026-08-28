@@ -46,11 +46,11 @@ const MainImageTextBlock = ({ data, children }: ImageTextDTO) => {
       </div>
       <div className="w-full  rounded-md  pt-4 pb-6   md:w-[60%]   flex rtl flex-col justify-between px-4">
         <div className="flex flex-col gap-2 text-xl">
-          <p className="text-primary-700 text-xl font-light ">
+          <p className="text-brand-600 text-xl font-light ">
             {" "}
             {moment(data?.created_at).format("jYYYY/jMM/jDD")}
           </p>
-          <h1 className="text-3xl  text-primary-700 font-bold leading-8 mb-3">
+          <h1 className="text-3xl  text-brand-600 font-bold leading-8 mb-3">
             {" "}
             {item?.title}
           </h1>

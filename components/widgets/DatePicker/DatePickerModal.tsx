@@ -57,7 +57,7 @@ const DatePickerModal = ({
         onHide={onHide}
         options={{
           containerClass:
-            "!px-10 mx-auto rounded-t-20 absolute pb-[1.5rem] md:pb-10 bottom-0 md:translate-x-1/2 md:right-1/2 w-full md:w-[calc(50svw)]  bg-white dark:bg-zinc-900 overflow-y-scroll  dark:bg-dark-700 ",
+            "!px-10 mx-auto rounded-t-20 absolute pb-[1.5rem] md:pb-10 bottom-0 md:translate-x-1/2 md:right-1/2 w-full md:w-[calc(50svw)]  bg-white  overflow-y-scroll   ",
         }}
       >
         {/* <DatePicker
@@ -85,7 +85,7 @@ const DatePickerModal = ({
           submitCallback={() => {
             onHide();
           }}
-          buttonClassName="w-full !bg-primary-700 rounded-md h-10 text-center flex items-center justify-center"
+          buttonClassName="w-full !bg-brand-600 rounded-md h-10 text-center flex items-center justify-center"
           setSelectedDate={(date) => {
             setDate?.(date);
           }}

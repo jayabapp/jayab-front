@@ -72,7 +72,7 @@ const Modal = ({ children, show, onHide, options, onScroll, type, zIndex }: Moda
                 className={
                   options?.containerClass
                     ? options?.containerClass
-                    : "mx-auto my-20 w-11/12 md:w-1/2 xl:w-1/3 2xl:w-1/4 rounded-2xl overflow-y-scroll bg-white dark:bg-zinc-900"
+                    : "mx-auto my-20 w-11/12 md:w-1/2 xl:w-1/3 2xl:w-1/4 rounded-2xl overflow-y-scroll bg-white "
                 }
                 ref={ref}
                 onScroll={(e) => {

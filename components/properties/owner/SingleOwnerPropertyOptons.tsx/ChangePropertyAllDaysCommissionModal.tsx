@@ -1,5 +1,7 @@
 "use client";
 
+import { colors } from "@/theme/colors";
+
 /* eslint-disable react-hooks/set-state-in-effect */
 
 import { useOwnerCalendarActions } from "@features/owner-property/hooks/useOwnerCalendarActions";
@@ -66,7 +68,7 @@ const ChangePropertyAllDaysCommissionModal = ({
           className="w-9 h-9 aspect-square"
           src="/assets/icons/property/hand_shake_money.svg"
         />
-        <p className="text-base font-bold text-primary-700">
+        <p className="text-base font-bold text-brand-600">
           {_STRINGS.CHANGE_ADVISOR_COMMISSION}
         </p>
         {isLoading ? (
@@ -77,7 +79,7 @@ const ChangePropertyAllDaysCommissionModal = ({
           </CmsText>
         )}
 
-        <div className="flex flex-col gap-3 text-primary-700 pt-6 pb-10">
+        <div className="flex flex-col gap-3 text-brand-600 pt-6 pb-10">
           <div className="flex items-center justify-between">
             <span>{_STRINGS.COMITION_PERC}</span>
             <span>{commission} %</span>
@@ -92,14 +94,14 @@ const ChangePropertyAllDaysCommissionModal = ({
               0: {
                 label: "0",
                 style: {
-                  color: "#888",
+                  color: colors.neutral[400],
                   paddingTop: 15,
                 },
               },
               50: {
                 label: "50",
                 style: {
-                  color: "#888",
+                  color: colors.neutral[400],
                   paddingTop: 15,
                   paddingRight: 20,
                 },

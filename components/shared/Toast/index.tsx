@@ -54,10 +54,7 @@ const Notify = (props: TNotifyProps) => {
   toast.custom(
     (t) => (
       <div
-        className={`flex   md:w-96  justify-start relative right-0 left-0   items-center bg-white z-10   dark:bg-slate-700   rounded-lg px-3 py-2 text-black mx-auto    dark:border-0 
-        border-r-8 dark:border-r-8 ${_findTypeData().border} shadow-lg
-        transform-gpu translate-y-0 hover:translate-y-1  relative transition-all duration-500 ease-in-out 
-        `}
+        className={`relative right-0 left-0 z-10 mx-auto flex items-center justify-start rounded-lg border-r-8 bg-white px-3 py-2 text-black shadow-lg transition-all duration-500 ease-in-out hover:translate-y-1 md:w-96 ${_findTypeData().border}`}
         onClick={() => {
           toast.dismiss(t);
           typeof cb == "function" && cb();

@@ -84,7 +84,7 @@ const ProductModels = ({
             isChecked={checkifSelected(i)}
             rounded={isMulty ? "rounded-md" : "rounded-full"}
           />
-          <p className="dark:text-neutral-200 text-sm">{i?.title}</p>
+          <p className=" text-sm">{i?.title}</p>
         </div>
       ))}
     </div>

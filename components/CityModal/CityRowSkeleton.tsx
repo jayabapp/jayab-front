@@ -5,10 +5,10 @@ export const CityRowSkeleton = () => (
   >
     {[0, 1, 2, 3, 4].map((item) => (
       <div className="flex items-center gap-4" key={item}>
-        <div className="size-10 rounded-md bg-gray-200" />
+        <div className="size-10 rounded-md bg-neutral-200" />
         <div className="flex grow flex-col gap-2">
-          <div className="h-4 w-1/3 rounded bg-gray-200" />
-          <div className="h-3 w-2/3 rounded bg-gray-100" />
+          <div className="h-4 w-1/3 rounded bg-neutral-200" />
+          <div className="h-3 w-2/3 rounded bg-neutral-100" />
         </div>
       </div>
     ))}

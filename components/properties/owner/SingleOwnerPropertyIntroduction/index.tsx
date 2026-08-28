@@ -69,7 +69,7 @@ const SingleOwnerPropertyIntroduction = ({
         </div>
 
         {!!data?.is_promoted ? (
-          <p className="  font-bold  text-primary-700  shrink-0  text-xs ">
+          <p className="  font-bold  text-brand-600  shrink-0  text-xs ">
             {_STRINGS.LADDERED}
           </p>
         ) : (
@@ -87,7 +87,7 @@ const SingleOwnerPropertyIntroduction = ({
         {" "}
         <p className="text-sm  shrink-0 ">{_STRINGS.TODAY_STATUS} :</p>
         <p
-          className={` text-sm font-bold ${!!data?.is_today_reserved ? " text-red-500 " : " text-primary-700 "} `}
+          className={` text-sm font-bold ${!!data?.is_today_reserved ? " text-red-500 " : " text-brand-600 "} `}
         >
           {!!data?.is_today_reserved ? _STRINGS.OCCUPIED : _STRINGS.EMPTY}{" "}
         </p>
@@ -102,11 +102,11 @@ const SingleOwnerPropertyIntroduction = ({
           {data?.region ? ` - ${data?.region}` : ""}
         </p>
       </div>
-      <div className="w-full flex  py-2  border-primary-200 items-center justify-between ">
+      <div className="w-full flex  py-2  border-neutral-200 items-center justify-between ">
         <p className="text-xs">{_STRINGS.SUB_STATUS} :</p>
 
         <div className=" flex items-center  gap-2">
-          <div className=" rounded-full text-sm text-primary-700 bg-primary-400 flex  items-center justify-center h-7 w-24 ">
+          <div className=" rounded-full text-sm text-brand-600 bg-brand-200 flex  items-center justify-center h-7 w-24 ">
             {data?.remaining_days
               ? `${data?.remaining_days} روز اعتبار`
               : `اعتبار ندارد`}
@@ -114,7 +114,7 @@ const SingleOwnerPropertyIntroduction = ({
           <Link
             prefetch={false}
             href={`/profile/owner/properties/${data?.id}/subscription`}
-            className=" rounded-full text-xs text-white bg-primary-700 flex  items-center justify-center h-7 w-24 "
+            className=" rounded-full text-xs text-white bg-brand-600 flex  items-center justify-center h-7 w-24 "
             title={_STRINGS.EXTEND_SUBS}
           >
             {_STRINGS.EXTEND_SUBS}

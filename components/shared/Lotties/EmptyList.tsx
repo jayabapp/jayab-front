@@ -28,7 +28,7 @@ const EmptyList = ({ title }: { title?: string }) => {
           width={"50%"}
         />
 
-        <p className="text-center -mt-2 dark:text-zinc-400 text-gray-300 ">
+        <p className="text-center -mt-2  text-neutral-300 ">
           {title || _STRINGS?.EMPTY_LIST}
         </p>
       </div>

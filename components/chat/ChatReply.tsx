@@ -9,7 +9,7 @@ export interface ChatReplyDto {
 
 const ChatReply = ({ data, cancleButton }: ChatReplyDto) => {
   return (
-    <div className="flex items-center border-r-4 border-primary-50  gap-2 p-0.5  my-1 relative">
+    <div className="flex items-center border-r-4 border-brand-50  gap-2 p-0.5  my-1 relative">
       {data?.post ? (
         <ContentImage
           width={44}
@@ -32,7 +32,7 @@ const ChatReply = ({ data, cancleButton }: ChatReplyDto) => {
         onClick={() => {
           cancleButton ? cancleButton() : null;
         }}
-        className=" absolute left-4 top-4 opacity-75  w-3 cursor-pointer aspect-square  dark:invert"
+        className=" absolute left-4 top-4 opacity-75  w-3 cursor-pointer aspect-square  "
         src="/assets/icons/shared/close.svg"
       />
     </div>

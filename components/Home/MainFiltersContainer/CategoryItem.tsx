@@ -33,8 +33,8 @@ const CategoryItem = ({ item }: { item: HomeLandingDto }) => {
           src={item?.image ? NEW_IMAGE_URL(item?.image) : "/assets/icons/shared/image_placeholder.svg"}
           alt={`icatImages${item?.title}`}
           fill
-          className={`mix-blend-multiply z-2  rounded-sm dark:mix-blend-normal    size-7 md:size-16 transition-all duration-500 aspect-square  ${
-            !!item?.image ? "!object-cover" : "!object-contain opacity-50 bg-primary-200  md:px-8"
+          className={`mix-blend-multiply z-2  rounded-sm     size-7 md:size-16 transition-all duration-500 aspect-square  ${
+            !!item?.image ? "!object-cover" : "!object-contain opacity-50 bg-neutral-200  md:px-8"
           }
 
    

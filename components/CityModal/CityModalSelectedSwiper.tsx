@@ -42,7 +42,7 @@ const CityModalSelectedSwiper = ({
         <p className=" ">{`${_STRINGS.SELECTED_CITIES}  ${!isEmpty(selectedCities) ? `(${selectedCities?.length} شهر)` : ""} `}</p>
         <div onClick={clearSelected} className="  cursor-pointer flex items-center gap-1   ">
           <img className="size-4  opacity-40 " src="/assets/icons/uploader/TrashIcon.svg" />
-          <p className="text-sm text-gray-400">حذف همه</p>
+          <p className="text-sm text-neutral-400">حذف همه</p>
         </div>
       </div>
 
@@ -53,8 +53,8 @@ const CityModalSelectedSwiper = ({
             if (selectedMainProv?.child?.length == val?.child?.length) {
               return (
                 <SwiperSlide key={`selectedItemsPROv${val?.id || val}`} className=" ">
-                  <div className="rounded-full gap-4 py-0.5 px-1 flex items-center justify-center border border-primary-700/30  bg-primary-700/5  text-xs">
-                    <p className="text-sm text-primary-text  font-medium  pr-2">
+                  <div className="rounded-full gap-4 py-0.5 px-1 flex items-center justify-center border border-brand-600/30  bg-brand-600/5  text-xs">
+                    <p className="text-sm text-neutral-900  font-medium  pr-2">
                       {" "}
                       {_STRINGS.PROVINCE} {val?.title}{" "}
                     </p>
@@ -62,11 +62,11 @@ const CityModalSelectedSwiper = ({
                       onClick={() => {
                         onProvCancelClick(val);
                       }}
-                      className=" cursor-pointer w-4 h-4 aspect-square rounded-full border border-primary-700/30  flex items-center justify-center"
+                      className=" cursor-pointer w-4 h-4 aspect-square rounded-full border border-brand-600/30  flex items-center justify-center"
                     >
                       <img
                         src="/assets/icons/adds/x_mark.svg"
-                        className="w-2.5 h-2.5    opacity-30 p-0.5  text-primary-text aspect-square "
+                        className="w-2.5 h-2.5    opacity-30 p-0.5  text-neutral-900 aspect-square "
                       />
                     </div>
                   </div>
@@ -75,17 +75,17 @@ const CityModalSelectedSwiper = ({
             } else
               return val?.child?.map((e) => (
                 <SwiperSlide key={`selectedItems${e?.id || e?.title}`}>
-                  <div className="rounded-full gap-4 py-0.5 px-1 flex items-center justify-center border border-primary-700/30  bg-primary-700/5  text-xs ">
-                    <p className="text-sm text-primary-text   pr-2">{e?.title} </p>
+                  <div className="rounded-full gap-4 py-0.5 px-1 flex items-center justify-center border border-brand-600/30  bg-brand-600/5  text-xs ">
+                    <p className="text-sm text-neutral-900   pr-2">{e?.title} </p>
                     <div
                       onClick={() => {
                         onCityClick(e);
                       }}
-                      className=" cursor-pointer w-4 h-4 aspect-square rounded-full border border-primary-700/30  flex items-center justify-center"
+                      className=" cursor-pointer w-4 h-4 aspect-square rounded-full border border-brand-600/30  flex items-center justify-center"
                     >
                       <img
                         src="/assets/icons/adds/x_mark.svg"
-                        className="w-2.5 h-2.5    opacity-30 p-0.5  text-primary-text aspect-square "
+                        className="w-2.5 h-2.5    opacity-30 p-0.5  text-neutral-900 aspect-square "
                       />
                     </div>
                   </div>

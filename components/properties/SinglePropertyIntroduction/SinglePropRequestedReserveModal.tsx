@@ -98,7 +98,7 @@ const SinglePropRequestedReserveModal = ({
         onHide={onHide}
         show={show}
         options={{
-          containerClass: `mx-auto rounded-t-20 absolute pb-[1.5rem] lg:pb-10 !max-h-[90dvh] bottom-0 lg:translate-x-1/2 lg:right-1/2 w-full lg:w-[calc(50svw)]  bg-white dark:bg-zinc-900 overflow-y-scroll  dark:bg-dark-700`,
+          containerClass: `mx-auto rounded-t-20 absolute pb-[1.5rem] lg:pb-10 !max-h-[90dvh] bottom-0 lg:translate-x-1/2 lg:right-1/2 w-full lg:w-[calc(50svw)]  bg-white  overflow-y-scroll  `,
         }}
       >
         <div className="w-full flex flex-col   p-4 rounded-2xl     gap-4">
@@ -160,7 +160,7 @@ const SinglePropRequestedReserveModal = ({
             />
             {/* ENTER */}
             <p className="flex   gap-1 items-center">
-              <span className="text-xs text-primary-1000  ">ورود</span>{" "}
+              <span className="text-xs text-neutral-400  ">ورود</span>{" "}
               <span className="text-sm ">
                 {" "}
                 {moment(startDate, "jYYYY/jMM/jD").format("jDD jMMMM")}{" "}
@@ -168,7 +168,7 @@ const SinglePropRequestedReserveModal = ({
             </p>
             {/* EXIT */}
             <p className="flex gap-1 items-center">
-              <span className="text-xs text-primary-1000 ">خروج</span>{" "}
+              <span className="text-xs text-neutral-400 ">خروج</span>{" "}
               <span className="text-sm ">
                 {" "}
                 {moment(endDate, "jYYYY/jMM/jD").format("jDD jMMMM")}{" "}
@@ -194,7 +194,7 @@ const SinglePropRequestedReserveModal = ({
             <Button
               title={`${_STRINGS.EDIT}`}
               variant="outline"
-              width=" !px-4  !text-xs !border-gray-300  !py-1 !bg-gray-100 !text-black/50 !font-normal/60 w-fit !py-0 "
+              width=" !px-4  !text-xs !border-neutral-300  !py-1 !bg-neutral-100 !text-black/50 !font-normal/60 w-fit !py-0 "
               roundedClass=" rounded-xl"
               icon={
                 <img
@@ -209,7 +209,7 @@ const SinglePropRequestedReserveModal = ({
             />
           </div>
 
-          <p className="text-sm text-primary-1300 ">
+          <p className="text-sm text-neutral-600 ">
             با انتخاب یکی از روش‌های زیر، درخواست شما برای میزبان ارسال می‌شود.
           </p>
           {/* <Divider /> */}
@@ -224,7 +224,7 @@ const SinglePropRequestedReserveModal = ({
                     // onActionsClick(ReserveUserAction.CALL);
                     onContactClick("call");
                   }}
-                  width={`w-full h-12 !text-black !font-normal !border-none  !py-2   !bg-primary-1100  !text-sm ${isExpired ? "  !text-gray-400" : ""} `}
+                  width={`w-full h-12 !text-black !font-normal !border-none  !py-2   !bg-neutral-50  !text-sm ${isExpired ? "  !text-neutral-400" : ""} `}
                   containerClass="w-full lg:w-1/2 "
                   roundedClass=" rounded-xl"
                   title={_STRINGS.CALL}
@@ -243,7 +243,7 @@ const SinglePropRequestedReserveModal = ({
                   onClick={() => {
                     onContactClick("sms");
                   }}
-                  width={`w-full h-12 !border-none !text-black !font-normal !py-2 !bg-primary-1100   !text-sm ${isExpired ? "  !text-gray-400" : ""} `}
+                  width={`w-full h-12 !border-none !text-black !font-normal !py-2 !bg-neutral-50   !text-sm ${isExpired ? "  !text-neutral-400" : ""} `}
                   containerClass="w-full lg:w-1/2  "
                   roundedClass=" rounded-xl"
                   title={_STRINGS.SMS}
@@ -261,7 +261,7 @@ const SinglePropRequestedReserveModal = ({
               onClick={() => {
                 onActionsClick(ReserveUserAction.RESERVE);
               }}
-              width="w-full h-12  !py-2  !text-black !font-normal !bg-primary-1100  !border-none !text-sm "
+              width="w-full h-12  !py-2  !text-black !font-normal !bg-neutral-50  !border-none !text-sm "
               containerClass="w-full lg:w-1/2 "
               roundedClass=" rounded-xl"
               title={_STRINGS.SUBMIT_RESERVE}
@@ -279,7 +279,7 @@ const SinglePropRequestedReserveModal = ({
             {data?.is_chat_enabled ? (
               <Button
                 variant="outline"
-                width="w-full h-12 !border-none !text-black !font-normal  !py-2 !bg-primary-1100  !text-sm "
+                width="w-full h-12 !border-none !text-black !font-normal  !py-2 !bg-neutral-50  !text-sm "
                 containerClass="w-full  lg:w-1/2 "
                 roundedClass=" rounded-xl"
                 title={_STRINGS.CHAT_IN_JAYAB}
@@ -299,7 +299,7 @@ const SinglePropRequestedReserveModal = ({
               <></>
             )}
           </div>
-          <p className="text-sm text-primary-700 text-center w-full">
+          <p className="text-sm text-brand-600 text-center w-full">
             «رزرو شما پس از هماهنگی با میزبان نهایی خواهد شد.»
           </p>
         </div>

@@ -145,8 +145,8 @@ const SwiperWithThumnails: React.FC<PropType> = (props) => {
                   onClick={() => onThumbClick(index)}
                   className={`       w-full h-full  overflow-clip rounded-10 border cursor-pointer transition-all ease-in-out duration-300   ${
                     index === selectedIndex
-                      ? "border-primary-700  dark:border-zinc-200 "
-                      : "border-gray-300 opacity-60 dark:border-zinc-600"
+                      ? "border-brand-600   "
+                      : "border-neutral-300 opacity-60 "
                   } `}
                 >
                   <ContentImage

@@ -68,7 +68,7 @@ const Day = ({ onSelect, data, selectedDayIds, month, year, freeDaysOfMonth, tod
 
   return (
     <div
-      className={`aspect-square   ${!!data?.year && (!isBefore || !!isToday) ? " bg-primary-450 " : "opacity-50"} ${
+      className={`aspect-square   ${!!data?.year && (!isBefore || !!isToday) ? " bg-neutral-100 " : "opacity-50"} ${
         onSelect ? "cursor-pointer" : ""
       } `}
       onClick={() => {
@@ -81,22 +81,22 @@ const Day = ({ onSelect, data, selectedDayIds, month, year, freeDaysOfMonth, tod
       <div
         key={data?.id}
         className={`text-center flex flex-col gap-2 ${data?.is_reserved ? "striped" : ""}   ${
-          isToday ? "  bg-gray-200  " : ""
+          isToday ? "  bg-neutral-200  " : ""
         }  relative  flex items-center justify-center aspect-square    ${
           isSelectedEnd
-            ? "!bg-primary-700  rounded-l-10 text-white"
+            ? "!bg-brand-600  rounded-l-10 text-white"
             : isSelectedStart
-            ? "!bg-primary-700  rounded-r-10 text-white"
+            ? "!bg-brand-600  rounded-r-10 text-white"
             : ""
-        }  ${!!isinBetween ? "!bg-primary-700  rounded-0 text-white" : ""}`}
+        }  ${!!isinBetween ? "!bg-brand-600  rounded-0 text-white" : ""}`}
       >
         {!!data?.has_memo ? (
-          <div className="absolute left-1 top-1  w-1 h-1 aspect-square bg-primary-900 !rounded-full"> </div>
+          <div className="absolute left-1 top-1  w-1 h-1 aspect-square bg-danger-500 !rounded-full"> </div>
         ) : (
           <></>
         )}
         {!!data?.is_peak ? (
-          <div className="absolute left-0 right-0 mx-auto  bottom-0.5   h-1  w-1/2  bg-primary-900 !rounded-full">
+          <div className="absolute left-0 right-0 mx-auto  bottom-0.5   h-1  w-1/2  bg-danger-500 !rounded-full">
             {" "}
           </div>
         ) : (

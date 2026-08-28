@@ -131,7 +131,7 @@ const CreatePropertyFacility = () => {
         <>
           {" "}
           <div className=" flex flex-col gap-2   pb-4 w-full">
-            <p className="font-bold w-full text-start  text-sm md:text-base text-primary-700  ">
+            <p className="font-bold w-full text-start  text-sm md:text-base text-brand-600  ">
               {_STRINGS.POOL_STATUS}
             </p>
             <Checkbox
@@ -166,7 +166,7 @@ const CreatePropertyFacility = () => {
           </div>
           <div className="  grid   grid-cols-2 md:grid-cols-3 gap-2  border-b pb-4 w-full">
             {" "}
-            <p className="font-bold mb-2  col-span-full w-full text-start  text-sm md:text-base text-primary-700  ">
+            <p className="font-bold mb-2  col-span-full w-full text-start  text-sm md:text-base text-brand-600  ">
               {_STRINGS.ENTERTAINMENT}
             </p>
             {propertyTypes?.["ENTERTAINMENT"]?.map((e, index) => (
@@ -184,7 +184,7 @@ const CreatePropertyFacility = () => {
             ))}
           </div>
           <div className=" grid   grid-cols-2 md:grid-cols-3  gap-2  border-b pb-4 w-full">
-            <p className="font-bold mb-2 col-span-full w-full text-start  text-sm md:text-base text-primary-700  ">
+            <p className="font-bold mb-2 col-span-full w-full text-start  text-sm md:text-base text-brand-600  ">
               {_STRINGS.KITCHEN_ACC}
             </p>
             {propertyTypes?.["KITCHEN"]?.map((e, index) => (
@@ -217,7 +217,7 @@ const CreatePropertyFacility = () => {
             }}
           />
           <div className="  grid   grid-cols-2 md:grid-cols-3   gap-2  border-b pb-4 w-full">
-            <p className="font-bold  w-full mb-2 col-span-full  text-start  text-sm md:text-base text-primary-700  ">
+            <p className="font-bold  w-full mb-2 col-span-full  text-start  text-sm md:text-base text-brand-600  ">
               {_STRINGS.COOL_HEAT}
             </p>
             {propertyTypes?.["COOL_HEAT"]?.map((e, index) => (
@@ -235,7 +235,7 @@ const CreatePropertyFacility = () => {
             ))}{" "}
           </div>
           <div className=" grid   grid-cols-2 md:grid-cols-3  gap-2  border-b pb-4 w-full">
-            <p className="font-bold col-span-full w-full mb-2 text-start  text-sm md:text-base text-primary-700  ">
+            <p className="font-bold col-span-full w-full mb-2 text-start  text-sm md:text-base text-brand-600  ">
               {_STRINGS.WELFARE}
             </p>
             {propertyTypes?.["WELFARE"]?.map((e, index) => (

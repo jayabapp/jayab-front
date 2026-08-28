@@ -21,7 +21,7 @@ const EditCreateUserPage = ({
 
   return (
     <div className="w-full flex flex-col gap-4   ">
-      <div className="p-4  rounded-10 bg-primary-100 items-center justify-center content  text-justify">
+      <div className="p-4  rounded-10 bg-brand-100 items-center justify-center content  text-justify">
         {isLoading ? (
           <BtnLoading />
         ) : (

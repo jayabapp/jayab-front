@@ -1,3 +1,4 @@
+import { colors } from "@/theme/colors";
 import { CSSProperties, Dispatch, useEffect, useState } from "react";
 
 import Slider from "rc-slider";
@@ -39,11 +40,11 @@ const PriceRange = ({
   useEffect(() => {
     var list: { [key: number]: { style: {}; label: number } } = {};
     list[lowerBound] = {
-      style: { color: "#3886E5", bottom: "-2rem" },
+      style: { color: colors.brand[500], bottom: "-2rem" },
       label: lowerBound,
     };
     list[upperBound] = {
-      style: { color: "#3886E5", bottom: "-2rem" },
+      style: { color: colors.brand[500], bottom: "-2rem" },
       label: upperBound,
     };
     setMarks(list);
@@ -75,18 +76,18 @@ const PriceRange = ({
         min={lowerBound}
         max={upperBound}
         step={steps || 100000}
-        railStyle={{ backgroundColor: "#d1d5db", height: 4 }}
-        trackStyle={{ backgroundColor: "#0088CC", height: 4 }}
+        railStyle={{ backgroundColor: colors.neutral[300], height: 4 }}
+        trackStyle={{ backgroundColor: colors.brand[600], height: 4 }}
         handleStyle={{
-          backgroundColor: "#3886E5",
+          backgroundColor: colors.brand[500],
           borderWidth: 0,
           width: 20,
           height: 20,
           bottom: -4,
         }}
         activeDotStyle={{
-          backgroundColor: "#10264B",
-          borderColor: "#10264B",
+          backgroundColor: colors.brand[800],
+          borderColor: colors.brand[800],
           borderWidth: 1,
           width: 7,
           height: 7,
@@ -94,8 +95,8 @@ const PriceRange = ({
           bottom: -20,
         }}
         dotStyle={{
-          backgroundColor: "#D6D6D6",
-          borderColor: "#D6D6D6",
+          backgroundColor: colors.neutral[300],
+          borderColor: colors.neutral[300],
           borderWidth: 1,
           width: 7,
           height: 7,
