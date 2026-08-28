@@ -1,20 +1,3 @@
-/**
- * ADR 0001: legacy route-level client boundaries.
- *
- * Context: these routes predate the server-first policy and currently own local
- * state, effects, mutations, or browser-only integrations at page/layout level.
- *
- * Rejected alternative: converting every route in the architecture-foundation
- * change would mix behavioral rewrites across auth, owner, reservation, support,
- * and notification domains and make safe rollback impossible.
- *
- * Bundle impact: the complete route subtree is hydrated until its vertical slice
- * is migrated. New entries are forbidden; removing an entry is always allowed.
- *
- * Containment plan: migrate entries feature-by-feature according to
- * docs/component-architecture/03-project-migration-map.md, moving interaction to
- * colocated `.client.tsx` islands and deleting the corresponding exception.
- */
 export const legacyClientRoutes = [
   "app/(profile)/layout.tsx",
   "app/(profile)/profile/(advisor)/advisor/subscription/[subscription_key]/page.tsx",
