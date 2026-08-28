@@ -9,13 +9,11 @@ import type {
 } from "@/types/features/support/api";
 
 export class SupportService {
-  static TICKETS_CACHEKEY = "TICKETS";
-  static SINGLE_TICKET_GET_CACHEKEY = "SINGLE_TICKET_GET";
-
-  static async GetTickets(
-    dto: { page: string | number; type: "TICKET" | "SUGGESTION" },
-    signal?: AbortSignal,
-  ) {
+  static async getTickets(dto: {
+    page: string | number;
+    type: "TICKET" | "SUGGESTION";
+    signal?: AbortSignal;
+  }) {
     return apiCall<
       {
         page: string | number;
@@ -27,11 +25,11 @@ export class SupportService {
       "GET",
       apiRoutes.TICKETS,
       { page: dto.page, type: dto.type, per_page: 20 },
-      { signal },
+      { signal: dto.signal },
     );
   }
 
-  static async AddTicket(dto: CreateTicketInput) {
+  static async addTicket(dto: CreateTicketInput) {
     return apiCall<CreateTicketInput, unknown>("POST", apiRoutes.TICKETS, {
       message: dto.message,
       title: dto.title,
@@ -39,22 +37,19 @@ export class SupportService {
     });
   }
 
-  static async GetSingleTicket(
-    dto: { id: number | string },
-    signal?: AbortSignal,
-  ) {
+  static async getSingleTicket(dto: { id: number | string; signal?: AbortSignal }) {
     return apiCall<never, TicketDetails>(
       "GET",
       apiRoutes.SINGLE_TICKET_GET(dto.id),
       undefined,
-      { signal },
+      { signal: dto.signal },
     );
   }
 
-  static async ReplySingleTicket(dto: ReplyTicketInput) {
+  static async replyToTicket(dto: ReplyTicketInput) {
     return apiCall<{ message: string }, unknown>(
       "POST",
-      `${apiRoutes.TICKETS}/${dto.id}`,
+      apiRoutes.SINGLE_TICKET_GET(dto.id),
       {
         message: dto.message,
       },

@@ -2,6 +2,7 @@ import { readdir, readFile } from "node:fs/promises";
 import path from "node:path";
 
 import { legacyClientRoutes } from "../architecture/adr/legacy-client-routes.mjs";
+import { componentMigrationMap } from "../architecture/component-migration-map.mjs";
 
 const root = process.cwd();
 const sourceExtensions = new Set([".js", ".jsx", ".ts", ".tsx"]);
@@ -44,10 +45,28 @@ const isOneOf = (specifier, prefixes) =>
 
 const report = (file, message) => violations.push(`${file.replaceAll("\\", "/")}: ${message}`);
 
+for (const entry of componentMigrationMap) {
+  if (entry.status !== "migrated") continue;
+
+  const legacyFiles = await walk(entry.source);
+  if (legacyFiles.length > 0) {
+    report(entry.source, `migration is marked complete but ${legacyFiles.length} legacy source files remain`);
+  }
+  for (const target of entry.targets) {
+    const targetFiles = await walk(target);
+    if (targetFiles.length === 0) report(target, "a completed migration target must contain source files");
+  }
+}
+
 const appFiles = await walk("app");
 const clientAppFiles = new Set();
 for (const file of appFiles) {
   const source = await readFile(path.join(root, file), "utf8");
+  for (const specifier of readImports(source)) {
+    if (isOneOf(specifier, ["@generated", "@/generated"])) {
+      report(file, `generated clients are only available inside feature api or lib/api boundaries (${specifier})`);
+    }
+  }
   if (!/^\s*["']use client["'];/m.test(source)) continue;
 
   const normalizedFile = file.replaceAll("\\", "/");
@@ -76,6 +95,43 @@ for (const file of componentFiles) {
   for (const specifier of readImports(source)) {
     if (isOneOf(specifier, ["@/app", "@app"])) {
       report(file, `components cannot import the app layer (${specifier})`);
+    }
+    if (isOneOf(specifier, ["@generated", "@/generated"])) {
+      report(file, `generated clients are only available inside feature api or lib/api boundaries (${specifier})`);
+    }
+  }
+}
+
+const featureFiles = await walk("features");
+for (const file of featureFiles) {
+  const source = await readFile(path.join(root, file), "utf8");
+  for (const specifier of readImports(source)) {
+    if (
+      isOneOf(specifier, [
+        "@modules",
+        "@templates",
+        "@layouts",
+        "@/components/modules",
+        "@/components/templates",
+        "@/components/layouts",
+      ])
+    ) {
+      report(file, `features cannot depend on UI composition layers (${specifier})`);
+    }
+    if (
+      isOneOf(specifier, ["@generated", "@/generated"]) &&
+      !/^features[\\/][^\\/]+[\\/]api[\\/]/.test(file)
+    ) {
+      report(file, `generated clients are only available inside feature api boundaries (${specifier})`);
+    }
+  }
+}
+
+for (const file of await walk("lib")) {
+  const source = await readFile(path.join(root, file), "utf8");
+  for (const specifier of readImports(source)) {
+    if (isOneOf(specifier, ["@generated", "@/generated"]) && !/^lib[\\/]api[\\/]/.test(file)) {
+      report(file, `generated clients are only available inside lib/api (${specifier})`);
     }
   }
 }
@@ -110,6 +166,12 @@ for (const architectureRoot of architectureRoots) {
         report(file, `templates only compose data and slots supplied by the page (${specifier})`);
       }
       if (
+        layer === "templates" &&
+        (/^@modules\/[^/]+\/parts(?:\/|$)/.test(specifier) || isOneOf(specifier, ["@/components"]))
+      ) {
+        report(file, `templates must consume public UI-layer entry points (${specifier})`);
+      }
+      if (
         layer === "layouts" &&
         isOneOf(specifier, ["@/api_services", "@/features", "@features", "@/generated", "@generated", "@/store", "@modules", "@templates"])
       ) {
@@ -117,6 +179,13 @@ for (const architectureRoot of architectureRoots) {
       }
       if (layer === "modules" && /^@modules\/[^/]+\/parts(?:\/|$)/.test(specifier)) {
         report(file, `module parts are private; import the other module's public index (${specifier})`);
+      }
+      if (
+        layer === "modules" &&
+        (isOneOf(specifier, ["@/api_services", "@/generated", "@generated", "@tanstack/react-query", "@/utils/urls"]) ||
+          /^@(?:\/)?features\/[^/]+\/api(?:\/|$)/.test(specifier))
+      ) {
+        report(file, `modules must consume high-level feature hooks instead of data internals (${specifier})`);
       }
     }
   }

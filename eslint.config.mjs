@@ -182,8 +182,11 @@ const eslintConfig = [
                 "@/store/*",
                 "@tanstack/react-query",
                 "zustand",
+                "@modules/*/parts",
+                "@modules/*/parts/*",
+                "@/components/*",
               ],
-              message: "Templates only compose modules from data and slots supplied by their page.",
+              message: "Templates only compose public module, layout, and element entry points.",
             },
             {
               group: ["../../*", "../../../*", "../../../../*"],
@@ -249,8 +252,90 @@ const eslintConfig = [
               message: "Module parts are private. Import another module through its public index.ts.",
             },
             {
+              group: [
+                "@/api_services/*",
+                "@/generated/*",
+                "@generated/*",
+                "@tanstack/react-query",
+                "@features/*/api/*",
+                "@/features/*/api/*",
+                "@/utils/urls",
+              ],
+              message: "Modules consume high-level feature hooks, never data clients, query options, keys, or endpoints.",
+            },
+            {
               group: ["../../*", "../../../*", "../../../../*"],
               message: "Use a configured @ alias outside the current module.",
+            },
+          ],
+        },
+      ],
+    },
+  },
+  {
+    files: ["features/**/*.{ts,tsx}"],
+    rules: {
+      "no-restricted-imports": [
+        "error",
+        {
+          paths: [
+            {
+              name: "lodash",
+              message: 'Import the function directly instead, e.g. import debounce from "lodash/debounce".',
+            },
+          ],
+          patterns: [
+            {
+              group: [
+                "@modules/*",
+                "@templates/*",
+                "@layouts/*",
+                "@/components/modules/*",
+                "@/components/templates/*",
+                "@/components/layouts/*",
+              ],
+              message: "Features own domain/data behavior and cannot depend on UI composition layers.",
+            },
+            {
+              group: ["../../*", "../../../*", "../../../../*"],
+              message: "Use a configured @ alias outside the current feature.",
+            },
+          ],
+        },
+      ],
+    },
+  },
+  {
+    files: ["features/support/hooks/**/*.{ts,tsx}"],
+    rules: {
+      "no-restricted-imports": [
+        "error",
+        {
+          paths: [
+            {
+              name: "lodash",
+              message: 'Import the function directly instead, e.g. import debounce from "lodash/debounce".',
+            },
+          ],
+          patterns: [
+            {
+              group: ["@/api_services/*", "@/generated/*", "@generated/*"],
+              message: "Support hooks must consume their feature api boundary instead of transport clients.",
+            },
+            {
+              group: [
+                "@modules/*",
+                "@templates/*",
+                "@layouts/*",
+                "@/components/modules/*",
+                "@/components/templates/*",
+                "@/components/layouts/*",
+              ],
+              message: "Features own domain/data behavior and cannot depend on UI composition layers.",
+            },
+            {
+              group: ["../../*", "../../../*", "../../../../*"],
+              message: "Use a configured @ alias outside the current feature.",
             },
           ],
         },

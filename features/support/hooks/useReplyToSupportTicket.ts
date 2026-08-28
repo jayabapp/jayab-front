@@ -1,19 +1,17 @@
 "use client";
 
 import { useMutation, useQueryClient } from "@tanstack/react-query";
-import { SupportService } from "@/api_services/support/support.service";
+import { replyToSupportTicketMutationOptions } from "@features/support/api/support.options";
 import { supportKeys } from "@features/support/api/support.keys";
 
 import type { TicketDetails } from "@/types/features/support/api";
-import type { ReplyTicketInput } from "@/types/features/support/api";
 
 export const useReplyToSupportTicket = (id: number | string) => {
   const queryClient = useQueryClient();
   const detailKey = supportKeys.detail(id);
 
   return useMutation({
-    mutationFn: (input: ReplyTicketInput) =>
-      SupportService.ReplySingleTicket(input),
+    ...replyToSupportTicketMutationOptions(id),
     onMutate: async ({ message }) => {
       await queryClient.cancelQueries({ queryKey: detailKey });
       const previousTicket = queryClient.getQueryData<TicketDetails>(detailKey);
