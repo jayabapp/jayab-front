@@ -1,11 +1,8 @@
 "use client";
 
-import {
-  DehydratedState,
-  HydrationBoundary,
-  QueryClientProvider,
-} from "@tanstack/react-query";
+import { DehydratedState, HydrationBoundary } from "@tanstack/react-query";
 import { ReactNode, useEffect, useState } from "react";
+import { QueryClientProvider } from "@tanstack/react-query";
 import { makeQueryClient } from "@/api_services/common/get-query-client";
 import { useStoreQuery } from "@/store";
 
@@ -19,13 +16,11 @@ interface Layout {
 
 const LayoutProvider = (props: Layout) => {
   const [queryClient] = useState(makeQueryClient);
-
   useEffect(() => {
     useStoreQuery.setState({
       client: queryClient,
     });
   }, [queryClient]);
-
   return (
     <QueryClientProvider client={queryClient}>
       <HydrationBoundary state={props?.dehydratedState}>

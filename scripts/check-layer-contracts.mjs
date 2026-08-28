@@ -1,6 +1,8 @@
 import { readdir, readFile } from "node:fs/promises";
 import path from "node:path";
 
+import { legacyClientRoutes } from "../architecture/adr/legacy-client-routes.mjs";
+
 const root = process.cwd();
 const sourceExtensions = new Set([".js", ".jsx", ".ts", ".tsx"]);
 const architectureRoots = ["components/elements", "components/layouts", "components/modules", "components/templates"];
@@ -42,9 +44,35 @@ const isOneOf = (specifier, prefixes) =>
 
 const report = (file, message) => violations.push(`${file.replaceAll("\\", "/")}: ${message}`);
 
+const appFiles = await walk("app");
+const clientAppFiles = new Set();
+for (const file of appFiles) {
+  const source = await readFile(path.join(root, file), "utf8");
+  if (!/^\s*["']use client["'];/m.test(source)) continue;
+
+  const normalizedFile = file.replaceAll("\\", "/");
+  clientAppFiles.add(normalizedFile);
+  const isRouteBoundary = /\/(?:page|layout)\.tsx$/.test(normalizedFile);
+  if (isRouteBoundary && !legacyClientRoutes.includes(normalizedFile)) {
+    report(file, "route-level Client Components require an explicit ADR exception");
+  }
+  if (!isRouteBoundary && !normalizedFile.endsWith(".client.tsx")) {
+    report(file, 'non-route Client Components in app must use the ".client.tsx" suffix');
+  }
+}
+
+for (const exception of legacyClientRoutes) {
+  if (!clientAppFiles.has(exception)) {
+    report(exception, "stale client-route ADR exception; remove it after migration");
+  }
+}
+
 const componentFiles = await walk("components");
 for (const file of componentFiles) {
   const source = await readFile(path.join(root, file), "utf8");
+  if (/Skeleton[^/]*\.tsx$/.test(file) && /^\s*["']use client["'];/m.test(source)) {
+    report(file, "skeletons must remain server-compatible; use CSS for loading animation");
+  }
   for (const specifier of readImports(source)) {
     if (isOneOf(specifier, ["@/app", "@app"])) {
       report(file, `components cannot import the app layer (${specifier})`);

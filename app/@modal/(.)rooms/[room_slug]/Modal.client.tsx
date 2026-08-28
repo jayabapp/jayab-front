@@ -24,11 +24,11 @@ const SinglePorpertyAccards = dynamic(
   () => import("@/components/properties/SinglePropertyAccards"),
 );
 
-export default function ModalClient({
+const ModalClient = ({
   params,
 }: {
   params: { room_slug: string };
-}) {
+}) => {
   const pathname = usePathname();
   const { property: properyData, isPending } = usePropertyDetails(
     params.room_slug,
@@ -98,4 +98,6 @@ export default function ModalClient({
       <Footer />
     </AnimationlessModal>
   );
-}
+};
+
+export default ModalClient;

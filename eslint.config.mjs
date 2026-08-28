@@ -1,5 +1,7 @@
 import next from "eslint-config-next";
 
+import { legacyClientRoutes } from "./architecture/adr/legacy-client-routes.mjs";
+
 // eslint-config-next ships a flat config array from v15 on. Routing it through
 // FlatCompat's eslintrc shim made ESLint 10 fail config-schema validation and
 // then crash formatting the error ("Converting circular structure to JSON").
@@ -271,6 +273,32 @@ const eslintConfig = [
         {
           selector: "ExpressionStatement[directive='use client']",
           message: 'Client islands inside layouts/modules must be named with the ".client.tsx" suffix.',
+        },
+      ],
+    },
+  },
+  {
+    files: ["app/**/page.tsx", "app/**/layout.tsx"],
+    ignores: legacyClientRoutes,
+    rules: {
+      "no-restricted-syntax": [
+        "error",
+        {
+          selector: "ExpressionStatement[directive='use client']",
+          message: "Route pages/layouts are Server Components by default; an exception requires an ADR.",
+        },
+      ],
+    },
+  },
+  {
+    files: ["app/**/*.tsx"],
+    ignores: ["app/**/page.tsx", "app/**/layout.tsx", "app/**/*.client.tsx"],
+    rules: {
+      "no-restricted-syntax": [
+        "error",
+        {
+          selector: "ExpressionStatement[directive='use client']",
+          message: 'Non-route Client Components in app must use the ".client.tsx" suffix.',
         },
       ],
     },

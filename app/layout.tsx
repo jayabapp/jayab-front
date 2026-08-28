@@ -9,8 +9,8 @@ import { dehydrate } from "@tanstack/react-query";
 import { ReactNode } from "react";
 
 import getQueryClient from "@/api_services/common/get-query-client";
+import LayoutProvider from "./layout-provider.client";
 import SplashScreen from "@/components/SplashScreen";
-import LayoutProvider from "./layout-provider";
 import serverCall from "@/helpers/serverCall";
 import Script from "next/script";
 

@@ -12,7 +12,8 @@
     "api:schema": "node scripts/fetch-openapi.mjs",
     "api:generate": "orval --config orval.config.mjs",
     "api:check": "node scripts/check-generated.mjs",
-    "architecture:check": "node scripts/check-layer-contracts.mjs"
+    "architecture:check": "node scripts/check-layer-contracts.mjs",
+    "architecture:report": "node scripts/report-client-boundaries.mjs"
   },
   "dependencies": {
     "@headlessui/react": "^2.2.0",
