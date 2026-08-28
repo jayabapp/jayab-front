@@ -1,7 +1,7 @@
 "use client";
 
+import { memo, Suspense, useEffect, useMemo, useState } from "react";
 import { useAuthStore, useStoreInit, useStoreParams } from "@/store";
-import { memo, Suspense, useEffect, useState } from "react";
 import { useParams, usePathname, useRouter } from "next/navigation";
 import { headerMobileSearchBlackList } from "@/utils/constantss";
 import { useNotificationBadge } from "@features/notifications/hooks/useNotificationBadge";
@@ -99,18 +99,22 @@ const Header = ({ scroll }: { scroll?: number }) => {
     useStoreParams.setState({ topHeaderVisible: false });
   };
 
-  useEffect(() => {
-    window?.addEventListener("scroll", handleScroll);
-    const temp = localStorage.getItem("theme");
-    const isLoginTemp = getCookie("isLogin") || localStorage.getItem("isLogin");
-    useAuthStore.setState({ isLogin: isLoginTemp === "true" ? true : false });
-    return () => window?.removeEventListener("scroll", handleScroll);
-  }, []);
+  const handleScroll = useMemo(
+    () =>
+      throttle(() => {
+        useStoreParams.setState({ topHeaderVisible: window.scrollY <= 60 });
+      }, 100),
+    [],
+  );
 
-  const handleScroll = throttle((event) => {
-    if (window?.scrollY > 60) hideTopHeader();
-    else showTopHeader();
-  }, 100);
+  useEffect(() => {
+    window.addEventListener("scroll", handleScroll);
+    useAuthStore.setState({ isLogin: getCookie("isLogin") === "true" });
+    return () => {
+      window.removeEventListener("scroll", handleScroll);
+      handleScroll.cancel();
+    };
+  }, [handleScroll]);
 
   useEffect(() => {
     if (scroll) {

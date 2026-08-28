@@ -1,8 +1,8 @@
 "use client";
 
 import { SORT_TYPES, zero_filter_remove_keys } from "@/utils/constantss";
+import { useEffect, useMemo, useState } from "react";
 import { usePathname, useRouter } from "next/navigation";
-import { useEffect, useState } from "react";
 import { SingleLandingDto } from "@/api_services/property/property.interface";
 import { PropertyService } from "@/api_services/property/property.service";
 import { removeKeyArray } from "@/components/Filters/SsrClinetPartFilterProperties";
@@ -148,15 +148,18 @@ const SsrFilterPage = ({
 
   const [showShadow, setShowShadow] = useState(false);
 
-  useEffect(() => {
-    window?.addEventListener("scroll", handleScroll);
-    return () => window?.removeEventListener("scroll", handleScroll);
-  }, []);
+  const handleScroll = useMemo(
+    () => throttle(() => setShowShadow(window.scrollY > 20), 100),
+    [],
+  );
 
-  const handleScroll = throttle(() => {
-    if (window?.scrollY > 20) setShowShadow(true);
-    else setShowShadow(false);
-  }, 100);
+  useEffect(() => {
+    window.addEventListener("scroll", handleScroll);
+    return () => {
+      window.removeEventListener("scroll", handleScroll);
+      handleScroll.cancel();
+    };
+  }, [handleScroll]);
 
   return (
     <>

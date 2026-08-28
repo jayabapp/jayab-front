@@ -1,11 +1,11 @@
 "use client";
 
-import { useCallback, useEffect, useRef, useState } from "react";
+import { useEffect, useEffectEvent, useRef, useState } from "react";
+import { useReverseGeocode } from "@features/map/hooks/useReverseGeocode";
 
 import CreateMarker from "./CreateMarker";
 import nmp_mapboxgl from "@neshan-maps-platform/mapbox-gl";
-import getAddress from "./GetAddress";
-import debounce from "lodash/debounce";
+import Image from "next/image";
 
 import "@neshan-maps-platform/mapbox-gl/dist/NeshanMapboxGl.css";
 
@@ -34,39 +34,34 @@ const Map = ({
   setCenterAddressLoading,
 }: mapType) => {
   const initialMap = useRef<any>(null);
-  const map = initialMap;
   const mapContainer = useRef<HTMLDivElement>(null);
-  const [isMoving, setIsMoving] = useState(false);
+  const initialCenterRef = useRef(center);
   const [zoom] = useState(15);
   const [API_KEY] = useState("web.4c0887bbd32f4ab2ba1adcc36243b6a2");
-  const checkTyping = useCallback(
-    debounce(() => {
-      setIsMoving(false);
-    }, 1000),
-    [],
+  const reverseGeocode = useReverseGeocode(
+    center[0],
+    center[1],
+    Boolean(setCenterAddress),
   );
+  const updateCenter = useEffectEvent((nextCenter: number[]) => {
+    setCenter?.(nextCenter);
+  });
 
   useEffect(() => {
-    if (center[0] && !isMoving) {
-      setTimeout(
-        () =>
-          getAddress({
-            latitude: center[1],
-            longitude: center[0],
-            setCenterAddress: setCenterAddress,
-            setCenterAddressLoading: setCenterAddressLoading,
-          }),
-        1000,
-      );
-    }
-  }, [center, isMoving]);
+    setCenterAddressLoading?.(reverseGeocode.isFetching);
+  }, [reverseGeocode.isFetching, setCenterAddressLoading]);
 
   useEffect(() => {
-    if (map.current) return;
-    map.current = new nmp_mapboxgl.Map({
+    if (reverseGeocode.data !== undefined)
+      setCenterAddress?.(reverseGeocode.data);
+  }, [reverseGeocode.data, setCenterAddress]);
+
+  useEffect(() => {
+    if (initialMap.current) return;
+    initialMap.current = new nmp_mapboxgl.Map({
       mapType: nmp_mapboxgl.Map.mapTypes.neshanRaster,
       container: mapContainer.current || "map",
-      center: [center[0], center[1]],
+      center: [initialCenterRef.current[0], initialCenterRef.current[1]],
       zoom: zoom,
       minZoom: 2,
       maxZoom: 21,
@@ -80,7 +75,7 @@ const Map = ({
       },
     });
 
-    map.current.addControl(
+    initialMap.current.addControl(
       new nmp_mapboxgl.GeolocateControl({
         positionOptions: {
           enableHighAccuracy: true,
@@ -88,18 +83,25 @@ const Map = ({
         trackUserLocation: true,
       }),
     );
-    map.current.addControl(new nmp_mapboxgl.NavigationControl(), "top-right");
-    map.current.on("move", () => {
-      if (setCenter)
-        setCenter([map.current.getCenter().lng, map.current.getCenter().lat]);
-      setIsMoving(true);
-      checkTyping();
-    });
-  }, [API_KEY, zoom, map, mapContainer]);
+    initialMap.current.addControl(
+      new nmp_mapboxgl.NavigationControl(),
+      "top-right",
+    );
+    const handleMove = () => {
+      const currentCenter = initialMap.current.getCenter();
+      updateCenter([currentCenter.lng, currentCenter.lat]);
+    };
+    initialMap.current.on("move", handleMove);
+    return () => {
+      initialMap.current?.off("move", handleMove);
+      initialMap.current?.remove();
+      initialMap.current = null;
+    };
+  }, [API_KEY, zoom]);
 
   useEffect(() => {
     if (!!jumpToState) {
-      map.current.jumpTo(
+      initialMap.current?.jumpTo(
         { center: [jumpToState?.lng, jumpToState?.lat] },
         2000,
       );
@@ -115,8 +117,11 @@ const Map = ({
         className={`map ${!!containerClass ? containerClass : "w-screen aspect-square"} `}
       />
       {!disableCenter ? (
-        <img
+        <Image
           id={"center_location"}
+          alt=""
+          width={32}
+          height={32}
           className="absolute w-8 cursor-pointer aspect-square top-1/2 left-1/2  "
           style={{ transform: "translate(-50%,-50%)" }}
           src="/assets/icons/addresses/location_center.svg"
@@ -130,7 +135,7 @@ const Map = ({
                 ...e,
                 new nmp_mapboxgl.Marker({ element: el, anchor: "center" })
                   .setLngLat([center[0], center[1]])
-                  .addTo(map.current),
+                  .addTo(initialMap.current),
               ]);
           }}
         />

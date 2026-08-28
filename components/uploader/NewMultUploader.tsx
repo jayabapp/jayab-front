@@ -90,18 +90,19 @@ const NewMultUploader = ({
     if (!!imagesLoadings && !isPending)
       if (Object.keys(imagesLoadings).every((e) => imagesLoadings?.[e] == 1))
         setLoading(false);
-  }, [imagesLoadings, isPending]);
+  }, [imagesLoadings, isPending, setLoading]);
 
   useEffect(() => {
+    const controllers = uploadControllersRef.current;
+    const blobUrls = blobUrlsRef.current;
     return () => {
-      uploadControllersRef.current.forEach((controller) => controller.abort());
-      blobUrlsRef.current.forEach((url) => URL.revokeObjectURL(url));
-      blobUrlsRef.current.clear();
+      controllers.forEach((controller) => controller.abort());
+      blobUrls.forEach((url) => URL.revokeObjectURL(url));
+      blobUrls.clear();
     };
   }, []);
 
   const uploadTemp = async (file: Blob, id: number | string) => {
-    console.log("try1");
     try {
       const formData = new FormData();
       formData.append("file", file);

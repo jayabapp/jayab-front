@@ -6,25 +6,26 @@ const useViewportHeightFix = (
   setOffSetTop: React.Dispatch<React.SetStateAction<number>>
 ) => {
   useEffect(() => {
-    const handleResize = () => {
-      if (window.visualViewport) {
-        const resizeHandler = () => {};
-
-        window.visualViewport.addEventListener("resize", resizeHandler);
-
-        setHeight(window.visualViewport?.height);
-        setOffSetTop(window.visualViewport?.offsetTop);
-      }
+    const viewport = window.visualViewport;
+    const updateViewport = () => {
+      if (!viewport) return;
+      setHeight(viewport.height);
+      setOffSetTop(viewport.offsetTop);
     };
 
-    if (window.visualViewport && isIOS) {
-      window.visualViewport.addEventListener("scroll", handleResize);
+    if (viewport && isIOS) {
+      viewport.addEventListener("resize", updateViewport);
+      viewport.addEventListener("scroll", updateViewport);
     } else {
-      window.addEventListener("resize", handleResize);
+      window.addEventListener("resize", updateViewport);
     }
-    handleResize(); // Initial call to set the value
+    updateViewport();
 
-    return () => window.removeEventListener("resize", handleResize);
-  }, []);
+    return () => {
+      viewport?.removeEventListener("resize", updateViewport);
+      viewport?.removeEventListener("scroll", updateViewport);
+      window.removeEventListener("resize", updateViewport);
+    };
+  }, [setHeight, setOffSetTop]);
 };
 export default useViewportHeightFix;

@@ -1,10 +1,10 @@
 "use client";
 
 import { useAuthStore, useStoreInit, useStoreParams } from "@/store";
+import { useEffect, useMemo, useState } from "react";
 import { AnimatePresence, motion } from "framer-motion";
 import { usePathname, useRouter } from "next/navigation";
 import { footerHiddenBlackList } from "@/utils/constantss";
-import { useEffect, useState } from "react";
 import { useUnreadChatCount } from "@features/chat/hooks/useUnreadChatCount";
 import { subscriptionStatus } from "@/helpers/subscriptionStatus";
 import { PropertyService } from "@/api_services/property/property.service";
@@ -26,7 +26,7 @@ const MobileFooter: React.FC = ({}) => {
   const { isLogin } = useAuthStore((state: any) => state);
   const route = usePathname();
   const { owmerActiveReservesCount } = useStoreParams((data) => data);
-  const { data: initPropData, refetch } = useQuery({
+  const { refetch } = useQuery({
     queryKey: [PropertyService.OWNER_PROP_INIT_CACHEKEY],
     queryFn: () => PropertyService.InitProperty({ property_id: undefined }),
     enabled: false,
@@ -110,22 +110,29 @@ const MobileFooter: React.FC = ({}) => {
     }
   };
 
-  var lastScrollTop = 0;
   const [isVisible, setIsVisible] = useState(true);
 
-  const handleScroll = throttle(() => {
-    var st = window?.scrollY || document?.documentElement?.scrollTop;
-    if (st > lastScrollTop) {
-      if (st - lastScrollTop > 20) setIsVisible(false);
-    } else if (st < lastScrollTop) {
-      if (lastScrollTop - st > 20) setIsVisible(true);
-    }
-    lastScrollTop = st <= 0 ? 0 : st;
-  }, 100);
-  useEffect(() => {
-    window?.addEventListener("scroll", handleScroll);
-    return () => window?.removeEventListener("scroll", handleScroll);
+  const handleScroll = useMemo(() => {
+    let previousScrollTop = 0;
+    return throttle(() => {
+      const scrollTop = window.scrollY || document.documentElement.scrollTop;
+      if (scrollTop > previousScrollTop && scrollTop - previousScrollTop > 20)
+        setIsVisible(false);
+      else if (
+        scrollTop < previousScrollTop &&
+        previousScrollTop - scrollTop > 20
+      )
+        setIsVisible(true);
+      previousScrollTop = Math.max(scrollTop, 0);
+    }, 100);
   }, []);
+  useEffect(() => {
+    window.addEventListener("scroll", handleScroll);
+    return () => {
+      window.removeEventListener("scroll", handleScroll);
+      handleScroll.cancel();
+    };
+  }, [handleScroll]);
 
   const MY_JAYAB_HAS_NOTIF = !!owmerActiveReservesCount;
 

@@ -1,13 +1,11 @@
-import React from "react";
-import { SearchedLOCType } from "./SearchPlaceModal";
+import type { SearchedLocation } from "@/types/features/map";
 
-const SearchedLocItem = ({
-  item,
-  locationClickFunc,
-}: {
-  item: SearchedLOCType;
-  locationClickFunc: (e: SearchedLOCType) => void;
-}) => {
+type TSearchedLocProps = {
+  item: SearchedLocation;
+  locationClickFunc: (e: SearchedLocation) => void;
+};
+
+const SearchedLocItem = ({ item, locationClickFunc }: TSearchedLocProps) => {
   return (
     <div
       onClick={() => {
@@ -18,7 +16,8 @@ const SearchedLocItem = ({
       <img src="/assets/icons/adds/pin_point_location.svg" className="" />
       <div className="flex h-full justify-between flex-col gap-1">
         <div className="text-sm">
-          {item?.title} {item?.neighbourhood ? `(${item?.neighbourhood})` : <></>}
+          {item?.title}{" "}
+          {item?.neighbourhood ? `(${item?.neighbourhood})` : <></>}
         </div>
         <p className="text-sm">{item?.address}</p>
       </div>
