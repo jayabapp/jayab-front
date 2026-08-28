@@ -34,6 +34,7 @@ const changedSources = [
 
 run(process.execPath, ["scripts/check-layer-contracts.mjs"]);
 run(process.execPath, ["scripts/check-migration-guardrails.mjs"]);
+run(process.execPath, ["scripts/report-migration-review.mjs"]);
 
 if (changedSources.length > 0) {
   run(process.execPath, ["node_modules/eslint/bin/eslint.js", ...changedSources]);

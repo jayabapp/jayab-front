@@ -52,6 +52,15 @@ for (const file of sourceFiles) {
   if (/^(?:app|components)\//.test(file) && /<img\b/.test(source)) {
     violations.push(`${file}: new bitmap UI must use next/image or a documented exception`);
   }
+  if (/\bURL\.createObjectURL\s*\(/.test(source) && !/\bURL\.revokeObjectURL\s*\(/.test(source)) {
+    violations.push(`${file}: object URLs require lifecycle cleanup with URL.revokeObjectURL`);
+  }
+  if (/\.addEventListener\s*\(/.test(source) && !/\.removeEventListener\s*\(/.test(source)) {
+    violations.push(`${file}: DOM event listeners require cleanup`);
+  }
+  if (/\bsetTimeout\s*\(/.test(source) && !/\bclearTimeout\s*\(/.test(source)) {
+    violations.push(`${file}: timers require cleanup or a shared lifecycle-safe abstraction`);
+  }
 }
 
 if (violations.length > 0) {

@@ -15,9 +15,11 @@
     "architecture:check": "node scripts/check-layer-contracts.mjs",
     "architecture:report": "node scripts/report-client-boundaries.mjs",
     "architecture:migration": "node scripts/report-component-migration.mjs",
+    "architecture:review": "node scripts/report-migration-review.mjs",
     "migration:guardrails": "node scripts/check-migration-guardrails.mjs",
     "migration:verify": "node scripts/verify-migration.mjs",
-    "migration:verify:build": "node scripts/verify-migration.mjs --build"
+    "migration:verify:build": "node scripts/verify-migration.mjs --build",
+    "module:scaffold": "node scripts/scaffold-module.mjs"
   },
   "dependencies": {
     "@headlessui/react": "^2.2.0",
