@@ -1,5 +1,8 @@
 export const CityRowSkeleton = () => (
-  <div className="flex w-full animate-pulse flex-col gap-4 p-3" aria-hidden="true">
+  <div
+    className="flex w-full animate-pulse flex-col gap-4 p-3 motion-reduce:animate-none"
+    aria-hidden="true"
+  >
     {[0, 1, 2, 3, 4].map((item) => (
       <div className="flex items-center gap-4" key={item}>
         <div className="size-10 rounded-md bg-gray-200" />

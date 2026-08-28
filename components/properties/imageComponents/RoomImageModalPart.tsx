@@ -1,52 +1,28 @@
 "use client";
-import Modal from "@/components/Modal";
-import { useEffect, useRef, useState } from "react";
-import { ImageSlideType } from "./PropertiesImagesPart";
 
-import SmallLoading from "@/components/shared/Lotties/SmallLoading";
+import { TransformComponent, TransformWrapper } from "react-zoom-pan-pinch";
 import { NEW_IMAGE_URL } from "@/utils/urls";
 
+import type { ImageSlideType } from "./PropertiesImagesPart";
+
 import SwiperWithThumnails from "@/components/embelaCarousel/SwiperWithThumnails";
-import { TransformComponent, TransformWrapper } from "react-zoom-pan-pinch";
-const RoomImageModalPart = ({
-  modalProps,
-  setModalProps,
-  addImages,
-  alt,
-}: {
+import Skeleton from "@/components/elements/Skeleton/Skeleton";
+import Modal from "@/components/Modal";
+
+type TRoomImageModalProps = {
+  alt?: string;
   addImages?: (any | undefined)[];
   modalProps?: ImageSlideType;
   setModalProps: (e?: ImageSlideType | null | any) => void | null | undefined;
+};
 
-  alt?: string;
-}) => {
-  const [isVisible, setisVisible] = useState(false);
-  const [activeIndex, setActiveIndex] = useState(modalProps?.currentIndex);
-
-  const mobileSwiper = useRef(null) as any;
-
-  useEffect(() => {
-    if (modalProps?.isVisible) {
-      setTimeout(() => {
-        setisVisible(true);
-      }, 200);
-    } else {
-      setisVisible(false);
-    }
-    setActiveIndex(modalProps?.currentIndex);
-  }, [modalProps]);
-  useEffect(() => {
-    if (activeIndex != null && mobileSwiper?.current) {
-      mobileSwiper?.current?.slideTo(activeIndex);
-    }
-  }, [activeIndex, mobileSwiper.current]);
-
-  const media =
-    modalProps?.data?.video && !!addImages
-      ? [...addImages, modalProps?.data?.video]
-      : !!addImages
-        ? [...addImages]
-        : [];
+const RoomImageModalPart = ({
+  alt,
+  addImages,
+  modalProps,
+  setModalProps,
+}: TRoomImageModalProps) => {
+  const isVisible = Boolean(modalProps?.isVisible);
 
   return (
     <Modal
@@ -65,28 +41,41 @@ const RoomImageModalPart = ({
             onClick={() => setModalProps({ ...modalProps, isVisible: false })}
             className="flex border  cursor-pointer bg-white p-2 rounded-10 justify-center aspect-square items-center "
           >
-            <img src="/assets/icons/adds/x_mark.svg" className={"w-4    h-auto mx-1 cursor-pointer dark:invert"} />
+            <img
+              src="/assets/icons/adds/x_mark.svg"
+              className={"w-4    h-auto mx-1 cursor-pointer dark:invert"}
+            />
           </div>
           <div className="flex items-center gap-2">
             {" "}
-            <h2 className=" !text-base  !line-clamp-1 dark:text-neutral-300">{modalProps?.data?.title}</h2>
+            <h2 className=" !text-base  !line-clamp-1 dark:text-neutral-300">
+              {modalProps?.data?.title}
+            </h2>
           </div>
         </div>
         <div className="w-full   md:h-full  relative  md:px-[25%] ">
           {isVisible ? (
             <SwiperWithThumnails
-              defaultSelectedIndex={modalProps?.currentIndex ? Number(modalProps?.currentIndex) : undefined}
+              defaultSelectedIndex={
+                modalProps?.currentIndex
+                  ? Number(modalProps?.currentIndex)
+                  : undefined
+              }
               slides={addImages || []}
               slidesWidth={{ def: "100%", md: "100%" }}
               spacing="0.5rem"
               options={{ align: "center", direction: "rtl", dragFree: false }}
             >
-              {addImages?.map((i, index) => (
+              {addImages?.map((i) => (
                 <div
                   key={`addImage${i?.id}`}
                   className="  flex items-center embla__slide  justify-center w-full h-full  p-1 rounded-md "
                 >
-                  <TransformWrapper panning={{ disabled: true }} disablePadding limitToBounds>
+                  <TransformWrapper
+                    panning={{ disabled: true }}
+                    disablePadding
+                    limitToBounds
+                  >
                     <TransformComponent>
                       <img
                         alt={alt || ""}
@@ -100,7 +89,7 @@ const RoomImageModalPart = ({
               ))}
             </SwiperWithThumnails>
           ) : (
-            <SmallLoading />
+            <Skeleton className="aspect-[4/3] w-full rounded-xl" />
           )}
         </div>
       </div>

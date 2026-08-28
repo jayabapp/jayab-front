@@ -1,5 +1,5 @@
 const ChatRoomSkeleton = () => (
-  <div className="flex h-[100dvh] w-full animate-pulse flex-col bg-neutral-100 md:w-1/2">
+  <div className="flex h-[100dvh] w-full animate-pulse flex-col bg-neutral-100 motion-reduce:animate-none md:w-1/2 dark:bg-zinc-800">
     <div className="flex h-20 items-center gap-3 bg-white px-4 shadow-sm">
       <div className="size-12 rounded-full bg-neutral-200" />
       <div className="h-4 w-1/3 rounded bg-neutral-200" />

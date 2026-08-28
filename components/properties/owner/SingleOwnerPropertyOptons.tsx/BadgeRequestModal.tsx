@@ -3,7 +3,7 @@ import { GetPropBadgeDto } from "@/api_services/property/property.interface";
 import { usePropertyBadge } from "@features/owner-property/hooks/usePropertyBadge";
 
 import useCmsContent from "@/hooks/useCmsContent";
-import SmallLoading from "@/components/shared/Lotties/SmallLoading";
+import SkeletonText from "@/components/elements/Skeleton/SkeletonText";
 import StatusShower from "@/components/shared/StatusShower";
 import _STRINGS from "@/utils/LocalStrings";
 import CmsText from "@/components/shared/CmsText";
@@ -57,7 +57,7 @@ const BadgeRequestModal = ({
           {_STRINGS.REQUEST_FOR_BADGE}
         </p>
         {isLoading ? (
-          <SmallLoading />
+          <SkeletonText lines={2} />
         ) : (
           <CmsText className="text-xs">
             {badgeContent?.small_text || ""}

@@ -10,7 +10,7 @@ import { produce } from "immer";
 
 import RangeWithTitle from "@/components/shared/Form/RangeWithTitle";
 import useCmsContent from "@/hooks/useCmsContent";
-import SmallLoading from "@/components/shared/Lotties/SmallLoading";
+import SkeletonText from "@/components/elements/Skeleton/SkeletonText";
 import _STRINGS from "@/utils/LocalStrings";
 import CmsText from "@/components/shared/CmsText";
 import Button from "@/components/shared/Button/Button";
@@ -92,7 +92,7 @@ const ChangeCommissionModal = ({
           {_STRINGS.CHANGE_ADVISOR_COMMISSION}
         </p>
         {isLoading ? (
-          <SmallLoading />
+          <SkeletonText lines={3} />
         ) : (
           <CmsText className="text-xs">
             {changeCommision?.small_text || ""}

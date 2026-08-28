@@ -10,7 +10,7 @@ import SearchBoxPopularPlaces from "./SearchBoxPopularPlaces";
 import SeachBoxCitySelector from "../Home/HomeCityFilterContainer/SeachBoxCitySelector";
 import SearchBoxCitiesPart from "./SearchBoxCitiesPart";
 import SuggestedPart from "./SuggestedPart";
-import SmallLoading from "../shared/Lotties/SmallLoading";
+import BtnLoading from "../shared/Button/BtnLoading";
 import isEmpty from "lodash/isEmpty";
 import dynamic from "next/dynamic";
 
@@ -164,7 +164,7 @@ const PopSearchbox = ({
               className="  cursor-pointer h-8 w-8  flex items-center justify-center  p-2 absolute left-1 aspect-square rounded-full  bg-primary-700"
             >
               {!!isPending ? (
-                <SmallLoading />
+                <BtnLoading />
               ) : (
                 <img
                   src="/assets/icons/edit/magnifier.svg"

@@ -1,17 +1,22 @@
+import { Divider } from "../shared/Divider";
+
+import CmsContentSkeleton from "../shared/CmsContentSkeleton";
 import _STRINGS from "@/utils/LocalStrings";
 import Modal from "../Modal";
-import { Divider } from "../shared/Divider";
-import SimpleLoading from "../shared/Lotties/SimpleLoading";
 
-type TermsTypes = {
+type TTermsTypes = {
   visibleTermsModal: boolean;
-
   setvisibleTermsModal: (e: boolean) => void | null;
   termsLoading: boolean;
   termsContent?: { html?: string; full_text?: string };
 };
 
-const Terms = ({ visibleTermsModal, setvisibleTermsModal, termsLoading, termsContent }: TermsTypes) => {
+const Terms = ({
+  termsLoading,
+  termsContent,
+  visibleTermsModal,
+  setvisibleTermsModal,
+}: TTermsTypes) => {
   return (
     <Modal show={visibleTermsModal} onHide={() => setvisibleTermsModal(false)}>
       <div className="app-text">
@@ -26,9 +31,7 @@ const Terms = ({ visibleTermsModal, setvisibleTermsModal, termsLoading, termsCon
         </div>
         <Divider moreClass="border-dashed mb-3" />
         {termsLoading ? (
-          <div className="w-full flex justify-center my-4">
-            <SimpleLoading />
-          </div>
+          <CmsContentSkeleton withImage={false} />
         ) : (
           <div
             className="  bg-neutral-200 dark:bg-zinc-800 font-light text-sm px-2 py-3 rounded-lg  content text-justify mx-2 lg:mx-4 leading-6 my-2 "

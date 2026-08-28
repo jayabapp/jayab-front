@@ -2,22 +2,24 @@ import { SingleChatDetailsDto } from "@/api_services/chat/chat.interface";
 import { NEW_IMAGE_URL } from "@/utils/urls";
 import { useRouter } from "next/navigation";
 
-import LottieLoading from "../shared/Lotties/LottieLoading";
+import CmsContentSkeleton from "../shared/CmsContentSkeleton";
 import useCmsContent from "@/hooks/useCmsContent";
 import _STRINGS from "@/utils/LocalStrings";
 import CmsText from "../shared/CmsText";
 import Button from "../shared/Button/Button";
 import Modal from "../Modal";
 
-const ExpiredPropertyModal = ({
-  visibleModal,
-  setVisibleModal,
-  singleChatData,
-}: {
+type TExpiredPropertyProps = {
   visibleModal: boolean;
   setVisibleModal: (e: any) => void | null;
   singleChatData: SingleChatDetailsDto | undefined;
-}) => {
+};
+
+const ExpiredPropertyModal = ({
+  visibleModal,
+  singleChatData,
+  setVisibleModal,
+}: TExpiredPropertyProps) => {
   const { push } = useRouter();
   const onHideFunc = () => {
     setVisibleModal(false);
@@ -44,7 +46,7 @@ const ExpiredPropertyModal = ({
     >
       <div className=" py-5 flex-col items-center  justify-center  gap-4 flex px-3">
         {isLoading || !data ? (
-          <LottieLoading />
+          <CmsContentSkeleton />
         ) : (
           <>
             <img src={NEW_IMAGE_URL(data?.feature_image)} className="w-60  " />

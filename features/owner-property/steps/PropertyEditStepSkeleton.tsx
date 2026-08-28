@@ -4,7 +4,7 @@ const PropertyEditStepSkeleton = ({
   variant?: "form" | "map" | "media";
 }) => (
   <div
-    className="w-full animate-pulse space-y-5 px-4 py-6"
+    className="w-full animate-pulse space-y-5 px-4 py-6 motion-reduce:animate-none"
     aria-label="در حال بارگذاری فرم"
   >
     <div className="h-5 w-1/3 rounded bg-zinc-200" />

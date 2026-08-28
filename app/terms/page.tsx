@@ -2,7 +2,6 @@ import { getCmsContent } from "@/api_services/home/cms-content.server";
 import { Metadata } from "next";
 
 import MehaHeaderHelper from "@/helpers/MetaHeaderHelper";
-import LottieLoading from "@/components/shared/Lotties/LottieLoading";
 import Breadcrumbs from "@/components/BreadCrumbs";
 import DOMPurify from "isomorphic-dompurify";
 import _STRINGS from "@/utils/LocalStrings";
@@ -23,7 +22,9 @@ const Terms = async () => {
             <h1 className="    ">{_STRINGS.TERMS}</h1>
           </div>{" "}
           {!aboutUsWebsite ? (
-            <LottieLoading />
+            <p className="py-12 text-center text-sm text-neutral-500">
+              {_STRINGS.ERROR}
+            </p>
           ) : (
             <div
               className=" font-light !text-base text-start  content mt-2 leading-8"

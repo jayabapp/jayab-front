@@ -1,31 +1,32 @@
 "use client";
-import { useRouter } from "next/navigation";
+
 import { ReactNode, useState } from "react";
-import React from "react";
-import Modal from ".";
-import SmallLoading from "../shared/Lotties/SmallLoading";
+
 import MultiLineFormInput from "../shared/Form/MultiLineFormInput";
+import BtnLoading from "../shared/Button/BtnLoading";
 import _STRINGS from "@/utils/LocalStrings";
+import Modal from ".";
+
 type ModalProps = {
-  children?: ReactNode;
-  onHide: () => void;
-  onConfirm: (e?: string | null | undefined) => void | null;
-  isVisible?: boolean;
-  isLoading?: boolean;
   options?: op;
   text: string;
-  confirmText?: string;
-  confirmTextClassName?: string;
-  hideText?: string;
-  hideTextClassName?: string;
   title?: string;
+  hideText?: string;
+  onHide: () => void;
+  isVisible?: boolean;
+  isLoading?: boolean;
+  confirmText?: string;
+  children?: ReactNode;
   headerImage?: string;
   messageClass?: string;
+  hideTextClassName?: string;
+  confirmTextClassName?: string;
+  onConfirm: (e?: string | null | undefined) => void | null;
 };
 interface op {
-  containerClass?: string;
   hasInput?: boolean;
   inputTitle?: string;
+  containerClass?: string;
 }
 const ConfirmModal = ({
   isVisible,
@@ -43,7 +44,6 @@ const ConfirmModal = ({
   options,
 }: ModalProps) => {
   const [message, setMessage] = useState("");
-  const router = useRouter();
   return (
     <Modal
       show={isVisible}
@@ -53,16 +53,31 @@ const ConfirmModal = ({
           "mx-auto my-20   w-11/12 md:w-1/2 xl:w-1/3 2xl:w-1/4 rounded-lg overflow-y-scroll  bg-white  dark:bg-zinc-800",
       }}
     >
-      <div className={"w-full flex items-center justify-center flex-col rounded-lg p-4"}>
-        {headerImage ? <img className="w-[3.25rem] aspect-square  object-contain " src={headerImage} /> : <></>}
-
-        {/* <Lottie width={100} height={100} options={{ animationData: LottieAnimation, loop: false }} /> */}
+      <div
+        className={
+          "w-full flex items-center justify-center flex-col rounded-lg p-4"
+        }
+      >
+        {headerImage ? (
+          <img
+            className="w-[3.25rem] aspect-square  object-contain "
+            src={headerImage}
+          />
+        ) : (
+          <></>
+        )}
         {title ? (
-          <p className="font-medium text-center text-base text-primary-700 dark:text-zinc-300 my-5">{title}</p>
+          <p className="font-medium text-center text-base text-primary-700 dark:text-zinc-300 my-5">
+            {title}
+          </p>
         ) : (
           ""
         )}
-        <p className={`font-light text-center text-sm dark:text-neutral-200 my-5  ${messageClass}`}>{text}</p>
+        <p
+          className={`font-light text-center text-sm dark:text-neutral-200 my-5  ${messageClass}`}
+        >
+          {text}
+        </p>
         {options?.hasInput ? (
           <MultiLineFormInput
             item={{
@@ -88,7 +103,7 @@ const ConfirmModal = ({
               }
             }}
           >
-            {isLoading ? <SmallLoading /> : confirmText}
+            {isLoading ? <BtnLoading /> : confirmText}
           </div>
           <div
             className={`  bg-gray-300 hover:opacity-80 transition-all duration-200 ease-in-out w-full mx-2 text-center py-2.5 rounded-md cursor-pointer ${hideTextClassName}`}

@@ -1,7 +1,13 @@
 export const PropertyGridSkeleton = ({ count = 8 }: { count?: number }) => (
-  <div className="grid grid-cols-1 gap-2 pb-8 pt-2 md:grid-cols-2 md:gap-4 xl:grid-cols-4" aria-hidden="true">
+  <div
+    className="grid grid-cols-1 gap-2 pb-8 pt-2 md:grid-cols-2 md:gap-4 xl:grid-cols-4"
+    aria-hidden="true"
+  >
     {Array.from({ length: count }, (_, index) => (
-      <div className="animate-pulse rounded-20 p-3 shadow" key={index}>
+      <div
+        className="animate-pulse rounded-20 p-3 shadow motion-reduce:animate-none"
+        key={index}
+      >
         <div className="grid grid-cols-5 gap-2">
           <div className="col-span-3 flex flex-col gap-3">
             <div className="h-4 w-full rounded bg-gray-200" />

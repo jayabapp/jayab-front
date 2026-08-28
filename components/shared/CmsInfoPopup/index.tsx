@@ -3,7 +3,7 @@
 import { NEW_IMAGE_URL } from "@/utils/urls";
 
 import ModalBottomSheet from "@/components/Modal/ModalBottomSheet";
-import LottieLoading from "@/components/shared/Lotties/LottieLoading";
+import CmsContentSkeleton from "@/components/shared/CmsContentSkeleton";
 import useCmsContent from "@/hooks/useCmsContent";
 import CmsText from "@/components/shared/CmsText";
 import Button from "@/components/shared/Button/Button";
@@ -14,18 +14,14 @@ export interface CmsInfoPopupAction {
   href?: string;
   onClick?: () => void;
 }
-
-const CmsInfoPopup = ({
-  show,
-  onHide,
-  contentKey,
-  action,
-}: {
+type TCmsInfoProps = {
   show: boolean;
-  onHide: () => void | null;
   contentKey: string;
+  onHide: () => void | null;
   action: CmsInfoPopupAction;
-}) => {
+};
+
+const CmsInfoPopup = ({ show, onHide, action, contentKey }: TCmsInfoProps) => {
   const { content, isLoading } = useCmsContent(contentKey, { enabled: !!show });
 
   const actionButton = (
@@ -42,7 +38,7 @@ const CmsInfoPopup = ({
     <ModalBottomSheet show={show} onHide={onHide}>
       <div className="flex gap-4  items-center justify-center flex-col p-4  ">
         {isLoading ? (
-          <LottieLoading />
+          <CmsContentSkeleton />
         ) : (
           <>
             <img

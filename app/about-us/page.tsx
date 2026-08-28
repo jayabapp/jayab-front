@@ -2,10 +2,10 @@ import { LocalBusinessSchema } from "@/components/SchemaGenerator/Schemas";
 import { NEW_IMAGE_URL } from "@/utils/urls";
 import { getCmsContent } from "@/api_services/home/cms-content.server";
 
-import LottieLoading from "@/components/shared/Lotties/LottieLoading";
 import Breadcrumbs from "@/components/BreadCrumbs";
 import DOMPurify from "isomorphic-dompurify";
 import Editable from "@/components/Editable";
+import _STRINGS from "@/utils/LocalStrings";
 
 const AboutUs = async () => {
   const aboutUs = await getCmsContent("aboutUs");
@@ -20,7 +20,9 @@ const AboutUs = async () => {
       <div className="flex  flex-col items-center justify-center">
         <img src="/assets/icons/logo/header_logo.svg" className=" max-w-52" />
         {!aboutUs ? (
-          <LottieLoading />
+          <p className="py-12 text-center text-sm text-neutral-500">
+            {_STRINGS.ERROR}
+          </p>
         ) : aboutUs ? (
           <Editable contentId={aboutUs?.id}>
             {" "}

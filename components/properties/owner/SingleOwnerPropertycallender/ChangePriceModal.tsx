@@ -11,7 +11,7 @@ import { produce } from "immer";
 import { Divider } from "@/components/shared/Divider";
 
 import PriceRangeField from "./PriceRangeField";
-import SmallLoading from "@/components/shared/Lotties/SmallLoading";
+import SkeletonText from "@/components/elements/Skeleton/SkeletonText";
 import useCmsContent from "@/hooks/useCmsContent";
 import Checkbox from "@/components/shared/Form/Checkbox";
 import _STRINGS from "@/utils/LocalStrings";
@@ -179,7 +179,7 @@ const ChangePriceModal = ({
           {_STRINGS.IMMEDIATE_CHANGE}
         </p>
         {isLoading ? (
-          <SmallLoading />
+          <SkeletonText lines={3} />
         ) : (
           <CmsText className="text-xs">
             {fastPriceChangeMessage?.small_text || ""}
@@ -205,7 +205,7 @@ const ChangePriceModal = ({
           {_STRINGS.DISCOUNTED_PRICE_TITLE}
         </p>
         {isDiscountLoading ? (
-          <SmallLoading />
+          <SkeletonText lines={3} />
         ) : (
           <CmsText className="text-xs">
             {discountPriceMessage?.small_text || ""}

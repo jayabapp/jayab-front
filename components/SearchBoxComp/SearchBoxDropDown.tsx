@@ -12,7 +12,7 @@ import SeachBoxCitySelector from "../Home/HomeCityFilterContainer/SeachBoxCitySe
 import SearchBoxCitiesPart from "./SearchBoxCitiesPart";
 import HistorySuggPart from "./HistorySuggPart";
 import SuggestedPart from "./SuggestedPart";
-import SmallLoading from "../shared/Lotties/SmallLoading";
+import BtnLoading from "../shared/Button/BtnLoading";
 import isEmpty from "lodash/isEmpty";
 interface props {
   boxId?: string;
@@ -113,7 +113,7 @@ const SearchBoxDropDown = ({
               className={` ${text ? "  " : " opacity-0"}  transition-all  cursor-pointer h-10 w-10  top-0  bottom-0 my-0 flex items-center justify-center    left-1 aspect-square rounded-full  bg-primary-700 `}
             >
               {!!isPending ? (
-                <SmallLoading />
+                <BtnLoading />
               ) : (
                 <img
                   src="/assets/icons/edit/magnifier.svg"

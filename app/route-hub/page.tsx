@@ -1,14 +1,16 @@
 "use client";
-import { PropertyService } from "@/api_services/property/property.service";
-import LottieLoading from "@/components/shared/Lotties/LottieLoading";
+
 import { useStoreInit, useStoreParams } from "@/store";
-import { useQuery } from "@tanstack/react-query";
+import { useEffect, useEffectEvent } from "react";
+import { PropertyService } from "@/api_services/property/property.service";
 import { useRouter } from "next/navigation";
-import React, { useEffect } from "react";
+import { useQuery } from "@tanstack/react-query";
+
+import PropertyEditStepSkeleton from "@features/owner-property/steps/PropertyEditStepSkeleton";
 
 const WaitingRoom = () => {
   const router = useRouter();
-  const { data: initPropData, refetch } = useQuery({
+  const { refetch } = useQuery({
     queryKey: [PropertyService.OWNER_PROP_INIT_CACHEKEY],
     queryFn: () => PropertyService.InitProperty({ property_id: undefined }),
     enabled: false,
@@ -21,21 +23,25 @@ const WaitingRoom = () => {
         router.push(`/profile/edit`);
       } else {
         refetch().then((e) => {
-          if (!!e?.data) router.push(`/profile/owner/properties/${e?.data?.id}/edit/initials`);
+          if (!!e?.data)
+            router.push(
+              `/profile/owner/properties/${e?.data?.id}/edit/initials`,
+            );
         });
       }
     } else {
       useStoreParams.setState({ loginModal: true, loginModalCancelRoute: "/" });
     }
   };
+  const startNavigation = useEffectEvent(onCreateAddClick);
 
   useEffect(() => {
-    onCreateAddClick();
+    startNavigation();
   }, []);
 
   return (
     <div className=" w-full container ">
-      <LottieLoading />
+      <PropertyEditStepSkeleton variant="form" />
     </div>
   );
 };
