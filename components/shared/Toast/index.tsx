@@ -1,6 +1,5 @@
 "use client";
 
-import { x_Iransans } from "@/app/fonts/x_iran/x_Iransans";
 import { ReactNode } from "react";
 import { isMobile } from "react-device-detect";
 import { toast } from "sonner";
@@ -65,7 +64,7 @@ const Notify = (props: TNotifyProps) => {
             options={{ animationData: _findTypeData()?.icon, loop }}
           />
         </div>
-        <div className={`mr-3   app-text  ${x_Iransans.className}  `}>
+        <div className="mr-3 app-text">
           <p className="font-light w-full text-[13px]  app-text  md:font-normal md:text-sm mx-2">
             {body}
           </p>
