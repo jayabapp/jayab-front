@@ -1,10 +1,12 @@
 "use client";
 
 import { AdvisorService } from "@/api_services/advisor/advisor.propery";
-import Button from "@/components/shared/Button/Button";
-import _STRINGS from "@/utils/LocalStrings";
 import { useQuery } from "@tanstack/react-query";
+
+import _STRINGS from "@/utils/LocalStrings";
+import Button from "@/components/shared/Button/Button";
 import React from "react";
+import Image from "next/image";
 
 const InviePage = () => {
   const onShare = async (data: any) => {
@@ -12,18 +14,18 @@ const InviePage = () => {
     const text = `شما را به جایاب دعوت میکنم
     ${data?.is_special ? `کد دعوت: ${data?.user?.referral_code}` : ""}
     ✅${window.origin}`;
-
     const shareDetails = { title, text };
     if (navigator.share) {
       try {
-        await navigator.share(shareDetails).then(() => console.log("Your content was shared"));
-      } catch (error) {}
+        await navigator
+          .share(shareDetails)
+          .then(() => console.log("Your content was shared"));
+      } catch {}
     }
   };
 
   const { data: advisorProfile } = useQuery({
     queryKey: [AdvisorService.USER_ADVISORS_PROFILE_CACHEKEY],
-
     queryFn: () => {
       return AdvisorService.userAdvisorsProfile();
     },
@@ -36,10 +38,15 @@ const InviePage = () => {
       className=" profile-container  !pb-36 items-center   !bg-transparent transition-all duration-500 ease-in-out flex flex-col gap-1 "
     >
       <div className=" w-full md:px-[30%]  mt-12   flex flex-col gap-4 ">
-        <img src="/assets/images/shared/invite_image.png" />
-
+        <Image
+          width={768}
+          height={512}
+          className="h-auto w-full"
+          alt={_STRINGS.INVITE_TEXT}
+          sizes="(min-width: 768px) 40vw, 100vw"
+          src="/assets/images/shared/invite_image.png"
+        />
         <p className="text-center">{_STRINGS.INVITE_TEXT}</p>
-
         {!!advisorProfile?.is_special ? (
           <div className="flex flex-col w-full items-center justify-center gap-2">
             <p className="text-sm">{_STRINGS.REFRAL_CODE}</p>
@@ -51,7 +58,12 @@ const InviePage = () => {
           <></>
         )}
 
-        <Button onClick={() => onShare(advisorProfile)} containerClass="w-full" width="w-full" title={_STRINGS.SHARE} />
+        <Button
+          width="w-full"
+          title={_STRINGS.SHARE}
+          containerClass="w-full"
+          onClick={() => onShare(advisorProfile)}
+        />
       </div>
     </div>
   );

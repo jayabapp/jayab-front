@@ -2,6 +2,7 @@
 
 import { TransformComponent, TransformWrapper } from "react-zoom-pan-pinch";
 import { NEW_IMAGE_URL } from "@/utils/urls";
+import { ContentImage } from "@/components/elements/Image";
 
 import type { ImageSlideType } from "./PropertiesImagesPart";
 
@@ -11,8 +12,8 @@ import Modal from "@/components/Modal";
 
 type TRoomImageModalProps = {
   alt?: string;
-  addImages?: (any | undefined)[];
   modalProps?: ImageSlideType;
+  addImages?: (any | undefined)[];
   setModalProps: (e?: ImageSlideType | null | any) => void | null | undefined;
 };
 
@@ -72,16 +73,19 @@ const RoomImageModalPart = ({
                   className="  flex items-center embla__slide  justify-center w-full h-full  p-1 rounded-md "
                 >
                   <TransformWrapper
-                    panning={{ disabled: true }}
-                    disablePadding
                     limitToBounds
+                    disablePadding
+                    panning={{ disabled: true }}
                   >
                     <TransformComponent>
-                      <img
+                      <ContentImage
+                        width={1024}
+                        height={1024}
                         alt={alt || ""}
                         title={alt || ""}
-                        className="w-fit  embla__slide  object-contain  h-full rounded-md  !max-h-[60dvh]  "
                         src={NEW_IMAGE_URL(i)}
+                        sizes="(min-width: 768px) 50vw, 100vw"
+                        className="w-fit  embla__slide  object-contain  h-full rounded-md  !max-h-[60dvh]  "
                       />
                     </TransformComponent>
                   </TransformWrapper>

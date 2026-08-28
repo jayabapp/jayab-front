@@ -69,7 +69,6 @@ const HomeProductsBannerItems = ({
           fill
           sizes="100vw"
           src={imageSrc}
-          priority={false}
           alt={`${bannerItem?.id || ""} banner`}
           className="w-full h-full rounded-20 !object-cover aspect-[1.5] md:aspect-[6] overflow-hidden align-middle img-dark"
         />

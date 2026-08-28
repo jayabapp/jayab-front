@@ -1,6 +1,8 @@
 "use client";
 
 import { ReactEventHandler, useEffect, useRef, useState } from "react";
+import { UploadPreviewImage } from "@/components/elements/Image";
+import { ContentImage } from "@/components/elements/Image";
 import { AuthService } from "@/api_services/auth/auth.service";
 import { useMutation } from "@tanstack/react-query";
 import { toast } from "sonner";
@@ -11,7 +13,7 @@ import Notify from "../shared/Toast";
 
 import "react-advanced-cropper/dist/style.css";
 
-type props = {
+type TNewMultUploader = {
   type?: string;
   images: any[];
   item: any;
@@ -57,7 +59,7 @@ const NewMultUploader = ({
   setLoading,
   imagesLoadings,
   images,
-}: props) => {
+}: TNewMultUploader) => {
   const imagePickerRef = useRef<HTMLDivElement>(null);
   const blobUrlsRef = useRef(new Set<string>());
   const uploadControllersRef = useRef(
@@ -203,7 +205,11 @@ const NewMultUploader = ({
               innerClasses?.sizeClass || "h-24 w-24"
             }`}
           >
-            <img
+            <ContentImage
+              width={40}
+              height={40}
+              sizes="40px"
+              alt=""
               src="/assets/images/uploader/uploader_placeholder.png"
               className="w-10 h-10 opacity-80 text-primary-700"
             />
@@ -243,19 +249,33 @@ const NewMultUploader = ({
                 innerClasses?.sizeClass || "h-24 w-24"
               }`}
             >
-              <img
-                alt="img"
-                src={
-                  typeof item == "string"
-                    ? "imageUrl" + item
-                    : item.file_location
-                      ? "imageUrl" + item.file_location
-                      : item.name
-                        ? `https://${item?.bucket}.${item?.end_point}/${item?.path}/${item?.name}`
-                        : item
-                }
-                className="object-cover w-full rounded-20 aspect-square max-w-max"
-              />
+              {typeof item === "string" || item?.file_location || item?.name ? (
+                <ContentImage
+                  width={384}
+                  height={384}
+                  sizes="96px"
+                  alt="img"
+                  src={
+                    typeof item == "string"
+                      ? "imageUrl" + item
+                      : item.file_location
+                        ? "imageUrl" + item.file_location
+                        : item.name
+                          ? `https://${item?.bucket}.${item?.end_point}/${item?.path}/${item?.name}`
+                          : item
+                  }
+                  className="object-cover w-full rounded-20 aspect-square max-w-max"
+                />
+              ) : item?.url ? (
+                <UploadPreviewImage
+                  width={384}
+                  height={384}
+                  sizes="96px"
+                  alt=""
+                  src={item.url}
+                  className="object-cover w-full rounded-20 aspect-square max-w-max"
+                />
+              ) : null}
             </div>
             {!!onDelete && (
               <div

@@ -1,18 +1,18 @@
 import { ProvienceTypesDto } from "@/api_services/property/property.interface";
 import { NEW_IMAGE_URL } from "@/utils/urls";
-import { useRouter } from "next/navigation";
+import { ContentImage } from "@/components/elements/Image";
 
-const PropertilesFilterListItem = ({
-  item,
-  isSelected,
-  cb,
-}: {
-  item: ProvienceTypesDto;
+type TPropertilesFilterProps = {
   isSelected?: boolean;
   cb?: () => void | null;
-}) => {
-  const router = useRouter();
+  item: ProvienceTypesDto;
+};
 
+const PropertilesFilterListItem = ({
+  cb,
+  item,
+  isSelected,
+}: TPropertilesFilterProps) => {
   return (
     <button
       id={item?.title}
@@ -23,13 +23,23 @@ const PropertilesFilterListItem = ({
           cb();
         }
       }}
-      className={`flex  justify-center   rounded-2xl  border   w-full aspect-square  flex-col   items-center gap-2 ${isSelected ? "border-primary-700" : ""}`}
+      className={`flex justify-center rounded-2xl border w-full aspect-square flex-col items-center gap-2 ${isSelected ? "border-primary-700" : ""}`}
     >
-      <img
+      <ContentImage
+        width={64}
+        height={64}
+        sizes="(min-width: 768px) 64px, 32px"
+        alt={item?.title || ""}
         className=" size-8 md:size-16  rounded-sm "
-        src={item?.image ? NEW_IMAGE_URL(item?.image) : "/assets/icons/logo/mobile_header_logo.svg"}
+        src={
+          item?.image
+            ? NEW_IMAGE_URL(item?.image)
+            : "/assets/icons/logo/mobile_header_logo.svg"
+        }
       />
-      <p className=" text-sm line-clamp-1 md:text-base font-normal md:font-bold">{item?.title}</p>
+      <p className=" text-sm line-clamp-1 md:text-base font-normal md:font-bold">
+        {item?.title}
+      </p>
     </button>
   );
 };

@@ -1,5 +1,6 @@
 import { SingleChatDetailsDto } from "@/api_services/chat/chat.interface";
 import { NEW_IMAGE_URL } from "@/utils/urls";
+import { ContentImage } from "@/components/elements/Image";
 import { useRouter } from "next/navigation";
 
 import CmsContentSkeleton from "../shared/CmsContentSkeleton";
@@ -49,7 +50,14 @@ const ExpiredPropertyModal = ({
           <CmsContentSkeleton />
         ) : (
           <>
-            <img src={NEW_IMAGE_URL(data?.feature_image)} className="w-60  " />
+            <ContentImage
+              width={512}
+              height={512}
+              sizes="240px"
+              alt={data?.title || ""}
+              className="w-60 h-auto"
+              src={NEW_IMAGE_URL(data?.feature_image)}
+            />
             <div className="flex flex-col w-full gap-2 items-center justify-center">
               <CmsText className=" font-medium">
                 {data?.small_text || _STRINGS.ROOM_EXPIRED_NOTICE}
@@ -60,10 +68,10 @@ const ExpiredPropertyModal = ({
             </div>
             <div className="w-full flex justify-between items-center gap-4 ">
               <Button
-                title={_STRINGS.EXTEND_SUBS}
                 width="w-full"
-                containerClass="w-full"
                 onClick={goExtend}
+                containerClass="w-full"
+                title={_STRINGS.EXTEND_SUBS}
               />
               <Button
                 width="w-full"

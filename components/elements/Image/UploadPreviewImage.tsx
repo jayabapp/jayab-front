@@ -1,11 +1,11 @@
 "use client";
 
-import Image from "next/image";
-
 import type { UploadPreviewImageProps } from "@/types/components/elements/image";
 
-const UploadPreviewImage = ({ alt, src, ...props }: UploadPreviewImageProps) => {
-  return <Image {...props} unoptimized alt={alt} src={src} />;
-};
+import Image from "next/image";
+
+const UploadPreviewImage = ({ alt, ...props }: UploadPreviewImageProps) => (
+  <Image {...props} alt={alt} unoptimized />
+);
 
 export default UploadPreviewImage;

@@ -1,17 +1,22 @@
-import { ContentDto } from "@/api_services/home/home.interface";
 import { NEW_IMAGE_URL } from "@/utils/urls";
+import { ContentImage } from "@/components/elements/Image";
+import { ContentDto } from "@/api_services/home/home.interface";
+
 import Link from "next/link";
-const ContactuUItem = ({
-  e,
-  disableText = false,
-  textClass,
-  isShiny,
-}: {
+
+type TContactItemProps = {
   e: ContentDto;
-  disableText?: boolean;
   isShiny?: boolean;
   textClass?: string;
-}) => {
+  disableText?: boolean;
+};
+
+const ContactuUItem = ({
+  e,
+  isShiny,
+  textClass,
+  disableText = false,
+}: TContactItemProps) => {
   const link = () => {
     let link = "";
     if (e?.key == "tel" || e?.fields?.key == "tel") {
@@ -30,24 +35,33 @@ const ContactuUItem = ({
 
   return (
     <Link
-      rel="nofollow noopener noreferrer"
-      href={link() || ""}
       target="_blank"
+      href={link() || ""}
       referrerPolicy="no-referrer"
+      rel="nofollow noopener noreferrer"
       className={`flex items-center gap-2  ${(e?.link || e?.small_text) && e?.key !== "address" ? "cursor-pointer" : ""}
       ${isShiny ? " bg-gradient-to-br from-white via-transparent to-white rounded-full w-10 h-10  flex items-center justify-center " : ""}
       `}
     >
       {e?.feature_image ? (
-        <img
-          className="w-6 h-6 !object-contain aspect-square "
-          src={NEW_IMAGE_URL(e?.feature_image)}
+        <ContentImage
+          width={24}
+          height={24}
+          sizes="24px"
           alt={e?.feature_image?.alt || ""}
+          src={NEW_IMAGE_URL(e?.feature_image)}
+          className="w-6 h-6 !object-contain aspect-square "
         />
       ) : (
         <></>
       )}
-      {disableText ? <></> : <p className={`text-base font-medium dark:text-zinc-100 ${textClass}`}>{e?.small_text}</p>}
+      {disableText ? (
+        <></>
+      ) : (
+        <p className={`text-base font-medium dark:text-zinc-100 ${textClass}`}>
+          {e?.small_text}
+        </p>
+      )}
     </Link>
   );
 };

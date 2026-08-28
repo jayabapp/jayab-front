@@ -1,6 +1,7 @@
 import { LocalBusinessSchema } from "@/components/SchemaGenerator/Schemas";
 import { NEW_IMAGE_URL } from "@/utils/urls";
 import { getCmsContent } from "@/api_services/home/cms-content.server";
+import { ContentImage } from "@/components/elements/Image";
 
 import Breadcrumbs from "@/components/BreadCrumbs";
 import DOMPurify from "isomorphic-dompurify";
@@ -50,9 +51,13 @@ const AboutUs = async () => {
               key={`aboutUs${e?.id}`}
               className=" w-full flex flex-col items-center justify-center gap-4"
             >
-              <img
+              <ContentImage
+                width={1024}
+                height={640}
+                alt={e?.attachment?.alt || ""}
                 src={NEW_IMAGE_URL(e?.attachment)}
-                className="aspect-[1.6] rounded-md  w-full "
+                sizes="(min-width: 768px) 33vw, 100vw"
+                className="aspect-[1.6] rounded-md w-full object-cover"
               />
 
               <p className=" font-medium">{e?.attachment?.alt}</p>

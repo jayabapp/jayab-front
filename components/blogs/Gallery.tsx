@@ -2,6 +2,7 @@
 
 import { FC, Fragment, useState } from "react";
 import { NEW_IMAGE_URL } from "@/utils/urls";
+import { ContentImage } from "@/components/elements/Image";
 import { ImageDto } from "@/api_services/auth/auth.interface";
 
 import SwiperSlide from "../embelaCarousel/SwiperSlide";
@@ -53,10 +54,13 @@ const GalleryModal: FC<{
               key={`MODAL${i?.id}`}
               className="!w-full flex  justify-center items-center  aspect-square relative "
             >
-              <img
-                className="w-3/4 aspect-square rounded-md object-contain"
+              <ContentImage
+                width={1024}
+                height={1024}
                 alt={i?.alt as string}
                 src={NEW_IMAGE_URL(i, "name")}
+                sizes="(min-width: 768px) 50vw, 75vw"
+                className="w-3/4 aspect-square rounded-md object-contain"
               />
             </SwiperSlide>
           ))}

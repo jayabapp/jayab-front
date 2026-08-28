@@ -1,9 +1,10 @@
 "use client";
 
 import { NEW_IMAGE_URL } from "@/utils/urls";
+import { ContentImage } from "@/components/elements/Image";
 
-import ModalBottomSheet from "@/components/Modal/ModalBottomSheet";
 import CmsContentSkeleton from "@/components/shared/CmsContentSkeleton";
+import ModalBottomSheet from "@/components/Modal/ModalBottomSheet";
 import useCmsContent from "@/hooks/useCmsContent";
 import CmsText from "@/components/shared/CmsText";
 import Button from "@/components/shared/Button/Button";
@@ -14,6 +15,7 @@ export interface CmsInfoPopupAction {
   href?: string;
   onClick?: () => void;
 }
+
 type TCmsInfoProps = {
   show: boolean;
   contentKey: string;
@@ -41,9 +43,13 @@ const CmsInfoPopup = ({ show, onHide, action, contentKey }: TCmsInfoProps) => {
           <CmsContentSkeleton />
         ) : (
           <>
-            <img
+            <ContentImage
+              width={512}
+              height={512}
+              sizes="240px"
+              className="w-60 h-auto"
+              alt={content?.title || ""}
               src={NEW_IMAGE_URL(content?.feature_image)}
-              className=" w-60 "
             />
 
             <div className="flex flex-col w-full gap-2 items-center justify-center">

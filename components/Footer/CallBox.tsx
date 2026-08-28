@@ -2,6 +2,7 @@
 
 import { NEW_IMAGE_URL } from "@/utils/urls";
 import { useAuthStore } from "@/store";
+import { ImageFallback } from "@/components/elements/Image";
 
 import useCmsContent from "@/hooks/useCmsContent";
 import BtnLoading from "../shared/Button/BtnLoading";
@@ -15,22 +16,21 @@ const CallBox = () => {
   const { isLogin } = useAuthStore((state) => state);
   const { content: footerCallUs, isLoading } = useCmsContent("footerCallUs");
 
-  const onImageError = (e: any) => {
-    e.target.src = "/assets/images/home/footer_car.png";
-  };
-
   return (
     <div className=" w-full   p-4 md:px-[10%]  -top-24 absolute">
       <div className=" w-full min-h-[10rem] md:w-full px-6  py-6 md:py-0  gap-6  mx-auto bg-primary-700 rounded-20  relative flex flex-col md:flex-row items-center justify-between">
-        <img
-          onError={onImageError}
+        <ImageFallback
           src={
             !!footerCallUs?.feature_image
               ? NEW_IMAGE_URL(footerCallUs?.feature_image)
               : "/assets/images/footer/footer_place_holder_image.png"
           }
+          fallbackSrc="/assets/images/home/footer_car.png"
+          width={512}
+          height={384}
+          sizes="224px"
           alt={"footer_image "}
-          className=" md:absolute bottom-0   lg:flex  !max-w-[14rem] "
+          className="md:absolute bottom-0 lg:flex !max-w-[14rem] h-auto"
         />
         {isLoading ? (
           <>

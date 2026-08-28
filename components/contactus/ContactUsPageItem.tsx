@@ -1,16 +1,16 @@
 import { NEW_IMAGE_URL } from "@/utils/urls";
+import { ContentImage } from "@/components/elements/Image";
 import { ContentDto } from "@/api_services/home/home.interface";
 
 import Editable from "../Editable";
 import Link from "next/link";
 
-const ContactUsPageItem = ({
-  e,
-  disableText = false,
-}: {
+type TContactTest = {
   e: ContentDto;
   disableText?: boolean;
-}) => {
+};
+
+const ContactUsPageItem = ({ e, disableText = false }: TContactTest) => {
   const link = () => {
     let link = "";
     if (e?.key == "tel" || e?.fields?.key == "tel") {
@@ -41,10 +41,13 @@ const ContactUsPageItem = ({
         }`}
       >
         {!!e?.attachments[0]?.attachment ? (
-          <img
-            className="w-14  h-14 p-2 !object-contain aspect-square "
-            src={NEW_IMAGE_URL(e?.attachments[0]?.attachment)}
+          <ContentImage
+            width={56}
+            height={56}
+            sizes="56px"
             alt={e?.attachments[0]?.attachment?.alt || ""}
+            src={NEW_IMAGE_URL(e?.attachments[0]?.attachment)}
+            className="w-14  h-14 p-2 !object-contain aspect-square "
           />
         ) : (
           <></>

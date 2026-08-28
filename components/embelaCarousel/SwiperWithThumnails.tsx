@@ -1,23 +1,27 @@
 "use client";
+
+import { ReactNode, useCallback, useEffect, useMemo, useState } from "react";
+import { NextButton, PrevButton } from "./EmblaCarouselArrowButtons";
+import { usePrevNextButtons } from "./EmblaCarouselArrowButtons";
+import { EmblaOptionsType } from "embla-carousel";
 import { NEW_IMAGE_URL } from "@/utils/urls";
-import { EmblaOptionsType, EmblaPluginType } from "embla-carousel";
-import Autoplay from "embla-carousel-autoplay";
-import useEmblaCarousel from "embla-carousel-react";
-import React, { ReactNode, useCallback, useEffect, useState } from "react";
 import { useMediaQuery } from "react-responsive";
-import { NextButton, PrevButton, usePrevNextButtons } from "./EmblaCarouselArrowButtons";
-import { useAutoplay } from "./EmblaCarouselAutoplay";
+import { ContentImage } from "@/components/elements/Image";
+
+import useEmblaCarousel from "embla-carousel-react";
+import Autoplay from "embla-carousel-autoplay";
+
 type PropType = {
-  options?: EmblaOptionsType;
-  children: ReactNode;
-  slidesWidth?: { def: string; md: string };
-  dir?: "rtl" | "ltr";
+  slides: any[];
   spacing?: string;
   autoplay?: boolean;
+  dir?: "rtl" | "ltr";
+  children: ReactNode;
   pagination?: boolean;
-  slides: any[];
-  defaultSelectedIndex?: number;
+  options?: EmblaOptionsType;
   LoadingSkeleton?: ReactNode;
+  defaultSelectedIndex?: number;
+  slidesWidth?: { def: string; md: string };
 };
 
 const SwiperWithThumnails: React.FC<PropType> = (props) => {
@@ -25,7 +29,6 @@ const SwiperWithThumnails: React.FC<PropType> = (props) => {
   const isDesktopOrLaptop = useMediaQuery({
     query: "(min-width: 768px)",
   });
-  const [slideWidth, setSlideWidth] = useState("20%");
   const {
     options = { align: "start", direction: "rtl" },
     children,
@@ -33,27 +36,16 @@ const SwiperWithThumnails: React.FC<PropType> = (props) => {
     slidesWidth,
     spacing,
     autoplay = false,
-    pagination,
     slides,
     defaultSelectedIndex,
     LoadingSkeleton,
   } = props;
 
-  /* -------------------------------------------------------------------------- */
-  /*                           SETTING EXTRA OPTIONS                          */
-  /* -------------------------------------------------------------------------- */
-  const [extraOptions, setExtraOptions] = useState<EmblaPluginType[]>([]);
-  useEffect(() => {
-    const extraoptionsVar = [];
-    if (autoplay) {
-      extraoptionsVar.push(Autoplay({ playOnInit: true, delay: 3000 }));
-    }
-    setExtraOptions(extraoptionsVar);
-  }, [autoplay]);
+  const extraOptions = useMemo(
+    () => (autoplay ? [Autoplay({ playOnInit: true, delay: 3000 })] : []),
+    [autoplay],
+  );
 
-  /* -------------------------------------------------------------------------- */
-  /*                             CREATING  CAROUSEL                             */
-  /* -------------------------------------------------------------------------- */
   const [emblaRef, emblaMainApi] = useEmblaCarousel(options, [...extraOptions]);
   const [emblaThumbsRef, emblaThumbsApi] = useEmblaCarousel({
     containScroll: "keepSnaps",
@@ -62,43 +54,26 @@ const SwiperWithThumnails: React.FC<PropType> = (props) => {
     direction: "rtl",
   });
 
-  useEffect(() => {
-    if (!!isDesktopOrLaptop) {
-      setSlideWidth(slidesWidth?.md || "24%");
-    } else {
-      setSlideWidth(slidesWidth?.def || "35%");
-    }
-  }, [isDesktopOrLaptop]);
+  const slideWidth = isDesktopOrLaptop
+    ? slidesWidth?.md || "24%"
+    : slidesWidth?.def || "35%";
 
   const sizeStyle: any = {
     "--slide-spacing": spacing || "1rem",
     "--slide-size": slideWidth,
   };
 
-  /* -------------------------------------------------------------------------- */
-  /*                              AUTOPLAY OPTIONS                              */
-  /* -------------------------------------------------------------------------- */
-
-  const { autoplayIsPlaying, toggleAutoplay, onAutoplayButtonClick } = useAutoplay(emblaMainApi);
-  /* -------------------------------------------------------------------------- */
-  /*                            DEFAULT INDEX SELECT                            */
-  /* -------------------------------------------------------------------------- */
-
   useEffect(() => {
     if (!emblaMainApi || !emblaThumbsApi || !defaultSelectedIndex) return;
     emblaMainApi.scrollTo(defaultSelectedIndex);
   }, [defaultSelectedIndex, emblaThumbsApi, emblaMainApi]);
-
-  /* -------------------------------------------------------------------------- */
-  /*                                 PAGINATION                                 */
-  /* -------------------------------------------------------------------------- */
 
   const onThumbClick = useCallback(
     (index: number) => {
       if (!emblaMainApi || !emblaThumbsApi) return;
       emblaMainApi.scrollTo(index);
     },
-    [emblaMainApi, emblaThumbsApi]
+    [emblaMainApi, emblaThumbsApi],
   );
 
   const onSelect = useCallback(() => {
@@ -109,16 +84,20 @@ const SwiperWithThumnails: React.FC<PropType> = (props) => {
 
   useEffect(() => {
     if (!emblaMainApi) return;
-    onSelect();
-
     emblaMainApi.on("select", onSelect).on("reInit", onSelect);
+    const frame = requestAnimationFrame(onSelect);
+    return () => {
+      cancelAnimationFrame(frame);
+      emblaMainApi.off("select", onSelect).off("reInit", onSelect);
+    };
   }, [emblaMainApi, onSelect]);
 
-  /* -------------------------------------------------------------------------- */
-  /*                                   ARROWS                                   */
-  /* -------------------------------------------------------------------------- */
-
-  const { prevBtnDisabled, nextBtnDisabled, onPrevButtonClick, onNextButtonClick } = usePrevNextButtons(emblaMainApi);
+  const {
+    prevBtnDisabled,
+    nextBtnDisabled,
+    onPrevButtonClick,
+    onNextButtonClick,
+  } = usePrevNextButtons(emblaMainApi);
   return (
     <section
       style={{
@@ -128,10 +107,32 @@ const SwiperWithThumnails: React.FC<PropType> = (props) => {
       dir={dir}
     >
       <div className="embla__viewport relative flex" ref={emblaRef}>
-        <div className="embla__container">{emblaMainApi ? children : !!LoadingSkeleton ? LoadingSkeleton : <></>}</div>
+        <div className="embla__container">
+          {emblaMainApi ? (
+            children
+          ) : !!LoadingSkeleton ? (
+            LoadingSkeleton
+          ) : (
+            <></>
+          )}
+        </div>
         <div className="  embla__buttons">
-          {!!nextBtnDisabled ? <></> : <PrevButton onClick={onNextButtonClick} disabled={nextBtnDisabled} />}
-          {!!prevBtnDisabled ? <> </> : <NextButton onClick={onPrevButtonClick} disabled={prevBtnDisabled} />}
+          {!!nextBtnDisabled ? (
+            <></>
+          ) : (
+            <PrevButton
+              onClick={onNextButtonClick}
+              disabled={nextBtnDisabled}
+            />
+          )}
+          {!!prevBtnDisabled ? (
+            <> </>
+          ) : (
+            <NextButton
+              onClick={onPrevButtonClick}
+              disabled={prevBtnDisabled}
+            />
+          )}
         </div>
       </div>
 
@@ -139,7 +140,7 @@ const SwiperWithThumnails: React.FC<PropType> = (props) => {
         <div className="embla-thumbs__viewport" ref={emblaThumbsRef}>
           <div className="embla-thumbs__container">
             {slides.map((i, index) => (
-              <div className="w-full embla-thumbs__slide ">
+              <div key={i?.id || index} className="w-full embla-thumbs__slide ">
                 <div
                   onClick={() => onThumbClick(index)}
                   className={`       w-full h-full  overflow-clip rounded-10 border cursor-pointer transition-all ease-in-out duration-300   ${
@@ -148,9 +149,12 @@ const SwiperWithThumnails: React.FC<PropType> = (props) => {
                       : "border-gray-300 opacity-60 dark:border-zinc-600"
                   } `}
                 >
-                  <img
-                    // src={i?.type == 1 ? NEW_IMAGE_URL(i) : i?.cover}
+                  <ContentImage
                     src={NEW_IMAGE_URL(i, "thumbnail")}
+                    width={256}
+                    height={256}
+                    sizes="(min-width: 768px) 12vw, 25vw"
+                    alt={i?.alt || ""}
                     className={`  ${
                       i?.type != 1 ? " blur-sm" : ""
                     }  aspect-square  object-cover p-1 w-full rounded-10 h-full  `}

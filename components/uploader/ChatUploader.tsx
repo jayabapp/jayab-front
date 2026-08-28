@@ -210,11 +210,14 @@ const ChatUploader = ({
         >
           {!!selectedFile && (
             <>
-              {/* eslint-disable-next-line @next/next/no-img-element */}
-              <img
+              <Image
                 ref={imgRef}
-                alt="پیش‌نمایش تصویر"
+                unoptimized
+                width={1024}
+                height={1024}
                 src={previewUrl}
+                alt="پیش‌نمایش تصویر"
+                sizes="(min-width: 1280px) 25vw, (min-width: 768px) 50vw, 92vw"
                 className="max-h-[60dvh] bg-slate-800 object-contain xl:max-h-[70dvh]"
               />
             </>

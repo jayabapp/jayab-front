@@ -2,6 +2,7 @@
 
 import { footerHiddenBlackList, footerLinks } from "@/utils/constantss";
 import { NEW_IMAGE_URL } from "../../utils/urls";
+import { ContentImage } from "@/components/elements/Image";
 import { HomeService } from "@/api_services/home/home.service";
 import { usePathname } from "next/navigation";
 import { useQuery } from "@tanstack/react-query";
@@ -269,8 +270,12 @@ const Footer = () => {
               rel="nofollow noopener noreferrer"
               className="aspect-[3] max-w-[120px] "
             >
-              <img
+              <ContentImage
                 src={NEW_IMAGE_URL(e?.feature_image)}
+                width={120}
+                height={40}
+                sizes="120px"
+                alt={e?.feature_image?.alt || e?.title || ""}
                 className=" h-10  object-contain md:max-w-[120px] "
               />
             </Link>

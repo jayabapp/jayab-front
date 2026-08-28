@@ -2,9 +2,10 @@
 
 import { useAuthStore, useStoreInit, useStoreParams } from "@/store";
 import { useTrackPropertyView } from "@features/properties/hooks/useTrackPropertyView";
-import { useEffect, useState } from "react";
 import { SinglePropDto } from "@/api_services/property/property.interface";
 import { NEW_IMAGE_URL } from "@/utils/urls";
+import { ContentImage } from "@/components/elements/Image";
+import { useState } from "react";
 import { isMobile } from "react-device-detect";
 
 import SinglePropertyPricePart from "../SinglePropertyPricePart";
@@ -21,12 +22,16 @@ import Button from "@/components/shared/Button/Button";
 
 const OwnerPart = ({ data }: { data: SinglePropDto }) => (
   <div className="flex flex-row items-center gap-2 ">
-    <img
+    <ContentImage
       src={
         data.owner_info
           ? NEW_IMAGE_URL(data.owner_info.avatar)
           : "/assets/images/add/wall_e_lover.png"
       }
+      width={48}
+      height={48}
+      sizes="(min-width: 768px) 48px, 40px"
+      alt={data.owner_info?.full_name || _STRINGS.HOST}
       className="size-10 aspect-square rounded-full md:size-12"
     />
     <div className="flex flex-col items-start gap-1">
@@ -52,7 +57,9 @@ const SinglePropertyIntroduction = ({ data }: { data: SinglePropDto }) => {
   const { isAdvisor } = useStoreParams((data) => data);
   const [showShare, setShowShare] = useState(false);
   const [showReserve, setShowReserve] = useState(false);
-  const [origin, setOrigin] = useState("");
+  const [origin] = useState(() =>
+    typeof window === "undefined" ? "" : window.origin,
+  );
 
   const showLogin = () => {
     useStoreParams.setState({ loginModal: true });
@@ -66,10 +73,6 @@ const SinglePropertyIntroduction = ({ data }: { data: SinglePropDto }) => {
   const onShareClose = () => {
     setShowShare(false);
   };
-
-  useEffect(() => {
-    if (!!window.origin) setOrigin(window.origin);
-  }, []);
 
   const onReserveClick = () => {
     if (!!isLogin) setShowReserve(true);

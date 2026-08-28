@@ -26,19 +26,14 @@ type ImageCarouselTypes = {
 };
 
 const HomeBannerPart = ({
-  banner: item,
-  devices,
   title,
+  devices,
+  banner: item,
 }: ImageCarouselTypes) => {
   const [showPop, setShowPop] = useState(false);
   const isPhone = !!devices?.isMobile;
   return (
-    <div
-      className={`
-  
-    relative
-       w-full h-full  md:gap-3 lg:grid-cols-3  px-0  `}
-    >
+    <div className={`relative w-full h-full md:gap-3 lg:grid-cols-3 px-0`}>
       <div className="w-full extra-padding-x  lg:!px-[28%] flex absolute m-auto left-0 right-0  bottom-[35%] lg:bottom-[30%] flex-col   z-10 lg:z-1  gap-20">
         <div className="flex z-5 !gap-2 lg:!gap-4 items-center justify-center flex-col">
           <Image
@@ -117,9 +112,8 @@ const HomeBannerPart = ({
           {isPhone ? (
             <Image
               fill
-              priority
+              preload
               sizes="100vw"
-              fetchPriority="high"
               alt={item?.image?.alt}
               src={NEW_IMAGE_URL(item?.image_sm ? item?.image_sm : item?.image)}
               className={`w-full object-cover  flex  aspect-[1.5] align-middle  ${
@@ -129,9 +123,8 @@ const HomeBannerPart = ({
           ) : (
             <Image
               fill
-              priority
+              preload
               sizes="100vw"
-              fetchPriority="high"
               alt={item?.image?.alt}
               src={NEW_IMAGE_URL(item?.image)}
               className={`w-full object-cover  flex aspect-[3.029]   align-middle  ${

@@ -1,6 +1,14 @@
 import { ReserveDaysDto } from "@/api_services/property/property.interface";
 
-const DaysOfTheWeekStatus = ({ isCard, data, week }: { week: any[]; isCard?: boolean; data: ReserveDaysDto[] }) => {
+import Image from "next/image";
+
+type TDaysOfTheWeekProps = {
+  week: any[];
+  isCard?: boolean;
+  data: ReserveDaysDto[];
+};
+
+const DaysOfTheWeekStatus = ({ isCard, data, week }: TDaysOfTheWeekProps) => {
   return (
     <div
       className={`w-full flex  justify-between gap-1  ${isCard ? "!gap-0.5 2xl:!gap-0.5" : "md:gap-1"}  items-center `}
@@ -37,15 +45,29 @@ const DaysOfTheWeekStatus = ({ isCard, data, week }: { week: any[]; isCard?: boo
             >
               <p className="text-center leading-4 flex items-center    m-auto justify-center">
                 {" "}
-                {data?.find((x) => x?.day_number == e?.id)?.is_reserved ? "رزرو" : "خالی"}
+                {data?.find((x) => x?.day_number == e?.id)?.is_reserved
+                  ? "رزرو"
+                  : "خالی"}
               </p>
             </div>
           ) : (
             <>
               {data?.find((x) => x?.day_number == e?.id)?.is_reserved ? (
-                <img src="/assets/images/shared/reserved.png" />
+                <Image
+                  width={64}
+                  height={64}
+                  sizes="64px"
+                  alt="رزرو شده"
+                  src="/assets/images/shared/reserved.png"
+                />
               ) : (
-                <img src="/assets/images/shared/empty.png" />
+                <Image
+                  width={64}
+                  height={64}
+                  sizes="64px"
+                  alt="خالی"
+                  src="/assets/images/shared/empty.png"
+                />
               )}
             </>
           )}

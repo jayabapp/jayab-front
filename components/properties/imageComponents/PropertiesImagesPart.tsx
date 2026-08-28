@@ -1,6 +1,6 @@
 "use client";
 
-import { Suspense, useEffect, useState } from "react";
+import { Suspense, useMemo, useState } from "react";
 import { SingleOwnerPropertyDto } from "@/api_services/property/property.interface";
 import { NEW_IMAGE_URL } from "../../../utils/urls";
 import { SinglePropDto } from "@/api_services/property/property.interface";
@@ -78,16 +78,12 @@ function ProductImagesContainer({
     isVisible: false,
     currentIndex: null,
   });
-  const defaultImages = [...data?.images];
-  const [addImages, setAddImages] = useState<(any | undefined)[]>([
-    ...data?.images,
-  ]);
-  const allImagesIds = difference(
-    defaultImages?.map((e) => e?.id),
-    attsImagesArray || [],
-  );
-
-  useEffect(() => {
+  const addImages = useMemo<(any | undefined)[]>(() => {
+    const defaultImages = [...data?.images];
+    const allImagesIds = difference(
+      defaultImages.map((image) => image?.id),
+      attsImagesArray || [],
+    );
     if (productImageId) {
       const activeImages = [productImageId]
         .concat(allImagesIds)
@@ -97,10 +93,11 @@ function ProductImagesContainer({
         !isEmpty(activeImages) &&
         activeImages?.every((e) => !!e)
       ) {
-        setAddImages(activeImages);
+        return activeImages;
       }
     }
-  }, [productImageId]);
+    return defaultImages;
+  }, [attsImagesArray, data?.images, productImageId]);
   if (!data) return null;
 
   return (
@@ -127,32 +124,20 @@ function ProductImagesContainer({
                   {addImages?.slice(3)?.length} +
                 </div>
               ) : null}
-              {true ? (
-                <div
-                  className={` rounded-10 overflow-clip  ${index == 3 ? " blur-sm " : " "}`}
-                >
-                  <ProductImage
-                    item={e}
-                    id={`${e?.id}`}
-                    alt={imagesDefautAlt}
-                    imageSize="thumbnail"
-                    moreClass={"w-full bg-white aspect-square object-cover"}
-                    onClick={() =>
-                      setModalProps({ isVisible: false, currentImage: e })
-                    }
-                  />
-                </div>
-              ) : (
-                <div
-                  className={` relative flex-1 md:flex-none w-full !aspect-square   rounded-20   cursor-pointer transition-all ease-in-out duration-300  `}
-                >
-                  <img
-                    className={`  ${
-                      e?.type != 1 ? " blur-sm" : ""
-                    } w-full !aspect-square object-contain     rounded-20  `}
-                  />
-                </div>
-              )}
+              <div
+                className={` rounded-10 overflow-clip  ${index == 3 ? " blur-sm " : " "}`}
+              >
+                <ProductImage
+                  item={e}
+                  id={`${e?.id}`}
+                  alt={imagesDefautAlt}
+                  imageSize="thumbnail"
+                  moreClass={"w-full bg-white aspect-square object-cover"}
+                  onClick={() =>
+                    setModalProps({ isVisible: false, currentImage: e })
+                  }
+                />
+              </div>
             </div>
           ))}
         </div>
@@ -215,10 +200,10 @@ function ProductImagesContainer({
                         currentIndex == index ? "name" : "thumbnail",
                       )}
                       fill
-                      priority={index === 0}
+                      preload={index === 0}
                       title={imagesDefautAlt}
                       sizes="(max-width: 768px) 100vw, 80vw"
-                      loading={index === 0 ? "eager" : "lazy"}
+                      loading={index === 0 ? undefined : "lazy"}
                       alt={`${i?.alt || imagesDefautAlt || ""}`}
                       className={`w-full h-full !p-0  transform-gpu !overflow-clip  bg-white  transition-all
                       rounded-20 duration-500 aspect-square !object-cover `}

@@ -1,26 +1,22 @@
-import { useEffect, useState } from "react";
+import { ContentImage } from "@/components/elements/Image";
+
 import Modal from "../Modal";
 
-function FullscreenImage({
-  show,
-  setShow,
-  src,
-  onDelete,
-  isNew,
-}: {
-  show: boolean;
-  setShow: (e: boolean | string | any) => void | null;
+type TFullScreenProps = {
   src: any;
-  onDelete?: () => void | null;
+  show: boolean;
   isNew?: boolean;
-}) {
-  const [srcHelper, setSrcHelper] = useState("");
+  onDelete?: () => void | null;
+  setShow: (e: boolean | string | any) => void | null;
+};
 
-  useEffect(() => {
-    if (src) {
-      setSrcHelper(src);
-    }
-  }, [src]);
+const FullscreenImage = ({
+  src,
+  show,
+  isNew,
+  setShow,
+  onDelete,
+}: TFullScreenProps) => {
   return (
     <Modal show={show} onHide={() => setShow(false)}>
       <div className="h-full w-full flex flex-col p-2 gap-2  justify-center items-center bg-white  dark:bg-dark-700 ">
@@ -43,19 +39,18 @@ function FullscreenImage({
             <></>
           )}
         </div>
-        <img
+        <ContentImage
           alt="img"
-          src={
-            isNew
-              ? srcHelper
-              : //  NEW_IMAGE_URL(srcHelper)
-                srcHelper
-          }
+          src={src}
+          width={1024}
+          height={1024}
+          sizes="100vw"
+          unoptimized={isNew}
           className="object-cover  w-full bg-gradient-to-b aspect-auto max-w-max  rounded-xl"
         />
       </div>
     </Modal>
   );
-}
+};
 
 export default FullscreenImage;
