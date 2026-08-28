@@ -1,0 +1,47 @@
+name: Frontend production rollout
+description: Controlled rollout and monitoring for a migrated frontend feature
+title: "[rollout] "
+labels: ["frontend", "rollout"]
+body:
+  - type: input
+    id: feature
+    attributes:
+      label: Feature and routes
+    validations:
+      required: true
+  - type: textarea
+    id: stage
+    attributes:
+      label: Stage evidence
+      description: Record API compatibility, smoke scenarios, request count, chunks and Web Vitals.
+    validations:
+      required: true
+  - type: textarea
+    id: rollback
+    attributes:
+      label: Independent rollback plan
+    validations:
+      required: true
+  - type: dropdown
+    id: strategy
+    attributes:
+      label: Release strategy
+      options:
+        - Standard single-feature release
+        - Feature flag
+        - Canary
+    validations:
+      required: true
+  - type: checkboxes
+    id: monitoring
+    attributes:
+      label: Monitoring window
+      options:
+        - label: JS errors are monitored
+          required: true
+        - label: 4xx/5xx, request rate and latency are monitored
+          required: true
+        - label: Web Vitals are monitored
+          required: true
+        - label: An owner is assigned for 24–48 hours
+          required: true

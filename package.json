@@ -14,7 +14,10 @@
     "api:check": "node scripts/check-generated.mjs",
     "architecture:check": "node scripts/check-layer-contracts.mjs",
     "architecture:report": "node scripts/report-client-boundaries.mjs",
-    "architecture:migration": "node scripts/report-component-migration.mjs"
+    "architecture:migration": "node scripts/report-component-migration.mjs",
+    "migration:guardrails": "node scripts/check-migration-guardrails.mjs",
+    "migration:verify": "node scripts/verify-migration.mjs",
+    "migration:verify:build": "node scripts/verify-migration.mjs --build"
   },
   "dependencies": {
     "@headlessui/react": "^2.2.0",

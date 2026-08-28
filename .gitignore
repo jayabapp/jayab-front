@@ -54,3 +54,8 @@ ecosystem.config*
 
 .yarnrc
 .yarn-cache/
+
+# Repository workflow documentation must remain trackable even when local
+# developer excludes ignore working Markdown documents.
+!.github/
+!.github/**/*.md
