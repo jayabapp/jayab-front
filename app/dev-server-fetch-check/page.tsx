@@ -10,7 +10,7 @@ const ServerFetchCheck = async () => {
   let result: unknown;
   let error: string | null = null;
   try {
-    result = await AuthService.GetProfile();
+    result = await AuthService.getProfile();
   } catch (e: any) {
     error = typeof e === "string" ? e : JSON.stringify(e);
   }

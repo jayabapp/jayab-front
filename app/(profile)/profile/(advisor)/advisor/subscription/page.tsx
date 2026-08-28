@@ -1,19 +1,22 @@
 "use client";
-import { AuthService } from "@/api_services/auth/auth.service";
-import AdvisorPlansCard from "@/components/Advisor/AdvisorPlansCard";
-import ConfirmModal from "@/components/Modal/ConfirmModal";
-import Button from "@/components/shared/Button/Button";
-import StatusShower from "@/components/shared/StatusShower";
-import { useStoreInit } from "@/store";
-import _STRINGS from "@/utils/LocalStrings";
-import { useQuery } from "@tanstack/react-query";
-import isEmpty from "lodash/isEmpty";
-import moment from "moment-jalaali";
-import { useRouter, useSearchParams } from "next/navigation";
+
+import { useCancelAdvisorSubscription } from "@features/advisors/hooks/useAdvisorSubscription";
 import { useEffect, useRef, useState } from "react";
+import { useRouter, useSearchParams } from "next/navigation";
+import { usePurchaseAdvisorPlan } from "@features/advisors/hooks/useAdvisorSubscription";
 import { useAdvisorProfile } from "@features/advisors/hooks/useAdvisorProfile";
 import { useAdvisorPlans } from "@features/advisors/hooks/useAdvisorPlans";
-import { useCancelAdvisorSubscription, usePurchaseAdvisorPlan } from "@features/advisors/hooks/useAdvisorSubscription";
+import { useStoreInit } from "@/store";
+import { AuthService } from "@/api_services/auth/auth.service";
+import { useQuery } from "@tanstack/react-query";
+
+import AdvisorPlansCard from "@/components/Advisor/AdvisorPlansCard";
+import ConfirmModal from "@/components/Modal/ConfirmModal";
+import StatusShower from "@/components/shared/StatusShower";
+import _STRINGS from "@/utils/LocalStrings";
+import isEmpty from "lodash/isEmpty";
+import Button from "@/components/shared/Button/Button";
+import moment from "moment-jalaali";
 
 const AdvisorRegister = () => {
   const router = useRouter();
@@ -21,8 +24,10 @@ const AdvisorRegister = () => {
   const pay_key = searchParams.get("pay_key");
   const [showEndSub, setShowEndSub] = useState(false);
   const [showConfirmRegister, setShowConfirmRegister] = useState(false);
-  const { data: subscriptionPlans, isPending: plansPending } = useAdvisorPlans();
-  const { data: advisorProfile, isPending: profilePending } = useAdvisorProfile();
+  const { data: subscriptionPlans, isPending: plansPending } =
+    useAdvisorPlans();
+  const { data: advisorProfile, isPending: profilePending } =
+    useAdvisorProfile();
   const isActive = moment().isBefore(advisorProfile?.subscription_expired_at);
 
   const hideRegisterModa = () => {
@@ -36,14 +41,10 @@ const AdvisorRegister = () => {
     setShowEndSub(false);
   };
 
-  /* -------------------------------------------------------------------------- */
-  /*                                 DELETE SUB                                 */
-  /* -------------------------------------------------------------------------- */
-
   const { data: profile, refetch } = useQuery({
     queryKey: [AuthService.AU4_CACHEKEY],
     queryFn: () => {
-      return AuthService.GetProfile();
+      return AuthService.getProfile();
     },
     staleTime: 0,
     gcTime: 0,
@@ -51,37 +52,37 @@ const AdvisorRegister = () => {
   });
 
   useEffect(() => {
-    if (!!profile) {
-      useStoreInit.setState({ userInfo: profile });
-    }
+    if (!!profile) useStoreInit.setState({ userInfo: profile });
   }, [profile]);
 
   const { mutate, isPending } = useCancelAdvisorSubscription();
   const onDelete = () => {
-    mutate(undefined, { onSuccess: () => {
-      void refetch();
-      hideEndSub();
-    }});
+    mutate(undefined, {
+      onSuccess: () => {
+        void refetch();
+        hideEndSub();
+      },
+    });
   };
 
   const goToEdit = () => {
     let link = "";
-    if (advisorProfile?.is_special) {
+    if (advisorProfile?.is_special)
       link = "/profile/advisor/subscription/is-especial";
-    } else {
-      link = "/profile/advisor/subscription/normal";
-    }
+    else link = "/profile/advisor/subscription/normal";
     pusher(link);
   };
 
-  /* -------------------------------------------------------------------------- */
-  /*                                  AUTO PAY                                  */
-  /* -------------------------------------------------------------------------- */
-  const { mutate: payMutate, isPending: paymentPending } = usePurchaseAdvisorPlan();
+  const { mutate: payMutate, isPending: paymentPending } =
+    usePurchaseAdvisorPlan();
   const paymentStarted = useRef(false);
 
   useEffect(() => {
-    if (!!pay_key && !isEmpty(subscriptionPlans?.list) && !paymentStarted.current) {
+    if (
+      !!pay_key &&
+      !isEmpty(subscriptionPlans?.list) &&
+      !paymentStarted.current
+    ) {
       const paymentKey = `advisor-payment:${pay_key}`;
       const lastStartedAt = Number(sessionStorage.getItem(paymentKey));
       if (lastStartedAt && Date.now() - lastStartedAt < 2 * 60_000) return;
@@ -92,20 +93,37 @@ const AdvisorRegister = () => {
       if (!!planId) {
         paymentStarted.current = true;
         sessionStorage.setItem(paymentKey, String(Date.now()));
-        payMutate({
-          gateway: process.env.NEXT_PUBLIC_PAYMENT_GATEWAY || "",
-          plan_id: planId,
-          redirect_url: `${window.origin}/profile/advisor/subscription`,
-        }, { onError: () => {
-          paymentStarted.current = false;
-          sessionStorage.removeItem(paymentKey);
-        }});
+        payMutate(
+          {
+            gateway: process.env.NEXT_PUBLIC_PAYMENT_GATEWAY || "",
+            plan_id: planId,
+            redirect_url: `${window.origin}/profile/advisor/subscription`,
+          },
+          {
+            onError: () => {
+              paymentStarted.current = false;
+              sessionStorage.removeItem(paymentKey);
+            },
+          },
+        );
       }
     }
   }, [payMutate, pay_key, subscriptionPlans]);
 
-  if ((plansPending || profilePending) && !advisorProfile && !subscriptionPlans) {
-    return <div className="profile-container animate-pulse"><div className="h-24 rounded-xl bg-neutral-100" /><div className="mt-4 grid grid-cols-1 gap-3 md:grid-cols-2"><div className="h-52 rounded-2xl bg-neutral-100" /><div className="h-52 rounded-2xl bg-neutral-100" /></div></div>;
+  if (
+    (plansPending || profilePending) &&
+    !advisorProfile &&
+    !subscriptionPlans
+  ) {
+    return (
+      <div className="profile-container animate-pulse">
+        <div className="h-24 rounded-xl bg-neutral-100" />
+        <div className="mt-4 grid grid-cols-1 gap-3 md:grid-cols-2">
+          <div className="h-52 rounded-2xl bg-neutral-100" />
+          <div className="h-52 rounded-2xl bg-neutral-100" />
+        </div>
+      </div>
+    );
   }
 
   return (
@@ -127,7 +145,6 @@ const AdvisorRegister = () => {
             <p className="text-primary-150 text-sm">(شما اشتراک فعال ندارید)</p>
           ) : moment().isBefore(advisorProfile?.subscription_expired_at) ? (
             <div className="flex items-center gap-2  justify-between  w-full  flex-row">
-              {/* انقضا : {moment(advisorProfile?.subscription_expired_at)?.format("jYYYY/jMM/jDD")} */}
               <p className=" text-sm"> تعداد روز باقیمانده از اعتبار :</p>
               <div className=" rounded-full text-xs md:text-sm text-primary-700 bg-primary-400 flex  items-center justify-center h-5 md:h-6 w-16 md:w-20 ">
                 {advisorProfile?.subscription_expired_at &&
@@ -157,7 +174,6 @@ const AdvisorRegister = () => {
               )}
             </div>
             {!!advisorProfile?.is_special ? (
-              // {!!advisorProfile?.is_special && advisorProfile?.subscription_expired_at && isActive ? (
               <Button
                 onClick={() => {
                   setShowEndSub(true);
@@ -213,15 +229,17 @@ const AdvisorRegister = () => {
         confirmText={"ادامه"}
         hideText="برگشت"
       />
-      {paymentPending ? <div className="fixed inset-x-0 bottom-0 z-50 h-1 animate-pulse bg-primary-600" /> : null}
+      {paymentPending ? (
+        <div className="fixed inset-x-0 bottom-0 z-50 h-1 animate-pulse bg-primary-600" />
+      ) : null}
       <ConfirmModal
+        onHide={hideEndSub}
+        isLoading={isPending}
+        isVisible={showEndSub}
+        text={`آیا میخواهید اشتراک مشاور خود را لغو کنید؟`}
+        headerImage={"/assets/images/shared/red_crossed_sheet.png"}
         confirmTextClassName=" !bg-primary-900 text-white !rounded-full "
         hideTextClassName=" !border-primary-900 border !bg-white !text-primary-900 !rounded-full "
-        headerImage={"/assets/images/shared/red_crossed_sheet.png"}
-        isVisible={showEndSub}
-        onHide={hideEndSub}
-        text={`آیا میخواهید اشتراک مشاور خود را لغو کنید؟`}
-        isLoading={isPending}
         onConfirm={() => {
           onDelete();
         }}

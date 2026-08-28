@@ -75,7 +75,7 @@ export class AuthService {
   }
 
   /** Masked state of the in-flight OTP challenge; `undefined` when there is none. */
-  static async getOtpChallenge() {
+  static async getOtpChallenge(dto: { signal?: AbortSignal } = {}) {
     try {
       return await apiCall<unknown, OtpChallengeDto>(
         "GET",
@@ -83,6 +83,7 @@ export class AuthService {
         undefined,
         {
           localRoute: true,
+          signal: dto.signal,
         },
       );
     } catch {
@@ -164,7 +165,7 @@ export class AuthService {
     }
   }
 
-  static async SetUserPass(dto: SetPassword) {
+  static async setUserPassword(dto: SetPassword) {
     try {
       const result = await apiCall<SetPassword, SetPasswordResponse>(
         "POST",
@@ -180,7 +181,7 @@ export class AuthService {
     }
   }
 
-  static async SetUsersNewPass(dto: SetNewPassword) {
+  static async setNewPassword(dto: SetNewPassword) {
     try {
       const result = await apiCall<SetNewPassword, SetPasswordResponse>(
         "POST",
@@ -223,30 +224,18 @@ export class AuthService {
     }
   }
 
-  static async GetProfile() {
-    try {
-      const result = await apiCall<unknown, GetProfileDto>(
-        "GET",
-        apiRoutes.AU4,
-      );
-      return result;
-    } catch (e) {
-      throw e;
-    }
+  static async getProfile(dto: { signal?: AbortSignal } = {}) {
+    return apiCall<unknown, GetProfileDto>("GET", apiRoutes.AU4, undefined, {
+      signal: dto.signal,
+    });
   }
-  static async GetOwnerProfile() {
-    try {
-      const result = await apiCall<unknown, OwnerProfileDto>(
-        "GET",
-        apiRoutes.GET_OWNER_PROFILE,
-      );
-      return result;
-    } catch (e) {
-      throw e;
-    }
+  static async getOwnerProfile(dto: { signal?: AbortSignal } = {}) {
+    return apiCall<unknown, OwnerProfileDto>("GET", apiRoutes.GET_OWNER_PROFILE, undefined, {
+      signal: dto.signal,
+    });
   }
 
-  static async EditProfile(dto: UpdateProfileDto) {
+  static async updateProfile(dto: UpdateProfileDto) {
     try {
       const result = await apiCall<UpdateProfileDto, unknown>(
         "PUT",
@@ -261,7 +250,7 @@ export class AuthService {
     }
   }
 
-  static async RegisterOwner(dto: RegisterDto) {
+  static async registerOwner(dto: RegisterDto) {
     try {
       const result = await apiCall<RegisterDto, unknown>(
         "PUT",
@@ -277,15 +266,9 @@ export class AuthService {
       throw e;
     }
   }
-  static async initCall() {
-    try {
-      const result = await apiCall<unknown, InitDto>(
-        "GET",
-        apiRoutes.AUTH_INIT,
-      );
-      return result;
-    } catch (e) {
-      throw e;
-    }
+  static async getAuthInit(dto: { signal?: AbortSignal } = {}) {
+    return apiCall<unknown, InitDto>("GET", apiRoutes.AUTH_INIT, undefined, {
+      signal: dto.signal,
+    });
   }
 }

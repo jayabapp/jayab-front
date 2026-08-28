@@ -1,16 +1,11 @@
-"use client";
+import { Suspense } from "react";
+
 import OtpPageSignInComponent from "@/components/SinglePageComponents/OtpPageComponent";
-import { useAuthStore, useStoreSocket, useStoreTheme } from "@/store";
-import React, { Suspense } from "react";
 
-const Auth = () => {
-  const { socket } = useStoreSocket((state) => state);
-  return (
-    <Suspense>
-      {" "}
-      <OtpPageSignInComponent socket={socket} authUserStore={useAuthStore} />
-    </Suspense>
-  );
-};
+const OtpPage = () => (
+  <Suspense>
+    <OtpPageSignInComponent />
+  </Suspense>
+);
 
-export default Auth;
+export default OtpPage;

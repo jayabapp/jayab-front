@@ -1,9 +1,9 @@
 import { useAuthStore, useStoreInit, useStoreParams } from "@/store";
 import { useUpdateProfileImage } from "@features/notifications/hooks/useUpdateProfileImage";
-import { useEffect, useState } from "react";
 import { useLogoutUser } from "@features/notifications/hooks/useLogoutUser";
 import { profileItems } from "@/utils/constantss";
 import { useRouter } from "next/navigation";
+import { useState } from "react";
 import { isMobile } from "react-device-detect";
 
 import MainUploader from "../uploader";
@@ -11,10 +11,10 @@ import ConfirmModal from "../Modal/ConfirmModal";
 import ProfileItem from "./ProfileItem";
 import _STRINGS from "@/utils/LocalStrings";
 import Button from "../shared/Button/Button";
+import Image from "next/image";
 
 const Profile = ({}) => {
   const { owmerActiveReservesCount } = useStoreParams();
-  const [profileImage, setProfileImage] = useState<any>(null);
   const router = useRouter();
   const { isLogin } = useAuthStore((state) => state);
   const [isVisible, setisVisible] = useState(false);
@@ -33,10 +33,6 @@ const Profile = ({}) => {
   const goToLogin = () => {
     router.push("/auth");
   };
-
-  useEffect(() => {
-    if (!!userInfo) setProfileImage(userInfo?.profile_image);
-  }, [userInfo]);
 
   const { mutate } = useUpdateProfileImage();
 
@@ -69,10 +65,9 @@ const Profile = ({}) => {
             containerClass={
               "my-3  relative w-fit flex items-start justify-start "
             }
-            item={profileImage}
+            item={userInfo?.profile_image}
             onSelect={(file) => {
               mutate({ profile_image_id: file?.id });
-              setProfileImage(file);
             }}
             showCamera={true}
           />
@@ -177,8 +172,11 @@ const Profile = ({}) => {
             }}
             className="py-5 flex   items-center w-full gap-3 md:gap-4 cursor-pointer hover:scale-102 transition-all"
           >
-            <img
+            <Image
               src="/assets/icons/header/header_logout.svg"
+              alt=""
+              width={24}
+              height={24}
               className="w-6 h-6  aspect-square "
             />{" "}
             <p className="text-base font-medium text-primary-150 ">

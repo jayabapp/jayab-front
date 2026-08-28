@@ -47,7 +47,6 @@ export type SendOtpVerifyWithMobile = {
 
 export type SendOtpVerifyResponse = {
   needs_registration?: boolean;
-  socket_token?: string;
 };
 export type CheckUserName = { username: string };
 export type CheckUserNameResponse = any;

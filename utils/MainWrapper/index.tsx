@@ -6,10 +6,10 @@ import { headerBlackList, mobileFooterBlackList } from "../constantss";
 import { useOwnerActiveReservationCount } from "@features/reservations/hooks/useOwnerActiveReservationCount";
 import { usePathname, useRouter } from "next/navigation";
 import { initMetrix, withMetrix } from "../metrix";
-import { getCookie, setCookie } from "cookies-next/client";
-import { AuthService } from "@/api_services/auth/auth.service";
+import { useCurrentProfile } from "@features/auth/hooks/useCurrentProfile";
+import { useAuthInit } from "@features/auth/hooks/useAuthInit";
+import { getCookie } from "cookies-next/client";
 import { isMobile } from "react-device-detect";
-import { useQuery } from "@tanstack/react-query";
 import { SocketIO } from "../../components/SocketIo";
 import { Toaster } from "sonner";
 
@@ -48,8 +48,13 @@ const MainWrapper = ({ children }: mainWrapper) => {
   const { isDark, setOwmerActiveReservesCount, owmerActiveReservesSocket } =
     useStoreParams((state) => state);
   const { isLogin, isAdminSso } = useAuthStore((state) => state);
-  const isAuthScreen = pathname.match("auth");
-  const [isLandscape, setIsLandscape] = useState(false);
+  const isAuthScreen = pathname.includes("auth");
+  const [isLandscape, setIsLandscape] = useState(
+    () =>
+      isMobile &&
+      typeof window !== "undefined" &&
+      window.matchMedia("(orientation: landscape)").matches,
+  );
 
   useEffect(() => {
     initMetrix();
@@ -58,10 +63,7 @@ const MainWrapper = ({ children }: mainWrapper) => {
         console.log({ metrixUserId });
       }),
     );
-    const isLoginLocal = localStorage.getItem("isLogin");
-    if (!!isLoginLocal)
-      setCookie("isLogin", "true", { maxAge: 60 * 24 * 60 * 60 });
-    const isLogin = getCookie("isLogin") || isLoginLocal;
+    const isLogin = getCookie("isLogin");
 
     if (isLogin) {
       useAuthStore.setState({
@@ -70,17 +72,9 @@ const MainWrapper = ({ children }: mainWrapper) => {
       });
       if (isAuthScreen) router.push("/");
     }
-  }, []);
+  }, [isAuthScreen, router]);
 
-  const { data: profile } = useQuery({
-    queryKey: [AuthService.AU4_CACHEKEY, isLogin],
-    queryFn: () => {
-      if (!!isLogin) return AuthService.GetProfile();
-      else return null;
-    },
-    staleTime: 0,
-    gcTime: 0,
-  });
+  const { data: profile } = useCurrentProfile(isLogin);
 
   const { data: activeReserves, refetch: refetchActiveReserveCount } =
     useOwnerActiveReservationCount(Boolean(profile?.owner_id));
@@ -93,15 +87,9 @@ const MainWrapper = ({ children }: mainWrapper) => {
   useEffect(() => {
     if (!!activeReserves) setOwmerActiveReservesCount(activeReserves);
     else setOwmerActiveReservesCount(null);
-  }, [activeReserves]);
+  }, [activeReserves, setOwmerActiveReservesCount]);
 
-  const { data: initData } = useQuery({
-    queryKey: [AuthService.AUTH_INIT_CACHEKEY, isLogin],
-    queryFn: () => {
-      if (!!isLogin) return AuthService.initCall();
-      else return null;
-    },
-  });
+  const { data: initData } = useAuthInit(isLogin);
 
   useEffect(() => {
     if (!!initData) {
@@ -134,31 +122,33 @@ const MainWrapper = ({ children }: mainWrapper) => {
 
   useEffect(() => {
     if (isLogin && !isAdminSso) FCM.init();
-  }, [isLogin]);
+  }, [isAdminSso, isLogin]);
   SocketIO();
   useEffect(() => {
-    window.addEventListener(
-      "orientationchange",
-      function () {
-        if (window.orientation == 90 || window.orientation == -90)
-          setIsLandscape(true);
-        else setIsLandscape(false);
-      },
-      false,
-    );
-    if (window.matchMedia("(orientation: landscape)").matches && isMobile)
-      setIsLandscape(true);
-    window.addEventListener("beforeinstallprompt", (e) => {
+    const handleOrientation = () => {
+      if (window.orientation == 90 || window.orientation == -90)
+        setIsLandscape(true);
+      else setIsLandscape(false);
+    };
+    const handleInstallPrompt = (e: Event) => {
       useStoreParams.setState({ installPrompt: e });
       e.preventDefault();
-    });
+    };
+    const handleInstalled = () => {
+      localStorage.setItem("INSTALL_PROMPT_IS_DISABLED", "1");
+    };
+    window.addEventListener("orientationchange", handleOrientation, false);
+    window.addEventListener("beforeinstallprompt", handleInstallPrompt);
     console.log(
       "INSTALL_PROMPT_IS_DISABLED",
       localStorage.getItem("INSTALL_PROMPT_IS_DISABLED"),
     );
-    window.addEventListener("appinstalled", () => {
-      localStorage.setItem("INSTALL_PROMPT_IS_DISABLED", "1");
-    });
+    window.addEventListener("appinstalled", handleInstalled);
+    return () => {
+      window.removeEventListener("orientationchange", handleOrientation);
+      window.removeEventListener("beforeinstallprompt", handleInstallPrompt);
+      window.removeEventListener("appinstalled", handleInstalled);
+    };
   }, []);
   if (isLandscape) return <RotatePhone />;
   return (

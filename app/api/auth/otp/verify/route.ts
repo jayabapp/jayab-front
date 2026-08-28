@@ -3,6 +3,7 @@ import { captureToken, isSameOriginRequest } from "@/utils/sessionCookie";
 import { NextRequest, NextResponse } from "next/server";
 import { callBackend, envelope } from "@/utils/backendFetch";
 import { setAccessTokenCookie } from "@/utils/sessionCookie";
+import { setSocketTokenCookie } from "@/utils/sessionCookie";
 import { OTP_CHALLENGE_COOKIE } from "@/utils/otpChallenge";
 
 export const dynamic = "force-dynamic";
@@ -47,12 +48,21 @@ export async function POST(request: NextRequest) {
       status,
       headers: { "Content-Type": "application/json" },
     });
-  const { body: safeBody, token } = captureToken(raw);
+  const { body: safeBody, socketToken, token } = captureToken(raw);
   const response = new NextResponse(safeBody, {
     status,
     headers: { "Content-Type": "application/json" },
   });
   if (token) setAccessTokenCookie(response, token);
+  if (socketToken) setSocketTokenCookie(response, socketToken);
+  if (token) {
+    response.cookies.set("isLogin", "true", {
+      path: "/",
+      maxAge: 60 * 24 * 60 * 60,
+      sameSite: "lax",
+      secure: process.env.NODE_ENV === "production",
+    });
+  }
   clearOtpChallenge(response);
   return response;
 }

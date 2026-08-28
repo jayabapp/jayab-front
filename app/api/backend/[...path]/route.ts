@@ -1,5 +1,6 @@
-import { captureToken, setAccessTokenCookie } from "@/utils/sessionCookie";
+import { captureToken, setSocketTokenCookie } from "@/utils/sessionCookie";
 import { NextRequest, NextResponse } from "next/server";
+import { setAccessTokenCookie } from "@/utils/sessionCookie";
 import { ACCESS_TOKEN_COOKIE } from "@/utils/sessionCookie";
 import { isProxyablePath } from "@/utils/proxyAllowlist";
 import { promisify } from "node:util";
@@ -82,7 +83,7 @@ async function proxyRequest(
     COMPRESSIBLE_TYPE.test(responseContentType) &&
     /\bgzip\b/i.test(request.headers.get("accept-encoding") || "");
 
-  if (!hasBody || !responseContentType.includes("application/json")) {
+  if (!responseContentType.includes("application/json")) {
     if (!compressible) {
       return new NextResponse(upstream.body, {
         status: upstream.status,
@@ -97,7 +98,11 @@ async function proxyRequest(
     );
   }
 
-  const { body, token: mintedToken } = captureToken(await upstream.text());
+  const {
+    body,
+    socketToken,
+    token: mintedToken,
+  } = captureToken(await upstream.text());
   const response = await buildResponse(
     Buffer.from(body, "utf8"),
     upstream.status,
@@ -105,6 +110,7 @@ async function proxyRequest(
     compressible,
   );
   if (mintedToken) setAccessTokenCookie(response, mintedToken);
+  if (socketToken) setSocketTokenCookie(response, socketToken);
   return response;
 }
 

@@ -1,6 +1,7 @@
-"use client";
+import { Suspense } from "react";
+
 import AuthPageComponent from "@/components/SinglePageComponents/AuthComponent";
-import React, { Suspense } from "react";
+
 const Auth = () => {
   return (
     <Suspense>

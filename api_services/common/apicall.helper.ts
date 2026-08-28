@@ -15,7 +15,6 @@ export type ApiCallOptions = {
   localRoute?: boolean;
   signal?: AbortSignal;
   serverAuth?: boolean;
-  isSocketToken?: boolean;
   showErrorNotification?: boolean;
   progressCallBack?: (e: unknown) => void | null;
 };
@@ -27,6 +26,7 @@ interface SuccessResponse<K> {
 }
 
 const isBrowser = typeof window !== "undefined";
+let unauthorizedRedirectStarted = false;
 
 export async function apiCall<T, K>(
   method: Methods,
@@ -38,7 +38,7 @@ export async function apiCall<T, K>(
     const IS_FORM_DATA = !!body && body instanceof FormData;
     const token =
       options?.passedToken ??
-      (isBrowser || options?.isSocketToken || options?.serverAuth === false
+      (isBrowser || options?.serverAuth === false
         ? undefined
         : await readServerAccessToken());
     const config: AxiosRequestConfig = {
@@ -51,7 +51,7 @@ export async function apiCall<T, K>(
             ? baseUrlV(options.version) + url
             : baseUrl + url,
       headers: {
-        ...headerItems(IS_FORM_DATA ? "file" : undefined, options?.isSocketToken, token),
+        ...headerItems(IS_FORM_DATA ? "file" : undefined, token),
         ...options?.headers,
       },
       data: body,
@@ -86,7 +86,8 @@ export async function apiCall<T, K>(
   } catch (error: any) {
     if (axios.isCancel(error)) throw error;
     handleError(error, options?.showErrorNotification !== false);
-    if (error?.response?.status == 401 && isBrowser) {
+    if (error?.response?.status == 401 && isBrowser && !unauthorizedRedirectStarted) {
+      unauthorizedRedirectStarted = true;
       await endSession();
       window?.location?.replace("/");
     }
@@ -100,7 +101,6 @@ export async function apiCall<T, K>(
 
 const headerItems = (
   type?: "file",
-  isSocketToken?: boolean,
   passedToken?: string,
 ) => {
   let headers = {
@@ -108,12 +108,7 @@ const headerItems = (
     "Content-Type": `application/json`,
   } as AxiosRequestHeaders | { authorization?: string };
   if (type == "file") headers = {};
-  const socketToken: string = isBrowser
-    ? localStorage.getItem("socket_token") || ""
-    : "";
-  if (!!isSocketToken && !!socketToken)
-    headers.authorization = `Bearer ${socketToken}`;
-  else if (passedToken) headers.authorization = `Bearer ${passedToken}`;
+  if (passedToken) headers.authorization = `Bearer ${passedToken}`;
   return headers;
 };
 

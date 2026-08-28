@@ -2,8 +2,8 @@
 
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { useStoreInit } from "@/store";
-import { AuthService } from "@/api_services/auth/auth.service";
 import { UserService } from "@/api_services/user/user.service";
+import { authKeys } from "@features/auth/api/auth.keys";
 
 export const useUpdateProfileImage = () => {
   const queryClient = useQueryClient();
@@ -12,10 +12,7 @@ export const useUpdateProfileImage = () => {
     onSuccess: (profile) => {
       if (!profile) return;
       useStoreInit.setState({ userInfo: profile });
-      queryClient.setQueriesData(
-        { queryKey: [AuthService.GET_PROFILE_CACHEKEY] },
-        profile,
-      );
+      queryClient.setQueryData(authKeys.profile(), profile);
     },
   });
 };

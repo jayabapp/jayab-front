@@ -4,6 +4,7 @@ const _STRINGS = {
   MESSAGE_SENDING: "در حال ارسال",
   MESSAGE_SEND_FAILED: "ارسال ناموفق",
   CHAT_RECONNECTING: "در حال اتصال مجدد...",
+  SANDBOX_OTP: "کد ورود سندباکس",
   CURRENCY: "تومان",
   IMAGE: "تصویر",
   RETURN: "بازگشت",

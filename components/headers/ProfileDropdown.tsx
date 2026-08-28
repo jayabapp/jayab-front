@@ -1,36 +1,29 @@
-import { useAuthStore, useStoreInit, useStoreParams } from "@/store";
+import { useStoreInit, useStoreParams } from "@/store";
 import { Menu, MenuButton, Transition } from "@headlessui/react";
 import { Fragment, useRef, useState } from "react";
-import { usePathname, useRouter } from "next/navigation";
 import { profileDropDownItems } from "@/utils/constantss";
-import { endSession } from "@/helpers/session";
+import { usePathname } from "next/navigation";
+import { useLogout } from "@features/auth/hooks/useLogout";
 import { Pulser } from ".";
 
 import AbsoluteBadge from "./AbsoluteBadge";
 import ConfirmModal from "../Modal/ConfirmModal";
 import _STRINGS from "@/utils/LocalStrings";
+import Image from "next/image";
 import Link from "next/link";
 
-const ProfileDropdown = ({
-  notifBadge,
-  isHome,
-}: {
-  notifBadge?: number | string;
+type TProfileDropProps = {
   isHome?: boolean;
-}) => {
+  notifBadge?: number | string;
+};
+
+const ProfileDropdown = ({ notifBadge, isHome }: TProfileDropProps) => {
   const { userInfo } = useStoreInit((data) => data);
   const { owmerActiveReservesCount } = useStoreParams((data) => data);
   const asPath = usePathname();
   const ref = useRef<HTMLButtonElement>(null);
   const [isVisible, setisVisible] = useState(false);
-  const router = useRouter();
-
-  const logoutProcess = async () => {
-    await endSession();
-    useAuthStore.setState({ isLogin: false, isAdminSso: false });
-    useStoreInit.setState({ userInfo: null });
-    router.push("/");
-  };
+  const logoutProcess = useLogout();
 
   const _logout = () => {
     void logoutProcess();
@@ -99,8 +92,11 @@ const ProfileDropdown = ({
                   <div className="relative">
                     {" "}
                     <AbsoluteBadge count={Number(notifBadge) || 0} />
-                    <img
+                    <Image
                       src={`/assets/icons/header/prof_dropdownn_bell.svg`}
+                      alt=""
+                      width={24}
+                      height={24}
                       className={`w-6 h-6 aspect-square ${asPath.includes("notifications") ? " " : ""} dark:invert `}
                     />
                   </div>
@@ -121,8 +117,11 @@ const ProfileDropdown = ({
                   >
                     <div className="relative">
                       {" "}
-                      <img
+                      <Image
                         src={`/assets/icons/header/header_my_adds.svg`}
+                        alt=""
+                        width={24}
+                        height={24}
                         className={`w-6 h-6 aspect-square ${asPath.includes("notifications") ? " " : ""} dark:invert `}
                       />
                     </div>
@@ -147,8 +146,11 @@ const ProfileDropdown = ({
                       <AbsoluteBadge
                         count={Number(owmerActiveReservesCount) || 0}
                       />
-                      <img
+                      <Image
                         src={`/assets/icons/header/header_my_adds.svg`}
+                        alt=""
+                        width={24}
+                        height={24}
                         className={`w-6 h-6 aspect-square ${asPath.includes("notifications") ? " " : ""} dark:invert `}
                       />
                     </div>
@@ -172,8 +174,11 @@ const ProfileDropdown = ({
                   >
                     <div className="relative">
                       {" "}
-                      <img
+                      <Image
                         src={`/assets/icons/header/header_my_sub.svg`}
+                        alt=""
+                        width={24}
+                        height={24}
                         className={`w-6 h-6 aspect-square ${
                           asPath.includes("/profile/advisor/subscription")
                             ? " "
@@ -198,8 +203,11 @@ const ProfileDropdown = ({
                     key={e.id}
                     className={`hover:bg-primary-700/80 dark:hover:bg-zinc-600  cursor-pointer hover:text-white text-gray-600 dark:text-gray-300 group flex w-full gap-2 items-center rounded-md px-2 py-2 text-sm font-light no-underline`}
                   >
-                    <img
+                    <Image
                       src={e?.imgSrc}
+                      alt=""
+                      width={24}
+                      height={24}
                       className={`w-6 h-6 aspect-square ${asPath.includes(e?.route) ? " " : ""} dark:invert `}
                     />
                     <p className="text-sm"> {e?.title}</p>
@@ -211,8 +219,11 @@ const ProfileDropdown = ({
                      group flex w-full px-2    items-center rounded-md  gap-2 py-2 text-sm font-medium`}
                 onClick={() => setisVisible(true)}
               >
-                <img
+                <Image
                   src={"/assets/icons/header/header_logout.svg"}
+                  alt=""
+                  width={24}
+                  height={24}
                   className={`w-6 h-6 aspect-square dark:invert `}
                 />{" "}
                 {_STRINGS.LOGOUT_TITLE}

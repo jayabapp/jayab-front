@@ -4,41 +4,32 @@ import { useAuthStore, useStoreInit, useStoreParams } from "@/store";
 import { Suspense, useEffect, useState } from "react";
 import { useUpdateProfileImage } from "@features/notifications/hooks/useUpdateProfileImage";
 import { isMobile, isTablet } from "react-device-detect";
+import { useCurrentProfile } from "@features/auth/hooks/useCurrentProfile";
 import { useLogoutUser } from "@features/notifications/hooks/useLogoutUser";
 import { profileItems } from "@/utils/constantss";
-import { AuthService } from "@/api_services/auth/auth.service";
 import { useRouter } from "next/navigation";
-import { useQuery } from "@tanstack/react-query";
 
+import ProfileFormSkeleton from "@features/auth/components/ProfileFormSkeleton";
 import ConfirmModal from "@/components/Modal/ConfirmModal";
 import ProfileItem from "@/components/profile/ProfileItem";
 import _STRINGS from "@/utils/LocalStrings";
 import isEmpty from "lodash/isEmpty";
 import dynamic from "next/dynamic";
 import Button from "@/components/shared/Button/Button";
+import Image from "next/image";
 
 const MainUploader = dynamic(() => import("@/components/uploader"));
 
 const Profile = () => {
-  const [profileImage, setProfileImage] = useState<any>(null);
   const { owmerActiveReservesCount } = useStoreParams();
   const router = useRouter();
   const [showLogout, setShowLogout] = useState(false);
   const { isLogin } = useAuthStore((state) => state);
 
-  const { data } = useQuery({
-    queryKey: [AuthService?.GET_PROFILE_CACHEKEY, "profile_page", isLogin],
-    queryFn: () => {
-      if (isLogin) return AuthService?.GetProfile();
-      else return null;
-    },
-  });
+  const { data, isPending } = useCurrentProfile(isLogin);
 
   useEffect(() => {
-    if (!!data) {
-      useStoreInit.setState({ userInfo: data });
-      setProfileImage(data?.profile_image);
-    }
+    if (!!data) useStoreInit.setState({ userInfo: data });
   }, [data]);
 
   const logoutProcess = useLogoutUser();
@@ -69,11 +60,18 @@ const Profile = () => {
     >
       {!isMobile && !isTablet ? (
         <div className="w-full flex gap-4 items-center justify-center flex-col pt-8 opacity-40">
-          <img src="/assets/icons/logo/logo.svg" className="w-1/5" />
+          <Image
+            alt=""
+            width={160}
+            height={80}
+            className="w-1/5 h-auto"
+            src="/assets/icons/logo/logo.svg"
+          />
           <p className="text-sm font-medium">{_STRINGS.PLZ_SELECT_A_PAGE}</p>
         </div>
       ) : (
         <div className="flex flex-col mt-0 lg:mt-4 ">
+          {isPending && isLogin ? <ProfileFormSkeleton /> : <></>}
           {!!data ? (
             <div className="flex items-center gap-2">
               <Suspense>
@@ -86,12 +84,11 @@ const Profile = () => {
                   title={_STRINGS.IMAGE}
                   withCrop
                   key={`uploader`}
-                  item={profileImage}
+                  item={data?.profile_image}
                   link="/attachments?type=PROFILE"
                   containerClass={"my-3  w-fit flex items-start justify-start "}
                   onSelect={(file) => {
                     mutate({ profile_image_id: file?.id });
-                    setProfileImage(file);
                   }}
                   showCamera
                 />
@@ -197,8 +194,11 @@ const Profile = () => {
                 }}
                 className="py-5 flex   items-center w-full gap-3 xl:gap-6 cursor-pointer hover:scale-102 transition-all"
               >
-                <img
+                <Image
                   src="/assets/icons/header/header_logout.svg"
+                  alt=""
+                  width={24}
+                  height={24}
                   className="w-6 h-6  aspect-square "
                 />{" "}
                 <p className=" text-sm xl:text-base  font-medium text-primary-150 ">

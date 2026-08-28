@@ -27,6 +27,7 @@ export const readOtpChallenge = (raw?: string): OtpChallenge | null => {
     const parsed = JSON.parse(Buffer.from(raw, "base64url").toString("utf8"));
     if (!isValidMobile(parsed?.mobile) || typeof parsed?.expiresAt !== "number")
       return null;
+    if (parsed.expiresAt <= Date.now()) return null;
     return parsed;
   } catch {
     return null;

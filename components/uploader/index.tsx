@@ -1,32 +1,35 @@
 "use client";
-import { ReactEventHandler, useRef, useState } from "react";
-import "react-advanced-cropper/dist/style.css";
 
+import { ReactEventHandler, useEffect, useRef, useState } from "react";
+import { NEW_IMAGE_URL } from "@/utils/urls";
 import { AuthService } from "@/api_services/auth/auth.service";
 import { useMutation } from "@tanstack/react-query";
-import { Coordinates, CropperRef } from "react-advanced-cropper";
 import { toast } from "sonner";
-import BtnLoading from "../shared/Button/BtnLoading";
+
+import ProfileImageModal from "@features/auth/components/ProfileImageModal";
 import EditImageModal from "./EditImageModal";
-import FullscreenImage from "./FullScreenImage";
-//For Slider
+import BtnLoading from "../shared/Button/BtnLoading";
+import Image from "next/image";
+
+import "react-advanced-cropper/dist/style.css";
 
 type props = {
-  type?: string;
-
   item: any;
-  onDelete?: () => void | null;
-  onSelect: (e: any) => void | null;
-  containerClass?: string;
-
+  link: string;
+  type?: string;
+  title?: string;
   disabled?: boolean;
   withCrop?: boolean;
-  showCamera?: boolean;
   cropRatio?: number;
-  link: string;
-  title?: string;
-
-  innerClasses?: { sizeClass?: string; secontParentClass?: string; imageClass?: string };
+  showCamera?: boolean;
+  containerClass?: string;
+  onDelete?: () => void | null;
+  onSelect: (e: any) => void | null;
+  innerClasses?: {
+    sizeClass?: string;
+    secontParentClass?: string;
+    imageClass?: string;
+  };
 };
 interface RefObject<T> {
   readonly current: T | null;
@@ -34,81 +37,61 @@ interface RefObject<T> {
 
 const MainUploader = ({
   item,
-  type = "image",
-
-  disabled,
-  onSelect,
-
-  onDelete,
-
-  containerClass,
-
-  withCrop = false,
-  cropRatio,
   link,
   title,
-  innerClasses,
+  disabled,
+  onSelect,
+  onDelete,
+  cropRatio,
   showCamera,
+  innerClasses,
+  type = "image",
+  containerClass,
 }: props) => {
-  const cropperRef = useRef<CropperRef>(null);
-  const [coordinates, setCoordinates] = useState<Coordinates | null>(null);
   const imagePickerRef = useRef<HTMLDivElement>(null);
-  const [subLoading, setSubLoading] = useState(false);
-  const [image, setImage] = useState<string>();
   const [loading, setLoading] = useState(false);
   const [show, setShow] = useState(false);
-  const [showImage, setShowImage] = useState<any>("");
+  const [showImage, setShowImage] = useState("");
   const [selectedFile, setselectedFile] = useState<string | null>(null);
-  const [isCropping, setisCropping] = useState(false);
+  const uploadControllerRef = useRef<AbortController | null>(null);
 
   const { mutate } = useMutation({ mutationFn: AuthService.UploadUsersImage });
 
+  useEffect(
+    () => () => {
+      uploadControllerRef.current?.abort();
+      if (selectedFile) URL.revokeObjectURL(selectedFile);
+    },
+    [selectedFile],
+  );
+
   const uploadTemp = async (file: Blob) => {
     setLoading(true);
-
+    uploadControllerRef.current?.abort();
+    const controller = new AbortController();
+    uploadControllerRef.current = controller;
     try {
-      // let compressedBlob;
-      // let compressedFile;
-      // try {
-      //   compressedBlob = await imageCompression(file as any, {
-      //     maxSizeMB: 1,
-      //     maxWidthOrHeight: 1240,
-      //     useWebWorker: true,
-      //     maxIteration: 5,
-      //   });
-      //   compressedFile = new File([compressedBlob], "whatever", {
-      //     type: file.type,
-      //     lastModified: Date.now(),
-      //   });
-      // } catch (error) {
-      //   compressedFile = file;
-      //   console.error("Image compression failed:", error);
-      // }
       if (!!file) {
         var formData = new FormData();
         formData.append("file", file);
-
         mutate(
-          { formData: formData, link: link },
+          { formData: formData, link: link, signal: controller.signal },
           {
             onSuccess: (e) => {
+              if (controller.signal.aborted) return;
               setLoading(false);
-              setSubLoading(false);
               onSelect(e?.result);
-              setImage("");
+              if (selectedFile) URL.revokeObjectURL(selectedFile);
               setselectedFile(null);
-              // setNewCrop(null);
-              // setDisable(true);
             },
             onError: () => {
-              setSubLoading(false);
+              if (controller.signal.aborted) return;
               setLoading(false);
             },
           },
         );
       }
     } finally {
-      // drop file reference
       file = null as any;
     }
   };
@@ -116,26 +99,28 @@ const MainUploader = ({
   const pick: ReactEventHandler = async (e) => {
     const target = e.target as HTMLInputElement;
     const file = target?.files ? target?.files[0] : null;
-
     if (!file) return;
-    if (type == "image" && !file.type?.includes("image/")) return toast.error("لطفا از فایل تصویر استفاده نمایید");
+    if (type == "image" && !file.type?.includes("image/"))
+      return toast.error("لطفا از فایل تصویر استفاده نمایید");
     if (type == "image" && file.name.split(".")[1] == "jfif")
       return toast.error("لطفا از فایل تصویر درست استفاده نمایید");
     else {
-      setImage(URL.createObjectURL(file));
+      if (selectedFile) URL.revokeObjectURL(selectedFile);
       setselectedFile(URL.createObjectURL(file));
     }
   };
 
   const onHide = () => {
-    setImage("");
+    uploadControllerRef.current?.abort();
+    if (selectedFile) URL.revokeObjectURL(selectedFile);
     setselectedFile(null);
-    setisCropping(false);
   };
 
   return (
-    <div className={`flex w-fit  ${containerClass} ${showCamera ? "relative" : ""}`} style={{ zIndex: "4 !important" }}>
-      {/* <div id="myVIdeo"></div> */}
+    <div
+      className={`flex w-fit  ${containerClass} ${showCamera ? "relative" : ""}`}
+      style={{ zIndex: "4 !important" }}
+    >
       {!!showCamera ? (
         <div
           onClick={() => {
@@ -143,14 +128,18 @@ const MainUploader = ({
           }}
           className="  z-2  bg-transparent cursor-pointer absolute bottom-0  w-6 h-6 aspect-square right-0 "
         >
-          <img src="/assets/icons/uploader/uploader_camera.svg" className=" w-6 h-6 " />
+          <Image
+            width={24}
+            height={24}
+            alt="تغییر تصویر"
+            src="/assets/icons/uploader/uploader_camera.svg"
+          />
         </div>
       ) : (
         <></>
       )}
       <div
-        className={`flex  w-fit  flex-col     items-center justify-start   rounded-20 ${innerClasses?.secontParentClass}`}
-        // style={{ overflowX: "scroll" }}
+        className={`flex w-fit flex-col items-center justify-start rounded-20 ${innerClasses?.secontParentClass}`}
       >
         <input
           className="  hidden "
@@ -172,7 +161,13 @@ const MainUploader = ({
               !!innerClasses?.sizeClass ? innerClasses?.sizeClass : "h-24 w-24"
             }  `}
           >
-            <img className="w-8 opacity-70" src="/assets/images/uploader/uploader_placeholder.png" />
+            <Image
+              className="w-8 opacity-70"
+              src="/assets/images/uploader/uploader_placeholder.png"
+              alt="انتخاب تصویر"
+              width={32}
+              height={32}
+            />
             {title && <p className=" text-sm  opacity-70 ">{title}</p>}
             {loading ? (
               <div className="w-full h-full absolute top-0 left-0 rounded-20 flex items-center justify-center   backdrop-blur-md">
@@ -196,30 +191,26 @@ const MainUploader = ({
               onClick={() => {
                 setShow(true);
                 setShowImage(
-                  typeof item == "string"
-                    ? "imageUrl" + item
-                    : item?.file_location
-                      ? "imageUrl" + item?.file_location
-                      : item?.name
-                        ? `https://${item?.bucket}.${item?.end_point}/${item?.path}/${item?.name}`
-                        : item,
+                  typeof item === "string"
+                    ? item
+                    : item?.file_location || NEW_IMAGE_URL(item),
                 );
               }}
               className={`cursor-pointer border   bg-whiteGray-100  dark:bg-zinc-700  rounded-20 aspect-square relative  ${
-                !!innerClasses?.sizeClass ? innerClasses?.sizeClass : "h-24 w-24"
+                !!innerClasses?.sizeClass
+                  ? innerClasses?.sizeClass
+                  : "h-24 w-24"
               } `}
             >
-              <img
-                alt="img"
+              <Image
+                alt={title || "تصویر پروفایل"}
                 src={
-                  typeof item == "string"
-                    ? "imageUrl" + item
-                    : item.file_location
-                      ? "imageUrl" + item.file_location
-                      : item.name
-                        ? `https://${item?.bucket}.${item?.end_point}/${item?.path}/${item?.name}`
-                        : item
+                  typeof item === "string"
+                    ? item
+                    : item?.file_location || NEW_IMAGE_URL(item, "thumbnail")
                 }
+                width={96}
+                height={96}
                 className={`object-cover  w-full bg-gradient-to-b rounded-20 aspect-square max-w-max 
                   
                    ${!!innerClasses?.imageClass ? innerClasses?.imageClass : "h-24 w-24"}
@@ -227,8 +218,16 @@ const MainUploader = ({
               />
             </div>
             {!!onDelete ? (
-              <div className="   bg-transparent cursor-pointer absolute top-2 left-2 shadow-2xl " onClick={onDelete}>
-                <img src="/assets/icons/uploader/faded_x_circle.svg" />
+              <div
+                className="   bg-transparent cursor-pointer absolute top-2 left-2 shadow-2xl "
+                onClick={onDelete}
+              >
+                <Image
+                  src="/assets/icons/uploader/faded_x_circle.svg"
+                  alt="حذف تصویر"
+                  width={20}
+                  height={20}
+                />
               </div>
             ) : (
               <></>
@@ -238,10 +237,9 @@ const MainUploader = ({
       </div>
 
       {show && (
-        <FullscreenImage
-          setShow={setShow}
-          show={show}
+        <ProfileImageModal
           src={showImage}
+          onClose={() => setShow(false)}
           onDelete={
             !!onDelete
               ? () => {
@@ -254,11 +252,11 @@ const MainUploader = ({
       )}
       {!!selectedFile ? (
         <EditImageModal
-          cropRatio={cropRatio}
-          imageUrl={selectedFile || ""}
-          isUploading={loading}
-          onComplete={uploadTemp}
           onHide={onHide}
+          isUploading={loading}
+          cropRatio={cropRatio}
+          onComplete={uploadTemp}
+          imageUrl={selectedFile || ""}
         />
       ) : (
         <></>

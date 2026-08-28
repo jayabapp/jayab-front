@@ -1,85 +1,26 @@
 "use client";
 
-import { useRouter, useSearchParams } from "next/navigation";
-import { useEffect, useState } from "react";
-import { useAuthStore } from "../../store";
-import { useMutation } from "@tanstack/react-query";
-import { AuthService } from "@/api_services/auth/auth.service";
-import { p2e } from "@/helpers/NumberConverter";
+import { useAuthForm } from "@features/auth/hooks/useAuthForm";
 
 import useCmsContent from "@/hooks/useCmsContent";
 import AuthHeader from "../headers/AuthHeader";
 import FormInput from "../shared/Form/FormInput";
 import _STRINGS from "@/utils/LocalStrings";
 import Button from "../shared/Button/Button";
-import Notify from "../shared/Toast";
 import Image from "next/image";
 import Terms from "../auth/Terms";
 
 const AuthPageComponent = () => {
-  const { isLogin } = useAuthStore((state) => state);
-  const router = useRouter();
-  const searchParams = useSearchParams();
-  const redirectUrl = searchParams.get("redirect_url");
-  const [mobile, setMobile] = useState<number | string>("");
-  const [loading, setLoading] = useState(false);
-  const [visibleTermsModal, setvisibleTermsModal] = useState(false);
-  const { mutate } = useMutation({ mutationFn: AuthService.sendOtp });
-
-  const signUp = () => {
-    setLoading(true);
-    const mobile_number = p2e(mobile);
-    if (mobile_number?.length == 11) {
-      mutate(
-        { mobile_number: mobile_number || null },
-        {
-          onSuccess: (data) => {
-            if (data?.sandbox_otp_code) {
-              Notify({
-                type: "info",
-                body: `کد ورود سندباکس: ${data.sandbox_otp_code}`,
-              });
-            }
-
-            const link = redirectUrl
-              ? `/auth/otp?redirect_url=${redirectUrl}`
-              : `/auth/otp`;
-
-            router.replace(link);
-            useAuthStore.setState({ authCodeExpire: data?.expires_at ?? null });
-          },
-          onError: () => {
-            setLoading(false);
-            console.log("err");
-          },
-        },
-      );
-    } else {
-      Notify({
-        type: "warn",
-        title: _STRINGS.ATTENTION,
-        body: _STRINGS.WORNG_NUMBER,
-      });
-      setLoading(false);
-    }
-  };
+  const {
+    submit,
+    mobile,
+    setMobile,
+    isSubmitting,
+    visibleTermsModal,
+    setVisibleTermsModal,
+  } = useAuthForm();
 
   const { content: terms, isLoading: termsLoading } = useCmsContent("terms");
-
-  useEffect(() => {
-    document.addEventListener("keydown", _onKeyDown);
-    return () => {
-      document.removeEventListener("keydown", _onKeyDown);
-    };
-  }, [signUp]);
-
-  function _onKeyDown(e: KeyboardEvent) {
-    if (e.code == "Enter") return signUp();
-  }
-
-  useEffect(() => {
-    if (!!isLogin) router.replace("/");
-  }, [isLogin]);
 
   return (
     <div className="auth-container bg-cover    min-h-screen h-fit flex flex-col gap-8 items-center  md:!pb-8   relative">
@@ -90,8 +31,8 @@ const AuthPageComponent = () => {
           <div className="flex relative z-1  w-28 flex-col items-center  gap-2 h-fit aspect-square">
             <Image
               fill
-              unoptimized
               alt="logo"
+              unoptimized
               src={`/assets/icons/logo/logo.svg`}
               className="w-full aspect-square rounded-md object-contain"
             />
@@ -121,7 +62,7 @@ const AuthPageComponent = () => {
                 <p>{_STRINGS.U_ACCEPTED}</p>
                 <p
                   className="inline-block underline cursor-pointer font-medium text-pink-1000 mx-1"
-                  onClick={() => setvisibleTermsModal(true)}
+                  onClick={() => setVisibleTermsModal(true)}
                 >
                   {_STRINGS?.TERMS}
                 </p>{" "}
@@ -131,8 +72,8 @@ const AuthPageComponent = () => {
 
             <Button
               width="w-full"
-              onClick={signUp}
-              loading={loading}
+              onClick={submit}
+              loading={isSubmitting}
               roundedClass="rounded-full"
               containerClass="w-full  mt-20"
               title={_STRINGS?.ENTER_AND_MOVE_ON}
@@ -143,7 +84,7 @@ const AuthPageComponent = () => {
         <Terms
           termsLoading={termsLoading}
           visibleTermsModal={visibleTermsModal}
-          setvisibleTermsModal={setvisibleTermsModal}
+          setvisibleTermsModal={setVisibleTermsModal}
           termsContent={terms ? terms : { full_text: "", html: "" }}
         />
       </div>

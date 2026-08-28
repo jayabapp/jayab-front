@@ -45,6 +45,12 @@ class FCM {
       fcm_token: token,
     });
   }
+
+  static async cleanup() {
+    if (!this.messagingInstance) return;
+    const { deleteToken } = await import("firebase/messaging");
+    await deleteToken(this.messagingInstance).catch(() => false);
+  }
 }
 
 export default FCM;
