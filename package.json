@@ -13,7 +13,8 @@
     "api:generate": "orval --config orval.config.mjs",
     "api:check": "node scripts/check-generated.mjs",
     "architecture:check": "node scripts/check-layer-contracts.mjs",
-    "architecture:report": "node scripts/report-client-boundaries.mjs"
+    "architecture:report": "node scripts/report-client-boundaries.mjs",
+    "architecture:migration": "node scripts/report-component-migration.mjs"
   },
   "dependencies": {
     "@headlessui/react": "^2.2.0",

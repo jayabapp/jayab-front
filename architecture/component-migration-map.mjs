@@ -1,0 +1,101 @@
+export const componentMigrationMap = [
+  {
+    source: "components/shared",
+    targets: ["components/elements"],
+    status: "in-progress",
+    note: "Only domain-agnostic primitives are promoted; domain UI stays with its module.",
+  },
+  {
+    source: "components/Home",
+    targets: ["components/modules/Home"],
+    status: "planned",
+    note: "Migrate section-by-section with Home/CMS data boundaries.",
+  },
+  {
+    source: "components/Filters",
+    targets: ["components/modules/PropertySearch"],
+    status: "planned",
+    note: "Filters belong to property search rather than global elements.",
+  },
+  {
+    source: "components/SearchBoxComp",
+    targets: ["components/modules/Search"],
+    status: "planned",
+    note: "Keep interaction in a small search client island.",
+  },
+  {
+    source: "components/properties",
+    targets: [
+      "components/modules/PropertyDiscovery",
+      "components/modules/PropertyDetails",
+      "components/modules/OwnerProperty",
+      "components/modules/Reservations",
+    ],
+    status: "planned",
+    note: "Split by domain responsibility; do not recreate a single properties bucket.",
+  },
+  {
+    source: "components/profile",
+    targets: ["components/modules/Profile"],
+    status: "planned",
+    note: "Move data behavior to user features while migrating UI sections.",
+  },
+  {
+    source: "components/chat",
+    targets: ["components/modules/ChatList", "components/modules/ChatRoom"],
+    status: "planned",
+    note: "Realtime behavior remains in the chat feature and client islands.",
+  },
+  {
+    source: "components/Advisor",
+    targets: ["components/modules/Advisors"],
+    status: "planned",
+    note: "API and mutations remain owned by the advisor feature.",
+  },
+  {
+    source: "components/support",
+    targets: [
+      "components/modules/SupportList",
+      "components/modules/SupportTicket",
+      "components/modules/SupportCreate",
+    ],
+    status: "migrated",
+    note: "Pilot vertical slice; route pages are server templates around client islands.",
+  },
+  {
+    source: "components/headers",
+    targets: ["components/layouts"],
+    status: "planned",
+    note: "Move chrome composition while keeping interactive menus as client islands.",
+  },
+  {
+    source: "components/Footer",
+    targets: ["components/layouts"],
+    status: "planned",
+    note: "Desktop and mobile chrome remain separate responsive implementations.",
+  },
+  {
+    source: "components/Map",
+    targets: ["components/modules/Map", "components/elements/Map"],
+    status: "planned",
+    note: "Browser-only Neshan wrappers and domain map UI must be separated.",
+  },
+  {
+    source: "components/uploader",
+    targets: ["components/elements/Upload", "components/modules/PropertyMedia"],
+    status: "planned",
+    note: "Promote only generic upload primitives.",
+  },
+  {
+    source: "components/widgets",
+    targets: ["components/elements", "components/modules"],
+    status: "planned",
+    note: "Each widget requires an explicit owner before it moves.",
+  },
+  {
+    source: "components/SinglePageComponents",
+    targets: ["components/templates", "components/modules"],
+    status: "planned",
+    note: "Classify each file by page composition versus business section.",
+  },
+];

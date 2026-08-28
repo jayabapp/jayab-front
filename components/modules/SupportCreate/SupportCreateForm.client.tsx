@@ -14,7 +14,7 @@ import FormInput from "@/components/shared/Form/FormInput";
 import _STRINGS from "@/utils/LocalStrings";
 import Button from "@/components/shared/Button/Button";
 
-const NewTicketPageComponent = ({ dataKey }: NewTicketFormProps) => {
+const SupportCreateForm = ({ dataKey }: NewTicketFormProps) => {
   const router = useRouter();
   const [title, setTitle] = useState("");
   const [message, setMessage] = useState("");
@@ -39,11 +39,7 @@ const NewTicketPageComponent = ({ dataKey }: NewTicketFormProps) => {
   };
 
   return (
-    <div
-      id="homeParent"
-      className="profile-container transition-all duration-500 ease-in-out"
-    >
-      <div className="mt-6 flex flex-col gap-5">
+    <div className="mt-6 flex flex-col gap-5">
         <FormInput
           item={{
             keyboard: "text",
@@ -59,7 +55,7 @@ const NewTicketPageComponent = ({ dataKey }: NewTicketFormProps) => {
           errorKey="title"
         />
         {errors.title?.[0] ? (
-          <p className="text-xs text-red-600">{errors.title[0]}</p>
+          <p className="text-xs text-danger-500">{errors.title[0]}</p>
         ) : null}
         <MultiLineFormInput
           item={{
@@ -75,7 +71,7 @@ const NewTicketPageComponent = ({ dataKey }: NewTicketFormProps) => {
           errorKey="message"
         />
         {errors.message?.[0] ? (
-          <p className="text-xs text-red-600">{errors.message[0]}</p>
+          <p className="text-xs text-danger-500">{errors.message[0]}</p>
         ) : null}
         <Button
           onClick={submit}
@@ -84,9 +80,8 @@ const NewTicketPageComponent = ({ dataKey }: NewTicketFormProps) => {
           title={_STRINGS.SEND_TICKET}
           containerClass="flex w-full items-center justify-end"
         />
-      </div>
     </div>
   );
 };
 
-export default NewTicketPageComponent;
+export default SupportCreateForm;

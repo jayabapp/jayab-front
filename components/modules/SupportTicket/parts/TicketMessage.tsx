@@ -3,7 +3,7 @@ import type { TicketMessageProps } from "@/types/features/support/components";
 import _STRINGS from "@/utils/LocalStrings";
 import moment from "moment-jalaali";
 
-const Message = ({ item }: TicketMessageProps) => (
+const TicketMessage = ({ item }: TicketMessageProps) => (
   <div
     className={`w-full rounded-lg p-4 text-white ${
       item?.by_admin
@@ -31,4 +31,4 @@ const Message = ({ item }: TicketMessageProps) => (
   </div>
 );
 
-export default Message;
+export default TicketMessage;

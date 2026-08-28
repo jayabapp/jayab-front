@@ -352,6 +352,8 @@ const _STRINGS = {
   SEE_CITIES: "مشاهده شهرها",
 
   SEND_NEW_TICKET: "ارسال تیکت  جدید",
+  SUPPORT_LIST_ERROR: "دریافت فهرست تیکت‌ها با خطا مواجه شد.",
+  SUPPORT_DETAILS_ERROR: "دریافت اطلاعات تیکت با خطا مواجه شد.",
   CLOSED: "بسته شده",
   WAITING_TO_RESPOND: "در انتظار پاسخ",
   RESPONDED: "پاسخ داده شده",

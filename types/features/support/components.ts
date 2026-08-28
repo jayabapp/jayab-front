@@ -13,6 +13,6 @@ export type TicketMessageProps = {
   item?: TicketDetails | TicketReply;
 };
 
-export type TicketStatusProps = {
-  status: number;
+export type SupportTicketModuleProps = {
+  ticketId: string;
 };
