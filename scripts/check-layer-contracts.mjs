@@ -45,6 +45,27 @@ const isOneOf = (specifier, prefixes) =>
 
 const report = (file, message) => violations.push(`${file.replaceAll("\\", "/")}: ${message}`);
 
+for (const forbiddenTypeDump of ["types.ts", "interfaces.ts", "types/types.ts", "types/interfaces.ts"]) {
+  try {
+    await readFile(path.join(root, forbiddenTypeDump), "utf8");
+    report(forbiddenTypeDump, "generic type dumps are forbidden; use the ownership tree under types/");
+  } catch (error) {
+    if (error?.code !== "ENOENT") throw error;
+  }
+}
+
+for (const file of await walk("types")) {
+  const source = await readFile(path.join(root, file), "utf8");
+  for (const specifier of readImports(source)) {
+    if (isOneOf(specifier, ["@/components", "@elements", "@layouts", "@modules", "@templates"])) {
+      report(file, `centralized types cannot import runtime UI components (${specifier})`);
+    }
+  }
+  if (/\b(?:type|interface)\s+(?:Props|Data|Item)\b/.test(source)) {
+    report(file, "centralized types require a domain-specific name instead of Props, Data, or Item");
+  }
+}
+
 for (const entry of componentMigrationMap) {
   if (entry.status !== "migrated") continue;
 

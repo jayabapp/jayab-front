@@ -1,6 +1,7 @@
 import next from "eslint-config-next";
 
 import { legacyClientRoutes } from "./architecture/adr/legacy-client-routes.mjs";
+import { importConventionsPlugin } from "./architecture/eslint/import-conventions.mjs";
 
 // eslint-config-next ships a flat config array from v15 on. Routing it through
 // FlatCompat's eslintrc shim made ESLint 10 fail config-schema validation and
@@ -103,6 +104,23 @@ const eslintConfig = [
           message: "Import runtime colors from @/theme/colors instead of hardcoding hex values.",
         },
       ],
+    },
+  },
+  {
+    files: [
+      "components/{elements,layouts,modules,templates}/**/*.{ts,tsx}",
+      "features/support/**/*.{ts,tsx}",
+      "app/(profile)/profile/support/**/*.{ts,tsx}",
+    ],
+    plugins: { "jayab-imports": importConventionsPlugin },
+    rules: {
+      "@typescript-eslint/consistent-type-imports": ["error", { prefer: "type-imports" }],
+      "react/function-component-definition": [
+        "error",
+        { namedComponents: "arrow-function", unnamedComponents: "arrow-function" },
+      ],
+      "jayab-imports/sort-imports": "error",
+      "jayab-imports/no-ui-type-declarations": "error",
     },
   },
   {

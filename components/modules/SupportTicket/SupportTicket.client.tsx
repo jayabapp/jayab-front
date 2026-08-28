@@ -1,20 +1,19 @@
 "use client";
 
 import { useReplyToSupportTicket } from "@features/support/hooks/useReplyToSupportTicket";
+import type { SupportTicketModuleProps } from "@/types/features/support/components";
 import { type SupportFormErrors } from "@features/support/model/support.schema";
 import { getSupportFormErrors } from "@features/support/model/support.schema";
-import { supportReplySchema } from "@features/support/model/support.schema";
 import { useSupportTicket } from "@features/support/hooks/useSupportTicket";
+import { supportReplySchema } from "@features/support/model/support.schema";
 import { useEffect, useState } from "react";
 import { useStoreSocket } from "@/store";
 
-import type { SupportTicketModuleProps } from "@/types/features/support/components";
-
-import TicketDetailsSkeleton from "./parts/TicketDetailsSkeleton";
 import MultiLineFormInput from "@/components/shared/Form/MultiLineFormInput";
+import TicketDetailsSkeleton from "./parts/TicketDetailsSkeleton";
+import Button from "@/components/shared/Button/Button";
 import TicketMessage from "./parts/TicketMessage";
 import _STRINGS from "@/utils/LocalStrings";
-import Button from "@/components/shared/Button/Button";
 import Modal from "@/components/Modal";
 
 const SupportTicket = ({ ticketId }: SupportTicketModuleProps) => {

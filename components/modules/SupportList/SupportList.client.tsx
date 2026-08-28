@@ -1,22 +1,28 @@
 "use client";
 
 import { useSupportTickets } from "@features/support/hooks/useSupportTickets";
-import { useAuthStore } from "@/store";
 import { useRouter } from "next/navigation";
+import { useAuthStore } from "@/store";
 
 import SupportCardSkeleton from "./parts/SupportCardSkeleton";
 import SupportListSkeleton from "./parts/SupportListSkeleton";
-import InfiniteScroll from "react-infinite-scroll-component";
-import SupportCard from "./parts/SupportCard";
 import EmptyList from "@/components/shared/Lotties/EmptyList";
-import _STRINGS from "@/utils/LocalStrings";
+import InfiniteScroll from "react-infinite-scroll-component";
 import Button from "@/components/shared/Button/Button";
+import SupportCard from "./parts/SupportCard";
+import _STRINGS from "@/utils/LocalStrings";
 
 const SupportList = () => {
   const { isLogin } = useAuthStore();
   const router = useRouter();
-  const { fetchNextPage, hasNextPage, isFetchingNextPage, isPending, isError, tickets } =
-    useSupportTickets("TICKET", Boolean(isLogin));
+  const {
+    fetchNextPage,
+    hasNextPage,
+    isFetchingNextPage,
+    isPending,
+    isError,
+    tickets,
+  } = useSupportTickets("TICKET", Boolean(isLogin));
 
   const goToLogin = () => router.push("/auth?redirect_url=/profile/support");
 
@@ -27,7 +33,10 @@ const SupportList = () => {
           {isPending ? (
             <SupportListSkeleton />
           ) : isError ? (
-            <div role="alert" className="rounded-lg bg-danger-50 p-4 text-sm text-danger-500">
+            <div
+              role="alert"
+              className="rounded-lg bg-danger-50 p-4 text-sm text-danger-500"
+            >
               {_STRINGS.SUPPORT_LIST_ERROR}
             </div>
           ) : tickets.length === 0 ? (

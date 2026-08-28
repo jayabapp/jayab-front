@@ -33,6 +33,7 @@ const changedSources = [
 ];
 
 run(process.execPath, ["scripts/check-layer-contracts.mjs"]);
+run(process.execPath, ["scripts/check-import-cycles.mjs"]);
 run(process.execPath, ["scripts/check-migration-guardrails.mjs"]);
 run(process.execPath, ["scripts/report-migration-review.mjs"]);
 

@@ -13,10 +13,12 @@
     "api:generate": "orval --config orval.config.mjs",
     "api:check": "node scripts/check-generated.mjs",
     "architecture:check": "node scripts/check-layer-contracts.mjs",
+    "architecture:cycles": "node scripts/check-import-cycles.mjs",
     "architecture:report": "node scripts/report-client-boundaries.mjs",
     "architecture:migration": "node scripts/report-component-migration.mjs",
     "architecture:review": "node scripts/report-migration-review.mjs",
     "migration:guardrails": "node scripts/check-migration-guardrails.mjs",
+    "migration:fix": "eslint components/elements components/modules components/templates features/support \"app/(profile)/profile/support\" --fix",
     "migration:verify": "node scripts/verify-migration.mjs",
     "migration:verify:build": "node scripts/verify-migration.mjs --build",
     "module:scaffold": "node scripts/scaffold-module.mjs"

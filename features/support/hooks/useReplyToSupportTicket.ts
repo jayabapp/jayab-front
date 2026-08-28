@@ -1,10 +1,9 @@
 "use client";
 
-import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { replyToSupportTicketMutationOptions } from "@features/support/api/support.options";
-import { supportKeys } from "@features/support/api/support.keys";
-
+import { useMutation, useQueryClient } from "@tanstack/react-query";
 import type { TicketDetails } from "@/types/features/support/api";
+import { supportKeys } from "@features/support/api/support.keys";
 
 export const useReplyToSupportTicket = (id: number | string) => {
   const queryClient = useQueryClient();

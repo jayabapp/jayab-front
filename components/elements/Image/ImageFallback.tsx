@@ -1,8 +1,7 @@
 "use client";
 
-import { useState } from "react";
-
 import type { ImageFallbackProps } from "@/types/components/elements/image";
+import { useState } from "react";
 
 import Image from "next/image";
 

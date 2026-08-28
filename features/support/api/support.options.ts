@@ -1,11 +1,10 @@
 import { infiniteQueryOptions, mutationOptions, queryOptions } from "@tanstack/react-query";
-import { SupportService } from "@/api_services/support/support.service";
-import { GC_TIME, STALE_TIME } from "@/helpers/queryCache";
-import { supportKeys } from "./support.keys";
-import { ApiError } from "@lib/api/api-error";
-
 import type { CreateTicketInput, ReplyTicketInput } from "@/types/features/support/api";
+import { SupportService } from "@/api_services/support/support.service";
 import type { SupportTicketType } from "@/types/features/support/api";
+import { GC_TIME, STALE_TIME } from "@/helpers/queryCache";
+import { ApiError } from "@lib/api/api-error";
+import { supportKeys } from "./support.keys";
 
 export const supportTicketsOptions = (
   type: SupportTicketType,

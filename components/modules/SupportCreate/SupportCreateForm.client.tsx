@@ -2,17 +2,16 @@
 
 import { useCreateSupportTicket } from "@features/support/hooks/useCreateSupportTicket";
 import { type SupportFormErrors } from "@features/support/model/support.schema";
+import type { NewTicketFormProps } from "@/types/features/support/components";
 import { getSupportFormErrors } from "@features/support/model/support.schema";
 import { supportTicketSchema } from "@features/support/model/support.schema";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
 
-import type { NewTicketFormProps } from "@/types/features/support/components";
-
 import MultiLineFormInput from "@/components/shared/Form/MultiLineFormInput";
 import FormInput from "@/components/shared/Form/FormInput";
-import _STRINGS from "@/utils/LocalStrings";
 import Button from "@/components/shared/Button/Button";
+import _STRINGS from "@/utils/LocalStrings";
 
 const SupportCreateForm = ({ dataKey }: NewTicketFormProps) => {
   const router = useRouter();
@@ -40,46 +39,46 @@ const SupportCreateForm = ({ dataKey }: NewTicketFormProps) => {
 
   return (
     <div className="mt-6 flex flex-col gap-5">
-        <FormInput
-          item={{
-            keyboard: "text",
-            title: _STRINGS.TICKET_TITLE,
-            containerClass: "w-full",
-            titleClass: "",
-            inputClass: "!rounded-md",
-            autoFocus: false,
-          }}
-          onChangeText={setTitle}
-          value={title}
-          errors={errors}
-          errorKey="title"
-        />
-        {errors.title?.[0] ? (
-          <p className="text-xs text-danger-500">{errors.title[0]}</p>
-        ) : null}
-        <MultiLineFormInput
-          item={{
-            keyboard: "text",
-            title: _STRINGS.TICKET_TEXT,
-            containerClass: "w-full",
-            titleClass: "",
-            rows: 7,
-          }}
-          onChangeText={setMessage}
-          value={message}
-          errors={errors}
-          errorKey="message"
-        />
-        {errors.message?.[0] ? (
-          <p className="text-xs text-danger-500">{errors.message[0]}</p>
-        ) : null}
-        <Button
-          onClick={submit}
-          loading={isPending}
-          disabled={isPending}
-          title={_STRINGS.SEND_TICKET}
-          containerClass="flex w-full items-center justify-end"
-        />
+      <FormInput
+        item={{
+          keyboard: "text",
+          title: _STRINGS.TICKET_TITLE,
+          containerClass: "w-full",
+          titleClass: "",
+          inputClass: "!rounded-md",
+          autoFocus: false,
+        }}
+        onChangeText={setTitle}
+        value={title}
+        errors={errors}
+        errorKey="title"
+      />
+      {errors.title?.[0] ? (
+        <p className="text-xs text-danger-500">{errors.title[0]}</p>
+      ) : null}
+      <MultiLineFormInput
+        item={{
+          keyboard: "text",
+          title: _STRINGS.TICKET_TEXT,
+          containerClass: "w-full",
+          titleClass: "",
+          rows: 7,
+        }}
+        onChangeText={setMessage}
+        value={message}
+        errors={errors}
+        errorKey="message"
+      />
+      {errors.message?.[0] ? (
+        <p className="text-xs text-danger-500">{errors.message[0]}</p>
+      ) : null}
+      <Button
+        onClick={submit}
+        loading={isPending}
+        disabled={isPending}
+        title={_STRINGS.SEND_TICKET}
+        containerClass="flex w-full items-center justify-end"
+      />
     </div>
   );
 };
