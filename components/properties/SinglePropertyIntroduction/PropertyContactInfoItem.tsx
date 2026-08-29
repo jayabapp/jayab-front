@@ -10,8 +10,8 @@ import { ContentImage } from "@/components/elements/Image";
 
 import maskPhoneNumber from "@/helpers/maskPhoneNumber";
 import _STRINGS from "@/utils/LocalStrings";
-import Button from "@/components/shared/Button/Button";
-import Notify from "@/components/shared/Toast";
+import Button from "@elements/Button";
+import Notify from "@elements/Toast";
 
 type TPropertyContact = {
   image?: ImageDto;

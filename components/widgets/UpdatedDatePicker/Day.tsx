@@ -3,7 +3,7 @@ import { toast } from "sonner";
 
 import DayPricePart from "./DayPricePart";
 import _STRINGS from "@/utils/LocalStrings";
-import Notify from "@/components/shared/Toast";
+import Notify from "@elements/Toast";
 import moment from "moment-jalaali";
 
 const RESERVED_DATE_TOAST_ID = "reserved-date";

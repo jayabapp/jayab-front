@@ -9,7 +9,7 @@ import { Swiper } from "swiper";
 import PropertilesFilterListItem from "./PropertilesFilterListItem";
 import SwiperWithNavigation from "@/components/SwiperWithNavigation";
 import queryBuilder from "@/helpers/queryBuilder";
-import BtnLoading from "@/components/shared/Button/BtnLoading";
+import { BtnLoading } from "@elements/Button";
 import isEmpty from "lodash/isEmpty";
 
 function PropertiesFilterList({

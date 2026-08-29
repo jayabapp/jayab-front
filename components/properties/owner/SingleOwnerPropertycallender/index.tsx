@@ -14,7 +14,7 @@ import ChangePriceComp from "./ChangePriceComp";
 import Callender from "@/components/widgets/DatePicker/callender";
 import _STRINGS from "@/utils/LocalStrings";
 import moment from "moment-jalaali";
-import Button from "@/components/shared/Button/Button";
+import Button from "@elements/Button";
 
 const MAX_SELECTABLE_DAYS = 62;
 

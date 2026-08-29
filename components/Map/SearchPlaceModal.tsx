@@ -4,8 +4,8 @@ import { useMapAddressSearch } from "@features/map/hooks/useMapAddressSearch";
 import type { SearchedLocation } from "@/types/features/map";
 
 import SearchedLocItem from "./SearchedLocItem";
-import FormInput from "@/components/shared/Form/FormInput";
-import PopUpDown from "../PopUpDown";
+import { FormInput } from "@elements/Form";
+import PopUpDown from "@elements/PopUpDown";
 
 type TSearchPlaceModalProps = {
   show: boolean;

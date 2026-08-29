@@ -10,7 +10,7 @@ import SearchBoxPopularPlaces from "./SearchBoxPopularPlaces";
 import SeachBoxCitySelector from "../Home/HomeCityFilterContainer/SeachBoxCitySelector";
 import SearchBoxCitiesPart from "./SearchBoxCitiesPart";
 import SuggestedPart from "./SuggestedPart";
-import BtnLoading from "../shared/Button/BtnLoading";
+import { BtnLoading } from "@elements/Button";
 import isEmpty from "lodash/isEmpty";
 import dynamic from "next/dynamic";
 

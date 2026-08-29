@@ -1,4 +1,4 @@
-import Checkbox from "../shared/Form/Checkbox";
+import { Checkbox } from "@elements/Form";
 import CmsText from "../shared/CmsText";
 
 const PropTermItem = ({

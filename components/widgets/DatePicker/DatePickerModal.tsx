@@ -4,7 +4,7 @@ import React, { useEffect, useState } from "react";
 // import CircularArrowRight from "../../DynamicIcons/CircularArrowRight";
 // import "@moamfar/react-time-date-picker/dist/style.css";
 
-import ModalBottomSheet from "@/components/Modal/ModalBottomSheet";
+import { ModalBottomSheet } from "@elements/Modal";
 // import { DatePicker, DatePickerSelectedDate } from "@moamfar/react-time-date-picker";
 const DatePickerModal = ({
   date,

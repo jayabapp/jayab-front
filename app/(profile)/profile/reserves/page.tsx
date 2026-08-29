@@ -8,7 +8,7 @@ import { useState } from "react";
 import ReservationCardSkeleton from "@features/reservations/components/ReservationCardSkeleton";
 import ConfirmModal from "@/components/Modal/ConfirmModal";
 import ReserveCard from "@/components/properties/reserve/ReserveCard";
-import EmptyList from "@/components/shared/Lotties/EmptyList";
+import EmptyState from "@elements/EmptyState";
 import isEmpty from "lodash/isEmpty";
 
 const UserReserves = () => {
@@ -44,7 +44,7 @@ const UserReserves = () => {
           {reserves?.length == 0 ? (
             <div className="col-span-2">
               {" "}
-              <EmptyList />
+              <EmptyState />
             </div>
           ) : (
             reserves?.map((e) => (

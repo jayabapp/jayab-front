@@ -6,9 +6,9 @@ import { useChats } from "../hooks/useChats";
 
 import ChatListSkeleton from "./ChatListSkeleton";
 import ChatListItem from "@/components/chat/ChatListItem";
-import EmptyList from "@/components/shared/Lotties/EmptyList";
+import EmptyState from "@elements/EmptyState";
 import _STRINGS from "@/utils/LocalStrings";
-import Button from "@/components/shared/Button/Button";
+import Button from "@elements/Button";
 
 const ChatListView = ({ profile = false }: { profile?: boolean }) => {
   const isLogin = useAuthStore((state) => state.isLogin);
@@ -28,7 +28,7 @@ const ChatListView = ({ profile = false }: { profile?: boolean }) => {
           width="w-full"
         />
       ) : !isPending && chats.length === 0 && isLogin ? (
-        <EmptyList />
+        <EmptyState />
       ) : (
         chats.map((chat) => <ChatListItem item={chat} key={chat.id} />)
       )}

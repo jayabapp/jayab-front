@@ -2,12 +2,12 @@ import { colors } from "@/theme/colors";
 import { useState } from "react";
 
 import AdvisorCircularProgresCard from "../AdvisorCircularProgressPart/AdvisorCircularProgresCard";
-import ModalHeaderPart from "@/components/Modal/ModalHeaderPart";
+import { ModalHeaderPart } from "@elements/Modal";
 import AdvisorCard from "../AdvisorCard";
 import _STRINGS from "@/utils/LocalStrings";
 import RatePop from "./RatePop";
-import Button from "@/components/shared/Button/Button";
-import Modal from "@/components/Modal";
+import Button from "@elements/Button";
+import Modal from "@elements/Modal";
 import Image from "next/image";
 import { useAdvisorDetails } from "@features/advisors/hooks/useAdvisorDetails";
 import { useStartAdvisorContact } from "@features/advisors/hooks/useStartAdvisorContact";

@@ -6,7 +6,7 @@ import { HomeService } from "@/api_services/home/home.service";
 import { useQuery } from "@tanstack/react-query";
 
 import _STRINGS from "@/utils/LocalStrings";
-import Checkbox from "@/components/shared/Form/Checkbox";
+import { Checkbox } from "@elements/Form";
 import CmsText from "@/components/shared/CmsText";
 
 type TPropertyTermsBodyProps = {

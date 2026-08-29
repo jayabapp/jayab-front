@@ -1,8 +1,8 @@
 import { PropertyListDto } from "@/api_services/property/property.interface";
 import _STRINGS from "@/utils/LocalStrings";
 import Link from "next/link";
-import Button from "../shared/Button/Button";
-import { Divider } from "../shared/Divider";
+import Button from "@elements/Button";
+import { Divider } from "@elements/Divider";
 import AuthorizationStatus from "./AuthorizationStatus";
 
 const PropertyCardOwnerPart = ({ data, goToLink }: { goToLink: string; data: PropertyListDto }) => {

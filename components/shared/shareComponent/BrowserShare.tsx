@@ -4,7 +4,7 @@ import { useEffect, useState } from "react";
 
 import { shareLinks } from "@/utils/constantss";
 import { isMobile } from "react-device-detect";
-import Notify from "../Toast";
+import Notify from "@elements/Toast";
 
 const ShareLink = ({
   containerClass = "flex-row relative justify-start",

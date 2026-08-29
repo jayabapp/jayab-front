@@ -10,15 +10,15 @@ import { useOwnerProperty } from "@features/owner-property/hooks/useOwnerPropert
 import { PropertySubsDto } from "@/api_services/property/property.interface";
 
 import OwnerPhotoUpgradeModal from "@/components/profile/photo-upgrade/OwnerPhotoUpgradeModal";
-import CheckboxCardContainer from "@/components/shared/Form/Checkbox/CheckboxCardContainer";
+import { CheckboxCardContainer } from "@elements/Form";
 import FixedBottomContainer from "@/components/shared/FixedBottomContainer";
 import AddCardPricePart from "@/components/properties/AddCardPricePart";
 import numberWithCommas from "@/helpers/numberWithCommas";
 import SimpleBarChart from "@/components/widgets/chart/SimpleBarChart";
 import _STRINGS from "@/utils/LocalStrings";
 import isEmpty from "lodash/isEmpty";
-import Button from "@/components/shared/Button/Button";
-import Notify from "@/components/shared/Toast";
+import Button from "@elements/Button";
+import Notify from "@elements/Toast";
 
 const Subscription = () => {
   const router = useRouter();

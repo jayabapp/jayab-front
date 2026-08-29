@@ -1,9 +1,9 @@
 "use client";
 import React, { Dispatch } from "react";
-import Counter from "../shared/Form/Counter";
+import { Counter } from "@elements/Form";
 import { usePathname, useRouter } from "next/navigation";
 import queryBuilder from "@/helpers/queryBuilder";
-import Checkbox from "../shared/Form/Checkbox";
+import { Checkbox } from "@elements/Form";
 
 const FilterCheck = ({
   title,

@@ -5,7 +5,7 @@ import { useOtpFlow } from "@features/auth/hooks/useOtpFlow";
 import AuthHeader from "@/components/headers/AuthHeader";
 import _STRINGS from "@/utils/LocalStrings";
 import OtpInput from "./OtpInput";
-import Button from "@/components/shared/Button/Button";
+import Button from "@elements/Button";
 import Image from "next/image";
 
 const OtpPageSignInComponent = () => {

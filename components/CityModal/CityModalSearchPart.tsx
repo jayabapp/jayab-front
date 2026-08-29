@@ -1,6 +1,6 @@
 import _STRINGS from "@/utils/LocalStrings";
 import React from "react";
-import FormInput from "../shared/Form/FormInput";
+import { FormInput } from "@elements/Form";
 
 const CityModalSearchPart = ({
   search,

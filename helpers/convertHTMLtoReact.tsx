@@ -5,7 +5,7 @@ import SimpleAccordion from "@/components/shared/SimpleAccorion";
 import HTMLParser from "node-html-parser";
 import DOMPurify from "isomorphic-dompurify";
 import Swiper from "@/components/embelaCarousel/Swiper";
-import Button from "@/components/shared/Button/Button";
+import Button from "@elements/Button";
 import Image from "next/image";
 import Link from "next/link";
 

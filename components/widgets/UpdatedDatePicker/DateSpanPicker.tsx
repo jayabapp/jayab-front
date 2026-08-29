@@ -1,4 +1,4 @@
-import Notify from "@/components/shared/Toast";
+import Notify from "@elements/Toast";
 import _STRINGS from "@/utils/LocalStrings";
 import moment from "moment-jalaali";
 import { Dispatch, SetStateAction, useState } from "react";

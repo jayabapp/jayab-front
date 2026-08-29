@@ -15,7 +15,7 @@ import ConfirmModal from "@/components/Modal/ConfirmModal";
 import StatusShower from "@/components/shared/StatusShower";
 import _STRINGS from "@/utils/LocalStrings";
 import isEmpty from "lodash/isEmpty";
-import Button from "@/components/shared/Button/Button";
+import Button from "@elements/Button";
 import moment from "moment-jalaali";
 
 const AdvisorRegister = () => {

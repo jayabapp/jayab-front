@@ -14,12 +14,12 @@ import CityModalSearchPart from "./CityModalSearchPart";
 import ProvienceCard from "./ProvienceCard";
 import queryBuilder from "@/helpers/queryBuilder";
 import useQueryGet from "@/helpers/queryGet";
-import EmptyList from "../shared/Lotties/EmptyList";
+import EmptyState from "@elements/EmptyState";
 import _STRINGS from "@/utils/LocalStrings";
 import CityCard from "./CityCard";
 import isEmpty from "lodash/isEmpty";
-import Button from "../shared/Button/Button";
-import Modal from "../Modal";
+import Button from "@elements/Button";
+import Modal from "@elements/Modal";
 
 type TCityModal = {
   show: boolean;
@@ -289,7 +289,7 @@ const CityModal = ({
           <CityRowSkeleton />
         ) : !selectedProv ? (
           isEmpty(provinces) ? (
-            <EmptyList />
+            <EmptyState />
           ) : (
             provinces
               ?.filter((e) => provienceAndCitiesSearchEngine(e))
@@ -312,7 +312,7 @@ const CityModal = ({
               ))
           )
         ) : isEmpty(cities) ? (
-          <EmptyList />
+          <EmptyState />
         ) : (
           cities
             ?.filter((e) => provienceAndCitiesSearchEngine(e))

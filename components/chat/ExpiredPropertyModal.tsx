@@ -7,8 +7,8 @@ import CmsContentSkeleton from "../shared/CmsContentSkeleton";
 import useCmsContent from "@/hooks/useCmsContent";
 import _STRINGS from "@/utils/LocalStrings";
 import CmsText from "../shared/CmsText";
-import Button from "../shared/Button/Button";
-import Modal from "../Modal";
+import Button from "@elements/Button";
+import Modal from "@elements/Modal";
 
 type TExpiredPropertyProps = {
   visibleModal: boolean;

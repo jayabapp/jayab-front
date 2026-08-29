@@ -12,17 +12,17 @@ import { usePropertyRules } from "@features/owner-property/hooks/usePropertyRule
 
 import PropertyEditStepSkeleton from "@features/owner-property/steps/PropertyEditStepSkeleton";
 import FixedBottomContainer from "@/components/shared/FixedBottomContainer";
-import MultiLineFormInput from "@/components/shared/Form/MultiLineFormInput";
+import { MultiLineFormInput } from "@elements/Form";
 import SuccessAddModal from "@/components/properties/SuccessAddModal";
 import PropTermItem from "@/components/properties/TermItem";
 import FormCounter from "@/components/properties/FormCounter";
 import StepShower from "@/components/shared/StepShower";
-import FormInput from "@/components/shared/Form/FormInput";
-import Checkbox from "@/components/shared/Form/Checkbox";
+import { FormInput } from "@elements/Form";
+import { Checkbox } from "@elements/Form";
 import _STRINGS from "@/utils/LocalStrings";
 import isArray from "lodash/isArray";
-import Button from "@/components/shared/Button/Button";
-import Notify from "@/components/shared/Toast";
+import Button from "@elements/Button";
+import Notify from "@elements/Toast";
 
 const CreatePropertyTerms = () => {
   const router = useRouter();

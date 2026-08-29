@@ -1,6 +1,6 @@
 "use client";
 import React from "react";
-import Notify from "../Toast";
+import Notify from "@elements/Toast";
 
 const ShareButton = () => {
   const shareCode = async () => {

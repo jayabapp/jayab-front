@@ -8,7 +8,7 @@ export const YupValidator = async <T>(data: T, schema: Schema) => {
   } catch (error) {
     const { ValidationError } = await import("yup");
     if (error instanceof ValidationError) {
-      const { default: Notify } = await import("@/components/shared/Toast");
+      const { default: Notify } = await import("@elements/Toast");
       Notify({ type: "warn", body: error?.message, title: _STRINGS.ATTENTION });
       throw error.message;
     } else {

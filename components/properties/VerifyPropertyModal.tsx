@@ -1,7 +1,7 @@
 import React from "react";
-import Modal from "../Modal";
+import Modal from "@elements/Modal";
 import _STRINGS from "@/utils/LocalStrings";
-import Button from "../shared/Button/Button";
+import Button from "@elements/Button";
 import { useRouter } from "next/navigation";
 
 const VerifyPropertyModal = ({

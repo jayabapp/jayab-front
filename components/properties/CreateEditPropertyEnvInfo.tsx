@@ -1,8 +1,8 @@
 import { PropertyService } from "@/api_services/property/property.service";
 import _STRINGS from "@/utils/LocalStrings";
 import { useQuery } from "@tanstack/react-query";
-import MultiLineFormInput from "../shared/Form/MultiLineFormInput";
-import SinglePopUpSelect from "../shared/Form/SingleSelectPopUpSelect";
+import { MultiLineFormInput } from "@elements/Form";
+import { SingleSelectPopUpSelect as SinglePopUpSelect } from "@elements/Form";
 import FormCounter from "./FormCounter";
 
 export interface CreateProperyStepThree {

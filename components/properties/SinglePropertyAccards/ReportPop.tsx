@@ -1,13 +1,13 @@
 import { useReportProperty } from "@features/properties/hooks/useReportProperty";
 import { useState } from "react";
 
-import MultiLineFormInput from "@/components/shared/Form/MultiLineFormInput";
-import SinglePopUpSelect from "@/components/shared/Form/SingleSelectPopUpSelect";
-import ModalBottomSheet from "@/components/Modal/ModalBottomSheet";
-import ModalHeaderPart from "@/components/Modal/ModalHeaderPart";
+import { MultiLineFormInput } from "@elements/Form";
+import { SingleSelectPopUpSelect as SinglePopUpSelect } from "@elements/Form";
+import { ModalBottomSheet } from "@elements/Modal";
+import { ModalHeaderPart } from "@elements/Modal";
 import useCmsContent from "@/hooks/useCmsContent";
 import _STRINGS from "@/utils/LocalStrings";
-import Button from "@/components/shared/Button/Button";
+import Button from "@elements/Button";
 
 type TReportPop = {
   show: boolean;

@@ -1,8 +1,8 @@
-import { Divider } from "../shared/Divider";
+import { Divider } from "@elements/Divider";
 
 import CmsContentSkeleton from "../shared/CmsContentSkeleton";
 import _STRINGS from "@/utils/LocalStrings";
-import Modal from "../Modal";
+import Modal from "@elements/Modal";
 
 type TTermsTypes = {
   visibleTermsModal: boolean;

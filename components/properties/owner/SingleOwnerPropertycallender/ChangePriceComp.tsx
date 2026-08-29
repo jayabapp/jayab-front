@@ -4,7 +4,7 @@ import { useState } from "react";
 
 import ChangePriceModal from "./ChangePriceModal";
 import _STRINGS from "@/utils/LocalStrings";
-import Button from "@/components/shared/Button/Button";
+import Button from "@elements/Button";
 
 export type TChangePriceProps = {
   callenderselectedDates: string[];

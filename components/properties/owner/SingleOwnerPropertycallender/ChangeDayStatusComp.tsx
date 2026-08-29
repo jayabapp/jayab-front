@@ -7,7 +7,7 @@ import { produce } from "immer";
 
 import ConfirmModal from "@/components/Modal/ConfirmModal";
 import _STRINGS from "@/utils/LocalStrings";
-import Button from "@/components/shared/Button/Button";
+import Button from "@elements/Button";
 import moment from "moment-jalaali";
 
 export type TChangeDayStatusProps = {

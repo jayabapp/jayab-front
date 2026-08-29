@@ -8,7 +8,7 @@ import { calculateTimeLeft } from "@/helpers/calculateTimeLeft";
 import { ReserveListDto } from "@/api_services/reserve/reserve.interface";
 import { useStoreParams } from "@/store";
 import { NEW_IMAGE_URL } from "@/utils/urls";
-import { Divider } from "@/components/shared/Divider";
+import { Divider } from "@elements/Divider";
 
 import SinglePropContactInfoModal from "../SinglePropertyIntroduction/SinglePropContactInfoModal";
 import LinearTextBlock from "../SinglePropertyAccards/LinearTextBlock";
@@ -16,7 +16,7 @@ import StatusShower from "@/components/shared/StatusShower";
 import CmsInfoPopup from "@/components/shared/CmsInfoPopup";
 import NumberFlow from "@number-flow/react";
 import _STRINGS from "@/utils/LocalStrings";
-import Button from "@/components/shared/Button/Button";
+import Button from "@elements/Button";
 import moment from "moment-jalaali";
 import Image from "next/image";
 import Link from "next/link";

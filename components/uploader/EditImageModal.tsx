@@ -5,8 +5,8 @@ import _STRINGS from "@/utils/LocalStrings";
 
 import { useEffect, useRef, useState } from "react";
 import "react-advanced-cropper/dist/themes/compact.css";
-import Modal from "../Modal";
-import Button from "../shared/Button/Button";
+import Modal from "@elements/Modal";
+import Button from "@elements/Button";
 import FixedBottomContainer from "../shared/FixedBottomContainer";
 import {
   RatioIcon11,

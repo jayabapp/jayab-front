@@ -2,10 +2,10 @@
 
 import { ReactNode, useState } from "react";
 
-import MultiLineFormInput from "../shared/Form/MultiLineFormInput";
-import BtnLoading from "../shared/Button/BtnLoading";
+import { MultiLineFormInput } from "@elements/Form";
+import { BtnLoading } from "@elements/Button";
 import _STRINGS from "@/utils/LocalStrings";
-import Modal from ".";
+import Modal from "@elements/Modal";
 
 type ModalProps = {
   options?: op;

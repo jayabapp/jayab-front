@@ -2,7 +2,7 @@ import { AxiosRequestConfig, AxiosRequestHeaders } from "axios";
 import { readServerAccessToken } from "./server-token";
 import { baseUrl, baseUrlV } from "@/utils/urls";
 import { endSession } from "@/helpers/session";
-import { notify } from "@/components/shared/Toast/notify";
+import { notify } from "@elements/Toast";
 
 import axios from "axios";
 

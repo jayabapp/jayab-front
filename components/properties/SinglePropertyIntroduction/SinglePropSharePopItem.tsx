@@ -1,4 +1,4 @@
-import Checkbox from "@/components/shared/Form/Checkbox";
+import { Checkbox } from "@elements/Form";
 import React from "react";
 
 const SinglePropSharePopItem = ({ data, isChecked, cb }: { cb: () => void | null; isChecked: boolean; data: any }) => {

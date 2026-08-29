@@ -4,7 +4,7 @@ import { DeviceInfo } from "@/helpers/device.detector";
 import HomePropertiesSsrPart from "./HomePropertiesSsrPart";
 import _STRINGS from "@/utils/LocalStrings";
 import isEmpty from "lodash/isEmpty";
-import Button from "@/components/shared/Button/Button";
+import Button from "@elements/Button";
 import Link from "next/link";
 
 const HomePropertiesList = ({

@@ -1,4 +1,4 @@
-import Button from "../shared/Button/Button";
+import Button from "@elements/Button";
 import _STRINGS from "@/utils/LocalStrings";
 import { PropertySubsDto } from "@/api_services/property/property.interface";
 import numberWithCommas from "@/helpers/numberWithCommas";

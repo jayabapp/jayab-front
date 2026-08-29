@@ -2,7 +2,7 @@ import { usePathname, useRouter } from "next/navigation";
 import { Dispatch } from "react";
 
 import queryBuilder from "@/helpers/queryBuilder";
-import Checkbox from "../shared/Form/Checkbox";
+import { Checkbox } from "@elements/Form";
 import isArray from "lodash/isArray";
 
 type ProductModelsType = {

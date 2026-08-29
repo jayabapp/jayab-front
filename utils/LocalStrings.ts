@@ -1,4 +1,12 @@
 const _STRINGS = {
+  PREVIOUS_PAGE: "صفحه قبل",
+  NEXT_PAGE: "صفحه بعد",
+  DECREASE: "کاهش",
+  INCREASE: "افزایش",
+  PAGES: "صفحات",
+  CLOSE: "بستن",
+  SEARCH_OF: "جستجوی",
+  BACK: "بازگشت",
   TRY_AGAIN: "تلاش دوباره",
   ERROR: "خطایی رخ داده است",
   MESSAGE_SENDING: "در حال ارسال",

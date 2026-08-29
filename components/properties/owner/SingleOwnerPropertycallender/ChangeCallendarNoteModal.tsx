@@ -6,13 +6,13 @@ import { useOwnerCalendarActions } from "@features/owner-property/hooks/useOwner
 import { SingleOwnerPropertyDto } from "@/api_services/property/property.interface";
 import { OwnerCallendarItemDto } from "@/api_services/property/property.interface";
 import { useEffect, useState } from "react";
-import { Divider } from "@/components/shared/Divider";
+import { Divider } from "@elements/Divider";
 import { produce } from "immer";
 
-import MultiLineFormInput from "@/components/shared/Form/MultiLineFormInput";
+import { MultiLineFormInput } from "@elements/Form";
 import _STRINGS from "@/utils/LocalStrings";
-import Button from "@/components/shared/Button/Button";
-import Modal from "@/components/Modal";
+import Button from "@elements/Button";
+import Modal from "@elements/Modal";
 
 type TChangeCommissionModalProps = {
   show: boolean;

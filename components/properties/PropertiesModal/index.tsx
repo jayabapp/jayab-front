@@ -9,7 +9,7 @@ import ProductImagesContainer from "@/components/properties/imageComponents/Prop
 import SinglePorpertyAccards from "@/components/properties/SinglePropertyAccards";
 import ProductSkeleton from "@/components/properties/ProductSkeleton";
 import Headers from "@/components/headers";
-import Modal from "@/components/Modal";
+import Modal from "@elements/Modal";
 
 const PropertiesModal = ({ room_slug }: { room_slug: string }) => {
   const pathname = usePathname();

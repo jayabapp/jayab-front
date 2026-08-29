@@ -1,5 +1,5 @@
 import Headers from "@/components/headers";
-import AnimationlessModal from "@/components/Modal/AnimationlessModal";
+import { AnimationlessModal } from "@elements/Modal";
 import dynamic from "next/dynamic";
 
 import Footer from "@/components/Footer";

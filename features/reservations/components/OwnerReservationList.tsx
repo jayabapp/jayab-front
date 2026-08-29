@@ -6,7 +6,7 @@ import { useEffect } from "react";
 import ReservationCardSkeleton from "./ReservationCardSkeleton";
 import InfiniteScroll from "react-infinite-scroll-component";
 import ReserveCard from "@/components/properties/reserve/ReserveCard";
-import EmptyList from "@/components/shared/Lotties/EmptyList";
+import EmptyState from "@elements/EmptyState";
 import _STRINGS from "@/utils/LocalStrings";
 import isEmpty from "lodash/isEmpty";
 
@@ -44,7 +44,7 @@ const OwnerReservationList = ({
           ))}
         </div>
       ) : isEmpty(reservations) ? (
-        <EmptyList />
+        <EmptyState />
       ) : (
         <InfiniteScroll
           dataLength={reservations.length}

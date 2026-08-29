@@ -12,7 +12,7 @@ import SeachBoxCitySelector from "../Home/HomeCityFilterContainer/SeachBoxCitySe
 import SearchBoxCitiesPart from "./SearchBoxCitiesPart";
 import HistorySuggPart from "./HistorySuggPart";
 import SuggestedPart from "./SuggestedPart";
-import BtnLoading from "../shared/Button/BtnLoading";
+import { BtnLoading } from "@elements/Button";
 import isEmpty from "lodash/isEmpty";
 interface props {
   boxId?: string;

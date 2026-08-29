@@ -4,7 +4,7 @@ import { useParams, useRouter } from "next/navigation";
 import { useState } from "react";
 import CreateEditSimpleAdvisor from "@/components/Advisor/CreateEditSimpleAdvisor";
 import CreateEditSpecialAdvisor from "@/components/Advisor/CreateEditSpecialAdvisor";
-import Button from "@/components/shared/Button/Button";
+import Button from "@elements/Button";
 import FixedBottomContainer from "@/components/shared/FixedBottomContainer";
 import { useStoreInit } from "@/store";
 import _STRINGS from "@/utils/LocalStrings";

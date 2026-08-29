@@ -8,7 +8,7 @@ import { PropertyListDto } from "@/api_services/property/property.interface";
 import { NEW_IMAGE_URL } from "@/utils/urls";
 import { ImageDto } from "@/api_services/auth/auth.interface";
 
-import ModalBottomSheet from "@/components/Modal/ModalBottomSheet";
+import { ModalBottomSheet } from "@elements/Modal";
 import numberWithCommas from "@/helpers/numberWithCommas";
 import useCmsContent from "@/hooks/useCmsContent";
 import SwiperSlide from "@/components/embelaCarousel/SwiperSlide";
@@ -16,8 +16,8 @@ import _STRINGS from "@/utils/LocalStrings";
 import CmsText from "@/components/shared/CmsText";
 import isEmpty from "lodash/isEmpty";
 import Swiper from "@/components/embelaCarousel/Swiper";
-import Button from "@/components/shared/Button/Button";
-import Notify from "@/components/shared/Toast";
+import Button from "@elements/Button";
+import Notify from "@elements/Toast";
 import chunk from "lodash/chunk";
 import Image from "next/image";
 

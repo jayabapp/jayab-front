@@ -6,9 +6,9 @@ import { CommentComponent } from "./CommentComponent";
 import { QuestionForm } from "./QuestionForm";
 import { FC, useState } from "react";
 
-import Pagination from "../shared/Pagination";
+import Pagination from "@elements/Pagination";
 import _STRINGS from "@/utils/LocalStrings";
-import Button from "../shared/Button/Button";
+import Button from "@elements/Button";
 
 export const ContentQuestions: FC<{
   containerClass?: string;

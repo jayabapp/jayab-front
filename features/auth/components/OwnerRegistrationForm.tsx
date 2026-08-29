@@ -8,7 +8,7 @@ import type { GetProfileDto } from "@/api_services/auth/auth.interface";
 import FixedBottomContainer from "@/components/shared/FixedBottomContainer";
 import EditCreateUserPage from "@/components/SinglePageComponents/EditCreateUserPage";
 import _STRINGS from "@/utils/LocalStrings";
-import Button from "@/components/shared/Button/Button";
+import Button from "@elements/Button";
 
 type TOwnerRegisterationProps = {
   profile?: GetProfileDto;

@@ -1,5 +1,5 @@
 import { ContentDto } from "@/api_services/home/home.interface";
-import Button from "@/components/shared/Button/Button";
+import Button from "@elements/Button";
 import _STRINGS from "@/utils/LocalStrings";
 import { NEW_IMAGE_URL } from "@/utils/urls";
 import moment from "moment-jalaali";

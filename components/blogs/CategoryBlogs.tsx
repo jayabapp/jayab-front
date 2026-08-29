@@ -4,8 +4,8 @@ import { BlogGridSkeleton } from "./BlogGridSkeleton";
 import { useContentList } from "@features/home/hooks/useContentList";
 
 import queryBuilder from "@/helpers/queryBuilder";
-import Pagination from "../shared/Pagination";
-import EmptyList from "../shared/Lotties/EmptyList";
+import Pagination from "@elements/Pagination";
+import EmptyState from "@elements/EmptyState";
 import BlogCard from "./BlogCard";
 
 export interface catQueryTypes {
@@ -63,7 +63,7 @@ function CategoryBlogs({ queryPage }: CategoryBlogsType) {
           </div>
         ) : (
           <div className="col-span-4">
-            <EmptyList />
+            <EmptyState />
           </div>
         )}
         <Pagination

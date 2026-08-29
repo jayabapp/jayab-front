@@ -4,8 +4,8 @@ import { FC, useEffect, useState } from "react";
 import { ContentDto } from "@/api_services/home/home.interface";
 import { isMobile } from "react-device-detect";
 
-import Button from "../shared/Button/Button";
-import Notify from "../shared/Toast";
+import Button from "@elements/Button";
+import Notify from "@elements/Toast";
 
 const BlogShare: FC<{ data: ContentDto }> = ({ data }) => {
   const [url, setUrl] = useState("");

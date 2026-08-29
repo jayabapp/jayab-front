@@ -8,7 +8,7 @@ import { ImageDto } from "@/api_services/auth/auth.interface";
 import SwiperSlide from "../embelaCarousel/SwiperSlide";
 import dynamic from "next/dynamic";
 import Image from "next/image";
-import Modal from "../Modal";
+import Modal from "@elements/Modal";
 
 const Swiper = dynamic(() => import("../embelaCarousel/Swiper"), { ssr: true });
 
@@ -38,7 +38,7 @@ const GalleryModal: FC<{
   images: ImageDto[];
 }> = ({ isVisible, _onHide, images }) => {
   return (
-    <Modal show={isVisible > 0} onHide={_onHide} type="bottom-sheet">
+    <Modal show={isVisible > 0} onHide={_onHide}>
       {isVisible > 0 && (
         <Swiper
           options={{

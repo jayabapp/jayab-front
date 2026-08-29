@@ -2,8 +2,8 @@ import { useCancelReservation } from "@features/reservations/hooks/useCancelRese
 import { ReserveListDto } from "@/api_services/reserve/reserve.interface";
 import { useState } from "react";
 
-import ModalBottomSheet from "@/components/Modal/ModalBottomSheet";
-import ModalHeaderPart from "@/components/Modal/ModalHeaderPart";
+import { ModalBottomSheet } from "@elements/Modal";
+import { ModalHeaderPart } from "@elements/Modal";
 import ConfirmModal from "@/components/Modal/ConfirmModal";
 import ReserveCard from "./ReserveCard";
 

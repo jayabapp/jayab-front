@@ -12,11 +12,11 @@ import { useState } from "react";
 
 import SinglePropContactInfoModal from "./SinglePropContactInfoModal";
 import ActiveReservePop from "../reserve/ActiveReservePop";
-import ModalBottomSheet from "@/components/Modal/ModalBottomSheet";
+import { ModalBottomSheet } from "@elements/Modal";
 import CmsInfoPopup from "@/components/shared/CmsInfoPopup";
 import _STRINGS from "@/utils/LocalStrings";
-import Button from "@/components/shared/Button/Button";
-import Notify from "@/components/shared/Toast";
+import Button from "@elements/Button";
+import Notify from "@elements/Toast";
 import moment from "moment-jalaali";
 import Image from "next/image";
 

@@ -4,10 +4,10 @@ import { NEW_IMAGE_URL } from "@/utils/urls";
 import { ContentImage } from "@/components/elements/Image";
 
 import CmsContentSkeleton from "@/components/shared/CmsContentSkeleton";
-import ModalBottomSheet from "@/components/Modal/ModalBottomSheet";
+import { ModalBottomSheet } from "@elements/Modal";
 import useCmsContent from "@/hooks/useCmsContent";
 import CmsText from "@/components/shared/CmsText";
-import Button from "@/components/shared/Button/Button";
+import Button from "@elements/Button";
 import Link from "next/link";
 
 export interface CmsInfoPopupAction {

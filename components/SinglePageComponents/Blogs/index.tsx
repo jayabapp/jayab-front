@@ -2,11 +2,11 @@
 
 import { useSearchParams } from "next/navigation";
 import { useState } from "react";
-import { Divider } from "@/components/shared/Divider";
+import { Divider } from "@elements/Divider";
 
 import CategoryBlogs from "@/components/blogs/CategoryBlogs";
 import Breadcrumbs from "@/components/BreadCrumbs";
-import Modal from "@/components/Modal";
+import Modal from "@elements/Modal";
 
 export interface PostPageQuery {
   searchParams: {

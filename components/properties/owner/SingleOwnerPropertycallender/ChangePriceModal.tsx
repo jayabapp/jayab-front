@@ -8,17 +8,17 @@ import { useOwnerPriceLimits } from "@features/owner-property/hooks/useOwnerPric
 import { useUpdateDayPrice } from "@features/owner-property/hooks/useUpdateDayPrice";
 import { toJalaaliDays } from "./jalaaliDays";
 import { produce } from "immer";
-import { Divider } from "@/components/shared/Divider";
+import { Divider } from "@elements/Divider";
 
 import PriceRangeField from "./PriceRangeField";
 import SkeletonText from "@/components/elements/Skeleton/SkeletonText";
 import useCmsContent from "@/hooks/useCmsContent";
-import Checkbox from "@/components/shared/Form/Checkbox";
+import { Checkbox } from "@elements/Form";
 import _STRINGS from "@/utils/LocalStrings";
 import CmsText from "@/components/shared/CmsText";
-import Button from "@/components/shared/Button/Button";
-import Notify from "@/components/shared/Toast";
-import Modal from "@/components/Modal";
+import Button from "@elements/Button";
+import Notify from "@elements/Toast";
+import Modal from "@elements/Modal";
 import moment from "moment-jalaali";
 
 const MAX_PROPERTY_PRICE = 1000000000;

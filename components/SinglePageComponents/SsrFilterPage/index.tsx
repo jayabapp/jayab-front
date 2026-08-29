@@ -16,7 +16,7 @@ import SingleProductBreadCrumb from "@/components/BreadCrumbs/SingleProductBread
 import FilterPageCitiesTitle from "@/components/CityModal/FilterPageCitiesTitle";
 import SsrFilterPageContents from "./SsrFilterPageContents";
 import SpecialFilterButtons from "@/components/Filters/SpecialFilterButtons";
-import ModalHeaderPart from "@/components/Modal/ModalHeaderPart";
+import { ModalHeaderPart } from "@elements/Modal";
 import SsrPartFilter from "@/components/Filters/SsrPartFilter";
 import queryBuilder from "@/helpers/queryBuilder";
 import FiltersPart from "./FiltersPart";
@@ -28,8 +28,8 @@ import _STRINGS from "@/utils/LocalStrings";
 import throttle from "lodash/throttle";
 import isEmpty from "lodash/isEmpty";
 import isArray from "lodash/isArray";
-import Button from "@/components/shared/Button/Button";
-import Modal from "@/components/Modal";
+import Button from "@elements/Button";
+import Modal from "@elements/Modal";
 
 export interface PostPageQuery {
   params: { id: string };

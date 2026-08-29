@@ -5,13 +5,13 @@ import { useReservationAvailability } from "@features/reservations/hooks/useRese
 import { SinglePropDto } from "@/api_services/property/property.interface";
 
 import SinglePropRequestedReserveModal from "./SinglePropRequestedReserveModal";
-import SinglePopUpSelect from "@/components/shared/Form/SingleSelectPopUpSelect";
-import ModalBottomSheet from "@/components/Modal/ModalBottomSheet";
-import ModalHeaderPart from "@/components/Modal/ModalHeaderPart";
+import { SingleSelectPopUpSelect as SinglePopUpSelect } from "@elements/Form";
+import { ModalBottomSheet } from "@elements/Modal";
+import { ModalHeaderPart } from "@elements/Modal";
 import DateSpanPicker from "@/components/widgets/UpdatedDatePicker/DateSpanPicker";
 import _STRINGS from "@/utils/LocalStrings";
-import Button from "@/components/shared/Button/Button";
-import Notify from "@/components/shared/Toast";
+import Button from "@elements/Button";
+import Notify from "@elements/Toast";
 import moment from "moment-jalaali";
 
 type TSinglePropReserveProps = {

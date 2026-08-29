@@ -10,7 +10,7 @@ import MainUploader from "../uploader";
 import ConfirmModal from "../Modal/ConfirmModal";
 import ProfileItem from "./ProfileItem";
 import _STRINGS from "@/utils/LocalStrings";
-import Button from "../shared/Button/Button";
+import Button from "@elements/Button";
 import Image from "next/image";
 
 const Profile = ({}) => {

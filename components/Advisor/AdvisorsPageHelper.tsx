@@ -13,10 +13,10 @@ import AdvisorCard from "@/components/Advisor/AdvisorCard";
 import Breadcrumbs from "@/components/BreadCrumbs";
 import useQueryGet from "@/helpers/queryGet";
 import CityModal from "@/components/CityModal";
-import EmptyList from "@/components/shared/Lotties/EmptyList";
+import EmptyState from "@elements/EmptyState";
 import _STRINGS from "@/utils/LocalStrings";
 import dynamic from "next/dynamic";
-import Button from "@/components/shared/Button/Button";
+import Button from "@elements/Button";
 import Link from "next/link";
 import Image from "next/image";
 import { useAdvisors } from "@features/advisors/hooks/useAdvisors";
@@ -175,7 +175,7 @@ const AdvisorsPageHelper = ({ devices }: { devices: DeviceInfo }) => {
           </InfiniteScroll>
         ) : (
           <div className="col-span-4">
-            <EmptyList />
+            <EmptyState />
           </div>
         )}
 

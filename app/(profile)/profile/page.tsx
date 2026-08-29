@@ -15,7 +15,7 @@ import ProfileItem from "@/components/profile/ProfileItem";
 import _STRINGS from "@/utils/LocalStrings";
 import isEmpty from "lodash/isEmpty";
 import dynamic from "next/dynamic";
-import Button from "@/components/shared/Button/Button";
+import Button from "@elements/Button";
 import Image from "next/image";
 
 const MainUploader = dynamic(() => import("@/components/uploader"));

@@ -5,9 +5,9 @@ import { WeekDays } from "@/utils/constantss";
 import { useMemo } from "react";
 
 import PropertyCardSkeleton from "@/components/properties/PropertyCardSkeleton";
-import ServerSidePaginate from "@/components/shared/Pagination/ServerSidePaginate";
+import { ServerSidePaginate } from "@elements/Pagination";
 import PropertyCard from "@/components/properties/PropertyCard";
-import EmptyList from "@/components/shared/Lotties/EmptyList";
+import EmptyState from "@elements/EmptyState";
 import moment from "moment-jalaali";
 
 export interface catQueryTypes {
@@ -64,7 +64,7 @@ const SsrClinetPartFilterProperties = ({
   if (properties.length === 0) {
     return (
       <div className="col-span-full">
-        <EmptyList />
+        <EmptyState />
       </div>
     );
   }

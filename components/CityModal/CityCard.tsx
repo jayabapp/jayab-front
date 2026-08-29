@@ -2,7 +2,7 @@ import { ProvienceTypesDto } from "@/api_services/property/property.interface";
 import { NEW_IMAGE_URL } from "@/utils/urls";
 import Image from "next/image";
 import React from "react";
-import Checkbox from "../shared/Form/Checkbox";
+import { Checkbox } from "@elements/Form";
 import { ChildCities } from "@/api_services/city/city.interface";
 
 const CityCard = ({

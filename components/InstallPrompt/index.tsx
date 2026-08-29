@@ -1,7 +1,7 @@
 "use client";
 
 import React from "react";
-import Button from "../shared/Button/Button";
+import Button from "@elements/Button";
 
 const InstallPromt = ({
   submitCallBack,

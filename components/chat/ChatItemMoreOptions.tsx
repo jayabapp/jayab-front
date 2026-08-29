@@ -1,7 +1,7 @@
 "use client";
 import _STRINGS from "@/utils/LocalStrings";
 import React from "react";
-import Notify from "../shared/Toast";
+import Notify from "@elements/Toast";
 import { Tooltip } from "react-tooltip";
 import { useChatStore } from "@/store";
 

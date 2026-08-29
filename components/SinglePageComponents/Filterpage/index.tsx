@@ -16,9 +16,9 @@ import FiltersSelectedFiltersShowcase from "@/components/Filters/FiltersSelected
 import FilterdPropertiesPageOrianted from "@/components/Filters/NewFiltredProperties";
 import SortMenu from "@/components/Filters/SortMenu";
 import SpecialFilterButtons from "@/components/Filters/SpecialFilterButtons";
-import Modal from "@/components/Modal";
-import ModalHeaderPart from "@/components/Modal/ModalHeaderPart";
-import Button from "@/components/shared/Button/Button";
+import Modal from "@elements/Modal";
+import { ModalHeaderPart } from "@elements/Modal";
+import Button from "@elements/Button";
 import { DeviceInfo } from "@/helpers/device.detector";
 import queryBuilder from "@/helpers/queryBuilder";
 import useQueryGet from "@/helpers/queryGet";

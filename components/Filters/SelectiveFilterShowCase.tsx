@@ -4,9 +4,9 @@ import { useModalVisible } from "@/hooks/modal.hook";
 import _STRINGS from "@/utils/LocalStrings";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import { useEffect, useState } from "react";
-import ModalBottomSheet from "../Modal/ModalBottomSheet";
-import ModalHeaderPart from "../Modal/ModalHeaderPart";
-import Button from "../shared/Button/Button";
+import { ModalBottomSheet } from "@elements/Modal";
+import { ModalHeaderPart } from "@elements/Modal";
+import Button from "@elements/Button";
 import ProductModels from "./ProductModelx";
 
 const SelectiveFilterShowCase = ({

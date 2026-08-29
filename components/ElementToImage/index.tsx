@@ -2,7 +2,7 @@ import { useCallback, useRef } from "react";
 
 import FixedBottomContainer from "../shared/FixedBottomContainer";
 import _STRINGS from "@/utils/LocalStrings";
-import Button from "../shared/Button/Button";
+import Button from "@elements/Button";
 
 const ElementToImage = ({ children, ...props }: any) => {
   const ref = useRef<HTMLDivElement>(null);

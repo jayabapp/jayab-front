@@ -17,7 +17,7 @@ import NewMultUploader from "@/components/uploader/NewMultUploader";
 import StepShower from "@/components/shared/StepShower";
 import _STRINGS from "@/utils/LocalStrings";
 import isEmpty from "lodash/isEmpty";
-import Button from "@/components/shared/Button/Button";
+import Button from "@elements/Button";
 
 const CreatePropertyImages = () => {
   const [loading, setLoading] = useState(false);

@@ -18,7 +18,7 @@ import AutoFitText from "@/components/shared/AutoFitText";
 import FavButton from "../FavButton";
 import ShareLink from "@/components/shared/shareComponent/BrowserShare";
 import _STRINGS from "@/utils/LocalStrings";
-import Button from "@/components/shared/Button/Button";
+import Button from "@elements/Button";
 
 const OwnerPart = ({ data }: { data: SinglePropDto }) => (
   <div className="flex flex-row items-center gap-2 ">

@@ -4,7 +4,7 @@ import DatePicker from "./index";
 // import CalenderIcon from "../../DynamicIcons/CalenderIcon";
 // import CircularArrowLeft from "../../DynamicIcons/CircularArrowLeft";
 // import CircularArrowRight from "../../DynamicIcons/CircularArrowRight";
-import Modal from "../../Modal";
+import Modal from "@elements/Modal";
 const DatePickerModal = ({
   date,
   setDate,

@@ -6,7 +6,7 @@ import { isIOS } from "react-device-detect";
 
 import ExpiredPropertyModal from "./ExpiredPropertyModal";
 import ChatUploader from "../uploader/ChatUploader";
-import BtnLoading from "../shared/Button/BtnLoading";
+import { BtnLoading } from "@elements/Button";
 import ChatInput from "./ChatInput";
 import ChatReply from "./ChatReply";
 import debounce from "lodash/debounce";

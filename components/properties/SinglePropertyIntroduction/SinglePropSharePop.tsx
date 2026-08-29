@@ -6,11 +6,11 @@ import { SinglePropDto } from "@/api_services/property/property.interface";
 import { useState } from "react";
 
 import SinglePropSharePopItem from "./SinglePropSharePopItem";
-import ModalHeaderPart from "@/components/Modal/ModalHeaderPart";
-import PopUpDown from "@/components/PopUpDown";
+import { ModalHeaderPart } from "@elements/Modal";
+import PopUpDown from "@elements/PopUpDown";
 import _STRINGS from "@/utils/LocalStrings";
-import Button from "@/components/shared/Button/Button";
-import Notify from "@/components/shared/Toast";
+import Button from "@elements/Button";
+import Notify from "@elements/Toast";
 
 type TSinglePropsShareProps = {
   show: boolean;

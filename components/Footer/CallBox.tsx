@@ -5,11 +5,11 @@ import { useAuthStore } from "@/store";
 import { ImageFallback } from "@/components/elements/Image";
 
 import useCmsContent from "@/hooks/useCmsContent";
-import BtnLoading from "../shared/Button/BtnLoading";
+import { BtnLoading } from "@elements/Button";
 import Editable from "../Editable";
 import _STRINGS from "@/utils/LocalStrings";
 import CmsText from "../shared/CmsText";
-import Button from "../shared/Button/Button";
+import Button from "@elements/Button";
 import Link from "next/link";
 
 const CallBox = () => {

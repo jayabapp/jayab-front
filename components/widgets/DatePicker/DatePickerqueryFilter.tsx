@@ -3,7 +3,7 @@ import React, { useEffect, Fragment, useState } from "react";
 
 import { Menu, Transition } from "@headlessui/react";
 import { useStoreTheme } from "../../../store";
-import Modal from "../../Modal";
+import Modal from "@elements/Modal";
 import DatePicker from "./index";
 import moment from "moment-jalaali";
 import queryBuilder from "@/helpers/queryBuilder";

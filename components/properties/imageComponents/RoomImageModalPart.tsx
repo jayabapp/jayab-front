@@ -8,7 +8,7 @@ import type { ImageSlideType } from "./PropertiesImagesPart";
 
 import SwiperWithThumnails from "@/components/embelaCarousel/SwiperWithThumnails";
 import Skeleton from "@/components/elements/Skeleton/Skeleton";
-import Modal from "@/components/Modal";
+import Modal from "@elements/Modal";
 
 type TRoomImageModalProps = {
   alt?: string;

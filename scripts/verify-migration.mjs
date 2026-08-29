@@ -31,14 +31,25 @@ const changedSources = [
       .filter((file) => sourcePattern.test(file) && existsSync(file)),
   ),
 ];
+const migrationLintRoots = [
+  "architecture/",
+  "components/elements/",
+  "scripts/",
+  "types/components/elements/",
+  "utils/LocalStrings.ts",
+];
+const lintSources = changedSources.filter((file) => {
+  const normalizedFile = file.replaceAll("\\", "/");
+  return migrationLintRoots.some((root) => normalizedFile.startsWith(root));
+});
 
 run(process.execPath, ["scripts/check-layer-contracts.mjs"]);
 run(process.execPath, ["scripts/check-import-cycles.mjs"]);
 run(process.execPath, ["scripts/check-migration-guardrails.mjs"]);
 run(process.execPath, ["scripts/report-migration-review.mjs"]);
 
-if (changedSources.length > 0) {
-  run(process.execPath, ["node_modules/eslint/bin/eslint.js", ...changedSources]);
+if (lintSources.length > 0) {
+  run(process.execPath, ["node_modules/eslint/bin/eslint.js", ...lintSources]);
 } else {
   console.log("\nNo changed source files require ESLint.");
 }

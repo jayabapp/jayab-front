@@ -1,7 +1,7 @@
 import { SingleAdvisorDto } from "@/api_services/advisor/advisor.interface";
-import ModalBottomSheet from "@/components/Modal/ModalBottomSheet";
-import Button from "@/components/shared/Button/Button";
-import RangeWithTitle from "@/components/shared/Form/RangeWithTitle";
+import { ModalBottomSheet } from "@elements/Modal";
+import Button from "@elements/Button";
+import RangeWithTitle from "@elements/Slider";
 import { easyRatingItems } from "@/utils/constantss";
 import _STRINGS from "@/utils/LocalStrings";
 import { useState } from "react";

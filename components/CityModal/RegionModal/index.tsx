@@ -1,8 +1,8 @@
 import { ChildCities } from "@/api_services/city/city.interface";
-import Modal from "@/components/Modal";
-import ModalHeaderPart from "@/components/Modal/ModalHeaderPart";
-import Button from "@/components/shared/Button/Button";
-import EmptyList from "@/components/shared/Lotties/EmptyList";
+import Modal from "@elements/Modal";
+import { ModalHeaderPart } from "@elements/Modal";
+import Button from "@elements/Button";
+import EmptyState from "@elements/EmptyState";
 import queryBuilder from "@/helpers/queryBuilder";
 import useQueryGet from "@/helpers/queryGet";
 import _STRINGS from "@/utils/LocalStrings";
@@ -113,7 +113,7 @@ const RegionModal = ({
         <SelectedRegions selectedRegions={selectedRegions} onRegionClick={onRegionClick} />
 
         {isEmpty(cityWithRegions?.child) ? (
-          <EmptyList />
+          <EmptyState />
         ) : (
           cityWithRegions?.child
             ?.filter((e) => onRegionSearchFunc(e))

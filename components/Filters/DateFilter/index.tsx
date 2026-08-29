@@ -1,4 +1,4 @@
-import Modal from "@/components/Modal";
+import Modal from "@elements/Modal";
 import FilterDatePicker from "@/components/widgets/FilterDatePicker";
 import DateStateHelperStringfy from "@/components/widgets/FilterDatePicker/DateStateHelperStringfy";
 import _STRINGS from "@/utils/LocalStrings";

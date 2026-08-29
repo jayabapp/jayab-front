@@ -1,8 +1,8 @@
 import { p2e } from "@/helpers/NumberConverter";
 
-import FormInputWithExternalUnit from "@/components/shared/Form/FormInputWithExternalUnit";
+import { FormInputWithExternalUnit } from "@elements/Form";
 import numberWithCommas from "@/helpers/numberWithCommas";
-import RangeWithTitle from "@/components/shared/Form/RangeWithTitle";
+import RangeWithTitle from "@elements/Slider";
 import _STRINGS from "@/utils/LocalStrings";
 
 export type TPriceRangeProps = {

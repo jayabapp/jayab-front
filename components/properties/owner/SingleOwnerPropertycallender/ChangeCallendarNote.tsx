@@ -4,8 +4,8 @@ import { useState } from "react";
 
 import ChangeCallendarNoteModal from "./ChangeCallendarNoteModal";
 import _STRINGS from "@/utils/LocalStrings";
-import Button from "@/components/shared/Button/Button";
-import Notify from "@/components/shared/Toast";
+import Button from "@elements/Button";
+import Notify from "@elements/Toast";
 
 export type TChangeCallendarNoteProps = {
   isDisabled?: boolean;

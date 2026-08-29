@@ -5,7 +5,7 @@ import { useNotifications } from "@features/notifications/hooks/useNotifications
 import NotificationCardSkeleton from "@/components/notification/NotificationCardSkeleton";
 import InfiniteScroll from "react-infinite-scroll-component";
 import NotifCard from "@/components/notification/NotifCard";
-import EmptyList from "@/components/shared/Lotties/EmptyList";
+import EmptyState from "@elements/EmptyState";
 
 const NotificationSkeletonGrid = ({ count = 4 }: { count?: number }) => (
   <div
@@ -44,7 +44,7 @@ const Notifications = () => {
           دریافت اعلان‌ها با خطا مواجه شد.
         </div>
       ) : notifications.length === 0 ? (
-        <EmptyList />
+        <EmptyState />
       ) : (
         <InfiniteScroll
           hasMore={Boolean(hasNextPage)}

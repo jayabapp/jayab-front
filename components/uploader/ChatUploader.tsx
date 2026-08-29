@@ -3,11 +3,11 @@ import { AuthService } from "@/api_services/auth/auth.service";
 import { useMutation } from "@tanstack/react-query";
 import { toast } from "sonner";
 
-import BtnLoading from "../shared/Button/BtnLoading";
-import FormInput from "../shared/Form/FormInput";
+import { BtnLoading } from "@elements/Button";
+import { FormInput } from "@elements/Form";
 import _STRINGS from "@/utils/LocalStrings";
 import Image from "next/image";
-import Modal from "../Modal";
+import Modal from "@elements/Modal";
 
 type props = {
   item: any;

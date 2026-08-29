@@ -14,7 +14,7 @@ import PropertyEditStepSkeleton from "@features/owner-property/steps/PropertyEdi
 import FixedBottomContainer from "@/components/shared/FixedBottomContainer";
 import StepShower from "@/components/shared/StepShower";
 import _STRINGS from "@/utils/LocalStrings";
-import Button from "@/components/shared/Button/Button";
+import Button from "@elements/Button";
 
 const CreateProperty = () => {
   const router = useRouter();

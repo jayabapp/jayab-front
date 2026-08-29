@@ -3,7 +3,7 @@ import { useStoreParams } from "@/store";
 import _STRINGS from "@/utils/LocalStrings";
 import { usePathname, useRouter } from "next/navigation";
 import React from "react";
-import Modal from ".";
+import Modal from "@elements/Modal";
 type LoginModalType = {
   visibleLoginModal: boolean;
   setvisibleLoginModal: (e: boolean) => void | null;

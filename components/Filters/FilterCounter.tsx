@@ -3,7 +3,7 @@
 import queryBuilder from "@/helpers/queryBuilder";
 import { usePathname, useRouter } from "next/navigation";
 import { Dispatch, useCallback, useMemo } from "react";
-import Counter from "../shared/Form/Counter";
+import { Counter } from "@elements/Form";
 
 interface FilterCounterProps {
   query?: Record<string, string | string[] | undefined>;

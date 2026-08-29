@@ -10,16 +10,16 @@ import { useEffect, useState } from "react";
 import { createPropertySteps } from "@/utils/constantss";
 import { usePropertyDraft } from "@features/owner-property/hooks/usePropertyDraft";
 
-import FormInputWithExternalUnit from "@/components/shared/Form/FormInputWithExternalUnit";
+import { FormInputWithExternalUnit } from "@elements/Form";
 import PropertyEditStepSkeleton from "@features/owner-property/steps/PropertyEditStepSkeleton";
 import FixedBottomContainer from "@/components/shared/FixedBottomContainer";
 import numberWithCommas from "@/helpers/numberWithCommas";
-import RangeWithTitle from "@/components/shared/Form/RangeWithTitle";
+import RangeWithTitle from "@elements/Slider";
 import CmsInfoPopup from "@/components/shared/CmsInfoPopup";
 import TitleCounter from "@/components/properties/TitleCounter";
 import StepShower from "@/components/shared/StepShower";
 import _STRINGS from "@/utils/LocalStrings";
-import Button from "@/components/shared/Button/Button";
+import Button from "@elements/Button";
 
 const CreatePropertyPricing = () => {
   const router = useRouter();

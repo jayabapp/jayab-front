@@ -1,5 +1,5 @@
 import React from "react";
-import Counter from "../shared/Form/Counter";
+import { Counter } from "@elements/Form";
 
 const TitleCounter = ({
   title,

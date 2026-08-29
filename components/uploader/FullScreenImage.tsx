@@ -1,6 +1,6 @@
 import { ContentImage } from "@/components/elements/Image";
 
-import Modal from "../Modal";
+import Modal from "@elements/Modal";
 
 type TFullScreenProps = {
   src: any;

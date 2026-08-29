@@ -4,7 +4,7 @@ import { Fragment } from "react";
 
 import HomeProductsBannerItems from "./HomeProductsBannerItems";
 import PropertyCard from "@/components/properties/PropertyCard";
-import EmptyList from "@/components/shared/Lotties/EmptyList";
+import EmptyState from "@elements/EmptyState";
 
 type HomePropertiesSsrPartType = {
   data: any;
@@ -49,7 +49,7 @@ function HomePropertiesSsrPart({
           </div>
         ) : (
           <div className="col-span-4">
-            <EmptyList />
+            <EmptyState />
           </div>
         )}
       </div>

@@ -2,7 +2,7 @@ import { HomeLandingDto } from "@/api_services/home/home.interface";
 import { DeviceInfo } from "@/helpers/device.detector";
 
 import CategoryItem from "./CategoryItem";
-import EmptyList from "@/components/shared/Lotties/EmptyList";
+import EmptyState from "@elements/EmptyState";
 import dynamic from "next/dynamic";
 import isEmpty from "lodash/isEmpty";
 
@@ -31,7 +31,7 @@ function MainFiltersContainer({ data, title, devices }: TMainFiltersProps) {
       {isEmpty(data) ? (
         <div className=" min-h-[30dvh] w-full flex items-center justify-center">
           {" "}
-          <EmptyList />
+          <EmptyState />
         </div>
       ) : (
         <Swiper

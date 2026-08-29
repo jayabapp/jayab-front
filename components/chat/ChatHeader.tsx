@@ -8,7 +8,7 @@ import { ImageDto } from "@/api_services/auth/auth.interface";
 import { useState } from "react";
 
 import ConfirmModal from "../Modal/ConfirmModal";
-import BtnLoading from "../shared/Button/BtnLoading";
+import { BtnLoading } from "@elements/Button";
 import _STRINGS from "@/utils/LocalStrings";
 import Image from "next/image";
 import Link from "next/link";

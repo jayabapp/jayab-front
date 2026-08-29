@@ -4,7 +4,7 @@ import numberWithCommas from "@/helpers/numberWithCommas";
 import _STRINGS from "@/utils/LocalStrings";
 import { SubPaymentsDto } from "@/api_services/user/user.interface";
 import moment from "moment-jalaali";
-import { Divider } from "../shared/Divider";
+import { Divider } from "@elements/Divider";
 
 const MyPaymentCards = ({ data }: { data: SubPaymentsDto }) => {
   return (

@@ -1,5 +1,5 @@
 import React from "react";
-import FormInput from "../shared/Form/FormInput";
+import { FormInput } from "@elements/Form";
 import _STRINGS from "@/utils/LocalStrings";
 import { CreateAdvisorDto } from "@/api_services/advisor/advisor.interface";
 

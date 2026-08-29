@@ -1,6 +1,6 @@
 "use client";
 import Image from "next/image";
-import Modal from "@/components/Modal";
+import Modal from "@elements/Modal";
 
 type TRemoteImageProps = {
   alt: string;

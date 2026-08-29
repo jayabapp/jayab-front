@@ -7,15 +7,15 @@ import { colors } from "@/theme/colors";
 import { useOwnerCalendarActions } from "@features/owner-property/hooks/useOwnerCalendarActions";
 import { SingleOwnerPropertyDto } from "@/api_services/property/property.interface";
 import { useEffect, useState } from "react";
-import { Divider } from "@/components/shared/Divider";
+import { Divider } from "@elements/Divider";
 
-import RangeWithTitle from "@/components/shared/Form/RangeWithTitle";
+import RangeWithTitle from "@elements/Slider";
 import useCmsContent from "@/hooks/useCmsContent";
 import SkeletonText from "@/components/elements/Skeleton/SkeletonText";
 import _STRINGS from "@/utils/LocalStrings";
 import CmsText from "@/components/shared/CmsText";
-import Button from "@/components/shared/Button/Button";
-import Modal from "@/components/Modal";
+import Button from "@elements/Button";
+import Modal from "@elements/Modal";
 
 const ChangePropertyAllDaysCommissionModal = ({
   data,

@@ -1,6 +1,6 @@
 "use client";
 
-import Modal from "@/components/Modal";
+import Modal from "@elements/Modal";
 import Image from "next/image";
 
 type TProfileImageProps = {

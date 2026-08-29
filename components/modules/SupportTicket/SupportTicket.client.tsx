@@ -9,12 +9,12 @@ import { supportReplySchema } from "@features/support/model/support.schema";
 import { useEffect, useState } from "react";
 import { useStoreSocket } from "@/store";
 
-import MultiLineFormInput from "@/components/shared/Form/MultiLineFormInput";
+import { MultiLineFormInput } from "@elements/Form";
 import TicketDetailsSkeleton from "./parts/TicketDetailsSkeleton";
-import Button from "@/components/shared/Button/Button";
+import Button from "@elements/Button";
 import TicketMessage from "./parts/TicketMessage";
 import _STRINGS from "@/utils/LocalStrings";
-import Modal from "@/components/Modal";
+import Modal from "@elements/Modal";
 
 const SupportTicket = ({ ticketId }: SupportTicketModuleProps) => {
   const { notification } = useStoreSocket((state) => state);

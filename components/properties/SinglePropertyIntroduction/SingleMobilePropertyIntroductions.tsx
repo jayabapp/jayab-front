@@ -2,7 +2,7 @@ import _STRINGS from "@/utils/LocalStrings";
 import React from "react";
 import AddCardPricePart from "../AddCardPricePart";
 import SinglePropertyPricePart from "../SinglePropertyPricePart";
-import Button from "@/components/shared/Button/Button";
+import Button from "@elements/Button";
 import { SinglePropDto } from "@/api_services/property/property.interface";
 
 const SingleMobilePropertyIntroductions = ({ data }: { data: SinglePropDto }) => {

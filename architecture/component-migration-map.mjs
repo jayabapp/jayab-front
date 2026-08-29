@@ -3,7 +3,7 @@ export const componentMigrationMap = [
     source: "components/shared",
     targets: ["components/elements"],
     status: "in-progress",
-    note: "Only domain-agnostic primitives are promoted; domain UI stays with its module.",
+    note: "Button, generic form controls, Divider, Pagination, Toast, EmptyState, Slider, Modal shell, and PopUpDown are promoted; domain UI remains pending its owner migration.",
   },
   {
     source: "components/Home",

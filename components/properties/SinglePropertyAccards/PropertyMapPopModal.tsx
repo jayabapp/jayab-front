@@ -1,6 +1,6 @@
-import Modal from "@/components/Modal";
-import ModalHeaderPart from "@/components/Modal/ModalHeaderPart";
-import Button from "@/components/shared/Button/Button";
+import Modal from "@elements/Modal";
+import { ModalHeaderPart } from "@elements/Modal";
+import Button from "@elements/Button";
 import mapRedirectHelper from "@/helpers/map.link";
 import _STRINGS from "@/utils/LocalStrings";
 import dynamic from "next/dynamic";

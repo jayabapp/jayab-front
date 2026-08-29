@@ -1,7 +1,7 @@
 import useCmsContent from "@/hooks/useCmsContent";
 import AuthUploader from "@/components/uploader/AuthUploader";
-import BtnLoading from "@/components/shared/Button/BtnLoading";
-import FormInput from "@/components/shared/Form/FormInput";
+import { BtnLoading } from "@elements/Button";
+import { FormInput } from "@elements/Form";
 import _STRINGS from "@/utils/LocalStrings";
 import CmsText from "@/components/shared/CmsText";
 

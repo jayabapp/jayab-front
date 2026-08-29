@@ -9,7 +9,7 @@ import { WeekDays } from "@/utils/constantss";
 import { ImageDto } from "@/api_services/auth/auth.interface";
 
 import DaysOfTheWeekStatus from "@/components/properties/DaysOfTheWeekStatus";
-import MultiLineFormInput from "@/components/shared/Form/MultiLineFormInput";
+import { MultiLineFormInput } from "@elements/Form";
 import ShareImageItems from "@/components/properties/imageComponents/ShareImageItems";
 import ProductSkeleton from "@/components/properties/ProductSkeleton";
 import ElementToImage from "@/components/ElementToImage";

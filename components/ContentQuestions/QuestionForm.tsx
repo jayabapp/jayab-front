@@ -8,11 +8,11 @@ import { useRecaptchaGenerator } from "@/helpers/captcha.helper";
 import { useStoreInit } from "@/store";
 import { p2e } from "@/helpers/NumberConverter";
 
-import MultiLineFormInput from "../shared/Form/MultiLineFormInput";
-import FormInput from "../shared/Form/FormInput";
+import { MultiLineFormInput } from "@elements/Form";
+import { FormInput } from "@elements/Form";
 import _STRINGS from "@/utils/LocalStrings";
-import Button from "../shared/Button/Button";
-import Notify from "../shared/Toast";
+import Button from "@elements/Button";
+import Notify from "@elements/Toast";
 
 export const QuestionForm: FC<{
   contentId?: string | number;

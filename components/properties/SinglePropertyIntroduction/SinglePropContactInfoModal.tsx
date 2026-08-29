@@ -5,9 +5,9 @@ import { SinglePropDto } from "@/api_services/property/property.interface";
 import { useEffect } from "react";
 
 import PropertyContactInfoItem from "./PropertyContactInfoItem";
-import ModalBottomSheet from "@/components/Modal/ModalBottomSheet";
+import { ModalBottomSheet } from "@elements/Modal";
 import LinearSkeleton from "../ProductSkeleton/LinearSkeleton";
-import ModalHeaderPart from "@/components/Modal/ModalHeaderPart";
+import { ModalHeaderPart } from "@elements/Modal";
 import _STRINGS from "@/utils/LocalStrings";
 import isEmpty from "lodash/isEmpty";
 

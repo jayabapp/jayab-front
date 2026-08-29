@@ -4,13 +4,13 @@ import { useAuthStore } from "@/store";
 import { CityService } from "@/api_services/city/city.service";
 import { useQuery } from "@tanstack/react-query";
 
-import FormInputWithExternalUnit from "../shared/Form/FormInputWithExternalUnit";
-import MultiLineFormInput from "../shared/Form/MultiLineFormInput";
-import SinglePopUpSelect from "../shared/Form/SingleSelectPopUpSelect";
+import { FormInputWithExternalUnit } from "@elements/Form";
+import { MultiLineFormInput } from "@elements/Form";
+import { SingleSelectPopUpSelect as SinglePopUpSelect } from "@elements/Form";
 import FormCounter from "./FormCounter";
 import _STRINGS from "@/utils/LocalStrings";
-import FormInput from "@/components/shared/Form/FormInput";
-import Checkbox from "../shared/Form/Checkbox";
+import { FormInput } from "@elements/Form";
+import { Checkbox } from "@elements/Form";
 import isEmpty from "lodash/isEmpty";
 import sample from "lodash/sample";
 

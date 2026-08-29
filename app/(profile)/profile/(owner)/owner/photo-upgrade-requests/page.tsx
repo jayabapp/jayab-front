@@ -4,7 +4,7 @@ import { usePhotoUpgradeRequests } from "@features/photo-upgrade/hooks/usePhotoU
 
 import PhotoUpgradeRequestCardSkeleton from "@features/photo-upgrade/components/PhotoUpgradeRequestCardSkeleton";
 import PhotoUpgradeRequestCard from "@/components/profile/photo-upgrade/PhotoUpgradeRequestCard";
-import EmptyList from "@/components/shared/Lotties/EmptyList";
+import EmptyState from "@elements/EmptyState";
 
 const OwnerPhotoUpgradeRequestsPage = () => {
   const { data = [], isPending, isError, refetch } = usePhotoUpgradeRequests();
@@ -49,7 +49,7 @@ const OwnerPhotoUpgradeRequestsPage = () => {
           ))}
         </div>
       ) : (
-        <EmptyList />
+        <EmptyState />
       )}
     </div>
   );

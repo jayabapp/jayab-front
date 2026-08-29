@@ -4,7 +4,7 @@ import { usePropertyBookmarks } from "@features/properties/hooks/usePropertyBook
 
 import PropertyCardSkeleton from "@/components/properties/PropertyCardSkeleton";
 import PropertyCard from "@/components/properties/PropertyCard";
-import EmptyList from "@/components/shared/Lotties/EmptyList";
+import EmptyState from "@elements/EmptyState";
 import isEmpty from "lodash/isEmpty";
 
 const BookMarks = () => {
@@ -19,7 +19,7 @@ const BookMarks = () => {
           ))}
         </div>
       ) : isEmpty(properties) ? (
-        <EmptyList />
+        <EmptyState />
       ) : (
         <div className="w-full p-2  !grid  gap-4 grid-cols-1 md:grid-cols-2 ">
           {" "}

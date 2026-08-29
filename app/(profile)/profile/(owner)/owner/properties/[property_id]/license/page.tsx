@@ -12,7 +12,7 @@ import FixedBottomContainer from "@/components/shared/FixedBottomContainer";
 import StatusShower from "@/components/shared/StatusShower";
 import ProgressBar from "@/components/shared/progressbar";
 import _STRINGS from "@/utils/LocalStrings";
-import Button from "@/components/shared/Button/Button";
+import Button from "@elements/Button";
 import dynamic from "next/dynamic";
 
 const MainUploader = dynamic(() => import("@/components/uploader"));

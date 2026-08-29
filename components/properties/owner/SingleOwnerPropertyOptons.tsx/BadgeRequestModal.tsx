@@ -7,8 +7,8 @@ import SkeletonText from "@/components/elements/Skeleton/SkeletonText";
 import StatusShower from "@/components/shared/StatusShower";
 import _STRINGS from "@/utils/LocalStrings";
 import CmsText from "@/components/shared/CmsText";
-import Button from "@/components/shared/Button/Button";
-import Modal from "@/components/Modal";
+import Button from "@elements/Button";
+import Modal from "@elements/Modal";
 import React from "react";
 
 type TBadgeRequestModalProps = {

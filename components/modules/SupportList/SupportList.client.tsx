@@ -6,9 +6,9 @@ import { useAuthStore } from "@/store";
 
 import SupportCardSkeleton from "./parts/SupportCardSkeleton";
 import SupportListSkeleton from "./parts/SupportListSkeleton";
-import EmptyList from "@/components/shared/Lotties/EmptyList";
+import EmptyState from "@elements/EmptyState";
 import InfiniteScroll from "react-infinite-scroll-component";
-import Button from "@/components/shared/Button/Button";
+import Button from "@elements/Button";
 import SupportCard from "./parts/SupportCard";
 import _STRINGS from "@/utils/LocalStrings";
 
@@ -40,7 +40,7 @@ const SupportList = () => {
               {_STRINGS.SUPPORT_LIST_ERROR}
             </div>
           ) : tickets.length === 0 ? (
-            <EmptyList />
+            <EmptyState />
           ) : (
             <InfiniteScroll
               dataLength={tickets.length}

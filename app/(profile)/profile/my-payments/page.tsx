@@ -6,7 +6,7 @@ import DatePickerQueryWithDynamicKeyFilter from "@/components/widgets/DatePicker
 import InfiniteScroll from "react-infinite-scroll-component";
 import MyPaymentCards from "@/components/profile/MyPaymentCards";
 import useQueryGet from "@/helpers/queryGet";
-import EmptyList from "@/components/shared/Lotties/EmptyList";
+import EmptyState from "@elements/EmptyState";
 import _STRINGS from "@/utils/LocalStrings";
 import moment from "moment-jalaali";
 
@@ -85,7 +85,7 @@ const Income = () => {
           </InfiniteScroll>
         ) : (
           <div className="col-span-4">
-            <EmptyList />
+            <EmptyState />
           </div>
         )}
       </div>

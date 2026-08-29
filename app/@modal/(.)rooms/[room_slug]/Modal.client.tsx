@@ -5,7 +5,7 @@ import { usePathname } from "next/navigation";
 import { Suspense } from "react";
 
 import SingleProductBreadCrumb from "@/components/BreadCrumbs/SingleProductBreadCrumb";
-import AnimationlessModal from "@/components/Modal/AnimationlessModal";
+import { AnimationlessModal } from "@elements/Modal";
 import ProductSkeleton from "@/components/properties/ProductSkeleton";
 import Headers from "@/components/headers";
 import dynamic from "next/dynamic";

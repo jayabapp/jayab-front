@@ -1,6 +1,6 @@
-import Modal from "@/components/Modal";
-import BtnLoading from "@/components/shared/Button/BtnLoading";
-import Button from "@/components/shared/Button/Button";
+import Modal from "@elements/Modal";
+import { BtnLoading } from "@elements/Button";
+import Button from "@elements/Button";
 import _STRINGS from "@/utils/LocalStrings";
 import moment from "moment-jalaali";
 import React, { useEffect, useState } from "react";

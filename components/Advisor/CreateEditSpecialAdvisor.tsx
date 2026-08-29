@@ -1,10 +1,10 @@
 import { CreateAdvisorDto } from "@/api_services/advisor/advisor.interface";
 
-import MultiLineFormInput from "../shared/Form/MultiLineFormInput";
-import SinglePopUpSelect from "../shared/Form/SingleSelectPopUpSelect";
-import MultyPopUpSelect from "../shared/Form/MultiSelectPopUpSelect";
+import { MultiLineFormInput } from "@elements/Form";
+import { SingleSelectPopUpSelect as SinglePopUpSelect } from "@elements/Form";
+import { MultiSelectPopUpSelect as MultyPopUpSelect } from "@elements/Form";
 import MainUploader from "../uploader";
-import FormInput from "../shared/Form/FormInput";
+import { FormInput } from "@elements/Form";
 import _STRINGS from "@/utils/LocalStrings";
 import isArray from "lodash/isArray";
 import { useAdvisorLocations } from "@features/advisors/hooks/useAdvisorLocations";

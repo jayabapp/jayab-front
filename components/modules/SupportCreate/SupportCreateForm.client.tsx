@@ -8,9 +8,9 @@ import { supportTicketSchema } from "@features/support/model/support.schema";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
 
-import MultiLineFormInput from "@/components/shared/Form/MultiLineFormInput";
-import FormInput from "@/components/shared/Form/FormInput";
-import Button from "@/components/shared/Button/Button";
+import { MultiLineFormInput } from "@elements/Form";
+import { FormInput } from "@elements/Form";
+import Button from "@elements/Button";
 import _STRINGS from "@/utils/LocalStrings";
 
 const SupportCreateForm = ({ dataKey }: NewTicketFormProps) => {

@@ -9,7 +9,7 @@ import type { Swiper } from "swiper";
 
 import SwiperWithNavigation from "../SwiperWithNavigation";
 import _STRINGS from "@/utils/LocalStrings";
-import EmptyList from "../shared/Lotties/EmptyList";
+import EmptyState from "@elements/EmptyState";
 import BlogCard from "./BlogCard";
 import isEmpty from "lodash/isEmpty";
 import Link from "next/link";
@@ -38,7 +38,7 @@ function BlogsContainer({ title, data, viewAllUrl }: BlogsContainerTypes) {
       {!tempData ? (
         <BlogGridSkeleton count={3} />
       ) : isEmpty(tempData) ? (
-        <EmptyList />
+        <EmptyState />
       ) : (
         <SwiperWithNavigation
           reference={ref}

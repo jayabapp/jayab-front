@@ -7,8 +7,8 @@ import { useEffect } from "react";
 
 import LatestBlogCard from "@/components/blogs/BlogCard";
 import InfiniteScroll from "react-infinite-scroll-component";
-import BtnLoading from "@/components/shared/Button/BtnLoading";
-import EmptyList from "@/components/shared/Lotties/EmptyList";
+import { BtnLoading } from "@elements/Button";
+import EmptyState from "@elements/EmptyState";
 
 const BlogsClientPageComponent = () => {
   const { notification } = useStoreSocket((state) => state);
@@ -44,7 +44,7 @@ const BlogsClientPageComponent = () => {
           {data?.length == 0 ? (
             <div className="col-span-2">
               {" "}
-              <EmptyList />
+              <EmptyState />
             </div>
           ) : (
             data?.map((e) => (

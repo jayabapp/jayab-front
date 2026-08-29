@@ -4,8 +4,8 @@ import { usePropertyContact } from "@features/properties/hooks/usePropertyContac
 import { SinglePropDto } from "@/api_services/property/property.interface";
 import { useEffect } from "react";
 
-import ModalBottomSheet from "@/components/Modal/ModalBottomSheet";
-import ModalHeaderPart from "@/components/Modal/ModalHeaderPart";
+import { ModalBottomSheet } from "@elements/Modal";
+import { ModalHeaderPart } from "@elements/Modal";
 import _STRINGS from "@/utils/LocalStrings";
 
 type TSinglePropContactInfoProps = {

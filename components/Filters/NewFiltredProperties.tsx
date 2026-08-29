@@ -9,10 +9,10 @@ import { useMemo } from "react";
 
 import HomeProductsBannerItems from "../Home/HomePropertiesList/HomeProductsBannerItems";
 import PropertyCardSkeleton from "../properties/PropertyCardSkeleton";
-import ServerSidePaginate from "../shared/Pagination/ServerSidePaginate";
+import { ServerSidePaginate } from "@elements/Pagination";
 import InfiniteScroll from "react-infinite-scroll-component";
 import PropertyCard from "../properties/PropertyCard";
-import EmptyList from "../shared/Lotties/EmptyList";
+import EmptyState from "@elements/EmptyState";
 import moment from "moment-jalaali";
 
 export interface catQueryTypes {
@@ -134,7 +134,7 @@ function FilterdPropertiesPageOrianted({
           </InfiniteScroll>
         ) : (
           <div className="col-span-full">
-            <EmptyList />
+            <EmptyState />
           </div>
         )}
       </div>

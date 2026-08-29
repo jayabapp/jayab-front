@@ -14,7 +14,7 @@ import StepShower from "@/components/shared/StepShower";
 import SearchBox from "@/components/SearchBoxComp";
 import _STRINGS from "@/utils/LocalStrings";
 import dynamic from "next/dynamic";
-import Button from "@/components/shared/Button/Button";
+import Button from "@elements/Button";
 
 const Map = dynamic(() => import("@/components/Map"), { ssr: false });
 

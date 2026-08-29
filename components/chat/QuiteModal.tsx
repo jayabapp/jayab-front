@@ -1,7 +1,7 @@
 import React from "react";
-import Button from "../shared/Button/Button";
+import Button from "@elements/Button";
 import _STRINGS from "@/utils/LocalStrings";
-import Modal from "../Modal";
+import Modal from "@elements/Modal";
 
 type modlType = {
   show: boolean;

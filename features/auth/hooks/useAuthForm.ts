@@ -6,7 +6,7 @@ import { useSendOtp } from "./useSendOtp";
 import { p2e } from "@/helpers/NumberConverter";
 
 import _STRINGS from "@/utils/LocalStrings";
-import Notify from "@/components/shared/Toast";
+import Notify from "@elements/Toast";
 
 export const useAuthForm = () => {
   const [mobile, setMobile] = useState<number | string>("");

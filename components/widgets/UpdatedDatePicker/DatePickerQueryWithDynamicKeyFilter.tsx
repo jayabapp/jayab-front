@@ -3,7 +3,7 @@ import { useState } from "react";
 
 import queryBuilder from "@/helpers/queryBuilder";
 import moment from "moment-jalaali";
-import Modal from "../../Modal";
+import Modal from "@elements/Modal";
 import DatePicker from "./index";
 
 const DatePickerQueryWithDynamicKeyFilter = ({

@@ -13,11 +13,11 @@ import { useParams } from "next/navigation";
 import FixedBottomContainer from "@/components/shared/FixedBottomContainer";
 import PropertyEditStepSkeleton from "@features/owner-property/steps/PropertyEditStepSkeleton";
 import StepShower from "@/components/shared/StepShower";
-import FormInput from "@/components/shared/Form/FormInput";
-import Checkbox from "@/components/shared/Form/Checkbox";
+import { FormInput } from "@elements/Form";
+import { Checkbox } from "@elements/Form";
 import _STRINGS from "@/utils/LocalStrings";
-import Button from "@/components/shared/Button/Button";
-import Notify from "@/components/shared/Toast";
+import Button from "@elements/Button";
+import Notify from "@elements/Toast";
 
 const CreatePropertyAssistance = () => {
   const searchParams = useSearchParams();

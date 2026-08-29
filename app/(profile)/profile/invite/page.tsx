@@ -4,7 +4,7 @@ import { AdvisorService } from "@/api_services/advisor/advisor.propery";
 import { useQuery } from "@tanstack/react-query";
 
 import _STRINGS from "@/utils/LocalStrings";
-import Button from "@/components/shared/Button/Button";
+import Button from "@elements/Button";
 import React from "react";
 import Image from "next/image";
 

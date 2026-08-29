@@ -10,7 +10,7 @@ import { useQueryClient } from "@tanstack/react-query";
 import { useRouter } from "next/navigation";
 import { useEffect } from "react";
 import { chatKeys } from "@features/chat/api/chat.keys";
-import { notify } from "../shared/Toast/notify";
+import { notify } from "@elements/Toast";
 import { Url } from "@/utils/urls";
 import { io } from "socket.io-client";
 

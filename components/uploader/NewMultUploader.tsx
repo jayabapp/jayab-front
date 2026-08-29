@@ -8,8 +8,8 @@ import { useMutation } from "@tanstack/react-query";
 import { toast } from "sonner";
 
 import FullscreenImage from "./FullScreenImage";
-import BtnLoading from "../shared/Button/BtnLoading";
-import Notify from "../shared/Toast";
+import { BtnLoading } from "@elements/Button";
+import Notify from "@elements/Toast";
 
 import "react-advanced-cropper/dist/style.css";
 

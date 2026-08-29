@@ -23,7 +23,7 @@ import _STRINGS from "@/utils/LocalStrings";
 import throttle from "lodash/throttle";
 import dynamic from "next/dynamic";
 import Script from "next/script";
-import Button from "../shared/Button/Button";
+import Button from "@elements/Button";
 import Link from "next/link";
 
 const PopSearchbox = dynamic(() => import("../SearchBoxComp/PopSearchbox"), {

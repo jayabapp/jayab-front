@@ -3,7 +3,7 @@ import { Transition, TransitionChild } from "@headlessui/react";
 import { usePathname, useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 
-import { Divider } from "../Divider";
+import { Divider } from "@elements/Divider";
 
 type DrawerMenuType = {
   isOpen: boolean;

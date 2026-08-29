@@ -6,7 +6,7 @@ import { toast } from "sonner";
 
 import ProfileImageModal from "@features/auth/components/ProfileImageModal";
 import EditImageModal from "./EditImageModal";
-import BtnLoading from "../shared/Button/BtnLoading";
+import { BtnLoading } from "@elements/Button";
 import Image from "next/image";
 
 import "react-advanced-cropper/dist/style.css";

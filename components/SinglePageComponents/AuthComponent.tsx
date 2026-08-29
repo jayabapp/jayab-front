@@ -4,9 +4,9 @@ import { useAuthForm } from "@features/auth/hooks/useAuthForm";
 
 import useCmsContent from "@/hooks/useCmsContent";
 import AuthHeader from "../headers/AuthHeader";
-import FormInput from "../shared/Form/FormInput";
+import { FormInput } from "@elements/Form";
 import _STRINGS from "@/utils/LocalStrings";
-import Button from "../shared/Button/Button";
+import Button from "@elements/Button";
 import Image from "next/image";
 import Terms from "../auth/Terms";
 

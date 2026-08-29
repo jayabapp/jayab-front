@@ -12,14 +12,14 @@ import { useParams } from "next/navigation";
 
 import PropertyEditStepSkeleton from "@features/owner-property/steps/PropertyEditStepSkeleton";
 import FixedBottomContainer from "@/components/shared/FixedBottomContainer";
-import MultiLineFormInput from "@/components/shared/Form/MultiLineFormInput";
-import MultyPopUpSelect from "@/components/shared/Form/MultiSelectPopUpSelect";
+import { MultiLineFormInput } from "@elements/Form";
+import { MultiSelectPopUpSelect as MultyPopUpSelect } from "@elements/Form";
 import FormCounter from "@/components/properties/FormCounter";
 import StepShower from "@/components/shared/StepShower";
-import Checkbox from "@/components/shared/Form/Checkbox";
+import { Checkbox } from "@elements/Form";
 import _STRINGS from "@/utils/LocalStrings";
 import isArray from "lodash/isArray";
-import Button from "@/components/shared/Button/Button";
+import Button from "@elements/Button";
 
 const CreatePropertyFacility = () => {
   const router = useRouter();

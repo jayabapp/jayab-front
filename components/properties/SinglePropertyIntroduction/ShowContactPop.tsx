@@ -3,7 +3,7 @@ import { ContentImage } from "@/components/elements/Image";
 import { ImageDto } from "@/api_services/auth/auth.interface";
 
 import _STRINGS from "@/utils/LocalStrings";
-import Modal from "@/components/Modal";
+import Modal from "@elements/Modal";
 
 type TShowContactProps = {
   data: any;

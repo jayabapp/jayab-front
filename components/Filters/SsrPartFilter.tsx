@@ -10,7 +10,7 @@ import { useMemo } from "react";
 import HomeProductsBannerItems from "../Home/HomePropertiesList/HomeProductsBannerItems";
 import PropertyCard from "../properties/PropertyCard";
 import isUndefined from "lodash/isUndefined";
-import EmptyList from "../shared/Lotties/EmptyList";
+import EmptyState from "@elements/EmptyState";
 import moment from "moment-jalaali";
 
 type SsrPartFilterType = {
@@ -68,7 +68,7 @@ function SsrPartFilter({ firstData, devices }: SsrPartFilterType) {
           </div>
         ) : (
           <div className="col-span-4">
-            <EmptyList />
+            <EmptyState />
           </div>
         )}
       </div>
