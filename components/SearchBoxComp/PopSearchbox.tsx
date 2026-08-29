@@ -7,7 +7,7 @@ import { useSearchParams } from "next/navigation";
 import { useCitiesStore } from "@/store";
 
 import SearchBoxPopularPlaces from "./SearchBoxPopularPlaces";
-import SeachBoxCitySelector from "../Home/HomeCityFilterContainer/SeachBoxCitySelector";
+import { SearchBoxCitySelector } from "@modules/HomeCities";
 import SearchBoxCitiesPart from "./SearchBoxCitiesPart";
 import SuggestedPart from "./SuggestedPart";
 import { BtnLoading } from "@elements/Button";
@@ -197,7 +197,7 @@ const PopSearchbox = ({
           />
         </Suspense>
         <SearchBoxPopularPlaces setShowPop={setShowPop} />
-        <SeachBoxCitySelector
+        <SearchBoxCitySelector
           onSubmitCB={() => {
             setShowPop(false);
           }}

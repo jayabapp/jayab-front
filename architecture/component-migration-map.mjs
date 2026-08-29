@@ -7,9 +7,20 @@ export const componentMigrationMap = [
   },
   {
     source: "components/Home",
-    targets: ["components/modules/Home"],
-    status: "planned",
-    note: "Migrate section-by-section with Home/CMS data boundaries.",
+    targets: [
+      "components/templates/Home",
+      "components/modules/HomeSearch",
+      "components/modules/HomeBanners",
+      "components/modules/HomeProperties",
+      "components/modules/HomeCities",
+      "components/modules/HomeAdvisor",
+      "components/modules/HomeReservations",
+      "components/modules/HomeContent",
+      "components/modules/HomeInstallPrompt",
+      "components/modules/HomeSeo",
+    ],
+    status: "migrated",
+    note: "Home is composed by a server template; interaction remains in section-owned client islands and server data is hydrated with the canonical landing key.",
   },
   {
     source: "components/Filters",

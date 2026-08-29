@@ -7,7 +7,7 @@ import { isMobile } from "react-device-detect";
 import { useQuery } from "@tanstack/react-query";
 import { useMemo } from "react";
 
-import HomeProductsBannerItems from "../Home/HomePropertiesList/HomeProductsBannerItems";
+import { HomePropertiesBanner } from "@modules/HomeProperties";
 import PropertyCardSkeleton from "../properties/PropertyCardSkeleton";
 import { ServerSidePaginate } from "@elements/Pagination";
 import InfiniteScroll from "react-infinite-scroll-component";
@@ -125,7 +125,7 @@ function FilterdPropertiesPageOrianted({
                 key={`banner${e?.id}`}
                 className={` col-span-full  `}
               >
-                <HomeProductsBannerItems devices={devices} bannerItem={e} />
+                <HomePropertiesBanner devices={devices} bannerItem={e} />
               </div>
             ))}
             {data?.map((i) => (

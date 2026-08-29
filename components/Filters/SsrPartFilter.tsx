@@ -1,4 +1,4 @@
-import { PropertyGridSkeleton } from "../Home/HomePropertiesList/PropertyGridSkeleton";
+import { HomePropertiesBanner, HomePropertiesSkeleton } from "@modules/HomeProperties";
 import { BannerPosition } from "@/enum/banners.enum";
 import { HomeService } from "@/api_services/home/home.service";
 import { DeviceInfo } from "@/helpers/device.detector";
@@ -7,7 +7,6 @@ import { useQuery } from "@tanstack/react-query";
 import { isMobile } from "react-device-detect";
 import { useMemo } from "react";
 
-import HomeProductsBannerItems from "../Home/HomePropertiesList/HomeProductsBannerItems";
 import PropertyCard from "../properties/PropertyCard";
 import isUndefined from "lodash/isUndefined";
 import EmptyState from "@elements/EmptyState";
@@ -50,7 +49,7 @@ function SsrPartFilter({ firstData, devices }: SsrPartFilterType) {
     <div className="w-full px-0  self-center">
       <div className=" w-full">
         {isUndefined(firstData) ? (
-          <PropertyGridSkeleton count={6} />
+          <HomePropertiesSkeleton count={6} />
         ) : firstData?.length > 0 ? (
           <div className="grid   pb-2 pt-4 md:pt-2 px-1  !overflow-hidden  grid-cols-1 gap-2 md:gap-4  md:grid-cols-2 xl:grid-cols-3 ">
             {maxVisibleBanners?.map((e: any, index: number) => (
@@ -59,7 +58,7 @@ function SsrPartFilter({ firstData, devices }: SsrPartFilterType) {
                 className={`col-span-full`}
                 style={{ gridRowStart: (index + 1) * (isMobile ? 7 : 3) }}
               >
-                <HomeProductsBannerItems devices={devices} bannerItem={e} />
+                <HomePropertiesBanner devices={devices} bannerItem={e} />
               </div>
             ))}
             {firstData?.map((i: any) => (

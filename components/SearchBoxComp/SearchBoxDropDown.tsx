@@ -8,7 +8,7 @@ import { usePropertySearch } from "@features/search/hooks/usePropertySearch";
 import { useCitiesStore } from "@/store";
 
 import SearchBoxPopularPlaces from "./SearchBoxPopularPlaces";
-import SeachBoxCitySelector from "../Home/HomeCityFilterContainer/SeachBoxCitySelector";
+import { SearchBoxCitySelector } from "@modules/HomeCities";
 import SearchBoxCitiesPart from "./SearchBoxCitiesPart";
 import HistorySuggPart from "./HistorySuggPart";
 import SuggestedPart from "./SuggestedPart";
@@ -162,7 +162,7 @@ const SearchBoxDropDown = ({
                 />
               </Suspense>
               <SearchBoxPopularPlaces setShowPop={setShowResults} />
-              <SeachBoxCitySelector
+              <SearchBoxCitySelector
                 onSubmitCB={() => {
                   setShowResults(false);
                 }}

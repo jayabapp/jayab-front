@@ -33,9 +33,14 @@ const changedSources = [
 ];
 const migrationLintRoots = [
   "architecture/",
+  "app/(pages)/",
   "components/elements/",
+  "components/modules/",
+  "components/templates/",
   "scripts/",
   "types/components/elements/",
+  "types/components/modules/",
+  "types/components/templates/",
   "utils/LocalStrings.ts",
 ];
 const lintSources = changedSources.filter((file) => {

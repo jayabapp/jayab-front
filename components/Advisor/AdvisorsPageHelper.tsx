@@ -24,11 +24,11 @@ import { useAdvisorBanners } from "@features/advisors/hooks/useAdvisorBanners";
 import AdvisorCardSkeleton from "@features/advisors/components/AdvisorCardSkeleton";
 
 const HomeAdvisorSub = dynamic(
-  () => import("@/components/Home/HomeAdvisorSub"),
+  () => import("@modules/HomeAdvisor").then((module) => module.HomeAdvisorSubscription),
 );
 
 const BannersContainer = dynamic(
-  () => import("@/components/Home/BannersContainer"),
+  () => import("@modules/HomeBanners").then((module) => module.HomeBanners),
 );
 const SearchBox = dynamic(() => import("@/components/SearchBoxComp"));
 const AdvisorsPageHelper = ({ devices }: { devices: DeviceInfo }) => {

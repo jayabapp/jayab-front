@@ -14,7 +14,7 @@ import { NEW_IMAGE_URL } from "@/utils/urls";
 import { getCookie } from "cookies-next/client";
 import { useQuery } from "@tanstack/react-query";
 
-import HomeCityFilterCityPart from "../Home/HomeCityFilterContainer/HomeCityFilterCityPart";
+import { HomeCitySelector } from "@modules/HomeCities";
 import ProfileDropdown from "./ProfileDropdown";
 import AbsoluteBadge from "./AbsoluteBadge";
 import HeaderTitle from "./HeaderTitle";
@@ -319,7 +319,7 @@ transition-all ease-out  duration-300  header-content-container w-full mx-auto `
                     />
                   </Suspense>
                   <div className="w-[1px] h-8 bg-neutral-300"></div>
-                  <HomeCityFilterCityPart />
+                  <HomeCitySelector />
                 </div>
               </div>
             ) : (
@@ -500,7 +500,7 @@ transition-all ease-out  duration-300  header-content-container w-full mx-auto `
                         />
                       </Suspense>
                       <div className="w-[1px] h-8 bg-neutral-300"></div>
-                      <HomeCityFilterCityPart />
+                      <HomeCitySelector />
                     </div>
                   </>
                 )}
