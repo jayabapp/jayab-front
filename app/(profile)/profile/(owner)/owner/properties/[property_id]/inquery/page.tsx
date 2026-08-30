@@ -1,17 +1,17 @@
 "use client";
 /* eslint-disable react-hooks/set-state-in-effect */
 
+import { PropertyDetailsSkeleton } from "@modules/PropertyDetails";
 import { useEffect, useState } from "react";
 import { DaysOfTheWeekStatus } from "@modules/PropertyGrid";
 import { MultiLineFormInput } from "@elements/Form";
 import { useOwnerProperty } from "@features/owner-property/hooks/useOwnerProperty";
+import { ShareImageItem } from "@modules/PropertyGallery";
 import { NEW_IMAGE_URL } from "@/utils/urls";
 import { useParams } from "next/navigation";
 import { WeekDays } from "@/utils/constantss";
 import { ImageDto } from "@/api_services/auth/auth.interface";
 
-import ShareImageItems from "@/components/properties/imageComponents/ShareImageItems";
-import ProductSkeleton from "@/components/properties/ProductSkeleton";
 import ElementToImage from "@/components/ElementToImage";
 import _STRINGS from "@/utils/LocalStrings";
 import moment from "moment-jalaali";
@@ -48,7 +48,7 @@ const PropertyInquery = () => {
   return (
     <div className=" profile-container grid gap-4   md:grid-cols-2  flex-col items-start justify-center !h-auto    ">
       {!!isLoading ? (
-        <ProductSkeleton />
+        <PropertyDetailsSkeleton />
       ) : !!data ? (
         <>
           <div className="w-full flex  order-2 md:order-1 flex-col gap-4">
@@ -140,7 +140,7 @@ const PropertyInquery = () => {
               {_STRINGS.SELECT_YOUR_IMAGE} :
             </div>
             {data?.images?.map((e) => (
-              <ShareImageItems
+              <ShareImageItem
                 image={e}
                 cb={() => {
                   setSelectedImage(e);

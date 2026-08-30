@@ -19,6 +19,14 @@ export const getServerPropertyPage = cache((filters: PropertyFilters) =>
   ),
 );
 
+export const getServerPropertyDetail = cache((slug: string) =>
+  serverCall(baseUrl + apiRoutes.GET_SINGLEPROPERTY_SlUG(slug), null, {
+    redirect404: true,
+    redirect410: true,
+    revalidate: REVALIDATE.PROPERTY_DETAIL,
+  }),
+);
+
 export const seedPropertyList = (
   queryClient: QueryClient,
   filters: PropertyFilters,

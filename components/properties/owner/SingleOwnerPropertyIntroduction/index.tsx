@@ -1,13 +1,14 @@
 "use client";
 
 /* eslint-disable react-hooks/set-state-in-effect */
+
+import { PropertyAuthorizationStatus } from "@modules/PropertyGrid";
 import { SingleOwnerPropertyDto } from "@/api_services/property/property.interface";
 import { useEffect, useState } from "react";
+import { PropertyPriceTag } from "@modules/PropertyDetails";
 import { useRouter } from "next/navigation";
 
-import SinglePropertyPricePart from "../../SinglePropertyPricePart";
 import VerifyPropertyModal from "../../VerifyPropertyModal";
-import { PropertyAuthorizationStatus } from "@modules/PropertyGrid";
 import StatusShower from "@/components/shared/StatusShower";
 import ShareLink from "@/components/shared/shareComponent/BrowserShare";
 import _STRINGS from "@/utils/LocalStrings";
@@ -54,7 +55,10 @@ const SingleOwnerPropertyIntroduction = ({
         <p className=" font-medium text-lg w-3/5 md:w-full md:text-2xl ">
           {data?.title}
         </p>
-        <PropertyAuthorizationStatus isAuthorized={data?.is_authorized} data={data} />
+        <PropertyAuthorizationStatus
+          isAuthorized={data?.is_authorized}
+          data={data}
+        />
       </div>
       <div className=" w-full flex items-center justify-between">
         <div className="flex items-center gap-4">
@@ -81,7 +85,13 @@ const SingleOwnerPropertyIntroduction = ({
         <div className="flex   text-sm items-center gap-1">
           <p>{_STRINGS.TODAYS_PRICE} </p>
         </div>
-        <SinglePropertyPricePart data={data} />
+        <PropertyPriceTag
+          price={{
+            price: data?.today_price?.price,
+            discountedPrice: data?.today_price?.discounted_price,
+            discountPercentage: data?.today_price?.discount_percentage,
+          }}
+        />
       </div>
       <div className="w-full flex  flex-row  items-center gap-2 justify-start">
         {" "}

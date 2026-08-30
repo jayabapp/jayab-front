@@ -1,8 +1,12 @@
-import ModalClient from "./Modal.client";
+import { PropertyDetailsModal } from "@modules/PropertyDetails";
 
-const Page = async ({ params }: { params: Promise<{ room_slug: string }> }) => {
-  const pageParams = await params;
-  return <ModalClient params={pageParams} />;
+const InterceptedPropertyDetailsPage = async ({
+  params,
+}: {
+  params: Promise<{ room_slug: string }>;
+}) => {
+  const { room_slug } = await params;
+  return <PropertyDetailsModal slug={room_slug} />;
 };
 
-export default Page;
+export default InterceptedPropertyDetailsPage;

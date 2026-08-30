@@ -2,16 +2,16 @@
 
 import { usePathname, useRouter } from "next/navigation";
 import { useOwnerContactRequest } from "@features/reservations/hooks/useOwnerContactRequest";
+import { PropertyContactModal } from "@modules/PropertyContact";
 import { useEffect, useState } from "react";
 import { useStartOrFindChat } from "@features/chat/hooks/useStartOrFindChat";
 import { calculateTimeLeft } from "@/helpers/calculateTimeLeft";
+import { PropertySpecRow } from "@modules/PropertyDetails";
 import { ReserveListDto } from "@/api_services/reserve/reserve.interface";
 import { useStoreParams } from "@/store";
 import { NEW_IMAGE_URL } from "@/utils/urls";
 import { Divider } from "@elements/Divider";
 
-import SinglePropContactInfoModal from "../SinglePropertyIntroduction/SinglePropContactInfoModal";
-import LinearTextBlock from "../SinglePropertyAccards/LinearTextBlock";
 import StatusShower from "@/components/shared/StatusShower";
 import CmsInfoPopup from "@/components/shared/CmsInfoPopup";
 import NumberFlow from "@number-flow/react";
@@ -236,7 +236,7 @@ const ReserveCard = ({
       )}
       <Divider moreClass="  !border-transparent  " />
       <div className="w-full flex mt-2 flex-col  gap-2">
-        <LinearTextBlock
+        <PropertySpecRow
           dots
           title={_STRINGS.PPL_COUNT}
           value={`${!!`${data?.guests_count}`.includes("+") ? `بیشتر از  ${data?.guests_count}`.replace("+", "") : data?.guests_count} نفر`}
@@ -245,7 +245,7 @@ const ReserveCard = ({
             value_class: "!text-sm",
           }}
         />
-        <LinearTextBlock
+        <PropertySpecRow
           dots
           title={_STRINGS.START_DATE}
           value={` ${moment(data?.check_in).format("ddd - jYYYY/jMM/jD")}`}
@@ -254,7 +254,7 @@ const ReserveCard = ({
             value_class: "!text-sm",
           }}
         />
-        <LinearTextBlock
+        <PropertySpecRow
           dots
           title={_STRINGS.EXIT_DATE}
           value={` ${moment(data?.check_out).format("ddd - jYYYY/jMM/jD")}`}
@@ -263,7 +263,7 @@ const ReserveCard = ({
             value_class: "!text-sm",
           }}
         />
-        <LinearTextBlock
+        <PropertySpecRow
           dots
           title={_STRINGS.DURATION}
           value={` ${moment(data?.check_out).diff(data?.check_in, "days")} شب`}
@@ -273,7 +273,7 @@ const ReserveCard = ({
           }}
         />
         {isOwner ? (
-          <LinearTextBlock
+          <PropertySpecRow
             dots
             title={_STRINGS.REQUEST_DATE}
             value={`${moment(data?.created_at).format("HH:mm - jYYYY/jMM/jD")}`}
@@ -424,11 +424,11 @@ const ReserveCard = ({
       ) : (
         <></>
       )}
-      <SinglePropContactInfoModal
+      <PropertyContactModal
         type={contactType}
         show={!!contactType}
-        data={data?.property}
         onHide={onContactClose}
+        propertySlug={data?.property?.slug}
       />
       <CmsInfoPopup
         contentKey="ad-expired-content"
