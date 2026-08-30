@@ -1,5 +1,10 @@
-import OwnerReservationList from "@features/reservations/components/OwnerReservationList";
+import { OwnerReservationList } from "@modules/OwnerReservations";
+import ReservationsTemplate from "@templates/Reservations";
 
-const OwnerCallLogsPage = () => <OwnerReservationList autoRefresh />;
+const OwnerCallLogsPage = () => (
+  <ReservationsTemplate>
+    <OwnerReservationList autoRefresh />
+  </ReservationsTemplate>
+);
 
 export default OwnerCallLogsPage;

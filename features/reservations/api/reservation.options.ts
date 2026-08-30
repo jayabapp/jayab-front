@@ -4,6 +4,7 @@ import { reservationKeys } from "./reservation.keys";
 import { ReserveService } from "@/api_services/reserve/reserve.service";
 
 const OWNER_PAGE_SIZE = 20;
+const OWNER_POLL_INTERVAL = 30 * 60_000;
 
 export const userReservationsOptions = (type: string) =>
   queryOptions({
@@ -14,6 +15,7 @@ export const userReservationsOptions = (type: string) =>
 
 export const ownerReservationsOptions = (
   filters: OwnerReservationFilters = {},
+  autoRefresh = false,
 ) =>
   infiniteQueryOptions({
     queryKey: reservationKeys.owner(filters),
@@ -25,6 +27,7 @@ export const ownerReservationsOptions = (
       if (items.length < OWNER_PAGE_SIZE) return undefined;
       return items.at(-1)?.id;
     },
+    refetchInterval: autoRefresh ? OWNER_POLL_INTERVAL : false,
     staleTime: 30_000,
   });
 

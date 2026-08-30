@@ -28,21 +28,13 @@ export type PropertySpecsSectionProps = {
   property: SinglePropDto;
 };
 
-export type SpecRowProps = {
-  dots?: boolean;
-  options?: { title_class?: string; value_class?: string };
-  title: string;
-  unit?: number | string;
-  value?: number | string | null;
-};
-
 export type SpecOptionProps = {
   title: string;
 };
 
 export type PropertyTermsBodyProps = {
-  className?: string;
   enabled?: boolean;
+  className?: string;
   prologueClass?: string;
   property: SinglePropDto;
 };
@@ -53,10 +45,10 @@ export type PropertyLocationRowProps = {
 };
 
 export type PropertyMapModalProps = {
+  show: boolean;
   latitude?: number;
   longitude?: number;
   onHide: () => void | null;
-  show: boolean;
 };
 
 export type PropertyReportRowProps = {
@@ -64,9 +56,9 @@ export type PropertyReportRowProps = {
 };
 
 export type PropertyReportModalProps = {
+  show: boolean;
   onHide: () => void;
   propertyId: number;
-  show: boolean;
 };
 
 export type PropertyBookmarkButtonProps = {
@@ -74,13 +66,13 @@ export type PropertyBookmarkButtonProps = {
 };
 
 export type PropertyLikeButtonProps = {
-  onCountChange: (delta: number) => void;
   propertyId: number;
+  onCountChange: (delta: number) => void;
 };
 
 export type PropertyOwnerBadgeProps = {
-  avatar?: PropertyDetailsView["ownerAvatar"];
   name?: string;
+  avatar?: PropertyDetailsView["ownerAvatar"];
 };
 
 export type PropertyPriceTagProps = {

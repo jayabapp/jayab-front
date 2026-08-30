@@ -558,6 +558,19 @@ const _STRINGS = {
   PROPERTY_DESCRIPTION_HINT:
     "ارائه توضیحات کامل و دقیق در این بخش به رزرو اقامتگاه شما کمک می کند.",
   SELECT_A_PLAN: "لطفا پلن مورد نظر را انتخاب کنید",
+
+  // Reservation list and card copy.
+  ARE_U_SURE_CANCEL_RESERVE: "از کنسل کردن رزرو",
+  ARE_U_SURE_SHORT: "مطمئنید ؟",
+  CALL_THE_GUEST: "تماس با میهمان",
+  CANCEL_RESERVE: "لغو رزرو",
+  GUEST_AWAITS_YOU: "میهمان منتظر پاسخ شماست",
+  RESERVE_ANSWER_TIME_UP: "زمان شما برای پاسخ به این درخواست به اتمام رسیده است.",
+  RESERVE_FINALIZE_NOTE: "رزرو شما پس از هماهنگی با میزبان نهایی خواهد شد",
+  RESERVE_GUEST_WAITING_HINT: "مدت زمان انتظار جهت بررسی میزبان",
+  RESERVE_OWNER_TIMEOUT_HINT:
+    "پس از اتمام تایم و عدم پاسخ لینک ویلاهای مشابه برای میهمان ارسال می گردد.",
+  YOUR_ACTIVE_RESERVE: "رزرو فعال شما",
 };
 
 export default _STRINGS;

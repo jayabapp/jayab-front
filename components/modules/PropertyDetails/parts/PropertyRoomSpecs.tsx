@@ -3,7 +3,7 @@ import type { PropertySpecsSectionProps } from "@/types/components/modules/prope
 import { SPEC_ACCORDION_ITEM } from "./PropertyPrimarySpecs";
 import SimpleAccordion from "@/components/shared/SimpleAccorion";
 import _STRINGS from "@/utils/LocalStrings";
-import SpecRow from "./SpecRow";
+import SpecRow from "@elements/SpecRow";
 
 const PropertyRoomSpecs = ({
   devices,

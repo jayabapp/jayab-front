@@ -1,9 +1,9 @@
-import Skeleton from "@/components/elements/Skeleton/Skeleton";
+import Skeleton from "@elements/Skeleton/Skeleton";
 
 const ReservationCardSkeleton = () => (
   <div
-    className="w-full space-y-4 rounded-2xl p-3 shadow-card"
     aria-hidden="true"
+    className="w-full space-y-4 rounded-2xl p-3 shadow-card"
   >
     <div className="flex gap-3">
       <Skeleton className="size-24 rounded-xl" />
@@ -19,4 +19,5 @@ const ReservationCardSkeleton = () => (
     <Skeleton className="h-10 w-full rounded-xl" />
   </div>
 );
+
 export default ReservationCardSkeleton;

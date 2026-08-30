@@ -45,8 +45,9 @@ const RotatePhone = dynamic(
 const MainWrapper = ({ children }: mainWrapper) => {
   const router = useRouter();
   const pathname = usePathname();
-  const { isDark, setOwmerActiveReservesCount, owmerActiveReservesSocket } =
-    useStoreParams((state) => state);
+  const { isDark, setOwmerActiveReservesCount } = useStoreParams(
+    (state) => state,
+  );
   const { isLogin, isAdminSso } = useAuthStore((state) => state);
   const isAuthScreen = pathname.includes("auth");
   const [isLandscape, setIsLandscape] = useState(
@@ -76,13 +77,12 @@ const MainWrapper = ({ children }: mainWrapper) => {
 
   const { data: profile } = useCurrentProfile(isLogin);
 
-  const { data: activeReserves, refetch: refetchActiveReserveCount } =
-    useOwnerActiveReservationCount(Boolean(profile?.owner_id));
-
-  useEffect(() => {
-    if (profile?.owner_id && owmerActiveReservesSocket)
-      void refetchActiveReserveCount();
-  }, [owmerActiveReservesSocket, profile?.owner_id, refetchActiveReserveCount]);
+  // A new-reserve socket event invalidates the count's query key inside the
+  // reservations feature, so this observer refetches on its own instead of
+  // being poked through a store flag.
+  const { data: activeReserves } = useOwnerActiveReservationCount(
+    Boolean(profile?.owner_id),
+  );
 
   useEffect(() => {
     if (!!activeReserves) setOwmerActiveReservesCount(activeReserves);

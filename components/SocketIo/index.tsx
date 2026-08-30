@@ -1,7 +1,8 @@
 import { useAuthStore, useChatStore, useStoreSocket } from "@/store";
+import { invalidateReservationCaches } from "@features/reservations/hooks/reservation-invalidation";
+import { patchChatListFromMessage } from "@features/chat/api/chat.cache";
 import { ChatRealtimeMessageEvent } from "@/api_services/chat/chat.interface";
 import { ChatRealtimeDeleteEvent } from "@/api_services/chat/chat.interface";
-import { patchChatListFromMessage } from "@features/chat/api/chat.cache";
 import { appendMessageToCache } from "@features/chat/api/chat.cache";
 import { notificationKeys } from "@features/notifications/api/notification.keys";
 import { ChatTypingEvent } from "@/api_services/chat/chat.interface";
@@ -63,13 +64,14 @@ export const SocketIO = () => {
             if (e?.eventData?.event_type == "NOTIF_FROM_MANAGER")
               router.push(`/notifications`);
             if (e?.eventData?.event_type == "RESERVE")
-              router.push(`/reserves/${e?.eventData?.event_id}`);
+              router.push("/profile/reserves");
           },
         });
       });
 
       socket.on("event:new-reserve", (e) => {
         useStoreParams.setState({ owmerActiveReservesSocket: e });
+        void invalidateReservationCaches(queryClient);
       });
 
       socket.on("user:status", (e) => {

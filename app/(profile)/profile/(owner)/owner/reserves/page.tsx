@@ -1,5 +1,10 @@
-import OwnerReservationList from "@features/reservations/components/OwnerReservationList";
+import { OwnerReservationList } from "@modules/OwnerReservations";
+import ReservationsTemplate from "@templates/Reservations";
 
-const OwnerReservesPage = () => <OwnerReservationList />;
+const OwnerReservesPage = () => (
+  <ReservationsTemplate>
+    <OwnerReservationList />
+  </ReservationsTemplate>
+);
 
 export default OwnerReservesPage;

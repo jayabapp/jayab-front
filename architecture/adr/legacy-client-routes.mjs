@@ -9,7 +9,6 @@ export const legacyClientRoutes = [
   "app/(profile)/profile/invite/page.tsx",
   "app/(profile)/profile/my-payments/page.tsx",
   "app/(profile)/profile/page.tsx",
-  "app/(profile)/profile/reserves/page.tsx",
   "app/notifications/page.tsx",
   "app/route-hub/page.tsx",
 ];

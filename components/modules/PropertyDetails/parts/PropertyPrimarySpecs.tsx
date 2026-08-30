@@ -3,7 +3,7 @@ import type { PropertySpecsSectionProps } from "@/types/components/modules/prope
 import SimpleAccordion from "@/components/shared/SimpleAccorion";
 import numberWithCommas from "@/helpers/numberWithCommas";
 import _STRINGS from "@/utils/LocalStrings";
-import SpecRow from "./SpecRow";
+import SpecRow from "@elements/SpecRow";
 
 export const SPEC_ACCORDION_ITEM = {
   parenClass: " bg-white border border-neutral-300 !mt-0 rounded-10 w-full",

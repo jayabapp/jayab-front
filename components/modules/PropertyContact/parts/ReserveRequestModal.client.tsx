@@ -7,13 +7,13 @@ import { useCreateReservation } from "@features/reservations/hooks/useCreateRese
 import { jalaliDateToApiDate } from "@features/reservations/mappers/reservation-dates";
 import type { ReserveListDto } from "@/types/components/modules/property-contact";
 import { useStartOrFindChat } from "@features/chat/hooks/useStartOrFindChat";
+import { ActiveReservationSheet } from "@modules/ReservationDetails";
 import { ReserveUserAction } from "@/enum/reserve.enum";
 import { ModalBottomSheet } from "@elements/Modal";
 import { ContentImage } from "@elements/Image";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
 
-import ActiveReservePop from "@/components/properties/reserve/ActiveReservePop";
 import PropertyContactModal from "../PropertyContactModal.client";
 import CmsInfoPopup from "@/components/shared/CmsInfoPopup";
 import _STRINGS from "@/utils/LocalStrings";
@@ -298,9 +298,10 @@ const ReserveRequestModal = ({
         onHide={() => setContactType("")}
       />
 
-      <ActiveReservePop
-        data={activeReserve}
+      <ActiveReservationSheet
         show={!!activeReserve}
+        reservation={activeReserve}
+        onContactRequest={setContactType}
         onHide={() => setActiveReserve(null)}
       />
 

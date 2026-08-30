@@ -1,4 +1,4 @@
-import type { SpecRowProps } from "@/types/components/modules/property-details";
+import type { SpecRowProps } from "@/types/components/elements/spec-row";
 
 const SpecRow = ({ dots, options, title, unit, value }: SpecRowProps) => (
   <div className="flex items-center gap-4 justify-between w-full">

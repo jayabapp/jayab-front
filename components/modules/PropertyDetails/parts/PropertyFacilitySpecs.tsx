@@ -1,12 +1,11 @@
 import type { PropertySpecsSectionProps } from "@/types/components/modules/property-details";
 import type { TOptionGroup } from "@/types/components/modules/property-details";
-
 import { SPEC_ACCORDION_ITEM } from "./PropertyPrimarySpecs";
 
 import SimpleAccordion from "@/components/shared/SimpleAccorion";
 import _STRINGS from "@/utils/LocalStrings";
+import SpecRow from "@elements/SpecRow";
 import SpecOption from "./SpecOption";
-import SpecRow from "./SpecRow";
 
 const OptionGroup = ({ options, title }: TOptionGroup) =>
   options?.length ? (
