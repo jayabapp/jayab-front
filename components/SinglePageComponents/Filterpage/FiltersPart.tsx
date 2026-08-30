@@ -3,7 +3,7 @@ import DateFilter from "@/components/Filters/DateFilter";
 import FilterCheck from "@/components/Filters/FilterCheck";
 import FilterCounter from "@/components/Filters/FilterCounter";
 import PriceRange from "@/components/Filters/PriceRange";
-import ProductModels from "@/components/Filters/ProductModelx";
+import { PropertyModelFilter } from "@modules/PropertySearchFilters";
 import PropertyRulesFilter from "@/components/Filters/PropertyRulesFilter";
 import SimpleAccordion from "@/components/shared/SimpleAccorion";
 import numberWithCommas from "@/helpers/numberWithCommas";
@@ -26,7 +26,7 @@ const FiltersPart = ({ queries, setFilters, filters, propertyTypes }: any) => {
         title={_STRINGS.PROPERTY_TYPE}
         isOpenFirst
       >
-        <ProductModels
+        <PropertyModelFilter
           mobileFilters={filters}
           setMobileFilters={setFilters}
           queryKey={"property_type"}
@@ -40,7 +40,7 @@ const FiltersPart = ({ queries, setFilters, filters, propertyTypes }: any) => {
         title={_STRINGS.POOL_STATUS}
         isOpenFirst
       >
-        <ProductModels
+        <PropertyModelFilter
           mobileFilters={filters}
           setMobileFilters={setFilters}
           queryKey={"has_pool"}
@@ -56,7 +56,7 @@ const FiltersPart = ({ queries, setFilters, filters, propertyTypes }: any) => {
           item={{ parenClass: "   pb-2  border-b w-full p-2 !px-0", disableBorderB: true }}
           title={_STRINGS.POOL_TYPE}
         >
-          <ProductModels
+          <PropertyModelFilter
             mobileFilters={filters}
             setMobileFilters={setFilters}
             queryKey={"pool_type"}
@@ -85,7 +85,7 @@ const FiltersPart = ({ queries, setFilters, filters, propertyTypes }: any) => {
         item={{ parenClass: "  pb-2  border-b w-full p-2 !px-0", disableBorderB: true }}
         title={_STRINGS.ENTERTAINMENT}
       >
-        <ProductModels
+        <PropertyModelFilter
           mobileFilters={filters}
           setMobileFilters={setFilters}
           queryKey={"entertainment"}
@@ -119,7 +119,7 @@ const FiltersPart = ({ queries, setFilters, filters, propertyTypes }: any) => {
         item={{ parenClass: "  pb-2  border-b w-full p-2 !px-0", disableBorderB: true }}
         title={_STRINGS.ENV_PATTERN}
       >
-        <ProductModels
+        <PropertyModelFilter
           mobileFilters={filters}
           setMobileFilters={setFilters}
           queryKey={"pattern"}
@@ -132,7 +132,7 @@ const FiltersPart = ({ queries, setFilters, filters, propertyTypes }: any) => {
         item={{ parenClass: "  pb-2  border-b w-full p-2 !px-0", disableBorderB: true }}
         title={_STRINGS.WELFARE}
       >
-        <ProductModels
+        <PropertyModelFilter
           mobileFilters={filters}
           setMobileFilters={setFilters}
           queryKey={"welfare"}
@@ -145,7 +145,7 @@ const FiltersPart = ({ queries, setFilters, filters, propertyTypes }: any) => {
         item={{ parenClass: "  pb-2  border-b w-full p-2 !px-0", disableBorderB: true }}
         title={_STRINGS.COOL_HEAT}
       >
-        <ProductModels
+        <PropertyModelFilter
           mobileFilters={filters}
           setMobileFilters={setFilters}
           queryKey={"cool_heat"}
@@ -158,7 +158,7 @@ const FiltersPart = ({ queries, setFilters, filters, propertyTypes }: any) => {
         item={{ parenClass: "  pb-2  border-b w-full p-2 !px-0", disableBorderB: true }}
         title={_STRINGS.KITCHEN_ACC}
       >
-        <ProductModels
+        <PropertyModelFilter
           mobileFilters={filters}
           setMobileFilters={setFilters}
           queryKey={"kitchen"}

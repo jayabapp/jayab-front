@@ -6,16 +6,13 @@ import { useEffect, useState } from "react";
 import _STRINGS from "@/utils/LocalStrings";
 import { useQuery } from "@tanstack/react-query";
 
+import { SelectedFiltersBar, SpecialFilterButtons } from "@modules/PropertySearchFilters";
+import { CityModal, CitySelectorTitle, RegionModal } from "@modules/CitySelector";
 import { ChildCities } from "@/api_services/city/city.interface";
 import { PropertyService } from "@/api_services/property/property.service";
 import SingleProductBreadCrumb from "@/components/BreadCrumbs/SingleProductBreadCrumb";
-import CityModal from "@/components/CityModal";
-import FilterPageCitiesTitle from "@/components/CityModal/FilterPageCitiesTitle";
-import RegionModal from "@/components/CityModal/RegionModal";
-import FiltersSelectedFiltersShowcase from "@/components/Filters/FiltersSelectedFiltersShowcase";
 import FilterdPropertiesPageOrianted from "@/components/Filters/NewFiltredProperties";
 import SortMenu from "@/components/Filters/SortMenu";
-import SpecialFilterButtons from "@/components/Filters/SpecialFilterButtons";
 import Modal from "@elements/Modal";
 import { ModalHeaderPart } from "@elements/Modal";
 import Button from "@elements/Button";
@@ -188,7 +185,7 @@ const Filterpage = ({ devices }: { devices: DeviceInfo }) => {
             <div className=" flex  order-1  xl:hidden  relative w-full">
               <div className=" z-1  px-2  relative  w-full items-center gap-1 justify-between  ">
                 <div className=" !col-span-9 ">
-                  <FiltersSelectedFiltersShowcase
+                  <SelectedFiltersBar
                     cityWithRegions={cityWithRegions}
                     setShowRegions={setShowRegions}
                     setFilterModalShow={setFilterModalShow}
@@ -209,7 +206,7 @@ const Filterpage = ({ devices }: { devices: DeviceInfo }) => {
                 <SpecialFilterButtons query={queries} />
               </div>
 
-              <FilterPageCitiesTitle
+              <CitySelectorTitle
                 showRegions={showRegions}
                 setShowRegions={setShowRegions}
                 queries={queries}
@@ -218,7 +215,7 @@ const Filterpage = ({ devices }: { devices: DeviceInfo }) => {
                 title={cityButtonTItle}
                 cb={showCityModalFunc}
               />
-              <FiltersSelectedFiltersShowcase
+              <SelectedFiltersBar
                 cityWithRegions={cityWithRegions}
                 setShowRegions={setShowRegions}
                 containerClass="   !hidden xl:!contents  xl:!w-full"
@@ -293,7 +290,7 @@ const Filterpage = ({ devices }: { devices: DeviceInfo }) => {
         {/* BODY */}
         <div className="w-[90%] mx-auto">
           <div className=" w-full  pt-4 pb-8  ">
-            <FilterPageCitiesTitle
+            <CitySelectorTitle
               hideCityPart
               showRegions={showRegions}
               setShowRegions={setShowRegions}
@@ -322,7 +319,7 @@ const Filterpage = ({ devices }: { devices: DeviceInfo }) => {
       <CityModal
         setRegionsCb={setCityWithRegions}
         onSubmitCustomeCB={!!filterModalShow ? setFilters : undefined}
-        customeValues={!!filterModalShow ? filters : false}
+        customeValues={filterModalShow ? filters : undefined}
         show={showCityModal}
         onHide={hideCityModal}
         setTitle={setCityTitleButton}

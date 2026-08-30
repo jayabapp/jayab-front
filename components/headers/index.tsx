@@ -26,9 +26,10 @@ import Script from "next/script";
 import Button from "@elements/Button";
 import Link from "next/link";
 
-const PopSearchbox = dynamic(() => import("../SearchBoxComp/PopSearchbox"), {
-  ssr: true,
-});
+const PopSearchbox = dynamic(
+  () => import("@modules/Search").then((module) => module.PopSearchBox),
+  { ssr: true },
+);
 
 type textIconType = {
   item: {
@@ -123,8 +124,6 @@ const Header = ({ scroll }: { scroll?: number }) => {
     }
   }, [scroll]);
 
-  const path = pathname;
-  const isInSearch = path.includes("products?");
   const { data: initPropData, refetch } = useQuery({
     queryKey: [PropertyService.OWNER_PROP_INIT_CACHEKEY],
     queryFn: () => PropertyService.InitProperty({ property_id: undefined }),
@@ -274,7 +273,6 @@ transition-all ease-out  duration-300  header-content-container w-full mx-auto `
                       <PopSearchbox
                         onClear={() => {}}
                         onSubmit={() => {}}
-                        autofocus={isInSearch}
                         item={{ bg: `  !py-0.5 ` }}
                         placeholder={_STRINGS?.SEARCH}
                         containerClass={" w-full mx-auto"}
@@ -312,7 +310,6 @@ transition-all ease-out  duration-300  header-content-container w-full mx-auto `
                       }
                       onClear={() => {}}
                       onSubmit={() => {}}
-                      autofocus={isInSearch}
                       placeholder={_STRINGS?.SEARCH}
                       containerClass={" w-full mx-auto"}
                       item={{ bg: `!bg-transparent  !border-none ` }}
@@ -403,7 +400,6 @@ transition-all ease-out  duration-300  header-content-container w-full mx-auto `
                               item={{ bg: "" }}
                               onClear={() => {}}
                               onSubmit={() => {}}
-                              autofocus={isInSearch}
                               placeholder={_STRINGS?.SEARCH}
                               boxId={
                                 scroll

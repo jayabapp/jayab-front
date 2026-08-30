@@ -24,15 +24,21 @@ export const componentMigrationMap = [
   },
   {
     source: "components/Filters",
-    targets: ["components/modules/PropertySearch"],
-    status: "planned",
-    note: "Filters belong to property search rather than global elements.",
+    targets: ["components/modules/PropertySearchFilters", "components/modules/PropertyDiscovery"],
+    status: "in-progress",
+    note: "The active-filter bar and its attribute pickers moved to PropertySearchFilters; the filter form and result list wait for the property discovery migration.",
   },
   {
     source: "components/SearchBoxComp",
     targets: ["components/modules/Search"],
-    status: "planned",
-    note: "Keep interaction in a small search client island.",
+    status: "migrated",
+    note: "Search interaction lives in client islands around one debounced, race-safe suggestions hook.",
+  },
+  {
+    source: "components/CityModal",
+    targets: ["components/modules/CitySelector"],
+    status: "migrated",
+    note: "Province/city/region selection has a single source of truth in the cities feature; the modals are thin client islands.",
   },
   {
     source: "components/properties",

@@ -2,7 +2,7 @@ import { Dispatch } from "react";
 
 import SimpleAccordion from "@/components/shared/SimpleAccorion";
 import _STRINGS from "@/utils/LocalStrings";
-import ProductModels from "./ProductModelx";
+import { PropertyModelFilter } from "@modules/PropertySearchFilters";
 
 type PropertyRuleOption = {
   id: string | number;
@@ -54,7 +54,7 @@ const PropertyRulesFilter = ({
       title={_STRINGS.ACCOMMODATION_RULES}
     >
       {rules.map((rule) => (
-        <ProductModels
+        <PropertyModelFilter
           query={queries}
           key={rule.queryKey}
           mobileFilters={filters}

@@ -11,7 +11,7 @@ import PropertyEditStepSkeleton from "@features/owner-property/steps/PropertyEdi
 import FixedBottomContainer from "@/components/shared/FixedBottomContainer";
 import SearchPlaceModal from "@/components/Map/SearchPlaceModal";
 import StepShower from "@/components/shared/StepShower";
-import SearchBox from "@/components/SearchBoxComp";
+import { SearchInput } from "@modules/Search";
 import _STRINGS from "@/utils/LocalStrings";
 import dynamic from "next/dynamic";
 import Button from "@elements/Button";
@@ -86,7 +86,7 @@ const CreateProperty = () => {
             }}
             className="absolute top-2 z-1 left-0 right-0  w-[70%] md:w-1/2 mx-auto "
           >
-            <SearchBox
+            <SearchInput
               autofocus={false}
               onClear={() => {}}
               onSubmit={() => {}}

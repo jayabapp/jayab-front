@@ -12,7 +12,7 @@ import queryBuilder from "@/helpers/queryBuilder";
 import AdvisorCard from "@/components/Advisor/AdvisorCard";
 import Breadcrumbs from "@/components/BreadCrumbs";
 import useQueryGet from "@/helpers/queryGet";
-import CityModal from "@/components/CityModal";
+import { CityModal } from "@modules/CitySelector";
 import EmptyState from "@elements/EmptyState";
 import _STRINGS from "@/utils/LocalStrings";
 import dynamic from "next/dynamic";
@@ -30,7 +30,9 @@ const HomeAdvisorSub = dynamic(
 const BannersContainer = dynamic(
   () => import("@modules/HomeBanners").then((module) => module.HomeBanners),
 );
-const SearchBox = dynamic(() => import("@/components/SearchBoxComp"));
+const SearchInput = dynamic(() =>
+  import("@modules/Search").then((module) => module.SearchInput),
+);
 const AdvisorsPageHelper = ({ devices }: { devices: DeviceInfo }) => {
   const router = useRouter();
   const queriesParams = useQueryGet<any>();
@@ -89,7 +91,7 @@ const AdvisorsPageHelper = ({ devices }: { devices: DeviceInfo }) => {
 
         <div className="w-full flex flex-col  md:flex-row gap-4">
           <Suspense>
-            <SearchBox
+            <SearchInput
               passedQuerykey="search"
               boxId="ADVISOR_SEARCH"
               containerClass=" w-full"
@@ -111,7 +113,7 @@ const AdvisorsPageHelper = ({ devices }: { devices: DeviceInfo }) => {
                   {!!cityTitle ? cityTitle.replace("جستجو در  ", "") : `شهر`}
                 </p>
               </div>
-            </SearchBox>
+            </SearchInput>
           </Suspense>
           <div className=" w-full flex   md:flex-wrap flex-col md:flex-row  gap-2 md:gap-4 items-center  md:justify-end ">
             {!userInfo?.advisor_id ? (

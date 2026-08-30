@@ -127,14 +127,19 @@ export class HomeService {
     }
   }
 
-  static async Search(dto: { q?: string }) {
+  static async Search(dto: { q?: string }, signal?: AbortSignal) {
     try {
       const result = await apiCall<
         { q?: string },
         { client_query: { [key: string]: any }; cities_list: CitySuggestDto[] }
-      >("GET", apiRoutes.SEARCH, {
-        q: dto?.q,
-      });
+      >(
+        "GET",
+        apiRoutes.SEARCH,
+        {
+          q: dto?.q,
+        },
+        { signal },
+      );
       return result;
     } catch (e) {
       throw e;

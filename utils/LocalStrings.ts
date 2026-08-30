@@ -484,6 +484,14 @@ const _STRINGS = {
   FOR_SUPPORT_LOGIN: "برای درخواست پشتیبانی وارد حساب کاربری خود شوید.",
   HI: "سلام",
   NEW: "جدید",
+  CANCEL: "لغو",
+  ITEM: "مورد",
+  PREMIUM: "ممتاز",
+  OTHER_FILTERS: "سایر فیلترها",
+  REMOVE_ALL: "حذف همه",
+  CLEAR_SEARCH: "پاک کردن جستجو",
+  ALL_CITIES_LIST: "لیست شهرها",
+  ALL_CITIES_LIST_DESC: "لیست تمامی شهرها و استان ها",
 };
 
 export default _STRINGS;

@@ -5,24 +5,21 @@ import { useEffect, useMemo, useState } from "react";
 import { usePathname, useRouter } from "next/navigation";
 import { SingleLandingDto } from "@/api_services/property/property.interface";
 import { PropertyService } from "@/api_services/property/property.service";
+import { SelectedFiltersBar, SpecialFilterButtons } from "@modules/PropertySearchFilters";
+import { CityModal, CitySelectorTitle, RegionModal } from "@modules/CitySelector";
 import { removeKeyArray } from "@/components/Filters/SsrClinetPartFilterProperties";
 import { ChildCities } from "@/api_services/city/city.interface";
 import { DeviceInfo } from "@/helpers/device.detector";
 import { useQuery } from "@tanstack/react-query";
 
-import FiltersSelectedFiltersShowcase from "@/components/Filters/FiltersSelectedFiltersShowcase";
 import SsrClinetPartFilterProperties from "@/components/Filters/SsrClinetPartFilterProperties";
 import SingleProductBreadCrumb from "@/components/BreadCrumbs/SingleProductBreadCrumb";
-import FilterPageCitiesTitle from "@/components/CityModal/FilterPageCitiesTitle";
 import SsrFilterPageContents from "./SsrFilterPageContents";
-import SpecialFilterButtons from "@/components/Filters/SpecialFilterButtons";
 import { ModalHeaderPart } from "@elements/Modal";
 import SsrPartFilter from "@/components/Filters/SsrPartFilter";
 import queryBuilder from "@/helpers/queryBuilder";
 import FiltersPart from "./FiltersPart";
-import RegionModal from "@/components/CityModal/RegionModal";
 import useQueryGet from "@/helpers/queryGet";
-import CityModal from "@/components/CityModal";
 import SortMenu from "@/components/Filters/SortMenu";
 import _STRINGS from "@/utils/LocalStrings";
 import throttle from "lodash/throttle";
@@ -173,7 +170,7 @@ const SsrFilterPage = ({
           <div className=" z-1  pr-2  relative  w-full items-center gap-1 justify-between  ">
             <div className=" !col-span-9 ">
               {" "}
-              <FiltersSelectedFiltersShowcase
+              <SelectedFiltersBar
                 query={queries}
                 hiddenFilters={hiddenFilters}
                 setShowRegions={setShowRegions}
@@ -236,7 +233,7 @@ const SsrFilterPage = ({
                 </div>
                 {(!hiddenFilters?.includes("cities") || !!cityWithRegions) &&
                 !hiddenFilters?.includes("provinces") ? (
-                  <FilterPageCitiesTitle
+                  <CitySelectorTitle
                     hideCityPart
                     queries={queries}
                     cb={showCityModalFunc}
@@ -248,7 +245,7 @@ const SsrFilterPage = ({
                 ) : (
                   <> </>
                 )}
-                <FiltersSelectedFiltersShowcase
+                <SelectedFiltersBar
                   hiddenFilters={hiddenFilters}
                   setShowRegions={setShowRegions}
                   cityWithRegions={cityWithRegions}
@@ -330,7 +327,7 @@ const SsrFilterPage = ({
             <div className=" w-full  pt-4 pb-8  ">
               {(!hiddenFilters?.includes("cities") || !!cityWithRegions) &&
               !hiddenFilters?.includes("provinces") ? (
-                <FilterPageCitiesTitle
+                <CitySelectorTitle
                   hideCityPart
                   queries={queries}
                   cb={showCityModalFunc}

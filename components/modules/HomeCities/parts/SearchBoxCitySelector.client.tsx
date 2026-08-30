@@ -1,8 +1,7 @@
 "use client";
+import { CityModal } from "@modules/CitySelector";
 import { ContentImage } from "@elements/Image";
 import { Suspense, useState } from "react";
-
-import CityModal from "@/components/CityModal";
 
 const SeachBoxCitySelector = ({
   options,

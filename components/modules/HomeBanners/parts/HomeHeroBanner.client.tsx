@@ -9,11 +9,11 @@ import _STRINGS from "@/utils/LocalStrings";
 import dynamic from "next/dynamic";
 import Image from "next/image";
 
-const SearchBoxDropDown = dynamic(
-  () => import("@/components/SearchBoxComp/SearchBoxDropDown"),
+const SearchBoxDropDown = dynamic(() =>
+  import("@modules/Search").then((module) => module.SearchBoxDropDown),
 );
-const HomePopSearch = dynamic(
-  () => import("@/components/SearchBoxComp/HomePopSearch"),
+const HomePopSearch = dynamic(() =>
+  import("@modules/Search").then((module) => module.HomePopSearch),
 );
 const HomeCitySelector = dynamic(
   () => import("@modules/HomeCities").then((module) => module.HomeCitySelector),

@@ -1,13 +1,13 @@
 "use client";
 import { HomeCitySelector } from "@modules/HomeCities";
 
-import PopSearchbox from "@/components/SearchBoxComp/PopSearchbox";
+import { PopSearchBox } from "@modules/Search";
 import _STRINGS from "@/utils/LocalStrings";
 
 const HomeSearchPart = () => {
   return (
     <div className=" flex backdrop-blur-md    lg:backdrop-blur-none      w-[90%]  mx-auto  shadow-card   lg:h-14 lg:bg-white rounded-full items-center  gap-1 lg:gap-2    p-[1px]   lg:pl-4">
-      <PopSearchbox
+      <PopSearchBox
         boxId={"HOME_SEARCH_BOX"}
         placeholder={_STRINGS?.SEARCH}
         onSubmit={() => {}}
