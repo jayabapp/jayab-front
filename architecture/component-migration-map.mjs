@@ -64,9 +64,16 @@ export const componentMigrationMap = [
   },
   {
     source: "components/profile",
-    targets: ["components/modules/Profile"],
-    status: "planned",
-    note: "Move data behavior to user features while migrating UI sections.",
+    targets: [
+      "components/modules/ProfileOverview",
+      "components/modules/ProfileEditor",
+      "components/modules/Bookmarks",
+      "components/modules/Payments",
+      "components/modules/Invite",
+      "components/modules/Notifications",
+    ],
+    status: "in-progress",
+    note: "Overview, sidebar, edit, bookmarks, payments, invite and notifications have moved to the user feature and their modules; the owner photo-upgrade UI waits for its own migration.",
   },
   {
     source: "components/chat",

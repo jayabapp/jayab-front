@@ -1,14 +1,7 @@
 export const legacyClientRoutes = [
-  "app/(profile)/layout.tsx",
   "app/(profile)/profile/(advisor)/advisor/subscription/[subscription_key]/page.tsx",
   "app/(profile)/profile/(advisor)/advisor/subscription/page.tsx",
   "app/(profile)/profile/(owner)/owner/photo-upgrade-requests/[id]/page.tsx",
   "app/(profile)/profile/(owner)/owner/photo-upgrade-requests/page.tsx",
-  "app/(profile)/profile/bookmarks/page.tsx",
-  "app/(profile)/profile/edit/page.tsx",
-  "app/(profile)/profile/invite/page.tsx",
-  "app/(profile)/profile/my-payments/page.tsx",
-  "app/(profile)/profile/page.tsx",
-  "app/notifications/page.tsx",
   "app/route-hub/page.tsx",
 ];

@@ -3,6 +3,13 @@ import next from "eslint-config-next";
 import { legacyClientRoutes } from "./architecture/adr/legacy-client-routes.mjs";
 import { importConventionsPlugin } from "./architecture/eslint/import-conventions.mjs";
 
+// ESLint matches `ignores` as globs, where `[id]` is a character class rather
+// than a literal segment. Without escaping, every dynamic route in the ADR
+// silently failed to match and its exception did nothing.
+const legacyClientRoutePatterns = legacyClientRoutes.map((route) =>
+  route.replace(/[[\]]/g, (character) => `\\${character}`),
+);
+
 // eslint-config-next ships a flat config array from v15 on. Routing it through
 // FlatCompat's eslintrc shim made ESLint 10 fail config-schema validation and
 // then crash formatting the error ("Converting circular structure to JSON").
@@ -382,7 +389,7 @@ const eslintConfig = [
   },
   {
     files: ["app/**/page.tsx", "app/**/layout.tsx"],
-    ignores: legacyClientRoutes,
+    ignores: legacyClientRoutePatterns,
     rules: {
       "no-restricted-syntax": [
         "error",

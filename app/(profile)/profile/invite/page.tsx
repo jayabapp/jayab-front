@@ -1,72 +1,10 @@
-"use client";
+import ProfilePageTemplate from "@templates/ProfilePage";
+import { InvitePanel } from "@modules/Invite";
 
-import { AdvisorService } from "@/api_services/advisor/advisor.propery";
-import { useQuery } from "@tanstack/react-query";
+const InvitePage = () => (
+  <ProfilePageTemplate containerClass="!pb-36 items-center !bg-transparent flex flex-col gap-1">
+    <InvitePanel />
+  </ProfilePageTemplate>
+);
 
-import _STRINGS from "@/utils/LocalStrings";
-import Button from "@elements/Button";
-import React from "react";
-import Image from "next/image";
-
-const InviePage = () => {
-  const onShare = async (data: any) => {
-    const title = "جایاب";
-    const text = `شما را به جایاب دعوت میکنم
-    ${data?.is_special ? `کد دعوت: ${data?.user?.referral_code}` : ""}
-    ✅${window.origin}`;
-    const shareDetails = { title, text };
-    if (navigator.share) {
-      try {
-        await navigator
-          .share(shareDetails)
-          .then(() => console.log("Your content was shared"));
-      } catch {}
-    }
-  };
-
-  const { data: advisorProfile } = useQuery({
-    queryKey: [AdvisorService.USER_ADVISORS_PROFILE_CACHEKEY],
-    queryFn: () => {
-      return AdvisorService.userAdvisorsProfile();
-    },
-    staleTime: 0,
-    gcTime: 0,
-  });
-  return (
-    <div
-      id="homeParent"
-      className=" profile-container  !pb-36 items-center   !bg-transparent transition-all duration-500 ease-in-out flex flex-col gap-1 "
-    >
-      <div className=" w-full md:px-[30%]  mt-12   flex flex-col gap-4 ">
-        <Image
-          width={768}
-          height={512}
-          className="h-auto w-full"
-          alt={_STRINGS.INVITE_TEXT}
-          sizes="(min-width: 768px) 40vw, 100vw"
-          src="/assets/images/shared/invite_image.png"
-        />
-        <p className="text-center">{_STRINGS.INVITE_TEXT}</p>
-        {!!advisorProfile?.is_special ? (
-          <div className="flex flex-col w-full items-center justify-center gap-2">
-            <p className="text-sm">{_STRINGS.REFRAL_CODE}</p>
-            <div className=" w-32  h-10 flex items-center justify-center  border rounded-10 text-sm ">
-              <p>{advisorProfile?.user?.referral_code}</p>
-            </div>
-          </div>
-        ) : (
-          <></>
-        )}
-
-        <Button
-          width="w-full"
-          title={_STRINGS.SHARE}
-          containerClass="w-full"
-          onClick={() => onShare(advisorProfile)}
-        />
-      </div>
-    </div>
-  );
-};
-
-export default InviePage;
+export default InvitePage;

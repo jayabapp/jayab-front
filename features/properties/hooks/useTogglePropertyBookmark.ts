@@ -3,7 +3,7 @@
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { PropertyService } from "@/api_services/property/property.service";
 import { useStoreParams } from "@/store";
-import { propertyKeys } from "@features/properties/api/property.keys";
+import { userKeys } from "@features/user/api/user.keys";
 
 export const useTogglePropertyBookmark = (propertyId: number) => {
   const queryClient = useQueryClient();
@@ -12,12 +12,12 @@ export const useTogglePropertyBookmark = (propertyId: number) => {
     mutationFn: () =>
       PropertyService.BookmarkProperty({ property_id: propertyId }),
     onMutate: async () => {
-      await queryClient.cancelQueries({ queryKey: propertyKeys.bookmarks() });
+      await queryClient.cancelQueries({ queryKey: userKeys.bookmarks() });
       const wasBookmarked = useStoreParams
         .getState()
         .bookmarks.includes(propertyId);
       const previousBookmarks = queryClient.getQueryData(
-        propertyKeys.bookmarks(),
+        userKeys.bookmarks(),
       );
       useStoreParams.setState((state) => ({
         bookmarks: wasBookmarked
@@ -29,7 +29,7 @@ export const useTogglePropertyBookmark = (propertyId: number) => {
     onError: (_error, _variables, context) => {
       if (!context) return;
       queryClient.setQueryData(
-        propertyKeys.bookmarks(),
+        userKeys.bookmarks(),
         context.previousBookmarks,
       );
       useStoreParams.setState((state) => ({
@@ -42,6 +42,6 @@ export const useTogglePropertyBookmark = (propertyId: number) => {
       if (response) useStoreParams.setState({ bookmarks: response.bookmarks });
     },
     onSettled: () =>
-      queryClient.invalidateQueries({ queryKey: propertyKeys.bookmarks() }),
+      queryClient.invalidateQueries({ queryKey: userKeys.bookmarks() }),
   });
 };

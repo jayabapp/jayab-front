@@ -1,10 +1,10 @@
-import SkeletonCircle from "@/components/elements/Skeleton/SkeletonCircle";
-import Skeleton from "@/components/elements/Skeleton/Skeleton";
+import SkeletonCircle from "@elements/Skeleton/SkeletonCircle";
+import Skeleton from "@elements/Skeleton/Skeleton";
 
 const NotificationCardSkeleton = () => (
   <div
-    className="flex flex-col gap-4 rounded-20 bg-white/60 px-3 py-3 shadow-sm"
     aria-hidden="true"
+    className="flex flex-col gap-4 rounded-20 bg-white/60 px-3 py-3 shadow-sm"
   >
     <div className="flex items-start gap-3">
       <SkeletonCircle className="size-5" />

@@ -96,9 +96,3 @@ export const propertyCalendarOptions = (
     staleTime: 60_000,
   });
 
-export const propertyBookmarksOptions = () =>
-  queryOptions({
-    queryKey: propertyKeys.bookmarks(),
-    queryFn: ({ signal }) => PropertyService.getBookMarks(signal),
-    staleTime: 30_000,
-  });

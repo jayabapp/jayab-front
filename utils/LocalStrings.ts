@@ -571,6 +571,16 @@ const _STRINGS = {
   RESERVE_OWNER_TIMEOUT_HINT:
     "پس از اتمام تایم و عدم پاسخ لینک ویلاهای مشابه برای میهمان ارسال می گردد.",
   YOUR_ACTIVE_RESERVE: "رزرو فعال شما",
+
+  // Profile payments and invite copy.
+  PAYMENT_TIME: "زمان پرداخت",
+  SERVICE_TYPE: "نوع سرویس",
+  STATUS: "وضعیت",
+  TITLE: "عنوان",
+
+  // Notification list copy.
+  LOADING_NOTIFICATIONS: "در حال دریافت اعلان‌ها",
+  NOTIFICATIONS_FAILED: "دریافت اعلان‌ها با خطا مواجه شد.",
 };
 
 export default _STRINGS;

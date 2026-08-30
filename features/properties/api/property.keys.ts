@@ -11,7 +11,6 @@ export const propertyKeys = {
     [...propertyKeys.all, "calendar", { id: String(id), range }] as const,
   reservedDates: (id: number | string) =>
     [...propertyKeys.all, "reserved-dates", { id: String(id) }] as const,
-  bookmarks: () => [...propertyKeys.all, "bookmarks"] as const,
   optionGroups: (groups: readonly string[]) =>
     [...propertyKeys.all, "option-groups", [...groups].sort()] as const,
 };

@@ -12,8 +12,8 @@ import { useQueryClient } from "@tanstack/react-query";
 import { endSession } from "@/helpers/session";
 import { useRouter } from "next/navigation";
 import { authKeys } from "../api/auth.keys";
+import { userKeys } from "@features/user/api/user.keys";
 import { advisorKeys } from "@features/advisors/api/advisor.keys";
-import { propertyKeys } from "@features/properties/api/property.keys";
 
 import FCM from "@/utils/FCM";
 
@@ -51,10 +51,10 @@ export const useLogout = () => {
       queryClient.removeQueries({ queryKey: authKeys.all });
       await Promise.all([
         queryClient.cancelQueries({ queryKey: advisorKeys.profile() }),
-        queryClient.cancelQueries({ queryKey: propertyKeys.bookmarks() }),
+        queryClient.cancelQueries({ queryKey: userKeys.bookmarks() }),
       ]);
       queryClient.removeQueries({ queryKey: advisorKeys.profile() });
-      queryClient.removeQueries({ queryKey: propertyKeys.bookmarks() });
+      queryClient.removeQueries({ queryKey: userKeys.bookmarks() });
       useStoreSocket.getState().socket?.disconnect();
       useStoreSocket.setState({
         connecting: false,
