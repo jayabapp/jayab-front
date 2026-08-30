@@ -7,7 +7,7 @@ import { useRouter } from "next/navigation";
 
 import SinglePropertyPricePart from "../../SinglePropertyPricePart";
 import VerifyPropertyModal from "../../VerifyPropertyModal";
-import AuthorizationStatus from "../../AuthorizationStatus";
+import { PropertyAuthorizationStatus } from "@modules/PropertyGrid";
 import StatusShower from "@/components/shared/StatusShower";
 import ShareLink from "@/components/shared/shareComponent/BrowserShare";
 import _STRINGS from "@/utils/LocalStrings";
@@ -54,7 +54,7 @@ const SingleOwnerPropertyIntroduction = ({
         <p className=" font-medium text-lg w-3/5 md:w-full md:text-2xl ">
           {data?.title}
         </p>
-        <AuthorizationStatus isAuthorized={data?.is_authorized} data={data} />
+        <PropertyAuthorizationStatus isAuthorized={data?.is_authorized} data={data} />
       </div>
       <div className=" w-full flex items-center justify-between">
         <div className="flex items-center gap-4">

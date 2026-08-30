@@ -2,14 +2,14 @@
 /* eslint-disable react-hooks/set-state-in-effect */
 
 import { useEffect, useState } from "react";
+import { DaysOfTheWeekStatus } from "@modules/PropertyGrid";
+import { MultiLineFormInput } from "@elements/Form";
 import { useOwnerProperty } from "@features/owner-property/hooks/useOwnerProperty";
 import { NEW_IMAGE_URL } from "@/utils/urls";
 import { useParams } from "next/navigation";
 import { WeekDays } from "@/utils/constantss";
 import { ImageDto } from "@/api_services/auth/auth.interface";
 
-import DaysOfTheWeekStatus from "@/components/properties/DaysOfTheWeekStatus";
-import { MultiLineFormInput } from "@elements/Form";
 import ShareImageItems from "@/components/properties/imageComponents/ShareImageItems";
 import ProductSkeleton from "@/components/properties/ProductSkeleton";
 import ElementToImage from "@/components/ElementToImage";

@@ -5,13 +5,13 @@ import { type SupportFormErrors } from "@features/support/model/support.schema";
 import type { NewTicketFormProps } from "@/types/features/support/components";
 import { getSupportFormErrors } from "@features/support/model/support.schema";
 import { supportTicketSchema } from "@features/support/model/support.schema";
+import { MultiLineFormInput } from "@elements/Form";
 import { useRouter } from "next/navigation";
+import { FormInput } from "@elements/Form";
 import { useState } from "react";
 
-import { MultiLineFormInput } from "@elements/Form";
-import { FormInput } from "@elements/Form";
-import Button from "@elements/Button";
 import _STRINGS from "@/utils/LocalStrings";
+import Button from "@elements/Button";
 
 const SupportCreateForm = ({ dataKey }: NewTicketFormProps) => {
   const router = useRouter();

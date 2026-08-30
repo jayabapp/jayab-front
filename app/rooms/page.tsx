@@ -1,24 +1,41 @@
+import { dehydrate, HydrationBoundary } from "@tanstack/react-query";
+import { getServerPropertyPage } from "@features/properties/server/property.server";
+import { searchParamsToFilters } from "@features/properties/lib/search-params";
+import { PropertyGridSkeleton } from "@modules/PropertyGrid";
+import { seedPropertyList } from "@features/properties/server/property.server";
 import { Suspense } from "react";
+import { cookies } from "next/headers";
 
-import PropertyCardSkeleton from "@/components/properties/PropertyCardSkeleton";
 import deviceTypeDetector from "@/helpers/device.detector";
-import Filterpage from "@/components/SinglePageComponents/Filterpage";
+import getQueryClient from "@/api_services/common/get-query-client";
+import RoomsTemplate from "@templates/Rooms";
 
-const Fallback = () => (
-  <div className="container grid grid-cols-1 gap-2 py-4 md:grid-cols-2 md:gap-4 xl:grid-cols-3">
-    {Array.from({ length: 6 }, (_, index) => (
-      <PropertyCardSkeleton key={index} />
-    ))}
-  </div>
-);
+type RoomsPageProps = {
+  searchParams: Promise<Record<string, string | string[] | undefined>>;
+};
 
-export default async function PropertiesPage() {
-  const devices = await deviceTypeDetector();
+const PropertiesPage = async ({ searchParams }: RoomsPageProps) => {
+  const [searchParamsData, devices, cookieStore] = await Promise.all([
+    searchParams,
+    deviceTypeDetector(),
+    cookies(),
+  ]);
+
+  const filters = searchParamsToFilters(searchParamsData);
+  const queryClient = getQueryClient();
+
+  if (!cookieStore.get("isLogin")?.value) {
+    const page = await getServerPropertyPage(filters);
+    seedPropertyList(queryClient, filters, page?.data);
+  }
+
   return (
-    <>
-      <Suspense fallback={<Fallback />}>
-        <Filterpage devices={devices} />
+    <HydrationBoundary state={dehydrate(queryClient)}>
+      <Suspense fallback={<PropertyGridSkeleton />}>
+        <RoomsTemplate devices={devices} />
       </Suspense>
-    </>
+    </HydrationBoundary>
   );
-}
+};
+
+export default PropertiesPage;

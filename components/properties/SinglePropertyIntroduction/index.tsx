@@ -1,6 +1,7 @@
 "use client";
 
 import { useAuthStore, useStoreInit, useStoreParams } from "@/store";
+import { PropertyAuthorizationStatus } from "@modules/PropertyGrid";
 import { useTrackPropertyView } from "@features/properties/hooks/useTrackPropertyView";
 import { SinglePropDto } from "@/api_services/property/property.interface";
 import { NEW_IMAGE_URL } from "@/utils/urls";
@@ -11,7 +12,6 @@ import { isMobile } from "react-device-detect";
 import SinglePropertyPricePart from "../SinglePropertyPricePart";
 import FixedBottomContainer from "@/components/shared/FixedBottomContainer";
 import SinglePropReservePop from "./SinglePropReservePop";
-import AuthorizationStatus from "../AuthorizationStatus";
 import SinglePropSharePop from "./SinglePropSharePop";
 import BookMarkButton from "../BookMarkButton";
 import AutoFitText from "@/components/shared/AutoFitText";
@@ -96,7 +96,7 @@ const SinglePropertyIntroduction = ({ data }: { data: SinglePropDto }) => {
           </h1>
         </div>
         {!!data?.is_authorized ? (
-          <AuthorizationStatus isAuthorized={data?.is_authorized} />
+          <PropertyAuthorizationStatus isAuthorized={data?.is_authorized} />
         ) : (
           <></>
         )}
@@ -118,7 +118,7 @@ const SinglePropertyIntroduction = ({ data }: { data: SinglePropDto }) => {
 
         <div className="flex  items-center gap-2">
           {!!data?.is_promoted ? (
-            <p className="  font-bold  text-brand-600  shrink-0  text-sm  hidden lg:flex ">
+            <p className="font-bold text-brand-600 shrink-0 text-sm hidden lg:flex ">
               {_STRINGS.LADDERED}
             </p>
           ) : (
@@ -150,8 +150,7 @@ const SinglePropertyIntroduction = ({ data }: { data: SinglePropDto }) => {
           <p className="w-20 md:text-sm text-xs ">{_STRINGS.TODAYS_PRICE} </p>
         </div>
         <SinglePropertyPricePart data={data} />
-      </div>{" "}
-      {/*                          */}
+      </div>
       <div className="flex items-center gap-4   py-0.5 w-full md:justify-between">
         <p className="w-20 md:text-sm text-xs ">{_STRINGS.ROOM_COUNTS} :</p>
         <p className="font-bold text-sm md:text-base text-brand-600">

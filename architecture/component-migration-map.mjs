@@ -25,8 +25,8 @@ export const componentMigrationMap = [
   {
     source: "components/Filters",
     targets: ["components/modules/PropertySearchFilters", "components/modules/PropertyDiscovery"],
-    status: "in-progress",
-    note: "The active-filter bar and its attribute pickers moved to PropertySearchFilters; the filter form and result list wait for the property discovery migration.",
+    status: "migrated",
+    note: "The filter form, sort menu and active-filter bar belong to the search filters module; the result lists belong to discovery.",
   },
   {
     source: "components/SearchBoxComp",
@@ -43,13 +43,14 @@ export const componentMigrationMap = [
   {
     source: "components/properties",
     targets: [
+      "components/modules/PropertyGrid",
       "components/modules/PropertyDiscovery",
       "components/modules/PropertyDetails",
       "components/modules/OwnerProperty",
       "components/modules/Reservations",
     ],
-    status: "planned",
-    note: "Split by domain responsibility; do not recreate a single properties bucket.",
+    status: "in-progress",
+    note: "The listing card, its parts and the results grid moved to PropertyGrid; property detail, owner and reserve UI wait for their own migrations.",
   },
   {
     source: "components/profile",
@@ -112,7 +113,7 @@ export const componentMigrationMap = [
   {
     source: "components/SinglePageComponents",
     targets: ["components/templates", "components/modules"],
-    status: "planned",
-    note: "Classify each file by page composition versus business section.",
+    status: "in-progress",
+    note: "The two filter pages became the Rooms and Landing templates around the discovery module; auth, blog, profile and not-found pages wait for their own migrations.",
   },
 ];

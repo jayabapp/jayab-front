@@ -1,11 +1,39 @@
 import { infiniteQueryOptions, queryOptions } from "@tanstack/react-query";
 import { normalizePropertyFilters } from "@features/properties/lib/normalize-property-filters";
+import { GC_TIME, STALE_TIME } from "@/helpers/queryCache";
 import { PropertyService } from "@/api_services/property/property.service";
 import { propertyKeys } from "./property.keys";
 
 import type { PropertyFilters } from "@features/properties/lib/normalize-property-filters";
 
 const PAGE_SIZE = 30;
+
+export const DISCOVERY_OPTION_GROUPS = [
+  "PROPERTY_TYPE",
+  "ENTERTAINMENT",
+  "POOL_TYPE",
+  "OWNERSHIP",
+  "KITCHEN",
+  "COOL_HEAT",
+  "WELFARE",
+  "PATTERN",
+  "PARTY",
+  "PET",
+] as const;
+
+export const propertyOptionGroupsOptions = (
+  groups: readonly string[] = DISCOVERY_OPTION_GROUPS,
+) =>
+  queryOptions({
+    queryKey: propertyKeys.optionGroups(groups),
+    queryFn: ({ signal }) =>
+      PropertyService.GetUserPropertyGroup(
+        { group: [...groups] as any },
+        signal,
+      ),
+    staleTime: STALE_TIME.LONG,
+    gcTime: GC_TIME.LONG,
+  });
 
 export const propertiesOptions = (filters: PropertyFilters) => {
   const normalized = normalizePropertyFilters(filters);

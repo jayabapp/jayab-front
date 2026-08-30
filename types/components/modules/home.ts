@@ -7,6 +7,7 @@ import type { HomeLandingDto } from "@/api_services/home/home.interface";
 import type { PropertyListDto } from "@/api_services/property/property.interface";
 import type { DeviceInfo } from "@/helpers/device.detector";
 import type { HomeBannerDto } from "@/types/components/templates/home";
+import type { WeekDayEntry } from "@/types/components/modules/property-grid";
 
 export type HomeBannersProps = {
   banners?: HomeBannerDto[];
@@ -29,5 +30,5 @@ export type HomePropertiesGridProps = {
   data: PropertyListDto[];
   devices?: DeviceInfo;
   middleBanner?: HomeBannerDto;
-  week: string[];
+  week: WeekDayEntry[];
 };

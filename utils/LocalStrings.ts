@@ -492,6 +492,18 @@ const _STRINGS = {
   CLEAR_SEARCH: "پاک کردن جستجو",
   ALL_CITIES_LIST: "لیست شهرها",
   ALL_CITIES_LIST_DESC: "لیست تمامی شهرها و استان ها",
+  UP_TO: "تا",
+  PERSON: "نفر",
+  LIKES: "پسندیدن",
+  ADVISOR_COMMISSION_SHORT: "کمیسیون",
+  NO_CREDIT: "بدون اعتبار",
+  DAYS_CREDIT: "روز اعتبار",
+  IMAGE_UPGRADE: "بهبود تصویر",
+  NOT_VERIFIED: "احراز نشده",
+  RESERVED_SHORT: "رزرو",
+  FREE_SHORT: "خالی",
+  PICK_EMPTY_DAYS: "انتخاب تاریخ بر حسب روز های خالی",
+  SQUARE_METER: "متر مربع",
 };
 
 export default _STRINGS;

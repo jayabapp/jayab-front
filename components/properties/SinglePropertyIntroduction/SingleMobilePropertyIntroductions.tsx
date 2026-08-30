@@ -1,18 +1,29 @@
-import _STRINGS from "@/utils/LocalStrings";
-import React from "react";
-import AddCardPricePart from "../AddCardPricePart";
-import SinglePropertyPricePart from "../SinglePropertyPricePart";
-import Button from "@elements/Button";
 import { SinglePropDto } from "@/api_services/property/property.interface";
+import { ContentImage } from "@elements/Image";
 
-const SingleMobilePropertyIntroductions = ({ data }: { data: SinglePropDto }) => {
+import SinglePropertyPricePart from "../SinglePropertyPricePart";
+import _STRINGS from "@/utils/LocalStrings";
+import Button from "@elements/Button";
+
+const SingleMobilePropertyIntroductions = ({
+  data,
+}: {
+  data: SinglePropDto;
+}) => {
   return (
     <div className=" md:hidden w-full flex flex-col relative  gap-4">
       <div className="w-full flex items-start md:items-center justify-between gap-2">
         {" "}
-        <p className=" font-medium text-lg w-3/5 md:w-full md:text-2xl ">{data?.title}</p>
+        <p className=" font-medium text-lg w-3/5 md:w-full md:text-2xl ">
+          {data?.title}
+        </p>
         <div className="  w-fit   shrink-0   p-1  rounded-full flex items-center gap-2 bg-black/10   bottom-1">
-          <img src="/assets/icons/adds/green_circular_tick.svg" />
+          <ContentImage
+            alt=""
+            width={16}
+            height={16}
+            src="/assets/icons/adds/green_circular_tick.svg"
+          />
           <p className="text-sm text-neutral-400 ">{_STRINGS.VERIFIED}</p>
         </div>
       </div>
@@ -21,7 +32,13 @@ const SingleMobilePropertyIntroductions = ({ data }: { data: SinglePropDto }) =>
           کد {data.code}
         </div>{" "}
         <div className="flex items-center gap-1">
-          <img className="w-5 h-5 aspect-square" src="/assets/icons/adds/filled_heart.svg" />
+          <ContentImage
+            alt=""
+            width={20}
+            height={20}
+            className="w-5 h-5 aspect-square"
+            src="/assets/icons/adds/filled_heart.svg"
+          />
           <p className="text-base  opacity-60">{data?.favorite_count}</p>
         </div>
       </div>
@@ -39,27 +56,31 @@ const SingleMobilePropertyIntroductions = ({ data }: { data: SinglePropDto }) =>
       </div>
       <div className="flex items-center gap-4 border-t  py-2 w-full justify-between">
         <div className="flex items-center gap-1">
-          <img className="/assets/icons/adds/pin_point_location.svg" src="/assets/icons/adds/pin_point_location.svg" />
+          <ContentImage
+            alt=""
+            width={20}
+            height={20}
+            className="w-5 h-5 aspect-square"
+            src="/assets/icons/adds/pin_point_location.svg"
+          />
           <p>{_STRINGS.PROPERTY_LOC} :</p>
         </div>
         <p className="">
           {data?.city} <span className="opacity-75">({data?.province})</span>
         </p>
       </div>
-      {/* 
-      <div className="flex items-center gap-4 border-t  py-2 w-full justify-between">
-        <p>{_STRINGS.TODAY_STATUS} :</p>
-        <p className="font-bold text-brand-600">
-          {data?.room_count} 
-        </p>
-      </div> */}
       <div className="flex items-center gap-4 border-t   py-2 w-full justify-between">
         <div className="flex items-center gap-1">
           <p>{_STRINGS.TODAYS_PRICE} </p>
         </div>
         <SinglePropertyPricePart data={data} />
       </div>
-      <Button width="w-full" containerClass="w-full" roundedClass="rounded-full" title={_STRINGS.ONLINE_RESERVE} />
+      <Button
+        width="w-full"
+        containerClass="w-full"
+        roundedClass="rounded-full"
+        title={_STRINGS.ONLINE_RESERVE}
+      />
     </div>
   );
 };

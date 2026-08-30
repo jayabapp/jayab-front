@@ -1,12 +1,11 @@
 "use client";
 
+import { PropertyCard, PropertyCardSkeleton } from "@modules/PropertyGrid";
 import { useOwnerProperties } from "@features/owner-property/hooks/useOwnerProperties";
 import { PropertyListDto } from "@/api_services/property/property.interface";
 import { useState } from "react";
 
 import OwnerPhotoUpgradeModal from "@/components/profile/photo-upgrade/OwnerPhotoUpgradeModal";
-import PropertyCardSkeleton from "@/components/properties/PropertyCardSkeleton";
-import PropertyCard from "@/components/properties/PropertyCard";
 import EmptyState from "@elements/EmptyState";
 import isEmpty from "lodash/isEmpty";
 

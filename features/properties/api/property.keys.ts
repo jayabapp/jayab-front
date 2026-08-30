@@ -3,7 +3,8 @@ import type { PropertyFilters } from "@features/properties/lib/normalize-propert
 export const propertyKeys = {
   all: ["properties"] as const,
   lists: () => [...propertyKeys.all, "list"] as const,
-  list: (filters: PropertyFilters) => [...propertyKeys.lists(), filters] as const,
+  list: (filters: PropertyFilters) =>
+    [...propertyKeys.lists(), filters] as const,
   details: () => [...propertyKeys.all, "detail"] as const,
   detail: (slug: string) => [...propertyKeys.details(), { slug }] as const,
   calendar: (id: number | string, range: string) =>
@@ -11,4 +12,6 @@ export const propertyKeys = {
   reservedDates: (id: number | string) =>
     [...propertyKeys.all, "reserved-dates", { id: String(id) }] as const,
   bookmarks: () => [...propertyKeys.all, "bookmarks"] as const,
+  optionGroups: (groups: readonly string[]) =>
+    [...propertyKeys.all, "option-groups", [...groups].sort()] as const,
 };

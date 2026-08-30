@@ -5,14 +5,14 @@ import { useParams, useRouter, useSearchParams } from "next/navigation";
 import { useOwnerSubscriptionPlans } from "@features/owner-property/hooks/useOwnerSubscription";
 import { usePayOwnerSubscription } from "@features/owner-property/hooks/useOwnerSubscription";
 import { usePropertyStatistics } from "@features/owner-property/hooks/usePropertyStatistics";
+import { CheckboxCardContainer } from "@elements/Form";
 import { useEffect, useState } from "react";
 import { useOwnerProperty } from "@features/owner-property/hooks/useOwnerProperty";
 import { PropertySubsDto } from "@/api_services/property/property.interface";
+import { PropertyPrice } from "@modules/PropertyGrid";
 
 import OwnerPhotoUpgradeModal from "@/components/profile/photo-upgrade/OwnerPhotoUpgradeModal";
-import { CheckboxCardContainer } from "@elements/Form";
 import FixedBottomContainer from "@/components/shared/FixedBottomContainer";
-import AddCardPricePart from "@/components/properties/AddCardPricePart";
 import numberWithCommas from "@/helpers/numberWithCommas";
 import SimpleBarChart from "@/components/widgets/chart/SimpleBarChart";
 import _STRINGS from "@/utils/LocalStrings";
@@ -156,7 +156,7 @@ const Subscription = () => {
               <p className="font-bold text-sm text-brand-600">
                 {_STRINGS.COST} :
               </p>
-              <AddCardPricePart
+              <PropertyPrice
                 ribbon={e}
                 containerClass="flex gap-2 text-brand-600"
                 data={{

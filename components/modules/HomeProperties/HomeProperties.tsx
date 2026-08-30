@@ -1,4 +1,5 @@
-import type { DeviceInfo } from "@/helpers/device.detector";
+import type { THomeProper } from "@/types/components/modules/property-discovery";
+
 import { weekFromToday } from "@/helpers/weekFromToday";
 
 import HomePropertiesGrid from "./parts/HomePropertiesGrid";
@@ -7,16 +8,8 @@ import Button from "@elements/Button";
 import isEmpty from "lodash/isEmpty";
 import Link from "next/link";
 
-const HomePropertiesList = ({
-  data,
-  devices,
-  middleBanner,
-}: {
-  data: any[];
-  middleBanner?: any;
-  devices?: DeviceInfo;
-}) => {
-  const week = weekFromToday().flatMap((day) => (day ? [day.title] : []));
+const HomePropertiesList = ({ data, devices, middleBanner }: THomeProper) => {
+  const week = weekFromToday();
 
   return (
     <div className="w-full  padding-x ">

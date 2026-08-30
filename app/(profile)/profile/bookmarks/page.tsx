@@ -1,9 +1,8 @@
 "use client";
 
+import { PropertyCard, PropertyCardSkeleton } from "@modules/PropertyGrid";
 import { usePropertyBookmarks } from "@features/properties/hooks/usePropertyBookmarks";
 
-import PropertyCardSkeleton from "@/components/properties/PropertyCardSkeleton";
-import PropertyCard from "@/components/properties/PropertyCard";
 import EmptyState from "@elements/EmptyState";
 import isEmpty from "lodash/isEmpty";
 

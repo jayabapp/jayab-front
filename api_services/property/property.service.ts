@@ -51,16 +51,24 @@ export class PropertyService {
   static OWNER_PROPERTIES_PRICE_RANGE_UPDATE_CACHEKEY =
     "OWNER_PROPERTIES_PRICE_RANGE_UPDATE";
 
-  static async GetUserPropertyGroup(dto: {
-    group: (keyof typeof PropertyOptionGroup)[];
-  }) {
+  static async GetUserPropertyGroup(
+    dto: {
+      group: (keyof typeof PropertyOptionGroup)[];
+    },
+    signal?: AbortSignal,
+  ) {
     try {
       const result = await apiCall<
         { group: string[] },
         { [key: string]: ProvienceTypesDto[] }
-      >("GET", apiRoutes.USER_PROP_OPTIONS, {
-        group: dto.group,
-      });
+      >(
+        "GET",
+        apiRoutes.USER_PROP_OPTIONS,
+        {
+          group: dto.group,
+        },
+        { signal },
+      );
       return result;
     } catch (e) {
       throw e;
