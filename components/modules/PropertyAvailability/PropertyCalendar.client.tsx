@@ -5,8 +5,8 @@ import { usePropertyCalendar } from "@features/properties/hooks/usePropertyCalen
 import { useStoreInit } from "@/store";
 import { useState } from "react";
 
-import OwnerCallemdarGuide from "@/components/properties/owner/SingleOwnerPropertycallender/OwnerCallemdarGuide";
 import Callender from "@/components/widgets/DatePicker/callender";
+import PropertyCalendarLegend from "./PropertyCalendarLegend";
 import moment from "moment-jalaali";
 
 const JALALI_DAY = "jYYYY/jMM/jD";
@@ -38,7 +38,7 @@ const PropertyCalendar = ({ propertyId }: PropertyCalendarProps) => {
         setChosenDateState={setVisibleMonth}
         options={{ disableDaySelect: true }}
       />
-      <OwnerCallemdarGuide isAdvisor={isAdvisor} isCustomer={!isAdvisor} />
+      <PropertyCalendarLegend isAdvisor={isAdvisor} isCustomer={!isAdvisor} />
     </div>
   );
 };

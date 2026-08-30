@@ -1,40 +1,15 @@
-"use client";
+import { OwnerPropertyOverview } from "@modules/OwnerPropertyOverview";
+import { OwnerPropertyTemplate } from "@templates/OwnerProperty";
 
-import { PropertyDetailsSkeleton } from "@modules/PropertyDetails";
-import { useOwnerProperty } from "@features/owner-property/hooks/useOwnerProperty";
-import { PropertyGallery } from "@modules/PropertyGallery";
-import { useParams } from "next/navigation";
+import type { OwnerPropertyPageProps } from "@/types/components/templates/owner-property";
 
-import SingleOwnerPropertyIntroduction from "@/components/properties/owner/SingleOwnerPropertyIntroduction";
-import SingleOwnerPropertycallender from "@/components/properties/owner/SingleOwnerPropertycallender";
-import SingleOwnerPropertyOptons from "@/components/properties/owner/SingleOwnerPropertyOptons.tsx";
-
-const OwnerSingleProperty = () => {
-  const params = useParams();
-  const { property_id } = params;
-  const { data, isLoading, refetch } = useOwnerProperty(`${property_id ?? ""}`);
+const OwnerPropertyPage = async ({ params }: OwnerPropertyPageProps) => {
+  const { property_id } = await params;
   return (
-    <div className=" profile-container  !pb-48 lg:!pb-36   gap-4 justify-start items-start  grid grid-cols-1  md:grid-cols-2  !h-auto    ">
-      {!!isLoading ? (
-        <PropertyDetailsSkeleton />
-      ) : !!data ? (
-        <>
-          <PropertyGallery title={data?.title} images={data?.images ?? []} />
-          <SingleOwnerPropertyIntroduction data={data} />
-          <SingleOwnerPropertycallender
-            data={data}
-            setRefresh={() => void refetch()}
-          />
-          <SingleOwnerPropertyOptons
-            data={data}
-            setRefresh={() => void refetch()}
-          />
-        </>
-      ) : (
-        <></>
-      )}
-    </div>
+    <OwnerPropertyTemplate>
+      <OwnerPropertyOverview propertyId={property_id} />
+    </OwnerPropertyTemplate>
   );
 };
 
-export default OwnerSingleProperty;
+export default OwnerPropertyPage;

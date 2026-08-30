@@ -1,20 +1,10 @@
 "use client";
 
+import type { PropertyDraftStep } from "@/types/features/owner-property";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { ownerPropertyKeys } from "../api/owner-property.keys";
 import { PropertyService } from "@/api_services/property/property.service";
 import { propertyKeys } from "@features/properties/api/property.keys";
-
-export type PropertyDraftStep =
-  | "initials"
-  | "location"
-  | "media"
-  | "bedroom"
-  | "facility"
-  | "price"
-  | "assistants"
-  | "terms"
-  | "environment";
 
 const stepMutations: Record<
   PropertyDraftStep,

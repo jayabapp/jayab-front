@@ -531,6 +531,33 @@ const _STRINGS = {
   NIGHT: "شب",
   GROUND_FLOOR: "همکف",
   BOOKMARKS: "نشان شده‌ها",
+
+  // Owner property wizard, calendar and subscription copy.
+  ADD_IMAGE: "افزودن عکس",
+  ARE_U_SURE_ABOUT: "آیا از",
+  ARE_U_SURE_SUFFIX: "اطمینان دارید؟",
+  BATHROOM_MASTER: "حمام شخصی داخل اتاق",
+  DAY: "روز",
+  DAYS_OF_CREDIT: "روز اعتبار",
+  ENTER_ASSISTANT_NAME: "نام دستیار را وارد کنید",
+  ENTER_ASSISTANT_PHONE: "شماره تماس دستیار را وارد کنید",
+  FOR_EXAMPLE: "مثال",
+  HAS_NO_POOL: "استخر ندارد",
+  POOL_YES: "استخر دارد",
+  MAKING_OF: "کردن",
+  MAX_CAPACITY: "حداکثر ظرفیت میهمان",
+  MEDIA_HINT_LIMIT: "1- حداکثر تعداد آپلود همزمان عکس 10 عدد میباشد.",
+  MEDIA_HINT_NETWORK:
+    "3- در صورت بروز اختلال در شبکه اینترنت، میتوانید ابتدا یک عکس آپلود و پس از اتمام مراحل ثبت اقامتگاه، مجددا تصاویر بیشتری بارگذاری نمائید.",
+  MEDIA_HINT_PRIMARY:
+    "2- عکس اصلی خود را با ضربه زدن روی عکس مورد نظر انتخاب کنید.",
+  NO_REMAINING_CREDIT: "اعتبار ندارد",
+  OPTIONAL: "اختیاری",
+  PRICE_EXTRA_PERSON: "قیمت نفر اضافه و سه سال به بالا",
+  PROMOTE_AFTER_ACTIVATION: "نردبان، پس از فعال شدن آگهی قابل خرید می‌باشد.",
+  PROPERTY_DESCRIPTION_HINT:
+    "ارائه توضیحات کامل و دقیق در این بخش به رزرو اقامتگاه شما کمک می کند.",
+  SELECT_A_PLAN: "لطفا پلن مورد نظر را انتخاب کنید",
 };
 
 export default _STRINGS;
