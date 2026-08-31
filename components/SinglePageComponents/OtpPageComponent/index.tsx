@@ -1,8 +1,8 @@
 "use client";
 
 import { useOtpFlow } from "@features/auth/hooks/useOtpFlow";
+import { AuthHeader } from "@layouts/AuthHeader";
 
-import AuthHeader from "@/components/headers/AuthHeader";
 import _STRINGS from "@/utils/LocalStrings";
 import OtpInput from "./OtpInput";
 import Button from "@elements/Button";
@@ -24,7 +24,7 @@ const OtpPageSignInComponent = () => {
 
   return (
     <div className="auth-container flex min-h-screen h-fit flex-col items-center gap-8 bg-cover md:pb-8">
-      <AuthHeader title={_STRINGS.CONFIRM_CODE} customeBackRoute="/auth" />
+      <AuthHeader title={_STRINGS.CONFIRM_CODE} backRoute="/auth" />
       <div className="mt-8 flex w-full flex-col items-center gap-6 rounded-2xl pb-8 pt-0 md:w-3/4 md:border md:pt-8 md:shadow-lg lg:w-[35%] ">
         <div className="relative z-1 flex size-28 flex-col items-center gap-2">
           <Image

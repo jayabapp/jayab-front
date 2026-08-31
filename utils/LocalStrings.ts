@@ -599,6 +599,11 @@ const _STRINGS = {
     "میزان رضایت شما از مسئولیت پذیری و مشاوره صحیح مشاور در خصوص رزرو اقامتگاه",
   REMAINING_CREDIT_DAYS: "تعداد روز باقیمانده از اعتبار",
   SEARCH_IN_PREFIX: "جستجو در  ",
+  ADVISOR_SECTION: "بخش مشاور",
+  MY_PROPERTY_ADS: "آگهی های من",
+  NOTIFICATIONS_TITLE: "اعلانات",
+  PROPERTY_DETAILS_TITLE: "جزئیات ملک",
+  RESERVE_REQUESTS: "درخواست های رزرو",
   YOUR_PLAN: "پلن شما",
 };
 

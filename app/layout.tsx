@@ -1,14 +1,19 @@
+import { mobileFooterBlackList } from "@/utils/constantss";
+import { footerHiddenBlackList } from "@/utils/constantss";
+import { AppOverlays, AppShell } from "@modules/AppShell";
 import { isNoIndexDeployment } from "@/helpers/indexingPolicy";
 import { Metadata, Viewport } from "next";
 import { apiRoutes, baseUrl } from "@/utils/urls";
 import { InnitSettingsDto } from "@/api_services/home/home.interface";
-import { seedCmsContent } from "@/api_services/home/cms-content.server";
-import { REVALIDATE } from "@/helpers/revalidate";
+import { headerBlackList } from "@/utils/constantss";
 import { x_Iransans } from "./fonts/x_iran/x_Iransans";
-import { dehydrate } from "@tanstack/react-query";
+import { MainLayout } from "@layouts/MainLayout";
+import { SiteFooter } from "@modules/SiteFooter";
+import { SiteHeader } from "@modules/SiteHeader";
+import { REVALIDATE } from "@/helpers/revalidate";
+import { MobileNav } from "@modules/MobileNav";
 import { ReactNode } from "react";
 
-import getQueryClient from "@/api_services/common/get-query-client";
 import LayoutProvider from "./layout-provider.client";
 import SplashScreen from "@/components/SplashScreen";
 import serverCall from "@/helpers/serverCall";
@@ -16,7 +21,11 @@ import Script from "next/script";
 
 import "../styles/globals.css";
 
-const LAYOUT_CMS_KEYS = ["aboutUs", "footerCallUs"];
+const CHROME_HIDDEN_ROUTES = [
+  ...mobileFooterBlackList,
+  ...footerHiddenBlackList,
+];
+
 const indexingDisabled = isNoIndexDeployment();
 
 export const metadata: Metadata = {
@@ -84,15 +93,11 @@ const RootLayout = async ({
   children: ReactNode;
   modal: ReactNode;
 }>) => {
-  const queryClient = getQueryClient();
-
-  const [{ data: appSetting }]: [{ data: InnitSettingsDto }, void] =
-    await Promise.all([
-      serverCall(baseUrl + apiRoutes.APP_SETTINGS, undefined, {
-        revalidate: REVALIDATE.APP_SETTINGS,
-      }),
-      seedCmsContent(queryClient, LAYOUT_CMS_KEYS),
-    ]);
+  const { data: appSetting }: { data: InnitSettingsDto } = await serverCall(
+    baseUrl + apiRoutes.APP_SETTINGS,
+    undefined,
+    { revalidate: REVALIDATE.APP_SETTINGS },
+  );
 
   const gtmId = appSetting?.googleTagManagerId?.toString() || "";
 
@@ -100,8 +105,21 @@ const RootLayout = async ({
     <html lang="fa" dir="rtl">
       <body className={x_Iransans.className} suppressHydrationWarning>
         <SplashScreen />
-        <LayoutProvider modal={modal} dehydratedState={dehydrate(queryClient)}>
-          {children}
+        <LayoutProvider>
+          <AppShell>
+            <MainLayout
+              header={<SiteHeader />}
+              footer={<SiteFooter />}
+              overlays={<AppOverlays />}
+              mobileFooter={<MobileNav />}
+              headerHiddenOn={headerBlackList}
+              footerHiddenOn={CHROME_HIDDEN_ROUTES}
+              mobileFooterHiddenOn={CHROME_HIDDEN_ROUTES}
+            >
+              {children}
+              {modal}
+            </MainLayout>
+          </AppShell>
         </LayoutProvider>
         <footer>
           <Script

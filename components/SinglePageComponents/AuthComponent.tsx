@@ -1,10 +1,10 @@
 "use client";
 
 import { useAuthForm } from "@features/auth/hooks/useAuthForm";
+import { AuthHeader } from "@layouts/AuthHeader";
+import { FormInput } from "@elements/Form";
 
 import useCmsContent from "@/hooks/useCmsContent";
-import AuthHeader from "../headers/AuthHeader";
-import { FormInput } from "@elements/Form";
 import _STRINGS from "@/utils/LocalStrings";
 import Button from "@elements/Button";
 import Image from "next/image";
@@ -39,7 +39,6 @@ const AuthPageComponent = () => {
           </div>
         </div>
         <div className="z-1 w-full gap-8 flex flex-col px-4 items-center    mx-auto relative  rounded-2xl pt-4 pb-4 ">
-          {/* <div className="font-medium text-xl text-center">{_STRINGS?.A89}</div> */}
           <div className="w-full flex flex-col gap-2">
             <FormInput
               item={{

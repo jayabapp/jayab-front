@@ -12,6 +12,8 @@ export type PropertyDetailsContentProps = {
 
 export type PropertyDetailsModalProps = {
   slug: string;
+  header: ReactNode;
+  footer: ReactNode;
 };
 
 export type PropertyIntroductionProps = {

@@ -103,15 +103,24 @@ export const componentMigrationMap = [
   },
   {
     source: "components/headers",
-    targets: ["components/layouts"],
-    status: "planned",
-    note: "Move chrome composition while keeping interactive menus as client islands.",
+    targets: [
+      "components/layouts/MainLayout",
+      "components/layouts/AuthHeader",
+      "components/modules/SiteHeader",
+      "components/modules/AppShell",
+    ],
+    status: "migrated",
+    note: "The frame is a server layout with route-blacklisted slots; the interactive header is one module island over feature hooks, and app-wide session/socket/push runtime moved to the app shell.",
   },
   {
     source: "components/Footer",
-    targets: ["components/layouts"],
-    status: "planned",
-    note: "Desktop and mobile chrome remain separate responsive implementations.",
+    targets: [
+      "components/layouts/MainLayout",
+      "components/modules/SiteFooter",
+      "components/modules/MobileNav",
+    ],
+    status: "migrated",
+    note: "The desktop footer is a Server Component reading cacheable CMS copy; the mobile bar stays a separate client island as a responsive implementation.",
   },
   {
     source: "components/Map",

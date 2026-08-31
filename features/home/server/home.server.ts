@@ -74,3 +74,5 @@ export const getServerPropertyTypes = cache(() =>
     { revalidate: REVALIDATE.PROPERTY_OPTIONS },
   ),
 );
+
+export { getCmsContent as getServerCmsContent } from "@/api_services/home/cms-content.server";
