@@ -581,6 +581,25 @@ const _STRINGS = {
   // Notification list copy.
   LOADING_NOTIFICATIONS: "در حال دریافت اعلان‌ها",
   NOTIFICATIONS_FAILED: "دریافت اعلان‌ها با خطا مواجه شد.",
+
+  // Advisor list, rating and subscription copy.
+  ADMIN_DESCRIPTION: "توضیحات ادمین",
+  ADVISOR_IMAGE: "تصویر مشاور",
+  ADVISOR_SEARCH_PLACEHOLDER: "کد یا نام مشاور ...",
+  AMOUNT: "مبلغ",
+  ARE_U_SURE_CANCEL_ADVISOR_SUB: "آیا میخواهید اشتراک مشاور خود را لغو کنید؟",
+  BUY_REQUIRES_REGISTRATION_PREFIX: "برای خرید",
+  BUY_REQUIRES_REGISTRATION_SUFFIX: "باید اول ثبت نام کنید .",
+  NO_ACTIVE_SUB: "(شما اشتراک فعال ندارید)",
+  RATE_BEHAVIOUR:
+    "میزان رضایت شما از برخورد مشاور و پیگیری مراحل تا تحویل اقامتگاه",
+  RATE_RESPONSE_SPEED:
+    "میزان رضایت شما از سرعت پیگیری و نحوه پاسخگویی مشاور",
+  RATE_RESPONSIBILITY:
+    "میزان رضایت شما از مسئولیت پذیری و مشاوره صحیح مشاور در خصوص رزرو اقامتگاه",
+  REMAINING_CREDIT_DAYS: "تعداد روز باقیمانده از اعتبار",
+  SEARCH_IN_PREFIX: "جستجو در  ",
+  YOUR_PLAN: "پلن شما",
 };
 
 export default _STRINGS;

@@ -83,9 +83,13 @@ export const componentMigrationMap = [
   },
   {
     source: "components/Advisor",
-    targets: ["components/modules/Advisors"],
-    status: "planned",
-    note: "API and mutations remain owned by the advisor feature.",
+    targets: [
+      "components/modules/AdvisorList",
+      "components/modules/AdvisorDetails",
+      "components/modules/AdvisorSubscription",
+    ],
+    status: "migrated",
+    note: "Listing, detail modal, rating and the subscription/registration flow are modules over advisor feature hooks; queries, mutations and the form view model live in the feature.",
   },
   {
     source: "components/support",

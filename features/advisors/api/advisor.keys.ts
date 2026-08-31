@@ -1,6 +1,7 @@
 export type AdvisorFilters = {
   q?: string;
-  cities?: Array<number | string>;
+  /** Comma-joined in the URL, an array when a caller builds it directly. */
+  cities?: Array<number | string> | string;
   province_id?: number | string;
 };
 

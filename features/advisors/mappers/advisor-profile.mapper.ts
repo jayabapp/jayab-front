@@ -1,11 +1,8 @@
-import type { AdvisorProfileDto, CreateAdvisorDto } from "@/api_services/advisor/advisor.interface";
-
-export type AdvisorFormValues = CreateAdvisorDto & {
-  province?: string | number | null;
-  profile_image: AdvisorProfileDto["user"]["profile_image"] | null;
-  national_card_image: AdvisorProfileDto["national_card_image"] | null;
-  document_image: AdvisorProfileDto["document_image"] | null;
-};
+import type {
+  AdvisorFormValues,
+  AdvisorProfileDto,
+  CreateAdvisorDto,
+} from "@/types/features/advisors";
 
 export const mapAdvisorProfileToForm = (
   profile: AdvisorProfileDto | null | undefined,
@@ -24,7 +21,9 @@ export const mapAdvisorProfileToForm = (
   province: profile?.cities?.[0]?.parent_id ?? "",
 });
 
-export const mapAdvisorFormToRequest = (values: AdvisorFormValues): CreateAdvisorDto => ({
+export const mapAdvisorFormToRequest = (
+  values: AdvisorFormValues,
+): CreateAdvisorDto => ({
   address: values.address || "",
   cityIds: values.cityIds?.map((city: any) => city?.id ?? city).filter(Boolean),
   full_name: values.full_name,

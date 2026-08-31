@@ -1,14 +1,19 @@
-import AdvisorsPageHelper from "@/components/Advisor/AdvisorsPageHelper";
-import deviceTypeDetector from "@/helpers/device.detector";
+import { AdvisorList } from "@modules/AdvisorList";
 import { Suspense } from "react";
 
-const AdvisorsListPage = async () => {
+import deviceTypeDetector from "@/helpers/device.detector";
+import AdvisorsTemplate from "@templates/Advisors";
+
+const AdvisorsPage = async () => {
   const devices = await deviceTypeDetector();
+
   return (
-    <Suspense>
-      <AdvisorsPageHelper devices={devices} />
-    </Suspense>
+    <AdvisorsTemplate>
+      <Suspense>
+        <AdvisorList devices={devices} />
+      </Suspense>
+    </AdvisorsTemplate>
   );
 };
 
-export default AdvisorsListPage;
+export default AdvisorsPage;

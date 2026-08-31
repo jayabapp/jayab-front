@@ -1,10 +1,10 @@
-import SkeletonCircle from "@/components/elements/Skeleton/SkeletonCircle";
-import Skeleton from "@/components/elements/Skeleton/Skeleton";
+import SkeletonCircle from "@elements/Skeleton/SkeletonCircle";
+import Skeleton from "@elements/Skeleton/Skeleton";
 
 const AdvisorCardSkeleton = () => (
   <div
-    className="flex min-h-52 w-full flex-col gap-4 rounded-2xl p-4 shadow-card"
     aria-hidden="true"
+    className="flex min-h-52 w-full flex-col gap-4 rounded-2xl p-4 shadow-card"
   >
     <div className="flex gap-3">
       <SkeletonCircle className="size-24" />
@@ -17,4 +17,5 @@ const AdvisorCardSkeleton = () => (
     <Skeleton className="h-4 w-4/5 rounded" />
   </div>
 );
+
 export default AdvisorCardSkeleton;
