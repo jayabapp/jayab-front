@@ -12,8 +12,8 @@ import { useState } from "react";
 
 import OwnerPhotoUpgradeModal from "@/components/profile/photo-upgrade/OwnerPhotoUpgradeModal";
 import FixedBottomContainer from "@/components/shared/FixedBottomContainer";
-import SimpleBarChart from "@/components/widgets/chart/SimpleBarChart";
 import numberWithCommas from "@/helpers/numberWithCommas";
+import ViewsChart from "./parts/ViewsChart.client";
 import _STRINGS from "@/utils/LocalStrings";
 import Button from "@elements/Button";
 import Notify from "@elements/Toast";
@@ -111,7 +111,7 @@ const OwnerPropertySubscription = ({ propertyId }: OwnerPropertyRouteProps) => {
         <div className="w-full">
           <p className="text-base font-bold mb-4">{_STRINGS.ROOM_STATS}</p>
           <div className="h-96">
-            <SimpleBarChart data={toDailyViewSeries(statistics?.statistics)} />
+            <ViewsChart data={toDailyViewSeries(statistics?.statistics)} />
           </div>
         </div>
       ) : null}

@@ -2,7 +2,7 @@
 
 import { useUserSubscriptions } from "@features/user/hooks/useUserSubscriptions";
 
-import DatePickerQueryWithDynamicKeyFilter from "@/components/widgets/DatePicker/DatePickerQueryWithDynamicKeyFilter";
+import PaymentDateFilter from "./parts/PaymentDateFilter.client";
 import InfiniteScroll from "react-infinite-scroll-component";
 import PaymentCard from "./parts/PaymentCard";
 import EmptyState from "@elements/EmptyState";
@@ -43,17 +43,11 @@ const PaymentList = () => {
             <div className="flex items-center gap-4">
               <div className="flex w-fit shrink-0 items-center gap-2">
                 <p>{_STRINGS.FROM}</p>
-                <DatePickerQueryWithDynamicKeyFilter
-                  query={query}
-                  queryKey="from"
-                />
+                <PaymentDateFilter query={query} queryKey="from" />
               </div>
               <div className="flex w-fit shrink-0 items-center justify-end gap-2">
                 <p>{_STRINGS.TO}</p>
-                <DatePickerQueryWithDynamicKeyFilter
-                  query={query}
-                  queryKey="to"
-                />
+                <PaymentDateFilter query={query} queryKey="to" />
               </div>
             </div>
           </div>

@@ -4,10 +4,9 @@ import { getServerContentList } from "@features/home/server/home.server";
 import { blogListOptions } from "@features/home/api/home.options";
 import { Metadata } from "next";
 
-import BlogsClientPageComponent from "@/components/SinglePageComponents/Blogs/ClientPage";
 import MehaHeaderHelper from "@/helpers/MetaHeaderHelper";
 import getQueryClient from "@lib/query/query-client";
-import Breadcrumbs from "@/components/BreadCrumbs";
+import BlogTemplate from "@templates/Blog";
 
 export async function generateMetadata(): Promise<Metadata> {
   const { data: blogContent } = await getServerContentCategory("blog");
@@ -24,10 +23,7 @@ const BlogsPage = async () => {
 
   return (
     <HydrationBoundary state={dehydrate(queryClient)}>
-      <div className="app-container  !overflow-visible">
-        <Breadcrumbs />
-        <BlogsClientPageComponent />
-      </div>
+      <BlogTemplate />
     </HydrationBoundary>
   );
 };

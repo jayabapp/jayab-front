@@ -136,14 +136,26 @@ export const componentMigrationMap = [
   },
   {
     source: "components/widgets",
-    targets: ["components/elements", "components/modules"],
-    status: "planned",
-    note: "Each widget requires an explicit owner before it moves.",
+    targets: [
+      "components/elements/JalaliCalendar",
+      "components/modules/Payments",
+      "components/modules/PropertyContact",
+      "components/modules/PropertySearchFilters",
+      "components/modules/OwnerPropertySubscription",
+    ],
+    status: "migrated",
+    note: "The reusable Jalali calendar is an element; payment, reservation, search-filter, and statistics compositions live beside their owning modules, and unused widget variants were removed.",
   },
   {
     source: "components/SinglePageComponents",
-    targets: ["components/templates", "components/modules"],
-    status: "in-progress",
-    note: "The two filter pages became the Rooms and Landing templates around the discovery module; auth, blog, profile and not-found pages wait for their own migrations.",
+    targets: [
+      "components/templates/Blog",
+      "components/templates/NotFound",
+      "components/modules/BlogList",
+      "components/modules/NotFound",
+      "components/modules/ProfileEditor",
+    ],
+    status: "migrated",
+    note: "Blog and not-found routes now render server templates over focused client modules; owner registration fields belong to ProfileEditor and obsolete page buckets were removed.",
   },
 ];

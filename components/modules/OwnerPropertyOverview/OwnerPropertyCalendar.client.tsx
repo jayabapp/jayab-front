@@ -3,13 +3,13 @@
 import { useOwnerCalendarBoard } from "@features/owner-property/hooks/useOwnerCalendarBoard";
 import type { OwnerPropertyViewProps } from "@/types/components/modules/owner-property";
 import { PropertyCalendarLegend } from "@modules/PropertyAvailability";
+import { AvailabilityCalendar } from "@elements/JalaliCalendar";
 import { useEffect } from "react";
 
 import OwnerDayCommissionAction from "./parts/OwnerDayCommissionAction.client";
 import OwnerDayStatusAction from "./parts/OwnerDayStatusAction.client";
 import OwnerDayPriceAction from "./parts/OwnerDayPriceAction.client";
 import OwnerDayNoteAction from "./parts/OwnerDayNoteAction.client";
-import Callender from "@/components/widgets/DatePicker/callender";
 import _STRINGS from "@/utils/LocalStrings";
 import Button from "@elements/Button";
 
@@ -44,7 +44,7 @@ const OwnerPropertyCalendar = ({ property }: OwnerPropertyViewProps) => {
       id={CALENDAR_ANCHOR}
       className="order-3 scroll-mt-24 md:order-4 flex flex-col gap-4"
     >
-      <Callender
+      <AvailabilityCalendar
         multiSelect
         active_days={[]}
         callenderData={board.days}

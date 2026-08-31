@@ -2,10 +2,10 @@
 
 import type { PropertyCalendarProps } from "@/types/components/modules/property-availability";
 import { usePropertyCalendar } from "@features/properties/hooks/usePropertyCalendar";
+import { AvailabilityCalendar } from "@elements/JalaliCalendar";
 import { useStoreInit } from "@/store";
 import { useState } from "react";
 
-import Callender from "@/components/widgets/DatePicker/callender";
 import PropertyCalendarLegend from "./PropertyCalendarLegend";
 import moment from "moment-jalaali";
 
@@ -29,7 +29,7 @@ const PropertyCalendar = ({ propertyId }: PropertyCalendarProps) => {
 
   return (
     <div className="order-3 flex flex-col gap-4 md:order-4">
-      <Callender
+      <AvailabilityCalendar
         disablePrevMonths
         active_days={[]}
         selectedDate={selectedDate}

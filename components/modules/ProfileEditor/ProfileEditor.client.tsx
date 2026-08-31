@@ -4,8 +4,8 @@ import { useCurrentProfile } from "@features/auth/hooks/useCurrentProfile";
 import { useOwnerProfile } from "@features/auth/hooks/useOwnerProfile";
 import { useAuthStore } from "@/store";
 
-import OwnerRegistrationForm from "@features/auth/components/OwnerRegistrationForm";
 import ProfileFormSkeleton from "@features/auth/components/ProfileFormSkeleton";
+import OwnerRegistrationForm from "./OwnerRegistrationForm.client";
 
 const ProfileEditor = () => {
   const isLogin = useAuthStore((state) => state.isLogin);

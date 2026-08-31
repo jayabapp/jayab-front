@@ -4,8 +4,8 @@ import type { DateFilterProps } from "@/types/components/modules/property-search
 import { ContentImage } from "@elements/Image";
 import { useState } from "react";
 
-import DateStateHelperStringfy from "@/components/widgets/FilterDatePicker/DateStateHelperStringfy";
-import FilterDatePicker from "@/components/widgets/FilterDatePicker";
+import SearchDateRangePicker from "./DateRangePicker/SearchDateRangePicker.client";
+import updateDateRange from "./DateRangePicker/updateDateRange";
 import _STRINGS from "@/utils/LocalStrings";
 import Modal from "@elements/Modal";
 import moment from "moment-jalaali";
@@ -85,9 +85,9 @@ const DateFilter = ({ filters, setFilters }: DateFilterProps) => {
       </button>
 
       <Modal onHide={onHide} show={show}>
-        <FilterDatePicker
+        <SearchDateRangePicker
           setSelectedDay={(day) => {
-            DateStateHelperStringfy({
+            updateDateRange({
               date: day,
               cb: onHide,
               state: filters,

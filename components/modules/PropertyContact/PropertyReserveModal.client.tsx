@@ -6,7 +6,7 @@ import { SingleSelectPopUpSelect as SinglePopUpSelect } from "@elements/Form";
 import { ModalBottomSheet, ModalHeaderPart } from "@elements/Modal";
 import { useState } from "react";
 
-import DateSpanPicker from "@/components/widgets/UpdatedDatePicker/DateSpanPicker";
+import ReservationDatePicker from "./parts/ReservationDatePicker/ReservationDatePicker.client";
 import ReserveRequestModal from "./parts/ReserveRequestModal.client";
 import _STRINGS from "@/utils/LocalStrings";
 import Button from "@elements/Button";
@@ -83,7 +83,7 @@ const PropertyReserveModal = ({
           <div className="w-full flex flex-col gap-2">
             <p>{_STRINGS.TRIP_DATE}</p>
             <div className="flex w-full items-center justify-between gap-4">
-              <DateSpanPicker
+              <ReservationDatePicker
                 dates={dates}
                 setDates={setDates}
                 forbiden_dates={reservedDates || []}
