@@ -1,11 +1,10 @@
-import type { SearchedLocation } from "@/types/features/map";
+import type { SearchedLocationItemProps } from "@/types/components/modules/property-map";
+import { ContentImage } from "@elements/Image";
 
-type TSearchedLocProps = {
-  item: SearchedLocation;
-  locationClickFunc: (e: SearchedLocation) => void;
-};
-
-const SearchedLocItem = ({ item, locationClickFunc }: TSearchedLocProps) => {
+const SearchedLocItem = ({
+  item,
+  locationClickFunc,
+}: SearchedLocationItemProps) => {
   return (
     <div
       onClick={() => {
@@ -13,7 +12,12 @@ const SearchedLocItem = ({ item, locationClickFunc }: TSearchedLocProps) => {
       }}
       className="w-full flex items-start cursor-pointer px-4 pb-4 border-b border-cream-100  gap-4"
     >
-      <img src="/assets/icons/adds/pin_point_location.svg" className="" />
+      <ContentImage
+        alt=""
+        width={24}
+        height={24}
+        src="/assets/icons/adds/pin_point_location.svg"
+      />
       <div className="flex h-full justify-between flex-col gap-1">
         <div className="text-sm">
           {item?.title}{" "}

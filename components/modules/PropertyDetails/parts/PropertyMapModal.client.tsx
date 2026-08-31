@@ -13,8 +13,8 @@ import Link from "next/link";
 
 const TEHRAN_CENTER = [51.37, 35.767];
 
-const MapPlaceShower = dynamic(
-  () => import("@/components/Map/MapPlaceShower"),
+const MapViewer = dynamic(
+  () => import("@elements/Map").then((module) => module.MapViewer),
   {
     ssr: false,
   },
@@ -41,7 +41,7 @@ const PropertyMapModal = ({
       <div className="w-full bg-white rounded-md">
         <div className="w-full h-[80dvh] md:h-[60dvh] relative">
           {longitude ? (
-            <MapPlaceShower
+            <MapViewer
               disableCenter
               setCenter={setCenter}
               containerClass="w-full"

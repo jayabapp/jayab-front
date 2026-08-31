@@ -1,36 +1,22 @@
-import { ReactEventHandler, useEffect, useRef, useState } from "react";
-import { NEW_IMAGE_URL } from "@/utils/urls";
-import { useMutation } from "@tanstack/react-query";
-import { AuthService } from "@/api_services/auth/auth.service";
+"use client";
+
+import type { AuthUploadFieldProps } from "@/types/components/modules/property-media";
+import { getUploadedImageUrl } from "@features/upload/mappers/upload-image.mapper";
+import { useAttachmentUpload } from "@features/upload/hooks/useAttachmentUpload";
+import { useEffect, useRef, useState } from "react";
+import { ImageCropModal } from "@elements/Upload";
+import type { ReactEventHandler } from "react";
+import { BtnLoading } from "@elements/Button";
 import { toast } from "sonner";
 
 import ProfileImageModal from "@features/auth/components/ProfileImageModal";
-import EditImageModal from "./EditImageModal";
-import { BtnLoading } from "@elements/Button";
-import Image from "next/image";
-
 import "react-advanced-cropper/dist/style.css";
-
-type props = {
-  item: any;
-  link: string;
-  type?: string;
-  title?: string;
-  disabled?: boolean;
-  withCrop?: boolean;
-  cropRatio?: number;
-  containerClass?: string;
-  onDelete: () => void | null;
-  onSelect: (e: any) => void | null;
-};
-interface RefObject<T> {
-  readonly current: T | null;
-}
+import Image from "next/image";
 
 const resolveProfileImage = (item: any, derivative?: "thumbnail") => {
   if (typeof item === "string") return item;
   if (item?.file_location) return item.file_location;
-  return NEW_IMAGE_URL(item, derivative);
+  return getUploadedImageUrl(item, derivative);
 };
 
 const AuthUploader = ({
@@ -43,15 +29,15 @@ const AuthUploader = ({
   cropRatio,
   containerClass,
   type = "image",
-}: props) => {
-  const imagePickerRef = useRef<HTMLDivElement>(null);
+}: AuthUploadFieldProps) => {
+  const imagePickerRef = useRef<HTMLInputElement>(null);
   const [loading, setLoading] = useState(false);
   const [show, setShow] = useState(false);
   const [showImage, setShowImage] = useState("");
   const [selectedFile, setselectedFile] = useState<string | null>(null);
   const uploadControllerRef = useRef<AbortController | null>(null);
 
-  const { mutate } = useMutation({ mutationFn: AuthService.UploadUsersImage });
+  const { mutate } = useAttachmentUpload();
 
   useEffect(
     () => () => {
@@ -122,7 +108,7 @@ const AuthUploader = ({
           className="  hidden "
           type="file"
           id={`formFile-${type}`}
-          ref={imagePickerRef as RefObject<HTMLInputElement>}
+          ref={imagePickerRef}
           onChange={pick}
           onClick={(e) => {
             const target = e.target as HTMLInputElement;
@@ -199,7 +185,7 @@ const AuthUploader = ({
       )}
 
       {!!selectedFile ? (
-        <EditImageModal
+        <ImageCropModal
           onHide={onHide}
           cropRatio={cropRatio}
           isUploading={loading}

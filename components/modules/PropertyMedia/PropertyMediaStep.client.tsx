@@ -9,9 +9,9 @@ import { createPropertySteps } from "@/utils/constantss";
 import { useCallback, useState } from "react";
 
 import PropertyEditStepSkeleton from "@features/owner-property/steps/PropertyEditStepSkeleton";
-import UploadedItemShowCase from "@/components/uploader/UploadedItemShowCase";
 import FixedBottomContainer from "@/components/shared/FixedBottomContainer";
-import NewMultUploader from "@/components/uploader/NewMultUploader";
+import MultiImageUpload from "./uploaders/MultiImageUpload.client";
+import UploadedMediaItem from "./parts/UploadedMediaItem.client";
 import StepShower from "@/components/shared/StepShower";
 import _STRINGS from "@/utils/LocalStrings";
 import Button from "@elements/Button";
@@ -81,7 +81,7 @@ const PropertyMediaStep = ({ propertyId }: OwnerPropertyRouteProps) => {
           <PropertyEditStepSkeleton variant="media" />
         ) : (
           <>
-            <NewMultUploader
+            <MultiImageUpload
               item={null}
               images={images}
               key="propertyMediaUploader"
@@ -111,7 +111,7 @@ const PropertyMediaStep = ({ propertyId }: OwnerPropertyRouteProps) => {
                   }))
                 }
               >
-                <UploadedItemShowCase
+                <UploadedMediaItem
                   item={image}
                   cb={() => {}}
                   containerClass={THUMB_SIZE}

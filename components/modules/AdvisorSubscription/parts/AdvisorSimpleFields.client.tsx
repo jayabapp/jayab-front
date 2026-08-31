@@ -6,7 +6,9 @@ import { FormInput } from "@elements/Form";
 import _STRINGS from "@/utils/LocalStrings";
 import dynamic from "next/dynamic";
 
-const MainUploader = dynamic(() => import("@/components/uploader"));
+const UploadField = dynamic(() =>
+  import("@modules/PropertyMedia").then((module) => module.UploadField),
+);
 
 const UPLOAD_BOX =
   "!bg-white  !border !border-dashed   w-24 h-24 !border-neutral-300 ";
@@ -33,7 +35,7 @@ const AdvisorSimpleFields = ({ values, setValues }: AdvisorFieldsProps) => {
         <p className="w-full text-start text-sm md:text-base">
           {_STRINGS.YOUR_IMAGE}
         </p>
-        <MainUploader
+        <UploadField
           withCrop
           title={_STRINGS.IMAGE}
           key="advisor-profile-image"

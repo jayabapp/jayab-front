@@ -11,7 +11,9 @@ import _STRINGS from "@/utils/LocalStrings";
 import isArray from "lodash/isArray";
 import dynamic from "next/dynamic";
 
-const MainUploader = dynamic(() => import("@/components/uploader"));
+const UploadField = dynamic(() =>
+  import("@modules/PropertyMedia").then((module) => module.UploadField),
+);
 
 const UPLOAD_BOX =
   "!bg-white  !border !border-dashed   w-24 h-24 !border-neutral-300 ";
@@ -140,7 +142,7 @@ const AdvisorSpecialFields = ({ values, setValues }: AdvisorFieldsProps) => {
           <p className="w-full text-start text-sm md:text-base">
             {upload.label}
           </p>
-          <MainUploader
+          <UploadField
             withCrop
             link={upload.link}
             key={`advisor-${upload.key}`}

@@ -124,15 +124,15 @@ export const componentMigrationMap = [
   },
   {
     source: "components/Map",
-    targets: ["components/modules/Map", "components/elements/Map"],
-    status: "planned",
-    note: "Browser-only Neshan wrappers and domain map UI must be separated.",
+    targets: ["components/modules/PropertyMap", "components/elements/Map"],
+    status: "migrated",
+    note: "Browser-only Neshan primitives are isolated in elements; address search and reverse-geocode orchestration are owned by PropertyMap.",
   },
   {
     source: "components/uploader",
     targets: ["components/elements/Upload", "components/modules/PropertyMedia"],
-    status: "planned",
-    note: "Promote only generic upload primitives.",
+    status: "migrated",
+    note: "Crop and preview primitives are elements; cancellable attachment upload orchestration is exposed by PropertyMedia and features/upload.",
   },
   {
     source: "components/widgets",

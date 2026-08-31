@@ -3,15 +3,19 @@
 import { useOwnerPropertyStep } from "@features/owner-property/hooks/useOwnerPropertyStep";
 import type { OwnerPropertyRouteProps } from "@/types/components/modules/owner-property";
 import { usePropertyDraft } from "@features/owner-property/hooks/usePropertyDraft";
+import { SearchPlaceModal } from "@modules/PropertyMap";
 import { SearchInput } from "@modules/Search";
 import { useState } from "react";
 
 import PropertyStepFrame from "./parts/PropertyStepFrame.client";
-import SearchPlaceModal from "@/components/Map/SearchPlaceModal";
 import _STRINGS from "@/utils/LocalStrings";
 import dynamic from "next/dynamic";
 
-const Map = dynamic(() => import("@/components/Map"), { ssr: false });
+const PropertyLocationMap = dynamic(
+  () =>
+    import("@modules/PropertyMap").then((module) => module.PropertyLocationMap),
+  { ssr: false },
+);
 
 const TEHRAN_CENTER = [51.37, 35.767];
 
@@ -71,7 +75,7 @@ const PropertyLocationStep = ({ propertyId }: OwnerPropertyRouteProps) => {
             placeholder={_STRINGS?.SEARCH_PLACE_INPUT}
           />
         </div>
-        <Map
+        <PropertyLocationMap
           center={center}
           jumpToState={jumpTo}
           setCenter={setCenter}

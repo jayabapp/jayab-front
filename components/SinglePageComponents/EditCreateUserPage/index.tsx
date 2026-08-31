@@ -1,21 +1,13 @@
-import useCmsContent from "@/hooks/useCmsContent";
-import AuthUploader from "@/components/uploader/AuthUploader";
+import { TEditCreateProps } from "@/types/components/modules/property-media";
+import { AuthUploadField } from "@modules/PropertyMedia";
 import { BtnLoading } from "@elements/Button";
 import { FormInput } from "@elements/Form";
+
+import useCmsContent from "@/hooks/useCmsContent";
 import _STRINGS from "@/utils/LocalStrings";
 import CmsText from "@/components/shared/CmsText";
 
-const EditCreateUserPage = ({
-  values,
-  onChange,
-}: {
-  values: {
-    name: string;
-    national_code: string;
-    image: any;
-  };
-  onChange: (value: string | number | null, key: string) => void;
-}) => {
+const EditCreateUserPage = ({ values, onChange }: TEditCreateProps) => {
   const { content: ownerCreateContent, isLoading } =
     useCmsContent("ownerCreateContent");
 
@@ -62,7 +54,7 @@ const EditCreateUserPage = ({
           </p>
         </div>
         <p>{_STRINGS.YOUR_IMAGE}</p>
-        <AuthUploader
+        <AuthUploadField
           withCrop
           cropRatio={1}
           key={`uploader`}

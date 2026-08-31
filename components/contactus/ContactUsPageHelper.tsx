@@ -1,11 +1,10 @@
 "use client";
 
-import { Suspense, useEffect, useMemo, useState } from "react";
+import { Suspense, useMemo, useState } from "react";
 import { HTMLGenerator } from "@/helpers/html.generator";
 
 import ContactUsPageItem from "@/components/contactus/ContactUsPageItem";
 import ContactuUItem from "@/components/contactus/ContactuUItem";
-import CreateMarker from "@/components/Map/CreateMarker";
 import Breadcrumbs from "@/components/BreadCrumbs";
 import Editable from "@/components/Editable";
 import _STRINGS from "@/utils/LocalStrings";
@@ -14,7 +13,7 @@ import dynamic from "next/dynamic";
 const ContactUsPageHelper = ({ data }: { data: any }) => {
   const Map = useMemo(
     () =>
-      dynamic(() => import("@/components/Map/MapPlaceShower"), {
+      dynamic(() => import("@elements/Map").then((module) => module.MapViewer), {
         ssr: false,
       }),
     [],
@@ -30,12 +29,6 @@ const ContactUsPageHelper = ({ data }: { data: any }) => {
     ?.find((e: any) => e?.key == "address" || e?.fields?.key == "address")
     ?.full_text?.split(",");
   const hasMap = !!locationPosition?.[0] && !!locationPosition?.[1];
-
-  useEffect(() => {
-    const el = CreateMarker({
-      url: "/assets/icons/forms/location.svg",
-    });
-  }, [locationPosition]);
 
   const { html } = HTMLGenerator(data?.data[0]?.category?.description || "", {
     hasHeading: true,

@@ -1,24 +1,13 @@
-import { useEffect, useRef, useState } from "react";
+"use client";
+
+import type { SearchPlaceModalProps } from "@/types/components/modules/property-map";
 import { useMapAddressSearch } from "@features/map/hooks/useMapAddressSearch";
-
 import type { SearchedLocation } from "@/types/features/map";
-
-import SearchedLocItem from "./SearchedLocItem";
+import { useEffect, useRef, useState } from "react";
 import { FormInput } from "@elements/Form";
-import PopUpDown from "@elements/PopUpDown";
 
-type TSearchPlaceModalProps = {
-  show: boolean;
-  title: string;
-  center: number[];
-  setShow: (e: boolean) => void | null;
-  setJumpTo: React.Dispatch<
-    React.SetStateAction<{
-      lat: string | number;
-      lng: string | number;
-    } | null>
-  >;
-};
+import SearchedLocItem from "./parts/SearchedLocationItem";
+import PopUpDown from "@elements/PopUpDown";
 
 const SearchPlaceModal = ({
   show,
@@ -26,7 +15,7 @@ const SearchPlaceModal = ({
   center,
   setShow,
   setJumpTo,
-}: TSearchPlaceModalProps) => {
+}: SearchPlaceModalProps) => {
   const [search, setSearch] = useState("");
   const {
     addresses: searchedAddresses,

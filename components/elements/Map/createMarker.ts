@@ -1,6 +1,4 @@
-import React from "react";
-
-const CreateMarker = ({ url }: { url: string }) => {
+const createMarker = (url: string) => {
   const el = document.createElement("div");
   const width = 60;
   const height = 34;
@@ -15,4 +13,4 @@ const CreateMarker = ({ url }: { url: string }) => {
   return el;
 };
 
-export default CreateMarker;
+export default createMarker;

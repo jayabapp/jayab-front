@@ -1,85 +1,63 @@
 "use client";
 
-import { ReactEventHandler, useEffect, useRef, useState } from "react";
+import type { MultiImageUploadProps } from "@/types/components/modules/property-media";
+import { useAttachmentUpload } from "@features/upload/hooks/useAttachmentUpload";
 import { UploadPreviewImage } from "@/components/elements/Image";
 import { ContentImage } from "@/components/elements/Image";
-import { AuthService } from "@/api_services/auth/auth.service";
-import { useMutation } from "@tanstack/react-query";
+import { useEffect, useRef, useState } from "react";
+import { FullscreenImage } from "@elements/Upload";
+import type { ReactEventHandler } from "react";
+import { BtnLoading } from "@elements/Button";
 import { toast } from "sonner";
 
-import FullscreenImage from "./FullScreenImage";
-import { BtnLoading } from "@elements/Button";
-import Notify from "@elements/Toast";
-
 import "react-advanced-cropper/dist/style.css";
-
-type TNewMultUploader = {
-  type?: string;
-  images: any[];
-  item: any;
-  onDelete?: () => void | null;
-  setImages: React.Dispatch<React.SetStateAction<any[]>>;
-  setimagesLoadings: React.Dispatch<
-    React.SetStateAction<{
-      [key: string]: any;
-    }>
-  >;
-  containerClass?: string;
-  disabled?: boolean;
-  activeFull?: boolean;
-  loading?: boolean;
-  link: string;
-  title?: string;
-  setLoading: React.Dispatch<React.SetStateAction<boolean>>;
-  imagesLoadings: {
-    [key: string]: any;
-  };
-  innerClasses?: { sizeClass?: string; secontParentClass?: string };
-};
-
-interface RefObject<T> {
-  readonly current: T | null;
-}
+import Notify from "@elements/Toast";
 
 const MAX_TOTAL_IMAGES = 20;
 
 const NewMultUploader = ({
   item,
-  type = "image",
-  disabled,
-  setImages,
-  setimagesLoadings,
-  onDelete,
-  containerClass,
   link,
   title,
-  innerClasses,
-  activeFull,
-  loading,
-  setLoading,
-  imagesLoadings,
   images,
-}: TNewMultUploader) => {
-  const imagePickerRef = useRef<HTMLDivElement>(null);
+  loading,
+  onDelete,
+  disabled,
+  setImages,
+  setLoading,
+  activeFull,
+  innerClasses,
+  containerClass,
+  type = "image",
+  imagesLoadings,
+  setimagesLoadings,
+}: MultiImageUploadProps) => {
+  const imagePickerRef = useRef<HTMLInputElement>(null);
   const blobUrlsRef = useRef(new Set<string>());
   const uploadControllersRef = useRef(
     new Map<string | number, AbortController>(),
   );
   const [show, setShow] = useState(false);
   const [showImage, setShowImage] = useState<any>("");
-  const { mutateAsync, isPending } = useMutation({
-    mutationFn: AuthService.UploadUsersImage,
+  const { mutateAsync, isPending } = useAttachmentUpload({
     mutationKey: [setImages],
     gcTime: 0,
 
     onSuccess: (data) => {
-      setImages((current) =>
-        current.some((image) => image?.id === data?.id)
+      setImages((current) => {
+        const uploadedImage = current.find((image) => image?.id === data?.id);
+        if (uploadedImage?.url?.startsWith("blob:")) {
+          URL.revokeObjectURL(uploadedImage.url);
+          blobUrlsRef.current.delete(uploadedImage.url);
+        }
+        return current.some((image) => image?.id === data?.id)
           ? current.map((image) =>
-              image?.id === data?.id ? { ...image, data: data.result } : image,
+              image?.id === data?.id
+                ? { ...image, data: data.result, url: undefined }
+                : image,
             )
-          : current,
-      );
+          : current;
+      });
     },
 
     onError: (error: any) => {
@@ -188,7 +166,7 @@ const NewMultUploader = ({
           type="file"
           accept="image/png, image/jpeg"
           id={`formFile-${type}`}
-          ref={imagePickerRef as RefObject<HTMLInputElement>}
+          ref={imagePickerRef}
           onChange={pick}
           onClick={(e) => {
             const target = e.target as HTMLInputElement;
@@ -199,7 +177,9 @@ const NewMultUploader = ({
         {typeof setImages == "function" && item == null && (
           <div
             onClick={() => {
-              !disabled ? imagePickerRef?.current?.click() : void null;
+              !disabled && !loading && !isPending
+                ? imagePickerRef?.current?.click()
+                : void null;
             }}
             className={`cursor-pointer flex flex-col items-center gap-1 border bg-white relative transition-all duration-150 ease-in-out hover:border-neutral-600 justify-center rounded-20 aspect-square ${
               innerClasses?.sizeClass || "h-24 w-24"
@@ -268,10 +248,10 @@ const NewMultUploader = ({
                 />
               ) : item?.url ? (
                 <UploadPreviewImage
+                  alt=""
                   width={384}
                   height={384}
                   sizes="96px"
-                  alt=""
                   src={item.url}
                   className="object-cover w-full rounded-20 aspect-square max-w-max"
                 />
@@ -289,7 +269,12 @@ const NewMultUploader = ({
                   onDelete();
                 }}
               >
-                <img src="/assets/icons/uploader/faded_x_circle.svg" />
+                <ContentImage
+                  alt=""
+                  width={20}
+                  height={20}
+                  src="/assets/icons/uploader/faded_x_circle.svg"
+                />
               </div>
             )}
           </div>

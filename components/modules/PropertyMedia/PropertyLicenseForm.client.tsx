@@ -11,7 +11,9 @@ import _STRINGS from "@/utils/LocalStrings";
 import Button from "@elements/Button";
 import dynamic from "next/dynamic";
 
-const MainUploader = dynamic(() => import("@/components/uploader"));
+const UploadField = dynamic(() =>
+  import("@modules/PropertyMedia").then((module) => module.UploadField),
+);
 
 const DOC_UPLOAD_LINK = "/attachments?type=OWNER_PROPERTY_DOCS";
 const DOC_THUMB = {
@@ -48,7 +50,7 @@ const PropertyLicenseForm = ({ propertyId }: OwnerPropertyRouteProps) => {
         <p className="w-full text-start">
           {_STRINGS.NATIONAL_CARD_IMAGE_AUTH} :
         </p>
-        <MainUploader
+        <UploadField
           withCrop
           item={nationalImage}
           title={_STRINGS.IMAGE}
@@ -64,7 +66,7 @@ const PropertyLicenseForm = ({ propertyId }: OwnerPropertyRouteProps) => {
         <p>{_STRINGS.DOCS_IMAGE_AUTH} :</p>
 
         {isLocked ? null : (
-          <MainUploader
+          <UploadField
             item={null}
             key="uploader-add"
             containerClass="w-24"
@@ -77,7 +79,7 @@ const PropertyLicenseForm = ({ propertyId }: OwnerPropertyRouteProps) => {
         )}
 
         {docs?.map((doc) => (
-          <MainUploader
+          <UploadField
             item={doc}
             onSelect={() => {}}
             containerClass="w-24"

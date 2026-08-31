@@ -1,30 +1,20 @@
-import { colors } from "@/theme/colors";
-import { Cropper, CropperRef } from "react-advanced-cropper";
-//import "react-advanced-cropper/dist/style.css";
-import _STRINGS from "@/utils/LocalStrings";
+"use client";
 
+import type { ImageCropModalProps } from "@/types/components/elements/upload";
+import { RatioIcon43, RatioIcon52, RatioIconFree } from "./ratio-icons";
+import { RatioIcon21, RatioIcon34 } from "./ratio-icons";
+import { RatioIcon11, RatioIcon12 } from "./ratio-icons";
+import type { CropperRef } from "react-advanced-cropper";
 import { useEffect, useRef, useState } from "react";
-import "react-advanced-cropper/dist/themes/compact.css";
-import Modal from "@elements/Modal";
-import Button from "@elements/Button";
-import FixedBottomContainer from "../shared/FixedBottomContainer";
-import {
-  RatioIcon11,
-  RatioIcon12,
-  RatioIcon21,
-  RatioIcon34,
-  RatioIcon43,
-  RatioIcon52,
-  RatioIconFree,
-} from "./icons/ratio-icons";
+import { Cropper } from "react-advanced-cropper";
+import { ContentImage } from "@elements/Image";
+import { colors } from "@/theme/colors";
 
-type Props = {
-  imageUrl: string;
-  cropRatio?: number;
-  isUploading: boolean;
-  onHide: () => void;
-  onComplete: (image: File) => void;
-};
+import FixedBottomContainer from "@/components/shared/FixedBottomContainer";
+import "react-advanced-cropper/dist/themes/compact.css";
+import _STRINGS from "@/utils/LocalStrings";
+import Button from "@elements/Button";
+import Modal from "@elements/Modal";
 
 const aspectRatioList = [
   { value: null, icon: RatioIconFree },
@@ -35,16 +25,26 @@ const aspectRatioList = [
   { value: 1 / 2, icon: RatioIcon12 },
   { value: 5 / 2, icon: RatioIcon52 },
 ];
-const EditImageModal = ({ imageUrl, isUploading, onHide, onComplete, cropRatio }: Props) => {
+const EditImageModal = ({
+  imageUrl,
+  isUploading,
+  onHide,
+  onComplete,
+  cropRatio,
+}: ImageCropModalProps) => {
   const cropperRef = useRef<CropperRef>(null);
-  const [aspectRatio, setAspectRatio] = useState<number | null>(1);
+  const mountedRef = useRef(true);
+  const resetTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
+  const [aspectRatio, setAspectRatio] = useState<number | null>(cropRatio ?? 1);
 
   const convertCanvasToFile = () => {
     const canvas = cropperRef?.current?.getCanvas();
     if (canvas) {
       canvas.toBlob((blob) => {
-        if (blob) {
-          const cropped = new File([blob], "cropped-image.png", { type: "image/png" });
+        if (blob && mountedRef.current) {
+          const cropped = new File([blob], "cropped-image.png", {
+            type: "image/png",
+          });
           onComplete(cropped);
         } else {
           const error = new Error(`${blob}blob does not exict`);
@@ -58,20 +58,18 @@ const EditImageModal = ({ imageUrl, isUploading, onHide, onComplete, cropRatio }
   };
 
   useEffect(() => {
-    if (!imageUrl && !cropRatio) setAspectRatio(cropRatio || 1);
-    else reset();
-  }, [imageUrl, cropRatio]);
-
-  useEffect(() => {
-    if (!!cropRatio) {
-      setAspectRatio(cropRatio);
-    }
-  }, [cropRatio]);
+    mountedRef.current = true;
+    return () => {
+      mountedRef.current = false;
+      if (resetTimerRef.current) clearTimeout(resetTimerRef.current);
+    };
+  }, []);
 
   const reset = () => {
     setAspectRatio(null);
     cropperRef?.current?.reset();
-    setTimeout(() => {
+    if (resetTimerRef.current) clearTimeout(resetTimerRef.current);
+    resetTimerRef.current = setTimeout(() => {
       cropperRef?.current?.setCoordinates(({ imageSize }) => imageSize);
     }, 500);
   };
@@ -87,22 +85,11 @@ const EditImageModal = ({ imageUrl, isUploading, onHide, onComplete, cropRatio }
         onHide();
       }}
     >
-      <div className="relative  py-20 px-4 md:p-20 w-full h-[90dvh]  !relative   flex flex-col items-center justify-center">
-        {/* <Cropper
-          ref={cropperRef}
-          src={imageUrl}
-          stencilProps={{
-            handlers: true,
-            lines: false,
-            movable: true,
-            resizable: true,
-
-            aspectRatio,
-          }}
-        /> */}
+      <div className="relative py-20 px-4 md:p-20 w-full h-[90dvh] flex flex-col items-center justify-center">
         <div className="flex w-full   relative  h-[60dvh] items-center justify-center">
           <Cropper
-            defaultSize={({ imageSize }, settings) => {
+            key={imageUrl}
+            defaultSize={({ imageSize }) => {
               return {
                 width: imageSize.width,
                 height: imageSize.height,
@@ -130,20 +117,41 @@ const EditImageModal = ({ imageUrl, isUploading, onHide, onComplete, cropRatio }
             .map((e, i) => {
               const Icon = e.icon;
               return (
-                <button className=" aspect-auto w-fit " key={i} onClick={() => setAspectRatio(e.value)}>
-                  <Icon color={aspectRatio === e.value ? colors.brand[400] : "currentColor"} />
+                <button
+                  className=" aspect-auto w-fit "
+                  key={i}
+                  onClick={() => setAspectRatio(e.value)}
+                >
+                  <Icon
+                    color={
+                      aspectRatio === e.value
+                        ? colors.brand[400]
+                        : "currentColor"
+                    }
+                  />
                 </button>
               );
             })}
         </div>
         <div className="lg:absolute mt-8 lg:mt-0 flex justify-center lg:flex-col gap-6 left-3  lg:top-1/3">
-          <img
+          <ContentImage
+            alt=""
+            height={24}
+            width={24}
             onClick={() => cropperRef?.current?.flipImage(true)}
             src={"/assets/icons/uploader/flip_icon.svg"}
             className=" scale-[-1] rotate-90 cursor-pointer   "
           />
-          <img
-            onClick={() => cropperRef?.current?.rotateImage(90, { transitions: true, normalize: true })}
+          <ContentImage
+            alt=""
+            height={24}
+            width={24}
+            onClick={() =>
+              cropperRef?.current?.rotateImage(90, {
+                transitions: true,
+                normalize: true,
+              })
+            }
             src={"/assets/icons/uploader/rotate_icon.svg"}
             className=" cursor-pointer    "
           />
@@ -154,19 +162,32 @@ const EditImageModal = ({ imageUrl, isUploading, onHide, onComplete, cropRatio }
               reset
             </p>
           </div>
-          <img
-            onClick={() => cropperRef?.current?.rotateImage(-90, { transitions: true, normalize: true })}
+          <ContentImage
+            alt=""
+            height={24}
+            width={24}
+            onClick={() =>
+              cropperRef?.current?.rotateImage(-90, {
+                transitions: true,
+                normalize: true,
+              })
+            }
             src={"/assets/icons/uploader/rotate_icon.svg"}
             className="  scale-x-[-1] cursor-pointer r  "
           />
-          <img
+          <ContentImage
+            alt=""
+            height={24}
+            width={24}
             onClick={() => cropperRef?.current?.flipImage(false, true)}
             className="   cursor-pointer ]   "
             src={"/assets/icons/uploader/flip_icon.svg"}
           />
         </div>
 
-        <FixedBottomContainer containerClass={" gap-4 px-4  md:gap-8 !bg-transparent"}>
+        <FixedBottomContainer
+          containerClass={" gap-4 px-4  md:gap-8 !bg-transparent"}
+        >
           <Button
             containerClass="w-full"
             onClick={() => {
@@ -182,13 +203,13 @@ const EditImageModal = ({ imageUrl, isUploading, onHide, onComplete, cropRatio }
 
           <Button
             color="danger"
-            variant="outline"
-            containerClass="w-full"
-            onClick={() => onHide()}
             width="w-full"
             title={"فعلا نه"}
+            variant="outline"
             loading={isUploading}
             disabled={isUploading}
+            containerClass="w-full"
+            onClick={() => onHide()}
           />
         </FixedBottomContainer>
       </div>

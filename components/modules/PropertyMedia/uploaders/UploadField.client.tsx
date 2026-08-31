@@ -1,39 +1,17 @@
 "use client";
 
-import { ReactEventHandler, useEffect, useRef, useState } from "react";
-import { NEW_IMAGE_URL } from "@/utils/urls";
-import { AuthService } from "@/api_services/auth/auth.service";
-import { useMutation } from "@tanstack/react-query";
+import { getUploadedImageUrl } from "@features/upload/mappers/upload-image.mapper";
+import type { UploadFieldProps } from "@/types/components/modules/property-media";
+import { useAttachmentUpload } from "@features/upload/hooks/useAttachmentUpload";
+import { useEffect, useRef, useState } from "react";
+import { ImageCropModal } from "@elements/Upload";
+import type { ReactEventHandler } from "react";
+import { BtnLoading } from "@elements/Button";
 import { toast } from "sonner";
 
 import ProfileImageModal from "@features/auth/components/ProfileImageModal";
-import EditImageModal from "./EditImageModal";
-import { BtnLoading } from "@elements/Button";
-import Image from "next/image";
-
 import "react-advanced-cropper/dist/style.css";
-
-type props = {
-  item: any;
-  link: string;
-  type?: string;
-  title?: string;
-  disabled?: boolean;
-  withCrop?: boolean;
-  cropRatio?: number;
-  showCamera?: boolean;
-  containerClass?: string;
-  onDelete?: () => void | null;
-  onSelect: (e: any) => void | null;
-  innerClasses?: {
-    sizeClass?: string;
-    secontParentClass?: string;
-    imageClass?: string;
-  };
-};
-interface RefObject<T> {
-  readonly current: T | null;
-}
+import Image from "next/image";
 
 const MainUploader = ({
   item,
@@ -47,15 +25,15 @@ const MainUploader = ({
   innerClasses,
   type = "image",
   containerClass,
-}: props) => {
-  const imagePickerRef = useRef<HTMLDivElement>(null);
+}: UploadFieldProps) => {
+  const imagePickerRef = useRef<HTMLInputElement>(null);
   const [loading, setLoading] = useState(false);
   const [show, setShow] = useState(false);
   const [showImage, setShowImage] = useState("");
   const [selectedFile, setselectedFile] = useState<string | null>(null);
   const uploadControllerRef = useRef<AbortController | null>(null);
 
-  const { mutate } = useMutation({ mutationFn: AuthService.UploadUsersImage });
+  const { mutate } = useAttachmentUpload();
 
   useEffect(
     () => () => {
@@ -145,7 +123,7 @@ const MainUploader = ({
           className="  hidden "
           type="file"
           id={`formFile-${type}`}
-          ref={imagePickerRef as RefObject<HTMLInputElement>}
+          ref={imagePickerRef}
           onChange={pick}
           onClick={(e) => {
             const target = e.target as HTMLInputElement;
@@ -191,9 +169,7 @@ const MainUploader = ({
               onClick={() => {
                 setShow(true);
                 setShowImage(
-                  typeof item === "string"
-                    ? item
-                    : item?.file_location || NEW_IMAGE_URL(item),
+                  typeof item === "string" ? item : getUploadedImageUrl(item),
                 );
               }}
               className={`cursor-pointer border   bg-whiteGray-100    rounded-20 aspect-square relative  ${
@@ -207,7 +183,7 @@ const MainUploader = ({
                 src={
                   typeof item === "string"
                     ? item
-                    : item?.file_location || NEW_IMAGE_URL(item, "thumbnail")
+                    : getUploadedImageUrl(item, "thumbnail")
                 }
                 width={96}
                 height={96}
@@ -223,10 +199,10 @@ const MainUploader = ({
                 onClick={onDelete}
               >
                 <Image
-                  src="/assets/icons/uploader/faded_x_circle.svg"
-                  alt="حذف تصویر"
                   width={20}
                   height={20}
+                  alt="حذف تصویر"
+                  src="/assets/icons/uploader/faded_x_circle.svg"
                 />
               </div>
             ) : (
@@ -251,7 +227,7 @@ const MainUploader = ({
         />
       )}
       {!!selectedFile ? (
-        <EditImageModal
+        <ImageCropModal
           onHide={onHide}
           isUploading={loading}
           cropRatio={cropRatio}

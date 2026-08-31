@@ -37,6 +37,7 @@ const migrationLintRoots = [
   "components/elements/",
   "components/modules/",
   "components/templates/",
+  "features/upload/",
   "scripts/",
   "types/components/elements/",
   "types/components/modules/",

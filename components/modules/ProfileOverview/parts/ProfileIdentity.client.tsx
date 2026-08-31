@@ -6,7 +6,9 @@ import type { ProfileIdentityProps } from "@/types/components/modules/profile";
 import _STRINGS from "@/utils/LocalStrings";
 import dynamic from "next/dynamic";
 
-const MainUploader = dynamic(() => import("@/components/uploader"));
+const UploadField = dynamic(() =>
+  import("@modules/PropertyMedia").then((module) => module.UploadField),
+);
 
 const AVATAR_CLASSES = {
   imageClass: " !rounded-full ",
@@ -19,7 +21,7 @@ const ProfileIdentity = ({ profile }: ProfileIdentityProps) => {
 
   return (
     <div className="flex items-center gap-2">
-      <MainUploader
+      <UploadField
         withCrop
         showCamera
         key="profile-avatar"

@@ -1,14 +1,7 @@
+import type { FullscreenImageProps } from "@/types/components/elements/upload";
 import { ContentImage } from "@/components/elements/Image";
 
 import Modal from "@elements/Modal";
-
-type TFullScreenProps = {
-  src: any;
-  show: boolean;
-  isNew?: boolean;
-  onDelete?: () => void | null;
-  setShow: (e: boolean | string | any) => void | null;
-};
 
 const FullscreenImage = ({
   src,
@@ -16,12 +9,15 @@ const FullscreenImage = ({
   isNew,
   setShow,
   onDelete,
-}: TFullScreenProps) => {
+}: FullscreenImageProps) => {
   return (
     <Modal show={show} onHide={() => setShow(false)}>
       <div className="h-full w-full flex flex-col p-2 gap-2  justify-center items-center bg-white   ">
         <div className="w-full h-8 flex items-center justify-between">
-          <img
+          <ContentImage
+            alt=""
+            height={16}
+            width={16}
             src="/assets/icons/adds/x_mark.svg"
             onClick={() => setShow(false)}
             className="cursor-pointer w-4 m-2  "
@@ -29,7 +25,10 @@ const FullscreenImage = ({
 
           {onDelete ? (
             <div className="ml-2">
-              <img
+              <ContentImage
+                alt=""
+                height={16}
+                width={16}
                 src="/assets/icons/uploader/TrashIcon.svg"
                 className="w-4 h-auto cursor-pointer"
                 onClick={() => onDelete()}

@@ -1,50 +1,41 @@
 "use client";
-import React, { Dispatch, SetStateAction, useEffect, useRef } from "react";
-import "@neshan-maps-platform/mapbox-gl/dist/NeshanMapboxGl.css";
-// import { BusinessListDto, CategoryDto } from "@/api_services/home/home.interface";
+
+import type { MapViewerProps } from "@/types/components/elements/map";
+import { useEffect, useEffectEvent, useRef } from "react";
 import { renderToStaticMarkup } from "react-dom/server";
+
+import LocationAnime from "@/components/shared/Lotties/LocationAnime";
+import "@neshan-maps-platform/mapbox-gl/dist/NeshanMapboxGl.css";
 import nmp_mapboxgl from "@neshan-maps-platform/mapbox-gl";
-import { useRouter } from "next/navigation";
-import LocationAnime from "../shared/Lotties/LocationAnime";
-import PlacesMarker from "./MapShowplaceMarker";
-
-type mapType = {
-  disableCenter?: boolean;
-  jumpToNow?: boolean;
-  businessMarkersData?: any[];
-  containerClass?: string;
-  center: number[];
-
-  setCenter: (e: number[]) => void | null;
-  categoriesList?: any[] | undefined;
-  setShowData?: Dispatch<any>;
-  setJumpToNow?: Dispatch<SetStateAction<boolean>>;
-  jumpToGivenPlace?: { lat?: number | string; lng?: number | string };
-};
+import PlacesMarker from "./MapMarker";
 
 const API_KEY = "web.4c0887bbd32f4ab2ba1adcc36243b6a2";
 
 const MapPlaceShower = ({
   center,
-  setCenter,
-  disableCenter,
-  businessMarkersData,
-  containerClass,
-
-  setShowData,
-
   jumpToNow,
+  setCenter,
   setJumpToNow,
+  disableCenter,
+  containerClass,
   jumpToGivenPlace,
-}: mapType) => {
-  const router = useRouter();
-  const markers = useRef<any>(null);
+  businessMarkersData,
+}: MapViewerProps) => {
+  const markers = useRef<any[]>([]);
   const map = useRef<any>(null);
+  const mapContainer = useRef<HTMLDivElement>(null);
+  const initialCenterRef = useRef(center);
+  const updateCenter = useEffectEvent((nextCenter: number[]) =>
+    setCenter(nextCenter),
+  );
   useEffect(() => {
     map.current = new nmp_mapboxgl.Map({
       mapType: nmp_mapboxgl.Map.mapTypes.neshanVector,
-      container: map.current || "map",
-      center: { lat: center[1], lng: center[0] },
+      container: mapContainer.current || "map",
+      center: {
+        lat: initialCenterRef.current[1],
+        lng: initialCenterRef.current[0],
+      },
       zoom: 16,
       minZoom: 2,
       maxZoom: 21,
@@ -69,29 +60,31 @@ const MapPlaceShower = ({
         showUserLocation: true,
         trackUserLocation: true,
         showUserHeading: true,
-      })
+      }),
     );
-    // map.current.addControl(new nmp_mapboxgl.NavigationControl(), "top-right");
-    map.current.on("dragend", () => {
-      setCenter([map.current.getCenter().lng, map.current.getCenter().lat]);
-    });
+    const handleDragEnd = () => {
+      updateCenter([map.current.getCenter().lng, map.current.getCenter().lat]);
+    };
+    map.current.on("dragend", handleDragEnd);
+    return () => {
+      markers.current.forEach((marker) => marker.remove());
+      markers.current = [];
+      map.current?.off("dragend", handleDragEnd);
+      map.current?.remove();
+      map.current = null;
+    };
   }, []);
 
   useEffect(() => {
     if (businessMarkersData) {
-      if (markers?.current) markers?.current?.map((_: any) => _.remove());
-
+      markers.current.forEach((marker) => marker.remove());
       markers.current = businessMarkersData?.map((e) => {
         const element = document.createElement("div");
         const renderToStaticMarkupHelp: any = renderToStaticMarkup;
         const staticElement = renderToStaticMarkupHelp(<PlacesMarker />);
         element.innerHTML = staticElement;
-        // element.onclick = () => {
-        //   if (setShowData) setShowData(e);
-        // };
-
         return new nmp_mapboxgl.Marker({ element: element, anchor: "center" })
-          .setLngLat([e?.lng, e?.lat])
+          .setLngLat([Number(e?.lng), Number(e?.lat)])
           .addTo(map.current);
       });
     }
@@ -104,7 +97,7 @@ const MapPlaceShower = ({
       map?.current?.flyTo({ center: [lng, lat] });
       setJumpToNow(false);
     }
-  }, [jumpToNow]);
+  }, [jumpToNow, setJumpToNow]);
 
   useEffect(() => {
     const lat = jumpToGivenPlace?.lat;
@@ -115,18 +108,8 @@ const MapPlaceShower = ({
   }, [jumpToGivenPlace]);
   return (
     <div className={`map-wrap   relative ${containerClass}`}>
-      <div ref={map} id="map" className="map " />
-      {!disableCenter ? (
-        // <img
-        //   id={"center_location"}
-        //   className="absolute w-8 cursor-pointer aspect-square top-1/2 left-1/2  "
-        //   style={{ transform: "translate(-50%,-50%)" }}
-        //   src="/assets/icons/addresses/location_center.svg"
-        // />
-        <LocationAnime />
-      ) : (
-        <></>
-      )}
+      <div ref={mapContainer} id="map" className="map " />
+      {!disableCenter ? <LocationAnime /> : <></>}
     </div>
   );
 };

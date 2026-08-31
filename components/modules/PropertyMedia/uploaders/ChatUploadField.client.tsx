@@ -1,41 +1,16 @@
-import { ReactEventHandler, useEffect, useRef, useState } from "react";
-import { AuthService } from "@/api_services/auth/auth.service";
-import { useMutation } from "@tanstack/react-query";
-import { toast } from "sonner";
+"use client";
 
+import type { ChatUploadFieldProps } from "@/types/components/modules/property-media";
+import { useAttachmentUpload } from "@features/upload/hooks/useAttachmentUpload";
+import { useEffect, useRef, useState } from "react";
+import type { ReactEventHandler } from "react";
 import { BtnLoading } from "@elements/Button";
 import { FormInput } from "@elements/Form";
-import _STRINGS from "@/utils/LocalStrings";
-import Image from "next/image";
-import Modal from "@elements/Modal";
+import { toast } from "sonner";
 
-type props = {
-  item: any;
-  link: string;
-  type?: string;
-  disabled?: boolean;
-  cropRatio?: number;
-  withCrop?: boolean;
-  chatId: string | number;
-  containerClass?: string;
-  onDelete: () => void | null;
-  onSelect: (e: any) => void | null;
-  sendMessage: (
-    body: {
-      id: string | number;
-      text: string;
-      media_id?: number;
-      optimisticMedia?: any;
-    },
-    options?: {
-      onSuccess?: (response: unknown) => void;
-      onError?: (error: unknown) => void;
-    },
-  ) => void;
-};
-interface RefObject<T> {
-  readonly current: T | null;
-}
+import _STRINGS from "@/utils/LocalStrings";
+import Modal from "@elements/Modal";
+import Image from "next/image";
 
 const ChatUploader = ({
   link,
@@ -46,8 +21,8 @@ const ChatUploader = ({
   sendMessage,
   type = "image",
   containerClass,
-}: props) => {
-  const imagePickerRef = useRef<HTMLDivElement>(null);
+}: ChatUploadFieldProps) => {
+  const imagePickerRef = useRef<HTMLInputElement>(null);
   const [loading, setLoading] = useState(false);
   const [subLoading, setSubLoading] = useState(false);
   const [, setNewCrop] = useState<any>();
@@ -57,7 +32,7 @@ const ChatUploader = ({
   const [caption, setCaption] = useState<string>("");
   const [previewUrl, setPreviewUrl] = useState("");
   const uploadControllerRef = useRef<AbortController | null>(null);
-  const { mutate } = useMutation({ mutationFn: AuthService.UploadUsersImage });
+  const { mutate } = useAttachmentUpload();
 
   useEffect(
     () => () => {
@@ -162,7 +137,7 @@ const ChatUploader = ({
           className="  hidden "
           type="file"
           id={`formFile-${type}`}
-          ref={imagePickerRef as RefObject<HTMLInputElement>}
+          ref={imagePickerRef}
           onChange={pick}
           onClick={(e) => {
             const target = e.target as HTMLInputElement;
@@ -239,7 +214,7 @@ const ChatUploader = ({
                 uploadImage();
               }
             }}
-            className={`  transition-all  w-full cursor-pointer flex py-1.5  border rounded-xl border-green-600  gap-3 items-center  border-l justify-center`}
+            className={`transition-all w-full cursor-pointer flex py-1.5 border rounded-xl border-green-600  gap-3 items-center  border-l justify-center`}
           >
             {subLoading ? (
               <div className=" flex items-center justify-center w-full min-h-[1.7rem]">
@@ -271,12 +246,10 @@ const ChatUploader = ({
               width={20}
               height={20}
               alt="XCircleIcon"
-              src="/assets/icons/adds/red_x_mark.svg"
               className="  text-red-600 w-5 "
+              src="/assets/icons/adds/red_x_mark.svg"
             />
-            <p className="text-red-600  text-lg font-medium ">
-              بستن
-            </p>
+            <p className="text-red-600  text-lg font-medium ">بستن</p>
           </div>
         </div>
 

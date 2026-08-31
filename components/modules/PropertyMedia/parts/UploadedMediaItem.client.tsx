@@ -1,18 +1,10 @@
+import type { UploadedMediaItemProps } from "@/types/components/modules/property-media";
+import { getUploadedImageUrl } from "@features/upload/mappers/upload-image.mapper";
 import { UploadPreviewImage } from "@/components/elements/Image";
-import { NEW_IMAGE_URL } from "@/utils/urls";
 import { ContentImage } from "@/components/elements/Image";
 import { useState } from "react";
 
-import ProgressBar from "../shared/progressbar";
-
-type TUploadedItemProps = {
-  item: any;
-  progress: number;
-  cb?: () => void | null;
-  containerClass?: string;
-  onDelete?: () => void | null;
-  innerClasses?: { sizeClass?: string; secontParentClass?: string };
-};
+import ProgressBar from "@/components/shared/progressbar";
 
 const UploadedItemShowCase = ({
   cb,
@@ -21,7 +13,7 @@ const UploadedItemShowCase = ({
   progress,
   innerClasses,
   containerClass,
-}: TUploadedItemProps) => {
+}: UploadedMediaItemProps) => {
   const [showRealData, setShowRealData] = useState(false);
   const [isError, setIsError] = useState(false);
 
@@ -61,7 +53,7 @@ const UploadedItemShowCase = ({
                   setIsError(true);
                 }}
                 alt="img"
-                src={NEW_IMAGE_URL(item?.data)}
+                src={getUploadedImageUrl(item?.data)}
                 className={`object-cover w-full bg-gradient-to-b rounded-20 aspect-square max-w-max ${sizeClass}`}
               />
             ) : null}
@@ -89,7 +81,12 @@ const UploadedItemShowCase = ({
                 onDelete();
               }}
             >
-              <img src="/assets/icons/uploader/faded_x_circle.svg" />
+              <ContentImage
+                width={20}
+                height={20}
+                alt=""
+                src="/assets/icons/uploader/faded_x_circle.svg"
+              />
             </div>
           )}
         </div>

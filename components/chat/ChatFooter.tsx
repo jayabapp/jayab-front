@@ -1,12 +1,12 @@
 import { useEffect, useEffectEvent, useMemo, useRef, useState } from "react";
 import { useChatStore, useStoreSocket } from "@/store";
-import { SingleChatDetailsDto } from "@/api_services/chat/chat.interface";
+import { TChatFooterTypes } from "@/types/components/modules/property-map";
+import { ChatUploadField } from "@modules/PropertyMedia";
 import { useSendMessage } from "@features/chat/hooks/useSendMessage";
+import { BtnLoading } from "@elements/Button";
 import { isIOS } from "react-device-detect";
 
 import ExpiredPropertyModal from "./ExpiredPropertyModal";
-import ChatUploader from "../uploader/ChatUploader";
-import { BtnLoading } from "@elements/Button";
 import ChatInput from "./ChatInput";
 import ChatReply from "./ChatReply";
 import debounce from "lodash/debounce";
@@ -19,13 +19,6 @@ const EmojiPicker = dynamic(
   },
   { ssr: true },
 );
-export interface ChatFooterTypes {
-  showProduct: boolean;
-  product?: any | null;
-  chatId: string | number;
-  cancleButton?: () => void | null;
-  singleChatData?: SingleChatDetailsDto;
-}
 
 const ChatFooter = ({
   chatId,
@@ -33,7 +26,7 @@ const ChatFooter = ({
   showProduct,
   cancleButton,
   singleChatData,
-}: ChatFooterTypes) => {
+}: TChatFooterTypes) => {
   const [showExpired, setShowExpired] = useState(false);
   const [isTyping, setIsTyping] = useState<boolean | null>(false);
   const { chatReply } = useChatStore((state) => state);
@@ -221,7 +214,7 @@ const ChatFooter = ({
               className="w-5 text-neutral-500 h-5  md:!w-6 md:!h-6 "
             />
           )}
-          <ChatUploader
+          <ChatUploadField
             withCrop
             item={image}
             chatId={chatId}
