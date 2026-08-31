@@ -19,7 +19,13 @@ const AboutUs = async () => {
       <Breadcrumbs />
 
       <div className="flex  flex-col items-center justify-center">
-        <img src="/assets/icons/logo/header_logo.svg" className=" max-w-52" />
+        <ContentImage
+          alt=""
+          width={208}
+          height={64}
+          src="/assets/icons/logo/header_logo.svg"
+          className="h-auto max-w-52"
+        />
         {!aboutUs ? (
           <p className="py-12 text-center text-sm text-neutral-500">
             {_STRINGS.ERROR}

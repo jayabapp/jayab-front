@@ -7,6 +7,7 @@ import { componentMigrationMap } from "../architecture/component-migration-map.m
 const root = process.cwd();
 const sourceExtensions = new Set([".js", ".jsx", ".ts", ".tsx"]);
 const architectureRoots = ["components/elements", "components/layouts", "components/modules", "components/templates"];
+const allowedAppRootDirectories = new Set(["(auth)", "(internal)", "(pages)", "(profile)", "@modal", "api", "fonts"]);
 const violations = [];
 
 const walk = async (relativeDirectory) => {
@@ -51,6 +52,15 @@ for (const forbiddenTypeDump of ["types.ts", "interfaces.ts", "types/types.ts", 
     report(forbiddenTypeDump, "generic type dumps are forbidden; use the ownership tree under types/");
   } catch (error) {
     if (error?.code !== "ENOENT") throw error;
+  }
+}
+
+for (const entry of await readdir(path.join(root, "app"), { withFileTypes: true })) {
+  if (entry.isDirectory() && !allowedAppRootDirectories.has(entry.name)) {
+    report(
+      path.join("app", entry.name),
+      "route families must live in (pages), (profile), or (internal); keep only framework infrastructure at app root",
+    );
   }
 }
 

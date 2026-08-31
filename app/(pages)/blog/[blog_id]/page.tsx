@@ -4,6 +4,7 @@ import { convertHtmlToReact } from "@/helpers/convertHTMLtoReact";
 import { ContentFAQSchema } from "@/components/SchemaGenerator/Schemas";
 import { ContentQuestions } from "@/components/ContentQuestions";
 import { HTMLGenerator } from "@/helpers/html.generator";
+import { ContentImage } from "@elements/Image";
 import { BlogSchema } from "@/components/SchemaGenerator/Schemas";
 import { ContentDto } from "@/api_services/home/home.interface";
 import { REVALIDATE } from "@/helpers/revalidate";
@@ -84,7 +85,10 @@ const SingleBlogPage = async ({ params }: Props) => {
                   href={`#${i?.id}`}
                   className="flex  group flex-row items-center justify-start gap-2"
                 >
-                  <img
+                  <ContentImage
+                    alt=""
+                    width={12}
+                    height={12}
                     src="/assets/icons/shared/blue_chevron_left.svg"
                     className=" w-3 h-3  grayscale group-hover:grayscale-0    group-hover:-rotate-90 transition-all "
                   />

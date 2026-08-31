@@ -1,4 +1,5 @@
 import { getServerContentList } from "@features/home/server/home.server";
+import { ContentImage } from "@elements/Image";
 import { chunkArray } from "@/helpers/chunk-array.helper";
 import { ContentDto } from "@/api_services/home/home.interface";
 import { FaqSchema } from "@/components/SchemaGenerator/Schemas";
@@ -30,14 +31,16 @@ const RepetitiveQuestions = async () => {
                   {" "}
                   <SimpleAccordion
                     titleIcon={
-                      <img
+                      <ContentImage
+                        alt=""
+                        width={28}
+                        height={28}
                         className="w-7 h-7 aspect-square"
                         src="/assets/icons/accordion/faq_question_mark.svg"
                       />
                     }
                     item={{
-                      parenClass:
-                        " bg-white z-1 rounded-xl border ",
+                      parenClass: " bg-white z-1 rounded-xl border ",
                     }}
                     key={e?.id}
                     title={e?.title}

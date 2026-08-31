@@ -10,7 +10,9 @@ import { useMutation } from "@tanstack/react-query";
 import { useCallback } from "react";
 import { useRouter } from "next/navigation";
 
-export const useCreatePropertyEntry = () => {
+export const useCreatePropertyEntry = (options?: {
+  loginModalCancelRoute?: string;
+}) => {
   const router = useRouter();
   const queryClient = useQueryClient();
   const { isLogin } = useAuthStore((state) => state);
@@ -27,7 +29,10 @@ export const useCreatePropertyEntry = () => {
 
   const start = useCallback(() => {
     if (!isLogin) {
-      useStoreParams.setState({ loginModal: true });
+      useStoreParams.setState({
+        loginModal: true,
+        loginModalCancelRoute: options?.loginModalCancelRoute,
+      });
       return;
     }
     if (!profile || isPending) return;
@@ -36,6 +41,6 @@ export const useCreatePropertyEntry = () => {
       return;
     }
     mutate();
-  }, [isLogin, isPending, mutate, profile, router]);
+  }, [isLogin, isPending, mutate, options?.loginModalCancelRoute, profile, router]);
   return { start, isPending };
 };
