@@ -1,5 +1,5 @@
 import { ChatListTemplate } from "@templates/ChatList";
 
-const ChatListPage = () => <ChatListTemplate profile />;
+const ChatListPage = () => <ChatListTemplate />;
 
 export default ChatListPage;

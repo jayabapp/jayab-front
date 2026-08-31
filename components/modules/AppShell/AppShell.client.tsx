@@ -1,8 +1,8 @@
 "use client";
 
 import { useSessionBootstrap } from "@features/auth/hooks/useSessionBootstrap";
+import { useRealtimeGateway } from "@features/chat/hooks/useRealtimeGateway";
 import type { AppShellProps } from "@/types/components/modules/app-shell";
-import { SocketIO } from "@/components/SocketIo";
 import { isMobile } from "react-device-detect";
 import { useEffect, useState } from "react";
 import { useStoreParams } from "@/store";
@@ -23,7 +23,7 @@ const AppShell = ({ children }: AppShellProps) => {
   );
 
   useSessionBootstrap();
-  SocketIO();
+  useRealtimeGateway();
 
   useEffect(() => {
     const handleOrientation = () =>

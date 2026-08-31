@@ -25,12 +25,15 @@ export const useChatRealtime = (chatId: string) => {
   useEffect(() => {
     if (!chatId) return;
     markRead.mutate({ chatId });
-    return () => markRead.mutate({ chatId });
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [chatId]);
 
   useEffect(() => {
-    if (chatNotification?.chatroom_id === chatId) markRead.mutate({ chatId });
+    if (
+      chatNotification?.chatroom_id === chatId &&
+      document.visibilityState === "visible"
+    )
+      markRead.mutate({ chatId });
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [chatId, chatNotification?.message?.id]);
 

@@ -78,8 +78,8 @@ export const componentMigrationMap = [
   {
     source: "components/chat",
     targets: ["components/modules/ChatList", "components/modules/ChatRoom"],
-    status: "planned",
-    note: "Realtime behavior remains in the chat feature and client islands.",
+    status: "migrated",
+    note: "Chat list/room UI is owned by server templates and client modules; realtime behavior remains in feature hooks.",
   },
   {
     source: "components/Advisor",
