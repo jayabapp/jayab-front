@@ -1,65 +1,14 @@
 import { getServerContentList } from "@features/home/server/home.server";
-import { ContentImage } from "@elements/Image";
-import { chunkArray } from "@/helpers/chunk-array.helper";
-import { ContentDto } from "@/api_services/home/home.interface";
 import { FaqSchema } from "@features/seo/components/Schemas";
 
-import SimpleAccordion from "@elements/Accordion/SimpleAccordion.client";
-import Breadcrumbs from "@elements/Breadcrumbs/Breadcrumbs.client";
-import Editable from "@elements/Editable";
+import type { ContentDto } from "@/api_services/home/home.interface";
 
-const RepetitiveQuestions = async () => {
-  const { data: faqData }: { data: { data: ContentDto[] } } =
-    await getServerContentList("faq", 1, 20);
+import FaqContent from "@modules/FaqContent";
+import FaqTemplate from "@templates/Faq";
 
-  const faqChunckedData = chunkArray(faqData?.data || [], 2);
-
-  return (
-    <div
-      id="homeParent"
-      className="container    transition-all duration-500 ease-in-out "
-    >
-      <FaqSchema />
-      <Breadcrumbs />
-
-      {faqData ? (
-        <div className="grid grid-cols-1 md:grid-cols-2  mt-2 gap-3">
-          {faqChunckedData?.map((item, index) => (
-            <div key={`chunlk${index}`} className="grid gap-3 h-fit">
-              {item?.map((e) => (
-                <Editable key={e?.id} contentId={e?.id}>
-                  {" "}
-                  <SimpleAccordion
-                    titleIcon={
-                      <ContentImage
-                        alt=""
-                        width={28}
-                        height={28}
-                        className="w-7 h-7 aspect-square"
-                        src="/assets/icons/accordion/faq_question_mark.svg"
-                      />
-                    }
-                    item={{
-                      parenClass: " bg-white z-1 rounded-xl border ",
-                    }}
-                    key={e?.id}
-                    title={e?.title}
-                  >
-                    <div
-                      className="text-xs content md:text-sm"
-                      dangerouslySetInnerHTML={{
-                        __html: e?.full_text || e?.small_text,
-                      }}
-                    />
-                  </SimpleAccordion>
-                </Editable>
-              ))}
-            </div>
-          ))}
-        </div>
-      ) : null}
-    </div>
-  );
+const FaqPage = async () => {
+  const { data }: { data: { data: ContentDto[] } } = await getServerContentList("faq", 1, 20);
+  return <FaqTemplate schema={<FaqSchema />}><FaqContent items={data?.data} /></FaqTemplate>;
 };
 
-export default RepetitiveQuestions;
+export default FaqPage;

@@ -1,7 +1,7 @@
 import type { FooterContactColumnProps } from "@/types/components/modules/site-footer";
+import { ContactItem } from "@modules/ContactInfo";
 import { ContentImage } from "@elements/Image";
 
-import ContactuUItem from "@/components/contactus/ContactuUItem";
 import _STRINGS from "@/utils/LocalStrings";
 
 const ENAMAD_ID = process.env.NEXT_PUBLIC_ENAMAD_ID;
@@ -15,7 +15,7 @@ const FooterContactColumn = ({ contacts }: FooterContactColumnProps) => (
       </p>
 
       {contacts?.map((contact) => (
-        <ContactuUItem
+        <ContactItem
           e={contact}
           textClass=" !font-normal "
           key={`footer-contact-${contact?.id}`}

@@ -1,78 +1,12 @@
-import { LocalBusinessSchema } from "@features/seo/components/Schemas";
-import { NEW_IMAGE_URL } from "@/utils/urls";
 import { getCmsContent } from "@/api_services/home/cms-content.server";
-import { ContentImage } from "@/components/elements/Image";
+import { LocalBusinessSchema } from "@features/seo/components/Schemas";
 
-import Breadcrumbs from "@elements/Breadcrumbs/Breadcrumbs.client";
-import DOMPurify from "isomorphic-dompurify";
-import Editable from "@elements/Editable";
-import _STRINGS from "@/utils/LocalStrings";
+import AboutUsContent from "@modules/AboutUsContent";
+import AboutUsTemplate from "@templates/AboutUs";
 
-const AboutUs = async () => {
-  const aboutUs = await getCmsContent("aboutUs");
-  return (
-    <div
-      id="homeParent"
-      className="container     transition-all duration-500 ease-in-out "
-    >
-      <LocalBusinessSchema />
-      <Breadcrumbs />
-
-      <div className="flex  flex-col items-center justify-center">
-        <ContentImage
-          alt=""
-          width={208}
-          height={64}
-          src="/assets/icons/logo/header_logo.svg"
-          className="h-auto max-w-52"
-        />
-        {!aboutUs ? (
-          <p className="py-12 text-center text-sm text-neutral-500">
-            {_STRINGS.ERROR}
-          </p>
-        ) : aboutUs ? (
-          <Editable contentId={aboutUs?.id}>
-            {" "}
-            <div
-              className="w-full mt-4 text-sm md:text-base text-center px-3"
-              dangerouslySetInnerHTML={{
-                __html: DOMPurify.sanitize(
-                  aboutUs && aboutUs
-                    ? aboutUs?.html || aboutUs?.full_text || ""
-                    : "",
-                  {
-                    FORCE_BODY: true,
-                    SANITIZE_DOM: true,
-                  },
-                ),
-              }}
-            />
-          </Editable>
-        ) : (
-          <></>
-        )}
-        <div className=" mt-8 w-full grid grid-cols-1 gap-4  md:grid-cols-3">
-          {aboutUs?.attachments?.map((e: any) => (
-            <div
-              key={`aboutUs${e?.id}`}
-              className=" w-full flex flex-col items-center justify-center gap-4"
-            >
-              <ContentImage
-                width={1024}
-                height={640}
-                alt={e?.attachment?.alt || ""}
-                src={NEW_IMAGE_URL(e?.attachment)}
-                sizes="(min-width: 768px) 33vw, 100vw"
-                className="aspect-[1.6] rounded-md w-full object-cover"
-              />
-
-              <p className=" font-medium">{e?.attachment?.alt}</p>
-            </div>
-          ))}
-        </div>
-      </div>
-    </div>
-  );
+const AboutUsPage = async () => {
+  const content = await getCmsContent("aboutUs");
+  return <AboutUsTemplate schema={<LocalBusinessSchema />}><AboutUsContent content={content} /></AboutUsTemplate>;
 };
 
-export default AboutUs;
+export default AboutUsPage;

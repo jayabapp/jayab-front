@@ -1,0 +1,68 @@
+import { getHomeImageUrl } from "@features/home/mappers/home-image.mapper";
+import type { BlogCardProps } from "@/types/components/modules/blog";
+
+import _STRINGS from "@/utils/LocalStrings";
+import Editable from "@elements/Editable";
+import Button from "@elements/Button";
+import moment from "moment-jalaali";
+import Image from "next/image";
+import Link from "next/link";
+
+moment.loadPersian();
+const LatestBlogCard = ({ item }: BlogCardProps) => {
+  return (
+    <Editable
+      contentId={item?.id}
+      containerClass={"h-full"}
+      className={`  !h-full  overflow-clip aspect-auto  rounded-20 shadow-card  justify-between  hover:scale-98   bg-white   relative cursor-pointer transition-all duration-200 ease-in-out group    flex items-center  flex-col gap-1   `}
+    >
+      <Link
+        title={item?.title}
+        href={`/blog/${item?.slug}`}
+        className="flex flex-col w-full"
+      >
+        {" "}
+        <div className="  w-full   aspect-[2] relative">
+          <Image
+            fill
+            className=" object-cover  aspect-[2] "
+            alt={item?.feature_image?.alt || item?.title}
+            src={getHomeImageUrl(item?.feature_image, "medium")}
+            sizes="(min-width: 1536px) 26vw, (min-width: 768px) 30vw, 92vw"
+          />
+        </div>
+      </Link>
+      <Link
+        href={`/blog/${item?.slug}`}
+        title={item?.small_text || item?.full_text || ""}
+        className=" gap-2 flex p-3 flex-col items-start w-full justify-center "
+      >
+        <div className="w-full    font-normal  z-1 ">
+          {moment(item?.created_at).format("jYYYY/jMM/jDD")}
+        </div>
+        <p className=" font-bold line-clamp-1 ">{item?.title}</p>
+        <p className="line-clamp-2  whitespace-pre-wrap flex-1 min-h-[2.5rem] text-base">
+          {item?.small_text || item?.full_text || ""}
+        </p>
+      </Link>
+      <div className="w-full  pb-4">
+        {" "}
+        <Link
+          className=" "
+          title={_STRINGS?.WATCH}
+          href={`/blog/${item?.slug}`}
+        >
+          {" "}
+          <Button
+            title={_STRINGS?.WATCH}
+            roundedClass="rounded-full "
+            width="!px-8 !py-1 !min-w-[40%] !font-normal "
+            containerClass="mb-1 flex items-center justify-center !w-full !text-sm "
+          />
+        </Link>
+      </div>
+    </Editable>
+  );
+};
+
+export default LatestBlogCard;

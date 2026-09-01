@@ -11,7 +11,7 @@ import { MultiLineFormInput } from "@elements/Form";
 import { ContentImage } from "@elements/Image";
 import { useMemo, useState } from "react";
 
-import ElementToImage from "@/components/ElementToImage";
+import ElementToImage from "./parts/ElementToImage.client";
 import _STRINGS from "@/utils/LocalStrings";
 import moment from "moment-jalaali";
 

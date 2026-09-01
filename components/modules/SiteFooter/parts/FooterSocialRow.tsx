@@ -1,6 +1,6 @@
 import type { FooterSocialRowProps } from "@/types/components/modules/site-footer";
 
-import ContactuUItem from "@/components/contactus/ContactuUItem";
+import { ContactItem } from "@modules/ContactInfo";
 
 const FooterSocialRow = ({ socials, className }: FooterSocialRowProps) => {
   if (!socials?.length) return null;
@@ -8,11 +8,11 @@ const FooterSocialRow = ({ socials, className }: FooterSocialRowProps) => {
   return (
     <div className={className}>
       {socials.map((social) => (
-        <ContactuUItem
+        <ContactItem
           disableText
           e={social}
-          isShiny={!!className?.includes("md:justify-start")}
           key={`footer-social-${social?.id}`}
+          isShiny={!!className?.includes("md:justify-start")}
         />
       ))}
     </div>

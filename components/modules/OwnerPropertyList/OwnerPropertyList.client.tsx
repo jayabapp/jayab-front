@@ -2,10 +2,10 @@
 
 import { useOwnerProperties } from "@features/owner-property/hooks/useOwnerProperties";
 import { PropertyCard, PropertyCardSkeleton } from "@modules/PropertyGrid";
+import { OwnerPhotoUpgradeModal } from "@modules/OwnerPhotoUpgrade";
 import type { PropertyListDto } from "@/types/features/properties";
 import { useState } from "react";
 
-import OwnerPhotoUpgradeModal from "@/components/profile/photo-upgrade/OwnerPhotoUpgradeModal";
 import EmptyState from "@elements/EmptyState";
 import isEmpty from "lodash/isEmpty";
 

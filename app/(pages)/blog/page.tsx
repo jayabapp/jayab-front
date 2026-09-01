@@ -6,7 +6,7 @@ import { Metadata } from "next";
 
 import MehaHeaderHelper from "@/helpers/MetaHeaderHelper";
 import getQueryClient from "@lib/query/query-client";
-import BlogTemplate from "@templates/Blog";
+import BlogListTemplate from "@templates/BlogList";
 
 export async function generateMetadata(): Promise<Metadata> {
   const { data: blogContent } = await getServerContentCategory("blog");
@@ -23,7 +23,7 @@ const BlogsPage = async () => {
 
   return (
     <HydrationBoundary state={dehydrate(queryClient)}>
-      <BlogTemplate />
+      <BlogListTemplate />
     </HydrationBoundary>
   );
 };

@@ -5,12 +5,12 @@ import { toDailyViewSeries } from "@features/owner-property/mappers/property-sta
 import { usePayOwnerSubscription } from "@features/owner-property/hooks/useOwnerSubscription";
 import { usePropertyStatistics } from "@features/owner-property/hooks/usePropertyStatistics";
 import type { OwnerPropertyRouteProps } from "@/types/components/modules/owner-property";
+import { OwnerPhotoUpgradeModal } from "@modules/OwnerPhotoUpgrade";
 import { useRouter, useSearchParams } from "next/navigation";
 import { CheckboxCardContainer } from "@elements/Form";
 import { PropertyPrice } from "@modules/PropertyGrid";
 import { useState } from "react";
 
-import OwnerPhotoUpgradeModal from "@/components/profile/photo-upgrade/OwnerPhotoUpgradeModal";
 import FixedBottomContainer from "@elements/FixedBottomContainer";
 import numberWithCommas from "@/helpers/numberWithCommas";
 import ViewsChart from "./parts/ViewsChart.client";

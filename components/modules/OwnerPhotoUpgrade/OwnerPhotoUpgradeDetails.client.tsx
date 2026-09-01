@@ -1,0 +1,135 @@
+"use client";
+
+import { usePhotoUpgradeRequest } from "@features/photo-upgrade/hooks/usePhotoUpgradeRequest";
+import type { PhotoUpgradeSummaryItemProps } from "@/types/components/modules/photo-upgrade";
+import { getPropertyImageUrl } from "@features/properties/mappers/property-image.mapper";
+
+import PhotoUpgradeDetailSkeleton from "@features/photo-upgrade/components/PhotoUpgradeDetailSkeleton";
+import PhotoUpgradeImagePair from "./PhotoUpgradeImagePair.client";
+import numberWithCommas from "@/helpers/numberWithCommas";
+import StatusShower from "@elements/StatusShower";
+import moment from "moment-jalaali";
+import Image from "next/image";
+
+const SummaryItem = ({ title, value }: PhotoUpgradeSummaryItemProps) => (
+  <div className="flex items-center justify-between gap-2 rounded-10 bg-neutral-50 px-3 py-2 text-xs md:text-sm">
+    <span className="text-neutral-500">{title}</span>
+    <span className="font-medium text-neutral-900">{value}</span>
+  </div>
+);
+
+const OwnerPhotoUpgradeDetails = ({ requestId }: { requestId: number }) => {
+
+  const { data, isPending, isError, refetch } =
+    usePhotoUpgradeRequest(requestId);
+
+  if (!Number.isInteger(requestId) || requestId <= 0)
+    return (
+      <div className="profile-container white-card text-center text-sm text-neutral-500">
+        شناسه درخواست معتبر نیست.
+      </div>
+    );
+  if (isPending) return <PhotoUpgradeDetailSkeleton />;
+  if (isError || !data)
+    return (
+      <div className="profile-container white-card flex flex-col items-center gap-3 text-center text-sm text-neutral-500">
+        <p>درخواست پیدا نشد یا اجازه مشاهده آن را ندارید.</p>
+        <button
+          type="button"
+          onClick={() => void refetch()}
+          className="text-brand-600"
+        >
+          تلاش دوباره
+        </button>
+      </div>
+    );
+
+  return (
+    <div
+      id="homeParent"
+      className="profile-container flex flex-col gap-4 transition-all duration-500 ease-in-out"
+    >
+      <div className="white-card flex flex-col gap-4">
+        <div className="flex items-start gap-3">
+          <Image
+            src={
+              getPropertyImageUrl(data?.property?.feature_image, "medium")
+            }
+            alt={data?.property?.title || ""}
+            width={80}
+            height={80}
+            sizes="80px"
+            className="h-20 w-20 shrink-0 rounded-10 object-cover"
+          />
+          <div className="flex min-w-0 flex-1 flex-col gap-2">
+            <div className="flex flex-col gap-2 md:flex-row md:items-start md:justify-between">
+              <div className="min-w-0">
+                <h1 className="line-clamp-1 text-base font-medium md:text-xl">
+                  {data?.property?.title || "اقامتگاه"}
+                </h1>
+                <p className="mt-1 text-xs text-neutral-500">
+                  کد {data?.property?.code || data?.property_id}
+                </p>
+              </div>
+              {data?.status ? (
+                <StatusShower
+                  data={data.status}
+                  containerClass="shrink-0 !px-2 !py-1"
+                />
+              ) : (
+                <></>
+              )}
+            </div>
+          </div>
+        </div>
+        <div className="grid grid-cols-1 gap-2 lg:grid-cols-2 ">
+          <SummaryItem
+            title="تعداد عکس"
+            value={`${data?.image_count || data?._count?.items || 0} عکس`}
+          />
+          <SummaryItem
+            title="قیمت هر عکس"
+            value={`${numberWithCommas(data?.price_per_image)} تومان`}
+          />
+          <SummaryItem
+            title="مبلغ کل"
+            value={`${numberWithCommas(data?.total_amount)} تومان`}
+          />
+          <SummaryItem
+            title="ثبت درخواست"
+            value={
+              data?.created_at
+                ? moment(data.created_at).format("HH:mm - jYYYY/jMM/jDD")
+                : "-"
+            }
+          />
+          <SummaryItem
+            title="تکمیل درخواست"
+            value={
+              data?.completed_at
+                ? moment(data.completed_at).format("HH:mm - jYYYY/jMM/jDD")
+                : "-"
+            }
+          />
+        </div>
+      </div>
+      <div className=" grid grid-cols-1 lg:grid-cols-2 gap-3">
+        {data?.items && data.items.length > 0 ? (
+          data.items.map((item, index) => (
+            <PhotoUpgradeImagePair
+              item={item}
+              index={index}
+              key={`photoUpgradeRequestItem${item.id}`}
+            />
+          ))
+        ) : (
+          <div className="white-card text-center text-sm text-neutral-500">
+            تصویری برای این درخواست ثبت نشده است.
+          </div>
+        )}
+      </div>
+    </div>
+  );
+};
+
+export default OwnerPhotoUpgradeDetails;

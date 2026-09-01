@@ -47,3 +47,5 @@ export type PhotoUpgradeInfoItemProps = {
 export type PhotoUpgradeRequestCardProps = {
   data: PhotoUpgradeRequestDto;
 };
+export type PhotoUpgradeImage = ImageDto;
+export type PhotoUpgradeItem = PhotoUpgradeRequestItemDto;

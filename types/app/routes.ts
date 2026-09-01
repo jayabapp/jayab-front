@@ -6,3 +6,7 @@ export type BlogDetailsRouteProps = {
 export type PropertyDetailsRouteProps = {
   params: Promise<{ room_slug: string }>;
 };
+
+export type OwnerPhotoUpgradeDetailsRouteProps = {
+  params: Promise<{ id: string }>;
+};

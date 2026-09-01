@@ -1,4 +1,4 @@
-import TheInstallPrompt from "@/components/InstallPrompt/TheInstallPrompt";
+import TheInstallPrompt from "./parts/TheInstallPrompt.client";
 
 const HomeInstallPrompt = () => <TheInstallPrompt />;
 

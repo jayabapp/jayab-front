@@ -1,14 +1,14 @@
 "use client";
 
-import { BlogGridSkeleton } from "@/components/blogs/BlogGridSkeleton";
 import { useBlogList } from "@features/home/hooks/useBlogList";
+import { BlogGridSkeleton } from "./parts/BlogGridSkeleton";
 import { BtnLoading } from "@elements/Button";
 import { useStoreSocket } from "@/store";
 import { useEffect } from "react";
 
 import Breadcrumbs from "@elements/Breadcrumbs/Breadcrumbs.client";
 import InfiniteScroll from "react-infinite-scroll-component";
-import LatestBlogCard from "@/components/blogs/BlogCard";
+import LatestBlogCard from "./parts/BlogCard";
 import EmptyState from "@elements/EmptyState";
 
 const BlogsClientPageComponent = () => {

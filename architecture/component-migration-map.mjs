@@ -76,9 +76,10 @@ export const componentMigrationMap = [
       "components/modules/Payments",
       "components/modules/Invite",
       "components/modules/Notifications",
+      "components/modules/OwnerPhotoUpgrade",
     ],
-    status: "in-progress",
-    note: "Overview, sidebar, edit, bookmarks, payments, invite and notifications have moved to the user feature and their modules; the owner photo-upgrade UI waits for its own migration.",
+    status: "migrated",
+    note: "Profile UI is split into focused modules; owner photo-upgrade pages now use server templates around client query islands and the ambiguous profile bucket is removed.",
   },
   {
     source: "components/chat",
@@ -154,7 +155,7 @@ export const componentMigrationMap = [
   {
     source: "components/SinglePageComponents",
     targets: [
-      "components/templates/Blog",
+      "components/templates/BlogList",
       "components/templates/NotFound",
       "components/modules/BlogList",
       "components/modules/NotFound",
@@ -162,5 +163,35 @@ export const componentMigrationMap = [
     ],
     status: "migrated",
     note: "Blog and not-found routes now render server templates over focused client modules; owner registration fields belong to ProfileEditor and obsolete page buckets were removed.",
+  },
+  {
+    source: "components/blogs",
+    targets: ["components/modules/BlogList", "components/modules/BlogDetails", "components/templates/BlogList", "components/templates/BlogDetails"],
+    status: "migrated",
+    note: "Blog list and details are independently owned modules rendered through server templates; feature data behavior remains outside components.",
+  },
+  {
+    source: "components/contactus",
+    targets: ["components/modules/ContactInfo", "components/templates/ContactUs"],
+    status: "migrated",
+    note: "Contact composition belongs to its server template while map and contact interactions stay in a focused client module.",
+  },
+  {
+    source: "components/ContentQuestions",
+    targets: ["components/modules/ContentQuestions"],
+    status: "migrated",
+    note: "Questions, comments, pagination and form behavior are exposed through one domain module over feature hooks.",
+  },
+  {
+    source: "components/ElementToImage",
+    targets: ["components/modules/OwnerPropertyInquiry/parts"],
+    status: "migrated",
+    note: "The capture-and-share utility is private to its only consumer, OwnerPropertyInquiry.",
+  },
+  {
+    source: "components/InstallPrompt",
+    targets: ["components/modules/HomeInstallPrompt"],
+    status: "migrated",
+    note: "Install prompt UI is private to HomeInstallPrompt; app-wide event listener cleanup remains owned by AppShell.",
   },
 ];
