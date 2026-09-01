@@ -5,8 +5,8 @@ import { chunkArray } from "@/helpers/chunk-array.helper";
 import { ContentImage } from "@elements/Image";
 import { useMemo } from "react";
 
-import SimpleAccordion from "@/components/shared/SimpleAccorion";
-import Editable from "@/components/Editable";
+import SimpleAccordion from "@elements/Accordion/SimpleAccordion.client";
+import Editable from "@elements/Editable";
 
 const FAQ_COLUMNS = 2;
 

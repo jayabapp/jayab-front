@@ -84,3 +84,7 @@ export type AdvisorFieldsProps = {
   values: AdvisorFormValues;
   setValues: Dispatch<SetStateAction<AdvisorFormValues>>;
 };
+export type AdvisorFormBodyProps = {
+  initialValues: AdvisorFormValues;
+  subscriptionKey: string;
+};

@@ -3,9 +3,9 @@ import { AuthUploadField } from "@modules/PropertyMedia";
 import { BtnLoading } from "@elements/Button";
 import { FormInput } from "@elements/Form";
 
-import CmsText from "@/components/shared/CmsText";
 import useCmsContent from "@/hooks/useCmsContent";
 import _STRINGS from "@/utils/LocalStrings";
+import CmsText from "@elements/CmsText";
 
 const OwnerRegistrationFields = ({ values, onChange }: TEditCreateProps) => {
   const { content: ownerCreateContent, isLoading } =

@@ -2,11 +2,11 @@ import { getServerContentList } from "@features/home/server/home.server";
 import { ContentImage } from "@elements/Image";
 import { chunkArray } from "@/helpers/chunk-array.helper";
 import { ContentDto } from "@/api_services/home/home.interface";
-import { FaqSchema } from "@/components/SchemaGenerator/Schemas";
+import { FaqSchema } from "@features/seo/components/Schemas";
 
-import SimpleAccordion from "@/components/shared/SimpleAccorion";
-import Breadcrumbs from "@/components/BreadCrumbs";
-import Editable from "@/components/Editable";
+import SimpleAccordion from "@elements/Accordion/SimpleAccordion.client";
+import Breadcrumbs from "@elements/Breadcrumbs/Breadcrumbs.client";
+import Editable from "@elements/Editable";
 
 const RepetitiveQuestions = async () => {
   const { data: faqData }: { data: { data: ContentDto[] } } =

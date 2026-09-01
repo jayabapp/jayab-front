@@ -10,7 +10,7 @@ import { useStoreParams } from "@/store";
 import dynamic from "next/dynamic";
 
 const RotatePhone = dynamic(
-  () => import("@/components/shared/Lotties/RotatePhone"),
+  () => import("@elements/Lottie/RotatePhone.client"),
   { ssr: false },
 );
 

@@ -4,7 +4,7 @@ import { UploadPreviewImage } from "@/components/elements/Image";
 import { ContentImage } from "@/components/elements/Image";
 import { useState } from "react";
 
-import ProgressBar from "@/components/shared/progressbar";
+import ProgressBar from "@elements/ProgressBar";
 
 const UploadedItemShowCase = ({
   cb,

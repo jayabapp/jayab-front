@@ -2,33 +2,24 @@
 
 import { memo, useCallback, useMemo, useState } from "react";
 import { usePhotoUpgradeCheckout } from "@features/photo-upgrade/hooks/usePhotoUpgradeCheckout";
-import { SingleOwnerPropertyDto } from "@/api_services/property/property.interface";
-import { PropertySubsDto } from "@/api_services/property/property.interface";
-import { PropertyListDto } from "@/api_services/property/property.interface";
 import { NEW_IMAGE_URL } from "@/utils/urls";
-import { ImageDto } from "@/api_services/auth/auth.interface";
+import type { OwnerPhotoUpgradeModalProps, SelectablePhotoUpgradeImageProps } from "@/types/components/modules/photo-upgrade";
 
 import { ModalBottomSheet } from "@elements/Modal";
 import numberWithCommas from "@/helpers/numberWithCommas";
 import useCmsContent from "@/hooks/useCmsContent";
-import SwiperSlide from "@/components/embelaCarousel/SwiperSlide";
+import SwiperSlide from "@elements/Carousel/SwiperSlide";
 import _STRINGS from "@/utils/LocalStrings";
-import CmsText from "@/components/shared/CmsText";
+import CmsText from "@elements/CmsText";
 import isEmpty from "lodash/isEmpty";
-import Swiper from "@/components/embelaCarousel/Swiper";
+import Swiper from "@elements/Carousel/Swiper.client";
 import Button from "@elements/Button";
 import Notify from "@elements/Toast";
 import chunk from "lodash/chunk";
 import Image from "next/image";
 
-type TSelectTableImageProps = {
-  image: ImageDto;
-  isSelected: boolean;
-  onToggle: (imageId: number) => void;
-};
-
 const SelectableImageItem = memo(
-  ({ image, isSelected, onToggle }: TSelectTableImageProps) => {
+  ({ image, isSelected, onToggle }: SelectablePhotoUpgradeImageProps) => {
     return (
       <button
         type="button"
@@ -65,20 +56,6 @@ const SelectableImageItem = memo(
 
 SelectableImageItem.displayName = "SelectableImageItem";
 
-type TOwnerPhotoUpgradeProps = {
-  property: PropertyListDto | SingleOwnerPropertyDto | null;
-  onHide: () => void;
-  noImageSubmit?: () => void;
-  onHideClick?: () => void;
-  extraPrice?: number;
-  mutationOptions?: {
-    promote_id?: number;
-    redirect_url?: string;
-    subscription_id?: number;
-  };
-  selectedPlans?: PropertySubsDto[];
-};
-
 const OwnerPhotoUpgradeModal = ({
   onHide,
   property,
@@ -87,7 +64,7 @@ const OwnerPhotoUpgradeModal = ({
   noImageSubmit,
   selectedPlans,
   mutationOptions,
-}: TOwnerPhotoUpgradeProps) => {
+}: OwnerPhotoUpgradeModalProps) => {
   const [selectedImageIds, setSelectedImageIds] = useState<number[]>([]);
 
   const {

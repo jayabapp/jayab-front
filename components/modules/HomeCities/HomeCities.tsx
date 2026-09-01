@@ -1,23 +1,15 @@
-const SwiperEm = dynamic(() => import("@/components/embelaCarousel/Swiper"), {
+const SwiperEm = dynamic(() => import("@elements/Carousel/Swiper.client"), {
   ssr: true,
 });
 
-import { type DeviceInfo, type HomeLandingDto } from "@/types/components/modules/home";
+import type { HomeCitiesProps } from "@/types/components/modules/home";
 
-import SwiperSlide from "@/components/embelaCarousel/SwiperSlide";
+import SwiperSlide from "@elements/Carousel/SwiperSlide";
 import HomeCityItem from "./parts/HomeCityItem.client";
 import dynamic from "next/dynamic";
 import chunk from "lodash/chunk";
 
-const HomeCityFilterContainer = ({
-  data,
-  title,
-  devices,
-}: {
-  data: HomeLandingDto[];
-  title: string;
-  devices?: DeviceInfo;
-}) => {
+const HomeCityFilterContainer = ({ data, title, devices }: HomeCitiesProps) => {
   const chunckedData = chunk(data || [], 2);
   return (
     <div
@@ -90,6 +82,6 @@ const HomeCityFilterContainer = ({
       </SwiperEm>
     </div>
   );
-}
+};
 
 export default HomeCityFilterContainer;

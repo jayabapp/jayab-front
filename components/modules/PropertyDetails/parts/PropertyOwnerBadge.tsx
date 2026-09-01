@@ -2,7 +2,7 @@ import type { PropertyOwnerBadgeProps } from "@/types/components/modules/propert
 import { getPropertyImageUrl } from "@features/properties/mappers/property-image.mapper";
 import { ContentImage } from "@elements/Image";
 
-import AutoFitText from "@/components/shared/AutoFitText";
+import AutoFitText from "@elements/AutoFitText";
 import _STRINGS from "@/utils/LocalStrings";
 
 const OWNER_AVATAR_FALLBACK = "/assets/images/add/wall_e_lover.png";

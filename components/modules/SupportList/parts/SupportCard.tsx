@@ -1,6 +1,6 @@
 import type { SupportCardProps } from "@/types/features/support/components";
 
-import StatusShower from "@/components/shared/StatusShower";
+import StatusShower from "@elements/StatusShower";
 import moment from "moment-jalaali";
 import Link from "next/link";
 

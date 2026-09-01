@@ -1,7 +1,7 @@
 import type { PropertyTermOptionProps } from "@/types/components/modules/owner-property";
 import { Checkbox } from "@elements/Form";
 
-import CmsText from "@/components/shared/CmsText";
+import CmsText from "@elements/CmsText";
 
 const PropertyTermOption = ({
   desc,

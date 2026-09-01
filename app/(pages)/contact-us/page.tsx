@@ -1,4 +1,4 @@
-import { LocalBusinessSchema } from "@/components/SchemaGenerator/Schemas";
+import { LocalBusinessSchema } from "@features/seo/components/Schemas";
 import { apiRoutes, baseUrl } from "@/utils/urls";
 import { REVALIDATE } from "@/helpers/revalidate";
 import { Suspense } from "react";

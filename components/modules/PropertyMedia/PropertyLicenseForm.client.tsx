@@ -5,8 +5,8 @@ import type { OwnerPropertyRouteProps } from "@/types/components/modules/owner-p
 import { useRouter } from "next/navigation";
 
 import PropertyEditStepSkeleton from "@features/owner-property/steps/PropertyEditStepSkeleton";
-import FixedBottomContainer from "@/components/shared/FixedBottomContainer";
-import StatusShower from "@/components/shared/StatusShower";
+import FixedBottomContainer from "@elements/FixedBottomContainer";
+import StatusShower from "@elements/StatusShower";
 import _STRINGS from "@/utils/LocalStrings";
 import Button from "@elements/Button";
 import dynamic from "next/dynamic";

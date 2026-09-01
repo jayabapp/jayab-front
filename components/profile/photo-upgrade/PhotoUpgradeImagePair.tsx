@@ -3,10 +3,12 @@
 import { colors } from "@/theme/colors";
 
 import { PhotoUpgradeRequestItemDto } from "@/api_services/photo-upgrade/photo-upgrade.interface";
-import StatusShower from "@/components/shared/StatusShower";
+import StatusShower from "@elements/StatusShower";
 import { NEW_IMAGE_URL } from "@/utils/urls";
 import { ImageDto } from "@/api_services/auth/auth.interface";
 import { useState } from "react";
+
+import type { PhotoUpgradeImageBoxProps, PhotoUpgradeImagePairProps } from "@/types/components/modules/photo-upgrade";
 
 import RemoteImageModal from "@features/photo-upgrade/components/RemoteImageModal";
 import Image from "next/image";
@@ -21,19 +23,12 @@ const getOldImage = (item: PhotoUpgradeRequestItemDto): ImageDto | null =>
 const getNewImage = (item: PhotoUpgradeRequestItemDto): ImageDto | null =>
   item?.current_attachment || item?.attachment || null;
 
-type TImageBoxProps = {
-  title: string;
-  emptyTitle?: string;
-  cb?: () => void | null;
-  image?: ImageDto | null;
-};
-
 const ImageBox = ({
   cb,
   title,
   image,
   emptyTitle = "عکسی ثبت نشده",
-}: TImageBoxProps) => (
+}: PhotoUpgradeImageBoxProps) => (
   <div onClick={cb} className="flex min-w-0 flex-col gap-2">
     {image ? (
       <div className="relative overflow-hidden rounded-10 border border-neutral-100 bg-neutral-50">
@@ -70,12 +65,7 @@ const ImageBox = ({
   </div>
 );
 
-type TPhotoUpgradeImageProps = {
-  index: number;
-  item: PhotoUpgradeRequestItemDto;
-};
-
-const PhotoUpgradeImagePair = ({ item, index }: TPhotoUpgradeImageProps) => {
+const PhotoUpgradeImagePair = ({ item, index }: PhotoUpgradeImagePairProps) => {
   const [image, selectedImage] = useState<ImageDto | null>(null);
   const oldImage = getOldImage(item);
   const newImage = getNewImage(item);

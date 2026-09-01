@@ -1,7 +1,7 @@
 import type { ReservationStatusBarProps } from "@/types/components/modules/reservations";
 import { ContentImage } from "@elements/Image";
 
-import StatusShower from "@/components/shared/StatusShower";
+import StatusShower from "@elements/StatusShower";
 import _STRINGS from "@/utils/LocalStrings";
 import Button from "@elements/Button";
 

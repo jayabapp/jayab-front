@@ -8,7 +8,7 @@ import { PropertyContactModal } from "@modules/PropertyContact";
 import { ReservationCard } from "@modules/ReservationDetails";
 import { useState } from "react";
 
-import ConfirmModal from "@/components/Modal/ConfirmModal";
+import ConfirmModal from "@elements/Modal/ConfirmModal.client";
 import EmptyState from "@elements/EmptyState";
 import _STRINGS from "@/utils/LocalStrings";
 import isEmpty from "lodash/isEmpty";

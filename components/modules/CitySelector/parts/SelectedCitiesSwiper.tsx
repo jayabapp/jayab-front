@@ -2,21 +2,19 @@ import type { SelectedCitiesSwiperProps } from "@/types/components/modules/city-
 import { ContentImage } from "@elements/Image";
 import { useMemo } from "react";
 
-import SwiperSlide from "@/components/embelaCarousel/SwiperSlide";
-import Swiper from "@/components/embelaCarousel/Swiper";
+import SwiperSlide from "@elements/Carousel/SwiperSlide";
+import Swiper from "@elements/Carousel/Swiper.client";
 import _STRINGS from "@/utils/LocalStrings";
 import LocationChip from "./LocationChip";
 import isEmpty from "lodash/isEmpty";
 
 const SelectedCitiesSwiper = ({
-  clearSelected,
-  onCityClick,
-  onProvCancelClick,
   provinces,
+  onCityClick,
+  clearSelected,
   selectedCities,
+  onProvCancelClick,
 }: SelectedCitiesSwiperProps) => {
-  // Regroup the flat selection back under its provinces so a province whose cities
-  // are all selected collapses into a single chip.
   const touchedProvinces = useMemo(
     () =>
       (provinces ?? [])
@@ -43,7 +41,9 @@ const SelectedCitiesSwiper = ({
       >
         <p>
           {`${_STRINGS.SELECTED_CITIES} ${
-            isEmpty(selectedCities) ? "" : `(${selectedCities?.length} ${_STRINGS.CITY})`
+            isEmpty(selectedCities)
+              ? ""
+              : `(${selectedCities?.length} ${_STRINGS.CITY})`
           }`}
         </p>
         <button
@@ -58,13 +58,17 @@ const SelectedCitiesSwiper = ({
             className="size-4 opacity-40"
             src="/assets/icons/uploader/TrashIcon.svg"
           />
-          <span className="text-sm text-neutral-400">{_STRINGS.REMOVE_ALL}</span>
+          <span className="text-sm text-neutral-400">
+            {_STRINGS.REMOVE_ALL}
+          </span>
         </button>
       </div>
 
       <Swiper autoFit>
         {touchedProvinces.flatMap((province) => {
-          const source = (provinces ?? []).find((entry) => entry?.id === province?.id);
+          const source = (provinces ?? []).find(
+            (entry) => entry?.id === province?.id,
+          );
           if (source?.child?.length === province?.child?.length) {
             return [
               <SwiperSlide key={`selected-province-${province?.id}`}>
@@ -78,7 +82,10 @@ const SelectedCitiesSwiper = ({
           }
           return (province?.child ?? []).map((city) => (
             <SwiperSlide key={`selected-city-${city?.id}`}>
-              <LocationChip title={city?.title} onRemove={() => onCityClick(city)} />
+              <LocationChip
+                title={city?.title}
+                onRemove={() => onCityClick(city)}
+              />
             </SwiperSlide>
           ));
         })}

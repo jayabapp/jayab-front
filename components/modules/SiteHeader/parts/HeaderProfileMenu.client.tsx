@@ -11,7 +11,7 @@ import { CountBadge, PulseDot } from "@elements/Badge";
 import { useMemo, useRef, useState } from "react";
 import { ContentImage } from "@elements/Image";
 
-import ConfirmModal from "@/components/Modal/ConfirmModal";
+import ConfirmModal from "@elements/Modal/ConfirmModal.client";
 import _STRINGS from "@/utils/LocalStrings";
 import Link from "next/link";
 

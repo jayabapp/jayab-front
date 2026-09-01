@@ -1,16 +1,11 @@
 import { NEW_IMAGE_URL } from "@/utils/urls";
 import { ContentImage } from "@/components/elements/Image";
-import { ContentDto } from "@/api_services/home/home.interface";
+import type { ContactUsItemProps } from "@/types/components/modules/contact-us";
 
-import Editable from "../Editable";
+import Editable from "@elements/Editable";
 import Link from "next/link";
 
-type TContactTest = {
-  e: ContentDto;
-  disableText?: boolean;
-};
-
-const ContactUsPageItem = ({ e, disableText = false }: TContactTest) => {
+const ContactUsPageItem = ({ e, disableText = false }: ContactUsItemProps) => {
   const link = () => {
     let link = "";
     if (e?.key == "tel" || e?.fields?.key == "tel") {

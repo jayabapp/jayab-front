@@ -1,4 +1,5 @@
-import { OrganizationSchema, SearchboxSchema } from "@/components/SchemaGenerator/Schemas";
+import { OrganizationSchema } from "@features/seo/components/Schemas";
+import { SearchboxSchema } from "@features/seo/components/Schemas";
 
 const HomeSeo = () => (
   <>

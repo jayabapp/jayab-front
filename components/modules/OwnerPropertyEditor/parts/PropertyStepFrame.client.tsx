@@ -5,8 +5,8 @@ import { propertyStepIndex } from "@features/owner-property/lib/property-step-ro
 import { createPropertySteps } from "@/utils/constantss";
 
 import PropertyEditStepSkeleton from "@features/owner-property/steps/PropertyEditStepSkeleton";
-import FixedBottomContainer from "@/components/shared/FixedBottomContainer";
-import StepShower from "@/components/shared/StepShower";
+import FixedBottomContainer from "@elements/FixedBottomContainer";
+import StepShower from "@elements/StepShower";
 import Button from "@elements/Button";
 
 const PropertyStepFrame = ({

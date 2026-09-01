@@ -7,7 +7,7 @@ import { SwiperSlide } from "swiper/react";
 import type { Swiper } from "swiper";
 import { useRef } from "react";
 
-import SwiperWithNavigation from "@/components/SwiperWithNavigation";
+import SwiperWithNavigation from "@elements/Carousel/SwiperWithNavigation.client";
 import PropertyCategoryItem from "./PropertyCategoryItem";
 import queryBuilder from "@/helpers/queryBuilder";
 import isEmpty from "lodash/isEmpty";

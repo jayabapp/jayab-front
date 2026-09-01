@@ -4,8 +4,8 @@ import type { HomeHeroBannerProps } from "@/types/components/modules/home";
 import { getHomeImageUrl } from "@features/home/mappers/home-image.mapper";
 import { Suspense, useState } from "react";
 
-import Editable from "@/components/Editable";
 import _STRINGS from "@/utils/LocalStrings";
+import Editable from "@elements/Editable";
 import dynamic from "next/dynamic";
 import Image from "next/image";
 
@@ -44,7 +44,6 @@ const HomeBannerPart = ({
         </div>
       </div>
 
-      {/* HOME SEARCH PART  */}
       <div className=" flex backdrop-blur-md   shadow-card lg:shadow-none  lg:backdrop-blur-none  z-5   absolute bottom-0   lg:bottom-[12%]  w-[90%] lg:w-[40%]   left-0 right-0     mx-auto    h-11   lg:h-14 lg:bg-white rounded-full items-center  gap-1 lg:gap-2    p-[1px]   lg:pl-4">
         <Suspense>
           <SearchBoxDropDown

@@ -4,7 +4,7 @@ import { Suspense } from "react";
 import { Toaster } from "sonner";
 
 import AuthQueriesSetter from "./AuthQueriesSetter.client";
-import LoginModal from "@/components/Modal/LoginModal";
+import LoginModal from "./LoginModal.client";
 
 const AppOverlays = () => (
   <>

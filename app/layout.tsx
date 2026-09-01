@@ -15,7 +15,7 @@ import { MobileNav } from "@modules/MobileNav";
 import { ReactNode } from "react";
 
 import LayoutProvider from "./layout-provider.client";
-import SplashScreen from "@/components/SplashScreen";
+import SplashScreen from "@layouts/SplashScreen";
 import serverCall from "@/helpers/serverCall";
 import Script from "next/script";
 

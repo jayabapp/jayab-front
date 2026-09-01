@@ -4,8 +4,8 @@ import type { PropertyTermsBodyProps } from "@/types/components/modules/property
 import { useContentList } from "@features/home/hooks/useContentList";
 import { Checkbox } from "@elements/Form";
 
-import CmsText from "@/components/shared/CmsText";
 import _STRINGS from "@/utils/LocalStrings";
+import CmsText from "@elements/CmsText";
 
 const PROPERTY_RULES_KEY = "propertyRules";
 

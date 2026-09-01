@@ -13,7 +13,7 @@ import { CityModal, RegionModal } from "@modules/CitySelector";
 import { CitySelectorTitle } from "@modules/CitySelector";
 import { useEffect, useMemo, useState } from "react";
 
-import SingleProductBreadCrumb from "@/components/BreadCrumbs/SingleProductBreadCrumb";
+import SingleProductBreadCrumb from "@elements/Breadcrumbs/SingleProductBreadcrumb.client";
 import DiscoveryFilterModal from "./parts/DiscoveryFilterModal.client";
 import DiscoveryResults from "./parts/DiscoveryResults.client";
 import LandingContent from "./parts/LandingContent";

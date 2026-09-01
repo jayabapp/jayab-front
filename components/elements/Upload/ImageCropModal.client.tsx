@@ -10,7 +10,7 @@ import { Cropper } from "react-advanced-cropper";
 import { ContentImage } from "@elements/Image";
 import { colors } from "@/theme/colors";
 
-import FixedBottomContainer from "@/components/shared/FixedBottomContainer";
+import FixedBottomContainer from "@elements/FixedBottomContainer";
 import "react-advanced-cropper/dist/themes/compact.css";
 import _STRINGS from "@/utils/LocalStrings";
 import Button from "@elements/Button";
@@ -101,7 +101,6 @@ const EditImageModal = ({
               aspectRatio: cropRatio || aspectRatio || undefined,
             }}
             src={imageUrl}
-            // onChange={onChange}
             className={"cropper"}
           />
         </div>

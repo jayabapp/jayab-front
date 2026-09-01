@@ -11,9 +11,9 @@ import { colors } from "@/theme/colors";
 import { useState } from "react";
 
 import PropertyStepFrame from "./parts/PropertyStepFrame.client";
-import CmsInfoPopup from "@/components/shared/CmsInfoPopup";
 import numberWithCommas from "@/helpers/numberWithCommas";
 import TitledCounter from "./parts/TitledCounter";
+import CmsInfoPopup from "@elements/CmsInfoPopup";
 import RangeWithTitle from "@elements/Slider";
 import _STRINGS from "@/utils/LocalStrings";
 

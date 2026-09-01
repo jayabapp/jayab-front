@@ -1,7 +1,7 @@
 import type { AuthTermsProps } from "@/types/components/modules/auth";
 import { Divider } from "@elements/Divider";
 
-import CmsContentSkeleton from "@/components/shared/CmsContentSkeleton";
+import CmsContentSkeleton from "@elements/Skeleton/CmsContentSkeleton";
 import _STRINGS from "@/utils/LocalStrings";
 import Modal from "@elements/Modal";
 import Image from "next/image";
@@ -18,11 +18,11 @@ const Terms = ({
         <div className="app-text flex justify-between items-center py-3 px-4 sticky top-0 bg-white  z-10">
           <h3 className="mr-2 font-medium">{_STRINGS.TERMS}</h3>
           <Image
+            alt=""
             width={16}
             height={16}
-            src="/assets/icons/shared/close.svg"
             className="w-4 h-4 "
-            alt=""
+            src="/assets/icons/shared/close.svg"
             onClick={() => setvisibleTermsModal(false)}
           />
         </div>

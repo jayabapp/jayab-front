@@ -5,7 +5,7 @@ import { useUpdateDayStatus } from "@features/owner-property/hooks/useUpdateDayS
 import { toJalaaliDays } from "@features/owner-property/lib/calendar-cache";
 import { useState } from "react";
 
-import ConfirmModal from "@/components/Modal/ConfirmModal";
+import ConfirmModal from "@elements/Modal/ConfirmModal.client";
 import _STRINGS from "@/utils/LocalStrings";
 import Button from "@elements/Button";
 

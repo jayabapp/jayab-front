@@ -4,7 +4,7 @@ import type { TPropertyGrid } from "@/types/components/modules/property-discover
 import { useTrackBannerView } from "@features/home/hooks/useTrackBannerView";
 import { getHomeImageUrl } from "@features/home/mappers/home-image.mapper";
 
-import Editable from "@/components/Editable";
+import Editable from "@elements/Editable";
 import Image from "next/image";
 import Link from "next/link";
 

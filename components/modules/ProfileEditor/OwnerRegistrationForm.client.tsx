@@ -4,7 +4,7 @@ import type { OwnerRegistrationFormProps } from "@/types/components/modules/prof
 import { useOwnerRegistrationForm } from "@features/auth/hooks/useOwnerRegistrationForm";
 
 import OwnerRegistrationFields from "./parts/OwnerRegistrationFields.client";
-import FixedBottomContainer from "@/components/shared/FixedBottomContainer";
+import FixedBottomContainer from "@elements/FixedBottomContainer";
 import _STRINGS from "@/utils/LocalStrings";
 import Button from "@elements/Button";
 

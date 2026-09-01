@@ -9,10 +9,10 @@ import { ContentImage } from "@elements/Image";
 import { useCallback } from "react";
 
 import SelectiveFilterChip from "./parts/SelectiveFilterChip.client";
-import SwiperSlide from "@/components/embelaCarousel/SwiperSlide";
 import RemovableFilterChip from "./parts/RemovableFilterChip";
 import numberWithCommas from "@/helpers/numberWithCommas";
-import Swiper from "@/components/embelaCarousel/Swiper";
+import SwiperSlide from "@elements/Carousel/SwiperSlide";
+import Swiper from "@elements/Carousel/Swiper.client";
 import queryBuilder from "@/helpers/queryBuilder";
 import _STRINGS from "@/utils/LocalStrings";
 import indexOf from "lodash/indexOf";

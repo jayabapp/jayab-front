@@ -2,7 +2,7 @@ import type { PropertySpecsSectionProps } from "@/types/components/modules/prope
 
 import { SPEC_ACCORDION_ITEM } from "./PropertyPrimarySpecs";
 
-import SimpleAccordion from "@/components/shared/SimpleAccorion";
+import SimpleAccordion from "@elements/Accordion/SimpleAccordion.client";
 import _STRINGS from "@/utils/LocalStrings";
 import SpecRow from "@elements/SpecRow";
 

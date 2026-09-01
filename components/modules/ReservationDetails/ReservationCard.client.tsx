@@ -13,7 +13,7 @@ import ReservationGuestContact from "./parts/ReservationGuestContact";
 import ReservationCountdown from "./parts/ReservationCountdown";
 import ReservationStatusBar from "./parts/ReservationStatusBar";
 import ReservationSchedule from "./parts/ReservationSchedule";
-import CmsInfoPopup from "@/components/shared/CmsInfoPopup";
+import CmsInfoPopup from "@elements/CmsInfoPopup";
 import _STRINGS from "@/utils/LocalStrings";
 
 const AWAITING_OWNER_STATUS_ID = 10;

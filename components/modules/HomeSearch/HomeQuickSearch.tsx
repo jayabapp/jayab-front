@@ -5,15 +5,18 @@ import EmptyState from "@elements/EmptyState";
 import isEmpty from "lodash/isEmpty";
 import dynamic from "next/dynamic";
 
-const Swiper = dynamic(() => import("@/components/embelaCarousel/Swiper"), {
+const Swiper = dynamic(() => import("@elements/Carousel/Swiper.client"), {
   ssr: true,
 });
-const SwiperSlide = dynamic(
-  () => import("@/components/embelaCarousel/SwiperSlide"),
-  { ssr: true },
-);
+const SwiperSlide = dynamic(() => import("@elements/Carousel/SwiperSlide"), {
+  ssr: true,
+});
 
-const MainFiltersContainer = ({ data, title, devices }: HomeQuickSearchProps) => {
+const MainFiltersContainer = ({
+  data,
+  title,
+  devices,
+}: HomeQuickSearchProps) => {
   return (
     <div
       className={` w-full noSelect   select-none   relative  rounded-20 flex gap-4 md:gap-2 flex-col items-center`}
@@ -40,7 +43,6 @@ const MainFiltersContainer = ({ data, title, devices }: HomeQuickSearchProps) =>
               slidesPerView: 4.25,
               spaceBetween: 10,
             },
-            // when window width is >= 768px
             768: {
               slidesPerView: 4.25,
               spaceBetween: 10,

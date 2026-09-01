@@ -1,6 +1,6 @@
 import type { PropertyRulesFilterProps } from "@/types/components/modules/property-search-filters";
 
-import SimpleAccordion from "@/components/shared/SimpleAccorion";
+import SimpleAccordion from "@elements/Accordion/SimpleAccordion.client";
 import PropertyModelFilter from "../PropertyModelFilter.client";
 import _STRINGS from "@/utils/LocalStrings";
 

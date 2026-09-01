@@ -15,7 +15,7 @@ import { useRouter } from "next/navigation";
 import { useState } from "react";
 
 import PropertyContactModal from "../PropertyContactModal.client";
-import CmsInfoPopup from "@/components/shared/CmsInfoPopup";
+import CmsInfoPopup from "@elements/CmsInfoPopup";
 import _STRINGS from "@/utils/LocalStrings";
 import Button from "@elements/Button";
 import Notify from "@elements/Toast";

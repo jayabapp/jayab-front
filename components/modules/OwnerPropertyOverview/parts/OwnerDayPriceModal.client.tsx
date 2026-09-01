@@ -11,9 +11,9 @@ import { useMemo, useState } from "react";
 
 import SkeletonText from "@elements/Skeleton/SkeletonText";
 import OwnerPriceRangeField from "./OwnerPriceRangeField";
-import CmsText from "@/components/shared/CmsText";
 import useCmsContent from "@/hooks/useCmsContent";
 import _STRINGS from "@/utils/LocalStrings";
+import CmsText from "@elements/CmsText";
 import Button from "@elements/Button";
 import Notify from "@elements/Toast";
 import Modal from "@elements/Modal";

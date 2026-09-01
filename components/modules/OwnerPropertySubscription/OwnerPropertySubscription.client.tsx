@@ -11,7 +11,7 @@ import { PropertyPrice } from "@modules/PropertyGrid";
 import { useState } from "react";
 
 import OwnerPhotoUpgradeModal from "@/components/profile/photo-upgrade/OwnerPhotoUpgradeModal";
-import FixedBottomContainer from "@/components/shared/FixedBottomContainer";
+import FixedBottomContainer from "@elements/FixedBottomContainer";
 import numberWithCommas from "@/helpers/numberWithCommas";
 import ViewsChart from "./parts/ViewsChart.client";
 import _STRINGS from "@/utils/LocalStrings";

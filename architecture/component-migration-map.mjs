@@ -1,9 +1,14 @@
 export const componentMigrationMap = [
   {
     source: "components/shared",
-    targets: ["components/elements"],
-    status: "in-progress",
-    note: "Button, generic form controls, Divider, Pagination, Toast, EmptyState, Slider, Modal shell, and PopUpDown are promoted; domain UI remains pending its owner migration.",
+    targets: [
+      "components/elements",
+      "components/layouts/SplashScreen",
+      "components/modules/AppShell",
+      "components/modules/HomeBanners",
+    ],
+    status: "migrated",
+    note: "Reusable primitives now belong to elements, root splash belongs to layouts, login overlay belongs to AppShell, and banner compositions belong to HomeBanners; the ambiguous shared bucket is removed.",
   },
   {
     source: "components/Home",

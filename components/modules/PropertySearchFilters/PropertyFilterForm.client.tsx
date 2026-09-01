@@ -5,7 +5,7 @@ import { poolFilterTypes } from "@/utils/constantss";
 import { ContentImage } from "@elements/Image";
 import { useStoreInit } from "@/store";
 
-import SimpleAccordion from "@/components/shared/SimpleAccorion";
+import SimpleAccordion from "@elements/Accordion/SimpleAccordion.client";
 import PriceRangeFilter from "./parts/PriceRangeFilter.client";
 import PropertyModelFilter from "./PropertyModelFilter.client";
 import PropertyRulesFilter from "./parts/PropertyRulesFilter";

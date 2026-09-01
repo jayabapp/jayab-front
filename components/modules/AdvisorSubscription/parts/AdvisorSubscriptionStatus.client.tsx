@@ -3,7 +3,7 @@
 import type { AdvisorSubscriptionStatusProps } from "@/types/components/modules/advisors";
 import { useRouter } from "next/navigation";
 
-import StatusShower from "@/components/shared/StatusShower";
+import StatusShower from "@elements/StatusShower";
 import _STRINGS from "@/utils/LocalStrings";
 import Button from "@elements/Button";
 import moment from "moment-jalaali";

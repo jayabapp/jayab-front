@@ -1,15 +1,11 @@
 "use client";
+
+import type { TSearchBoxProps } from "@/types/components/elements/LinearData";
 import { CityModal } from "@modules/CitySelector";
 import { ContentImage } from "@elements/Image";
 import { Suspense, useState } from "react";
 
-const SeachBoxCitySelector = ({
-  options,
-  onSubmitCB,
-}: {
-  onSubmitCB: () => void | null;
-  options?: { cotainerClass?: string };
-}) => {
+const SeachBoxCitySelector = ({ options, onSubmitCB }: TSearchBoxProps) => {
   const [showCities, setShowCities] = useState(false);
   const [title, setTitle] = useState("");
   const onHideCities = () => {
@@ -39,25 +35,27 @@ const SeachBoxCitySelector = ({
         </div>
 
         <div className="flex flex-col items-start justify-start gap-1 ">
-          <p className="    text-sm   font-bold">لیست شهرها</p>
-          <p className="    text-xxs ">لیست تمامی شهرها و استان ها</p>
+          <p className="text-sm font-bold">لیست شهرها</p>
+          <p className="text-xxs ">لیست تمامی شهرها و استان ها</p>
         </div>
 
-        <ContentImage alt="" height={12} width={12} className="size-3 absolute left-0" src="/assets/icons/shared/chevron-left.svg" />
+        <ContentImage
+          alt=""
+          width={12}
+          height={12}
+          className="size-3 absolute left-0"
+          src="/assets/icons/shared/chevron-left.svg"
+        />
       </div>
       <Suspense>
         {" "}
         <CityModal
-          onSubmitExtendedCB={onSubmitCB}
-          // customeValues={{
-          //   cities: locationsData?.cities?.map((e: any) => e?.id),
-          //   provinces: locationsData?.provinces?.map((e: any) => e?.id)?.join(","),
-          // }}
           isHome
-          setTitle={setTitle}
-          onHide={onHideCities}
           show={showCities}
+          setTitle={setTitle}
           passedUrl={"/rooms"}
+          onHide={onHideCities}
+          onSubmitExtendedCB={onSubmitCB}
         />
       </Suspense>{" "}
     </div>

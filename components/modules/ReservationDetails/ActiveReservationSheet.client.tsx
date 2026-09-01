@@ -5,7 +5,7 @@ import type { ActiveReservationSheetProps } from "@/types/components/modules/res
 import { ModalBottomSheet } from "@elements/Modal";
 import { ModalHeaderPart } from "@elements/Modal";
 
-import ConfirmModal from "@/components/Modal/ConfirmModal";
+import ConfirmModal from "@elements/Modal/ConfirmModal.client";
 import ReservationCard from "./ReservationCard.client";
 import _STRINGS from "@/utils/LocalStrings";
 

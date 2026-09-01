@@ -1,17 +1,19 @@
 import { getServerContentBySlug } from "@features/home/server/home.server";
 import { apiRoutes, baseUrl } from "@/utils/urls";
 import { convertHtmlToReact } from "@/helpers/convertHTMLtoReact";
-import { ContentFAQSchema } from "@/components/SchemaGenerator/Schemas";
+import { ContentFAQSchema } from "@features/seo/components/Schemas";
 import { ContentQuestions } from "@/components/ContentQuestions";
 import { HTMLGenerator } from "@/helpers/html.generator";
 import { ContentImage } from "@elements/Image";
-import { BlogSchema } from "@/components/SchemaGenerator/Schemas";
+import { BlogSchema } from "@features/seo/components/Schemas";
 import { ContentDto } from "@/api_services/home/home.interface";
 import { REVALIDATE } from "@/helpers/revalidate";
 import { Metadata } from "next";
 import { Suspense } from "react";
 
-import SingleProductBreadCrumb from "@/components/BreadCrumbs/SingleProductBreadCrumb";
+import type { BlogDetailsRouteProps } from "@/types/app/routes";
+
+import SingleProductBreadCrumb from "@elements/Breadcrumbs/SingleProductBreadcrumb.client";
 import MainImageTextBlock from "@/components/blogs/MainImageTextBlock";
 import MehaHeaderHelper from "@/helpers/MetaHeaderHelper";
 import RelatedBlogs from "@/components/blogs/RelatedBlogs";
@@ -19,17 +21,12 @@ import serverCall from "@/helpers/serverCall";
 import Gallery from "@/components/blogs/Gallery";
 import Link from "next/link";
 
-type Props = {
-  params: Promise<{ id: string; blog_id: string }>;
-  searchParams: Promise<{ [key: string]: string | string[] | undefined }>;
-};
-
-export async function generateMetadata({ params }: Props): Promise<Metadata> {
+export async function generateMetadata({ params }: BlogDetailsRouteProps): Promise<Metadata> {
   const { blog_id } = await params;
   const { data: blogData } = await getServerContentBySlug(blog_id);
   return MehaHeaderHelper(blogData);
 }
-const SingleBlogPage = async ({ params }: Props) => {
+const SingleBlogPage = async ({ params }: BlogDetailsRouteProps) => {
   const { blog_id } = await params;
   const { data }: { data: ContentDto } = await getServerContentBySlug(blog_id);
 

@@ -1,6 +1,6 @@
 import type { PropertySpecsSectionProps } from "@/types/components/modules/property-details";
 
-import SimpleAccordion from "@/components/shared/SimpleAccorion";
+import SimpleAccordion from "@elements/Accordion/SimpleAccordion.client";
 import numberWithCommas from "@/helpers/numberWithCommas";
 import _STRINGS from "@/utils/LocalStrings";
 import SpecRow from "@elements/SpecRow";

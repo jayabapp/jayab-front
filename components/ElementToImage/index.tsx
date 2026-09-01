@@ -1,6 +1,6 @@
 import { useCallback, useRef } from "react";
 
-import FixedBottomContainer from "../shared/FixedBottomContainer";
+import FixedBottomContainer from "@elements/FixedBottomContainer";
 import _STRINGS from "@/utils/LocalStrings";
 import Button from "@elements/Button";
 

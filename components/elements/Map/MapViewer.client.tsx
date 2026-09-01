@@ -4,7 +4,7 @@ import type { MapViewerProps } from "@/types/components/elements/map";
 import { useEffect, useEffectEvent, useRef } from "react";
 import { renderToStaticMarkup } from "react-dom/server";
 
-import LocationAnime from "@/components/shared/Lotties/LocationAnime";
+import LocationAnime from "@elements/Lottie/LocationAnimation.client";
 import "@neshan-maps-platform/mapbox-gl/dist/NeshanMapboxGl.css";
 import nmp_mapboxgl from "@neshan-maps-platform/mapbox-gl";
 import PlacesMarker from "./MapMarker";

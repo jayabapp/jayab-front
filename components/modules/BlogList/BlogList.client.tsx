@@ -6,9 +6,9 @@ import { BtnLoading } from "@elements/Button";
 import { useStoreSocket } from "@/store";
 import { useEffect } from "react";
 
+import Breadcrumbs from "@elements/Breadcrumbs/Breadcrumbs.client";
 import InfiniteScroll from "react-infinite-scroll-component";
 import LatestBlogCard from "@/components/blogs/BlogCard";
-import Breadcrumbs from "@/components/BreadCrumbs";
 import EmptyState from "@elements/EmptyState";
 
 const BlogsClientPageComponent = () => {

@@ -2,25 +2,19 @@
 
 import { BlogGridSkeleton } from "./BlogGridSkeleton";
 import { SwiperSlide } from "swiper/react";
-import { ContentDto } from "@/api_services/home/home.interface";
 import { useRef } from "react";
 
+import type { BlogsContainerProps } from "@/types/components/modules/blog";
 import type { Swiper } from "swiper";
 
-import SwiperWithNavigation from "../SwiperWithNavigation";
-import _STRINGS from "@/utils/LocalStrings";
+import SwiperWithNavigation from "@elements/Carousel/SwiperWithNavigation.client";
 import EmptyState from "@elements/EmptyState";
+import _STRINGS from "@/utils/LocalStrings";
 import BlogCard from "./BlogCard";
 import isEmpty from "lodash/isEmpty";
 import Link from "next/link";
 
-type BlogsContainerTypes = {
-  title: string;
-  viewAllUrl: string;
-  data?: ContentDto[];
-};
-
-function BlogsContainer({ title, data, viewAllUrl }: BlogsContainerTypes) {
+function BlogsContainer({ title, data, viewAllUrl }: BlogsContainerProps) {
   const ref = useRef<Swiper>(null);
   const tempData = data;
 

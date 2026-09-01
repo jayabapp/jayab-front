@@ -9,8 +9,8 @@ import { useState } from "react";
 
 import AdvisorSubscriptionStatus from "./parts/AdvisorSubscriptionStatus.client";
 import AdvisorSubscriptionSkeleton from "./AdvisorSubscriptionSkeleton";
+import ConfirmModal from "@elements/Modal/ConfirmModal.client";
 import AdvisorPlanCard from "./parts/AdvisorPlanCard.client";
-import ConfirmModal from "@/components/Modal/ConfirmModal";
 import _STRINGS from "@/utils/LocalStrings";
 
 const AdvisorSubscription = () => {

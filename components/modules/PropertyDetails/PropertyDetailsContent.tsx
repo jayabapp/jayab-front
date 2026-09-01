@@ -3,7 +3,7 @@ import { toPropertyDetailsView } from "@features/properties/mappers/property-det
 import { PropertyCalendar } from "@modules/PropertyAvailability";
 import { PropertyGallery } from "@modules/PropertyGallery";
 
-import SingleProductBreadCrumb from "@/components/BreadCrumbs/SingleProductBreadCrumb";
+import SingleProductBreadCrumb from "@elements/Breadcrumbs/SingleProductBreadcrumb.client";
 import PropertyIntroduction from "./PropertyIntroduction.client";
 import PropertySpecs from "./PropertySpecs";
 import _STRINGS from "@/utils/LocalStrings";

@@ -7,7 +7,7 @@ import { BtnLoading } from "@elements/Button";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
 
-import ConfirmModal from "@/components/Modal/ConfirmModal";
+import ConfirmModal from "@elements/Modal/ConfirmModal.client";
 import _STRINGS from "@/utils/LocalStrings";
 import Image from "next/image";
 import Link from "next/link";

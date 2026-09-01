@@ -1,31 +1,22 @@
 "use client";
 
-import { PhotoUpgradeRequestDto } from "@/api_services/photo-upgrade/photo-upgrade.interface";
+import type { PhotoUpgradeInfoItemProps, PhotoUpgradeRequestCardProps } from "@/types/components/modules/photo-upgrade";
 import { NEW_IMAGE_URL } from "@/utils/urls";
 
 import numberWithCommas from "@/helpers/numberWithCommas";
-import StatusShower from "@/components/shared/StatusShower";
+import StatusShower from "@elements/StatusShower";
 import moment from "moment-jalaali";
 import Image from "next/image";
 import Link from "next/link";
 
-type TInfoItem = {
-  title: string;
-  value: string | number;
-};
-
-const InfoItem = ({ title, value }: TInfoItem) => (
+const InfoItem = ({ title, value }: PhotoUpgradeInfoItemProps) => (
   <div className="flex items-center justify-between gap-2 text-xs md:text-sm">
     <span className="text-neutral-500">{title}</span>
     <span className="font-medium text-neutral-900">{value}</span>
   </div>
 );
 
-const PhotoUpgradeRequestCard = ({
-  data,
-}: {
-  data: PhotoUpgradeRequestDto;
-}) => {
+const PhotoUpgradeRequestCard = ({ data }: PhotoUpgradeRequestCardProps) => {
   return (
     <Link
       prefetch={false}

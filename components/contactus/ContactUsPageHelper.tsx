@@ -5,12 +5,13 @@ import { HTMLGenerator } from "@/helpers/html.generator";
 
 import ContactUsPageItem from "@/components/contactus/ContactUsPageItem";
 import ContactuUItem from "@/components/contactus/ContactuUItem";
-import Breadcrumbs from "@/components/BreadCrumbs";
-import Editable from "@/components/Editable";
+import Breadcrumbs from "@elements/Breadcrumbs/Breadcrumbs.client";
+import Editable from "@elements/Editable";
 import _STRINGS from "@/utils/LocalStrings";
 import dynamic from "next/dynamic";
+import type { ContactUsPageProps } from "@/types/components/modules/contact-us";
 
-const ContactUsPageHelper = ({ data }: { data: any }) => {
+const ContactUsPageHelper = ({ data }: ContactUsPageProps) => {
   const Map = useMemo(
     () =>
       dynamic(() => import("@elements/Map").then((module) => module.MapViewer), {
@@ -30,7 +31,7 @@ const ContactUsPageHelper = ({ data }: { data: any }) => {
     ?.full_text?.split(",");
   const hasMap = !!locationPosition?.[0] && !!locationPosition?.[1];
 
-  const { html } = HTMLGenerator(data?.data[0]?.category?.description || "", {
+  const { html } = HTMLGenerator(data?.data?.[0]?.category?.description || "", {
     hasHeading: true,
     hasCount: true,
   });

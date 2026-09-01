@@ -2,7 +2,7 @@ import { getCmsContent } from "@/api_services/home/cms-content.server";
 import { Metadata } from "next";
 
 import MehaHeaderHelper from "@/helpers/MetaHeaderHelper";
-import Breadcrumbs from "@/components/BreadCrumbs";
+import Breadcrumbs from "@elements/Breadcrumbs/Breadcrumbs.client";
 import DOMPurify from "isomorphic-dompurify";
 import _STRINGS from "@/utils/LocalStrings";
 

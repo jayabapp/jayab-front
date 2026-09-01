@@ -6,7 +6,7 @@ import { ContentImage } from "@elements/Image";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
 
-import ConfirmModal from "@/components/Modal/ConfirmModal";
+import ConfirmModal from "@elements/Modal/ConfirmModal.client";
 import _STRINGS from "@/utils/LocalStrings";
 import Button from "@elements/Button";
 

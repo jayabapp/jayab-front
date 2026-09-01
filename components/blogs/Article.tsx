@@ -1,52 +1,48 @@
-import { ContentDto } from "@/api_services/home/home.interface";
+import type { ArticleProps } from "@/types/components/modules/blog";
 import { NEW_IMAGE_URL } from "@/utils/urls";
+
+import ShareLink from "@elements/Share/BrowserShare.client";
 import moment from "moment-jalaali";
 import Image from "next/image";
-import ShareLink from "../shared/shareComponent/BrowserShare";
 
-const Article = ({ data, item }: { data: ContentDto; item?: { customeImageClass?: string } }) => {
+const Article = ({ data, item }: ArticleProps) => {
   return (
     <div className="w-full flex  flex-col md:flex-row  items-start gap-6">
       <div className=" items-center w-full md:w-1/3 justify-center flex flex-wrap">
         {data?.feature_image ? (
-          <div className={`  rounded-[1.25rem]     aspect-square relative ${item?.customeImageClass || "w-full"}`}>
+          <div
+            className={`  rounded-[1.25rem]     aspect-square relative ${item?.customeImageClass || "w-full"}`}
+          >
             <Image
-              src={NEW_IMAGE_URL(data?.feature_image)}
               fill
-              sizes="(min-width: 768px) 30vw, 92vw"
-              className={`aspect-square    rounded-[1.25rem] !object-contain ${item?.customeImageClass} !w-full`}
               alt={data?.feature_image?.alt || ""}
+              sizes="(min-width: 768px) 30vw, 92vw"
+              src={NEW_IMAGE_URL(data?.feature_image)}
+              className={`aspect-square    rounded-[1.25rem] !object-contain ${item?.customeImageClass} !w-full`}
             />
           </div>
         ) : (
           <></>
         )}
-      </div>{" "}
+      </div>
       <div className="w-full md:w-2/3 h-full justify-between flex flex-col">
-        {/* title */}
         <div className="flex mb-4 items-center justify-between w-full">
-          {" "}
           <p className="font-bold">{data?.title}</p>
           <div className=" transition-all flex items-center gap-4">
             <div className="text-sm flex items-center gap-2">
-              {/* <p className="text-sm font-medium">{data?.view_count}</p> <EyeIcon className="w-6 h-6 aspect-square" /> */}
-            </div>{" "}
-            <div className="text-sm flex items-center gap-2">
-              <p className="text-sm font-medium">{moment(data?.created_at).format("  jYYYY/jMM/jDD")}</p>{" "}
-              {/* <CalendarIcon className="w-6 h-6 aspect-square" /> */}
+              <p className="text-sm font-medium">
+                {moment(data?.created_at).format("jYYYY/jMM/jDD")}
+              </p>
             </div>
-            {/* {isMobile ? <ShareButton /> : */}
             <ShareLink />
-            {/* } */}
           </div>
         </div>
-        {/* description */}
         <div
           className="!text-justify content "
           dangerouslySetInnerHTML={{
             __html: data?.small_text,
           }}
-        />{" "}
+        />
       </div>
     </div>
   );

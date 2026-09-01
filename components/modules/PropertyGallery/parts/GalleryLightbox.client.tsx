@@ -5,7 +5,7 @@ import type { GalleryLightboxProps } from "@/types/components/modules/property-g
 import { TransformComponent, TransformWrapper } from "react-zoom-pan-pinch";
 import { ContentImage } from "@elements/Image";
 
-import SwiperWithThumnails from "@/components/embelaCarousel/SwiperWithThumnails";
+import SwiperWithThumnails from "@elements/Carousel/SwiperWithThumbnails.client";
 import Skeleton from "@elements/Skeleton/Skeleton";
 import _STRINGS from "@/utils/LocalStrings";
 import Modal from "@elements/Modal";

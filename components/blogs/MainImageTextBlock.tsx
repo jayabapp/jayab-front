@@ -4,7 +4,9 @@ import { NEW_IMAGE_URL } from "../../utils/urls";
 import { ContentDto } from "@/api_services/home/home.interface";
 import { Fragment } from "react";
 
-import SingleProductBreadCrumb from "../BreadCrumbs/SingleProductBreadCrumb";
+import type { BlogImageTextProps } from "@/types/components/modules/blog";
+
+import SingleProductBreadCrumb from "@elements/Breadcrumbs/SingleProductBreadcrumb.client";
 import SmoothScroll from "./smooth-scroll";
 import BlogShare from "./BlogShare";
 import DOMPurify from "isomorphic-dompurify";
@@ -12,22 +14,12 @@ import isEmpty from "lodash/isEmpty";
 import moment from "moment-jalaali";
 import Image from "next/image";
 
-export interface ImageTextDTO {
-  data?: ContentDto;
-  children?: any;
-  timeToRead?: number;
-  breadcrumb?: {
-    title: string;
-    link: string;
-  }[];
-}
-
 const MainImageTextBlock = ({
   data,
   children,
   timeToRead,
   breadcrumb,
-}: ImageTextDTO) => {
+}: BlogImageTextProps) => {
   let item;
   if (data)
     item = {
@@ -46,11 +38,11 @@ const MainImageTextBlock = ({
         >
           <Image
             fill
-            sizes="(min-width: 1536px) 40vw, (min-width: 768px) 45vw, 92vw"
             alt={item?.title}
             title={item?.title}
             src={NEW_IMAGE_URL(item?.image)}
             className="w-full !aspect-[3/2] !rounded-20 object-cover "
+            sizes="(min-width: 1536px) 40vw, (min-width: 768px) 45vw, 92vw"
           />
         </div>
         {!isEmpty(breadcrumb) && !!breadcrumb ? (

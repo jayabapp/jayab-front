@@ -9,11 +9,11 @@ import { PropertyShareModal } from "@modules/PropertyContact";
 import { ContentImage } from "@elements/Image";
 import { useState } from "react";
 
-import FixedBottomContainer from "@/components/shared/FixedBottomContainer";
 import PropertyBookmarkButton from "./parts/PropertyBookmarkButton.client";
-import ShareLink from "@/components/shared/shareComponent/BrowserShare";
 import PropertyLikeButton from "./parts/PropertyLikeButton.client";
+import FixedBottomContainer from "@elements/FixedBottomContainer";
 import PropertyOwnerBadge from "./parts/PropertyOwnerBadge";
+import ShareLink from "@elements/Share/BrowserShare.client";
 import PropertyPriceTag from "./PropertyPriceTag";
 import _STRINGS from "@/utils/LocalStrings";
 import Button from "@elements/Button";

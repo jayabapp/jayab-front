@@ -5,12 +5,12 @@ import { NEW_IMAGE_URL } from "@/utils/urls";
 import { ContentImage } from "@/components/elements/Image";
 import { ImageDto } from "@/api_services/auth/auth.interface";
 
-import SwiperSlide from "../embelaCarousel/SwiperSlide";
+import SwiperSlide from "@elements/Carousel/SwiperSlide";
 import dynamic from "next/dynamic";
 import Image from "next/image";
 import Modal from "@elements/Modal";
 
-const Swiper = dynamic(() => import("../embelaCarousel/Swiper"), { ssr: true });
+const Swiper = dynamic(() => import("@elements/Carousel/Swiper.client"), { ssr: true });
 
 const GalleryItem: FC<{ item: ImageDto; _onPress: () => void }> = ({
   item,

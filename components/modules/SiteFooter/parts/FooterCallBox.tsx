@@ -3,9 +3,9 @@ import { getHomeImageUrl } from "@features/home/mappers/home-image.mapper";
 import { ImageFallback } from "@elements/Image";
 
 import FooterHostCta from "./FooterHostCta.client";
-import CmsText from "@/components/shared/CmsText";
-import Editable from "@/components/Editable";
 import _STRINGS from "@/utils/LocalStrings";
+import Editable from "@elements/Editable";
+import CmsText from "@elements/CmsText";
 
 const FooterCallBox = ({ content }: FooterCallBoxProps) => (
   <div className="w-full p-4 md:px-[10%] -top-24 absolute">

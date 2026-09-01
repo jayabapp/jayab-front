@@ -1,0 +1,95 @@
+"use client";
+
+import { Keyboard, Pagination, Zoom } from "swiper/modules";
+import { ContentImage } from "@elements/Image";
+import React, { useState } from "react";
+import { Swiper } from "swiper/react";
+
+import "swiper/css/pagination";
+import "swiper/css/zoom";
+import "swiper/css";
+
+const SwiperWithNavigation = ({
+  dataLength,
+  children,
+  reference,
+  containerClass,
+  ...props
+}: any) => {
+  const [isEnd, setIsEnd] = useState(false);
+  const [isStart, setisStart] = useState(
+    !props?.initialSlide || props?.initialSlide == 0,
+  );
+  const [slidesPerView, setslidesPerView] = useState<number | string>(2);
+
+  return (
+    <div
+      className={`w-full  flex items-center !select-none  ${containerClass}`}
+    >
+      {!isEnd && dataLength > slidesPerView ? (
+        <div
+          onClick={() => {
+            reference.current?.slideNext();
+            setisStart(false);
+          }}
+          className=" my-auto    flex bottom-0 top-0  items-center justify-center hover:scale-102 group hover:bg-brand-600  transition-all lg:flex md:flex-col absolute z-10 bg-white/40   rounded-full cursor-pointer h-10 w-10 left-4   right-auto"
+        >
+          <ContentImage
+            width={24}
+            height={24}
+            alt="chvronSwiper"
+            src="/assets/icons/shared/chevron.svg"
+            className="w-6 h-6  rotate-90   select-none group-hover:invert"
+          />
+        </div>
+      ) : null}
+
+      <Swiper
+        zoom={true}
+        keyboard={true}
+        modules={[Keyboard, Zoom, Pagination]}
+        onReachBeginning={() => {
+          setisStart(true);
+          setIsEnd(false);
+        }}
+        onSlideNextTransitionStart={() => {
+          setisStart(false);
+        }}
+        onSlidePrevTransitionStart={() => {
+          setIsEnd(false);
+        }}
+        onAfterInit={(swiper) =>
+          setslidesPerView(swiper?.params?.slidesPerView || 2)
+        }
+        ref={reference}
+        onReachEnd={() => {
+          setIsEnd(true);
+          setisStart(false);
+        }}
+        {...props}
+      >
+        {children}
+      </Swiper>
+
+      {!isStart && dataLength > slidesPerView ? (
+        <div
+          onClick={() => {
+            reference.current?.slidePrev();
+            setIsEnd(false);
+          }}
+          className=" flex   bottom-0 top-0  my-auto hover:scale-102 transition-all group hover:bg-brand-600   lg:flex md:flex-col absolute z-10 bg-white/40   rounded-full cursor-pointer h-10 w-10 right-4  left-auto justify-center items-center"
+        >
+          <ContentImage
+            width={24}
+            height={24}
+            alt="chvronSwiper"
+            src="/assets/icons/shared/chevron.svg"
+            className="w-6 -rotate-90 h-6    select-none group-hover:invert "
+          />
+        </div>
+      ) : null}
+    </div>
+  );
+};
+
+export default SwiperWithNavigation;

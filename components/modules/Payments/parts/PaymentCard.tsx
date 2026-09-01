@@ -2,7 +2,7 @@ import type { PaymentCardProps } from "@/types/components/modules/profile";
 import { Divider } from "@elements/Divider";
 
 import numberWithCommas from "@/helpers/numberWithCommas";
-import LinearData from "@/components/LinearDataShowCase";
+import LinearData from "@elements/LinearDataList";
 import _STRINGS from "@/utils/LocalStrings";
 import moment from "moment-jalaali";
 

@@ -1,9 +1,9 @@
 import type { FooterAboutColumnProps } from "@/types/components/modules/site-footer";
 import { ContentImage } from "@elements/Image";
 
-import CmsText from "@/components/shared/CmsText";
 import FooterSocialRow from "./FooterSocialRow";
 import _STRINGS from "@/utils/LocalStrings";
+import CmsText from "@elements/CmsText";
 import Link from "next/link";
 
 const FooterAboutColumn = ({ about, socials }: FooterAboutColumnProps) => (

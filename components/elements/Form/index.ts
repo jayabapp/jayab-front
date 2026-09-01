@@ -2,6 +2,9 @@ export { default as FormInputWithExternalUnit } from "./FormInputWithExternalUni
 export { default as SingleSelectPopUpSelect } from "./SingleSelectPopUpSelect";
 export { default as MultiSelectPopUpSelect } from "./MultiSelectPopUpSelect";
 export { default as MultiLineFormInput } from "./MultiLineFormInput";
+export { default as MultiRangeSlider } from "./MultiRangeSlider.client";
+export { default as SearchForm } from "./SearchForm.client";
+export { default as SingleRangeSlider } from "./SingleRangeSlider.client";
 export { CheckboxCardContainer, Checkbox } from "./Checkbox";
 export { default as FormInput } from "./FormInput";
 export { default as Counter } from "./Counter";

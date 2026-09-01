@@ -4,10 +4,15 @@ import type { ImageDto } from "@/api_services/auth/auth.interface";
 import type { DeviceInfo } from "@/helpers/device.detector";
 
 export type HomeBannerDto = {
+  brand_id?: number | null;
+  category?: { id?: number; parent?: { id?: number } } | null;
   id: number;
   image: ImageDto;
   image_sm?: ImageDto | null;
   imageClasses?: string;
+  link?: string | null;
+  product?: { slug?: string } | null;
+  property?: { slug?: string } | null;
   title?: string;
 };
 

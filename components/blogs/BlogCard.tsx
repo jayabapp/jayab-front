@@ -1,21 +1,27 @@
-import { ContentDto } from "@/api_services/home/home.interface";
-import Button from "@elements/Button";
-import _STRINGS from "@/utils/LocalStrings";
 import { NEW_IMAGE_URL } from "@/utils/urls";
+
+import type { BlogCardProps } from "@/types/components/modules/blog";
+
+import _STRINGS from "@/utils/LocalStrings";
+import Editable from "@elements/Editable";
+import Button from "@elements/Button";
 import moment from "moment-jalaali";
 import Image from "next/image";
 import Link from "next/link";
-import Editable from "../Editable";
 
 moment.loadPersian();
-const LatestBlogCard = ({ item }: { item: ContentDto }) => {
+const LatestBlogCard = ({ item }: BlogCardProps) => {
   return (
     <Editable
       contentId={item?.id}
       containerClass={"h-full"}
       className={`  !h-full  overflow-clip aspect-auto  rounded-20 shadow-card  justify-between  hover:scale-98   bg-white   relative cursor-pointer transition-all duration-200 ease-in-out group    flex items-center  flex-col gap-1   `}
     >
-      <Link href={`/blog/${item?.slug}`} title={item?.title} className="flex flex-col w-full">
+      <Link
+        href={`/blog/${item?.slug}`}
+        title={item?.title}
+        className="flex flex-col w-full"
+      >
         {" "}
         <div className="  w-full   aspect-[2] relative">
           <Image
@@ -32,7 +38,9 @@ const LatestBlogCard = ({ item }: { item: ContentDto }) => {
         href={`/blog/${item?.slug}`}
         className=" gap-2 flex p-3 flex-col items-start w-full justify-center "
       >
-        <div className="w-full    font-normal  z-1 ">{moment(item?.created_at).format("jYYYY/jMM/jDD")}</div>
+        <div className="w-full    font-normal  z-1 ">
+          {moment(item?.created_at).format("jYYYY/jMM/jDD")}
+        </div>
         <p className=" font-bold line-clamp-1 ">{item?.title}</p>
         <p className="line-clamp-2  whitespace-pre-wrap flex-1 min-h-[2.5rem] text-base">
           {item?.small_text || item?.full_text || ""}
@@ -40,14 +48,17 @@ const LatestBlogCard = ({ item }: { item: ContentDto }) => {
       </Link>
       <div className="w-full  pb-4">
         {" "}
-        <Link title={_STRINGS?.WATCH} href={`/blog/${item?.slug}`} className=" ">
+        <Link
+          className=" "
+          title={_STRINGS?.WATCH}
+          href={`/blog/${item?.slug}`}
+        >
           {" "}
           <Button
             title={_STRINGS?.WATCH}
             roundedClass="rounded-full "
-            containerClass="mb-1 flex  items-center  justify-center !w-full  !text-sm "
-            // variant="white"
-            width="!px-8 !py-1 !min-w-[40%]    !font-normal "
+            width="!px-8 !py-1 !min-w-[40%] !font-normal "
+            containerClass="mb-1 flex items-center justify-center !w-full !text-sm "
           />
         </Link>
       </div>

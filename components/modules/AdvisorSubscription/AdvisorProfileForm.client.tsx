@@ -4,15 +4,15 @@ import { mapAdvisorProfileToForm } from "@features/advisors/mappers/advisor-prof
 import { mapAdvisorFormToRequest } from "@features/advisors/mappers/advisor-profile.mapper";
 import { useUpsertAdvisorProfile } from "@features/advisors/hooks/useUpsertAdvisorProfile";
 import type { AdvisorProfileFormProps } from "@/types/components/modules/advisors";
+import type { AdvisorFormBodyProps } from "@/types/components/modules/advisors";
 import { useAdvisorProfile } from "@features/advisors/hooks/useAdvisorProfile";
-import type { AdvisorFormValues } from "@/types/components/modules/advisors";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
 
-import FixedBottomContainer from "@/components/shared/FixedBottomContainer";
 import AdvisorSpecialFields from "./parts/AdvisorSpecialFields.client";
 import AdvisorProfileFormSkeleton from "./AdvisorProfileFormSkeleton";
 import AdvisorSimpleFields from "./parts/AdvisorSimpleFields.client";
+import FixedBottomContainer from "@elements/FixedBottomContainer";
 import _STRINGS from "@/utils/LocalStrings";
 import Button from "@elements/Button";
 
@@ -21,10 +21,7 @@ const SPECIAL_KEY = "is-especial";
 const AdvisorFormBody = ({
   initialValues,
   subscriptionKey,
-}: {
-  initialValues: AdvisorFormValues;
-  subscriptionKey: string;
-}) => {
+}: AdvisorFormBodyProps) => {
   const router = useRouter();
   const [values, setValues] = useState(initialValues);
   const { mutate, isPending } = useUpsertAdvisorProfile();

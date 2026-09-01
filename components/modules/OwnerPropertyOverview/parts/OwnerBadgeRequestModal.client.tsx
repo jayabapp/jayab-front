@@ -4,11 +4,11 @@ import type { OwnerBadgeRequestModalProps } from "@/types/components/modules/own
 import { usePropertyBadge } from "@features/owner-property/hooks/usePropertyBadge";
 import { ContentImage } from "@elements/Image";
 
-import StatusShower from "@/components/shared/StatusShower";
 import SkeletonText from "@elements/Skeleton/SkeletonText";
-import CmsText from "@/components/shared/CmsText";
 import useCmsContent from "@/hooks/useCmsContent";
+import StatusShower from "@elements/StatusShower";
 import _STRINGS from "@/utils/LocalStrings";
+import CmsText from "@elements/CmsText";
 import Button from "@elements/Button";
 import Modal from "@elements/Modal";
 

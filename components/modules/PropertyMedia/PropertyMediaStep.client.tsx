@@ -9,10 +9,10 @@ import { createPropertySteps } from "@/utils/constantss";
 import { useCallback, useState } from "react";
 
 import PropertyEditStepSkeleton from "@features/owner-property/steps/PropertyEditStepSkeleton";
-import FixedBottomContainer from "@/components/shared/FixedBottomContainer";
 import MultiImageUpload from "./uploaders/MultiImageUpload.client";
+import FixedBottomContainer from "@elements/FixedBottomContainer";
 import UploadedMediaItem from "./parts/UploadedMediaItem.client";
-import StepShower from "@/components/shared/StepShower";
+import StepShower from "@elements/StepShower";
 import _STRINGS from "@/utils/LocalStrings";
 import Button from "@elements/Button";
 import isEmpty from "lodash/isEmpty";

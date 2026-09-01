@@ -8,10 +8,10 @@ import { colors } from "@/theme/colors";
 import { useState } from "react";
 
 import SkeletonText from "@elements/Skeleton/SkeletonText";
-import CmsText from "@/components/shared/CmsText";
 import useCmsContent from "@/hooks/useCmsContent";
 import RangeWithTitle from "@elements/Slider";
 import _STRINGS from "@/utils/LocalStrings";
+import CmsText from "@elements/CmsText";
 import Button from "@elements/Button";
 import Modal from "@elements/Modal";
 

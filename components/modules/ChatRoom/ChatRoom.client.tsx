@@ -8,7 +8,7 @@ import { useChatDetails } from "@features/chat/hooks/useChatDetails";
 import { useSearchParams } from "next/navigation";
 import { useChatStore } from "@/store";
 
-import ConfirmModal from "@/components/Modal/ConfirmModal";
+import ConfirmModal from "@elements/Modal/ConfirmModal.client";
 import ChatRoomSkeleton from "./parts/ChatRoomSkeleton";
 import ChatFooter from "./parts/ChatFooter.client";
 import ChatHeader from "./parts/ChatHeader.client";

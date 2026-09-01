@@ -7,16 +7,12 @@ import { useParams } from "next/navigation";
 import PhotoUpgradeDetailSkeleton from "@features/photo-upgrade/components/PhotoUpgradeDetailSkeleton";
 import PhotoUpgradeImagePair from "@/components/profile/photo-upgrade/PhotoUpgradeImagePair";
 import numberWithCommas from "@/helpers/numberWithCommas";
-import StatusShower from "@/components/shared/StatusShower";
+import StatusShower from "@elements/StatusShower";
 import moment from "moment-jalaali";
 import Image from "next/image";
+import type { PhotoUpgradeSummaryItemProps } from "@/types/components/modules/photo-upgrade";
 
-type TSummaryItemProps = {
-  title: string;
-  value: string | number;
-};
-
-const SummaryItem = ({ title, value }: TSummaryItemProps) => (
+const SummaryItem = ({ title, value }: PhotoUpgradeSummaryItemProps) => (
   <div className="flex items-center justify-between gap-2 rounded-10 bg-neutral-50 px-3 py-2 text-xs md:text-sm">
     <span className="text-neutral-500">{title}</span>
     <span className="font-medium text-neutral-900">{value}</span>

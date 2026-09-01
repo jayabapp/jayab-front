@@ -12,9 +12,9 @@ import { BannerPosition } from "@/enum/banners.enum";
 import { useMemo, useState } from "react";
 
 import AdvisorRegisterCta from "./parts/AdvisorRegisterCta.client";
+import Breadcrumbs from "@elements/Breadcrumbs/Breadcrumbs.client";
 import AdvisorSearchBar from "./parts/AdvisorSearchBar.client";
 import InfiniteScroll from "react-infinite-scroll-component";
-import Breadcrumbs from "@/components/BreadCrumbs";
 import queryBuilder from "@/helpers/queryBuilder";
 import EmptyState from "@elements/EmptyState";
 import useQueryGet from "@/helpers/queryGet";

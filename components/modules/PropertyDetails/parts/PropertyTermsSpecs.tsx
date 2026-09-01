@@ -1,7 +1,7 @@
 import type { PropertySpecsSectionProps } from "@/types/components/modules/property-details";
 import { SPEC_ACCORDION_ITEM } from "./PropertyPrimarySpecs";
 
-import SimpleAccordion from "@/components/shared/SimpleAccorion";
+import SimpleAccordion from "@elements/Accordion/SimpleAccordion.client";
 import PropertyTermsBody from "./PropertyTermsBody.client";
 import _STRINGS from "@/utils/LocalStrings";
 

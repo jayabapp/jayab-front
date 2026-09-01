@@ -9,7 +9,7 @@ import { useState } from "react";
 
 import OwnerCommissionAllDaysModal from "./parts/OwnerCommissionAllDaysModal.client";
 import OwnerBadgeRequestModal from "./parts/OwnerBadgeRequestModal.client";
-import ConfirmModal from "@/components/Modal/ConfirmModal";
+import ConfirmModal from "@elements/Modal/ConfirmModal.client";
 import OwnerActionRow from "./parts/OwnerActionRow";
 import _STRINGS from "@/utils/LocalStrings";
 

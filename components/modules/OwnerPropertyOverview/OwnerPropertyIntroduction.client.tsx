@@ -7,9 +7,9 @@ import { PropertyPriceTag } from "@modules/PropertyDetails";
 import { ContentImage } from "@elements/Image";
 import { useRouter } from "next/navigation";
 
-import ShareLink from "@/components/shared/shareComponent/BrowserShare";
 import OwnerVerifyPromptModal from "./parts/OwnerVerifyPromptModal";
-import StatusShower from "@/components/shared/StatusShower";
+import ShareLink from "@elements/Share/BrowserShare.client";
+import StatusShower from "@elements/StatusShower";
 import _STRINGS from "@/utils/LocalStrings";
 import Link from "next/link";
 

@@ -3,10 +3,10 @@ import type { ExpiredPropertyProps } from "@/types/components/modules/chat";
 import { ContentImage } from "@/components/elements/Image";
 import { useRouter } from "next/navigation";
 
-import CmsContentSkeleton from "@/components/shared/CmsContentSkeleton";
-import CmsText from "@/components/shared/CmsText";
+import CmsContentSkeleton from "@elements/Skeleton/CmsContentSkeleton";
 import useCmsContent from "@/hooks/useCmsContent";
 import _STRINGS from "@/utils/LocalStrings";
+import CmsText from "@elements/CmsText";
 import Button from "@elements/Button";
 import Modal from "@elements/Modal";
 

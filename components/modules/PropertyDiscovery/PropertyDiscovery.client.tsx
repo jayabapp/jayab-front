@@ -13,7 +13,7 @@ import { CitySelectorTitle } from "@modules/CitySelector";
 import { useStoreParams } from "@/store";
 import { useState } from "react";
 
-import SingleProductBreadCrumb from "@/components/BreadCrumbs/SingleProductBreadCrumb";
+import SingleProductBreadCrumb from "@elements/Breadcrumbs/SingleProductBreadcrumb.client";
 import PropertyCategoryStrip from "./parts/PropertyCategoryStrip.client";
 import DiscoveryFilterModal from "./parts/DiscoveryFilterModal.client";
 import DiscoveryResults from "./parts/DiscoveryResults.client";

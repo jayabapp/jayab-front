@@ -1,10 +1,12 @@
 import { isMobile } from "react-device-detect";
 
+import type { StandaloneLinkCardProps } from "@/types/helpers/html";
+
 import numberWithCommas from "./numberWithCommas";
-import SimpleAccordion from "@/components/shared/SimpleAccorion";
+import SimpleAccordion from "@elements/Accordion/SimpleAccordion.client";
 import HTMLParser from "node-html-parser";
 import DOMPurify from "isomorphic-dompurify";
-import Swiper from "@/components/embelaCarousel/Swiper";
+import Swiper from "@elements/Carousel/Swiper.client";
 import Button from "@elements/Button";
 import Image from "next/image";
 import Link from "next/link";
@@ -18,13 +20,7 @@ const StandaloneLinkCard = ({
   target,
   rel,
   title,
-}: {
-  href: string;
-  text: string;
-  target?: string;
-  rel?: string;
-  title?: string;
-}) => {
+}: StandaloneLinkCardProps) => {
   return (
     <Link
       href={href}
@@ -128,7 +124,6 @@ export function convertHtmlToReact(htmlString: string) {
               slidesPerView: 1.25,
               spaceBetween: 15,
             },
-            // when window width is >= 768px
             768: {
               slidesPerView: 1.25,
               spaceBetween: 15,
@@ -170,7 +165,6 @@ export function convertHtmlToReact(htmlString: string) {
       );
     }
 
-    /* ------------------------------ TABLE -------------------------------- */
     if (node.getAttribute?.("data-table") === "true") {
       const content = decodeURIComponent(
         node.getAttribute("data-content") || "",
@@ -211,7 +205,6 @@ export function convertHtmlToReact(htmlString: string) {
               slidesPerView: 1.75,
               spaceBetween: 5,
             },
-            // when window width is >= 768px
             768: {
               slidesPerView: 1.75,
               spaceBetween: 5,

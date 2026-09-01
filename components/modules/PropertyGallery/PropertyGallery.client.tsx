@@ -13,9 +13,9 @@ import difference from "lodash/difference";
 import isEmpty from "lodash/isEmpty";
 import dynamic from "next/dynamic";
 
-const Swiper = dynamic(() => import("@/components/embelaCarousel/Swiper"));
+const Swiper = dynamic(() => import("@elements/Carousel/Swiper.client"));
 const SwiperSlide = dynamic(
-  () => import("@/components/embelaCarousel/SwiperSlide"),
+  () => import("@elements/Carousel/SwiperSlide"),
 );
 
 const THUMBNAIL_COUNT = 4;

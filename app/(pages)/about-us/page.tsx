@@ -1,11 +1,11 @@
-import { LocalBusinessSchema } from "@/components/SchemaGenerator/Schemas";
+import { LocalBusinessSchema } from "@features/seo/components/Schemas";
 import { NEW_IMAGE_URL } from "@/utils/urls";
 import { getCmsContent } from "@/api_services/home/cms-content.server";
 import { ContentImage } from "@/components/elements/Image";
 
-import Breadcrumbs from "@/components/BreadCrumbs";
+import Breadcrumbs from "@elements/Breadcrumbs/Breadcrumbs.client";
 import DOMPurify from "isomorphic-dompurify";
-import Editable from "@/components/Editable";
+import Editable from "@elements/Editable";
 import _STRINGS from "@/utils/LocalStrings";
 
 const AboutUs = async () => {
