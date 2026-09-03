@@ -1550,6 +1550,27 @@ ul {
   @apply border-brand-600 bg-brand-100 text-brand-700;
 }
 
+/* ── Home hero search ──────────────────────────────────────────────────────
+   One cell of the hero search bar, shared by the three fields so their heights
+   cannot drift apart — they sit on one row, and a few pixels of difference
+   between them reads as a broken control rather than as a style choice.
+
+   Deliberately tight: the label and value stack, so generous vertical padding
+   compounds into a bar tall enough to dominate the hero. `leading-tight` on the
+   caption and `leading-snug` on the value do most of the work; the padding only
+   keeps the hover surface from clipping the text. */
+.hero-field {
+  @apply flex w-full min-w-0 flex-col items-start justify-center rounded-full px-4 py-1 text-right transition-colors hover:bg-neutral-50 md:py-1.5;
+}
+
+.hero-field-label {
+  @apply text-xxs font-bold leading-tight text-neutral-500;
+}
+
+.hero-field-value {
+  @apply w-full truncate text-sm leading-snug;
+}
+
 /* ── Search suggestion rows ────────────────────────────────────────────────
    The pointer and the keyboard cursor light up the same surface: hover sets
    `.search-option-active` through React rather than through `:hover`, so a row

@@ -1,6 +1,7 @@
 "use client";
 
 import { useSearchSuggestions } from "@features/search/hooks/useSearchSuggestions";
+import type { SearchOption } from "@/types/features/search";
 import { useListboxNavigation } from "@features/search/hooks/useListboxNavigation";
 import { useSearchOptionPick } from "@features/search/hooks/useSearchOptionPick";
 import { buildSearchOptions } from "@features/search/lib/build-search-options";
@@ -20,11 +21,20 @@ export const useSearchPanel = ({
   initValue,
   isOpen,
   onOpenChange,
+  onPickOption,
   onSubmit,
 }: {
   initValue?: string;
   isOpen: boolean;
   onOpenChange: (open: boolean) => void;
+  /**
+   * Replaces the default "navigate to the suggestion" behaviour. The home hero
+   * stages a chosen place alongside dates and guests instead of leaving for
+   * `/rooms` immediately, which is the whole point of a multi-field search.
+   * Keyboard Enter and mouse click both route through this, so the two cannot
+   * drift apart.
+   */
+  onPickOption?: (option?: SearchOption) => void;
   onSubmit?: (value: string | null) => void | null;
 }) => {
   const [term, setTerm] = useState(initValue ?? "");
@@ -59,7 +69,8 @@ export const useSearchPanel = ({
 
   const close = useCallback(() => onOpenChange(false), [onOpenChange]);
   const { mutate, isPending } = usePropertySearch(close);
-  const pick = useSearchOptionPick(term, close);
+  const navigateToOption = useSearchOptionPick(term, close);
+  const pick = onPickOption ?? navigateToOption;
 
   // Enter on a highlighted row opens it; Enter with no highlight is left alone
   // so the form's own submit runs the free-text search.

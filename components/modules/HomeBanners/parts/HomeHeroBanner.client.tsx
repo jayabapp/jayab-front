@@ -2,98 +2,52 @@
 
 import type { HomeHeroBannerProps } from "@/types/components/modules/home";
 import { getHomeImageUrl } from "@features/home/mappers/home-image.mapper";
+import { HomeHeroSearch } from "@modules/HomeHeroSearch";
 import { ContentImage } from "@elements/Image";
-import { Suspense, useState } from "react";
 
 import _STRINGS from "@/utils/LocalStrings";
 import Editable from "@elements/Editable";
-import dynamic from "next/dynamic";
-import Image from "next/image";
-
-const SearchBoxDropDown = dynamic(() =>
-  import("@modules/Search").then((module) => module.SearchBoxDropDown),
-);
-const HomePopSearch = dynamic(() =>
-  import("@modules/Search").then((module) => module.HomePopSearch),
-);
-const HomeCitySelector = dynamic(
-  () => import("@modules/HomeCities").then((module) => module.HomeCitySelector),
-);
 
 const HomeBannerPart = ({
   title,
   devices,
   banner: item,
 }: HomeHeroBannerProps) => {
-  const [showPop, setShowPop] = useState(false);
   const isPhone = !!devices?.isMobile;
   return (
-    <div className={`relative w-full h-full md:gap-3 lg:grid-cols-3 px-0`}>
-      <div className="w-full extra-padding-x  lg:!px-[28%] flex absolute m-auto left-0 right-0  bottom-[35%] lg:bottom-[30%] flex-col   z-10 lg:z-1  gap-20">
-        <div className="flex z-5 !gap-2 lg:!gap-4 items-center justify-center flex-col">
-          <Image
+    <div className="relative w-full h-full px-0">
+      {/* One stacked column instead of two absolutely-positioned blocks at
+          different offsets. The old layout pinned the wordmark at bottom-35% and
+          the search at bottom-12%, so the gap between them changed with every
+          viewport height, and on short screens the two collided. */}
+      <div className="absolute inset-x-0 bottom-0 z-10 flex flex-col items-center justify-end gap-4 px-4 pb-4 md:gap-6 md:pb-12">
+        <div className="flex max-w-2xl flex-col items-center gap-2 text-center md:gap-3">
+          <ContentImage
             width={320}
             height={166}
             alt={_STRINGS.HOME_TITLE}
-            className=" !w-24 lg:!w-40 h-auto"
             sizes="(max-width: 1024px) 96px, 160px"
+            className="h-auto !w-24 drop-shadow-md lg:!w-40"
             src="/assets/images/home/home_banner_logo.webp"
           />
-          <h2 className="text-white font-bold !text-sm lg:!text-lg  text-center">
+          {/* Kept as the supporting line under the wordmark, but no longer 12px
+              on a single clipped row: `text-balance` and a max width let it wrap
+              to two lines on a phone instead of running off both edges. */}
+          <h2 className="text-balance text-sm font-bold leading-snug text-white drop-shadow-md md:text-xl">
             {title || _STRINGS.HOME_TITLE}
           </h2>
         </div>
-      </div>
 
-      <div className=" flex backdrop-blur-md   shadow-card lg:shadow-none  lg:backdrop-blur-none  z-5   absolute bottom-0   lg:bottom-[12%]  w-[90%] lg:w-[40%]   left-0 right-0     mx-auto    h-11   lg:h-14 lg:bg-white rounded-full items-center  gap-1 lg:gap-2    p-[1px]   lg:pl-4">
-        <Suspense>
-          <SearchBoxDropDown
-            placeholder={_STRINGS?.SEARCH}
-            containerClass="bg-transparent border   rounded-full lg:flex hidden    w-full    justify-between items-center  !bg-white lg:bg-transparent !rounded-l-none  lg:!rounded-l-20  !border-none "
-          />
-        </Suspense>
-
-        <div
-          onClick={() => {
-            setShowPop(true);
-          }}
-          className={`bg-transparent border  lg:hidden rounded-20  px-4 py-1.5  overflow-hidden w-full   flex justify-between items-center  !bg-white lg:bg-transparent !rounded-l-none  lg:!rounded-l-20  !border-none `}
-        >
-          {" "}
-          <div className="flex items-center gap-1 w-full">
-            <div
-              id={"HOME_SEARCH_BOX"}
-              className={`bg-transparent text-sm   py-1 pl-3 pr-0.5  w-full opacity-50  `}
-            >
-              {_STRINGS?.SEARCH}
-            </div>
-          </div>{" "}
+        <div className="w-full max-w-3xl">
+          <HomeHeroSearch />
         </div>
-
-        <div className="w-[1px] h-8 bg-neutral-300 lg:flex hidden"></div>
-        <Suspense>
-          {" "}
-          <HomeCitySelector
-            isHome
-            options={{
-              cotainerClass:
-                " h-10  px-2 shrink-0  w-fit  rounded-l-20 lg:rounded-l-0 lg:px-0  justify-between  bg-white   lg:h-auto lg:bg-transparent",
-            }}
-          />
-        </Suspense>
       </div>
-      <Suspense>
-        <HomePopSearch
-          showPop={showPop}
-          item={{ bg: `` }}
-          onClear={() => {}}
-          onSubmit={() => {}}
-          setShowPop={setShowPop}
-          boxId={"HOME_SEARCH_BOX"}
-          placeholder={_STRINGS?.SEARCH}
-          containerClass={" w-full mx-auto"}
-        />
-      </Suspense>
+
+      {/* Text over a photograph the CMS can change at any time cannot rely on
+          the photo being dark. A bottom-weighted scrim keeps the headline and the
+          search legible whichever image is in rotation, and costs no request. */}
+      <div className="pointer-events-none absolute inset-0 z-5 bg-gradient-to-t from-black/70 via-black/20 to-transparent" />
+
       <div aria-label={item?.image?.alt || item?.title}>
         {" "}
         <Editable

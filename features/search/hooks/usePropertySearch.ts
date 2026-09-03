@@ -29,7 +29,7 @@ export const usePropertySearch = (onNavigate?: () => void) => {
   useEffect(() => () => controller.current?.abort(), []);
 
   return useMutation({
-    mutationFn: async ({ q }: PropertySearchInput) => {
+    mutationFn: async ({ extra, q }: PropertySearchInput) => {
       controller.current?.abort();
       const nextController = new AbortController();
       controller.current = nextController;
@@ -40,9 +40,9 @@ export const usePropertySearch = (onNavigate?: () => void) => {
         { q: normalizePersianSearchText(q).slice(0, MAX_TERM_LENGTH) },
         nextController.signal,
       );
-      return { data, requestId };
+      return { data, extra, requestId };
     },
-    onSuccess: ({ data, requestId }) => {
+    onSuccess: ({ data, extra, requestId }) => {
       if (requestId !== sequence.current) return;
       if (!data?.client_query) return;
 
@@ -57,7 +57,9 @@ export const usePropertySearch = (onNavigate?: () => void) => {
         },
       });
       onNavigate?.();
-      router.push(`/rooms?${queryBuilder(data.client_query)}`);
+      // The user's own choices win over anything the text resolved to: if they
+      // said 4 guests, that is not a guess to be overwritten by `/extract`.
+      router.push(`/rooms?${queryBuilder({ ...data.client_query, ...extra })}`);
     },
   });
 };

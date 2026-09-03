@@ -137,3 +137,13 @@ export type SearchQueryParamSyncProps = {
   onSearchParam: (param: string | null) => void;
   queryKey?: string;
 };
+
+export type HeroDestinationSearchProps = {
+  boxId?: string;
+  /** The small persistent caption above the value. */
+  label: string;
+  /** What the closed field shows: a chosen place's title, or the typed text. */
+  value?: string;
+  onTermChange?: (term: string) => void;
+  onPickPlace?: (option: SearchOption) => void;
+};

@@ -560,6 +560,13 @@ const _STRINGS = {
   NO_RESULT_TITLE: "هیچ اقامتگاهی با این فیلترها پیدا نشد",
   NO_RESULT_DESCRIPTION: "چند فیلتر را بردارید تا گزینه‌های بیشتری ببینید.",
   ROOMS_PAGE_TITLE: "اجاره ویلا و اقامتگاه",
+  HERO_WHERE_LABEL: "کجا",
+  HERO_WHERE_EMPTY: "شهر یا نام اقامتگاه",
+  HERO_WHERE_PLACEHOLDER: "مثلاً تبریز، ویلا استخردار",
+  HERO_DATES_LABEL: "تاریخ",
+  HERO_DATES_EMPTY: "افزودن تاریخ",
+  HERO_GUESTS_EMPTY: "افزودن نفرات",
+  HERO_ACTIVE_PROPERTIES: "اقامتگاه فعال، مستقیم از میزبان",
   ROOMS_PAGE_META_TITLE: "اجاره ویلا، سوئیت و اقامتگاه روزانه | جایاب",
   ROOMS_PAGE_META_DESCRIPTION:
     "اجاره روزانه ویلا، سوئیت، آپارتمان و اقامتگاه بومگردی در سراسر ایران. جست‌وجو بر اساس شهر، قیمت، ظرفیت و امکانات، با تصاویر واقعی و رزرو آنلاین.",
