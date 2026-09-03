@@ -1,5 +1,7 @@
+import type { CreateTestAccessMember } from "@/types/features/test-access/api";
 import type { UpdateTestAccessMember } from "@/types/features/test-access/api";
 import type { TestAccessMember } from "@/types/features/test-access/api";
+import type { TestAccessMe } from "@/types/features/test-access/api";
 
 import { apiRoutes } from "@/utils/urls";
 import { apiCall } from "../common/apicall.helper";
