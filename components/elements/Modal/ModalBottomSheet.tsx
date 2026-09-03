@@ -5,28 +5,24 @@ import { Dialog, DialogPanel } from "@headlessui/react";
 import { createPortal } from "react-dom";
 import type { JSX } from "react";
 
-import _STRINGS from "@/utils/LocalStrings";
-
 const ModalBottomSheet = ({
-  children,
-  show = false,
   onHide,
   options,
+  children,
+  show = false,
 }: ModalBottomSheetProps): JSX.Element | null => {
   if (!show || typeof document === "undefined") return null;
 
   return createPortal(
     <Dialog
-      className="fixed inset-0"
-      onClose={onHide}
       open
+      onClose={onHide}
+      className="fixed inset-0"
       style={{ zIndex: options?.zIndex ?? 1000 }}
     >
-      <button
-        aria-label={_STRINGS.CLOSE}
+      <div
+        aria-hidden="true"
         className="fixed inset-0 cursor-default bg-black/70 backdrop-blur-xs"
-        onClick={onHide}
-        type="button"
       />
 
       <div

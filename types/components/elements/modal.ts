@@ -3,6 +3,7 @@ import type { Dispatch, ReactNode, SetStateAction } from "react";
 export type ModalOptions = { containerClass?: string; parentClass?: string; zIndex?: number };
 export type ModalProps = {
   children?: ReactNode;
+  dismissible?: boolean;
   onHide: () => void;
   onScroll?: Dispatch<SetStateAction<number>>;
   show?: boolean;

@@ -15,7 +15,7 @@ const PropertySuccessModal = ({
   const router = useRouter();
 
   return (
-    <Modal show={show} onHide={() => {}}>
+    <Modal dismissible={false} show={show} onHide={() => undefined}>
       <div className="bg-white p-4 rounded-20 gap-4 flex flex-col items-center justify-center">
         <ContentImage
           alt=""

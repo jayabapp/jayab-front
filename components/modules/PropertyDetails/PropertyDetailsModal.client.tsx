@@ -2,8 +2,8 @@
 
 import type { PropertyDetailsModalProps } from "@/types/components/modules/property-details";
 import { usePropertyDetails } from "@features/properties/hooks/usePropertyDetails";
+import { usePathname, useRouter } from "next/navigation";
 import { AnimationlessModal } from "@elements/Modal";
-import { usePathname } from "next/navigation";
 
 import PropertyDetailsSkeleton from "./PropertyDetailsSkeleton";
 import PropertyDetailsContent from "./PropertyDetailsContent";
@@ -16,11 +16,12 @@ const PropertyDetailsModal = ({
   footer,
 }: PropertyDetailsModalProps) => {
   const pathname = usePathname();
+  const router = useRouter();
   const { property, isPending } = usePropertyDetails(slug);
 
   return (
     <AnimationlessModal
-      onHide={() => {}}
+      onHide={() => router.back()}
       show={pathname.includes(ROOM_PATH)}
       options={{
         containerClass:

@@ -1,40 +1,46 @@
 "use client";
 
 import type { AnimationlessModalProps } from "@/types/components/elements/modal";
-import { Dialog, Transition } from "@headlessui/react";
+import { Dialog, DialogPanel } from "@headlessui/react";
+import { createPortal } from "react-dom";
 import type { JSX } from "react";
 
-const AnimationlessModal = ({ children, show, onHide, options }: AnimationlessModalProps): JSX.Element => {
-  // useModalBack(show, onHide);
-  return (
-    <Transition show={show}>
-      <div className="fixed inset-0">
-        <Dialog
-          as="div"
-          className="relative"
-          style={{ zIndex: options?.zIndex ? options?.zIndex : 1000 }}
-          onClose={!!onHide ? onHide : () => {}}
-        >
-          <div className="fixed inset-0 bg-black bg-opacity-70 	" onClick={onHide} />
+const AnimationlessModal = ({
+  children,
+  show,
+  onHide,
+  options,
+}: AnimationlessModalProps): JSX.Element => {
+  if (!show || typeof document === "undefined") return <></>;
 
-          <div
-            className={` ${
-              options?.parentClass ? options?.parentClass : ""
-            } fixed inset-y-0 w-screen h-[100dvh] flex flex-col justify-center `}
-          >
-            <div
-              className={
-                options?.containerClass
-                  ? options?.containerClass
-                  : "mx-auto my-20   w-11/12 md:w-1/2 xl:w-1/3 2xl:w-1/4 rounded-2xl overflow-y-scroll  bg-white   "
-              }
-            >
-              {children}
-            </div>
-          </div>
-        </Dialog>
+  const handleHide = onHide ?? (() => undefined);
+
+  return createPortal(
+    <Dialog
+      open
+      onClose={handleHide}
+      className="fixed inset-0"
+      style={{ zIndex: options?.zIndex ?? 1000 }}
+    >
+      <div
+        aria-hidden="true"
+        className="fixed inset-0 cursor-default bg-black/70"
+      />
+
+      <div
+        className={`${options?.parentClass ?? ""} pointer-events-none fixed inset-0 flex h-screen w-screen flex-col justify-center supports-[height:100dvh]:h-[100dvh] supports-[width:100svw]:w-[100svw]`}
+      >
+        <DialogPanel
+          className={`pointer-events-auto ${
+            options?.containerClass ??
+            "mx-auto my-20 max-h-[calc(100vh-10rem)] w-11/12 overflow-y-auto overscroll-contain rounded-2xl bg-white supports-[height:100dvh]:max-h-[calc(100dvh-10rem)] md:w-1/2 xl:w-1/3 2xl:w-1/4"
+          }`}
+        >
+          {children}
+        </DialogPanel>
       </div>
-    </Transition>
+    </Dialog>,
+    document.body,
   );
 };
 

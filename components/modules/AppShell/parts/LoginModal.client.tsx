@@ -18,7 +18,10 @@ const LoginModal = () => {
     (state) => state,
   );
   const closeDispatch = () => {
-    useStoreParams.setState({ loginModal: false });
+    useStoreParams.setState({
+      loginModal: false,
+      loginModalCancelRoute: "",
+    });
   };
 
   const title = _STRINGS.LOGIN_MODAL_TITLE,
