@@ -1,5 +1,6 @@
 import { resolveChatImage } from "@features/chat/presentation/chat.presenter";
 import type { ChatMessageItemProps } from "@/types/components/modules/chat";
+import { ContentImage } from "@elements/Image";
 import { useEffect, useState } from "react";
 import { useRef } from "react";
 
@@ -7,7 +8,6 @@ import ChatItemMoreOptions from "./ChatItemMoreOptions.client";
 import ChatMediaModal from "./ChatMediaModal.client";
 import _STRINGS from "@/utils/LocalStrings";
 import moment from "moment-jalaali";
-import Image from "next/image";
 
 moment.loadPersian();
 
@@ -59,7 +59,7 @@ const PrivateOthersMessage = ({ data }: ChatMessageItemProps) => {
               !!data?.text ? " mb-4" : ""
             } rounded-[10px] `}
           >
-            <Image
+            <ContentImage
               src={resolveChatImage(data?.media, "medium")}
               alt="تصویر پیام"
               width={480}

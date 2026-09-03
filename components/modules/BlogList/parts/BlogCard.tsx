@@ -1,17 +1,17 @@
 import { getHomeImageUrl } from "@features/home/mappers/home-image.mapper";
 import type { BlogCardProps } from "@/types/components/modules/blog";
+import { ContentImage } from "@elements/Image";
 import type { CSSProperties } from "react";
 
 import BlogCardLink from "./BlogCardLink.client";
 import _STRINGS from "@/utils/LocalStrings";
 import Editable from "@elements/Editable";
 import moment from "moment-jalaali";
-import Image from "next/image";
 
 moment.loadPersian();
 
-// One column on a phone, three from md — mirrors the grid the list renders into.
-const BLOG_IMAGE_SIZES = "(min-width: 1536px) 26vw, (min-width: 768px) 30vw, 92vw";
+const BLOG_IMAGE_SIZES =
+  "(min-width: 1536px) 26vw, (min-width: 768px) 30vw, 92vw";
 
 const BlogCard = ({ item, index }: BlogCardProps) => {
   const href = `/blog/${item?.slug}`;
@@ -23,16 +23,13 @@ const BlogCard = ({ item, index }: BlogCardProps) => {
       style={{ "--card-index": index ?? 0 } as CSSProperties}
       className="lift-card stagger-rise flex h-full flex-col overflow-hidden rounded-20 border border-white bg-white"
     >
-      {/* One link for the whole card. The old markup wrapped the image, the text
-          and a "مشاهده" button in three separate anchors to the same href, which
-          costs three tab stops and three identical links per card. */}
       <BlogCardLink
         href={href}
         title={item?.title}
         className="flex h-full flex-col !outline-none"
       >
         <div className="relative aspect-[16/9] w-full overflow-hidden">
-          <Image
+          <ContentImage
             fill
             sizes={BLOG_IMAGE_SIZES}
             className="lift-card-media object-cover"
@@ -79,9 +76,9 @@ const BlogCard = ({ item, index }: BlogCardProps) => {
                 className="lift-card-arrow h-2.5 w-2"
               >
                 <path
+                  strokeWidth="1.6"
                   d="M6.5 1 1.5 6l5 5"
                   stroke="currentColor"
-                  strokeWidth="1.6"
                   strokeLinecap="round"
                   strokeLinejoin="round"
                 />

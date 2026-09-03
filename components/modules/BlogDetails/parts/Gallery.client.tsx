@@ -9,7 +9,6 @@ import { Fragment, useState } from "react";
 import SwiperSlide from "@elements/Carousel/SwiperSlide";
 import Modal from "@elements/Modal";
 import dynamic from "next/dynamic";
-import Image from "next/image";
 
 const Swiper = dynamic(() => import("@elements/Carousel/Swiper.client"), {
   ssr: true,
@@ -27,7 +26,7 @@ const GalleryItem = ({
       className="col-span-1 w-full aspect-square relative cursor-pointer"
       onClick={_onPress}
     >
-      <Image
+      <ContentImage
         fill
         alt={item?.alt as string}
         src={getUploadedImageUrl(item)}

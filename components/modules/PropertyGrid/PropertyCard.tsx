@@ -121,7 +121,7 @@ const PropertyCard = ({
               loading="lazy"
               sizes="(min-width: 1536px) 10vw, (min-width: 1280px) 12vw, (min-width: 768px) 18vw, 37vw"
               alt={data?.feature_image?.alt || ""}
-              src={getPropertyImageUrl(data?.feature_image)}
+              src={getPropertyImageUrl(data?.feature_image, "medium")}
               className="w-full rounded-2xl h-full object-cover aspect-square"
             />
             {data?.advisor_commission || data?.advisor_commission === 0 ? (

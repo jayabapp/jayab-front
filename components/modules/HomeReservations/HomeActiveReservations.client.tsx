@@ -7,7 +7,6 @@ import { ContentImage } from "@elements/Image";
 
 import _STRINGS from "@/utils/LocalStrings";
 import isEmpty from "lodash/isEmpty";
-import Image from "next/image";
 import Link from "next/link";
 
 const HomeActiveReserve = () => {
@@ -99,7 +98,7 @@ const HomeActiveReserve = () => {
                     className={`flex h-fit !outline-none items-start justify-start w-full col-span-2 order-2`}
                   >
                     <div className="aspect-square w-full h-full relative">
-                      <Image
+                      <ContentImage
                         fill
                         loading="lazy"
                         sizes="(min-width: 1024px) 8vw, 23vw"

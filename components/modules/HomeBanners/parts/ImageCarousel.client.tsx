@@ -1,11 +1,11 @@
 import type { HomeImageCarouselProps } from "@/types/components/modules/home";
 import { useTrackBannerView } from "@features/home/hooks/useTrackBannerView";
 import { getHomeImageUrl } from "@features/home/mappers/home-image.mapper";
+import { ContentImage } from "@elements/Image";
 
 import SwiperSlide from "@elements/Carousel/SwiperSlide";
 import Swiper from "@elements/Carousel/Swiper.client";
 import Editable from "@elements/Editable";
-import Image from "next/image";
 import Link from "next/link";
 
 const ImageCarousel = ({ list, item, devices }: HomeImageCarouselProps) => {
@@ -85,7 +85,7 @@ const ImageCarousel = ({ list, item, devices }: HomeImageCarouselProps) => {
                 } transition-all duration-300 ease-in-out   relative`}
               >
                 {isPhone ? (
-                  <Image
+                  <ContentImage
                     fill
                     sizes="100vw"
                     loading="lazy"
@@ -96,7 +96,7 @@ const ImageCarousel = ({ list, item, devices }: HomeImageCarouselProps) => {
                     }   `}
                   />
                 ) : (
-                  <Image
+                  <ContentImage
                     fill
                     sizes="100vw"
                     loading="lazy"

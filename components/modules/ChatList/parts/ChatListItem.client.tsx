@@ -1,5 +1,6 @@
 import { resolveChatImage } from "@features/chat/presentation/chat.presenter";
 import type { ChatListItemProps } from "@/types/components/modules/chat";
+import { ContentImage } from "@elements/Image";
 import { useStoreParams } from "@/store";
 
 import moment from "moment-jalaali";
@@ -23,12 +24,12 @@ const ChatListItem = ({ item, onClickCb }: ChatListItemProps) => {
       className="w-full flex  relative pb-3  border-b flex-col"
     >
       <div className="w-full  relative  flex items-start flex-row  gap-2">
-        <Image
-          className="w-12 aspect-square h-12 rounded-md "
-          src={resolveChatImage(item?.property_image, "medium")}
-          alt={`${item?.property_title}`}
+        <ContentImage
           width={48}
           height={48}
+          alt={`${item?.property_title}`}
+          className="w-12 aspect-square h-12 rounded-md "
+          src={resolveChatImage(item?.property_image, "medium")}
         />
         <div className=" w-full flex   flex-col   items-start gap-2 justify-between">
           <p className=" font-medium  text-sm   w-full text-start md:w-fit ">
@@ -37,11 +38,11 @@ const ChatListItem = ({ item, onClickCb }: ChatListItemProps) => {
           </p>
           <div className="w-full flex items-center gap-0.5 ">
             <Image
-              className="w-5 h-5"
-              src="/assets/icons/chat/basil_user.svg"
               alt="کاربر"
               width={20}
               height={20}
+              className="w-5 h-5"
+              src="/assets/icons/chat/basil_user.svg"
             />
             <p className="text-xs !leading-2 opacity-50 mt-1 ">
               {item?.other_side_mobile}

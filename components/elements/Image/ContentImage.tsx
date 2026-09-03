@@ -1,4 +1,7 @@
+"use client";
+
 import type { ContentImageProps } from "@/types/components/elements/image";
+import { useState } from "react";
 
 import Image from "next/image";
 
@@ -18,16 +21,27 @@ const shouldSkipOptimizer = (src: ContentImageProps["src"]): boolean => {
 const ContentImage = ({
   src,
   alt,
+  fallbackSrc = DEFAULT_FALLBACK,
+  onError,
   unoptimized,
   ...props
 }: ContentImageProps) => {
-  const source = src || DEFAULT_FALLBACK;
+  const [failedSource, setFailedSource] =
+    useState<ContentImageProps["src"]>(null);
+  const requestedSource = src || fallbackSrc;
+  const source =
+    failedSource === requestedSource ? fallbackSrc : requestedSource;
+
   return (
     <Image
       {...props}
       alt={alt}
       src={source}
       unoptimized={unoptimized || shouldSkipOptimizer(source)}
+      onError={(event) => {
+        onError?.(event);
+        if (source !== fallbackSrc) setFailedSource(requestedSource);
+      }}
     />
   );
 };

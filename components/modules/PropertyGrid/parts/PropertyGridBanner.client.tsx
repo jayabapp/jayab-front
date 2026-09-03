@@ -3,9 +3,9 @@
 import type { TPropertyGrid } from "@/types/components/modules/property-discovery";
 import { useTrackBannerView } from "@features/home/hooks/useTrackBannerView";
 import { getHomeImageUrl } from "@features/home/mappers/home-image.mapper";
+import { ContentImage } from "@elements/Image";
 
 import Editable from "@elements/Editable";
-import Image from "next/image";
 import Link from "next/link";
 
 const PropertyGridBanner = ({ bannerItem, devices }: TPropertyGrid) => {
@@ -59,7 +59,7 @@ const PropertyGridBanner = ({ bannerItem, devices }: TPropertyGrid) => {
         }}
         className="w-full h-full rounded-20 object-cover overflow-hidden align-middle block"
       >
-        <Image
+        <ContentImage
           fill
           sizes="100vw"
           src={imageSrc}

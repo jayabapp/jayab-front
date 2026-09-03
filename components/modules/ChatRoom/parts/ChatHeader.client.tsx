@@ -3,6 +3,7 @@
 import { resolveChatImage } from "@features/chat/presentation/chat.presenter";
 import { useBlockChatUser } from "@features/chat/hooks/useBlockChatUser";
 import type { ChatHeaderProps } from "@/types/components/modules/chat";
+import { ContentImage } from "@elements/Image";
 import { BtnLoading } from "@elements/Button";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
@@ -70,7 +71,7 @@ const ChatHeader = ({
               <div
                 className={`absolute bottom-0 left-0 z-10 size-2 rounded-full ${is_recipient_online ? "bg-emerald-400" : "bg-neutral-400"}`}
               />
-              <Image
+              <ContentImage
                 src={
                   image
                     ? resolveChatImage(image)

@@ -1,9 +1,9 @@
 "use client";
 
 import type { ChatMediaProps } from "@/types/components/modules/chat";
+import { ContentImage } from "@elements/Image";
 
 import Modal from "@elements/Modal";
-import Image from "next/image";
 
 const ChatMediaModal = ({ show, src, onClose }: ChatMediaProps) => (
   <Modal show={show} onHide={onClose}>
@@ -17,7 +17,7 @@ const ChatMediaModal = ({ show, src, onClose }: ChatMediaProps) => (
         ×
       </button>
       <div className="relative min-h-0 flex-1">
-        <Image
+        <ContentImage
           fill
           src={src}
           sizes="100vw"

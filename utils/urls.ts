@@ -3,6 +3,7 @@ export const baseUrl = `${Url}/api/v1`;
 
 export const baseUrlV = (v: string) => `${Url}/api/${v}`;
 export const imageUrl = `${Url}/`;
+const REMOTE_IMAGE_FALLBACK = "/assets/icons/shared/image_placeholder.svg";
 /**
  * Builds the public S3 URL for an attachment.
  *
@@ -14,19 +15,32 @@ export const imageUrl = `${Url}/`;
  */
 export const NEW_IMAGE_URL = (
   item?: {
-    bucket: string;
-    end_point: string;
-    path: string;
-    name: string;
+    bucket?: string | null;
+    end_point?: string | null;
+    path?: string | null;
+    name?: string | null;
     thumbnail?: string | null;
     medium?: string | null;
   } | null,
   keyValue?: "name" | "thumbnail" | "medium",
 ) => {
-  if (item?.bucket && item?.bucket != null) {
-    const fileName = (keyValue && keyValue !== "name" ? item[keyValue] : null) || item?.name;
-    return `https://${item?.bucket}.${item?.end_point}/${item?.path}/${fileName}`;
-  } else return "/assets/icons/logo/logo.svg";
+  const fileName =
+    (keyValue && keyValue !== "name" ? item?.[keyValue] : null) || item?.name;
+  if (!item?.bucket || !item.end_point || !item.path || !fileName)
+    return REMOTE_IMAGE_FALLBACK;
+
+  const endpoint = item.end_point
+    .trim()
+    .replace(/^https?:\/\//i, "")
+    .replace(/^\/+|\/+$/g, "");
+  const bucket = item.bucket.trim().replace(/^\/+|\/+$/g, "");
+  const path = item.path.trim().replace(/^\/+|\/+$/g, "");
+  if (!endpoint || !bucket || !path) return REMOTE_IMAGE_FALLBACK;
+
+  const hostname = endpoint.startsWith(`${bucket}.`)
+    ? endpoint
+    : `${bucket}.${endpoint}`;
+  return `https://${hostname}/${path}/${fileName}`;
 };
 export const imageUrlBase = `${Url}/images/contents/`;
 export const IMAGE_URL = (path: string) => `${Url}/${path}`;

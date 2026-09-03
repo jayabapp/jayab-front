@@ -1,7 +1,7 @@
 "use client";
 
 import Modal from "@elements/Modal";
-import Image from "next/image";
+import { ContentImage } from "@elements/Image";
 
 type TProfileImageProps = {
   src: string;
@@ -25,7 +25,7 @@ const ProfileImageModal = ({ src, onClose, onDelete }: TProfileImageProps) => (
         )}
       </div>
       <div className="relative min-h-0 flex-1">
-        <Image
+        <ContentImage
           fill
           src={src}
           sizes="100vw"

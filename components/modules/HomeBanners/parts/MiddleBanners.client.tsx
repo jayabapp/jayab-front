@@ -3,13 +3,13 @@
 import type { HomeMiddleBannersProps } from "@/types/components/modules/home";
 import { getHomeImageUrl } from "@features/home/mappers/home-image.mapper";
 import { Swiper, SwiperSlide } from "swiper/react";
+import { ContentImage } from "@elements/Image";
 import { isMobile } from "react-device-detect";
 import { useRouter } from "next/navigation";
 import { Autoplay } from "swiper/modules";
 import { useRef } from "react";
 
 import Editable from "@elements/Editable";
-import Image from "next/image";
 import "swiper/css/pagination";
 import "swiper/css";
 
@@ -89,7 +89,7 @@ const MiddleBanners = ({
             >
               <div className="invisible">sd</div>
               <div className="w-full h-full rounded-20 object-cover overflow-hidden align-middle">
-                <Image
+                <ContentImage
                   src={getHomeImageUrl(
                     isMobile && e?.image_sm ? e?.image_sm : e?.image,
                   )}

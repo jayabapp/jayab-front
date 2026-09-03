@@ -2,9 +2,9 @@
 
 import { getHomeImageUrl } from "@features/home/mappers/home-image.mapper";
 import { type HomeLandingDto } from "@/types/components/modules/home";
+import { ContentImage } from "@elements/Image";
 import { useCitiesStore } from "@/store";
 
-import Image from "next/image";
 import Link from "next/link";
 
 const HomeCityItem = ({ item }: { item: HomeLandingDto }) => {
@@ -17,10 +17,6 @@ const HomeCityItem = ({ item }: { item: HomeLandingDto }) => {
   return (
     <Link
       href={item?.url}
-      // Deliberately opted out, unlike the other content links. These rows are a
-      // marquee: every card is rendered twice and both copies drift through the
-      // viewport continuously, so viewport prefetching would re-fire for the
-      // whole city list on a loop rather than once.
       prefetch={false}
       id={item?.title}
       onClick={onClickCB}
@@ -32,7 +28,7 @@ const HomeCityItem = ({ item }: { item: HomeLandingDto }) => {
         className="w-full  col-span-2  relative rounded-10  aspect-square "
       >
         {" "}
-        <Image
+        <ContentImage
           fill
           sizes="(min-width: 1024px) 12vw, 21vw"
           src={

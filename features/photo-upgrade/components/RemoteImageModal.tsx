@@ -1,5 +1,5 @@
 "use client";
-import Image from "next/image";
+import { ContentImage } from "@elements/Image";
 import Modal from "@elements/Modal";
 
 type TRemoteImageProps = {
@@ -21,7 +21,7 @@ const RemoteImageModal = ({ show, src, alt, onHide }: TRemoteImageProps) => (
         ×
       </button>
       <div className="relative min-h-[70vh] w-full flex-1">
-        <Image
+        <ContentImage
           fill
           src={src}
           alt={alt}

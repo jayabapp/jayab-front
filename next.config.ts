@@ -47,7 +47,10 @@ const nextConfig: NextConfig = {
     // and `maximumDiskCacheSize` below caps what those keys can add up to.
     deviceSizes: [640, 750, 828, 1024, 1200, 1920],
     imageSizes: [16, 32, 48, 64, 96, 128, 256, 384],
-    minimumCacheTTL: 60 * 60 * 24,
+    // Uploaded object keys are immutable (UUID/timestamp based), so retaining
+    // optimized variants avoids repeatedly fetching the same source from S3.
+    // The bounded disk cache below still controls total storage usage.
+    minimumCacheTTL: 60 * 60 * 24 * 30,
 
     // Without this Next falls back to `statfs(cacheDir).bavail * bsize / 2`, i.e.
     // HALF THE FREE DISK, so the LRU never evicts in practice and

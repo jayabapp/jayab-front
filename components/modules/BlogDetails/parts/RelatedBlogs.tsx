@@ -1,10 +1,10 @@
 import { getHomeImageUrl } from "@features/home/mappers/home-image.mapper";
 import type { RelatedBlogsProps } from "@/types/components/modules/blog";
+import { ContentImage } from "@elements/Image";
 
 import _STRINGS from "@/utils/LocalStrings";
 import isEmpty from "lodash/isEmpty";
 import moment from "moment-jalaali";
-import Image from "next/image";
 import Link from "next/link";
 
 moment.loadPersian();
@@ -26,7 +26,7 @@ const RelatedBlogs = ({ currentId, items }: RelatedBlogsProps) => {
           className="group flex items-center gap-3 rounded-10 p-1 transition-colors hover:bg-brand-50"
         >
           <div className="relative aspect-square w-16 shrink-0 overflow-hidden rounded-10">
-            <Image
+            <ContentImage
               fill
               sizes="64px"
               alt={item?.feature_image?.alt || ""}

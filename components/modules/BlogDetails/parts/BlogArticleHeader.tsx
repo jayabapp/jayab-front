@@ -1,5 +1,6 @@
 import type { BlogArticleHeaderProps } from "@/types/components/modules/blog";
 import { getHomeImageUrl } from "@features/home/mappers/home-image.mapper";
+import { ContentImage } from "@elements/Image";
 
 import SingleProductBreadcrumb from "@elements/Breadcrumbs/SingleProductBreadcrumb.client";
 import SmoothScroll from "./SmoothScroll.client";
@@ -11,9 +12,6 @@ import Image from "next/image";
 
 moment.loadPersian();
 
-// The image is boxed into its own column instead of running the page width.
-// CMS uploads are capped at 1024px, so a full-bleed hero displays them at well
-// past their real resolution and the grain shows; at ~26rem it stays sharp.
 const HERO_IMAGE_SIZES = "(min-width: 768px) 26rem, 92vw";
 
 const MetaItem = ({
@@ -38,11 +36,6 @@ const MetaItem = ({
   </span>
 );
 
-// The article header is a Server Component on purpose. It used to be a client
-// one, which pulled `isomorphic-dompurify` and `moment-jalaali` into the route's
-// browser bundle — DOMPurify only to sanitise a title that is then rendered as a
-// plain string, which React already escapes. The two genuinely interactive bits
-// (SmoothScroll, BlogShare) stay their own islands.
 const BlogArticleHeader = ({
   data,
   timeToRead,
@@ -54,8 +47,6 @@ const BlogArticleHeader = ({
     <header className="grid w-full grid-cols-1 items-center gap-5 md:grid-cols-[minmax(0,1fr)_26rem] md:gap-8">
       <SmoothScroll />
 
-      {/* The header halves arrive from their own side; --card-index leaves
-          them at 0 so they lead, and the body/sidebar below follow. */}
       <div className="enter-from-right flex w-full flex-col gap-3.5">
         {!isEmpty(breadcrumb) && !!breadcrumb ? (
           <div className="flex w-full md:hidden">
@@ -84,8 +75,6 @@ const BlogArticleHeader = ({
         )}
 
         <div className="flex flex-wrap items-center justify-between gap-x-5 gap-y-3 border-y border-neutral-100 py-3 text-xs md:text-sm">
-          {/* The facts wrap among themselves; the share control is a sibling of
-              the whole group so it never gets orphaned onto a line of its own. */}
           <div className="flex flex-wrap items-center gap-x-5 gap-y-2">
             <MetaItem
               icon="/assets/icons/blogs/calendar.svg"
@@ -94,16 +83,16 @@ const BlogArticleHeader = ({
             />
             {!!data?.fields?.author ? (
               <MetaItem
-                icon="/assets/icons/blogs/author.svg"
                 label={_STRINGS.BLOG_AUTHOR}
                 value={data.fields.author}
+                icon="/assets/icons/blogs/author.svg"
               />
             ) : (
               <></>
             )}
             <MetaItem
-              icon="/assets/icons/blogs/time.svg"
               label={_STRINGS.BLOG_READ_TIME}
+              icon="/assets/icons/blogs/time.svg"
               value={`${timeToRead} ${_STRINGS.BLOG_READ_TIME_UNIT}`}
             />
           </div>
@@ -111,16 +100,14 @@ const BlogArticleHeader = ({
         </div>
       </div>
 
-      {/* `priority`: this is the LCP element on every article page, so it must
-          not wait behind the lazy images further down. */}
       <div className="enter-from-left relative aspect-[4/3] w-full overflow-hidden rounded-20">
-        <Image
+        <ContentImage
           fill
           priority
+          className="object-cover"
           sizes={HERO_IMAGE_SIZES}
           src={getHomeImageUrl(data?.feature_image)}
           alt={data?.feature_image?.alt || data?.title || ""}
-          className="object-cover"
         />
       </div>
     </header>

@@ -2,6 +2,7 @@
 
 import type { HomeHeroBannerProps } from "@/types/components/modules/home";
 import { getHomeImageUrl } from "@features/home/mappers/home-image.mapper";
+import { ContentImage } from "@elements/Image";
 import { Suspense, useState } from "react";
 
 import _STRINGS from "@/utils/LocalStrings";
@@ -103,7 +104,7 @@ const HomeBannerPart = ({
            transition-all duration-300 ease-in-out   relative`}
         >
           {isPhone ? (
-            <Image
+            <ContentImage
               fill
               preload
               sizes="100vw"
@@ -114,7 +115,7 @@ const HomeBannerPart = ({
               }   `}
             />
           ) : (
-            <Image
+            <ContentImage
               fill
               preload
               sizes="100vw"
