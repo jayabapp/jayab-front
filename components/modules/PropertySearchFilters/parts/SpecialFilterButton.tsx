@@ -7,9 +7,7 @@ const SpecialFilterButton = ({ cb, isChecked, item }: SpecialFilterButtonProps) 
     type="button"
     onClick={cb}
     aria-pressed={isChecked}
-    className={`rounded-full !w-auto ${
-      isChecked ? "border-brand-600 bg-brand-600/5 text-brand-600" : "opacity-70"
-    } transition-all cursor-pointer gap-0 py-1 h-[1.625rem] pl-2 pr-1 flex items-center justify-center border text-xs`}
+    className={`filter-chip ${isChecked ? "filter-chip-active" : "filter-chip-idle"}`}
   >
     <span className="flex items-center gap-1">
       <ContentImage
@@ -17,7 +15,7 @@ const SpecialFilterButton = ({ cb, isChecked, item }: SpecialFilterButtonProps) 
         width={20}
         height={20}
         src={item?.img}
-        className={`size-5 transition-all ${isChecked ? "" : "grayscale opacity-60"}`}
+        className="size-5 transition-all"
       />
       <span className="text-xs pr-2 shrink-0">{item?.title}</span>
     </span>

@@ -235,7 +235,7 @@ const SelectedFiltersBar = ({
           <button
             type="button"
             onClick={() => setFilterValue("has_pool", 1)}
-            className={`cursor-pointer ${query?.has_pool ? "" : "grayscale opacity-70"} rounded-full !w-auto gap-0 py-1 h-[1.625rem] px-1 flex items-center justify-center border border-brand-600 bg-brand-600/5 text-brand-600 text-xs`}
+            className={`filter-chip gap-0 px-1 ${query?.has_pool ? "filter-chip-active" : "filter-chip-idle"}`}
           >
             <span className="text-xs px-2">
               {query?.has_pool === "0" ? _STRINGS.NO_POOL : _STRINGS.HAS_POOL}
@@ -256,7 +256,7 @@ const SelectedFiltersBar = ({
                   event.stopPropagation();
                   removeFiltersKeys(["has_pool"]);
                 }}
-                className="cursor-pointer w-4 h-4 aspect-square rounded-full border border-brand-600 flex items-center justify-center"
+                className="flex aspect-square h-4 w-4 cursor-pointer items-center justify-center rounded-full border border-brand-600"
               >
                 <ContentImage
                   alt=""

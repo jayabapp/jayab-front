@@ -23,7 +23,7 @@ const PropertyCard = ({
     : `/rooms/${data?.slug}`;
 
   return (
-    <div className="w-full property-card-shadow rounded-20 justify-between flex flex-col p-3 gap-2">
+    <div className="surface-card property-card-shadow flex w-full flex-col justify-between gap-2 p-3">
       <div className="w-full grid grid-cols-5 gap-2">
         <PropertyCardLink
           title={data.title}

@@ -47,7 +47,7 @@ const SelectiveFilterChip = ({
       <button
         type="button"
         onClick={openSheet}
-        className={`rounded-full !w-auto ${selectedCount ? "" : "grayscale opacity-70"} transition-all cursor-pointer gap-0 py-1 h-[1.625rem] pl-2 pr-1 flex items-center justify-center border border-brand-600 bg-brand-600/5 text-brand-600 text-xs`}
+        className={`filter-chip ${selectedCount ? "filter-chip-active" : "filter-chip-idle"}`}
       >
         <span className="text-xs pr-2">{title}</span>
         {selectedCount ? (
@@ -70,7 +70,7 @@ const SelectiveFilterChip = ({
                 event.stopPropagation();
                 removeFiltersKeys([queryKey]);
               }}
-              className="cursor-pointer w-4 h-4 mr-2 aspect-square rounded-full border border-brand-600 flex items-center justify-center"
+              className="mr-2 flex aspect-square h-4 w-4 cursor-pointer items-center justify-center rounded-full border border-brand-600"
             >
               <ContentImage
                 alt=""

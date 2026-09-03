@@ -5,7 +5,7 @@ import _STRINGS from "@/utils/LocalStrings";
 
 /** The active-filter pill: a label plus the control that clears that filter. */
 const RemovableFilterChip = ({ label, onRemove }: RemovableFilterChipProps) => (
-  <div className="rounded-full !w-auto gap-4 py-1 h-[1.625rem] px-1 flex items-center justify-center border border-brand-600 bg-brand-600/5 text-brand-600 text-xs">
+  <div className="filter-chip filter-chip-active gap-4 px-1">
     <p className="text-xs pr-2">{label}</p>
     <button
       type="button"

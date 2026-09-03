@@ -2,7 +2,7 @@ import Skeleton from "@elements/Skeleton/Skeleton";
 
 const PropertyCardSkeleton = () => (
   <div
-    className="flex min-h-48 flex-col justify-between gap-3 rounded-20 p-3 shadow-sm"
+    className="surface-card flex min-h-48 flex-col justify-between gap-3 p-3 shadow-sm"
     aria-hidden="true"
   >
     <div className="flex gap-3">

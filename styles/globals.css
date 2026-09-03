@@ -1516,6 +1516,40 @@ ul {
   @apply rounded-20 border border-white bg-white shadow-glass-sm;
 }
 
+/* The results-card surface. Same reasoning as `.surface-panel`, and the same
+   trap: the canvas is deliberately tinted (`brand.50` plus the aurora mesh) so
+   that white cards read as cards. A card that paints no background does not
+   come out neutral — it inherits the tint. `PropertyCard` was doing exactly
+   that, carrying only a radius and a shadow, so the whole results grid dissolved
+   into one blue field with shadows floating on it. `PropertyShowcaseCard` and
+   the owner cards already paint a surface; this names the rule so the next card
+   does not have to rediscover it. */
+.surface-card {
+  @apply rounded-20 border border-neutral-100 bg-white;
+}
+
+/* ── Filter chips ──────────────────────────────────────────────────────────
+   One pill, two states, used by the attribute chips, the special toggles and
+   the applied-filter pills so they cannot drift apart.
+
+   Idle chips paint white: on a tinted canvas a transparent chip is not neutral,
+   it is a tinted chip. The previous idle style was `grayscale opacity-70` over
+   no background, which read as *disabled* rather than as available.
+
+   Active chips use `brand.100`, not `brand.50` — `brand.50` is the exact colour
+   of the canvas (#F0F6FE), so a chip filled with it would be invisible. */
+.filter-chip {
+  @apply flex h-6.5 w-auto shrink-0 cursor-pointer items-center justify-center gap-0 rounded-full border py-1 pl-2 pr-1 text-xs transition-colors;
+}
+
+.filter-chip-idle {
+  @apply border-neutral-200 bg-white text-neutral-700 hover:border-neutral-300 hover:bg-neutral-50;
+}
+
+.filter-chip-active {
+  @apply border-brand-600 bg-brand-100 text-brand-700;
+}
+
 /* ── Search suggestion rows ────────────────────────────────────────────────
    The pointer and the keyboard cursor light up the same surface: hover sets
    `.search-option-active` through React rather than through `:hover`, so a row

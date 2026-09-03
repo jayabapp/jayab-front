@@ -13,8 +13,12 @@ const PropertyCategoryItem = ({
     onClick={() => cb?.()}
     data-umami-event="Category Select"
     data-umami-event-id={item?.title}
-    className={`flex justify-center rounded-2xl border w-full aspect-square flex-col items-center gap-2 ${
-      isSelected ? "border-brand-600" : ""
+    // White by default for the same reason the cards are: a tile with no
+    // background is a tinted tile on this canvas, not a neutral one.
+    className={`flex aspect-square w-full flex-col items-center justify-center gap-2 rounded-2xl border transition-colors ${
+      isSelected
+        ? "border-brand-600 bg-brand-100 text-brand-700"
+        : "border-neutral-100 bg-white hover:border-neutral-300"
     }`}
   >
     <ContentImage
