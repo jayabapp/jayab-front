@@ -5,6 +5,8 @@ export const propertyKeys = {
   lists: () => [...propertyKeys.all, "list"] as const,
   list: (filters: PropertyFilters) =>
     [...propertyKeys.lists(), filters] as const,
+  count: (filters: PropertyFilters) =>
+    [...propertyKeys.all, "count", filters] as const,
   details: () => [...propertyKeys.all, "detail"] as const,
   detail: (slug: string) => [...propertyKeys.details(), { slug }] as const,
   calendar: (id: number | string, range: string) =>

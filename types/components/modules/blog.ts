@@ -1,14 +1,12 @@
+import type { ReactNode } from "react";
+
 import type { ContentDto } from "@/api_services/home/home.interface";
 import type { ImageDto } from "@/api_services/auth/auth.interface";
 import type { QuestionDto } from "@/api_services/home/home.interface";
-import type { ReactNode } from "react";
-
-export type ArticleProps = {
-  data: ContentDto;
-  item?: { customeImageClass?: string };
-};
 
 export type BlogCardProps = {
+  /** Position in the grid — drives the entrance stagger, nothing else. */
+  index?: number;
   item: ContentDto;
 };
 
@@ -18,11 +16,14 @@ export type BlogsContainerProps = {
   data?: ContentDto[];
 };
 
-export type BlogImageTextProps = {
+export type BlogArticleHeaderProps = {
+  breadcrumb?: { link: string; title: string }[];
   data?: ContentDto;
   timeToRead?: number;
-  children?: ReactNode;
-  breadcrumb?: { link: string; title: string }[];
+};
+
+export type BlogTableOfContentsProps = {
+  headings: { id: string; innerText: string }[];
 };
 
 export type BlogCategoryQuery = {
@@ -47,17 +48,6 @@ export type CategoryBlogsProps = {
   queryPage: number | string | null;
 };
 
-export type LegacyBlogImageTextProps = {
-  children?: ReactNode;
-  data?: {
-    title?: string;
-    full_text: string;
-    small_text?: string;
-    feature_image: ImageDto;
-    created_at?: number | string;
-  };
-};
-
 export type BlogDetailsTemplateProps = {
   html: string;
   data: ContentDto;
@@ -77,3 +67,10 @@ export type BlogGalleryModalProps = {
 export type BlogShareProps = { data: ContentDto };
 export type RelatedBlogsProps = { currentId: number; items: ContentDto[] };
 export type ContentQuestionCommentProps = { item: QuestionDto };
+
+export type BlogCardLinkProps = {
+  children: ReactNode;
+  className?: string;
+  href: string;
+  title?: string;
+};

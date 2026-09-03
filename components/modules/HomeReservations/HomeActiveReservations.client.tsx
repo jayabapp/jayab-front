@@ -59,7 +59,6 @@ const HomeActiveReserve = () => {
                 <div className="w-full  grid grid-cols-8 gap-2   ">
                   {/* INFO */}
                   <Link
-                    prefetch={false}
                     href={`${goToLink}`}
                     title={data?.property?.title}
                     onClick={removeredirectRoomToHome}
@@ -94,7 +93,6 @@ const HomeActiveReserve = () => {
                     </div>
                   </Link>
                   <Link
-                    prefetch={false}
                     href={`${goToLink}`}
                     title={data?.property?.title}
                     onClick={removeredirectRoomToHome}

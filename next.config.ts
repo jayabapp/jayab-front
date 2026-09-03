@@ -64,6 +64,26 @@ const nextConfig: NextConfig = {
   productionBrowserSourceMaps: false,
 
   experimental: {
+    // Client Router Cache lifetimes, in seconds. Next 15+ ships `dynamic: 0`,
+    // which means a dynamic page is thrown away the moment you leave it: going
+    // Back re-runs the whole server render and the remote API round trips with
+    // it, so returning to a list felt exactly as slow as opening it. 30s covers
+    // the read-an-article-then-go-back loop without letting a listing go stale
+    // enough to show a removed property. `static` must be >= 30 per Next.
+    staleTimes: {
+      dynamic: 30,
+      static: 180,
+    },
+
+    // `viewTransition` is deliberately NOT enabled. It needs React's
+    // <ViewTransition>, which only exists on the experimental React channel --
+    // the installed react@19.2.7 does not export it, and Next only swaps in its
+    // vendored experimental build for `taint`, `transitionIndicator` or
+    // `gestureTransition`, not for this flag. Turning it on would therefore do
+    // nothing except invite someone to install react@experimental in a
+    // production app. Route enter animation is done in CSS instead; see
+    // `.route-enter` in styles/globals.css.
+
     // `optimizeCss` (critters) was measured on this app and inlined no critical
     // CSS at all: same two render-blocking <link rel="stylesheet"> tags, same
     // CSS bytes, same HTML size with it on and off. critters is also deprecated

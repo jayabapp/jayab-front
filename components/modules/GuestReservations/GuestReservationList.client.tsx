@@ -36,7 +36,12 @@ const GuestReservationList = () => {
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-4 pb-4 md:p-4">
         {isEmpty(reservations) ? (
           <div className="col-span-2">
-            <EmptyState />
+            <EmptyState
+              actionRoute="/rooms"
+              title={_STRINGS.EMPTY_RESERVES_TITLE}
+              description={_STRINGS.EMPTY_RESERVES_DESC}
+              actionLabel={_STRINGS.SEARCH_PROPERTY_CTA}
+            />
           </div>
         ) : (
           reservations?.map((reservation) => (

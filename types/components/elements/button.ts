@@ -20,6 +20,8 @@ export type ButtonProps = {
   color?: keyof typeof BtnColors;
   containerClass?: string;
   roundedClass?: string;
+  /** Extra classes on the <button> itself, for skins the enums don't cover. */
+  btnClass?: string;
   width?: string;
   icon?: ReactNode;
   endIcon?: ReactNode;

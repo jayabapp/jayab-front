@@ -18,23 +18,27 @@ const PriceRangeFilter = ({
   lowLimit = 0,
   upLimit = DEFAULT_UPPER_BOUND,
 }: PriceRangeFilterProps) => {
+  /**
+   * Both bounds move together, or neither does.
+   *
+   * The previous version dropped whichever handle was still resting on its
+   * limit, which is how the common case — "up to 5 million", one handle
+   * dragged — became a request carrying a single bound. For price the backend
+   * answers a lone `min_price` with a 500 (verified: `min_price=1` alone fails
+   * deterministically, `min_price=1&max_price=999999999` returns the full
+   * 3,324), so that shortening turned an ordinary drag into an error page.
+   * Sending the pair also keeps the URL self-describing and gives the chip in
+   * `SelectedFiltersBar` both numbers to render.
+   */
   const onChange = (value: number | number[]) => {
     if (!Array.isArray(value) || !setFilters) return;
     const [lower, higher] = value;
+    const isFullSpan = lower === lowLimit && higher === upLimit;
 
-    if (higher === upLimit && lower === lowLimit) {
-      setFilters((current: any) => ({
-        ...current,
-        [lowerKey]: undefined,
-        [higherKey]: undefined,
-      }));
-      return;
-    }
     setFilters((current: any) => ({
       ...current,
-      [lowerKey]: lower === lowLimit && !current[higherKey] ? undefined : lower,
-      [higherKey]:
-        higher === upLimit && !current[lowerKey] ? undefined : higher,
+      [lowerKey]: isFullSpan ? undefined : lower,
+      [higherKey]: isFullSpan ? undefined : higher,
     }));
   };
 

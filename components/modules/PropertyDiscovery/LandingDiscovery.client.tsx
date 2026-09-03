@@ -3,10 +3,10 @@
 import { usePropertyDiscoveryFilters } from "@features/properties/hooks/usePropertyDiscoveryFilters";
 import { usePropertyOptionGroups } from "@features/properties/hooks/usePropertyOptionGroups";
 import type { LandingDiscoveryProps } from "@/types/components/modules/property-discovery";
+import { FilterApplyBar, PropertyFilterForm } from "@modules/PropertySearchFilters";
 import type { ChildCities } from "@/types/components/modules/property-discovery";
 import { landingQueryDefaults } from "@features/properties/lib/landing-filters";
 import { SpecialFilterButtons } from "@modules/PropertySearchFilters";
-import { PropertyFilterForm } from "@modules/PropertySearchFilters";
 import { SelectedFiltersBar } from "@modules/PropertySearchFilters";
 import { PropertySortMenu } from "@modules/PropertySearchFilters";
 import { CityModal, RegionModal } from "@modules/CitySelector";
@@ -19,7 +19,6 @@ import DiscoveryResults from "./parts/DiscoveryResults.client";
 import LandingContent from "./parts/LandingContent";
 import _STRINGS from "@/utils/LocalStrings";
 import throttle from "lodash/throttle";
-import Button from "@elements/Button";
 
 const SIDEBAR_HEIGHT = "calc(100dvh - 90px)";
 const SHADOW_SCROLL_THRESHOLD = 20;
@@ -99,11 +98,12 @@ const LandingDiscovery = ({ devices, landing }: LandingDiscoveryProps) => {
 
       <div className="app-container !pt-[7.5rem] lg:!pt-20 !relative z-2">
         <div className="grid grid-cols-12 col-span-12">
-          <div
+          <aside
+            aria-label={_STRINGS.FILTERS}
             style={{ height: SIDEBAR_HEIGHT }}
-            className="hidden justify-between overflow-y-hidden gap-4 lg:sticky lg:top-20 lg:flex flex-col items-center rounded-10 border col-span-3"
+            className="surface-panel col-span-3 hidden flex-col justify-between overflow-hidden lg:sticky lg:top-20 lg:flex"
           >
-            <div className="w-full flex flex-col gap-4 overflow-y-scroll">
+            <div className="w-full grow overflow-y-auto">
               <PropertyFilterForm
                 filters={filters}
                 queries={queries}
@@ -111,13 +111,8 @@ const LandingDiscovery = ({ devices, landing }: LandingDiscoveryProps) => {
                 propertyTypes={propertyTypes}
               />
             </div>
-            <Button
-              width="w-full"
-              onClick={onApplyFilters}
-              title={_STRINGS?.DO_THE_FILTERING}
-              containerClass="w-full flex items-center flex-col px-2 pb-2 pt-0"
-            />
-          </div>
+            <FilterApplyBar draft={filters} onApply={onApplyFilters} />
+          </aside>
 
           <div className="col-span-12 md:col-span-12 lg:col-span-9 px-0 md:pr-4 md:pl-0 md:mt-0">
             <div className="hidden mb-2 z-1 w-full xl:flex flex-col xl:flex-row items-center justify-between">

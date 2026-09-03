@@ -63,7 +63,11 @@ const MainFiltersContainer = ({
               key={index}
               className={`w-full  !h-auto   p-0 md:py-2 cursor-pointer select-none md:px-2`}
             >
-              <QuickSearchItem item={i} key={`${i?.title}${index}cat`} />
+              <QuickSearchItem
+                index={index}
+                item={i}
+                key={`${i?.title}${index}cat`}
+              />
             </SwiperSlide>
           ))}
         </Swiper>

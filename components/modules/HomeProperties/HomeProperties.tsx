@@ -1,7 +1,5 @@
 import type { THomeProper } from "@/types/components/modules/property-discovery";
 
-import { weekFromToday } from "@/helpers/weekFromToday";
-
 import HomePropertiesGrid from "./parts/HomePropertiesGrid";
 import _STRINGS from "@/utils/LocalStrings";
 import Button from "@elements/Button";
@@ -9,20 +7,16 @@ import isEmpty from "lodash/isEmpty";
 import Link from "next/link";
 
 const HomePropertiesList = ({ data, devices, middleBanner }: THomeProper) => {
-  const week = weekFromToday();
-
   return (
     <div className="w-full  padding-x ">
       <HomePropertiesGrid
         data={data}
-        week={week}
         devices={devices}
         middleBanner={middleBanner}
       />
       {!isEmpty(data) && data?.length % 12 === 0 && (
         <Link
           href="/rooms"
-          prefetch={false}
           className="w-full"
           title={_STRINGS.SHOW_MORE}
         >

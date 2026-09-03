@@ -14,6 +14,7 @@ import { REVALIDATE } from "@/helpers/revalidate";
 import { MobileNav } from "@modules/MobileNav";
 import { ReactNode } from "react";
 
+import NavigationProgress from "@elements/NavigationProgress";
 import LayoutProvider from "./layout-provider.client";
 import SplashScreen from "@layouts/SplashScreen";
 import serverCall from "@/helpers/serverCall";
@@ -104,6 +105,9 @@ const RootLayout = async ({
   return (
     <html lang="fa" dir="rtl">
       <body className={x_Iransans.className} suppressHydrationWarning>
+        {/* Mounted at body level, outside anything that could create a
+            containing block for a `position: fixed` child. */}
+        <NavigationProgress />
         <SplashScreen />
         <LayoutProvider>
           <AppShell>

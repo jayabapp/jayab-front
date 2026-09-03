@@ -16,10 +16,6 @@ export type PropertyDetailsModalProps = {
   footer: ReactNode;
 };
 
-export type PropertyIntroductionProps = {
-  property: PropertyDetailsView;
-};
-
 export type PropertySpecsProps = {
   devices?: DeviceInfo;
   property: SinglePropDto;
@@ -88,4 +84,12 @@ export type PropertyDetailsSkeletonProps = {
 export type TOptionGroup = {
   title: string;
   options?: string[];
+};
+
+export type PropertySummaryCardProps = {
+  property: PropertyDetailsView;
+};
+
+export type PropertyDescriptionProps = {
+  property: SinglePropDto;
 };

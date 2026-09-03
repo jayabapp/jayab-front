@@ -30,7 +30,11 @@ const FilterCheck = ({
       delete body.specifications;
       delete body.categories;
     }
-    if (source[queryKey] === 0) delete body[queryKey];
+    // Unchecking removes the key instead of writing `0`. These are one-sided
+    // filters — the API only acts on `=== 1` — so a lingering `has_discount=0`
+    // filtered nothing while still splitting the React Query cache and putting
+    // a meaningless pair into every shared link.
+    if (!value) delete body[queryKey];
 
     if (setMobileFilters) setMobileFilters(body);
     else router.replace(`${pathname}?${queryBuilder(body)}`);

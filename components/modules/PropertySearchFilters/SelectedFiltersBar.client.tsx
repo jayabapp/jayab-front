@@ -20,6 +20,26 @@ import isEmpty from "lodash/isEmpty";
 import moment from "moment-jalaali";
 
 const JALALI_DATE_FORMAT = "jDD/jMMMM/jYYYY";
+
+/**
+ * Label for a range chip.
+ *
+ * A range does not always have both ends: `PriceRangeFilter` deliberately drops
+ * a bound that is still sitting on its slider limit, so "up to 5 million" is
+ * stored as `max_price` alone. The chips used to require both keys, which meant
+ * exactly those one-sided filters — the common case — were applied to the
+ * results while showing nothing the user could see or click to remove.
+ */
+const rangeLabel = (
+  title: string,
+  lower: string | undefined,
+  higher: string | undefined,
+  unit: string,
+) => {
+  const from = lower ? `${_STRINGS.FROM} ${numberWithCommas(lower)}` : "";
+  const to = higher ? `${_STRINGS.TO} ${numberWithCommas(higher)}` : "";
+  return `${title} ${[from, to].filter(Boolean).join(" ")} ${unit}`.trim();
+};
 // Party and pet render as their own chips instead of going through the dynamic list.
 const RULE_FILTERS = [
   { key: "party", title: _STRINGS.PARTY },
@@ -130,29 +150,44 @@ const SelectedFiltersBar = ({
         </SwiperSlide>
       ) : null}
 
-      {query?.max_commission && query?.min_commission ? (
+      {query?.max_commission || query?.min_commission ? (
         <SwiperSlide key="selected-commission" className="!w-auto">
           <RemovableFilterChip
             onRemove={() => removeFiltersKeys(["max_commission", "min_commission"])}
-            label={`${_STRINGS.COMMIS_JUST_PERC} ${_STRINGS.FROM} ${numberWithCommas(query?.min_commission)}% ${_STRINGS.TO} ${numberWithCommas(query?.max_commission)}%`}
+            label={rangeLabel(
+              _STRINGS.COMMIS_JUST_PERC,
+              query?.min_commission,
+              query?.max_commission,
+              "%",
+            )}
           />
         </SwiperSlide>
       ) : null}
 
-      {query?.max_price && query?.min_price ? (
+      {query?.max_price || query?.min_price ? (
         <SwiperSlide key="selected-price" className="!w-auto">
           <RemovableFilterChip
             onRemove={() => removeFiltersKeys(["max_price", "min_price"])}
-            label={`${_STRINGS.PRICE} ${_STRINGS.FROM} ${numberWithCommas(query?.min_price)} ${_STRINGS.TO} ${numberWithCommas(query?.max_price)} ${_STRINGS.TOMAN}`}
+            label={rangeLabel(
+              _STRINGS.PRICE,
+              query?.min_price,
+              query?.max_price,
+              _STRINGS.TOMAN,
+            )}
           />
         </SwiperSlide>
       ) : null}
 
-      {query?.max_building_area && query?.min_building_area ? (
+      {query?.max_building_area || query?.min_building_area ? (
         <SwiperSlide key="selected-area" className="!w-auto">
           <RemovableFilterChip
             onRemove={() => removeFiltersKeys(["max_building_area", "min_building_area"])}
-            label={`${_STRINGS.ROOM_SIZE} ${_STRINGS.FROM} ${query?.min_building_area} ${_STRINGS.TO} ${query?.max_building_area} ${_STRINGS.METER}`}
+            label={rangeLabel(
+              _STRINGS.ROOM_SIZE,
+              query?.min_building_area,
+              query?.max_building_area,
+              _STRINGS.METER,
+            )}
           />
         </SwiperSlide>
       ) : null}

@@ -49,8 +49,12 @@ const BlogsClientPageComponent = () => {
               <EmptyState />
             </div>
           ) : (
-            data?.map((e) => (
-              <LatestBlogCard item={e} key={`latestBlog${e?.title}`} />
+            data?.map((e, index) => (
+              <LatestBlogCard
+                index={index}
+                item={e}
+                key={`latestBlog${e?.title}`}
+              />
             ))
           )}
         </InfiniteScroll>

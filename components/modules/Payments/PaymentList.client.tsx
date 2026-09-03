@@ -74,7 +74,10 @@ const PaymentList = () => {
         </InfiniteScroll>
       ) : (
         <div className="col-span-4">
-          <EmptyState />
+          <EmptyState
+            title={_STRINGS.EMPTY_PAYMENTS_TITLE}
+            description={_STRINGS.EMPTY_PAYMENTS_DESC}
+          />
         </div>
       )}
     </div>

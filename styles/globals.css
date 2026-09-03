@@ -64,14 +64,36 @@ ul {
 }
 
 .app-container {
-  @apply h-full bg-white !min-h-screen px-3 md:px-10 lg:px-12 2xl:px-[10%]   pt-24 lg:pt-28 pb-32 lg:pb-48;
+  @apply h-full bg-transparent !min-h-screen px-3 md:px-10 lg:px-12 2xl:px-[10%]   pt-24 lg:pt-28 pb-32 lg:pb-48;
 }
 
 .app-size {
   @apply w-full md:w-full mx-auto lg:w-full  min-h-[100dvh];
 }
+/* The app canvas. Tier one of two: every page sits on this tinted mesh so white
+   cards read as cards instead of white-on-white, and it is deliberately STATIC —
+   no drifting orbs. Measured on /faq, three runs of four seconds each: a bare
+   page and this tint both produce 241 frames, while the auth/dashboard version
+   with its two animated blurred orbs drops the browser to 95-158. Orbs on every
+   page would mean a device never reaches idle while someone reads a blog post,
+   so they stay in `.auth-container` / `.aurora-layer`, which need something for
+   their glass surfaces to blur. Painted on a pseudo-element rather than the
+   element itself so it stays `fixed` to the viewport and never grows the page. */
 .app-background {
-  @apply !bg-white  !h-full;
+  @apply !h-full;
+  background-color: theme("colors.brand.50");
+}
+
+.app-background::before {
+  content: "";
+  position: fixed;
+  inset: 0;
+  z-index: 0;
+  pointer-events: none;
+  background-image: var(--aurora-mesh);
+  /* Half the dashboard's strength: content pages carry dense tables and small
+     grey text that the dashboard's card-only layout never has to. */
+  opacity: 0.35;
 }
 
 .app-text {
@@ -110,8 +132,325 @@ ul {
 }
 
 /* ---------------------------------- AUTH ---------------------------------- */
+/* Glassmorphism auth shell. `isolate` makes this element the backdrop root, so
+   the glass surfaces inside sample the colour mesh and the floating blobs
+   below instead of the plain white <body>. */
+/* One definition of the aurora mesh, shared by the auth shell and the fixed
+   layer the profile pages sit on. */
+:root {
+  --aurora-mesh:
+    radial-gradient(
+      100% 70% at 100% 0%,
+      theme(colors.brand.400 / 75%),
+      transparent 62%
+    ),
+    radial-gradient(
+      95% 62% at 0% 6%,
+      theme(colors.brand.200 / 90%),
+      transparent 66%
+    ),
+    radial-gradient(
+      130% 85% at 50% 112%,
+      theme(colors.brand.600 / 45%),
+      transparent 72%
+    );
+}
+
 .auth-container {
-  @apply w-full overflow-x-hidden  max-w-full px-4  mx-auto     pb-24  pt-20  md:shadow-lg  md:rounded-20;
+  @apply relative isolate mx-auto flex w-full max-w-full flex-col items-center justify-center overflow-hidden px-4 pb-20 pt-24;
+  min-height: 100dvh;
+  background-color: theme("colors.brand.100");
+  background-image: var(--aurora-mesh);
+}
+
+/* The same aurora for content pages, as a fixed layer instead of a background on
+   the page wrapper: nothing can clip it, it cannot introduce a horizontal
+   scrollbar, and it stays put while the page scrolls. `opacity` dials the whole
+   thing down in one move — a dashboard has to stay readable under it, unlike the
+   login card. It sits at z-0 rather than a negative z-index, which would put it
+   behind the white <body> background and make it invisible. */
+.aurora-layer {
+  @apply pointer-events-none fixed inset-0 z-0;
+  background-color: theme("colors.brand.50");
+  background-image: var(--aurora-mesh);
+  opacity: 0.5;
+}
+
+/* Two slow-drifting blurred orbs give the blur something to bite on — a glass
+   card over a flat background is indistinguishable from a plain white card. */
+.auth-container::before,
+.auth-container::after,
+.aurora-layer::before,
+.aurora-layer::after {
+  content: "";
+  position: absolute;
+  z-index: -1;
+  border-radius: 9999px;
+  filter: blur(56px);
+  pointer-events: none;
+}
+
+.auth-container::before,
+.aurora-layer::before {
+  top: -6rem;
+  inset-inline-end: -6rem;
+  width: 26rem;
+  height: 26rem;
+  background: radial-gradient(
+    circle,
+    theme(colors.brand.600 / 70%),
+    transparent 70%
+  );
+  animation: auth-orb-drift 20s ease-in-out infinite;
+}
+
+.auth-container::after,
+.aurora-layer::after {
+  bottom: -8rem;
+  inset-inline-start: -7rem;
+  width: 28rem;
+  height: 28rem;
+  background: radial-gradient(
+    circle,
+    theme(colors.brand.500 / 60%),
+    transparent 70%
+  );
+  animation: auth-orb-drift 26s ease-in-out infinite reverse;
+}
+
+@keyframes auth-orb-drift {
+  0%,
+  100% {
+    transform: translate3d(0, 0, 0) scale(1);
+  }
+  50% {
+    transform: translate3d(-1.5rem, 2.5rem, 0) scale(1.12);
+  }
+}
+
+/* ------------------------------ GLASS SURFACES ----------------------------- */
+/* These live in globals rather than inline utilities because `backdrop-filter`
+   needs the -webkit- prefix for iOS Safari and Tailwind emits neither the
+   prefix nor the `saturate()` pairing that keeps colours from going grey. */
+.glass-panel {
+  @apply relative overflow-hidden rounded-28 border border-white/60 bg-white/55 shadow-glass;
+  -webkit-backdrop-filter: blur(26px) saturate(170%);
+  backdrop-filter: blur(26px) saturate(170%);
+}
+
+/* Specular highlight along the top edge — the cue that sells "pane of glass". */
+.glass-panel::before {
+  content: "";
+  @apply pointer-events-none absolute inset-x-10 top-0 h-px;
+  background: linear-gradient(
+    to left,
+    transparent,
+    rgba(255, 255, 255, 0.95),
+    transparent
+  );
+}
+
+/* Tinted chip behind the profile menu icons — the bare icons on a white row
+   were the flattest part of the dashboard. */
+.menu-icon-chip {
+  @apply flex size-10 shrink-0 items-center justify-center rounded-xl border border-white/70 bg-brand-50/80 transition-colors;
+}
+
+.group:hover .menu-icon-chip {
+  @apply bg-brand-100;
+}
+
+/* Glass surface for content cards. The blur lives on a pseudo-element, not the
+   card itself: `backdrop-filter` would make the card the containing block for
+   its `fixed` children, and these cards host confirm modals. */
+.glass-surface {
+  @apply relative border border-white/70 shadow-glass-sm;
+}
+
+.glass-surface::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  border-radius: inherit;
+  background-color: rgba(255, 255, 255, 0.75);
+  -webkit-backdrop-filter: blur(20px) saturate(170%);
+  backdrop-filter: blur(20px) saturate(170%);
+}
+
+.glass-badge {
+  @apply border border-white/70 bg-white/60 shadow-glass-sm;
+  -webkit-backdrop-filter: blur(14px) saturate(160%);
+  backdrop-filter: blur(14px) saturate(160%);
+}
+
+/* Frosted sticky site header. The blur sits on a pseudo-element instead of the
+   header box itself because `backdrop-filter` turns an element into the
+   containing block for its fixed-position descendants — and the profile menu's
+   logout ConfirmModal is a plain `fixed` overlay that would get trapped inside
+   the header. 55% white with a heavier blur: transparent enough to read as glass
+   over the page, while `saturate` keeps the text underneath from greying out. */
+.header-glass {
+  @apply relative;
+}
+
+.header-glass::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  background-color: rgba(255, 255, 255, 0.55);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.55);
+  -webkit-backdrop-filter: blur(26px) saturate(190%);
+  backdrop-filter: blur(26px) saturate(190%);
+}
+
+.glass-header {
+  @apply border-b border-white/50 bg-white/45;
+  -webkit-backdrop-filter: blur(18px) saturate(160%);
+  backdrop-filter: blur(18px) saturate(160%);
+}
+
+/* Centre-out underline for hoverable nav titles. Lives here rather than as an
+   inline `after:` chain because the header nav links, the header profile-menu
+   trigger and the dashboard sidebar rows all share it. `currentColor` makes it
+   follow whatever hover colour the label uses, so each caller only picks a text
+   colour. Requires `relative` on the label and `group` on the hovered ancestor. */
+.nav-underline::after {
+  content: "";
+  position: absolute;
+  inset-inline: 0;
+  bottom: -0.375rem;
+  height: 2px;
+  border-radius: 9999px;
+  background-color: currentColor;
+  transform: scaleX(0);
+  transform-origin: center;
+  transition: transform 0.25s ease;
+}
+
+.group:hover .nav-underline::after {
+  transform: scaleX(1);
+}
+
+/* Auth flip card. The two faces are stacked in one grid cell so the card is as
+   tall as the taller of them and the height never jumps mid-rotation, and only
+   `transform` animates, so the flip stays on the compositor. */
+.flip-scene {
+  perspective: 1800px;
+}
+
+.flip-card {
+  display: grid;
+  transform-style: preserve-3d;
+  transition: transform 700ms cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.flip-card > * {
+  grid-area: 1 / 1;
+}
+
+.flip-card.is-flipped {
+  transform: rotateY(180deg);
+}
+
+.flip-face {
+  backface-visibility: hidden;
+  -webkit-backface-visibility: hidden;
+}
+
+.flip-face-back {
+  transform: rotateY(180deg);
+}
+
+/* Entrance for the auth card. Transform + opacity only, so it runs on the
+   compositor and shifts no layout; no `forwards` fill, so the transform is gone
+   once it ends and the card never becomes a containing block for a `fixed`
+   overlay. Kept short because the card carries a backdrop-filter, which is
+   re-sampled on every animated frame. */
+@keyframes auth-card-in {
+  from {
+    opacity: 0;
+    transform: scale(0.94);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+.auth-card-enter {
+  animation: auth-card-in 320ms cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.glass-chip {
+  @apply rounded-full border border-white/60 bg-white/50 px-3 py-1.5;
+  -webkit-backdrop-filter: blur(12px);
+  backdrop-filter: blur(12px);
+}
+
+/* Declared after `@tailwind utilities` so it wins over the base field classes
+   FormInput hard-codes (`bg-neutral-50`, hover/focus borders) without `!`. */
+.glass-field {
+  border-color: rgba(255, 255, 255, 0.7);
+  background-color: rgba(255, 255, 255, 0.5);
+  -webkit-backdrop-filter: blur(12px);
+  backdrop-filter: blur(12px);
+  transition:
+    border-color 0.2s ease,
+    background-color 0.2s ease,
+    box-shadow 0.2s ease;
+}
+
+.glass-field:hover {
+  border-color: rgba(255, 255, 255, 0.95);
+}
+
+.glass-field:focus {
+  border-color: theme("colors.brand.400");
+  background-color: rgba(255, 255, 255, 0.8);
+  box-shadow: 0 0 0 4px theme(colors.brand.500 / 14%);
+}
+
+.glass-field-filled {
+  border-color: theme("colors.brand.400");
+  background-color: rgba(255, 255, 255, 0.85);
+  color: theme("colors.brand.700");
+}
+
+.btn-glass-primary {
+  @apply border-transparent text-white shadow-glass-btn;
+  background-image: linear-gradient(
+    to left,
+    theme("colors.brand.700"),
+    theme("colors.brand.500")
+  );
+}
+
+.btn-glass-primary:disabled {
+  background-image: none;
+  @apply shadow-none;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .auth-container::before,
+  .auth-container::after,
+  .aurora-layer::before,
+  .aurora-layer::after,
+  .auth-card-enter {
+    animation: none;
+  }
+
+  .nav-underline::after {
+    transition: none;
+  }
+
+  /* 1ms rather than `none`: the rotation is imperceptible either way, but the
+     transitionend still fires, and that event is what unmounts the OTP face. */
+  .flip-card {
+    transition-duration: 1ms;
+  }
+
 }
 .home-container {
   @apply h-full bg-transparent mx-auto !max-w-full min-h-[100dvh] px-3 md:px-3 lg:px-4 xl:px-[15%]  pt-24 lg:pt-24  pb-32 lg:pb-44 overflow-x-scroll;
@@ -140,29 +479,6 @@ ul {
   direction: ltr;
 }
 
-/* -------------------------------------------------------------------------- */
-/*                        react bottom sheet customize                        */
-/* -------------------------------------------------------------------------- */
-/* @media only screen and (min-width: 1024px) {
-  :root {
-    --rsbs-max-w: calc(100vw * 0.5);
-    --rsbs-ml: calc(100vw * 0.25);
-    --rsbs-mr: calc(100vw * 0.25);
-  }
-}
-[data-rsbs-header] {
-  box-shadow: none !important;
-}
-[data-theme="dark"] {
-  --rsbs-bg: theme("colors.neutral.800");
-}
-[data-theme="light"] {
-  --rsbs-bg: white;
-} */
-
-/* -------------------------------------------------------------------------- */
-/*                        end react bottom sheet customize                    */
-/* -------------------------------------------------------------------------- */
 
 /* -------------------------------------------------------------------------- */
 /*                                  CALENDAR                                  */
@@ -792,6 +1108,238 @@ ul {
   box-shadow: 0px 0px 10px 0px rgba(0, 7, 55, 0.1);
 }
 
+/* Lift card — the shared photo-first card behaviour: the media leads, and the
+   whole card rises on hover. Used by the landing's property cards and by the blog
+   cards, which is why it is named for what it does rather than for one caller.
+   Only `transform`, `opacity` and `box-shadow` animate, so nothing here reflows. */
+.lift-card {
+  box-shadow: 0 1px 2px 0 rgb(0 7 55 / 0.06);
+  transition:
+    transform 0.3s cubic-bezier(0.22, 1, 0.36, 1),
+    box-shadow 0.3s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.lift-card:hover,
+.lift-card:focus-within {
+  @apply shadow-glass-sm;
+  transform: translateY(-0.375rem);
+}
+
+.lift-card-media {
+  transition: transform 0.55s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.lift-card:hover .lift-card-media,
+.lift-card:focus-within .lift-card-media {
+  transform: scale(1.07);
+}
+
+/* "نردبان شده" means the listing was bumped up, so the chevrons step up with the
+   card on hover. 2px only — it should register as liveliness, not as a control. */
+.promoted-pill-glyph {
+  transition: transform 0.35s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.lift-card:hover .promoted-pill-glyph,
+.lift-card:focus-within .promoted-pill-glyph {
+  transform: translateY(-0.125rem);
+}
+
+/* RTL: forward is leftwards, so the "read on" chevron slides that way. */
+.lift-card-arrow {
+  transition: transform 0.28s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.lift-card:hover .lift-card-arrow,
+.lift-card:focus-within .lift-card-arrow {
+  transform: translateX(-0.25rem);
+}
+
+/* The scrim only exists to keep the verified pill legible on bright photos, so it
+   sits at a low opacity until hover, where it also sells the lift. */
+.lift-card-scrim {
+  background-image: linear-gradient(
+    to top,
+    rgb(11 21 36 / 0.55),
+    rgb(11 21 36 / 0.08) 42%,
+    transparent 68%
+  );
+  opacity: 0.75;
+  transition: opacity 0.3s ease;
+}
+
+.lift-card:hover .lift-card-scrim,
+.lift-card:focus-within .lift-card-scrim {
+  opacity: 1;
+}
+
+/* Shared staggered entrance: rise + fade, ordered by --card-index. Used by the
+   landing's showcase cards and its type / quick-search tiles, so a grid and a
+   carousel of tiles come in with the same rhythm. `backwards` (not `both`) is
+   deliberate: it holds the first keyframe through the stagger delay so an item
+   never flashes in before its turn, while letting the element fall back to its
+   own rules once the run ends. A forwards fill would pin `transform: none` at
+   animation priority and the hover lifts below could never win the cascade. */
+@keyframes stagger-rise-in {
+  from {
+    opacity: 0;
+    transform: translateY(0.75rem);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+.stagger-rise {
+  animation: stagger-rise-in 0.45s cubic-bezier(0.22, 1, 0.36, 1) backwards;
+  animation-delay: calc(var(--card-index, 0) * 60ms);
+}
+
+/* Landing tile — one design for both the property-type row and the quick-search
+   row. Solid white rather than glass: sixteen blurred surfaces on one screen is
+   real GPU work, and there is nothing behind these worth blurring. The icon well
+   repeats `menu-icon-chip`'s recipe from the dashboard at a larger size. */
+.home-tile {
+  box-shadow: 0 1px 2px 0 rgb(0 7 55 / 0.06);
+  transition:
+    transform 0.28s cubic-bezier(0.22, 1, 0.36, 1),
+    box-shadow 0.28s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.home-tile:hover,
+.home-tile:focus-visible {
+  @apply shadow-glass-sm;
+  transform: translateY(-0.25rem);
+}
+
+/* Touch devices never hover, so the press is the only feedback there is. */
+.home-tile:active {
+  transform: scale(0.97);
+}
+
+.home-tile-well {
+  @apply flex items-center justify-center rounded-2xl border border-white bg-brand-50;
+  transition: background-color 0.28s ease;
+}
+
+.home-tile:hover .home-tile-well,
+.home-tile:focus-visible .home-tile-well {
+  @apply bg-brand-100;
+}
+
+.home-tile-icon {
+  transition: transform 0.28s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+/* Continuous marquee for the popular-cities rows. Pure CSS on purpose: a JS
+   autoplay ticks the main thread every frame, while `translateX` on a
+   `width: max-content` track is composited and touches neither layout nor paint.
+   Seamlessness comes from rendering the row twice and travelling exactly -50%,
+   which is a percentage of the track itself — so it stays exact at any item
+   width or breakpoint, with no measuring. */
+.marquee {
+  overflow: hidden;
+}
+
+.marquee-track {
+  display: flex;
+  width: max-content;
+  animation: marquee-drift var(--marquee-duration, 32s) linear infinite;
+  will-change: transform;
+}
+
+/* Positive, not negative: the page is RTL, so a `max-content` track hangs its
+   right edge on the container and overflows leftwards, which puts the duplicate
+   to the LEFT of the original. Travelling right is what brings the duplicate
+   into the window; travelling left would just drag the row off and leave a gap.
+   +50% lands the duplicate exactly where the original sat, so the loop is
+   pixel-identical at the seam. */
+@keyframes marquee-drift {
+  from {
+    transform: translateX(0);
+  }
+  to {
+    transform: translateX(50%);
+  }
+}
+
+/* The second row travels the other way. `animation-direction` rather than a
+   second keyframe block, so both rows stay in one definition. */
+.marquee-track-reverse {
+  animation-direction: reverse;
+}
+
+/* Paused while pointed at or tab-focused so a city can actually be read and
+   clicked, and while off-screen (a class an observer toggles) so scrolling past
+   the row lets the page reach idle instead of animating forever. */
+.marquee:hover .marquee-track,
+.marquee:focus-within .marquee-track,
+.marquee-paused .marquee-track {
+  animation-play-state: paused;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .marquee {
+    overflow-x: auto;
+  }
+
+  .marquee-track {
+    animation: none;
+    will-change: auto;
+  }
+
+  /* Without the drift the duplicate is dead weight, and the row has to stay
+     reachable, so it is dropped and the track scrolls by hand instead. */
+  .marquee-clone {
+    display: none;
+  }
+}
+
+.home-tile:hover .home-tile-icon,
+.home-tile:focus-visible .home-tile-icon {
+  transform: scale(1.08);
+}
+
+/* Kept next to the rules it cancels rather than in the shared reduced-motion
+   block further up the file: that block is declared before these, and at equal
+   specificity the later declaration would win and the motion would survive. */
+@media (prefers-reduced-motion: reduce) {
+  .stagger-rise {
+    animation: none;
+  }
+
+  .lift-card,
+  .lift-card-media,
+  .lift-card-scrim,
+  .promoted-pill-glyph,
+  .lift-card-arrow {
+    transition: none;
+  }
+
+  .home-tile,
+  .home-tile-well,
+  .home-tile-icon {
+    transition: none;
+  }
+
+  .lift-card:hover,
+  .lift-card:focus-within,
+  .lift-card:hover .lift-card-media,
+  .lift-card:focus-within .lift-card-media,
+  .lift-card:hover .promoted-pill-glyph,
+  .lift-card:focus-within .promoted-pill-glyph,
+  .lift-card:hover .lift-card-arrow,
+  .lift-card:focus-within .lift-card-arrow,
+  .home-tile:hover,
+  .home-tile:focus-visible,
+  .home-tile:active,
+  .home-tile:hover .home-tile-icon,
+  .home-tile:focus-visible .home-tile-icon {
+    transform: none;
+  }
+}
+
 .footer-plus-shadow {
   box-shadow: 0px 3.64px 10.93px 0px rgba(53, 130, 224, 0.35);
 }
@@ -813,4 +1361,184 @@ ul {
   box-shadow: 0px 2px 3px 0px rgba(255, 255, 255, 0.4) inset;
 
   box-shadow: 0px -2px 3.4px 0px rgba(168, 40, 47, 1) inset;
+}
+
+/* ── Route transition feedback ──────────────────────────────────────────────
+   Driven entirely by class toggles from NavigationProgress.client.tsx, never by
+   React state, so a navigation costs no re-render of the app shell.
+
+   `right: 0` because the document is RTL: the bar has to grow from the start
+   edge, which is the right one here. */
+.nav-progress {
+  position: fixed;
+  top: 0;
+  right: 0;
+  z-index: 100;
+  width: 0;
+  height: 2px;
+  opacity: 0;
+  pointer-events: none;
+  border-bottom-left-radius: 2px;
+  background: linear-gradient(
+    270deg,
+    theme("colors.brand.600") 0%,
+    theme("colors.brand.400") 100%
+  );
+}
+
+/* Creeps toward 90% and stops. It must never reach the end on its own: a bar
+   that completes before the page arrives tells the user the wait is over when
+   it is not. The real completion is `.nav-progress-done`. */
+.nav-progress-active {
+  width: 90%;
+  opacity: 1;
+  transition: width 12s cubic-bezier(0.1, 0.85, 0.25, 1), opacity 0.15s ease-out;
+}
+
+.nav-progress-done {
+  width: 100%;
+  opacity: 0;
+  transition: width 0.18s ease-out, opacity 0.32s ease-out 0.12s;
+}
+
+/* Pending state for a single link, fed by useLinkStatus. The card dims slightly
+   and stops responding to further clicks, which is the acknowledgement the
+   cards previously never gave. */
+.link-pending {
+  opacity: 0.55;
+  pointer-events: none;
+  transition: opacity 0.15s ease-out;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .nav-progress,
+  .nav-progress-active,
+  .nav-progress-done {
+    transition: none;
+  }
+
+  .link-pending {
+    transition: none;
+  }
+}
+
+/* Route enter animation. Applied to content that genuinely mounts fresh on a
+   navigation — the loading fallbacks and the blog route template — so the new
+   page eases in instead of cutting. Opacity and a small lift only: nothing that
+   moves layout, so it cannot cause a shift while the page is still settling. */
+@keyframes route-enter-in {
+  from {
+    opacity: 0;
+    transform: translateY(0.5rem);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+.route-enter {
+  animation: route-enter-in 0.32s cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .route-enter {
+    animation: none;
+  }
+}
+
+/* Directional entrance for the article page's panels: the two halves of each
+   row arrive from their own side, so the layout assembles instead of appearing
+   in one hard cut.
+
+   Named for what the reader sees, not logical start/end — CSS transforms ignore
+   `direction`, so translateX is physical in RTL exactly as in LTR.
+
+   Below md the columns stack full width, where a sideways entrance would mean
+   nothing and 1.5rem of translate could push past the viewport edge and raise a
+   horizontal scrollbar. There the same elements just rise instead. */
+@keyframes enter-from-right {
+  from {
+    opacity: 0;
+    transform: translateX(1.5rem);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+@keyframes enter-from-left {
+  from {
+    opacity: 0;
+    transform: translateX(-1.5rem);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+.enter-from-right,
+.enter-from-left {
+  animation-name: route-enter-in;
+  animation-duration: 0.5s;
+  animation-timing-function: cubic-bezier(0.22, 1, 0.36, 1);
+  /* `backwards`, not `both`: it holds the opening frame through the delay but
+     releases afterwards, so nothing stays pinned at animation priority. */
+  animation-fill-mode: backwards;
+  animation-delay: calc(var(--card-index, 0) * 90ms);
+}
+
+@media (min-width: 768px) {
+  .enter-from-right {
+    animation-name: enter-from-right;
+  }
+
+  .enter-from-left {
+    animation-name: enter-from-left;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .enter-from-right,
+  .enter-from-left {
+    animation: none;
+  }
+}
+
+/* The page-level card surface. Defined once so the article page and the
+   property page cannot drift apart: both are white cards floating on the tinted
+   canvas, and a difference of one border or shadow between them reads as a bug.
+   Padding is deliberately excluded — panels that wrap their own scroll areas or
+   full-bleed media set it themselves. */
+.surface-panel {
+  @apply rounded-20 border border-white bg-white shadow-glass-sm;
+}
+
+/* ── Search suggestion rows ────────────────────────────────────────────────
+   The pointer and the keyboard cursor light up the same surface: hover sets
+   `.search-option-active` through React rather than through `:hover`, so a row
+   can never be highlighted twice or highlighted in two places at once. */
+.search-option {
+  @apply flex w-full items-center gap-2.5 rounded-10 px-2 py-2 text-right transition-colors;
+}
+
+.search-option-active {
+  @apply bg-brand-50;
+}
+
+.search-option-icon {
+  @apply flex size-8 shrink-0 items-center justify-center rounded-full bg-neutral-100 transition-colors;
+}
+
+.search-option-active .search-option-icon {
+  @apply bg-white;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .search-option,
+  .search-option-icon {
+    transition: none;
+  }
 }

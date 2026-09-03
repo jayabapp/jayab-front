@@ -11,6 +11,7 @@ const Button = ({
   variant = "solid",
   color = "primary",
   containerClass,
+  btnClass = "",
   width = "w-fit",
   roundedClass = "rounded-10",
   disabled,
@@ -26,7 +27,7 @@ const Button = ({
         type="button"
         className={` active:ring-4  flex items-center justify-center relative  transition-all font-medium text-base ${
           !disabled ? ` ${BtnVariants[variant]} ${BtnColors[color]}` : ""
-        } ${"px-7 disabled:bg-neutral-300 py-2.5"}  ${roundedClass} ${width} ${
+        } ${"px-7 disabled:bg-neutral-300 py-2.5"}  ${roundedClass} ${width} ${btnClass} ${
           (disabled || loading) && "bg-neutral-200  border-neutral-400 hover:ring-0"
         }`}
         onClick={typeof onClick == "function" ? onClick : void null}

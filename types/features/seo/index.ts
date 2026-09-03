@@ -7,8 +7,6 @@ export type ServiceStructuredDataProps = {
 
 export type BlogStructuredDataProps = {
   data: ContentDto;
-  rate: number;
-  rate_count: number;
   timeToRead: number;
   wordCount: number;
 };

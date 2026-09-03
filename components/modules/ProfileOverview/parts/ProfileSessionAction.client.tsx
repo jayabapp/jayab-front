@@ -30,7 +30,7 @@ const ProfileSessionAction = ({ isLogin }: ProfileSessionActionProps) => {
       <button
         type="button"
         onClick={() => setShowConfirm(true)}
-        className="py-5 flex items-center w-full gap-3 xl:gap-6 cursor-pointer hover:scale-102 transition-all"
+        className="group py-5 flex items-center w-full gap-3 xl:gap-6 cursor-pointer text-danger-500 transition-colors hover:text-danger-600"
       >
         <ContentImage
           alt=""
@@ -39,7 +39,7 @@ const ProfileSessionAction = ({ isLogin }: ProfileSessionActionProps) => {
           className="w-6 h-6 aspect-square"
           src="/assets/icons/header/header_logout.svg"
         />
-        <p className="text-sm xl:text-base font-medium text-danger-500">
+        <p className="nav-underline relative text-sm xl:text-base font-medium">
           {_STRINGS?.LOGOUT_TITLE}
         </p>
       </button>

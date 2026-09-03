@@ -95,7 +95,7 @@ const SiteHeader = ({ variant = "page" }: SiteHeaderProps) => {
               ? " bg-transparent "
               : topHeaderVisible
                 ? " bg-white "
-                : ` bg-white ${headerWithFullSeach.includes(pathname) || !!params?.slug ? " border-b xl:border-b-0 xl:shadow-lg" : "shadow-lg"} `
+                : ` header-glass ${headerWithFullSeach.includes(pathname) || !!params?.slug ? " border-b xl:border-b-0 xl:shadow-glass-sm" : "shadow-glass-sm"} `
           }`}
         >
           <HeaderMobileBar

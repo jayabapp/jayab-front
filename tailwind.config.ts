@@ -25,11 +25,18 @@ export default {
       },
       colors,
       borderRadius: {
+        28: "1.75rem",
         20: "1.25rem",
         10: "0.75rem",
       },
       boxShadow: {
         card: "0px 0px 7px 1px rgb(0 ,0 ,0,0.1)",
+        // Glass tokens: a wide, brand-tinted drop shadow reads as depth over the
+        // blurred auth backdrop, where a neutral black shadow just looks dirty
+        // against the blue mesh.
+        glass: "0 24px 60px -24px rgb(21 60 105 / 0.45), 0 2px 6px -2px rgb(21 60 105 / 0.10)",
+        "glass-sm": "0 12px 30px -16px rgb(21 60 105 / 0.45)",
+        "glass-btn": "0 14px 30px -12px rgb(31 107 201 / 0.65)",
       },
       spacing: {
         "1/5": "20%",

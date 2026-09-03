@@ -29,7 +29,6 @@ const HeaderBrand = ({ isLight, asLink }: HeaderBrandProps) => {
   return (
     <Link
       href="/"
-      prefetch={false}
       title={_STRINGS.JAYAB}
       className="flex items-center gap-1.5 shrink-0 h-10"
     >

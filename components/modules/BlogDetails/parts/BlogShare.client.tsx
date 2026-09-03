@@ -4,7 +4,7 @@ import type { BlogShareProps } from "@/types/components/modules/blog";
 import { isMobile } from "react-device-detect";
 import { useEffect, useState } from "react";
 
-import Button from "@elements/Button";
+import _STRINGS from "@/utils/LocalStrings";
 import Notify from "@elements/Toast";
 import Image from "next/image";
 
@@ -26,9 +26,7 @@ const BlogShare = ({ data }: BlogShareProps) => {
       const shareDetails = { url, title, text };
       if (navigator.share) {
         try {
-          await navigator
-            .share(shareDetails)
-            .then(() => console.log("Your content was shared"));
+          await navigator.share(shareDetails);
         } catch {}
       }
     } else {
@@ -41,29 +39,26 @@ const BlogShare = ({ data }: BlogShareProps) => {
     navigator.clipboard.writeText(url);
     Notify({
       type: "success",
-      body: "لینک مورد نظر کپی شد",
+      body: _STRINGS.BLOG_LINK_COPIED,
     });
   };
 
   return (
-    <div className="col-span-1 md:col-span-3 flex flex-row items-center justify-between py-3 border-y">
-      <div className="flex flex-row items-center justify-start gap-2">
-        <p>این مطلب را اشتراک گذاری کنید:</p>
-      </div>
-      <Button
-        roundedClass="rounded-full"
-        icon={
-          <Image
-            width={28}
-            height={28}
-            alt="share"
-            className="w-7 h-7 md:w-6 md:h-6"
-            src="/assets/icons/blogs/share.svg"
-          />
-        }
-        onClick={onShare}
+    <button
+      type="button"
+      onClick={() => void onShare()}
+      title={_STRINGS.BLOG_SHARE}
+      className="flex items-center gap-1.5 rounded-full bg-brand-50 px-3 py-1.5 text-xs font-bold text-brand-600 transition-colors hover:bg-brand-100"
+    >
+      <Image
+        alt=""
+        width={16}
+        height={16}
+        className="h-4 w-4"
+        src="/assets/icons/blogs/share.svg"
       />
-    </div>
+      {_STRINGS.BLOG_SHARE}
+    </button>
   );
 };
 

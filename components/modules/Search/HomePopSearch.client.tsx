@@ -26,14 +26,20 @@ const HomePopSearch = ({
     [setShowPop],
   );
   const {
+    activeIndex,
     close,
+    hasOpened,
     inputRef,
     isLoading,
     isPending,
+    listRef,
+    onKeyDown,
     onSearchParam,
+    options,
+    pick,
+    setActiveIndex,
     setTerm,
     submit,
-    suggestions,
     term,
   } = useSearchPanel({ initValue, isOpen: showPop, onOpenChange, onSubmit });
 
@@ -46,14 +52,20 @@ const HomePopSearch = ({
       <SearchOverlay
         term={term}
         boxId={boxId}
+        onPick={pick}
         onClose={close}
         isOpen={showPop}
         onSubmit={submit}
+        options={options}
+        listRef={listRef}
         inputRef={inputRef}
         isLoading={isLoading}
         isPending={isPending}
+        onKeyDown={onKeyDown}
+        hasOpened={hasOpened}
         onTermChange={setTerm}
-        suggestions={suggestions}
+        onHover={setActiveIndex}
+        activeIndex={activeIndex}
         placeholder={placeholder}
         submitButtonClass="left-0.5"
         panelClass={showPop ? OPEN_PANEL_CLASS : CLOSED_PANEL_CLASS}

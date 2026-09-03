@@ -40,7 +40,12 @@ const SupportList = () => {
               {_STRINGS.SUPPORT_LIST_ERROR}
             </div>
           ) : tickets.length === 0 ? (
-            <EmptyState />
+            <EmptyState
+              title={_STRINGS.EMPTY_SUPPORT_TITLE}
+              actionRoute="/profile/support/new-ticket"
+              description={_STRINGS.EMPTY_SUPPORT_DESC}
+              actionLabel={_STRINGS.SEND_NEW_TICKET}
+            />
           ) : (
             <InfiniteScroll
               dataLength={tickets.length}

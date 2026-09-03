@@ -1,7 +1,9 @@
 import type { PropertyRulesFilterProps } from "@/types/components/modules/property-search-filters";
 
-import SimpleAccordion from "@elements/Accordion/SimpleAccordion.client";
+import { countFilterGroup } from "@features/properties/lib/count-active-filters";
+
 import PropertyModelFilter from "../PropertyModelFilter.client";
+import FilterSection from "./FilterSection.client";
 import _STRINGS from "@/utils/LocalStrings";
 
 const DISALLOWED_RULE_TITLE = "مجاز نیست";
@@ -37,12 +39,12 @@ const PropertyRulesFilter = ({
   if (!rules.length) return null;
 
   return (
-    <SimpleAccordion
+    <FilterSection
       title={_STRINGS.ACCOMMODATION_RULES}
-      item={{
-        parenClass: "pb-2 border-b w-full p-2 !px-0",
-        disableBorderB: true,
-      }}
+      count={countFilterGroup(
+        filters,
+        rules.map((rule) => rule.queryKey),
+      )}
     >
       {rules.map((rule) => (
         <PropertyModelFilter
@@ -54,7 +56,7 @@ const PropertyRulesFilter = ({
           list={[{ id: rule.id, title: rule.title }]}
         />
       ))}
-    </SimpleAccordion>
+    </FilterSection>
   );
 };
 

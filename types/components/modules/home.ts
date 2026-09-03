@@ -14,7 +14,7 @@ import type { HomeLandingDto } from "@/api_services/home/home.interface";
 import type { PropertyListDto } from "@/api_services/property/property.interface";
 import type { DeviceInfo } from "@/helpers/device.detector";
 import type { HomeBannerDto } from "@/types/components/templates/home";
-import type { WeekDayEntry } from "@/types/components/modules/property-grid";
+import type { ReactNode } from "react";
 
 export type HomeBannersProps = {
   banners?: HomeBannerDto[];
@@ -37,15 +37,29 @@ export type HomeMiddleBannersProps = {
   list?: HomeBannerDto[];
 };
 
+export type CityMarqueeRowProps = {
+  children: ReactNode;
+  /** Items in this row — the drift duration scales with it to keep speed even. */
+  count: number;
+  reverse?: boolean;
+};
+
 export type HomeCitiesProps = {
   data: HomeLandingDto[];
-  devices?: DeviceInfo;
   title: string;
 };
 
 export type HomeHeroBannerProps = {
   banner?: HomeBannerDto;
   devices?: DeviceInfo;
+  title?: string;
+};
+
+export type HomeTileCardProps = {
+  href: string;
+  imageSrc?: string;
+  /** Position in the row — drives the entrance stagger, nothing else. */
+  index?: number;
   title?: string;
 };
 
@@ -59,7 +73,6 @@ export type HomePropertiesGridProps = {
   data: PropertyListDto[];
   devices?: DeviceInfo;
   middleBanner?: HomeBannerDto;
-  week: WeekDayEntry[];
 };
 
 export type THomePropertyTypesProps = {

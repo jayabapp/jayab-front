@@ -14,10 +14,19 @@ export type PropertyCardProps = {
   week?: WeekDayEntry[];
 };
 
+export type PropertyShowcaseCardProps = {
+  data: PropertyListDto;
+  /** Position in the grid — drives the entrance stagger, nothing else. */
+  index?: number;
+};
+
+export type PropertyCardVariant = "detailed" | "showcase";
+
 export type PropertyGridItemsProps = {
   banners?: HomeBannerDto[];
   data: PropertyListDto[];
   devices?: DeviceInfo;
+  variant?: PropertyCardVariant;
   week?: WeekDayEntry[];
 };
 

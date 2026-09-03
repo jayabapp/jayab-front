@@ -17,7 +17,13 @@ const HeaderNavLink = ({
 }: HeaderNavLinkProps) => {
   const label = (
     <p
-      className={`${isLight ? "text-white" : "text-black"} text-sm xl:text-base transition-all duration-100 shrink-0 font-medium group-hover:brightness-100 group-hover:text-brand-600`}
+      className={`nav-underline relative ${
+        isLight
+          ? // Over the hero the header is transparent on a dark gradient, where
+            // brand-600 on white text reads as "dimmed", not "hovered".
+            "text-white group-hover:text-brand-200"
+          : "text-black group-hover:text-brand-600"
+      } text-sm xl:text-base transition-colors duration-150 shrink-0 font-medium`}
     >
       {title}
     </p>
@@ -32,7 +38,6 @@ const HeaderNavLink = ({
       <Link
         href={route}
         title={title}
-        prefetch={false}
         className={CONTAINER_CLASS}
       >
         {badge}

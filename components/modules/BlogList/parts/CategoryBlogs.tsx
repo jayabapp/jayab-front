@@ -36,8 +36,8 @@ const CategoryBlogs = ({ queryPage }: CategoryBlogsProps) => {
           <BlogGridSkeleton />
         ) : blogs && blogs?.length > 0 ? (
           <div className="grid grid-cols-1 gap-1 lg:gap-6 lg:grid-cols-3 !pb-8 p-2 !overflow-hidden">
-            {blogs?.map((i) => (
-              <BlogCard item={i} key={`PRODUCT${i?.id}`} />
+            {blogs?.map((i, index) => (
+              <BlogCard index={index} item={i} key={`PRODUCT${i?.id}`} />
             ))}
           </div>
         ) : (

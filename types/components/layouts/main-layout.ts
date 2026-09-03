@@ -28,4 +28,6 @@ export type AuthHeaderProps = {
   title: string;
   backRoute?: string;
   disableBack?: boolean;
+  /** Takes over the back button, for a step that is in-page rather than a route. */
+  onBack?: () => void;
 };

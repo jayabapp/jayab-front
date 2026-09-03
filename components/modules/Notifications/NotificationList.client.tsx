@@ -48,7 +48,10 @@ const NotificationList = () => {
       </div>
     );
 
-  if (notifications.length === 0) return <EmptyState />;
+  if (notifications.length === 0) return <EmptyState
+        title={_STRINGS.EMPTY_NOTIFICATIONS_TITLE}
+        description={_STRINGS.EMPTY_NOTIFICATIONS_DESC}
+      />;
 
   return (
     <InfiniteScroll

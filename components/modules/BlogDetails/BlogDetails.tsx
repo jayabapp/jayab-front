@@ -1,14 +1,18 @@
 import type { BlogDetailsTemplateProps } from "@/types/components/modules/blog";
 import { convertHtmlToReact } from "@/helpers/convertHTMLtoReact";
 import { ContentQuestions } from "@modules/ContentQuestions";
-import { ContentImage } from "@elements/Image";
+import type { CSSProperties } from "react";
 import { Suspense } from "react";
 
 import SingleProductBreadcrumb from "@elements/Breadcrumbs/SingleProductBreadcrumb.client";
-import MainImageTextBlock from "./parts/MainImageTextBlock.client";
+import BlogTableOfContents from "./parts/BlogTableOfContents";
+import BlogArticleHeader from "./parts/BlogArticleHeader";
 import RelatedBlogs from "./parts/RelatedBlogs";
 import Gallery from "./parts/Gallery.client";
-import Link from "next/link";
+
+// `.surface-panel` carries the card itself (radius, border, shadow); the padding
+// stays here because it is this page's choice, not the surface's.
+const PANEL_CLASS = "surface-panel p-4 md:p-6";
 
 const BlogDetails = ({
   breadcrumb,
@@ -22,54 +26,53 @@ const BlogDetails = ({
     <div className="hidden w-full md:flex">
       <SingleProductBreadcrumb dataArray={breadcrumb} />
     </div>
-    <Suspense>
-      <MainImageTextBlock
-        data={data}
-        timeToRead={timeToRead}
-        breadcrumb={breadcrumb}
-      >
-        <div className="scrollbar relative w-full overflow-y-scroll">
-          {headings.map((heading) => (
-            <div key={heading.id} className="my-4 text-xs! md:my-6">
-              <Link
-                replace
-                title="content"
-                href={`#${heading.id}`}
-                className="group flex flex-row items-center justify-start gap-2"
-              >
-                <ContentImage
-                  alt=""
-                  width={12}
-                  height={12}
-                  src="/assets/icons/shared/blue_chevron_left.svg"
-                  className="h-3 w-3 grayscale transition group-hover:-rotate-90 group-hover:grayscale-0"
-                />
-                <div
-                  className="text-right! text-[16px] font-regular! transition duration-300 hover:font-bold hover:text-brand-600!"
-                  dangerouslySetInnerHTML={{ __html: heading.innerText }}
-                />
-              </Link>
-            </div>
-          ))}
-        </div>
-      </MainImageTextBlock>
-    </Suspense>
+
+    <BlogArticleHeader
+      data={data}
+      breadcrumb={breadcrumb}
+      timeToRead={timeToRead}
+    />
+
     <div className="grid grid-cols-1 gap-6 md:grid-cols-3">
-      <div className="content col-span-1 w-full rounded-10 md:col-span-2 md:bg-white md:p-4 md:shadow-md">
-        <div className="content break-words">{convertHtmlToReact(html)}</div>
+      {/* --card-index staggers the two columns: the body lands first, the
+          sidebar a beat later, which reads as one movement rather than two
+          things happening at once. */}
+      <article
+        style={{ "--card-index": 1 } as CSSProperties}
+        className={`enter-from-right col-span-1 w-full md:col-span-2 ${PANEL_CLASS}`}
+      >
+        {/* Capped measure: an uncapped 2/3 column runs past 90 characters a line
+            on a wide screen, which is well beyond comfortable for long Persian
+            copy. `mx-auto` keeps the column centred inside the card. */}
+        <div className="content mx-auto max-w-[68ch] break-words leading-8">
+          {convertHtmlToReact(html)}
+        </div>
         <ContentQuestions
-          containerClass="!px-0 border-t !rounded-none !mb-0"
+          containerClass="!px-0 border-t !rounded-none !mb-0 mt-6"
           contentId={data?.id}
         />
-      </div>
-      <div className="sticky top-28 flex h-fit flex-col gap-8 self-start rounded-10 md:bg-white md:p-4 md:shadow-md">
-        <RelatedBlogs currentId={data?.id as number} items={relatedBlogs} />
-        <Suspense>
-          <Gallery
-            images={data?.attachments?.map((item) => item?.attachment) || []}
-          />
-        </Suspense>
-      </div>
+      </article>
+
+      <aside
+        style={{ "--card-index": 2 } as CSSProperties}
+        className="enter-from-left flex h-fit flex-col gap-6 self-start md:sticky md:top-28"
+      >
+        {/* The contents list lives here rather than under the title: sticky beside
+            the body it stays usable while reading, which is the only time it is
+            actually wanted. */}
+        <div className={PANEL_CLASS}>
+          <BlogTableOfContents headings={headings} />
+        </div>
+
+        <div className={`flex flex-col gap-8 ${PANEL_CLASS}`}>
+          <RelatedBlogs currentId={data?.id as number} items={relatedBlogs} />
+          <Suspense>
+            <Gallery
+              images={data?.attachments?.map((item) => item?.attachment) || []}
+            />
+          </Suspense>
+        </div>
+      </aside>
     </div>
   </div>
 );

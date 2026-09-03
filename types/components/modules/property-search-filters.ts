@@ -1,4 +1,4 @@
-import type { Dispatch, SetStateAction } from "react";
+import type { Dispatch, ReactNode, SetStateAction } from "react";
 export type { ProvienceTypesDto } from "@/api_services/property/property.interface";
 import type { ProvienceTypesDto } from "@/api_services/property/property.interface";
 import type { ChildCities } from "@/api_services/city/city.interface";
@@ -56,7 +56,26 @@ export type PoolFilterChipProps = {
 
 export type PropertyFilterDraft = Record<string, any>;
 
+export type FilterSectionProps = {
+  title: string;
+  count?: number;
+  defaultOpen?: boolean;
+  children: ReactNode;
+};
+
+export type FilterPanelHeaderProps = {
+  activeCount: number;
+  onReset: () => void;
+};
+
+export type FilterApplyBarProps = {
+  enabled?: boolean;
+  onApply: () => void;
+  draft: PropertyFilterDraft;
+};
+
 export type PropertyFilterFormProps = {
+  onReset?: () => void;
   hiddenFilters?: string[];
   filters: PropertyFilterDraft;
   queries: Record<string, string>;

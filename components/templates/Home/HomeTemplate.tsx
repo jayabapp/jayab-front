@@ -25,7 +25,7 @@ const HomeTemplate = ({ banners, devices, homeContent, landings, properties, pro
         {!!heroBanner ? <HomeHeroBanner banner={heroBanner} devices={devices} title={homeContent?.full_text} /> : <></>}
         <section
           style={{ minHeight: !isEmpty(landings?.popular_city) && !isEmpty(landings?.quick_search) ? "30dvh" : "0" }}
-          className="bg-white rounded-t-20 mb-8 -mt-[1.375rem] md:mt-0 flex flex-col relative gap-5 lg:gap-6 select-none px-0 md:py-0 w-full"
+          className="rounded-t-20 mb-8 -mt-[1.375rem] md:mt-0 flex flex-col relative gap-5 lg:gap-6 select-none px-0 md:py-0 w-full"
         >
           <Suspense fallback={null}>
             <div className="w-full mt-3 lg:mt-0 px-0">
@@ -33,7 +33,7 @@ const HomeTemplate = ({ banners, devices, homeContent, landings, properties, pro
             </div>
           </Suspense>
           <HomePropertyTypes data={propertyTypes} devices={devices} title={_STRINGS.PROPERTY_TYPE} />
-          <HomeCities data={landings?.popular_city ?? []} devices={devices} title={_STRINGS.MOST_VISITED_CITIES} />
+          <HomeCities data={landings?.popular_city ?? []} title={_STRINGS.MOST_VISITED_CITIES} />
           <HomeQuickSearch data={landings?.quick_search ?? []} devices={devices} title={_STRINGS.FAST_SEARCH} />
           <HomeProperties data={properties} devices={devices} middleBanner={middleBanner} />
         </section>

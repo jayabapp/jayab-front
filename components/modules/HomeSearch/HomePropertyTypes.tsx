@@ -59,7 +59,11 @@ const HomePropertyTypes = ({
             key={index}
             className={`w-full  !h-auto   p-0 md:py-2 cursor-pointer select-none md:px-2`}
           >
-            <PropertyTypeItem item={i} key={`${i?.title}${index}`} />
+            <PropertyTypeItem
+              index={index}
+              item={i}
+              key={`${i?.title}${index}`}
+            />
           </SwiperSlide>
         ))}
       </SwiperEm>

@@ -41,7 +41,6 @@ export const useAuthQueriesStore = create<AuthQueriesStore, any>(
 );
 
 export type ParamStore = {
-  isDark: boolean;
   likes: number[];
   isAdvisor: boolean;
   loginModal: boolean;
@@ -61,7 +60,6 @@ export type ParamStore = {
 };
 
 export const useStoreParams = create<ParamStore>((set) => ({
-  isDark: false,
   topHeaderVisible: true,
   showInstallPrompt: false,
   installPrompt: null,

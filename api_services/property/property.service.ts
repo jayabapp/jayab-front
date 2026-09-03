@@ -769,16 +769,25 @@ export class PropertyService {
   /*                             GET PROPERTIES PART                            */
   /* -------------------------------------------------------------------------- */
 
-  static async GetProperties(dto: GetPropertiesPlusFilters, signal?: AbortSignal) {
-    try {
-      const result = await apiCall<
-        GetPropertiesPlusFilters,
-        { data: PropertyListDto[]; meta: PageMetaDto }
-      >("GET", apiRoutes.GET_PROPERTIES, dto, { signal });
-      return result;
-    } catch (e) {
-      throw e;
-    }
+  /**
+   * @param silent suppresses the automatic error toast. Set it when the call is
+   * a background read the user did not ask for — the live filter count runs on
+   * a debounce as they tick checkboxes, and a failing backend would otherwise
+   * stack a toast onto the screen for every keystroke.
+   */
+  static async GetProperties(
+    dto: GetPropertiesPlusFilters,
+    signal?: AbortSignal,
+    silent?: boolean,
+  ) {
+    const result = await apiCall<
+      GetPropertiesPlusFilters,
+      { data: PropertyListDto[]; meta: PageMetaDto }
+    >("GET", apiRoutes.GET_PROPERTIES, dto, {
+      signal,
+      showErrorNotification: !silent,
+    });
+    return result;
   }
 
   static async GetSinglePropertyWithSlug(dto: { Property_slug: string }, signal?: AbortSignal) {

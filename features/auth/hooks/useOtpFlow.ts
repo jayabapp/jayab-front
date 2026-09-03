@@ -1,10 +1,11 @@
-import { useEffect, useEffectEvent, useState } from "react";
+import { useEffect, useEffectEvent, useRef, useState } from "react";
 import { useAuthQueriesStore, useAuthStore } from "@/store";
 import { useRouter, useSearchParams } from "next/navigation";
 import { calculateTimeLeft } from "@/helpers/calculateTimeLeft";
 import { safeInternalPath } from "@/helpers/safeRedirect";
 import { useOtpChallenge } from "./useOtpChallenge";
 import { useVerifyOtp } from "./useVerifyOtp";
+import type { OtpChallengeDto } from "@/api_services/auth/auth.interface";
 import { AuthService } from "@/api_services/auth/auth.service";
 import { useSendOtp } from "./useSendOtp";
 import { p2e } from "@/helpers/NumberConverter";
@@ -12,11 +13,26 @@ import { p2e } from "@/helpers/NumberConverter";
 import _STRINGS from "@/utils/LocalStrings";
 import Notify from "@elements/Toast";
 
-export const useOtpFlow = () => {
+type OtpFlowOptions = {
+  /**
+   * A challenge the caller already holds. The in-page flip passes the one that
+   * came back from the send-OTP response, so the OTP step costs no round-trip;
+   * the standalone /auth/otp route passes nothing and reads the cookie instead.
+   */
+  challenge?: OtpChallengeDto | null;
+  /** Replaces the route-back on "edit number" — the flip turns the card over. */
+  onEditNumber?: () => void;
+};
+
+export const useOtpFlow = ({
+  challenge: providedChallenge = null,
+  onEditNumber,
+}: OtpFlowOptions = {}) => {
   const [otp, setOtp] = useState("");
   const [resetKey, setResetKey] = useState(0);
+  const autoSubmittedCodeRef = useRef<string | null>(null);
   const [countdown, setCountdown] = useState({ minutes: "00", seconds: "00" });
-  const challengeQuery = useOtpChallenge();
+  const challengeQuery = useOtpChallenge(!providedChallenge);
   const resend = useSendOtp();
   const verifyMutation = useVerifyOtp();
   const authCodeExpire = useAuthStore((state) => state.authCodeExpire);
@@ -26,7 +42,10 @@ export const useOtpFlow = () => {
   const searchParams = useSearchParams();
   const router = useRouter();
   const redirectUrl = safeInternalPath(searchParams.get("redirect_url"));
-  const codeExpiry = challengeQuery.data?.expires_at ?? authCodeExpire;
+  // The cache wins when it holds anything: `useSendOtp` writes the new challenge
+  // there on resend, so the countdown restarts without another read.
+  const challenge = challengeQuery.data ?? providedChallenge;
+  const codeExpiry = challenge?.expires_at ?? authCodeExpire;
 
   const submit = () => {
     const numericCode = p2e(otp);
@@ -64,9 +83,12 @@ export const useOtpFlow = () => {
   const submitEvent = useEffectEvent(submit);
 
   useEffect(() => {
+    // Only the cookie-reading caller can conclude that nothing is in flight; the
+    // flip owns its challenge in memory and must never bounce itself to /auth.
+    if (providedChallenge) return;
     if (!challengeQuery.isPending && !challengeQuery.data)
       router.replace("/auth");
-  }, [challengeQuery.data, challengeQuery.isPending, router]);
+  }, [providedChallenge, challengeQuery.data, challengeQuery.isPending, router]);
 
   useEffect(() => {
     if (!codeExpiry) return;
@@ -77,16 +99,23 @@ export const useOtpFlow = () => {
     return () => window.clearInterval(interval);
   }, [codeExpiry]);
 
+  // A complete code verifies itself, once per code value. This used to have two
+  // more triggers — a document-wide Enter listener and the submit button — and
+  // all three fired for a single user gesture, so one wrong code produced three
+  // identical requests and a toast that visibly restarted three times. The Enter
+  // listener is gone rather than guarded: it also fired for Enter pressed in any
+  // other field on the page, and with auto-submit in place it added nothing.
   useEffect(() => {
-    const onKeyDown = (event: KeyboardEvent) => {
-      if (event.code === "Enter") submitEvent();
-    };
-    document.addEventListener("keydown", onKeyDown);
-    return () => document.removeEventListener("keydown", onKeyDown);
-  }, []);
-
-  useEffect(() => {
-    if (otp.length === 4) submitEvent();
+    const numericCode = p2e(otp);
+    if (!/^\d{4}$/.test(numericCode)) {
+      // Editing the code re-arms auto-submit, so retyping the same digits after
+      // a rejection still verifies.
+      autoSubmittedCodeRef.current = null;
+      return;
+    }
+    if (autoSubmittedCodeRef.current === numericCode) return;
+    autoSubmittedCodeRef.current = numericCode;
+    submitEvent();
   }, [otp]);
 
   const resendCode = () => {
@@ -106,6 +135,7 @@ export const useOtpFlow = () => {
         }
         setOtp("");
         setResetKey((current) => current + 1);
+        autoSubmittedCodeRef.current = null;
         useAuthStore.setState({
           authCodeExpire: challenge?.expires_at ?? null,
         });
@@ -114,6 +144,14 @@ export const useOtpFlow = () => {
   };
 
   const editNumber = async () => {
+    // The flip turns immediately and clears the cookie behind it — waiting on a
+    // round-trip before the card moves is exactly what this flow set out to
+    // avoid. The standalone route still awaits it, since it navigates after.
+    if (onEditNumber) {
+      onEditNumber();
+      await AuthService.clearOtpChallenge();
+      return;
+    }
     await AuthService.clearOtpChallenge();
     router.replace("/auth");
   };
@@ -127,8 +165,8 @@ export const useOtpFlow = () => {
     editNumber,
     resendCode,
     isResending: resend.isPending,
-    challenge: challengeQuery.data,
+    challenge,
     isSubmitting: verifyMutation.isPending,
-    challengeLoading: challengeQuery.isPending,
+    challengeLoading: challengeQuery.isPending && !providedChallenge,
   };
 };

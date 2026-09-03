@@ -85,7 +85,11 @@ const HeaderProfileMenu = ({
             <PulseDot className="absolute -left-2 -top-0.5 z-1" />
           ) : null}
           <p
-            className={`text-sm ${isLight ? "text-white" : "text-black"} shrink-0 font-medium group-hover:text-brand-600`}
+            className={`nav-underline relative text-sm ${
+              isLight
+                ? "text-white group-hover:text-brand-200"
+                : "text-black group-hover:text-brand-600"
+            } shrink-0 font-medium transition-colors duration-150`}
           >
             {_STRINGS.MY_PROFILE}
           </p>

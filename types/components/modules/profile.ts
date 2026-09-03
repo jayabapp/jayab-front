@@ -23,6 +23,27 @@ export type ProfileMenuRowProps = {
   entry: ProfileMenuEntry;
 };
 
+export type ProfileQuickAccessProps = {
+  entries: ProfileMenuEntry[];
+  /** How many shortcuts to surface; the rest stay in the menu. */
+  limit?: number;
+};
+
+export type ProfileWelcomeProps = {
+  profile?: GetProfileDto;
+  entries: ProfileMenuEntry[];
+  isLogin: boolean;
+};
+
+export type ProfileStatsProps = {
+  profile?: GetProfileDto;
+  isLogin: boolean;
+};
+
+export type ProfileCompletionProps = {
+  profile?: GetProfileDto;
+};
+
 export type PaymentCardProps = {
   payment: SubPaymentsDto;
 };

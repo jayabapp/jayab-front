@@ -1,15 +1,20 @@
 "use client";
 
 import type { DiscoveryFilterModalProps } from "@/types/components/modules/property-discovery";
-import { PropertyFilterForm } from "@modules/PropertySearchFilters";
+import { FilterApplyBar, PropertyFilterForm } from "@modules/PropertySearchFilters";
 import { CitySelectorTitle } from "@modules/CitySelector";
 import { ModalHeaderPart } from "@elements/Modal";
-import { ContentImage } from "@elements/Image";
 
-import _STRINGS from "@/utils/LocalStrings";
-import Button from "@elements/Button";
 import Modal from "@elements/Modal";
 
+/**
+ * The mobile face of the same panel the desktop sidebar renders.
+ *
+ * Reset lives inside `PropertyFilterForm`'s own header rather than in the modal
+ * chrome, so it sits beside the active-filter count that explains what it would
+ * clear — and so the two form factors do not grow separate affordances for the
+ * same action.
+ */
 const DiscoveryFilterModal = ({
   cityTitle,
   cityWithRegions,
@@ -30,31 +35,19 @@ const DiscoveryFilterModal = ({
     onHide={onClose}
     options={{
       containerClass:
-        "mx-auto my-0 xl:my-10 h-full w-full xl:w-1/3 2xl:w-1/4 rounded-0 overflow-y-scroll bg-white pb-32",
+        "mx-auto my-0 xl:my-10 h-full w-full xl:w-1/3 2xl:w-1/4 rounded-0 bg-white flex flex-col overflow-hidden",
     }}
   >
-    <ModalHeaderPart title={_STRINGS.FILTERS} onHide={onClose}>
-      {onClearExtraFilters ? (
-        <button
-          type="button"
-          onClick={onClearExtraFilters}
-          className="absolute flex items-center gap-2 left-4 md:left-12"
-        >
-          <span className="text-sm text-brand-600">
-            {_STRINGS.REMOVE_FILTERS}
-          </span>
-          <ContentImage
-            alt=""
-            width={16}
-            height={16}
-            src="/assets/icons/property/blue_trash_icon.svg"
-          />
-        </button>
-      ) : null}
-    </ModalHeaderPart>
+    {/* Title-less on purpose: `PropertyFilterForm` opens with its own pinned
+        header, and naming the sheet twice in two stacked bars just costs a row
+        of a viewport that has few to spare. */}
+    <ModalHeaderPart showX title="" onHide={onClose} />
 
-    <div className="w-[90%] mx-auto">
-      <div className="w-full pt-4 pb-8">
+    {/* The list scrolls; the submit bar does not. Previously the button was
+        `fixed` to the viewport from inside a 90%-wide box, which put it out of
+        step with the sheet it belongs to. */}
+    <div className="w-full grow overflow-y-auto pb-4">
+      <div className="mx-auto w-[92%] pb-2">
         <CitySelectorTitle
           hideCityPart
           queries={queries}
@@ -63,23 +56,18 @@ const DiscoveryFilterModal = ({
           setShowRegions={setShowRegions}
           cityWithRegions={cityWithRegions}
         />
-        <PropertyFilterForm
-          filters={filters}
-          queries={queries}
-          setFilters={setFilters}
-          propertyTypes={propertyTypes}
-          hiddenFilters={hiddenFilters}
-        />
       </div>
-      <div className="w-full pb-6 fixed bottom-0 right-0 bg-white z-1 border-t">
-        <Button
-          width="w-full"
-          onClick={onApply}
-          title={_STRINGS?.DO_THE_FILTERING}
-          containerClass="w-full flex items-center flex-col px-2 pb-2 pt-6"
-        />
-      </div>
+      <PropertyFilterForm
+        filters={filters}
+        queries={queries}
+        setFilters={setFilters}
+        onReset={onClearExtraFilters}
+        propertyTypes={propertyTypes}
+        hiddenFilters={hiddenFilters}
+      />
     </div>
+
+    <FilterApplyBar draft={filters} onApply={onApply} enabled={show} />
   </Modal>
 );
 

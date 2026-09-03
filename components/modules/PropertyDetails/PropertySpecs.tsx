@@ -3,14 +3,17 @@ import type { PropertySpecsProps } from "@/types/components/modules/property-det
 import PropertyEnvironmentSpecs from "./parts/PropertyEnvironmentSpecs";
 import PropertyLocationRow from "./parts/PropertyLocationRow.client";
 import PropertyFacilitySpecs from "./parts/PropertyFacilitySpecs";
-import PropertyReportRow from "./parts/PropertyReportRow.client";
 import PropertyPrimarySpecs from "./parts/PropertyPrimarySpecs";
 import PropertyGuestSpecs from "./parts/PropertyGuestSpecs";
 import PropertyTermsSpecs from "./parts/PropertyTermsSpecs";
 import PropertyRoomSpecs from "./parts/PropertyRoomSpecs";
 
+// One panel holding every spec section as a divided row. Previously each was
+// its own bordered card and "گزارش تخلف" was stacked in among them, so a
+// destructive utility action looked like one more content section; it is now a
+// quiet footer row rendered by PropertyDetailsContent instead.
 const PropertySpecs = ({ devices, property }: PropertySpecsProps) => (
-  <div className="w-full order-4 md:order-3 flex gap-2 flex-col">
+  <div className="surface-panel flex w-full flex-col overflow-hidden">
     <PropertyPrimarySpecs property={property} devices={devices} />
     <PropertyGuestSpecs property={property} devices={devices} />
     <PropertyEnvironmentSpecs property={property} devices={devices} />
@@ -23,7 +26,6 @@ const PropertySpecs = ({ devices, property }: PropertySpecsProps) => (
         longitude={property?.longitude}
       />
     ) : null}
-    <PropertyReportRow propertyId={property?.id} />
   </div>
 );
 

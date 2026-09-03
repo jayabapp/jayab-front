@@ -1,152 +1,95 @@
 "use client";
 
-import type { CitySuggestDto, SearchSuggestionsProps } from "@/types/components/modules/search";
-import { useSearchHistory } from "@features/search/hooks/useSearchHistory";
-import { CitiesSuggestTypes } from "@/enum/cities_suggest.enum";
-import { ContentImage } from "@elements/Image";
-import { useRouter } from "next/navigation";
-import { useCitiesStore } from "@/store";
+import type { SearchSuggestionsProps } from "@/types/components/modules/search";
+import type { SearchOptionKind } from "@/types/features/search";
 
 import SuggestionRowSkeleton from "./SuggestionRowSkeleton";
+import SearchOptionRow from "./SearchOptionRow";
 import _STRINGS from "@/utils/LocalStrings";
 import isEmpty from "lodash/isEmpty";
 
-const cityLevelLabel = (level?: string) => {
-  if (level === CitiesSuggestTypes.PROVINCE) return _STRINGS.PROVINCE;
-  if (level === CitiesSuggestTypes.CITY) return _STRINGS.CITY;
-  return "";
+// Rendered in this order; a group disappears entirely when it has no options.
+const GROUP_ORDER: SearchOptionKind[] = ["place", "property", "guide"];
+
+const GROUP_LABEL: Record<SearchOptionKind, string> = {
+  place: _STRINGS.SEARCH_GROUP_PLACES,
+  property: _STRINGS.SEARCH_GROUP_PROPERTIES,
+  guide: _STRINGS.SEARCH_GROUP_GUIDES,
 };
 
-/** Maps a city suggestion onto the `/rooms` filter it stands for. */
-const cityTarget = (city: CitySuggestDto) => {
-  if (city?.level === CitiesSuggestTypes.PROVINCE) {
-    return {
-      href: `/rooms?provinces=${city?.id}`,
-      locations: { provinces: [{ id: city?.id, title: city?.title }] },
-    };
-  }
-  if (city?.level === CitiesSuggestTypes.REGION) {
-    return {
-      href: `/rooms?cities=${city?.parent_id}&regions=${city?.id}`,
-      locations: {
-        cities: [{ id: city?.parent_id, title: city?.parent_title }],
-        regions: [city],
-      },
-    };
-  }
-  return {
-    href: `/rooms?cities=${city?.id}`,
-    locations: { cities: [{ id: city?.id, title: city?.title }] },
-  };
-};
-
+/**
+ * The suggestion listbox.
+ *
+ * Options arrive already flattened and ordered, so the index a row reports is
+ * the same index the keyboard cursor uses — the group headings are drawn from
+ * the same sequence rather than from separate arrays.
+ */
 const SearchSuggestions = ({
-  data,
+  activeIndex,
   isLoading,
-  onClose,
+  listId,
+  listRef,
+  onHover,
+  onPick,
+  options,
   searchedText,
 }: SearchSuggestionsProps) => {
-  const router = useRouter();
-  const { remember } = useSearchHistory();
+  if (isLoading)
+    return (
+      <div className="w-full px-4 pb-2">
+        <SuggestionRowSkeleton />
+      </div>
+    );
 
-  const navigate = (href: string) => {
-    remember(searchedText);
-    onClose();
-    router.push(href);
-  };
-
-  const onCityClick = (city: CitySuggestDto) => {
-    const { href, locations } = cityTarget(city);
-    useCitiesStore.setState({ locationsData: locations });
-    navigate(href);
-  };
-
-  const isEmptyResult =
-    !!data && isEmpty(data?.cities) && isEmpty(data?.properties) && isEmpty(data?.landings);
+  // Only an answered-and-empty search says "nothing found"; an untouched panel
+  // stays quiet and lets history and popular places do the talking.
+  if (isEmpty(options))
+    return !!searchedText && searchedText.trim().length >= 2 ? (
+      <div className="w-full px-4 pb-2 pt-1">
+        <p className="rounded-10 bg-neutral-50 px-3 py-4 text-center text-sm text-neutral-600">
+          {_STRINGS.SEARCH_NO_RESULT}
+        </p>
+      </div>
+    ) : (
+      <></>
+    );
 
   return (
-    <div className="flex items-start flex-col w-full py-4 justify-start px-4 gap-2">
-      {isLoading ? (
-        <SuggestionRowSkeleton />
-      ) : isEmptyResult ? null : (
-        <>
-          {isEmpty(data?.properties) ? null : (
-            <div className="w-full flex flex-col gap-2">
-              {data?.properties?.map((property) => (
-                <button
-                  type="button"
-                  key={`property-${property?.id}`}
-                  onClick={() => navigate(`/rooms/${property?.slug}`)}
-                  className="flex cursor-pointer flex-row grayscale transition-all hover:grayscale-0 items-center gap-2"
-                >
-                  <ContentImage
-                    alt=""
-                    width={16}
-                    height={16}
-                    className="w-4 transition-all h-4 aspect-square"
-                    src="/assets/icons/edit/magnifier.svg"
-                  />
-                  <span className="text-brand-600 text-sm md:text-base transition-all">
-                    {property?.title}
-                  </span>
-                </button>
-              ))}
-            </div>
-          )}
-
-          {isEmpty(data?.cities) ? null : (
-            <div className="w-full flex flex-col gap-3">
-              {data?.cities?.map((city) => (
-                <button
-                  type="button"
-                  key={`city-${city?.id}`}
-                  onClick={() => onCityClick(city)}
-                  className="flex cursor-pointer flex-row grayscale transition-all hover:grayscale-0 items-center gap-2"
-                >
-                  <ContentImage
-                    alt=""
-                    width={16}
-                    height={16}
-                    className="w-4 transition-all h-4 aspect-square"
-                    src="/assets/icons/home/literly_map.svg"
-                  />
-                  <span className="text-brand-600 text-sm md:text-base transition-all">
-                    {cityLevelLabel(city?.level)} {city?.title}
-                    {city?.level === CitiesSuggestTypes.REGION ? (
-                      <span className="opacity-70 text-xs"> {`(${city?.parent_title})`}</span>
-                    ) : null}
-                  </span>
-                </button>
-              ))}
-            </div>
-          )}
-
-          {isEmpty(data?.landings) ? null : (
-            <div className="w-full flex flex-col gap-2">
-              <p className="font-medium">{_STRINGS.RELATED_RESULTS}</p>
-              {data?.landings?.map((landing) => (
-                <button
-                  type="button"
-                  key={`landing-${landing?.id}`}
-                  onClick={() => navigate(`/${landing?.url}`)}
-                  className="flex cursor-pointer flex-row grayscale transition-all hover:grayscale-0 items-center gap-2"
-                >
-                  <ContentImage
-                    alt=""
-                    width={16}
-                    height={16}
-                    className="w-4 transition-all h-4 aspect-square"
-                    src="/assets/icons/edit/magnifier.svg"
-                  />
-                  <span className="text-brand-600 text-sm md:text-base transition-all">
-                    {landing?.title}
-                  </span>
-                </button>
-              ))}
-            </div>
-          )}
-        </>
-      )}
+    <div
+      id={listId}
+      ref={listRef}
+      role="listbox"
+      aria-label={_STRINGS.SEARCH_SUGGESTIONS}
+      className="flex w-full flex-col gap-0.5 px-2 pb-2 pt-1"
+    >
+      {/* Empty groups are dropped before the map rather than returned as empty
+          fragments from inside it: a fragment in an array still needs a key, and
+          React warns about it. */}
+      {GROUP_ORDER.map((kind) => ({
+        kind,
+        group: options.filter((option) => option.kind === kind),
+      }))
+        .filter(({ group }) => !isEmpty(group))
+        .map(({ group, kind }) => (
+          <div className="flex w-full flex-col" key={kind}>
+            <p className="px-2 pb-1 pt-2 text-xxs font-bold text-neutral-500">
+              {GROUP_LABEL[kind]}
+            </p>
+            {group.map((option) => {
+              const index = options.indexOf(option);
+              return (
+                <SearchOptionRow
+                  index={index}
+                  key={option.id}
+                  option={option}
+                  onHover={onHover}
+                  onSelect={() => onPick(option)}
+                  isActive={index === activeIndex}
+                />
+              );
+            })}
+          </div>
+        ))}
     </div>
   );
 };

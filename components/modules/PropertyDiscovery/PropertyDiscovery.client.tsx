@@ -3,9 +3,9 @@
 import { usePropertyDiscoveryFilters } from "@features/properties/hooks/usePropertyDiscoveryFilters";
 import { usePropertyOptionGroups } from "@features/properties/hooks/usePropertyOptionGroups";
 import type { PropertyDiscoveryProps } from "@/types/components/modules/property-discovery";
+import { FilterApplyBar, PropertyFilterForm } from "@modules/PropertySearchFilters";
 import type { ChildCities } from "@/types/components/modules/property-discovery";
 import { SpecialFilterButtons } from "@modules/PropertySearchFilters";
-import { PropertyFilterForm } from "@modules/PropertySearchFilters";
 import { SelectedFiltersBar } from "@modules/PropertySearchFilters";
 import { PropertySortMenu } from "@modules/PropertySearchFilters";
 import { CityModal, RegionModal } from "@modules/CitySelector";
@@ -18,7 +18,6 @@ import PropertyCategoryStrip from "./parts/PropertyCategoryStrip.client";
 import DiscoveryFilterModal from "./parts/DiscoveryFilterModal.client";
 import DiscoveryResults from "./parts/DiscoveryResults.client";
 import _STRINGS from "@/utils/LocalStrings";
-import Button from "@elements/Button";
 
 const BREAD_CRUMBS = [
   { title: _STRINGS.HOME, link: "/" },
@@ -59,29 +58,30 @@ const PropertyDiscovery = ({ devices }: PropertyDiscoveryProps) => {
   return (
     <div className="app-container !px-0 md:!px-10 2xl:px-[9%] !pt-[7.5rem] xl:!pt-20 z-2 flex flex-col !gap-2">
       <div className="grid grid-cols-12 col-span-12">
-        <div
+        {/* The panel scrolls between a pinned header and a pinned submit bar, so
+            "how many filters are on" and "how many results this would give" are
+            both readable from anywhere in a list far taller than the viewport. */}
+        <aside
+          aria-label={_STRINGS.FILTERS}
           style={{ height: SIDEBAR_HEIGHT }}
-          className="hidden justify-between overflow-y-hidden gap-4 lg:sticky lg:top-20 lg:flex flex-col items-center rounded-10 border col-span-3"
+          className="surface-panel col-span-3 hidden flex-col justify-between overflow-hidden lg:sticky lg:top-20 lg:flex"
         >
-          <div className="w-full flex flex-col gap-4 overflow-y-scroll">
+          <div className="w-full grow overflow-y-auto">
             <PropertyFilterForm
               filters={filters}
               queries={queries}
               setFilters={setFilters}
+              onReset={clearExtraFilters}
               propertyTypes={propertyTypes}
             />
           </div>
-          <Button
-            width="w-full"
-            onClick={onApplyFilters}
-            title={_STRINGS?.DO_THE_FILTERING}
-            containerClass="w-full flex items-center flex-col px-2 pb-2 pt-0"
-          />
-        </div>
+          <FilterApplyBar draft={filters} onApply={onApplyFilters} />
+        </aside>
 
         <div className="col-span-12 md:col-span-12 lg:col-span-9 px-0 xl:pr-4 xl:pl-0 xl:mt-0">
           <div className="hidden z-1 w-full xl:flex flex-col xl:flex-row items-center justify-between mb-2">
             <SingleProductBreadCrumb dataArray={BREAD_CRUMBS} />
+            <h1 className="sr-only">{_STRINGS.ROOMS_PAGE_TITLE}</h1>
             <div className="w-full items-center justify-end hidden lg:flex">
               <SpecialFilterButtons query={queries} />
               <PropertySortMenu query={queries} />
@@ -143,7 +143,11 @@ const PropertyDiscovery = ({ devices }: PropertyDiscoveryProps) => {
             </div>
           </div>
 
-          <DiscoveryResults devices={devices} query={queries} />
+          <DiscoveryResults
+            query={queries}
+            devices={devices}
+            onClearFilters={clearExtraFilters}
+          />
         </div>
       </div>
 

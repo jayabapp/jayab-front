@@ -19,7 +19,6 @@ const ChatListItem = ({ item, onClickCb }: ChatListItemProps) => {
         removeredirectRoomToHome();
         onClickCb?.();
       }}
-      prefetch={false}
       href={`/chat/${item?.uuid}`}
       className="w-full flex  relative pb-3  border-b flex-col"
     >

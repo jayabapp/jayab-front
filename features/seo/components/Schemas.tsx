@@ -1,5 +1,5 @@
 import { apiRoutes, baseUrl, NEW_IMAGE_URL } from "@/utils/urls";
-import { ContentDto } from "@/api_services/home/home.interface";
+import type { ContentDto } from "@/api_services/home/home.interface";
 import { getCmsContent } from "@/api_services/home/cms-content.server";
 import { REVALIDATE } from "@/helpers/revalidate";
 import { JsonLd } from "@elements/StructuredData";

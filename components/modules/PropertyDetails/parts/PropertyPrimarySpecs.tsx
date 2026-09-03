@@ -5,8 +5,11 @@ import numberWithCommas from "@/helpers/numberWithCommas";
 import _STRINGS from "@/utils/LocalStrings";
 import SpecRow from "@elements/SpecRow";
 
+// Shared by all six spec sections. They sit inside one `.surface-panel` now, so
+// each is a divided row rather than its own bordered card — nested borders on a
+// tinted canvas read as clutter.
 export const SPEC_ACCORDION_ITEM = {
-  parenClass: " bg-white border border-neutral-300 !mt-0 rounded-10 w-full",
+  parenClass: "!mt-0 w-full border-b border-neutral-100 last:border-b-0",
 };
 
 const PropertyPrimarySpecs = ({ property }: PropertySpecsSectionProps) => (
@@ -63,17 +66,6 @@ const PropertyPrimarySpecs = ({ property }: PropertySpecsSectionProps) => (
         <p className="text-sm font-medium">{_STRINGS.PROP_EXACT_ADDRESS}</p>
         <p className="font-medium">{property?.address}</p>
       </div>
-
-      {property?.property_descriptions?.ad_dscr ||
-      property?.property_descriptions?.property_dscr ? (
-        <div className="flex flex-col gap-1 w-full">
-          <p className="text-sm font-medium">{_STRINGS.PROP_DESC}</p>
-          <p className="font-medium whitespace-pre-wrap">
-            {property?.property_descriptions?.ad_dscr ||
-              property?.property_descriptions?.property_dscr}
-          </p>
-        </div>
-      ) : null}
     </div>
   </SimpleAccordion>
 );

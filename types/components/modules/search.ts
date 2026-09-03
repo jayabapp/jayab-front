@@ -1,6 +1,7 @@
 export type { CitySuggestDto, SearchSuggDto } from "@/api_services/home/home.interface";
 
-import type { CitySuggestDto, SearchSuggDto } from "@/api_services/home/home.interface";
+import type { CitySuggestDto } from "@/api_services/home/home.interface";
+import type { SearchOption } from "@/types/features/search";
 import type { Dispatch, ReactNode, SetStateAction } from "react";
 
 export type SearchBoxAppearance = {
@@ -25,10 +26,15 @@ export type SearchInputProps = {
 };
 
 export type SearchPanelInputProps = {
+  activeIndex: number;
   boxId?: string;
+  hasOptions: boolean;
   inputRef?: React.RefObject<HTMLInputElement | null>;
+  isOpen: boolean;
   isPending: boolean;
+  listId: string;
   onChange: (value: string) => void;
+  onKeyDown: (event: React.KeyboardEvent) => void;
   onSubmit: () => void;
   placeholder?: string;
   submitButtonClass?: string;
@@ -36,26 +42,37 @@ export type SearchPanelInputProps = {
 };
 
 export type SearchOverlayProps = {
+  activeIndex: number;
   boxId?: string;
+  hasOpened: boolean;
+  inputRef?: React.RefObject<HTMLInputElement | null>;
   isLoading: boolean;
   isOpen: boolean;
   isPending: boolean;
+  listRef: React.RefObject<HTMLDivElement | null>;
   onClose: () => void;
+  onHover: (index: number) => void;
+  onKeyDown: (event: React.KeyboardEvent) => void;
+  onPick: (option: SearchOption) => void;
   onSubmit: () => void;
   onTermChange: (value: string) => void;
+  options: SearchOption[];
   panelClass: string;
   placeholder?: string;
   submitButtonClass?: string;
-  suggestions?: SearchSuggDto | null;
   term: string;
-  inputRef?: React.RefObject<HTMLInputElement | null>;
 };
 
 export type SearchPanelBodyProps = {
+  activeIndex: number;
   isLoading: boolean;
+  listId: string;
+  listRef: React.RefObject<HTMLDivElement | null>;
   onClose: () => void;
+  onHover: (index: number) => void;
+  onPick: (option: SearchOption) => void;
   onTermChange: (value: string) => void;
-  suggestions?: SearchSuggDto | null;
+  options: SearchOption[];
   term: string;
 };
 
@@ -84,10 +101,14 @@ export type SearchBoxDropDownProps = {
 };
 
 export type SearchSuggestionsProps = {
+  activeIndex: number;
   isLoading: boolean;
-  onClose: () => void;
+  listId: string;
+  listRef: React.RefObject<HTMLDivElement | null>;
+  onHover: (index: number) => void;
+  onPick: (option: SearchOption) => void;
+  options: SearchOption[];
   searchedText: string;
-  data?: SearchSuggDto | null;
 };
 
 export type SearchSuggestionCityProps = {

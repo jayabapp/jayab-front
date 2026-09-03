@@ -46,7 +46,7 @@ const OtpInput = ({ setValue }: OtpInputProps) => {
     <div
       id="otp"
       dir="ltr"
-      className="mt-5 flex w-full flex-row items-center justify-between text-center"
+      className="flex w-full flex-row items-center justify-center gap-3 text-center"
     >
       {digits.map((digit, index) => (
         <input
@@ -58,7 +58,7 @@ const OtpInput = ({ setValue }: OtpInputProps) => {
           autoComplete={index === 0 ? "one-time-code" : "off"}
           autoFocus={index === 0}
           inputMode="numeric"
-          className={`h-14 w-16 rounded-10 border bg-white/80 text-center text-lg font-medium opacity-80 ${digit ? "border-brand-600 " : ""}`}
+          className={`glass-field h-16 w-14 rounded-2xl border text-center text-2xl font-semibold text-neutral-900 sm:w-16 ${digit ? "glass-field-filled" : ""}`}
           type="text"
           maxLength={1}
           value={digit}

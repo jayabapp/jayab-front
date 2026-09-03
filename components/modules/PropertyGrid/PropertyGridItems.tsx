@@ -1,6 +1,7 @@
 import type { PropertyGridItemsProps } from "@/types/components/modules/property-grid";
 
 import PropertyGridBanner from "./parts/PropertyGridBanner.client";
+import PropertyShowcaseCard from "./PropertyShowcaseCard";
 import PropertyCard from "./PropertyCard";
 
 const MOBILE_BANNER_ROW_STEP = 7;
@@ -11,6 +12,7 @@ const PropertyGridItems = ({
   week,
   devices,
   banners,
+  variant = "detailed",
 }: PropertyGridItemsProps) => {
   const rowStep = devices?.isMobile
     ? MOBILE_BANNER_ROW_STEP
@@ -27,13 +29,21 @@ const PropertyGridItems = ({
           <PropertyGridBanner devices={devices} bannerItem={banner} />
         </div>
       ))}
-      {data?.map((property) => (
-        <PropertyCard
-          week={week}
-          data={property}
-          key={`property-${property?.id}`}
-        />
-      ))}
+      {data?.map((property, index) =>
+        variant === "showcase" ? (
+          <PropertyShowcaseCard
+            index={index}
+            data={property}
+            key={`property-${property?.id}`}
+          />
+        ) : (
+          <PropertyCard
+            week={week}
+            data={property}
+            key={`property-${property?.id}`}
+          />
+        ),
+      )}
     </>
   );
 };

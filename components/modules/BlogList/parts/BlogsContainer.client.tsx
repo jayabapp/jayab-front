@@ -67,7 +67,7 @@ const BlogsContainer = ({ title, data, viewAllUrl }: BlogsContainerProps) => {
               key={index}
               className={`w-full  !h-auto py-2 cursor-pointer select-none px-2`}
             >
-              <BlogCard item={i} />
+              <BlogCard index={index} item={i} />
             </SwiperSlide>
           ))}
         </SwiperWithNavigation>
@@ -76,7 +76,6 @@ const BlogsContainer = ({ title, data, viewAllUrl }: BlogsContainerProps) => {
       <div className="w-full  flex items-center justify-center mt-4">
         {" "}
         <Link
-          prefetch={false}
           href={viewAllUrl}
           title={_STRINGS.SEE_ALL}
           style={{ textDecoration: "none" }}

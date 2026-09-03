@@ -18,20 +18,25 @@ const ProfileMenuRow = ({ entry, compact }: ProfileMenuRowProps) => {
 
   return (
     <Link
-      prefetch={false}
       href={entry?.route}
       title={entry?.title}
-      className={`${isSelected ? "text-brand-600" : "border-r-transparent"} py-3 md:py-5 flex border-b last:border-b-0 border-neutral-200 items-center w-full justify-between cursor-pointer hover:scale-102 transition-all`}
+      className={`${
+        isSelected ? "text-brand-600" : "text-neutral-900"
+      } group flex w-full cursor-pointer items-center justify-between gap-2 border-b border-white/70 px-2 py-3 transition-colors last:border-b-0 hover:bg-white/60 hover:text-brand-600 md:py-4 rounded-2xl`}
     >
       <div className="flex items-center gap-3 md:gap-4 relative">
-        <ContentImage
-          alt=""
-          width={28}
-          height={28}
-          src={entry?.imgSrc}
-          className="w-7 h-7 aspect-square"
-        />
-        <p className="text-sm md:text-base font-medium">{entry?.title}</p>
+        <span className="menu-icon-chip">
+          <ContentImage
+            alt=""
+            width={24}
+            height={24}
+            src={entry?.imgSrc}
+            className="w-6 h-6 aspect-square"
+          />
+        </span>
+        <p className="nav-underline relative text-sm md:text-base font-medium">
+          {entry?.title}
+        </p>
       </div>
       {compact ? (
         badge

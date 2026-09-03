@@ -18,7 +18,8 @@ const MainLayout = ({
       {header}
     </ChromeSlot>
 
-    <div className="app-size relative">
+    {/* z-1: the canvas behind everything is a `fixed` pseudo-element at z-0. */}
+    <div className="app-size relative z-1">
       <div style={{ minHeight: "100dvh" }} className="mx-auto h-full w-full">
         {children}
       </div>

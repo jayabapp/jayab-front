@@ -28,6 +28,8 @@ export type LandingDiscoveryProps = {
 export type DiscoveryResultsProps = {
   devices?: DeviceInfo;
   query: Record<string, any>;
+  /** Offered from the empty state so a dead-end result set is escapable. */
+  onClearFilters?: () => void;
 };
 
 export type PropertyCategoryStripProps = {

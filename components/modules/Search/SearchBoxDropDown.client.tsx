@@ -19,12 +19,25 @@ const SearchBoxDropDown = ({
   placeholder = "search...",
 }: SearchBoxDropDownProps) => {
   const [showResults, setShowResults] = useState(false);
-  const { close, isLoading, isPending, setTerm, submit, suggestions, term } =
-    useSearchPanel({
-      initValue,
-      isOpen: showResults,
-      onOpenChange: setShowResults,
-    });
+  const {
+    activeIndex,
+    close,
+    isLoading,
+    isPending,
+    listRef,
+    onKeyDown,
+    options,
+    pick,
+    setActiveIndex,
+    setTerm,
+    submit,
+    term,
+  } = useSearchPanel({
+    initValue,
+    isOpen: showResults,
+    onOpenChange: setShowResults,
+  });
+  const listId = `${boxId}-listbox`;
 
   return (
     <div className={containerClass}>
@@ -48,9 +61,18 @@ const SearchBoxDropDown = ({
             <input
               id={boxId}
               value={term}
+              role="combobox"
+              autoComplete="off"
+              aria-controls={listId}
+              aria-autocomplete="list"
               placeholder={placeholder}
+              onKeyDown={onKeyDown}
+              aria-expanded={showResults && options.length > 0}
               onChange={(event) => setTerm(event.target.value)}
               className={`bg-transparent py-1 pl-0.5 pr-3 outline-none w-full ${item?.bg ?? ""}`}
+              aria-activedescendant={
+                activeIndex >= 0 ? `search-option-${activeIndex}` : undefined
+              }
             />
           </div>
           <div className="inline-flex w-1/4 justify-end">
@@ -89,10 +111,15 @@ const SearchBoxDropDown = ({
             <div className="flex gap-2 w-full items-center flex-col px-2 py-2">
               <SearchPanelBody
                 term={term}
+                listId={listId}
+                onPick={pick}
                 onClose={close}
+                options={options}
+                listRef={listRef}
                 isLoading={isLoading}
                 onTermChange={setTerm}
-                suggestions={suggestions}
+                onHover={setActiveIndex}
+                activeIndex={activeIndex}
               />
             </div>
           </div>

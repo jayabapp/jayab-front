@@ -20,7 +20,6 @@ const ReservationPropertySummary = ({
     <div className="w-full grid grid-cols-8 gap-2">
       <Link
         href={href}
-        prefetch={false}
         title={property?.title}
         onClick={clearReturnHome}
         className={`col-span-6 !outline-none ${isOwner ? "order-2" : "order-1"} flex flex-col gap-1`}
@@ -46,7 +45,6 @@ const ReservationPropertySummary = ({
 
       <Link
         href={href}
-        prefetch={false}
         title={property?.title}
         onClick={clearReturnHome}
         className={`flex h-fit !outline-none items-start justify-start w-full col-span-2 ${isOwner ? "order-1" : "order-2"}`}
