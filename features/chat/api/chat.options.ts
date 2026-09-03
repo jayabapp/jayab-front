@@ -19,11 +19,12 @@ export const chatDetailsOptions = (chatId: string) =>
     queryKey: chatKeys.detail(chatId),
     queryFn: ({ signal }) => ChatService.getSingleChat({ id: chatId, signal }),
     enabled: chatId.length > 0,
-    staleTime: STALE_TIME.SHORT,
+    refetchOnMount: "always",
+    staleTime: 0,
     gcTime: GC_TIME.DEFAULT,
   });
 
-export const chatMessagesOptions = (chatId: string) =>
+export const chatMessagesOptions = (chatId: string, enabled = true) =>
   infiniteQueryOptions({
     queryKey: chatKeys.messages(chatId),
     queryFn: async ({ pageParam, signal }) =>
@@ -37,7 +38,7 @@ export const chatMessagesOptions = (chatId: string) =>
       if (lastPage.data.length < CHAT_PAGE_SIZE) return undefined;
       return lastPage.data.at(-1)?.id;
     },
-    enabled: chatId.length > 0,
+    enabled: enabled && chatId.length > 0,
     staleTime: STALE_TIME.REALTIME,
     gcTime: GC_TIME.DEFAULT,
   });

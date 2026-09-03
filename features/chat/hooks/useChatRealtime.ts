@@ -4,7 +4,7 @@ import { useMarkChatRead } from "./useMarkChatRead";
 import { useQueryClient } from "@tanstack/react-query";
 import { chatKeys } from "../api/chat.keys";
 
-export const useChatRealtime = (chatId: string) => {
+export const useChatRealtime = (chatId: string, enabled = true) => {
   const connecting = useStoreSocket((state) => state.connecting);
   const usersStatus = useChatStore((state) => state.usersStatus);
   const chatNotification = useChatStore((state) => state.chatNotification);
@@ -13,29 +13,30 @@ export const useChatRealtime = (chatId: string) => {
   const markRead = useMarkChatRead();
 
   useEffect(() => {
-    if (wasConnecting.current && !connecting) {
+    if (enabled && wasConnecting.current && !connecting) {
       void queryClient.invalidateQueries({ queryKey: chatKeys.detail(chatId) });
       void queryClient.invalidateQueries({
         queryKey: chatKeys.messages(chatId),
       });
     }
     wasConnecting.current = connecting;
-  }, [chatId, connecting, queryClient]);
+  }, [chatId, connecting, enabled, queryClient]);
 
   useEffect(() => {
-    if (!chatId) return;
+    if (!chatId || !enabled) return;
     markRead.mutate({ chatId });
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [chatId]);
+  }, [chatId, enabled]);
 
   useEffect(() => {
     if (
+      enabled &&
       chatNotification?.chatroom_id === chatId &&
       document.visibilityState === "visible"
     )
       markRead.mutate({ chatId });
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [chatId, chatNotification?.message?.id]);
+  }, [chatId, chatNotification?.message?.id, enabled]);
 
   return { connecting, usersStatus };
 };

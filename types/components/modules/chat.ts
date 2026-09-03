@@ -13,6 +13,7 @@ export type ChatListItemProps = {
   onClickCb?: () => void;
 };
 export type ChatRoomProps = { chatId: string };
+export type ChatAccessDeniedProps = { chatId: string };
 export type ChatBodyProps = {
   hasNextPage: boolean;
   data: NewSingleChatDto[];

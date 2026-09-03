@@ -34,6 +34,7 @@ export class ChatService {
       undefined,
       {
         signal: dto.signal,
+        showErrorNotification: false,
       },
     );
   }
@@ -82,7 +83,7 @@ export class ChatService {
       "GET",
       apiRoutes.GET_SNGLE_CHAT_MESSAGES(dto.id, dto.cursor),
       undefined,
-      { signal: dto.signal },
+      { signal: dto.signal, showErrorNotification: false },
     );
   }
 

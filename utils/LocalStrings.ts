@@ -12,6 +12,11 @@ const _STRINGS = {
   MESSAGE_SENDING: "در حال ارسال",
   MESSAGE_SEND_FAILED: "ارسال ناموفق",
   CHAT_RECONNECTING: "در حال اتصال مجدد...",
+  CHAT_ACCOUNT_MISMATCH_TITLE: "ورود با شماره دیگر",
+  CHAT_ACCOUNT_MISMATCH:
+    "شما با شماره دیگری این آگهی را ثبت کرده‌اید، جهت مشاهده پیام‌ها با همان خط وارد برنامه شوید.",
+  LOGIN_WITH_OTHER_NUMBER: "ورود با شماره دیگر",
+  BACK_TO_CHATS: "بازگشت به چت‌ها",
   SANDBOX_OTP: "کد ورود سندباکس",
   CURRENCY: "تومان",
   IMAGE: "تصویر",

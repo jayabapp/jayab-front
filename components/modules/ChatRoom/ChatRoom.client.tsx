@@ -3,11 +3,13 @@
 import { useDeleteMessage } from "@features/chat/hooks/useDeleteMessage";
 import { useChatMessages } from "@features/chat/hooks/useChatMessages";
 import { useChatRealtime } from "@features/chat/hooks/useChatRealtime";
+import { isChatAccountMismatch } from "@features/chat/lib/chat-error";
 import type { ChatRoomProps } from "@/types/components/modules/chat";
 import { useChatDetails } from "@features/chat/hooks/useChatDetails";
 import { useSearchParams } from "next/navigation";
 import { useChatStore } from "@/store";
 
+import ChatAccessDenied from "./parts/ChatAccessDenied.client";
 import ConfirmModal from "@elements/Modal/ConfirmModal.client";
 import ChatRoomSkeleton from "./parts/ChatRoomSkeleton";
 import ChatFooter from "./parts/ChatFooter.client";
@@ -20,8 +22,13 @@ const ChatRoomView = ({ chatId }: ChatRoomProps) => {
   const chatProduct = useChatStore((state) => state.chatProduct);
   const chatDelete = useChatStore((state) => state.chatDelete);
   const detailsQuery = useChatDetails(chatId);
-  const messagesQuery = useChatMessages(chatId);
-  const { connecting, usersStatus } = useChatRealtime(chatId);
+  const hasVerifiedChatAccess =
+    detailsQuery.isSuccess && detailsQuery.isFetchedAfterMount;
+  const messagesQuery = useChatMessages(chatId, hasVerifiedChatAccess);
+  const { connecting, usersStatus } = useChatRealtime(
+    chatId,
+    hasVerifiedChatAccess,
+  );
   const deleteMessage = useDeleteMessage(chatId);
 
   const clearProduct = () => {
@@ -34,7 +41,13 @@ const ChatRoomView = ({ chatId }: ChatRoomProps) => {
       ? usersStatus.is_online
       : details?.is_recipient_online;
 
-  if (detailsQuery.isPending || messagesQuery.isPending)
+  if (isChatAccountMismatch(detailsQuery.error, messagesQuery.error))
+    return <ChatAccessDenied chatId={chatId} />;
+  if (
+    detailsQuery.isPending ||
+    !detailsQuery.isFetchedAfterMount ||
+    (hasVerifiedChatAccess && messagesQuery.isPending)
+  )
     return <ChatRoomSkeleton />;
   if (detailsQuery.isError || messagesQuery.isError || !details) {
     return (
