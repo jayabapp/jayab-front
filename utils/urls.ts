@@ -75,6 +75,12 @@ export const apiRoutes = {
 
   AUTH_INIT: "/auth/init-user",
 
+  TEST_ACCESS_ME: "/user/test-access/me",
+
+  TEST_ACCESS_MEMBERS: "/user/test-access/members",
+
+  TEST_ACCESS_MEMBER: (id: string | number) => `/user/test-access/members/${id}`,
+
   APP_SETTINGS: "/auth/init-settings",
 
   PROFILE_UPLOAD: "/attachments",

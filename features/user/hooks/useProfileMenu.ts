@@ -2,6 +2,7 @@
 
 import type { GetProfileDto, ProfileMenuEntry } from "@/types/features/user";
 import { useOwnerActiveReservationCount } from "@features/reservations/hooks/useOwnerActiveReservationCount";
+import { useTestAccessMe } from "@features/test-access/hooks/useTestAccessMe";
 import { profileItems } from "@/utils/constantss";
 import { isMobile, isTablet } from "react-device-detect";
 import { useMemo } from "react";
@@ -16,6 +17,7 @@ export const useProfileMenu = (
   const includeMobileOnly =
     options?.includeMobileOnly ?? (isMobile || isTablet);
   const isLogin = options?.isLogin ?? true;
+  const { data: testAccess } = useTestAccessMe(isLogin);
 
   return useMemo<ProfileMenuEntry[]>(() => {
     const roleEntries: ProfileMenuEntry[] = [];
@@ -62,6 +64,15 @@ export const useProfileMenu = (
       });
     }
 
+    if (testAccess?.enabled && testAccess.is_team_lead) {
+      roleEntries.push({
+        id: "test-access",
+        imgSrc: "/assets/icons/header/new-face/user.svg",
+        route: "/profile/test-access",
+        title: "دسترسی محیط تست",
+      });
+    }
+
     const platformEntries = includeMobileOnly
       ? profileItems
       : profileItems.filter((entry) => !entry?.isMobile);
@@ -76,5 +87,12 @@ export const useProfileMenu = (
       }));
 
     return [...roleEntries, ...shared];
-  }, [activeReserveCount, includeMobileOnly, isAdvisor, isLogin, isOwner]);
+  }, [
+    activeReserveCount,
+    includeMobileOnly,
+    isAdvisor,
+    isLogin,
+    isOwner,
+    testAccess,
+  ]);
 };

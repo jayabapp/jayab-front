@@ -141,6 +141,7 @@ export const SORT_TYPES = [
   { id: "commission_desc", title: "بیشترین کمیسیون", icon: "/assets/icons/sort/sort_most_comision.svg" },
 ];
 export const allRoutes: { [key: string]: string } = {
+  "test-access": "دسترسی محیط تست",
   questions: "پرسش ها",
   notifications: "اعلان ها",
   rooms: "آگهی ها",
