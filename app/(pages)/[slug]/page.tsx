@@ -4,6 +4,7 @@ import { searchParamsToFilters } from "@features/properties/lib/search-params";
 import { landingQueryDefaults } from "@features/properties/lib/landing-filters";
 import { seedPropertyList } from "@features/properties/server/property.server";
 import { getServerLanding } from "@features/home/server/home.server";
+import { LandingFAQSchema } from "@features/seo/components/Schemas";
 import { headers } from "next/headers";
 
 import deviceTypeDetector from "@/helpers/device.detector";
@@ -53,9 +54,15 @@ const LandingPage = async ({ params, searchParams }: LandingPageProps) => {
   seedPropertyList(queryClient, filters, page?.data);
 
   return (
-    <HydrationBoundary state={dehydrate(queryClient)}>
-      <LandingTemplate devices={devices} landing={landing} />
-    </HydrationBoundary>
+    <>
+      <LandingFAQSchema
+        faqData={landing?.content?.questions || []}
+        url={`${process.env.NEXT_PUBLIC_WEB_SITE}/${paramData.slug}`}
+      />
+      <HydrationBoundary state={dehydrate(queryClient)}>
+        <LandingTemplate devices={devices} landing={landing} />
+      </HydrationBoundary>
+    </>
   );
 };
 

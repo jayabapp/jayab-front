@@ -17,4 +17,10 @@ export type PropertyStructuredDataProps = {
 
 export type ContentFaqStructuredDataProps = {
   faqData: { innerText: string; title: string }[];
+  url: string;
+};
+
+export type LandingFaqStructuredDataProps = {
+  faqData: { answer: string | null; question: string }[];
+  url: string;
 };

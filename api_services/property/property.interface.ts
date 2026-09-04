@@ -608,8 +608,9 @@ export interface Content {
 export interface Fields {}
 
 export interface Question {
+  id: number;
   question: string;
-  answer: string;
+  answer: string | null;
   updated_at: Date;
 }
 

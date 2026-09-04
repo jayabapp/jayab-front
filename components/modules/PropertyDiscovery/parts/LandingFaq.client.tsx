@@ -2,40 +2,50 @@
 
 import type { LandingFaqProps } from "@/types/components/modules/property-discovery";
 import { chunkArray } from "@/helpers/chunk-array.helper";
-import { ContentImage } from "@elements/Image";
 import { useMemo } from "react";
 
 import SimpleAccordion from "@elements/Accordion/SimpleAccordion.client";
+import DOMPurify from "isomorphic-dompurify";
 import Editable from "@elements/Editable";
 
 const FAQ_COLUMNS = 2;
 
+const sanitizeAnswer = (answer: string) =>
+  DOMPurify.sanitize(answer, { FORCE_BODY: true, SANITIZE_DOM: true });
+
 const LandingFaq = ({ data }: LandingFaqProps) => {
-  const columns = useMemo(() => chunkArray(data || [], FAQ_COLUMNS), [data]);
+  const columns = useMemo(
+    () =>
+      chunkArray(
+        (data || []).filter(
+          (item) => item.question?.trim() && item.answer?.trim(),
+        ),
+        FAQ_COLUMNS,
+      ),
+    [data],
+  );
+
+  if (!columns.length) return null;
 
   return (
-    <div className="w-full">
+    <section className="w-full" aria-labelledby="landing-faq-title">
+      <h2 id="landing-faq-title" className="mb-3 text-lg font-bold">
+        سوالات متداول
+      </h2>
       <div className="grid grid-cols-1 md:grid-cols-2 mt-2 gap-3">
         {columns?.map((column, index) => (
           <div key={`faq-column-${index}`} className="grid gap-3 h-fit">
             {column?.map((question) => (
-              <Editable key={`faq-${question?.id}`} contentId={question?.id}>
+              <Editable key={`faq-${question.id}`} contentId={question.id}>
                 <SimpleAccordion
-                  title={question?.question}
-                  item={{ parenClass: " bg-white z-1 rounded-xl border " }}
-                  titleIcon={
-                    <ContentImage
-                      alt=""
-                      width={28}
-                      height={28}
-                      className="w-7 h-7 aspect-square"
-                      src="/assets/icons/accordion/faq_question_mark.svg"
-                    />
-                  }
+                  title={question.question}
+                  item={{ parenClass: "bg-white rounded-xl shadow-md my-2" }}
                 >
                   <div
-                    className="text-xs md:text-sm"
-                    dangerouslySetInnerHTML={{ __html: question?.answer || "" }}
+                    className="content text-xs md:text-sm"
+                    dangerouslySetInnerHTML={{
+                      __html: sanitizeAnswer(question.answer || ""),
+                    }}
                   />
                 </SimpleAccordion>
               </Editable>
@@ -43,7 +53,7 @@ const LandingFaq = ({ data }: LandingFaqProps) => {
           </div>
         ))}
       </div>
-    </div>
+    </section>
   );
 };
 

@@ -53,7 +53,10 @@ const BlogDetailsPage = async ({ params }: BlogDetailsRouteProps) => {
         wordCount={wordCount || 0}
         timeToRead={timeToRead || 0}
       />
-      <ContentFAQSchema faqData={faqData || []} />
+      <ContentFAQSchema
+        faqData={faqData || []}
+        url={`${process.env.NEXT_PUBLIC_WEB_SITE}/blog/${data?.slug || blog_id}`}
+      />
     </>
   );
   return (

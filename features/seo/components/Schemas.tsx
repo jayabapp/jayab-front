@@ -1,11 +1,17 @@
 import { apiRoutes, baseUrl, NEW_IMAGE_URL } from "@/utils/urls";
 import type { ContentDto } from "@/api_services/home/home.interface";
-import { getCmsContent } from "@/api_services/home/cms-content.server";
 import { REVALIDATE } from "@/helpers/revalidate";
 import { JsonLd } from "@elements/StructuredData";
 
-import type { BlogStructuredDataProps, ContentFaqStructuredDataProps, PropertyStructuredDataProps, ServiceStructuredDataProps } from "@/types/features/seo";
+import type {
+  BlogStructuredDataProps,
+  ContentFaqStructuredDataProps,
+  LandingFaqStructuredDataProps,
+  PropertyStructuredDataProps,
+  ServiceStructuredDataProps,
+} from "@/types/features/seo";
 
+import sanitizeHtml from "sanitize-html";
 import serverCall from "@/helpers/serverCall";
 import isEmpty from "lodash/isEmpty";
 
@@ -44,7 +50,9 @@ export const FaqSchema = async () => {
   });
 };
 
-export const ServiceSchema = async ({ service }: ServiceStructuredDataProps) => {
+export const ServiceSchema = async ({
+  service,
+}: ServiceStructuredDataProps) => {
   const { data: contactUs }: { data: { data: ContentDto[] } } =
     await serverCall(
       baseUrl +
@@ -102,7 +110,6 @@ export const OrganizationSchema = async () => {
       undefined,
       { revalidate: REVALIDATE.CMS_PAGE },
     );
-  const aboutUs = await getCmsContent("aboutUs");
   const socials = contactUs?.data?.filter((e) => e?.fields?.key == "social");
   const tels = contactUs?.data?.filter((i) => i?.fields?.key == "tel");
   const email = contactUs?.data?.find((i) => i?.fields?.key == "email");
@@ -242,16 +249,64 @@ function getTomorrowDateISO(): string {
   return tomorrow.toISOString().split("T")[0]; // "2026-07-12"
 }
 
-export const ContentFAQSchema = async ({ faqData }: ContentFaqStructuredDataProps) => {
-  if (isEmpty(faqData)) return;
+const sanitizeFaqQuestion = (value: string) =>
+  sanitizeHtml(value, { allowedAttributes: {}, allowedTags: [] }).trim();
+
+const sanitizeFaqAnswer = (value: string) =>
+  sanitizeHtml(value, {
+    allowedAttributes: { a: ["href", "rel", "target"] },
+    allowedTags: ["a", "b", "br", "em", "li", "ol", "p", "strong", "ul"],
+  }).trim();
+
+const createFaqSchema = (
+  faqData: { answer: string; question: string }[],
+  url: string,
+) => {
+  const mainEntity = faqData
+    .map((item) => ({
+      answer: sanitizeFaqAnswer(item.answer),
+      question: sanitizeFaqQuestion(item.question),
+    }))
+    .filter((item) => item.question && item.answer)
+    .map((item) => ({
+      "@type": "Question" as const,
+      name: item.question,
+      acceptedAnswer: {
+        "@type": "Answer" as const,
+        text: item.answer,
+      },
+    }));
+
+  if (isEmpty(mainEntity)) return null;
+
   return JsonLd<FAQPage>({
     "@context": "https://schema.org",
     "@type": "FAQPage",
-    url: `${process.env.NEXT_PUBLIC_WEB_SITE}/faq`,
-    mainEntity: faqData?.map((e: any) => ({
-      name: e?.title,
-      acceptedAnswer: { text: e?.innerText || e?.innerText, "@type": "Answer" },
-      "@type": "Question",
-    })),
+    url,
+    mainEntity,
   });
 };
+
+export const ContentFAQSchema = ({
+  faqData,
+  url,
+}: ContentFaqStructuredDataProps) =>
+  createFaqSchema(
+    faqData.map((item) => ({
+      answer: item.innerText,
+      question: item.title,
+    })),
+    url,
+  );
+
+export const LandingFAQSchema = ({
+  faqData,
+  url,
+}: LandingFaqStructuredDataProps) =>
+  createFaqSchema(
+    faqData.map((item) => ({
+      answer: item.answer || "",
+      question: item.question,
+    })),
+    url,
+  );
