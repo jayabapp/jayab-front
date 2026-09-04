@@ -2,7 +2,10 @@
 
 import { getUploadedImageUrl } from "@features/upload/mappers/upload-image.mapper";
 import type { BlogGalleryModalProps } from "@/types/components/modules/blog";
+import { BLOG_DETAIL_IMAGE_QUALITY } from "@features/blog/constants/image";
 import type { BlogGalleryProps } from "@/types/components/modules/blog";
+import type { TGalleryItem } from "@/types/components/modules/blog";
+import { BLOG_IMAGE_QUALITY } from "@features/blog/constants/image";
 import { ContentImage } from "@/components/elements/Image";
 import { Fragment, useState } from "react";
 
@@ -14,13 +17,7 @@ const Swiper = dynamic(() => import("@elements/Carousel/Swiper.client"), {
   ssr: true,
 });
 
-const GalleryItem = ({
-  item,
-  _onPress,
-}: {
-  item: BlogGalleryProps["images"][number];
-  _onPress: () => void;
-}) => {
+const GalleryItem = ({ item, _onPress }: TGalleryItem) => {
   return (
     <div
       className="col-span-1 w-full aspect-square relative cursor-pointer"
@@ -28,6 +25,7 @@ const GalleryItem = ({
     >
       <ContentImage
         fill
+        quality={BLOG_IMAGE_QUALITY}
         alt={item?.alt as string}
         src={getUploadedImageUrl(item)}
         sizes="(min-width: 768px) 9vw, 28vw"
@@ -60,6 +58,7 @@ const GalleryModal = ({
               className="!w-full flex  justify-center items-center  aspect-square relative "
             >
               <ContentImage
+                quality={BLOG_DETAIL_IMAGE_QUALITY}
                 width={1024}
                 height={1024}
                 alt={i?.alt as string}

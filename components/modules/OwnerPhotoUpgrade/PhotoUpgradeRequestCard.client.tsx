@@ -3,6 +3,7 @@
 import type { PhotoUpgradeRequestCardProps } from "@/types/components/modules/photo-upgrade";
 import type { PhotoUpgradeInfoItemProps } from "@/types/components/modules/photo-upgrade";
 import { getPropertyImageUrl } from "@features/properties/mappers/property-image.mapper";
+import { PROPERTY_IMAGE_QUALITY } from "@features/properties/constants/image";
 
 import numberWithCommas from "@/helpers/numberWithCommas";
 import StatusShower from "@elements/StatusShower";
@@ -26,12 +27,13 @@ const PhotoUpgradeRequestCard = ({ data }: PhotoUpgradeRequestCardProps) => {
     >
       <div className="flex items-start gap-3 p-3">
         <Image
+          quality={PROPERTY_IMAGE_QUALITY}
           width={80}
           height={80}
           sizes="80px"
           alt={data?.property?.title || "تصویر اقامتگاه"}
           className="h-20 w-20 shrink-0 rounded-10 object-cover"
-          src={getPropertyImageUrl(data?.property?.feature_image, "medium")}
+          src={getPropertyImageUrl(data?.property?.feature_image)}
         />
         <div className="flex min-w-0 flex-1 flex-col gap-2">
           <div className="flex items-start justify-between gap-2">

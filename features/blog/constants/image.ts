@@ -1,0 +1,2 @@
+export const BLOG_IMAGE_QUALITY = 85;
+export const BLOG_DETAIL_IMAGE_QUALITY = 90;

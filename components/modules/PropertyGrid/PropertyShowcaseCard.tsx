@@ -1,5 +1,6 @@
 import type { PropertyShowcaseCardProps } from "@/types/components/modules/property-grid";
 import { getPropertyImageUrl } from "@features/properties/mappers/property-image.mapper";
+import { PROPERTY_IMAGE_QUALITY } from "@features/properties/constants/image";
 import { ContentImage } from "@elements/Image";
 import type { CSSProperties } from "react";
 
@@ -8,9 +9,6 @@ import PropertyCardLink from "./parts/PropertyCardLink.client";
 import PropertyPrice from "./PropertyPrice";
 import _STRINGS from "@/utils/LocalStrings";
 
-// 2 cards on a phone, 3 from md, 4 from xl — mirrors HOME_GRID_CLASS in
-// HomePropertiesGrid so the optimizer is never asked for a width the card
-// does not actually render at.
 const SHOWCASE_IMAGE_SIZES =
   "(min-width: 1280px) 22vw, (min-width: 768px) 30vw, 45vw";
 
@@ -27,7 +25,7 @@ const PropertyShowcaseCard = ({ data, index }: PropertyShowcaseCardProps) => (
       <div className="relative aspect-[4/3] w-full overflow-hidden">
         <ContentImage
           fill
-          quality={75}
+          quality={PROPERTY_IMAGE_QUALITY}
           loading="lazy"
           sizes={SHOWCASE_IMAGE_SIZES}
           alt={data?.feature_image?.alt || ""}
@@ -35,11 +33,6 @@ const PropertyShowcaseCard = ({ data, index }: PropertyShowcaseCardProps) => (
           className="lift-card-media h-full w-full object-cover"
         />
         <div className="lift-card-scrim pointer-events-none absolute inset-0" />
-
-        {/* Promoted sits in the start corner and reads light-on-photo, while the
-            verified badge below stays dark: two paid/trust signals that must not
-            look interchangeable. The chevrons are inline rather than an asset so
-            they inherit the pill's brand colour through `currentColor`. */}
         {!!data?.is_promoted ? (
           <div className="promoted-pill absolute right-1.5 top-1.5 flex h-5 items-center gap-0.5 rounded-full bg-white/85 pl-1.5 pr-1 text-brand-600 shadow-sm backdrop-blur-[6px] md:right-2 md:top-2 md:h-6 md:gap-1 md:pl-2 md:pr-1.5">
             <svg
@@ -66,9 +59,9 @@ const PropertyShowcaseCard = ({ data, index }: PropertyShowcaseCardProps) => (
         {!!data?.is_authorized ? (
           <div className="absolute bottom-1.5 right-1.5 flex h-5 items-center gap-0.5 rounded-full bg-neutral-900/35 pl-1.5 pr-0.5 backdrop-blur-[6px] md:bottom-2 md:right-2 md:h-6 md:gap-1 md:pl-2 md:pr-1">
             <ContentImage
+              alt=""
               width={14}
               height={14}
-              alt=""
               className="h-3 w-3 md:h-3.5 md:w-3.5"
               src="/assets/icons/adds/green_circular_tick.svg"
             />
@@ -112,9 +105,6 @@ const PropertyShowcaseCard = ({ data, index }: PropertyShowcaseCardProps) => (
           />
         </div>
 
-        {/* A middle-dot separator between "نفر" and the next digit is a neutral
-            character: bidi reorders it into the wrong slot, so the capacity and
-            the room count are split with a border instead. */}
         <div className="mt-auto flex flex-wrap items-end justify-between gap-x-2 gap-y-1 border-t border-neutral-100 pt-2">
           <div className="flex items-end gap-1">
             <PropertyPrice

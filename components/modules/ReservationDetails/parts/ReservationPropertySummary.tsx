@@ -1,5 +1,6 @@
 import { getPropertyImageUrl } from "@features/properties/mappers/property-image.mapper";
 import type { ReservationViewProps } from "@/types/components/modules/reservations";
+import { PROPERTY_IMAGE_QUALITY } from "@features/properties/constants/image";
 import { ContentImage } from "@elements/Image";
 import { useStoreParams } from "@/store";
 
@@ -52,14 +53,14 @@ const ReservationPropertySummary = ({
         <div className="aspect-square w-full h-full relative">
           <ContentImage
             fill
-            quality={75}
+            quality={PROPERTY_IMAGE_QUALITY}
             loading="lazy"
             sizes="(min-width: 1024px) 10vw, 25vw"
             alt={property?.feature_image?.alt || ""}
             className="w-full rounded-10 h-full object-cover aspect-square"
             src={
               property?.feature_image
-                ? getPropertyImageUrl(property?.feature_image, "medium")
+                ? getPropertyImageUrl(property?.feature_image)
                 : IMAGE_PLACEHOLDER
             }
           />

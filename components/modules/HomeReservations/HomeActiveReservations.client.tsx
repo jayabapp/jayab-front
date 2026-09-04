@@ -1,6 +1,7 @@
 "use client";
 
 import { useHomeActiveReserves } from "@features/home/hooks/useHomeActiveReserves";
+import { PROPERTY_IMAGE_QUALITY } from "@features/properties/constants/image";
 import { getHomeImageUrl } from "@features/home/mappers/home-image.mapper";
 import { useAuthStore, useStoreParams } from "@/store";
 import { ContentImage } from "@elements/Image";
@@ -31,8 +32,8 @@ const HomeActiveReserve = () => {
               <div className=" size-2 mb-3  rounded-full bg-red-700 animate-pulse  duration-700" />
             </div>
             <Link
-              href="/profile/reserves"
               title={_STRINGS.WATCH}
+              href="/profile/reserves"
               className="flex items-center gap-1.5"
             >
               <p className="text-white lg:text-black !text-sm  lg:!text-base">
@@ -40,8 +41,8 @@ const HomeActiveReserve = () => {
               </p>
               <ContentImage
                 alt=""
-                height={16}
                 width={16}
+                height={16}
                 className="w-4  lg:brightness-0 "
                 src="/assets/icons/property/white_arrow_left.svg"
               />
@@ -102,14 +103,11 @@ const HomeActiveReserve = () => {
                         fill
                         loading="lazy"
                         sizes="(min-width: 1024px) 8vw, 23vw"
-                        quality={75}
+                        quality={PROPERTY_IMAGE_QUALITY}
                         alt={data?.property?.feature_image?.alt || ""}
                         src={
                           !!data?.property?.feature_image
-                            ? getHomeImageUrl(
-                                data?.property?.feature_image,
-                                "medium",
-                              )
+                            ? getHomeImageUrl(data?.property?.feature_image)
                             : "/assets/icons/shared/image_placeholder.svg"
                         }
                         className=" w-full rounded-10  h-full  object-cover aspect-square"

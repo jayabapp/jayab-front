@@ -28,6 +28,10 @@ export type GalleryLightboxProps = {
   title?: string;
 };
 
+export type PropertyImageDownloadButtonProps = {
+  attachmentId?: number | null;
+};
+
 export type ShareImageItemProps = {
   cb: () => void | null;
   image: ImageDto;

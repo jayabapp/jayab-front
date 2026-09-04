@@ -1,5 +1,6 @@
 import { getPropertyImageUrl } from "@features/properties/mappers/property-image.mapper";
 import type { PropertyCardProps } from "@/types/components/modules/property-grid";
+import { PROPERTY_IMAGE_QUALITY } from "@features/properties/constants/image";
 import { ContentImage } from "@elements/Image";
 
 import PropertyCardOwnerActions from "./parts/PropertyCardOwnerActions";
@@ -26,8 +27,8 @@ const PropertyCard = ({
     <div className="surface-card property-card-shadow flex w-full flex-col justify-between gap-2 p-3">
       <div className="w-full grid grid-cols-5 gap-2">
         <PropertyCardLink
-          title={data.title}
           href={goToLink}
+          title={data.title}
           className="col-span-3 !outline-none order-1 flex flex-col justify-between gap-1"
         >
           <div className="flex items-start gap-2">
@@ -117,11 +118,11 @@ const PropertyCard = ({
           <div className="aspect-square w-full h-full relative">
             <ContentImage
               fill
-              quality={75}
+              quality={PROPERTY_IMAGE_QUALITY}
               loading="lazy"
               sizes="(min-width: 1536px) 10vw, (min-width: 1280px) 12vw, (min-width: 768px) 18vw, 37vw"
               alt={data?.feature_image?.alt || ""}
-              src={getPropertyImageUrl(data?.feature_image, "medium")}
+              src={getPropertyImageUrl(data?.feature_image)}
               className="w-full rounded-2xl h-full object-cover aspect-square"
             />
             {data?.advisor_commission || data?.advisor_commission === 0 ? (

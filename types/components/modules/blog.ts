@@ -1,11 +1,9 @@
-import type { ReactNode } from "react";
-
-import type { ContentDto } from "@/api_services/home/home.interface";
-import type { ImageDto } from "@/api_services/auth/auth.interface";
 import type { QuestionDto } from "@/api_services/home/home.interface";
+import type { ContentDto } from "@/api_services/home/home.interface";
+import type { ReactNode } from "react";
+import type { ImageDto } from "@/api_services/auth/auth.interface";
 
 export type BlogCardProps = {
-  /** Position in the grid — drives the entrance stagger, nothing else. */
   index?: number;
   item: ContentDto;
 };
@@ -69,8 +67,19 @@ export type RelatedBlogsProps = { currentId: number; items: ContentDto[] };
 export type ContentQuestionCommentProps = { item: QuestionDto };
 
 export type BlogCardLinkProps = {
-  children: ReactNode;
-  className?: string;
   href: string;
   title?: string;
+  className?: string;
+  children: ReactNode;
+};
+
+export type TMetaItem = {
+  icon: string;
+  label: string;
+  value: string;
+};
+
+export type TGalleryItem = {
+  _onPress: () => void;
+  item: BlogGalleryProps["images"][number];
 };

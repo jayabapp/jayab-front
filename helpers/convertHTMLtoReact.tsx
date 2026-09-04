@@ -38,7 +38,7 @@ const StandaloneLinkCard = ({
   );
 };
 
-export function convertHtmlToReact(htmlString: string) {
+export function convertHtmlToReact(htmlString: string, imageQuality = 75) {
   const root = HTMLParser.parse(htmlString);
   const children = root.childNodes;
 
@@ -148,7 +148,7 @@ export function convertHtmlToReact(htmlString: string) {
               className="embla__slide flex items-center justify-center relative"
             >
               <Image
-                quality={75}
+                quality={imageQuality}
                 src={img.src}
                 loading="lazy"
                 sizes="(min-width: 1600px) 20vw, (min-width: 1024px) 30vw, (min-width: 768px) 48vw, 74vw"

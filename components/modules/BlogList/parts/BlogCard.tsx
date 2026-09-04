@@ -1,5 +1,6 @@
 import { getHomeImageUrl } from "@features/home/mappers/home-image.mapper";
 import type { BlogCardProps } from "@/types/components/modules/blog";
+import { BLOG_IMAGE_QUALITY } from "@features/blog/constants/image";
 import { ContentImage } from "@elements/Image";
 import type { CSSProperties } from "react";
 
@@ -32,9 +33,10 @@ const BlogCard = ({ item, index }: BlogCardProps) => {
           <ContentImage
             fill
             sizes={BLOG_IMAGE_SIZES}
+            quality={BLOG_IMAGE_QUALITY}
             className="lift-card-media object-cover"
+            src={getHomeImageUrl(item?.feature_image)}
             alt={item?.feature_image?.alt || item?.title}
-            src={getHomeImageUrl(item?.feature_image, "medium")}
           />
           <div className="lift-card-scrim pointer-events-none absolute inset-0" />
 

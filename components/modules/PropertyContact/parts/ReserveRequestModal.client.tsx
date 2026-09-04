@@ -6,6 +6,7 @@ import { getPropertyImageUrl } from "@features/properties/mappers/property-image
 import { useCreateReservation } from "@features/reservations/hooks/useCreateReservation";
 import { jalaliDateToApiDate } from "@features/reservations/mappers/reservation-dates";
 import type { ReserveListDto } from "@/types/components/modules/property-contact";
+import { PROPERTY_IMAGE_QUALITY } from "@features/properties/constants/image";
 import { useStartOrFindChat } from "@features/chat/hooks/useStartOrFindChat";
 import { ActiveReservationSheet } from "@modules/ReservationDetails";
 import { ReserveUserAction } from "@/enum/reserve.enum";
@@ -117,11 +118,11 @@ const ReserveRequestModal = ({
               <div className="aspect-square w-full h-full relative">
                 <ContentImage
                   fill
-                  quality={75}
                   loading="lazy"
+                  quality={PROPERTY_IMAGE_QUALITY}
                   sizes="(min-width: 1024px) 6vw, 20vw"
                   alt={property?.featureImage?.alt || ""}
-                  src={getPropertyImageUrl(property?.featureImage, "medium")}
+                  src={getPropertyImageUrl(property?.featureImage)}
                   className="w-full rounded-20 h-full object-cover aspect-square"
                 />
               </div>

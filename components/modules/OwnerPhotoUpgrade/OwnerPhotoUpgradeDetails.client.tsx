@@ -3,6 +3,7 @@
 import { usePhotoUpgradeRequest } from "@features/photo-upgrade/hooks/usePhotoUpgradeRequest";
 import type { PhotoUpgradeSummaryItemProps } from "@/types/components/modules/photo-upgrade";
 import { getPropertyImageUrl } from "@features/properties/mappers/property-image.mapper";
+import { PROPERTY_IMAGE_QUALITY } from "@features/properties/constants/image";
 
 import PhotoUpgradeDetailSkeleton from "@features/photo-upgrade/components/PhotoUpgradeDetailSkeleton";
 import PhotoUpgradeImagePair from "./PhotoUpgradeImagePair.client";
@@ -52,8 +53,9 @@ const OwnerPhotoUpgradeDetails = ({ requestId }: { requestId: number }) => {
       <div className="white-card flex flex-col gap-4">
         <div className="flex items-start gap-3">
           <Image
+            quality={PROPERTY_IMAGE_QUALITY}
             src={
-              getPropertyImageUrl(data?.property?.feature_image, "medium")
+              getPropertyImageUrl(data?.property?.feature_image)
             }
             alt={data?.property?.title || ""}
             width={80}

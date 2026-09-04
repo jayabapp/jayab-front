@@ -4,6 +4,7 @@ import type { SelectablePhotoUpgradeImageProps } from "@/types/components/module
 import { usePhotoUpgradeCheckout } from "@features/photo-upgrade/hooks/usePhotoUpgradeCheckout";
 import type { OwnerPhotoUpgradeModalProps } from "@/types/components/modules/photo-upgrade";
 import { getUploadedImageUrl } from "@features/upload/mappers/upload-image.mapper";
+import { PROPERTY_IMAGE_QUALITY } from "@features/properties/constants/image";
 import { getHomeImageUrl } from "@features/home/mappers/home-image.mapper";
 import { memo, useCallback, useMemo, useState } from "react";
 import { ModalBottomSheet } from "@elements/Modal";
@@ -167,8 +168,9 @@ const OwnerPhotoUpgradeModal = ({
           <div className="w-full flex flex-col items-center justify-center gap-4 ">
             {!!upgradeContent?.feature_image ? (
               <Image
+                quality={PROPERTY_IMAGE_QUALITY}
                 src={
-                  getHomeImageUrl(upgradeContent?.feature_image, "medium") ||
+                  getHomeImageUrl(upgradeContent?.feature_image) ||
                   "/assets/icons/shared/image_placeholder.svg"
                 }
                 alt="نمونه بهبود تصویر"

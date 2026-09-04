@@ -2,10 +2,12 @@
 
 import { getPropertyImageUrl } from "@features/properties/mappers/property-image.mapper";
 import type { GalleryLightboxProps } from "@/types/components/modules/property-gallery";
+import { PROPERTY_DETAIL_IMAGE_QUALITY } from "@features/properties/constants/image";
 import { TransformComponent, TransformWrapper } from "react-zoom-pan-pinch";
 import { ContentImage } from "@elements/Image";
 
 import SwiperWithThumnails from "@elements/Carousel/SwiperWithThumbnails.client";
+import PropertyImageDownloadButton from "./PropertyImageDownloadButton.client";
 import Skeleton from "@elements/Skeleton/Skeleton";
 import _STRINGS from "@/utils/LocalStrings";
 import Modal from "@elements/Modal";
@@ -60,8 +62,9 @@ const GalleryLightbox = ({
             {images?.map((image) => (
               <div
                 key={`gallery-image-${image?.id}`}
-                className="flex items-center embla__slide justify-center w-full h-full p-1 rounded-md"
+                className="relative flex items-center embla__slide justify-center w-full h-full p-1 rounded-md"
               >
+                <PropertyImageDownloadButton attachmentId={image?.id} />
                 <TransformWrapper
                   limitToBounds
                   disablePadding
@@ -69,12 +72,14 @@ const GalleryLightbox = ({
                 >
                   <TransformComponent>
                     <ContentImage
+                      unoptimized
                       width={1024}
                       height={1024}
                       alt={alt || ""}
                       title={alt || ""}
                       src={getPropertyImageUrl(image)}
                       sizes="(min-width: 768px) 50vw, 100vw"
+                      quality={PROPERTY_DETAIL_IMAGE_QUALITY}
                       className="w-fit embla__slide object-contain h-full rounded-md !max-h-[60dvh]"
                     />
                   </TransformComponent>

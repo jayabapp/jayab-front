@@ -1,5 +1,6 @@
 import { getHomeImageUrl } from "@features/home/mappers/home-image.mapper";
 import type { RelatedBlogsProps } from "@/types/components/modules/blog";
+import { BLOG_IMAGE_QUALITY } from "@features/blog/constants/image";
 import { ContentImage } from "@elements/Image";
 
 import _STRINGS from "@/utils/LocalStrings";
@@ -29,6 +30,7 @@ const RelatedBlogs = ({ currentId, items }: RelatedBlogsProps) => {
             <ContentImage
               fill
               sizes="64px"
+              quality={BLOG_IMAGE_QUALITY}
               alt={item?.feature_image?.alt || ""}
               src={getHomeImageUrl(item?.feature_image)}
               className="object-cover transition-transform duration-300 group-hover:scale-110 motion-reduce:transition-none motion-reduce:group-hover:scale-100"

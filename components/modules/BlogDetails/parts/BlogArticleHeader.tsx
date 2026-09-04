@@ -1,5 +1,7 @@
 import type { BlogArticleHeaderProps } from "@/types/components/modules/blog";
+import { BLOG_DETAIL_IMAGE_QUALITY } from "@features/blog/constants/image";
 import { getHomeImageUrl } from "@features/home/mappers/home-image.mapper";
+import type { TMetaItem } from "@/types/components/modules/blog";
 import { ContentImage } from "@elements/Image";
 
 import SingleProductBreadcrumb from "@elements/Breadcrumbs/SingleProductBreadcrumb.client";
@@ -14,21 +16,13 @@ moment.loadPersian();
 
 const HERO_IMAGE_SIZES = "(min-width: 768px) 26rem, 92vw";
 
-const MetaItem = ({
-  icon,
-  label,
-  value,
-}: {
-  icon: string;
-  label: string;
-  value: string;
-}) => (
+const MetaItem = ({ icon, label, value }: TMetaItem) => (
   <span className="flex items-center gap-1.5">
     <Image
       alt=""
       width={16}
-      height={16}
       src={icon}
+      height={16}
       className="h-4 w-4 shrink-0"
     />
     <span className="text-neutral-600">{label}:</span>
@@ -77,14 +71,14 @@ const BlogArticleHeader = ({
         <div className="flex flex-wrap items-center justify-between gap-x-5 gap-y-3 border-y border-neutral-100 py-3 text-xs md:text-sm">
           <div className="flex flex-wrap items-center gap-x-5 gap-y-2">
             <MetaItem
-              icon="/assets/icons/blogs/calendar.svg"
               label={_STRINGS.BLOG_PUBLISHED_ON}
+              icon="/assets/icons/blogs/calendar.svg"
               value={moment(data?.created_at).format("jYYYY/jMM/jDD")}
             />
             {!!data?.fields?.author ? (
               <MetaItem
-                label={_STRINGS.BLOG_AUTHOR}
                 value={data.fields.author}
+                label={_STRINGS.BLOG_AUTHOR}
                 icon="/assets/icons/blogs/author.svg"
               />
             ) : (
@@ -106,6 +100,7 @@ const BlogArticleHeader = ({
           priority
           className="object-cover"
           sizes={HERO_IMAGE_SIZES}
+          quality={BLOG_DETAIL_IMAGE_QUALITY}
           src={getHomeImageUrl(data?.feature_image)}
           alt={data?.feature_image?.alt || data?.title || ""}
         />

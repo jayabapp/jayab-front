@@ -2,7 +2,7 @@ import type { NextConfig } from "next";
 
 const nextConfig: NextConfig = {
   images: {
-    qualities: [75, 100],
+    qualities: [75, 85, 90, 100],
     remotePatterns: [
       {
         protocol: "https",
@@ -27,24 +27,18 @@ const nextConfig: NextConfig = {
     // is only marginally smaller. One format, one entry.
     formats: ["image/webp"],
 
-    // Sources are capped at upload time by `resizeWidth`: 1024 for property /
-    // content / chat images, 512 for profiles, 256 for categories, 2048-2880 for
-    // banners. `optimizeImage` resizes with `withoutEnlargement: true`, so Next
-    // never upscales -- any requested width above the source width returns the
-    // source-sized image under a *separate* cache key. With the old ladder,
-    // w=1080, w=1200, w=1920, w=2048 and w=3840 all produced byte-identical
-    // output for a 1024px source: five cache entries for one payload.
+    // Sources are capped at upload time by `resizeWidth`: 1600 for property,
+    // 1024 for content / chat images, 512 for profiles, 256 for categories and
+    // 2048-2880 for banners. `optimizeImage` uses `withoutEnlargement`, so Next
+    // never upscales. Keeping a compact width ladder prevents duplicate cache
+    // entries for sources that are smaller than the requested output.
     //
-    // 1024 is here because it is the exact source ceiling for property and
-    // content images, which is the bulk of the corpus -- it gives them one
-    // canonical top variant instead of several interchangeable ones.
+    // 1024 remains the content-image ceiling and an efficient property variant;
+    // the 1200 and 1920 steps cover high-DPR property displays without adding a
+    // dense set of cache keys.
     //
-    // 1200 and 1920 exist only for the banner sources, which really are wider
-    // than 1024. Dropping 1200 was tried and reverted: it left a 1024-1920 gap,
-    // and a DPR3 phone asking for a ~1170px slot fell through to w=1920 and pulled
-    // 682KB where w=1200 serves 277KB. For every <=1024 source, 1200 and 1920 are
-    // still clamped down to 1024 -- that costs an extra cache key, never extra bytes,
-    // and `maximumDiskCacheSize` below caps what those keys can add up to.
+    // 1200 covers high-DPR mobile property views without falling through to
+    // 1920; the latter remains necessary for large property and banner views.
     deviceSizes: [640, 750, 828, 1024, 1200, 1920],
     imageSizes: [16, 32, 48, 64, 96, 128, 256, 384],
     // Uploaded object keys are immutable (UUID/timestamp based), so retaining

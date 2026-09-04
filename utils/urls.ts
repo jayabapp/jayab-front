@@ -43,6 +43,8 @@ export const NEW_IMAGE_URL = (
   return `https://${hostname}/${path}/${fileName}`;
 };
 export const imageUrlBase = `${Url}/images/contents/`;
+export const PUBLIC_PROPERTY_IMAGE_DOWNLOAD = (attachmentId: number) =>
+  `${baseUrl}/attachments/${attachmentId}/download`;
 export const IMAGE_URL = (path: string) => `${Url}/${path}`;
 export const bankUrl = (path: string) => `${Url}/images/bank/${path}`;
 
