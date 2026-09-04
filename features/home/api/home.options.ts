@@ -47,7 +47,7 @@ export const blogListOptions = (perPage = 18) =>
     queryKey: [...cmsKeys.lists(), "blog", { perPage }] as const,
     queryFn: ({ pageParam, signal }) =>
       HomeService.GetContent(
-        { key: "blog", page: pageParam, per_page: perPage },
+        { key: "blog", page: pageParam, per_page: perPage, summary: true },
         signal,
       ),
     initialPageParam: 1,

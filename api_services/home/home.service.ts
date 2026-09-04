@@ -74,12 +74,13 @@ export class HomeService {
       key: string;
       page: number;
       per_page?: number;
+      summary?: boolean;
     },
     signal?: AbortSignal,
   ) {
     try {
       const result = await apiCall<
-        { key: string; page: number; per_page?: number },
+        { key: string; page: number; per_page?: number; summary?: boolean },
         { data: ContentDto[]; meta: Meta }
       >(
         "GET",
@@ -88,6 +89,7 @@ export class HomeService {
           key: dto?.key,
           page: dto?.page,
           per_page: dto?.per_page,
+          summary: dto?.summary,
         },
         { signal },
       );

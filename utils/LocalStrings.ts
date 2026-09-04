@@ -11,6 +11,8 @@ const _STRINGS = {
   ERROR: "خطایی رخ داده است",
   SEARCH_RESULTS_LOAD_ERROR:
     "دریافت آگهی‌ها کامل نشد. اتصال اینترنت را بررسی و دوباره تلاش کنید.",
+  BLOG_LIST_LOAD_ERROR:
+    "دریافت مطالب بلاگ کامل نشد. لطفاً دوباره تلاش کنید.",
   MESSAGE_SENDING: "در حال ارسال",
   MESSAGE_SEND_FAILED: "ارسال ناموفق",
   CHAT_RECONNECTING: "در حال اتصال مجدد...",

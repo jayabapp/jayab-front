@@ -5,8 +5,8 @@ import { blogListOptions } from "@features/home/api/home.options";
 import { Metadata } from "next";
 
 import MehaHeaderHelper from "@/helpers/MetaHeaderHelper";
-import getQueryClient from "@lib/query/query-client";
 import BlogListTemplate from "@templates/BlogList";
+import getQueryClient from "@lib/query/query-client";
 
 export async function generateMetadata(): Promise<Metadata> {
   const { data: blogContent } = await getServerContentCategory("blog");
@@ -14,12 +14,14 @@ export async function generateMetadata(): Promise<Metadata> {
 }
 
 const BlogsPage = async () => {
-  const { data: blogs } = await getServerContentList("blog", 1, 18);
+  const { data: blogs } = await getServerContentList("blog", 1, 18, true);
   const queryClient = getQueryClient();
-  queryClient.setQueryData(blogListOptions(18).queryKey, {
-    pages: [blogs],
-    pageParams: [1],
-  });
+  if (blogs?.data) {
+    queryClient.setQueryData(blogListOptions(18).queryKey, {
+      pages: [blogs],
+      pageParams: [1],
+    });
+  }
 
   return (
     <HydrationBoundary state={dehydrate(queryClient)}>

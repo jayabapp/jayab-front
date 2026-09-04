@@ -28,10 +28,10 @@ export const getServerLandings = cache((placement: LandingsPlacements) =>
 );
 
 export const getServerContentList = cache(
-  (key: string, page: number, perPage: number) =>
+  (key: string, page: number, perPage: number, summary = false) =>
     serverCall(
       baseUrl + apiRoutes.CONTENTS,
-      { key, page, per_page: perPage },
+      { key, page, per_page: perPage, summary: summary || undefined },
       {
         revalidate: key === "blog" ? REVALIDATE.BLOG : REVALIDATE.CMS_PAGE,
       },
