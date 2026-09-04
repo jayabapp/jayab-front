@@ -1,24 +1,23 @@
 "use client";
 
 import { getPropertyImageUrl } from "@features/properties/mappers/property-image.mapper";
-import type { PropertyGalleryProps } from "@/types/components/modules/property-gallery";
-import { Suspense, useMemo, useState } from "react";
+import { useMemo, useState } from "react";
 import { ContentImage } from "@elements/Image";
 import { useStoreInit } from "@/store";
 
-import GalleryLightbox from "./parts/GalleryLightbox.client";
-import GalleryThumbnail from "./parts/GalleryThumbnail";
-import _STRINGS from "@/utils/LocalStrings";
-import difference from "lodash/difference";
-import isEmpty from "lodash/isEmpty";
-import dynamic from "next/dynamic";
+import type { PropertyGalleryProps } from "@/types/components/modules/property-gallery";
 
-const Swiper = dynamic(() => import("@elements/Carousel/Swiper.client"));
-const SwiperSlide = dynamic(
-  () => import("@elements/Carousel/SwiperSlide"),
-);
+import GalleryThumbnail from "./parts/GalleryThumbnail";
+import GalleryLightbox from "./parts/GalleryLightbox.client";
+import SwiperSlide from "@elements/Carousel/SwiperSlide";
+import difference from "lodash/difference";
+import _STRINGS from "@/utils/LocalStrings";
+import isEmpty from "lodash/isEmpty";
+import Swiper from "@elements/Carousel/Swiper.client";
 
 const THUMBNAIL_COUNT = 4;
+const BLUR_PLACEHOLDER =
+  "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mP8/x8AAusB9Wl2nWQAAAAASUVORK5CYII=";
 
 const PropertyGallery = ({
   title,
@@ -75,8 +74,8 @@ const PropertyGallery = ({
                 className={`rounded-10 overflow-clip ${index === THUMBNAIL_COUNT - 1 ? "blur-sm" : ""}`}
               >
                 <GalleryThumbnail
-                  item={image}
                   alt={title}
+                  item={image}
                   id={`${image?.id}`}
                   imageSize="thumbnail"
                   moreClass="w-full bg-white aspect-square object-cover"
@@ -105,45 +104,43 @@ const PropertyGallery = ({
               </p>
             </div>
           ) : null}
-          <Suspense>
-            <Swiper
-              slidesWidth={{ def: "100%", md: "100%" }}
-              options={{ align: "center", direction: "rtl", dragFree: false }}
-              selectedIndexCb={(index) => setCurrentIndex(index)}
-              onShowCountClick={(activeIndex: number) => {
-                setCurrentIndex(activeIndex);
-                openLightbox(activeIndex);
-              }}
-            >
-              {orderedImages.map((image, index) => (
-                <SwiperSlide
-                  key={`slide-${image?.id}`}
-                  className="w-full !h-auto cursor-pointer select-none"
+          <Swiper
+            onShowCountClick={openLightbox}
+            selectedIndexCb={setCurrentIndex}
+            slidesWidth={{ def: "100%", md: "100%" }}
+            options={{ align: "center", direction: "rtl", dragFree: false }}
+          >
+            {orderedImages.map((image, index) => (
+              <SwiperSlide
+                key={`slide-${image?.id}`}
+                className="w-full !h-auto cursor-pointer select-none"
+              >
+                <button
+                  type="button"
+                  onClick={() => openLightbox(index)}
+                  aria-label={`${title ?? ""} ${index + 1}`}
+                  className="w-full h-full aspect-square relative rounded-20"
                 >
-                  <button
-                    type="button"
-                    onClick={() => openLightbox(index)}
-                    aria-label={`${title ?? ""} ${index + 1}`}
-                    className="w-full h-full aspect-square relative rounded-20"
-                  >
-                    <ContentImage
-                      fill
-                      title={title}
-                      priority={index === 0}
-                      sizes="(max-width: 768px) 100vw, 80vw"
-                      loading={index === 0 ? undefined : "lazy"}
-                      alt={`${image?.alt || title || ""}`}
-                      src={getPropertyImageUrl(
-                        image,
-                        currentIndex === index ? "name" : "thumbnail",
-                      )}
-                      className="w-full h-full !p-0 transform-gpu !overflow-clip bg-white transition-all rounded-20 duration-500 aspect-square !object-cover"
-                    />
-                  </button>
-                </SwiperSlide>
-              ))}
-            </Swiper>
-          </Suspense>
+                  <ContentImage
+                    fill
+                    unoptimized
+                    title={title}
+                    placeholder="blur"
+                    preload={index === 0}
+                    blurDataURL={BLUR_PLACEHOLDER}
+                    sizes="(max-width: 768px) 100vw, 53vw"
+                    loading={index === 0 ? undefined : "lazy"}
+                    alt={`${image?.alt || title || ""}`}
+                    src={getPropertyImageUrl(
+                      image,
+                      currentIndex === index ? "name" : "thumbnail",
+                    )}
+                    className="w-full h-full !p-0 transform-gpu !overflow-clip bg-neutral-100 transition-all rounded-20 duration-500 aspect-square !object-cover"
+                  />
+                </button>
+              </SwiperSlide>
+            ))}
+          </Swiper>
         </div>
       </div>
     </div>
