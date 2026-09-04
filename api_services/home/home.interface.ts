@@ -108,6 +108,7 @@ export interface CitySuggestDto {
   grandparent_title: string;
   grandparent_id: null;
   matched_words: string;
+  target?: string;
 }
 
 export interface City {

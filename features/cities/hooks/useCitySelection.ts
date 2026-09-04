@@ -13,6 +13,7 @@ import { usePathname, useRouter } from "next/navigation";
 import { useMemo, useState } from "react";
 import { useQueryClient } from "@tanstack/react-query";
 import { useCitiesStore } from "@/store";
+import { HomeService } from "@/api_services/home/home.service";
 import { useCityTree } from "@features/cities/hooks/useCityTree";
 
 import type { CitySelectionState } from "@/types/features/cities";
@@ -121,7 +122,7 @@ export const useCitySelection = ({
     [committedSelection],
   );
 
-  const submit = () => {
+  const submit = async () => {
     if (onSubmitCustomValues) {
       onSubmitCustomValues((current: any) => ({
         ...current,
@@ -141,6 +142,42 @@ export const useCitySelection = ({
     });
 
     cancelPropertyDiscoveryQueries(queryClient);
+
+    const cityIds = Array.isArray(body.cities)
+      ? body.cities.map(Number).filter(Boolean)
+      : body.cities
+        ? [Number(body.cities)].filter(Boolean)
+        : [];
+    const provinceIds = Array.isArray(body.provinces)
+      ? body.provinces.map(Number).filter(Boolean)
+      : body.provinces
+        ? [Number(body.provinces)].filter(Boolean)
+        : [];
+
+    if (
+      (cityIds.length === 1 && provinceIds.length === 0) ||
+      (provinceIds.length === 1 && cityIds.length === 0)
+    ) {
+      try {
+        const landing = await HomeService.ResolveLocationLanding({
+          city_id: cityIds[0],
+          province_id: provinceIds[0],
+        });
+        if (landing?.url) {
+          const landingQuery = { ...body };
+          delete landingQuery.cities;
+          delete landingQuery.provinces;
+          delete landingQuery.regions;
+          router.push(
+            `/${landing.url.replace(/^\/+/, "")}?${queryBuilder(landingQuery)}`,
+          );
+          return;
+        }
+      } catch {
+        // Resolving a CMS destination is an enhancement; filtered discovery is
+        // the safe fallback when the resolver is temporarily unavailable.
+      }
+    }
 
     if (navigateUrl) {
       const isEmptySelection = !body.provinces && isEmpty(body.cities);

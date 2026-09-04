@@ -31,7 +31,7 @@ export type CitySelectionState = {
   setSearch: (value: string) => void;
   setSelectedCities: (cities: ChildCities[]) => void;
   setSelectedProvince: (province: NewCitiesListDto | null) => void;
-  submit: () => void;
+  submit: () => Promise<void> | void;
   title: string;
   toggleCity: (city: ChildCities) => void;
   visibleProvinces: NewCitiesListDto[];

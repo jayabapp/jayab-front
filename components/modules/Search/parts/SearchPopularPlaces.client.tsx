@@ -27,7 +27,7 @@ const SearchPopularPlaces = ({ onClose }: SearchPopularPlacesProps) => {
                 event.stopPropagation();
                 event.preventDefault();
                 onClose();
-                push(landing?.url);
+                push(`/${landing?.url?.replace(/^\/+/, "")}`);
               }}
               className="flex px-3 cursor-pointer py-0.5 flex-row text-white bg-brand-600 rounded-full transition-all items-center gap-2"
             >

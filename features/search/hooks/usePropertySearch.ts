@@ -2,9 +2,9 @@
 
 import { normalizePersianSearchText } from "@features/search/lib/normalize-persian-search-text";
 import { CitiesSuggestTypes } from "@/enum/cities_suggest.enum";
-import { HomeService } from "@/api_services/home/home.service";
 import { useEffect, useRef } from "react";
 import { useCitiesStore } from "@/store";
+import { HomeService } from "@/api_services/home/home.service";
 import { useMutation } from "@tanstack/react-query";
 import { useRouter } from "next/navigation";
 
@@ -14,13 +14,6 @@ import queryBuilder from "@/helpers/queryBuilder";
 
 const MAX_TERM_LENGTH = 80;
 
-/**
- * Turns a free-text query into the `/rooms` filter URL the backend derives from it.
- *
- * Submitting again while a request is in flight aborts the previous one and stamps
- * the new request with a higher sequence number, so a late response from an earlier
- * submit can neither navigate nor overwrite the location store.
- */
 export const usePropertySearch = (onNavigate?: () => void) => {
   const router = useRouter();
   const sequence = useRef(0);
@@ -35,7 +28,6 @@ export const usePropertySearch = (onNavigate?: () => void) => {
       controller.current = nextController;
       sequence.current += 1;
       const requestId = sequence.current;
-
       const data = await HomeService.Search(
         { q: normalizePersianSearchText(q).slice(0, MAX_TERM_LENGTH) },
         nextController.signal,
@@ -57,8 +49,16 @@ export const usePropertySearch = (onNavigate?: () => void) => {
         },
       });
       onNavigate?.();
-      // The user's own choices win over anything the text resolved to: if they
-      // said 4 guests, that is not a guess to be overwritten by `/extract`.
+      if (data.landing_url) {
+        const landingFilters = { ...data.client_query, ...extra };
+        delete landingFilters.cities;
+        delete landingFilters.provinces;
+        delete landingFilters.province_id;
+        delete landingFilters.regions;
+        delete landingFilters.q;
+        router.push(`/${data.landing_url}?${queryBuilder(landingFilters)}`);
+        return;
+      }
       router.push(`/rooms?${queryBuilder({ ...data.client_query, ...extra })}`);
     },
   });

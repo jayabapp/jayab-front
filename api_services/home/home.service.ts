@@ -16,6 +16,18 @@ export class HomeService {
   static CONTENT_QUESTIONS_KEY = "CONTENTQUESTIONSKEY";
   static SEARCH_KEY = "SEARCH";
   static USER_LANDING_PAGES_KEY = "USER_LANDING_PAGES";
+
+  static async ResolveLocationLanding(
+    dto: { city_id?: number; province_id?: number },
+    signal?: AbortSignal,
+  ) {
+    return apiCall<typeof dto, { url: string } | null>(
+      "GET",
+      apiRoutes.RESOLVE_LOCATION_LANDING,
+      dto,
+      { signal, showErrorNotification: false },
+    );
+  }
   static SETTING_KEY = "SETTING";
 
   static async GetBanners(
@@ -133,7 +145,11 @@ export class HomeService {
     try {
       const result = await apiCall<
         { q?: string },
-        { client_query: { [key: string]: any }; cities_list: CitySuggestDto[] }
+        {
+          client_query: { [key: string]: any };
+          cities_list: CitySuggestDto[];
+          landing_url?: string | null;
+        }
       >(
         "GET",
         apiRoutes.SEARCH,

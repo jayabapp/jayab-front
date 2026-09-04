@@ -1,8 +1,9 @@
 "use client";
 
-import { hasMatchingChild, matchesCitySearch } from "@features/cities/lib/city-selection";
 import type { CityModalProps } from "@/types/components/modules/city-selector";
 import { useCitySelection } from "@features/cities/hooks/useCitySelection";
+import { matchesCitySearch } from "@features/cities/lib/city-selection";
+import { hasMatchingChild } from "@features/cities/lib/city-selection";
 import { useEffect } from "react";
 
 import CityModalAllCitiesButton from "./parts/CityModalAllCitiesButton";
@@ -55,9 +56,6 @@ const CityModal = ({
     onSubmitCustomValues: onSubmitCustomeCB,
   });
 
-  // The trigger label and the region drill-down live in the caller, so the
-  // committed selection is pushed up once per change instead of being recomputed
-  // on both sides.
   useEffect(() => {
     setTitle?.(title);
   }, [setTitle, title]);
@@ -72,13 +70,14 @@ const CityModal = ({
   };
 
   const onSubmitClick = () => {
-    submit();
+    void submit();
     onSubmitExtendedCB?.();
     onHide();
   };
 
   const submitTitle =
-    item?.submitTitle || (onSubmitCustomeCB ? _STRINGS.SUBMIT : _STRINGS.SEARCH);
+    item?.submitTitle ||
+    (onSubmitCustomeCB ? _STRINGS.SUBMIT : _STRINGS.SEARCH);
 
   return (
     <Modal
@@ -133,8 +132,6 @@ const CityModal = ({
                 key={`province-${province?.id}`}
                 callback={() => {
                   setSelectedProvince(province);
-                  // Keep the term only when it also narrows the city list, so a
-                  // province-name search does not hide every city behind it.
                   if (!hasMatchingChild(province, search)) setSearch("");
                 }}
               />
@@ -150,7 +147,9 @@ const CityModal = ({
                 item={city}
                 key={`city-${city?.id}`}
                 callback={() => toggleCity(city)}
-                isChecked={selectedCities.some((entry) => entry?.id === city?.id)}
+                isChecked={selectedCities.some(
+                  (entry) => entry?.id === city?.id,
+                )}
               />
             ))
         )}

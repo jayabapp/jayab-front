@@ -134,6 +134,7 @@ export const apiRoutes = {
   BANNERS: "/banners",
 
   USER_LANDING_PAGES: "/user/landing-pages",
+  RESOLVE_LOCATION_LANDING: "/user/landing-pages/resolve/location",
 
   PROFILE_REGISTER_ADVISORS: `/profile/register/advisor`,
 
