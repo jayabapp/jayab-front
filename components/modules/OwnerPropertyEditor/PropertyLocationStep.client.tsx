@@ -61,7 +61,7 @@ const PropertyLocationStep = ({ propertyId }: OwnerPropertyRouteProps) => {
       <div className="w-full h-[70dvh] relative">
         <div
           onClick={() => setShowSearch(true)}
-          className="absolute top-2 z-1 left-0 right-0 w-[70%] md:w-1/2 mx-auto"
+          className="absolute top-2 z-1 left-0 right-0 w-[70%] md:w-1/2 mx-auto cursor-pointer"
         >
           <SearchInput
             autofocus={false}

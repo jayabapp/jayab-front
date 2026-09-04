@@ -53,3 +53,11 @@ export type ExpiredPropertyProps = {
   singleChatData?: SingleChatDetailsDto;
   setVisibleModal: (visible: boolean) => void;
 };
+
+export type TChatItemMoreProps = {
+  data: any;
+  refer: any;
+  show: boolean;
+  mine?: boolean;
+  close: () => void | null;
+};

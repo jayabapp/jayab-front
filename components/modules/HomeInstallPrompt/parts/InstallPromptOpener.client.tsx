@@ -6,6 +6,7 @@ const InstallPromptOpener = () => {
   return (
     <>
       <div
+        className="cursor-pointer"
         onClick={() => {
           useStoreParams.setState({ showInstallPrompt: true });
         }}

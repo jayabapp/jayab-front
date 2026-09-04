@@ -52,7 +52,7 @@ const PaymentDateFilter = ({
   };
   return (
     <div className="w-fit flex lg:flex-row  gap-3 items-center justify-between rounded-10  ">
-      <div onClick={showModal} className="relative inline-block text-left mr-1">
+      <div onClick={showModal} className="relative inline-block cursor-pointer text-left mr-1">
         <div className=" h-11  rounded-10 cursor-pointer  flex justify-between items-center">
           <div
             className={`flex bg-white/50 ${

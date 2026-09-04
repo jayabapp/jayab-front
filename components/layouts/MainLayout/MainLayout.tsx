@@ -20,7 +20,7 @@ const MainLayout = ({
 
     {/* z-1: the canvas behind everything is a `fixed` pseudo-element at z-0. */}
     <div className="app-size relative z-1">
-      <div style={{ minHeight: "100dvh" }} className="mx-auto h-full w-full">
+      <div className="mx-auto h-full w-full min-h-[100dvh]">
         {children}
       </div>
 

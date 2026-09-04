@@ -30,7 +30,7 @@ const ImageBox = ({
   image,
   emptyTitle = "عکسی ثبت نشده",
 }: PhotoUpgradeImageBoxProps) => (
-  <div onClick={cb} className="flex min-w-0 flex-col gap-2">
+  <div onClick={cb} className="flex min-w-0 cursor-pointer flex-col gap-2">
     {image ? (
       <div className="relative overflow-hidden rounded-10 border border-neutral-100 bg-neutral-50">
         <Image

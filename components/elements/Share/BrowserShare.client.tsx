@@ -49,7 +49,7 @@ const ShareLink = ({
   };
 
   return (
-    <div className={`flex ${containerClass} items-center`} onClick={onShare}>
+    <div className={`flex ${containerClass} cursor-pointer items-center`} onClick={onShare}>
       {" "}
       <div
         className={`flex items-center  rounded-md   justify-center    cursor-pointer     transition-all  ${
@@ -100,7 +100,7 @@ const ShareLink = ({
             leaveFrom="opacity-100 scale-100 translate-x-0"
             leaveTo="opacity-0 scale-75 -translate-x-10"
           >
-            <div onClick={copyLink}>
+            <div className="cursor-pointer" onClick={copyLink}>
               <ContentImage
                 alt=""
                 width={20}

@@ -43,7 +43,7 @@ const Notify = (props: NotifyProps) => {
   toast.custom(
     (t) => (
       <div
-        className={`relative right-0 left-0 z-10 mx-auto flex items-center justify-start rounded-lg border-r-8 bg-white px-3 py-2 text-black shadow-lg transition-all duration-500 ease-in-out hover:translate-y-1 md:w-96 ${_findTypeData().border}`}
+        className={`relative right-0 left-0 z-10 mx-auto flex items-center justify-start rounded-lg border-r-8 bg-white px-3 py-2 text-black shadow-lg transition-all duration-500 ease-in-out hover:translate-y-1 md:w-96 cursor-pointer ${_findTypeData().border}`}
         onClick={() => {
           toast.dismiss(t);
           typeof cb == "function" && cb();

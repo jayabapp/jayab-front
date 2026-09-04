@@ -20,12 +20,13 @@ const HomeTemplate = ({ banners, devices, homeContent, landings, properties, pro
     banners?.[BannerPosition.MAIN_2]?.filter((banner) => Boolean(devices?.isMobile ? banner?.image_sm : banner?.image)),
   );
   return (
-      <div id="homeParent" style={{ minHeight: "100dvh" }} className="home-container !px-0 !pt-0 flex flex-col gap-0">
+      <div id="homeParent" className="home-container !px-0 !pt-0 flex flex-col gap-0">
         <HomeSeo />
         {!!heroBanner ? <HomeHeroBanner banner={heroBanner} devices={devices} title={homeContent?.full_text} /> : <></>}
         <section
-          style={{ minHeight: !isEmpty(landings?.popular_city) && !isEmpty(landings?.quick_search) ? "30dvh" : "0" }}
-          className="rounded-t-20 mb-8 -mt-[1.375rem] md:mt-0 flex flex-col relative gap-5 lg:gap-6 select-none px-0 md:py-0 w-full"
+          className={`rounded-t-20 mb-8 -mt-[1.375rem] md:mt-0 flex flex-col relative gap-5 lg:gap-6 select-none px-0 md:py-0 w-full ${
+            !isEmpty(landings?.popular_city) && !isEmpty(landings?.quick_search) ? "min-h-[30dvh]" : ""
+          }`}
         >
           <Suspense fallback={null}>
             <div className="w-full mt-3 lg:mt-0 px-0">

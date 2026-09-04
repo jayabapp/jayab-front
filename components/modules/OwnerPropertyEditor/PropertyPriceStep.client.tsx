@@ -126,7 +126,7 @@ const PropertyPriceStep = ({ propertyId }: OwnerPropertyRouteProps) => {
           setShowNotice(true);
         }}
       >
-        <p className="font-bold w-full text-start text-sm md:text-base text-brand-600">
+        <p className="font-bold w-full cursor-pointer text-start text-sm md:text-base text-brand-600">
           {_STRINGS.REND_DAYLI_PRICE}
         </p>
         {PRICE_FIELDS.map((field) => (

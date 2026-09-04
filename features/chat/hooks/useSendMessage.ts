@@ -4,12 +4,12 @@ import { appendMessageToCache } from "../api/chat.cache";
 import { ChatService } from "@/api_services/chat/chat.service";
 import { chatKeys } from "../api/chat.keys";
 
+import type { ChatMessagesPageDto } from "@/api_services/chat/chat.interface";
+import type { SendChatMessageDto } from "@/api_services/chat/chat.interface";
+import type { NewSingleChatDto } from "@/api_services/chat/chat.interface";
 import type { InfiniteData } from "@tanstack/react-query";
-import type {
-  ChatMessagesPageDto,
-  NewSingleChatDto,
-  SendChatMessageDto,
-} from "@/api_services/chat/chat.interface";
+
+import randomId from "@/helpers/randomId";
 
 export const useSendMessage = (chatId: string, participantId?: number) => {
   const queryClient = useQueryClient();
@@ -18,10 +18,10 @@ export const useSendMessage = (chatId: string, participantId?: number) => {
     mutationFn: (variables) =>
       ChatService.sendMessage({
         ...variables,
-        clientMessageId: variables.clientMessageId ?? crypto.randomUUID(),
+        clientMessageId: variables.clientMessageId ?? randomId(),
       }),
     onMutate: async (variables: SendChatMessageDto) => {
-      const clientMessageId = variables.clientMessageId ?? crypto.randomUUID();
+      const clientMessageId = variables.clientMessageId ?? randomId();
       variables.clientMessageId = clientMessageId;
       await queryClient.cancelQueries({ queryKey: chatKeys.messages(chatId) });
       const optimisticMessage: NewSingleChatDto = {

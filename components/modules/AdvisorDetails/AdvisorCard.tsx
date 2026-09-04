@@ -16,7 +16,7 @@ const AdvisorCard = ({ advisor, onSelect, isSingle }: AdvisorCardProps) => {
   return (
     <div
       onClick={onSelect}
-      className="rounded-2xl gap-2 shadow-card p-4 w-full flex flex-col items-center"
+      className="rounded-2xl gap-2 shadow-card p-4 w-full flex cursor-pointer flex-col items-center"
     >
       <div className="w-full flex items-center gap-2">
         <div className="flex flex-col gap-2 h-full justify-between w-1/4 lg:w-1/5 2xl:w-1/4">

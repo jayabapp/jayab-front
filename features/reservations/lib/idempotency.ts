@@ -1,4 +1,5 @@
 import type { CreateReserveDto } from "@/api_services/reserve/reserve.interface";
+import randomId from "@/helpers/randomId";
 
 const prefix = "reservation-idempotency:";
 const payloadKey = (payload: CreateReserveDto) =>
@@ -15,8 +16,7 @@ export const getReservationIdempotencyKey = (payload: CreateReserveDto) => {
   if (typeof window === "undefined") return `${Date.now()}-${Math.random()}`;
   const existing = sessionStorage.getItem(storageKey);
   if (existing) return existing;
-  const key =
-    globalThis.crypto?.randomUUID?.() ?? `${Date.now()}-${Math.random()}`;
+  const key = randomId();
   sessionStorage.setItem(storageKey, key);
   return key;
 };

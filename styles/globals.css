@@ -1597,3 +1597,13 @@ ul {
     transition: none;
   }
 }
+
+/* The cropper's height is an inline `60dvh` set by ImageCropModal, and an inline
+   declaration a browser cannot parse is dropped rather than falling back. On
+   iOS below 15.4 that left the cropper at auto height and the crop surface
+   collapsed. A class cannot beat the inline value on a browser that does
+   understand dvh, so this only ever applies where the inline one was thrown
+   away. Kept in step with the `style` prop in ImageCropModal.client.tsx. */
+.cropper {
+  height: 60vh;
+}

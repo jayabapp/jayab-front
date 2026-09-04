@@ -25,7 +25,7 @@ export const userSubscriptionsOptions = (filters: UserSubscriptionFilters) => {
     initialPageParam: 0,
     getNextPageParam: (lastPage) => {
       if (!lastPage || lastPage.data.length < perPage) return undefined;
-      return lastPage.data.at(-1)?.id;
+      return lastPage.data[lastPage.data.length - 1]?.id;
     },
     staleTime: 30_000,
   });

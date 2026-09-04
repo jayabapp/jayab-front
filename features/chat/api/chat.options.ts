@@ -36,7 +36,7 @@ export const chatMessagesOptions = (chatId: string, enabled = true) =>
     initialPageParam: 0,
     getNextPageParam: (lastPage) => {
       if (lastPage.data.length < CHAT_PAGE_SIZE) return undefined;
-      return lastPage.data.at(-1)?.id;
+      return lastPage.data[lastPage.data.length - 1]?.id;
     },
     enabled: enabled && chatId.length > 0,
     staleTime: STALE_TIME.REALTIME,

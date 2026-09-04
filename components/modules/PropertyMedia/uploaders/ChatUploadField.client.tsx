@@ -176,11 +176,10 @@ const ChatUploader = ({
         onHide={onHide}
       >
         <div
-          className="flex    items-center justify-center"
+          className="flex    items-center justify-center min-h-[60dvh]"
           style={{
             position: "relative",
             width: "100%",
-            minHeight: "60dvh",
           }}
         >
           {!!selectedFile && (

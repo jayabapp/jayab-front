@@ -93,6 +93,7 @@ const PropertyContactRow = ({
               <span
                 role="button"
                 tabIndex={0}
+                className="cursor-pointer"
                 aria-label={_STRINGS.NUMBER_COPIED}
                 onKeyDown={(event) => {
                   if (event.key !== "Enter" && event.key !== " ") return;

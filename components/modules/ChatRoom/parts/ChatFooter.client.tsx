@@ -7,6 +7,7 @@ import { BtnLoading } from "@elements/Button";
 import { isIOS } from "react-device-detect";
 
 import ExpiredPropertyModal from "./ExpiredPropertyModal.client";
+import randomId from "@/helpers/randomId";
 import debounce from "lodash/debounce";
 import ChatInput from "./ChatInput";
 import ChatReply from "./ChatReply";
@@ -106,7 +107,7 @@ const ChatFooter = ({
       };
       if (!!image) body.media_id = Number(image?.id);
       sendMessage(
-        { ...body, clientMessageId: crypto.randomUUID() },
+        { ...body, clientMessageId: randomId() },
         { onSuccess: handleSendSuccess, onError: handleSendError },
       );
     }
@@ -221,7 +222,7 @@ const ChatFooter = ({
             containerClass={"my-3"}
             sendMessage={(body, options) =>
               sendMessage(
-                { ...body, clientMessageId: crypto.randomUUID() },
+                { ...body, clientMessageId: randomId() },
                 {
                   onSuccess: (response) => {
                     submittingRef.current = false;
@@ -257,7 +258,7 @@ const ChatFooter = ({
             lazyLoadEmojis={true}
             skinTonesDisabled={true}
             previewConfig={{ showPreview: false }}
-            className={"!w-full !p-0 !border-none !bg-transparent"}
+            className={"!w-full !p-0 !border-none !bg-transparent !h-[50dvh]"}
             onEmojiClick={(e) => {
               setText((t) => `${t}${e?.emoji}`);
             }}

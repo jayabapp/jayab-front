@@ -39,7 +39,7 @@ const StepShower = ({ value, steps }: TStepShowerProps) => {
                 onClick={() => onClick(e)}
                 className={`${
                   !!isSelected ? "bg-brand-600" : "bg-neutral-300"
-                }  w-4 h-4 !shrink-0 aspect-square  rounded-full`}
+                }  w-4 h-4 !shrink-0 aspect-square cursor-pointer rounded-full`}
               >
                 {" "}
               </div>

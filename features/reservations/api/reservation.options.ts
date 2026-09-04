@@ -25,7 +25,7 @@ export const ownerReservationsOptions = (
     getNextPageParam: (lastPage) => {
       const items = lastPage?.data ?? [];
       if (items.length < OWNER_PAGE_SIZE) return undefined;
-      return items.at(-1)?.id;
+      return items[items.length - 1]?.id;
     },
     refetchInterval: autoRefresh ? OWNER_POLL_INTERVAL : false,
     staleTime: 30_000,

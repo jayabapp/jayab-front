@@ -25,7 +25,8 @@ export const useProperties = (filters: PropertyFilters, enabled = true) => {
 
     return [...uniqueProperties.values()];
   }, [query.data]);
-  const meta = query.data?.pages.at(-1)?.meta;
+  const pages = query.data?.pages ?? [];
+  const meta = pages[pages.length - 1]?.meta;
 
   return {
     ...query,
