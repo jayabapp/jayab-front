@@ -1,29 +1,33 @@
 "use client";
 
-import { matchesCitySearch, parseIdList } from "@features/cities/lib/city-selection";
+import { cancelPropertyDiscoveryQueries } from "@features/properties/api/property-discovery.cache";
 import { usePathname, useRouter } from "next/navigation";
 import { useMemo, useState } from "react";
+import { matchesCitySearch } from "@features/cities/lib/city-selection";
+import { useQueryClient } from "@tanstack/react-query";
+import { parseIdList } from "@features/cities/lib/city-selection";
 
+import type { RegionSelectionState } from "@/types/features/cities";
+import type { RegionSelectionInput } from "@/types/features/cities";
 import type { ChildCities } from "@/api_services/city/city.interface";
-import type { RegionSelectionInput, RegionSelectionState } from "@/types/features/cities";
 
 import queryBuilder from "@/helpers/queryBuilder";
 import useQueryGet from "@/helpers/queryGet";
 
-/**
- * Region selection mirrors {@link useCitySelection}: the URL owns the committed
- * value and the draft is dropped whenever the URL or the parent city changes.
- */
 export const useRegionSelection = ({
   navigateUrl,
   cityWithRegions,
 }: RegionSelectionInput): RegionSelectionState => {
   const router = useRouter();
+  const queryClient = useQueryClient();
   const pathname = usePathname();
   const queries = useQueryGet<Record<string, string>>();
   const regionsQuery = queries?.regions;
 
-  const regions = useMemo(() => cityWithRegions?.child ?? [], [cityWithRegions]);
+  const regions = useMemo(
+    () => cityWithRegions?.child ?? [],
+    [cityWithRegions],
+  );
 
   const committedRegions = useMemo(() => {
     const ids = parseIdList(regionsQuery);
@@ -69,6 +73,7 @@ export const useRegionSelection = ({
       regions: selectedRegions.map((region) => region?.id),
     };
     delete body.page;
+    cancelPropertyDiscoveryQueries(queryClient);
     if (navigateUrl) {
       router.push(`${navigateUrl}?${queryBuilder(body)}`);
       return;

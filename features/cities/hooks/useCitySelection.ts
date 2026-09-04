@@ -8,27 +8,22 @@ import {
   resolveQueryProvinceCities,
   resolveQueryProvinces,
 } from "@features/cities/lib/city-selection";
+import { cancelPropertyDiscoveryQueries } from "@features/properties/api/property-discovery.cache";
 import { usePathname, useRouter } from "next/navigation";
-import { useCityTree } from "@features/cities/hooks/useCityTree";
 import { useMemo, useState } from "react";
+import { useQueryClient } from "@tanstack/react-query";
 import { useCitiesStore } from "@/store";
+import { useCityTree } from "@features/cities/hooks/useCityTree";
 
-import type { ChildCities, NewCitiesListDto } from "@/api_services/city/city.interface";
-import type { CitySelectionInput, CitySelectionState } from "@/types/features/cities";
+import type { CitySelectionState } from "@/types/features/cities";
+import type { CitySelectionInput } from "@/types/features/cities";
+import type { NewCitiesListDto } from "@/api_services/city/city.interface";
+import type { ChildCities } from "@/api_services/city/city.interface";
 
 import queryBuilder from "@/helpers/queryBuilder";
 import useQueryGet from "@/helpers/queryGet";
 import isEmpty from "lodash/isEmpty";
 
-/**
- * Single source of truth for province/city selection.
- *
- * The committed selection always comes from the URL (or from the caller-supplied
- * filter draft); the in-modal edits live in `draft`, which is discarded whenever
- * the committed selection or the open/closed state changes. Nothing is mirrored
- * into an effect, so reopening the modal cannot show a stale selection and no
- * extra fetch is triggered when the URL changes.
- */
 export const useCitySelection = ({
   enabled,
   navigateUrl,
@@ -37,6 +32,7 @@ export const useCitySelection = ({
   onSubmitCustomValues,
 }: CitySelectionInput): CitySelectionState => {
   const router = useRouter();
+  const queryClient = useQueryClient();
   const pathname = usePathname();
   const urlQueries = useQueryGet<Record<string, string>>();
   const queries = customValues ?? urlQueries;
@@ -80,7 +76,9 @@ export const useCitySelection = ({
   const search = draft.search;
 
   const patchDraft = (
-    patch: Partial<Omit<typeof draft, "key">> & { cities?: ChildCities[] | null },
+    patch: Partial<Omit<typeof draft, "key">> & {
+      cities?: ChildCities[] | null;
+    },
   ) => setDraft((current) => ({ ...current, key: selectionKey, ...patch }));
 
   const setSelectedCities = (cities: ChildCities[]) => patchDraft({ cities });
@@ -103,7 +101,10 @@ export const useCitySelection = ({
 
   const cities = selectedProvince?.child ?? [];
   const visibleProvinces = useMemo(
-    () => (provinces ?? []).filter((province) => matchesCitySearch(province, search)),
+    () =>
+      (provinces ?? []).filter((province) =>
+        matchesCitySearch(province, search),
+      ),
     [provinces, search],
   );
 
@@ -112,7 +113,6 @@ export const useCitySelection = ({
     [queryProvinces, queryCities],
   );
 
-  /** The city whose regions the filter bar may drill into: exactly one selected city that has children. */
   const regionCity = useMemo(
     () =>
       committedSelection.length === 1 && !isEmpty(committedSelection[0]?.child)
@@ -139,6 +139,8 @@ export const useCitySelection = ({
     useCitiesStore.setState({
       locationsData: { cities: storedCities, provinces: storedProvinces },
     });
+
+    cancelPropertyDiscoveryQueries(queryClient);
 
     if (navigateUrl) {
       const isEmptySelection = !body.provinces && isEmpty(body.cities);

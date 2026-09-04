@@ -9,6 +9,8 @@ const _STRINGS = {
   BACK: "بازگشت",
   TRY_AGAIN: "تلاش دوباره",
   ERROR: "خطایی رخ داده است",
+  SEARCH_RESULTS_LOAD_ERROR:
+    "دریافت آگهی‌ها کامل نشد. اتصال اینترنت را بررسی و دوباره تلاش کنید.",
   MESSAGE_SENDING: "در حال ارسال",
   MESSAGE_SEND_FAILED: "ارسال ناموفق",
   CHAT_RECONNECTING: "در حال اتصال مجدد...",

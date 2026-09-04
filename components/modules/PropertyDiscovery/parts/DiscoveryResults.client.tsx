@@ -21,21 +21,24 @@ const GRID_CLASS =
   "grid pb-8 pt-4 md:pt-2 px-3 lg:px-1 !overflow-hidden grid-cols-1 gap-2 md:gap-4 md:grid-cols-2 xl:grid-cols-3";
 
 const DiscoveryResults = ({
+  query,
   devices,
   onClearFilters,
-  query,
 }: DiscoveryResultsProps) => {
   const hasPaginate = Boolean(query?.page);
   const week = weekFromToday();
 
   const {
-    fetchNextPage,
-    hasNextPage,
-    isFetchingNextPage,
-    isPending,
-    isPlaceholderData,
     meta,
+    refetch,
+    isError,
+    isPending,
+    isFetching,
     properties,
+    hasNextPage,
+    fetchNextPage,
+    isPlaceholderData,
+    isFetchingNextPage,
   } = useProperties(query);
 
   const { data: banners } = useHomeBanners(BANNER_POSITIONS);
@@ -47,11 +50,19 @@ const DiscoveryResults = ({
     Math.min(maxBanners, MAX_INLINE_BANNERS),
   );
 
-  // Only the very first load has nothing to show. Every later filter change
-  // keeps the previous results on screen — see `placeholderData` on
-  // `propertiesOptions` — so the reader's place in the list survives.
-  if (isPending && properties.length === 0) {
-    return <PropertyGridSkeleton />;
+  if (isPending && properties.length === 0) return <PropertyGridSkeleton />;
+
+  if (isError && properties.length === 0) {
+    return (
+      <div className="col-span-full">
+        <EmptyState
+          onAction={() => void refetch()}
+          title={_STRINGS.ERROR}
+          description={_STRINGS.SEARCH_RESULTS_LOAD_ERROR}
+          actionLabel={_STRINGS.TRY_AGAIN}
+        />
+      </div>
+    );
   }
 
   if (properties.length === 0) {
@@ -69,9 +80,21 @@ const DiscoveryResults = ({
 
   return (
     <div className="w-full self-center px-0">
-      {/* The API already computes this total for pagination; not showing it was
-          leaving the one number that tells a visitor whether their filters were
-          reasonable sitting unused in the response. */}
+      {isError ? (
+        <div
+          role="alert"
+          className="mx-3 mt-2 flex items-center justify-between gap-3 rounded-xl bg-danger-50 px-3 py-2 text-xs text-danger-600 lg:mx-1"
+        >
+          <span>{_STRINGS.SEARCH_RESULTS_LOAD_ERROR}</span>
+          <button
+            type="button"
+            onClick={() => void refetch()}
+            className="shrink-0 font-bold underline underline-offset-4"
+          >
+            {_STRINGS.TRY_AGAIN}
+          </button>
+        </div>
+      ) : null}
       {meta?.total ? (
         <p
           aria-live="polite"
@@ -86,20 +109,25 @@ const DiscoveryResults = ({
         <></>
       )}
 
-      {/* Dimmed, not replaced. `pointer-events-none` stops a click landing on a
-          card that is about to be swapped for a different property. */}
       <div
         className={`w-full transition-opacity duration-200 ${
-          isPlaceholderData ? "pointer-events-none opacity-50" : ""
+          isPlaceholderData && isFetching ? "opacity-60" : ""
         }`}
       >
         <InfiniteScroll
           className={GRID_CLASS}
           scrollThreshold={0.5}
           dataLength={properties.length}
-          next={() => void fetchNextPage()}
+          next={() => {
+            if (!isPlaceholderData && !isFetchingNextPage) void fetchNextPage();
+          }}
           loader={isFetchingNextPage ? <PropertyCardSkeleton /> : null}
-          hasMore={!hasPaginate && Boolean(hasNextPage) && !isFetchingNextPage}
+          hasMore={
+            !hasPaginate &&
+            !isPlaceholderData &&
+            Boolean(hasNextPage) &&
+            !isFetchingNextPage
+          }
         >
           <PropertyGridItems
             week={week}

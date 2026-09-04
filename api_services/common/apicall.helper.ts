@@ -26,6 +26,7 @@ interface SuccessResponse<K> {
 }
 
 const isBrowser = typeof window !== "undefined";
+const API_TIMEOUT_MS = 20_000;
 let unauthorizedRedirectStarted = false;
 
 export async function apiCall<T, K>(
@@ -56,6 +57,7 @@ export async function apiCall<T, K>(
       },
       data: body,
       signal: options?.signal,
+      timeout: API_TIMEOUT_MS,
       onUploadProgress: options?.progressCallBack,
     };
     if (method == "GET") {
@@ -95,7 +97,16 @@ export async function apiCall<T, K>(
       window?.location?.replace("/");
       return;
     }
-    throw error?.response?.data || "Failed";
+    const responseData = error?.response?.data;
+    if (responseData && typeof responseData === "object") {
+      Object.defineProperty(responseData, "httpStatus", {
+        configurable: true,
+        enumerable: false,
+        value: error.response.status,
+      });
+      throw responseData;
+    }
+    throw error;
   }
 }
 

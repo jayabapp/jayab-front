@@ -1,8 +1,10 @@
 "use client";
 
 import { useCallback, useMemo, useState } from "react";
+import { cancelPropertyDiscoveryQueries } from "@features/properties/api/property-discovery.cache";
 import { zero_filter_remove_keys } from "@/utils/constantss";
 import { usePathname, useRouter } from "next/navigation";
+import { useQueryClient } from "@tanstack/react-query";
 
 import type { PropertyDiscoveryFilters } from "@/types/features/properties";
 
@@ -19,6 +21,7 @@ export const usePropertyDiscoveryFilters = ({
   hiddenFilters?: string[];
 } = {}) => {
   const router = useRouter();
+  const queryClient = useQueryClient();
   const pathname = usePathname();
   const urlQueries = useQueryGet<Record<string, string>>();
 
@@ -49,9 +52,11 @@ export const usePropertyDiscoveryFilters = ({
   );
 
   const replaceWith = useCallback(
-    (body: Record<string, unknown>) =>
-      router.replace(`${pathname}?${queryBuilder(body)}`),
-    [pathname, router],
+    (body: Record<string, unknown>) => {
+      cancelPropertyDiscoveryQueries(queryClient);
+      router.replace(`${pathname}?${queryBuilder(body)}`);
+    },
+    [pathname, queryClient, router],
   );
 
   const applyFilters = useCallback(() => {
@@ -79,11 +84,11 @@ export const usePropertyDiscoveryFilters = ({
   }, [queries, replaceWith]);
 
   return {
-    applyFilters,
-    clearExtraFilters,
-    filters: draft.filters,
     queries,
     resetDraft,
     setFilters,
+    applyFilters,
+    clearExtraFilters,
+    filters: draft.filters,
   };
 };
