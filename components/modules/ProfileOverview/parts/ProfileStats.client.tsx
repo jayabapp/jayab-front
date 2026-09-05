@@ -74,7 +74,7 @@ const ProfileStats = ({ profile, isLogin }: ProfileStatsProps) => {
       <div className="grid grid-cols-2 gap-3 lg:grid-cols-4">
         {stats.map((stat) => (
           <Link
-            prefetch={false}
+            prefetch
             href={stat.route}
             title={stat.title}
             key={`profileStat${stat.id}`}

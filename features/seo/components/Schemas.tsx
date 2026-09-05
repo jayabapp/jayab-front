@@ -6,6 +6,7 @@ import { JsonLd } from "@elements/StructuredData";
 import type {
   BlogStructuredDataProps,
   ContentFaqStructuredDataProps,
+  FaqStructuredDataProps,
   LandingFaqStructuredDataProps,
   PropertyStructuredDataProps,
   ServiceStructuredDataProps,
@@ -27,14 +28,18 @@ import type {
   Service,
 } from "schema-dts";
 
-export const FaqSchema = async () => {
-  const { data: faqData } = await serverCall(
-    baseUrl + apiRoutes.CONTENTS + `?key=faq&per_page=20&page=1`,
-    undefined,
-    {
-      revalidate: REVALIDATE.CMS_PAGE,
-    },
-  );
+export const FaqSchema = async ({ items }: FaqStructuredDataProps = {}) => {
+  const faqData = items
+    ? { data: items }
+    : (
+        await serverCall(
+          baseUrl + apiRoutes.CONTENTS + `?key=faq&per_page=20&page=1`,
+          undefined,
+          {
+            revalidate: REVALIDATE.CMS_PAGE,
+          },
+        )
+      )?.data;
   return JsonLd<FAQPage>({
     "@context": "https://schema.org",
     "@type": "FAQPage",

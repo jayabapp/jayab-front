@@ -1,6 +1,6 @@
 import type { TermsContentProps } from "@/types/components/modules/content-pages";
+import { sanitizeCmsHtml } from "@/helpers/html.generator";
 import Breadcrumbs from "@elements/Breadcrumbs/Breadcrumbs.client";
-import DOMPurify from "isomorphic-dompurify";
 import _STRINGS from "@/utils/LocalStrings";
 
 const TermsContent = ({ content: aboutUsWebsite }: TermsContentProps) => {
@@ -20,7 +20,7 @@ const TermsContent = ({ content: aboutUsWebsite }: TermsContentProps) => {
             <div
               className=" font-light !text-base text-start  content mt-2 leading-8"
               dangerouslySetInnerHTML={{
-                __html: DOMPurify.sanitize(
+                __html: sanitizeCmsHtml(
                   aboutUsWebsite?.html || aboutUsWebsite?.full_text || "",
                 ),
               }}

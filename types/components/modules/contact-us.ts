@@ -10,3 +10,8 @@ export type ContactUsItemProps = {
 export type ContactUsPageProps = {
   data?: { data?: ContentDto[] };
 };
+
+export type ContactMapProps = {
+  latitude: number;
+  longitude: number;
+};

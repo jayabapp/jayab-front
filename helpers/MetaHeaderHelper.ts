@@ -17,10 +17,11 @@ export const truncateMetaDescription = (value: string, limit: number) => {
 
 const MetaHeaderHelper = async (
   data: any,
-  options?: { descriptionLimit?: number },
+  options?: { canonicalUrl?: string; descriptionLimit?: number },
 ) => {
-  const requestHeaders = await headers();
-  const xCanonical = requestHeaders?.get("x-canonical");
+  const xCanonical = options?.canonicalUrl
+    ? options.canonicalUrl
+    : (await headers()).get("x-canonical");
   const title = data?.seo?.metaTitle || data?.title;
   const propertyTitle = normalizeMetaText(data?.title);
   const propertyDescription = normalizeMetaText(

@@ -1,19 +1,13 @@
 import { BlogSchema, ContentFAQSchema } from "@features/seo/components/Schemas";
 import { getServerContentBySlug } from "@features/home/server/home.server";
-import { apiRoutes, baseUrl } from "@/utils/urls";
-import { HTMLGenerator } from "@/helpers/html.generator";
-import { REVALIDATE } from "@/helpers/revalidate";
+import { getCachedBlogHtml } from "@features/blog/server/blog.server";
 
 import type { BlogDetailsRouteProps } from "@/types/app/routes";
-import type { ContentDto } from "@/api_services/home/home.interface";
 import type { Metadata } from "next";
 
 import BlogDetailsTemplate from "@templates/BlogDetails";
 import MehaHeaderHelper from "@/helpers/MetaHeaderHelper";
 import BlogDetails from "@modules/BlogDetails";
-import serverCall from "@/helpers/serverCall";
-
-const RELATED_BLOGS_URL = `${baseUrl}${apiRoutes.CONTENTS}?key=blog&page=1&per_page=4&summary=true`;
 
 export const generateMetadata = async ({
   params,
@@ -26,14 +20,12 @@ export const generateMetadata = async ({
 const BlogDetailsPage = async ({ params }: BlogDetailsRouteProps) => {
   const { blog_id } = await params;
 
-  const [{ data }, { data: relatedData }] = (await Promise.all([
-    getServerContentBySlug(blog_id),
-    serverCall(RELATED_BLOGS_URL, undefined, { revalidate: REVALIDATE.BLOG }),
-  ])) as [{ data: ContentDto }, { data: { data: ContentDto[] } }];
+  const { data } = await getServerContentBySlug(blog_id);
 
-  const { html, headings, timeToRead, wordCount, faqData } = HTMLGenerator(
+  const { html, headings, timeToRead, wordCount, faqData } = await getCachedBlogHtml(
+    blog_id,
+    String(data?.updated_at ?? ""),
     data?.html || "",
-    { hasHeading: true, hasCount: true },
   );
   const breadcrumb = [
     { title: "خانه", link: "/" },
@@ -61,7 +53,6 @@ const BlogDetailsPage = async ({ params }: BlogDetailsRouteProps) => {
         breadcrumb={breadcrumb}
         headings={headings || []}
         timeToRead={timeToRead || 0}
-        relatedBlogs={relatedData?.data || []}
       />
     </BlogDetailsTemplate>
   );

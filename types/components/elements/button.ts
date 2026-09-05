@@ -27,6 +27,8 @@ export type ButtonProps = {
   endIcon?: ReactNode;
   onClick?: (event?: MouseEvent) => void;
   loading?: boolean;
+  loadingIndicator?: ReactNode;
+  preserveStyleWhileLoading?: boolean;
   disabled?: boolean;
   passRef?: LegacyRef<HTMLButtonElement>;
 };

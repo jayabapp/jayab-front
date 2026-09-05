@@ -22,6 +22,7 @@ const _STRINGS = {
   LOGIN_WITH_OTHER_NUMBER: "ورود با شماره دیگر",
   BACK_TO_CHATS: "بازگشت به چت‌ها",
   SANDBOX_OTP: "کد ورود سندباکس",
+  PROFILE_OVERVIEW_MENU: "نمای کلی",
   CURRENCY: "تومان",
   IMAGE: "تصویر",
   RETURN: "بازگشت",
@@ -121,7 +122,7 @@ const _STRINGS = {
   PROFILE_IMAGE: " تصویر پروفایل",
   CHECK_CREDENTIOALS: "احراز کد ملی و ادامه",
   REGISTER_PROPERTY: "ثبت ملک",
-  PROPERTY_TYPE: "نوع ملک  ",
+  PROPERTY_TYPE: "نوع اقامتگاه",
   ROTATE_PHONE: "لطفا گوشی خود را در حالت عمودی قرار دهید",
 
   // CONSULTANT

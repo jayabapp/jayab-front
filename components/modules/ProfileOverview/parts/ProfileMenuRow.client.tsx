@@ -8,7 +8,10 @@ import Link from "next/link";
 
 const ProfileMenuRow = ({ entry, compact }: ProfileMenuRowProps) => {
   const pathname = usePathname();
-  const isSelected = pathname.includes(entry?.route);
+  const isSelected =
+    entry.route === "/profile"
+      ? pathname === entry.route
+      : pathname.includes(entry.route);
 
   const badge = entry?.badgeCounter ? (
     <div className="aspect-square w-5 h-5 rounded-full text-white border border-brand-100 bg-danger-500 flex z-1 items-center justify-center text-[10px]">
@@ -18,6 +21,7 @@ const ProfileMenuRow = ({ entry, compact }: ProfileMenuRowProps) => {
 
   return (
     <Link
+      prefetch
       href={entry?.route}
       title={entry?.title}
       className={`${

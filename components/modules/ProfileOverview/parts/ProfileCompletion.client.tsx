@@ -66,7 +66,7 @@ const ProfileCompletion = ({ profile }: ProfileCompletionProps) => {
       </div>
 
       <Link
-        prefetch={false}
+        prefetch
         href="/profile/edit"
         className="btn-glass-primary w-fit rounded-2xl px-6 py-2.5 text-sm font-medium"
       >

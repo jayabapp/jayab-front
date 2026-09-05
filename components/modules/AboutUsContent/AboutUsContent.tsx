@@ -1,9 +1,9 @@
 import type { AboutUsContentProps } from "@/types/components/modules/content-pages";
 import { getHomeImageUrl } from "@features/home/mappers/home-image.mapper";
+import { sanitizeCmsHtml } from "@/helpers/html.generator";
 import { ContentImage } from "@elements/Image";
 
 import Breadcrumbs from "@elements/Breadcrumbs/Breadcrumbs.client";
-import DOMPurify from "isomorphic-dompurify";
 import _STRINGS from "@/utils/LocalStrings";
 import Editable from "@elements/Editable";
 
@@ -33,14 +33,10 @@ const AboutUsContent = ({ content: aboutUs }: AboutUsContentProps) => {
             <div
               className="w-full mt-4 text-sm md:text-base text-center px-3"
               dangerouslySetInnerHTML={{
-                __html: DOMPurify.sanitize(
+                __html: sanitizeCmsHtml(
                   aboutUs && aboutUs
                     ? aboutUs?.html || aboutUs?.full_text || ""
                     : "",
-                  {
-                    FORCE_BODY: true,
-                    SANITIZE_DOM: true,
-                  },
                 ),
               }}
             />

@@ -12,22 +12,29 @@ export const useVerifyOtp = () => {
   const submissionLockRef = useRef(false);
   const mutation = useMutation({
     mutationFn: AuthService.confirmOtp,
-    onSuccess: async (result) => {
+    onSuccess: (result) => {
       queryClient.removeQueries({ queryKey: authKeys.otpChallenge() });
       if (result?.needs_registration) return;
       useAuthStore.setState({ isLogin: true });
-      const [profile, init] = await Promise.all([
-        queryClient.fetchQuery(currentProfileOptions()),
-        queryClient.fetchQuery(authInitOptions()),
-      ]);
-      if (profile) useStoreInit.setState({ userInfo: profile });
-      if (init) {
-        useStoreParams.setState({
-          bookmarks: init.bookmarks ?? [],
-          likes: init.favorites ?? [],
-          isAdvisor: init.isValidAdvisor?.isAdvisor ?? false,
-        });
-      }
+
+      void queryClient
+        .fetchQuery(currentProfileOptions())
+        .then((profile) => {
+          if (profile) useStoreInit.setState({ userInfo: profile });
+        })
+        .catch(() => undefined);
+
+      void queryClient
+        .fetchQuery(authInitOptions())
+        .then((init) => {
+          if (!init) return;
+          useStoreParams.setState({
+            bookmarks: init.bookmarks ?? [],
+            likes: init.favorites ?? [],
+            isAdvisor: init.isValidAdvisor?.isAdvisor ?? false,
+          });
+        })
+        .catch(() => undefined);
     },
     onSettled: () => {
       submissionLockRef.current = false;

@@ -1,23 +1,14 @@
-"use client";
-
 import type { ContactUsPageProps } from "@/types/components/modules/contact-us";
 import { HTMLGenerator } from "@/helpers/html.generator";
-import { Suspense, useState } from "react";
 
 import Breadcrumbs from "@elements/Breadcrumbs/Breadcrumbs.client";
 import ContactUsPageItem from "./parts/ContactUsPageItem";
+import ContactMap from "./parts/ContactMap.client";
 import ContactItem from "./parts/ContactItem";
 import _STRINGS from "@/utils/LocalStrings";
 import Editable from "@elements/Editable";
-import dynamic from "next/dynamic";
-
-const Map = dynamic(
-  () => import("@elements/Map").then((module) => module.MapViewer),
-  { ssr: false },
-);
 
 const ContactUsPageHelper = ({ data }: ContactUsPageProps) => {
-  const [, setCenter] = useState([51.3778346, 35.7709651]);
   const socials = data?.data?.filter((e: any) => e?.fields?.key == "social");
   const others = data?.data?.filter(
     (e: any) => e?.fields?.key !== "social" && !!e?.small_text,
@@ -52,23 +43,10 @@ const ContactUsPageHelper = ({ data }: ContactUsPageProps) => {
         </div>
         {hasMap ? (
           <div className="w-full overflow-clip aspect-[1.3] relative rounded-md  md:order-2 order-2  ">
-            <Suspense>
-              <Map
-                disableCenter={true}
-                center={[
-                  Number(locationPosition[1]),
-                  Number(locationPosition[0]),
-                ]}
-                setCenter={setCenter}
-                businessMarkersData={[
-                  {
-                    lat: Number(locationPosition[0]) || 0,
-                    lng: Number(locationPosition[1]) || 0,
-                    icon: "/assets/icons/orders/location.svg",
-                  },
-                ]}
-              />
-            </Suspense>
+            <ContactMap
+              latitude={Number(locationPosition[0])}
+              longitude={Number(locationPosition[1])}
+            />
           </div>
         ) : (
           <></>

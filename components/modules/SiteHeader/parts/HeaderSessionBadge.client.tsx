@@ -15,7 +15,7 @@ const HeaderSessionBadge = ({
 }: HeaderSessionBadgeProps) => (
   <div className="flex items-center gap-3 xl:gap-6 shrink-0">
     <Link
-      prefetch={false}
+      prefetch={isLogin}
       title={_STRINGS.MY_PROFILE}
       href={isLogin ? "/profile" : "/auth"}
       className={`py-1.5 backdrop-blur-[2px] px-2.5 flex items-center gap-3 ${isLight ? "bg-white/40 border-transparent" : ""} border relative shrink-0 transition-all rounded-full justify-center`}
@@ -47,7 +47,7 @@ const HeaderSessionBadge = ({
 
     {isLogin ? (
       <Link
-        prefetch={false}
+        prefetch
         href="/notifications"
         title={_STRINGS.MY_NOTIFS}
         className="relative w-5 h-5 transition-all aspect-square shrink-0 flex"

@@ -432,6 +432,15 @@ ul {
   @apply shadow-none;
 }
 
+.btn-glass-primary.btn-loading-preserve:disabled {
+  background-image: linear-gradient(
+    to left,
+    theme("colors.brand.700"),
+    theme("colors.brand.500")
+  );
+  @apply cursor-wait text-white opacity-100 shadow-glass-btn;
+}
+
 @media (prefers-reduced-motion: reduce) {
   .auth-container::before,
   .auth-container::after,

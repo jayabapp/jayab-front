@@ -33,6 +33,12 @@ const HeaderProfileMenu = ({
   const entries = useMemo<ProfileMenuEntry[]>(() => {
     const rows: ProfileMenuEntry[] = [
       {
+        id: "overview",
+        imgSrc: "/assets/icons/header/new-face/user.svg",
+        route: "/profile",
+        title: _STRINGS.PROFILE_OVERVIEW_MENU,
+      },
+      {
         badgeCounter: Number(notificationCount) || undefined,
         id: "notifications",
         imgSrc: "/assets/icons/header/prof_dropdownn_bell.svg",
@@ -102,7 +108,7 @@ const HeaderProfileMenu = ({
           {entries.map((entry) => (
             <MenuItem key={entry.id}>
               <Link
-                prefetch={false}
+                prefetch
                 href={entry.route}
                 title={entry.title}
                 className={ROW_CLASS}

@@ -1,7 +1,8 @@
 import { colors } from "@/theme/colors";
 
 const splashStyles = `
-#app-splash{position:fixed;inset:0;z-index:5000;display:flex;align-items:center;justify-content:center;background-color:${colors.brand[500]};contain:layout paint style;will-change:opacity,transform;animation:splash-dismiss .5s ease-in-out .9s forwards}
+#app-splash{position:fixed;inset:0;z-index:5000;display:flex;align-items:center;justify-content:center;background-color:${colors.brand[500]};contain:layout paint style;will-change:opacity,transform;animation:splash-dismiss .35s ease-in-out .65s forwards}
+#app-splash.app-splash--seen{display:none}
 #app-splash::before{content:"";position:absolute;width:300px;height:300px;border-radius:9999px;background:radial-gradient(circle closest-side,rgba(255,255,255,.3),rgba(255,255,255,.15) 45%,rgba(255,255,255,0) 100%);transform:scale(0);opacity:0;animation:splash-glow 1s ease-out alternate 10}
 #app-splash .splash-logo{position:relative;z-index:10;width:10rem;height:10rem;color:white;animation:splash-logo-pop .7s cubic-bezier(.34,1.56,.64,1) forwards}
 @keyframes splash-dismiss{to{opacity:0;transform:scale(1.05);visibility:hidden;pointer-events:none}}

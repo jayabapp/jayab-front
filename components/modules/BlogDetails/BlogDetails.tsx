@@ -1,3 +1,6 @@
+import RelatedBlogsSection, {
+  RelatedBlogsFallback,
+} from "./parts/RelatedBlogsSection";
 import type { BlogDetailsTemplateProps } from "@/types/components/modules/blog";
 import { BLOG_IMAGE_QUALITY } from "@features/blog/constants/image";
 import { convertHtmlToReact } from "@/helpers/convertHTMLtoReact";
@@ -8,7 +11,6 @@ import { Suspense } from "react";
 import SingleProductBreadcrumb from "@elements/Breadcrumbs/SingleProductBreadcrumb.client";
 import BlogTableOfContents from "./parts/BlogTableOfContents";
 import BlogArticleHeader from "./parts/BlogArticleHeader";
-import RelatedBlogs from "./parts/RelatedBlogs";
 import Gallery from "./parts/Gallery.client";
 
 const PANEL_CLASS = "surface-panel p-4 md:p-6";
@@ -19,7 +21,6 @@ const BlogDetails = ({
   headings,
   breadcrumb,
   timeToRead,
-  relatedBlogs,
 }: BlogDetailsTemplateProps) => (
   <div className="app-container relative !pt-24 flex flex-col !gap-6 !overflow-visible">
     <div className="hidden w-full md:flex">
@@ -55,7 +56,9 @@ const BlogDetails = ({
         </div>
 
         <div className={`flex flex-col gap-8 ${PANEL_CLASS}`}>
-          <RelatedBlogs currentId={data?.id as number} items={relatedBlogs} />
+          <Suspense fallback={<RelatedBlogsFallback />}>
+            <RelatedBlogsSection currentId={data.id} />
+          </Suspense>
           <Suspense>
             <Gallery
               images={data?.attachments?.map((item) => item?.attachment) || []}

@@ -10,12 +10,6 @@ export type PropertyDetailsContentProps = {
   property: SinglePropDto;
 };
 
-export type PropertyDetailsModalProps = {
-  slug: string;
-  header: ReactNode;
-  footer: ReactNode;
-};
-
 export type PropertySpecsProps = {
   devices?: DeviceInfo;
   property: SinglePropDto;

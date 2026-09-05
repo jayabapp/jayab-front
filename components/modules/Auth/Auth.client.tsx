@@ -6,6 +6,7 @@ import { AuthOtpCard } from "@modules/AuthOtp";
 import { FormInput } from "@elements/Form";
 import { useState } from "react";
 
+import DotLoading from "@elements/Button/DotLoading";
 import useCmsContent from "@/hooks/useCmsContent";
 import _STRINGS from "@/utils/LocalStrings";
 import Terms from "./parts/Terms.client";
@@ -118,6 +119,8 @@ const AuthPageComponent = () => {
                 width="w-full"
                 onClick={submit}
                 loading={isSubmitting}
+                loadingIndicator={<DotLoading />}
+                preserveStyleWhileLoading
                 disabled={isSubmitting}
                 containerClass="w-full"
                 roundedClass="rounded-2xl"

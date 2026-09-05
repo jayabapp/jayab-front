@@ -15,11 +15,12 @@ const FooterCallBox = ({ content }: FooterCallBoxProps) => (
         height={384}
         sizes="224px"
         alt="footer_image"
-        fallbackSrc="/assets/images/home/footer_car.png"
+        fallbackSrc="/assets/images/footer/footer_place_holder_image.png"
         className="md:absolute bottom-0 lg:flex !max-w-[14rem] h-auto"
         src={
-          getHomeImageUrl(content?.feature_image) ||
-          "/assets/images/footer/footer_place_holder_image.png"
+          content?.feature_image
+            ? getHomeImageUrl(content.feature_image)
+            : "/assets/images/footer/footer_place_holder_image.png"
         }
       />
 

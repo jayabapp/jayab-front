@@ -4,6 +4,7 @@ import type { GetProfileDto, ProfileMenuEntry } from "@/types/features/user";
 import { useOwnerActiveReservationCount } from "@features/reservations/hooks/useOwnerActiveReservationCount";
 import { useTestAccessMe } from "@features/test-access/hooks/useTestAccessMe";
 import { profileItems } from "@/utils/constantss";
+import _STRINGS from "@/utils/LocalStrings";
 import { isMobile, isTablet } from "react-device-detect";
 import { useMemo } from "react";
 
@@ -21,6 +22,15 @@ export const useProfileMenu = (
 
   return useMemo<ProfileMenuEntry[]>(() => {
     const roleEntries: ProfileMenuEntry[] = [];
+
+    if (isLogin) {
+      roleEntries.push({
+        id: "overview",
+        imgSrc: "/assets/icons/header/new-face/user.svg",
+        route: "/profile",
+        title: _STRINGS.PROFILE_OVERVIEW_MENU,
+      });
+    }
 
     if (isOwner) {
       roleEntries.push(

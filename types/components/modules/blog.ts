@@ -50,7 +50,6 @@ export type BlogDetailsTemplateProps = {
   html: string;
   data: ContentDto;
   timeToRead: number;
-  relatedBlogs: ContentDto[];
   breadcrumb: { link: string; title: string }[];
   headings: { id: string; innerText: string }[];
 };
@@ -64,6 +63,7 @@ export type BlogGalleryModalProps = {
 };
 export type BlogShareProps = { data: ContentDto };
 export type RelatedBlogsProps = { currentId: number; items: ContentDto[] };
+export type RelatedBlogsSectionProps = { currentId: number };
 export type ContentQuestionCommentProps = { item: QuestionDto };
 
 export type BlogCardLinkProps = {

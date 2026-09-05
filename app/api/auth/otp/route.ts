@@ -70,7 +70,7 @@ export async function POST(request: NextRequest) {
 
   const expiresAt = Date.now() + OTP_CODE_TTL_MS;
   const response = NextResponse.json(
-    envelope("successful", typeof messageFa === "string" ? messageFa : null, {
+    envelope("successful", sandboxOtpCode ? null : typeof messageFa === "string" ? messageFa : null, {
       masked_mobile: maskMobile(mobile),
       expires_at: new Date(expiresAt).toISOString(),
       ...(sandboxOtpCode ? { sandbox_otp_code: sandboxOtpCode } : {}),

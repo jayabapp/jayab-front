@@ -298,31 +298,7 @@ const enhanceHeadings: Transformer = (root, context) => {
 /* -------------------------------------------------------------------------- */
 
 export const HTMLGenerator = (html: string, options?: TransformOptions): ReturnType => {
-  const sanitized = sanitizeHtml(html, {
-    allowedTags: sanitizeHtml.defaults.allowedTags.concat(["iframe", "img", "details", "summary"]),
-    allowedAttributes: {
-      ...sanitizeHtml.defaults.allowedAttributes,
-      "*": [
-        "class",
-        "target",
-        "rel",
-        "allow",
-        "allowfullscreen",
-        "frameborder",
-        "src",
-        "alt",
-        "width",
-        "height",
-        "title",
-        "id",
-        "data-product-id",
-        "data-product-img",
-        "data-product-title",
-        "data-product-href",
-        "data-product-price",
-      ],
-    },
-  });
+  const sanitized = sanitizeCmsHtml(html);
 
   const root = HTMLParser.parse(sanitized);
 
@@ -362,5 +338,32 @@ export const HTMLGenerator = (html: string, options?: TransformOptions): ReturnT
     faqData: context.faqData,
   };
 };
+
+export const sanitizeCmsHtml = (html: string) =>
+  sanitizeHtml(html, {
+    allowedTags: sanitizeHtml.defaults.allowedTags.concat(["iframe", "img", "details", "summary"]),
+    allowedAttributes: {
+      ...sanitizeHtml.defaults.allowedAttributes,
+      "*": [
+        "class",
+        "target",
+        "rel",
+        "allow",
+        "allowfullscreen",
+        "frameborder",
+        "src",
+        "alt",
+        "width",
+        "height",
+        "title",
+        "id",
+        "data-product-id",
+        "data-product-img",
+        "data-product-title",
+        "data-product-href",
+        "data-product-price",
+      ],
+    },
+  });
 
 HTMLGenerator.Version = "1.5.0";

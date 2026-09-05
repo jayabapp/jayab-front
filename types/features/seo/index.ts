@@ -24,3 +24,7 @@ export type LandingFaqStructuredDataProps = {
   faqData: { answer: string | null; question: string }[];
   url: string;
 };
+
+export type FaqStructuredDataProps = {
+  items?: ContentDto[];
+};

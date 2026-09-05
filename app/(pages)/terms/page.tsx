@@ -6,7 +6,11 @@ import TermsTemplate from "@templates/Terms";
 import TermsContent from "@modules/TermsContent";
 
 export const generateMetadata = async (): Promise<Metadata> =>
-  MehaHeaderHelper(await getCmsContent("terms"));
+  MehaHeaderHelper(await getCmsContent("terms"), {
+    canonicalUrl: `${process.env.NEXT_PUBLIC_WEB_SITE}/terms`,
+  });
+
+export const revalidate = 600;
 
 const TermsPage = async () => {
   const content = await getCmsContent("terms");
