@@ -1,6 +1,7 @@
 "use client";
 
 import { useAuthForm } from "@features/auth/hooks/useAuthForm";
+import { HeaderBrand } from "@modules/SiteHeader";
 import { AuthHeader } from "@layouts/AuthHeader";
 import { AuthOtpCard } from "@modules/AuthOtp";
 import { FormInput } from "@elements/Form";
@@ -11,8 +12,6 @@ import useCmsContent from "@/hooks/useCmsContent";
 import _STRINGS from "@/utils/LocalStrings";
 import Terms from "./parts/Terms.client";
 import Button from "@elements/Button";
-import Image from "next/image";
-import Link from "next/link";
 
 const AuthPageComponent = () => {
   const {
@@ -59,24 +58,13 @@ const AuthPageComponent = () => {
           {/* PHONE */}
           <div
             inert={isOtpStep}
-            className="flip-face glass-panel px-6 pb-8 pt-10 md:px-9"
+            className="flip-face glass-panel px-6 pb-8 pt-24 md:px-9"
           >
+            <div className="absolute left-5 top-5 z-10">
+              <HeaderBrand alwaysShowTitle asLink />
+            </div>
+
             <div className="flex flex-col items-center gap-3">
-              <Link
-                href="/"
-                prefetch={false}
-                title={_STRINGS.BACK_TO_HOME}
-                className="glass-badge relative flex size-24 items-center justify-center rounded-full transition-transform duration-200 hover:scale-105 active:scale-95"
-              >
-                <Image
-                  width={64}
-                  height={64}
-                  unoptimized
-                  alt={_STRINGS.JAYAB_LOGO_ALT}
-                  src="/assets/icons/logo/logo.svg"
-                  className="size-16 object-contain"
-                />
-              </Link>
               <h1 className="text-xl font-bold text-neutral-900">
                 {_STRINGS.AUTH_WELCOME_TITLE}
               </h1>

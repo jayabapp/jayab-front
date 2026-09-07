@@ -19,6 +19,7 @@ const HeaderDesktopNav = ({
   chatCount,
   advisorHasBadge,
   notificationCount,
+  phone,
   onCreateProperty,
 }: HeaderDesktopNavProps) => (
   <>
@@ -28,6 +29,7 @@ const HeaderDesktopNav = ({
         isLight={isLight}
         isLogin={isLogin}
         notificationCount={notificationCount}
+        phone={phone}
       />
 
       <HeaderNavLink

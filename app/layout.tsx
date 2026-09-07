@@ -2,9 +2,11 @@ import { mobileFooterBlackList } from "@/utils/constantss";
 import { footerHiddenBlackList } from "@/utils/constantss";
 import { AppOverlays, AppShell } from "@modules/AppShell";
 import { isNoIndexDeployment } from "@/helpers/indexingPolicy";
+import { getServerContentList } from "@features/home/server/home.server";
+import type { ContentDto } from "@/api_services/home/home.interface";
 import { Metadata, Viewport } from "next";
 import { apiRoutes, baseUrl } from "@/utils/urls";
-import { InnitSettingsDto } from "@/api_services/home/home.interface";
+import type { InnitSettingsDto } from "@/api_services/home/home.interface";
 import { headerBlackList } from "@/utils/constantss";
 import { x_Iransans } from "./fonts/x_iran/x_Iransans";
 import { MainLayout } from "@layouts/MainLayout";
@@ -26,6 +28,7 @@ const CHROME_HIDDEN_ROUTES = [
   ...mobileFooterBlackList,
   ...footerHiddenBlackList,
 ];
+const CONTACT_PER_PAGE = 100;
 
 const indexingDisabled = isNoIndexDeployment();
 
@@ -94,10 +97,17 @@ const RootLayout = async ({
   children: ReactNode;
   modal: ReactNode;
 }>) => {
-  const { data: appSetting }: { data: InnitSettingsDto } = await serverCall(
-    baseUrl + apiRoutes.APP_SETTINGS,
-    undefined,
-    { revalidate: REVALIDATE.APP_SETTINGS },
+  const [appSettingsResponse, contactsResponse] = await Promise.all([
+    serverCall(baseUrl + apiRoutes.APP_SETTINGS, undefined, {
+      revalidate: REVALIDATE.APP_SETTINGS,
+    }),
+    getServerContentList("contactUs", 1, CONTACT_PER_PAGE),
+  ]);
+
+  const appSetting = appSettingsResponse?.data as InnitSettingsDto;
+  const contacts: ContentDto[] = contactsResponse?.data?.data ?? [];
+  const phone = contacts.find(
+    (entry) => entry?.fields?.key === "tel" || entry?.key === "tel",
   );
 
   const gtmId = appSetting?.googleTagManagerId?.toString() || "";
@@ -112,7 +122,7 @@ const RootLayout = async ({
         <LayoutProvider>
           <AppShell>
             <MainLayout
-              header={<SiteHeader />}
+              header={<SiteHeader phone={phone} />}
               footer={<SiteFooter />}
               overlays={<AppOverlays />}
               mobileFooter={<MobileNav />}

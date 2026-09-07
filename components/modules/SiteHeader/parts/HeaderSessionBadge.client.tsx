@@ -4,6 +4,7 @@ import type { HeaderSessionBadgeProps } from "@/types/components/modules/site-he
 import { ContentImage } from "@elements/Image";
 import { CountBadge } from "@elements/Badge";
 
+import HeaderContactLink from "./HeaderContactLink";
 import _STRINGS from "@/utils/LocalStrings";
 import Link from "next/link";
 
@@ -12,6 +13,7 @@ const HeaderSessionBadge = ({
   isLight,
   isLogin,
   notificationCount,
+  phone,
 }: HeaderSessionBadgeProps) => (
   <div className="flex items-center gap-3 xl:gap-6 shrink-0">
     <Link
@@ -44,6 +46,8 @@ const HeaderSessionBadge = ({
         </p>
       )}
     </Link>
+
+    <HeaderContactLink isLight={isLight} phone={phone} />
 
     {isLogin ? (
       <Link

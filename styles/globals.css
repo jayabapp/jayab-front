@@ -81,7 +81,7 @@ ul {
    element itself so it stays `fixed` to the viewport and never grows the page. */
 .app-background {
   @apply !h-full;
-  background-color: theme("colors.brand.50");
+  background-color: theme("colors.canvas");
 }
 
 .app-background::before {
@@ -141,17 +141,17 @@ ul {
   --aurora-mesh:
     radial-gradient(
       100% 70% at 100% 0%,
-      theme(colors.brand.400 / 75%),
+      theme(colors.brand.400 / 55%),
       transparent 62%
     ),
     radial-gradient(
       95% 62% at 0% 6%,
-      theme(colors.brand.200 / 90%),
+      theme(colors.brand.200 / 65%),
       transparent 66%
     ),
     radial-gradient(
       130% 85% at 50% 112%,
-      theme(colors.brand.600 / 45%),
+      theme(colors.brand.600 / 30%),
       transparent 72%
     );
 }
@@ -159,7 +159,7 @@ ul {
 .auth-container {
   @apply relative isolate mx-auto flex w-full max-w-full flex-col items-center justify-center overflow-hidden px-4 pb-20 pt-24;
   min-height: 100dvh;
-  background-color: theme("colors.brand.100");
+  background-color: theme("colors.canvas");
   background-image: var(--aurora-mesh);
 }
 
@@ -171,9 +171,9 @@ ul {
    behind the white <body> background and make it invisible. */
 .aurora-layer {
   @apply pointer-events-none fixed inset-0 z-0;
-  background-color: theme("colors.brand.50");
+  background-color: theme("colors.canvas");
   background-image: var(--aurora-mesh);
-  opacity: 0.5;
+  opacity: 0.45;
 }
 
 /* Two slow-drifting blurred orbs give the blur something to bite on — a glass
@@ -1249,6 +1249,12 @@ ul {
    width or breakpoint, with no measuring. */
 .marquee {
   overflow: hidden;
+  cursor: grab;
+  touch-action: pan-y;
+}
+
+.marquee-dragging {
+  cursor: grabbing;
 }
 
 .marquee-track {
@@ -1284,6 +1290,7 @@ ul {
    the row lets the page reach idle instead of animating forever. */
 .marquee:hover .marquee-track,
 .marquee:focus-within .marquee-track,
+.marquee-dragging .marquee-track,
 .marquee-paused .marquee-track {
   animation-play-state: paused;
 }

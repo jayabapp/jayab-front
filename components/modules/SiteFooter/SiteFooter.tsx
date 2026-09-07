@@ -9,7 +9,6 @@ import FooterQuickSearch from "./parts/FooterQuickSearch";
 import FooterBottomBar from "./parts/FooterBottomBar";
 import FooterSocialRow from "./parts/FooterSocialRow";
 import FooterCallBox from "./parts/FooterCallBox";
-import FooterCallFab from "./parts/FooterCallFab";
 
 const CONTACT_PER_PAGE = 100;
 const DOWNLOAD_PER_PAGE = 20;
@@ -28,15 +27,10 @@ const SiteFooter = async () => {
   const contacts: FooterContentEntry[] = contactsResponse?.data?.data ?? [];
   const socials = contacts.filter((entry) => entry?.fields?.key === "social");
   const others = contacts.filter((entry) => entry?.fields?.key !== "social");
-  const phone = others.find(
-    (entry) => entry?.fields?.key === "tel" || entry?.key === "tel",
-  );
-
   return (
     <footer className="w-full z-2 bg-neutral-400/40 flex flex-col items-center justify-center bg-dark-500 bg-no-repeat bg-cover relative pt-[28rem] md:pt-[16rem] lg:pt-[6rem]">
       <FooterCallBox content={callUs} />
       <FooterQuickSearch links={quickResponse?.data?.data ?? []} />
-      <FooterCallFab phone={phone} />
 
       <div className="w-full padding-x lg:w-full mx-auto py-4 grid grid-cols-4 lg:grid-cols-7 gap-5">
         <FooterAboutColumn about={about} socials={socials} />

@@ -1,6 +1,9 @@
+import type { ContentDto } from "@/api_services/home/home.interface";
+
 export type SiteHeaderVariant = "page" | "modal";
 
 export type SiteHeaderProps = {
+  phone?: ContentDto;
   variant?: SiteHeaderVariant;
 };
 
@@ -13,6 +16,7 @@ export type HeaderNavLinkProps = {
 };
 
 export type HeaderBrandProps = {
+  alwaysShowTitle?: boolean;
   isLight?: boolean;
   asLink?: boolean;
 };
@@ -22,6 +26,12 @@ export type HeaderSessionBadgeProps = {
   isLight?: boolean;
   avatar?: string | null;
   notificationCount?: number;
+  phone?: ContentDto;
+};
+
+export type HeaderContactLinkProps = {
+  isLight?: boolean;
+  phone?: ContentDto;
 };
 
 export type HeaderProfileMenuProps = {
@@ -46,6 +56,7 @@ export type HeaderDesktopNavProps = {
   avatar?: string | null;
   advisorHasBadge?: boolean;
   notificationCount?: number;
+  phone?: ContentDto;
   onCreateProperty: () => void;
 };
 
@@ -57,5 +68,6 @@ export type HeaderMobileBarProps = {
   isAdvisor: boolean;
   avatar?: string | null;
   notificationCount?: number;
+  phone?: ContentDto;
   onRegisterAdvisor: () => void;
 };

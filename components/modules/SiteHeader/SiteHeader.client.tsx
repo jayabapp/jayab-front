@@ -23,7 +23,7 @@ const TOP_HEADER_SCROLL_THRESHOLD = 60;
 const ADVISOR_PENDING_STATUS_ID = 20;
 const ADVISOR_BADGE_DAYS_LEFT = 3;
 
-const SiteHeader = ({ variant = "page" }: SiteHeaderProps) => {
+const SiteHeader = ({ phone, variant = "page" }: SiteHeaderProps) => {
   const router = useRouter();
   const params = useParams();
   const pathname = usePathname();
@@ -105,6 +105,7 @@ const SiteHeader = ({ variant = "page" }: SiteHeaderProps) => {
             isLogin={Boolean(isLogin)}
             isAdvisor={!!profile?.advisor_id}
             notificationCount={notificationCount}
+            phone={phone}
             onRegisterAdvisor={onRegisterAdvisor}
             boxId={isModal ? "SEARCH_BOX_Mobile_Modal" : "SEARCH_BOX_Mobile"}
           />
@@ -116,6 +117,7 @@ const SiteHeader = ({ variant = "page" }: SiteHeaderProps) => {
             isLogin={Boolean(isLogin)}
             advisorHasBadge={advisorHasBadge}
             notificationCount={notificationCount}
+            phone={phone}
             onCreateProperty={onCreateProperty}
             chatCount={chatBadge?.unread_count ?? 0}
             boxId={isModal ? "SEARCH_BOX_Modal" : "SEARCH_BOX"}

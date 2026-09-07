@@ -44,6 +44,16 @@ export type CityMarqueeRowProps = {
   reverse?: boolean;
 };
 
+export type CityMarqueeDragState = {
+  animation: Animation;
+  contentWidth: number;
+  durationMs: number;
+  moved: boolean;
+  pointerId: number;
+  startTime: number;
+  startX: number;
+};
+
 export type HomeCitiesProps = {
   data: HomeLandingDto[];
   title: string;

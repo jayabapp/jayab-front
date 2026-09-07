@@ -23,6 +23,7 @@ const HeaderMobileBar = ({
   isLogin,
   isAdvisor,
   notificationCount,
+  phone,
   onRegisterAdvisor,
 }: HeaderMobileBarProps) => {
   const router = useRouter();
@@ -52,6 +53,7 @@ const HeaderMobileBar = ({
             isLight={isLight}
             isLogin={isLogin}
             notificationCount={notificationCount}
+            phone={phone}
           />
 
           <div className="flex items-center gap-3 xl:gap-6 w-full justify-end">

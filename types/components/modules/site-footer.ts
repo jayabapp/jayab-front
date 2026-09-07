@@ -30,10 +30,6 @@ export type FooterAboutColumnProps = {
   about: ContentByKeyDto | null;
 };
 
-export type FooterCallFabProps = {
-  phone?: ContentDto;
-};
-
 export type FooterBottomBarProps = {
   downloadLinks: ContentDto[];
 };

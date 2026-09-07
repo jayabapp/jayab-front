@@ -4,7 +4,7 @@ import { ContentImage } from "@elements/Image";
 import _STRINGS from "@/utils/LocalStrings";
 import Link from "next/link";
 
-const HeaderBrand = ({ isLight, asLink }: HeaderBrandProps) => {
+const HeaderBrand = ({ alwaysShowTitle, isLight, asLink }: HeaderBrandProps) => {
   const mark = (
     <div className="flex items-center shrink-0 gap-1 justify-center">
       <ContentImage
@@ -12,7 +12,7 @@ const HeaderBrand = ({ isLight, asLink }: HeaderBrandProps) => {
         width={64}
         height={25}
         src="/assets/icons/logo/just_title_logo.svg"
-        className={`w-16 h-auto ${isLight ? "flex grayscale brightness-[500]" : "hidden xl:flex"}`}
+        className={`w-16 h-auto ${alwaysShowTitle ? "flex" : isLight ? "flex grayscale brightness-[500]" : "hidden xl:flex"}`}
       />
       <ContentImage
         alt=""

@@ -1,4 +1,5 @@
 export const colors = {
+  canvas: "#F8FBFF",
   brand: {
     50: "#F0F6FE",
     100: "#DCEAFD",
