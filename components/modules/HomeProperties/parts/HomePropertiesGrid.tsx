@@ -4,11 +4,12 @@ import { PropertyGrid } from "@modules/PropertyGrid";
 import HomePropertiesSkeleton from "./HomePropertiesSkeleton";
 import EmptyState from "@elements/EmptyState";
 
-// Two columns on a phone rather than one: the showcase card leads with a 4:3
-// photo, so a full-width card would be ~380px tall and push the whole grid
-// below several folds. Three from md, four from xl.
+// One column on a phone. The listing card is horizontal — photo beside text —
+// so two of them on a 390px screen leave each photo about 80px wide and the
+// title squeezed to three or four characters a line. Two from md, three from
+// xl, matching `/rooms` so the same card is not laid out two different ways.
 const HOME_GRID_CLASS =
-  "grid grid-cols-2 gap-2.5 pb-8 pt-2 md:grid-cols-3 md:gap-4 xl:grid-cols-4";
+  "grid grid-cols-1 gap-2.5 pb-8 pt-2 md:grid-cols-2 md:gap-4 xl:grid-cols-3";
 
 const HomePropertiesGrid = ({
   data,
@@ -23,12 +24,12 @@ const HomePropertiesGrid = ({
         <PropertyGrid
           data={data}
           devices={devices}
-          variant="showcase"
+          variant="compact"
           className={HOME_GRID_CLASS}
           banners={middleBanner ? [middleBanner] : []}
         />
       ) : (
-        <div className="col-span-4">
+        <div className="col-span-full">
           <EmptyState />
         </div>
       )}

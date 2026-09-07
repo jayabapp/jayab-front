@@ -41,6 +41,8 @@ const PropertyGridItems = ({
             week={week}
             data={property}
             key={`property-${property?.id}`}
+            largeMedia={variant === "compact"}
+            hideWeekStatus={variant === "compact"}
           />
         ),
       )}

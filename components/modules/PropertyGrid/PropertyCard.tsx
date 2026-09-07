@@ -17,6 +17,8 @@ const PropertyCard = ({
   data,
   week,
   isOwner,
+  largeMedia,
+  hideWeekStatus,
   onPhotoUpgradeClick,
 }: PropertyCardProps) => {
   const goToLink = isOwner
@@ -25,11 +27,15 @@ const PropertyCard = ({
 
   return (
     <div className="surface-card property-card-shadow flex w-full flex-col justify-between gap-2 p-3">
-      <div className="w-full grid grid-cols-5 gap-2">
+      <div
+        className={`grid w-full gap-2 ${largeMedia ? "grid-cols-2" : "grid-cols-5"}`}
+      >
         <PropertyCardLink
           href={goToLink}
           title={data.title}
-          className="col-span-3 !outline-none order-1 flex flex-col justify-between gap-1"
+          className={`order-1 flex flex-col justify-between gap-1 !outline-none ${
+            largeMedia ? "col-span-1" : "col-span-3"
+          }`}
         >
           <div className="flex items-start gap-2">
             {data?.has_blue_tick ? (
@@ -113,14 +119,20 @@ const PropertyCard = ({
         <PropertyCardLink
           title={data.title}
           href={goToLink}
-          className="flex h-fit !outline-none items-start justify-start w-full col-span-2 order-2"
+          className={`order-2 flex h-fit w-full items-start justify-start !outline-none ${
+            largeMedia ? "col-span-1" : "col-span-2"
+          }`}
         >
           <div className="aspect-square w-full h-full relative">
             <ContentImage
               fill
               quality={PROPERTY_IMAGE_QUALITY}
               loading="lazy"
-              sizes="(min-width: 1536px) 10vw, (min-width: 1280px) 12vw, (min-width: 768px) 18vw, 37vw"
+              sizes={
+                largeMedia
+                  ? "(min-width: 1280px) 16vw, (min-width: 768px) 24vw, 46vw"
+                  : "(min-width: 1536px) 10vw, (min-width: 1280px) 12vw, (min-width: 768px) 18vw, 37vw"
+              }
               alt={data?.feature_image?.alt || ""}
               src={getPropertyImageUrl(data?.feature_image)}
               className="w-full rounded-2xl h-full object-cover aspect-square"
@@ -185,7 +197,7 @@ const PropertyCard = ({
         <PropertyCardFeatures data={data} />
       </div>
 
-      {data?.reserve_days && !isEmpty(data?.reserve_days) ? (
+      {!hideWeekStatus && data?.reserve_days && !isEmpty(data?.reserve_days) ? (
         <div className="w-full pt-1 border-t">
           <DaysOfTheWeekStatus
             isCard

@@ -1,5 +1,6 @@
 import type { PropertyDetailsTemplateProps } from "@/types/components/templates/property-details";
 import { PropertyDetailsContent } from "@modules/PropertyDetails";
+import { ScrollToTopOnMount } from "@elements/ScrollToTop";
 
 // Three columns from md: the content takes two, the sticky booking card one.
 // It used to be two equal columns, which left the whole left half empty from
@@ -17,6 +18,7 @@ const PropertyDetailsTemplate = ({
   property,
 }: PropertyDetailsTemplateProps) => (
   <div className="container grid !h-auto grid-cols-1 justify-start gap-4 !overflow-x-visible !pb-48 md:grid-cols-3 lg:!pb-36">
+    <ScrollToTopOnMount />
     {schema}
     <PropertyDetailsContent property={property} devices={devices} />
   </div>

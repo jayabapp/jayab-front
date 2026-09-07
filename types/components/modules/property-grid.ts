@@ -12,6 +12,15 @@ export type PropertyCardProps = {
   isOwner?: boolean;
   onPhotoUpgradeClick?: (property: PropertyListDto) => void;
   week?: WeekDayEntry[];
+  /**
+   * Drops the seven-day availability strip. The listing page wants it — it is
+   * what turns a result into a bookable date — but on the home page the card is
+   * an invitation to look, not a booking surface, and the strip is the tallest
+   * row on a card that has to sit above the fold.
+   */
+  hideWeekStatus?: boolean;
+  /** Splits the card 50/50 instead of 60/40, so the photo leads. */
+  largeMedia?: boolean;
 };
 
 export type PropertyShowcaseCardProps = {
@@ -20,7 +29,13 @@ export type PropertyShowcaseCardProps = {
   index?: number;
 };
 
-export type PropertyCardVariant = "detailed" | "showcase";
+/**
+ * `detailed` is the listing card with its availability strip; `compact` is the
+ * same card without it and with a larger photo; `showcase` is the photo-first
+ * card. Threaded through the grid so callers do not have to drill individual
+ * card props through three components.
+ */
+export type PropertyCardVariant = "detailed" | "compact" | "showcase";
 
 export type PropertyGridItemsProps = {
   banners?: HomeBannerDto[];
