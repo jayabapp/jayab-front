@@ -20,7 +20,7 @@ const HomeTemplate = ({ banners, devices, homeContent, landings, properties, pro
     banners?.[BannerPosition.MAIN_2]?.filter((banner) => Boolean(devices?.isMobile ? banner?.image_sm : banner?.image)),
   );
   return (
-      <div id="homeParent" className="home-container !px-0 !pt-0 flex flex-col gap-0">
+      <div id="homeParent" className="home-container !px-0 !pt-0 !pb-0 flex flex-col gap-0">
         <HomeSeo />
         {/* Layer one: pinned. Stays at the top of the viewport while layer two
             travels up over it. */}
@@ -41,8 +41,15 @@ const HomeTemplate = ({ banners, devices, homeContent, landings, properties, pro
 
             `-mt` on every breakpoint now, not only mobile — the overlap is what
             makes the rounded lip read as a surface resting on the photo rather
-            than as the next block down the page. */}
-        <div className="home-sheet mb-8 -mt-[1.375rem] flex w-full flex-col gap-0 md:-mt-8">
+            than as the next block down the page.
+
+            The bottom padding lives here rather than on `#homeParent` (which
+            carries `!pb-0` for the same reason). Padding on the container sits
+            inside the pinned hero's containing block but outside the sheet, so
+            the hero painted straight through it: a band of the banner photo
+            showed between the closing copy and the footer. The sheet has to
+            reach the very bottom of the container for the page to stay covered. */}
+        <div className="home-sheet -mt-[1.375rem] flex w-full flex-col gap-0 pb-32 md:-mt-8 lg:pb-44">
           <section
             className={`flex flex-col gap-5 lg:gap-6 select-none px-0 md:py-0 w-full ${
               !isEmpty(landings?.popular_city) && !isEmpty(landings?.quick_search) ? "min-h-[30dvh]" : ""
