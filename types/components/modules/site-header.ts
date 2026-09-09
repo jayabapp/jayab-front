@@ -16,24 +16,25 @@ export type HeaderNavLinkProps = {
 };
 
 export type HeaderBrandProps = {
-  alwaysShowTitle?: boolean;
-  isLight?: boolean;
   asLink?: boolean;
+  isLight?: boolean;
+  markOnly?: boolean;
+  alwaysShowTitle?: boolean;
 };
 
 export type HeaderSessionBadgeProps = {
   isLogin: boolean;
+  compact?: boolean;
   isLight?: boolean;
+  phone?: ContentDto;
   avatar?: string | null;
   notificationCount?: number;
-  phone?: ContentDto;
-  compact?: boolean;
 };
 
 export type HeaderContactLinkProps = {
+  compact?: boolean;
   isLight?: boolean;
   phone?: ContentDto;
-  compact?: boolean;
 };
 
 export type HeaderProfileMenuProps = {
@@ -66,10 +67,9 @@ export type HeaderMobileBarProps = {
   boxId: string;
   isHome: boolean;
   isLogin: boolean;
-  isLight: boolean;
+  phone?: ContentDto;
   isAdvisor: boolean;
   avatar?: string | null;
   notificationCount?: number;
-  phone?: ContentDto;
   onRegisterAdvisor: () => void;
 };

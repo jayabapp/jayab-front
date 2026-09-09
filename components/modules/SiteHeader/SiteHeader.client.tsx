@@ -35,11 +35,6 @@ const SiteHeader = ({ phone, variant = "page" }: SiteHeaderProps) => {
   const isLight = isHome && topHeaderVisible;
   const isModal = variant === "modal";
 
-  // Only writes when the boolean actually flips. It used to call `setState` on
-  // every throttled tick, and several components read this store with a
-  // whole-state selector — `PropertyCardLikes` among them, which renders once per
-  // card — so an unchanged value still re-rendered the whole grid ten times a
-  // second while scrolling. Same behaviour, minus that.
   const handleScroll = useMemo(
     () =>
       throttle(() => {
@@ -58,16 +53,15 @@ const SiteHeader = ({ phone, variant = "page" }: SiteHeaderProps) => {
     };
   }, [handleScroll]);
 
-  // Home only for now. The pattern would suit the long result lists too, but the
-  // ask was the landing page and every other route keeps exactly the header it
-  // has today.
   useHeaderAutoHide(
     isModal ? "headerContainerModal" : "headerContainer",
     isHome && !isModal,
   );
 
   const { data: profile } = useCurrentProfile(Boolean(isLogin));
-  const { data: notificationCount = 0 } = useNotificationBadge(Boolean(isLogin));
+  const { data: notificationCount = 0 } = useNotificationBadge(
+    Boolean(isLogin),
+  );
   const { data: chatBadge } = useUnreadChatCount(
     Boolean(isLogin) && (isHome || pathname === "/chat"),
   );
@@ -77,7 +71,6 @@ const SiteHeader = ({ phone, variant = "page" }: SiteHeaderProps) => {
   const { isActive, remainingDays } = subscriptionStatus(
     advisorProfile?.subscription_expired_at,
   );
-  // A pending advisor is nudged when the subscription is gone or about to be.
   const advisorHasBadge =
     advisorProfile?.status?.id == ADVISOR_PENDING_STATUS_ID &&
     (!isActive || remainingDays <= ADVISOR_BADGE_DAYS_LEFT);
@@ -101,38 +94,37 @@ const SiteHeader = ({ phone, variant = "page" }: SiteHeaderProps) => {
 
       <div
         id={isModal ? "headerContainerModal" : "headerContainer"}
-        className={`${isLight ? "bg-gradient-to-b from-black/40 to-black/0 md:pb-24" : ""} transition-all ease-out duration-300 header-content-container w-full mx-auto`}
+        className={`${isLight ? "md:bg-gradient-to-b md:from-black/40 md:to-black/0 md:pb-24" : ""} transition-all ease-out duration-300 header-content-container w-full mx-auto`}
       >
         <div
           className={`flex justify-between transition-all items-center xl:gap-[10%] duration-300 padding-x py-2 xl:py-4 ${
             isLight
-              ? " bg-transparent "
+              ? " bg-white md:bg-transparent "
               : topHeaderVisible
                 ? " bg-white "
                 : ` header-glass ${headerWithFullSeach.includes(pathname) || !!params?.slug ? " border-b xl:border-b-0 xl:shadow-glass-sm" : "shadow-glass-sm"} `
           }`}
         >
           <HeaderMobileBar
+            phone={phone}
             avatar={avatar}
             isHome={isHome}
-            isLight={isLight}
             isLogin={Boolean(isLogin)}
             isAdvisor={!!profile?.advisor_id}
             notificationCount={notificationCount}
-            phone={phone}
             onRegisterAdvisor={onRegisterAdvisor}
             boxId={isModal ? "SEARCH_BOX_Mobile_Modal" : "SEARCH_BOX_Mobile"}
           />
 
           <HeaderDesktopNav
+            phone={phone}
             avatar={avatar}
             isHome={isHome}
             isLight={isLight}
             isLogin={Boolean(isLogin)}
             advisorHasBadge={advisorHasBadge}
-            notificationCount={notificationCount}
-            phone={phone}
             onCreateProperty={onCreateProperty}
+            notificationCount={notificationCount}
             chatCount={chatBadge?.unread_count ?? 0}
             boxId={isModal ? "SEARCH_BOX_Modal" : "SEARCH_BOX"}
           />

@@ -42,14 +42,14 @@ const PropertyCardFeatures = ({
       />
     </div>
     {showDetailsIndicator ? (
-      <span className="flex size-6 shrink-0 items-center justify-center text-neutral-700 transition-transform duration-200 group-hover:translate-x-0.5 group-hover:text-brand-700 group-focus-visible:text-brand-700">
+      <span className="flex size-6 shrink-0 items-center justify-center transition-transform duration-200 group-hover:-translate-x-0.5">
         <ContentImage
           alt=""
           width={16}
           height={16}
           aria-hidden="true"
-          src="/assets/icons/shared/chevron-right.svg"
           className="size-4"
+          src="/assets/icons/shared/chevron-left.svg"
         />
       </span>
     ) : null}

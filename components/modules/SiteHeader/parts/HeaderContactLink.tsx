@@ -5,8 +5,8 @@ import _STRINGS from "@/utils/LocalStrings";
 import Link from "next/link";
 
 const HeaderContactLink = ({
-  isLight,
   phone,
+  isLight,
   compact = false,
 }: HeaderContactLinkProps) => (
   <Link
@@ -18,7 +18,7 @@ const HeaderContactLink = ({
     title={_STRINGS.CONTACT_US}
     className={`icon-parent flex shrink-0 items-center justify-center rounded-full border transition-all hover:scale-105 active:scale-95 ${compact ? "size-8" : "size-9"} ${
       isLight
-        ? "border-white/60 bg-white/35 backdrop-blur-[2px]"
+        ? "border-white/70 bg-white/90 backdrop-blur-[2px]"
         : "border-brand-100 bg-brand-50"
     }`}
   >

@@ -18,19 +18,18 @@ import Link from "next/link";
 
 const HeaderMobileBar = ({
   boxId,
+  phone,
   avatar,
   isHome,
-  isLight,
   isLogin,
   isAdvisor,
   notificationCount,
-  phone,
   onRegisterAdvisor,
 }: HeaderMobileBarProps) => {
   const router = useRouter();
   const pathname = usePathname();
   const { chat_id, room_slug, slug } = useParams();
-  const { getBackHome, topHeaderVisible } = useStoreParams((state) => state);
+  const { getBackHome } = useStoreParams((state) => state);
 
   const leaveRoomToHome = () => {
     useStoreParams.setState({ getBackHome: false });
@@ -50,23 +49,19 @@ const HeaderMobileBar = ({
       <div className="flex w-full min-w-0 xl:hidden">
         <div className="flex w-full min-w-0 items-center gap-2 py-1">
           <HeaderSessionBadge
-            avatar={avatar}
             compact
-            isLight={isLight}
+            phone={phone}
+            avatar={avatar}
+            isLight={false}
             isLogin={isLogin}
             notificationCount={notificationCount}
-            phone={phone}
           />
 
-          {topHeaderVisible ? (
-            <div className="mr-auto flex min-w-0 items-center justify-end">
-              <HeaderBrand isLight={isLight} />
-            </div>
-          ) : (
-            <div className="min-w-0 flex-1">
-              <HomeHeroSearch isPhone variant="header" />
-            </div>
-          )}
+          <div className="min-w-0 flex-1">
+            <HomeHeroSearch isPhone variant="header" />
+          </div>
+
+          <HeaderBrand asLink markOnly isLight={false} />
         </div>
       </div>
     );

@@ -8,44 +8,55 @@ import HeaderContactLink from "./HeaderContactLink";
 import _STRINGS from "@/utils/LocalStrings";
 import Link from "next/link";
 
+const compactAction = (isLight?: boolean) =>
+  `flex size-8 shrink-0 items-center justify-center rounded-full border transition-all ${
+    isLight
+      ? "border-white/70 bg-white/90 text-neutral-800 backdrop-blur-[2px]"
+      : "border-brand-100 bg-brand-50 text-neutral-700"
+  }`;
+
 const HeaderSessionBadge = ({
+  phone,
   avatar,
   isLight,
   isLogin,
-  notificationCount,
-  phone,
   compact = false,
+  notificationCount,
 }: HeaderSessionBadgeProps) => (
   <div
-    className={`flex shrink-0 items-center ${compact ? "gap-1.5 sm:gap-2" : "gap-3 xl:gap-6"}`}
+    className={`flex shrink-0 items-center ${compact ? "gap-1.5" : "gap-3 xl:gap-6"}`}
   >
     <Link
       prefetch={isLogin}
       title={_STRINGS.MY_PROFILE}
       href={isLogin ? "/profile" : "/auth"}
-      className={`flex shrink-0 items-center justify-center rounded-full border py-1.5 backdrop-blur-[2px] transition-all ${
-        compact ? "gap-1 px-1.5 sm:px-2" : "gap-3 px-2.5"
-      } ${isLight ? "border-transparent bg-white/40" : ""}`}
+      className={
+        compact
+          ? compactAction(isLight)
+          : `flex shrink-0 items-center justify-center rounded-full border py-1.5 backdrop-blur-[2px] transition-all gap-3 px-2.5 ${isLight ? "border-transparent bg-white/40" : ""}`
+      }
     >
       <ContentImage
         alt=""
         width={24}
         height={24}
         src={avatar || "/assets/icons/header/new-face/user.svg"}
-        className={`${isLogin && !avatar ? "xl:brightness-0" : !isLogin && !isLight ? "brightness-0" : ""} ${isLight ? "border-white" : "border-neutral-500"} border shrink-0 size-6 rounded-full transform-gpu transition-all`}
+        className={`${compact ? "size-5 border-0" : `size-6 border ${isLight ? "border-white" : "border-neutral-500"}`} ${isLogin && !avatar ? "xl:brightness-0" : !isLogin && !isLight ? "brightness-0" : ""} shrink-0 rounded-full transform-gpu transition-all`}
       />
 
-      {isLogin ? (
+      {compact ? (
+        <></>
+      ) : isLogin ? (
         <ContentImage
           alt=""
           width={20}
           height={20}
           src="/assets/icons/header/new-face/dots-three-vertical.svg"
-          className={`${compact ? "hidden sm:block" : ""} size-5 pl-1 transition-all ${isLight ? "invert brightness-200" : ""}`}
+          className={`size-5 pl-1 transition-all ${isLight ? "invert brightness-200" : ""}`}
         />
       ) : (
         <p
-          className={`${compact ? "hidden min-[360px]:block" : ""} pl-1 text-xs transition-all ${isLight ? "text-white" : ""}`}
+          className={`pl-1 text-xs transition-all ${isLight ? "text-white" : ""}`}
         >
           {_STRINGS.ENTER}
         </p>
@@ -59,12 +70,14 @@ const HeaderSessionBadge = ({
         prefetch
         href="/notifications"
         title={_STRINGS.MY_NOTIFS}
-        className={`relative flex shrink-0 items-center justify-center rounded-full border transition-all ${
-          compact ? "size-8" : "size-9"
-        } ${
-          isLight
-            ? "border-white/60 bg-white/35 text-white backdrop-blur-[2px]"
-            : "border-brand-100 bg-brand-50 text-neutral-700"
+        className={`relative ${
+          compact
+            ? compactAction(isLight)
+            : `flex size-9 shrink-0 items-center justify-center rounded-full border transition-all ${
+                isLight
+                  ? "border-white/70 bg-white/90 text-neutral-800 backdrop-blur-[2px]"
+                  : "border-brand-100 bg-brand-50 text-neutral-700"
+              }`
         }`}
       >
         <CountBadge count={notificationCount} />
