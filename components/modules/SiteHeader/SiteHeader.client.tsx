@@ -8,6 +8,7 @@ import { useUnreadChatCount } from "@features/chat/hooks/useUnreadChatCount";
 import { getUserAvatarUrl } from "@features/user/mappers/user-image.mapper";
 import { useCurrentProfile } from "@features/auth/hooks/useCurrentProfile";
 import { subscriptionStatus } from "@/helpers/subscriptionStatus";
+import { useHeaderAutoHide } from "@hooks/useHeaderAutoHide";
 import { headerWithFullSeach } from "@/utils/constantss";
 import { useParams, usePathname } from "next/navigation";
 import { useAuthStore, useStoreParams } from "@/store";
@@ -34,23 +35,36 @@ const SiteHeader = ({ phone, variant = "page" }: SiteHeaderProps) => {
   const isLight = isHome && topHeaderVisible;
   const isModal = variant === "modal";
 
+  // Only writes when the boolean actually flips. It used to call `setState` on
+  // every throttled tick, and several components read this store with a
+  // whole-state selector — `PropertyCardLikes` among them, which renders once per
+  // card — so an unchanged value still re-rendered the whole grid ten times a
+  // second while scrolling. Same behaviour, minus that.
   const handleScroll = useMemo(
     () =>
       throttle(() => {
-        useStoreParams.setState({
-          topHeaderVisible: window.scrollY <= TOP_HEADER_SCROLL_THRESHOLD,
-        });
+        const visible = window.scrollY <= TOP_HEADER_SCROLL_THRESHOLD;
+        if (useStoreParams.getState().topHeaderVisible !== visible)
+          useStoreParams.setState({ topHeaderVisible: visible });
       }, 100),
     [],
   );
 
   useEffect(() => {
-    window.addEventListener("scroll", handleScroll);
+    window.addEventListener("scroll", handleScroll, { passive: true });
     return () => {
       window.removeEventListener("scroll", handleScroll);
       handleScroll.cancel();
     };
   }, [handleScroll]);
+
+  // Home only for now. The pattern would suit the long result lists too, but the
+  // ask was the landing page and every other route keeps exactly the header it
+  // has today.
+  useHeaderAutoHide(
+    isModal ? "headerContainerModal" : "headerContainer",
+    isHome && !isModal,
+  );
 
   const { data: profile } = useCurrentProfile(Boolean(isLogin));
   const { data: notificationCount = 0 } = useNotificationBadge(Boolean(isLogin));

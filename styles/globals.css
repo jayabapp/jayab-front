@@ -104,6 +104,21 @@ ul {
 /* --------------------------------- HEADER --------------------------------- */
 .header-content-container {
   @apply fixed top-0   right-0 left-0  z-20;
+  transition: transform 240ms ease;
+}
+
+/* Driven by a data attribute the auto-hide hook writes straight onto the node,
+   never by React state: the header has to react at scroll frequency, and a
+   re-render at that rate would be felt on exactly the low-end phones this is
+   meant to stay smooth on. Transform only — no layout, no paint. */
+.header-content-container[data-autohide="hidden"] {
+  transform: translate3d(0, -100%, 0);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .header-content-container {
+    transition: none;
+  }
 }
 .header-container {
   @apply w-full flex  justify-between items-center px-2  h-full;
@@ -460,11 +475,69 @@ ul {
     transition-duration: 1ms;
   }
 }
+/* `overflow-x: clip` rather than `scroll`. Any overflow value other than
+   `visible` turns an element into a scroll container, and a scroll container
+   captures every `position: sticky` descendant: the pinned hero would stick to
+   *this* box instead of to the viewport, which scrolls away with the page, so
+   the pin silently does nothing. `clip` contains the same horizontal overflow
+   without creating a scrollport, so sticky keeps resolving against the
+   viewport. It also drops a horizontal scrollbar that was never wanted here. */
 .home-container {
-  @apply h-full bg-transparent mx-auto !max-w-full min-h-[100dvh] px-3 md:px-3 lg:px-4 xl:px-[15%]  pt-24 lg:pt-24  pb-32 lg:pb-44 overflow-x-scroll;
+  @apply h-full bg-transparent mx-auto !max-w-full min-h-[100dvh] px-3 md:px-3 lg:px-4 xl:px-[15%]  pt-24 lg:pt-24  pb-32 lg:pb-44 overflow-x-clip;
 }
 .container {
   @apply h-full bg-transparent mx-auto !max-w-full min-h-[100dvh] px-3 md:px-3 lg:px-4 xl:px-[15%]  pt-20 lg:pt-28  pb-32 lg:pb-44 overflow-x-scroll;
+}
+
+/* ---------------------------- HOME TWO-LAYER ------------------------------ */
+
+/* The home page is two layers: the hero (photo + wordmark + search) pins to the
+   top of the viewport, and everything below it rides up over the hero as one
+   sheet.
+
+   The whole effect is `position: sticky` plus paint order. There is no scroll
+   listener, no rAF loop and no JS-driven transform behind it, so it costs one
+   compositing layer and nothing per frame — which is why it can ship on the
+   page whose load time matters most. */
+.home-hero-pin {
+  @apply sticky top-0 z-0;
+}
+
+/* The sheet has to be opaque. The effect is paint order alone, so a transparent
+   surface would just show the pinned hero straight through it. `canvas` is the
+   colour the page already sits on, so the sheet is not a new tone — it is the
+   same background it always was, now with an edge and something behind it.
+
+   The upward shadow is what sells the depth: without it the sheet reads as a
+   flat cut across the photo rather than as a surface lifted above it. */
+.home-sheet {
+  @apply relative z-10 rounded-t-20;
+  @apply shadow-[0_-18px_40px_-24px_theme(colors.neutral.900/0.45)];
+  background-color: theme("colors.canvas");
+}
+
+/* The hero's own contents step back as the sheet arrives, so the search box is
+   never caught half-sliced under the sheet's edge.
+
+   Scroll-driven CSS animation, not JS: it runs on the compositor and never
+   touches the main thread, so it cannot cost a frame during scroll. Browsers
+   without `animation-timeline` skip the whole block and get the plain pin,
+   which already reads correctly — the fade is polish, not the mechanism. */
+@supports (animation-timeline: scroll()) {
+  @media (prefers-reduced-motion: no-preference) {
+    .home-hero-content {
+      animation: home-hero-recede linear both;
+      animation-timeline: scroll();
+      animation-range: 0 45vh;
+    }
+  }
+}
+
+@keyframes home-hero-recede {
+  to {
+    opacity: 0;
+    transform: translateY(-6%);
+  }
 }
 .profile-container {
   @apply h-full px-1 md:px-4 bg-transparent mx-auto !max-w-full min-h-[100dvh]   pb-32 lg:pb-44 overflow-x-scroll;

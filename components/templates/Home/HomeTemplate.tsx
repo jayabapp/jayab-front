@@ -22,29 +22,50 @@ const HomeTemplate = ({ banners, devices, homeContent, landings, properties, pro
   return (
       <div id="homeParent" className="home-container !px-0 !pt-0 flex flex-col gap-0">
         <HomeSeo />
-        {!!heroBanner ? <HomeHeroBanner banner={heroBanner} devices={devices} title={homeContent?.full_text} /> : <></>}
-        <section
-          className={`rounded-t-20 mb-8 -mt-[1.375rem] md:mt-0 flex flex-col relative gap-5 lg:gap-6 select-none px-0 md:py-0 w-full ${
-            !isEmpty(landings?.popular_city) && !isEmpty(landings?.quick_search) ? "min-h-[30dvh]" : ""
-          }`}
-        >
-          <Suspense fallback={null}>
-            <div className="w-full mt-3 lg:mt-0 px-0">
-              <HomeActiveReservations />
-            </div>
-          </Suspense>
-          <HomePropertyTypes data={propertyTypes} devices={devices} title={_STRINGS.PROPERTY_TYPE} />
-          <HomeCities data={landings?.popular_city ?? []} title={_STRINGS.MOST_VISITED_CITIES} />
-          <HomeQuickSearch data={landings?.quick_search ?? []} devices={devices} title={_STRINGS.FAST_SEARCH} />
-          <HomeProperties data={properties} devices={devices} middleBanner={middleBanner} />
-        </section>
-        <HomeInstallPrompt />
-        {!!banners && !isEmpty(banners) ? (
-          <HomeBanners banners={banners?.[BannerPosition.MAIN_3] ?? []} devices={devices} />
+        {/* Layer one: pinned. Stays at the top of the viewport while layer two
+            travels up over it. */}
+        {!!heroBanner ? (
+          <div className="home-hero-pin">
+            <HomeHeroBanner banner={heroBanner} devices={devices} title={homeContent?.full_text} />
+          </div>
         ) : (
           <></>
         )}
-        <HomeContent data={homeContent ?? null} />
+        {/* Layer two: the sheet — everything from the popular cities to the foot
+            of the page, as one surface that travels up over the hero.
+
+            It has to be *everything*, not just the first section. The pinned hero
+            is a positioned element, so it paints above any static block that
+            follows it; leaving the closing banners and SEO copy outside the sheet
+            left them showing through underneath it at the bottom of the page.
+
+            `-mt` on every breakpoint now, not only mobile — the overlap is what
+            makes the rounded lip read as a surface resting on the photo rather
+            than as the next block down the page. */}
+        <div className="home-sheet mb-8 -mt-[1.375rem] flex w-full flex-col gap-0 md:-mt-8">
+          <section
+            className={`flex flex-col gap-5 lg:gap-6 select-none px-0 md:py-0 w-full ${
+              !isEmpty(landings?.popular_city) && !isEmpty(landings?.quick_search) ? "min-h-[30dvh]" : ""
+            }`}
+          >
+            <Suspense fallback={null}>
+              <div className="w-full mt-3 lg:mt-0 px-0">
+                <HomeActiveReservations />
+              </div>
+            </Suspense>
+            <HomePropertyTypes data={propertyTypes} devices={devices} title={_STRINGS.PROPERTY_TYPE} />
+            <HomeCities data={landings?.popular_city ?? []} title={_STRINGS.MOST_VISITED_CITIES} />
+            <HomeQuickSearch data={landings?.quick_search ?? []} devices={devices} title={_STRINGS.FAST_SEARCH} />
+            <HomeProperties data={properties} devices={devices} middleBanner={middleBanner} />
+          </section>
+          <HomeInstallPrompt />
+          {!!banners && !isEmpty(banners) ? (
+            <HomeBanners banners={banners?.[BannerPosition.MAIN_3] ?? []} devices={devices} />
+          ) : (
+            <></>
+          )}
+          <HomeContent data={homeContent ?? null} />
+        </div>
       </div>
   );
 };

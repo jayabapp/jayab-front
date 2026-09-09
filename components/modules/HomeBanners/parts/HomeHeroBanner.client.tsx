@@ -20,8 +20,17 @@ const HomeBannerPart = ({
           different offsets. The old layout pinned the wordmark at bottom-35% and
           the search at bottom-12%, so the gap between them changed with every
           viewport height, and on short screens the two collided. */}
-      <div className="absolute inset-x-0 bottom-0 z-10 flex flex-col items-center justify-end gap-4 px-4 pb-4 md:gap-6 md:pb-12">
-        <div className="flex max-w-2xl flex-col items-center gap-2 text-center md:gap-3">
+      {/* `pb` has to clear the sheet's overlap (22px mobile, 32px from md) or the
+          sheet's opaque lip cuts across the bottom of the search pill. It did not
+          show before because the sheet had no background of its own. */}
+      <div className="absolute inset-x-0 bottom-0 z-10 flex flex-col items-center justify-end gap-4 px-4 pb-8 md:gap-6 md:pb-14">
+        {/* The recede animation goes on the wordmark only, never on a wrapper that
+            contains the search. The destination panel is `position: fixed` and is
+            rendered inline rather than through a portal, so an animated ancestor
+            would become its containing block and pin the full-screen panel to the
+            hero instead of the viewport — measured at `top: 84px` with the
+            backdrop inheriting the fade at 0.68 opacity. */}
+        <div className="home-hero-content flex max-w-2xl flex-col items-center gap-2 text-center md:gap-3">
           <ContentImage
             width={320}
             height={166}
