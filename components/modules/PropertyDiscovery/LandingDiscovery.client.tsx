@@ -1,17 +1,22 @@
 "use client";
 
+import {
+  FilterApplyBar,
+  PropertyFilterForm,
+} from "@modules/PropertySearchFilters";
+import { useEffect, useMemo, useState } from "react";
 import { usePropertyDiscoveryFilters } from "@features/properties/hooks/usePropertyDiscoveryFilters";
 import { usePropertyOptionGroups } from "@features/properties/hooks/usePropertyOptionGroups";
-import type { LandingDiscoveryProps } from "@/types/components/modules/property-discovery";
-import { FilterApplyBar, PropertyFilterForm } from "@modules/PropertySearchFilters";
-import type { ChildCities } from "@/types/components/modules/property-discovery";
+import { CityModal, RegionModal } from "@modules/CitySelector";
 import { landingQueryDefaults } from "@features/properties/lib/landing-filters";
 import { SpecialFilterButtons } from "@modules/PropertySearchFilters";
 import { SelectedFiltersBar } from "@modules/PropertySearchFilters";
-import { PropertySortMenu } from "@modules/PropertySearchFilters";
-import { CityModal, RegionModal } from "@modules/CitySelector";
 import { CitySelectorTitle } from "@modules/CitySelector";
-import { useEffect, useMemo, useState } from "react";
+import { PropertySortMenu } from "@modules/PropertySearchFilters";
+import { useCitiesStore } from "@/store";
+
+import type { LandingDiscoveryProps } from "@/types/components/modules/property-discovery";
+import type { ChildCities } from "@/types/components/modules/property-discovery";
 
 import SingleProductBreadCrumb from "@elements/Breadcrumbs/SingleProductBreadcrumb.client";
 import DiscoveryFilterModal from "./parts/DiscoveryFilterModal.client";
@@ -33,11 +38,25 @@ const LandingDiscovery = ({ devices, landing }: LandingDiscoveryProps) => {
   const [showRegions, setShowRegions] = useState(false);
   const [cityTitle, setCityTitle] = useState("");
   const [showShadow, setShowShadow] = useState(false);
+  const locationsData = useCitiesStore((state) => state.locationsData);
 
   const defaults = useMemo(() => landingQueryDefaults(landing), [landing]);
   const { applyFilters, filters, queries, resetDraft, setFilters } =
     usePropertyDiscoveryFilters({ defaults });
   const { data: propertyTypes } = usePropertyOptionGroups();
+  const selectedLocationTitle = useMemo(() => {
+    if (landing?.location)
+      return landing.location.level === "province"
+        ? `${_STRINGS.PROVINCE} ${landing.location.title}`
+        : landing.location.title;
+    const province = locationsData?.provinces?.[0];
+    if (province?.title) return `${_STRINGS.PROVINCE} ${province.title}`;
+    return (
+      locationsData?.regions?.[0]?.title ||
+      locationsData?.cities?.[0]?.title ||
+      ""
+    );
+  }, [landing?.location, locationsData]);
 
   const breadCrumbs = useMemo(
     () => [
@@ -138,19 +157,18 @@ const LandingDiscovery = ({ devices, landing }: LandingDiscoveryProps) => {
                   />
                 </div>
                 <CitySelectorTitle
-                  hideCityPart
                   queries={queries}
-                  title={cityTitle}
                   setShowRegions={setShowRegions}
                   cityWithRegions={cityWithRegions}
                   cb={() => setShowCityModal(true)}
+                  title={cityTitle || selectedLocationTitle}
                 />
                 <SelectedFiltersBar
                   query={queries}
                   setShowRegions={setShowRegions}
                   cityWithRegions={cityWithRegions}
-                  containerClass="!hidden xl:!contents"
                   propertyTypes={propertyTypes || {}}
+                  containerClass="!hidden xl:!contents"
                   setFilterModalShow={setFilterModalShow}
                 />
               </div>
@@ -177,8 +195,8 @@ const LandingDiscovery = ({ devices, landing }: LandingDiscoveryProps) => {
           propertyTypes={propertyTypes}
           setShowRegions={setShowRegions}
           cityWithRegions={cityWithRegions}
-          onShowCityModal={() => setShowCityModal(true)}
           show={filterModalShow && !showCityModal}
+          onShowCityModal={() => setShowCityModal(true)}
         />
 
         <CityModal

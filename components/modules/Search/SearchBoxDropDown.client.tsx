@@ -24,6 +24,7 @@ const SearchBoxDropDown = ({
     close,
     isLoading,
     isPending,
+    isStale,
     listRef,
     onKeyDown,
     options,
@@ -116,6 +117,7 @@ const SearchBoxDropDown = ({
                 onClose={close}
                 options={options}
                 listRef={listRef}
+                isStale={isStale}
                 isLoading={isLoading}
                 onTermChange={setTerm}
                 onHover={setActiveIndex}

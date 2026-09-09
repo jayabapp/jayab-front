@@ -68,6 +68,7 @@ export type PropertyCardLikesProps = {
 
 export type PropertyCardFeaturesProps = {
   data: PropertyListDto;
+  showDetailsIndicator?: boolean;
 };
 
 export type PropertyCardOwnerActionsProps = {

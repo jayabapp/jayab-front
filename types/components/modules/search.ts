@@ -49,6 +49,7 @@ export type SearchOverlayProps = {
   isLoading: boolean;
   isOpen: boolean;
   isPending: boolean;
+  isStale?: boolean;
   listRef: React.RefObject<HTMLDivElement | null>;
   onClose: () => void;
   onHover: (index: number) => void;
@@ -65,7 +66,9 @@ export type SearchOverlayProps = {
 
 export type SearchPanelBodyProps = {
   activeIndex: number;
+  hideCityList?: boolean;
   isLoading: boolean;
+  isStale?: boolean;
   listId: string;
   listRef: React.RefObject<HTMLDivElement | null>;
   onClose: () => void;
@@ -103,6 +106,7 @@ export type SearchBoxDropDownProps = {
 export type SearchSuggestionsProps = {
   activeIndex: number;
   isLoading: boolean;
+  isStale?: boolean;
   listId: string;
   listRef: React.RefObject<HTMLDivElement | null>;
   onHover: (index: number) => void;
@@ -136,6 +140,21 @@ export type SearchLocationChipProps = {
 export type SearchQueryParamSyncProps = {
   onSearchParam: (param: string | null) => void;
   queryKey?: string;
+};
+
+export type SearchInlinePanelProps = {
+  boxId?: string;
+  /** True while this is the step on screen: gates the request and the autofocus. */
+  isActive: boolean;
+  placeholder?: string;
+  onPickPlace?: (option: SearchOption) => void;
+  onTermChange?: (term: string) => void;
+  /**
+   * Replaces the default "run the search and leave for /rooms" submit. The hero
+   * sheet takes the typed term as its destination and moves to the next step
+   * instead, so Enter cannot skip the dates and guests the flow is there to ask.
+   */
+  onSubmitTerm?: (term: string) => void;
 };
 
 export type HeroDestinationSearchProps = {

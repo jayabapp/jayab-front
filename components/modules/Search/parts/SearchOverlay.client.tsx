@@ -18,6 +18,7 @@ const SearchOverlay = ({
   isLoading,
   isOpen,
   isPending,
+  isStale,
   listRef,
   onClose,
   onHover,
@@ -68,6 +69,7 @@ const SearchOverlay = ({
             onClose={onClose}
             onHover={onHover}
             onPick={onPick}
+            isStale={isStale}
             isLoading={isLoading}
             activeIndex={activeIndex}
             onTermChange={onTermChange}

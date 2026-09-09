@@ -3,15 +3,18 @@
 import { usePropertyDiscoveryFilters } from "@features/properties/hooks/usePropertyDiscoveryFilters";
 import { usePropertyOptionGroups } from "@features/properties/hooks/usePropertyOptionGroups";
 import type { PropertyDiscoveryProps } from "@/types/components/modules/property-discovery";
-import { FilterApplyBar, PropertyFilterForm } from "@modules/PropertySearchFilters";
 import type { ChildCities } from "@/types/components/modules/property-discovery";
 import { SpecialFilterButtons } from "@modules/PropertySearchFilters";
+import { PropertyFilterForm } from "@modules/PropertySearchFilters";
 import { SelectedFiltersBar } from "@modules/PropertySearchFilters";
 import { PropertySortMenu } from "@modules/PropertySearchFilters";
+import { FilterApplyBar } from "@modules/PropertySearchFilters";
 import { CityModal, RegionModal } from "@modules/CitySelector";
 import { CitySelectorTitle } from "@modules/CitySelector";
 import { useStoreParams } from "@/store";
+import { useCitiesStore } from "@/store";
 import { useState } from "react";
+import { useMemo } from "react";
 
 import SingleProductBreadCrumb from "@elements/Breadcrumbs/SingleProductBreadcrumb.client";
 import PropertyCategoryStrip from "./parts/PropertyCategoryStrip.client";
@@ -44,6 +47,16 @@ const PropertyDiscovery = ({ devices }: PropertyDiscoveryProps) => {
   } = usePropertyDiscoveryFilters();
   const { data: propertyTypes } = usePropertyOptionGroups();
   const { topHeaderVisible } = useStoreParams((state: any) => state);
+  const locationsData = useCitiesStore((state) => state.locationsData);
+  const selectedLocationTitle = useMemo(() => {
+    const province = locationsData?.provinces?.[0];
+    if (province?.title) return `${_STRINGS.PROVINCE} ${province.title}`;
+    return (
+      locationsData?.regions?.[0]?.title ||
+      locationsData?.cities?.[0]?.title ||
+      ""
+    );
+  }, [locationsData]);
 
   const onApplyFilters = () => {
     applyFilters();
@@ -58,9 +71,6 @@ const PropertyDiscovery = ({ devices }: PropertyDiscoveryProps) => {
   return (
     <div className="app-container !px-0 md:!px-10 2xl:px-[9%] !pt-[7.5rem] xl:!pt-20 z-2 flex flex-col !gap-2">
       <div className="grid grid-cols-12 col-span-12">
-        {/* The panel scrolls between a pinned header and a pinned submit bar, so
-            "how many filters are on" and "how many results this would give" are
-            both readable from anywhere in a list far taller than the viewport. */}
         <aside
           aria-label={_STRINGS.FILTERS}
           style={{ height: SIDEBAR_HEIGHT }}
@@ -98,8 +108,8 @@ const PropertyDiscovery = ({ devices }: PropertyDiscoveryProps) => {
                 <div className="!col-span-9">
                   <SelectedFiltersBar
                     query={queries}
-                    cityWithRegions={cityWithRegions}
                     setShowRegions={setShowRegions}
+                    cityWithRegions={cityWithRegions}
                     propertyTypes={propertyTypes || {}}
                     setFilterModalShow={setFilterModalShow}
                   />
@@ -122,17 +132,16 @@ const PropertyDiscovery = ({ devices }: PropertyDiscoveryProps) => {
                 <SpecialFilterButtons query={queries} />
               </div>
               <CitySelectorTitle
-                hideCityPart
                 queries={queries}
-                title={cityTitle}
                 setShowRegions={setShowRegions}
                 cityWithRegions={cityWithRegions}
                 cb={() => setShowCityModal(true)}
+                title={cityTitle || selectedLocationTitle}
               />
               <SelectedFiltersBar
                 query={queries}
-                cityWithRegions={cityWithRegions}
                 setShowRegions={setShowRegions}
+                cityWithRegions={cityWithRegions}
                 propertyTypes={propertyTypes || {}}
                 setFilterModalShow={setFilterModalShow}
                 containerClass="!hidden xl:!contents xl:!w-full"
@@ -162,8 +171,8 @@ const PropertyDiscovery = ({ devices }: PropertyDiscoveryProps) => {
         setShowRegions={setShowRegions}
         cityWithRegions={cityWithRegions}
         onClearExtraFilters={clearExtraFilters}
-        onShowCityModal={() => setShowCityModal(true)}
         show={filterModalShow && !showCityModal}
+        onShowCityModal={() => setShowCityModal(true)}
       />
 
       <CityModal

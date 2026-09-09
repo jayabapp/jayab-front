@@ -39,7 +39,7 @@ const HomeBannerPart = ({
         </div>
 
         <div className="w-full max-w-3xl">
-          <HomeHeroSearch />
+          <HomeHeroSearch isPhone={isPhone} />
         </div>
       </div>
 

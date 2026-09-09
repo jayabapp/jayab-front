@@ -30,6 +30,7 @@ const PopSearchBox = ({
     inputRef,
     isLoading,
     isPending,
+    isStale,
     listRef,
     onKeyDown,
     onSearchParam,
@@ -85,6 +86,7 @@ const PopSearchBox = ({
         options={options}
         listRef={listRef}
         inputRef={inputRef}
+        isStale={isStale}
         isLoading={isLoading}
         isPending={isPending}
         onKeyDown={onKeyDown}

@@ -4,94 +4,142 @@ import type { HomeHeroSearchProps } from "@/types/components/modules/home-hero-s
 import { useHeroSearch } from "@features/search/hooks/useHeroSearch";
 import { HeroDestinationSearch } from "@modules/Search";
 import { ContentImage } from "@elements/Image";
+import { useCallback, useState } from "react";
 
 import HeroGuestsField from "./parts/HeroGuestsField.client";
 import HeroDatesField from "./parts/HeroDatesField.client";
+import HeroMobileTrigger from "./parts/HeroMobileTrigger";
 import numberWithCommas from "@/helpers/numberWithCommas";
 import _STRINGS from "@/utils/LocalStrings";
+import moment from "moment-jalaali";
+import dynamic from "next/dynamic";
 
-const HomeHeroSearch = ({ totalProperties }: HomeHeroSearchProps) => {
-  const { draft, isPending, patch, submit } = useHeroSearch();
+const DAY_MONTH_FORMAT = "jD jMMMM";
+
+// A Persian comma, not a middot. A bare "·" between an RTL phrase and a digit is
+// bidi-neutral: it was resolving to the left of the number and rendering as part
+// of it, so "۲۹ شهریور · ۴ نفر" read on screen as "۴۰ نفر".
+const SUMMARY_SEPARATOR = "، ";
+
+// Held as a named function so touch-down can start the chunk before the tap
+// resolves — webpack hands back the same promise, so `dynamic` then mounts
+// against a download that is already in flight instead of starting one.
+const importHeroSearchSheet = () => import("./parts/HeroSearchSheet.client");
+
+// `ssr: false` because the sheet is a portal into `document.body` that only ever
+// opens on a tap: rendering it on the server would ship the Jalali calendar and
+// the suggestion panel in the home page's HTML for a surface nobody has asked
+// for yet.
+const HeroSearchSheet = dynamic(importHeroSearchSheet, { ssr: false });
+
+const HomeHeroSearch = ({ isPhone, totalProperties }: HomeHeroSearchProps) => {
+  const [isSheetOpen, setIsSheetOpen] = useState(false);
+  const { count, draft, isCountStale, isPending, patch, reset, submit } =
+    useHeroSearch(isSheetOpen);
+
+  const closeSheet = useCallback(() => setIsSheetOpen(false), []);
+
+  const summary = {
+    title: draft.cityTitle || draft.q || "",
+    detail: [
+      draft.checkin
+        ? `${moment(draft.checkin).format(DAY_MONTH_FORMAT)}${
+            draft.checkout ? ` - ${moment(draft.checkout).format(DAY_MONTH_FORMAT)}` : ""
+          }`
+        : "",
+      draft.total_guests ? `${draft.total_guests} ${_STRINGS.PERSON}` : "",
+    ]
+      .filter(Boolean)
+      .join(SUMMARY_SEPARATOR),
+  };
 
   return (
     <div className="flex w-full flex-col items-center gap-3">
-      <div className="surface-panel flex w-full items-center gap-0 !rounded-full p-1 shadow-glass md:p-1.5">
-        <HeroDestinationSearch
-          label={_STRINGS.HERO_WHERE_LABEL}
-          value={draft.cityTitle || draft.q}
-          onTermChange={(term) =>
-            patch({
-              q: term,
-              cities: undefined,
-              cityTitle: undefined,
-              landingUrl: undefined,
-            })
-          }
-          onPickPlace={(option) => {
-            const cityId = option.locations?.cities?.[0]?.id;
-            patch({
-              q: option.label,
-              cityTitle: option.label,
-              cities: cityId ? String(cityId) : undefined,
-              landingUrl: option.href.startsWith("/rooms")
-                ? undefined
-                : option.href,
-            });
-          }}
-        />
-
-        <span className="hidden h-7 w-px shrink-0 bg-neutral-200 sm:block" />
-
-        <div className="hidden min-w-0 flex-1 sm:flex">
-          <HeroDatesField
-            checkin={draft.checkin}
-            checkout={draft.checkout}
-            onChange={(next) => patch(next)}
+      {isPhone ? (
+        <>
+          <HeroMobileTrigger
+            summary={summary}
+            onPreload={importHeroSearchSheet}
+            onOpen={() => setIsSheetOpen(true)}
           />
+
+          {isSheetOpen ? (
+            <HeroSearchSheet
+              count={count}
+              draft={draft}
+              onPatch={patch}
+              onReset={reset}
+              onClose={closeSheet}
+              isPending={isPending}
+              isCountStale={isCountStale}
+              onSubmit={submit}
+            />
+          ) : (
+            <></>
+          )}
+        </>
+      ) : (
+        <div className="surface-panel relative flex w-full flex-nowrap items-center gap-0 !rounded-full p-1 shadow-glass md:p-1.5">
+          <HeroDestinationSearch
+            label={_STRINGS.HERO_WHERE_LABEL}
+            value={draft.cityTitle || draft.q}
+            onTermChange={(term) =>
+              patch({
+                q: term,
+                cities: undefined,
+                cityTitle: undefined,
+                landingUrl: undefined,
+              })
+            }
+            onPickPlace={(option) => {
+              const cityId = option.locations?.cities?.[0]?.id;
+              patch({
+                q: option.label,
+                cityTitle: option.label,
+                cities: cityId ? String(cityId) : undefined,
+                landingUrl: option.href.startsWith("/rooms")
+                  ? undefined
+                  : option.href,
+              });
+            }}
+          />
+
+          <span className="h-7 w-px shrink-0 bg-neutral-200" />
+
+          <div className="flex min-w-0 flex-1">
+            <HeroDatesField
+              checkin={draft.checkin}
+              checkout={draft.checkout}
+              onChange={(next) => patch(next)}
+            />
+          </div>
+
+          <span className="h-7 w-px shrink-0 bg-neutral-200" />
+
+          <div className="flex min-w-0 flex-1">
+            <HeroGuestsField
+              value={draft.total_guests}
+              onChange={(value) => patch({ total_guests: value })}
+            />
+          </div>
+
+          <button
+            type="button"
+            onClick={submit}
+            disabled={isPending}
+            aria-label={_STRINGS.SEARCH}
+            className="btn-primary flex size-9 shrink-0 items-center justify-center rounded-full bg-brand-600 transition-colors hover:bg-brand-700 disabled:bg-neutral-300 md:size-10"
+          >
+            <ContentImage
+              alt=""
+              width={20}
+              height={20}
+              className="size-4 shrink-0 brightness-0 invert md:size-[1.125rem]"
+              src="/assets/icons/edit/magnifier.svg"
+            />
+          </button>
         </div>
-
-        <span className="hidden h-7 w-px shrink-0 bg-neutral-200 sm:block" />
-
-        <div className="hidden min-w-0 flex-1 sm:flex">
-          <HeroGuestsField
-            value={draft.total_guests}
-            onChange={(value) => patch({ total_guests: value })}
-          />
-        </div>
-
-        <button
-          type="button"
-          onClick={submit}
-          disabled={isPending}
-          aria-label={_STRINGS.SEARCH}
-          className="btn-primary flex size-9 shrink-0 items-center justify-center rounded-full bg-brand-600 transition-colors hover:bg-brand-700 disabled:bg-neutral-300 md:size-10"
-        >
-          <ContentImage
-            alt=""
-            width={20}
-            height={20}
-            className="size-4 shrink-0 brightness-0 invert md:size-[1.125rem]"
-            src="/assets/icons/edit/magnifier.svg"
-          />
-        </button>
-      </div>
-
-      <div className="surface-panel flex w-full items-center !rounded-full p-1 sm:hidden">
-        <div className="min-w-0 flex-1">
-          <HeroDatesField
-            checkin={draft.checkin}
-            checkout={draft.checkout}
-            onChange={(next) => patch(next)}
-          />
-        </div>
-        <span className="h-7 w-px shrink-0 bg-neutral-200" />
-        <div className="min-w-0 flex-1">
-          <HeroGuestsField
-            value={draft.total_guests}
-            onChange={(value) => patch({ total_guests: value })}
-          />
-        </div>
-      </div>
+      )}
 
       {totalProperties ? (
         <p className="text-xs text-white/90 drop-shadow-sm">

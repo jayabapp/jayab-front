@@ -1,28 +1,37 @@
 "use client";
 
-import { SearchDateRangePicker, updateDateRange } from "@modules/PropertySearchFilters";
+import {
+  SearchDateRangePicker,
+  updateDateRange,
+} from "@modules/PropertySearchFilters";
 import type { HeroDatesFieldProps } from "@/types/components/modules/home-hero-search";
-import { useState } from "react";
+import { useEffect, useRef, useState } from "react";
 
 import _STRINGS from "@/utils/LocalStrings";
 import HeroSegment from "./HeroSegment";
-import Modal from "@elements/Modal";
 import moment from "moment-jalaali";
 
 const DAY_MONTH_FORMAT = "jD jMMMM";
 
-/**
- * Check-in and check-out, in the Jalali calendar the rest of the app uses.
- *
- * The picker and its range logic are the ones `/rooms` already ships — the same
- * two-tap start/end behaviour, the same handling of tapping a chosen day to
- * clear it. Reusing them rather than writing a second date control is what keeps
- * a date chosen on the home page behaving identically to one chosen in the
- * filter panel.
- */
-const HeroDatesField = ({ checkin, checkout, onChange }: HeroDatesFieldProps) => {
+const HeroDatesField = ({
+  checkin,
+  checkout,
+  onChange,
+}: HeroDatesFieldProps) => {
   const [isOpen, setIsOpen] = useState(false);
+  const containerRef = useRef<HTMLDivElement>(null);
   const hasRange = !!checkin && !!checkout;
+
+  useEffect(() => {
+    if (!isOpen) return;
+    const closeOnOutsideClick = (event: PointerEvent) => {
+      if (!containerRef.current?.contains(event.target as Node))
+        setIsOpen(false);
+    };
+    document.addEventListener("pointerdown", closeOnOutsideClick);
+    return () =>
+      document.removeEventListener("pointerdown", closeOnOutsideClick);
+  }, [isOpen]);
 
   const value = hasRange
     ? `${moment(checkin).format(DAY_MONTH_FORMAT)} - ${moment(checkout).format(DAY_MONTH_FORMAT)}`
@@ -31,38 +40,42 @@ const HeroDatesField = ({ checkin, checkout, onChange }: HeroDatesFieldProps) =>
       : _STRINGS.HERO_DATES_EMPTY;
 
   return (
-    <>
+    <div ref={containerRef} className="relative min-w-0 flex-1">
       <HeroSegment
         value={value}
         filled={!!checkin}
-        label={_STRINGS.HERO_DATES_LABEL}
         onClick={() => setIsOpen(true)}
+        label={_STRINGS.HERO_DATES_LABEL}
       />
 
-      <Modal show={isOpen} onHide={() => setIsOpen(false)}>
-        <SearchDateRangePicker
-          selectedDates={{
-            startDate: checkin ? moment(checkin).format("jYYYY/jMM/jD") : null,
-            endDate: checkout ? moment(checkout).format("jYYYY/jMM/jD") : null,
-          }}
-          setSelectedDay={(day) =>
-            updateDateRange({
-              date: day,
-              // Closing only once a full range exists is what makes the second
-              // tap land: `updateDateRange` calls back only on the closing date.
-              cb: () => setIsOpen(false),
-              state: { checkin, checkout },
-              setState: (updater) =>
-                onChange(
-                  typeof updater === "function"
-                    ? updater({ checkin, checkout })
-                    : updater,
-                ),
-            })
-          }
-        />
-      </Modal>
-    </>
+      {isOpen ? (
+        <div className="surface-panel absolute left-1/2 top-[calc(100%+0.75rem)] z-[60] w-[min(92vw,24rem)] -translate-x-1/2 overflow-hidden !rounded-20 p-3 shadow-glass">
+          <SearchDateRangePicker
+            selectedDates={{
+              startDate: checkin
+                ? moment(checkin).format("jYYYY/jMM/jD")
+                : null,
+              endDate: checkout
+                ? moment(checkout).format("jYYYY/jMM/jD")
+                : null,
+            }}
+            setSelectedDay={(day) =>
+              updateDateRange({
+                date: day,
+                cb: () => setIsOpen(false),
+                state: { checkin, checkout },
+                setState: (updater) =>
+                  onChange(
+                    typeof updater === "function"
+                      ? updater({ checkin, checkout })
+                      : updater,
+                  ),
+              })
+            }
+          />
+        </div>
+      ) : null}
+    </div>
   );
 };
 

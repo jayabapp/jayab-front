@@ -39,7 +39,20 @@ export const usePropertyFilterCount = (
     [debounced],
   );
 
-  const { data, isFetching } = useQuery(propertyCountOptions(settled, enabled));
+  // The count is only ever asked about a *settled* draft. `enabled` can flip on
+  // in the same render that the draft first gets a value — the hero sheet does
+  // exactly this, turning the count on the moment a destination is typed — and
+  // at that point `debounced` is still the empty string. Firing then asks the
+  // list endpoint to count the entire unfiltered catalogue: the slowest query
+  // the endpoint can answer, for a number that is discarded 500ms later.
+  //
+  // This never withholds a request the caller is waiting on. While the two
+  // disagree the answer is superseded by definition, and the query key has not
+  // moved, so the previous count stays on screen (dimmed by `isStale`) instead
+  // of blanking.
+  const { data, isFetching } = useQuery(
+    propertyCountOptions(settled, enabled && serialized === debounced),
+  );
 
   return {
     count: data,

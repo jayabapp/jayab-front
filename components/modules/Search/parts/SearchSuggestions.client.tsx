@@ -27,6 +27,7 @@ const GROUP_LABEL: Record<SearchOptionKind, string> = {
 const SearchSuggestions = ({
   activeIndex,
   isLoading,
+  isStale,
   listId,
   listRef,
   onHover,
@@ -60,7 +61,13 @@ const SearchSuggestions = ({
       ref={listRef}
       role="listbox"
       aria-label={_STRINGS.SEARCH_SUGGESTIONS}
-      className="flex w-full flex-col gap-0.5 px-2 pb-2 pt-1"
+      aria-busy={!!isStale}
+      // Dimmed, not unmounted, while the next term is in flight. The rows are
+      // still the best answer we have and they keep their height, so the panel
+      // does not collapse and re-expand under the reader's thumb.
+      className={`flex w-full flex-col gap-0.5 px-2 pb-2 pt-1 transition-opacity duration-200 ${
+        isStale ? "opacity-50" : "opacity-100"
+      }`}
     >
       {/* Empty groups are dropped before the map rather than returned as empty
           fragments from inside it: a fragment in an array still needs a key, and

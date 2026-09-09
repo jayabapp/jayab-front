@@ -20,7 +20,9 @@ import isEmpty from "lodash/isEmpty";
  */
 const SearchPanelBody = ({
   activeIndex,
+  hideCityList,
   isLoading,
+  isStale,
   listId,
   listRef,
   onClose,
@@ -43,6 +45,7 @@ const SearchPanelBody = ({
         onHover={onHover}
         onPick={onPick}
         searchedText={term}
+        isStale={isStale}
         isLoading={isLoading}
         activeIndex={activeIndex}
       />
@@ -55,7 +58,11 @@ const SearchPanelBody = ({
           <Suspense>
             <SearchPopularPlaces onClose={onClose} />
           </Suspense>
-          <SearchBoxCitySelector onSubmitCB={onClose} />
+          {/* Hidden inside the hero's mobile sheet: the city list is its own
+              full-screen surface that navigates straight to `/rooms`, so opening
+              it from a stepped flow both stacks a second overlay on the first and
+              throws away the dates and guests the user has already answered. */}
+          {hideCityList ? <></> : <SearchBoxCitySelector onSubmitCB={onClose} />}
         </>
       ) : (
         <></>

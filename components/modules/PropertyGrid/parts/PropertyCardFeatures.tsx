@@ -21,21 +21,38 @@ const FeatureItem = ({ disabled, iconUrl, title }: TFeatureItem) => (
   </div>
 );
 
-const PropertyCardFeatures = ({ data }: PropertyCardFeaturesProps) => (
-  <div className="w-full flex justify-start gap-4 items-center">
-    <FeatureItem
-      iconUrl="/assets/icons/adds/max_cap_house.svg"
-      title={`${_STRINGS.UP_TO} ${data?.max_capacity} ${_STRINGS.PERSON}`}
-    />
-    <FeatureItem
-      iconUrl="/assets/icons/adds/prop_card_bed.svg"
-      title={`${data?.total_bedrooms} ${_STRINGS.ROOM}`}
-    />
-    <FeatureItem
-      disabled={!data?.has_pool}
-      iconUrl="/assets/icons/adds/prop_card_pool.svg"
-      title={data?.has_pool ? _STRINGS.HAS_POOL : _STRINGS.POOL_LESS}
-    />
+const PropertyCardFeatures = ({
+  data,
+  showDetailsIndicator = false,
+}: PropertyCardFeaturesProps) => (
+  <div className="flex w-full items-center justify-between gap-2">
+    <div className="flex min-w-0 items-center justify-start gap-4">
+      <FeatureItem
+        iconUrl="/assets/icons/adds/max_cap_house.svg"
+        title={`${_STRINGS.UP_TO} ${data?.max_capacity} ${_STRINGS.PERSON}`}
+      />
+      <FeatureItem
+        iconUrl="/assets/icons/adds/prop_card_bed.svg"
+        title={`${data?.total_bedrooms} ${_STRINGS.ROOM}`}
+      />
+      <FeatureItem
+        disabled={!data?.has_pool}
+        iconUrl="/assets/icons/adds/prop_card_pool.svg"
+        title={data?.has_pool ? _STRINGS.HAS_POOL : _STRINGS.POOL_LESS}
+      />
+    </div>
+    {showDetailsIndicator ? (
+      <span className="flex size-8 shrink-0 items-center justify-center rounded-full bg-brand-600 shadow-sm transition-all duration-200 group-hover:bg-brand-700 group-hover:shadow-md group-focus-visible:bg-brand-700">
+        <ContentImage
+          alt=""
+          width={20}
+          height={20}
+          aria-hidden="true"
+          src="/assets/icons/property/white_arrow_left.svg"
+          className="size-5"
+        />
+      </span>
+    ) : null}
   </div>
 );
 

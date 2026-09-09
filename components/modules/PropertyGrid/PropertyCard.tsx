@@ -47,7 +47,7 @@ const PropertyCard = ({
                 src="/assets/icons/adds/verified_hexy_badge.svg"
               />
             ) : null}
-            <p className="text-sm line-clamp-2 h-10 text-right font-bold">
+            <p className="property-card-title line-clamp-2 h-14 text-right text-sm font-bold">
               {data.title}
             </p>
           </div>
@@ -194,7 +194,17 @@ const PropertyCard = ({
       ) : null}
 
       <div className="w-full pt-1.5">
-        <PropertyCardFeatures data={data} />
+        {isOwner ? (
+          <PropertyCardFeatures data={data} />
+        ) : (
+          <PropertyCardLink
+            href={goToLink}
+            title={data.title}
+            className="group block rounded-lg !outline-none focus-visible:ring-2 focus-visible:ring-brand-600 focus-visible:ring-offset-2"
+          >
+            <PropertyCardFeatures data={data} showDetailsIndicator />
+          </PropertyCardLink>
+        )}
       </div>
 
       {!hideWeekStatus && data?.reserve_days && !isEmpty(data?.reserve_days) ? (

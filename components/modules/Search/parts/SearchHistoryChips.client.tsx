@@ -11,7 +11,7 @@ const SearchHistoryChips = ({ onSelect }: SearchHistoryChipsProps) => {
   const { entries, forget } = useSearchHistory();
 
   return (
-    <div className="flex px-4 pt-0 flex-col w-full">
+    <div className="flex w-full flex-col px-4 pt-4">
       {isEmpty(entries) ? null : (
         <div className="w-full flex items-center gap-2 mb-2">
           <p className="text-sm md:text-base md:font-medium">{_STRINGS.UR_SEARCH_HISTORY}</p>

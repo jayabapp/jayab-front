@@ -4,12 +4,11 @@ import type { DiscoveryResultsProps } from "@/types/components/modules/property-
 import { PropertyGridItems, PropertyGridSkeleton } from "@modules/PropertyGrid";
 import { useProperties } from "@features/properties/hooks/useProperties";
 import { useHomeBanners } from "@features/home/hooks/useHomeBanners";
-import { PropertyCardSkeleton } from "@modules/PropertyGrid";
 import { ServerSidePaginate } from "@elements/Pagination";
 import { weekFromToday } from "@/helpers/weekFromToday";
 import { BannerPosition } from "@/enum/banners.enum";
+import { DotLoading } from "@elements/Button";
 
-import InfiniteScroll from "react-infinite-scroll-component";
 import numberWithCommas from "@/helpers/numberWithCommas";
 import EmptyState from "@elements/EmptyState";
 import _STRINGS from "@/utils/LocalStrings";
@@ -114,28 +113,26 @@ const DiscoveryResults = ({
           isPlaceholderData && isFetching ? "opacity-60" : ""
         }`}
       >
-        <InfiniteScroll
-          className={GRID_CLASS}
-          scrollThreshold={0.5}
-          dataLength={properties.length}
-          next={() => {
-            if (!isPlaceholderData && !isFetchingNextPage) void fetchNextPage();
-          }}
-          loader={isFetchingNextPage ? <PropertyCardSkeleton /> : null}
-          hasMore={
-            !hasPaginate &&
-            !isPlaceholderData &&
-            Boolean(hasNextPage) &&
-            !isFetchingNextPage
-          }
-        >
+        <div className={GRID_CLASS}>
           <PropertyGridItems
             week={week}
             devices={devices}
             data={properties}
             banners={visibleBanners}
           />
-        </InfiniteScroll>
+        </div>
+        {!hasPaginate && hasNextPage ? (
+          <div className="flex w-full justify-center px-3 pb-8">
+            <button
+              type="button"
+              disabled={isPlaceholderData || isFetchingNextPage}
+              onClick={() => void fetchNextPage()}
+              className="btn-primary min-w-36 rounded-full px-6 py-2.5 text-sm font-medium disabled:cursor-wait disabled:opacity-60"
+            >
+              {isFetchingNextPage ? <DotLoading /> : _STRINGS.SHOW_MORE}
+            </button>
+          </div>
+        ) : null}
       </div>
 
       {meta && hasPaginate ? (

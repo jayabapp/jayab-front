@@ -32,6 +32,7 @@ const HomePopSearch = ({
     inputRef,
     isLoading,
     isPending,
+    isStale,
     listRef,
     onKeyDown,
     onSearchParam,
@@ -59,6 +60,7 @@ const HomePopSearch = ({
         options={options}
         listRef={listRef}
         inputRef={inputRef}
+        isStale={isStale}
         isLoading={isLoading}
         isPending={isPending}
         onKeyDown={onKeyDown}

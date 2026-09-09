@@ -53,11 +53,7 @@ export const useSearchPanel = ({
   const [hasOpened, setHasOpened] = useState(false);
   if (isOpen && !hasOpened) setHasOpened(true);
 
-  const {
-    data: suggestions,
-    isLoading,
-    isDebouncing,
-  } = useSearchSuggestions(term, isOpen);
+  const { data: suggestions, isLoading, isStale } = useSearchSuggestions(term, isOpen);
 
   const options = useMemo(() => buildSearchOptions(suggestions), [suggestions]);
   const {
@@ -103,7 +99,8 @@ export const useSearchPanel = ({
     close,
     hasOpened,
     inputRef,
-    isLoading: isLoading || isDebouncing,
+    isLoading,
+    isStale,
     isPending,
     listRef,
     onKeyDown,

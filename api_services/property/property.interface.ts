@@ -573,6 +573,7 @@ export interface SingleLandingDto {
   content: Content;
   related_landings: RelatedLandings[];
   cities: City[];
+  location?: (City & { level: "city" | "province" }) | null;
 }
 
 export interface City {

@@ -1,4 +1,5 @@
 export { default as HeroDestinationSearch } from "./HeroDestinationSearch.client";
+export { default as SearchInlinePanel } from "./SearchInlinePanel.client";
 export { default as SearchBoxDropDown } from "./SearchBoxDropDown.client";
 export { default as HomePopSearch } from "./HomePopSearch.client";
 export { default as PopSearchBox } from "./PopSearchBox.client";

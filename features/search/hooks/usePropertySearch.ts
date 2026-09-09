@@ -54,7 +54,6 @@ export const usePropertySearch = (onNavigate?: () => void) => {
         delete landingFilters.cities;
         delete landingFilters.provinces;
         delete landingFilters.province_id;
-        delete landingFilters.regions;
         delete landingFilters.q;
         router.push(`/${data.landing_url}?${queryBuilder(landingFilters)}`);
         return;
