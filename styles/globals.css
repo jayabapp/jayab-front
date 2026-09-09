@@ -429,7 +429,7 @@ ul {
 /* ---------------------------- HOME TWO-LAYER ------------------------------ */
 
 .home-hero-pin {
-  @apply sticky top-16 z-0 md:top-0;
+  @apply sticky top-0 z-0;
 }
 
 .home-sheet {
