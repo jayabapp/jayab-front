@@ -20,7 +20,17 @@ const HomeTemplate = ({ banners, devices, homeContent, landings, properties, pro
     banners?.[BannerPosition.MAIN_2]?.filter((banner) => Boolean(devices?.isMobile ? banner?.image_sm : banner?.image)),
   );
   return (
-      <div id="homeParent" className="home-container !px-0 !pt-0 flex flex-col gap-0">
+      <div id="homeParent" className="home-container !bg-canvas !px-0 !pt-0 flex flex-col gap-0">
+        {/* `!bg-canvas` so the page reads as one surface. `.home-container` is
+            `bg-transparent`, so everything outside the sheet showed the app
+            canvas *plus* its fixed aurora mesh, while the sheet paints flat
+            `canvas` — the same declared colour with nothing over it. Measured
+            either side of the sheet's bottom edge: rgb(248,251,255) inside
+            against rgb(244,249,255) and rgb(242,247,254) just below, and the
+            tint shifts across the page because the mesh is anchored to the
+            viewport. Small numbers, but a visible seam. Painting the canvas here
+            covers the mesh for the whole page, and the only place it was ever
+            visible below the hero was the strip between sheet and footer. */}
         <HomeSeo />
         {/* The two layers share this wrapper, and that is the whole point of it:
             a sticky element is bounded by its containing block, so tying the hero
