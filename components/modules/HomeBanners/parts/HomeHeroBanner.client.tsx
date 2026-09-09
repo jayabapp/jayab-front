@@ -23,7 +23,7 @@ const HomeBannerPart = ({
       {/* `pb` has to clear the sheet's overlap (22px mobile, 32px from md) or the
           sheet's opaque lip cuts across the bottom of the search pill. It did not
           show before because the sheet had no background of its own. */}
-      <div className="absolute inset-x-0 bottom-0 z-10 flex flex-col items-center justify-end gap-4 px-4 pb-8 md:gap-6 md:pb-14">
+      <div className="absolute inset-x-0 bottom-0 z-10 flex flex-col items-center justify-end gap-5 px-4 pb-12 md:gap-6 md:pb-14">
         {/* The recede animation goes on the wordmark only, never on a wrapper that
             contains the search. The destination panel is `position: fixed` and is
             rendered inline rather than through a portal, so an animated ancestor
@@ -63,7 +63,14 @@ const HomeBannerPart = ({
           isBanner
           contentId={item?.id}
           editIconClass="!top-auto !bottom-0"
-          className={` focus:outline-none w-full px-0  aspect-[1.5] max-h-[60dvh]  md:aspect-[3.029] 
+          /* On a phone the hero is a share of the screen, not a ratio of its
+             width. `aspect-[1.5]` made the height a function of how wide the
+             device happened to be — 260px on a 390px phone — which left the
+             wordmark pressed against the header and the sheet sitting almost on
+             top of the search. A dvh share keeps the same composition on every
+             phone and gives the photograph room to actually be a photograph.
+             Desktop still runs on the wide ratio the artwork is cut for. */
+          className={` focus:outline-none w-full px-0  h-[62dvh] max-h-[34rem]  md:h-auto md:max-h-none md:aspect-[3.029]
            transition-all duration-300 ease-in-out   relative`}
         >
           {isPhone ? (

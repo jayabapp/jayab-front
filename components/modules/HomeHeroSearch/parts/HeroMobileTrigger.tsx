@@ -23,6 +23,19 @@ const HeroMobileTrigger = ({ onOpen, onPreload, summary }: HeroMobileTriggerProp
     data-test="hero-mobile-trigger"
     className="surface-panel flex w-full items-center gap-3 !rounded-full p-2 text-right shadow-glass"
   >
+    {/* Text before the icon in source order, which in RTL puts the label against
+        the right edge where reading starts and leaves the magnifier at the far
+        left. Ordered in the markup rather than with `flex-row-reverse` so the
+        DOM, the tab order and the rendered row all agree. */}
+    <span className="flex min-w-0 flex-1 flex-col items-start gap-0.5 pr-2">
+      <span className="w-full truncate text-sm font-bold leading-tight text-neutral-900">
+        {summary.title || _STRINGS.HERO_STEP_WHERE}
+      </span>
+      <span className="w-full truncate text-xxs leading-tight text-neutral-500">
+        {summary.detail || _STRINGS.HERO_MOBILE_TRIGGER_HINT}
+      </span>
+    </span>
+
     <span className="btn-primary flex size-10 shrink-0 items-center justify-center rounded-full bg-brand-600">
       <ContentImage
         alt=""
@@ -31,15 +44,6 @@ const HeroMobileTrigger = ({ onOpen, onPreload, summary }: HeroMobileTriggerProp
         src="/assets/icons/edit/magnifier.svg"
         className="size-[1.125rem] shrink-0 brightness-0 invert"
       />
-    </span>
-
-    <span className="flex min-w-0 flex-1 flex-col items-start gap-0.5 pl-2">
-      <span className="w-full truncate text-sm font-bold leading-tight text-neutral-900">
-        {summary.title || _STRINGS.HERO_STEP_WHERE}
-      </span>
-      <span className="w-full truncate text-xxs leading-tight text-neutral-500">
-        {summary.detail || _STRINGS.HERO_MOBILE_TRIGGER_HINT}
-      </span>
     </span>
   </button>
 );
