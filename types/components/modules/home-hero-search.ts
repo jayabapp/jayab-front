@@ -34,6 +34,7 @@ export type HomeHeroSearchProps = {
    * and the popover do not ship a second copy of themselves to phones.
    */
   isPhone?: boolean;
+  variant?: "hero" | "header";
 };
 
 export type HeroSearchStep = "where" | "dates" | "guests";
@@ -61,6 +62,7 @@ export type HeroMobileTriggerProps = {
   /** Starts fetching the sheet's chunk on touch-down, before the tap resolves. */
   onPreload: () => void;
   summary: { title: string; detail: string };
+  variant?: "hero" | "header";
 };
 
 export type HeroSearchSheetProps = {

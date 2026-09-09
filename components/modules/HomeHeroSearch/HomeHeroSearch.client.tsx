@@ -16,23 +16,17 @@ import dynamic from "next/dynamic";
 
 const DAY_MONTH_FORMAT = "jD jMMMM";
 
-// A Persian comma, not a middot. A bare "·" between an RTL phrase and a digit is
-// bidi-neutral: it was resolving to the left of the number and rendering as part
-// of it, so "۲۹ شهریور · ۴ نفر" read on screen as "۴۰ نفر".
 const SUMMARY_SEPARATOR = "، ";
 
-// Held as a named function so touch-down can start the chunk before the tap
-// resolves — webpack hands back the same promise, so `dynamic` then mounts
-// against a download that is already in flight instead of starting one.
 const importHeroSearchSheet = () => import("./parts/HeroSearchSheet.client");
 
-// `ssr: false` because the sheet is a portal into `document.body` that only ever
-// opens on a tap: rendering it on the server would ship the Jalali calendar and
-// the suggestion panel in the home page's HTML for a surface nobody has asked
-// for yet.
 const HeroSearchSheet = dynamic(importHeroSearchSheet, { ssr: false });
 
-const HomeHeroSearch = ({ isPhone, totalProperties }: HomeHeroSearchProps) => {
+const HomeHeroSearch = ({
+  isPhone,
+  totalProperties,
+  variant = "hero",
+}: HomeHeroSearchProps) => {
   const [isSheetOpen, setIsSheetOpen] = useState(false);
   const { count, draft, isCountStale, isPending, patch, reset, submit } =
     useHeroSearch(isSheetOpen);
@@ -44,7 +38,9 @@ const HomeHeroSearch = ({ isPhone, totalProperties }: HomeHeroSearchProps) => {
     detail: [
       draft.checkin
         ? `${moment(draft.checkin).format(DAY_MONTH_FORMAT)}${
-            draft.checkout ? ` - ${moment(draft.checkout).format(DAY_MONTH_FORMAT)}` : ""
+            draft.checkout
+              ? ` - ${moment(draft.checkout).format(DAY_MONTH_FORMAT)}`
+              : ""
           }`
         : "",
       draft.total_guests ? `${draft.total_guests} ${_STRINGS.PERSON}` : "",
@@ -59,6 +55,7 @@ const HomeHeroSearch = ({ isPhone, totalProperties }: HomeHeroSearchProps) => {
         <>
           <HeroMobileTrigger
             summary={summary}
+            variant={variant}
             onPreload={importHeroSearchSheet}
             onOpen={() => setIsSheetOpen(true)}
           />
@@ -69,10 +66,10 @@ const HomeHeroSearch = ({ isPhone, totalProperties }: HomeHeroSearchProps) => {
               draft={draft}
               onPatch={patch}
               onReset={reset}
+              onSubmit={submit}
               onClose={closeSheet}
               isPending={isPending}
               isCountStale={isCountStale}
-              onSubmit={submit}
             />
           ) : (
             <></>
@@ -141,7 +138,7 @@ const HomeHeroSearch = ({ isPhone, totalProperties }: HomeHeroSearchProps) => {
         </div>
       )}
 
-      {totalProperties ? (
+      {variant === "hero" && totalProperties ? (
         <p className="text-xs text-white/90 drop-shadow-sm">
           <span className="font-bold">{numberWithCommas(totalProperties)}</span>{" "}
           {_STRINGS.HERO_ACTIVE_PROPERTIES}

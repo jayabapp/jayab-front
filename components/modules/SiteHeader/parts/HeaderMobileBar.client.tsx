@@ -4,6 +4,7 @@ import type { HeaderMobileBarProps } from "@/types/components/modules/site-heade
 import { useParams, usePathname, useRouter } from "next/navigation";
 import { headerMobileSearchBlackList } from "@/utils/constantss";
 import { headerWithFullSeach } from "@/utils/constantss";
+import { HomeHeroSearch } from "@modules/HomeHeroSearch";
 import { ContentImage } from "@elements/Image";
 import { useStoreParams } from "@/store";
 
@@ -46,28 +47,26 @@ const HeaderMobileBar = ({
 
   if (isHome)
     return (
-      <div className="xl:hidden flex w-full">
-        <div className="w-full flex items-center py-1 rounded-full justify-between pl-2 pr-1.5 gap-3 xl:gap-6">
+      <div className="flex w-full min-w-0 xl:hidden">
+        <div className="flex w-full min-w-0 items-center gap-2 py-1">
           <HeaderSessionBadge
             avatar={avatar}
+            compact
             isLight={isLight}
             isLogin={isLogin}
             notificationCount={notificationCount}
             phone={phone}
           />
 
-          <div className="flex items-center gap-3 xl:gap-6 w-full justify-end">
-            <div
-              className={`${topHeaderVisible ? "hidden" : "flex"} transition-all w-full`}
-            >
-              <HeaderSearchField
-                boxId={boxId}
-                inputClass="  !py-0.5 "
-                containerClass=" w-full mx-auto"
-              />
+          {topHeaderVisible ? (
+            <div className="mr-auto flex min-w-0 items-center justify-end">
+              <HeaderBrand isLight={isLight} />
             </div>
-            <HeaderBrand isLight={isLight} />
-          </div>
+          ) : (
+            <div className="min-w-0 flex-1">
+              <HomeHeroSearch isPhone variant="header" />
+            </div>
+          )}
         </div>
       </div>
     );

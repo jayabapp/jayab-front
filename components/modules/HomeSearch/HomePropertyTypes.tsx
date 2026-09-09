@@ -17,7 +17,7 @@ const HomePropertyTypes = ({
     <div
       className={`w-full noSelect select-none gap-4 md:gap-2 relative rounded-20 pt-2 lg:pt-0 flex flex-col items-start`}
     >
-      <p className="font-bold padding-x  shrink-0 text-center md:text-start hidden lg:flex text-lg lg:text-xl">
+      <p className="padding-x flex shrink-0 text-start text-base font-bold lg:text-xl">
         {title}
       </p>
       <SwiperEm

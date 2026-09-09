@@ -27,7 +27,7 @@ a {
 
 ::-webkit-scrollbar {
   width: 0px;
-  background: transparent; /* make scrollbar transparent */
+  background: transparent;
   display: none;
 }
 textarea,
@@ -70,30 +70,20 @@ ul {
 .app-size {
   @apply w-full md:w-full mx-auto lg:w-full  min-h-[100dvh];
 }
-/* The app canvas. Tier one of two: every page sits on this tinted mesh so white
-   cards read as cards instead of white-on-white, and it is deliberately STATIC —
-   no drifting orbs. Measured on /faq, three runs of four seconds each: a bare
-   page and this tint both produce 241 frames, while the auth/dashboard version
-   with its two animated blurred orbs drops the browser to 95-158. Orbs on every
-   page would mean a device never reaches idle while someone reads a blog post,
-   so they stay in `.auth-container` / `.aurora-layer`, which need something for
-   their glass surfaces to blur. Painted on a pseudo-element rather than the
-   element itself so it stays `fixed` to the viewport and never grows the page. */
+
 .app-background {
   @apply !h-full;
   background-color: theme("colors.canvas");
 }
 
 .app-background::before {
-  content: "";
-  position: fixed;
   inset: 0;
   z-index: 0;
+  content: "";
+  opacity: 0.35;
+  position: fixed;
   pointer-events: none;
   background-image: var(--aurora-mesh);
-  /* Half the dashboard's strength: content pages carry dense tables and small
-     grey text that the dashboard's card-only layout never has to. */
-  opacity: 0.35;
 }
 
 .app-text {
@@ -107,10 +97,6 @@ ul {
   transition: transform 240ms ease;
 }
 
-/* Driven by a data attribute the auto-hide hook writes straight onto the node,
-   never by React state: the header has to react at scroll frequency, and a
-   re-render at that rate would be felt on exactly the low-end phones this is
-   meant to stay smooth on. Transform only — no layout, no paint. */
 .header-content-container[data-autohide="hidden"] {
   transform: translate3d(0, -100%, 0);
 }
@@ -147,11 +133,7 @@ ul {
 }
 
 /* ---------------------------------- AUTH ---------------------------------- */
-/* Glassmorphism auth shell. `isolate` makes this element the backdrop root, so
-   the glass surfaces inside sample the colour mesh and the floating blobs
-   below instead of the plain white <body>. */
-/* One definition of the aurora mesh, shared by the auth shell and the fixed
-   layer the profile pages sit on. */
+
 :root {
   --aurora-mesh:
     radial-gradient(
@@ -178,21 +160,13 @@ ul {
   background-image: var(--aurora-mesh);
 }
 
-/* The same aurora for content pages, as a fixed layer instead of a background on
-   the page wrapper: nothing can clip it, it cannot introduce a horizontal
-   scrollbar, and it stays put while the page scrolls. `opacity` dials the whole
-   thing down in one move — a dashboard has to stay readable under it, unlike the
-   login card. It sits at z-0 rather than a negative z-index, which would put it
-   behind the white <body> background and make it invisible. */
 .aurora-layer {
-  @apply pointer-events-none fixed inset-0 z-0;
-  background-color: theme("colors.canvas");
-  background-image: var(--aurora-mesh);
   opacity: 0.45;
+  background-image: var(--aurora-mesh);
+  background-color: theme("colors.canvas");
+  @apply pointer-events-none fixed inset-0 z-0;
 }
 
-/* Two slow-drifting blurred orbs give the blur something to bite on — a glass
-   card over a flat background is indistinguishable from a plain white card. */
 .auth-container::before,
 .auth-container::after,
 .aurora-layer::before,
@@ -244,9 +218,6 @@ ul {
 }
 
 /* ------------------------------ GLASS SURFACES ----------------------------- */
-/* These live in globals rather than inline utilities because `backdrop-filter`
-   needs the -webkit- prefix for iOS Safari and Tailwind emits neither the
-   prefix nor the `saturate()` pairing that keeps colours from going grey. */
 .glass-panel {
   @apply relative overflow-hidden rounded-28 border border-white/60 bg-white/55 shadow-glass;
   -webkit-backdrop-filter: blur(26px) saturate(170%);
@@ -265,8 +236,6 @@ ul {
   );
 }
 
-/* Tinted chip behind the profile menu icons — the bare icons on a white row
-   were the flattest part of the dashboard. */
 .menu-icon-chip {
   @apply flex size-10 shrink-0 items-center justify-center rounded-xl border border-white/70 bg-brand-50/80 transition-colors;
 }
@@ -275,9 +244,6 @@ ul {
   @apply bg-brand-100;
 }
 
-/* Glass surface for content cards. The blur lives on a pseudo-element, not the
-   card itself: `backdrop-filter` would make the card the containing block for
-   its `fixed` children, and these cards host confirm modals. */
 .glass-surface {
   @apply relative border border-white/70 shadow-glass-sm;
 }
@@ -299,12 +265,6 @@ ul {
   backdrop-filter: blur(14px) saturate(160%);
 }
 
-/* Frosted sticky site header. The blur sits on a pseudo-element instead of the
-   header box itself because `backdrop-filter` turns an element into the
-   containing block for its fixed-position descendants — and the profile menu's
-   logout ConfirmModal is a plain `fixed` overlay that would get trapped inside
-   the header. 55% white with a heavier blur: transparent enough to read as glass
-   over the page, while `saturate` keeps the text underneath from greying out. */
 .header-glass {
   @apply relative;
 }
@@ -326,11 +286,6 @@ ul {
   backdrop-filter: blur(18px) saturate(160%);
 }
 
-/* Centre-out underline for hoverable nav titles. Lives here rather than as an
-   inline `after:` chain because the header nav links, the header profile-menu
-   trigger and the dashboard sidebar rows all share it. `currentColor` makes it
-   follow whatever hover colour the label uses, so each caller only picks a text
-   colour. Requires `relative` on the label and `group` on the hovered ancestor. */
 .nav-underline::after {
   content: "";
   position: absolute;
@@ -348,9 +303,6 @@ ul {
   transform: scaleX(1);
 }
 
-/* Auth flip card. The two faces are stacked in one grid cell so the card is as
-   tall as the taller of them and the height never jumps mid-rotation, and only
-   `transform` animates, so the flip stays on the compositor. */
 .flip-scene {
   perspective: 1800px;
 }
@@ -378,11 +330,6 @@ ul {
   transform: rotateY(180deg);
 }
 
-/* Entrance for the auth card. Transform + opacity only, so it runs on the
-   compositor and shifts no layout; no `forwards` fill, so the transform is gone
-   once it ends and the card never becomes a containing block for a `fixed`
-   overlay. Kept short because the card carries a backdrop-filter, which is
-   re-sampled on every animated frame. */
 @keyframes auth-card-in {
   from {
     opacity: 0;
@@ -404,8 +351,6 @@ ul {
   backdrop-filter: blur(12px);
 }
 
-/* Declared after `@tailwind utilities` so it wins over the base field classes
-   FormInput hard-codes (`bg-neutral-50`, hover/focus borders) without `!`. */
 .glass-field {
   border-color: rgba(255, 255, 255, 0.7);
   background-color: rgba(255, 255, 255, 0.5);
@@ -469,21 +414,13 @@ ul {
     transition: none;
   }
 
-  /* 1ms rather than `none`: the rotation is imperceptible either way, but the
-     transitionend still fires, and that event is what unmounts the OTP face. */
   .flip-card {
     transition-duration: 1ms;
   }
 }
-/* `overflow-x: clip` rather than `scroll`. Any overflow value other than
-   `visible` turns an element into a scroll container, and a scroll container
-   captures every `position: sticky` descendant: the pinned hero would stick to
-   *this* box instead of to the viewport, which scrolls away with the page, so
-   the pin silently does nothing. `clip` contains the same horizontal overflow
-   without creating a scrollport, so sticky keeps resolving against the
-   viewport. It also drops a horizontal scrollbar that was never wanted here. */
+
 .home-container {
-  @apply h-full bg-transparent mx-auto !max-w-full min-h-[100dvh] px-3 md:px-3 lg:px-4 xl:px-[15%]  pt-24 lg:pt-24  pb-32 lg:pb-44 overflow-x-clip;
+  @apply h-full bg-canvas mx-auto !max-w-full min-h-[100dvh] px-3 md:px-3 lg:px-4 xl:px-[15%]  pt-24 lg:pt-24  pb-32 lg:pb-44 overflow-x-clip;
 }
 .container {
   @apply h-full bg-transparent mx-auto !max-w-full min-h-[100dvh] px-3 md:px-3 lg:px-4 xl:px-[15%]  pt-20 lg:pt-28  pb-32 lg:pb-44 overflow-x-scroll;
@@ -491,38 +428,16 @@ ul {
 
 /* ---------------------------- HOME TWO-LAYER ------------------------------ */
 
-/* The home page is two layers: the hero (photo + wordmark + search) pins to the
-   top of the viewport, and everything below it rides up over the hero as one
-   sheet.
-
-   The whole effect is `position: sticky` plus paint order. There is no scroll
-   listener, no rAF loop and no JS-driven transform behind it, so it costs one
-   compositing layer and nothing per frame — which is why it can ship on the
-   page whose load time matters most. */
 .home-hero-pin {
   @apply sticky top-0 z-0;
 }
 
-/* The sheet has to be opaque. The effect is paint order alone, so a transparent
-   surface would just show the pinned hero straight through it. `canvas` is the
-   colour the page already sits on, so the sheet is not a new tone — it is the
-   same background it always was, now with an edge and something behind it.
-
-   The upward shadow is what sells the depth: without it the sheet reads as a
-   flat cut across the photo rather than as a surface lifted above it. */
 .home-sheet {
   @apply relative z-10 rounded-t-20;
   @apply shadow-[0_-18px_40px_-24px_theme(colors.neutral.900/0.45)];
   background-color: theme("colors.canvas");
 }
 
-/* The hero's own contents step back as the sheet arrives, so the search box is
-   never caught half-sliced under the sheet's edge.
-
-   Scroll-driven CSS animation, not JS: it runs on the compositor and never
-   touches the main thread, so it cannot cost a frame during scroll. Browsers
-   without `animation-timeline` skip the whole block and get the plain pin,
-   which already reads correctly — the fade is polish, not the mechanism. */
 @supports (animation-timeline: scroll()) {
   @media (prefers-reduced-motion: no-preference) {
     .home-hero-content {
@@ -560,10 +475,6 @@ ul {
   direction: ltr;
 }
 
-/* -------------------------------------------------------------------------- */
-/*                                  CALENDAR                                  */
-/* -------------------------------------------------------------------------- */
-
 .Calendar {
   @apply bg-white;
   box-shadow: none !important;
@@ -590,20 +501,6 @@ input[type="number"] {
 .location-here {
   z-index: 400;
 }
-/* .fixed-button {
-  @apply flex flex-col  w-full px-4 py-2 fixed bottom-0 items-center md:left-[24%] md:w-[52%] lg:left-[32%] lg:w-[36%];
-}
-.fixed-button-main {
-  @apply flex flex-col  w-full px-4 py-2 fixed bottom-16 left-0 items-center md:left-12.5% md:w-3/4 lg:left-[30%] lg:w-[40%];
-} */
-/* -------------------------------------------------------------------------- */
-/*                                END CALENDAR                                */
-/* -------------------------------------------------------------------------- */
-/* .shadow-card {
-  -webkit-box-shadow: 0px 0px 11px 6px rgba(0, 0, 0, 0.06);
-  -moz-box-shadow: 0px 0px 11px 6px rgba(0, 0, 0, 0.06);
-  box-shadow: 0px 0px 11px 6px rgba(0, 0, 0, 0.06);
-} */
 .custom-header-Shadow {
   box-shadow: -4px 9px 16px -7px rgb(11 21 36 / 20%);
 }
@@ -623,27 +520,6 @@ input[type="number"] {
   @apply w-full md:w-[70%] lg:w-[60%] xl:w-1/2 px-6 md:px-6 max-w-[580px]  mx-auto;
 }
 
-/* 
-
-.alighn-pop > [data-rsbs-overlay],
-[data-rsbs-backdrop],
-[data-rsbs-root]:after {
-  z-index: 10 !important;
-  margin-left: 12% !important;
-  margin-right: auto !important;
-  left: 0rem !important;
-}
-
-[data-rsbs-overlay] {
-  box-shadow: none !important;
-  background: transparent !important;
-}
-[data-rsbs-header] {
-  margin-bottom: -0.5rem !important;
-  background: white !important;
-  @apply rounded-t-lg;
-} */
-
 .checkoutCards {
   @apply bg-white border p-2 md:p-6 rounded-20;
 }
@@ -662,9 +538,6 @@ input[type="number"] {
   @apply md:pb-16;
 }
 
-/* .centerise > .swiper-wrapper {
-  @apply !flex  !justify-between md:!justify-center;
-} */
 .react-transform-wrapper {
   @apply !w-full;
 }
@@ -675,7 +548,7 @@ input[type="number"] {
 .map-wrap {
   position: relative;
   width: 100%;
-  height: 100%; /* calculate height of the screen minus the heading */
+  height: 100%;
 }
 
 .map {
@@ -797,17 +670,14 @@ input[type="number"] {
   background-position: top, bottom;
 }
 
-/* strong {
-  @apply font-bold text-xl;
-} */
 p {
   @apply font-normal text-start;
 }
 
 select {
-  -moz-appearance: none; /* Firefox */
-  -webkit-appearance: none; /* Safari and Chrome */
   appearance: none;
+  -moz-appearance: none;
+  -webkit-appearance: none;
 }
 
 .maplibregl-ctrl-bottom-right {
@@ -869,8 +739,6 @@ select {
 .custome-shadow-card {
   box-shadow: 0px 5px 12px -5px rgb(11 21 36 / 20%);
 }
-
-/* temperoray */
 
 .rc-slider-handle {
   opacity: 1 !important;
@@ -940,13 +808,8 @@ button {
 /*                                    EMBLA                                   */
 /* -------------------------------------------------------------------------- */
 .embla {
-  /* max-width: 48rem; */
-  margin: auto;
   width: 100%;
-  /* --slide-height: 19rem;
-  */
-  /* --slide-spacing: 1rem;
-  --slide-size: 20%; */
+  margin: auto;
 }
 .embla__viewport {
   overflow: hidden;
@@ -957,25 +820,24 @@ button {
   margin-left: calc(var(--slide-spacing) * -1);
 }
 .embla__slide {
-  transform: translate3d(0, 0, 0);
-  flex: 0 0 var(--slide-size);
   min-width: 0;
+  flex: 0 0 var(--slide-size);
+  transform: translate3d(0, 0, 0);
   padding-left: var(--slide-spacing);
 }
 
 .embla__dots {
-  display: flex;
-
-  position: absolute;
   left: 1rem;
   right: 1rem;
-  flex-wrap: wrap;
-  justify-content: center;
-  align-items: center;
-  bottom: 1rem;
-  margin-right: calc((2.6rem - 1.4rem) / 2 * -1);
   gap: 0.5rem;
   @apply mt-2;
+  bottom: 1rem;
+  display: flex;
+  flex-wrap: wrap;
+  position: absolute;
+  align-items: center;
+  justify-content: center;
+  margin-right: calc((2.6rem - 1.4rem) / 2 * -1);
 }
 
 .embla__dot {
@@ -997,15 +859,7 @@ button {
   border-radius: 100%;
   @apply !h-1.5 !w-1.5 transition-all    bg-neutral-100/50 !rounded-full;
 }
-/* .embla__dot:after {
-  box-shadow: inset 0 0 0 0.2rem var(--detail-medium-contrast);
-  width: 1.4rem;
-  height: 1.4rem;
-  border-radius: 100%;
-  display: flex;
-  align-items: center;
-  content: "";
-} */
+
 .embla__dot--selected {
   @apply !bg-neutral-100/90  !w-5   !h-1.5  transition-all;
 }
@@ -1047,10 +901,6 @@ textarea {
     @apply !text-brand-600 !underline !underline-offset-4;
   }
 }
-
-/* -------------------------------------------------------------------------- */
-/*                              CONTETNT STYLINGS                             */
-/* -------------------------------------------------------------------------- */
 
 h1 {
   @apply text-[1.3rem] font-bold !leading-8 text-brand-800 lg:text-2xl;
@@ -1192,10 +1042,6 @@ ul {
   box-shadow: 0px 0px 10px 0px rgba(0, 7, 55, 0.1);
 }
 
-/* Lift card — the shared photo-first card behaviour: the media leads, and the
-   whole card rises on hover. Used by the landing's property cards and by the blog
-   cards, which is why it is named for what it does rather than for one caller.
-   Only `transform`, `opacity` and `box-shadow` animate, so nothing here reflows. */
 .lift-card {
   box-shadow: 0 1px 2px 0 rgb(0 7 55 / 0.06);
   transition:
@@ -1218,8 +1064,6 @@ ul {
   transform: scale(1.07);
 }
 
-/* "نردبان شده" means the listing was bumped up, so the chevrons step up with the
-   card on hover. 2px only — it should register as liveliness, not as a control. */
 .promoted-pill-glyph {
   transition: transform 0.35s cubic-bezier(0.22, 1, 0.36, 1);
 }
@@ -1229,7 +1073,6 @@ ul {
   transform: translateY(-0.125rem);
 }
 
-/* RTL: forward is leftwards, so the "read on" chevron slides that way. */
 .lift-card-arrow {
   transition: transform 0.28s cubic-bezier(0.22, 1, 0.36, 1);
 }
@@ -1239,8 +1082,6 @@ ul {
   transform: translateX(-0.25rem);
 }
 
-/* The scrim only exists to keep the verified pill legible on bright photos, so it
-   sits at a low opacity until hover, where it also sells the lift. */
 .lift-card-scrim {
   background-image: linear-gradient(
     to top,
@@ -1257,13 +1098,6 @@ ul {
   opacity: 1;
 }
 
-/* Shared staggered entrance: rise + fade, ordered by --card-index. Used by the
-   landing's showcase cards and its type / quick-search tiles, so a grid and a
-   carousel of tiles come in with the same rhythm. `backwards` (not `both`) is
-   deliberate: it holds the first keyframe through the stagger delay so an item
-   never flashes in before its turn, while letting the element fall back to its
-   own rules once the run ends. A forwards fill would pin `transform: none` at
-   animation priority and the hover lifts below could never win the cascade. */
 @keyframes stagger-rise-in {
   from {
     opacity: 0;
@@ -1280,10 +1114,6 @@ ul {
   animation-delay: calc(var(--card-index, 0) * 60ms);
 }
 
-/* Landing tile — one design for both the property-type row and the quick-search
-   row. Solid white rather than glass: sixteen blurred surfaces on one screen is
-   real GPU work, and there is nothing behind these worth blurring. The icon well
-   repeats `menu-icon-chip`'s recipe from the dashboard at a larger size. */
 .home-tile {
   box-shadow: 0 1px 2px 0 rgb(0 7 55 / 0.06);
   transition:
@@ -1297,7 +1127,6 @@ ul {
   transform: translateY(-0.25rem);
 }
 
-/* Touch devices never hover, so the press is the only feedback there is. */
 .home-tile:active {
   transform: scale(0.97);
 }
@@ -1316,12 +1145,6 @@ ul {
   transition: transform 0.28s cubic-bezier(0.22, 1, 0.36, 1);
 }
 
-/* Continuous marquee for the popular-cities rows. Pure CSS on purpose: a JS
-   autoplay ticks the main thread every frame, while `translateX` on a
-   `width: max-content` track is composited and touches neither layout nor paint.
-   Seamlessness comes from rendering the row twice and travelling exactly -50%,
-   which is a percentage of the track itself — so it stays exact at any item
-   width or breakpoint, with no measuring. */
 .marquee {
   overflow: hidden;
   cursor: grab;
@@ -1339,12 +1162,11 @@ ul {
   will-change: transform;
 }
 
-/* Positive, not negative: the page is RTL, so a `max-content` track hangs its
-   right edge on the container and overflows leftwards, which puts the duplicate
-   to the LEFT of the original. Travelling right is what brings the duplicate
-   into the window; travelling left would just drag the row off and leave a gap.
-   +50% lands the duplicate exactly where the original sat, so the loop is
-   pixel-identical at the seam. */
+.marquee-set {
+  min-width: 100vw;
+  justify-content: space-around;
+}
+
 @keyframes marquee-drift {
   from {
     transform: translateX(0);
@@ -1354,15 +1176,10 @@ ul {
   }
 }
 
-/* The second row travels the other way. `animation-direction` rather than a
-   second keyframe block, so both rows stay in one definition. */
 .marquee-track-reverse {
   animation-direction: reverse;
 }
 
-/* Paused while pointed at or tab-focused so a city can actually be read and
-   clicked, and while off-screen (a class an observer toggles) so scrolling past
-   the row lets the page reach idle instead of animating forever. */
 .marquee:hover .marquee-track,
 .marquee:focus-within .marquee-track,
 .marquee-dragging .marquee-track,
@@ -1380,8 +1197,6 @@ ul {
     will-change: auto;
   }
 
-  /* Without the drift the duplicate is dead weight, and the row has to stay
-     reachable, so it is dropped and the track scrolls by hand instead. */
   .marquee-clone {
     display: none;
   }
@@ -1392,9 +1207,6 @@ ul {
   transform: scale(1.08);
 }
 
-/* Kept next to the rules it cancels rather than in the shared reduced-motion
-   block further up the file: that block is declared before these, and at equal
-   specificity the later declaration would win and the motion would survive. */
 @media (prefers-reduced-motion: reduce) {
   .stagger-rise {
     animation: none;
@@ -1454,12 +1266,6 @@ ul {
   box-shadow: 0px -2px 3.4px 0px rgba(168, 40, 47, 1) inset;
 }
 
-/* ── Route transition feedback ──────────────────────────────────────────────
-   Driven entirely by class toggles from NavigationProgress.client.tsx, never by
-   React state, so a navigation costs no re-render of the app shell.
-
-   `right: 0` because the document is RTL: the bar has to grow from the start
-   edge, which is the right one here. */
 .nav-progress {
   position: fixed;
   top: 0;
@@ -1477,9 +1283,6 @@ ul {
   );
 }
 
-/* Creeps toward 90% and stops. It must never reach the end on its own: a bar
-   that completes before the page arrives tells the user the wait is over when
-   it is not. The real completion is `.nav-progress-done`. */
 .nav-progress-active {
   width: 90%;
   opacity: 1;
@@ -1496,9 +1299,6 @@ ul {
     opacity 0.32s ease-out 0.12s;
 }
 
-/* Pending state for a single link, fed by useLinkStatus. The card dims slightly
-   and stops responding to further clicks, which is the acknowledgement the
-   cards previously never gave. */
 .link-pending {
   opacity: 0.55;
   pointer-events: none;
@@ -1517,10 +1317,6 @@ ul {
   }
 }
 
-/* Route enter animation. Applied to content that genuinely mounts fresh on a
-   navigation — the loading fallbacks and the blog route template — so the new
-   page eases in instead of cutting. Opacity and a small lift only: nothing that
-   moves layout, so it cannot cause a shift while the page is still settling. */
 @keyframes route-enter-in {
   from {
     opacity: 0;
@@ -1542,16 +1338,6 @@ ul {
   }
 }
 
-/* Directional entrance for the article page's panels: the two halves of each
-   row arrive from their own side, so the layout assembles instead of appearing
-   in one hard cut.
-
-   Named for what the reader sees, not logical start/end — CSS transforms ignore
-   `direction`, so translateX is physical in RTL exactly as in LTR.
-
-   Below md the columns stack full width, where a sideways entrance would mean
-   nothing and 1.5rem of translate could push past the viewport edge and raise a
-   horizontal scrollbar. There the same elements just rise instead. */
 @keyframes enter-from-right {
   from {
     opacity: 0;
@@ -1579,8 +1365,6 @@ ul {
   animation-name: route-enter-in;
   animation-duration: 0.5s;
   animation-timing-function: cubic-bezier(0.22, 1, 0.36, 1);
-  /* `backwards`, not `both`: it holds the opening frame through the delay but
-     releases afterwards, so nothing stays pinned at animation priority. */
   animation-fill-mode: backwards;
   animation-delay: calc(var(--card-index, 0) * 90ms);
 }
@@ -1602,37 +1386,14 @@ ul {
   }
 }
 
-/* The page-level card surface. Defined once so the article page and the
-   property page cannot drift apart: both are white cards floating on the tinted
-   canvas, and a difference of one border or shadow between them reads as a bug.
-   Padding is deliberately excluded — panels that wrap their own scroll areas or
-   full-bleed media set it themselves. */
 .surface-panel {
   @apply rounded-20 border border-white bg-white shadow-glass-sm;
 }
 
-/* The results-card surface. Same reasoning as `.surface-panel`, and the same
-   trap: the canvas is deliberately tinted (`brand.50` plus the aurora mesh) so
-   that white cards read as cards. A card that paints no background does not
-   come out neutral — it inherits the tint. `PropertyCard` was doing exactly
-   that, carrying only a radius and a shadow, so the whole results grid dissolved
-   into one blue field with shadows floating on it. `PropertyShowcaseCard` and
-   the owner cards already paint a surface; this names the rule so the next card
-   does not have to rediscover it. */
 .surface-card {
   @apply rounded-20 border border-neutral-100 bg-white;
 }
 
-/* ── Filter chips ──────────────────────────────────────────────────────────
-   One pill, two states, used by the attribute chips, the special toggles and
-   the applied-filter pills so they cannot drift apart.
-
-   Idle chips paint white: on a tinted canvas a transparent chip is not neutral,
-   it is a tinted chip. The previous idle style was `grayscale opacity-70` over
-   no background, which read as *disabled* rather than as available.
-
-   Active chips use `brand.100`, not `brand.50` — `brand.50` is the exact colour
-   of the canvas (#F0F6FE), so a chip filled with it would be invisible. */
 .filter-chip {
   @apply flex h-6.5 w-auto shrink-0 cursor-pointer items-center justify-center gap-0 rounded-full border py-1 pl-2 pr-1 text-xs transition-colors;
 }
@@ -1645,15 +1406,6 @@ ul {
   @apply border-brand-600 bg-brand-100 text-brand-700;
 }
 
-/* ── Home hero search ──────────────────────────────────────────────────────
-   One cell of the hero search bar, shared by the three fields so their heights
-   cannot drift apart — they sit on one row, and a few pixels of difference
-   between them reads as a broken control rather than as a style choice.
-
-   Deliberately tight: the label and value stack, so generous vertical padding
-   compounds into a bar tall enough to dominate the hero. `leading-tight` on the
-   caption and `leading-snug` on the value do most of the work; the padding only
-   keeps the hover surface from clipping the text. */
 .hero-field {
   @apply flex w-full min-w-0 flex-col items-start justify-center rounded-full px-2 py-1 text-right transition-colors hover:bg-neutral-50 sm:px-4 md:py-1.5;
 }
@@ -1666,10 +1418,6 @@ ul {
   @apply w-full truncate text-sm leading-snug;
 }
 
-/* ── Search suggestion rows ────────────────────────────────────────────────
-   The pointer and the keyboard cursor light up the same surface: hover sets
-   `.search-option-active` through React rather than through `:hover`, so a row
-   can never be highlighted twice or highlighted in two places at once. */
 .search-option {
   @apply flex w-full items-center gap-2.5 rounded-10 px-2 py-2 text-right transition-colors;
 }
@@ -1693,12 +1441,6 @@ ul {
   }
 }
 
-/* The cropper's height is an inline `60dvh` set by ImageCropModal, and an inline
-   declaration a browser cannot parse is dropped rather than falling back. On
-   iOS below 15.4 that left the cropper at auto height and the crop surface
-   collapsed. A class cannot beat the inline value on a browser that does
-   understand dvh, so this only ever applies where the inline one was thrown
-   away. Kept in step with the `style` prop in ImageCropModal.client.tsx. */
 .cropper {
   height: 60vh;
 }

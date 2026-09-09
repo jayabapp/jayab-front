@@ -27,11 +27,13 @@ export type HeaderSessionBadgeProps = {
   avatar?: string | null;
   notificationCount?: number;
   phone?: ContentDto;
+  compact?: boolean;
 };
 
 export type HeaderContactLinkProps = {
   isLight?: boolean;
   phone?: ContentDto;
+  compact?: boolean;
 };
 
 export type HeaderProfileMenuProps = {
