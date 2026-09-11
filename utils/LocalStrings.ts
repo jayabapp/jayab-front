@@ -1,6 +1,10 @@
 const _STRINGS = {
   PREVIOUS_PAGE: "صفحه قبل",
   NEXT_PAGE: "صفحه بعد",
+  HERO_SLIDER: "تصاویر اقامتگاه‌ها",
+  HERO_SLIDE_MEADOW_ALT: "خانه‌ی چوبی زرد در دشت گل با کوه‌های مه‌آلود",
+  HERO_SLIDE_DUSK_ALT: "ویلای چوبی با پنجره‌های روشن در غروب",
+  HERO_SLIDE_NIGHT_ALT: "ویلای جنگلی با چراغ‌های روشن در شب",
   DECREASE: "کاهش",
   INCREASE: "افزایش",
   PAGES: "صفحات",

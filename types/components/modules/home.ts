@@ -60,9 +60,29 @@ export type HomeCitiesProps = {
 };
 
 export type HomeHeroBannerProps = {
-  banner?: HomeBannerDto;
+  /** Every MAIN_1 banner from the CMS; they lead the slider, ahead of the built-in slides. */
+  banners?: HomeBannerDto[];
   devices?: DeviceInfo;
   title?: string;
+};
+
+export type HeroSlide = {
+  key: string;
+  alt: string;
+  desktopSrc: string;
+  /** Art for widths below `lg`; the same file as `desktopSrc` when there is no separate cut. */
+  mobileSrc: string;
+  /** CSS `object-position` for the wide crops from `sm` up. Phones draw the whole photo. */
+  focus?: string;
+  /** CMS banner id, for the admin edit link. Absent on the built-in slides. */
+  contentId?: number | string;
+  imageClasses?: string;
+};
+
+export type HeroSlideImageProps = {
+  slide: HeroSlide;
+  isFirst: boolean;
+  onLoad: () => void;
 };
 
 export type HomeTileCardProps = {
