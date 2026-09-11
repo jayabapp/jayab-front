@@ -71,13 +71,11 @@ const HeroDestinationSearch = ({
         className="hero-field"
       >
         <span className="hero-field-label">{label}</span>
-        <span
-          className={`hero-field-value ${
-            value ? "font-medium text-neutral-900" : "text-neutral-400"
-          }`}
-        >
-          {value || _STRINGS.HERO_WHERE_EMPTY}
-        </span>
+        {value ? (
+          <span className="hero-field-value font-medium text-neutral-900">
+            {value}
+          </span>
+        ) : null}
       </button>
 
       <SearchOverlay

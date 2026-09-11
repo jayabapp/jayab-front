@@ -1,10 +1,8 @@
 "use client";
 
-import {
-  SearchDateRangePicker,
-  updateDateRange,
-} from "@modules/PropertySearchFilters";
 import type { HeroDatesFieldProps } from "@/types/components/modules/home-hero-search";
+import { SearchDateRangePicker } from "@modules/PropertySearchFilters";
+import { updateDateRange } from "@modules/PropertySearchFilters";
 import { useEffect, useRef, useState } from "react";
 
 import _STRINGS from "@/utils/LocalStrings";
@@ -37,7 +35,7 @@ const HeroDatesField = ({
     ? `${moment(checkin).format(DAY_MONTH_FORMAT)} - ${moment(checkout).format(DAY_MONTH_FORMAT)}`
     : !!checkin
       ? `${moment(checkin).format(DAY_MONTH_FORMAT)} - ...`
-      : _STRINGS.HERO_DATES_EMPTY;
+      : "";
 
   return (
     <div ref={containerRef} className="relative min-w-0 flex-1">

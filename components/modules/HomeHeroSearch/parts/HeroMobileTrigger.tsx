@@ -17,7 +17,7 @@ const HeroMobileTrigger = ({
     className={`surface-panel flex w-full items-center !rounded-full text-right ${
       variant === "header"
         ? "h-10 min-w-0 gap-1.5 border-white/70 bg-white/90 p-1 shadow-glass-sm"
-        : "gap-3 p-2 shadow-glass"
+        : "gap-2 p-1.5 shadow-glass"
     }`}
   >
     <span
@@ -29,16 +29,16 @@ const HeroMobileTrigger = ({
         {summary.title ||
           (variant === "header" ? _STRINGS.SEARCH : _STRINGS.HERO_STEP_WHERE)}
       </span>
-      {variant === "hero" ? (
+      {variant === "hero" && summary.detail ? (
         <span className="w-full truncate text-xxs leading-tight text-neutral-500">
-          {summary.detail || _STRINGS.HERO_MOBILE_TRIGGER_HINT}
+          {summary.detail}
         </span>
       ) : null}
     </span>
 
     <span
       className={`btn-primary flex shrink-0 items-center justify-center rounded-full bg-brand-600 ${
-        variant === "header" ? "size-8" : "size-10"
+        variant === "header" ? "size-8" : "size-9"
       }`}
     >
       <ContentImage

@@ -1411,11 +1411,11 @@ ul {
 }
 
 .hero-field-label {
-  @apply text-xxs font-bold leading-tight text-neutral-500;
+  @apply text-xs font-bold leading-tight text-neutral-500 md:text-sm;
 }
 
 .hero-field-value {
-  @apply w-full truncate text-sm leading-snug;
+  @apply w-full truncate text-sm leading-snug md:text-base;
 }
 
 .search-option {
