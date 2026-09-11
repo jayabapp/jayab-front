@@ -254,7 +254,7 @@ const HomeBannerPart = ({ title, devices, banners }: HomeHeroBannerProps) => {
           <HomeHeroSearch isPhone={isPhone} />
         </div>
       </div>
-      <div className="pointer-events-none absolute inset-0 z-5 bg-gradient-to-t from-black/70 via-black/20 to-transparent" />
+      <div className="hero-backdrop pointer-events-none absolute inset-0 z-5 bg-gradient-to-t from-black/70 via-black/20 to-transparent" />
       {count > 1 ? (
         <span
           key={index}
@@ -273,7 +273,7 @@ const HomeBannerPart = ({ title, devices, banners }: HomeHeroBannerProps) => {
         contentId={editable?.contentId}
         editIconClass="!top-auto !bottom-0"
         onPointerCancel={() => (swipeStart.current = null)}
-        className="relative aspect-[4/3] min-h-[19rem] w-full touch-pan-y overflow-hidden px-0 focus:outline-none sm:aspect-[2/1] lg:aspect-[3.029] lg:min-h-[23rem]"
+        className="hero-backdrop relative aspect-[4/3] min-h-[19rem] w-full touch-pan-y overflow-hidden px-0 focus:outline-none sm:aspect-[2/1] lg:aspect-[3.029] lg:min-h-[23rem]"
       >
         {slides.map((slide, slideIndex) => (
           <div

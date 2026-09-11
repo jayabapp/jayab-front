@@ -63,7 +63,9 @@ const HeroDestinationSearch = ({
   );
 
   return (
-    <div className="static min-w-0 flex-[1.2]">
+    // `data-hero-open` lets the home page lift the pinned hero above the sheet
+    // while this panel is open — see `.home-hero-pin:has(...)` in globals.css.
+    <div data-hero-open={isOpen} className="static min-w-0 flex-[1.2]">
       <button
         id={boxId}
         type="button"

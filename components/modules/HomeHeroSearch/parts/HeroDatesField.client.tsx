@@ -38,7 +38,7 @@ const HeroDatesField = ({
       : "";
 
   return (
-    <div ref={containerRef} className="relative min-w-0 flex-1">
+    <div ref={containerRef} data-hero-open={isOpen} className="relative min-w-0 flex-1">
       <HeroSegment
         value={value}
         filled={!!checkin}
