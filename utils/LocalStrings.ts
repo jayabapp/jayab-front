@@ -577,7 +577,7 @@ const _STRINGS = {
   HERO_GUESTS_EMPTY: "افزودن نفرات",
   HERO_ACTIVE_PROPERTIES: "اقامتگاه فعال، مستقیم از میزبان",
   HERO_SHEET_TITLE: "جستجوی اقامتگاه",
-  HERO_STEP_WHERE: "کجا می‌خواهید بروید؟",
+  HERO_STEP_WHERE: "مقصد سفرت کجاست؟",
   HERO_STEP_DATES: "چه تاریخی؟",
   HERO_STEP_GUESTS: "چند نفر؟",
   HERO_DATES_FLEXIBLE: "تاریخم مشخص نیست",

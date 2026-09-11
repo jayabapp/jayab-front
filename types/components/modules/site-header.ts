@@ -34,7 +34,6 @@ export type HeaderSessionBadgeProps = {
 export type HeaderContactLinkProps = {
   isLight?: boolean;
   phone?: ContentDto;
-  compact?: boolean;
 };
 
 export type HeaderProfileMenuProps = {

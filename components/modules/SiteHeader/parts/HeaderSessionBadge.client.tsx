@@ -9,12 +9,12 @@ import _STRINGS from "@/utils/LocalStrings";
 import Link from "next/link";
 
 const HeaderSessionBadge = ({
+  phone,
   avatar,
   isLight,
   isLogin,
-  notificationCount,
-  phone,
   compact = false,
+  notificationCount,
 }: HeaderSessionBadgeProps) => (
   <div
     className={`flex shrink-0 items-center ${compact ? "gap-1.5 sm:gap-2" : "gap-3 xl:gap-6"}`}
@@ -52,7 +52,7 @@ const HeaderSessionBadge = ({
       )}
     </Link>
 
-    <HeaderContactLink compact={compact} isLight={isLight} phone={phone} />
+    {compact ? <></> : <HeaderContactLink isLight={isLight} phone={phone} />}
 
     {isLogin ? (
       <Link
