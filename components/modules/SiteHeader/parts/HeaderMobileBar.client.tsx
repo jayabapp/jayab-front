@@ -63,9 +63,12 @@ const HeaderMobileBar = ({
               <HeaderBrand isLight={isLight} />
             </div>
           ) : (
-            <div className="min-w-0 flex-1">
-              <HomeHeroSearch isPhone variant="header" />
-            </div>
+            <>
+              <div className="min-w-0 flex-1">
+                <HomeHeroSearch isPhone variant="header" />
+              </div>
+              <HeaderBrand asLink markOnly isLight={false} />
+            </>
           )}
         </div>
       </div>

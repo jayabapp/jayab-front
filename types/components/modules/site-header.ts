@@ -19,6 +19,7 @@ export type HeaderBrandProps = {
   alwaysShowTitle?: boolean;
   isLight?: boolean;
   asLink?: boolean;
+  markOnly?: boolean;
 };
 
 export type HeaderSessionBadgeProps = {
