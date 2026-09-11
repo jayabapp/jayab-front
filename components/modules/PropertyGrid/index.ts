@@ -5,5 +5,4 @@ export { default as DaysOfTheWeekStatus } from "./DaysOfTheWeekStatus";
 export { default as PropertyGridItems } from "./PropertyGridItems";
 export { default as PropertyPrice } from "./PropertyPrice";
 export { default as PropertyGrid } from "./PropertyGrid";
-export { default as PropertyShowcaseCard } from "./PropertyShowcaseCard";
 export { default as PropertyCard } from "./PropertyCard";

@@ -11,7 +11,7 @@ import type { PropertyDiscoveryFilters } from "@/types/features/properties";
 import queryBuilder from "@/helpers/queryBuilder";
 import useQueryGet from "@/helpers/queryGet";
 
-const KEPT_ON_RESET = ["sort_type", "cities", "q"] as const;
+const KEPT_ON_RESET = ["sort_type", "q", "cities", "provinces", "regions"] as const;
 
 export const usePropertyDiscoveryFilters = ({
   defaults,
@@ -80,6 +80,10 @@ export const usePropertyDiscoveryFilters = ({
     for (const key of KEPT_ON_RESET) {
       if (queries?.[key]) body[key] = queries[key];
     }
+    // Clear the draft too. When the ticked filters were never applied the URL
+    // does not change, the draft never re-syncs, and every box stayed ticked,
+    // so "remove all" looked like it did nothing.
+    setDraft((current) => ({ ...current, filters: body as PropertyDiscoveryFilters }));
     replaceWith(body);
   }, [queries, replaceWith]);
 

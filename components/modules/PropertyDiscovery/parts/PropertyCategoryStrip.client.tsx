@@ -55,7 +55,7 @@ const PropertyCategoryStrip = ({
         <SwiperWithNavigation
           dataLength={1}
           reference={reference}
-          className="!w-full pr-3 !pb-2"
+          className="!w-full !pb-2"
           grid={{ fill: "row", rows: 1 }}
           breakpoints={CATEGORY_BREAKPOINTS}
           onBeforeInit={(swiper: Swiper) => (reference.current = swiper)}

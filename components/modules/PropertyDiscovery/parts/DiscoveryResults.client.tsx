@@ -4,10 +4,11 @@ import type { DiscoveryResultsProps } from "@/types/components/modules/property-
 import { PropertyGridItems, PropertyGridSkeleton } from "@modules/PropertyGrid";
 import { useProperties } from "@features/properties/hooks/useProperties";
 import { useHomeBanners } from "@features/home/hooks/useHomeBanners";
+import { useLoadMoreOnScroll } from "@hooks/useLoadMoreOnScroll";
 import { ServerSidePaginate } from "@elements/Pagination";
-import { weekFromToday } from "@/helpers/weekFromToday";
 import { BannerPosition } from "@/enum/banners.enum";
-import { DotLoading } from "@elements/Button";
+import { BtnLoading } from "@elements/Button";
+import { useCallback } from "react";
 
 import numberWithCommas from "@/helpers/numberWithCommas";
 import EmptyState from "@elements/EmptyState";
@@ -25,7 +26,6 @@ const DiscoveryResults = ({
   onClearFilters,
 }: DiscoveryResultsProps) => {
   const hasPaginate = Boolean(query?.page);
-  const week = weekFromToday();
 
   const {
     meta,
@@ -39,6 +39,13 @@ const DiscoveryResults = ({
     isPlaceholderData,
     isFetchingNextPage,
   } = useProperties(query);
+
+  const loadNextPage = useCallback(() => void fetchNextPage(), [fetchNextPage]);
+  const loadMoreRef = useLoadMoreOnScroll({
+    onLoadMore: loadNextPage,
+    enabled:
+      !hasPaginate && hasNextPage && !isFetchingNextPage && !isPlaceholderData,
+  });
 
   const { data: banners } = useHomeBanners(BANNER_POSITIONS);
   const bannerList = banners?.[BannerPosition.MAIN_2] ?? [];
@@ -115,22 +122,18 @@ const DiscoveryResults = ({
       >
         <div className={GRID_CLASS}>
           <PropertyGridItems
-            week={week}
             devices={devices}
             data={properties}
             banners={visibleBanners}
           />
         </div>
         {!hasPaginate && hasNextPage ? (
-          <div className="flex w-full justify-center px-3 pb-8">
-            <button
-              type="button"
-              disabled={isPlaceholderData || isFetchingNextPage}
-              onClick={() => void fetchNextPage()}
-              className="btn-primary min-w-36 rounded-full px-6 py-2.5 text-sm font-medium disabled:cursor-wait disabled:opacity-60"
-            >
-              {isFetchingNextPage ? <DotLoading /> : _STRINGS.SHOW_MORE}
-            </button>
+          <div
+            ref={loadMoreRef}
+            aria-busy={isFetchingNextPage}
+            className="flex min-h-16 w-full items-center justify-center px-3 pb-8"
+          >
+            {isFetchingNextPage ? <BtnLoading /> : <></>}
           </div>
         ) : null}
       </div>

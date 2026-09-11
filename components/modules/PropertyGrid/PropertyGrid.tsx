@@ -7,10 +7,8 @@ const DEFAULT_GRID_CLASS =
 
 const PropertyGrid = ({
   data,
-  week,
   banners,
   devices,
-  variant,
   className = DEFAULT_GRID_CLASS,
 }: PropertyGridProps) => (
   <div className={className}>
@@ -18,8 +16,6 @@ const PropertyGrid = ({
       banners={banners}
       data={data}
       devices={devices}
-      variant={variant}
-      week={week}
     />
   </div>
 );

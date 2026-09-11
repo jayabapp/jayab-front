@@ -7,18 +7,13 @@ import PropertyCardOwnerActions from "./parts/PropertyCardOwnerActions";
 import PropertyCardLikes from "./parts/PropertyCardLikes.client";
 import PropertyCardFeatures from "./parts/PropertyCardFeatures";
 import PropertyCardLink from "./parts/PropertyCardLink.client";
-import DaysOfTheWeekStatus from "./DaysOfTheWeekStatus";
 import StatusShower from "@elements/StatusShower";
 import PropertyPrice from "./PropertyPrice";
 import _STRINGS from "@/utils/LocalStrings";
-import isEmpty from "lodash/isEmpty";
 
 const PropertyCard = ({
   data,
-  week,
   isOwner,
-  largeMedia,
-  hideWeekStatus,
   onPhotoUpgradeClick,
 }: PropertyCardProps) => {
   const goToLink = isOwner
@@ -27,15 +22,11 @@ const PropertyCard = ({
 
   return (
     <div className="surface-card property-card-shadow flex w-full flex-col justify-between gap-2 p-3">
-      <div
-        className={`grid w-full gap-2 ${largeMedia ? "grid-cols-2" : "grid-cols-5"}`}
-      >
+      <div className="grid w-full grid-cols-2 gap-2">
         <PropertyCardLink
           href={goToLink}
           title={data.title}
-          className={`order-1 flex flex-col justify-between gap-1 !outline-none ${
-            largeMedia ? "col-span-1" : "col-span-3"
-          }`}
+          className="order-1 flex flex-col justify-between gap-1 !outline-none"
         >
           <div className="flex items-start gap-2">
             {data?.has_blue_tick ? (
@@ -119,20 +110,14 @@ const PropertyCard = ({
         <PropertyCardLink
           title={data.title}
           href={goToLink}
-          className={`order-2 flex h-fit w-full items-start justify-start !outline-none ${
-            largeMedia ? "col-span-1" : "col-span-2"
-          }`}
+          className="order-2 flex h-fit w-full items-start justify-start !outline-none"
         >
           <div className="aspect-square w-full h-full relative">
             <ContentImage
               fill
               quality={PROPERTY_IMAGE_QUALITY}
               loading="lazy"
-              sizes={
-                largeMedia
-                  ? "(min-width: 1280px) 16vw, (min-width: 768px) 24vw, 46vw"
-                  : "(min-width: 1536px) 10vw, (min-width: 1280px) 12vw, (min-width: 768px) 18vw, 37vw"
-              }
+              sizes="(min-width: 1280px) 16vw, (min-width: 768px) 24vw, 46vw"
               alt={data?.feature_image?.alt || ""}
               src={getPropertyImageUrl(data?.feature_image)}
               className="w-full rounded-2xl h-full object-cover aspect-square"
@@ -206,16 +191,6 @@ const PropertyCard = ({
           </PropertyCardLink>
         )}
       </div>
-
-      {!hideWeekStatus && data?.reserve_days && !isEmpty(data?.reserve_days) ? (
-        <div className="w-full pt-1 border-t">
-          <DaysOfTheWeekStatus
-            isCard
-            week={week || []}
-            data={data?.reserve_days}
-          />
-        </div>
-      ) : null}
     </div>
   );
 };

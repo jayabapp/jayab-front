@@ -12,9 +12,7 @@ import { FilterApplyBar } from "@modules/PropertySearchFilters";
 import { CityModal, RegionModal } from "@modules/CitySelector";
 import { CitySelectorTitle } from "@modules/CitySelector";
 import { useStoreParams } from "@/store";
-import { useCitiesStore } from "@/store";
 import { useState } from "react";
-import { useMemo } from "react";
 
 import SingleProductBreadCrumb from "@elements/Breadcrumbs/SingleProductBreadcrumb.client";
 import PropertyCategoryStrip from "./parts/PropertyCategoryStrip.client";
@@ -47,16 +45,6 @@ const PropertyDiscovery = ({ devices }: PropertyDiscoveryProps) => {
   } = usePropertyDiscoveryFilters();
   const { data: propertyTypes } = usePropertyOptionGroups();
   const { topHeaderVisible } = useStoreParams((state: any) => state);
-  const locationsData = useCitiesStore((state) => state.locationsData);
-  const selectedLocationTitle = useMemo(() => {
-    const province = locationsData?.provinces?.[0];
-    if (province?.title) return `${_STRINGS.PROVINCE} ${province.title}`;
-    return (
-      locationsData?.regions?.[0]?.title ||
-      locationsData?.cities?.[0]?.title ||
-      ""
-    );
-  }, [locationsData]);
 
   const onApplyFilters = () => {
     applyFilters();
@@ -104,7 +92,7 @@ const PropertyDiscovery = ({ devices }: PropertyDiscoveryProps) => {
             }`}
           >
             <div className="flex order-1 xl:hidden relative w-full">
-              <div className="z-1 px-2 relative w-full items-center gap-1 justify-between">
+              <div className="z-1 px-3 relative w-full items-center gap-1 justify-between">
                 <div className="!col-span-9">
                   <SelectedFiltersBar
                     query={queries}
@@ -118,7 +106,7 @@ const PropertyDiscovery = ({ devices }: PropertyDiscoveryProps) => {
             </div>
           </div>
 
-          <div className="w-full flex xl:hidden">
+          <div className="w-full flex px-3 xl:hidden">
             <PropertyCategoryStrip
               query={queries}
               propertyKey="property_type"
@@ -136,7 +124,6 @@ const PropertyDiscovery = ({ devices }: PropertyDiscoveryProps) => {
                 setShowRegions={setShowRegions}
                 cityWithRegions={cityWithRegions}
                 cb={() => setShowCityModal(true)}
-                title={cityTitle || selectedLocationTitle}
               />
               <SelectedFiltersBar
                 query={queries}

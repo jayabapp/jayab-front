@@ -7,14 +7,13 @@ import { Checkbox } from "@elements/Form";
 import queryBuilder from "@/helpers/queryBuilder";
 import isArray from "lodash/isArray";
 
-/** Checkbox list for one property-attribute filter, writing either the URL or a draft. */
 const PropertyModelFilter = ({
-  isMulty,
   list,
-  mobileFilters,
-  onClickCb,
   query,
+  isMulty,
   queryKey,
+  onClickCb,
+  mobileFilters,
   setMobileFilters,
 }: PropertyModelFilterProps) => {
   const router = useRouter();
@@ -43,8 +42,10 @@ const PropertyModelFilter = ({
   const isSelected = (item: any) => {
     if (isMulty && selectedValues)
       return selectedValues.some((value: string) => value === `${item?.id}`);
-    if (mobileFilters) return mobileFilters[queryKey] === item?.id;
-    return query?.[queryKey] === item?.id;
+    const current = mobileFilters ? mobileFilters[queryKey] : query?.[queryKey];
+    if (current === undefined || current === null || current === "")
+      return false;
+    return `${current}` === `${item?.id}`;
   };
 
   return (
@@ -59,8 +60,12 @@ const PropertyModelFilter = ({
             onSelect={() => {
               let next: string | string[] = selectedValues;
               if (isArray(selectedValues) && isMulty) {
-                next = selectedValues.some((value: string) => value === `${item?.id}`)
-                  ? selectedValues.filter((value: string) => value !== `${item?.id}`)
+                next = selectedValues.some(
+                  (value: string) => value === `${item?.id}`,
+                )
+                  ? selectedValues.filter(
+                      (value: string) => value !== `${item?.id}`,
+                    )
                   : [...selectedValues, `${item?.id}`];
               } else if (selectedValues && isMulty) {
                 next = [selectedValues as unknown as string, `${item?.id}`];
