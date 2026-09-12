@@ -3,6 +3,7 @@ import { HomePropertyTypes, HomeQuickSearch } from "@modules/HomeSearch";
 import { HomeHeroBanner, HomeBanners } from "@modules/HomeBanners";
 import { HomeActiveReservations } from "@modules/HomeReservations";
 import { HomeInstallPrompt } from "@modules/HomeInstallPrompt";
+import { HomeSheetSearch } from "@modules/HomeHeroSearch";
 import { HomeProperties } from "@modules/HomeProperties";
 import { BannerPosition } from "@/enum/banners.enum";
 import { HomeContent } from "@modules/HomeContent";
@@ -43,6 +44,9 @@ const HomeTemplate = ({
           />
         </div>
         <div className="home-sheet -mt-[1.375rem] flex w-full flex-col gap-0 md:-mt-8">
+          {/* The phone search pill rides the sheet's lip: it scrolls away with
+              the sheet instead of staying pinned to the hero. */}
+          {devices?.isMobile ? <HomeSheetSearch /> : <></>}
           <section
             className={`flex flex-col gap-5 lg:gap-6 select-none px-0 md:py-0 w-full ${
               !isEmpty(landings?.popular_city) &&

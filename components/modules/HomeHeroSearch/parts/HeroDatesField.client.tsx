@@ -3,6 +3,7 @@
 import type { HeroDatesFieldProps } from "@/types/components/modules/home-hero-search";
 import { SearchDateRangePicker } from "@modules/PropertySearchFilters";
 import { updateDateRange } from "@modules/PropertySearchFilters";
+import { useDropdownFit } from "@/hooks/useDropdownFit";
 import { useEffect, useRef, useState } from "react";
 
 import _STRINGS from "@/utils/LocalStrings";
@@ -19,6 +20,7 @@ const HeroDatesField = ({
   const [isOpen, setIsOpen] = useState(false);
   const containerRef = useRef<HTMLDivElement>(null);
   const hasRange = !!checkin && !!checkout;
+  useDropdownFit(isOpen, containerRef);
 
   useEffect(() => {
     if (!isOpen) return;
@@ -47,7 +49,7 @@ const HeroDatesField = ({
       />
 
       {isOpen ? (
-        <div className="surface-panel absolute left-1/2 top-[calc(100%+0.75rem)] z-[60] w-[min(92vw,24rem)] -translate-x-1/2 overflow-hidden !rounded-20 p-3 shadow-glass">
+        <div className="surface-panel hero-dropdown absolute left-1/2 top-[calc(100%+0.75rem)] z-[60] w-[min(92vw,24rem)] -translate-x-1/2 !rounded-20 p-3 shadow-glass">
           <SearchDateRangePicker
             selectedDates={{
               startDate: checkin

@@ -569,7 +569,7 @@ const _STRINGS = {
   NO_RESULT_TITLE: "هیچ اقامتگاهی با این فیلترها پیدا نشد",
   NO_RESULT_DESCRIPTION: "چند فیلتر را بردارید تا گزینه‌های بیشتری ببینید.",
   ROOMS_PAGE_TITLE: "اجاره ویلا و اقامتگاه",
-  HERO_WHERE_LABEL: "کجا",
+  HERO_WHERE_LABEL: "مقصد سفرت کجاست؟",
   HERO_WHERE_EMPTY: "شهر یا نام اقامتگاه",
   HERO_WHERE_PLACEHOLDER: "مثلاً تبریز، ویلا استخردار",
   HERO_DATES_LABEL: "تاریخ",

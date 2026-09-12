@@ -48,6 +48,7 @@ export type ParamStore = {
   getBackHome: boolean;
   sideBarStatus: boolean;
   topHeaderVisible: boolean;
+  homeSearchInView: boolean;
   installPrompt: any | null;
   showInstallPrompt: boolean;
   loginModalCancelRoute: string;
@@ -61,6 +62,7 @@ export type ParamStore = {
 
 export const useStoreParams = create<ParamStore>((set) => ({
   topHeaderVisible: true,
+  homeSearchInView: false,
   showInstallPrompt: false,
   installPrompt: null,
   sideBarStatus: false,

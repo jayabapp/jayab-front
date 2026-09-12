@@ -26,8 +26,7 @@ const HeroMobileTrigger = ({
       }`}
     >
       <span className="w-full truncate text-sm font-bold leading-tight text-neutral-900">
-        {summary.title ||
-          (variant === "header" ? _STRINGS.SEARCH : _STRINGS.HERO_STEP_WHERE)}
+        {summary.title || _STRINGS.HERO_STEP_WHERE}
       </span>
       {variant === "hero" && summary.detail ? (
         <span className="w-full truncate text-xxs leading-tight text-neutral-500">

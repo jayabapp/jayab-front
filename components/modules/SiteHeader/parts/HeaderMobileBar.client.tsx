@@ -30,7 +30,9 @@ const HeaderMobileBar = ({
   const router = useRouter();
   const pathname = usePathname();
   const { chat_id, room_slug, slug } = useParams();
-  const { getBackHome, topHeaderVisible } = useStoreParams((state) => state);
+  const { getBackHome, homeSearchInView, topHeaderVisible } = useStoreParams(
+    (state) => state,
+  );
 
   const leaveRoomToHome = () => {
     useStoreParams.setState({ getBackHome: false });
@@ -58,7 +60,9 @@ const HeaderMobileBar = ({
             phone={phone}
           />
 
-          {topHeaderVisible ? (
+          {/* The home page's own pill rides the sheet's lip; the header only
+              takes over the search once that pill has scrolled behind it. */}
+          {topHeaderVisible || homeSearchInView ? (
             <div className="mr-auto flex min-w-0 items-center justify-end">
               <HeaderBrand isLight={isLight} />
             </div>

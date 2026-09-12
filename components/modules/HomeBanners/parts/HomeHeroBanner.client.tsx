@@ -82,36 +82,19 @@ const HeroSlideImage = ({ slide, isFirst, onLoad }: HeroSlideImageProps) => {
   } as CSSProperties;
 
   return (
-    <>
-      <picture className="sm:hidden">
-        <source media={MOBILE_ART_QUERY} srcSet={mobileSrcSet} sizes="100vw" />
-        <img
-          {...desktopImage}
-          alt=""
-          className="scale-110 object-cover blur-xl brightness-75"
-        />
-      </picture>
-
-      <div className="absolute inset-0 max-sm:top-16">
-        <picture>
-          <source
-            sizes="100vw"
-            srcSet={mobileSrcSet}
-            media={MOBILE_ART_QUERY}
-          />
-          <img
-            {...desktopImage}
-            alt={slide.alt}
-            style={photoStyle}
-            onLoad={onLoad}
-            ref={(element) => {
-              if (element?.complete && element.naturalWidth) onLoad();
-            }}
-            className={`hero-slide-photo object-contain object-top sm:object-cover sm:[object-position:var(--hero-focus)] ${slide.imageClasses ?? ""}`}
-          />
-        </picture>
-      </div>
-    </>
+    <picture>
+      <source sizes="100vw" srcSet={mobileSrcSet} media={MOBILE_ART_QUERY} />
+      <img
+        {...desktopImage}
+        alt={slide.alt}
+        style={photoStyle}
+        onLoad={onLoad}
+        ref={(element) => {
+          if (element?.complete && element.naturalWidth) onLoad();
+        }}
+        className={`hero-slide-photo object-cover [object-position:var(--hero-focus)] ${slide.imageClasses ?? ""}`}
+      />
+    </picture>
   );
 };
 
@@ -235,7 +218,13 @@ const HomeBannerPart = ({ title, devices, banners }: HomeHeroBannerProps) => {
       onFocus={() => setFocused(true)}
       onBlur={onBlur}
     >
-      <div className="absolute inset-x-0 bottom-0 z-10 flex flex-col items-center justify-end gap-4 px-4 pb-12 md:gap-6 md:pb-14">
+      <div
+        className={`absolute inset-x-0 bottom-0 z-10 flex flex-col items-center justify-end gap-4 px-4 md:gap-6 ${
+          // On phones the search pill rides the sheet's lip instead, so the
+          // caption only needs clearance for that lip — see HomeTemplate.
+          isPhone ? "pb-14" : "pb-12 md:pb-14"
+        }`}
+      >
         <div className="home-hero-content flex max-w-2xl flex-col items-center gap-2 text-center md:gap-3">
           <ContentImage
             width={320}
@@ -250,9 +239,13 @@ const HomeBannerPart = ({ title, devices, banners }: HomeHeroBannerProps) => {
           </h2>
         </div>
 
-        <div className="w-full max-w-3xl">
-          <HomeHeroSearch isPhone={isPhone} />
-        </div>
+        {isPhone ? (
+          <></>
+        ) : (
+          <div className="w-full max-w-3xl">
+            <HomeHeroSearch isPhone={false} />
+          </div>
+        )}
       </div>
       <div className="hero-backdrop pointer-events-none absolute inset-0 z-5 bg-gradient-to-t from-black/70 via-black/20 to-transparent" />
       {count > 1 ? (
@@ -273,7 +266,7 @@ const HomeBannerPart = ({ title, devices, banners }: HomeHeroBannerProps) => {
         contentId={editable?.contentId}
         editIconClass="!top-auto !bottom-0"
         onPointerCancel={() => (swipeStart.current = null)}
-        className="hero-backdrop relative aspect-[4/3] min-h-[19rem] w-full touch-pan-y overflow-hidden px-0 focus:outline-none sm:aspect-[2/1] lg:aspect-[3.029] lg:min-h-[23rem]"
+        className="hero-backdrop relative aspect-[3/2] w-full touch-pan-y overflow-hidden px-0 focus:outline-none sm:aspect-[2/1] lg:aspect-[3.029] lg:min-h-[23rem]"
       >
         {slides.map((slide, slideIndex) => (
           <div

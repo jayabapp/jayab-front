@@ -2,14 +2,15 @@
 
 import type { HeroDestinationSearchProps } from "@/types/components/modules/search";
 import { useSearchPanel } from "@features/search/hooks/useSearchPanel";
-import { useCallback, useState } from "react";
+import { useDropdownFit } from "@/hooks/useDropdownFit";
+import { useCallback, useRef, useState } from "react";
 import { useCitiesStore } from "@/store";
 
 import SearchOverlay from "./parts/SearchOverlay.client";
 import _STRINGS from "@/utils/LocalStrings";
 
 const OPEN_PANEL_CLASS =
-  "!absolute !left-0 !right-0 !top-[calc(100%+0.5rem)] w-full min-h-[16rem] max-h-[65dvh] opacity-100 !rounded-20 min-w-[25dvw]";
+  "!absolute !left-0 !right-0 !top-[calc(100%+0.5rem)] w-full min-h-[12rem] hero-dropdown opacity-100 !rounded-20 min-w-[25dvw]";
 const CLOSED_PANEL_CLASS =
   "!absolute !top-[calc(100%+0.5rem)] -z-50 hidden h-0 opacity-0";
 
@@ -21,6 +22,8 @@ const HeroDestinationSearch = ({
   value,
 }: HeroDestinationSearchProps) => {
   const [isOpen, setIsOpen] = useState(false);
+  const anchorRef = useRef<HTMLDivElement>(null);
+  useDropdownFit(isOpen, anchorRef);
 
   const onPickOption = useCallback(
     (option?: Parameters<NonNullable<typeof onPickPlace>>[0]) => {
@@ -65,7 +68,11 @@ const HeroDestinationSearch = ({
   return (
     // `data-hero-open` lets the home page lift the pinned hero above the sheet
     // while this panel is open — see `.home-hero-pin:has(...)` in globals.css.
-    <div data-hero-open={isOpen} className="static min-w-0 flex-[1.2]">
+    <div
+      ref={anchorRef}
+      data-hero-open={isOpen}
+      className="static min-w-0 flex-[1.2]"
+    >
       <button
         id={boxId}
         type="button"

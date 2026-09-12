@@ -457,6 +457,14 @@ ul {
   }
 }
 
+/* Dropdowns opened from the pinned hero: never taller than the room under
+   their trigger (see useDropdownFit), and scrollable inside instead. */
+.hero-dropdown {
+  max-height: var(--hero-dropdown-h, 60dvh);
+  overflow-y: auto;
+  overscroll-behavior: contain;
+}
+
 .home-sheet {
   @apply relative z-10 rounded-t-20;
   @apply shadow-[0_-18px_40px_-24px_theme(colors.neutral.900/0.45)];
