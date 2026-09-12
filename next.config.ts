@@ -39,7 +39,11 @@ const nextConfig: NextConfig = {
     //
     // 1200 covers high-DPR mobile property views without falling through to
     // 1920; the latter remains necessary for large property and banner views.
-    deviceSizes: [640, 750, 828, 1024, 1200, 1920],
+    // 2560 is the hero's step: it is a full-bleed 100vw image, so a 1280-1440px
+    // viewport at DPR 2 asks for 2560-2880px and anything smaller is upscaled.
+    // Production (which kept Next's default ladder) serves it from 3840; that
+    // width is omitted here because no source is wider than 2880.
+    deviceSizes: [640, 750, 828, 1024, 1200, 1920, 2560],
     imageSizes: [16, 32, 48, 64, 96, 128, 256, 384],
     // Uploaded object keys are immutable (UUID/timestamp based), so retaining
     // optimized variants avoids repeatedly fetching the same source from S3.

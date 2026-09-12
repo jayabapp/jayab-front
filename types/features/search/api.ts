@@ -38,6 +38,8 @@ export type SearchOption = {
   href: string;
   label: string;
   hint?: string;
+  /** Overrides the kind's badge word, so a place can say province/city/region. */
+  badge?: string;
   kind: SearchOptionKind;
   city?: CitySuggestDto;
   locations?: SearchOptionLocations;

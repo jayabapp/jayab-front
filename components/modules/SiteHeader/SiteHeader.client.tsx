@@ -103,7 +103,7 @@ const SiteHeader = ({ phone, variant = "page" }: SiteHeaderProps) => {
               ? " bg-transparent "
               : topHeaderVisible
                 ? " bg-white "
-                : ` header-glass ${headerWithFullSeach.includes(pathname) || !!params?.slug ? " border-b xl:border-b-0 xl:shadow-glass-sm" : "shadow-glass-sm"} `
+                : ` bg-white ${headerWithFullSeach.includes(pathname) || !!params?.slug ? " border-b xl:border-b-0 xl:shadow-glass-sm" : "shadow-glass-sm"} `
           }`}
         >
           <HeaderMobileBar

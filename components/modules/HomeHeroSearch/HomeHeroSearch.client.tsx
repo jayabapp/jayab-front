@@ -6,8 +6,6 @@ import { HeroDestinationSearch } from "@modules/Search";
 import { ContentImage } from "@elements/Image";
 import { useCallback, useState } from "react";
 
-import HeroGuestsField from "./parts/HeroGuestsField.client";
-import HeroDatesField from "./parts/HeroDatesField.client";
 import HeroMobileTrigger from "./parts/HeroMobileTrigger";
 import numberWithCommas from "@/helpers/numberWithCommas";
 import _STRINGS from "@/utils/LocalStrings";
@@ -100,25 +98,6 @@ const HomeHeroSearch = ({
               });
             }}
           />
-
-          <span className="h-7 w-px shrink-0 bg-neutral-200" />
-
-          <div className="flex min-w-0 flex-1">
-            <HeroDatesField
-              checkin={draft.checkin}
-              checkout={draft.checkout}
-              onChange={(next) => patch(next)}
-            />
-          </div>
-
-          <span className="h-7 w-px shrink-0 bg-neutral-200" />
-
-          <div className="flex min-w-0 flex-1">
-            <HeroGuestsField
-              value={draft.total_guests}
-              onChange={(value) => patch({ total_guests: value })}
-            />
-          </div>
 
           <button
             type="button"

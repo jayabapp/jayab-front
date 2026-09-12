@@ -1,11 +1,11 @@
-import type { SearchOptionKind, SearchOptionRowProps } from "@/types/features/search";
+import type {
+  SearchOptionKind,
+  SearchOptionRowProps,
+} from "@/types/features/search";
 import { ContentImage } from "@elements/Image";
 
 import _STRINGS from "@/utils/LocalStrings";
 
-// Every kind gets its own icon and its own badge word. Before this, a listing
-// and a guide page were both a grey magnifier over brand-blue text, so the list
-// gave the reader no way to tell what a row would actually open.
 const ICON: Record<SearchOptionKind, string> = {
   place: "/assets/icons/home/literly_map.svg",
   property: "/assets/icons/adds/verified_hexy_badge.svg",
@@ -33,8 +33,6 @@ const SearchOptionRow = ({
     data-option-index={index}
     onClick={onSelect}
     onMouseEnter={() => onHover(index)}
-    // `search-option` carries the active/hover surface; the pointer and the
-    // keyboard cursor therefore light up the same way.
     className={`search-option ${isActive ? "search-option-active" : ""}`}
   >
     <span className="search-option-icon">
@@ -59,7 +57,7 @@ const SearchOptionRow = ({
     </span>
 
     <span className="shrink-0 rounded-full bg-neutral-100 px-2 py-0.5 text-xxs text-neutral-600">
-      {BADGE[option.kind]}
+      {option.badge || BADGE[option.kind]}
     </span>
   </button>
 );

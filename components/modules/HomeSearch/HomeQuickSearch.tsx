@@ -21,7 +21,7 @@ const MainFiltersContainer = ({
     <div
       className={` w-full noSelect   select-none   relative  rounded-20 flex gap-4 md:gap-2 flex-col items-center`}
     >
-      <p className="padding-x flex w-full shrink-0 text-start text-base font-bold lg:text-xl">
+      <p className="padding-x hidden w-full shrink-0 text-start text-base font-bold md:flex lg:text-xl">
         {title}
       </p>
       {isEmpty(data) ? (

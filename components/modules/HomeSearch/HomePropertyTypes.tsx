@@ -15,9 +15,9 @@ const HomePropertyTypes = ({
 }: THomePropertyTypesProps) => {
   return (
     <div
-      className={`w-full noSelect select-none gap-4 md:gap-2 relative rounded-20 pt-2 lg:pt-0 flex flex-col items-start`}
+      className={`w-full noSelect select-none gap-4 md:gap-2 relative rounded-20 lg:pt-0 flex flex-col items-start`}
     >
-      <p className="padding-x flex shrink-0 text-start text-base font-bold lg:text-xl">
+      <p className="padding-x hidden shrink-0 text-start text-base font-bold md:flex lg:text-xl">
         {title}
       </p>
       <SwiperEm

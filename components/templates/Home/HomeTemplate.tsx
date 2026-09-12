@@ -43,7 +43,7 @@ const HomeTemplate = ({
             title={homeContent?.full_text}
           />
         </div>
-        <div className="home-sheet -mt-[1.375rem] flex w-full flex-col gap-0 md:-mt-8">
+        <div className="home-sheet flex w-full flex-col gap-0 md:-mt-8">
           {devices?.isMobile ? <HomeSheetSearch /> : <></>}
           <section
             className={`flex flex-col gap-5 lg:gap-6 select-none px-0 md:py-0 w-full ${
@@ -54,7 +54,7 @@ const HomeTemplate = ({
             }`}
           >
             <Suspense fallback={null}>
-              <div className="w-full mt-3 lg:mt-0 px-0">
+              <div className="w-full px-0">
                 <HomeActiveReservations />
               </div>
             </Suspense>

@@ -27,6 +27,7 @@ const SWIPE_THRESHOLD_PX = 40;
 const MOBILE_ART_QUERY = "(max-width: 1023px)";
 const REDUCED_MOTION = "(prefers-reduced-motion: reduce)";
 const AUTOPLAY_MS = 6500;
+const HERO_QUALITY = 85;
 const COVERED_AT = 0.55;
 
 const subscribeReducedMotion = (onChange: () => void) => {
@@ -65,6 +66,7 @@ const HeroSlideImage = ({ slide, isFirst, onLoad }: HeroSlideImageProps) => {
     alt: slide.alt,
     fill: true,
     sizes: "100vw",
+    quality: HERO_QUALITY,
     loading: "eager" as const,
     fetchPriority: isFirst ? ("high" as const) : ("low" as const),
     unoptimized: slide.desktopSrc.endsWith(".svg"),
