@@ -247,7 +247,7 @@ const HomeBannerPart = ({ title, devices, banners }: HomeHeroBannerProps) => {
           </div>
         )}
       </div>
-      <div className="hero-backdrop pointer-events-none absolute inset-0 z-5 bg-gradient-to-t from-black/70 via-black/20 to-transparent" />
+      <div className="hero-backdrop pointer-events-none absolute inset-0 z-5 bg-gradient-to-t from-black/55 via-black/10 to-transparent" />
       {count > 1 ? (
         <span
           key={index}

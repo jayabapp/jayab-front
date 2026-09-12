@@ -447,12 +447,14 @@ ul {
    normally rests on (22px, 32px from md), which would cut the top off the
    sheet's first heading. Clip just the photo and its scrim back by that strip:
    the search and its dropdowns are separate layers and stay whole. */
-.home-hero-pin:has([data-hero-open="true"], [data-headlessui-state~="open"]) .hero-backdrop {
+.home-hero-pin:has([data-hero-open="true"], [data-headlessui-state~="open"])
+  .hero-backdrop {
   clip-path: inset(0 0 1.375rem 0);
 }
 
 @media (min-width: 768px) {
-  .home-hero-pin:has([data-hero-open="true"], [data-headlessui-state~="open"]) .hero-backdrop {
+  .home-hero-pin:has([data-hero-open="true"], [data-headlessui-state~="open"])
+    .hero-backdrop {
     clip-path: inset(0 0 2rem 0);
   }
 }
@@ -468,7 +470,7 @@ ul {
 .home-sheet {
   @apply relative z-10 rounded-t-20;
   @apply shadow-[0_-18px_40px_-24px_theme(colors.neutral.900/0.45)];
-  background-color: theme("colors.canvas");
+  background-color: #fff;
 }
 
 /* ------------------------------ HERO SLIDER ------------------------------- */
@@ -1218,74 +1220,11 @@ ul {
 }
 
 .home-tile-well {
-  @apply flex items-center justify-center rounded-2xl border border-white bg-brand-50;
-  transition: background-color 0.28s ease;
-}
-
-.home-tile:hover .home-tile-well,
-.home-tile:focus-visible .home-tile-well {
-  @apply bg-brand-100;
+  @apply flex items-center justify-center;
 }
 
 .home-tile-icon {
   transition: transform 0.28s cubic-bezier(0.22, 1, 0.36, 1);
-}
-
-.marquee {
-  overflow: hidden;
-  cursor: grab;
-  touch-action: pan-y;
-}
-
-.marquee-dragging {
-  cursor: grabbing;
-}
-
-.marquee-track {
-  display: flex;
-  width: max-content;
-  animation: marquee-drift var(--marquee-duration, 32s) linear infinite;
-  will-change: transform;
-}
-
-.marquee-set {
-  min-width: 100vw;
-  justify-content: space-around;
-}
-
-@keyframes marquee-drift {
-  from {
-    transform: translateX(0);
-  }
-  to {
-    transform: translateX(50%);
-  }
-}
-
-.marquee-track-reverse {
-  animation-direction: reverse;
-}
-
-.marquee:hover .marquee-track,
-.marquee:focus-within .marquee-track,
-.marquee-dragging .marquee-track,
-.marquee-paused .marquee-track {
-  animation-play-state: paused;
-}
-
-@media (prefers-reduced-motion: reduce) {
-  .marquee {
-    overflow-x: auto;
-  }
-
-  .marquee-track {
-    animation: none;
-    will-change: auto;
-  }
-
-  .marquee-clone {
-    display: none;
-  }
 }
 
 .home-tile:hover .home-tile-icon,

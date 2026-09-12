@@ -1,12 +1,10 @@
 import type { HomeTileCardProps } from "@/types/components/modules/home";
 import { ContentImage } from "@elements/Image";
-
 import type { CSSProperties } from "react";
+
 import Link from "next/link";
 
-// The icon renders at a fixed CSS size — 40px below md, 56px at md and above —
-// so these are exact widths rather than viewport-relative ones.
-const TILE_ICON_SIZES = "(min-width: 768px) 56px, 40px";
+const TILE_ICON_SIZES = "(min-width: 768px) 64px, 48px";
 
 const HomeTileCard = ({ href, title, imageSrc, index }: HomeTileCardProps) => (
   <Link
@@ -15,14 +13,14 @@ const HomeTileCard = ({ href, title, imageSrc, index }: HomeTileCardProps) => (
     style={{ "--card-index": index ?? 0 } as CSSProperties}
     className="home-tile stagger-rise flex aspect-square w-full flex-col items-center justify-center gap-2 rounded-2xl border border-white bg-white px-2 md:gap-2.5"
   >
-    <span className="home-tile-well size-11 shrink-0 md:size-16">
+    <span className="home-tile-well shrink-0">
       <ContentImage
-        width={56}
-        height={56}
-        alt={title || ""}
+        width={64}
+        height={64}
         src={imageSrc}
+        alt={title || ""}
         sizes={TILE_ICON_SIZES}
-        className="home-tile-icon size-7 object-contain md:size-10"
+        className="home-tile-icon size-12 object-contain md:size-16"
       />
     </span>
 

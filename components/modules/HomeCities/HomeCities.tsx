@@ -1,6 +1,5 @@
 import type { HomeCitiesProps } from "@/types/components/modules/home";
 
-import CityMarqueeRow from "./parts/CityMarqueeRow.client";
 import HomeCityItem from "./parts/HomeCityItem.client";
 
 const splitByRow = (data: HomeCitiesProps["data"]) => [
@@ -20,20 +19,19 @@ const HomeCityFilterContainer = ({ data, title }: HomeCitiesProps) => {
       </div>
 
       {rows.map((row, rowIndex) => (
-        <CityMarqueeRow
-          count={row.length}
+        <div
           key={`city-row-${rowIndex}`}
-          reverse={rowIndex % 2 === 1}
+          className="padding-x flex w-full gap-2 overflow-x-auto md:gap-3"
         >
           {row.map((city, index) => (
             <div
               key={`${city?.title}-${index}`}
-              className="w-[5.5rem] shrink-0 px-1 md:w-[9.5rem] md:px-1.5"
+              className="w-[7rem] shrink-0 md:w-[11.5rem]"
             >
               <HomeCityItem item={city} />
             </div>
           ))}
-        </CityMarqueeRow>
+        </div>
       ))}
     </div>
   );

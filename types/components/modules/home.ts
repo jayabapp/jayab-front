@@ -3,18 +3,14 @@ export type {
   ContentDto,
   HomeLandingDto,
 } from "@/api_services/home/home.interface";
-export type {
-  Content,
-  PropertyListDto,
-} from "@/api_services/property/property.interface";
-export type { DeviceInfo } from "@/helpers/device.detector";
-export type { HomeBannerDto } from "@/types/components/templates/home";
-
-import type { HomeLandingDto } from "@/api_services/home/home.interface";
+export type { PropertyListDto } from "@/api_services/property/property.interface";
 import type { PropertyListDto } from "@/api_services/property/property.interface";
-import type { DeviceInfo } from "@/helpers/device.detector";
+import type { HomeLandingDto } from "@/api_services/home/home.interface";
+export type { HomeBannerDto } from "@/types/components/templates/home";
 import type { HomeBannerDto } from "@/types/components/templates/home";
-import type { ReactNode } from "react";
+import type { DeviceInfo } from "@/helpers/device.detector";
+export type { DeviceInfo } from "@/helpers/device.detector";
+export type { Content } from "@/api_services/property/property.interface";
 
 export type HomeBannersProps = {
   banners?: HomeBannerDto[];
@@ -37,46 +33,25 @@ export type HomeMiddleBannersProps = {
   list?: HomeBannerDto[];
 };
 
-export type CityMarqueeRowProps = {
-  children: ReactNode;
-  /** Items in this row — the drift duration scales with it to keep speed even. */
-  count: number;
-  reverse?: boolean;
-};
-
-export type CityMarqueeDragState = {
-  animation: Animation;
-  contentWidth: number;
-  durationMs: number;
-  moved: boolean;
-  pointerId: number;
-  startTime: number;
-  startX: number;
-};
-
 export type HomeCitiesProps = {
   data: HomeLandingDto[];
   title: string;
 };
 
 export type HomeHeroBannerProps = {
-  /** Every MAIN_1 banner from the CMS; they lead the slider, ahead of the built-in slides. */
-  banners?: HomeBannerDto[];
-  devices?: DeviceInfo;
   title?: string;
+  devices?: DeviceInfo;
+  banners?: HomeBannerDto[];
 };
 
 export type HeroSlide = {
   key: string;
   alt: string;
-  desktopSrc: string;
-  /** Art for widths below `lg`; the same file as `desktopSrc` when there is no separate cut. */
-  mobileSrc: string;
-  /** CSS `object-position` for the wide crops from `sm` up. Phones draw the whole photo. */
   focus?: string;
-  /** CMS banner id, for the admin edit link. Absent on the built-in slides. */
-  contentId?: number | string;
+  mobileSrc: string;
+  desktopSrc: string;
   imageClasses?: string;
+  contentId?: number | string;
 };
 
 export type HeroSlideImageProps = {
@@ -87,21 +62,20 @@ export type HeroSlideImageProps = {
 
 export type HomeTileCardProps = {
   href: string;
-  imageSrc?: string;
-  /** Position in the row — drives the entrance stagger, nothing else. */
-  index?: number;
   title?: string;
+  index?: number;
+  imageSrc?: string;
 };
 
 export type HomeQuickSearchProps = {
-  data: HomeLandingDto[];
-  devices?: DeviceInfo;
   title: string;
+  devices?: DeviceInfo;
+  data: HomeLandingDto[];
 };
 
 export type HomePropertiesGridProps = {
-  data: PropertyListDto[];
   devices?: DeviceInfo;
+  data: PropertyListDto[];
   middleBanner?: HomeBannerDto;
 };
 
