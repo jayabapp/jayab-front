@@ -20,12 +20,15 @@ const FOCUS_DELAY_MS = 100;
 export const useSearchPanel = ({
   initValue,
   isOpen,
+  lockScroll = true,
   onOpenChange,
   onPickOption,
   onSubmit,
 }: {
   initValue?: string;
   isOpen: boolean;
+  /** Full-screen surfaces freeze the page; an anchored dropdown must not. */
+  lockScroll?: boolean;
   onOpenChange: (open: boolean) => void;
   /**
    * Replaces the default "navigate to the suggestion" behaviour. The home hero
@@ -53,7 +56,11 @@ export const useSearchPanel = ({
   const [hasOpened, setHasOpened] = useState(false);
   if (isOpen && !hasOpened) setHasOpened(true);
 
-  const { data: suggestions, isLoading, isStale } = useSearchSuggestions(term, isOpen);
+  const {
+    data: suggestions,
+    isLoading,
+    isStale,
+  } = useSearchSuggestions(term, isOpen);
 
   const options = useMemo(() => buildSearchOptions(suggestions), [suggestions]);
   const {
@@ -76,11 +83,14 @@ export const useSearchPanel = ({
     [onListKeyDown, options, pick],
   );
 
-  useBodyScrollLock(isOpen);
+  useBodyScrollLock(isOpen && lockScroll);
 
   useEffect(() => {
     if (!isOpen) return;
-    const timeout = window.setTimeout(() => inputRef.current?.focus(), FOCUS_DELAY_MS);
+    const timeout = window.setTimeout(
+      () => inputRef.current?.focus(),
+      FOCUS_DELAY_MS,
+    );
     return () => window.clearTimeout(timeout);
   }, [isOpen]);
 

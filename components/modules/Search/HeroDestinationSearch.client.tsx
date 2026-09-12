@@ -2,12 +2,14 @@
 
 import type { HeroDestinationSearchProps } from "@/types/components/modules/search";
 import { useSearchPanel } from "@features/search/hooks/useSearchPanel";
+import { useCallback, useEffect, useRef, useState } from "react";
 import { useDropdownFit } from "@/hooks/useDropdownFit";
-import { useCallback, useRef, useState } from "react";
 import { useCitiesStore } from "@/store";
 
 import SearchOverlay from "./parts/SearchOverlay.client";
 import _STRINGS from "@/utils/LocalStrings";
+
+const CLOSE_ON_SCROLL_PX = 24;
 
 const OPEN_PANEL_CLASS =
   "!absolute !left-0 !right-0 !top-[calc(100%+0.5rem)] w-full min-h-[12rem] hero-dropdown opacity-100 !rounded-20 min-w-[25dvw]";
@@ -24,6 +26,17 @@ const HeroDestinationSearch = ({
   const [isOpen, setIsOpen] = useState(false);
   const anchorRef = useRef<HTMLDivElement>(null);
   useDropdownFit(isOpen, anchorRef);
+
+  useEffect(() => {
+    if (!isOpen) return;
+    const openedAt = window.scrollY;
+    const closeOnPageScroll = () => {
+      if (Math.abs(window.scrollY - openedAt) > CLOSE_ON_SCROLL_PX)
+        setIsOpen(false);
+    };
+    window.addEventListener("scroll", closeOnPageScroll, { passive: true });
+    return () => window.removeEventListener("scroll", closeOnPageScroll);
+  }, [isOpen]);
 
   const onPickOption = useCallback(
     (option?: Parameters<NonNullable<typeof onPickPlace>>[0]) => {
@@ -53,6 +66,7 @@ const HeroDestinationSearch = ({
     setActiveIndex,
   } = useSearchPanel({
     isOpen,
+    lockScroll: false,
     onOpenChange: setIsOpen,
     onPickOption,
   });
@@ -66,8 +80,6 @@ const HeroDestinationSearch = ({
   );
 
   return (
-    // `data-hero-open` lets the home page lift the pinned hero above the sheet
-    // while this panel is open — see `.home-hero-pin:has(...)` in globals.css.
     <div
       ref={anchorRef}
       data-hero-open={isOpen}

@@ -5,12 +5,8 @@ import { useStoreParams } from "@/store";
 
 import HomeHeroSearch from "../HomeHeroSearch.client";
 
-// The fixed header's own height: a pill hidden behind it counts as gone.
 const HEADER_STRIP = "-64px 0px 0px 0px";
 
-// The phone search pill, riding the sheet's lip so it scrolls away with the
-// sheet. While it is still on screen the header keeps showing the brand instead
-// of its own compact search, so the two never appear stacked.
 const HomeSheetSearch = () => {
   const wrapperRef = useRef<HTMLDivElement>(null);
 
@@ -35,7 +31,10 @@ const HomeSheetSearch = () => {
   }, []);
 
   return (
-    <div ref={wrapperRef} className="relative z-10 -mt-5 mb-1 w-full px-3">
+    <div
+      ref={wrapperRef}
+      className="relative z-10 mx-auto -mt-5 mb-1 w-[calc(100%-1.5rem)] max-w-[20rem]"
+    >
       <HomeHeroSearch isPhone />
     </div>
   );

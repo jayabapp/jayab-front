@@ -3,12 +3,12 @@
 import { useCreatePropertyEntry } from "@features/owner-property/hooks/useCreatePropertyEntry";
 import { useNotificationBadge } from "@features/notifications/hooks/useNotificationBadge";
 import { useAdvisorProfile } from "@features/advisors/hooks/useAdvisorProfile";
+import { sheetBelowHeader, useHeaderAutoHide } from "@hooks/useHeaderAutoHide";
 import type { SiteHeaderProps } from "@/types/components/modules/site-header";
 import { useUnreadChatCount } from "@features/chat/hooks/useUnreadChatCount";
 import { getUserAvatarUrl } from "@features/user/mappers/user-image.mapper";
 import { useCurrentProfile } from "@features/auth/hooks/useCurrentProfile";
 import { subscriptionStatus } from "@/helpers/subscriptionStatus";
-import { useHeaderAutoHide } from "@hooks/useHeaderAutoHide";
 import { headerWithFullSeach } from "@/utils/constantss";
 import { useParams, usePathname } from "next/navigation";
 import { useAuthStore, useStoreParams } from "@/store";
@@ -34,15 +34,20 @@ const SiteHeader = ({ phone, variant = "page" }: SiteHeaderProps) => {
   const isHome = pathname === "/";
   const isLight = isHome && topHeaderVisible;
   const isModal = variant === "modal";
+  const headerId = isModal ? "headerContainerModal" : "headerContainer";
 
   const handleScroll = useMemo(
     () =>
       throttle(() => {
-        const visible = window.scrollY <= TOP_HEADER_SCROLL_THRESHOLD;
+        const overSheet = isHome
+          ? sheetBelowHeader(document.getElementById(headerId))
+          : null;
+        const visible =
+          overSheet ?? window.scrollY <= TOP_HEADER_SCROLL_THRESHOLD;
         if (useStoreParams.getState().topHeaderVisible !== visible)
           useStoreParams.setState({ topHeaderVisible: visible });
       }, 100),
-    [],
+    [headerId, isHome],
   );
 
   useEffect(() => {
@@ -53,10 +58,7 @@ const SiteHeader = ({ phone, variant = "page" }: SiteHeaderProps) => {
     };
   }, [handleScroll]);
 
-  useHeaderAutoHide(
-    isModal ? "headerContainerModal" : "headerContainer",
-    isHome && !isModal,
-  );
+  useHeaderAutoHide(headerId, isHome && !isModal);
 
   const { data: profile } = useCurrentProfile(Boolean(isLogin));
   const { data: notificationCount = 0 } = useNotificationBadge(

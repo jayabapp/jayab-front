@@ -13,6 +13,18 @@ import { useEffect } from "react";
 const RELEASE_VIEWPORT_SHARE = 0.6;
 const RELEASE_FLOOR = 220;
 
+/**
+ * On the home page the header floats, transparent, over the photo until the
+ * scrolling sheet reaches its bottom edge; that meeting point replaces the flat
+ * scroll thresholds. Returns null anywhere there is no sheet.
+ */
+export const sheetBelowHeader = (header: HTMLElement | null) => {
+  const sheet = document.querySelector<HTMLElement>(".home-sheet");
+  const bar = header?.firstElementChild;
+  if (!sheet || !bar) return null;
+  return sheet.getBoundingClientRect().top > bar.getBoundingClientRect().height;
+};
+
 /** Movement smaller than this is rubber-banding, a focus scroll, or a thumb resting. */
 const MOVEMENT_THRESHOLD = 8;
 
@@ -66,7 +78,8 @@ export const useHeaderAutoHide = (elementId: string, enabled = true) => {
         RELEASE_FLOOR,
         window.innerHeight * RELEASE_VIEWPORT_SHARE,
       );
-      if (current <= releaseAbove) return setHidden(false);
+      if (sheetBelowHeader(header) ?? current <= releaseAbove)
+        return setHidden(false);
 
       // A menu or search field open inside the header outranks the scroll: pulling
       // the panel's own anchor out from under the reader would be the bug, not the

@@ -244,7 +244,7 @@ const HomeBannerPart = ({ title, devices, banners }: HomeHeroBannerProps) => {
         {isPhone ? (
           <></>
         ) : (
-          <div className="w-full max-w-3xl">
+          <div className="w-full max-w-sm">
             <HomeHeroSearch isPhone={false} />
           </div>
         )}
