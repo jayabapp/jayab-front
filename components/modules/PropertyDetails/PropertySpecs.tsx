@@ -18,13 +18,13 @@ const PropertySpecs = ({ devices, property }: PropertySpecsProps) => (
     <PropertyFacilitySpecs property={property} devices={devices} />
     <PropertyTermsSpecs property={property} devices={devices} />
     <div className="flex w-full flex-col gap-2 p-3">
-      <PropertyReportRow propertyId={property?.id} />
       {property?.latitude ? (
         <PropertyLocationRow
           latitude={property?.latitude}
           longitude={property?.longitude}
         />
       ) : null}
+      <PropertyReportRow propertyId={property?.id} />
     </div>
   </div>
 );
