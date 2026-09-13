@@ -17,7 +17,7 @@ const PropertyReportRow = ({ propertyId }: PropertyReportRowProps) => {
         onClick={() => setShow(true)}
         className="cursor-pointer border border-neutral-300 rounded-10 px-4 py-3 flex items-center justify-between"
       >
-        <span className="text-danger-500 bg-white text-sm lg:text-base font-medium !mt-0 rounded-10 w-full text-right">
+        <span className="text-danger-500 font-medium bg-white text-sm md:text-base !mt-0 rounded-10 w-full text-right">
           {_STRINGS.REPORT_WRONG}
         </span>
         <ContentImage

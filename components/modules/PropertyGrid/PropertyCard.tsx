@@ -38,7 +38,7 @@ const PropertyCard = ({
                 src="/assets/icons/adds/verified_hexy_badge.svg"
               />
             ) : null}
-            <p className="property-card-title line-clamp-2 h-14 text-right text-sm font-bold">
+            <p className="line-clamp-2 h-10 text-right text-sm font-bold">
               {data.title}
             </p>
           </div>

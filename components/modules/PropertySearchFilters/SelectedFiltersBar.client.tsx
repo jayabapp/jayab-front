@@ -37,6 +37,8 @@ const RULE_FILTERS = [
   { key: "pet", title: _STRINGS.PET },
 ];
 
+const LEADING_DYNAMIC_KEY = "PROPERTY_TYPE";
+
 const SelectedFiltersBar = ({
   query,
   propertyTypes,
@@ -75,6 +77,17 @@ const SelectedFiltersBar = ({
         ? 1
         : -1,
     );
+
+  const renderDynamicChip = (key: string) => (
+    <SwiperSlide className="!w-auto" key={`dynamic-${key}`}>
+      <SelectiveFilterChip
+        queryKey={key.toLowerCase()}
+        removeFiltersKeys={removeFiltersKeys}
+        list={propertyTypes?.[key.toUpperCase()]}
+        title={(_STRINGS as Record<string, string>)?.[key.toUpperCase()] || ""}
+      />
+    </SwiperSlide>
+  );
 
   return (
     <Swiper autoFit parentClass={containerClass}>
@@ -206,6 +219,10 @@ const SelectedFiltersBar = ({
         </SwiperSlide>
       ))}
 
+      {dynamicKeys
+        .filter((key) => key === LEADING_DYNAMIC_KEY)
+        .map(renderDynamicChip)}
+
       <SwiperSlide key="selected-pool" className="!w-auto">
         <button
           type="button"
@@ -245,18 +262,9 @@ const SelectedFiltersBar = ({
         </button>
       </SwiperSlide>
 
-      {dynamicKeys.map((key) => (
-        <SwiperSlide className="!w-auto" key={`dynamic-${key}`}>
-          <SelectiveFilterChip
-            queryKey={key.toLowerCase()}
-            removeFiltersKeys={removeFiltersKeys}
-            list={propertyTypes?.[key.toUpperCase()]}
-            title={
-              (_STRINGS as Record<string, string>)?.[key.toUpperCase()] || ""
-            }
-          />
-        </SwiperSlide>
-      ))}
+      {dynamicKeys
+        .filter((key) => key !== LEADING_DYNAMIC_KEY)
+        .map(renderDynamicChip)}
     </Swiper>
   );
 };

@@ -1,16 +1,16 @@
 "use client";
 
 import type { HomeHeroSearchProps } from "@/types/components/modules/home-hero-search";
-import { useHeroSearch } from "@features/search/hooks/useHeroSearch";
 import { HeroDestinationSearch } from "@modules/Search";
-import { ContentImage } from "@elements/Image";
 import { useCallback, useState } from "react";
+import { useHeroSearch } from "@features/search/hooks/useHeroSearch";
+import { ContentImage } from "@elements/Image";
 
 import HeroMobileTrigger from "./parts/HeroMobileTrigger";
 import numberWithCommas from "@/helpers/numberWithCommas";
 import _STRINGS from "@/utils/LocalStrings";
-import moment from "moment-jalaali";
 import dynamic from "next/dynamic";
+import moment from "moment-jalaali";
 
 const DAY_MONTH_FORMAT = "jD jMMMM";
 
@@ -74,7 +74,7 @@ const HomeHeroSearch = ({
           )}
         </>
       ) : (
-        <div className="surface-panel relative flex w-full flex-nowrap items-center gap-0 !rounded-full p-1 shadow-glass md:p-1.5">
+        <div className="surface-panel relative flex w-full flex-nowrap items-center gap-0 !rounded-full p-1 shadow-glass">
           <HeroDestinationSearch
             label={_STRINGS.HERO_WHERE_LABEL}
             value={draft.cityTitle || draft.q}
@@ -104,7 +104,7 @@ const HomeHeroSearch = ({
             onClick={submit}
             disabled={isPending}
             aria-label={_STRINGS.SEARCH}
-            className="btn-primary flex size-9 shrink-0 items-center justify-center rounded-full bg-brand-600 transition-colors hover:bg-brand-700 disabled:bg-neutral-300 md:size-10"
+            className="btn-primary flex size-8 shrink-0 items-center justify-center rounded-full bg-brand-600 transition-colors hover:bg-brand-700 disabled:bg-neutral-300 md:size-9"
           >
             <ContentImage
               alt=""

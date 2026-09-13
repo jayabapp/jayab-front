@@ -1050,10 +1050,6 @@ ul {
   line-height: 1.25rem /* 20px */ !important;
 }
 
-.text-sm.property-card-title {
-  line-height: 2rem !important;
-}
-
 *:focus {
   outline: none !important;
 }
@@ -1421,11 +1417,11 @@ ul {
 }
 
 .hero-field {
-  @apply flex w-full min-w-0 flex-col items-start justify-center rounded-full px-2 py-1 text-right transition-colors hover:bg-neutral-50 sm:px-4 md:py-1.5;
+  @apply flex w-full min-w-0 flex-col items-start justify-center rounded-full px-2 py-0.5 text-right transition-colors hover:bg-neutral-50 sm:px-4 md:py-1;
 }
 
 .hero-field-label {
-  @apply text-xs font-bold leading-tight text-neutral-500 md:text-sm;
+  @apply text-xs font-normal leading-tight text-neutral-500 md:text-sm;
 }
 
 .hero-field-value {

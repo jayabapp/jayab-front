@@ -10,7 +10,6 @@ import { SelectedFiltersBar } from "@modules/PropertySearchFilters";
 import { PropertySortMenu } from "@modules/PropertySearchFilters";
 import { FilterApplyBar } from "@modules/PropertySearchFilters";
 import { CityModal, RegionModal } from "@modules/CitySelector";
-import { CitySelectorTitle } from "@modules/CitySelector";
 import { useStoreParams } from "@/store";
 import { useState } from "react";
 
@@ -119,12 +118,6 @@ const PropertyDiscovery = ({ devices }: PropertyDiscoveryProps) => {
               <div className="flex lg:hidden">
                 <SpecialFilterButtons query={queries} />
               </div>
-              <CitySelectorTitle
-                queries={queries}
-                setShowRegions={setShowRegions}
-                cityWithRegions={cityWithRegions}
-                cb={() => setShowCityModal(true)}
-              />
               <SelectedFiltersBar
                 query={queries}
                 setShowRegions={setShowRegions}

@@ -16,8 +16,8 @@ const HeroMobileTrigger = ({
     data-test="hero-mobile-trigger"
     className={`surface-panel flex w-full items-center !rounded-full text-right ${
       variant === "header"
-        ? "h-10 min-w-0 gap-1.5 border-white/70 bg-white/90 p-1 shadow-glass-sm"
-        : "gap-2 p-1.5 shadow-glass"
+        ? "h-10 min-w-0 gap-1.5 !border-neutral-200 bg-white p-1 !shadow-none"
+        : "gap-2 !border-neutral-200/80 p-1 !shadow-[0_10px_28px_-10px_rgb(15_23_42/0.28),0_2px_6px_-1px_rgb(15_23_42/0.08)]"
     }`}
   >
     <span
@@ -25,7 +25,13 @@ const HeroMobileTrigger = ({
         variant === "header" ? "pr-1.5" : "gap-0.5 pr-2"
       }`}
     >
-      <span className="w-full truncate text-sm font-bold leading-tight text-neutral-900">
+      <span
+        className={`w-full truncate text-sm leading-tight ${
+          summary.title
+            ? "font-medium text-neutral-900"
+            : "font-normal text-neutral-500"
+        }`}
+      >
         {summary.title || _STRINGS.HERO_STEP_WHERE}
       </span>
       {variant === "hero" && summary.detail ? (
@@ -35,11 +41,7 @@ const HeroMobileTrigger = ({
       ) : null}
     </span>
 
-    <span
-      className={`btn-primary flex shrink-0 items-center justify-center rounded-full bg-brand-600 ${
-        variant === "header" ? "size-8" : "size-9"
-      }`}
-    >
+    <span className="btn-primary flex size-8 shrink-0 items-center justify-center rounded-full bg-brand-600">
       <ContentImage
         alt=""
         width={18}

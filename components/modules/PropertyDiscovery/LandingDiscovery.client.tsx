@@ -1,22 +1,19 @@
 "use client";
 
-import {
-  FilterApplyBar,
-  PropertyFilterForm,
-} from "@modules/PropertySearchFilters";
-import { useEffect, useMemo, useState } from "react";
 import { usePropertyDiscoveryFilters } from "@features/properties/hooks/usePropertyDiscoveryFilters";
 import { usePropertyOptionGroups } from "@features/properties/hooks/usePropertyOptionGroups";
-import { CityModal, RegionModal } from "@modules/CitySelector";
-import { landingQueryDefaults } from "@features/properties/lib/landing-filters";
-import { SpecialFilterButtons } from "@modules/PropertySearchFilters";
-import { SelectedFiltersBar } from "@modules/PropertySearchFilters";
-import { CitySelectorTitle } from "@modules/CitySelector";
-import { PropertySortMenu } from "@modules/PropertySearchFilters";
-import { useCitiesStore } from "@/store";
-
 import type { LandingDiscoveryProps } from "@/types/components/modules/property-discovery";
 import type { ChildCities } from "@/types/components/modules/property-discovery";
+import { landingQueryDefaults } from "@features/properties/lib/landing-filters";
+import { SpecialFilterButtons } from "@modules/PropertySearchFilters";
+import { PropertyFilterForm } from "@modules/PropertySearchFilters";
+import { SelectedFiltersBar } from "@modules/PropertySearchFilters";
+import { PropertySortMenu } from "@modules/PropertySearchFilters";
+import { FilterApplyBar } from "@modules/PropertySearchFilters";
+import { CityModal, RegionModal } from "@modules/CitySelector";
+import { CitySelectorTitle } from "@modules/CitySelector";
+import { useEffect, useMemo, useState } from "react";
+import { useCitiesStore } from "@/store";
 
 import SingleProductBreadCrumb from "@elements/Breadcrumbs/SingleProductBreadcrumb.client";
 import DiscoveryFilterModal from "./parts/DiscoveryFilterModal.client";
@@ -101,7 +98,7 @@ const LandingDiscovery = ({ devices, landing }: LandingDiscoveryProps) => {
         } md:shadow-none pt-1 transition-all duration-300 xl:hidden h-16 right-0 items-center justify-center z-10 xl:z-1 top-[3rem] xl:top-auto left-0 xl:left-auto bg-white xl:bg-transparent xl:relative flex-col w-full xl:gap-2`}
       >
         <div className="flex order-1 xl:hidden relative w-full">
-          <div className="z-1 pr-2 relative w-full items-center gap-1 justify-between">
+          <div className="z-1 px-3 relative w-full items-center gap-1 justify-between">
             <div className="!col-span-9">
               <SelectedFiltersBar
                 query={queries}
@@ -115,7 +112,7 @@ const LandingDiscovery = ({ devices, landing }: LandingDiscoveryProps) => {
         </div>
       </div>
 
-      <div className="app-container !pt-[7.5rem] lg:!pt-20 !relative z-2">
+      <div className="app-container !px-0 md:!px-10 2xl:px-[9%] !pt-[7.5rem] lg:!pt-20 !relative z-2">
         <div className="grid grid-cols-12 col-span-12">
           <aside
             aria-label={_STRINGS.FILTERS}
@@ -133,12 +130,12 @@ const LandingDiscovery = ({ devices, landing }: LandingDiscoveryProps) => {
             <FilterApplyBar draft={filters} onApply={onApplyFilters} />
           </aside>
 
-          <div className="col-span-12 md:col-span-12 lg:col-span-9 px-0 md:pr-4 md:pl-0 md:mt-0">
+          <div className="col-span-12 md:col-span-12 lg:col-span-9 px-0 xl:pr-4 xl:pl-0 xl:mt-0">
             <div className="hidden mb-2 z-1 w-full xl:flex flex-col xl:flex-row items-center justify-between">
               <SingleProductBreadCrumb dataArray={breadCrumbs} />
             </div>
 
-            <div className="mb-3 w-full flex items-center justify-between">
+            <div className="mb-3 w-full flex items-center justify-between px-3 xl:px-0">
               <h2 className="text-lg font-medium text-black">
                 {landing?.content?.title}
               </h2>
@@ -148,7 +145,7 @@ const LandingDiscovery = ({ devices, landing }: LandingDiscoveryProps) => {
               </div>
             </div>
 
-            <div className="w-full grow-0 shrink-0 flex flex-row px-1 xl:px-0 relative justify-between">
+            <div className="w-full grow-0 shrink-0 flex flex-row px-3 xl:px-0 relative justify-between">
               <div className="flex flex-row items-center justify-start gap-1">
                 <div className="flex lg:hidden">
                   <SpecialFilterButtons
@@ -181,7 +178,9 @@ const LandingDiscovery = ({ devices, landing }: LandingDiscoveryProps) => {
               <DiscoveryResults devices={devices} query={queries} />
             </div>
 
-            <LandingContent data={landing} />
+            <div className="px-3 xl:px-0">
+              <LandingContent data={landing} />
+            </div>
           </div>
         </div>
 

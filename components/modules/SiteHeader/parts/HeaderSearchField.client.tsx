@@ -23,7 +23,7 @@ const HeaderSearchField = ({
       <PopSearchBox
         boxId={boxId}
         justIcon={justIcon}
-        placeholder={_STRINGS?.SEARCH}
+        placeholder={_STRINGS.HERO_STEP_WHERE}
         item={{ bg: inputClass ?? "" }}
         containerClass={withCitySelector ? " w-full mx-auto" : containerClass}
       />

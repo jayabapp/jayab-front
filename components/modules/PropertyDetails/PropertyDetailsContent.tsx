@@ -4,7 +4,6 @@ import { PropertyCalendar } from "@modules/PropertyAvailability";
 import { PropertyGallery } from "@modules/PropertyGallery";
 
 import SingleProductBreadCrumb from "@elements/Breadcrumbs/SingleProductBreadcrumb.client";
-import PropertyReportRow from "./parts/PropertyReportRow.client";
 import PropertySummaryCard from "./PropertySummaryCard.client";
 import PropertyDescription from "./parts/PropertyDescription";
 import PropertySpecs from "./PropertySpecs";
@@ -12,16 +11,6 @@ import _STRINGS from "@/utils/LocalStrings";
 
 const PANEL_CLASS = "surface-panel p-4 md:p-5";
 
-/**
- * Three grid items rather than two columns, so the summary card can sit level
- * with the gallery on desktop and still fall directly under it on mobile.
- *
- * Desktop: the gallery takes row 1 of the wide columns, the summary takes the
- * narrow column and spans both rows (which is the box its sticky positioning
- * travels inside), and everything else fills row 2 beneath the gallery.
- * Mobile: all three are full width and stack in DOM order — gallery, summary,
- * the rest — which is the order a guest reads them in.
- */
 const PropertyDetailsContent = ({
   devices,
   property,
@@ -62,12 +51,6 @@ const PropertyDetailsContent = ({
         </div>
 
         <PropertySpecs property={property} devices={devices} />
-
-        {/* Reporting a listing is a utility, not a section of the listing. It
-            sits after the content and carries no card of its own. */}
-        <div className="w-full opacity-80">
-          <PropertyReportRow propertyId={property?.id} />
-        </div>
       </div>
     </>
   );

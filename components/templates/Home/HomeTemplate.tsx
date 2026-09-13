@@ -43,7 +43,7 @@ const HomeTemplate = ({
             title={homeContent?.full_text}
           />
         </div>
-        <div className="home-sheet flex w-full flex-col gap-0 md:-mt-8">
+        <div className="home-sheet -mt-5 flex w-full flex-col gap-0 md:-mt-8">
           {devices?.isMobile ? <HomeSheetSearch /> : <></>}
           <section
             className={`flex flex-col gap-5 lg:gap-6 select-none px-0 md:py-0 w-full ${
