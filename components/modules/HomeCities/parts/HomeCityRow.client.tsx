@@ -1,16 +1,19 @@
 "use client";
 
 import { useHorizontalDragScroll } from "@/hooks/useHorizontalDragScroll";
-import type { HomeCitiesProps } from "@/types/components/modules/home";
+import type { HomeCityRowProps } from "@/types/components/modules/home";
 
 import HomeCityItem from "./HomeCityItem.client";
 
-const HomeCityRow = ({ row }: { row: HomeCitiesProps["data"] }) => {
+const HomeCityRow = ({ row, syncRef }: HomeCityRowProps) => {
   const scrollRef = useHorizontalDragScroll<HTMLDivElement>();
 
   return (
     <div
-      ref={scrollRef}
+      ref={(element) => {
+        scrollRef.current = element;
+        syncRef(element);
+      }}
       className="padding-x flex w-full cursor-grab gap-2 overflow-x-auto md:gap-3"
     >
       {row?.map((city, index) => (

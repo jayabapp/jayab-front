@@ -51,7 +51,7 @@ const HomePropertyTypes = ({
         {data?.map((i, index: number) => (
           <SwiperSlide
             key={index}
-            className={`w-full  !h-auto   p-0 md:py-2 cursor-pointer select-none md:px-2`}
+            className={`home-tile-slide w-full  !h-auto   p-0 md:py-2 cursor-pointer select-none md:px-2`}
           >
             <PropertyTypeItem
               index={index}

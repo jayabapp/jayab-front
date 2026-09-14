@@ -906,6 +906,17 @@ button {
   padding-left: var(--slide-spacing);
 }
 
+/* The property-type / quick-search rows size their tile to a literal
+   141x141 box on desktop, not a share of the row's width — `--slide-size`
+   is a percentage, so it can never land on an exact pixel value across
+   different viewport widths and has to be overridden outright. 141px tile
+   plus the slide's own `md:px-2` (2 x 0.5rem) padding, border-box. */
+@media (min-width: 768px) {
+  .home-tile-slide {
+    flex: 0 0 9.8125rem !important;
+  }
+}
+
 .embla__dots {
   left: 1rem;
   right: 1rem;

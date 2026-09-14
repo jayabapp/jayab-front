@@ -1,4 +1,5 @@
 import type { HomeCitiesProps } from "@/types/components/modules/home";
+import { useSyncedRowScroll } from "@/hooks/useSyncedRowScroll";
 
 import HomeCityRow from "./parts/HomeCityRow.client";
 
@@ -9,6 +10,7 @@ const splitByRow = (data: HomeCitiesProps["data"]) => [
 
 const HomeCityFilterContainer = ({ data, title }: HomeCitiesProps) => {
   const rows = splitByRow(data);
+  const setRowRef = useSyncedRowScroll(rows.length);
 
   return (
     <div className="noSelect relative flex w-full select-none flex-col gap-2.5 rounded-20 md:gap-2 lg:gap-3">
@@ -19,7 +21,11 @@ const HomeCityFilterContainer = ({ data, title }: HomeCitiesProps) => {
       </div>
 
       {rows.map((row, rowIndex) => (
-        <HomeCityRow key={`city-row-${rowIndex}`} row={row} />
+        <HomeCityRow
+          row={row}
+          key={`city-row-${rowIndex}`}
+          syncRef={setRowRef(rowIndex)}
+        />
       ))}
     </div>
   );

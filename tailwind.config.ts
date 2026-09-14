@@ -20,6 +20,10 @@ export default {
     "./components/**/*.{js,ts,jsx,tsx,mdx}",
     "./features/**/*.{js,ts,jsx,tsx,mdx}",
     "./app/**/*.{js,ts,jsx,tsx,mdx}", // single component styles
+    // Shared class-name constants (e.g. utils/constantss.ts) live here too —
+    // without this, an arbitrary-value utility built there never gets seen by
+    // the scanner and silently never makes it into the compiled CSS.
+    "./utils/**/*.{js,ts,jsx,tsx,mdx}",
   ],
   theme: {
     screens: { ...defaultTheme.screens },

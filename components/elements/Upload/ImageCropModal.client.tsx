@@ -25,12 +25,24 @@ const aspectRatioList = [
   { value: 1 / 2, icon: RatioIcon12 },
   { value: 5 / 2, icon: RatioIcon52 },
 ];
+
+const MAX_OUTPUT_DIMENSION_PX = 2000;
+const JPEG_QUALITY = 0.9;
+
+const downscaleCanvas = (source: HTMLCanvasElement, scale: number) => {
+  const canvas = document.createElement("canvas");
+  canvas.width = Math.round(source.width * scale);
+  canvas.height = Math.round(source.height * scale);
+  canvas.getContext("2d")?.drawImage(source, 0, 0, canvas.width, canvas.height);
+  return canvas;
+};
+
 const EditImageModal = ({
-  imageUrl,
-  isUploading,
   onHide,
-  onComplete,
+  imageUrl,
   cropRatio,
+  onComplete,
+  isUploading,
 }: ImageCropModalProps) => {
   const cropperRef = useRef<CropperRef>(null);
   const mountedRef = useRef(true);
@@ -38,23 +50,28 @@ const EditImageModal = ({
   const [aspectRatio, setAspectRatio] = useState<number | null>(cropRatio ?? 1);
 
   const convertCanvasToFile = () => {
-    const canvas = cropperRef?.current?.getCanvas();
-    if (canvas) {
-      canvas.toBlob((blob) => {
+    const sourceCanvas = cropperRef?.current?.getCanvas();
+    if (!sourceCanvas) return;
+    const scale = Math.min(
+      1,
+      MAX_OUTPUT_DIMENSION_PX /
+        Math.max(sourceCanvas.width, sourceCanvas.height),
+    );
+    const canvas =
+      scale < 1 ? downscaleCanvas(sourceCanvas, scale) : sourceCanvas;
+
+    canvas.toBlob(
+      (blob) => {
         if (blob && mountedRef.current) {
-          const cropped = new File([blob], "cropped-image.png", {
-            type: "image/png",
+          const cropped = new File([blob], "cropped-image.jpg", {
+            type: "image/jpeg",
           });
           onComplete(cropped);
-        } else {
-          const error = new Error(`${blob}blob does not exict`);
-          error.name = "Blob error";
         }
-      }, "image/png");
-    } else {
-      const error = new Error(`${canvas}canvas does not exict`);
-      error.name = "Canvas error";
-    }
+      },
+      "image/jpeg",
+      JPEG_QUALITY,
+    );
   };
 
   useEffect(() => {
@@ -77,7 +94,7 @@ const EditImageModal = ({
     <Modal
       options={{
         containerClass:
-          " app-size app-text  !overflow-hidden flex flex-col items-center justify-center !bg-black  relative  rounded-lg overflow-y-scroll  bg-white !rounded-none ",
+          " app-size app-text max-h-[100dvh] flex flex-col items-center justify-center !bg-black  relative  rounded-lg overflow-y-scroll overflow-x-hidden  bg-white !rounded-none ",
         parentClass: "bg-white",
       }}
       show={!!imageUrl}
@@ -135,11 +152,11 @@ const EditImageModal = ({
         <div className="lg:absolute mt-8 lg:mt-0 flex justify-center lg:flex-col gap-6 left-3  lg:top-1/3">
           <ContentImage
             alt=""
-            height={24}
             width={24}
-            onClick={() => cropperRef?.current?.flipImage(true)}
+            height={24}
             src={"/assets/icons/uploader/flip_icon.svg"}
             className=" scale-[-1] rotate-90 cursor-pointer   "
+            onClick={() => cropperRef?.current?.flipImage(true)}
           />
           <ContentImage
             alt=""
@@ -176,11 +193,11 @@ const EditImageModal = ({
           />
           <ContentImage
             alt=""
-            height={24}
             width={24}
-            onClick={() => cropperRef?.current?.flipImage(false, true)}
-            className="   cursor-pointer ]   "
+            height={24}
+            className="cursor-pointer"
             src={"/assets/icons/uploader/flip_icon.svg"}
+            onClick={() => cropperRef?.current?.flipImage(false, true)}
           />
         </div>
 
