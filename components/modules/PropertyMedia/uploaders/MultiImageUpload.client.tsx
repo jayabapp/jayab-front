@@ -3,7 +3,9 @@
 import type { MultiImageUploadProps } from "@/types/components/modules/property-media";
 import { useAttachmentUpload } from "@features/upload/hooks/useAttachmentUpload";
 import { UploadPreviewImage } from "@/components/elements/Image";
+import { compressImageIfNeeded } from "@/helpers/compressImage";
 import { ContentImage } from "@/components/elements/Image";
+import { normalizeApiError } from "@/lib/api/api-error";
 import { useEffect, useRef, useState } from "react";
 import { FullscreenImage } from "@elements/Upload";
 import type { ReactEventHandler } from "react";
@@ -82,10 +84,12 @@ const NewMultUploader = ({
     };
   }, []);
 
-  const uploadTemp = async (file: Blob, id: number | string) => {
+  const uploadTemp = async (file: File, id: number | string) => {
     try {
+      const uploadable =
+        type === "image" ? await compressImageIfNeeded(file) : file;
       const formData = new FormData();
-      formData.append("file", file);
+      formData.append("file", uploadable);
       const controller = new AbortController();
       uploadControllersRef.current.set(id, controller);
       await mutateAsync({
@@ -100,7 +104,15 @@ const NewMultUploader = ({
           }));
         },
       });
-    } catch {
+    } catch (error) {
+      const { status } = normalizeApiError(error);
+      Notify({
+        type: "error",
+        body:
+          status === 413
+            ? "حجم این تصویر برای آپلود زیاد است."
+            : "آپلود این تصویر ناموفق بود.",
+      });
       setimagesLoadings((e) => ({ ...e, [id]: 1 }));
       setImages((e) => e?.filter((x) => x?.id != id));
     } finally {

@@ -1,16 +1,15 @@
 "use client";
 
 import type { HomeHeroSearchProps } from "@/types/components/modules/home-hero-search";
-import { HeroDestinationSearch } from "@modules/Search";
-import { useCallback, useState } from "react";
 import { useHeroSearch } from "@features/search/hooks/useHeroSearch";
+import { HeroDestinationSearch } from "@modules/Search";
 import { ContentImage } from "@elements/Image";
+import { useCallback, useState } from "react";
 
 import HeroMobileTrigger from "./parts/HeroMobileTrigger";
-import numberWithCommas from "@/helpers/numberWithCommas";
 import _STRINGS from "@/utils/LocalStrings";
-import dynamic from "next/dynamic";
 import moment from "moment-jalaali";
+import dynamic from "next/dynamic";
 
 const DAY_MONTH_FORMAT = "jD jMMMM";
 
@@ -22,7 +21,6 @@ const HeroSearchSheet = dynamic(importHeroSearchSheet, { ssr: false });
 
 const HomeHeroSearch = ({
   isPhone,
-  totalProperties,
   variant = "hero",
 }: HomeHeroSearchProps) => {
   const [isSheetOpen, setIsSheetOpen] = useState(false);
@@ -115,15 +113,6 @@ const HomeHeroSearch = ({
             />
           </button>
         </div>
-      )}
-
-      {variant === "hero" && totalProperties ? (
-        <p className="text-xs text-white/90 drop-shadow-sm">
-          <span className="font-bold">{numberWithCommas(totalProperties)}</span>{" "}
-          {_STRINGS.HERO_ACTIVE_PROPERTIES}
-        </p>
-      ) : (
-        <></>
       )}
     </div>
   );

@@ -9,23 +9,12 @@ import SearchPanelInput from "./parts/SearchPanelInput.client";
 import SearchPanelBody from "./parts/SearchPanelBody.client";
 import _STRINGS from "@/utils/LocalStrings";
 
-/**
- * The same combobox the pop-over surfaces use, laid out in the normal flow
- * instead of in a fixed overlay.
- *
- * The hero's mobile sheet already *is* the overlay: it owns the viewport, the
- * backdrop and the scroll lock. Reusing `SearchOverlay` there would have nested
- * a second `fixed inset-0` layer with its own dismiss button inside the first,
- * so the panel's two halves — the input and the result body — are composed
- * directly here instead. Both halves stay private to this module; this file is
- * the public seam.
- */
 const SearchInlinePanel = ({
-  boxId = "HERO_SHEET_SEARCH",
   isActive,
   onPickPlace,
   onSubmitTerm,
   onTermChange,
+  boxId = "HERO_SHEET_SEARCH",
   placeholder = _STRINGS.HERO_WHERE_PLACEHOLDER,
 }: SearchInlinePanelProps) => {
   const onPickOption = useCallback(
@@ -39,24 +28,21 @@ const SearchInlinePanel = ({
   );
 
   const {
-    activeIndex,
+    pick,
+    term,
     close,
+    submit,
+    isStale,
+    listRef,
+    options,
+    setTerm,
     inputRef,
     isLoading,
     isPending,
-    isStale,
-    listRef,
     onKeyDown,
-    options,
-    pick,
+    activeIndex,
     setActiveIndex,
-    setTerm,
-    submit,
-    term,
   } = useSearchPanel({
-    // `isOpen` here means "this step is the one on screen". It gates the
-    // suggestion request and the autofocus, so a collapsed step neither holds a
-    // request open nor steals the keyboard from the step that is showing.
     isOpen: isActive,
     onOpenChange: () => undefined,
     onPickOption,

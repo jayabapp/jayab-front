@@ -1,65 +1,43 @@
 "use client";
 
+import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { useSearchSuggestions } from "@features/search/hooks/useSearchSuggestions";
-import type { SearchOption } from "@/types/features/search";
 import { useListboxNavigation } from "@features/search/hooks/useListboxNavigation";
 import { useSearchOptionPick } from "@features/search/hooks/useSearchOptionPick";
 import { buildSearchOptions } from "@features/search/lib/build-search-options";
 import { usePropertySearch } from "@features/search/hooks/usePropertySearch";
-import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { useBodyScrollLock } from "@hooks/useBodyScrollLock";
+
+import type { SearchOption } from "@/types/features/search";
 
 const FOCUS_DELAY_MS = 100;
 
-/**
- * Shared behaviour for every search surface: the term, the open/closed panel, the
- * remote suggestions bound to it, the keyboard cursor over those suggestions, and
- * the submit that turns the term into a `/rooms` URL. Suggestions are only
- * requested while the panel is open, and the request is aborted when it closes.
- */
-export const useSearchPanel = ({
-  initValue,
-  isOpen,
-  lockScroll = true,
-  onOpenChange,
-  onPickOption,
-  onSubmit,
-}: {
-  initValue?: string;
+export type TUseSearchPanel = {
   isOpen: boolean;
-  /** Full-screen surfaces freeze the page; an anchored dropdown must not. */
+  initValue?: string;
   lockScroll?: boolean;
   onOpenChange: (open: boolean) => void;
-  /**
-   * Replaces the default "navigate to the suggestion" behaviour. The home hero
-   * stages a chosen place alongside dates and guests instead of leaving for
-   * `/rooms` immediately, which is the whole point of a multi-field search.
-   * Keyboard Enter and mouse click both route through this, so the two cannot
-   * drift apart.
-   */
   onPickOption?: (option?: SearchOption) => void;
   onSubmit?: (value: string | null) => void | null;
-}) => {
+};
+
+export const useSearchPanel = ({
+  isOpen,
+  onSubmit,
+  initValue,
+  onOpenChange,
+  onPickOption,
+  lockScroll = true,
+}: TUseSearchPanel) => {
   const [term, setTerm] = useState(initValue ?? "");
   const inputRef = useRef<HTMLInputElement>(null);
-
-  // The panel body is mounted from the first open and then kept, never before.
-  // Rendering it on the server was the cause of a hydration mismatch on `/`:
-  // SearchPopularPlaces reads landings through useQuery, and React Query restores
-  // the dehydrated cache in an effect, so the server rendered no chips and the
-  // client rendered several. It is also pure waste — the panel is off-screen on
-  // first paint, so none of that markup is ever seen.
-  //
-  // Set during render rather than in an effect: React re-runs this component
-  // immediately with the new value and commits once, so there is no extra paint
-  // and no `set-state-in-effect` cascade.
   const [hasOpened, setHasOpened] = useState(false);
   if (isOpen && !hasOpened) setHasOpened(true);
 
   const {
-    data: suggestions,
-    isLoading,
     isStale,
+    isLoading,
+    data: suggestions,
   } = useSearchSuggestions(term, isOpen);
 
   const options = useMemo(() => buildSearchOptions(suggestions), [suggestions]);
@@ -73,10 +51,15 @@ export const useSearchPanel = ({
   const close = useCallback(() => onOpenChange(false), [onOpenChange]);
   const { mutate, isPending } = usePropertySearch(close);
   const navigateToOption = useSearchOptionPick(term, close);
-  const pick = onPickOption ?? navigateToOption;
+  const pickOption = onPickOption ?? navigateToOption;
+  const pick = useCallback(
+    (option?: SearchOption) => {
+      if (onPickOption && option?.label) setTerm(option.label);
+      pickOption(option);
+    },
+    [onPickOption, pickOption],
+  );
 
-  // Enter on a highlighted row opens it; Enter with no highlight is left alone
-  // so the form's own submit runs the free-text search.
   const onKeyDown = useCallback(
     (event: Parameters<typeof onListKeyDown>[0]) =>
       onListKeyDown(event, (index) => pick(options[index])),

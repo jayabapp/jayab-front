@@ -134,6 +134,7 @@ const HomeBannerPart = ({ title, devices, banners }: HomeHeroBannerProps) => {
   const firstReady = loaded.has(0);
   const playing =
     count > 1 && !hovered && !focused && onScreen && !reducedMotion;
+  const slideMotionPaused = !onScreen;
 
   const goTo = (target: number) => {
     advanceWhenLoaded.current = false;
@@ -209,6 +210,7 @@ const HomeBannerPart = ({ title, devices, banners }: HomeHeroBannerProps) => {
       aria-roledescription="carousel"
       aria-label={_STRINGS.HERO_SLIDER}
       data-paused={!playing}
+      data-slide-paused={slideMotionPaused}
       style={{ "--hero-interval": `${AUTOPLAY_MS}ms` } as CSSProperties}
       className="hero-slider relative w-full h-full px-0"
       onPointerEnter={(event) =>

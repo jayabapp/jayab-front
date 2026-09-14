@@ -1,6 +1,18 @@
 import type { Config } from "tailwindcss";
 import defaultTheme from "tailwindcss/defaultTheme";
+import plugin from "tailwindcss/plugin";
 import { colors } from "./theme/colors";
+
+// Touch devices report `:hover` on tap and only clear it on the next tap
+// elsewhere, so every `hover:` utility below reads as a stuck, flickery
+// "touch effect" with no real pointer behind it. Gating hover variants behind
+// `(hover: hover)` — true everywhere a mouse or trackpad is present, false on
+// touch-only devices — removes that without hand-editing every component.
+const hoverOnlyWithPointer = plugin(({ addVariant }) => {
+  addVariant("hover", "@media (hover: hover) { &:hover }");
+  addVariant("group-hover", "@media (hover: hover) { :merge(.group):hover & }");
+  addVariant("peer-hover", "@media (hover: hover) { :merge(.peer):hover ~ & }");
+});
 
 export default {
   content: [
@@ -48,7 +60,7 @@ export default {
       },
     },
   },
-  plugins: [],
+  plugins: [hoverOnlyWithPointer],
   transitionProperty: {
     height: "height",
     width: "width",

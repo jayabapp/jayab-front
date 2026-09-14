@@ -3,7 +3,7 @@ import Skeleton from "@elements/Skeleton/Skeleton";
 const ReservationCardSkeleton = () => (
   <div
     aria-hidden="true"
-    className="w-full space-y-4 rounded-2xl p-3 shadow-card"
+    className="w-full space-y-4 rounded-2xl bg-white p-3 shadow-card"
   >
     <div className="flex gap-3">
       <Skeleton className="size-24 rounded-xl" />

@@ -1,7 +1,13 @@
 "use client";
 
-import type { HeroSearchSheetProps, HeroSearchStep } from "@/types/components/modules/home-hero-search";
-import { SearchDateRangePicker, updateDateRange } from "@modules/PropertySearchFilters";
+import type {
+  HeroSearchSheetProps,
+  HeroSearchStep,
+} from "@/types/components/modules/home-hero-search";
+import {
+  SearchDateRangePicker,
+  updateDateRange,
+} from "@modules/PropertySearchFilters";
 import { useOverlayBackButton } from "@hooks/useOverlayBackButton";
 import { useCallback, useEffect, useMemo, useState } from "react";
 import { useBodyScrollLock } from "@hooks/useBodyScrollLock";
@@ -11,7 +17,6 @@ import { BtnLoading } from "@elements/Button";
 import { createPortal } from "react-dom";
 import { motion } from "framer-motion";
 
-import numberWithCommas from "@/helpers/numberWithCommas";
 import HeroGuestsStep from "./HeroGuestsStep";
 import _STRINGS from "@/utils/LocalStrings";
 import HeroStepCard from "./HeroStepCard";
@@ -26,28 +31,16 @@ const STEP_ICON: Record<HeroSearchStep, string> = {
   guests: "/assets/icons/reserve/blue_persons.svg",
 };
 
-/**
- * The hero search on phones: a full-screen sheet that asks where, when and how
- * many, one open step at a time.
- *
- * Full-screen rather than the shared `ModalBottomSheet`. That sheet caps itself
- * at 90dvh, and the destination step raises the keyboard — which would leave
- * roughly a third of the screen for a list of cities. A surface that owns the
- * viewport keeps the result list readable with the keyboard up.
- */
 const HeroSearchSheet = ({
   count,
   draft,
-  isCountStale,
-  isPending,
   onClose,
   onPatch,
   onReset,
   onSubmit,
+  isPending,
+  isCountStale,
 }: HeroSearchSheetProps) => {
-  // Opening lands on the first unanswered question rather than always on
-  // "where": re-opening to change the guest count should not walk back through a
-  // city and a date range that are already settled.
   const [step, setStep] = useState<HeroSearchStep>(() =>
     !draft.cities && !draft.q ? "where" : !draft.checkin ? "dates" : "guests",
   );
@@ -55,26 +48,17 @@ const HeroSearchSheet = ({
 
   const openStep = useCallback((next: HeroSearchStep) => {
     setStep(next);
-    setVisited((current) => (current.includes(next) ? current : [...current, next]));
+    setVisited((current) =>
+      current.includes(next) ? current : [...current, next],
+    );
   }, []);
 
-  /**
-   * "Any date" / "any number" is an answer, not a prompt, so a step only reads
-   * that way once the user has been through it and moved on. Showing it while
-   * the step is still open told them their question was already settled while
-   * they were looking at the empty calendar.
-   */
   const skippedSummary = (of: HeroSearchStep, label: string) =>
     visited.includes(of) && step !== of ? label : "";
 
   useBodyScrollLock(true);
-  // Dismissing through the header also pops the history entry the hook pushed,
-  // so the back gesture and the close button leave the stack in the same state.
   const requestClose = useOverlayBackButton(true, onClose);
 
-  // Only the steps below the fold are scrolled to, and only once they become
-  // active. Scrolling on the destination step would fight the keyboard it is
-  // raising.
   useEffect(() => {
     if (step === "where") return;
     document
@@ -94,8 +78,6 @@ const HeroSearchSheet = ({
     (day: string) =>
       updateDateRange({
         date: day,
-        // `updateDateRange` calls back only once a checkout lands, which is
-        // exactly when the question is answered and the flow should move on.
         cb: () => openStep("guests"),
         state: { checkin: draft.checkin, checkout: draft.checkout },
         setState: (updater) =>
@@ -175,13 +157,12 @@ const HeroSearchSheet = ({
                   q: option.label,
                   cityTitle: option.label,
                   cities: cityId ? String(cityId) : undefined,
-                  landingUrl: option.href.startsWith("/rooms") ? undefined : option.href,
+                  landingUrl: option.href.startsWith("/rooms")
+                    ? undefined
+                    : option.href,
                 });
                 openStep("dates");
               }}
-              // Enter commits the typed text as the destination and moves on,
-              // rather than running the free-text search and abandoning the two
-              // questions the sheet exists to ask.
               onSubmitTerm={() => openStep("dates")}
             />
           </HeroStepCard>
@@ -194,20 +175,22 @@ const HeroSearchSheet = ({
             title={_STRINGS.HERO_STEP_DATES}
             onOpen={() => openStep("dates")}
             hasBeenOpened={visited.includes("dates")}
-            summary={datesSummary || skippedSummary("dates", _STRINGS.HERO_ANY_DATE)}
+            summary={
+              datesSummary || skippedSummary("dates", _STRINGS.HERO_ANY_DATE)
+            }
           >
             <div className="flex flex-col gap-2 p-3">
               <SearchDateRangePicker
                 setSelectedDay={onPickDay}
                 selectedDates={{
-                  startDate: draft.checkin ? moment(draft.checkin).format(JALALI_FORMAT) : null,
-                  endDate: draft.checkout ? moment(draft.checkout).format(JALALI_FORMAT) : null,
+                  startDate: draft.checkin
+                    ? moment(draft.checkin).format(JALALI_FORMAT)
+                    : null,
+                  endDate: draft.checkout
+                    ? moment(draft.checkout).format(JALALI_FORMAT)
+                    : null,
                 }}
               />
-              {/* The way out for the visitor who knows the city but not the
-                  week. Without it a stepped flow quietly demands a date range
-                  before it will show anything, which is the single largest
-                  reason a stepped search converts worse than a flat one. */}
               <button
                 type="button"
                 onClick={onSkipDates}
@@ -242,20 +225,15 @@ const HeroSearchSheet = ({
 
       <footer className="flex shrink-0 items-center justify-between gap-3 border-t bg-white px-4 pb-[max(env(safe-area-inset-bottom),0.75rem)] pt-3">
         <p className="min-w-0 flex-1 truncate text-xs text-neutral-600">
-          {count === undefined ? (
-            _STRINGS.HERO_MOBILE_TRIGGER_HINT
-          ) : (
+          {count === 0 ? (
             <span className={isCountStale ? "opacity-50" : ""}>
-              {count > 0
-                ? `${numberWithCommas(count)} ${_STRINGS.RESULTS_FOUND_PREFIX}`
-                : _STRINGS.HERO_NO_MATCH}
+              {_STRINGS.HERO_NO_MATCH}
             </span>
+          ) : (
+            _STRINGS.HERO_MOBILE_TRIGGER_HINT
           )}
         </p>
 
-        {/* Never disabled. An empty draft is a legitimate search — it means
-            "show me everything", and `submit` already routes that to `/rooms`
-            unfiltered — so greying the button out would block a working path. */}
         <button
           type="button"
           onClick={onSubmit}

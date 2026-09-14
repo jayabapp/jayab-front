@@ -74,7 +74,11 @@ export const mobileFooterBlackList = [
   "/profile/support/",
 ];
 
-export const footerHiddenBlackList = ["/chat/", "/auth", "/profile/owner/properties/"];
+export const footerHiddenBlackList = [
+  "/chat/",
+  "/auth",
+  "/profile/owner/properties/",
+];
 
 export const createPropertySteps = (id?: null | number) => [
   {
@@ -134,11 +138,31 @@ export const createPropertySteps = (id?: null | number) => [
 ];
 
 export const SORT_TYPES = [
-  { id: "newset", title: "جدیدترین", icon: "/assets/icons/sort/sort_newest.svg" },
-  { id: "popular", title: "محبوب ترین", icon: "/assets/icons/sort/sort_star.svg" },
-  { id: "price_desc", title: "گران ترین", icon: "/assets/icons/sort/sort_expensive.svg" },
-  { id: "price_asc", title: "ارزان ترین", icon: "/assets/icons/sort/sort_piggy_banl.svg" },
-  { id: "commission_desc", title: "بیشترین کمیسیون", icon: "/assets/icons/sort/sort_most_comision.svg" },
+  {
+    id: "newset",
+    title: "جدیدترین",
+    icon: "/assets/icons/sort/sort_newest.svg",
+  },
+  {
+    id: "popular",
+    title: "محبوب ترین",
+    icon: "/assets/icons/sort/sort_star.svg",
+  },
+  {
+    id: "price_desc",
+    title: "گران ترین",
+    icon: "/assets/icons/sort/sort_expensive.svg",
+  },
+  {
+    id: "price_asc",
+    title: "ارزان ترین",
+    icon: "/assets/icons/sort/sort_piggy_banl.svg",
+  },
+  {
+    id: "commission_desc",
+    title: "بیشترین کمیسیون",
+    icon: "/assets/icons/sort/sort_most_comision.svg",
+  },
 ];
 export const allRoutes: { [key: string]: string } = {
   "test-access": "دسترسی محیط تست",
@@ -229,15 +253,50 @@ export const profileDropDownItems = [
     route: "/profile/bookmarks",
     imgSrc: "/assets/icons/header/header_my_saves.svg",
   },
-  { id: 23, title: "دعوت از دوستان", route: "/profile/invite", imgSrc: "/assets/icons/header/header_share.svg" },
-  { id: 253, title: "پشتیبانی", route: "/profile/support", imgSrc: "/assets/icons/header/header_support.svg" },
+  {
+    id: 23,
+    title: "دعوت از دوستان",
+    route: "/profile/invite",
+    imgSrc: "/assets/icons/header/header_share.svg",
+  },
+  {
+    id: 253,
+    title: "پشتیبانی",
+    route: "/profile/support",
+    imgSrc: "/assets/icons/header/header_support.svg",
+  },
 ];
 export const menuDropDownItems = [
-  { id: 115, title: "درباره ما", route: "/about-us", imgSrc: "/assets/icons/header/header_menu_about_us.svg" },
-  { id: 230, title: "قوانین و مقررات", route: "/terms", imgSrc: "/assets/icons/header/header_menu_terms.svg" },
-  { id: 251, title: "مجله گردشگری جایاب", route: "/blog", imgSrc: "/assets/icons/header/header_menu_blog.svg" },
-  { id: 1238, title: "سوالات متداول", route: "/faq", imgSrc: "/assets/icons/header/header_menu_faq.svg" },
-  { id: 4261, title: "تماس با ما", route: "/contact-us", imgSrc: "/assets/icons/header/header_menu_call.svg" },
+  {
+    id: 115,
+    title: "درباره ما",
+    route: "/about-us",
+    imgSrc: "/assets/icons/header/header_menu_about_us.svg",
+  },
+  {
+    id: 230,
+    title: "قوانین و مقررات",
+    route: "/terms",
+    imgSrc: "/assets/icons/header/header_menu_terms.svg",
+  },
+  {
+    id: 251,
+    title: "مجله گردشگری جایاب",
+    route: "/blog",
+    imgSrc: "/assets/icons/header/header_menu_blog.svg",
+  },
+  {
+    id: 1238,
+    title: "سوالات متداول",
+    route: "/faq",
+    imgSrc: "/assets/icons/header/header_menu_faq.svg",
+  },
+  {
+    id: 4261,
+    title: "تماس با ما",
+    route: "/contact-us",
+    imgSrc: "/assets/icons/header/header_menu_call.svg",
+  },
 ];
 
 export const footerLinks = [
@@ -351,7 +410,15 @@ export const WeekDays = [
   { title: "پنجشنبه", id: 4 },
   { title: "جـمعه", id: 5 },
 ];
-export const simpleWeekDays = ["یکشنبه", "دوشنبه", "سه شنبه", "چهارشنبه", "پنجشنبه", "جمعه", "شنبه"];
+export const simpleWeekDays = [
+  "یکشنبه",
+  "دوشنبه",
+  "سه شنبه",
+  "چهارشنبه",
+  "پنجشنبه",
+  "جمعه",
+  "شنبه",
+];
 
 export const easyRatingItems = {
   100: { label: "عالی", style: { color: "#3886E5", bottom: "2rem" } },
@@ -368,29 +435,32 @@ export const shareLinks = [
   {
     id: 0,
     icon: "/assets/icons/share/telegram.svg",
-    link: (address: string) => `https://t.me/share/url?url=${address}&text=${address}`,
+    link: (address: string) =>
+      `https://t.me/share/url?url=${address}&text=${address}`,
   },
   {
     id: 1,
     icon: "/assets/icons/share/whatsapp.svg",
     link: (address: string) => `https://api.whatsapp.com/send?text=${address}`,
   },
-  // {
-  //   id: 2,
-  //   icon: "/assets/icons/share/twitter.svg",
-  //   link: (address: string) => `https://twitter.com/intent/tweet?text=${address}&hashtags=digihagh`,
-  // },
-  // {
-  //   id: 3,
-  //   icon: "/assets/icons/share/linkdin.svg",
-  //   link: (address: string) => `https://www.linkedin.com/shareArticle?mini=true&title=دیجی حق&url=${address}`,
-  // },
 ];
 
 export const shareButtonItems = [
-  { title: "اشتراک گذاری تصاویر", icon: "/assets/icons/share/blue_pic.svg", id: "1" },
-  { title: "اشتراک گذاری اطلاعات", icon: "/assets/icons/share/blue_exclemation.svg", id: "2" },
-  { title: "اشتراک گذاری موقعیت مکانی", icon: "/assets/icons/adds/blue_pinpoint_location.svg", id: "3" },
+  {
+    title: "اشتراک گذاری تصاویر",
+    icon: "/assets/icons/share/blue_pic.svg",
+    id: "1",
+  },
+  {
+    title: "اشتراک گذاری اطلاعات",
+    icon: "/assets/icons/share/blue_exclemation.svg",
+    id: "2",
+  },
+  {
+    title: "اشتراک گذاری موقعیت مکانی",
+    icon: "/assets/icons/adds/blue_pinpoint_location.svg",
+    id: "3",
+  },
 ];
 
 export const randomeTitlePlaceholder = [
@@ -435,3 +505,12 @@ export const sortDynamicFiltersInOrder = [
 ];
 
 export const zero_filter_remove_keys = ["total_guests", "total_bedrooms"];
+
+export const PROPERTY_GRID_COLS_CLASS =
+  "grid-cols-[repeat(auto-fit,minmax(min(21.25rem,100%),1fr))]";
+
+export const DEFAULT_GRID_CLASS = `grid gap-2 overflow-hidden px-1 pb-8 pt-4 md:gap-4 md:pt-2 ${PROPERTY_GRID_COLS_CLASS}`;
+
+export const GRID_CLASS = `grid pb-8 pt-4 md:pt-2 px-3 lg:px-1 !overflow-hidden gap-2 md:gap-4 ${PROPERTY_GRID_COLS_CLASS}`;
+
+export const DEFAULT_GRID_CLASS_PROPERTY = `grid gap-2 px-3 pt-4 md:gap-4 ${PROPERTY_GRID_COLS_CLASS}`;

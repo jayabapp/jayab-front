@@ -1,10 +1,10 @@
 import type { HomePropertiesGridProps } from "@/types/components/modules/home";
 import { PropertyGrid, PropertyGridSkeleton } from "@modules/PropertyGrid";
+import { PROPERTY_GRID_COLS_CLASS } from "@/utils/constantss";
 
 import EmptyState from "@elements/EmptyState";
 
-const HOME_GRID_CLASS =
-  "grid grid-cols-1 gap-2.5 pb-8 pt-2 md:grid-cols-2 md:gap-4 xl:grid-cols-3";
+const HOME_GRID_CLASS = `grid gap-2.5 pb-8 pt-2 md:gap-4 ${PROPERTY_GRID_COLS_CLASS}`;
 
 const HomePropertiesGrid = ({
   data,

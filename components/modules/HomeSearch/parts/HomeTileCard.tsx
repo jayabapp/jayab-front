@@ -4,7 +4,7 @@ import type { CSSProperties } from "react";
 
 import Link from "next/link";
 
-const TILE_ICON_SIZES = "(min-width: 768px) 64px, 48px";
+const TILE_ICON_SIZES = "(min-width: 768px) 40px, 56px";
 
 const HomeTileCard = ({ href, title, imageSrc, index }: HomeTileCardProps) => (
   <Link
@@ -15,12 +15,12 @@ const HomeTileCard = ({ href, title, imageSrc, index }: HomeTileCardProps) => (
   >
     <span className="home-tile-well shrink-0">
       <ContentImage
-        width={64}
-        height={64}
+        width={56}
+        height={56}
         src={imageSrc}
         alt={title || ""}
         sizes={TILE_ICON_SIZES}
-        className="home-tile-icon size-12 object-contain md:size-16"
+        className="home-tile-icon size-7 object-contain md:size-10"
       />
     </span>
 

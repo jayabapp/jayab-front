@@ -2,12 +2,15 @@
 
 import { mapAdvisorProfileToForm } from "@features/advisors/mappers/advisor-profile.mapper";
 import { mapAdvisorFormToRequest } from "@features/advisors/mappers/advisor-profile.mapper";
+import { findMissingAdvisorField } from "@features/advisors/mappers/advisor-profile.mapper";
 import { useUpsertAdvisorProfile } from "@features/advisors/hooks/useUpsertAdvisorProfile";
 import type { AdvisorProfileFormProps } from "@/types/components/modules/advisors";
 import type { AdvisorFormBodyProps } from "@/types/components/modules/advisors";
 import { useAdvisorProfile } from "@features/advisors/hooks/useAdvisorProfile";
+import { normalizeApiError } from "@/lib/api/api-error";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
+import { toast } from "sonner";
 
 import AdvisorSpecialFields from "./parts/AdvisorSpecialFields.client";
 import AdvisorProfileFormSkeleton from "./AdvisorProfileFormSkeleton";
@@ -27,11 +30,19 @@ const AdvisorFormBody = ({
   const { mutate, isPending } = useUpsertAdvisorProfile();
   const onSubmit = () => {
     if (isPending) return;
+
+    const missingField = findMissingAdvisorField(values);
+    if (missingField) {
+      toast.error(`لطفا فیلد «${missingField}» را تکمیل کنید.`);
+      return;
+    }
+
     mutate(mapAdvisorFormToRequest(values), {
       onSuccess: () =>
         router.replace(
           `/profile/advisor/subscription?pay_key=${subscriptionKey}`,
         ),
+      onError: (error) => toast.error(normalizeApiError(error).message),
     });
   };
 

@@ -85,7 +85,7 @@ const EditImageModal = ({
         onHide();
       }}
     >
-      <div className="relative py-20 px-4 md:p-20 w-full h-[90dvh] flex flex-col items-center justify-center">
+      <div className="relative py-4 px-4 md:p-20 w-full h-[90dvh] flex flex-col items-center justify-center">
         <div className="flex w-full   relative  h-[60dvh] items-center justify-center">
           <Cropper
             key={imageUrl}

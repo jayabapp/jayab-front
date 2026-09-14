@@ -347,8 +347,10 @@ ul {
     box-shadow 0.2s ease;
 }
 
-.glass-field:hover {
-  border-color: rgba(255, 255, 255, 0.95);
+@media (hover: hover) {
+  .glass-field:hover {
+    border-color: rgba(255, 255, 255, 0.95);
+  }
 }
 
 .glass-field:focus {
@@ -487,8 +489,13 @@ ul {
   animation: hero-clock var(--hero-interval) linear forwards;
 }
 
-.hero-slider[data-paused="true"] .hero-clock,
-.hero-slider[data-paused="true"] .hero-slide-photo {
+.hero-slider[data-paused="true"] .hero-clock {
+  animation-play-state: paused;
+}
+
+/* Hovering (or focusing) the slider only holds it from auto-advancing — the
+   photo's own zoom keeps playing, so it never visibly freezes mid-motion. */
+.hero-slider[data-slide-paused="true"] .hero-slide-photo {
   animation-play-state: paused;
 }
 
@@ -1184,20 +1191,21 @@ ul {
 }
 
 .home-tile {
-  box-shadow: 0 1px 2px 0 rgb(0 7 55 / 0.06);
-  transition:
-    transform 0.28s cubic-bezier(0.22, 1, 0.36, 1),
-    box-shadow 0.28s cubic-bezier(0.22, 1, 0.36, 1);
+  transition: transform 0.28s cubic-bezier(0.22, 1, 0.36, 1);
 }
 
-.home-tile:hover,
 .home-tile:focus-visible {
-  @apply border-brand-200 shadow-glass-sm;
+  @apply border-brand-200 outline-none ring-2 ring-brand-500/40;
   transform: translateY(-0.25rem);
 }
 
-.home-tile:focus-visible {
-  @apply outline-none ring-2 ring-brand-500/40;
+/* Touch taps report `:hover` with no pointer to ever leave, so the lift would
+   otherwise stick until the next unrelated tap. Real pointer devices only. */
+@media (hover: hover) {
+  .home-tile:hover {
+    @apply border-brand-200;
+    transform: translateY(-0.25rem);
+  }
 }
 
 .home-tile:active {

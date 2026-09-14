@@ -1,4 +1,7 @@
 import type { HomeQuickSearchProps } from "@/types/components/modules/home";
+import { HOME_TILE_DEFAULT_SLIDES_PER_VIEW } from "./tile-breakpoints";
+import { HOME_TILE_DEFAULT_SPACE_BETWEEN } from "./tile-breakpoints";
+import { HOME_TILE_BREAKPOINTS } from "./tile-breakpoints";
 
 import QuickSearchItem from "./parts/QuickSearchItem";
 import EmptyState from "@elements/EmptyState";
@@ -17,6 +20,8 @@ const MainFiltersContainer = ({
   title,
   devices,
 }: HomeQuickSearchProps) => {
+  const isCompact = !!devices?.isMobile || !!devices?.isTablet;
+
   return (
     <div
       className={` w-full noSelect   select-none   relative  rounded-20 flex gap-4 md:gap-2 flex-col items-center`}
@@ -32,30 +37,17 @@ const MainFiltersContainer = ({
       ) : (
         <Swiper
           viewportClassName="padding-x"
-          slidesPerView={!!devices?.isMobile || !!devices?.isTablet ? 4.5 : 8}
-          spaceBetween={0}
-          breakPoints={{
-            320: {
-              slidesPerView: 4.25,
-              spaceBetween: 10,
-            },
-            640: {
-              slidesPerView: 4.25,
-              spaceBetween: 10,
-            },
-            768: {
-              slidesPerView: 4.25,
-              spaceBetween: 10,
-            },
-            1024: {
-              slidesPerView: 8,
-              spaceBetween: 10,
-            },
-            1600: {
-              slidesPerView: 8,
-              spaceBetween: 10,
-            },
-          }}
+          slidesPerView={
+            isCompact
+              ? HOME_TILE_DEFAULT_SLIDES_PER_VIEW.compact
+              : HOME_TILE_DEFAULT_SLIDES_PER_VIEW.wide
+          }
+          spaceBetween={
+            isCompact
+              ? HOME_TILE_DEFAULT_SPACE_BETWEEN.compact
+              : HOME_TILE_DEFAULT_SPACE_BETWEEN.wide
+          }
+          breakPoints={HOME_TILE_BREAKPOINTS}
           options={{ align: "start", direction: "rtl", dragFree: true }}
         >
           {data?.map((i, index: number) => (

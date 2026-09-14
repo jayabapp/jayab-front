@@ -7,18 +7,16 @@ import { useHomeBanners } from "@features/home/hooks/useHomeBanners";
 import { useLoadMoreOnScroll } from "@hooks/useLoadMoreOnScroll";
 import { ServerSidePaginate } from "@elements/Pagination";
 import { BannerPosition } from "@/enum/banners.enum";
+import { GRID_CLASS } from "@/utils/constantss";
 import { BtnLoading } from "@elements/Button";
 import { useCallback } from "react";
 
-import numberWithCommas from "@/helpers/numberWithCommas";
 import EmptyState from "@elements/EmptyState";
 import _STRINGS from "@/utils/LocalStrings";
 
 const BANNER_POSITIONS = [BannerPosition.MAIN_2];
 const ITEMS_PER_BANNER = 6;
 const MAX_INLINE_BANNERS = 2;
-const GRID_CLASS =
-  "grid pb-8 pt-4 md:pt-2 px-3 lg:px-1 !overflow-hidden grid-cols-1 gap-2 md:gap-4 md:grid-cols-2 xl:grid-cols-3";
 
 const DiscoveryResults = ({
   query,
@@ -101,19 +99,6 @@ const DiscoveryResults = ({
           </button>
         </div>
       ) : null}
-      {meta?.total ? (
-        <p
-          aria-live="polite"
-          className="px-3 pt-2 text-xs text-neutral-600 lg:px-1"
-        >
-          <span className="font-bold text-neutral-900">
-            {numberWithCommas(meta.total)}
-          </span>{" "}
-          {_STRINGS.RESULTS_FOUND_PREFIX}
-        </p>
-      ) : (
-        <></>
-      )}
 
       <div
         className={`w-full transition-opacity duration-200 ${

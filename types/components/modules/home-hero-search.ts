@@ -3,7 +3,6 @@ import type { ReactNode } from "react";
 
 export type HomeHeroSearchProps = {
   isPhone?: boolean;
-  totalProperties?: number;
   variant?: "hero" | "header";
 };
 

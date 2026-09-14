@@ -2,6 +2,11 @@ const SwiperEm = dynamic(() => import("@elements/Carousel/Swiper.client"), {
   ssr: true,
 });
 
+import {
+  HOME_TILE_BREAKPOINTS,
+  HOME_TILE_DEFAULT_SLIDES_PER_VIEW,
+  HOME_TILE_DEFAULT_SPACE_BETWEEN,
+} from "./tile-breakpoints";
 import type { THomePropertyTypesProps } from "@/types/components/modules/home";
 
 import SwiperSlide from "@elements/Carousel/SwiperSlide";
@@ -13,6 +18,8 @@ const HomePropertyTypes = ({
   title,
   devices,
 }: THomePropertyTypesProps) => {
+  const isCompact = !!devices?.isMobile || !!devices?.isTablet;
+
   return (
     <div
       className={`w-full noSelect select-none gap-4 md:gap-2 relative rounded-20 lg:pt-0 flex flex-col items-start`}
@@ -22,30 +29,17 @@ const HomePropertyTypes = ({
       </p>
       <SwiperEm
         viewportClassName="  padding-x "
-        slidesPerView={!!devices?.isMobile || !!devices?.isTablet ? 4 : 8}
-        spaceBetween={2}
-        breakPoints={{
-          320: {
-            slidesPerView: 4.25,
-            spaceBetween: 10,
-          },
-          640: {
-            slidesPerView: 4.25,
-            spaceBetween: 10,
-          },
-          768: {
-            slidesPerView: 4.25,
-            spaceBetween: 10,
-          },
-          1024: {
-            slidesPerView: 8,
-            spaceBetween: 2,
-          },
-          1600: {
-            slidesPerView: 8,
-            spaceBetween: 2,
-          },
-        }}
+        slidesPerView={
+          isCompact
+            ? HOME_TILE_DEFAULT_SLIDES_PER_VIEW.compact
+            : HOME_TILE_DEFAULT_SLIDES_PER_VIEW.wide
+        }
+        spaceBetween={
+          isCompact
+            ? HOME_TILE_DEFAULT_SPACE_BETWEEN.compact
+            : HOME_TILE_DEFAULT_SPACE_BETWEEN.wide
+        }
+        breakPoints={HOME_TILE_BREAKPOINTS}
         slidesWidth={{ def: "25%", md: "10%" }}
         options={{
           align: "start",

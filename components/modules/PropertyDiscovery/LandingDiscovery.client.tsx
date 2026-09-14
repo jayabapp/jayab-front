@@ -11,9 +11,7 @@ import { SelectedFiltersBar } from "@modules/PropertySearchFilters";
 import { PropertySortMenu } from "@modules/PropertySearchFilters";
 import { FilterApplyBar } from "@modules/PropertySearchFilters";
 import { CityModal, RegionModal } from "@modules/CitySelector";
-import { CitySelectorTitle } from "@modules/CitySelector";
 import { useEffect, useMemo, useState } from "react";
-import { useCitiesStore } from "@/store";
 
 import SingleProductBreadCrumb from "@elements/Breadcrumbs/SingleProductBreadcrumb.client";
 import DiscoveryFilterModal from "./parts/DiscoveryFilterModal.client";
@@ -35,25 +33,11 @@ const LandingDiscovery = ({ devices, landing }: LandingDiscoveryProps) => {
   const [showRegions, setShowRegions] = useState(false);
   const [cityTitle, setCityTitle] = useState("");
   const [showShadow, setShowShadow] = useState(false);
-  const locationsData = useCitiesStore((state) => state.locationsData);
 
   const defaults = useMemo(() => landingQueryDefaults(landing), [landing]);
   const { applyFilters, filters, queries, resetDraft, setFilters } =
     usePropertyDiscoveryFilters({ defaults });
   const { data: propertyTypes } = usePropertyOptionGroups();
-  const selectedLocationTitle = useMemo(() => {
-    if (landing?.location)
-      return landing.location.level === "province"
-        ? `${_STRINGS.PROVINCE} ${landing.location.title}`
-        : landing.location.title;
-    const province = locationsData?.provinces?.[0];
-    if (province?.title) return `${_STRINGS.PROVINCE} ${province.title}`;
-    return (
-      locationsData?.regions?.[0]?.title ||
-      locationsData?.cities?.[0]?.title ||
-      ""
-    );
-  }, [landing?.location, locationsData]);
 
   const breadCrumbs = useMemo(
     () => [
@@ -153,13 +137,6 @@ const LandingDiscovery = ({ devices, landing }: LandingDiscoveryProps) => {
                     containerClass="!w-full lg:!w-fit"
                   />
                 </div>
-                <CitySelectorTitle
-                  queries={queries}
-                  setShowRegions={setShowRegions}
-                  cityWithRegions={cityWithRegions}
-                  cb={() => setShowCityModal(true)}
-                  title={cityTitle || selectedLocationTitle}
-                />
                 <SelectedFiltersBar
                   query={queries}
                   setShowRegions={setShowRegions}

@@ -1,11 +1,11 @@
 import type { ProfileLayoutProps } from "@/types/components/layouts/main-layout";
 import { Suspense } from "react";
 
+import AuroraBackdrop from "./AuroraBackdrop.client";
+
 const ProfileLayout = ({ sidebar, children }: ProfileLayoutProps) => (
   <>
-    {/* Decorative only, and fixed, so it colours the whole profile area without
-        wrapping the grid in an element whose overflow could clip a dropdown. */}
-    <div aria-hidden className="aurora-layer" />
+    <AuroraBackdrop />
 
     <div className="profile-grid-part relative z-1 grid-cols-12 w-full px-3 md:px-3 lg:px-4 2xl:px-[10%] mx-auto gap-3 h-full">
       <div className="hidden lg:flex col-span-3 overflow-scroll rounded-10 text-center h-full profile-py-28">

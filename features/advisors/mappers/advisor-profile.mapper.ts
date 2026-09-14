@@ -4,6 +4,8 @@ import type {
   CreateAdvisorDto,
 } from "@/types/features/advisors";
 
+import _STRINGS from "@/utils/LocalStrings";
+
 export const mapAdvisorProfileToForm = (
   profile: AdvisorProfileDto | null | undefined,
   isSpecial: boolean,
@@ -20,6 +22,24 @@ export const mapAdvisorProfileToForm = (
   tel: profile?.tel ?? "",
   province: profile?.cities?.[0]?.parent_id ?? "",
 });
+
+const isBlank = (value: string | number | null | undefined) =>
+  !`${value ?? ""}`.trim();
+
+export const findMissingAdvisorField = (
+  values: AdvisorFormValues,
+): string | null => {
+  if (isBlank(values.full_name)) return _STRINGS.FULL_NAME;
+  if (!values.is_special) return null;
+
+  if (isBlank(values.national_code)) return _STRINGS.NATIONAL_CODE;
+  if (isBlank(values.tel)) return _STRINGS.TELEPHONE_NUMBER;
+  if (isBlank(values.province)) return _STRINGS.PROVINCE;
+  if (isBlank(values.address)) return _STRINGS.STATIONERY_PLACE;
+  if (!values.document_image) return _STRINGS.UPLOAD_RENTAL_DOC;
+  if (!values.national_card_image) return _STRINGS.NATIONAL_CARD_IMAGE;
+  return null;
+};
 
 export const mapAdvisorFormToRequest = (
   values: AdvisorFormValues,

@@ -3,7 +3,6 @@
 import type { PropertyCardLinkProps } from "@/types/components/modules/property-grid";
 import { useStoreParams } from "@/store";
 
-import LinkPending from "@elements/LinkPending";
 import Link from "next/link";
 
 const PropertyCardLink = ({
@@ -20,7 +19,6 @@ const PropertyCardLink = ({
       onClick={() => useStoreParams.setState({ getBackHome: false })}
     >
       {children}
-      <LinkPending />
     </Link>
   );
 };

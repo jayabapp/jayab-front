@@ -57,11 +57,11 @@ export const PrevButton: React.FC<CarouselButtonProps> = (props) => {
       {...restProps}
     >
       <ContentImage
-        width={24}
-        height={24}
+        width={18}
+        height={18}
         alt="chvronSwiper"
         src="/assets/icons/shared/chevron.svg"
-        className="w-6 h-6  rotate-90   select-none group-hover:invert"
+        className="w-[1.125rem] h-[1.125rem]  rotate-90   select-none group-hover:invert"
       />
     </button>
   );
@@ -77,11 +77,11 @@ export const NextButton: React.FC<CarouselButtonProps> = (props) => {
       {...restProps}
     >
       <ContentImage
-        width={24}
-        height={24}
+        width={18}
+        height={18}
         alt="chvronSwiper"
         src="/assets/icons/shared/chevron.svg"
-        className="w-6 h-6  -rotate-90   select-none group-hover:invert"
+        className="w-[1.125rem] h-[1.125rem]  -rotate-90   select-none group-hover:invert"
       />
     </button>
   );

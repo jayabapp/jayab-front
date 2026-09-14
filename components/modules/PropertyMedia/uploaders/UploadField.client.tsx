@@ -140,11 +140,11 @@ const MainUploader = ({
             }  `}
           >
             <Image
-              className="w-8 opacity-70"
-              src="/assets/images/uploader/uploader_placeholder.png"
-              alt="انتخاب تصویر"
               width={32}
               height={32}
+              alt="انتخاب تصویر"
+              className="w-8 opacity-70"
+              src="/assets/images/uploader/uploader_placeholder.png"
             />
             {title && <p className=" text-sm  opacity-70 ">{title}</p>}
             {loading ? (
@@ -167,6 +167,10 @@ const MainUploader = ({
           >
             <div
               onClick={() => {
+                if (showCamera && !onDelete) {
+                  if (!disabled) imagePickerRef?.current?.click();
+                  return;
+                }
                 setShow(true);
                 setShowImage(
                   typeof item === "string" ? item : getUploadedImageUrl(item),
