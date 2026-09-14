@@ -1,3 +1,5 @@
+"use client";
+
 import type { HomeCitiesProps } from "@/types/components/modules/home";
 import { useSyncedRowScroll } from "@/hooks/useSyncedRowScroll";
 
