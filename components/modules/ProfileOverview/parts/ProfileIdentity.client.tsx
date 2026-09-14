@@ -11,7 +11,7 @@ const UploadField = dynamic(() =>
 );
 
 const AVATAR_CLASSES = {
-  imageClass: " !rounded-full ",
+  imageClass: " !rounded-full !h-20 !w-20 !max-w-none object-cover ",
   secontParentClass: "!rounded-full   !aspect-auto ",
   sizeClass: " !rounded-full !w-20 !h-20",
 };

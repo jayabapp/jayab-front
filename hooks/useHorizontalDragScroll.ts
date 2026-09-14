@@ -47,12 +47,17 @@ export const useHorizontalDragScroll = <T extends HTMLElement>() => {
       }
     };
 
+    const onDragStart = (event: DragEvent) => {
+      if (isDown) event.preventDefault();
+    };
+
     el.addEventListener("wheel", onWheel, { passive: false });
     el.addEventListener("pointerdown", onPointerDown);
     el.addEventListener("pointermove", onPointerMove);
     el.addEventListener("pointerup", endDrag);
     el.addEventListener("pointerleave", endDrag);
     el.addEventListener("click", onClickCapture, true);
+    el.addEventListener("dragstart", onDragStart);
 
     return () => {
       el.removeEventListener("wheel", onWheel);
@@ -61,6 +66,7 @@ export const useHorizontalDragScroll = <T extends HTMLElement>() => {
       el.removeEventListener("pointerup", endDrag);
       el.removeEventListener("pointerleave", endDrag);
       el.removeEventListener("click", onClickCapture, true);
+      el.removeEventListener("dragstart", onDragStart);
     };
   }, []);
 
