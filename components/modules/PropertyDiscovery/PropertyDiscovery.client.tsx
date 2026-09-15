@@ -3,6 +3,7 @@
 import { usePropertyDiscoveryFilters } from "@features/properties/hooks/usePropertyDiscoveryFilters";
 import { usePropertyOptionGroups } from "@features/properties/hooks/usePropertyOptionGroups";
 import type { PropertyDiscoveryProps } from "@/types/components/modules/property-discovery";
+import { useUrlCityWithRegions } from "@features/cities/hooks/useUrlCityWithRegions";
 import type { ChildCities } from "@/types/components/modules/property-discovery";
 import { SpecialFilterButtons } from "@modules/PropertySearchFilters";
 import { PropertyFilterForm } from "@modules/PropertySearchFilters";
@@ -26,9 +27,8 @@ const BREAD_CRUMBS = [
 const SIDEBAR_HEIGHT = "calc(100dvh - 90px)";
 
 const PropertyDiscovery = ({ devices }: PropertyDiscoveryProps) => {
-  const [cityWithRegions, setCityWithRegions] = useState<ChildCities | null>(
-    null,
-  );
+  const [modalCityWithRegions, setCityWithRegions] =
+    useState<ChildCities | null>(null);
   const [filterModalShow, setFilterModalShow] = useState(false);
   const [showCityModal, setShowCityModal] = useState(false);
   const [showRegions, setShowRegions] = useState(false);
@@ -43,6 +43,8 @@ const PropertyDiscovery = ({ devices }: PropertyDiscoveryProps) => {
     setFilters,
   } = usePropertyDiscoveryFilters();
   const { data: propertyTypes } = usePropertyOptionGroups();
+  const urlCityWithRegions = useUrlCityWithRegions(queries);
+  const cityWithRegions = modalCityWithRegions ?? urlCityWithRegions;
   const { topHeaderVisible } = useStoreParams((state: any) => state);
 
   const onApplyFilters = () => {

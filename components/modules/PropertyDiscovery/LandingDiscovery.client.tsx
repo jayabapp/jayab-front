@@ -1,8 +1,14 @@
 "use client";
 
+import {
+  hasLocationQuery,
+  isSameLocationPath,
+  pickLocationQuery,
+} from "@features/cities/lib/location-label";
 import { usePropertyDiscoveryFilters } from "@features/properties/hooks/usePropertyDiscoveryFilters";
 import { usePropertyOptionGroups } from "@features/properties/hooks/usePropertyOptionGroups";
 import type { LandingDiscoveryProps } from "@/types/components/modules/property-discovery";
+import { useUrlCityWithRegions } from "@features/cities/hooks/useUrlCityWithRegions";
 import type { ChildCities } from "@/types/components/modules/property-discovery";
 import { landingQueryDefaults } from "@features/properties/lib/landing-filters";
 import { SpecialFilterButtons } from "@modules/PropertySearchFilters";
@@ -12,6 +18,8 @@ import { PropertySortMenu } from "@modules/PropertySearchFilters";
 import { FilterApplyBar } from "@modules/PropertySearchFilters";
 import { CityModal, RegionModal } from "@modules/CitySelector";
 import { useEffect, useMemo, useState } from "react";
+import { usePathname } from "next/navigation";
+import { useCitiesStore } from "@/store";
 
 import SingleProductBreadCrumb from "@elements/Breadcrumbs/SingleProductBreadcrumb.client";
 import DiscoveryFilterModal from "./parts/DiscoveryFilterModal.client";
@@ -25,9 +33,8 @@ const SHADOW_SCROLL_THRESHOLD = 20;
 const SCROLL_THROTTLE_MS = 100;
 
 const LandingDiscovery = ({ devices, landing }: LandingDiscoveryProps) => {
-  const [cityWithRegions, setCityWithRegions] = useState<ChildCities | null>(
-    null,
-  );
+  const [modalCityWithRegions, setCityWithRegions] =
+    useState<ChildCities | null>(null);
   const [filterModalShow, setFilterModalShow] = useState(false);
   const [showCityModal, setShowCityModal] = useState(false);
   const [showRegions, setShowRegions] = useState(false);
@@ -38,6 +45,31 @@ const LandingDiscovery = ({ devices, landing }: LandingDiscoveryProps) => {
   const { applyFilters, filters, queries, resetDraft, setFilters } =
     usePropertyDiscoveryFilters({ defaults });
   const { data: propertyTypes } = usePropertyOptionGroups();
+  const urlCityWithRegions = useUrlCityWithRegions(queries);
+  const cityWithRegions = modalCityWithRegions ?? urlCityWithRegions;
+  const pathname = usePathname();
+
+  useEffect(() => {
+    const location = pickLocationQuery({
+      cities: defaults.cities,
+      provinces: defaults.provinces ?? defaults.province_id,
+    });
+    if (!hasLocationQuery(location)) return;
+    useCitiesStore.setState((state) => {
+      const isSamePage = isSameLocationPath(
+        state.locationsData?.path,
+        pathname,
+      );
+      if (isSamePage && state.locationsData?.query) return state;
+      return {
+        locationsData: {
+          ...(isSamePage ? state.locationsData : {}),
+          path: pathname,
+          query: location,
+        },
+      };
+    });
+  }, [defaults.cities, defaults.province_id, defaults.provinces, pathname]);
 
   const breadCrumbs = useMemo(
     () => [

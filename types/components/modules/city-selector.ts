@@ -37,6 +37,8 @@ export type RegionButtonProps = {
   containerClass?: string;
   onClearRegions: () => void;
   regionsIds?: string[];
+  /** Names of the selected regions, when known, so a single one can be shown by name. */
+  regionTitles?: string[];
   setShowRegions: Dispatch<SetStateAction<boolean>>;
 };
 

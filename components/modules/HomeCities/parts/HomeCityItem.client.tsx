@@ -10,7 +10,10 @@ import Link from "next/link";
 const HomeCityItem = ({ item }: { item: HomeLandingDto }) => {
   const onClickCB = () => {
     useCitiesStore.setState({
-      locationsData: {},
+      locationsData: {
+        label: item?.title,
+        path: `/${`${item?.url ?? ""}`.replace(/^\/+/, "")}`,
+      },
     });
   };
 

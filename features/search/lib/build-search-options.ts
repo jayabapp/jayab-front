@@ -12,11 +12,6 @@ const PLACE_BADGE: Record<string, string> = {
   [CitiesSuggestTypes.REGION]: _STRINGS.LOCAL,
 };
 
-/**
- * What sits under the title. A province has nothing above it, a city names its
- * province, and a region names its city and province — so two rows reading
- * "تهران" are told apart by the line beneath them as well as by the badge.
- */
 const placeHint = (city: CitySuggestDto) => {
   if (city?.level === CitiesSuggestTypes.PROVINCE) return "";
   if (city?.level === CitiesSuggestTypes.REGION)
@@ -34,8 +29,7 @@ const placeTarget = (city: CitySuggestDto) => {
     };
   if (city?.level === CitiesSuggestTypes.REGION)
     return {
-      href:
-        city.target || `/rooms?cities=${city?.parent_id}&regions=${city?.id}`,
+      href: `/rooms?cities=${city?.parent_id}&regions=${city?.id}`,
       locations: {
         cities: [{ id: city?.parent_id, title: city?.parent_title }],
         regions: [city],
@@ -63,6 +57,8 @@ export const buildSearchOptions = (
     id: `property-${property?.id}`,
     kind: "property",
     label: property?.title ?? "",
+    code: property?.code,
+    hint: property?.code ? `${_STRINGS.CODE} ${property.code}` : undefined,
     href: `/rooms/${property?.slug}`,
   })),
   ...(data?.landings ?? []).map<SearchOption>((landing) => ({

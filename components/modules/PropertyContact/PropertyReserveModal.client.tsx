@@ -3,7 +3,10 @@
 import { useReservationAvailability } from "@features/reservations/hooks/useReservationAvailability";
 import type { PropertyReserveModalProps } from "@/types/components/modules/property-contact";
 import { SingleSelectPopUpSelect as SinglePopUpSelect } from "@elements/Form";
+import { guestsFromQuery } from "@features/reservations/lib/stay-from-query";
+import { stayFromQuery } from "@features/reservations/lib/stay-from-query";
 import { ModalBottomSheet, ModalHeaderPart } from "@elements/Modal";
+import { useSearchParams } from "next/navigation";
 import { useState } from "react";
 
 import ReservationDatePicker from "./parts/ReservationDatePicker/ReservationDatePicker.client";
@@ -21,8 +24,17 @@ const PropertyReserveModal = ({
   setShow,
   property,
 }: PropertyReserveModalProps) => {
-  const [dates, setDates] = useState<{ start?: Date; end?: Date }>();
-  const [count, setCount] = useState<number | string>("");
+  const searchParams = useSearchParams();
+  const [dates, setDates] = useState<{ start?: Date; end?: Date } | undefined>(
+    () =>
+      stayFromQuery(
+        searchParams?.get("checkin"),
+        searchParams?.get("checkout"),
+      ),
+  );
+  const [count, setCount] = useState<number | string>(() =>
+    guestsFromQuery(searchParams?.get("total_guests"), property?.maxCapacity),
+  );
   const [showRequest, setShowRequest] = useState(false);
 
   const guestOptions = [

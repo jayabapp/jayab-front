@@ -1,18 +1,14 @@
 "use client";
 
+import { buildLocationLabel } from "@features/cities/lib/location-label";
+import { pickLocationQuery } from "@features/cities/lib/location-label";
 import { useSearchHistory } from "@features/search/hooks/useSearchHistory";
-import type { SearchOption } from "@/types/features/search";
-import { useRouter } from "next/navigation";
-import { useCallback } from "react";
 import { useCitiesStore } from "@/store";
+import { useCallback } from "react";
+import { useRouter } from "next/navigation";
 
-/**
- * Opening a suggestion — from a click or from Enter on the keyboard cursor.
- *
- * It lives in one place because the two paths must not drift: remembering the
- * term, seeding the location chips and closing the panel are as much a part of
- * "choosing a suggestion" as the navigation is.
- */
+import type { SearchOption } from "@/types/features/search";
+
 export const useSearchOptionPick = (term: string, close: () => void) => {
   const router = useRouter();
   const { remember } = useSearchHistory();
@@ -20,12 +16,20 @@ export const useSearchOptionPick = (term: string, close: () => void) => {
   return useCallback(
     (option?: SearchOption) => {
       if (!option) return;
-
       remember(term);
-      // A place also seeds the chips, so the listing page can show what it
-      // filtered by without resolving the ids out of the URL again.
       if (option.kind === "place") {
-        useCitiesStore.setState({ locationsData: option.locations ?? {} });
+        const locations = option.locations ?? {};
+        const [path, search = ""] = option.href.split("?");
+        useCitiesStore.setState({
+          locationsData: {
+            ...locations,
+            label: buildLocationLabel(locations),
+            path,
+            query: pickLocationQuery(
+              Object.fromEntries(new URLSearchParams(search)),
+            ),
+          },
+        });
       }
       close();
       router.push(option.href);

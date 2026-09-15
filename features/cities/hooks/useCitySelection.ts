@@ -10,6 +10,8 @@ import {
 } from "@features/cities/lib/city-selection";
 import { cancelPropertyDiscoveryQueries } from "@features/properties/api/property-discovery.cache";
 import { usePathname, useRouter } from "next/navigation";
+import { buildLocationLabel } from "@features/cities/lib/location-label";
+import { pickLocationQuery } from "@features/cities/lib/location-label";
 import { useMemo, useState } from "react";
 import { useQueryClient } from "@tanstack/react-query";
 import { useCitiesStore } from "@/store";
@@ -154,10 +156,11 @@ export const useCitySelection = ({
         ? [Number(body.provinces)].filter(Boolean)
         : [];
 
-    if (
+    const isSinglePlace =
       (cityIds.length === 1 && provinceIds.length === 0) ||
-      (provinceIds.length === 1 && cityIds.length === 0)
-    ) {
+      (provinceIds.length === 1 && cityIds.length === 0);
+
+    if (isSinglePlace && isEmpty(body.regions)) {
       try {
         const landing = await HomeService.ResolveLocationLanding({
           city_id: cityIds[0],
@@ -168,9 +171,23 @@ export const useCitySelection = ({
           delete landingQuery.cities;
           delete landingQuery.provinces;
           delete landingQuery.regions;
-          router.push(
-            `/${landing.url.replace(/^\/+/, "")}?${queryBuilder(landingQuery)}`,
-          );
+          const path = `/${landing.url.replace(/^\/+/, "")}`;
+          useCitiesStore.setState({
+            locationsData: {
+              cities: storedCities,
+              provinces: storedProvinces,
+              label: buildLocationLabel({
+                cities: storedCities,
+                provinces: storedProvinces,
+              }),
+              path,
+              query: pickLocationQuery({
+                cities: cityIds,
+                provinces: provinceIds,
+              }),
+            },
+          });
+          router.push(`${path}?${queryBuilder(landingQuery)}`);
           return;
         }
       } catch {
@@ -190,16 +207,16 @@ export const useCitySelection = ({
 
   return {
     cities,
-    clearSelected,
+    search,
     isLoading,
     provinces,
     regionCity,
+    clearSelected,
     removeProvince,
-    search,
     selectedCities,
     selectedProvince,
-    setSearch: (value: string) => patchDraft({ search: value }),
     setSelectedCities,
+    setSearch: (value: string) => patchDraft({ search: value }),
     setSelectedProvince: (province: NewCitiesListDto | null) =>
       patchDraft({ province }),
     submit,

@@ -1,34 +1,46 @@
 "use client";
 
 import { usePathname, useRouter } from "next/navigation";
-import { parseIdList } from "@features/cities/lib/city-selection";
 import { useCitiesStore } from "@/store";
+import { parseIdList } from "@features/cities/lib/city-selection";
 
 import queryBuilder from "@/helpers/queryBuilder";
 import useQueryGet from "@/helpers/queryGet";
 import isEmpty from "lodash/isEmpty";
 
-type LocationEntry = { id: number | string; title?: string };
+type LocationEntry = {
+  title?: string;
+  id: number | string;
+  parent_id?: number | string | null;
+};
+
 type LocationKey = "cities" | "provinces" | "regions";
 
-/**
- * The location chips shown inside the search panel. The chip list is whatever the
- * cities store holds; toggling a chip rewrites the matching URL key and prunes the
- * store to match, so the store and the URL never disagree.
- */
 export const useSelectedLocationFilters = (onNavigate?: () => void) => {
   const router = useRouter();
   const pathname = usePathname();
   const queries = useQueryGet<Record<string, string>>();
   const { locationsData } = useCitiesStore();
+  const currentRegionIds = parseIdList(queries?.regions);
+  const regionsUnder = (cityIds: string[]) =>
+    ((locationsData?.regions ?? []) as LocationEntry[]).filter(
+      (region) =>
+        cityIds.includes(`${region?.parent_id}`) &&
+        currentRegionIds.includes(`${region?.id}`),
+    );
 
   const applyQuery = (ids: string[], key: LocationKey) => {
     const body: Record<string, unknown> = { ...queries, [key]: ids };
     if (isEmpty(ids)) delete body[key];
     delete body.page;
-    // Regions only make sense under the city they belong to, so any change to the
-    // city or province set drops them instead of leaving an orphaned filter.
-    if (key !== "regions") delete body.regions;
+    if (key !== "regions") {
+      const keptRegions =
+        key === "cities"
+          ? regionsUnder(ids).map((region) => `${region.id}`)
+          : [];
+      if (keptRegions.length > 0) body.regions = keptRegions;
+      else delete body.regions;
+    }
     onNavigate?.();
     router.replace(`${pathname}?${queryBuilder(body)}`);
   };
@@ -51,7 +63,7 @@ export const useSelectedLocationFilters = (onNavigate?: () => void) => {
           ? { ...locationsData, regions: nextStored }
           : {
               ...locationsData,
-              regions: undefined,
+              regions: key === "cities" ? regionsUnder(next) : undefined,
               [key]: nextStored,
             },
     });

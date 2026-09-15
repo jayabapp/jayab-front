@@ -1,7 +1,9 @@
 import { normalizePersianSearchText } from "@features/search/lib/normalize-persian-search-text";
 
-import type { ChildCities, NewCitiesListDto } from "@/api_services/city/city.interface";
-import type { CityQueryValues, CitySelectionQuery } from "@/types/features/cities";
+import type { CitySelectionQuery } from "@/types/features/cities";
+import type { NewCitiesListDto } from "@/api_services/city/city.interface";
+import type { CityQueryValues } from "@/types/features/cities";
+import type { ChildCities } from "@/api_services/city/city.interface";
 
 import _STRINGS from "@/utils/LocalStrings";
 import isEmpty from "lodash/isEmpty";
@@ -12,7 +14,6 @@ export const parseIdList = (value?: string | number | null): string[] =>
     .map((entry) => entry.trim())
     .filter(Boolean);
 
-/** Cities named directly by the `cities` query key, resolved against the loaded tree. */
 export const resolveQueryCities = (
   provinces: NewCitiesListDto[] | undefined,
   citiesQuery?: string | number | null,
@@ -24,7 +25,6 @@ export const resolveQueryCities = (
     .filter((city) => ids.includes(`${city.id}`));
 };
 
-/** Every child city of the provinces named by the `provinces` query key. */
 export const resolveQueryProvinceCities = (
   provinces: NewCitiesListDto[] | undefined,
   provincesQuery?: string | number | null,
@@ -70,31 +70,19 @@ export const hasMatchingChild = (
   );
 };
 
-/**
- * The label the city button shows. It is derived from the committed URL selection
- * — never from the in-modal draft — so closing the modal without submitting leaves
- * the trigger label untouched.
- */
 export const buildCitySelectionTitle = (
   queryProvinces: NewCitiesListDto[],
   queryCities: ChildCities[],
 ): string => {
-  if (queryProvinces.length === 1 && isEmpty(queryCities)) {
+  if (queryProvinces.length === 1 && isEmpty(queryCities))
     return `${_STRINGS.PROVINCE} ${queryProvinces[0]?.title}`;
-  }
-  if (queryCities.length === 1 && isEmpty(queryProvinces)) {
+  if (queryCities.length === 1 && isEmpty(queryProvinces))
     return `${queryCities[0]?.title}`;
-  }
-  if (!isEmpty(queryProvinces) || !isEmpty(queryCities)) {
+  if (!isEmpty(queryProvinces) || !isEmpty(queryCities))
     return `${queryCities.length + queryProvinces.length} ${_STRINGS.CITY}`;
-  }
   return "";
 };
 
-/**
- * Collapses the selected cities back into the narrowest URL shape: a province id
- * whenever every one of its cities is selected, individual city ids otherwise.
- */
 export const buildCitySelectionQuery = (
   provinces: NewCitiesListDto[] | undefined,
   selectedCities: ChildCities[],
@@ -104,7 +92,6 @@ export const buildCitySelectionQuery = (
   const provinceList = provinces ?? [];
   const isSelected = (city: { id: number }) =>
     selectedCities.some((selected) => selected?.id === city?.id);
-
   const touchedProvinces = provinceList
     .filter((province) => province?.child?.some(isSelected))
     .map((province) => ({
@@ -122,7 +109,9 @@ export const buildCitySelectionQuery = (
 
   if (fullySelectedProvinces.length > 0) {
     storedProvinces = fullySelectedProvinces;
-    const fullySelectedIds = fullySelectedProvinces.map((province) => province?.id);
+    const fullySelectedIds = fullySelectedProvinces.map(
+      (province) => province?.id,
+    );
     const remainingCities = touchedProvinces
       .filter((province) => !fullySelectedIds.includes(province?.id))
       .flatMap((province) => province?.child ?? []);
@@ -136,7 +125,14 @@ export const buildCitySelectionQuery = (
   }
 
   delete body.page;
-  delete body.regions;
-
+  const keptRegions = parseIdList(
+    (baseQuery as Record<string, unknown>)?.regions as string | undefined,
+  ).filter((id) =>
+    selectedCities.some((city) =>
+      city?.child?.some((region) => `${region?.id}` === id),
+    ),
+  );
+  if (keptRegions.length > 0) body.regions = keptRegions;
+  else delete body.regions;
   return { body, storedCities, storedProvinces };
 };

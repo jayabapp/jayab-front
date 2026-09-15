@@ -1,5 +1,6 @@
 "use client";
 
+import { CLEARED_DRAFT_TARGET, searchOptionToDraft } from "@features/search/lib/search-option-draft";
 import type { HomeHeroSearchProps } from "@/types/components/modules/home-hero-search";
 import { useHeroSearch } from "@features/search/hooks/useHeroSearch";
 import { HeroDestinationSearch } from "@modules/Search";
@@ -77,23 +78,10 @@ const HomeHeroSearch = ({
             label={_STRINGS.HERO_WHERE_LABEL}
             value={draft.cityTitle || draft.q}
             onTermChange={(term) =>
-              patch({
-                q: term,
-                cities: undefined,
-                cityTitle: undefined,
-                landingUrl: undefined,
-              })
+              patch({ ...CLEARED_DRAFT_TARGET, q: term, cityTitle: undefined })
             }
             onPickPlace={(option) => {
-              const cityId = option.locations?.cities?.[0]?.id;
-              patch({
-                q: option.label,
-                cityTitle: option.label,
-                cities: cityId ? String(cityId) : undefined,
-                landingUrl: option.href.startsWith("/rooms")
-                  ? undefined
-                  : option.href,
-              });
+              patch(searchOptionToDraft(option));
             }}
           />
 

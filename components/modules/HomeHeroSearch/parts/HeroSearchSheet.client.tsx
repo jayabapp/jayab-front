@@ -1,15 +1,13 @@
 "use client";
 
-import type {
-  HeroSearchSheetProps,
-  HeroSearchStep,
-} from "@/types/components/modules/home-hero-search";
-import {
-  SearchDateRangePicker,
-  updateDateRange,
-} from "@modules/PropertySearchFilters";
+import type { HeroSearchSheetProps } from "@/types/components/modules/home-hero-search";
+import type { HeroSearchStep } from "@/types/components/modules/home-hero-search";
+import { CLEARED_DRAFT_TARGET } from "@features/search/lib/search-option-draft";
+import { searchOptionToDraft } from "@features/search/lib/search-option-draft";
+import { SearchDateRangePicker } from "@modules/PropertySearchFilters";
 import { useOverlayBackButton } from "@hooks/useOverlayBackButton";
 import { useCallback, useEffect, useMemo, useState } from "react";
+import { updateDateRange } from "@modules/PropertySearchFilters";
 import { useBodyScrollLock } from "@hooks/useBodyScrollLock";
 import { SearchInlinePanel } from "@modules/Search";
 import { ContentImage } from "@elements/Image";
@@ -145,22 +143,13 @@ const HeroSearchSheet = ({
               isActive={step === "where"}
               onTermChange={(term) =>
                 onPatch({
+                  ...CLEARED_DRAFT_TARGET,
                   q: term,
-                  cities: undefined,
                   cityTitle: undefined,
-                  landingUrl: undefined,
                 })
               }
               onPickPlace={(option) => {
-                const cityId = option.locations?.cities?.[0]?.id;
-                onPatch({
-                  q: option.label,
-                  cityTitle: option.label,
-                  cities: cityId ? String(cityId) : undefined,
-                  landingUrl: option.href.startsWith("/rooms")
-                    ? undefined
-                    : option.href,
-                });
+                onPatch(searchOptionToDraft(option));
                 openStep("dates");
               }}
               onSubmitTerm={() => openStep("dates")}

@@ -149,6 +149,14 @@ export class HomeService {
           client_query: { [key: string]: any };
           cities_list: CitySuggestDto[];
           landing_url?: string | null;
+          matched_order?: string[];
+          property?: {
+            id: number;
+            title: string | null;
+            slug: string | null;
+            code: string;
+          } | null;
+          ignored_terms?: string[];
         }
       >(
         "GET",

@@ -1,11 +1,15 @@
 "use client";
 
 import type { SelectedFiltersBarProps } from "@/types/components/modules/property-search-filters";
+import { useDiscoveryQueryReplace } from "@features/properties/hooks/useDiscoveryQueryReplace";
+import { FILTER_ORDER_PARAM } from "@features/properties/lib/filter-order";
+import { parseFilterOrder } from "@features/properties/lib/filter-order";
+import { filterOrderRank } from "@features/properties/lib/filter-order";
 import { parseIdList } from "@features/cities/lib/city-selection";
 import { sortDynamicFiltersInOrder } from "@/utils/constantss";
-import { usePathname, useRouter } from "next/navigation";
 import { RegionButton } from "@modules/CitySelector";
 import { ContentImage } from "@elements/Image";
+import type { ReactNode } from "react";
 import { useCallback } from "react";
 
 import SelectiveFilterChip from "./parts/SelectiveFilterChip.client";
@@ -13,9 +17,7 @@ import RemovableFilterChip from "./parts/RemovableFilterChip";
 import numberWithCommas from "@/helpers/numberWithCommas";
 import SwiperSlide from "@elements/Carousel/SwiperSlide";
 import Swiper from "@elements/Carousel/Swiper.client";
-import queryBuilder from "@/helpers/queryBuilder";
 import _STRINGS from "@/utils/LocalStrings";
-import indexOf from "lodash/indexOf";
 import isEmpty from "lodash/isEmpty";
 import moment from "moment-jalaali";
 
@@ -47,106 +49,116 @@ const SelectedFiltersBar = ({
   setShowRegions,
   setFilterModalShow,
 }: SelectedFiltersBarProps) => {
-  const router = useRouter();
-  const pathname = usePathname();
+  const replaceQuery = useDiscoveryQueryReplace();
   const regionsIds = parseIdList(query?.regions);
+  const filterOrder = parseFilterOrder(query?.[FILTER_ORDER_PARAM]);
 
   const removeFiltersKeys = useCallback(
     (keys: string[]) => {
       const body: Record<string, unknown> = { ...query };
       for (const key of keys) delete body[key];
-      delete body.page;
-      router.replace(`${pathname}?${queryBuilder(body)}`);
+      replaceQuery(body);
     },
-    [pathname, query, router],
+    [query, replaceQuery],
   );
 
   const setFilterValue = (key: string, value: unknown) => {
     const body: Record<string, unknown> = { ...query };
     if (value) body[key] = value;
     else delete body[key];
-    delete body.page;
-    router.replace(`${pathname}?${queryBuilder(body)}`);
+    replaceQuery(body);
   };
 
   const dynamicKeys = Object.keys(propertyTypes)
     .filter((key) => !["PARTY", "PET"].includes(key))
-    .sort((left, right) =>
-      indexOf(sortDynamicFiltersInOrder, left) >
-      indexOf(sortDynamicFiltersInOrder, right)
-        ? 1
-        : -1,
+    .sort(
+      (left, right) =>
+        filterOrderRank(sortDynamicFiltersInOrder, left) -
+        filterOrderRank(sortDynamicFiltersInOrder, right),
     );
 
-  const renderDynamicChip = (key: string) => (
-    <SwiperSlide className="!w-auto" key={`dynamic-${key}`}>
-      <SelectiveFilterChip
-        queryKey={key.toLowerCase()}
-        removeFiltersKeys={removeFiltersKeys}
-        list={propertyTypes?.[key.toUpperCase()]}
-        title={(_STRINGS as Record<string, string>)?.[key.toUpperCase()] || ""}
-      />
-    </SwiperSlide>
-  );
+  const regionTitles = (cityWithRegions?.child ?? [])
+    .filter((region) => regionsIds.includes(`${region?.id}`))
+    .map((region) => region?.title)
+    .filter((title): title is string => !!title);
 
-  return (
-    <Swiper autoFit parentClass={containerClass}>
-      <SwiperSlide className="z-5 flex lg:hidden !w-auto">
-        <button
-          type="button"
-          onClick={() => setFilterModalShow(true)}
-          className="col-span-3 flex w-fit px-3 h-[1.625rem] rounded-full bg-brand-600 items-center gap-2"
-        >
-          <ContentImage
-            alt=""
-            width={12}
-            height={12}
-            className="cursor-pointer w-3 h-3 shrink-0"
-            src="/assets/icons/property/white_filter_icon.svg"
-          />
-          <span className="text-white text-xs">{_STRINGS.OTHER_FILTERS}</span>
-        </button>
+  const renderDynamicChip = (key: string) => ({
+    key: key.toLowerCase(),
+    node: (
+      <SwiperSlide className="!w-auto" key={`dynamic-${key}`}>
+        <SelectiveFilterChip
+          queryKey={key.toLowerCase()}
+          removeFiltersKeys={removeFiltersKeys}
+          list={propertyTypes?.[key.toUpperCase()]}
+          title={
+            (_STRINGS as Record<string, string>)?.[key.toUpperCase()] || ""
+          }
+        />
       </SwiperSlide>
+    ),
+  });
 
-      {isEmpty(cityWithRegions?.child) ? null : (
-        <SwiperSlide className="!w-auto flex lg:hidden">
+  const chips: { key: string; node: ReactNode }[] = [];
+
+  if (!isEmpty(cityWithRegions?.child))
+    chips.push({
+      key: "regions",
+      node: (
+        <SwiperSlide key="selected-regions" className="!w-auto flex">
           <RegionButton
             containerClass=""
             regionsIds={regionsIds}
+            regionTitles={regionTitles}
             setShowRegions={setShowRegions}
             onClearRegions={() => removeFiltersKeys(["regions"])}
           />
         </SwiperSlide>
-      )}
+      ),
+    });
 
-      {query?.total_bedrooms ? (
+  if (query?.total_bedrooms)
+    chips.push({
+      key: "total_bedrooms",
+      node: (
         <SwiperSlide key="selected-bedrooms" className="!w-auto">
           <RemovableFilterChip
             onRemove={() => removeFiltersKeys(["total_bedrooms"])}
             label={`${_STRINGS.ROOM_COUNT} : ${query?.total_bedrooms}`}
           />
         </SwiperSlide>
-      ) : null}
+      ),
+    });
 
-      {query?.total_guests ? (
+  if (query?.total_guests)
+    chips.push({
+      key: "total_guests",
+      node: (
         <SwiperSlide key="selected-guests" className="!w-auto">
           <RemovableFilterChip
             onRemove={() => removeFiltersKeys(["total_guests"])}
             label={`${_STRINGS.PPL_COUNT} : ${query?.total_guests}`}
           />
         </SwiperSlide>
-      ) : null}
+      ),
+    });
 
-      {query?.checkout && query?.checkin ? (
+  if (query?.checkout && query?.checkin)
+    chips.push({
+      key: "checkin",
+      node: (
         <SwiperSlide key="selected-date" className="!w-auto">
           <RemovableFilterChip
             onRemove={() => removeFiltersKeys(["checkout", "checkin"])}
             label={`${_STRINGS.FROM} ${moment(query?.checkin).format(JALALI_DATE_FORMAT)} ${_STRINGS.TO} ${moment(query?.checkout).format(JALALI_DATE_FORMAT)}`}
           />
         </SwiperSlide>
-      ) : null}
+      ),
+    });
 
-      {query?.max_commission || query?.min_commission ? (
+  if (query?.max_commission || query?.min_commission)
+    chips.push({
+      key: "min_commission",
+      node: (
         <SwiperSlide key="selected-commission" className="!w-auto">
           <RemovableFilterChip
             onRemove={() =>
@@ -160,9 +172,13 @@ const SelectedFiltersBar = ({
             )}
           />
         </SwiperSlide>
-      ) : null}
+      ),
+    });
 
-      {query?.max_price || query?.min_price ? (
+  if (query?.max_price || query?.min_price)
+    chips.push({
+      key: "min_price",
+      node: (
         <SwiperSlide key="selected-price" className="!w-auto">
           <RemovableFilterChip
             onRemove={() => removeFiltersKeys(["max_price", "min_price"])}
@@ -174,9 +190,13 @@ const SelectedFiltersBar = ({
             )}
           />
         </SwiperSlide>
-      ) : null}
+      ),
+    });
 
-      {query?.max_building_area || query?.min_building_area ? (
+  if (query?.max_building_area || query?.min_building_area)
+    chips.push({
+      key: "min_building_area",
+      node: (
         <SwiperSlide key="selected-area" className="!w-auto">
           <RemovableFilterChip
             onRemove={() =>
@@ -190,39 +210,57 @@ const SelectedFiltersBar = ({
             )}
           />
         </SwiperSlide>
-      ) : null}
+      ),
+    });
 
-      {query?.has_discount === "1" ? (
+  if (query?.has_discount === "1")
+    chips.push({
+      key: "has_discount",
+      node: (
         <SwiperSlide key="selected-discount" className="!w-auto">
           <RemovableFilterChip
             label={_STRINGS.HAS_DISCOUNT}
             onRemove={() => removeFiltersKeys(["has_discount"])}
           />
         </SwiperSlide>
-      ) : null}
+      ),
+    });
 
-      {query?.is_premium === "1" ? (
+  if (query?.is_premium === "1")
+    chips.push({
+      key: "is_premium",
+      node: (
         <SwiperSlide key="selected-premium" className="!w-auto">
           <RemovableFilterChip
             label={_STRINGS.PERMIUM_PROPS}
             onRemove={() => removeFiltersKeys(["is_premium"])}
           />
         </SwiperSlide>
-      ) : null}
+      ),
+    });
 
-      {RULE_FILTERS.filter((rule) => query?.[rule.key]).map((rule) => (
+  for (const rule of RULE_FILTERS.filter((entry) => query?.[entry.key]))
+    chips.push({
+      key: rule.key,
+      node: (
         <SwiperSlide key={`selected-${rule.key}`} className="!w-auto">
           <RemovableFilterChip
             label={rule.title}
             onRemove={() => removeFiltersKeys([rule.key])}
           />
         </SwiperSlide>
-      ))}
+      ),
+    });
 
-      {dynamicKeys
-        .filter((key) => key === LEADING_DYNAMIC_KEY)
-        .map(renderDynamicChip)}
+  chips.push(
+    ...dynamicKeys
+      .filter((key) => key === LEADING_DYNAMIC_KEY)
+      .map(renderDynamicChip),
+  );
 
+  chips.push({
+    key: "has_pool",
+    node: (
       <SwiperSlide key="selected-pool" className="!w-auto">
         <button
           type="button"
@@ -261,10 +299,43 @@ const SelectedFiltersBar = ({
           ) : null}
         </button>
       </SwiperSlide>
+    ),
+  });
 
-      {dynamicKeys
-        .filter((key) => key !== LEADING_DYNAMIC_KEY)
-        .map(renderDynamicChip)}
+  chips.push(
+    ...dynamicKeys
+      .filter((key) => key !== LEADING_DYNAMIC_KEY)
+      .map(renderDynamicChip),
+  );
+
+  const orderedChips = chips
+    .map((chip, index) => ({ ...chip, index }))
+    .sort(
+      (left, right) =>
+        filterOrderRank(filterOrder, left.key) -
+          filterOrderRank(filterOrder, right.key) || left.index - right.index,
+    );
+
+  return (
+    <Swiper autoFit parentClass={containerClass}>
+      <SwiperSlide className="z-5 flex lg:hidden !w-auto">
+        <button
+          type="button"
+          onClick={() => setFilterModalShow(true)}
+          className="col-span-3 flex w-fit px-3 h-[1.625rem] rounded-full bg-brand-600 items-center gap-2"
+        >
+          <ContentImage
+            alt=""
+            width={12}
+            height={12}
+            className="cursor-pointer w-3 h-3 shrink-0"
+            src="/assets/icons/property/white_filter_icon.svg"
+          />
+          <span className="text-white text-xs">{_STRINGS.OTHER_FILTERS}</span>
+        </button>
+      </SwiperSlide>
+
+      {orderedChips.map((chip) => chip.node)}
     </Swiper>
   );
 };
