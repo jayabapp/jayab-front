@@ -14,7 +14,7 @@ const HomeCityRow = ({ row, syncRef }: HomeCityRowProps) => {
         scrollRef.current = element;
         syncRef(element);
       }}
-      className="padding-x flex w-full cursor-grab gap-2 overflow-x-auto md:gap-3"
+      className="padding-x flex w-full cursor-grab select-none scroll-auto gap-2 overflow-x-auto md:gap-3 data-[dragging=true]:cursor-grabbing data-[dragging=true]:[&_*]:cursor-grabbing"
     >
       {row?.map((city, index) => (
         <div
