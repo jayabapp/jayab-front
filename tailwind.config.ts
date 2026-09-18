@@ -38,6 +38,10 @@ export default {
       zIndex: { 1: "1", 2: "2", 5: "5" },
       fontSize: {
         xxs: "0.625rem",
+        // 11px. `xxs` (10px) is below the floor for a price a guest has to read
+        // at a glance in a calendar cell, and 12px (`text-xs`) does not fit the
+        // cell. This is the smallest size any number on the listing page uses.
+        "2xs": "0.6875rem",
       },
       colors,
       borderRadius: {

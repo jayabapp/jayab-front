@@ -283,8 +283,9 @@ export interface SinglePropDto {
   unit_per_floor: number;
   floor: number;
   construction_year: number;
-  address: string;
+  address: string | null;
   options: Options;
+  option_items: PropertyOptionItemDto[];
   canceling_type: CancelationType;
   owner_info: { avatar: ImageDto; full_name: string };
   owner: { id: string | number };
@@ -327,6 +328,17 @@ export interface DailyPrice {
   today_offer: null;
   created_at: Date;
   updated_at: Date;
+}
+
+/**
+ * Flat amenity with its own icon, alongside the grouped `options` object the
+ * spec sections read. `icon` is the image an admin uploaded for that option and
+ * is null for options that never got one.
+ */
+export interface PropertyOptionItemDto {
+  group: string;
+  title: string;
+  icon: ImageDto | null;
 }
 
 export interface Options {

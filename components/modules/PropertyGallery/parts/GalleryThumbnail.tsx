@@ -5,12 +5,12 @@ import { ContentImage } from "@elements/Image";
 const INTRINSIC_SIZE = 320;
 
 const GalleryThumbnail = ({
-  alt,
   id,
-  imageSize,
+  alt,
   item,
-  moreClass = "",
   onClick,
+  imageSize,
+  moreClass = "",
   sizes = "(min-width: 768px) 20vw, 25vw",
 }: GalleryThumbnailProps) => (
   <ContentImage
@@ -23,6 +23,11 @@ const GalleryThumbnail = ({
     height={INTRINSIC_SIZE}
     id={id ? `${id}` : undefined}
     src={getPropertyImageUrl(item, imageSize)}
+    fallbackSrc={
+      imageSize && imageSize !== "name"
+        ? getPropertyImageUrl(item, "name")
+        : undefined
+    }
     className={`cursor-pointer ${moreClass}`}
   />
 );

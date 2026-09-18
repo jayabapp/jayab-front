@@ -12,7 +12,5 @@ export const reservationKeys = {
   owner: (filters: OwnerReservationFilters) =>
     [...reservationKeys.owners(), normalizeOwnerFilters(filters)] as const,
   active: () => [...reservationKeys.all, "active"] as const,
-  availability: (propertyId: number | string, checkIn: string, checkOut: string, guests: string) =>
-    [...reservationKeys.all, "availability", { propertyId: String(propertyId), checkIn, checkOut, guests }] as const,
   ownerActiveCount: () => [...reservationKeys.owners(), "active-count"] as const,
 };

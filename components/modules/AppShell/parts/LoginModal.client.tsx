@@ -45,7 +45,8 @@ const LoginModal = () => {
           <button
             className="bg-brand-600   w-full hover:ring-4 hover:ring-brand-600/50 px-2 py-3 rounded-lg text-white"
             onClick={() => {
-              router.push(`/auth?redirect_url=${pathname}`);
+              const target = `${pathname}${window.location.search}`;
+              router.push(`/auth?redirect_url=${encodeURIComponent(target)}`);
               closeDispatch();
             }}
           >

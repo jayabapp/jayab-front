@@ -2,4 +2,4 @@ export { default as PropertyDetailsPageSkeleton } from "./PropertyDetailsPageSke
 export { default as PropertyDetailsSkeleton } from "./PropertyDetailsSkeleton";
 export { default as PropertyDetailsContent } from "./PropertyDetailsContent";
 export { default as PropertyPriceTag } from "./PropertyPriceTag";
-export { default as PropertySpecs } from "./PropertySpecs";
+export { default as ListingHeader } from "./ListingHeader";

@@ -35,7 +35,7 @@ const SingleDatePicker = ({
     moment(chosenDate, "jYYYY/jMM/jDD").format("jMMMM"),
   );
   const [numbericMonth, setNumericMonth] = useState(
-    moment(chosenDate).format("jMM"),
+    moment(chosenDate, "jYYYY/jMM/jDD").format("jMM"),
   );
   const [prevX, setPrevX] = useState<any>(-1);
   const [start, setStart] = useState<any>(-1);

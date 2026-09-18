@@ -3,21 +3,14 @@ export const baseUrl = `${Url}/api/v1`;
 
 export const baseUrlV = (v: string) => `${Url}/api/${v}`;
 export const imageUrl = `${Url}/`;
+
 const REMOTE_IMAGE_FALLBACK = "/assets/icons/shared/image_placeholder.svg";
-/**
- * Builds the public S3 URL for an attachment.
- *
- * `keyValue` selects a derivative (`medium` ~= half the stored width, `thumbnail`
- * ~= a quarter). Both columns are nullable and are only populated for uploads made
- * after derivative generation was restored, so a requested derivative that is
- * absent falls back to the full-size `name` rather than producing a URL ending in
- * `/null`. Callers can therefore always ask for the derivative they want.
- */
+
 export const NEW_IMAGE_URL = (
   item?: {
+    path?: string | null;
     bucket?: string | null;
     end_point?: string | null;
-    path?: string | null;
     name?: string | null;
     thumbnail?: string | null;
     medium?: string | null;
@@ -81,7 +74,8 @@ export const apiRoutes = {
 
   TEST_ACCESS_MEMBERS: "/user/test-access/members",
 
-  TEST_ACCESS_MEMBER: (id: string | number) => `/user/test-access/members/${id}`,
+  TEST_ACCESS_MEMBER: (id: string | number) =>
+    `/user/test-access/members/${id}`,
 
   APP_SETTINGS: "/auth/init-settings",
 
@@ -164,19 +158,23 @@ export const apiRoutes = {
 
   OWNER_ACTIVE_RESERVE_COUNT: "/owner/reserves/badge-count",
 
-  OWNER_PROPERTY_PHOTO_UPGRADE_REQUESTS: "/owner/property-photo-upgrade-requests",
+  OWNER_PROPERTY_PHOTO_UPGRADE_REQUESTS:
+    "/owner/property-photo-upgrade-requests",
 
   OWNER_PROPERTY_PHOTO_UPGRADE_REQUEST: (requestId: string | number) =>
     `/owner/property-photo-upgrade-requests/${requestId}`,
 
-  CANCEL_RESERVE: (propertyReserveId: string | number) => `/reserves/${propertyReserveId}`,
+  CANCEL_RESERVE: (propertyReserveId: string | number) =>
+    `/reserves/${propertyReserveId}`,
 
   OWNER_CALL_RESERVE_REQUEST: (propertyReserveId: string | number) =>
     `/owner/reserves/${propertyReserveId}/events/click-guest-mobile`,
 
-  PROPERTY_REPORT: (postId: string | number) => `/user/property-reports/${postId}`,
+  PROPERTY_REPORT: (postId: string | number) =>
+    `/user/property-reports/${postId}`,
 
-  PROPERTY_RESERVED_DATES: (postId: string | number) => `/user/properties/${postId}/reserved?months=3`,
+  PROPERTY_RESERVED_DATES: (postId: string | number) =>
+    `/user/properties/${postId}/reserved?months=12`,
 
   SINGLE_TICKET_GET: (id: string | number) => `/user/tickets/${id}`,
 
@@ -186,18 +184,23 @@ export const apiRoutes = {
   SINGLE_PROPERTY_ADVISOR_SHARE: (propertyId: string | number | null) =>
     `/user/properties/${propertyId}/advisor-share/link`,
 
-  SINGLE_USER_LANDING_PAGE: (landingPageUrl: string | number) => `/user/landing-pages/${landingPageUrl}`,
+  SINGLE_USER_LANDING_PAGE: (landingPageUrl: string | number) =>
+    `/user/landing-pages/${landingPageUrl}`,
 
   OWNER_PROP_INIT: (propertyId?: string | number | null) =>
     `/owner/properties/init${!!propertyId ? `?property_id=${propertyId}` : ""}`,
 
-  SINGLE_ADVISOR: (advisorId?: string | number | null) => `/user/advisors/${advisorId}`,
+  SINGLE_ADVISOR: (advisorId?: string | number | null) =>
+    `/user/advisors/${advisorId}`,
 
-  SINGLE_ADVISOR_INIT_RATE: (advisorId?: string | number | null) => `/user/advisors/${advisorId}/rate/init`,
+  SINGLE_ADVISOR_INIT_RATE: (advisorId?: string | number | null) =>
+    `/user/advisors/${advisorId}/rate/init`,
 
-  SINGLE_ADVISOR_RATE: (advisorId?: string | number | null) => `/user/advisors/${advisorId}/rate/add`,
+  SINGLE_ADVISOR_RATE: (advisorId?: string | number | null) =>
+    `/user/advisors/${advisorId}/rate/add`,
 
-  OWNER_PROPERTIES: (propertyId: string | number | null) => `/owner/properties/${propertyId}`,
+  OWNER_PROPERTIES: (propertyId: string | number | null) =>
+    `/owner/properties/${propertyId}`,
 
   OWNER_PROPERTIES_STATUS_UPDATE: (propertyId: string | number | null) =>
     `/owner/properties/${propertyId}/calendar/reserves`,
@@ -214,14 +217,16 @@ export const apiRoutes = {
   OWNER_PROPERTIES_BULK_PRICE_UPDATE: (propertyId: string | number | null) =>
     `/owner/properties/${propertyId}/calendar/price/bulk`,
 
-  OWNER_PROPERTIES_ALL_DAYS_COMMISSION_UPDATE: (propertyId: string | number | null) =>
-    `/owner/properties/${propertyId}/commission`,
+  OWNER_PROPERTIES_ALL_DAYS_COMMISSION_UPDATE: (
+    propertyId: string | number | null,
+  ) => `/owner/properties/${propertyId}/commission`,
 
   OWNER_PROPERTIES_COMMISSION_UPDATE: (propertyId: string | number | null) =>
     `/owner/properties/${propertyId}/calendar/commission`,
 
-  OWNER_PROPERTIES_CALLENDARE_NOTE_UPDATE: (propertyId: string | number | null) =>
-    `/owner/properties/${propertyId}/calendar/notes`,
+  OWNER_PROPERTIES_CALLENDARE_NOTE_UPDATE: (
+    propertyId: string | number | null,
+  ) => `/owner/properties/${propertyId}/calendar/notes`,
 
   OWNER_PROPERTIES_SINGLE_CALLENDAR: (propertyId: string | number | null) =>
     `/owner/properties/${propertyId}/month-calendar`,
@@ -229,47 +234,60 @@ export const apiRoutes = {
   OWNER_PROPERTIES_SINGLE_BADGE: (propertyId: string | number | null) =>
     `/owner/properties/${propertyId}/property-badges`,
 
-  OWNER_PROPERTIES_SINGLE_AUTH: (propertyId: string | number | null) => `/owner/property-authorize/${propertyId}`,
+  OWNER_PROPERTIES_SINGLE_AUTH: (propertyId: string | number | null) =>
+    `/owner/property-authorize/${propertyId}`,
 
-  OWNER_PROPERTIES_PAY_SUBS: (propertyId: string | number | null) => `/owner/properties/${propertyId}/pay-subscription`,
+  OWNER_PROPERTIES_PAY_SUBS: (propertyId: string | number | null) =>
+    `/owner/properties/${propertyId}/pay-subscription`,
 
-  OWNER_PROPERTIES_LOC_UPDATE: (propertyId: string | number | null) => `/owner/properties/${propertyId}/location`,
+  OWNER_PROPERTIES_LOC_UPDATE: (propertyId: string | number | null) =>
+    `/owner/properties/${propertyId}/location`,
 
-  OWNER_PROPERTIES_MEDIA_UPDATE: (propertyId: string | number | null) => `/owner/properties/${propertyId}/media`,
+  OWNER_PROPERTIES_MEDIA_UPDATE: (propertyId: string | number | null) =>
+    `/owner/properties/${propertyId}/media`,
 
-  OWNER_PROPERTIES_ENV_UPDATE: (propertyId: string | number | null) => `/owner/properties/${propertyId}/environment`,
+  OWNER_PROPERTIES_ENV_UPDATE: (propertyId: string | number | null) =>
+    `/owner/properties/${propertyId}/environment`,
 
-  OWNER_PROPERTIES_ENV_FACILITY: (propertyId: string | number | null) => `/owner/properties/${propertyId}/facility`,
+  OWNER_PROPERTIES_ENV_FACILITY: (propertyId: string | number | null) =>
+    `/owner/properties/${propertyId}/facility`,
 
-  OWNER_PROPERTIES_ENV_PRICE: (propertyId: string | number | null) => `/owner/properties/${propertyId}/price`,
+  OWNER_PROPERTIES_ENV_PRICE: (propertyId: string | number | null) =>
+    `/owner/properties/${propertyId}/price`,
 
-  OWNER_PROPERTIES_ENV_ASSISTANT: (propertyId: string | number | null) => `/owner/properties/${propertyId}/assistants`,
+  OWNER_PROPERTIES_ENV_ASSISTANT: (propertyId: string | number | null) =>
+    `/owner/properties/${propertyId}/assistants`,
 
-  OWNER_PROPERTIES_ENV_TERMS: (propertyId: string | number | null) => `/owner/properties/${propertyId}/terms`,
+  OWNER_PROPERTIES_ENV_TERMS: (propertyId: string | number | null) =>
+    `/owner/properties/${propertyId}/terms`,
 
-  OWNER_PROPERTIES_ENV_BEDROOM: (propertyId: string | number | null) => `/owner/properties/${propertyId}/bedroom`,
+  OWNER_PROPERTIES_ENV_BEDROOM: (propertyId: string | number | null) =>
+    `/owner/properties/${propertyId}/bedroom`,
 
-  SINGLE_OWNER_PROPERTY: (propertyId: string | number | null) => `/owner/properties/${propertyId}`,
+  SINGLE_OWNER_PROPERTY: (propertyId: string | number | null) =>
+    `/owner/properties/${propertyId}`,
 
-  SINGLE_OWNER_PROPERTY_STATS: (propertyId: string | number | null) => `/owner/properties/${propertyId}/statistics`,
+  SINGLE_OWNER_PROPERTY_STATS: (propertyId: string | number | null) =>
+    `/owner/properties/${propertyId}/statistics`,
 
-  SINGLE_PROPERTY_UPDATE_VIEW: (propertyId: string | number | null) => `/user/properties/${propertyId}/view`,
+  SINGLE_PROPERTY_UPDATE_VIEW: (propertyId: string | number | null) =>
+    `/user/properties/${propertyId}/view`,
 
   CITIES_CHILDEREN: (parentId: string | number) => `/cities/${parentId}`,
 
   CONTENT_BY_KEY: (id: string | number) => `/contents/by-key/${id}`,
 
-  GET_SINGLEPROPERTY_SlUG: (propertySlug: string | number) => `/user/properties/${propertySlug}`,
+  GET_SINGLEPROPERTY_SlUG: (propertySlug: string | number) =>
+    `/user/properties/${propertySlug}`,
 
-  GET_SINGLEPROPERTY_CALLENDER: (propertyId: string | number | null) => `/user/properties/${propertyId}/month-calendar`,
+  GET_SINGLEPROPERTY_CALLENDER: (propertyId: string | number | null) =>
+    `/user/properties/${propertyId}/month-calendar`,
 
-  BANNER_VIEW_COUNT: (bannerId: string | number | null) => `/banners/${bannerId}`,
+  BANNER_VIEW_COUNT: (bannerId: string | number | null) =>
+    `/banners/${bannerId}`,
 
-  /* -------------------------------------------------------------------------- */
-  /*                                    CHAT                                    */
-  /* -------------------------------------------------------------------------- */
-
-  SEND_MESSAGE: (chatroomId: number | string) => `/chat/${chatroomId}/send-message`,
+  SEND_MESSAGE: (chatroomId: number | string) =>
+    `/chat/${chatroomId}/send-message`,
 
   READ_MESSAGE: (chatroomId: number | string) => `/chat/${chatroomId}/read-at`,
 
@@ -278,14 +296,18 @@ export const apiRoutes = {
   DELETE_MESSAGE: (chatroomId: number | string, messageId: number | string) =>
     `/chat/${chatroomId}/messages/${messageId}`,
 
-  GET_SNGLE_CHAT_MESSAGES: (chatroomId: number | string, cursor: number | string) =>
-    `/chat/${chatroomId}/messages?cursor=${cursor}`,
+  GET_SNGLE_CHAT_MESSAGES: (
+    chatroomId: number | string,
+    cursor: number | string,
+  ) => `/chat/${chatroomId}/messages?cursor=${cursor}`,
 
   GET_SNGLE_CHAT: (chatroomId: number | string) => `/chat/${chatroomId}`,
 
-  SINGLE_CONTENT_WITH_SLUG: (slug: number | string) => `/contents/by-slug/${slug}`,
+  SINGLE_CONTENT_WITH_SLUG: (slug: number | string) =>
+    `/contents/by-slug/${slug}`,
 
   REDIRECT_CHECK: (url: string) => `/user/redirect-urls/${url}`,
 
-  SINGLE_CONTENT_CATEGORY: (slug: number | string) => `/contents/category/${slug}`,
+  SINGLE_CONTENT_CATEGORY: (slug: number | string) =>
+    `/contents/category/${slug}`,
 };

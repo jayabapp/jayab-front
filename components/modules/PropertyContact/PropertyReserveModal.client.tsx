@@ -1,12 +1,10 @@
 "use client";
 
-import { useReservationAvailability } from "@features/reservations/hooks/useReservationAvailability";
 import type { PropertyReserveModalProps } from "@/types/components/modules/property-contact";
+import { useStaySearchParams } from "@features/reservations/hooks/useStaySearchParams";
+import { useReservedDates } from "@features/properties/hooks/useReservedDates";
 import { SingleSelectPopUpSelect as SinglePopUpSelect } from "@elements/Form";
-import { guestsFromQuery } from "@features/reservations/lib/stay-from-query";
-import { stayFromQuery } from "@features/reservations/lib/stay-from-query";
 import { ModalBottomSheet, ModalHeaderPart } from "@elements/Modal";
-import { useSearchParams } from "next/navigation";
 import { useState } from "react";
 
 import ReservationDatePicker from "./parts/ReservationDatePicker/ReservationDatePicker.client";
@@ -24,17 +22,13 @@ const PropertyReserveModal = ({
   setShow,
   property,
 }: PropertyReserveModalProps) => {
-  const searchParams = useSearchParams();
+  const { stay, guests, setStay, setGuests, clearStay } = useStaySearchParams(
+    property?.maxCapacity,
+  );
   const [dates, setDates] = useState<{ start?: Date; end?: Date } | undefined>(
-    () =>
-      stayFromQuery(
-        searchParams?.get("checkin"),
-        searchParams?.get("checkout"),
-      ),
+    stay,
   );
-  const [count, setCount] = useState<number | string>(() =>
-    guestsFromQuery(searchParams?.get("total_guests"), property?.maxCapacity),
-  );
+  const [count, setCount] = useState<number | string>(guests);
   const [showRequest, setShowRequest] = useState(false);
 
   const guestOptions = [
@@ -48,16 +42,11 @@ const PropertyReserveModal = ({
     },
   ];
 
-  const checkIn = dates?.start ? moment(dates.start).format("YYYY-MM-DD") : "";
-  const checkOut = dates?.end ? moment(dates.end).format("YYYY-MM-DD") : "";
+  // The reserved days of a listing do not depend on the dates or guest count
+  // being picked, but the old hook keyed them by both — so every click refetched
+  // the same list under a new cache entry.
   const { data: reservedDates, isFetching: isCheckingAvailability } =
-    useReservationAvailability(
-      property?.id,
-      checkIn,
-      checkOut,
-      String(count),
-      show,
-    );
+    useReservedDates(property?.id);
 
   const onContinue = () => {
     if (!dates?.start || !dates?.end) {
@@ -68,6 +57,8 @@ const PropertyReserveModal = ({
       Notify({ body: _STRINGS.PICK_GUEST_COUNT, type: "warn" });
       return;
     }
+    setStay(dates);
+    setGuests(count);
     setShow(false);
     setShowRequest(true);
   };
@@ -77,6 +68,7 @@ const PropertyReserveModal = ({
     setShowRequest(false);
     setCount("");
     setDates({});
+    clearStay();
   };
 
   return (
