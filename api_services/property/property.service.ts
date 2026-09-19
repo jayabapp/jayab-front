@@ -19,6 +19,7 @@ import {
   PropertyContactIInfDto,
   PropertyListDto,
   PropertyOptionGroup,
+  PropertyQuoteDto,
   PropertyStatsDto,
   PropertySubsDto,
   PropertyTermsSendDto,
@@ -981,5 +982,27 @@ export class PropertyService {
     } catch (e) {
       throw e;
     }
+  }
+
+  // The booking panel words a rejected range itself (too long, in the past), so
+  // the generic error toast stays off for this lookup.
+  static async getPropertyQuote(
+    dto: {
+      property_id: string | number;
+      check_in: string;
+      check_out: string;
+      guests: number;
+    },
+    signal?: AbortSignal,
+  ) {
+    return apiCall<
+      { check_in: string; check_out: string; guests: number },
+      PropertyQuoteDto
+    >(
+      "GET",
+      apiRoutes.PROPERTY_QUOTE(dto.property_id),
+      { check_in: dto.check_in, check_out: dto.check_out, guests: dto.guests },
+      { signal, showErrorNotification: false },
+    );
   }
 }

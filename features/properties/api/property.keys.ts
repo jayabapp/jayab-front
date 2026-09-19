@@ -13,6 +13,12 @@ export const propertyKeys = {
     [...propertyKeys.all, "calendar", { id: String(id), range }] as const,
   reservedDates: (id: number | string) =>
     [...propertyKeys.all, "reserved-dates", { id: String(id) }] as const,
+  quotes: (id: number | string) =>
+    [...propertyKeys.all, "quote", { id: String(id) }] as const,
+  quote: (
+    id: number | string,
+    stay: { checkIn: string; checkOut: string; guests: number },
+  ) => [...propertyKeys.quotes(id), stay] as const,
   optionGroups: (groups: readonly string[]) =>
     [...propertyKeys.all, "option-groups", [...groups].sort()] as const,
 };

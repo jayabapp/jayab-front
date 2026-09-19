@@ -1,5 +1,6 @@
-import { infiniteQueryOptions, keepPreviousData, queryOptions } from "@tanstack/react-query";
+import { keepPreviousData, queryOptions } from "@tanstack/react-query";
 import { normalizePropertyFilters } from "@features/properties/lib/normalize-property-filters";
+import { infiniteQueryOptions } from "@tanstack/react-query";
 import { GC_TIME, STALE_TIME } from "@/helpers/queryCache";
 import { PropertyService } from "@/api_services/property/property.service";
 import { propertyKeys } from "./property.keys";
@@ -56,12 +57,6 @@ export const propertiesOptions = (filters: PropertyFilters) => {
       if (requestedPage || !lastPage?.meta?.next) return undefined;
       return lastPage.meta.next;
     },
-    // Every filter change produces a new query key. Without this the grid falls
-    // back to `isPending` and the whole result list is replaced by a skeleton,
-    // which throws the user's scroll position away and reads as a page reload.
-    // Keeping the previous page on screen — dimmed by the caller — is what the
-    // rest of the app already does for navigation, and the same reasoning
-    // applies inside a single page.
     placeholderData: keepPreviousData,
     staleTime: 30_000,
   });
@@ -69,19 +64,6 @@ export const propertiesOptions = (filters: PropertyFilters) => {
 
 const COUNT_PAGE_SIZE = 1;
 
-/**
- * How many properties the *draft* filters would match, without committing them.
- *
- * The sidebar stages its edits and only writes the URL when the user submits,
- * so until then there is nothing on screen telling them whether the combination
- * they are assembling has any results at all. This asks the list endpoint for a
- * single row and reads `meta.total` off it — the count the API already computes
- * for pagination — so the answer costs one small response rather than a page of
- * property payloads.
- *
- * Kept under its own key prefix: it must never be mistaken for, or evict, the
- * real list cache, whose entries hold the rows the grid renders.
- */
 export const propertyCountOptions = (
   filters: PropertyFilters,
   enabled = true,
@@ -108,8 +90,6 @@ export const propertyCountOptions = (
       return result?.meta?.total ?? 0;
     },
     enabled,
-    // The previous count stays visible while the next one is in flight, so the
-    // submit button never blanks out mid-decision.
     placeholderData: keepPreviousData,
     staleTime: 30_000,
   });
@@ -151,3 +131,34 @@ export const propertyCalendarOptions = (
     staleTime: 60_000,
   });
 
+export type QuoteStay = {
+  checkIn?: string | null;
+  checkOut?: string | null;
+  guests?: number | null;
+};
+
+export const propertyQuoteOptions = (id: number | string, stay: QuoteStay) => {
+  const { checkIn, checkOut, guests } = stay;
+  const isComplete = Boolean(id && checkIn && checkOut && guests && guests > 0);
+
+  return queryOptions({
+    queryKey: propertyKeys.quote(id, {
+      checkIn: checkIn ?? "",
+      checkOut: checkOut ?? "",
+      guests: guests ?? 0,
+    }),
+    queryFn: ({ signal }) =>
+      PropertyService.getPropertyQuote(
+        {
+          property_id: id,
+          check_in: checkIn as string,
+          check_out: checkOut as string,
+          guests: guests as number,
+        },
+        signal,
+      ),
+    enabled: isComplete,
+    placeholderData: keepPreviousData,
+    staleTime: STALE_TIME.SHORT,
+  });
+};

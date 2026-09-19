@@ -8,22 +8,22 @@ export interface ProvienceTypesDto {
 }
 
 export interface CreatePropertyStepOneDto {
-  property_type: number | string | null;
-  title: number | string | null;
-  land_area: number | string | null;
-  building_area: number | string | null;
-  floors: number | string | null;
   floor: number | string | null;
+  title: number | string | null;
+  floors: number | string | null;
+  address: number | string | null;
+  is_chat_enabled: boolean | null;
+  city_id: number | string | null;
+  region_id: number | string | null;
+  ownership: number | string | null;
+  land_area: number | string | null;
+  is_location_visible: boolean | null;
+  province_id: number | string | null;
+  property_type: number | string | null;
+  building_area: number | string | null;
   unit_per_floor: number | string | null;
   construction_year: number | string | null;
   building_direction: number | string | null;
-  ownership: number | string | null;
-  province_id: number | string | null;
-  city_id: number | string | null;
-  region_id: number | string | null;
-  address: number | string | null;
-  is_chat_enabled: boolean | null;
-  is_location_visible: boolean | null;
 }
 
 export interface PropInitDto {
@@ -73,32 +73,32 @@ export interface PropInitDto {
 }
 
 export interface AssistantsDto {
+  is_owner: boolean;
+  owner_mobile_number: null;
   assistant_full_name: string;
   assistant_mobile_number: string;
-  owner_mobile_number: null;
-  is_owner: boolean;
 }
 
 export interface DayliPriceDto {
   id: number;
-  property_id: number;
-  normal: number;
-  wednesday: number;
-  thursday: number;
-  friday: number;
   peak: number;
+  normal: number;
+  friday: number;
+  thursday: number;
   cleaning: number;
-  additional_person: number;
-  today_offer: null;
-  created_at: Date;
   updated_at: Date;
+  created_at: Date;
+  today_offer: null;
+  wednesday: number;
+  property_id: number;
+  additional_person: number;
 }
 
 export interface PropertyOptionsDto {
-  property_id: number;
-  option_id: number;
-  assigned_at: Date;
   option: Option;
+  assigned_at: Date;
+  option_id: number;
+  property_id: number;
 }
 
 export interface Option {
@@ -503,6 +503,36 @@ export interface OwnerCallendarItemDto {
   note: string;
   is_reserved: boolean;
   is_peak: boolean;
+}
+
+export interface PropertyQuoteNightDto {
+  date: string;
+  day_column: "normal" | "wednesday" | "thursday" | "friday" | "peak";
+  base_price: number;
+  final_price: number;
+  is_discounted: boolean;
+  is_peak: boolean;
+}
+
+export interface PropertyQuoteDto {
+  property_id: number;
+  check_in: string;
+  check_out: string;
+  nights: number;
+  guests: number;
+  is_available: boolean;
+  unavailable_dates: string[];
+  nights_breakdown: PropertyQuoteNightDto[];
+  rent_total: number;
+  discount_total: number;
+  std_capacity: number;
+  max_capacity: number;
+  extra_guests: number;
+  extra_guest_fee_per_night: number;
+  extra_guest_total: number;
+  cleaning_fee: number;
+  total: number;
+  canceling_type: { id: string; title: string } | null;
 }
 
 export interface GetPropBadgeDto {

@@ -17,6 +17,9 @@ export const invalidateReservationCaches = async (
         })
       : Promise.resolve(),
     propertyId
+      ? client.invalidateQueries({ queryKey: propertyKeys.quotes(propertyId) })
+      : Promise.resolve(),
+    propertyId
       ? client.invalidateQueries({
           queryKey: [
             ...propertyKeys.all,

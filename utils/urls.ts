@@ -176,6 +176,9 @@ export const apiRoutes = {
   PROPERTY_RESERVED_DATES: (postId: string | number) =>
     `/user/properties/${postId}/reserved?months=12`,
 
+  PROPERTY_QUOTE: (propertyId: string | number) =>
+    `/user/properties/${propertyId}/quote`,
+
   SINGLE_TICKET_GET: (id: string | number) => `/user/tickets/${id}`,
 
   SINGLE_PROPERTY_CONTACT_INFO: (propertySlug: string | number | null) =>
