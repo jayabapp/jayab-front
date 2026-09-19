@@ -1,12 +1,11 @@
+import { mobileNavHiddenBlackList } from "@/utils/constantss";
 import { mobileFooterBlackList } from "@/utils/constantss";
 import { footerHiddenBlackList } from "@/utils/constantss";
 import { AppOverlays, AppShell } from "@modules/AppShell";
-import { isNoIndexDeployment } from "@/helpers/indexingPolicy";
 import { getServerContentList } from "@features/home/server/home.server";
-import type { ContentDto } from "@/api_services/home/home.interface";
+import { isNoIndexDeployment } from "@/helpers/indexingPolicy";
 import { Metadata, Viewport } from "next";
 import { apiRoutes, baseUrl } from "@/utils/urls";
-import type { InnitSettingsDto } from "@/api_services/home/home.interface";
 import { headerBlackList } from "@/utils/constantss";
 import { x_Iransans } from "./fonts/x_iran/x_Iransans";
 import { MainLayout } from "@layouts/MainLayout";
@@ -15,6 +14,9 @@ import { SiteHeader } from "@modules/SiteHeader";
 import { REVALIDATE } from "@/helpers/revalidate";
 import { MobileNav } from "@modules/MobileNav";
 import { ReactNode } from "react";
+
+import type { InnitSettingsDto } from "@/api_services/home/home.interface";
+import type { ContentDto } from "@/api_services/home/home.interface";
 
 import NavigationProgress from "@elements/NavigationProgress";
 import LayoutProvider from "./layout-provider.client";
@@ -115,8 +117,6 @@ const RootLayout = async ({
   return (
     <html lang="fa" dir="rtl">
       <body className={x_Iransans.className} suppressHydrationWarning>
-        {/* Mounted at body level, outside anything that could create a
-            containing block for a `position: fixed` child. */}
         <NavigationProgress />
         <SplashScreen />
         <LayoutProvider>
@@ -128,7 +128,10 @@ const RootLayout = async ({
               mobileFooter={<MobileNav />}
               headerHiddenOn={headerBlackList}
               footerHiddenOn={CHROME_HIDDEN_ROUTES}
-              mobileFooterHiddenOn={CHROME_HIDDEN_ROUTES}
+              mobileFooterHiddenOn={[
+                ...CHROME_HIDDEN_ROUTES,
+                ...mobileNavHiddenBlackList,
+              ]}
             >
               {children}
               {modal}

@@ -74,6 +74,9 @@ export const mobileFooterBlackList = [
   "/profile/support/",
 ];
 
+// The listing page carries its own fixed booking bar; the tab bar under it would peek out.
+export const mobileNavHiddenBlackList = ["/rooms/"];
+
 export const footerHiddenBlackList = [
   "/chat/",
   "/auth",

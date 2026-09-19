@@ -31,7 +31,9 @@ export type PropertyDetailsView = {
   advisorCommission?: number;
   buildingArea: number;
   city: string;
+  cleaningFee: number;
   code: string;
+  extraGuestFee: number;
   favoriteCount: number;
   featureImage?: ImageDto | null;
   hasBlueTick: boolean;
@@ -47,6 +49,7 @@ export type PropertyDetailsView = {
   region: string;
   remainingDays: number;
   slug: string;
+  stdCapacity: number;
   title: string;
   todayPrice: PropertyPriceView;
   totalBedrooms: number;

@@ -1,6 +1,6 @@
 "use client";
 
-import { usePathname, useRouter, useSearchParams } from "next/navigation";
+import { usePathname, useSearchParams } from "next/navigation";
 import { guestsFromQuery, stayFromQuery } from "../lib/stay-from-query";
 import { useCallback, useMemo } from "react";
 
@@ -25,7 +25,6 @@ const toApiDate = (value?: Date | null) =>
 export const useStaySearchParams = (maxCapacity?: number | null) => {
   const searchParams = useSearchParams();
   const pathname = usePathname();
-  const router = useRouter();
 
   const stay = useMemo(
     () =>
@@ -45,25 +44,28 @@ export const useStaySearchParams = (maxCapacity?: number | null) => {
     [maxCapacity, searchParams],
   );
 
+  const guestCount = guests
+    ? Math.min(Number.parseInt(guests, 10), maxCapacity ?? Number.MAX_SAFE_INTEGER)
+    : null;
+
   const intentParam = searchParams?.get(STAY_PARAM.intent);
   const intent = INTENTS.includes(intentParam as StayIntent)
     ? (intentParam as StayIntent)
     : null;
 
-  const write = useCallback(
-    (next: Record<string, string | null>) => {
-      const params = new URLSearchParams(searchParams?.toString() ?? "");
-      Object.entries(next).forEach(([key, value]) => {
-        if (value) params.set(key, value);
-        else params.delete(key);
-      });
-      const query = params.toString();
-      router.replace(query ? `${pathname}?${query}` : pathname, {
-        scroll: false,
-      });
-    },
-    [pathname, router, searchParams],
-  );
+  const write = useCallback((next: Record<string, string | null>) => {
+    const params = new URLSearchParams(window.location.search);
+    Object.entries(next).forEach(([key, value]) => {
+      if (value) params.set(key, value);
+      else params.delete(key);
+    });
+    const query = params.toString();
+    window.history.replaceState(
+      null,
+      "",
+      `${window.location.pathname}${query ? `?${query}` : ""}`,
+    );
+  }, []);
 
   const setStay = useCallback(
     (range?: { end?: Date | null; start?: Date | null } | null) =>
@@ -115,6 +117,7 @@ export const useStaySearchParams = (maxCapacity?: number | null) => {
     step,
     intent,
     guests,
+    guestCount,
     setStay,
     setGuests,
     clearStay,

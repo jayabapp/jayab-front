@@ -2,7 +2,7 @@ import type { PropertyDetailsContentProps } from "@/types/components/modules/pro
 import { toPropertyDetailsView } from "@features/properties/mappers/property-details.mapper";
 import { toAmenityItems } from "@features/properties/mappers/amenities.mapper";
 import type { SectionTab } from "@/types/components/modules/property-details";
-import { PropertyCalendar } from "@modules/PropertyAvailability";
+import { RateTable, StayCalendarSection } from "@modules/PropertyBooking";
 import { PropertyGallery } from "@modules/PropertyGallery";
 
 import PropertyReportRow from "./parts/PropertyReportRow.client";
@@ -89,7 +89,13 @@ const PropertyDetailsContent = ({ property }: PropertyDetailsContentProps) => {
           )}
 
           <ListingSection id="calendar" title={_STRINGS.TAB_CALENDAR}>
-            <PropertyCalendar propertyId={view.id} />
+            <StayCalendarSection propertyId={view.id} />
+            <RateTable
+              stdCapacity={view.stdCapacity}
+              cleaningFee={view.cleaningFee}
+              dailyPrice={property?.daily_price}
+              extraGuestFee={view.extraGuestFee}
+            />
           </ListingSection>
 
           <ListingSection id="rules" title={_STRINGS.PROP_TERMS}>

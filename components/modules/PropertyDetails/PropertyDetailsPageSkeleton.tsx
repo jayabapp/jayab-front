@@ -2,10 +2,6 @@ import { PropertyGallerySkeleton } from "@modules/PropertyGallery";
 
 import Skeleton from "@elements/Skeleton/Skeleton";
 
-// The route's own fallback. PropertyDetailsSkeleton stays as it is because the
-// detail modal and the two owner panels render it inside their own layouts;
-// this one mirrors the page's three grid items so the swap to real content does
-// not move anything.
 const PANEL_CLASS = "surface-panel p-4 md:p-5";
 const SPEC_ROWS = 6;
 

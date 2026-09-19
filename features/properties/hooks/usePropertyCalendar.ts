@@ -6,4 +6,5 @@ import { useQuery } from "@tanstack/react-query";
 export const usePropertyCalendar = (
   id: number | string,
   range: { month: number; year: number },
-) => useQuery(propertyCalendarOptions(id, range));
+  enabled = true,
+) => useQuery(propertyCalendarOptions(id, range, enabled));

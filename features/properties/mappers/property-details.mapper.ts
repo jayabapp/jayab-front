@@ -7,7 +7,9 @@ export const toPropertyDetailsView = (
   advisorCommission: property?.advisor_commission,
   buildingArea: property?.building_area,
   city: property?.city,
+  cleaningFee: property?.daily_price?.cleaning ?? 0,
   code: property?.code,
+  extraGuestFee: property?.daily_price?.additional_person ?? 0,
   favoriteCount: property?.favorite_count ?? 0,
   featureImage: property?.feature_image ?? null,
   hasBlueTick: !!property?.has_blue_tick,
@@ -23,6 +25,7 @@ export const toPropertyDetailsView = (
   region: property?.region,
   remainingDays: property?.remaining_days,
   slug: property?.slug,
+  stdCapacity: property?.std_capacity ?? 0,
   title: property?.title,
   todayPrice: {
     discountPercentage: property?.today_price?.discount_percentage,

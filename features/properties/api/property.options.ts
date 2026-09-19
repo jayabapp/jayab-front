@@ -119,6 +119,7 @@ export const reservedDatesOptions = (id: number | string) =>
 export const propertyCalendarOptions = (
   id: number | string,
   range: { month: number; year: number },
+  enabled = true,
 ) =>
   queryOptions({
     queryKey: propertyKeys.calendar(id, `${range.year}-${range.month}`),
@@ -127,7 +128,7 @@ export const propertyCalendarOptions = (
         { property_id: id, month: range.month, year: range.year },
         signal,
       ),
-    enabled: Boolean(id && range.month && range.year),
+    enabled: enabled && Boolean(id && range.month && range.year),
     staleTime: 60_000,
   });
 
