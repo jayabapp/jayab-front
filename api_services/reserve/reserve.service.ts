@@ -1,8 +1,5 @@
-import {
-  ActiveReserveDto,
-  CreateReserveDto,
-  ReserveListDto,
-} from "./reserve.interface";
+import { CreateReserveResultDto, ReserveListDto } from "./reserve.interface";
+import { ActiveReserveDto, CreateReserveDto } from "./reserve.interface";
 import { apiRoutes } from "@/utils/urls";
 import { apiCall } from "../common/apicall.helper";
 
@@ -14,12 +11,14 @@ export class ReserveService {
 
   static async createReserve(dto: CreateReserveDto, idempotencyKey: string) {
     try {
-      const result = await apiCall<CreateReserveDto, ReserveListDto>(
+      const result = await apiCall<CreateReserveDto, CreateReserveResultDto>(
         "POST",
         apiRoutes.RESERVE,
         dto,
         {
           headers: { "Idempotency-Key": idempotencyKey },
+          showErrorNotification: false,
+          version: "v2",
         },
       );
       return result;

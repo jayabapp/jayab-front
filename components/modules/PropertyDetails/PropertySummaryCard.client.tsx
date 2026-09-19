@@ -3,9 +3,9 @@
 import type { PropertySummaryCardProps } from "@/types/components/modules/property-details";
 import type { BookingRenderActions } from "@/types/components/modules/property-booking";
 import { useTrackPropertyView } from "@features/properties/hooks/useTrackPropertyView";
-import { BookingContinue, BookingPanel } from "@modules/PropertyBooking";
+import { BookingBottomBar, BookingPanel } from "@modules/PropertyBooking";
+import { ContactActions, ContactFlow } from "@modules/PropertyContact";
 import { PropertyShareModal } from "@modules/PropertyContact";
-import { BookingBottomBar } from "@modules/PropertyBooking";
 import { useStoreInit, useStoreParams } from "@/store";
 import { useState } from "react";
 
@@ -20,11 +20,11 @@ const PropertySummaryCard = ({ property }: PropertySummaryCardProps) => {
   useTrackPropertyView(property?.id);
 
   const renderActions: BookingRenderActions = (context) => (
-    <BookingContinue context={context} property={property} />
+    <ContactActions context={context} property={property} />
   );
 
   return (
-    <>
+    <ContactFlow property={property}>
       <div className="hidden w-full flex-col gap-3 md:sticky md:top-36 md:flex">
         <BookingPanel
           variant="card"
@@ -54,7 +54,7 @@ const PropertySummaryCard = ({ property }: PropertySummaryCardProps) => {
         property={property}
         onHide={() => setShowShare(false)}
       />
-    </>
+    </ContactFlow>
   );
 };
 

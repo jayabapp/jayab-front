@@ -6,7 +6,19 @@ export interface CreateReserveDto {
   check_out: string;
   property_id: number;
   guests_count: string;
-  user_action: number;
+}
+
+export interface CreateReserveResultDto {
+  created: boolean;
+  reserve: {
+    id: number;
+    status: number;
+    check_in: string;
+    check_out: string;
+    created_at: string;
+    property_id: number;
+    guests_count: string;
+  };
 }
 
 export interface ReserveListDto {

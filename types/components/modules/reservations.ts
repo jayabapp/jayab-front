@@ -19,7 +19,6 @@ export type ReservationViewProps = {
 export type ReservationCountdownProps = {
   minutes: string;
   seconds: string;
-  isOwner?: boolean;
 };
 
 export type ReservationStatusBarProps = {
@@ -34,13 +33,6 @@ export type ReservationGuestContactProps = {
   isExpired?: boolean;
   isChatPending?: boolean;
   onStartChat?: () => void;
-  onContactRequest?: (channel: ReservationContactChannel) => void;
-};
-
-export type ActiveReservationSheetProps = {
-  show: boolean;
-  onHide: () => void;
-  reservation: ReserveListDto | null;
   onContactRequest?: (channel: ReservationContactChannel) => void;
 };
 

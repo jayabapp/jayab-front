@@ -8,11 +8,16 @@ import type { ReactNode } from "react";
 export type StayMonthRef = { month: number; year: number };
 export type StayCompleteRange = { end: Date; start: Date };
 
+export type BookingActionsVariant = "bar" | "card" | "sheet";
+
 export type BookingActionsContext = {
   endDate: Date;
   guests: number;
+  nights: number;
   startDate: Date;
+  total: number;
   onEdit: () => void;
+  variant: BookingActionsVariant;
 };
 
 export type BookingRenderActions = (

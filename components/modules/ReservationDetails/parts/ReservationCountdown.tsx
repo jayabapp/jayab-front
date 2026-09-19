@@ -7,16 +7,13 @@ const DIGIT_CLASS =
   "pointer-events-none pt-1 text-lg !font-medium !space-x-14 w-12 h-12 flex items-center justify-center aspect-square rounded-lg bg-black text-white !tracking-[0.15rem]";
 
 const ReservationCountdown = ({
-  isOwner,
   minutes,
   seconds,
 }: ReservationCountdownProps) => (
   <div className="w-full flex items-center flex-col pb-1 gap-2 justify-center">
-    {isOwner ? (
-      <p className="text-xs text-danger-500 text-center w-full">
-        {_STRINGS.RESERVE_OWNER_TIMEOUT_HINT}
-      </p>
-    ) : null}
+    <p className="text-xs text-danger-500 text-center w-full">
+      {_STRINGS.RESERVE_OWNER_TIMEOUT_HINT}
+    </p>
 
     <div className="flex items-center gap-2">
       <div className="flex flex-col gap-1">
@@ -43,12 +40,6 @@ const ReservationCountdown = ({
         />
       </div>
     </div>
-
-    {isOwner ? null : (
-      <p className="text-sm text-neutral-400 text-center w-full">
-        {_STRINGS.RESERVE_GUEST_WAITING_HINT}
-      </p>
-    )}
   </div>
 );
 

@@ -37,7 +37,7 @@ const ReservationCard = ({
 
   const countdown = useReservationCountdown(
     reservation?.ttl_seconds,
-    !!reservation?.ttl_seconds || !!isOwner,
+    !!isOwner,
   );
 
   const onCallGuest = () => {
@@ -79,21 +79,22 @@ const ReservationCard = ({
 
       <Divider moreClass=" border-dashed  " />
 
-      {isOwner && !showCounter ? (
-        <p className="text-center text-sm">{_STRINGS.RESERVE_ANSWER_TIME_UP}</p>
-      ) : !isOwner && reservation?.is_answer_deadline_passed ? (
-        <p className="text-center text-sm">
-          {_STRINGS.RESERVE_ANSWER_DEADLINE_PASSED}
-        </p>
-      ) : showCounter ? (
-        <ReservationCountdown
-          isOwner={isOwner}
-          minutes={countdown.minutes}
-          seconds={countdown.seconds}
-        />
-      ) : null}
+      {isOwner ? (
+        <>
+          {showCounter ? (
+            <ReservationCountdown
+              minutes={countdown.minutes}
+              seconds={countdown.seconds}
+            />
+          ) : (
+            <p className="text-center text-sm">
+              {_STRINGS.RESERVE_ANSWER_TIME_UP}
+            </p>
+          )}
 
-      <Divider moreClass="  !border-transparent  " />
+          <Divider moreClass="  !border-transparent  " />
+        </>
+      ) : null}
 
       <ReservationSchedule isOwner={isOwner} reservation={reservation} />
 

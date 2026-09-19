@@ -8,7 +8,6 @@ const payloadKey = (payload: CreateReserveDto) =>
     payload.check_in,
     payload.check_out,
     payload.guests_count,
-    payload.user_action,
   ].join(":");
 
 export const getReservationIdempotencyKey = (payload: CreateReserveDto) => {

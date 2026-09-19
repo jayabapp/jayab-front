@@ -144,8 +144,11 @@ const BookingBottomBar = ({
           renderActions?.({
             endDate: stay.end,
             guests,
+            nights: quote.nights,
             onEdit: () => setEditOpen(true),
             startDate: stay.start,
+            total: quote.total,
+            variant: "bar",
           })
         ) : null}
       </div>

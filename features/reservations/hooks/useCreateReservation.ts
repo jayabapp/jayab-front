@@ -9,6 +9,8 @@ import { useRef } from "react";
 
 import type { CreateReserveDto } from "@/api_services/reserve/reserve.interface";
 
+const DATES_UNAVAILABLE_ERROR = "RESERVE_DATES_UNAVAILABLE";
+
 export const useCreateReservation = () => {
   const client = useQueryClient();
   const inFlight = useRef(false);
@@ -27,10 +29,14 @@ export const useCreateReservation = () => {
         inFlight.current = false;
       }
     },
-    onSuccess: (reservation, payload) =>
+    onError: (error: { message_code?: string }, payload) => {
+      if (error?.message_code === DATES_UNAVAILABLE_ERROR)
+        void invalidateReservationCaches(client, payload.property_id);
+    },
+    onSuccess: (result, payload) =>
       invalidateReservationCaches(
         client,
-        reservation?.property_id ?? payload.property_id,
+        result?.reserve.property_id ?? payload.property_id,
       ),
   });
 };

@@ -130,8 +130,11 @@ const BookingPanel = ({
           ? renderActions?.({
               endDate: stay.end,
               guests: booking.guests,
+              nights: quote.nights,
               onEdit: openDates,
               startDate: stay.start,
+              total: quote.total,
+              variant,
             })
           : null}
       </div>

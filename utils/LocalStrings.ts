@@ -519,15 +519,11 @@ const _STRINGS = {
   SELECT_DATE: "انتخاب تاریخ",
   SELECT_DATE_SPAN: "انتخاب بازه تاریخی",
   RESERVEE_EXPIRE: "اعتبار رزرو",
-  RESERVE_ANSWER_DEADLINE_PASSED:
-    "مهلت پاسخ میزبان به پایان رسیده است؛ درخواست شما تا ۲۴ ساعت فعال می‌ماند.",
   REQUEST_STATUS: "وضعیت درخواست",
   YOUR_CALL_CLICKS: " تعداد کیلیک روی دکمه تماس",
   OWNER_PLZ_CALL_MSG:
     "میزبان گرامی ; تمامی رزرو ها پس از ارتباط و تماس مستقیم با میهمان قطعی میگردد.",
-  CANT_RESERVE_MESSAGE:
-    "فعلا امکان صدور درخواست جدید ندارین مگر اینکه درخواست درحال انجام رو کنسل کنین.",
-  SUBMIT_RESERVE: " ارسال درخواست رزرو",
+  SUBMIT_RESERVE: "ارسال درخواست رزرو",
   REQUEST_TYPE: "نوع درخواست",
   REQUEST_DATE: "تاریخ ثبت درخواست",
   SEE_DETAILS: "مشاهده جزئیات",
@@ -614,10 +610,7 @@ const _STRINGS = {
   PICK_GUEST_COUNT: "تعداد نفرات را مشخص کنید.",
   MORE_THAN: "بیشتر از",
   RESERVE_REQUEST_FOR: "درخواست رزرو برای",
-  RESERVE_CONTACT_HINT:
-    "با انتخاب یکی از روش‌های زیر، درخواست شما برای میزبان ارسال می‌شود.",
   RESERVE_FINALIZE_HINT: "«رزرو شما پس از هماهنگی با میزبان نهایی خواهد شد.»",
-  ACTIVE_RESERVES_LINK: "مشاهده رزرو های فعال",
   CHECK_IN_SHORT: "ورود",
   CHECK_OUT_SHORT: "خروج",
   NIGHT: "شب",
@@ -659,10 +652,8 @@ const _STRINGS = {
   GUEST_AWAITS_YOU: "میهمان منتظر پاسخ شماست",
   RESERVE_ANSWER_TIME_UP: "زمان شما برای پاسخ به این درخواست به اتمام رسیده است.",
   RESERVE_FINALIZE_NOTE: "رزرو شما پس از هماهنگی با میزبان نهایی خواهد شد",
-  RESERVE_GUEST_WAITING_HINT: "مدت زمان انتظار جهت بررسی میزبان",
   RESERVE_OWNER_TIMEOUT_HINT:
     "پس از اتمام تایم و عدم پاسخ لینک ویلاهای مشابه برای میهمان ارسال می گردد.",
-  YOUR_ACTIVE_RESERVE: "رزرو فعال شما",
 
   // Profile payments and invite copy.
   PAYMENT_TIME: "زمان پرداخت",
@@ -774,6 +765,35 @@ const _STRINGS = {
   CALENDAR_PRICES_TITLE: "نرخ‌ها",
   RATE_PER_NIGHT: "هر شب",
   EDIT_STAY: "ویرایش تاریخ و مسافر",
+  CONTACT_HOST_TITLE: "هماهنگی مستقیم با میزبان",
+  CONTACT_HOST_TITLE_EXPIRED: "هماهنگی با میزبان",
+  CALL_HOST: "تماس با میزبان",
+  SMS_HOST: "پیامک به میزبان",
+  RESERVE_REQUEST_ACTION: "درخواست رزرو",
+  DIRECT_COORDINATION_NOTE:
+    "پرداخت و تحویل اقامتگاه مستقیماً با میزبان هماهنگ می‌شود.",
+  EXPIRED_REQUEST_NOTE:
+    "درخواست شما همراه تاریخ و تعداد برای میزبان ارسال می‌شود.",
+  CONTACT_PREFILL:
+    "سلام، برای اقامتگاه «{title}» (کد {code}) از {checkin} تا {checkout} برای {guests} نفر در جایاب دیدم. امکان هماهنگی دارید؟",
+  CONTACT_CALL_HINT: "هنگام تماس بگویید آگهی را در جایاب دیده‌اید.",
+  CONTACT_SMS_HINT: "متن پیام آماده است؛ کد آگهی هم در آن آمده است.",
+  COPY_NUMBER: "کپی شماره",
+  COPY_MESSAGE_TEXT: "کپی متن پیام",
+  MESSAGE_TEXT_COPIED: "متن پیام کپی شد",
+  RESERVE_SHEET_TITLE: "درخواست رزرو",
+  RESERVE_SHARES_NUMBER:
+    "شمارهٔ موبایل شما همراه تاریخ و تعداد برای میزبان پیامک می‌شود تا مستقیم با شما هماهنگ کند.",
+  CANCEL_ACTION: "انصراف",
+  RESERVE_SENT_TITLE: "درخواست رزرو برای میزبان ارسال شد",
+  RESERVE_SENT_BODY:
+    "میزبان برای هماهنگی با شما تماس می‌گیرد؛ برای هماهنگی سریع‌تر خودتان هم می‌توانید تماس بگیرید.",
+  RESERVE_SENT_EXPIRED_BODY:
+    "اگر هماهنگی انجام نشد، اقامتگاه‌های مشابه همین منطقه برایتان پیامک می‌شود.",
+  RESERVE_ALREADY_SENT_TITLE: "برای این اقامتگاه قبلاً درخواست داده‌اید",
+  MY_REQUESTS: "درخواست‌های من",
+  MANAGE_LISTING: "مدیریت آگهی",
+  RESERVE_FAILED: "ثبت درخواست انجام نشد. دوباره تلاش کنید.",
 };
 
 export default _STRINGS;

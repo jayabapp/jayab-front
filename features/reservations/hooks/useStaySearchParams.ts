@@ -8,6 +8,7 @@ import moment from "moment-jalaali";
 
 export type StayIntent = "call" | "sms" | "reserve" | "chat";
 export type StayStep = "PICK_DATES" | "PICK_GUESTS" | "READY";
+export type StayDraft = { end: Date; guests: number; start: Date };
 
 const INTENTS: StayIntent[] = ["call", "sms", "reserve", "chat"];
 const API_DATE = "YYYY-MM-DD";
@@ -98,8 +99,13 @@ export const useStaySearchParams = (maxCapacity?: number | null) => {
   );
 
   const authUrlFor = useCallback(
-    (nextIntent: StayIntent) => {
+    (nextIntent: StayIntent, current?: StayDraft) => {
       const params = new URLSearchParams(searchParams?.toString() ?? "");
+      if (current) {
+        params.set(STAY_PARAM.checkIn, toApiDate(current.start) ?? "");
+        params.set(STAY_PARAM.checkOut, toApiDate(current.end) ?? "");
+        params.set(STAY_PARAM.guests, `${current.guests}`);
+      }
       params.set(STAY_PARAM.intent, nextIntent);
       return `/auth?redirect_url=${encodeURIComponent(`${pathname}?${params.toString()}`)}`;
     },

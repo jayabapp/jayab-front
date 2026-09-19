@@ -32,8 +32,15 @@ const ChatFooter = ({
   const [isTyping, setIsTyping] = useState<boolean | null>(false);
   const { chatReply } = useChatStore((state) => state);
   const { socket } = useStoreSocket((state) => state);
-  const [text, setText] = useState("");
+  const [text, setText] = useState(() => {
+    const draft = useChatStore.getState().chatDraft;
+    return draft && `${draft.chatId}` === `${chatId}` ? draft.text : "";
+  });
   const [showEmojiPicker, setShowEmojiPicker] = useState(false);
+  useEffect(() => {
+    if (useChatStore.getState().chatDraft)
+      useChatStore.setState({ chatDraft: null });
+  }, []);
   const [image, setImage] = useState<any>(null);
   const inputRef = useRef<HTMLTextAreaElement>(null);
   const submittingRef = useRef(false);

@@ -153,6 +153,7 @@ export type ChatStore = {
   isTyping: any;
   chatReply: any;
   chatDelete: any;
+  chatDraft: { chatId: string; text: string } | null;
   chatProduct: any;
   usersStatus: any;
   chatsPageData: any;
@@ -164,6 +165,7 @@ export const useChatStore = create<ChatStore>(() => ({
   isTyping: null,
   chatReply: null,
   chatDelete: null,
+  chatDraft: null,
   usersStatus: null,
   chatProduct: null,
   chatsPageData: null,
