@@ -32,17 +32,18 @@ const AuthOtpCard = ({ challenge, onEditNumber }: AuthOtpCardProps) => {
           href="/"
           prefetch={false}
           title={_STRINGS.BACK_TO_HOME}
-          className="glass-badge relative flex size-24 items-center justify-center rounded-full transition-transform duration-200 hover:scale-105 active:scale-95"
+          className="glass-badge relative flex size-20 items-center justify-center rounded-[1.35rem] transition-transform duration-200 hover:scale-105 active:scale-95"
         >
           <Image
-            width={64}
-            height={64}
+            width={56}
+            height={56}
             unoptimized
             alt={_STRINGS.JAYAB_LOGO_ALT}
             src="/assets/icons/logo/logo.svg"
-            className="size-16 object-contain"
+            className="size-14 object-contain"
           />
         </Link>
+        <span className="h-1 w-10 rounded-full bg-brand-500/80" />
         <p className="text-sm text-neutral-600">{_STRINGS.AUTH_CODE_SENT_TO}</p>
         <button
           type="button"
@@ -103,8 +104,8 @@ const AuthOtpCard = ({ challenge, onEditNumber }: AuthOtpCardProps) => {
           loading={isSubmitting}
           disabled={isSubmitting}
           containerClass="mt-2 w-full"
-          roundedClass="rounded-2xl"
-          btnClass="btn-glass-primary !py-3.5"
+          roundedClass="rounded-20"
+          btnClass="auth-primary-button !py-4"
           title={_STRINGS.ENTER_AND_MOVE_ON}
         />
       </div>

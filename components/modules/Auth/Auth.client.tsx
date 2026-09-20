@@ -29,10 +29,6 @@ const AuthPageComponent = () => {
   const { content: terms, isLoading: termsLoading } = useCmsContent("terms");
   const isOtpStep = step === "otp";
 
-  // The OTP face is mounted only while it is in play: its WebOTP listener,
-  // autofocus and countdown must not run behind the phone form. On the way back
-  // it has to outlive the state change, or the face the user is still looking at
-  // would empty out mid-rotation — so it is torn down on transitionend instead.
   const [rotatingBack, setRotatingBack] = useState(false);
   const otpVisible = isOtpStep || rotatingBack;
 
@@ -58,17 +54,20 @@ const AuthPageComponent = () => {
           {/* PHONE */}
           <div
             inert={isOtpStep}
-            className="flip-face glass-panel px-6 pb-8 pt-24 md:px-9"
+            className="flip-face glass-panel px-6 pb-8 pt-10 md:px-9"
           >
-            <div className="absolute left-5 top-5 z-10">
-              <HeaderBrand alwaysShowTitle asLink />
+            <div className="flex justify-center">
+              <div className="glass-badge flex size-16 items-center justify-center rounded-[1.35rem]">
+                <HeaderBrand asLink markOnly />
+              </div>
             </div>
 
-            <div className="flex flex-col items-center gap-3">
-              <h1 className="text-xl font-bold text-neutral-900">
+            <div className="mt-6 flex flex-col items-center gap-3">
+              <span className="h-1 w-10 rounded-full bg-brand-500/80" />
+              <h1 className="text-xl font-bold tracking-tight text-neutral-900">
                 {_STRINGS.AUTH_WELCOME_TITLE}
               </h1>
-              <p className="max-w-64 text-center text-sm text-neutral-600">
+              <p className="max-w-72 text-center text-sm leading-6 text-neutral-600">
                 {_STRINGS.ENTER_TOUR_MOBILE_NUMBER}
               </p>
             </div>
@@ -77,6 +76,7 @@ const AuthPageComponent = () => {
               <FormInput
                 value={mobile}
                 item={{
+                  id: "auth-mobile",
                   maxLength: 11,
                   direction: "ltr",
                   keyboard: "number",
@@ -84,7 +84,7 @@ const AuthPageComponent = () => {
                   containerClass: "relative w-full",
                   placeholder: _STRINGS.MOBILE_PLACEHOLDER,
                   inputClass:
-                    "glass-field !rounded-2xl !py-4 !text-lg tracking-[0.3em] !text-center placeholder:!text-center placeholder:!text-base placeholder:tracking-[0.3em]",
+                    "glass-field !h-14 !rounded-20 !py-3 !text-lg tracking-[0.25em] !text-center placeholder:!text-center placeholder:!text-base placeholder:tracking-[0.25em]",
                 }}
                 onChangeText={(v: number) => {
                   setMobile(v);
@@ -107,16 +107,16 @@ const AuthPageComponent = () => {
                 width="w-full"
                 onClick={submit}
                 loading={isSubmitting}
-                loadingIndicator={<DotLoading />}
-                preserveStyleWhileLoading
-                disabled={isSubmitting}
                 containerClass="w-full"
-                roundedClass="rounded-2xl"
-                btnClass="btn-glass-primary !py-3.5"
+                disabled={isSubmitting}
+                roundedClass="rounded-20"
+                preserveStyleWhileLoading
+                loadingIndicator={<DotLoading />}
                 title={_STRINGS?.ENTER_AND_MOVE_ON}
+                btnClass="auth-primary-button !py-4"
               />
 
-              <div className="flex items-center justify-center gap-1.5 text-xs text-neutral-600">
+              <div className="flex items-center justify-center gap-1.5 text-xs text-neutral-500">
                 <svg
                   fill="none"
                   width="14"
@@ -152,9 +152,6 @@ const AuthPageComponent = () => {
         </div>
       </div>
 
-      {/* The modal is a plain `fixed` element, and the flip card's transform and
-          backdrop-filter would both make it the containing block — so it stays
-          outside the rotating surface. */}
       <Terms
         termsLoading={termsLoading}
         visibleTermsModal={visibleTermsModal}

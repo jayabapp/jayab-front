@@ -171,10 +171,15 @@ ul {
 }
 
 .auth-container {
-  @apply relative isolate mx-auto flex w-full max-w-full flex-col items-center justify-center overflow-hidden px-4 pb-20 pt-24;
+  @apply relative isolate mx-auto flex w-full max-w-full flex-col items-center justify-center overflow-hidden bg-white px-4 pb-12 pt-24 sm:pb-16;
   min-height: 100dvh;
-  background-color: theme("colors.canvas");
-  background-image: var(--aurora-mesh);
+  /* Match the landing page canvas; color and depth belong to the form itself. */
+  background-image: none;
+}
+
+.auth-container::before,
+.auth-container::after {
+  display: none;
 }
 
 .aurora-layer {
@@ -236,21 +241,18 @@ ul {
 
 /* ------------------------------ GLASS SURFACES ----------------------------- */
 .glass-panel {
-  @apply relative overflow-hidden rounded-28 border border-white/60 bg-white/55 shadow-glass;
-  -webkit-backdrop-filter: blur(26px) saturate(170%);
-  backdrop-filter: blur(26px) saturate(170%);
+  @apply relative overflow-hidden rounded-[2rem] border border-brand-100/80 bg-white/95;
+  box-shadow:
+    18px 18px 42px rgb(21 60 105 / 0.12),
+    -12px -12px 28px rgb(255 255 255 / 0.95),
+    inset 0 1px 0 rgb(255 255 255 / 0.98);
 }
 
 /* Specular highlight along the top edge — the cue that sells "pane of glass". */
 .glass-panel::before {
   content: "";
-  @apply pointer-events-none absolute inset-x-10 top-0 h-px;
-  background: linear-gradient(
-    to left,
-    transparent,
-    rgba(255, 255, 255, 0.95),
-    transparent
-  );
+  @apply pointer-events-none absolute inset-x-8 top-0 h-px;
+  background: linear-gradient(to left, transparent, theme(colors.brand.100 / 80%), transparent);
 }
 
 .menu-icon-chip {
@@ -277,15 +279,18 @@ ul {
 }
 
 .glass-badge {
-  @apply border border-white/70 bg-white/60 shadow-glass-sm;
-  -webkit-backdrop-filter: blur(14px) saturate(160%);
-  backdrop-filter: blur(14px) saturate(160%);
+  @apply border border-brand-100/80 bg-white;
+  box-shadow:
+    8px 8px 18px rgb(21 60 105 / 0.1),
+    -5px -5px 14px rgb(255 255 255 / 0.98),
+    inset 0 1px 0 rgb(255 255 255 / 0.98);
 }
 
 .glass-header {
-  @apply border-b border-white/50 bg-white/45;
-  -webkit-backdrop-filter: blur(18px) saturate(160%);
-  backdrop-filter: blur(18px) saturate(160%);
+  @apply border-b border-neutral-100 bg-white/95;
+  box-shadow: 0 8px 24px -22px rgb(21 60 105 / 0.32);
+  -webkit-backdrop-filter: blur(14px) saturate(120%);
+  backdrop-filter: blur(14px) saturate(120%);
 }
 
 .nav-underline::after {
@@ -348,16 +353,18 @@ ul {
 }
 
 .glass-chip {
-  @apply rounded-full border border-white/60 bg-white/50 px-3 py-1.5;
-  -webkit-backdrop-filter: blur(12px);
-  backdrop-filter: blur(12px);
+  @apply rounded-full border border-brand-100/80 bg-brand-50/45 px-3 py-1.5;
+  box-shadow:
+    inset 2px 2px 5px rgb(21 60 105 / 0.07),
+    inset -2px -2px 5px rgb(255 255 255 / 0.95);
 }
 
 .glass-field {
-  border-color: rgba(255, 255, 255, 0.7);
-  background-color: rgba(255, 255, 255, 0.5);
-  -webkit-backdrop-filter: blur(12px);
-  backdrop-filter: blur(12px);
+  border-color: theme("colors.neutral.100");
+  background-color: theme("colors.neutral.50");
+  box-shadow:
+    inset 3px 3px 7px rgb(21 60 105 / 0.06),
+    inset -3px -3px 7px rgb(255 255 255 / 0.96);
   transition:
     border-color 0.2s ease,
     background-color 0.2s ease,
@@ -366,19 +373,21 @@ ul {
 
 @media (hover: hover) {
   .glass-field:hover {
-    border-color: rgba(255, 255, 255, 0.95);
+    border-color: theme("colors.brand.200");
   }
 }
 
 .glass-field:focus {
   border-color: theme("colors.brand.400");
-  background-color: rgba(255, 255, 255, 0.8);
-  box-shadow: 0 0 0 4px theme(colors.brand.500 / 14%);
+  background-color: rgb(255 255 255);
+  box-shadow:
+    0 0 0 4px theme(colors.brand.500 / 12%),
+    inset 2px 2px 5px rgb(21 60 105 / 0.04);
 }
 
 .glass-field-filled {
   border-color: theme("colors.brand.400");
-  background-color: rgba(255, 255, 255, 0.85);
+  background-color: theme("colors.brand.50");
   color: theme("colors.brand.700");
 }
 
@@ -403,6 +412,54 @@ ul {
     theme("colors.brand.500")
   );
   @apply cursor-wait text-white opacity-100 shadow-glass-btn;
+}
+
+.auth-primary-button {
+  @apply border-transparent text-white;
+  background-image: linear-gradient(
+    to left,
+    theme("colors.brand.700"),
+    theme("colors.brand.500")
+  );
+  box-shadow:
+    0 14px 24px -14px rgb(31 107 201 / 0.74),
+    inset 0 1px 0 rgb(255 255 255 / 0.28);
+  transition:
+    box-shadow 0.2s ease,
+    transform 0.2s ease,
+    filter 0.2s ease;
+}
+
+@media (hover: hover) {
+  .auth-primary-button:hover:not(:disabled) {
+    box-shadow:
+      0 18px 28px -14px rgb(31 107 201 / 0.82),
+      inset 0 1px 0 rgb(255 255 255 / 0.32);
+    filter: saturate(1.06);
+    transform: translateY(-1px);
+  }
+}
+
+.auth-primary-button:active:not(:disabled) {
+  box-shadow: inset 2px 2px 6px rgb(8 49 99 / 0.28);
+  transform: translateY(0);
+}
+
+.auth-primary-button:disabled {
+  background-image: none;
+  @apply shadow-none;
+}
+
+.auth-primary-button.btn-loading-preserve:disabled {
+  background-image: linear-gradient(
+    to left,
+    theme("colors.brand.700"),
+    theme("colors.brand.500")
+  );
+  @apply cursor-wait text-white opacity-100;
+  box-shadow:
+    0 14px 24px -14px rgb(31 107 201 / 0.74),
+    inset 0 1px 0 rgb(255 255 255 / 0.28);
 }
 
 @media (prefers-reduced-motion: reduce) {
