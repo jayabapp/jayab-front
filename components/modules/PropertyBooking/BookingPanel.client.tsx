@@ -1,21 +1,23 @@
 "use client";
 
 import { usePrefetchStayMonths } from "@features/reservations/hooks/usePrefetchStayMonths";
-import type { BookingPanelProps } from "@/types/components/modules/property-booking";
+import { useCallback, useState } from "react";
+import { trackListingEvent } from "@/helpers/listingAnalytics";
 import { formatJalaliDay } from "@features/reservations/mappers/reservation-dates";
 import { useBookingStay } from "@features/reservations/hooks/useBookingStay";
 import { nightsBetween } from "@features/reservations/lib/stay-range";
-import { useCallback, useState } from "react";
+
+import type { BookingPanelProps } from "@/types/components/modules/property-booking";
 
 import PropertyPriceTag from "@modules/PropertyDetails/PropertyPriceTag";
 import StayDateFields from "./parts/StayDateFields.client";
 import GuestStepper from "./parts/GuestStepper.client";
 import PriceDetails from "./parts/PriceDetails.client";
-import Skeleton from "@elements/Skeleton/Skeleton";
 import PriceSummary from "./parts/PriceSummary";
 import formatToman from "@/helpers/formatToman";
-import StepCta from "./parts/StepCta.client";
+import Skeleton from "@elements/Skeleton/Skeleton";
 import _STRINGS from "@/utils/LocalStrings";
+import StepCta from "./parts/StepCta.client";
 import dynamic from "next/dynamic";
 
 const StayDatePanel = dynamic(() => import("./parts/StayDatePanel.client"), {
@@ -30,7 +32,11 @@ const BookingPanel = ({
   renderActions,
   variant,
 }: BookingPanelProps) => {
-  const booking = useBookingStay(property.id, property.maxCapacity);
+  const booking = useBookingStay(
+    property.id,
+    property.maxCapacity,
+    property.stdCapacity,
+  );
   const [datesOpen, setDatesOpen] = useState(false);
   const stepperId = `guest-stepper-${variant}`;
   const isCard = variant === "card";
@@ -42,6 +48,9 @@ const BookingPanel = ({
 
   const onConfirmDates = useCallback(
     (range: { end: Date; start: Date }) => {
+      trackListingEvent("booking_dates_selected", {
+        nights: nightsBetween(range.start, range.end),
+      });
       setStay(range);
       setDatesOpen(false);
       requestAnimationFrame(() => document.getElementById(stepperId)?.focus());

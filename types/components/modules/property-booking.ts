@@ -3,7 +3,7 @@ import type { PropertyQuoteDto } from "@/api_services/property/property.interfac
 import type { SinglePropDto } from "@/api_services/property/property.interface";
 import type { DayRangeState } from "@features/reservations/lib/stay-range";
 import type { StayRange } from "@features/reservations/lib/stay-range";
-import type { ReactNode } from "react";
+import type { KeyboardEventHandler, ReactNode } from "react";
 
 export type StayMonthRef = { month: number; year: number };
 export type StayCompleteRange = { end: Date; start: Date };
@@ -51,6 +51,9 @@ export type StayDayCellProps = {
   disabled: boolean;
   isReserved: boolean;
   discounted?: boolean;
+  isLoading?: boolean;
+  dateKey: string;
+  onKeyDown?: KeyboardEventHandler<HTMLButtonElement>;
   onSelect: () => void;
   state: DayRangeState;
 };

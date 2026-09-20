@@ -7,9 +7,8 @@ const ROW_CLASS =
   "flex items-center justify-between gap-3 text-sm text-neutral-800";
 
 const PriceSummary = ({ isRefreshing, quote }: PriceSummaryProps) => (
-  <div
-    className={`flex flex-col gap-2 transition-opacity ${isRefreshing ? "opacity-60" : ""}`}
-  >
+  <div className={`relative flex flex-col gap-2 transition-opacity motion-reduce:transition-none ${isRefreshing ? "opacity-60" : ""}`} aria-live="polite">
+    {isRefreshing ? <span aria-hidden="true" className="absolute inset-x-0 top-0 h-0.5 bg-brand-500" /> : null}
     <div className={ROW_CLASS}>
       <span>
         {quote.nights} {_STRINGS.NIGHTS_OF_STAY}

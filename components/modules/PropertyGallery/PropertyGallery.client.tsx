@@ -1,19 +1,21 @@
 "use client";
 
-import { getPropertyImageUrl } from "@features/properties/mappers/property-image.mapper";
-import type { PropertyGalleryProps } from "@/types/components/modules/property-gallery";
 import { PROPERTY_IMAGE_QUALITY } from "@features/properties/constants/image";
-import { ContentImage } from "@elements/Image";
+import { getPropertyImageUrl } from "@features/properties/mappers/property-image.mapper";
+import { trackListingEvent } from "@/helpers/listingAnalytics";
 import { useMemo, useState } from "react";
+import { ContentImage } from "@elements/Image";
 import { useStoreInit } from "@/store";
 import { Icon } from "@elements/Icon";
 
+import type { PropertyGalleryProps } from "@/types/components/modules/property-gallery";
+
 import PropertyPhotoViewer from "./PropertyPhotoViewer.client";
 import SwiperSlide from "@elements/Carousel/SwiperSlide";
-import Swiper from "@elements/Carousel/Swiper.client";
-import _STRINGS from "@/utils/LocalStrings";
 import difference from "lodash/difference";
+import _STRINGS from "@/utils/LocalStrings";
 import isEmpty from "lodash/isEmpty";
+import Swiper from "@elements/Carousel/Swiper.client";
 
 const THUMBNAIL_COUNT = 4;
 
@@ -57,7 +59,14 @@ const PropertyGallery = ({
 
   const [mainImage, ...restImages] = orderedImages;
   const thumbnails = restImages.slice(0, THUMBNAIL_COUNT);
-  const openViewer = (index: number) => setViewerIndex(index);
+  const openViewer = (
+    index: number,
+    source: "carousel" | "grid" | "show_all",
+  ) => {
+    trackListingEvent("listing_gallery_open", { index });
+    trackListingEvent("photo_viewer_open", { index, source });
+    setViewerIndex(index);
+  };
 
   return (
     <div className="relative w-full">
@@ -75,7 +84,7 @@ const PropertyGallery = ({
       <div className="hidden aspect-[16/7] w-full grid-cols-4 grid-rows-2 gap-2 overflow-hidden rounded-20 md:grid">
         <button
           type="button"
-          onClick={() => openViewer(0)}
+          onClick={() => openViewer(0, "grid")}
           aria-label={`${title ?? ""} 1`}
           className={`group relative cursor-pointer overflow-hidden bg-neutral-100 ${
             thumbnails.length
@@ -99,7 +108,7 @@ const PropertyGallery = ({
           <button
             type="button"
             key={`gallery-thumb-${image?.id}`}
-            onClick={() => openViewer(index + 1)}
+            onClick={() => openViewer(index + 1, "grid")}
             aria-label={`${title ?? ""} ${index + 2}`}
             className={`group relative cursor-pointer overflow-hidden bg-neutral-100 ${thumbnailSpan(
               thumbnails.length,
@@ -121,7 +130,7 @@ const PropertyGallery = ({
 
         <button
           type="button"
-          onClick={() => openViewer(0)}
+          onClick={() => openViewer(0, "show_all")}
           className="absolute bottom-4 left-4 flex cursor-pointer items-center gap-2 rounded-full bg-white/90 px-4 py-2 text-sm font-semibold text-neutral-900 shadow-glass-sm transition-colors hover:bg-white focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-500"
         >
           <Icon name="images" size={20} />
@@ -142,20 +151,20 @@ const PropertyGallery = ({
             >
               <button
                 type="button"
-                onClick={() => openViewer(index)}
+                onClick={() => openViewer(index, "carousel")}
                 aria-label={`${title ?? ""} ${index + 1}`}
                 className="relative block aspect-[4/3] w-full overflow-hidden rounded-20"
               >
                 <ContentImage
                   fill
                   title={title}
-                  priority={index === 0}
-                  loading={index === 0 ? undefined : "lazy"}
-                  alt={image?.alt || title || ""}
                   sizes="100vw"
+                  priority={index === 0}
+                  alt={image?.alt || title || ""}
                   quality={PROPERTY_IMAGE_QUALITY}
-                  src={getPropertyImageUrl(image, "name")}
                   className="bg-neutral-100 object-cover"
+                  src={getPropertyImageUrl(image, "name")}
+                  loading={index === 0 ? undefined : "lazy"}
                 />
               </button>
             </SwiperSlide>
@@ -168,9 +177,6 @@ const PropertyGallery = ({
       </div>
 
       <PropertyPhotoViewer
-        // Remounting per open is what makes `startIndex` the initial state, so
-        // the viewer needs no effect to sync the index it opens on.
-        key={`viewer-${viewerIndex ?? "closed"}`}
         alt={title}
         title={title}
         hostName={hostName}
@@ -179,6 +185,7 @@ const PropertyGallery = ({
         startIndex={viewerIndex}
         show={viewerIndex !== null}
         onHide={() => setViewerIndex(null)}
+        key={`viewer-${viewerIndex ?? "closed"}`}
       />
     </div>
   );

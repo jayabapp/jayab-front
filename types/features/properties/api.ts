@@ -37,6 +37,7 @@ export type PropertyDetailsView = {
   favoriteCount: number;
   featureImage?: ImageDto | null;
   hasBlueTick: boolean;
+  hasPool: boolean;
   id: number;
   images: ImageDto[];
   isAuthorized: boolean;

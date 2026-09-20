@@ -106,6 +106,23 @@ ul {
     transition: none;
   }
 }
+
+@keyframes sheet-backdrop-in {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+@keyframes sheet-panel-in {
+  from { opacity: 0; transform: translateY(100%); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.sheet-backdrop-enter { animation: sheet-backdrop-in 220ms cubic-bezier(0.22, 1, 0.36, 1); }
+.sheet-panel-enter { animation: sheet-panel-in 220ms cubic-bezier(0.22, 1, 0.36, 1); }
+
+@media (prefers-reduced-motion: reduce) {
+  .sheet-backdrop-enter, .sheet-panel-enter { animation: none; }
+}
 .header-container {
   @apply w-full flex  justify-between items-center px-2  h-full;
 }

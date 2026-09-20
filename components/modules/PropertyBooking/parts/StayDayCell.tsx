@@ -17,8 +17,11 @@ const StayDayCell = ({
   price,
   isPeak,
   tooltip,
+  dateKey,
   onSelect,
   disabled,
+  isLoading,
+  onKeyDown,
   discounted,
   isReserved,
 }: StayDayCellProps) => {
@@ -46,7 +49,9 @@ const StayDayCell = ({
       <button
         type="button"
         aria-label={label}
+        data-stay-date={dateKey}
         onClick={onSelect}
+        onKeyDown={onKeyDown}
         aria-disabled={blocked}
         aria-pressed={isEdge || state === "middle"}
         className={`${BASE} ${skin} ${blocked ? "cursor-not-allowed" : "cursor-pointer"}`}
@@ -58,14 +63,19 @@ const StayDayCell = ({
           />
         ) : null}
         <span className={isEdge ? "font-bold" : ""}>{day}</span>
-        {price && !blocked ? (
+        {isLoading ? (
+          <span
+            aria-hidden="true"
+            className="h-2.5 w-7 animate-pulse rounded bg-neutral-100 motion-reduce:animate-none"
+          />
+        ) : price && !blocked ? (
           <span
             className={`text-2xs ${
               isEdge
                 ? "text-brand-100"
                 : discounted
                   ? "text-success-600"
-                  : "text-neutral-500"
+                  : "text-neutral-600"
             }`}
           >
             {price}

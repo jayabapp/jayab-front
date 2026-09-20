@@ -5,11 +5,16 @@ import { reservedKeysFromDates, toDayKey } from "../lib/stay-range";
 import { useStaySearchParams } from "./useStaySearchParams";
 import { useReservedDates } from "@features/properties/hooks/useReservedDates";
 import { usePropertyQuote } from "@features/properties/hooks/usePropertyQuote";
+import { trackListingEvent } from "@/helpers/listingAnalytics";
 
 const GUEST_WRITE_DELAY_MS = 300;
 const DRAFT_HANDOFF_MS = 80;
 
-export const useBookingStay = (propertyId: number, maxCapacity: number) => {
+export const useBookingStay = (
+  propertyId: number,
+  maxCapacity: number,
+  stdCapacity: number,
+) => {
   const params = useStaySearchParams(maxCapacity);
   const { data: reservedDates } = useReservedDates(propertyId);
   const reserved = useMemo(
@@ -52,6 +57,31 @@ export const useBookingStay = (propertyId: number, maxCapacity: number) => {
   });
 
   const nights = quote.data?.nights ?? 0;
+  const quoteKey = quote.data
+    ? `${quote.data.nights}:${quote.data.total}:${quote.data.is_available}`
+    : null;
+  const lastTrackedQuote = useRef<string | null>(null);
+
+  useEffect(() => {
+    if (!quote.data || quoteKey === lastTrackedQuote.current) return;
+    lastTrackedQuote.current = quoteKey;
+    trackListingEvent("booking_quote_viewed", {
+      is_available: quote.data.is_available,
+      nights: quote.data.nights,
+      total: quote.data.total,
+    });
+  }, [quote.data, quoteKey]);
+
+  useEffect(() => {
+    if (params.guestCount === null) return;
+    const timer = setTimeout(() => {
+      trackListingEvent("booking_guests_selected", {
+        extra_guests: Math.max(0, params.guestCount - stdCapacity),
+        guests: params.guestCount,
+      });
+    }, GUEST_WRITE_DELAY_MS);
+    return () => clearTimeout(timer);
+  }, [params.guestCount, stdCapacity]);
 
   return {
     ...params,

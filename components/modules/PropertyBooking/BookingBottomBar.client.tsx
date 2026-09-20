@@ -1,15 +1,17 @@
 "use client";
 
-import type { BookingBottomBarProps } from "@/types/components/modules/property-booking";
+import { useCallback, useState } from "react";
+import { trackListingEvent } from "@/helpers/listingAnalytics";
 import { formatJalaliDay } from "@features/reservations/mappers/reservation-dates";
 import { useBookingStay } from "@features/reservations/hooks/useBookingStay";
 import { nightsBetween } from "@features/reservations/lib/stay-range";
-import { useCallback, useState } from "react";
 import { Icon } from "@elements/Icon";
 
+import type { BookingBottomBarProps } from "@/types/components/modules/property-booking";
+
 import PropertyPriceTag from "@modules/PropertyDetails/PropertyPriceTag";
-import Skeleton from "@elements/Skeleton/Skeleton";
 import formatToman from "@/helpers/formatToman";
+import Skeleton from "@elements/Skeleton/Skeleton";
 import _STRINGS from "@/utils/LocalStrings";
 import dynamic from "next/dynamic";
 
@@ -30,7 +32,11 @@ const BookingBottomBar = ({
   property,
   renderActions,
 }: BookingBottomBarProps) => {
-  const booking = useBookingStay(property.id, property.maxCapacity);
+  const booking = useBookingStay(
+    property.id,
+    property.maxCapacity,
+    property.stdCapacity,
+  );
   const [datesOpen, setDatesOpen] = useState(false);
   const [guestsOpen, setGuestsOpen] = useState(false);
   const [editOpen, setEditOpen] = useState(false);
@@ -40,6 +46,9 @@ const BookingBottomBar = ({
 
   const onConfirmDates = useCallback(
     (range: { end: Date; start: Date }) => {
+      trackListingEvent("booking_dates_selected", {
+        nights: nightsBetween(range.start, range.end),
+      });
       setStay(range);
       setDatesOpen(false);
       if (!guests) setGuestsOpen(true);

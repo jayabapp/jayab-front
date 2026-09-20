@@ -1,13 +1,15 @@
 "use client";
 
-import type { PropertyContactRowProps } from "@/types/components/modules/property-contact";
+import { isIOS, isMacOs, isWindows } from "react-device-detect";
 import { getPropertyImageUrl } from "@features/properties/mappers/property-image.mapper";
 import { usePropertyContact } from "@features/properties/hooks/usePropertyContact";
-import { buildSmsHref } from "@features/reservations/lib/contact-prefill";
-import { isIOS, isMacOs, isWindows } from "react-device-detect";
+import { trackListingEvent } from "@/helpers/listingAnalytics";
 import { ContentImage } from "@elements/Image";
-import { Icon } from "@elements/Icon";
+import { buildSmsHref } from "@features/reservations/lib/contact-prefill";
 import { useState } from "react";
+import { Icon } from "@elements/Icon";
+
+import type { PropertyContactRowProps } from "@/types/components/modules/property-contact";
 
 import maskPhoneNumber from "@/helpers/maskPhoneNumber";
 import _STRINGS from "@/utils/LocalStrings";
@@ -31,11 +33,13 @@ const PropertyContactRow = ({
   const { mutate } = usePropertyContact();
   const number = data?.assistant_mobile_number;
 
-  const trackAction = () => mutate({ propertySlug: propertySlug || "", action: type });
+  const trackAction = () =>
+    mutate({ propertySlug: propertySlug || "", action: type });
 
   const onContactClick = (action: "call" | "sms") => {
     onHide();
     trackAction();
+    trackListingEvent("host_contact_number_revealed", { action });
     const href =
       action === "call"
         ? `tel:${number}`
@@ -74,6 +78,7 @@ const PropertyContactRow = ({
           type="button"
           onClick={() => {
             trackAction();
+            trackListingEvent("host_contact_number_revealed", { action: type });
             setShowNumber(true);
           }}
           className={`${ACTION_CLASS} border border-neutral-200 bg-white text-neutral-900 hover:bg-neutral-50`}
@@ -124,7 +129,8 @@ const PropertyContactRow = ({
         />
         <div className="flex min-w-0 flex-col items-start gap-1">
           <p className="truncate text-sm text-neutral-900">
-            {data?.assistant_full_name} · {data?.is_owner ? _STRINGS.HOST : _STRINGS.OWNER_ASSIST}
+            {data?.assistant_full_name} ·{" "}
+            {data?.is_owner ? _STRINGS.HOST : _STRINGS.OWNER_ASSIST}
           </p>
           <p className="text-sm text-neutral-500">{maskPhoneNumber(number)}</p>
         </div>

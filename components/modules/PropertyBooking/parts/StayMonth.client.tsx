@@ -1,18 +1,18 @@
 "use client";
 
-import {
-  dayRangeState,
-  isDayDisabled,
-} from "@features/reservations/lib/stay-range";
+import { useEffect, useMemo, useRef, useState } from "react";
+import { nightsBetween, toDayKey } from "@features/reservations/lib/stay-range";
 import { formatJalaliWeekdayDay } from "@features/reservations/mappers/reservation-dates";
 import { usePropertyCalendar } from "@features/properties/hooks/usePropertyCalendar";
+import { dayRangeState } from "@features/reservations/lib/stay-range";
+import { isDayDisabled } from "@features/reservations/lib/stay-range";
+
 import type { StayMonthProps } from "@/types/components/modules/property-booking";
-import { nightsBetween, toDayKey } from "@features/reservations/lib/stay-range";
-import { useEffect, useMemo, useRef, useState } from "react";
+import { type KeyboardEvent } from "react";
 
 import formatCompactToman from "@/helpers/formatCompactToman";
-import _STRINGS from "@/utils/LocalStrings";
 import StayDayCell from "./StayDayCell";
+import _STRINGS from "@/utils/LocalStrings";
 import moment from "moment-jalaali";
 
 const WEEKDAYS = ["ش", "ی", "د", "س", "چ", "پ", "ج"];
@@ -20,13 +20,13 @@ const JALALI_PARSE = "jYYYY/jM/jD";
 
 const StayMonth = ({
   lazy,
-  month,
-  onSelectDay,
-  propertyId,
-  range,
-  reserved,
-  today,
   year,
+  month,
+  range,
+  today,
+  reserved,
+  propertyId,
+  onSelectDay,
 }: StayMonthProps) => {
   const ref = useRef<HTMLDivElement>(null);
   const [seen, setSeen] = useState(!lazy);
@@ -45,7 +45,7 @@ const StayMonth = ({
     return () => observer.disconnect();
   }, [seen]);
 
-  const { data: calendar } = usePropertyCalendar(
+  const { data: calendar, isPending: isCalendarPending } = usePropertyCalendar(
     propertyId,
     { month, year },
     seen,
@@ -73,6 +73,32 @@ const StayMonth = ({
 
   const stayNights =
     range.start && range.end ? nightsBetween(range.start, range.end) : 0;
+
+  const moveFocus = (date: Date, offset: number) => {
+    const key = toDayKey(moment(date).add(offset, "day").toDate());
+    document
+      .querySelector<HTMLButtonElement>(`[data-stay-date="${key}"]`)
+      ?.focus();
+  };
+
+  const onDayKeyDown = (
+    event: KeyboardEvent<HTMLButtonElement>,
+    date: Date,
+  ) => {
+    const visualWeekday = (moment(date).day() + 1) % 7;
+    const offsets: Record<string, number> = {
+      ArrowDown: 7,
+      ArrowLeft: 1,
+      ArrowRight: -1,
+      ArrowUp: -7,
+      End: 6 - visualWeekday,
+      Home: -visualWeekday,
+    };
+    const offset = offsets[event.key];
+    if (offset === undefined) return;
+    event.preventDefault();
+    moveFocus(date, offset);
+  };
 
   return (
     <div
@@ -108,11 +134,19 @@ const StayMonth = ({
             .toDate();
           const entry = byDay.get(day);
           const state = dayRangeState(date, range);
-          // A night already gone is just past; striping it as "reserved" reads as noise.
           const isReserved =
             date >= today &&
             (reserved.has(toDayKey(date)) || !!entry?.is_reserved);
           const price = entry?.discounted_price || entry?.price;
+          const isDisabled = isDayDisabled(date, range, reserved, today);
+          const availability = isReserved
+            ? "رزرو شده"
+            : isDisabled
+              ? "غیرقابل انتخاب"
+              : "قابل انتخاب";
+          const priceLabel = price
+            ? `، ${formatCompactToman(price)} تومان`
+            : "";
 
           return (
             <StayDayCell
@@ -123,9 +157,12 @@ const StayMonth = ({
               isPeak={!!entry?.is_peak}
               price={formatCompactToman(price)}
               onSelect={() => onSelectDay(date)}
-              label={formatJalaliWeekdayDay(date)}
+              onKeyDown={(event) => onDayKeyDown(event, date)}
+              dateKey={toDayKey(date)}
+              isLoading={isCalendarPending}
+              label={`${formatJalaliWeekdayDay(date)}${priceLabel}، ${availability}`}
               discounted={!!entry?.discounted_price}
-              disabled={isDayDisabled(date, range, reserved, today)}
+              disabled={isDisabled}
               tooltip={
                 state === "end" && stayNights
                   ? `${stayNights} ${_STRINGS.NIGHTS_OF_STAY}`

@@ -1,10 +1,10 @@
 "use client";
 
-import type { TSimilarPropertiesProps } from "@/types/components/modules/property-details";
-import { similarPropertiesOptions } from "@features/properties/api/property.options";
 import { PropertyCard, PropertyCardSkeleton } from "@modules/PropertyGrid";
 import { useEffect, useRef, useState } from "react";
-import { useQuery } from "@tanstack/react-query";
+import { useSimilarProperties } from "@features/properties/hooks/useSimilarProperties";
+
+import type { TSimilarPropertiesProps } from "@/types/components/modules/property-details";
 
 import SwiperSlide from "@elements/Carousel/SwiperSlide";
 import Swiper from "@elements/Carousel/Swiper.client";
@@ -16,9 +16,7 @@ const SimilarProperties = ({
 }: TSimilarPropertiesProps) => {
   const rootRef = useRef<HTMLElement>(null);
   const [isVisible, setIsVisible] = useState(false);
-  const { data, isLoading } = useQuery(
-    similarPropertiesOptions(propertyId, isVisible),
-  );
+  const { data, isLoading } = useSimilarProperties(propertyId, isVisible);
 
   useEffect(() => {
     const node = rootRef.current;

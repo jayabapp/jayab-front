@@ -13,6 +13,7 @@ export const toPropertyDetailsView = (
   favoriteCount: property?.favorite_count ?? 0,
   featureImage: property?.feature_image ?? null,
   hasBlueTick: !!property?.has_blue_tick,
+  hasPool: !!property?.has_pool,
   id: property?.id,
   images: property?.images ?? [],
   isAuthorized: !!property?.is_authorized,

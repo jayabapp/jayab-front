@@ -1,6 +1,7 @@
-import type { ListingHeaderProps } from "@/types/components/modules/property-details";
 import { ContentImage } from "@elements/Image";
 import { Icon } from "@elements/Icon";
+
+import type { ListingHeaderProps } from "@/types/components/modules/property-details";
 
 import SingleProductBreadCrumb from "@elements/Breadcrumbs/SingleProductBreadcrumb.client";
 import ListingActions from "./parts/ListingActions.client";
@@ -12,7 +13,7 @@ const ListingHeader = ({ breadcrumbs, property }: ListingHeaderProps) => {
     .join("، ");
 
   return (
-    <header className="flex flex-col gap-3 pb-4 pt-2 md:pb-6">
+    <header className="enter-from-right flex flex-col gap-3 pb-4 pt-2 md:pb-6">
       <div className="hidden md:flex">
         <SingleProductBreadCrumb dataArray={breadcrumbs} />
       </div>

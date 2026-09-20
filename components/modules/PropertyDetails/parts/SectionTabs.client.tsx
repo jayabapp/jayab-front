@@ -1,7 +1,9 @@
 "use client";
 
-import type { SectionTabsProps } from "@/types/components/modules/property-details";
 import { useEffect, useState } from "react";
+import { trackListingEvent } from "@/helpers/listingAnalytics";
+
+import type { SectionTabsProps } from "@/types/components/modules/property-details";
 
 import _STRINGS from "@/utils/LocalStrings";
 
@@ -30,6 +32,7 @@ const SectionTabs = ({ tabs }: SectionTabsProps) => {
   }, [tabs]);
 
   const onTabClick = (id: string) => {
+    trackListingEvent("listing_tab_click", { tab: id });
     const section = document.getElementById(id);
     if (!section) return;
     const prefersReducedMotion = window.matchMedia(

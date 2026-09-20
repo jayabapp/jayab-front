@@ -1,9 +1,10 @@
 "use client";
 
-import type { FullScreenSheetProps } from "@/types/components/modules/property-booking";
 import { Dialog, DialogPanel } from "@headlessui/react";
 import { createPortal } from "react-dom";
 import { Icon } from "@elements/Icon";
+
+import type { FullScreenSheetProps } from "@/types/components/modules/property-booking";
 
 import _STRINGS from "@/utils/LocalStrings";
 
@@ -22,10 +23,10 @@ const FullScreenSheet = ({
     <Dialog
       open
       onClose={onHide}
-      className="fixed inset-0"
+      className="sheet-backdrop-enter fixed inset-0 bg-neutral-900/30"
       style={{ zIndex: SHEET_Z_INDEX }}
     >
-      <DialogPanel className="fixed inset-0 flex h-[100dvh] w-full flex-col bg-white">
+      <DialogPanel className="sheet-panel-enter fixed inset-0 flex h-[100dvh] w-full flex-col bg-white">
         <div className="flex items-center gap-3 border-b border-neutral-100 px-4 py-3">
           <button
             type="button"

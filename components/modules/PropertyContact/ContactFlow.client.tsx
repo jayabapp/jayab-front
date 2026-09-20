@@ -1,22 +1,20 @@
 "use client";
 
-import type {
-  ContactFlowAction,
-  ContactSession,
-  ContactStay,
-} from "@/types/components/modules/property-contact";
-import type {
-  ContactFlowProps,
-  ContactFlowValue,
-} from "@/types/components/modules/property-contact";
-import { useStaySearchParams } from "@features/reservations/hooks/useStaySearchParams";
-import { useContactIntent } from "@features/reservations/hooks/useContactIntent";
-import { buildContactPrefill } from "@features/reservations/lib/contact-prefill";
-import { useStartOrFindChat } from "@features/chat/hooks/useStartOrFindChat";
 import { useContext, useMemo, useRef, useState } from "react";
 import { useAuthStore, useChatStore } from "@/store";
 import { createContext, useCallback } from "react";
+import { useStaySearchParams } from "@features/reservations/hooks/useStaySearchParams";
+import { buildContactPrefill } from "@features/reservations/lib/contact-prefill";
+import { useStartOrFindChat } from "@features/chat/hooks/useStartOrFindChat";
+import { trackListingEvent } from "@/helpers/listingAnalytics";
+import { useContactIntent } from "@features/reservations/hooks/useContactIntent";
 import { useRouter } from "next/navigation";
+
+import type { ContactFlowAction } from "@/types/components/modules/property-contact";
+import type { ContactFlowValue } from "@/types/components/modules/property-contact";
+import type { ContactFlowProps } from "@/types/components/modules/property-contact";
+import type { ContactSession } from "@/types/components/modules/property-contact";
+import type { ContactStay } from "@/types/components/modules/property-contact";
 
 import ReserveConfirmSheet from "./parts/ReserveConfirmSheet.client";
 import PropertyContactModal from "./PropertyContactModal.client";
@@ -76,12 +74,19 @@ const ContactFlow = ({ children, property }: ContactFlowProps) => {
 
   const start = useCallback(
     (action: ContactFlowAction, stay: ContactStay) => {
+      trackListingEvent("host_contact_action", {
+        action,
+        guests: stay.guests,
+        is_expired: isExpired,
+        nights: stay.nights,
+      });
       const isAllowed = isExpired
         ? action === "reserve"
         : action !== "chat" || canChat;
       if (!isAllowed) return;
 
       if (!isLogin) {
+        trackListingEvent("booking_auth_required", { intent: action });
         router.push(
           authUrlFor(action, {
             end: stay.endDate,

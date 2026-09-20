@@ -1,21 +1,24 @@
 "use client";
 
-import type { ReserveConfirmSheetProps } from "@/types/components/modules/property-contact";
-import { formatJalaliWeekdayDay } from "@features/reservations/mappers/reservation-dates";
-import { getPropertyImageUrl } from "@features/properties/mappers/property-image.mapper";
-import { useCreateReservation } from "@features/reservations/hooks/useCreateReservation";
-import type { ReserveFailure } from "@/types/components/modules/property-contact";
-import { buildReservePayload } from "@features/reservations/lib/contact-prefill";
-import { PROPERTY_IMAGE_QUALITY } from "@features/properties/constants/image";
-import { nightsBetween } from "@features/reservations/lib/stay-range";
 import { ModalBottomSheet, ModalHeaderPart } from "@elements/Modal";
-import { ContentImage } from "@elements/Image";
+import { formatJalaliWeekdayDay } from "@features/reservations/mappers/reservation-dates";
+import { PROPERTY_IMAGE_QUALITY } from "@features/properties/constants/image";
+import { useCreateReservation } from "@features/reservations/hooks/useCreateReservation";
+import { getPropertyImageUrl } from "@features/properties/mappers/property-image.mapper";
+import { buildReservePayload } from "@features/reservations/lib/contact-prefill";
+import { trackListingEvent } from "@/helpers/listingAnalytics";
 import { useRef, useState } from "react";
+import { nightsBetween } from "@features/reservations/lib/stay-range";
+import { ContentImage } from "@elements/Image";
 import { Icon } from "@elements/Icon";
+
+import type { ReserveConfirmSheetProps } from "@/types/components/modules/property-contact";
+import type { ReserveFailure } from "@/types/components/modules/property-contact";
 
 import ReserveSuccess from "./ReserveSuccess.client";
 import CmsInfoPopup from "@elements/CmsInfoPopup";
 import formatToman from "@/helpers/formatToman";
+import BtnLoading from "@elements/Button/BtnLoading";
 import _STRINGS from "@/utils/LocalStrings";
 import Link from "next/link";
 
@@ -48,6 +51,9 @@ const ReserveConfirmSheet = ({
     setFailure(null);
     mutate(buildReservePayload(property.id, stay), {
       onError: (error: any) => {
+        trackListingEvent("reserve_request_failed", {
+          message_code: error?.message_code ?? null,
+        });
         submitting.current = false;
         if (error?.message_code === MAX_RESERVE_ERROR) {
           setShowMax(true);
@@ -62,6 +68,10 @@ const ReserveConfirmSheet = ({
       },
       onSuccess: (result) => {
         if (result) {
+          trackListingEvent("reserve_request_sent", {
+            created: result.created,
+            is_expired: isExpired,
+          });
           setCreated(result.created);
           return;
         }
@@ -127,12 +137,12 @@ const ReserveConfirmSheet = ({
               <div className="relative size-16 shrink-0 overflow-hidden rounded-10">
                 <ContentImage
                   fill
-                  loading="lazy"
                   sizes="64px"
+                  loading="lazy"
+                  className="object-cover"
                   quality={PROPERTY_IMAGE_QUALITY}
                   alt={property.featureImage?.alt || ""}
                   src={getPropertyImageUrl(property.featureImage)}
-                  className="object-cover"
                 />
               </div>
               <div className="flex min-w-0 flex-col gap-1">
@@ -206,7 +216,7 @@ const ReserveConfirmSheet = ({
                   aria-busy={isPending}
                   className="h-12 w-full cursor-pointer rounded-10 bg-brand-600 text-base font-medium text-white transition-colors hover:bg-brand-700 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-500 focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-60"
                 >
-                  {_STRINGS.SUBMIT_RESERVE}
+                  {isPending ? <BtnLoading /> : _STRINGS.SUBMIT_RESERVE}
                 </button>
               )}
               <button
