@@ -126,7 +126,6 @@ const eslintConfig = [
         "error",
         { namedComponents: "arrow-function", unnamedComponents: "arrow-function" },
       ],
-      "jayab-imports/sort-imports": "error",
       "jayab-imports/no-ui-type-declarations": "error",
     },
   },
