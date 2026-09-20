@@ -3,9 +3,9 @@
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { reservedKeysFromDates, toDayKey } from "../lib/stay-range";
 import { useStaySearchParams } from "./useStaySearchParams";
+import { trackListingEvent } from "@/helpers/listingAnalytics";
 import { useReservedDates } from "@features/properties/hooks/useReservedDates";
 import { usePropertyQuote } from "@features/properties/hooks/usePropertyQuote";
-import { trackListingEvent } from "@/helpers/listingAnalytics";
 
 const GUEST_WRITE_DELAY_MS = 300;
 const DRAFT_HANDOFF_MS = 80;
@@ -72,16 +72,17 @@ export const useBookingStay = (
     });
   }, [quote.data, quoteKey]);
 
+  const trackedGuestCount = params.guestCount;
   useEffect(() => {
-    if (params.guestCount === null) return;
+    if (trackedGuestCount === null) return;
     const timer = setTimeout(() => {
       trackListingEvent("booking_guests_selected", {
-        extra_guests: Math.max(0, params.guestCount - stdCapacity),
-        guests: params.guestCount,
+        extra_guests: Math.max(0, trackedGuestCount - stdCapacity),
+        guests: trackedGuestCount,
       });
     }, GUEST_WRITE_DELAY_MS);
     return () => clearTimeout(timer);
-  }, [params.guestCount, stdCapacity]);
+  }, [trackedGuestCount, stdCapacity]);
 
   return {
     ...params,

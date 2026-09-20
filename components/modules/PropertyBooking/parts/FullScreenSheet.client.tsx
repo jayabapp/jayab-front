@@ -1,10 +1,10 @@
 "use client";
 
+import type { FullScreenSheetProps } from "@/types/components/modules/property-booking";
+
 import { Dialog, DialogPanel } from "@headlessui/react";
 import { createPortal } from "react-dom";
 import { Icon } from "@elements/Icon";
-
-import type { FullScreenSheetProps } from "@/types/components/modules/property-booking";
 
 import _STRINGS from "@/utils/LocalStrings";
 

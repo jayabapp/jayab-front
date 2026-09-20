@@ -2,10 +2,10 @@
 
 import { BookingBottomBar, BookingPanel } from "@modules/PropertyBooking";
 import { useStoreInit, useStoreParams } from "@/store";
-import { ContactActions, ContactFlow } from "@modules/PropertyContact";
 import { useTrackPropertyView } from "@features/properties/hooks/useTrackPropertyView";
 import { PropertyShareModal } from "@modules/PropertyContact";
 import { trackListingEvent } from "@/helpers/listingAnalytics";
+import { ContactActions } from "@modules/PropertyContact";
 import { useEffect } from "react";
 import { useState } from "react";
 
@@ -35,7 +35,7 @@ const PropertySummaryCard = ({ property }: PropertySummaryCardProps) => {
   );
 
   return (
-    <ContactFlow property={property}>
+    <>
       <div className="enter-from-left hidden w-full flex-col gap-3 md:sticky md:top-36 md:flex">
         <BookingPanel
           variant="card"
@@ -65,7 +65,7 @@ const PropertySummaryCard = ({ property }: PropertySummaryCardProps) => {
         property={property}
         onHide={() => setShowShare(false)}
       />
-    </ContactFlow>
+    </>
   );
 };
 

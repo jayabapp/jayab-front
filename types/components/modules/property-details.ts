@@ -183,5 +183,9 @@ export type PropertyDescriptionProps = {
 export type TSimilarPropertiesProps = {
   city?: string;
   propertyId: number;
+};
+
+export type RelatedLandingLinksProps = {
+  city?: string;
   seoLinks?: { villa?: string | null; pool?: string | null };
 };

@@ -1,16 +1,17 @@
 "use client";
 
-import type { StayDatePickerProps } from "@/types/components/modules/property-booking";
+import { useEffect, useRef, useState } from "react";
 import { STAY_MONTH_HORIZON } from "@features/reservations/lib/stay-months";
 import { isCompleteRange } from "@features/reservations/lib/stay-range";
-import type { StayRange } from "@features/reservations/lib/stay-range";
 import { nightsBetween } from "@features/reservations/lib/stay-range";
 import { stayMonths } from "@features/reservations/lib/stay-months";
-import { useEffect, useRef, useState } from "react";
 import { Icon } from "@elements/Icon";
 
-import StayCalendarGrid from "./StayCalendarGrid.client";
+import type { StayDatePickerProps } from "@/types/components/modules/property-booking";
+import type { StayRange } from "@features/reservations/lib/stay-range";
+
 import StayCalendarLegend from "./StayCalendarLegend";
+import StayCalendarGrid from "./StayCalendarGrid.client";
 import StayDateFields from "./StayDateFields.client";
 import _STRINGS from "@/utils/LocalStrings";
 import moment from "moment-jalaali";
@@ -78,7 +79,7 @@ const StayDatePanel = ({
       tabIndex={-1}
       role="dialog"
       aria-label={_STRINGS.TRIP_DATE}
-      className="absolute left-0 top-0 z-30 flex w-[min(46rem,calc(100vw-2rem))] flex-col gap-4 rounded-20 bg-white p-5 shadow-glass focus:outline-none"
+      className="popover-enter absolute left-0 top-0 z-30 flex w-[min(46rem,calc(100vw-2rem))] flex-col gap-4 rounded-20 bg-white p-5 shadow-glass focus:outline-none"
     >
       <div className="flex items-center gap-3">
         <div className="flex-1">

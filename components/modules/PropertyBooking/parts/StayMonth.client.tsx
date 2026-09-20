@@ -7,8 +7,8 @@ import { usePropertyCalendar } from "@features/properties/hooks/usePropertyCalen
 import { dayRangeState } from "@features/reservations/lib/stay-range";
 import { isDayDisabled } from "@features/reservations/lib/stay-range";
 
-import type { StayMonthProps } from "@/types/components/modules/property-booking";
 import { type KeyboardEvent } from "react";
+import type { StayMonthProps } from "@/types/components/modules/property-booking";
 
 import formatCompactToman from "@/helpers/formatCompactToman";
 import StayDayCell from "./StayDayCell";
@@ -140,10 +140,10 @@ const StayMonth = ({
           const price = entry?.discounted_price || entry?.price;
           const isDisabled = isDayDisabled(date, range, reserved, today);
           const availability = isReserved
-            ? "رزرو شده"
+            ? _STRINGS.DAY_RESERVED
             : isDisabled
-              ? "غیرقابل انتخاب"
-              : "قابل انتخاب";
+              ? _STRINGS.DAY_UNAVAILABLE
+              : _STRINGS.DAY_AVAILABLE;
           const priceLabel = price
             ? `، ${formatCompactToman(price)} تومان`
             : "";

@@ -4,6 +4,10 @@ import { Icon } from "@elements/Icon";
 import PropertyOwnerBadge from "./PropertyOwnerBadge";
 import HostActions from "./HostActions.client";
 import _STRINGS from "@/utils/LocalStrings";
+import moment from "moment-jalaali";
+
+const formatHostSince = (since: string | Date) =>
+  moment(since).format("jMMMM jYYYY");
 
 const HostCard = ({
   name,
@@ -16,11 +20,7 @@ const HostCard = ({
     <PropertyOwnerBadge avatar={avatar} name={name} />
     {since ? (
       <p className="text-sm text-neutral-500">
-        میزبان جایاب از{" "}
-        {new Intl.DateTimeFormat("fa-IR-u-ca-persian", {
-          month: "long",
-          year: "numeric",
-        }).format(new Date(since))}
+        {_STRINGS.HOST_SINCE.replace("{date}", formatHostSince(since))}
       </p>
     ) : null}
     {isAuthorized ? (

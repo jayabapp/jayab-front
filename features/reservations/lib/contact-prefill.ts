@@ -27,6 +27,15 @@ export const buildContactPrefill = ({
     .replace("{checkout}", () => formatJalaliDay(endDate))
     .replace("{guests}", () => `${guests}`);
 
+export const buildGenericPrefill = ({
+  code,
+  title,
+}: Pick<ContactTrip, "code" | "title">) =>
+  _STRINGS.CONTACT_PREFILL_GENERIC.replace("{title}", () => title).replace(
+    "{code}",
+    () => code,
+  );
+
 export const buildSmsHref = (number: string, body: string, isIOS: boolean) =>
   `sms:${number}${isIOS ? "&" : "?"}body=${encodeURIComponent(body)}`;
 

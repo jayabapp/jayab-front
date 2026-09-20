@@ -4,8 +4,8 @@ import { isIOS, isMacOs, isWindows } from "react-device-detect";
 import { getPropertyImageUrl } from "@features/properties/mappers/property-image.mapper";
 import { usePropertyContact } from "@features/properties/hooks/usePropertyContact";
 import { trackListingEvent } from "@/helpers/listingAnalytics";
-import { ContentImage } from "@elements/Image";
 import { buildSmsHref } from "@features/reservations/lib/contact-prefill";
+import { ContentImage } from "@elements/Image";
 import { useState } from "react";
 import { Icon } from "@elements/Icon";
 

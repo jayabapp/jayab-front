@@ -24,7 +24,7 @@ export type ContactStay = Pick<
 
 export type ContactFlowValue = {
   isChatPending: boolean;
-  start: (action: ContactFlowAction, stay: ContactStay) => void;
+  start: (action: ContactFlowAction, stay?: ContactStay) => void;
 };
 
 export type ContactFlowProps = {
@@ -95,7 +95,7 @@ export type ContactActionItem = {
 export type ContactSession = {
   action: "call" | "reserve" | "sms";
   nonce: number;
-  stay: ContactStay;
+  stay?: ContactStay;
 };
 
 export type ReserveFailure = { code?: string; message: string };

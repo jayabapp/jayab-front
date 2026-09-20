@@ -49,6 +49,12 @@ export const useStaySearchParams = (maxCapacity?: number | null) => {
     ? Math.min(Number.parseInt(guests, 10), maxCapacity ?? Number.MAX_SAFE_INTEGER)
     : null;
 
+  const hasStayParams = [
+    STAY_PARAM.checkIn,
+    STAY_PARAM.checkOut,
+    STAY_PARAM.guests,
+  ].some((key) => Boolean(searchParams?.get(key)));
+
   const intentParam = searchParams?.get(STAY_PARAM.intent);
   const intent = INTENTS.includes(intentParam as StayIntent)
     ? (intentParam as StayIntent)
@@ -124,6 +130,7 @@ export const useStaySearchParams = (maxCapacity?: number | null) => {
     intent,
     guests,
     guestCount,
+    hasStayParams,
     setStay,
     setGuests,
     clearStay,

@@ -7,13 +7,19 @@ import { useSimilarProperties } from "@features/properties/hooks/useSimilarPrope
 import type { TSimilarPropertiesProps } from "@/types/components/modules/property-details";
 
 import SwiperSlide from "@elements/Carousel/SwiperSlide";
+import _STRINGS from "@/utils/LocalStrings";
 import Swiper from "@elements/Carousel/Swiper.client";
 
-const SimilarProperties = ({
-  city,
-  seoLinks,
-  propertyId,
-}: TSimilarPropertiesProps) => {
+const SKELETON_SLOTS = [0, 1, 2];
+const BREAKPOINTS = {
+  320: { slidesPerView: 1.15, spaceBetween: 12 },
+  640: { slidesPerView: 2, spaceBetween: 12 },
+  768: { slidesPerView: 2, spaceBetween: 12 },
+  1024: { slidesPerView: 3, spaceBetween: 16 },
+  1600: { slidesPerView: 3, spaceBetween: 16 },
+};
+
+const SimilarProperties = ({ city, propertyId }: TSimilarPropertiesProps) => {
   const rootRef = useRef<HTMLElement>(null);
   const [isVisible, setIsVisible] = useState(false);
   const { data, isLoading } = useSimilarProperties(propertyId, isVisible);
@@ -38,56 +44,38 @@ const SimilarProperties = ({
     <section
       ref={rootRef}
       aria-labelledby="similar-properties-title"
-      className="py-8"
+      className="pt-8 pb-4"
     >
       <h2
         id="similar-properties-title"
         className="mb-4 text-base font-bold text-neutral-900 md:text-lg"
       >
-        اقامتگاه‌های مشابه{city ? ` در ${city}` : ""}
+        {city
+          ? _STRINGS.SIMILAR_STAYS_IN.replace("{city}", city)
+          : _STRINGS.SIMILAR_STAYS}
       </h2>
       {isVisible ? (
         <Swiper
-          slidesPerView={1.15}
-          breakPoints={{
-            640: { slidesPerView: 2, spaceBetween: 12 },
-            1024: { slidesPerView: 3, spaceBetween: 16 },
-          }}
-          spaceBetween={12}
           withArrows
+          spaceBetween={12}
+          slidesPerView={1.15}
+          breakPoints={BREAKPOINTS}
         >
-          {(isLoading ? Array.from({ length: 3 }) : data).map((item, index) => (
-            <SwiperSlide key={item ? item.id : index} className="pb-2">
-              {item ? <PropertyCard data={item} /> : <PropertyCardSkeleton />}
-            </SwiperSlide>
-          ))}
+          {isLoading
+            ? SKELETON_SLOTS.map((slot) => (
+                <SwiperSlide key={slot} className="pb-2">
+                  <PropertyCardSkeleton />
+                </SwiperSlide>
+              ))
+            : data?.map((item) => (
+                <SwiperSlide key={item.id} className="pb-2">
+                  <PropertyCard data={item} />
+                </SwiperSlide>
+              ))}
         </Swiper>
       ) : (
         <div className="h-48" aria-hidden />
       )}
-      {isVisible && (seoLinks?.villa || seoLinks?.pool) ? (
-        <nav
-          aria-label="لینک‌های مرتبط"
-          className="mt-4 flex flex-wrap gap-x-4 gap-y-2 text-sm"
-        >
-          {seoLinks.villa ? (
-            <a
-              href={`/${seoLinks.villa}`}
-              className="text-brand-600 hover:underline"
-            >
-              اجاره ویلا در {city}
-            </a>
-          ) : null}
-          {seoLinks.pool ? (
-            <a
-              href={`/${seoLinks.pool}`}
-              className="text-brand-600 hover:underline"
-            >
-              ویلا استخردار در {city}
-            </a>
-          ) : null}
-        </nav>
-      ) : null}
     </section>
   );
 };

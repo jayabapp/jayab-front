@@ -119,7 +119,10 @@ const BookingBottomBar = ({
               {_STRINGS.APPROX_STAY_COST}
             </span>
             {quote ? (
-              <span className="text-base font-bold text-neutral-900">
+              <span
+                aria-live="polite"
+                className="text-base font-bold text-neutral-900"
+              >
                 {formatToman(quote.total)}
               </span>
             ) : (

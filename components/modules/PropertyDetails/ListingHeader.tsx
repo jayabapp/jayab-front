@@ -1,7 +1,6 @@
+import type { ListingHeaderProps } from "@/types/components/modules/property-details";
 import { ContentImage } from "@elements/Image";
 import { Icon } from "@elements/Icon";
-
-import type { ListingHeaderProps } from "@/types/components/modules/property-details";
 
 import SingleProductBreadCrumb from "@elements/Breadcrumbs/SingleProductBreadcrumb.client";
 import ListingActions from "./parts/ListingActions.client";

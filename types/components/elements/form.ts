@@ -16,7 +16,7 @@ export type FormFieldItem = {
   titleHint?: string;
   inputClass?: string;
   keyboard?: string;
-  id?: number;
+  id?: number | string;
   maxLength?: number;
   isMandatory?: boolean;
   disableHover?: boolean;

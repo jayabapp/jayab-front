@@ -7,7 +7,7 @@ import numberWithCommas from "@/helpers/numberWithCommas";
 import _STRINGS from "@/utils/LocalStrings";
 
 const BUTTON_CLASS =
-  "flex size-8 cursor-pointer items-center justify-center rounded-full border border-neutral-300 text-neutral-900 transition-colors hover:bg-neutral-100 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-500 disabled:cursor-not-allowed disabled:opacity-40 disabled:hover:bg-transparent";
+  "flex size-11 cursor-pointer items-center justify-center rounded-full border border-neutral-300 text-neutral-900 md:size-8 transition-colors hover:bg-neutral-100 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-500 disabled:cursor-not-allowed disabled:opacity-40 disabled:hover:bg-transparent";
 
 const GuestStepper = ({
   id,

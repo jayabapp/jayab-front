@@ -4,6 +4,7 @@ import { useContext, useMemo, useRef, useState } from "react";
 import { useAuthStore, useChatStore } from "@/store";
 import { createContext, useCallback } from "react";
 import { useStaySearchParams } from "@features/reservations/hooks/useStaySearchParams";
+import { buildGenericPrefill } from "@features/reservations/lib/contact-prefill";
 import { buildContactPrefill } from "@features/reservations/lib/contact-prefill";
 import { useStartOrFindChat } from "@features/chat/hooks/useStartOrFindChat";
 import { trackListingEvent } from "@/helpers/listingAnalytics";
@@ -40,20 +41,19 @@ const ContactFlow = ({ children, property }: ContactFlowProps) => {
   const canChat = property.isChatEnabled && !isExpired;
 
   const openChat = useCallback(
-    (stay: ContactStay) => {
+    (stay?: ContactStay) => {
       findChat(
         { property_id: property.id },
         {
           onSuccess: (response) => {
             if (!response?.chatroom_id) return;
+            const listing = { code: property.code, title: property.title };
             useChatStore.setState({
               chatDraft: {
                 chatId: `${response.chatroom_id}`,
-                text: buildContactPrefill({
-                  ...stay,
-                  code: property.code,
-                  title: property.title,
-                }),
+                text: stay
+                  ? buildContactPrefill({ ...stay, ...listing })
+                  : buildGenericPrefill(listing),
               },
             });
             router.push(`/chat/${response.chatroom_id}`);
@@ -65,34 +65,32 @@ const ContactFlow = ({ children, property }: ContactFlowProps) => {
   );
 
   const open = useCallback(
-    (action: ContactSession["action"], stay: ContactStay) => {
+    (action: ContactSession["action"], stay?: ContactStay) => {
       nonce.current += 1;
       setSession({ action, nonce: nonce.current, stay });
     },
     [],
   );
 
-  const start = useCallback(
-    (action: ContactFlowAction, stay: ContactStay) => {
-      trackListingEvent("host_contact_action", {
-        action,
-        guests: stay.guests,
-        is_expired: isExpired,
-        nights: stay.nights,
-      });
+  const run = useCallback(
+    (action: ContactFlowAction, stay?: ContactStay) => {
       const isAllowed = isExpired
         ? action === "reserve"
         : action !== "chat" || canChat;
       if (!isAllowed) return;
+      if (action === "reserve" && !stay) return;
 
       if (!isLogin) {
         trackListingEvent("booking_auth_required", { intent: action });
         router.push(
-          authUrlFor(action, {
-            end: stay.endDate,
-            guests: stay.guests,
-            start: stay.startDate,
-          }),
+          authUrlFor(
+            action,
+            stay && {
+              end: stay.endDate,
+              guests: stay.guests,
+              start: stay.startDate,
+            },
+          ),
         );
         return;
       }
@@ -114,9 +112,20 @@ const ContactFlow = ({ children, property }: ContactFlowProps) => {
     ],
   );
 
-  useContactIntent(property.id, property.maxCapacity, (intent, stay) =>
-    start(intent, stay),
+  const start = useCallback(
+    (action: ContactFlowAction, stay?: ContactStay) => {
+      trackListingEvent("host_contact_action", {
+        action,
+        guests: stay?.guests,
+        is_expired: isExpired,
+        nights: stay?.nights,
+      });
+      run(action, stay);
+    },
+    [isExpired, run],
   );
+
+  useContactIntent(property.id, property.maxCapacity, run);
 
   const value = useMemo(
     () => ({ isChatPending, start }),
@@ -135,15 +144,17 @@ const ContactFlow = ({ children, property }: ContactFlowProps) => {
           type={session.action}
           onHide={closeSession}
           propertySlug={property.slug}
-          trip={{
-            ...session.stay,
-            code: property.code,
-            title: property.title,
-          }}
+          trip={
+            session.stay && {
+              ...session.stay,
+              code: property.code,
+              title: property.title,
+            }
+          }
         />
       ) : null}
 
-      {session?.action === "reserve" ? (
+      {session?.action === "reserve" && session.stay ? (
         <ReserveConfirmSheet
           key={session.nonce}
           property={property}

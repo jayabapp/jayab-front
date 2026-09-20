@@ -1,10 +1,10 @@
 "use client";
 
-import { usePropertyQuote } from "@features/properties/hooks/usePropertyQuote";
 import { useStaySearchParams } from "./useStaySearchParams";
-import { toDayKey } from "../lib/stay-range";
-import { useAuthStore } from "@/store";
 import { useEffect, useRef } from "react";
+import { usePropertyQuote } from "@features/properties/hooks/usePropertyQuote";
+import { useAuthStore } from "@/store";
+import { toDayKey } from "../lib/stay-range";
 
 import type { StayIntent } from "./useStaySearchParams";
 import type { ContactTrip } from "../lib/contact-prefill";
@@ -17,10 +17,10 @@ export type ContactIntentStay = Pick<
 export const useContactIntent = (
   propertyId: number,
   maxCapacity: number,
-  onIntent: (intent: StayIntent, stay: ContactIntentStay) => void,
+  onIntent: (intent: StayIntent, stay?: ContactIntentStay) => void,
 ) => {
   const isLogin = useAuthStore((state) => state.isLogin);
-  const { consumeIntent, guestCount, intent, stay } =
+  const { consumeIntent, guestCount, hasStayParams, intent, stay } =
     useStaySearchParams(maxCapacity);
   const quote = usePropertyQuote(propertyId, {
     checkIn: stay ? toDayKey(stay.start) : null,
@@ -44,6 +44,7 @@ export const useContactIntent = (
     if (!stay || !guestCount) {
       handled.current = true;
       consumeIntent();
+      if (!hasStayParams && intent !== "reserve") onIntentRef.current(intent);
       return;
     }
     if (quote.isPending && !quote.isError) return;
@@ -59,12 +60,13 @@ export const useContactIntent = (
       total: quote.data?.total,
     });
   }, [
-    consumeIntent,
-    guestCount,
     intent,
     isLogin,
     quote.data,
+    guestCount,
+    hasStayParams,
     quote.isError,
+    consumeIntent,
     quote.isPending,
     stay,
   ]);

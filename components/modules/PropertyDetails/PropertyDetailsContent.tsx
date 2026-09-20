@@ -1,24 +1,27 @@
-import type { PropertyDetailsContentProps } from "@/types/components/modules/property-details";
-import { toPropertyDetailsView } from "@features/properties/mappers/property-details.mapper";
-import { toAmenityItems } from "@features/properties/mappers/amenities.mapper";
-import type { SectionTab } from "@/types/components/modules/property-details";
 import { RateTable, StayCalendarSection } from "@modules/PropertyBooking";
+import { toPropertyDetailsView } from "@features/properties/mappers/property-details.mapper";
 import { PropertyGallery } from "@modules/PropertyGallery";
+import { toAmenityItems } from "@features/properties/mappers/amenities.mapper";
+import { ContactFlow } from "@modules/PropertyContact";
 
-import PropertyReportRow from "./parts/PropertyReportRow.client";
-import SimilarProperties from "./parts/SimilarProperties.client";
+import type { PropertyDetailsContentProps } from "@/types/components/modules/property-details";
+import type { SectionTab } from "@/types/components/modules/property-details";
+
 import SleepingArrangements from "./parts/SleepingArrangements";
 import PropertySummaryCard from "./PropertySummaryCard.client";
 import PropertyDescription from "./parts/PropertyDescription";
+import RelatedLandingLinks from "./parts/RelatedLandingLinks";
+import PropertyReportRow from "./parts/PropertyReportRow.client";
+import SimilarProperties from "./parts/SimilarProperties.client";
 import LocationSection from "./parts/LocationSection";
-import SectionTabs from "./parts/SectionTabs.client";
 import ListingSection from "./parts/ListingSection";
-import Amenities from "./parts/Amenities.client";
-import Surroundings from "./parts/Surroundings";
 import ListingHeader from "./ListingHeader";
+import Surroundings from "./parts/Surroundings";
+import SectionTabs from "./parts/SectionTabs.client";
 import ExtraCosts from "./parts/ExtraCosts";
 import Highlights from "./parts/Highlights";
 import HouseRules from "./parts/HouseRules";
+import Amenities from "./parts/Amenities.client";
 import _STRINGS from "@/utils/LocalStrings";
 import HostCard from "./parts/HostCard";
 import KeyFacts from "./parts/KeyFacts";
@@ -51,7 +54,7 @@ const PropertyDetailsContent = ({ property }: PropertyDetailsContentProps) => {
   ];
 
   return (
-    <>
+    <ContactFlow property={view}>
       <ListingHeader breadcrumbs={breadCrumbs} property={view} />
 
       <PropertyGallery
@@ -125,18 +128,15 @@ const PropertyDetailsContent = ({ property }: PropertyDetailsContentProps) => {
             </div>
           </ListingSection>
 
-          <SimilarProperties
-            propertyId={view.id}
-            city={view.city}
-            seoLinks={view.seoLinks}
-          />
+          <SimilarProperties propertyId={view.id} city={view.city} />
+          <RelatedLandingLinks city={view.city} seoLinks={view.seoLinks} />
         </div>
 
         <aside className="w-full md:col-span-5 lg:col-span-4">
           <PropertySummaryCard property={view} />
         </aside>
       </div>
-    </>
+    </ContactFlow>
   );
 };
 

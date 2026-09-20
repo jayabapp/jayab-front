@@ -21,7 +21,7 @@ const ReserveSuccess = ({
     role="status"
     className="flex flex-col items-center gap-4 p-6 text-center"
   >
-    <span className="flex size-12 items-center justify-center rounded-full bg-success-50 text-success-600">
+    <span className="success-pop flex size-12 items-center justify-center rounded-full bg-success-50 text-success-600">
       <Icon name="check" size={24} />
     </span>
 
