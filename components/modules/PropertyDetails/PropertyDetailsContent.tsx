@@ -6,6 +6,7 @@ import { RateTable, StayCalendarSection } from "@modules/PropertyBooking";
 import { PropertyGallery } from "@modules/PropertyGallery";
 
 import PropertyReportRow from "./parts/PropertyReportRow.client";
+import SimilarProperties from "./parts/SimilarProperties.client";
 import SleepingArrangements from "./parts/SleepingArrangements";
 import PropertySummaryCard from "./PropertySummaryCard.client";
 import PropertyDescription from "./parts/PropertyDescription";
@@ -116,11 +117,19 @@ const PropertyDetailsContent = ({ property }: PropertyDetailsContentProps) => {
               name={view.ownerName}
               avatar={view.ownerAvatar}
               isAuthorized={view.isAuthorized}
+              since={view.ownerSince}
+              property={view}
             />
             <div className="pt-2">
               <PropertyReportRow propertyId={view.id} />
             </div>
           </ListingSection>
+
+          <SimilarProperties
+            propertyId={view.id}
+            city={view.city}
+            seoLinks={view.seoLinks}
+          />
         </div>
 
         <aside className="w-full md:col-span-5 lg:col-span-4">

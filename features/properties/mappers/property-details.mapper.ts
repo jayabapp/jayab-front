@@ -21,6 +21,8 @@ export const toPropertyDetailsView = (
   maxCapacity: property?.max_capacity,
   ownerAvatar: property?.owner_info?.avatar ?? null,
   ownerName: property?.owner_info?.full_name ?? "",
+  ownerSince: property?.owner_info?.since ?? null,
+  seoLinks: property?.seo_links,
   province: property?.province,
   region: property?.region,
   remainingDays: property?.remaining_days,

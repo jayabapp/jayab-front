@@ -107,6 +107,14 @@ export const propertyDetailOptions = (slug: string) =>
     staleTime: 60_000,
   });
 
+export const similarPropertiesOptions = (id: number | string, enabled = true) =>
+  queryOptions({
+    queryKey: propertyKeys.similar(id),
+    queryFn: ({ signal }) => PropertyService.GetSimilarProperties(id, signal),
+    enabled: enabled && Boolean(id),
+    staleTime: 10 * 60_000,
+  });
+
 export const reservedDatesOptions = (id: number | string) =>
   queryOptions({
     queryKey: propertyKeys.reservedDates(id),

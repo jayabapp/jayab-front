@@ -93,6 +93,8 @@ export type HostCardProps = {
   name?: string;
   isAuthorized?: boolean;
   avatar?: PropertyDetailsView["ownerAvatar"];
+  since?: PropertyDetailsView["ownerSince"];
+  property: PropertyDetailsView;
 };
 
 export type PropertyDetailsContentProps = {
@@ -176,4 +178,10 @@ export type PropertySummaryCardProps = {
 
 export type PropertyDescriptionProps = {
   property: SinglePropDto;
+};
+
+export type TSimilarPropertiesProps = {
+  city?: string;
+  propertyId: number;
+  seoLinks?: { villa?: string | null; pool?: string | null };
 };

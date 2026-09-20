@@ -45,6 +45,8 @@ export type PropertyDetailsView = {
   maxCapacity: number;
   ownerAvatar?: ImageDto | null;
   ownerName: string;
+  ownerSince?: string | Date | null;
+  seoLinks?: { villa?: string | null; pool?: string | null };
   province: string;
   region: string;
   remainingDays: number;

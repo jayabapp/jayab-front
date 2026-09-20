@@ -283,6 +283,9 @@ export const apiRoutes = {
   GET_SINGLEPROPERTY_SlUG: (propertySlug: string | number) =>
     `/user/properties/${propertySlug}`,
 
+  SIMILAR_PROPERTIES: (propertyId: string | number) =>
+    `/user/properties/${propertyId}/similar`,
+
   GET_SINGLEPROPERTY_CALLENDER: (propertyId: string | number | null) =>
     `/user/properties/${propertyId}/month-calendar`,
 

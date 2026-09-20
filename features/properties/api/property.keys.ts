@@ -9,6 +9,7 @@ export const propertyKeys = {
     [...propertyKeys.all, "count", filters] as const,
   details: () => [...propertyKeys.all, "detail"] as const,
   detail: (slug: string) => [...propertyKeys.details(), { slug }] as const,
+  similar: (id: number | string) => [...propertyKeys.all, "similar", { id: String(id) }] as const,
   calendar: (id: number | string, range: string) =>
     [...propertyKeys.all, "calendar", { id: String(id), range }] as const,
   reservedDates: (id: number | string) =>

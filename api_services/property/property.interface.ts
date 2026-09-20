@@ -287,7 +287,8 @@ export interface SinglePropDto {
   options: Options;
   option_items: PropertyOptionItemDto[];
   canceling_type: CancelationType;
-  owner_info: { avatar: ImageDto; full_name: string };
+  owner_info: { avatar: ImageDto; full_name: string; since?: string | Date | null };
+  seo_links?: { villa?: string | null; pool?: string | null };
   owner: { id: string | number };
 }
 
