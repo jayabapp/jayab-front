@@ -1,11 +1,10 @@
 import type { PropertySpecsSectionProps } from "@/types/components/modules/property-details";
 import type { IconName } from "@/types/components/elements/icon";
+import { Icon } from "@elements/Icon";
 
 import _STRINGS from "@/utils/LocalStrings";
-import MiniInfoCard from "./MiniInfoCard";
 
-const MAX_HIGHLIGHTS = 4;
-
+// The pool is already a row in KeyFacts, so it is not repeated here.
 const Highlights = ({ property }: PropertySpecsSectionProps) => {
   const guestTypes = property?.options?.guest_type ?? [];
 
@@ -19,23 +18,26 @@ const Highlights = ({ property }: PropertySpecsSectionProps) => {
     property?.is_chat_enabled
       ? { icon: "chat", title: _STRINGS.CHAT_AVAILABLE }
       : null,
-    property?.has_pool
-      ? { icon: "pool", title: property?.options?.pool_type?.[0] || _STRINGS.HAS_POOL }
-      : null,
   ];
 
-  const visible = highlights
-    .filter((item): item is { icon: IconName; title: string } => Boolean(item))
-    .slice(0, MAX_HIGHLIGHTS);
+  const visible = highlights.filter(
+    (item): item is { icon: IconName; title: string } => Boolean(item),
+  );
 
   if (!visible.length) return <></>;
 
   return (
-    <div className="grid grid-cols-1 gap-3 sm:grid-cols-2">
+    <ul className="flex flex-wrap gap-2">
       {visible.map((item) => (
-        <MiniInfoCard key={item.title} icon={item.icon} title={item.title} />
+        <li
+          key={item.title}
+          className="flex items-center gap-2 rounded-full border border-neutral-200 px-4 py-2 text-sm font-medium text-neutral-900"
+        >
+          <Icon name={item.icon} size={20} className="text-neutral-800" />
+          {item.title}
+        </li>
       ))}
-    </div>
+    </ul>
   );
 };
 

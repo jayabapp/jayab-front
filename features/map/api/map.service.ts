@@ -1,12 +1,11 @@
 import type { SearchedLocation } from "@/types/features/map";
 
-const NESHAN_API_KEY = "service.2d7bb2fede1d4108ac849863562173de";
-
-const requestNeshan = async <T>(url: string, signal?: AbortSignal) => {
-  const response = await fetch(url, {
-    headers: { "Api-Key": NESHAN_API_KEY },
-    signal,
-  });
+const requestMap = async <T>(
+  path: string,
+  params: URLSearchParams,
+  signal?: AbortSignal,
+) => {
+  const response = await fetch(`/api/map/${path}?${params}`, { signal });
   if (!response.ok) throw new Error(`Map request failed: ${response.status}`);
   return (await response.json()) as T;
 };
@@ -26,8 +25,9 @@ export const MapService = {
       lat: String(center[1]),
       lng: String(center[0]),
     });
-    const result = await requestNeshan<{ items?: SearchedLocation[] }>(
-      `https://api.neshan.org/v1/search?${params}`,
+    const result = await requestMap<{ items?: SearchedLocation[] }>(
+      "search",
+      params,
       signal,
     );
     return result.items ?? [];
@@ -46,8 +46,9 @@ export const MapService = {
       lat: String(latitude),
       lng: String(longitude),
     });
-    const result = await requestNeshan<{ formatted_address?: string }>(
-      `https://api.neshan.org/v5/reverse?${params}`,
+    const result = await requestMap<{ formatted_address?: string }>(
+      "reverse",
+      params,
       signal,
     );
     return result.formatted_address ?? "";

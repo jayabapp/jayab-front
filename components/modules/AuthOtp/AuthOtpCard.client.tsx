@@ -1,13 +1,14 @@
 "use client";
 
-import type { AuthOtpCardProps } from "@/types/components/modules/auth";
+import { HeaderBrand } from "@modules/SiteHeader";
 import { useOtpFlow } from "@features/auth/hooks/useOtpFlow";
+
+import type { AuthOtpCardProps } from "@/types/components/modules/auth";
 
 import OtpInput from "./parts/OtpInput.client";
 import _STRINGS from "@/utils/LocalStrings";
 import Button from "@elements/Button";
 import Image from "next/image";
-import Link from "next/link";
 
 const AuthOtpCard = ({ challenge, onEditNumber }: AuthOtpCardProps) => {
   const {
@@ -27,22 +28,11 @@ const AuthOtpCard = ({ challenge, onEditNumber }: AuthOtpCardProps) => {
   return (
     <>
       {/* BRAND */}
-      <div className="flex flex-col items-center gap-3">
-        <Link
-          href="/"
-          prefetch={false}
-          title={_STRINGS.BACK_TO_HOME}
-          className="glass-badge relative flex size-20 items-center justify-center rounded-[1.35rem] transition-transform duration-200 hover:scale-105 active:scale-95"
-        >
-          <Image
-            width={56}
-            height={56}
-            unoptimized
-            alt={_STRINGS.JAYAB_LOGO_ALT}
-            src="/assets/icons/logo/logo.svg"
-            className="size-14 object-contain"
-          />
-        </Link>
+      <div className="flex justify-end">
+        <HeaderBrand asLink alwaysShowTitle />
+      </div>
+
+      <div className="mt-6 flex flex-col items-center gap-3">
         <span className="h-1 w-10 rounded-full bg-brand-500/80" />
         <p className="text-sm text-neutral-600">{_STRINGS.AUTH_CODE_SENT_TO}</p>
         <button

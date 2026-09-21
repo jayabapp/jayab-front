@@ -277,6 +277,7 @@ export interface SinglePropDto {
   daily_price: DailyPrice;
   latitude: number;
   longitude: number;
+  approx_location?: { lat: number; lng: number; radius_m: number } | null;
   land_area: number;
   building_area: number;
   floors: number;

@@ -87,6 +87,13 @@ export type LocationSectionProps = {
   place: string;
   latitude?: number;
   longitude?: number;
+  approxLocation?: SinglePropDto["approx_location"];
+};
+
+export type LocationNavigateLinkProps = {
+  latitude: number;
+  longitude: number;
+  className?: string;
 };
 
 export type HostCardProps = {
@@ -121,18 +128,6 @@ export type PropertyTermsBodyProps = {
   className?: string;
   prologueClass?: string;
   property: SinglePropDto;
-};
-
-export type PropertyLocationRowProps = {
-  latitude?: number;
-  longitude?: number;
-};
-
-export type PropertyMapModalProps = {
-  show: boolean;
-  latitude?: number;
-  longitude?: number;
-  onHide: () => void | null;
 };
 
 export type PropertyReportRowProps = {

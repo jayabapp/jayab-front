@@ -1,5 +1,6 @@
 import { PropertyGallerySkeleton } from "@modules/PropertyGallery";
 
+import { PageSurface } from "@elements/PageSurface";
 import Skeleton from "@elements/Skeleton/Skeleton";
 
 const PANEL_CLASS = "surface-panel p-4 md:p-5";
@@ -10,6 +11,7 @@ const PropertyDetailsPageSkeleton = () => (
     aria-busy="true"
     className="route-enter container grid !h-auto grid-cols-1 justify-start gap-4 !overflow-x-visible !pb-48 md:grid-cols-3 lg:!pb-36"
   >
+    <PageSurface />
     <div className="col-span-full hidden w-full md:flex">
       <Skeleton className="h-4 w-72 rounded" />
     </div>

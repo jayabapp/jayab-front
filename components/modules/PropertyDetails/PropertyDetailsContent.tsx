@@ -111,6 +111,7 @@ const PropertyDetailsContent = ({ property }: PropertyDetailsContentProps) => {
               place={place}
               latitude={property?.latitude}
               longitude={property?.longitude}
+              approxLocation={property?.approx_location}
             />
             <Surroundings property={property} />
           </ListingSection>

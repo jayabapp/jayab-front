@@ -1,6 +1,7 @@
-import type { PropertyOwnerBadgeProps } from "@/types/components/modules/property-details";
 import { getPropertyImageUrl } from "@features/properties/mappers/property-image.mapper";
 import { ContentImage } from "@elements/Image";
+
+import type { PropertyOwnerBadgeProps } from "@/types/components/modules/property-details";
 
 import AutoFitText from "@elements/AutoFitText";
 import _STRINGS from "@/utils/LocalStrings";
@@ -18,14 +19,14 @@ const PropertyOwnerBadge = ({ avatar, name }: PropertyOwnerBadgeProps) => (
       src={avatar ? getPropertyImageUrl(avatar) : OWNER_AVATAR_FALLBACK}
     />
     <div className="flex flex-col items-start gap-1">
-      <p className="text-sm font-bold text-brand-600">{_STRINGS.HOST}</p>
+      <p className="text-xs text-neutral-500">{_STRINGS.HOST}</p>
       {name ? (
         <div className="relative w-36">
           <AutoFitText
             text={name}
             maxFontSize={14}
             minFontSize={10}
-            className="w-36 text-sm font-medium text-brand-600"
+            className="w-36 text-sm font-bold text-neutral-900"
           />
         </div>
       ) : null}

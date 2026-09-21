@@ -1,8 +1,10 @@
 "use client";
 
-import { formatJalaliWeekdayDay } from "@features/reservations/mappers/reservation-dates";
-import type { StayDateFieldsProps } from "@/types/components/modules/property-booking";
+import { formatJalaliWeekday } from "@features/reservations/mappers/reservation-dates";
+import { formatJalaliDay } from "@features/reservations/mappers/reservation-dates";
 import { Icon } from "@elements/Icon";
+
+import type { StayDateFieldsProps } from "@/types/components/modules/property-booking";
 
 import _STRINGS from "@/utils/LocalStrings";
 
@@ -44,10 +46,15 @@ const StayDateFields = ({
           <span
             className={`text-sm ${field.value ? "font-semibold text-neutral-900" : "text-neutral-400"}`}
           >
-            {field.value
-              ? formatJalaliWeekdayDay(field.value)
-              : _STRINGS.EMPTY_DATE}
+            {field.value ? formatJalaliDay(field.value) : _STRINGS.EMPTY_DATE}
           </span>
+          {field.value ? (
+            <span className="text-xs text-neutral-500">
+              {formatJalaliWeekday(field.value)}
+            </span>
+          ) : (
+            <></>
+          )}
         </button>
       ))}
     </div>

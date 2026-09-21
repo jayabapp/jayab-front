@@ -130,11 +130,26 @@ ul {
   to { opacity: 1; transform: scale(1); }
 }
 
+@keyframes map-pin-drop {
+  from { opacity: 0; transform: translateY(-12px) scale(0.8); }
+  to { opacity: 1; transform: translateY(0) scale(1); }
+}
+
+@keyframes map-pin-pulse {
+  from { opacity: 0.9; transform: translate(-50%, 50%) scale(0.4); }
+  to { opacity: 0; transform: translate(-50%, 50%) scale(1.6); }
+}
+
+.map-pin-body { filter: drop-shadow(0 8px 12px rgb(21 60 105 / 0.35)); }
+.map-pin-drop { animation: map-pin-drop 220ms cubic-bezier(0.22, 1, 0.36, 1) both; transform-origin: bottom center; }
+.map-pin-pulse { animation: map-pin-pulse 1.2s ease-out 2 both; transform: translate(-50%, 50%); }
+
 .popover-enter { animation: popover-in 150ms ease-out; }
 .success-pop { animation: success-pop 250ms cubic-bezier(0.22, 1, 0.36, 1); }
 
 @media (prefers-reduced-motion: reduce) {
-  .sheet-backdrop-enter, .sheet-panel-enter, .popover-enter, .success-pop { animation: none; }
+  .sheet-backdrop-enter, .sheet-panel-enter, .popover-enter, .success-pop, .map-pin-drop, .map-pin-pulse { animation: none; }
+  .map-pin-pulse { display: none; }
 }
 .header-container {
   @apply w-full flex  justify-between items-center px-2  h-full;
@@ -845,10 +860,6 @@ select {
   appearance: none;
   -moz-appearance: none;
   -webkit-appearance: none;
-}
-
-.maplibregl-ctrl-bottom-right {
-  @apply hidden;
 }
 
 .canvasSize {

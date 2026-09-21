@@ -1,97 +1,79 @@
 "use client";
 
 import type { InteractiveMapProps } from "@/types/components/elements/map";
+import type { NeshanMapInstance } from "@/types/components/elements/map";
+
 import { useEffect, useEffectEvent, useRef, useState } from "react";
 
-import "@neshan-maps-platform/mapbox-gl/dist/NeshanMapboxGl.css";
-import nmp_mapboxgl from "@neshan-maps-platform/mapbox-gl";
+import NeshanMap from "./NeshanMap.client";
+import _STRINGS from "@/utils/LocalStrings";
 import Image from "next/image";
+
+const INITIAL_ZOOM = 15;
 
 const Map = ({
   center,
+  onError,
   setCenter,
   jumpToState,
   disableCenter,
   containerClass,
 }: InteractiveMapProps) => {
-  const initialMap = useRef<any>(null);
-  const mapContainer = useRef<HTMLDivElement>(null);
-  const initialCenterRef = useRef(center);
-  const [zoom] = useState(15);
-  const [API_KEY] = useState("web.4c0887bbd32f4ab2ba1adcc36243b6a2");
+  const [map, setMap] = useState<NeshanMapInstance | null>(null);
+  const [initialCenter] = useState<[number, number]>(() => [
+    center[0],
+    center[1],
+  ]);
+  const hasJumpedRef = useRef(false);
   const updateCenter = useEffectEvent((nextCenter: number[]) => {
     setCenter?.(nextCenter);
   });
 
   useEffect(() => {
-    if (initialMap.current) return;
-    initialMap.current = new nmp_mapboxgl.Map({
-      mapType: nmp_mapboxgl.Map.mapTypes.neshanRaster,
-      container: mapContainer.current || "map",
-      center: [initialCenterRef.current[0], initialCenterRef.current[1]],
-      zoom: zoom,
-      minZoom: 2,
-      maxZoom: 21,
-      trackResize: true,
-      mapKey: API_KEY,
-      poi: true,
-      traffic: false,
-      mapTypeControllerOptions: {
-        show: false,
-        position: "top-left",
-      },
-    });
-
-    initialMap.current.addControl(
-      new nmp_mapboxgl.GeolocateControl({
-        positionOptions: {
-          enableHighAccuracy: true,
-        },
-        trackUserLocation: true,
-      }),
-    );
-    initialMap.current.addControl(
-      new nmp_mapboxgl.NavigationControl(),
-      "top-right",
-    );
-    const handleMove = () => {
-      const currentCenter = initialMap.current.getCenter();
-      updateCenter([currentCenter.lng, currentCenter.lat]);
+    if (!map) return;
+    const handleMoveEnd = () => {
+      const { lng, lat } = map.getCenter();
+      updateCenter([lng, lat]);
     };
-    initialMap.current.on("move", handleMove);
+    map.on("moveend", handleMoveEnd);
     return () => {
-      initialMap.current?.off("move", handleMove);
-      initialMap.current?.remove();
-      initialMap.current = null;
+      map.off("moveend", handleMoveEnd);
     };
-  }, [API_KEY, zoom]);
+  }, [map]);
 
   useEffect(() => {
-    if (!!jumpToState) {
-      initialMap.current?.jumpTo(
-        { center: [jumpToState?.lng, jumpToState?.lat] },
-        2000,
-      );
-    }
-  }, [jumpToState]);
+    if (!map || !jumpToState) return;
+    const target = {
+      center: [Number(jumpToState.lng), Number(jumpToState.lat)] as [
+        number,
+        number,
+      ],
+    };
+    // A saved pin restored on load should appear in place; only later searches fly.
+    if (hasJumpedRef.current) map.flyTo({ ...target, essential: true });
+    else map.jumpTo(target);
+    hasJumpedRef.current = true;
+  }, [map, jumpToState]);
 
   return (
     <div className="map-wrap relative">
-      <div
-        ref={mapContainer}
-        id="map"
-        key="mapBox"
-        className={`map ${!!containerClass ? containerClass : "w-screen aspect-square"} `}
+      <NeshanMap
+        showGeolocate
+        onError={onError}
+        onMapReady={setMap}
+        zoom={INITIAL_ZOOM}
+        center={initialCenter}
+        ariaLabel={_STRINGS.MAP_ARIA_LABEL}
+        className={`map ${containerClass || "w-screen aspect-square"}`}
       />
       {!disableCenter ? (
         <Image
           alt=""
           width={32}
           height={32}
-          id={"center_location"}
           style={{ transform: "translate(-50%,-50%)" }}
           src="/assets/icons/addresses/location_center.svg"
-          className="absolute w-8 cursor-pointer aspect-square top-1/2 left-1/2  "
+          className="pointer-events-none absolute w-8 aspect-square top-1/2 left-1/2"
         />
       ) : (
         <></>

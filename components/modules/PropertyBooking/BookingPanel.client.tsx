@@ -155,7 +155,7 @@ const BookingPanel = ({
       <div
         className={
           isCard
-            ? "surface-panel flex w-full flex-col gap-4 p-5"
+            ? "flex w-full flex-col gap-4 rounded-20 border border-neutral-200 bg-white p-5 shadow-glass-sm"
             : "flex w-full flex-col gap-4 p-4"
         }
       >

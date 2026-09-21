@@ -1,9 +1,14 @@
 "use client";
 
+import { googleDirectionsHref } from "@/helpers/map.link";
+import { useMemo, useState } from "react";
+import { MapFallbackCard } from "@elements/MapFallback";
+import { useMapSupport } from "@features/map/hooks/useMapSupport";
+
 import type { ContactMapProps } from "@/types/components/modules/contact-us";
-import { useState } from "react";
 
 import Skeleton from "@elements/Skeleton/Skeleton";
+import _STRINGS from "@/utils/LocalStrings";
 import dynamic from "next/dynamic";
 
 const Map = dynamic(
@@ -15,20 +20,29 @@ const Map = dynamic(
 );
 
 const ContactMap = ({ latitude, longitude }: ContactMapProps) => {
-  const [, setCenter] = useState([longitude, latitude]);
+  const isSupported = useMapSupport();
+  const [hasFailed, setHasFailed] = useState(false);
+  const markers = useMemo(
+    () => [{ lat: latitude, lng: longitude }],
+    [latitude, longitude],
+  );
 
+  if (isSupported === null)
+    return <Skeleton className="size-full rounded-md" />;
+  if (!isSupported || hasFailed)
+    return (
+      <MapFallbackCard
+        className="size-full"
+        message={_STRINGS.MAP_BROWSER_UNSUPPORTED}
+        actionLabel={_STRINGS.VIEW_ON_MAP}
+        href={googleDirectionsHref({ latitude, longitude })}
+      />
+    );
   return (
     <Map
-      disableCenter
       center={[longitude, latitude]}
-      setCenter={setCenter}
-      businessMarkersData={[
-        {
-          lat: latitude,
-          lng: longitude,
-          icon: "/assets/icons/orders/location.svg",
-        },
-      ]}
+      businessMarkersData={markers}
+      onError={() => setHasFailed(true)}
     />
   );
 };

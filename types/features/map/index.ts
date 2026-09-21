@@ -11,3 +11,14 @@ export interface SearchedLocation {
   };
   neighbourhood: string;
 }
+
+export type MapFlightLanding = {
+  animated: boolean;
+  interrupted: boolean;
+};
+
+export type ApproxLocation = {
+  lat: number;
+  lng: number;
+  radius_m: number;
+};

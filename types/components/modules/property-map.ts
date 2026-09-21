@@ -1,5 +1,5 @@
 import type { SingleChatDetailsDto } from "@/api_services/chat/chat.interface";
-import type { SearchedLocation } from "@/types/features/map";
+import type { ApproxLocation, SearchedLocation } from "@/types/features/map";
 
 export type PropertyLocationMapProps = {
   center: number[];
@@ -32,4 +32,18 @@ export type TChatFooterTypes = {
   chatId: string | number;
   cancleButton?: () => void | null;
   singleChatData?: SingleChatDetailsDto;
+};
+
+export type ListingLocationMapProps = {
+  latitude?: number | null;
+  longitude?: number | null;
+  approxLocation?: ApproxLocation | null;
+};
+
+export type ListingMapCanvasProps = {
+  lat: number;
+  lng: number;
+  onError: () => void;
+  radiusMeters: number;
+  mode: "exact" | "approx";
 };

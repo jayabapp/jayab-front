@@ -10,6 +10,7 @@ export type IconName =
   | "chevron-left"
   | "clock"
   | "copy"
+  | "expand"
   | "heart"
   | "home"
   | "images"

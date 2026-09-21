@@ -701,6 +701,10 @@ const _STRINGS = {
   SHOW_ALL_PHOTOS: "مشاهده همه تصاویر",
   PHOTO_OF: "از",
   HOSTED_BY: "به میزبانی",
+  DOWNLOAD: "دانلود",
+  DOWNLOADING: "در حال دانلود",
+  DOWNLOAD_IMAGE: "دانلود تصویر",
+  PHOTO_VIEWER: "نمایشگر تصاویر",
   CODE_COPIED: "کد آگهی کپی شد",
   COPY_CODE: "کپی کد آگهی",
   TAB_SPECS: "مشخصات",
@@ -806,6 +810,20 @@ const _STRINGS = {
   MY_REQUESTS: "درخواست‌های من",
   MANAGE_LISTING: "مدیریت آگهی",
   RESERVE_FAILED: "ثبت درخواست انجام نشد. دوباره تلاش کنید.",
+  APPROXIMATE_AREA: "محدودهٔ تقریبی",
+  MAP_EXPAND: "بزرگ‌نمایی نقشه",
+  MAP_COLLAPSE: "بستن نقشه",
+  MAP_ARIA_LABEL: "نقشهٔ موقعیت اقامتگاه",
+  MAP_ZOOM_IN: "بزرگ‌نمایی",
+  MAP_ZOOM_OUT: "کوچک‌نمایی",
+  MAP_RESET_BEARING: "بازگرداندن جهت شمال",
+  MAP_FIND_MY_LOCATION: "نمایش موقعیت من",
+  MAP_COOPERATIVE_HINT_DESKTOP: "برای زوم نقشه از Ctrl و اسکرول استفاده کنید",
+  MAP_COOPERATIVE_HINT_MAC: "برای زوم نقشه از ⌘ و اسکرول استفاده کنید",
+  MAP_COOPERATIVE_HINT_MOBILE: "برای جابه‌جایی نقشه از دو انگشت استفاده کنید",
+  MAP_BROWSER_UNSUPPORTED: "برای مشاهدهٔ نقشه، مرورگر خود را به‌روز کنید.",
+  MAP_PICK_UNSUPPORTED:
+    "برای انتخاب دقیق روی نقشه، مرورگر خود را به‌روز کنید. تا آن زمان می‌توانید آدرس را جست‌وجو کنید و موقعیت نتیجه ثبت می‌شود.",
 };
 
 export default _STRINGS;

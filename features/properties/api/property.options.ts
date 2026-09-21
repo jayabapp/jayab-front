@@ -110,7 +110,9 @@ export const propertyDetailOptions = (slug: string) =>
 export const similarPropertiesOptions = (id: number | string, enabled = true) =>
   queryOptions({
     queryKey: propertyKeys.similar(id),
-    queryFn: ({ signal }) => PropertyService.GetSimilarProperties(id, signal),
+    // The section hides itself on an empty list, so a missing payload is the same as none.
+    queryFn: async ({ signal }) =>
+      (await PropertyService.GetSimilarProperties(id, signal)) ?? [],
     enabled: enabled && Boolean(id),
     staleTime: 10 * 60_000,
   });

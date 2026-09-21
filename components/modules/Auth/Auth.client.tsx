@@ -1,17 +1,17 @@
 "use client";
 
 import { useAuthForm } from "@features/auth/hooks/useAuthForm";
+import { AuthOtpCard } from "@modules/AuthOtp";
 import { HeaderBrand } from "@modules/SiteHeader";
 import { AuthHeader } from "@layouts/AuthHeader";
-import { AuthOtpCard } from "@modules/AuthOtp";
 import { FormInput } from "@elements/Form";
 import { useState } from "react";
 
-import DotLoading from "@elements/Button/DotLoading";
 import useCmsContent from "@/hooks/useCmsContent";
+import DotLoading from "@elements/Button/DotLoading";
 import _STRINGS from "@/utils/LocalStrings";
-import Terms from "./parts/Terms.client";
 import Button from "@elements/Button";
+import Terms from "./parts/Terms.client";
 
 const AuthPageComponent = () => {
   const {
@@ -56,10 +56,8 @@ const AuthPageComponent = () => {
             inert={isOtpStep}
             className="flip-face glass-panel px-6 pb-8 pt-10 md:px-9"
           >
-            <div className="flex justify-center">
-              <div className="glass-badge flex size-16 items-center justify-center rounded-[1.35rem]">
-                <HeaderBrand asLink markOnly />
-              </div>
+            <div className="flex justify-end">
+              <HeaderBrand asLink alwaysShowTitle />
             </div>
 
             <div className="mt-6 flex flex-col items-center gap-3">

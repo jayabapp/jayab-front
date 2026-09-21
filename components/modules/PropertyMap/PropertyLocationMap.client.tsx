@@ -1,9 +1,19 @@
 "use client";
 
-import type { PropertyLocationMapProps } from "@/types/components/modules/property-map";
+import { useEffect, useState } from "react";
 import { useReverseGeocode } from "@features/map/hooks/useReverseGeocode";
-import { InteractiveMap } from "@elements/Map";
-import { useEffect } from "react";
+import { MapFallbackCard } from "@elements/MapFallback";
+import { useMapSupport } from "@features/map/hooks/useMapSupport";
+
+import type { PropertyLocationMapProps } from "@/types/components/modules/property-map";
+
+import _STRINGS from "@/utils/LocalStrings";
+import dynamic from "next/dynamic";
+
+const InteractiveMap = dynamic(
+  () => import("@elements/Map").then((module) => module.InteractiveMap),
+  { ssr: false },
+);
 
 const PropertyLocationMap = ({
   center,
@@ -14,6 +24,9 @@ const PropertyLocationMap = ({
   setCenterAddress,
   setCenterAddressLoading,
 }: PropertyLocationMapProps) => {
+  const isSupported = useMapSupport();
+  const [hasFailed, setHasFailed] = useState(false);
+  const isMapUnavailable = isSupported === false || hasFailed;
   const reverseGeocode = useReverseGeocode(
     center[0],
     center[1],
@@ -30,6 +43,19 @@ const PropertyLocationMap = ({
     }
   }, [reverseGeocode.data, setCenterAddress]);
 
+  useEffect(() => {
+    if (!isMapUnavailable || !jumpToState) return;
+    setCenter?.([Number(jumpToState.lng), Number(jumpToState.lat)]);
+  }, [isMapUnavailable, jumpToState, setCenter]);
+
+  if (isMapUnavailable)
+    return (
+      <MapFallbackCard
+        className="size-full"
+        message={_STRINGS.MAP_PICK_UNSUPPORTED}
+      />
+    );
+  if (isSupported === null) return <></>;
   return (
     <InteractiveMap
       center={center}
@@ -37,6 +63,7 @@ const PropertyLocationMap = ({
       jumpToState={jumpToState}
       disableCenter={disableCenter}
       containerClass={containerClass}
+      onError={() => setHasFailed(true)}
     />
   );
 };

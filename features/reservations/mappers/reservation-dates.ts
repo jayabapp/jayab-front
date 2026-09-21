@@ -19,5 +19,8 @@ export const apiDateToJalaliDate = (value: string | Date) =>
 export const formatJalaliDay = (value?: string | Date | null) =>
   value ? moment(value).format(JALALI_DAY_MONTH) : "";
 
+export const formatJalaliWeekday = (value?: string | Date | null) =>
+  value ? moment(value).format("dddd") : "";
+
 export const formatJalaliWeekdayDay = (value?: string | Date | null) =>
   value ? moment(value).format(JALALI_WEEKDAY_DAY_MONTH) : "";

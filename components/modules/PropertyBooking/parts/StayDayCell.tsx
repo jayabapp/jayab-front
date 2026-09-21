@@ -40,7 +40,7 @@ const StayDayCell = ({
       {tooltip ? (
         <span
           role="status"
-          className="pointer-events-none absolute bottom-full left-1/2 z-10 mb-1 -translate-x-1/2 whitespace-nowrap rounded-full bg-white px-3 py-1 text-xs text-neutral-900 shadow-glass-sm"
+          className="pointer-events-none absolute bottom-full left-1/2 z-10 mb-1 -translate-x-1/2 whitespace-nowrap rounded-full bg-neutral-900 px-3 py-1 text-xs text-white shadow-glass-sm"
         >
           {tooltip}
         </span>
@@ -49,10 +49,10 @@ const StayDayCell = ({
       <button
         type="button"
         aria-label={label}
-        data-stay-date={dateKey}
         onClick={onSelect}
         onKeyDown={onKeyDown}
         aria-disabled={blocked}
+        data-stay-date={dateKey}
         aria-pressed={isEdge || state === "middle"}
         className={`${BASE} ${skin} ${blocked ? "cursor-not-allowed" : "cursor-pointer"}`}
       >
