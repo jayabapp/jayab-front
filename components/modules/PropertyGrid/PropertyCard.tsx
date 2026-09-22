@@ -90,9 +90,15 @@ const PropertyCard = ({
               </div>
             </>
           ) : (
-            // Divar-style order: title, then the price stands out right
-            // under it, then the supporting details (place, code, likes).
+            // Divar-style order: title, then a plain capacity line (as on
+            // divar.ir's own room listings), then the price, then the
+            // supporting details (place, code, likes).
             <>
+              <p className="text-xs text-neutral-500">
+                {data?.total_bedrooms ? `${data.total_bedrooms} ${_STRINGS.ROOM}، ` : ""}
+                {_STRINGS.UP_TO} {data?.max_capacity} {_STRINGS.PERSON}
+              </p>
+
               <div className="w-full flex flex-row items-end justify-between gap-2">
                 <p className="text-xs 2xl:text-xs shrink-0">
                   {_STRINGS.TODAYS_PRICE}
