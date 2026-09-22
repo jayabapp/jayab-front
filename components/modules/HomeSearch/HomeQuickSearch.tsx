@@ -1,8 +1,7 @@
+import type { HomeQuickSearchProps } from "@/types/components/modules/home";
 import { HOME_TILE_DEFAULT_SLIDES_PER_VIEW } from "./tile-breakpoints";
 import { HOME_TILE_DEFAULT_SPACE_BETWEEN } from "./tile-breakpoints";
 import { HOME_TILE_BREAKPOINTS } from "./tile-breakpoints";
-
-import type { HomeQuickSearchProps } from "@/types/components/modules/home";
 
 import QuickSearchItem from "./parts/QuickSearchItem";
 import EmptyState from "@elements/EmptyState";
@@ -36,49 +35,34 @@ const MainFiltersContainer = ({
           <EmptyState />
         </div>
       ) : (
-        <>
-          <div className="w-full min-[900px]:hidden">
-            <Swiper
-              viewportClassName="padding-x"
-              slidesPerView={
-                isCompact
-                  ? HOME_TILE_DEFAULT_SLIDES_PER_VIEW.compact
-                  : HOME_TILE_DEFAULT_SLIDES_PER_VIEW.wide
-              }
-              spaceBetween={
-                isCompact
-                  ? HOME_TILE_DEFAULT_SPACE_BETWEEN.compact
-                  : HOME_TILE_DEFAULT_SPACE_BETWEEN.wide
-              }
-              breakPoints={HOME_TILE_BREAKPOINTS}
-              options={{ align: "start", direction: "rtl", dragFree: true }}
+        <Swiper
+          viewportClassName="padding-x"
+          slidesPerView={
+            isCompact
+              ? HOME_TILE_DEFAULT_SLIDES_PER_VIEW.compact
+              : HOME_TILE_DEFAULT_SLIDES_PER_VIEW.wide
+          }
+          spaceBetween={
+            isCompact
+              ? HOME_TILE_DEFAULT_SPACE_BETWEEN.compact
+              : HOME_TILE_DEFAULT_SPACE_BETWEEN.wide
+          }
+          breakPoints={HOME_TILE_BREAKPOINTS}
+          options={{ align: "start", direction: "rtl", dragFree: true }}
+        >
+          {data?.map((i, index: number) => (
+            <SwiperSlide
+              key={index}
+              className={`home-tile-slide w-full  !h-auto   p-0 md:py-2 cursor-pointer select-none md:px-2`}
             >
-              {data?.map((i, index: number) => (
-                <SwiperSlide
-                  key={index}
-                  className={`home-tile-slide w-full  !h-auto   p-0 md:py-2 cursor-pointer select-none md:px-2`}
-                >
-                  <QuickSearchItem
-                    index={index}
-                    item={i}
-                    key={`${i?.title}${index}cat`}
-                  />
-                </SwiperSlide>
-              ))}
-            </Swiper>
-          </div>
-
-          <div className="home-tile-grid padding-x hidden w-full min-[900px]:grid">
-            {data?.map((i, index: number) => (
               <QuickSearchItem
-                item={i}
                 index={index}
-                key={`grid-${i?.title}${index}cat`}
-                sizeClassName="aspect-square w-full"
+                item={i}
+                key={`${i?.title}${index}cat`}
               />
-            ))}
-          </div>
-        </>
+            </SwiperSlide>
+          ))}
+        </Swiper>
       )}
     </div>
   );
