@@ -23,7 +23,7 @@ const PropertyCard = ({
 
   return (
     <div className="surface-card property-card-shadow flex w-full flex-col justify-between gap-2 p-3">
-      <div className="grid w-full grid-cols-2 gap-2">
+      <div className="grid w-full grid-cols-2 items-stretch gap-2">
         <PropertyCardLink
           href={goToLink}
           title={data.title}
@@ -90,17 +90,23 @@ const PropertyCard = ({
               </div>
             </>
           ) : (
-            // Divar-style order: title, then a plain capacity line (as on
-            // divar.ir's own room listings), then the price, then the
-            // supporting details (place, code, likes).
+            // Divar-style order: title, then the code/likes (where the
+            // capacity line used to sit), then the price — stacked so a
+            // discount's extra line has room — then place, then the plain
+            // capacity line at the very bottom.
             <>
-              <p className="text-xs text-neutral-500">
-                {data?.total_bedrooms ? `${data.total_bedrooms} ${_STRINGS.ROOM}، ` : ""}
-                {_STRINGS.UP_TO} {data?.max_capacity} {_STRINGS.PERSON}
-              </p>
+              <div className="flex items-center gap-2">
+                <div className="bg-neutral-200 font-normal rounded-full text-xs text-black px-2 h-5 leading-4 flex items-center justify-center">
+                  {_STRINGS.CODE} {data.code}
+                </div>
+                <PropertyCardLikes
+                  propertyId={data?.id}
+                  favoriteCount={data?.favorite_count}
+                />
+              </div>
 
-              <div className="w-full flex flex-row items-end justify-between gap-2">
-                <p className="text-xs 2xl:text-xs shrink-0">
+              <div className="flex flex-col gap-0.5">
+                <p className="text-xs text-neutral-500">
                   {_STRINGS.TODAYS_PRICE}
                 </p>
                 <PropertyPrice
@@ -128,15 +134,10 @@ const PropertyCard = ({
                 </p>
               </div>
 
-              <div className="flex items-center gap-2">
-                <div className="bg-neutral-200 font-normal rounded-full text-xs text-black px-2 h-5 leading-4 flex items-center justify-center">
-                  {_STRINGS.CODE} {data.code}
-                </div>
-                <PropertyCardLikes
-                  propertyId={data?.id}
-                  favoriteCount={data?.favorite_count}
-                />
-              </div>
+              <p className="text-xs text-neutral-500">
+                {data?.total_bedrooms ? `${data.total_bedrooms} ${_STRINGS.ROOM}، ` : ""}
+                {_STRINGS.UP_TO} {data?.max_capacity} {_STRINGS.PERSON}
+              </p>
             </>
           )}
         </PropertyCardLink>
@@ -144,9 +145,12 @@ const PropertyCard = ({
         <PropertyCardLink
           title={data.title}
           href={goToLink}
-          className="order-2 flex h-fit w-full items-start justify-start !outline-none"
+          className="order-2 flex w-full items-start justify-start !outline-none"
         >
-          <div className="aspect-square w-full h-full relative">
+          {/* No fixed aspect ratio here on purpose: the grid row's height is
+              set by the text column's natural content, and this fills that
+              same height (h-full) so both sides always line up. */}
+          <div className="w-full h-full relative">
             <ContentImage
               fill
               loading="lazy"
@@ -154,7 +158,7 @@ const PropertyCard = ({
               alt={data?.feature_image?.alt || ""}
               src={getPropertyImageUrl(data?.feature_image)}
               sizes="(min-width: 1280px) 16vw, (min-width: 768px) 24vw, 46vw"
-              className="w-full rounded-2xl h-full object-cover aspect-square"
+              className="w-full rounded-2xl h-full object-cover"
             />
             {data?.advisor_commission || data?.advisor_commission === 0 ? (
               <div className="w-16 gap-0.5 h-5 rounded-md transition-all py-[0.2rem] backdrop-blur-[6px] bg-neutral-900/30 text-white absolute z-1 left-2 flex-row top-2 aspect-square flex items-center justify-center">
