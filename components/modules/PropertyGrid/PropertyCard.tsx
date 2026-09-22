@@ -45,67 +45,94 @@ const PropertyCard = ({
           </div>
 
           {isOwner ? (
-            <div className="w-full flex flex-row items-start gap-2 justify-start">
-              <p className="text-sm shrink-0">{_STRINGS.TODAY_STATUS} :</p>
-              <p
-                className={`text-sm font-bold ${data?.is_today_reserved ? "text-danger-500" : "text-brand-600"}`}
-              >
-                {data?.is_today_reserved
-                  ? _STRINGS.IS_RESERVED
-                  : _STRINGS.EMPTY}
-              </p>
-            </div>
+            <>
+              <div className="w-full flex flex-row items-start gap-2 justify-start">
+                <p className="text-sm shrink-0">{_STRINGS.TODAY_STATUS} :</p>
+                <p
+                  className={`text-sm font-bold ${data?.is_today_reserved ? "text-danger-500" : "text-brand-600"}`}
+                >
+                  {data?.is_today_reserved
+                    ? _STRINGS.IS_RESERVED
+                    : _STRINGS.EMPTY}
+                </p>
+              </div>
+
+              <div className="flex items-center gap-2">
+                <div className="bg-neutral-200 font-normal rounded-full text-xs text-black px-2 h-5 leading-4 flex items-center justify-center">
+                  {_STRINGS.CODE} {data.code}
+                </div>
+                <PropertyCardLikes
+                  propertyId={data?.id}
+                  favoriteCount={data?.favorite_count}
+                />
+              </div>
+
+              <div className="w-full flex flex-row items-end justify-between gap-2">
+                <p className="text-xs 2xl:text-xs shrink-0">
+                  {_STRINGS.TODAYS_PRICE}
+                </p>
+                <PropertyPrice
+                  data={{
+                    discounted_price: data?.today_price?.discounted_price,
+                    price: data?.today_price?.price,
+                    discount_percentage: data.today_price?.discount_percentage,
+                  }}
+                />
+              </div>
+
+              <div className="flex items-center w-full gap-2">
+                <StatusShower data={data?.status} />
+                {data?.is_promoted ? (
+                  <p className="font-bold text-brand-600 shrink-0 text-xs pr-1 border-r">
+                    {_STRINGS.LADDERED}
+                  </p>
+                ) : null}
+              </div>
+            </>
           ) : (
-            <div className="flex w-full items-center gap-1">
-              {data?.is_promoted ? (
-                <p className="font-bold text-brand-600 shrink-0 text-xs pl-1 border-l">
-                  {_STRINGS.LADDERED}
+            // Divar-style order: title, then the price stands out right
+            // under it, then the supporting details (place, code, likes).
+            <>
+              <div className="w-full flex flex-row items-end justify-between gap-2">
+                <p className="text-xs 2xl:text-xs shrink-0">
+                  {_STRINGS.TODAYS_PRICE}
                 </p>
-              ) : null}
-              <p className="text-xs line-clamp-1 text-center">
-                {data?.city}،{" "}
-                <span className="text-xs">
-                  {data?.province || data?.region
-                    ? `${data?.region || data?.province}`
-                    : ``}
-                </span>
-              </p>
-            </div>
+                <PropertyPrice
+                  data={{
+                    discounted_price: data?.today_price?.discounted_price,
+                    price: data?.today_price?.price,
+                    discount_percentage: data.today_price?.discount_percentage,
+                  }}
+                />
+              </div>
+
+              <div className="flex w-full items-center gap-1">
+                {data?.is_promoted ? (
+                  <p className="font-bold text-brand-600 shrink-0 text-xs pl-1 border-l">
+                    {_STRINGS.LADDERED}
+                  </p>
+                ) : null}
+                <p className="text-xs line-clamp-1 text-center">
+                  {data?.city}،{" "}
+                  <span className="text-xs">
+                    {data?.province || data?.region
+                      ? `${data?.region || data?.province}`
+                      : ``}
+                  </span>
+                </p>
+              </div>
+
+              <div className="flex items-center gap-2">
+                <div className="bg-neutral-200 font-normal rounded-full text-xs text-black px-2 h-5 leading-4 flex items-center justify-center">
+                  {_STRINGS.CODE} {data.code}
+                </div>
+                <PropertyCardLikes
+                  propertyId={data?.id}
+                  favoriteCount={data?.favorite_count}
+                />
+              </div>
+            </>
           )}
-
-          <div className="flex items-center gap-2">
-            <div className="bg-neutral-200 font-normal rounded-full text-xs text-black px-2 h-5 leading-4 flex items-center justify-center">
-              {_STRINGS.CODE} {data.code}
-            </div>
-            <PropertyCardLikes
-              propertyId={data?.id}
-              favoriteCount={data?.favorite_count}
-            />
-          </div>
-
-          <div className="w-full flex flex-row items-end justify-between gap-2">
-            <p className="text-xs 2xl:text-xs shrink-0">
-              {_STRINGS.TODAYS_PRICE}
-            </p>
-            <PropertyPrice
-              data={{
-                discounted_price: data?.today_price?.discounted_price,
-                price: data?.today_price?.price,
-                discount_percentage: data.today_price?.discount_percentage,
-              }}
-            />
-          </div>
-
-          {isOwner ? (
-            <div className="flex items-center w-full gap-2">
-              <StatusShower data={data?.status} />
-              {data?.is_promoted ? (
-                <p className="font-bold text-brand-600 shrink-0 text-xs pr-1 border-r">
-                  {_STRINGS.LADDERED}
-                </p>
-              ) : null}
-            </div>
-          ) : null}
         </PropertyCardLink>
 
         <PropertyCardLink
