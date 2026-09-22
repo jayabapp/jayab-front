@@ -1,6 +1,7 @@
+import { ContentImage } from "@elements/Image";
+
 import type { PropertyCardFeaturesProps } from "@/types/components/modules/property-grid";
 import type { TFeatureItem } from "@/types/components/modules/property-discovery";
-import { ContentImage } from "@elements/Image";
 
 import _STRINGS from "@/utils/LocalStrings";
 
@@ -21,38 +22,21 @@ const FeatureItem = ({ disabled, iconUrl, title }: TFeatureItem) => (
   </div>
 );
 
-const PropertyCardFeatures = ({
-  data,
-  showDetailsIndicator = false,
-}: PropertyCardFeaturesProps) => (
-  <div className="flex w-full items-center justify-between gap-2">
-    <div className="flex min-w-0 items-center justify-start gap-4">
-      <FeatureItem
-        iconUrl="/assets/icons/adds/max_cap_house.svg"
-        title={`${_STRINGS.UP_TO} ${data?.max_capacity} ${_STRINGS.PERSON}`}
-      />
-      <FeatureItem
-        iconUrl="/assets/icons/adds/prop_card_bed.svg"
-        title={`${data?.total_bedrooms} ${_STRINGS.ROOM}`}
-      />
-      <FeatureItem
-        disabled={!data?.has_pool}
-        iconUrl="/assets/icons/adds/prop_card_pool.svg"
-        title={data?.has_pool ? _STRINGS.HAS_POOL : _STRINGS.POOL_LESS}
-      />
-    </div>
-    {showDetailsIndicator ? (
-      <span className="flex size-6 shrink-0 items-center justify-center text-neutral-700 transition-transform duration-200 group-hover:-translate-x-0.5 group-hover:text-brand-700 group-focus-visible:text-brand-700">
-        <ContentImage
-          alt=""
-          width={16}
-          height={16}
-          aria-hidden="true"
-          src="/assets/icons/shared/chevron-left.svg"
-          className="h-3 w-2"
-        />
-      </span>
-    ) : null}
+const PropertyCardFeatures = ({ data }: PropertyCardFeaturesProps) => (
+  <div className="flex min-w-0 items-center justify-start gap-4">
+    <FeatureItem
+      iconUrl="/assets/icons/adds/max_cap_house.svg"
+      title={`${_STRINGS.UP_TO} ${data?.max_capacity} ${_STRINGS.PERSON}`}
+    />
+    <FeatureItem
+      iconUrl="/assets/icons/adds/prop_card_bed.svg"
+      title={`${data?.total_bedrooms} ${_STRINGS.ROOM}`}
+    />
+    <FeatureItem
+      disabled={!data?.has_pool}
+      iconUrl="/assets/icons/adds/prop_card_pool.svg"
+      title={data?.has_pool ? _STRINGS.HAS_POOL : _STRINGS.POOL_LESS}
+    />
   </div>
 );
 

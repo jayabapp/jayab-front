@@ -1,14 +1,15 @@
-import { getPropertyImageUrl } from "@features/properties/mappers/property-image.mapper";
-import type { PropertyCardProps } from "@/types/components/modules/property-grid";
 import { PROPERTY_IMAGE_QUALITY } from "@features/properties/constants/image";
+import { getPropertyImageUrl } from "@features/properties/mappers/property-image.mapper";
 import { ContentImage } from "@elements/Image";
 
+import type { PropertyCardProps } from "@/types/components/modules/property-grid";
+
 import PropertyCardOwnerActions from "./parts/PropertyCardOwnerActions";
-import PropertyCardLikes from "./parts/PropertyCardLikes.client";
 import PropertyCardFeatures from "./parts/PropertyCardFeatures";
+import PropertyCardLikes from "./parts/PropertyCardLikes.client";
 import PropertyCardLink from "./parts/PropertyCardLink.client";
-import StatusShower from "@elements/StatusShower";
 import PropertyPrice from "./PropertyPrice";
+import StatusShower from "@elements/StatusShower";
 import _STRINGS from "@/utils/LocalStrings";
 
 const PropertyCard = ({
@@ -26,7 +27,7 @@ const PropertyCard = ({
         <PropertyCardLink
           href={goToLink}
           title={data.title}
-          className="order-1 flex flex-col justify-between gap-1 !outline-none"
+          className="order-1 flex flex-col gap-1.5 !outline-none"
         >
           <div className="flex items-start gap-2">
             {data?.has_blue_tick ? (
@@ -115,11 +116,11 @@ const PropertyCard = ({
           <div className="aspect-square w-full h-full relative">
             <ContentImage
               fill
-              quality={PROPERTY_IMAGE_QUALITY}
               loading="lazy"
-              sizes="(min-width: 1280px) 16vw, (min-width: 768px) 24vw, 46vw"
+              quality={PROPERTY_IMAGE_QUALITY}
               alt={data?.feature_image?.alt || ""}
               src={getPropertyImageUrl(data?.feature_image)}
+              sizes="(min-width: 1280px) 16vw, (min-width: 768px) 24vw, 46vw"
               className="w-full rounded-2xl h-full object-cover aspect-square"
             />
             {data?.advisor_commission || data?.advisor_commission === 0 ? (
@@ -178,19 +179,11 @@ const PropertyCard = ({
         </div>
       ) : null}
 
-      <div className="w-full pt-1.5">
-        {isOwner ? (
+      {isOwner ? (
+        <div className="w-full pt-1.5">
           <PropertyCardFeatures data={data} />
-        ) : (
-          <PropertyCardLink
-            href={goToLink}
-            title={data.title}
-            className="group block rounded-lg !outline-none focus-visible:ring-2 focus-visible:ring-brand-600 focus-visible:ring-offset-2"
-          >
-            <PropertyCardFeatures data={data} showDetailsIndicator />
-          </PropertyCardLink>
-        )}
-      </div>
+        </div>
+      ) : null}
     </div>
   );
 };
