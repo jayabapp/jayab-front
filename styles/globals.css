@@ -1004,43 +1004,14 @@ button {
   padding-left: var(--slide-spacing);
 }
 
-/* Home discovery tiles (property type / quick search / popular cities): one
-   shared box size so all three rows always match each other and grow
-   together on wider screens, instead of each row computing its own width
-   from a percentage of its own row. */
-.home-tile-box {
-  width: 5.5rem;
-  height: 5.5rem;
-}
-@media (min-width: 768px) {
-  .home-tile-box {
-    width: 9.4375rem;
-    height: 9.4375rem;
-  }
-}
-@media (min-width: 1536px) {
-  .home-tile-box {
-    width: 10.5rem;
-    height: 10.5rem;
-  }
-}
-
-/* The property-type / quick-search rows wrap their tile in an embla slide;
-   `--slide-size` is a percentage, so it can never land on an exact pixel
-   value across different viewport widths and has to be overridden outright
-   to match `.home-tile-box` above, plus the slide's own horizontal padding
-   (`md:px-2` = 2 x 0.5rem, border-box; none below md). */
-.home-tile-slide {
-  flex: 0 0 5.5rem !important;
-}
+/* The property-type / quick-search rows size their tile to a literal
+   141x141 box on desktop, not a share of the row's width — `--slide-size`
+   is a percentage, so it can never land on an exact pixel value across
+   different viewport widths and has to be overridden outright. 141px tile
+   plus the slide's own `md:px-2` (2 x 0.5rem) padding, border-box. */
 @media (min-width: 768px) {
   .home-tile-slide {
-    flex: 0 0 10.4375rem !important;
-  }
-}
-@media (min-width: 1536px) {
-  .home-tile-slide {
-    flex: 0 0 11.5rem !important;
+    flex: 0 0 9.8125rem !important;
   }
 }
 
