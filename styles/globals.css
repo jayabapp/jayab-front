@@ -108,48 +108,107 @@ ul {
 }
 
 @keyframes sheet-backdrop-in {
-  from { opacity: 0; }
-  to { opacity: 1; }
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
 }
 
 @keyframes sheet-panel-in {
-  from { opacity: 0; transform: translateY(100%); }
-  to { opacity: 1; transform: translateY(0); }
+  from {
+    opacity: 0;
+    transform: translateY(100%);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
 }
 
-.sheet-backdrop-enter { animation: sheet-backdrop-in 220ms cubic-bezier(0.22, 1, 0.36, 1); }
-.sheet-panel-enter { animation: sheet-panel-in 220ms cubic-bezier(0.22, 1, 0.36, 1); }
+.sheet-backdrop-enter {
+  animation: sheet-backdrop-in 220ms cubic-bezier(0.22, 1, 0.36, 1);
+}
+.sheet-panel-enter {
+  animation: sheet-panel-in 220ms cubic-bezier(0.22, 1, 0.36, 1);
+}
 
 @keyframes popover-in {
-  from { opacity: 0; transform: scale(0.98); }
-  to { opacity: 1; transform: scale(1); }
+  from {
+    opacity: 0;
+    transform: scale(0.98);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
 }
 
 @keyframes success-pop {
-  from { opacity: 0; transform: scale(0.8); }
-  to { opacity: 1; transform: scale(1); }
+  from {
+    opacity: 0;
+    transform: scale(0.8);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
 }
 
 @keyframes map-pin-drop {
-  from { opacity: 0; transform: translateY(-12px) scale(0.8); }
-  to { opacity: 1; transform: translateY(0) scale(1); }
+  from {
+    opacity: 0;
+    transform: translateY(-12px) scale(0.8);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
 }
 
 @keyframes map-pin-pulse {
-  from { opacity: 0.9; transform: translate(-50%, 50%) scale(0.4); }
-  to { opacity: 0; transform: translate(-50%, 50%) scale(1.6); }
+  from {
+    opacity: 0.9;
+    transform: translate(-50%, 50%) scale(0.4);
+  }
+  to {
+    opacity: 0;
+    transform: translate(-50%, 50%) scale(1.6);
+  }
 }
 
-.map-pin-body { filter: drop-shadow(0 8px 12px rgb(21 60 105 / 0.35)); }
-.map-pin-drop { animation: map-pin-drop 220ms cubic-bezier(0.22, 1, 0.36, 1) both; transform-origin: bottom center; }
-.map-pin-pulse { animation: map-pin-pulse 1.2s ease-out 2 both; transform: translate(-50%, 50%); }
+.map-pin-body {
+  filter: drop-shadow(0 8px 12px rgb(21 60 105 / 0.35));
+}
+.map-pin-drop {
+  animation: map-pin-drop 220ms cubic-bezier(0.22, 1, 0.36, 1) both;
+  transform-origin: bottom center;
+}
+.map-pin-pulse {
+  animation: map-pin-pulse 1.2s ease-out 2 both;
+  transform: translate(-50%, 50%);
+}
 
-.popover-enter { animation: popover-in 150ms ease-out; }
-.success-pop { animation: success-pop 250ms cubic-bezier(0.22, 1, 0.36, 1); }
+.popover-enter {
+  animation: popover-in 150ms ease-out;
+}
+.success-pop {
+  animation: success-pop 250ms cubic-bezier(0.22, 1, 0.36, 1);
+}
 
 @media (prefers-reduced-motion: reduce) {
-  .sheet-backdrop-enter, .sheet-panel-enter, .popover-enter, .success-pop, .map-pin-drop, .map-pin-pulse { animation: none; }
-  .map-pin-pulse { display: none; }
+  .sheet-backdrop-enter,
+  .sheet-panel-enter,
+  .popover-enter,
+  .success-pop,
+  .map-pin-drop,
+  .map-pin-pulse {
+    animation: none;
+  }
+  .map-pin-pulse {
+    display: none;
+  }
 }
 .header-container {
   @apply w-full flex  justify-between items-center px-2  h-full;
@@ -280,7 +339,12 @@ ul {
 .glass-panel::before {
   content: "";
   @apply pointer-events-none absolute inset-x-8 top-0 h-px;
-  background: linear-gradient(to left, transparent, theme(colors.brand.100 / 80%), transparent);
+  background: linear-gradient(
+    to left,
+    transparent,
+    theme(colors.brand.100 / 80%),
+    transparent
+  );
 }
 
 .menu-icon-chip {
@@ -323,14 +387,14 @@ ul {
 
 .nav-underline::after {
   content: "";
-  position: absolute;
+  height: 2px;
   inset-inline: 0;
   bottom: -0.375rem;
-  height: 2px;
-  border-radius: 9999px;
-  background-color: currentColor;
+  position: absolute;
   transform: scaleX(0);
+  border-radius: 9999px;
   transform-origin: center;
+  background-color: currentColor;
   transition: transform 0.25s ease;
 }
 
@@ -521,21 +585,10 @@ ul {
   @apply sticky top-0 z-0;
 }
 
-/* A sticky element always forms its own stacking context, so everything inside
-   the hero — the destination panel, the date picker — is layered as one block
-   at z-0, and the sheet (z-10) paints over any part of a dropdown that reaches
-   below the hero. The panels' own z-50 / z-[60] only rank them *within* the
-   hero. While one of them is open, lift the whole pin above the sheet; it drops
-   back the moment the panel closes. The header lives in a separate context and
-   stays on top either way. */
 .home-hero-pin:has([data-hero-open="true"], [data-headlessui-state~="open"]) {
   z-index: 30;
 }
 
-/* Lifting the pin also lifts the strip of photo the sheet's rounded lip
-   normally rests on (22px, 32px from md), which would cut the top off the
-   sheet's first heading. Clip just the photo and its scrim back by that strip:
-   the search and its dropdowns are separate layers and stay whole. */
 .home-hero-pin:has([data-hero-open="true"], [data-headlessui-state~="open"])
   .hero-backdrop {
   clip-path: inset(0 0 1.375rem 0);
@@ -548,8 +601,6 @@ ul {
   }
 }
 
-/* Dropdowns opened from the pinned hero: never taller than the room under
-   their trigger (see useDropdownFit), and scrollable inside instead. */
 .hero-dropdown {
   max-height: var(--hero-dropdown-h, 60dvh);
   overflow-y: auto;
@@ -595,8 +646,6 @@ ul {
   animation-play-state: paused;
 }
 
-/* Hovering (or focusing) the slider only holds it from auto-advancing — the
-   photo's own zoom keeps playing, so it never visibly freezes mid-motion. */
 .hero-slider[data-slide-paused="true"] .hero-slide-photo {
   animation-play-state: paused;
 }
@@ -744,15 +793,15 @@ input[type="number"] {
 }
 
 .popCard {
-  position: fixed;
+  right: 0;
   bottom: 0;
   height: 0;
-  width: 100%;
-  max-width: 500px;
-  right: 0;
-  z-index: 7000;
-  width: 100%;
   left: 50%;
+  width: 100%;
+  width: 100%;
+  z-index: 7000;
+  position: fixed;
+  max-width: 500px;
   transform: translateX(-50%);
 }
 
@@ -779,13 +828,13 @@ input[type="number"] {
 }
 
 .card__inner::after {
-  content: " ";
-  background: theme("colors.neutral.800");
+  left: 0;
+  top: 99%;
   width: 100%;
   height: 100%;
-  top: 99%;
+  content: " ";
   position: absolute;
-  left: 0;
+  background: theme("colors.neutral.800");
 }
 
 .indicatorWrapper {
@@ -1004,44 +1053,19 @@ button {
   padding-left: var(--slide-spacing);
 }
 
-/* Home discovery tiles (property type / quick search / popular cities): one
-   shared box size so all three rows always match each other and grow
-   together on wider screens, instead of each row computing its own width
-   from a percentage of its own row. */
 .home-tile-box {
   width: 5.5rem;
   height: 5.5rem;
 }
-@media (min-width: 768px) {
-  .home-tile-box {
-    width: 9.4375rem;
-    height: 9.4375rem;
-  }
-}
-@media (min-width: 1536px) {
-  .home-tile-box {
-    width: 10.5rem;
-    height: 10.5rem;
-  }
-}
 
-/* The property-type / quick-search rows wrap their tile in an embla slide;
-   `--slide-size` is a percentage, so it can never land on an exact pixel
-   value across different viewport widths and has to be overridden outright
-   to match `.home-tile-box` above, plus the slide's own horizontal padding
-   (`md:px-2` = 2 x 0.5rem, border-box; none below md). */
 .home-tile-slide {
   flex: 0 0 5.5rem !important;
 }
-@media (min-width: 768px) {
-  .home-tile-slide {
-    flex: 0 0 10.4375rem !important;
-  }
-}
-@media (min-width: 1536px) {
-  .home-tile-slide {
-    flex: 0 0 11.5rem !important;
-  }
+
+.home-tile-grid {
+  display: grid;
+  gap: 0.75rem;
+  grid-template-columns: repeat(auto-fit, minmax(max(9.4rem, 14%), 1fr));
 }
 
 .embla__dots {
@@ -1337,8 +1361,6 @@ ul {
   transform: translateY(-0.25rem);
 }
 
-/* Touch taps report `:hover` with no pointer to ever leave, so the lift would
-   otherwise stick until the next unrelated tap. Real pointer devices only. */
 @media (hover: hover) {
   .home-tile:hover {
     @apply border-brand-200;

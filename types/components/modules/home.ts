@@ -1,7 +1,7 @@
 export type {
   ContentByKeyDto,
-  ContentDto,
   HomeLandingDto,
+  ContentDto,
 } from "@/api_services/home/home.interface";
 export type { PropertyListDto } from "@/api_services/property/property.interface";
 import type { PropertyListDto } from "@/api_services/property/property.interface";
@@ -70,6 +70,7 @@ export type HomeTileCardProps = {
   title?: string;
   index?: number;
   imageSrc?: string;
+  sizeClassName?: string;
 };
 
 export type HomeQuickSearchProps = {
@@ -88,4 +89,10 @@ export type THomePropertyTypesProps = {
   title: string;
   devices?: DeviceInfo;
   data: HomeLandingDto[];
+};
+
+export type TQuickSearchItem = {
+  index?: number;
+  item: HomeLandingDto;
+  sizeClassName?: string;
 };

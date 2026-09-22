@@ -7,12 +7,18 @@ import Link from "next/link";
 
 const TILE_ICON_SIZES = "(min-width: 768px) 64px, 56px";
 
-const HomeTileCard = ({ href, title, imageSrc, index }: HomeTileCardProps) => (
+const HomeTileCard = ({
+  href,
+  index,
+  title,
+  imageSrc,
+  sizeClassName = "home-tile-box",
+}: HomeTileCardProps) => (
   <Link
     href={href}
     title={title}
     style={{ "--card-index": index ?? 0 } as CSSProperties}
-    className="home-tile home-tile-box stagger-rise flex flex-col items-center justify-center gap-2 rounded-2xl border bg-white px-2 shrink-0 md:gap-2.5"
+    className={`home-tile stagger-rise flex flex-col items-center justify-center gap-2 rounded-2xl border bg-white px-2 shrink-0 md:gap-2.5 ${sizeClassName}`}
   >
     <span className="home-tile-well shrink-0">
       <ContentImage
