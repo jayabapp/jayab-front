@@ -2,15 +2,14 @@ const SwiperEm = dynamic(() => import("@elements/Carousel/Swiper.client"), {
   ssr: true,
 });
 
-import {
-  HOME_TILE_BREAKPOINTS,
-  HOME_TILE_DEFAULT_SLIDES_PER_VIEW,
-  HOME_TILE_DEFAULT_SPACE_BETWEEN,
-} from "./tile-breakpoints";
+import { HOME_TILE_DEFAULT_SLIDES_PER_VIEW } from "./tile-breakpoints";
+import { HOME_TILE_DEFAULT_SPACE_BETWEEN } from "./tile-breakpoints";
+import { HOME_TILE_BREAKPOINTS } from "./tile-breakpoints";
+
 import type { THomePropertyTypesProps } from "@/types/components/modules/home";
 
-import SwiperSlide from "@elements/Carousel/SwiperSlide";
 import PropertyTypeItem from "./parts/PropertyTypeItem";
+import SwiperSlide from "@elements/Carousel/SwiperSlide";
 import dynamic from "next/dynamic";
 
 const HomePropertyTypes = ({
@@ -22,7 +21,7 @@ const HomePropertyTypes = ({
 
   return (
     <div
-      className={`w-full noSelect select-none gap-4 md:gap-2 relative rounded-20 lg:pt-0 flex flex-col items-start`}
+      className={`home-tile-row w-full noSelect select-none gap-4 md:gap-2 relative rounded-20 lg:pt-0 flex flex-col items-start`}
     >
       <p className="padding-x hidden shrink-0 text-start text-base font-bold md:flex lg:text-xl">
         {title}
@@ -54,8 +53,8 @@ const HomePropertyTypes = ({
             className={`home-tile-slide w-full  !h-auto   p-0 md:py-2 cursor-pointer select-none md:px-2`}
           >
             <PropertyTypeItem
-              index={index}
               item={i}
+              index={index}
               key={`${i?.title}${index}`}
             />
           </SwiperSlide>

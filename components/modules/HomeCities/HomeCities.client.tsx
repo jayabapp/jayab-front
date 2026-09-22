@@ -15,7 +15,7 @@ const HomeCityFilterContainer = ({ data, title }: HomeCitiesProps) => {
   const setRowRef = useSyncedRowScroll(rows.length);
 
   return (
-    <div className="noSelect relative flex w-full select-none flex-col gap-2.5 rounded-20 md:gap-2 lg:gap-3">
+    <div className="home-tile-row noSelect relative flex w-full select-none flex-col gap-2.5 rounded-20 md:gap-2 lg:gap-3">
       <div className="padding-x hidden w-full items-center justify-between md:flex">
         <p className="shrink-0 text-start text-base font-bold lg:text-xl">
           {title}

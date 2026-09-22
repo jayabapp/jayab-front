@@ -1004,12 +1004,11 @@ button {
   padding-left: var(--slide-spacing);
 }
 
-/* The property-type / quick-search rows size their tile to a literal
-   141x141 box on desktop, not a share of the row's width — `--slide-size`
-   is a percentage, so it can never land on an exact pixel value across
-   different viewport widths and has to be overridden outright. 141px tile
-   plus the slide's own `md:px-2` (2 x 0.5rem) padding, border-box. */
-@media (min-width: 768px) {
+/* Tablet keeps the literal 141x141 tile: the rows scroll there anyway, so a
+   ragged trailing tile is the affordance that says "there is more". 141px tile
+   plus the slide's own `md:px-2` (2 x 0.5rem) padding, border-box. From `lg`
+   the desktop ladder below takes over, so this stops at 1023px. */
+@media (min-width: 768px) and (max-width: 1023.98px) {
   .home-tile-slide {
     flex: 0 0 9.8125rem !important;
   }
@@ -1297,6 +1296,69 @@ ul {
 .stagger-rise {
   animation: stagger-rise-in 0.45s cubic-bezier(0.22, 1, 0.36, 1) backwards;
   animation-delay: calc(var(--card-index, 0) * 60ms);
+}
+
+/* ------------------------- HOME TILE ROW RHYTHM --------------------------- */
+
+/* The three landing rows — property types, popular cities, quick search — have
+   to read as one grid on desktop: same tile width, same tile height, same gap,
+   and the two non-scrolling rows ending flush with the header and the property
+   grid (all four share `.padding-x`, so they already share a content box).
+   A fixed 141px tile can never do that: the content width is never an exact
+   multiple of it, so a partial tile always hangs off the end. The tile is
+   therefore a share of the row, and `--home-tile-count` is the single place
+   that share is decided.
+
+   The home page zeroes `.home-container`'s own padding (`!px-0`), so a row's
+   width is the viewport minus `.padding-x` — exactly the header's box, which
+   is why the two line up once the tile stops being a fixed size.
+
+   `--home-tile-count` is the divisor, and it is *not* a per-breakpoint guess:
+   `HomeTemplate` sets it on the section wrapping all three rows, from the
+   number of items the CMS returned, because the row is only flush when the
+   divisor is the item count. A viewport ladder would land flush at one width
+   and leave a gap or a hanging tile at every other.
+
+   It is read as `var(--home-tile-count, 8)` rather than declared here on
+   purpose: a declaration on `.home-tile-row` would win over the value the
+   section hands down, since an own declaration beats inheritance. The 8 is
+   only a floor for this markup being used outside `HomeTemplate`. */
+.home-tile-row {
+  --home-tile-gap: 0.75rem;
+}
+
+@media (min-width: 1024px) {
+  /* Embla pulls its container back by one `--slide-spacing`, so a slide basis
+     of 100%/N lands N tiles and N-1 visible gaps exactly on the row's width.
+     Shadowing the variable on the container (rather than on the section, where
+     Embla's own injected <style> would win on source order) redefines the pull
+     and the slide padding in one move, with no `!important`. */
+  .home-tile-row .embla__container {
+    --slide-spacing: var(--home-tile-gap);
+  }
+
+  /* Beats the injected `[data-embla-id] { --slide-size }` on specificity, and
+     the slide's own `md:px-2` with it. Both paddings are restated here rather
+     than left to `.embla__slide`, which measurably loses the (0,1,0) tie to
+     `md:px-2` and hands the slide an 8px trailing edge: that made every tile
+     4px narrower than a city tile and left the flush edge short by the same.
+     Raising specificity settles it in one place instead of relying on which
+     of two equally specific rules the build happens to emit last. */
+  .home-tile-row .home-tile-slide.embla__slide {
+    flex: 0 0 calc(100% / var(--home-tile-count, 8));
+    padding-left: var(--slide-spacing);
+    padding-right: 0;
+  }
+
+  /* The city row scrolls, so only its first N tiles are flush — but a
+     percentage inside a scroll container resolves against the visible width,
+     so those N match the carousels' tiles exactly. */
+  .home-tile-row .home-city-tile {
+    width: calc(
+      (100% - (var(--home-tile-count, 8) - 1) * var(--home-tile-gap)) /
+        var(--home-tile-count, 8)
+    );
+  }
 }
 
 .home-tile {

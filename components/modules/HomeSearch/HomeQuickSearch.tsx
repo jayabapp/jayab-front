@@ -1,7 +1,8 @@
-import type { HomeQuickSearchProps } from "@/types/components/modules/home";
 import { HOME_TILE_DEFAULT_SLIDES_PER_VIEW } from "./tile-breakpoints";
 import { HOME_TILE_DEFAULT_SPACE_BETWEEN } from "./tile-breakpoints";
 import { HOME_TILE_BREAKPOINTS } from "./tile-breakpoints";
+
+import type { HomeQuickSearchProps } from "@/types/components/modules/home";
 
 import QuickSearchItem from "./parts/QuickSearchItem";
 import EmptyState from "@elements/EmptyState";
@@ -24,7 +25,7 @@ const MainFiltersContainer = ({
 
   return (
     <div
-      className={` w-full noSelect   select-none   relative  rounded-20 flex gap-4 md:gap-2 flex-col items-center`}
+      className={`home-tile-row w-full noSelect   select-none   relative  rounded-20 flex gap-4 md:gap-2 flex-col items-center`}
     >
       <p className="padding-x hidden w-full shrink-0 text-start text-base font-bold md:flex lg:text-xl">
         {title}
@@ -56,8 +57,8 @@ const MainFiltersContainer = ({
               className={`home-tile-slide w-full  !h-auto   p-0 md:py-2 cursor-pointer select-none md:px-2`}
             >
               <QuickSearchItem
-                index={index}
                 item={i}
+                index={index}
                 key={`${i?.title}${index}cat`}
               />
             </SwiperSlide>

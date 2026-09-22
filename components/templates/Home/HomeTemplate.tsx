@@ -1,15 +1,18 @@
-import type { HomeTemplateProps } from "@/types/components/templates/home";
 import { HomePropertyTypes, HomeQuickSearch } from "@modules/HomeSearch";
 import { HomeHeroBanner, HomeBanners } from "@modules/HomeBanners";
 import { HomeActiveReservations } from "@modules/HomeReservations";
+import { resolveHomeTileCount } from "@modules/HomeSearch";
 import { HomeInstallPrompt } from "@modules/HomeInstallPrompt";
 import { HomeSheetSearch } from "@modules/HomeHeroSearch";
 import { HomeProperties } from "@modules/HomeProperties";
 import { BannerPosition } from "@/enum/banners.enum";
 import { HomeContent } from "@modules/HomeContent";
 import { HomeCities } from "@modules/HomeCities";
-import { HomeSeo } from "@modules/HomeSeo";
 import { Suspense } from "react";
+import { HomeSeo } from "@modules/HomeSeo";
+
+import type { HomeTemplateProps } from "@/types/components/templates/home";
+import type { CSSProperties } from "react";
 
 import pickBanner from "@/helpers/pickBanner";
 import _STRINGS from "@/utils/LocalStrings";
@@ -29,6 +32,11 @@ const HomeTemplate = ({
       Boolean(devices?.isMobile ? banner?.image_sm : banner?.image),
     ),
   );
+
+  const homeTileCount = resolveHomeTileCount(
+    propertyTypes?.length,
+    landings?.quick_search?.length,
+  );
   return (
     <div
       id="homeParent"
@@ -46,6 +54,7 @@ const HomeTemplate = ({
         <div className="home-sheet -mt-5 flex w-full flex-col gap-0 md:-mt-8">
           {devices?.isMobile ? <HomeSheetSearch /> : <></>}
           <section
+            style={{ "--home-tile-count": homeTileCount } as CSSProperties}
             className={`flex flex-col gap-5 lg:gap-6 select-none px-0 md:py-0 w-full ${
               !isEmpty(landings?.popular_city) &&
               !isEmpty(landings?.quick_search)
