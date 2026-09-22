@@ -19,7 +19,7 @@ const HomeCityRow = ({ row, syncRef }: HomeCityRowProps) => {
       {row?.map((city, index) => (
         <div
           key={`${city?.title}-${index}`}
-          className="w-[5.5rem] shrink-0 md:w-[8.8125rem]"
+          className="home-tile-box shrink-0"
         >
           <HomeCityItem item={city} />
         </div>
