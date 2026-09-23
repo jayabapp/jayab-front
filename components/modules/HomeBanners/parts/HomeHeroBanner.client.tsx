@@ -99,10 +99,7 @@ const HomeBannerPart = ({ title, devices, banners }: HomeHeroBannerProps) => {
   const isPhone = !!devices?.isMobile;
 
   const slides = useMemo(
-    () => [
-      ...(banners ?? []).filter((banner) => banner?.image).map(cmsSlide),
-      ...STATIC_HERO_SLIDES,
-    ],
+    () => (banners ?? []).filter((banner) => banner?.image).map(cmsSlide),
     [banners],
   );
   const count = slides.length;
