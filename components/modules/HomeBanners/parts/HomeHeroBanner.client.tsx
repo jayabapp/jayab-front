@@ -44,16 +44,34 @@ const onIdle = (callback: () => void) => {
 const withIndex = (set: ReadonlySet<number>, index: number) =>
   set.has(index) ? set : new Set(set).add(index);
 
-const cmsSlide = (banner: HomeBannerDto): HeroSlide => {
+const cmsSlides = (banner: HomeBannerDto): HeroSlide[] => {
+  const alt = banner?.title || "";
   const desktopSrc = getHomeImageUrl(banner?.image);
-  return {
+
+  const primary: HeroSlide = {
     key: `cms-${banner?.id}`,
-    alt: banner?.image?.alt || banner?.title || "",
+    alt: banner?.image?.alt || alt,
     desktopSrc,
     mobileSrc: banner?.image_sm ? getHomeImageUrl(banner.image_sm) : desktopSrc,
     contentId: banner?.id,
     imageClasses: banner?.imageClasses,
   };
+
+  const extraSlides: HeroSlide[] = (banner?.attachments ?? []).map(
+    (entry, index) => {
+      const src = getHomeImageUrl(entry?.attachment);
+      return {
+        key: `cms-${banner?.id}-${index}`,
+        alt: entry?.attachment?.alt || alt,
+        desktopSrc: src,
+        mobileSrc: src,
+        contentId: banner?.id,
+        imageClasses: banner?.imageClasses,
+      };
+    },
+  );
+
+  return [primary, ...extraSlides];
 };
 
 const HeroSlideImage = ({ slide, isFirst, onLoad }: HeroSlideImageProps) => {
@@ -99,7 +117,7 @@ const HomeBannerPart = ({ title, devices, banners }: HomeHeroBannerProps) => {
   const isPhone = !!devices?.isMobile;
 
   const slides = useMemo(
-    () => (banners ?? []).filter((banner) => banner?.image).map(cmsSlide),
+    () => (banners ?? []).filter((banner) => banner?.image).flatMap(cmsSlides),
     [banners],
   );
   const count = slides.length;

@@ -1,19 +1,23 @@
-import type { ContentByKeyDto, HomeLandingDto } from "@/api_services/home/home.interface";
+import type {
+  ContentByKeyDto,
+  HomeLandingDto,
+} from "@/api_services/home/home.interface";
 import type { PropertyListDto } from "@/api_services/property/property.interface";
-import type { ImageDto } from "@/api_services/auth/auth.interface";
 import type { DeviceInfo } from "@/helpers/device.detector";
+import type { ImageDto } from "@/api_services/auth/auth.interface";
 
 export type HomeBannerDto = {
-  brand_id?: number | null;
-  category?: { id?: number; parent?: { id?: number } } | null;
   id: number;
+  title?: string;
   image: ImageDto;
-  image_sm?: ImageDto | null;
-  imageClasses?: string;
   link?: string | null;
+  imageClasses?: string;
+  brand_id?: number | null;
+  image_sm?: ImageDto | null;
   product?: { slug?: string } | null;
   property?: { slug?: string } | null;
-  title?: string;
+  attachments?: { attachment: ImageDto }[] | null;
+  category?: { id?: number; parent?: { id?: number } } | null;
 };
 
 export type HomeBannerGroups = Partial<Record<string, HomeBannerDto[]>>;
@@ -24,10 +28,10 @@ export type HomeLandings = {
 };
 
 export type HomeTemplateProps = {
-  banners?: HomeBannerGroups | null;
   devices: DeviceInfo;
-  homeContent?: ContentByKeyDto | null;
-  landings?: HomeLandings | null;
   properties: PropertyListDto[];
+  landings?: HomeLandings | null;
   propertyTypes: HomeLandingDto[];
+  banners?: HomeBannerGroups | null;
+  homeContent?: ContentByKeyDto | null;
 };
