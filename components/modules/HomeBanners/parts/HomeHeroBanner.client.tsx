@@ -5,20 +5,15 @@ import type {
   HeroSlideImageProps,
   HomeHeroBannerProps,
 } from "@/types/components/modules/home";
-import {
-  useEffect,
-  useMemo,
-  useRef,
-  useState,
-  useSyncExternalStore,
-} from "react";
+import { useState, useSyncExternalStore } from "react";
+import { useEffect, useMemo, useRef } from "react";
 import { getHomeImageUrl } from "@features/home/mappers/home-image.mapper";
-import type { HomeBannerDto } from "@/types/components/templates/home";
-import type { CSSProperties, FocusEvent, PointerEvent } from "react";
 import { HomeHeroSearch } from "@modules/HomeHeroSearch";
-import { STATIC_HERO_SLIDES } from "./heroSlides";
-import { ContentImage } from "@elements/Image";
 import { getImageProps } from "next/image";
+import { ContentImage } from "@elements/Image";
+
+import type { CSSProperties, FocusEvent, PointerEvent } from "react";
+import type { HomeBannerDto } from "@/types/components/templates/home";
 
 import _STRINGS from "@/utils/LocalStrings";
 import Editable from "@elements/Editable";
