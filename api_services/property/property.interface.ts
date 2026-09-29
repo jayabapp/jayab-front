@@ -273,6 +273,7 @@ export interface SinglePropDto {
   city: string;
   advisor_commission: number;
   today_price: TodayPrice;
+  minimum_price: number | null;
   status: Status;
   daily_price: DailyPrice;
   latitude: number;
@@ -403,6 +404,7 @@ export interface PropertyListDto {
   city: string;
   advisor_commission: number;
   today_price: TodayPrice;
+  minimum_price: number | null;
   is_today_reserved: boolean;
   is_authorized: boolean;
   has_blue_tick: boolean;

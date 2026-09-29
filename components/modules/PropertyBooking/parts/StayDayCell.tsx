@@ -20,6 +20,7 @@ const StayDayCell = ({
   dateKey,
   onSelect,
   disabled,
+  isFriday,
   isLoading,
   onKeyDown,
   discounted,
@@ -27,6 +28,8 @@ const StayDayCell = ({
 }: StayDayCellProps) => {
   const isEdge = state === "start" || state === "end";
   const blocked = disabled && !isEdge;
+  // Precedence (FEATURE.md §4.6): selected > reserved/disabled > Friday > normal.
+  const isPlainFriday = isFriday && !isEdge && !blocked;
   const skin = isEdge
     ? STATE_CLASS[state]
     : isReserved && blocked
@@ -62,7 +65,11 @@ const StayDayCell = ({
             className="striped absolute inset-0 rounded-10 opacity-20"
           />
         ) : null}
-        <span className={isEdge ? "font-bold" : ""}>{day}</span>
+        <span
+          className={`${isEdge ? "font-bold" : ""} ${isPlainFriday ? "text-danger-500" : ""}`}
+        >
+          {day}
+        </span>
         {isLoading ? (
           <span
             aria-hidden="true"
@@ -75,7 +82,9 @@ const StayDayCell = ({
                 ? "text-brand-100"
                 : discounted
                   ? "text-success-600"
-                  : "text-neutral-600"
+                  : isPlainFriday
+                    ? "text-danger-500"
+                    : "text-neutral-600"
             }`}
           >
             {price}

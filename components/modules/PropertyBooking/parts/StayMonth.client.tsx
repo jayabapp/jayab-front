@@ -10,7 +10,8 @@ import { isDayDisabled } from "@features/reservations/lib/stay-range";
 import { type KeyboardEvent } from "react";
 import type { StayMonthProps } from "@/types/components/modules/property-booking";
 
-import formatCompactToman from "@/helpers/formatCompactToman";
+import formatCalendarCellPrice from "@/helpers/formatCalendarCellPrice";
+import formatToman from "@/helpers/formatToman";
 import StayDayCell from "./StayDayCell";
 import _STRINGS from "@/utils/LocalStrings";
 import moment from "moment-jalaali";
@@ -58,13 +59,12 @@ const StayMonth = ({
   const daysInMonth = moment.jDaysInMonth(year, month - 1);
   const weekdayOfFirst = (first.day() + 1) % 7;
 
-  const isCurrentMonth =
-    moment(today).jYear() === year && moment(today).jMonth() + 1 === month;
-  const todayWeek = isCurrentMonth
-    ? Math.floor((weekdayOfFirst + moment(today).jDate() - 1) / 7)
-    : 0;
-  const firstDay = todayWeek > 0 ? todayWeek * 7 - weekdayOfFirst + 1 : 1;
-  const lead = todayWeek > 0 ? 0 : weekdayOfFirst;
+  // Always render every day of the month, 1 through the last — a full grid
+  // reads as a complete calendar even when most of it is disabled. Past days
+  // stay in the grid but greyed out via `isDayDisabled`; they are never
+  // dropped from the layout.
+  const firstDay = 1;
+  const lead = weekdayOfFirst;
 
   const byDay = useMemo(
     () => new Map((calendar ?? []).map((entry) => [entry.day, entry])),
@@ -139,14 +139,13 @@ const StayMonth = ({
             (reserved.has(toDayKey(date)) || !!entry?.is_reserved);
           const price = entry?.discounted_price || entry?.price;
           const isDisabled = isDayDisabled(date, range, reserved, today);
+          const isFriday = moment(date).day() === 5;
           const availability = isReserved
             ? _STRINGS.DAY_RESERVED
             : isDisabled
               ? _STRINGS.DAY_UNAVAILABLE
               : _STRINGS.DAY_AVAILABLE;
-          const priceLabel = price
-            ? `، ${formatCompactToman(price)} تومان`
-            : "";
+          const priceLabel = price ? `، ${formatToman(price)}` : "";
 
           return (
             <StayDayCell
@@ -155,7 +154,7 @@ const StayMonth = ({
               state={state}
               isReserved={isReserved}
               isPeak={!!entry?.is_peak}
-              price={formatCompactToman(price)}
+              price={formatCalendarCellPrice(price)}
               onSelect={() => onSelectDay(date)}
               onKeyDown={(event) => onDayKeyDown(event, date)}
               dateKey={toDayKey(date)}
@@ -163,6 +162,7 @@ const StayMonth = ({
               label={`${formatJalaliWeekdayDay(date)}${priceLabel}، ${availability}`}
               discounted={!!entry?.discounted_price}
               disabled={isDisabled}
+              isFriday={isFriday}
               tooltip={
                 state === "end" && stayNights
                   ? `${stayNights} ${_STRINGS.NIGHTS_OF_STAY}`

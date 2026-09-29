@@ -69,7 +69,7 @@ const BookingPanel = ({
             {_STRINGS.STAY_STARTS_FROM}
           </p>
           <div className="flex flex-wrap items-end gap-1.5">
-            <PropertyPriceTag price={property.todayPrice} />
+            <PropertyPriceTag price={{ price: property.minimumPrice ?? undefined }} />
             <span className="pb-0.5 text-xs text-neutral-600">
               / {_STRINGS.NIGHT}
             </span>
