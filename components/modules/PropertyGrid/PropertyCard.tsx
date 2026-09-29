@@ -67,7 +67,10 @@ const PropertyCard = ({
                 />
               </div>
 
-              <div className="w-full flex flex-row items-end justify-between gap-2">
+              {/* Fixed min-height reserved whether or not a discount row is
+                  present, so adding/removing a discount never changes the
+                  card's overall height (SL-29). */}
+              <div className="w-full min-h-10 flex flex-row items-end justify-between gap-2">
                 <p className="text-xs 2xl:text-xs shrink-0">
                   {_STRINGS.TODAYS_PRICE}
                 </p>
@@ -95,17 +98,19 @@ const PropertyCard = ({
             // discount's extra line has room — then place, then the plain
             // capacity line at the very bottom.
             <>
+              {/* Public card: no property code, only the public-facing
+                  like counter (SL-29 — code stays owner-card-only). */}
               <div className="flex items-center gap-2">
-                <div className="bg-neutral-200 font-normal rounded-full text-xs text-black px-2 h-5 leading-4 flex items-center justify-center">
-                  {_STRINGS.CODE} {data.code}
-                </div>
                 <PropertyCardLikes
                   propertyId={data?.id}
                   favoriteCount={data?.favorite_count}
                 />
               </div>
 
-              <div className="flex flex-col gap-0.5">
+              {/* Fixed min-height reserved whether or not a discount row is
+                  present, so adding/removing a discount never changes the
+                  card's overall height (SL-29). */}
+              <div className="flex min-h-10 flex-col gap-0.5">
                 <p className="text-xs text-neutral-500">
                   {_STRINGS.TODAYS_PRICE}
                 </p>
@@ -134,7 +139,7 @@ const PropertyCard = ({
                 </p>
               </div>
 
-              <p className="text-xs text-neutral-500">
+              <p className="line-clamp-1 text-xs text-neutral-500">
                 {data?.total_bedrooms ? `${data.total_bedrooms} ${_STRINGS.ROOM}، ` : ""}
                 {_STRINGS.UP_TO} {data?.max_capacity} {_STRINGS.PERSON}
               </p>
@@ -147,10 +152,10 @@ const PropertyCard = ({
           href={goToLink}
           className="order-2 flex w-full items-start justify-start !outline-none"
         >
-          {/* No fixed aspect ratio here on purpose: the grid row's height is
-              set by the text column's natural content, and this fills that
-              same height (h-full) so both sides always line up. */}
-          <div className="w-full h-full relative">
+          {/* Fixed aspect ratio reserved for the image regardless of the
+              text column's content (e.g. a discount row) — the image never
+              resizes because of sibling content (SL-29). */}
+          <div className="relative w-full aspect-square">
             <ContentImage
               fill
               loading="lazy"

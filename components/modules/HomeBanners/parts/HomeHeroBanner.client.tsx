@@ -212,6 +212,7 @@ const HomeBannerPart = ({ title, devices, banners }: HomeHeroBannerProps) => {
   };
 
   const editable = slides.find((slide) => slide.contentId !== undefined);
+  const hasSlides = count > 0;
 
   return (
     <div
@@ -233,11 +234,19 @@ const HomeBannerPart = ({ title, devices, banners }: HomeHeroBannerProps) => {
       onBlur={onBlur}
     >
       <div
-        className={`absolute inset-x-0 bottom-0 z-10 flex flex-col items-center justify-end gap-4 px-4 md:gap-6 ${
-          // On phones the search pill rides the sheet's lip instead, so the
-          // caption only needs clearance for that lip — see HomeTemplate.
-          isPhone ? "pb-14" : "pb-12 md:pb-14"
-        }`}
+        className={
+          // With no CMS image behind it, the caption/search block is no
+          // longer pinned over a photo — it just flows normally so the hero
+          // shrinks to a search/content-only strip instead of leaving a
+          // tall empty box under it (see the `hasSlides` branch below).
+          hasSlides
+            ? `absolute inset-x-0 bottom-0 z-10 flex flex-col items-center justify-end gap-4 px-4 md:gap-6 ${
+                // On phones the search pill rides the sheet's lip instead, so
+                // the caption only needs clearance for that lip — see HomeTemplate.
+                isPhone ? "pb-14" : "pb-12 md:pb-14"
+              }`
+            : "relative z-10 flex w-full flex-col items-center justify-center gap-4 px-4 py-8 md:gap-6"
+        }
       >
         <div className="home-hero-content flex max-w-2xl flex-col items-center gap-2 text-center md:gap-3">
           <ContentImage
@@ -245,10 +254,14 @@ const HomeBannerPart = ({ title, devices, banners }: HomeHeroBannerProps) => {
             height={166}
             alt={_STRINGS.HOME_TITLE}
             sizes="(max-width: 1024px) 96px, 160px"
-            className="h-auto !w-24 drop-shadow-md lg:!w-40"
+            className={`h-auto !w-24 lg:!w-40 ${hasSlides ? "drop-shadow-md" : ""}`}
             src="/assets/images/home/home_banner_logo.webp"
           />
-          <h2 className="text-balance text-sm font-bold leading-snug text-white drop-shadow-md md:text-xl">
+          <h2
+            className={`text-balance text-sm font-bold leading-snug md:text-xl ${
+              hasSlides ? "text-white drop-shadow-md" : "text-neutral-900"
+            }`}
+          >
             {title || _STRINGS.HOME_TITLE}
           </h2>
         </div>
@@ -261,46 +274,52 @@ const HomeBannerPart = ({ title, devices, banners }: HomeHeroBannerProps) => {
           </div>
         )}
       </div>
-      <div className="hero-backdrop pointer-events-none absolute inset-0 z-5 bg-gradient-to-t from-black/55 via-black/10 to-transparent" />
-      {count > 1 ? (
-        <span
-          key={index}
-          aria-hidden="true"
-          onAnimationEnd={onProgressEnd}
-          className="hero-clock pointer-events-none absolute size-px opacity-0"
-        />
+
+      {hasSlides ? (
+        <>
+          {count > 1 ? (
+            <span
+              key={index}
+              aria-hidden="true"
+              onAnimationEnd={onProgressEnd}
+              className="hero-clock pointer-events-none absolute size-px opacity-0"
+            />
+          ) : (
+            <></>
+          )}
+
+          <Editable
+            isBanner
+            onPointerUp={onPointerUp}
+            onPointerDown={onPointerDown}
+            contentId={editable?.contentId}
+            editIconClass="!top-auto !bottom-0"
+            onPointerCancel={() => (swipeStart.current = null)}
+            className="hero-backdrop relative aspect-[3/2] w-full touch-pan-y overflow-hidden px-0 focus:outline-none sm:aspect-[2/1] lg:aspect-[3.029] lg:min-h-[23rem]"
+          >
+            {slides.map((slide, slideIndex) => (
+              <div
+                key={slide.key}
+                data-active={slideIndex === index}
+                aria-hidden={slideIndex !== index}
+                className="hero-slide absolute inset-0"
+              >
+                {mounted.has(slideIndex) ? (
+                  <HeroSlideImage
+                    slide={slide}
+                    isFirst={slideIndex === 0}
+                    onLoad={() => markLoaded(slideIndex)}
+                  />
+                ) : (
+                  <></>
+                )}
+              </div>
+            ))}
+          </Editable>
+        </>
       ) : (
         <></>
       )}
-
-      <Editable
-        isBanner
-        onPointerUp={onPointerUp}
-        onPointerDown={onPointerDown}
-        contentId={editable?.contentId}
-        editIconClass="!top-auto !bottom-0"
-        onPointerCancel={() => (swipeStart.current = null)}
-        className="hero-backdrop relative aspect-[3/2] w-full touch-pan-y overflow-hidden px-0 focus:outline-none sm:aspect-[2/1] lg:aspect-[3.029] lg:min-h-[23rem]"
-      >
-        {slides.map((slide, slideIndex) => (
-          <div
-            key={slide.key}
-            data-active={slideIndex === index}
-            aria-hidden={slideIndex !== index}
-            className="hero-slide absolute inset-0"
-          >
-            {mounted.has(slideIndex) ? (
-              <HeroSlideImage
-                slide={slide}
-                isFirst={slideIndex === 0}
-                onLoad={() => markLoaded(slideIndex)}
-              />
-            ) : (
-              <></>
-            )}
-          </div>
-        ))}
-      </Editable>
     </div>
   );
 };
