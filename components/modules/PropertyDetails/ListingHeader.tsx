@@ -4,6 +4,7 @@ import { Icon } from "@elements/Icon";
 
 import SingleProductBreadCrumb from "@elements/Breadcrumbs/SingleProductBreadcrumb.client";
 import ListingActions from "./parts/ListingActions.client";
+import TrustBadges from "./parts/TrustBadges";
 import _STRINGS from "@/utils/LocalStrings";
 
 const ListingHeader = ({ breadcrumbs, property }: ListingHeaderProps) => {
@@ -36,27 +37,10 @@ const ListingHeader = ({ breadcrumbs, property }: ListingHeaderProps) => {
             </h1>
           </div>
 
-          <div className="flex flex-wrap items-center gap-2 text-sm text-neutral-500">
-            <span className="flex items-center gap-1">
-              <Icon name="map-pin" size={16} />
-              {place}
-            </span>
-            {property?.isAuthorized ? (
-              <span className="flex items-center gap-1 rounded-full bg-success-50 px-2 py-0.5 text-xs font-semibold text-success-600">
-                <Icon name="shield" size={16} />
-                {_STRINGS.VERIFIED}
-              </span>
-            ) : (
-              <></>
-            )}
-            {property?.isPromoted ? (
-              <span className="rounded-full bg-brand-50 px-2 py-0.5 text-xs font-semibold text-brand-700">
-                {_STRINGS.LADDERED}
-              </span>
-            ) : (
-              <></>
-            )}
-          </div>
+          <span className="flex items-center gap-1 text-sm text-neutral-500">
+            <Icon name="map-pin" size={16} />
+            {place}
+          </span>
         </div>
 
         <div className="shrink-0 overflow-x-auto">
@@ -68,6 +52,8 @@ const ListingHeader = ({ breadcrumbs, property }: ListingHeaderProps) => {
           />
         </div>
       </div>
+
+      <TrustBadges property={property} />
     </header>
   );
 };

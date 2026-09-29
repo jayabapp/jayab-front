@@ -43,6 +43,8 @@ export type PropertyDetailsView = {
   isAuthorized: boolean;
   isChatEnabled: boolean;
   isPromoted: boolean;
+  isPetAllowed: boolean;
+  isEventsAllowed: boolean;
   maxCapacity: number;
   ownerAvatar?: ImageDto | null;
   ownerName: string;
@@ -55,5 +57,6 @@ export type PropertyDetailsView = {
   stdCapacity: number;
   title: string;
   todayPrice: PropertyPriceView;
+  minimumPrice: number | null;
   totalBedrooms: number;
 };

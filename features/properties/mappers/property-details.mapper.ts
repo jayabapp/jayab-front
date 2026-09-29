@@ -1,6 +1,12 @@
 import type { PropertyDetailsView } from "@/types/features/properties";
 import type { SinglePropDto } from "@/api_services/property/property.interface";
 
+// Options like `pet`/`party` are free-text from the host ("مجاز است" vs
+// "مجاز نیست"), not booleans, so a truthy value that doesn't say "نیست" (not
+// allowed) counts as allowed. Mirrors the same check in HouseRules.tsx.
+const isRuleAllowed = (value?: string | number | null) =>
+  Boolean(value) && !`${value}`.includes("نیست");
+
 export const toPropertyDetailsView = (
   property: SinglePropDto,
 ): PropertyDetailsView => ({
@@ -19,6 +25,8 @@ export const toPropertyDetailsView = (
   isAuthorized: !!property?.is_authorized,
   isChatEnabled: !!property?.is_chat_enabled,
   isPromoted: !!property?.is_promoted,
+  isPetAllowed: isRuleAllowed(property?.options?.pet),
+  isEventsAllowed: isRuleAllowed(property?.options?.party),
   maxCapacity: property?.max_capacity,
   ownerAvatar: property?.owner_info?.avatar ?? null,
   ownerName: property?.owner_info?.full_name ?? "",
@@ -35,5 +43,6 @@ export const toPropertyDetailsView = (
     discountedPrice: property?.today_price?.discounted_price,
     price: property?.today_price?.price,
   },
+  minimumPrice: property?.minimum_price ?? null,
   totalBedrooms: property?.total_bedrooms,
 });

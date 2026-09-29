@@ -57,6 +57,16 @@ export type ListingHeaderProps = {
   property: PropertyDetailsView;
 };
 
+export type TrustBadgesProps = {
+  property: PropertyDetailsView;
+};
+
+export type TrustBadge = {
+  icon: IconName;
+  label: string;
+  colorClass: string;
+};
+
 export type ListingActionsProps = {
   code: string;
   slug: string;

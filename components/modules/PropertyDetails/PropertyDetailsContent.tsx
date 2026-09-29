@@ -19,7 +19,6 @@ import ListingHeader from "./ListingHeader";
 import Surroundings from "./parts/Surroundings";
 import SectionTabs from "./parts/SectionTabs.client";
 import ExtraCosts from "./parts/ExtraCosts";
-import Highlights from "./parts/Highlights";
 import HouseRules from "./parts/HouseRules";
 import Amenities from "./parts/Amenities.client";
 import _STRINGS from "@/utils/LocalStrings";
@@ -55,22 +54,44 @@ const PropertyDetailsContent = ({ property }: PropertyDetailsContentProps) => {
 
   return (
     <ContactFlow property={view}>
-      <ListingHeader breadcrumbs={breadCrumbs} property={view} />
+      {/*
+        SL-18: mobile keeps photo -> section-nav tabs -> title/location/specs
+        -> "ویلا به میزبانی" above the fold; desktop keeps the original
+        header-first order. `md:contents` drops the wrapper box on desktop so
+        DOM order (header, gallery, tabs) is what renders there, while the
+        `order-*` utilities only take effect while the wrapper is `flex` (mobile).
+      */}
+      <div className="flex flex-col md:contents">
+        <div className="order-1">
+          <PropertyGallery
+            title={view.title}
+            images={view.images}
+            hostName={view.ownerName}
+            advisorCommission={view.advisorCommission}
+          />
+        </div>
 
-      <PropertyGallery
-        title={view.title}
-        images={view.images}
-        hostName={view.ownerName}
-        advisorCommission={view.advisorCommission}
-      />
+        <div className="order-2">
+          <SectionTabs tabs={tabs} />
+        </div>
 
-      <SectionTabs tabs={tabs} />
+        <div className="order-3">
+          <ListingHeader breadcrumbs={breadCrumbs} property={view} />
+        </div>
+
+        {view.ownerName ? (
+          <p className="order-4 pb-4 text-sm text-neutral-600 md:hidden">
+            {_STRINGS.VILLA_HOSTED_BY} {view.ownerName}
+          </p>
+        ) : (
+          <></>
+        )}
+      </div>
 
       <div className="grid grid-cols-1 gap-x-8 md:grid-cols-12">
         <div className="flex w-full flex-col md:col-span-7 lg:col-span-8">
           <ListingSection id="specs" title={_STRINGS.TAB_SPECS}>
             <KeyFacts property={property} />
-            <Highlights property={property} />
             <PropertyDescription property={property} />
 
             <div className="flex flex-col gap-4">

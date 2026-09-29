@@ -1,6 +1,7 @@
 import type { PropertyDescriptionProps } from "@/types/components/modules/property-details";
 
 import _STRINGS from "@/utils/LocalStrings";
+import ClampText from "./ClampText.client";
 
 const PropertyDescription = ({ property }: PropertyDescriptionProps) => {
   const text =
@@ -14,9 +15,7 @@ const PropertyDescription = ({ property }: PropertyDescriptionProps) => {
       <h3 className="text-sm font-bold text-neutral-900 md:text-base">
         {_STRINGS.PROP_DESC}
       </h3>
-      <p className="whitespace-pre-wrap text-sm leading-7 text-neutral-800 md:leading-8">
-        {text}
-      </p>
+      <ClampText lines={2}>{text}</ClampText>
     </section>
   );
 };
