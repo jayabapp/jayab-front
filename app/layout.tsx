@@ -1,7 +1,7 @@
 import { mobileNavHiddenBlackList } from "@/utils/constantss";
 import { mobileFooterBlackList } from "@/utils/constantss";
 import { footerHiddenBlackList } from "@/utils/constantss";
-import { AppOverlays, AppShell } from "@modules/AppShell";
+import { AppOverlays, AppShell, ImpersonationBanner } from "@modules/AppShell";
 import { getServerContentList } from "@features/home/server/home.server";
 import { isNoIndexDeployment } from "@/helpers/indexingPolicy";
 import { Metadata, Viewport } from "next";
@@ -117,6 +117,7 @@ const RootLayout = async ({
   return (
     <html lang="fa" dir="rtl">
       <body className={x_Iransans.className} suppressHydrationWarning>
+        <ImpersonationBanner />
         <NavigationProgress />
         <SplashScreen />
         <LayoutProvider>
