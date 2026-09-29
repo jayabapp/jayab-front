@@ -8,6 +8,7 @@ import PropertyCardOwnerActions from "./parts/PropertyCardOwnerActions";
 import PropertyCardFeatures from "./parts/PropertyCardFeatures";
 import PropertyCardLikes from "./parts/PropertyCardLikes.client";
 import PropertyCardLink from "./parts/PropertyCardLink.client";
+import queryBuilder from "@/helpers/queryBuilder";
 import PropertyPrice from "./PropertyPrice";
 import StatusShower from "@elements/StatusShower";
 import _STRINGS from "@/utils/LocalStrings";
@@ -15,11 +16,22 @@ import _STRINGS from "@/utils/LocalStrings";
 const PropertyCard = ({
   data,
   isOwner,
+  searchParams,
   onPhotoUpgradeClick,
 }: PropertyCardProps) => {
+  // FL-02: carry the active checkin/checkout/total_guests forward so the
+  // single-listing page hydrates from the URL instead of asking again.
+  const staySearch = isOwner
+    ? ""
+    : queryBuilder({
+        checkin: searchParams?.checkin || undefined,
+        checkout: searchParams?.checkout || undefined,
+        total_guests: searchParams?.total_guests || undefined,
+      });
+
   const goToLink = isOwner
     ? `/profile/owner/properties/${data?.id}`
-    : `/rooms/${data?.slug}`;
+    : `/rooms/${data?.slug}${staySearch ? `?${staySearch}` : ""}`;
 
   return (
     <div className="surface-card property-card-shadow flex w-full flex-col justify-between gap-2 p-3">

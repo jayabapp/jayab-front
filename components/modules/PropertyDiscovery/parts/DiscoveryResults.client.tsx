@@ -110,6 +110,11 @@ const DiscoveryResults = ({
             devices={devices}
             data={properties}
             banners={visibleBanners}
+            searchParams={{
+              checkin: query?.checkin,
+              checkout: query?.checkout,
+              total_guests: query?.total_guests,
+            }}
           />
         </div>
         {!hasPaginate && hasNextPage ? (

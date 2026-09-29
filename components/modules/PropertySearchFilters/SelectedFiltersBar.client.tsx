@@ -6,22 +6,28 @@ import { FILTER_ORDER_PARAM } from "@features/properties/lib/filter-order";
 import { parseFilterOrder } from "@features/properties/lib/filter-order";
 import { filterOrderRank } from "@features/properties/lib/filter-order";
 import { parseIdList } from "@features/cities/lib/city-selection";
+import { zero_filter_remove_keys } from "@/utils/constantss";
 import { sortDynamicFiltersInOrder } from "@/utils/constantss";
 import { RegionButton } from "@modules/CitySelector";
 import { ContentImage } from "@elements/Image";
 import type { ReactNode } from "react";
-import { useCallback } from "react";
+import { useCallback, useState } from "react";
 
+import SearchDateRangePicker from "./parts/DateRangePicker/SearchDateRangePicker.client";
 import SelectiveFilterChip from "./parts/SelectiveFilterChip.client";
+import updateDateRange from "./parts/DateRangePicker/updateDateRange";
 import RemovableFilterChip from "./parts/RemovableFilterChip";
 import numberWithCommas from "@/helpers/numberWithCommas";
+import FilterCounter from "./parts/FilterCounter.client";
 import SwiperSlide from "@elements/Carousel/SwiperSlide";
 import Swiper from "@elements/Carousel/Swiper.client";
 import _STRINGS from "@/utils/LocalStrings";
 import isEmpty from "lodash/isEmpty";
 import moment from "moment-jalaali";
+import Modal from "@elements/Modal";
 
 const JALALI_DATE_FORMAT = "jDD/jMMMM/jYYYY";
+const JALALI_INPUT_DATE_FORMAT = "jYYYY/jMM/jD";
 
 const rangeLabel = (
   title: string,
@@ -53,6 +59,12 @@ const SelectedFiltersBar = ({
   const regionsIds = parseIdList(query?.regions);
   const filterOrder = parseFilterOrder(query?.[FILTER_ORDER_PARAM]);
 
+  // FL-01: the date and guest chips open the same pickers used inside the
+  // filter panel, but scoped to this bar so a click works regardless of
+  // whether the panel/sheet happens to be mounted.
+  const [dateEditorOpen, setDateEditorOpen] = useState(false);
+  const [guestEditorOpen, setGuestEditorOpen] = useState(false);
+
   const removeFiltersKeys = useCallback(
     (keys: string[]) => {
       const body: Record<string, unknown> = { ...query };
@@ -68,6 +80,29 @@ const SelectedFiltersBar = ({
     else delete body[key];
     replaceQuery(body);
   };
+
+  // Shared by the date and guest editors below: both edit the applied query
+  // directly (there is no draft/apply step in this bar, unlike the filter
+  // panel), and both may be called either with a next value or, like React's
+  // own state setter, with an updater reading the current one. A guest count
+  // dragged down to zero is dropped rather than persisted as `total_guests=0`,
+  // matching how `total_guests` is cleaned up when the filter panel applies.
+  const setQueryFilters = useCallback(
+    (
+      next:
+        | Record<string, unknown>
+        | ((current: Record<string, unknown>) => Record<string, unknown>),
+    ) => {
+      const body: Record<string, unknown> = {
+        ...(typeof next === "function" ? next(query ?? {}) : next),
+      };
+      for (const key of zero_filter_remove_keys) {
+        if (body?.[key] === 0 || body?.[key] === "0") delete body[key];
+      }
+      replaceQuery(body);
+    },
+    [query, replaceQuery],
+  );
 
   const dynamicKeys = Object.keys(propertyTypes)
     .filter((key) => !["PARTY", "PET"].includes(key))
@@ -136,6 +171,7 @@ const SelectedFiltersBar = ({
         <SwiperSlide key="selected-guests" className="!w-auto">
           <RemovableFilterChip
             onRemove={() => removeFiltersKeys(["total_guests"])}
+            onLabelClick={() => setGuestEditorOpen(true)}
             label={`${_STRINGS.PPL_COUNT} : ${query?.total_guests}`}
           />
         </SwiperSlide>
@@ -149,6 +185,7 @@ const SelectedFiltersBar = ({
         <SwiperSlide key="selected-date" className="!w-auto">
           <RemovableFilterChip
             onRemove={() => removeFiltersKeys(["checkout", "checkin"])}
+            onLabelClick={() => setDateEditorOpen(true)}
             label={`${_STRINGS.FROM} ${moment(query?.checkin).format(JALALI_DATE_FORMAT)} ${_STRINGS.TO} ${moment(query?.checkout).format(JALALI_DATE_FORMAT)}`}
           />
         </SwiperSlide>
@@ -317,26 +354,74 @@ const SelectedFiltersBar = ({
     );
 
   return (
-    <Swiper autoFit parentClass={containerClass}>
-      <SwiperSlide className="z-5 flex lg:hidden !w-auto">
-        <button
-          type="button"
-          onClick={() => setFilterModalShow(true)}
-          className="col-span-3 flex w-fit px-3 h-[1.625rem] rounded-full bg-brand-600 items-center gap-2"
-        >
-          <ContentImage
-            alt=""
-            width={12}
-            height={12}
-            className="cursor-pointer w-3 h-3 shrink-0"
-            src="/assets/icons/property/white_filter_icon.svg"
-          />
-          <span className="text-white text-xs">{_STRINGS.OTHER_FILTERS}</span>
-        </button>
-      </SwiperSlide>
+    <>
+      <Swiper autoFit parentClass={containerClass}>
+        <SwiperSlide className="z-5 flex lg:hidden !w-auto">
+          <button
+            type="button"
+            onClick={() => setFilterModalShow(true)}
+            className="col-span-3 flex w-fit px-3 h-[1.625rem] rounded-full bg-brand-600 items-center gap-2"
+          >
+            <ContentImage
+              alt=""
+              width={12}
+              height={12}
+              className="cursor-pointer w-3 h-3 shrink-0"
+              src="/assets/icons/property/white_filter_icon.svg"
+            />
+            <span className="text-white text-xs">{_STRINGS.OTHER_FILTERS}</span>
+          </button>
+        </SwiperSlide>
 
-      {orderedChips.map((chip) => chip.node)}
-    </Swiper>
+        {orderedChips.map((chip) => chip.node)}
+      </Swiper>
+
+      {/* FL-01: reopen the same date picker used inside the filter panel,
+          bound directly to the applied query so a change here is visible
+          immediately, the same way removing the chip is. */}
+      <Modal show={dateEditorOpen} onHide={() => setDateEditorOpen(false)}>
+        <SearchDateRangePicker
+          setSelectedDay={(day) =>
+            updateDateRange({
+              date: day,
+              cb: () => setDateEditorOpen(false),
+              state: query,
+              setState: setQueryFilters,
+            })
+          }
+          selectedDates={{
+            endDate: query?.checkout
+              ? moment(query.checkout).format(JALALI_INPUT_DATE_FORMAT)
+              : null,
+            startDate: query?.checkin
+              ? moment(query.checkin).format(JALALI_INPUT_DATE_FORMAT)
+              : null,
+          }}
+        />
+      </Modal>
+
+      {/* FL-01: reopen the guest-count control, editing the applied query
+          directly instead of a draft, since this bar has no separate apply
+          step. */}
+      <Modal show={guestEditorOpen} onHide={() => setGuestEditorOpen(false)}>
+        <div className="flex w-full flex-col gap-3 p-4">
+          <FilterCounter
+            query={query}
+            queryKey="total_guests"
+            title={_STRINGS.PPL_COUNT}
+            mobileFilters={query}
+            setMobileFilters={setQueryFilters}
+          />
+          <button
+            type="button"
+            onClick={() => setGuestEditorOpen(false)}
+            className="filter-chip filter-chip-active w-full items-center justify-center"
+          >
+            {_STRINGS.CONFIRM_GUESTS}
+          </button>
+        </div>
+      </Modal>
+    </>
   );
 };
 

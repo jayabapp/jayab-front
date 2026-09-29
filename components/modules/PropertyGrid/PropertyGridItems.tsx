@@ -6,7 +6,12 @@ import PropertyCard from "./PropertyCard";
 const MOBILE_BANNER_ROW_STEP = 7;
 const DESKTOP_BANNER_ROW_STEP = 3;
 
-const PropertyGridItems = ({ data, devices, banners }: PropertyGridItemsProps) => {
+const PropertyGridItems = ({
+  data,
+  devices,
+  banners,
+  searchParams,
+}: PropertyGridItemsProps) => {
   const rowStep = devices?.isMobile
     ? MOBILE_BANNER_ROW_STEP
     : DESKTOP_BANNER_ROW_STEP;
@@ -23,7 +28,11 @@ const PropertyGridItems = ({ data, devices, banners }: PropertyGridItemsProps) =
         </div>
       ))}
       {data?.map((property) => (
-        <PropertyCard data={property} key={`property-${property?.id}`} />
+        <PropertyCard
+          data={property}
+          searchParams={searchParams}
+          key={`property-${property?.id}`}
+        />
       ))}
     </>
   );

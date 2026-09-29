@@ -7,10 +7,16 @@ const PropertyGrid = ({
   data,
   banners,
   devices,
+  searchParams,
   className = DEFAULT_GRID_CLASS,
 }: PropertyGridProps) => (
   <div className={className}>
-    <PropertyGridItems banners={banners} data={data} devices={devices} />
+    <PropertyGridItems
+      banners={banners}
+      data={data}
+      devices={devices}
+      searchParams={searchParams}
+    />
   </div>
 );
 

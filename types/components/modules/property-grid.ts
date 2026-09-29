@@ -7,9 +7,19 @@ import type { ReactNode } from "react";
 
 export type WeekDayEntry = { id: number; title: string } | undefined;
 
+/** The active search's stay params, forwarded from the card link to the
+ * single-listing page (FL-02) so it never asks the visitor to pick dates and
+ * guests again. */
+export type PropertyCardSearchParams = {
+  checkin?: string;
+  checkout?: string;
+  total_guests?: string;
+};
+
 export type PropertyCardProps = {
   data: PropertyListDto;
   isOwner?: boolean;
+  searchParams?: PropertyCardSearchParams;
   onPhotoUpgradeClick?: (property: PropertyListDto) => void;
 };
 
@@ -17,6 +27,7 @@ export type PropertyGridItemsProps = {
   banners?: HomeBannerDto[];
   data: PropertyListDto[];
   devices?: DeviceInfo;
+  searchParams?: PropertyCardSearchParams;
 };
 
 export type PropertyGridProps = PropertyGridItemsProps & {

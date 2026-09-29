@@ -41,10 +41,10 @@ const RegionButton = ({
             ? _STRINGS.SELECT_LOCAL
             : singleTitle
               ? `${_STRINGS.LOCAL}: ${singleTitle}`
-              : _STRINGS.LOCAL}
+              : null}
         </span>
         {hasRegions && !singleTitle ? (
-          <span className="shrink-0">{`(${regionsIds?.length} ${_STRINGS.ITEM})`}</span>
+          <span className="shrink-0">{`${regionsIds?.length} ${_STRINGS.LOCAL}`}</span>
         ) : null}
       </button>
 

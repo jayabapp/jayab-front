@@ -45,6 +45,9 @@ export type PropertyModelFilterProps = {
 export type RemovableFilterChipProps = {
   label: string;
   onRemove: () => void;
+  /** Opens the relevant editor for this filter. Omitted for chips that have
+   * no dedicated editor to reopen (e.g. price range, commission). */
+  onLabelClick?: () => void;
 };
 
 export type PoolFilterChipProps = {

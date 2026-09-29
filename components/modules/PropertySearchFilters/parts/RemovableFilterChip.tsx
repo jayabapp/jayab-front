@@ -4,9 +4,23 @@ import { ContentImage } from "@elements/Image";
 import _STRINGS from "@/utils/LocalStrings";
 
 /** The active-filter pill: a label plus the control that clears that filter. */
-const RemovableFilterChip = ({ label, onRemove }: RemovableFilterChipProps) => (
+const RemovableFilterChip = ({
+  label,
+  onRemove,
+  onLabelClick,
+}: RemovableFilterChipProps) => (
   <div className="filter-chip filter-chip-active gap-4 px-1">
-    <p className="text-xs pr-2">{label}</p>
+    {onLabelClick ? (
+      <button
+        type="button"
+        onClick={onLabelClick}
+        className="cursor-pointer text-xs pr-2"
+      >
+        {label}
+      </button>
+    ) : (
+      <p className="text-xs pr-2">{label}</p>
+    )}
     <button
       type="button"
       onClick={onRemove}
