@@ -117,10 +117,10 @@ const RootLayout = async ({
   return (
     <html lang="fa" dir="rtl">
       <body className={x_Iransans.className} suppressHydrationWarning>
-        <ImpersonationBanner />
         <NavigationProgress />
         <SplashScreen />
         <LayoutProvider>
+          <ImpersonationBanner />
           <AppShell>
             <MainLayout
               header={<SiteHeader phone={phone} />}
