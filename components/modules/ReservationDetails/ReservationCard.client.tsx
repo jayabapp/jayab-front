@@ -2,11 +2,12 @@
 
 import { useReservationCountdown } from "@features/reservations/hooks/useReservationCountdown";
 import { useOwnerContactRequest } from "@features/reservations/hooks/useOwnerContactRequest";
+import { useMarkReserveSeen } from "@features/reservations/hooks/useMarkReserveSeen";
 import type { ReservationCardProps } from "@/types/components/modules/reservations";
 import { useStartOrFindChat } from "@features/chat/hooks/useStartOrFindChat";
 import { usePathname, useRouter } from "next/navigation";
 import { Divider } from "@elements/Divider";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 import ReservationPropertySummary from "./parts/ReservationPropertySummary";
 import ReservationGuestContact from "./parts/ReservationGuestContact";
@@ -34,11 +35,18 @@ const ReservationCard = ({
   const { mutate: requestContact, isPending: isRequestingContact } =
     useOwnerContactRequest();
   const { mutate: startChat, isPending: isChatPending } = useStartOrFindChat();
+  const { mutate: markSeen } = useMarkReserveSeen();
 
-  const countdown = useReservationCountdown(
-    reservation?.ttl_seconds,
-    !!isOwner,
-  );
+  const countdown = useReservationCountdown(reservation?.ttl_seconds, showCounter);
+
+  useEffect(() => {
+    if (!isOwner || reservation?.owner_seen_at) return;
+    if (reservation?.status?.id !== AWAITING_OWNER_STATUS_ID) return;
+    markSeen({ id: reservation.id });
+    // Fires once per mount of an unseen, still-pending card; markSeen is
+    // idempotent server-side so a stray re-render can't double-count it.
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [isOwner, reservation?.id]);
 
   const onCallGuest = () => {
     if (isRequestingContact) return;
@@ -79,16 +87,23 @@ const ReservationCard = ({
 
       <Divider moreClass=" border-dashed  " />
 
-      {isOwner ? (
+      {reservation?.status?.id === AWAITING_OWNER_STATUS_ID ? (
         <>
           {showCounter ? (
             <ReservationCountdown
               minutes={countdown.minutes}
               seconds={countdown.seconds}
+              hint={
+                isOwner
+                  ? _STRINGS.RESERVE_OWNER_TIMEOUT_HINT
+                  : _STRINGS.RESERVE_GUEST_TIMEOUT_HINT
+              }
             />
           ) : (
             <p className="text-center text-sm">
-              {_STRINGS.RESERVE_ANSWER_TIME_UP}
+              {isOwner
+                ? _STRINGS.RESERVE_ANSWER_TIME_UP
+                : _STRINGS.RESERVE_ANSWER_TIME_UP_GUEST}
             </p>
           )}
 

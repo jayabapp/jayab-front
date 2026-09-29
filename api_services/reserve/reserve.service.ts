@@ -105,6 +105,18 @@ export class ReserveService {
     }
   }
 
+  static async ownerMarkSeen(dto: { id: string | number }) {
+    try {
+      const result = await apiCall<unknown, any>(
+        "POST",
+        apiRoutes.OWNER_MARK_RESERVE_SEEN(dto?.id),
+      );
+      return result;
+    } catch (e) {
+      throw e;
+    }
+  }
+
   static async ownerActiveReserveCount(signal?: AbortSignal) {
     try {
       const result = await apiCall<unknown, number>(

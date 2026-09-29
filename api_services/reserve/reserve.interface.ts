@@ -34,7 +34,7 @@ export interface ReserveListDto {
   description: null;
   property: Property;
   property_id: number;
-  owner_seen_at: null;
+  owner_seen_at: Date | null;
   ttl_seconds: number;
   guests_count: string;
   guest_mobile: number;
@@ -43,6 +43,8 @@ export interface ReserveListDto {
   is_subscription_expired: boolean;
   owner_clicked_guest_mobile: number;
   is_answer_deadline_passed: boolean;
+  nights: number | null;
+  quoted_total: number | null;
 }
 
 export interface Property {
@@ -115,7 +117,7 @@ export interface ActiveReserveDto {
   check_in: Date;
   check_out: Date;
   guests_count: string;
-  owner_seen_at: null;
+  owner_seen_at: Date | null;
   canceled_at: null;
   expired_at: null;
   description: null;
@@ -125,6 +127,8 @@ export interface ActiveReserveDto {
   property: Property;
   ttl_seconds: number;
   is_chat_enabled: boolean;
+  nights: number | null;
+  quoted_total: number | null;
 }
 
 export interface AdminDescription {

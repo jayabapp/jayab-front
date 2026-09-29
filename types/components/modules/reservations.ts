@@ -19,6 +19,7 @@ export type ReservationViewProps = {
 export type ReservationCountdownProps = {
   minutes: string;
   seconds: string;
+  hint?: string;
 };
 
 export type ReservationStatusBarProps = {

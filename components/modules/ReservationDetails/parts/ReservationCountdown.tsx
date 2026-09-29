@@ -9,11 +9,10 @@ const DIGIT_CLASS =
 const ReservationCountdown = ({
   minutes,
   seconds,
+  hint = _STRINGS.RESERVE_OWNER_TIMEOUT_HINT,
 }: ReservationCountdownProps) => (
   <div className="w-full flex items-center flex-col pb-1 gap-2 justify-center">
-    <p className="text-xs text-danger-500 text-center w-full">
-      {_STRINGS.RESERVE_OWNER_TIMEOUT_HINT}
-    </p>
+    <p className="text-xs text-danger-500 text-center w-full">{hint}</p>
 
     <div className="flex items-center gap-2">
       <div className="flex flex-col gap-1">

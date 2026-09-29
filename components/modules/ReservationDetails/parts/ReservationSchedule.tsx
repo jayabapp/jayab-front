@@ -1,5 +1,6 @@
 import type { ReservationViewProps } from "@/types/components/modules/reservations";
 
+import formatToman from "@/helpers/formatToman";
 import _STRINGS from "@/utils/LocalStrings";
 import SpecRow from "@elements/SpecRow";
 import moment from "moment-jalaali";
@@ -45,6 +46,16 @@ const ReservationSchedule = ({
         options={ROW_OPTIONS}
         title={_STRINGS.DURATION}
         value={` ${moment(reservation?.check_out).diff(reservation?.check_in, "days")} ${_STRINGS.NIGHT}`}
+      />
+      <SpecRow
+        dots
+        options={ROW_OPTIONS}
+        title={_STRINGS.TOTAL_STAY_COST}
+        value={
+          reservation?.quoted_total
+            ? formatToman(reservation.quoted_total)
+            : _STRINGS.RESERVE_AMOUNT_NOT_RECORDED
+        }
       />
       {isOwner ? (
         <SpecRow

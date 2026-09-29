@@ -648,9 +648,14 @@ const _STRINGS = {
   CANCEL_RESERVE: "لغو رزرو",
   GUEST_AWAITS_YOU: "میهمان منتظر پاسخ شماست",
   RESERVE_ANSWER_TIME_UP: "زمان شما برای پاسخ به این درخواست به اتمام رسیده است.",
+  RESERVE_ANSWER_TIME_UP_GUEST: "مهلت پاسخ میزبان به این درخواست به پایان رسیده است.",
   RESERVE_FINALIZE_NOTE: "رزرو شما پس از هماهنگی با میزبان نهایی خواهد شد",
   RESERVE_OWNER_TIMEOUT_HINT:
     "پس از اتمام تایم و عدم پاسخ لینک ویلاهای مشابه برای میهمان ارسال می گردد.",
+  RESERVE_GUEST_TIMEOUT_HINT:
+    "در صورت پایان مهلت و عدم پاسخ میزبان، اقامتگاه‌های مشابه برای شما ارسال می‌شود.",
+  TOTAL_STAY_COST: "جمع هزینه اقامت",
+  RESERVE_AMOUNT_NOT_RECORDED: "مبلغ ثبت نشده",
 
   // Profile payments and invite copy.
   PAYMENT_TIME: "زمان پرداخت",

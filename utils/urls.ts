@@ -170,6 +170,9 @@ export const apiRoutes = {
   OWNER_CALL_RESERVE_REQUEST: (propertyReserveId: string | number) =>
     `/owner/reserves/${propertyReserveId}/events/click-guest-mobile`,
 
+  OWNER_MARK_RESERVE_SEEN: (propertyReserveId: string | number) =>
+    `/owner/reserves/${propertyReserveId}/events/mark-seen`,
+
   PROPERTY_REPORT: (postId: string | number) =>
     `/user/property-reports/${postId}`,
 
