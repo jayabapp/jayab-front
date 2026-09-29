@@ -86,13 +86,9 @@ const BookingPanel = ({
       <div className="flex items-baseline gap-2 text-lg font-bold text-neutral-900">
         <span>
           {nights} {_STRINGS.NIGHT}
+          {quote ? ":" : ""}
         </span>
-        {quote ? (
-          <>
-            <span aria-hidden="true">·</span>
-            <span>{formatToman(quote.total)}</span>
-          </>
-        ) : null}
+        {quote ? <span>{formatToman(quote.stay_total)}</span> : null}
       </div>
     );
   };
@@ -142,7 +138,7 @@ const BookingPanel = ({
               nights: quote.nights,
               onEdit: openDates,
               startDate: stay.start,
-              total: quote.total,
+              total: quote.stay_total,
               variant,
             })
           : null}

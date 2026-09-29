@@ -26,17 +26,18 @@ const PriceSummary = ({ isRefreshing, quote }: PriceSummaryProps) => (
       </div>
     ) : null}
 
-    {quote.cleaning_fee > 0 ? (
-      <div className={ROW_CLASS}>
-        <span>{_STRINGS.CLEANING_ONCE}</span>
-        <span>{formatToman(quote.cleaning_fee)}</span>
-      </div>
-    ) : null}
-
     <div className="flex items-center justify-between gap-3 border-t border-neutral-200 pt-3 text-base font-bold text-neutral-900">
       <span>{_STRINGS.APPROX_STAY_COST}</span>
-      <span>{formatToman(quote.total)}</span>
+      <span>{formatToman(quote.stay_total)}</span>
     </div>
+
+    {quote.cleaning_fee > 0 ? (
+      <p className="text-xs text-neutral-500">
+        {_STRINGS.CLEANING_FEE_CONDITIONAL_PREFIX}
+        {formatToman(quote.cleaning_fee)}
+        {_STRINGS.CLEANING_FEE_CONDITIONAL_SUFFIX}
+      </p>
+    ) : null}
   </div>
 );
 

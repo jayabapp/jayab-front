@@ -52,7 +52,7 @@ const PropertyContactModal = ({
           <p className="line-clamp-1 text-neutral-900">{trip.title}</p>
           <p className="text-neutral-500">
             {formatJalaliDay(trip.startDate)} {_STRINGS.TO}{" "}
-            {formatJalaliDay(trip.endDate)} · {trip.guests} {_STRINGS.PERSON}
+            {formatJalaliDay(trip.endDate)}، {trip.guests} {_STRINGS.PERSON}
           </p>
           {trip.total ? (
             <p className="text-neutral-500">

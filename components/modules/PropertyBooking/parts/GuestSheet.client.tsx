@@ -18,7 +18,7 @@ const GuestSheet = ({
   extraGuestFee,
 }: GuestSheetProps) => (
   <ModalBottomSheet show={show} onHide={onHide} options={{ zIndex: 1100 }}>
-    <ModalHeaderPart hideArrow onHide={onHide} title={_STRINGS.GUEST_COUNT} />
+    <ModalHeaderPart showX hideArrow onHide={onHide} title={_STRINGS.GUEST_COUNT} />
     <div className="flex flex-col gap-4 p-4">
       {summary ? <p className="text-sm text-neutral-500">{summary}</p> : null}
       <GuestStepper

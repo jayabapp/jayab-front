@@ -29,6 +29,7 @@ const OWN_PROPERTY_ERROR = "RESERVE_OWN_PROPERTY";
 const ReserveConfirmSheet = ({
   stay,
   onCall,
+  onSms,
   onChat,
   onHide,
   property,
@@ -126,6 +127,7 @@ const ReserveConfirmSheet = ({
         {created !== null ? (
           <ReserveSuccess
             onCall={onCall}
+            onSms={onSms}
             onChat={onChat}
             created={created}
             onClose={onHide}
@@ -162,7 +164,7 @@ const ReserveConfirmSheet = ({
                 <Icon name="calendar" size={20} className="text-brand-600" />
                 <span className="flex-1">
                   {formatJalaliWeekdayDay(stay.startDate)} {_STRINGS.TO}{" "}
-                  {formatJalaliWeekdayDay(stay.endDate)} · {nights}{" "}
+                  {formatJalaliWeekdayDay(stay.endDate)}، {nights}{" "}
                   {_STRINGS.NIGHT}
                 </span>
                 {stay.onEdit ? (

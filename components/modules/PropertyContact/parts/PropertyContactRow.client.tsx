@@ -129,7 +129,7 @@ const PropertyContactRow = ({
         />
         <div className="flex min-w-0 flex-col items-start gap-1">
           <p className="truncate text-sm text-neutral-900">
-            {data?.assistant_full_name} ·{" "}
+            {data?.assistant_full_name}،{" "}
             {data?.is_owner ? _STRINGS.HOST : _STRINGS.OWNER_ASSIST}
           </p>
           <p className="text-sm text-neutral-500">{maskPhoneNumber(number)}</p>

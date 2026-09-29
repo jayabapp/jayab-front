@@ -57,6 +57,7 @@ export type PropertyContactRowProps = {
 
 export type ReserveConfirmSheetProps = {
   onCall: () => void;
+  onSms?: () => void;
   onChat?: () => void;
   onHide: () => void;
   property: PropertyDetailsView;
@@ -68,6 +69,7 @@ export type ReserveSuccessProps = {
   isChatPending?: boolean;
   isExpired: boolean;
   onCall: () => void;
+  onSms?: () => void;
   onChat?: () => void;
   onClose: () => void;
 };

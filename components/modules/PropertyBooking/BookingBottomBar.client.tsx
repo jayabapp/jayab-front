@@ -91,7 +91,7 @@ const BookingBottomBar = ({
         <div className="flex items-center justify-between gap-3">
           <div className="flex min-w-0 flex-col">
             <span className="text-sm font-semibold text-neutral-900">
-              {nights} {_STRINGS.NIGHT} · {rangeText}
+              {nights} {_STRINGS.NIGHT}: {rangeText}
             </span>
             <button
               type="button"
@@ -123,7 +123,7 @@ const BookingBottomBar = ({
                 aria-live="polite"
                 className="text-base font-bold text-neutral-900"
               >
-                {formatToman(quote.total)}
+                {formatToman(quote.stay_total)}
               </span>
             ) : (
               <Skeleton className="mt-1 h-5 w-32 rounded-md" />
@@ -134,7 +134,7 @@ const BookingBottomBar = ({
             onClick={() => setEditOpen(true)}
             className="flex cursor-pointer items-center gap-1.5 rounded-full border border-neutral-200 px-3 py-1.5 text-sm text-neutral-700"
           >
-            {guests} {_STRINGS.PERSON}
+            {_STRINGS.EDIT_RESERVATION_DETAILS}
             <Icon name="chevron-down" size={16} />
           </button>
         </div>
@@ -159,7 +159,7 @@ const BookingBottomBar = ({
             nights: quote.nights,
             onEdit: () => setEditOpen(true),
             startDate: stay.start,
-            total: quote.total,
+            total: quote.stay_total,
             variant: "bar",
           })
         ) : null}
@@ -191,7 +191,7 @@ const BookingBottomBar = ({
         onConfirm={() => setGuestsOpen(false)}
         extraGuestFee={property.extraGuestFee}
         summary={
-          stay ? `${nights} ${_STRINGS.NIGHT} · ${rangeText}` : undefined
+          stay ? `${nights} ${_STRINGS.NIGHT}: ${rangeText}` : undefined
         }
       />
       <BookingEditSheet

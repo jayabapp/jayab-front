@@ -535,6 +535,7 @@ export interface PropertyQuoteDto {
   extra_guest_fee_per_night: number;
   extra_guest_total: number;
   cleaning_fee: number;
+  stay_total: number;
   total: number;
   canceling_type: { id: string; title: string } | null;
 }

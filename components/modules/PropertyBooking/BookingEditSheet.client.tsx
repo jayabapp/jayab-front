@@ -13,7 +13,7 @@ const BookingEditSheet = ({
   renderActions,
 }: BookingEditSheetProps) => (
   <ModalBottomSheet show={show} onHide={onHide}>
-    <ModalHeaderPart hideArrow onHide={onHide} title={_STRINGS.EDIT_STAY} />
+    <ModalHeaderPart showX hideArrow onHide={onHide} title={_STRINGS.EDIT_STAY} />
     <BookingPanel
       variant="sheet"
       property={property}

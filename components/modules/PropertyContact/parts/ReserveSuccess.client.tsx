@@ -12,6 +12,7 @@ const ACTION_CLASS =
 const ReserveSuccess = ({
   onChat,
   onCall,
+  onSms,
   onClose,
   created,
   isExpired,
@@ -48,6 +49,16 @@ const ReserveSuccess = ({
           <Icon name="phone" size={20} />
           {_STRINGS.CALL_HOST}
         </button>
+        {onSms ? (
+          <button
+            type="button"
+            onClick={onSms}
+            className={`${ACTION_CLASS} border border-neutral-200 bg-white text-neutral-900 hover:bg-neutral-50`}
+          >
+            <Icon name="sms" size={20} />
+            {_STRINGS.SMS}
+          </button>
+        ) : null}
         {onChat ? (
           <button
             type="button"

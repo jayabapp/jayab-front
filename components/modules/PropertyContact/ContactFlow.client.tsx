@@ -161,6 +161,7 @@ const ContactFlow = ({ children, property }: ContactFlowProps) => {
           stay={session.stay}
           onHide={closeSession}
           onCall={() => open("call", session.stay)}
+          onSms={() => open("sms", session.stay)}
           onChat={canChat ? () => openChat(session.stay) : undefined}
         />
       ) : null}
