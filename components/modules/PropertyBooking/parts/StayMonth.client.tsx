@@ -128,6 +128,9 @@ const StayMonth = ({
 
         {Array.from({ length: daysInMonth - firstDay + 1 }, (_, offset) => {
           const day = firstDay + offset;
+          const gridPosition = lead + offset;
+          const row = Math.floor(gridPosition / 7);
+          const column = gridPosition % 7;
           const date = first
             .clone()
             .add(day - 1, "day")
@@ -151,6 +154,8 @@ const StayMonth = ({
             <StayDayCell
               key={day}
               day={day}
+              row={row}
+              column={column}
               state={state}
               isReserved={isReserved}
               isPeak={!!entry?.is_peak}

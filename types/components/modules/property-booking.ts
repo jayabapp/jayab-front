@@ -44,6 +44,8 @@ export type BookingEditSheetProps = {
 
 export type StayDayCellProps = {
   day: number;
+  row?: number;
+  column?: number;
   label: string;
   price?: string;
   isPeak?: boolean;

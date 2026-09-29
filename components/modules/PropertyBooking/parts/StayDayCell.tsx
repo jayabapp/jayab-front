@@ -12,9 +12,11 @@ const STATE_CLASS = {
 
 const StayDayCell = ({
   day,
+  row,
   label,
   state,
   price,
+  column,
   isPeak,
   tooltip,
   dateKey,
@@ -38,12 +40,26 @@ const StayDayCell = ({
         ? "text-neutral-300"
         : STATE_CLASS[state];
 
+  // Collision-aware tooltip (FEATURE.md §11.1): flip below the cell in the
+  // first grid row so it doesn't get clipped by the sheet header above, and
+  // anchor to the physical edge in the first/last column instead of
+  // centering so it can't run off either side of a 320px viewport. Columns
+  // are DOM order, and this grid renders under dir="rtl", so column 0 sits
+  // at the physical right edge and column 6 at the physical left edge.
+  const verticalClass = row === 0 ? "top-full mt-1" : "bottom-full mb-1";
+  const horizontalClass =
+    column === 0
+      ? "right-0"
+      : column === 6
+        ? "left-0"
+        : "left-1/2 -translate-x-1/2";
+
   return (
     <div className="relative">
       {tooltip ? (
         <span
           role="status"
-          className="pointer-events-none absolute bottom-full left-1/2 z-10 mb-1 -translate-x-1/2 whitespace-nowrap rounded-full bg-neutral-900 px-3 py-1 text-xs text-white shadow-glass-sm"
+          className={`pointer-events-none absolute z-10 whitespace-nowrap rounded-full bg-neutral-900 px-3 py-1 text-xs text-white shadow-glass-sm ${verticalClass} ${horizontalClass}`}
         >
           {tooltip}
         </span>
