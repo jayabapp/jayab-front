@@ -16,6 +16,20 @@ const CHIP_CLASS: Record<string, string> = {
   STRICT: "bg-danger-50 text-danger-500",
 };
 
+/**
+ * The cancellation policy has no structured time-window/percentage data
+ * anywhere in the API: `canceling_type` on the property is only
+ * `{ id, title }` and the matching CMS `propertyRules` item is free-text
+ * (`small_text`/`full_text`). So the real policy text is rendered as a
+ * timeline, one step per non-empty line, in the order the CMS author wrote
+ * it — no percentage or deducted amount is invented here.
+ */
+const buildTimelineSteps = (text?: string | null) =>
+  (text ?? "")
+    .split("\n")
+    .map((line) => line.trim())
+    .filter(Boolean);
+
 const CancellationSummary = ({ cancelingType }: CancellationSummaryProps) => {
   const [showDetails, setShowDetails] = useState(false);
   const { items } = useContentList(
@@ -23,6 +37,8 @@ const CancellationSummary = ({ cancelingType }: CancellationSummaryProps) => {
     showDetails,
   );
   const rule = items.find((item) => item?.key === cancelingType?.id);
+  const steps = buildTimelineSteps(rule?.small_text || rule?.full_text);
+  const timelineSteps = steps.length ? steps : [_STRINGS.CANCELLATION_RULE_FALLBACK];
   if (!cancelingType?.title) return <></>;
   return (
     <>
@@ -57,9 +73,27 @@ const CancellationSummary = ({ cancelingType }: CancellationSummaryProps) => {
           onHide={() => setShowDetails(false)}
         />
         <div className="p-4">
-          <CmsText className="content text-justify text-sm leading-7 text-neutral-800">
-            {rule?.small_text}
-          </CmsText>
+          <ol className="flex flex-col">
+            {timelineSteps.map((step, index) => (
+              <li key={index} className="relative flex gap-3 pb-6 last:pb-0">
+                <div className="flex flex-col items-center">
+                  <span className="flex h-6 w-6 shrink-0 items-center justify-center rounded-full bg-brand-50 text-xs font-bold text-brand-700">
+                    {index + 1}
+                  </span>
+                  {index < timelineSteps.length - 1 ? (
+                    <span className="mt-1 w-px flex-1 bg-neutral-200" />
+                  ) : null}
+                </div>
+                <CmsText
+                  as="p"
+                  whitespace="pre-wrap"
+                  className="pt-0.5 text-sm leading-7 text-neutral-800"
+                >
+                  {step}
+                </CmsText>
+              </li>
+            ))}
+          </ol>
         </div>
       </ModalBottomSheet>
     </>

@@ -143,7 +143,6 @@ const PropertyDetailsContent = ({ property }: PropertyDetailsContentProps) => {
               avatar={view.ownerAvatar}
               isAuthorized={view.isAuthorized}
               since={view.ownerSince}
-              property={view}
             />
             <div className="pt-2">
               <PropertyReportRow propertyId={view.id} />

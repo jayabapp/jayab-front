@@ -111,7 +111,6 @@ export type HostCardProps = {
   isAuthorized?: boolean;
   avatar?: PropertyDetailsView["ownerAvatar"];
   since?: PropertyDetailsView["ownerSince"];
-  property: PropertyDetailsView;
 };
 
 export type PropertyDetailsContentProps = {

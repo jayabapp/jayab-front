@@ -1,7 +1,7 @@
 "use client";
 
 import type { PropertyReportRowProps } from "@/types/components/modules/property-details";
-import { ContentImage } from "@elements/Image";
+import { Icon } from "@elements/Icon";
 import { useState } from "react";
 
 import PropertyReportModal from "./PropertyReportModal.client";
@@ -15,17 +15,21 @@ const PropertyReportRow = ({ propertyId }: PropertyReportRowProps) => {
       <button
         type="button"
         onClick={() => setShow(true)}
-        className="cursor-pointer border border-neutral-300 rounded-10 px-4 py-3 flex items-center justify-between"
+        className="flex w-full cursor-pointer items-center gap-3 rounded-10 border border-neutral-200 px-4 py-3 text-right transition-colors hover:bg-neutral-50"
       >
-        <span className="text-danger-500 font-medium bg-white text-sm md:text-base !mt-0 rounded-10 w-full text-right">
-          {_STRINGS.REPORT_WRONG}
+        <Icon name="info" size={20} className="shrink-0 text-neutral-500" />
+        <span className="flex min-w-0 flex-1 flex-col gap-0.5">
+          <span className="text-sm font-bold text-neutral-900 md:text-base">
+            {_STRINGS.REPORT_WRONG}
+          </span>
+          <span className="text-xs text-neutral-500 md:text-sm">
+            {_STRINGS.REPORT_WRONG_DESC}
+          </span>
         </span>
-        <ContentImage
-          alt=""
-          width={16}
-          height={16}
-          src="/assets/icons/shared/chevron.svg"
-          className="object-contain transition-all w-4 aspect-square"
+        <Icon
+          name="chevron-left"
+          size={16}
+          className="shrink-0 text-neutral-400"
         />
       </button>
       {show ? (

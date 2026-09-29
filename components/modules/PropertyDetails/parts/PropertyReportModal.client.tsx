@@ -66,6 +66,7 @@ const PropertyReportModal = ({
         <Button
           color="danger"
           loading={isPending}
+          disabled={!reportTitle}
           containerClass="w-full"
           width="w-full !text-white"
           title={_STRINGS.SUBMIT_REPORT}

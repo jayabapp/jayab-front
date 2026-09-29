@@ -403,6 +403,7 @@ const _STRINGS = {
   PROP_TERMS_PROLUGE:
     "قوانین و شرایطی که میهمان ها باید بپذیرند و در طول اقامتشان آنها را رعایت کنند",
   CANCENLATION_DESC: "قوانین لغو درخواست میهمان (کنسلی)",
+  CANCELLATION_RULE_FALLBACK: "جزئیات این قانون لغو هنوز ثبت نشده است.",
   OTHER_TERMS: "سایر قوانین لازم جهت اقامت",
   CONTACT_US: "تماس با ما",
   CONTACT_WAYS: "راه های ارتباطی",
@@ -475,6 +476,7 @@ const _STRINGS = {
   NAVIGATE: "مسیر یابی",
   ADDS_LIST: "لیست آگهی ها",
   REPORT_WRONG: "گزارش تخلف",
+  REPORT_WRONG_DESC: "مشکلی در این آگهی مشاهده کردید؟ به ما اطلاع دهید",
   RECAPTHCA_ERROR: "کد امنیتی وارد شده صحیح نمی‌باشد",
   ASK_QUESTION_TITLE: "سوال خود را بپرسید",
   ASK_QUESTION_NAME: "",

@@ -4,7 +4,6 @@ import { Icon } from "@elements/Icon";
 import type { LocationSectionProps } from "@/types/components/modules/property-details";
 
 import LocationNavigateLink from "./LocationNavigateLink.client";
-import _STRINGS from "@/utils/LocalStrings";
 
 const LocationSection = ({
   place,
@@ -37,10 +36,6 @@ const LocationSection = ({
           <></>
         )}
       </div>
-
-      <p className="text-xs text-neutral-500">
-        {_STRINGS.EXACT_ADDRESS_AFTER_CONTACT}
-      </p>
     </div>
   );
 };

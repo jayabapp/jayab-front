@@ -2,7 +2,6 @@ import type { HostCardProps } from "@/types/components/modules/property-details"
 import { Icon } from "@elements/Icon";
 
 import PropertyOwnerBadge from "./PropertyOwnerBadge";
-import HostActions from "./HostActions.client";
 import _STRINGS from "@/utils/LocalStrings";
 import moment from "moment-jalaali";
 
@@ -13,7 +12,6 @@ const HostCard = ({
   name,
   since,
   avatar,
-  property,
   isAuthorized,
 }: HostCardProps) => (
   <div className="flex flex-col gap-3 rounded-20 border border-neutral-200 p-4">
@@ -29,7 +27,6 @@ const HostCard = ({
         <span>{_STRINGS.VERIFIED}</span>
       </div>
     ) : null}
-    <HostActions property={property} />
   </div>
 );
 
