@@ -1,10 +1,5 @@
 "use client";
 
-import type {
-  HeroSlide,
-  HeroSlideImageProps,
-  HomeHeroBannerProps,
-} from "@/types/components/modules/home";
 import { useState, useSyncExternalStore } from "react";
 import { useEffect, useMemo, useRef } from "react";
 import { getHomeImageUrl } from "@features/home/mappers/home-image.mapper";
@@ -13,7 +8,10 @@ import { getImageProps } from "next/image";
 import { ContentImage } from "@elements/Image";
 
 import type { CSSProperties, FocusEvent, PointerEvent } from "react";
+import type { HomeHeroBannerProps } from "@/types/components/modules/home";
+import type { HeroSlideImageProps } from "@/types/components/modules/home";
 import type { HomeBannerDto } from "@/types/components/templates/home";
+import type { HeroSlide } from "@/types/components/modules/home";
 
 import _STRINGS from "@/utils/LocalStrings";
 import Editable from "@elements/Editable";
@@ -235,14 +233,8 @@ const HomeBannerPart = ({ title, devices, banners }: HomeHeroBannerProps) => {
     >
       <div
         className={
-          // With no CMS image behind it, the caption/search block is no
-          // longer pinned over a photo — it just flows normally so the hero
-          // shrinks to a search/content-only strip instead of leaving a
-          // tall empty box under it (see the `hasSlides` branch below).
           hasSlides
             ? `absolute inset-x-0 bottom-0 z-10 flex flex-col items-center justify-end gap-4 px-4 md:gap-6 ${
-                // On phones the search pill rides the sheet's lip instead, so
-                // the caption only needs clearance for that lip — see HomeTemplate.
                 isPhone ? "pb-14" : "pb-12 md:pb-14"
               }`
             : "relative z-10 flex w-full flex-col items-center justify-center gap-4 px-4 py-8 md:gap-6"
@@ -315,6 +307,10 @@ const HomeBannerPart = ({ title, devices, banners }: HomeHeroBannerProps) => {
                 )}
               </div>
             ))}
+            <div
+              aria-hidden="true"
+              className="pointer-events-none absolute inset-0 bg-gradient-to-t from-black/55 via-black/10 to-transparent"
+            />
           </Editable>
         </>
       ) : (

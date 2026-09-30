@@ -38,11 +38,6 @@ export type HomeCitiesProps = {
   title: string;
 };
 
-export type HomeCityRowProps = {
-  row: HomeCitiesProps["data"];
-  syncRef: (element: HTMLDivElement | null) => void;
-};
-
 export type HomeHeroBannerProps = {
   title?: string;
   devices?: DeviceInfo;

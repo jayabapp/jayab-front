@@ -19,8 +19,6 @@ const PropertyCard = ({
   searchParams,
   onPhotoUpgradeClick,
 }: PropertyCardProps) => {
-  // FL-02: carry the active checkin/checkout/total_guests forward so the
-  // single-listing page hydrates from the URL instead of asking again.
   const staySearch = isOwner
     ? ""
     : queryBuilder({
@@ -46,8 +44,8 @@ const PropertyCard = ({
               <ContentImage
                 width={24}
                 height={24}
-                alt="verified_badge"
                 className="w-6 h-6"
+                alt="verified_badge"
                 src="/assets/icons/adds/verified_hexy_badge.svg"
               />
             ) : null}
@@ -79,9 +77,6 @@ const PropertyCard = ({
                 />
               </div>
 
-              {/* Fixed min-height reserved whether or not a discount row is
-                  present, so adding/removing a discount never changes the
-                  card's overall height (SL-29). */}
               <div className="w-full min-h-10 flex flex-row items-end justify-between gap-2">
                 <p className="text-xs 2xl:text-xs shrink-0">
                   {_STRINGS.TODAYS_PRICE}
@@ -105,43 +100,14 @@ const PropertyCard = ({
               </div>
             </>
           ) : (
-            // Divar-style order: title, then the code/likes (where the
-            // capacity line used to sit), then the price — stacked so a
-            // discount's extra line has room — then place, then the plain
-            // capacity line at the very bottom.
-            <>
-              {/* Public card: no property code, only the public-facing
-                  like counter (SL-29 — code stays owner-card-only). */}
-              <div className="flex items-center gap-2">
-                <PropertyCardLikes
-                  propertyId={data?.id}
-                  favoriteCount={data?.favorite_count}
-                />
-              </div>
-
-              {/* Fixed min-height reserved whether or not a discount row is
-                  present, so adding/removing a discount never changes the
-                  card's overall height (SL-29). */}
-              <div className="flex min-h-10 flex-col gap-0.5">
-                <p className="text-xs text-neutral-500">
-                  {_STRINGS.TODAYS_PRICE}
-                </p>
-                <PropertyPrice
-                  data={{
-                    discounted_price: data?.today_price?.discounted_price,
-                    price: data?.today_price?.price,
-                    discount_percentage: data.today_price?.discount_percentage,
-                  }}
-                />
-              </div>
-
+            <div className="flex flex-1 flex-col gap-1.5">
               <div className="flex w-full items-center gap-1">
                 {data?.is_promoted ? (
                   <p className="font-bold text-brand-600 shrink-0 text-xs pl-1 border-l">
                     {_STRINGS.LADDERED}
                   </p>
                 ) : null}
-                <p className="text-xs line-clamp-1 text-center">
+                <p className="text-xs line-clamp-1 text-neutral-500">
                   {data?.city}،{" "}
                   <span className="text-xs">
                     {data?.province || data?.region
@@ -151,66 +117,95 @@ const PropertyCard = ({
                 </p>
               </div>
 
-              <p className="line-clamp-1 text-xs text-neutral-500">
-                {data?.total_bedrooms ? `${data.total_bedrooms} ${_STRINGS.ROOM}، ` : ""}
-                {_STRINGS.UP_TO} {data?.max_capacity} {_STRINGS.PERSON}
+              <div className="flex w-full items-center justify-between gap-2">
+                <p className="line-clamp-1 text-xs text-neutral-500">
+                  {data?.total_bedrooms
+                    ? `${data.total_bedrooms} ${_STRINGS.ROOM}، `
+                    : ""}
+                  {_STRINGS.UP_TO} {data?.max_capacity} {_STRINGS.PERSON}
+                </p>
+                <PropertyCardLikes
+                  propertyId={data?.id}
+                  favoriteCount={data?.favorite_count}
+                />
+              </div>
+
+              <p className="mt-auto text-xs text-neutral-500">
+                {_STRINGS.TODAYS_PRICE}
               </p>
-            </>
+            </div>
           )}
         </PropertyCardLink>
 
-        <PropertyCardLink
-          title={data.title}
-          href={goToLink}
-          className="order-2 flex w-full items-start justify-start !outline-none"
-        >
-          {/* Fixed aspect ratio reserved for the image regardless of the
-              text column's content (e.g. a discount row) — the image never
-              resizes because of sibling content (SL-29). */}
-          <div className="relative w-full aspect-square">
-            <ContentImage
-              fill
-              loading="lazy"
-              quality={PROPERTY_IMAGE_QUALITY}
-              alt={data?.feature_image?.alt || ""}
-              src={getPropertyImageUrl(data?.feature_image)}
-              sizes="(min-width: 1280px) 16vw, (min-width: 768px) 24vw, 46vw"
-              className="w-full rounded-2xl h-full object-cover"
-            />
-            {data?.advisor_commission || data?.advisor_commission === 0 ? (
-              <div className="w-16 gap-0.5 h-5 rounded-md transition-all py-[0.2rem] backdrop-blur-[6px] bg-neutral-900/30 text-white absolute z-1 left-2 flex-row top-2 aspect-square flex items-center justify-center">
-                <p className="text-xxs">
-                  {_STRINGS.ADVISOR_COMMISSION_SHORT}: {data.advisor_commission}
-                  %
-                </p>
-              </div>
-            ) : data?.attachments_count ? (
-              <div className="w-12 gap-1.5 h-6 rounded-full transition-all py-[0.2rem] backdrop-blur-[6px] bg-neutral-900/30 text-white absolute z-1 left-2 flex-row top-2 aspect-square flex items-center justify-center">
-                <p className="text-xs font-medium">{data.attachments_count}</p>
-                <ContentImage
-                  width={16}
-                  height={16}
-                  className="w-4 h-4"
-                  alt={`camera${data?.id}`}
-                  src="/assets/icons/adds/simple_camera.svg"
-                />
-              </div>
-            ) : null}
-            {data?.is_authorized ? (
-              <div className="right-2 w-fit h-7 absolute pr-1 pl-2 backdrop-blur-[6px] bg-neutral-900/30 rounded-full flex items-center gap-2 mx-auto bottom-2">
-                <ContentImage
-                  width={16}
-                  height={16}
-                  alt={`tick${data?.id}`}
-                  src="/assets/icons/adds/green_circular_tick.svg"
-                />
-                <p className="text-[0.6875rem] font-medium text-white">
-                  {_STRINGS.VERIFIED}
-                </p>
-              </div>
-            ) : null}
-          </div>
-        </PropertyCardLink>
+        <div className="order-2 flex w-full flex-col gap-1.5">
+          <PropertyCardLink
+            title={data.title}
+            href={goToLink}
+            className="flex w-full items-start justify-start !outline-none"
+          >
+            <div className="relative w-full aspect-square">
+              <ContentImage
+                fill
+                loading="lazy"
+                quality={PROPERTY_IMAGE_QUALITY}
+                alt={data?.feature_image?.alt || ""}
+                src={getPropertyImageUrl(data?.feature_image)}
+                className="w-full rounded-2xl h-full object-cover"
+                sizes="(min-width: 1280px) 16vw, (min-width: 768px) 24vw, 46vw"
+              />
+              {data?.advisor_commission || data?.advisor_commission === 0 ? (
+                <div className="w-16 gap-0.5 h-5 rounded-md transition-all py-[0.2rem] backdrop-blur-[6px] bg-neutral-900/30 text-white absolute z-1 left-2 flex-row top-2 aspect-square flex items-center justify-center">
+                  <p className="text-xxs">
+                    {_STRINGS.ADVISOR_COMMISSION_SHORT}:{" "}
+                    {data.advisor_commission}%
+                  </p>
+                </div>
+              ) : data?.attachments_count ? (
+                <div className="w-12 gap-1.5 h-6 rounded-full transition-all py-[0.2rem] backdrop-blur-[6px] bg-neutral-900/30 text-white absolute z-1 left-2 flex-row top-2 aspect-square flex items-center justify-center">
+                  <p className="text-xs font-medium">
+                    {data.attachments_count}
+                  </p>
+                  <ContentImage
+                    width={16}
+                    height={16}
+                    className="w-4 h-4"
+                    alt={`camera${data?.id}`}
+                    src="/assets/icons/adds/simple_camera.svg"
+                  />
+                </div>
+              ) : null}
+              {data?.is_authorized ? (
+                <div className="right-2 w-fit h-7 absolute pr-1 pl-2 backdrop-blur-[6px] bg-neutral-900/30 rounded-full flex items-center gap-2 mx-auto bottom-2">
+                  <ContentImage
+                    width={16}
+                    height={16}
+                    alt={`tick${data?.id}`}
+                    src="/assets/icons/adds/green_circular_tick.svg"
+                  />
+                  <p className="text-[0.6875rem] font-medium text-white">
+                    {_STRINGS.VERIFIED}
+                  </p>
+                </div>
+              ) : null}
+            </div>
+          </PropertyCardLink>
+
+          {isOwner ? null : (
+            <PropertyCardLink
+              title={data.title}
+              href={goToLink}
+              className="flex w-full !outline-none"
+            >
+              <PropertyPrice
+                data={{
+                  discounted_price: data?.today_price?.discounted_price,
+                  price: data?.today_price?.price,
+                  discount_percentage: data.today_price?.discount_percentage,
+                }}
+              />
+            </PropertyCardLink>
+          )}
+        </div>
       </div>
 
       {isOwner ? (

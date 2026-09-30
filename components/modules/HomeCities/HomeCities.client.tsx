@@ -1,18 +1,13 @@
 "use client";
 
+import { useHorizontalDragScroll } from "@/hooks/useHorizontalDragScroll";
+
 import type { HomeCitiesProps } from "@/types/components/modules/home";
-import { useSyncedRowScroll } from "@/hooks/useSyncedRowScroll";
 
-import HomeCityRow from "./parts/HomeCityRow.client";
-
-const splitByRow = (data: HomeCitiesProps["data"]) => [
-  data?.filter((_, index) => index % 2 === 0) ?? [],
-  data?.filter((_, index) => index % 2 === 1) ?? [],
-];
+import HomeCityItem from "./parts/HomeCityItem.client";
 
 const HomeCityFilterContainer = ({ data, title }: HomeCitiesProps) => {
-  const rows = splitByRow(data);
-  const setRowRef = useSyncedRowScroll(rows.length);
+  const scrollRef = useHorizontalDragScroll<HTMLDivElement>();
 
   return (
     <div className="home-tile-row noSelect relative flex w-full select-none flex-col gap-2.5 rounded-20 md:gap-2 lg:gap-3">
@@ -22,13 +17,19 @@ const HomeCityFilterContainer = ({ data, title }: HomeCitiesProps) => {
         </p>
       </div>
 
-      {rows.map((row, rowIndex) => (
-        <HomeCityRow
-          row={row}
-          key={`city-row-${rowIndex}`}
-          syncRef={setRowRef(rowIndex)}
-        />
-      ))}
+      <div
+        ref={scrollRef}
+        className="padding-x grid w-full cursor-grab select-none grid-flow-col grid-rows-[auto_auto] gap-2 overflow-x-auto scroll-auto md:gap-3 data-[dragging=true]:cursor-grabbing data-[dragging=true]:[&_*]:cursor-grabbing"
+      >
+        {data?.map((city, index) => (
+          <div
+            key={`${city?.title}-${index}`}
+            className="home-city-tile w-[5.5rem] shrink-0 md:w-[8.8125rem]"
+          >
+            <HomeCityItem item={city} />
+          </div>
+        ))}
+      </div>
     </div>
   );
 };

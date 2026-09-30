@@ -6,7 +6,7 @@ const OwnerPropertyStepTemplate = ({
 }: OwnerPropertyStepTemplateProps) => (
   <main
     id="homeParent"
-    className={`profile-container items-center transition-all duration-500 ease-in-out flex flex-col gap-6 ${containerClass ?? ""}`}
+    className={`profile-container !bg-white items-center transition-all duration-500 ease-in-out flex flex-col gap-6 ${containerClass ?? ""}`}
   >
     {children}
   </main>

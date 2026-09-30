@@ -76,7 +76,6 @@ export const mobileFooterBlackList = [
   "/qa-login",
 ];
 
-// The listing page carries its own fixed booking bar; the tab bar under it would peek out.
 export const mobileNavHiddenBlackList = ["/rooms/"];
 
 export const footerHiddenBlackList = [
@@ -84,6 +83,7 @@ export const footerHiddenBlackList = [
   "/auth",
   "/qa-login",
   "/profile/owner/properties/",
+  "/profile/advisor/subscription/",
 ];
 
 export const createPropertySteps = (id?: null | number) => [
@@ -316,23 +316,6 @@ export const footerLinks = [
 ];
 
 export const profileItems = [
-  // {
-  //   id: 14124,
-  //   title: "پیام های من",
-  //   route: "/profile/chat",
-  //   imgSrc: "/assets/icons/header/header_my_messages.svg",
-  //   guard: true,
-  //   isMobile: false,
-  // },
-
-  // {
-  //   id: 5232,
-  //   title: "پرداخت های من",
-  //   route: "/profile/my-payments",
-  //   imgSrc: "/assets/icons/header/header_my_turnovers.svg",
-  //   guard: true,
-  //   isMobile: false,
-  // },
   {
     id: 1251769,
     title: "رزرو های من",
