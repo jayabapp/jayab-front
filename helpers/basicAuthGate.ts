@@ -18,7 +18,9 @@ export const BASIC_AUTH_HEALTHCHECK_PATH = "/api/healthz";
 export const QA_LOGIN_PATH = "/qa-login";
 export const QA_LOGIN_API_PATH = "/api/qa-login";
 export const QA_GATE_COOKIE = "qa_gate_session";
-const QA_GATE_COOKIE_MAX_AGE = 30 * 24 * 60 * 60;
+// This gate only ever runs on the QA host (jayab.org), never production, so
+// a short-lived session is preferred over convenience: re-login once a day.
+const QA_GATE_COOKIE_MAX_AGE = 24 * 60 * 60;
 
 // Framework/static assets carry no page content and must always be
 // reachable — redirecting them to /qa-login (as this gate does for pages)
