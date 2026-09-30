@@ -20,6 +20,13 @@ export const QA_LOGIN_API_PATH = "/api/qa-login";
 export const QA_GATE_COOKIE = "qa_gate_session";
 const QA_GATE_COOKIE_MAX_AGE = 30 * 24 * 60 * 60;
 
+// Framework/static assets carry no page content and must always be
+// reachable — redirecting them to /qa-login (as this gate does for pages)
+// serves the login page's HTML in place of a JS/CSS file, which breaks
+// parsing on the client ("Unexpected token '<'") and leaves the login page
+// itself unstyled and unhydrated, unable to log in.
+const GATE_EXEMPT_PATH = /^\/(_next\/static|_next\/image|static|assets\/|favicon|manifest\.json|sw\.js|workbox)/;
+
 const normalizeHostname = (hostname: string) => hostname.trim().toLowerCase();
 
 const gateHosts = new Set(
@@ -129,7 +136,8 @@ export async function enforceBasicAuthGate(request: NextRequest): Promise<NextRe
   if (
     pathname === BASIC_AUTH_HEALTHCHECK_PATH ||
     pathname === QA_LOGIN_PATH ||
-    pathname === QA_LOGIN_API_PATH
+    pathname === QA_LOGIN_API_PATH ||
+    GATE_EXEMPT_PATH.test(pathname)
   )
     return null;
 
