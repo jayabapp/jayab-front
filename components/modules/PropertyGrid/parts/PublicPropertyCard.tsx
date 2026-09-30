@@ -62,6 +62,7 @@ const PublicPropertyCard = ({ data, goToLink }: PublicPropertyCardProps) => (
           </p>
           <PropertyPrice
             emphasis
+            reserveDiscountSpace
             containerClass="flex min-w-0 flex-col gap-0 text-left"
             data={{
               discounted_price: data.today_price?.discounted_price,

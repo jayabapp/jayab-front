@@ -8,6 +8,7 @@ const PropertyPrice = ({
   ribbon,
   containerClass,
   emphasis = false,
+  reserveDiscountSpace = false,
 }: PropertyPriceProps) => (
   <div className={containerClass || "flex flex-col w-fit gap-0 md:gap-0"}>
     {ribbon?.ribbon_title ? (
@@ -43,6 +44,11 @@ const PropertyPrice = ({
           </div>
         ) : null}
       </div>
+    ) : reserveDiscountSpace ? (
+      <div
+        aria-hidden="true"
+        className={emphasis ? "min-h-6" : "min-h-5"}
+      />
     ) : null}
 
     <p className={`font-bold ${emphasis ? "text-xl md:text-2xl" : "text-sm"}`}>
