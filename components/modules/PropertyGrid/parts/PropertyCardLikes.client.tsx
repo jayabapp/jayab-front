@@ -9,6 +9,7 @@ import _STRINGS from "@/utils/LocalStrings";
 const PropertyCardLikes = ({
   favoriteCount,
   propertyId,
+  forceFilled = false,
 }: PropertyCardLikesProps) => {
   const { likes, ssrLikedProducts } = useStoreParams((state) => state);
   const isLiked = likes?.includes(propertyId);
@@ -21,7 +22,7 @@ const PropertyCardLikes = ({
         alt={_STRINGS.LIKES}
         className="w-4 h-4 aspect-square"
         src={
-          isLiked
+          forceFilled || isLiked
             ? "/assets/icons/adds/filled_heart.svg"
             : "/assets/icons/adds/empty_heart.svg"
         }

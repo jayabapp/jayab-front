@@ -23,6 +23,11 @@ export type PropertyCardProps = {
   onPhotoUpgradeClick?: (property: PropertyListDto) => void;
 };
 
+export type PublicPropertyCardProps = {
+  data: PropertyListDto;
+  goToLink: string;
+};
+
 export type PropertyGridItemsProps = {
   banners?: HomeBannerDto[];
   data: PropertyListDto[];
@@ -49,6 +54,7 @@ export type PropertyCardLinkProps = {
 export type PropertyCardLikesProps = {
   favoriteCount?: number;
   propertyId: number;
+  forceFilled?: boolean;
 };
 
 export type PropertyCardFeaturesProps = {

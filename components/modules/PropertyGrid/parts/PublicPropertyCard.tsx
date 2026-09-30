@@ -1,17 +1,12 @@
 import { PROPERTY_IMAGE_QUALITY } from "@features/properties/constants/image";
 import { getPropertyImageUrl } from "@features/properties/mappers/property-image.mapper";
 import { ContentImage } from "@elements/Image";
-import type { PropertyListDto } from "@/api_services/property/property.interface";
+import type { PublicPropertyCardProps } from "@/types/components/modules/property-grid";
 
 import PropertyCardLikes from "./PropertyCardLikes.client";
 import PropertyCardLink from "./PropertyCardLink.client";
 import PropertyPrice from "../PropertyPrice";
 import _STRINGS from "@/utils/LocalStrings";
-
-type PublicPropertyCardProps = {
-  data: PropertyListDto;
-  goToLink: string;
-};
 
 const PublicPropertyCard = ({ data, goToLink }: PublicPropertyCardProps) => (
   <div className="surface-card property-card-shadow flex w-full flex-col gap-3 p-3 sm:p-4">
@@ -47,7 +42,7 @@ const PublicPropertyCard = ({ data, goToLink }: PublicPropertyCardProps) => (
           </p>
         </div>
 
-        <div className="flex w-full items-center justify-between gap-2">
+        <div className="flex w-full items-center gap-2">
           <p className="line-clamp-1 text-sm text-neutral-700">
             {data.total_bedrooms
               ? `${data.total_bedrooms} ${_STRINGS.ROOM}، `
@@ -55,23 +50,35 @@ const PublicPropertyCard = ({ data, goToLink }: PublicPropertyCardProps) => (
             {_STRINGS.UP_TO} {data.max_capacity} {_STRINGS.PERSON}
           </p>
           <PropertyCardLikes
+            forceFilled
             propertyId={data.id}
             favoriteCount={data.favorite_count}
           />
         </div>
 
-        <p className="mt-auto pt-1 text-sm text-neutral-700">
-          {_STRINGS.TODAYS_PRICE}
-        </p>
+        <div className="mt-auto flex w-full items-end justify-between gap-2 pt-2">
+          <p className="shrink-0 text-sm text-neutral-700">
+            {_STRINGS.TODAYS_PRICE}
+          </p>
+          <PropertyPrice
+            emphasis
+            containerClass="flex min-w-0 flex-col gap-0 text-left"
+            data={{
+              discounted_price: data.today_price?.discounted_price,
+              price: data.today_price?.price,
+              discount_percentage: data.today_price?.discount_percentage,
+            }}
+          />
+        </div>
       </PropertyCardLink>
 
-      <div className="order-2 flex w-full flex-col gap-2">
+      <div className="order-2 flex w-full">
         <PropertyCardLink
           title={data.title}
           href={goToLink}
-          className="flex w-full !outline-none"
+          className="flex h-full w-full !outline-none"
         >
-          <div className="relative aspect-square w-full overflow-hidden rounded-[1.75rem]">
+          <div className="relative min-h-[7.75rem] w-full overflow-hidden rounded-[1.75rem]">
             <ContentImage
               fill
               loading="lazy"
@@ -120,21 +127,6 @@ const PublicPropertyCard = ({ data, goToLink }: PublicPropertyCardProps) => (
               </div>
             ) : null}
           </div>
-        </PropertyCardLink>
-
-        <PropertyCardLink
-          title={data.title}
-          href={goToLink}
-          className="flex w-full !outline-none"
-        >
-          <PropertyPrice
-            emphasis
-            data={{
-              discounted_price: data.today_price?.discounted_price,
-              price: data.today_price?.price,
-              discount_percentage: data.today_price?.discount_percentage,
-            }}
-          />
         </PropertyCardLink>
       </div>
     </div>
