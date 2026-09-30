@@ -1,8 +1,11 @@
 const ChatRoomSkeleton = () => (
   <div className="flex h-[100dvh] w-full animate-pulse flex-col bg-neutral-100 motion-reduce:animate-none md:w-1/2 ">
-    <div className="flex h-20 items-center gap-3 bg-white px-4 shadow-sm">
-      <div className="size-12 rounded-full bg-neutral-200" />
-      <div className="h-4 w-1/3 rounded bg-neutral-200" />
+    <div className="bg-white shadow-sm">
+      <div className="flex h-20 items-center gap-3 px-4">
+        <div className="size-12 rounded-full bg-neutral-200" />
+        <div className="h-4 w-1/3 rounded bg-neutral-200" />
+      </div>
+      <div className="h-20 border-t border-amber-100 bg-amber-50" />
     </div>
     <div className="flex flex-1 flex-col justify-end gap-5 p-4">
       <div className="h-16 w-2/3 rounded-xl rounded-br-none bg-neutral-200" />

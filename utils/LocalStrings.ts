@@ -17,6 +17,13 @@ const _STRINGS = {
   MESSAGE_SENDING: "در حال ارسال",
   MESSAGE_SEND_FAILED: "ارسال ناموفق",
   CHAT_RECONNECTING: "در حال اتصال مجدد...",
+  CHAT_SECURITY_WARNING_TITLE: "هشدار امنیتی",
+  CHAT_SECURITY_WARNING_START: "جایاب هرگز",
+  CHAT_SECURITY_WARNING_SENSITIVE_INFO: "رمز عبور یا کد تأیید پیامکی",
+  CHAT_SECURITY_WARNING_END:
+    "شما را درخواست نمی‌کند. در صورت مشاهده پیام مشکوک یا فردی که خود را پشتیبانی جایاب معرفی می‌کند، از ارسال کد و اطلاعات حساس خودداری کرده و موضوع را گزارش کنید.",
+  CHAT_SECURITY_WARNING_LEGAL:
+    "مکالمات در جایاب ثبت و قابل بررسی است و در صورت تخلف، مطابق ضوابط قانونی و درخواست مراجع ذی‌صلاح پیگیری خواهد شد.",
   CHAT_ACCOUNT_MISMATCH_TITLE: "ورود با شماره دیگر",
   CHAT_ACCOUNT_MISMATCH:
     "شما با شماره دیگری این آگهی را ثبت کرده‌اید، جهت مشاهده پیام‌ها با همان خط وارد برنامه شوید.",

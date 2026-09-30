@@ -1,13 +1,15 @@
 "use client";
 
+import { useLayoutEffect, useRef, useState } from "react";
 import { resolveChatImage } from "@features/chat/presentation/chat.presenter";
 import { useBlockChatUser } from "@features/chat/hooks/useBlockChatUser";
-import type { ChatHeaderProps } from "@/types/components/modules/chat";
 import { ContentImage } from "@elements/Image";
 import { BtnLoading } from "@elements/Button";
 import { useRouter } from "next/navigation";
-import { useState } from "react";
 
+import type { ChatHeaderProps } from "@/types/components/modules/chat";
+
+import ChatSecurityNotice from "./ChatSecurityNotice";
 import ConfirmModal from "@elements/Modal/ConfirmModal.client";
 import _STRINGS from "@/utils/LocalStrings";
 import Image from "next/image";
@@ -21,6 +23,7 @@ const ChatHeader = ({
   is_recipient_online,
 }: ChatHeaderProps) => {
   const router = useRouter();
+  const headerRef = useRef<HTMLDivElement>(null);
   const [showBlock, setShowBlock] = useState(false);
   const isBlocked = !!data?.is_blocked;
 
@@ -50,89 +53,133 @@ const ChatHeader = ({
     if (window.history.length <= 1) router.push("/");
     else router.back();
   };
+
+  useLayoutEffect(() => {
+    const header = headerRef.current;
+    const chatContainer = header?.closest<HTMLElement>(".chat-container");
+    if (!header || !chatContainer) return;
+
+    const setChatOffsets = () => {
+      const headerBottom = Math.ceil(
+        header.getBoundingClientRect().bottom -
+          chatContainer.getBoundingClientRect().top,
+      );
+      chatContainer.style.setProperty(
+        "--chat-header-bottom",
+        `${headerBottom}px`,
+      );
+      // Keep enough room for the reconnecting status if it appears below header.
+      chatContainer.style.setProperty(
+        "--chat-body-top-offset",
+        `${headerBottom + 44}px`,
+      );
+    };
+
+    setChatOffsets();
+    const observer = new ResizeObserver(setChatOffsets);
+    observer.observe(header);
+    window.addEventListener("resize", setChatOffsets);
+
+    return () => {
+      observer.disconnect();
+      window.removeEventListener("resize", setChatOffsets);
+      chatContainer.style.removeProperty("--chat-header-bottom");
+      chatContainer.style.removeProperty("--chat-body-top-offset");
+    };
+  }, []);
+
   return (
-    <div className="flex fixed  justify-between pr-2 z-50 md:z-30 bg-white   w-full left-0  md:left-[10%] md:right-[10%] mx-auto lg:top-0 md:w-[50%]   min-h-[4.25rem]   top-0 xl:top-[4.5rem] pt-4 items-center gap-2 pb-3 shadow-md ">
-      <div className="flex items-center w-full gap-2">
-        <Image
-          src="/assets/icons/shared/chevron.svg"
-          alt="بازگشت"
-          width={16}
-          height={16}
-          onClick={(e) => {
-            e.preventDefault();
-            e.stopPropagation();
-            handleBackClick();
-          }}
-          className="  h-4 aspect-square w-4 -rotate-90  justify-start  "
-        />
-        <div className="flex items-center   w-full gap-2">
-          {image ? (
-            <div className="w-10 shrink-0 relative flex items-center aspect-square">
-              <div
-                className={`absolute bottom-0 left-0 z-10 size-2 rounded-full ${is_recipient_online ? "bg-emerald-400" : "bg-neutral-400"}`}
-              />
-              <ContentImage
-                src={
-                  image
-                    ? resolveChatImage(image)
-                    : "/assets/icons/logo/logo.svg"
-                }
-                alt={name || _STRINGS.CHAT}
-                width={56}
-                height={56}
-                className="w-10 col-span-1 md:w-14 rounded-full  clear-left  aspect-square"
-              />
-            </div>
-          ) : (
-            <></>
-          )}
-          <Link
-            href={goToLink}
-            title={name || _STRINGS.CHAT}
-            className="flex h-full flex-col justify-around col-span-3"
-          >
-            {!!name || !!data?.recipient?.user_mobile_number ? (
-              <>
-                {" "}
-                <p className="text-sm md:text-base">{name || _STRINGS?.CHAT}</p>
-                <p className="text-xs font-extralight md:text-sm">
-                  {description}
-                </p>
-                {!!data?.recipient?.user_mobile_number ? (
-                  <div className="w-full flex items-center gap-0.5 ">
-                    <Image
-                      className="w-5 h-5"
-                      src="/assets/icons/chat/basil_user.svg"
-                      alt="کاربر"
-                      width={20}
-                      height={20}
-                    />
-                    <p className="text-xs !leading-2 opacity-50 mt-1 ">
-                      {data?.recipient?.user_mobile_number}
-                    </p>
-                  </div>
-                ) : (
-                  <></>
-                )}
-              </>
+    <div
+      ref={headerRef}
+      className="fixed left-0 top-0 z-50 mx-auto w-full bg-white shadow-md md:left-[10%] md:right-[10%] md:z-30 md:w-1/2 xl:top-[4.5rem]"
+    >
+      <div className="flex min-h-[4.25rem] items-center justify-between gap-2 px-2 pb-3 pt-4">
+        <div className="flex w-full items-center gap-2">
+          <Image
+            src="/assets/icons/shared/chevron.svg"
+            alt="بازگشت"
+            width={16}
+            height={16}
+            onClick={(e) => {
+              e.preventDefault();
+              e.stopPropagation();
+              handleBackClick();
+            }}
+            className="  h-4 aspect-square w-4 -rotate-90  justify-start  "
+          />
+          <div className="flex items-center   w-full gap-2">
+            {image ? (
+              <div className="w-10 shrink-0 relative flex items-center aspect-square">
+                <div
+                  className={`absolute bottom-0 left-0 z-10 size-2 rounded-full ${is_recipient_online ? "bg-emerald-400" : "bg-neutral-400"}`}
+                />
+                <ContentImage
+                  src={
+                    image
+                      ? resolveChatImage(image)
+                      : "/assets/icons/logo/logo.svg"
+                  }
+                  alt={name || _STRINGS.CHAT}
+                  width={56}
+                  height={56}
+                  className="w-10 col-span-1 md:w-14 rounded-full  clear-left  aspect-square"
+                />
+              </div>
             ) : (
-              <>
-                <BtnLoading />
-              </>
+              <></>
             )}
-          </Link>
+            <Link
+              href={goToLink}
+              title={name || _STRINGS.CHAT}
+              className="flex h-full flex-col justify-around col-span-3"
+            >
+              {!!name || !!data?.recipient?.user_mobile_number ? (
+                <>
+                  {" "}
+                  <p className="text-sm md:text-base">
+                    {name || _STRINGS?.CHAT}
+                  </p>
+                  <p className="text-xs font-extralight md:text-sm">
+                    {description}
+                  </p>
+                  {!!data?.recipient?.user_mobile_number ? (
+                    <div className="w-full flex items-center gap-0.5 ">
+                      <Image
+                        className="w-5 h-5"
+                        src="/assets/icons/chat/basil_user.svg"
+                        alt="کاربر"
+                        width={20}
+                        height={20}
+                      />
+                      <p className="text-xs !leading-2 opacity-50 mt-1 ">
+                        {data?.recipient?.user_mobile_number}
+                      </p>
+                    </div>
+                  ) : (
+                    <></>
+                  )}
+                </>
+              ) : (
+                <>
+                  <BtnLoading />
+                </>
+              )}
+            </Link>
+          </div>
         </div>
+        <Image
+          onClick={showBlockFunc}
+          className={`w-6 h-6 cursor-pointer aspect-square ${
+            isBlocked ? "" : "grayscale"
+          }   transition-all ml-4 opacity-65 hover:opacity-100 hover:grayscale-0 `}
+          src="/assets/icons/chat/chat_block.svg"
+          alt="مسدود کردن کاربر"
+          width={24}
+          height={24}
+        />
       </div>
-      <Image
-        onClick={showBlockFunc}
-        className={`w-6 h-6 cursor-pointer aspect-square ${
-          isBlocked ? "" : "grayscale"
-        }   transition-all ml-4 opacity-65 hover:opacity-100 hover:grayscale-0 `}
-        src="/assets/icons/chat/chat_block.svg"
-        alt="مسدود کردن کاربر"
-        width={24}
-        height={24}
-      />
+
+      <ChatSecurityNotice />
 
       <ConfirmModal
         text={

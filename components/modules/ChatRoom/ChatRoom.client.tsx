@@ -1,13 +1,14 @@
 "use client";
 
+import { isChatAccountMismatch } from "@features/chat/lib/chat-error";
 import { useDeleteMessage } from "@features/chat/hooks/useDeleteMessage";
 import { useChatMessages } from "@features/chat/hooks/useChatMessages";
-import { useChatRealtime } from "@features/chat/hooks/useChatRealtime";
-import { isChatAccountMismatch } from "@features/chat/lib/chat-error";
-import type { ChatRoomProps } from "@/types/components/modules/chat";
-import { useChatDetails } from "@features/chat/hooks/useChatDetails";
 import { useSearchParams } from "next/navigation";
+import { useChatRealtime } from "@features/chat/hooks/useChatRealtime";
+import { useChatDetails } from "@features/chat/hooks/useChatDetails";
 import { useChatStore } from "@/store";
+
+import type { ChatRoomProps } from "@/types/components/modules/chat";
 
 import ChatAccessDenied from "./parts/ChatAccessDenied.client";
 import ConfirmModal from "@elements/Modal/ConfirmModal.client";
@@ -74,7 +75,7 @@ const ChatRoomView = ({ chatId }: ChatRoomProps) => {
         image={details.property.feature_image}
       />
       {connecting ? (
-        <div className="absolute top-20 z-40 w-full bg-amber-100 py-1 text-center text-xs text-amber-800">
+        <div className="absolute top-[var(--chat-header-bottom,12rem)] z-40 w-full bg-amber-100 py-1 text-center text-xs text-amber-800">
           {_STRINGS.CHAT_RECONNECTING}
         </div>
       ) : (

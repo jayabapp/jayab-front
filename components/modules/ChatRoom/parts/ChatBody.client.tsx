@@ -1,8 +1,9 @@
 "use client";
 
-import type { ChatBodyProps } from "@/types/components/modules/chat";
 import { useEffect, useRef } from "react";
 import { useChatStore } from "@/store";
+
+import type { ChatBodyProps } from "@/types/components/modules/chat";
 
 import PrivateOthersMessage from "./PrivateOthersMessage.client";
 import MyMessageItem from "./MyMessageItem.client";
@@ -52,7 +53,7 @@ const ChatBody = ({
         onScroll={(event) => {
           if (event.currentTarget.scrollTop < 80) void loadOlderMessages();
         }}
-        className="grid max-h-[90dvh] w-full grid-cols-3 items-end justify-center gap-6 overflow-y-scroll pb-4 pt-24 md:pt-36"
+        className="grid max-h-[90dvh] w-full grid-cols-3 items-end justify-center gap-6 overflow-y-scroll pb-4 pt-[var(--chat-body-top-offset,13rem)]"
       >
         {isFetchingNextPage ? (
           <div
