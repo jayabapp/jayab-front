@@ -70,7 +70,7 @@ function consumeSsoToken(request: NextRequest) {
 }
 
 export async function proxy(request: NextRequest) {
-  const gateResponse = enforceBasicAuthGate(request);
+  const gateResponse = await enforceBasicAuthGate(request);
   if (gateResponse) return gateResponse;
 
   if (ROUTING_LOGIC_EXCLUDED_PATH.test(request.nextUrl.pathname)) {

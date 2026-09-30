@@ -1,13 +1,24 @@
 import { NextRequest, NextResponse } from "next/server";
 import { getRequestHostname } from "./indexingPolicy";
 
+// Originally HTTP Basic Auth (a native browser credential prompt, no page).
+// Replaced with a real login page + session cookie per product decision —
+// same env vars (BASIC_AUTH_HOSTS/USER/PASSWORD), same rollback story
+// (clear either credential var, restart, no rebuild), different mechanism:
+// an unauthenticated request is redirected to /qa-login instead of
+// challenged with a 401. Filename kept to avoid re-touching every doc that
+// references it.
 const DEFAULT_GATE_HOSTS = ["jayab.org", "www.jayab.org"];
-const REALM = "Jayab QA";
 
-// Bypassed unauthenticated so the load balancer / uptime monitor never sees
-// this deployment as unhealthy just because it also requires credentials.
-// Reveals nothing beyond process liveness.
+// Bypassed so the load balancer / uptime monitor never sees this deployment
+// as unhealthy just because it also requires credentials. Reveals nothing
+// beyond process liveness.
 export const BASIC_AUTH_HEALTHCHECK_PATH = "/api/healthz";
+
+export const QA_LOGIN_PATH = "/qa-login";
+export const QA_LOGIN_API_PATH = "/api/qa-login";
+export const QA_GATE_COOKIE = "qa_gate_session";
+const QA_GATE_COOKIE_MAX_AGE = 30 * 24 * 60 * 60;
 
 const normalizeHostname = (hostname: string) => hostname.trim().toLowerCase();
 
@@ -17,18 +28,18 @@ const gateHosts = new Set(
     .filter(Boolean),
 );
 
-const isGateHost = (hostname: string) => gateHosts.has(normalizeHostname(hostname));
+export const isGateHost = (hostname: string) => gateHosts.has(normalizeHostname(hostname));
 
 // Both must be set. Clearing either one is the rollback switch: they are
 // server-only env vars (never NEXT_PUBLIC_*), read per-request, so turning
 // the gate off only needs a restart, not a rebuild of Front.
-const isGateConfigured = () =>
+export const isGateConfigured = () =>
   Boolean(process.env.BASIC_AUTH_USER && process.env.BASIC_AUTH_PASSWORD);
 
 // A plain `===` short-circuits on the first differing character, which leaks
 // how many leading characters of a guess were correct through response
 // timing. XOR-accumulate over the full length instead of returning early.
-function timingSafeStringEqual(a: string, b: string) {
+export function timingSafeStringEqual(a: string, b: string) {
   const length = Math.max(a.length, b.length);
   let diff = a.length === b.length ? 0 : 1;
   for (let i = 0; i < length; i += 1) {
@@ -37,30 +48,48 @@ function timingSafeStringEqual(a: string, b: string) {
   return diff === 0;
 }
 
-function decodeBasicAuthHeader(header: string | null) {
-  if (!header?.startsWith("Basic ")) return null;
-  try {
-    const decoded = atob(header.slice("Basic ".length));
-    const separatorIndex = decoded.indexOf(":");
-    if (separatorIndex === -1) return null;
-    return {
-      user: decoded.slice(0, separatorIndex),
-      password: decoded.slice(separatorIndex + 1),
-    };
-  } catch {
-    return null;
-  }
+const toHex = (buffer: ArrayBuffer) =>
+  Array.from(new Uint8Array(buffer))
+    .map((byte) => byte.toString(16).padStart(2, "0"))
+    .join("");
+
+// The session cookie is a deterministic digest of the current gate password
+// (Web Crypto, so this also runs on the Edge runtime — no Node `crypto`).
+// It needs no server-side session store: verifying it just means
+// recomputing the same digest from today's env var and comparing. A bonus
+// of that: rotating BASIC_AUTH_PASSWORD instantly invalidates every
+// previously issued cookie, with no separate revocation step.
+export async function computeQaGateSessionToken(password: string) {
+  const data = new TextEncoder().encode(`qa-gate-session:${password}`);
+  const digest = await crypto.subtle.digest("SHA-256", data);
+  return toHex(digest);
 }
 
-function unauthorizedResponse() {
-  return new NextResponse("Authentication required.", {
-    status: 401,
-    headers: {
-      "WWW-Authenticate": `Basic realm="${REALM}", charset="UTF-8"`,
-      "Cache-Control": "no-store",
-      "X-Robots-Tag": "noindex, nofollow",
-    },
+async function hasValidSessionCookie(request: NextRequest) {
+  const cookieValue = request.cookies.get(QA_GATE_COOKIE)?.value;
+  if (!cookieValue) return false;
+  const expected = await computeQaGateSessionToken(process.env.BASIC_AUTH_PASSWORD || "");
+  return timingSafeStringEqual(cookieValue, expected);
+}
+
+export function setQaGateSessionCookie(response: NextResponse, token: string) {
+  response.cookies.set(QA_GATE_COOKIE, token, {
+    path: "/",
+    httpOnly: true,
+    sameSite: "lax",
+    secure: process.env.NODE_ENV === "production",
+    maxAge: QA_GATE_COOKIE_MAX_AGE,
   });
+}
+
+function redirectToLogin(request: NextRequest) {
+  const target = new URL(QA_LOGIN_PATH, request.url);
+  const next = `${request.nextUrl.pathname}${request.nextUrl.search}`;
+  if (next && next !== QA_LOGIN_PATH) target.searchParams.set("next", next);
+  const response = NextResponse.redirect(target, 307);
+  response.headers.set("Cache-Control", "no-store");
+  response.headers.set("X-Robots-Tag", "noindex, nofollow");
+  return response;
 }
 
 // Best-effort, single-instance guard against casual credential guessing. It
@@ -72,7 +101,7 @@ const FAILED_ATTEMPT_WINDOW_MS = 5 * 60 * 1000;
 const FAILED_ATTEMPT_LIMIT = 20;
 const failedAttemptsByIp = new Map<string, number[]>();
 
-function isRateLimited(key: string) {
+export function isLoginRateLimited(key: string) {
   const now = Date.now();
   const recent = (failedAttemptsByIp.get(key) || []).filter(
     (timestamp) => now - timestamp < FAILED_ATTEMPT_WINDOW_MS,
@@ -81,43 +110,30 @@ function isRateLimited(key: string) {
   return recent.length >= FAILED_ATTEMPT_LIMIT;
 }
 
-function recordFailedAttempt(key: string) {
+export function recordFailedLoginAttempt(key: string) {
   const recent = failedAttemptsByIp.get(key) || [];
   recent.push(Date.now());
   failedAttemptsByIp.set(key, recent);
 }
 
 /**
- * Returns a 401 challenge when the request must be blocked, or `null` when
- * it should proceed. Never logs the password, only the client IP, host and
- * path of a rejected attempt.
+ * Returns a redirect to the login page when the request must be blocked, or
+ * `null` when it should proceed. Never logs the password, only the client
+ * IP, host and path of a rejected attempt.
  */
-export function enforceBasicAuthGate(request: NextRequest): NextResponse | null {
+export async function enforceBasicAuthGate(request: NextRequest): Promise<NextResponse | null> {
   const hostname = getRequestHostname(request);
   if (!isGateHost(hostname) || !isGateConfigured()) return null;
-  if (request.nextUrl.pathname === BASIC_AUTH_HEALTHCHECK_PATH) return null;
 
-  const clientIp = request.headers.get("x-forwarded-for")?.split(",")[0]?.trim() || "unknown";
+  const { pathname } = request.nextUrl;
+  if (
+    pathname === BASIC_AUTH_HEALTHCHECK_PATH ||
+    pathname === QA_LOGIN_PATH ||
+    pathname === QA_LOGIN_API_PATH
+  )
+    return null;
 
-  if (isRateLimited(clientIp)) {
-    console.warn(`[basic-auth-gate] rate limited ip=${clientIp} host=${hostname}`);
-    return unauthorizedResponse();
-  }
+  if (await hasValidSessionCookie(request)) return null;
 
-  const credentials = decodeBasicAuthHeader(request.headers.get("authorization"));
-  const userMatches = timingSafeStringEqual(credentials?.user || "", process.env.BASIC_AUTH_USER || "");
-  const passwordMatches = timingSafeStringEqual(
-    credentials?.password || "",
-    process.env.BASIC_AUTH_PASSWORD || "",
-  );
-
-  if (!credentials || !userMatches || !passwordMatches) {
-    recordFailedAttempt(clientIp);
-    console.warn(
-      `[basic-auth-gate] rejected ip=${clientIp} host=${hostname} path=${request.nextUrl.pathname}`,
-    );
-    return unauthorizedResponse();
-  }
-
-  return null;
+  return redirectToLogin(request);
 }
