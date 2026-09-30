@@ -25,7 +25,29 @@ const QA_GATE_COOKIE_MAX_AGE = 30 * 24 * 60 * 60;
 // serves the login page's HTML in place of a JS/CSS file, which breaks
 // parsing on the client ("Unexpected token '<'") and leaves the login page
 // itself unstyled and unhydrated, unable to log in.
-const GATE_EXEMPT_PATH = /^\/(_next\/static|_next\/image|static|assets\/|favicon|manifest\.json|sw\.js|workbox)/;
+//
+// Listed as exact paths / directory prefixes rather than a loose regex
+// prefix match (e.g. a bare `favicon` or `static` prefix) on purpose: an
+// unanchored prefix would also exempt any future page route that happens to
+// start with the same characters (`/favicon-leak`, `/static-report`, ...),
+// silently bypassing the gate for it.
+const GATE_EXEMPT_DIR_PREFIXES = ["/_next/static/", "/_next/image", "/static/", "/assets/"];
+const GATE_EXEMPT_EXACT_PATHS = new Set([
+  "/favicon.ico",
+  "/favicon.svg",
+  "/favicon-96x96.png",
+  "/apple-touch-icon.png",
+  "/manifest.json",
+  "/web-app-manifest-192x192.png",
+  "/web-app-manifest-512x512.png",
+  "/firebase-messaging-sw.js",
+  "/next.svg",
+  "/vercel.svg",
+]);
+
+const isGateExemptPath = (pathname: string) =>
+  GATE_EXEMPT_EXACT_PATHS.has(pathname) ||
+  GATE_EXEMPT_DIR_PREFIXES.some((prefix) => pathname.startsWith(prefix));
 
 const normalizeHostname = (hostname: string) => hostname.trim().toLowerCase();
 
@@ -99,6 +121,29 @@ function redirectToLogin(request: NextRequest) {
   return response;
 }
 
+// `X-Forwarded-For` is attacker-controlled input: a client can send any
+// value it wants, and if the FIRST entry is trusted naively, an attacker
+// defeats the rate limiter below by sending a fresh fake leading IP on every
+// request. A reverse proxy that appends the real client IP (the common
+// nginx `proxy_add_x_forwarded_for` behaviour) puts the trustworthy value
+// LAST, not first. `X-Real-IP` is normally set by the proxy itself via
+// `proxy_set_header`, which overwrites rather than appends, so a
+// client-supplied copy of that header is discarded before it reaches this
+// process; Cloudflare's `CF-Connecting-IP` is rewritten at the edge the same
+// way. Prefer both over `X-Forwarded-For` when present.
+export function getTrustedClientIp(request: NextRequest) {
+  const cfIp = request.headers.get("cf-connecting-ip");
+  if (cfIp) return cfIp.trim();
+  const realIp = request.headers.get("x-real-ip");
+  if (realIp) return realIp.trim();
+  const forwardedFor = request.headers.get("x-forwarded-for");
+  if (forwardedFor) {
+    const hops = forwardedFor.split(",").map((hop) => hop.trim()).filter(Boolean);
+    if (hops.length > 0) return hops[hops.length - 1];
+  }
+  return "unknown";
+}
+
 // Best-effort, single-instance guard against casual credential guessing. It
 // resets on restart and is not shared across instances or regions, so it is
 // not a substitute for a real limiter at the CDN/ingress layer if this
@@ -106,6 +151,10 @@ function redirectToLogin(request: NextRequest) {
 // scripted attempts against a single process.
 const FAILED_ATTEMPT_WINDOW_MS = 5 * 60 * 1000;
 const FAILED_ATTEMPT_LIMIT = 20;
+// Caps memory use if an attacker floods distinct (real or spoofed) IPs
+// instead of retrying the same one — the limiter is best-effort, so simply
+// dropping all tracked history when this fills is an acceptable reset.
+const MAX_TRACKED_IPS = 5000;
 const failedAttemptsByIp = new Map<string, number[]>();
 
 export function isLoginRateLimited(key: string) {
@@ -118,6 +167,7 @@ export function isLoginRateLimited(key: string) {
 }
 
 export function recordFailedLoginAttempt(key: string) {
+  if (failedAttemptsByIp.size >= MAX_TRACKED_IPS) failedAttemptsByIp.clear();
   const recent = failedAttemptsByIp.get(key) || [];
   recent.push(Date.now());
   failedAttemptsByIp.set(key, recent);
@@ -137,7 +187,7 @@ export async function enforceBasicAuthGate(request: NextRequest): Promise<NextRe
     pathname === BASIC_AUTH_HEALTHCHECK_PATH ||
     pathname === QA_LOGIN_PATH ||
     pathname === QA_LOGIN_API_PATH ||
-    GATE_EXEMPT_PATH.test(pathname)
+    isGateExemptPath(pathname)
   )
     return null;
 

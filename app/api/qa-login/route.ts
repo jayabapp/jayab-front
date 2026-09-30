@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
 import {
   computeQaGateSessionToken,
+  getTrustedClientIp,
   isGateConfigured,
   isLoginRateLimited,
   recordFailedLoginAttempt,
@@ -12,7 +13,7 @@ export async function POST(request: NextRequest) {
   if (!isGateConfigured())
     return NextResponse.json({ ok: false, message: "GATE_NOT_CONFIGURED" }, { status: 503 });
 
-  const clientIp = request.headers.get("x-forwarded-for")?.split(",")[0]?.trim() || "unknown";
+  const clientIp = getTrustedClientIp(request);
   if (isLoginRateLimited(clientIp))
     return NextResponse.json({ ok: false, message: "RATE_LIMITED" }, { status: 429 });
 

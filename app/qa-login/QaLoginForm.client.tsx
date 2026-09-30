@@ -1,6 +1,7 @@
 "use client";
 
 import { Icon } from "@elements/Icon";
+import { safeInternalPath } from "@/helpers/safeRedirect";
 import { useRouter } from "next/navigation";
 import { useState, type FormEvent } from "react";
 
@@ -34,7 +35,7 @@ const QaLoginForm = ({ next }: { next?: string }) => {
         );
         return;
       }
-      const destination = next && next.startsWith("/") ? next : "/";
+      const destination = safeInternalPath(next) || "/";
       router.replace(destination);
       router.refresh();
     } catch {
