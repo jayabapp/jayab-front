@@ -8,6 +8,7 @@ import PropertyCardOwnerActions from "./parts/PropertyCardOwnerActions";
 import PropertyCardFeatures from "./parts/PropertyCardFeatures";
 import PropertyCardLikes from "./parts/PropertyCardLikes.client";
 import PropertyCardLink from "./parts/PropertyCardLink.client";
+import PublicPropertyCard from "./parts/PublicPropertyCard";
 import queryBuilder from "@/helpers/queryBuilder";
 import PropertyPrice from "./PropertyPrice";
 import StatusShower from "@elements/StatusShower";
@@ -30,6 +31,8 @@ const PropertyCard = ({
   const goToLink = isOwner
     ? `/profile/owner/properties/${data?.id}`
     : `/rooms/${data?.slug}${staySearch ? `?${staySearch}` : ""}`;
+
+  if (!isOwner) return <PublicPropertyCard data={data} goToLink={goToLink} />;
 
   return (
     <div className="surface-card property-card-shadow flex w-full flex-col justify-between gap-2 p-3">

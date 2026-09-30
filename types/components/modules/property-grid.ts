@@ -67,6 +67,7 @@ export type PropertyAuthorizationStatusProps = {
 
 export type PropertyPriceProps = {
   containerClass?: string;
+  emphasis?: boolean;
   data: { discount_percentage?: number; discounted_price?: number; price?: number };
   ribbon?: {
     ribbon_bg_color?: string;

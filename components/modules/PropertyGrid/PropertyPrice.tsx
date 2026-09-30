@@ -7,6 +7,7 @@ const PropertyPrice = ({
   data,
   ribbon,
   containerClass,
+  emphasis = false,
 }: PropertyPriceProps) => (
   <div className={containerClass || "flex flex-col w-fit gap-0 md:gap-0"}>
     {ribbon?.ribbon_title ? (
@@ -23,22 +24,34 @@ const PropertyPrice = ({
 
     {data?.discounted_price ? (
       <div className="relative gap-2 flex items-center">
-        <p className="text-xs md:text-xs relative flex items-center line-through opacity-65">
+        <p
+          className={`relative flex items-center line-through opacity-65 ${
+            emphasis ? "text-sm" : "text-xs md:text-xs"
+          }`}
+        >
           {numberWithCommas(data?.price)}
         </p>
         {data?.discount_percentage ? (
-          <div className="w-7 gap-0.5 flex-col h-5 rounded-full transition-all px-1 py-[0.2rem] bg-danger-500 text-white aspect-square flex items-center justify-center">
-            <p className="text-xxs">%{data?.discount_percentage}</p>
+          <div
+            className={`flex aspect-square flex-col items-center justify-center gap-0.5 rounded-full bg-danger-500 px-1 py-[0.2rem] text-white transition-all ${
+              emphasis ? "h-6 w-9" : "h-5 w-7"
+            }`}
+          >
+            <p className={emphasis ? "text-xs" : "text-xxs"}>
+              %{data?.discount_percentage}
+            </p>
           </div>
         ) : null}
       </div>
     ) : null}
 
-    <p className="font-bold text-sm">
+    <p className={`font-bold ${emphasis ? "text-xl md:text-2xl" : "text-sm"}`}>
       {numberWithCommas(
         data?.discounted_price ? data?.discounted_price : data?.price,
       )}{" "}
-      <span className="text-xxs">{_STRINGS.TOMAN}</span>
+      <span className={emphasis ? "text-xs" : "text-xxs"}>
+        {_STRINGS.TOMAN}
+      </span>
     </p>
   </div>
 );
