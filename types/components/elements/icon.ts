@@ -12,6 +12,8 @@ export type IconName =
   | "clock"
   | "copy"
   | "expand"
+  | "eye"
+  | "eye-off"
   | "heart"
   | "home"
   | "images"

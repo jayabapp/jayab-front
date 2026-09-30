@@ -1,15 +1,17 @@
 "use client";
 
+import { Icon } from "@elements/Icon";
 import { useRouter } from "next/navigation";
 import { useState, type FormEvent } from "react";
 
 const INPUT_CLASS =
-  "h-11 rounded-10 border border-neutral-200 px-3 text-sm text-neutral-900 outline-none focus-visible:ring-2 focus-visible:ring-brand-500";
+  "h-11 w-full rounded-10 border border-neutral-200 px-3 text-sm text-neutral-900 outline-none focus-visible:ring-2 focus-visible:ring-brand-500";
 
 const QaLoginForm = ({ next }: { next?: string }) => {
   const router = useRouter();
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
+  const [showPassword, setShowPassword] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [isSubmitting, setIsSubmitting] = useState(false);
 
@@ -63,15 +65,26 @@ const QaLoginForm = ({ next }: { next?: string }) => {
         <label htmlFor="qa-password" className="text-sm font-medium text-neutral-800">
           رمز عبور
         </label>
-        <input
-          id="qa-password"
-          type="password"
-          autoComplete="current-password"
-          value={password}
-          onChange={(event) => setPassword(event.target.value)}
-          required
-          className={INPUT_CLASS}
-        />
+        <div className="relative">
+          <input
+            id="qa-password"
+            type={showPassword ? "text" : "password"}
+            autoComplete="current-password"
+            value={password}
+            onChange={(event) => setPassword(event.target.value)}
+            required
+            className={`${INPUT_CLASS} pl-10`}
+          />
+          <button
+            type="button"
+            onClick={() => setShowPassword((value) => !value)}
+            aria-label={showPassword ? "پنهان کردن رمز عبور" : "نمایش رمز عبور"}
+            aria-pressed={showPassword}
+            className="absolute inset-y-0 left-0 flex w-10 cursor-pointer items-center justify-center text-neutral-500 hover:text-neutral-800"
+          >
+            <Icon name={showPassword ? "eye-off" : "eye"} size={20} />
+          </button>
+        </div>
       </div>
 
       {error ? <p className="text-sm text-danger-500">{error}</p> : null}

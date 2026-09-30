@@ -35,6 +35,7 @@ export const guardedDirectories = ["/chat/", "/profile/"];
 export const guardedDirectoriesExceptions = ["/profile/support"];
 
 export const headerBlackList = [
+  "/qa-login",
   "/auth",
   "/new-post",
   "/auth/sign-in",
@@ -72,6 +73,7 @@ export const mobileFooterBlackList = [
   // "/chat/",
   "/profile/edit",
   "/profile/support/",
+  "/qa-login",
 ];
 
 // The listing page carries its own fixed booking bar; the tab bar under it would peek out.
@@ -80,6 +82,7 @@ export const mobileNavHiddenBlackList = ["/rooms/"];
 export const footerHiddenBlackList = [
   "/chat/",
   "/auth",
+  "/qa-login",
   "/profile/owner/properties/",
 ];
 

@@ -14,7 +14,7 @@ const QaLoginPage = async ({
   const { next } = await searchParams;
 
   return (
-    <div className="flex min-h-[70vh] w-full items-center justify-center px-4 py-12">
+    <div className="flex min-h-[100dvh] w-full items-center justify-center px-4 py-12">
       <div className="w-full max-w-sm rounded-20 border border-neutral-200 bg-white p-6 shadow-glass-sm">
         <h1 className="mb-1 text-lg font-bold text-neutral-900">
           ورود به محیط تست جایاب
