@@ -7,10 +7,9 @@ import { NEW_IMAGE_URL } from "@/utils/urls";
 import { useMutation } from "@tanstack/react-query";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
-import { useEffect, useLayoutEffect, useRef, useState } from "react";
+import { useEffect, useState } from "react";
 import ConfirmModal from "../Modal/ConfirmModal";
 import BtnLoading from "../shared/Button/BtnLoading";
-import ChatSecurityNotice from "./ChatSecurityNotice";
 
 type chatHeaderType = {
   image?: ImageDto;
@@ -23,7 +22,6 @@ type chatHeaderType = {
 
 const ChatHeader = ({ image, description, name, offSetTop, is_recipient_online, data }: chatHeaderType) => {
   const router = useRouter();
-  const headerRef = useRef<HTMLDivElement>(null);
   const [showBlock, setShowBlock] = useState(false);
   const [isBlocked, setIsBlocked] = useState(false);
 
@@ -68,34 +66,8 @@ const ChatHeader = ({ image, description, name, offSetTop, is_recipient_online, 
       router.back();
     }
   };
-
-  useLayoutEffect(() => {
-    const header = headerRef.current;
-    const chatContainer = header?.closest<HTMLElement>(".chat-container");
-    if (!header || !chatContainer) return;
-
-    const setChatBodyOffset = () => {
-      const headerBottom = Math.ceil(
-        header.getBoundingClientRect().bottom - chatContainer.getBoundingClientRect().top,
-      );
-      chatContainer.style.setProperty("--chat-body-top-offset", `${headerBottom + 16}px`);
-    };
-
-    setChatBodyOffset();
-    const observer = new ResizeObserver(setChatBodyOffset);
-    observer.observe(header);
-    window.addEventListener("resize", setChatBodyOffset);
-
-    return () => {
-      observer.disconnect();
-      window.removeEventListener("resize", setChatBodyOffset);
-      chatContainer.style.removeProperty("--chat-body-top-offset");
-    };
-  }, []);
-
   return (
     <div
-      ref={headerRef}
       // style={
       //   isIOS && offSetTop
       //     ? {
@@ -103,10 +75,9 @@ const ChatHeader = ({ image, description, name, offSetTop, is_recipient_online, 
       //       }
       //     : {}
       // }
-      className="fixed z-50 mx-auto w-full bg-white shadow-md dark:bg-dark-900 left-0 top-0 md:left-[10%] md:right-[10%] md:z-30 md:w-[50%] xl:top-[4.5rem]"
+      className="flex fixed  justify-between pr-2 z-50 md:z-30 bg-white  dark:bg-dark-900 w-full left-0  md:left-[10%] md:right-[10%] mx-auto lg:top-0 md:w-[50%]   min-h-[4.25rem]   top-0 xl:top-[4.5rem] pt-4 items-center gap-2 pb-3 shadow-md "
     >
-      <div className="flex min-h-[4.25rem] items-center justify-between gap-2 pb-3 pt-4 pr-2">
-        <div className="flex items-center w-full gap-2">
+      <div className="flex items-center w-full gap-2">
         {" "}
         <img
           src="/assets/icons/shared/chevron.svg"
@@ -161,16 +132,13 @@ const ChatHeader = ({ image, description, name, offSetTop, is_recipient_online, 
           </Link>
         </div>
       </div>
-        <img
-          onClick={showBlockFunc}
-          className={`w-6 h-6 cursor-pointer aspect-square ${
-            isBlocked ? "" : "grayscale"
-          }   transition-all ml-4 opacity-65 hover:opacity-100 hover:grayscale-0 `}
-          src="/assets/icons/chat/chat_block.svg"
-        />
-      </div>
-
-      <ChatSecurityNotice />
+      <img
+        onClick={showBlockFunc}
+        className={`w-6 h-6 cursor-pointer aspect-square ${
+          isBlocked ? "" : "grayscale"
+        }   transition-all ml-4 opacity-65 hover:opacity-100 hover:grayscale-0 `}
+        src="/assets/icons/chat/chat_block.svg"
+      />
 
       <ConfirmModal
         text={!!isBlocked ? "آیا از آنبلاک کردن کاربر مطمئنید ؟" : "آیا از بلاک کردن کاربر مطمئنید ؟"}

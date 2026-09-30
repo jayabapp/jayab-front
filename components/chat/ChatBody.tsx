@@ -40,7 +40,7 @@ const ChatBody = ({
 
   return (
     <div className="flex pb-4 md:mb-0   flex-1  overflow-y-hidden  items-end w-full  px-4">
-      <div className="grid h-fit max-h-[90dvh] gap-6 pt-[var(--chat-body-top-offset,16rem)] pb-4 w-full overflow-y-scroll items-end justify-center grid-cols-3">
+      <div className="grid h-fit max-h-[90dvh] gap-6 pt-24 md:pt-36 pb-4  w-full overflow-y-scroll  items-end justify-center grid-cols-3">
         {!!nextIsLoading ? (
           <div className=" flex items-center justify-center w-full col-span-full">
             <BtnLoading />
