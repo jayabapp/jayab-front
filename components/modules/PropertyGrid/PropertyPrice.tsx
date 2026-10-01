@@ -51,7 +51,7 @@ const PropertyPrice = ({
       />
     ) : null}
 
-    <p className={`font-bold ${emphasis ? "text-xl md:text-2xl" : "text-sm"}`}>
+    <p className={`font-bold ${emphasis ? "text-xl md:text-2xl" : "text-xs"}`}>
       {numberWithCommas(
         data?.discounted_price ? data?.discounted_price : data?.price,
       )}{" "}

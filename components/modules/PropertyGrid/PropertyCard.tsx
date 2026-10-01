@@ -194,12 +194,23 @@ const PropertyCard = ({
           </PropertyCardLink>
 
           {isOwner ? null : (
+            // `mt-auto` anchors this to the bottom of the stretched grid
+            // row, matching the "قیمت امروز" label's own `mt-auto` in the
+            // text column (PropertyCard.tsx's public branch above) — both
+            // columns are stretched to the same row height by
+            // `items-stretch`, so anchoring both pieces to the bottom is
+            // what keeps the label and the price on the same visual row
+            // regardless of how tall the title/location content makes that
+            // row. Without it, the price sat right under the photo while
+            // the label (pushed down on the other side) ended up well below
+            // it whenever the text column was taller than the photo.
             <PropertyCardLink
               title={data.title}
               href={goToLink}
-              className="flex w-full !outline-none"
+              className="mt-auto flex w-full !outline-none"
             >
               <PropertyPrice
+                reserveDiscountSpace
                 data={{
                   discounted_price: data?.today_price?.discounted_price,
                   price: data?.today_price?.price,
