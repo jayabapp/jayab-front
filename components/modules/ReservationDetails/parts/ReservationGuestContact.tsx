@@ -10,6 +10,7 @@ const ACTION_WIDTH =
 
 const ReservationGuestContact = ({
   isExpired,
+  isChatEnabled = true,
   onStartChat,
   isChatPending,
   onContactRequest,
@@ -60,25 +61,27 @@ const ReservationGuestContact = ({
           </>
         )}
 
-        <Button
-          variant="outline"
-          width={ACTION_WIDTH}
-          onClick={onStartChat}
-          loading={isChatPending}
-          disabled={isChatPending}
-          roundedClass=" rounded-xl"
-          containerClass="w-full lg:w-1/2 "
-          title={_STRINGS.CHAT_IN_JAYAB}
-          icon={
-            <ContentImage
-              alt=""
-              width={16}
-              height={16}
-              className="w-4 h-4 absolute right-3 top-0 bottom-0 my-auto ml-1 aspect-square"
-              src="/assets/icons/reserve/blue_chat_reserve.svg"
-            />
-          }
-        />
+        {isChatEnabled ? (
+          <Button
+            variant="outline"
+            width={ACTION_WIDTH}
+            onClick={onStartChat}
+            loading={isChatPending}
+            disabled={isChatPending}
+            roundedClass=" rounded-xl"
+            containerClass="w-full lg:w-1/2 "
+            title={_STRINGS.CHAT_IN_JAYAB}
+            icon={
+              <ContentImage
+                alt=""
+                width={16}
+                height={16}
+                className="w-4 h-4 absolute right-3 top-0 bottom-0 my-auto ml-1 aspect-square"
+                src="/assets/icons/reserve/blue_chat_reserve.svg"
+              />
+            }
+          />
+        ) : null}
       </div>
     </>
   );

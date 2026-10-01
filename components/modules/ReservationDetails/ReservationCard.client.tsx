@@ -124,6 +124,7 @@ const ReservationCard = ({
       {isOwner ? null : (
         <ReservationGuestContact
           isExpired={isExpired}
+          isChatEnabled={reservation?.is_chat_enabled !== false}
           onStartChat={onStartChat}
           isChatPending={isChatPending}
           onContactRequest={onContactRequest}

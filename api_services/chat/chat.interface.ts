@@ -279,6 +279,7 @@ export interface SingleChatDetailsDto {
   recipient: Recipient;
   is_recipient_online: boolean;
   is_blocked: boolean;
+  is_chat_suspended?: boolean;
 }
 
 export interface Recipient {

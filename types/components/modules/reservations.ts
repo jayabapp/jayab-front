@@ -32,6 +32,7 @@ export type ReservationStatusBarProps = {
 
 export type ReservationGuestContactProps = {
   isExpired?: boolean;
+  isChatEnabled?: boolean;
   isChatPending?: boolean;
   onStartChat?: () => void;
   onContactRequest?: (channel: ReservationContactChannel) => void;

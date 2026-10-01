@@ -13,6 +13,7 @@ import ChatInput from "./ChatInput";
 import ChatReply from "./ChatReply";
 import dynamic from "next/dynamic";
 import Image from "next/image";
+import _STRINGS from "@/utils/LocalStrings";
 
 const EmojiPicker = dynamic(
   () => {
@@ -29,6 +30,7 @@ const ChatFooter = ({
   singleChatData,
 }: TChatFooterTypes) => {
   const [showExpired, setShowExpired] = useState(false);
+  const [suspended, setSuspended] = useState(false);
   const [isTyping, setIsTyping] = useState<boolean | null>(false);
   const { chatReply } = useChatStore((state) => state);
   const { socket } = useStoreSocket((state) => state);
@@ -86,7 +88,10 @@ const ChatFooter = ({
   const handleSendError = (e: any) => {
     submittingRef.current = false;
     if (e?.message_code == "CHAT10") setShowExpired(true);
+    if (e?.message_code == "CHAT14") setSuspended(true);
   };
+
+  const isSuspended = suspended || !!singleChatData?.is_chat_suspended;
 
   useEffect(() => {
     if (!!socket && chatId) {
@@ -99,7 +104,7 @@ const ChatFooter = ({
   }, [chatId, isTyping, singleChatData?.self?.participant_id, socket]);
 
   const submit = () => {
-    if (submittingRef.current || connecting || sedLoading) return;
+    if (isSuspended || submittingRef.current || connecting || sedLoading) return;
     if (
       !!singleChatData?.property?.is_expired &&
       singleChatData?.self?.user_id == singleChatData?.property?.owner?.user?.id
@@ -143,6 +148,16 @@ const ChatFooter = ({
     setIsTyping(true);
     typingDebounce();
   };
+
+  if (isSuspended)
+    return (
+      <div className="absolute bottom-0 left-0 z-30 flex h-fit w-full items-center justify-center border-b bg-white px-4 py-4">
+        <p className="text-center text-sm text-neutral-600">
+          {_STRINGS.CHAT_SUSPENDED}
+        </p>
+      </div>
+    );
+
   return (
     <div
       className={` flex px-2  flex-1 z-30 w-full left-0 border-b   ${

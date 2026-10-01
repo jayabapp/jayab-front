@@ -363,6 +363,7 @@ const _STRINGS = {
   COPY: "رونوشت ",
   DELETED_MESSAGE: "پیام حذف شده",
   CHAT_IN_JAYAB: "چت در جایاب",
+  CHAT_SUSPENDED: "چت موقتاً غیرفعال است. تاریخچه گفتگو فقط قابل مشاهده است.",
   CONTACT_INFO: "اطلاعات تماس",
   ARE_U_SURE_DELETE_MESSAGE: "آیا از حذف پیام مطمئنید",
   MESSAGES: "پیام ها",
