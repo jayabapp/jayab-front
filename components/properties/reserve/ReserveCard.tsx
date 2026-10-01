@@ -375,7 +375,7 @@ const ReserveCard = ({
             ) : (
               <></>
             )} */}
-            {!isOwner ? (
+            {!isOwner && data?.is_chat_enabled !== false ? (
               <Button
                 variant="outline"
                 width="w-full h-12 !border-none !text-black !font-normal  !py-2 !bg-primary-1100  !text-sm "

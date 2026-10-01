@@ -12,6 +12,7 @@ import ChatUploader from "../uploader/ChatUploader";
 import ChatInput from "./ChatInput";
 import ChatReply from "./ChatReply";
 import ExpiredPropertyModal from "./ExpiredPropertyModal";
+import _STRINGS from "@/utils/LocalStrings";
 const EmojiPicker = dynamic(
   () => {
     return import("emoji-picker-react");
@@ -48,6 +49,8 @@ const ChatFooter = ({
   setData,
 }: ChatFooterTypes) => {
   const [showExpired, setShowExpired] = useState(false);
+  const [suspended, setSuspended] = useState(false);
+  const isSuspended = suspended || !!singleChatData?.is_chat_suspended;
   const [isTyping, setIsTyping] = useState<boolean | null>(false);
   const { chatReply } = useChatStore((state) => state);
   const { socket } = useStoreSocket((state) => state);
@@ -81,6 +84,10 @@ const ChatFooter = ({
     onError: (e: any) => {
       if (e?.message_code == "CHAT10") {
         setShowExpired(true);
+      }
+      // کلید سراسری توقف چت در حین باز بودن صفحه خاموش شده است
+      if (e?.message_code == "CHAT13") {
+        setSuspended(true);
       }
     },
   });
@@ -137,6 +144,7 @@ const ChatFooter = ({
   // }, [isTyping, socket, !!singleChatData]);
 
   const submit = () => {
+    if (isSuspended) return;
     if (
       !!singleChatData?.property?.is_expired &&
       singleChatData?.self?.user_id == singleChatData?.property?.owner?.user?.id
@@ -179,6 +187,20 @@ const ChatFooter = ({
     setIsTyping(true);
     checkIsTyping();
   };
+
+  // چت متوقف شده: ورودی و آپلود حذف می‌شود و فقط پیام توضیحی نمایش داده می‌شود
+  if (isSuspended) {
+    return (
+      <div
+        className={`flex flex-1 z-30 w-full left-0 border-b h-fit absolute bottom-0 px-4 py-4 items-center justify-center bg-white dark:bg-dark-700 ${
+          isIOS ? "" : "pb-2"
+        }`}
+      >
+        <p className="text-sm text-center text-gray-600 dark:text-gray-300">{_STRINGS.CHAT_SUSPENDED}</p>
+      </div>
+    );
+  }
+
   return (
     <div
       onClick={() => {
