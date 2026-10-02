@@ -1,7 +1,7 @@
 "use client";
 
-import { TransformComponent, TransformWrapper } from "react-zoom-pan-pinch";
 import { useCallback, useEffect, useRef, useState } from "react";
+import { TransformComponent, TransformWrapper } from "react-zoom-pan-pinch";
 import { PROPERTY_DETAIL_IMAGE_QUALITY } from "@features/properties/constants/image";
 import { useOverlayBackButton } from "@/hooks/useOverlayBackButton";
 import { getPropertyImageUrl } from "@features/properties/mappers/property-image.mapper";
@@ -228,8 +228,7 @@ const PropertyPhotoViewer = ({
                   alt=""
                   sizes="112px"
                   className="object-cover"
-                  src={getPropertyImageUrl(image, "thumbnail")}
-                  fallbackSrc={getPropertyImageUrl(image, "name")}
+                  src={getPropertyImageUrl(image, "name")}
                 />
               </button>
             ))}

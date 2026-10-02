@@ -121,8 +121,7 @@ const PropertyGallery = ({
               loading="lazy"
               alt={image?.alt || title || ""}
               quality={PROPERTY_IMAGE_QUALITY}
-              src={getPropertyImageUrl(image, "medium")}
-              fallbackSrc={getPropertyImageUrl(image, "name")}
+              src={getPropertyImageUrl(image, "name")}
               className="object-cover transition-transform duration-500 group-hover:scale-102"
             />
           </button>

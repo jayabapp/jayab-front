@@ -1014,20 +1014,6 @@ button {
   }
 }
 
-/* Below `md`, Embla still sizes `.home-tile-slide` itself (4.5 slides, 5px
-   gaps per HOME_TILE_BREAKPOINTS) via its own JS-computed `--slide-size`,
-   which resolves to the same "100%/N tiles minus (N-1) gaps" percentage this
-   mirrors. `.home-city-tile` had no such formula behind it at all — a static
-   5.5rem that only coincidentally matched the carousel tiles on ~375px
-   phones and drifted apart at every other width. Give it the identical
-   formula so both rows are the same size at every mobile width, not just by
-   accident. */
-@media (max-width: 767.98px) {
-  .home-tile-row .home-city-tile {
-    width: calc((100% - 3.5 * 0.3125rem) / 4.5);
-  }
-}
-
 .embla__dots {
   left: 1rem;
   right: 1rem;
