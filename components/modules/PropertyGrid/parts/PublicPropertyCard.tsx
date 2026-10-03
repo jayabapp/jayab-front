@@ -12,31 +12,12 @@ import _STRINGS from "@/utils/LocalStrings";
 
 const PublicPropertyCard = ({ data, goToLink }: PublicPropertyCardProps) => {
   // Temporary frontend mock
-  // Later replace with:
+  // Later:
   // const hasActiveSubscription = data.has_active_subscription;
   const hasActiveSubscription = true;
 
   return (
-    <div className="property-card-shadow relative w-full rounded-20 bg-white p-3">
-      {/* Active Subscription Indicator */}
-      {hasActiveSubscription ? (
-        <div
-          className="
-            absolute left-[3px] top-[3px] z-20
-            h-3 w-3
-            rounded-full
-            border-2 border-white
-            bg-emerald-500
-            shadow-[0_0_4px_rgba(16,185,129,1),0_0_9px_rgba(16,185,129,0.75),0_0_15px_rgba(16,185,129,0.4)]
-          "
-          role="status"
-          aria-label="اشتراک فعال"
-          title="اشتراک فعال"
-        >
-          <span className="sr-only">اشتراک فعال</span>
-        </div>
-      ) : null}
-
+    <div className="property-card-shadow w-full rounded-20 bg-white p-3">
       <div className="grid w-full grid-cols-5 gap-3">
         {/* Right Side - Information */}
         <PropertyCardLink
@@ -111,64 +92,89 @@ const PublicPropertyCard = ({ data, goToLink }: PublicPropertyCardProps) => {
           </div>
         </PropertyCardLink>
 
-        {/* Left Side - Image */}
-        <PropertyCardLink
-          title={data.title}
-          href={goToLink}
-          className="order-2 col-span-2 flex w-full !outline-none"
-        >
-          <div className="relative aspect-square w-full shrink-0 overflow-hidden rounded-2xl">
-            <ContentImage
-              fill
-              loading="lazy"
-              quality={PROPERTY_IMAGE_QUALITY}
-              alt={data.feature_image?.alt || ""}
-              src={getPropertyImageUrl(data.feature_image)}
-              className="object-cover"
-              sizes="(min-width: 1280px) 16vw, (min-width: 768px) 24vw, 46vw"
-            />
+        {/* Left Side - Image Area */}
+        <div className="relative order-2 col-span-2 w-full">
+          {/* Active Subscription Indicator */}
+          {hasActiveSubscription ? (
+            <div
+              className="
+                absolute left-1 top-1 z-20
+                h-[10px] w-[10px]
+                rounded-full
+                bg-emerald-500
+                ring-2 ring-white
+                shadow-[0_0_4px_rgba(16,185,129,0.95),0_0_8px_rgba(16,185,129,0.6),0_0_14px_rgba(16,185,129,0.3)]
+              "
+              role="status"
+              aria-label="اشتراک فعال"
+              title="اشتراک فعال"
+            >
+              <span className="sr-only">اشتراک فعال</span>
+            </div>
+          ) : null}
 
-            {/* Attachments Count */}
-            {!data.advisor_commission &&
-            data.advisor_commission !== 0 &&
-            data.attachments_count ? (
-              <div className="absolute left-2 top-2 z-1 flex h-6 min-w-[3rem] items-center justify-center gap-1.5 rounded-full bg-neutral-900/30 px-2 text-white backdrop-blur-[6px]">
-                <p className="text-xs font-medium">{data.attachments_count}</p>
+          <PropertyCardLink
+            title={data.title}
+            href={goToLink}
+            className="flex w-full !outline-none"
+          >
+            <div className="relative aspect-square w-full shrink-0 overflow-hidden rounded-2xl">
+              <ContentImage
+                fill
+                loading="lazy"
+                quality={PROPERTY_IMAGE_QUALITY}
+                alt={data.feature_image?.alt || ""}
+                src={getPropertyImageUrl(data.feature_image)}
+                className="object-cover"
+                sizes="(min-width: 1280px) 16vw, (min-width: 768px) 24vw, 46vw"
+              />
 
-                <ContentImage
-                  width={16}
-                  height={16}
-                  className="h-4 w-4"
-                  alt={`camera${data.id}`}
-                  src="/assets/icons/adds/simple_camera.svg"
-                />
-              </div>
-            ) : null}
+              {/* Attachments Count */}
+              {!data.advisor_commission &&
+              data.advisor_commission !== 0 &&
+              data.attachments_count ? (
+                <div className="absolute left-2 top-2 z-1 flex h-6 min-w-[3rem] items-center justify-center gap-1.5 rounded-full bg-neutral-900/30 px-2 text-white backdrop-blur-[6px]">
+                  <p className="text-xs font-medium">
+                    {data.attachments_count}
+                  </p>
 
-            {/* Advisor Commission */}
-            {data.advisor_commission || data.advisor_commission === 0 ? (
-              <div className="absolute left-2 top-2 z-1 flex h-6 items-center justify-center rounded-full bg-red-500 px-3 text-white shadow-sm">
-                <p className="text-xs font-bold">%{data.advisor_commission}</p>
-              </div>
-            ) : null}
+                  <ContentImage
+                    width={16}
+                    height={16}
+                    className="h-4 w-4"
+                    alt={`camera${data.id}`}
+                    src="/assets/icons/adds/simple_camera.svg"
+                  />
+                </div>
+              ) : null}
 
-            {/* Authorized Badge */}
-            {data.is_authorized ? (
-              <div className="absolute bottom-2 right-2 z-1 mx-auto flex h-7 w-fit items-center gap-2 rounded-full bg-neutral-900/35 pl-2 pr-1 text-white backdrop-blur-[6px]">
-                <ContentImage
-                  width={16}
-                  height={16}
-                  alt={`tick${data.id}`}
-                  src="/assets/icons/adds/green_circular_tick.svg"
-                />
+              {/* Advisor Commission */}
+              {data.advisor_commission || data.advisor_commission === 0 ? (
+                <div className="absolute left-2 top-2 z-1 flex h-6 items-center justify-center rounded-full bg-red-500 px-3 text-white shadow-sm">
+                  <p className="text-xs font-bold">
+                    %{data.advisor_commission}
+                  </p>
+                </div>
+              ) : null}
 
-                <p className="text-[0.6875rem] font-medium text-white">
-                  {_STRINGS.VERIFIED}
-                </p>
-              </div>
-            ) : null}
-          </div>
-        </PropertyCardLink>
+              {/* Authorized Badge */}
+              {data.is_authorized ? (
+                <div className="absolute bottom-2 right-2 z-1 mx-auto flex h-7 w-fit items-center gap-2 rounded-full bg-neutral-900/35 pl-2 pr-1 text-white backdrop-blur-[6px]">
+                  <ContentImage
+                    width={16}
+                    height={16}
+                    alt={`tick${data.id}`}
+                    src="/assets/icons/adds/green_circular_tick.svg"
+                  />
+
+                  <p className="text-[0.6875rem] font-medium text-white">
+                    {_STRINGS.VERIFIED}
+                  </p>
+                </div>
+              ) : null}
+            </div>
+          </PropertyCardLink>
+        </div>
       </div>
     </div>
   );
