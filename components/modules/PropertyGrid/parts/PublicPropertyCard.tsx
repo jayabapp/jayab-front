@@ -17,17 +17,17 @@ const PublicPropertyCard = ({ data, goToLink }: PublicPropertyCardProps) => {
   const hasActiveSubscription = true;
 
   return (
-    <div className="property-card-shadow relative w-full rounded-20 bg-white p-3">
-      {/* Active Subscription Indicator */}
+    <div className="property-card-shadow relative w-full overflow-visible rounded-20 bg-white p-3">
+      {/* Active Subscription Indicator - sits on card corner */}
       {hasActiveSubscription ? (
         <div
           className="
-            absolute left-3 top-3 z-20
+            absolute -left-[5px] -top-[5px] z-20
             h-3 w-3
             rounded-full
+            border-2 border-white
             bg-emerald-500
-            ring-2 ring-white
-            shadow-[0_0_0_3px_rgba(16,185,129,0.10),0_0_10px_rgba(16,185,129,0.70),0_0_18px_rgba(16,185,129,0.35)]
+            shadow-[0_0_5px_rgba(16,185,129,0.95),0_0_11px_rgba(16,185,129,0.65),0_0_18px_rgba(16,185,129,0.32)]
           "
           role="status"
           aria-label="اشتراک فعال"
