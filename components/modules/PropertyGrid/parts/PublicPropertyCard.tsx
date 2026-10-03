@@ -11,45 +11,37 @@ import PropertyPrice from "../PropertyPrice";
 import _STRINGS from "@/utils/LocalStrings";
 
 const PublicPropertyCard = ({ data, goToLink }: PublicPropertyCardProps) => {
-  /**
-   * TEMPORARY FRONT-END MOCK
-   *
-   * فعلاً برای مشاهده طراحی true قرار داده شده.
-   *
-   * بعداً زمانی که بک‌اند فیلد مربوطه را اضافه کرد:
-   *
-   * const hasActiveSubscription = data.has_active_subscription;
-   */
+  // Temporary frontend state
+  // Later:
+  // const hasActiveSubscription = data.has_active_subscription;
   const hasActiveSubscription = true;
 
   return (
     <div
-      className={`
-        relative w-full overflow-visible rounded-20 bg-white p-3
-        transition-shadow duration-200
-        motion-reduce:transition-none
-        ${
-          hasActiveSubscription
-            ? `
-              shadow-md shadow-emerald-200/40
-              hover:shadow-lg hover:shadow-emerald-200/50
-              focus-within:shadow-lg focus-within:shadow-emerald-200/50
-            `
-            : "property-card-shadow"
-        }
-      `}
+      className={[
+        "relative w-full overflow-visible rounded-20 bg-white p-3",
+        "transition-[box-shadow] duration-200 ease-out",
+        "motion-reduce:transition-none",
+        hasActiveSubscription
+          ? [
+              "shadow-[0_12px_32px_rgba(16,185,129,0.16),0_3px_10px_rgba(15,23,42,0.07)]",
+              "hover:shadow-[0_16px_40px_rgba(16,185,129,0.22),0_4px_14px_rgba(15,23,42,0.09)]",
+              "focus-within:shadow-[0_16px_40px_rgba(16,185,129,0.22),0_4px_14px_rgba(15,23,42,0.09)]",
+            ].join(" ")
+          : "property-card-shadow",
+      ].join(" ")}
     >
-      {/* Active Subscription Indicator */}
       {hasActiveSubscription ? (
         <div
           className="
             absolute -left-1.5 -top-1.5 z-20
-            flex h-3 w-3
-            items-center justify-center
+            h-3 w-3
             rounded-full
             bg-emerald-500
             ring-2 ring-white
+            shadow-[0_1px_4px_rgba(16,185,129,0.45)]
           "
+          role="status"
           aria-label="اشتراک فعال"
           title="اشتراک فعال"
         >
@@ -62,11 +54,7 @@ const PublicPropertyCard = ({ data, goToLink }: PublicPropertyCardProps) => {
         <PropertyCardLink
           href={goToLink}
           title={data.title}
-          className="
-            order-1 col-span-3
-            flex min-h-0 flex-col justify-between
-            !outline-none
-          "
+          className="order-1 col-span-3 flex min-h-0 flex-col justify-between !outline-none"
         >
           {/* Title */}
           <div className="flex items-start gap-2">
@@ -93,7 +81,7 @@ const PublicPropertyCard = ({ data, goToLink }: PublicPropertyCardProps) => {
                   {_STRINGS.LADDERED}
                 </p>
 
-                <span className="text-neutral-300" aria-hidden="true">
+                <span aria-hidden="true" className="text-neutral-300">
                   |
                 </span>
               </>
@@ -139,11 +127,7 @@ const PublicPropertyCard = ({ data, goToLink }: PublicPropertyCardProps) => {
         <PropertyCardLink
           title={data.title}
           href={goToLink}
-          className="
-            order-2 col-span-2
-            flex w-full
-            !outline-none
-          "
+          className="order-2 col-span-2 flex w-full !outline-none"
         >
           <div className="relative aspect-square w-full shrink-0 overflow-hidden rounded-2xl">
             <ContentImage
@@ -153,11 +137,7 @@ const PublicPropertyCard = ({ data, goToLink }: PublicPropertyCardProps) => {
               alt={data.feature_image?.alt || ""}
               src={getPropertyImageUrl(data.feature_image)}
               className="object-cover"
-              sizes="
-                (min-width: 1280px) 16vw,
-                (min-width: 768px) 24vw,
-                46vw
-              "
+              sizes="(min-width: 1280px) 16vw, (min-width: 768px) 24vw, 46vw"
             />
 
             {/* Attachments Count */}
