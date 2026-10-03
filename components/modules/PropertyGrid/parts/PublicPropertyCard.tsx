@@ -11,9 +11,6 @@ import PropertyPrice from "../PropertyPrice";
 import _STRINGS from "@/utils/LocalStrings";
 
 const PublicPropertyCard = ({ data, goToLink }: PublicPropertyCardProps) => {
-  // Temporary frontend mock
-  // Later:
-  // const hasActiveSubscription = data.has_active_subscription;
   const hasActiveSubscription = true;
 
   return (
@@ -50,8 +47,8 @@ const PublicPropertyCard = ({ data, goToLink }: PublicPropertyCardProps) => {
               <ContentImage
                 width={24}
                 height={24}
-                className="h-6 w-6 shrink-0"
                 alt="verified_badge"
+                className="h-6 w-6 shrink-0"
                 src="/assets/icons/adds/verified_hexy_badge.svg"
               />
             ) : null}
@@ -88,9 +85,9 @@ const PublicPropertyCard = ({ data, goToLink }: PublicPropertyCardProps) => {
 
             <div className="mr-1 shrink-0">
               <PropertyCardLikes
+                forceFilled
                 propertyId={data.id}
                 favoriteCount={data.favorite_count}
-                forceFilled
               />
             </div>
           </div>
@@ -121,10 +118,10 @@ const PublicPropertyCard = ({ data, goToLink }: PublicPropertyCardProps) => {
             <ContentImage
               fill
               loading="lazy"
+              className="object-cover"
               quality={PROPERTY_IMAGE_QUALITY}
               alt={data.feature_image?.alt || ""}
               src={getPropertyImageUrl(data.feature_image)}
-              className="object-cover"
               sizes="(min-width: 1280px) 16vw, (min-width: 768px) 24vw, 46vw"
             />
 

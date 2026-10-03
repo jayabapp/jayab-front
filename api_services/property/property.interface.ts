@@ -402,9 +402,9 @@ export interface PropertyListDto {
   bedrooms: Bedrooms;
   std_capacity: number;
   max_capacity: number;
-  remaining_days: null;
   is_promoted: boolean;
   is_chat_enabled: null;
+  remaining_days: number;
   total_bedrooms: number;
   favorite_count: number;
   has_blue_tick: boolean;
@@ -416,6 +416,7 @@ export interface PropertyListDto {
   advisor_commission: number;
   minimum_price: number | null;
   reserve_days: ReserveDaysDto[];
+  has_active_subscription: boolean;
 }
 
 export interface ReserveDaysDto {
