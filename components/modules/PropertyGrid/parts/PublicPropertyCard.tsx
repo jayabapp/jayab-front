@@ -22,12 +22,12 @@ const PublicPropertyCard = ({ data, goToLink }: PublicPropertyCardProps) => {
       {hasActiveSubscription ? (
         <div
           className="
-            absolute left-[4px] top-[8px] z-20
-            h-2 w-2
-            rounded-full
-            bg-emerald-500
-            ring-1 ring-white
-            shadow-[0_0_4px_rgba(16,185,129,1),0_0_8px_rgba(16,185,129,0.75),0_0_13px_rgba(16,185,129,0.45)]
+          h-3 w-3
+          rounded-full
+          bg-emerald-500
+          ring-1 ring-white
+          absolute left-[4px] top-[8px] z-20
+          shadow-[0_0_4px_rgba(16,185,129,1),0_0_8px_rgba(16,185,129,0.75),0_0_13px_rgba(16,185,129,0.45)]
           "
           role="status"
           aria-label="اشتراک فعال"
