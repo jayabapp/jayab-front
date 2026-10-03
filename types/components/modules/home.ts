@@ -40,7 +40,6 @@ export type HomeCitiesProps = {
 
 export type HomeCityRowProps = {
   row: HomeCitiesProps["data"];
-  syncRef: (element: HTMLDivElement | null) => void;
 };
 
 export type HomeHeroBannerProps = {

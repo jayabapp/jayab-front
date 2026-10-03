@@ -1355,12 +1355,25 @@ ul {
      so those N match the carousels' tiles exactly. */
   .home-tile-row .home-city-tile {
     width: calc(
-      (100% - (var(--home-tile-count, 8) - 1) * var(--home-tile-gap)) /
+      (100cqw - (var(--home-tile-count, 8) - 1) * var(--home-tile-gap)) /
         var(--home-tile-count, 8)
     );
   }
 }
 
+
+/* The two city lines share this one native scroll surface. Synchronizing two
+   independent overflow elements from `scroll` events makes the untouched line
+   visibly trail the line under a finger. */
+.home-city-scroller {
+  container-type: inline-size;
+  scroll-snap-type: x proximity;
+  -webkit-overflow-scrolling: touch;
+}
+
+.home-city-tile {
+  scroll-snap-align: start;
+}
 .home-tile {
   transition: transform 0.28s cubic-bezier(0.22, 1, 0.36, 1);
 }

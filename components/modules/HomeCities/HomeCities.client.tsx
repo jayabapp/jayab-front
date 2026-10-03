@@ -1,7 +1,5 @@
 "use client";
 
-import { useSyncedRowScroll } from "@/hooks/useSyncedRowScroll";
-
 import type { HomeCitiesProps } from "@/types/components/modules/home";
 
 import HomeCityRow from "./parts/HomeCityRow.client";
@@ -13,7 +11,6 @@ const splitByRow = (data: HomeCitiesProps["data"]) => [
 
 const HomeCityFilterContainer = ({ data, title }: HomeCitiesProps) => {
   const rows = splitByRow(data);
-  const setRowRef = useSyncedRowScroll(rows.length);
 
   return (
     <div className="home-tile-row noSelect relative flex w-full select-none flex-col gap-2.5 rounded-20 md:gap-2 lg:gap-3">
@@ -23,13 +20,13 @@ const HomeCityFilterContainer = ({ data, title }: HomeCitiesProps) => {
         </p>
       </div>
 
-      {rows.map((row, rowIndex) => (
-        <HomeCityRow
-          row={row}
-          key={`city-row-${rowIndex}`}
-          syncRef={setRowRef(rowIndex)}
-        />
-      ))}
+      <div className="home-city-scroller padding-x w-full overflow-x-auto overscroll-x-contain scroll-smooth [scrollbar-width:none] [&::-webkit-scrollbar]:hidden">
+        <div className="home-city-scroll-track flex min-w-full w-max flex-col gap-2.5 md:gap-2 lg:gap-3">
+          {rows.map((row, rowIndex) => (
+            <HomeCityRow row={row} key={`city-row-${rowIndex}`} />
+          ))}
+        </div>
+      </div>
     </div>
   );
 };
