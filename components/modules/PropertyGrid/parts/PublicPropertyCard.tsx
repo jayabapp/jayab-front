@@ -3,67 +3,61 @@ import { getPropertyImageUrl } from "@features/properties/mappers/property-image
 import { ContentImage } from "@elements/Image";
 import type { PublicPropertyCardProps } from "@/types/components/modules/property-grid";
 
+import PropertyCardFeatures from "./PropertyCardFeatures";
 import PropertyCardLikes from "./PropertyCardLikes.client";
 import PropertyCardLink from "./PropertyCardLink.client";
 import PropertyPrice from "../PropertyPrice";
 import _STRINGS from "@/utils/LocalStrings";
 
 const PublicPropertyCard = ({ data, goToLink }: PublicPropertyCardProps) => (
-  <div className="surface-card property-card-shadow flex w-full flex-col gap-3 p-3 sm:p-4">
-    <div className="grid w-full grid-cols-[minmax(0,1.35fr)_minmax(7.75rem,0.8fr)] items-stretch gap-3 sm:grid-cols-[minmax(0,1.4fr)_minmax(10rem,0.8fr)]">
+  <div className="property-card-shadow flex w-full flex-col justify-between gap-2 rounded-20 bg-white p-3">
+    <div className="grid w-full grid-cols-5 gap-2">
       <PropertyCardLink
         href={goToLink}
         title={data.title}
-        className="order-1 flex min-w-0 flex-col gap-2.5 py-1 !outline-none"
+        className="order-1 col-span-3 flex flex-col justify-between gap-1 !outline-none"
       >
         <div className="flex items-start gap-2">
           {data.has_blue_tick ? (
             <ContentImage
-              width={20}
-              height={20}
-              className="mt-0.5 h-5 w-5 shrink-0"
+              width={24}
+              height={24}
+              className="h-6 w-6 shrink-0"
               alt="verified_badge"
               src="/assets/icons/adds/verified_hexy_badge.svg"
             />
           ) : null}
-          <p className="min-h-12 line-clamp-2 text-right text-base font-bold leading-6 sm:text-lg sm:leading-7">
+          <p className="h-10 line-clamp-2 text-right text-sm font-bold">
             {data.title}
           </p>
         </div>
 
-        <div className="flex min-w-0 items-center gap-1.5">
+        <div className="flex w-full items-center gap-1">
           {data.is_promoted ? (
-            <p className="shrink-0 border-l border-neutral-200 pl-1.5 text-sm font-bold text-brand-600">
+            <p className="shrink-0 border-l pl-1 text-xs font-bold text-brand-600">
               {_STRINGS.LADDERED}
             </p>
           ) : null}
-          <p className="line-clamp-1 text-sm text-neutral-600">
+          <p className="line-clamp-1 text-center text-xs">
             {data.city}، {data.region || data.province || ""}
           </p>
         </div>
 
-        <div className="flex w-full items-center gap-2">
-          <p className="line-clamp-1 text-sm text-neutral-700">
-            {data.total_bedrooms
-              ? `${data.total_bedrooms} ${_STRINGS.ROOM}، `
-              : ""}
-            {_STRINGS.UP_TO} {data.max_capacity} {_STRINGS.PERSON}
-          </p>
+        <div className="flex items-center gap-2">
+          <div className="flex h-5 items-center justify-center rounded-full bg-neutral-200 px-2 text-xs font-normal leading-4 text-black">
+            {_STRINGS.CODE} {data.code}
+          </div>
           <PropertyCardLikes
-            forceFilled
             propertyId={data.id}
             favoriteCount={data.favorite_count}
           />
         </div>
 
-        <div className="mt-auto flex w-full items-end justify-between gap-2 pt-2">
-          <p className="shrink-0 text-sm text-neutral-700">
+        <div className="flex w-full items-end justify-between gap-2">
+          <p className="shrink-0 text-xs 2xl:text-xs">
             {_STRINGS.TODAYS_PRICE}
           </p>
           <PropertyPrice
-            emphasis
-            reserveDiscountSpace
-            containerClass="flex min-w-0 flex-col gap-0 text-left"
             data={{
               discounted_price: data.today_price?.discounted_price,
               price: data.today_price?.price,
@@ -73,25 +67,26 @@ const PublicPropertyCard = ({ data, goToLink }: PublicPropertyCardProps) => (
         </div>
       </PropertyCardLink>
 
-      <div className="order-2 flex w-full">
-        <PropertyCardLink
-          title={data.title}
-          href={goToLink}
-          className="flex h-full w-full !outline-none"
-        >
-          <div className="relative min-h-[7.75rem] w-full overflow-hidden rounded-[1.75rem]">
-            <ContentImage
-              fill
-              loading="lazy"
-              quality={PROPERTY_IMAGE_QUALITY}
-              alt={data.feature_image?.alt || ""}
-              src={getPropertyImageUrl(data.feature_image)}
-              className="h-full w-full object-cover"
-              sizes="(min-width: 1280px) 16vw, (min-width: 768px) 24vw, 46vw"
-            />
+      <PropertyCardLink
+        title={data.title}
+        href={goToLink}
+        className="order-2 col-span-2 flex h-fit w-full items-start justify-start !outline-none"
+      >
+        <div className="relative aspect-square h-full w-full">
+          <ContentImage
+            fill
+            loading="lazy"
+            quality={PROPERTY_IMAGE_QUALITY}
+            alt={data.feature_image?.alt || ""}
+            src={getPropertyImageUrl(data.feature_image)}
+            className="h-full w-full aspect-square rounded-2xl object-cover"
+            sizes="(min-width: 1280px) 16vw, (min-width: 768px) 24vw, 46vw"
+          />
 
-            {data.attachments_count ? (
-              <div className="absolute left-2 top-2 z-1 flex h-7 min-w-14 items-center justify-center gap-1.5 rounded-full bg-neutral-900/45 px-2 py-1 text-white backdrop-blur-[6px]">
+          {!data.advisor_commission &&
+          data.advisor_commission !== 0 &&
+          data.attachments_count ? (
+            <div className="absolute left-2 top-2 z-1 flex h-6 w-12 items-center justify-center gap-1.5 rounded-full bg-neutral-900/30 py-[0.2rem] text-white backdrop-blur-[6px]">
                 <p className="text-xs font-medium">{data.attachments_count}</p>
                 <ContentImage
                   width={16}
@@ -100,36 +95,36 @@ const PublicPropertyCard = ({ data, goToLink }: PublicPropertyCardProps) => (
                   alt={`camera${data.id}`}
                   src="/assets/icons/adds/simple_camera.svg"
                 />
-              </div>
-            ) : null}
+            </div>
+          ) : null}
 
-            {data.advisor_commission || data.advisor_commission === 0 ? (
-              <div className="absolute left-2 top-11 z-1 flex h-5 items-center justify-center rounded-md bg-neutral-900/35 px-1.5 text-white backdrop-blur-[6px]">
+          {data.advisor_commission || data.advisor_commission === 0 ? (
+            <div className="absolute left-2 top-2 z-1 flex h-5 w-16 items-center justify-center gap-0.5 rounded-md bg-neutral-900/30 py-[0.2rem] text-white backdrop-blur-[6px]">
                 <p className="text-xxs">
                   {_STRINGS.ADVISOR_COMMISSION_SHORT}: {data.advisor_commission}
                   %
                 </p>
-              </div>
-            ) : null}
+            </div>
+          ) : null}
 
-            {data.is_today_reserved || data.is_authorized ? (
-              <div className="absolute bottom-2 right-2 z-1 flex h-8 items-center gap-1.5 rounded-full bg-neutral-900/55 py-1 pl-2 pr-1.5 text-white backdrop-blur-[6px]">
+          {data.is_authorized ? (
+            <div className="absolute bottom-2 right-2 z-1 mx-auto flex h-7 w-fit items-center gap-2 rounded-full bg-neutral-900/30 pl-2 pr-1 text-white backdrop-blur-[6px]">
                 <ContentImage
                   width={16}
                   height={16}
                   alt={`tick${data.id}`}
                   src="/assets/icons/adds/green_circular_tick.svg"
                 />
-                <p className="text-xs font-medium">
-                  {data.is_today_reserved
-                    ? _STRINGS.IS_RESERVED
-                    : _STRINGS.VERIFIED}
+                <p className="text-[0.6875rem] font-medium text-white">
+                  {_STRINGS.VERIFIED}
                 </p>
-              </div>
-            ) : null}
-          </div>
-        </PropertyCardLink>
-      </div>
+            </div>
+          ) : null}
+        </div>
+      </PropertyCardLink>
+    </div>
+    <div className="w-full pt-1.5">
+      <PropertyCardFeatures data={data} />
     </div>
   </div>
 );
