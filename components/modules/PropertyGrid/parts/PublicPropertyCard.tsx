@@ -17,29 +17,17 @@ const PublicPropertyCard = ({ data, goToLink }: PublicPropertyCardProps) => {
   const hasActiveSubscription = true;
 
   return (
-    <div
-      className={[
-        "relative w-full overflow-visible rounded-20 bg-white p-3",
-        "transition-[box-shadow] duration-200 ease-out",
-        "motion-reduce:transition-none",
-        hasActiveSubscription
-          ? [
-              "shadow-[0_12px_32px_rgba(16,185,129,0.16),0_3px_10px_rgba(15,23,42,0.07)]",
-              "hover:shadow-[0_16px_40px_rgba(16,185,129,0.22),0_4px_14px_rgba(15,23,42,0.09)]",
-              "focus-within:shadow-[0_16px_40px_rgba(16,185,129,0.22),0_4px_14px_rgba(15,23,42,0.09)]",
-            ].join(" ")
-          : "property-card-shadow",
-      ].join(" ")}
-    >
+    <div className="property-card-shadow relative w-full rounded-20 bg-white p-3">
+      {/* Active Subscription Indicator */}
       {hasActiveSubscription ? (
         <div
           className="
-            absolute -left-1.5 -top-1.5 z-20
+            absolute left-3 top-3 z-20
             h-3 w-3
             rounded-full
             bg-emerald-500
             ring-2 ring-white
-            shadow-[0_1px_4px_rgba(16,185,129,0.45)]
+            shadow-[0_0_0_3px_rgba(16,185,129,0.10),0_0_10px_rgba(16,185,129,0.70),0_0_18px_rgba(16,185,129,0.35)]
           "
           role="status"
           aria-label="اشتراک فعال"
@@ -144,18 +132,7 @@ const PublicPropertyCard = ({ data, goToLink }: PublicPropertyCardProps) => {
             {!data.advisor_commission &&
             data.advisor_commission !== 0 &&
             data.attachments_count ? (
-              <div
-                className="
-                  absolute left-2 top-2 z-1
-                  flex h-6 min-w-[3rem]
-                  items-center justify-center gap-1.5
-                  rounded-full
-                  bg-neutral-900/30
-                  px-2
-                  text-white
-                  backdrop-blur-[6px]
-                "
-              >
+              <div className="absolute left-2 top-2 z-1 flex h-6 min-w-[3rem] items-center justify-center gap-1.5 rounded-full bg-neutral-900/30 px-2 text-white backdrop-blur-[6px]">
                 <p className="text-xs font-medium">{data.attachments_count}</p>
 
                 <ContentImage
@@ -170,37 +147,14 @@ const PublicPropertyCard = ({ data, goToLink }: PublicPropertyCardProps) => {
 
             {/* Advisor Commission */}
             {data.advisor_commission || data.advisor_commission === 0 ? (
-              <div
-                className="
-                  absolute left-2 top-2 z-1
-                  flex h-6
-                  items-center justify-center
-                  rounded-full
-                  bg-red-500
-                  px-3
-                  text-white
-                  shadow-sm
-                "
-              >
+              <div className="absolute left-2 top-2 z-1 flex h-6 items-center justify-center rounded-full bg-red-500 px-3 text-white shadow-sm">
                 <p className="text-xs font-bold">%{data.advisor_commission}</p>
               </div>
             ) : null}
 
             {/* Authorized Badge */}
             {data.is_authorized ? (
-              <div
-                className="
-                  absolute bottom-2 right-2 z-1
-                  mx-auto
-                  flex h-7 w-fit
-                  items-center gap-2
-                  rounded-full
-                  bg-neutral-900/35
-                  pl-2 pr-1
-                  text-white
-                  backdrop-blur-[6px]
-                "
-              >
+              <div className="absolute bottom-2 right-2 z-1 mx-auto flex h-7 w-fit items-center gap-2 rounded-full bg-neutral-900/35 pl-2 pr-1 text-white backdrop-blur-[6px]">
                 <ContentImage
                   width={16}
                   height={16}
