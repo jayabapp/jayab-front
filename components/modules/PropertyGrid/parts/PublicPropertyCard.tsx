@@ -31,35 +31,32 @@ const PublicPropertyCard = ({ data, goToLink }: PublicPropertyCardProps) => (
             />
           ) : null}
 
-          <p className="h-10 line-clamp-2 text-right text-sm font-bold">
+          <p className="line-clamp-2 min-h-[2.75rem] text-right text-sm font-bold leading-7 text-black">
             {data.title}
           </p>
         </div>
 
         {/* Location */}
-        <div className="flex w-full items-center gap-1">
+        <div className="flex w-full items-center gap-2 text-xs">
           {data.is_promoted ? (
-            <p className="shrink-0 border-l pl-1 text-xs font-bold text-brand-600">
-              {_STRINGS.LADDERED}
-            </p>
+            <>
+              <p className="shrink-0 font-bold text-brand-600">
+                {_STRINGS.LADDERED}
+              </p>
+              <span className="text-neutral-300">|</span>
+            </>
           ) : null}
 
-          <p className="line-clamp-1 text-right text-xs">
+          <p className="line-clamp-1 text-right text-neutral-700">
             {data.city}، {data.region || data.province || ""}
           </p>
         </div>
 
-        {/* Rooms / Capacity / Likes */}
-        <div className="flex w-full items-center justify-between gap-2">
-          <div className="flex min-w-0 items-center gap-1.5">
-            <div className="flex h-6 shrink-0 items-center justify-center rounded-full bg-neutral-200 px-2.5 text-xs font-normal leading-4 text-black">
-              {data.total_bedrooms || 0} اتاق
-            </div>
+        {/* Meta Row - Rooms / Capacity / Likes */}
+        <div className="flex w-full items-center gap-2 text-sm text-neutral-800">
+          <p className="shrink-0">{data.total_bedrooms || 0} اتاق،</p>
 
-            <div className="flex h-6 shrink-0 items-center justify-center rounded-full bg-neutral-200 px-2.5 text-xs font-normal leading-4 text-black">
-              تا {data.max_capacity || 0} نفر
-            </div>
-          </div>
+          <p className="shrink-0">تا {data.max_capacity || 0} نفر</p>
 
           <PropertyCardLikes
             propertyId={data.id}
@@ -68,8 +65,8 @@ const PublicPropertyCard = ({ data, goToLink }: PublicPropertyCardProps) => (
         </div>
 
         {/* Price */}
-        <div className="flex min-h-[42px] w-full items-end justify-between gap-2">
-          <p className="shrink-0 text-xs">{_STRINGS.TODAYS_PRICE}</p>
+        <div className="flex min-h-[52px] w-full items-end justify-between gap-2">
+          <p className="shrink-0 text-xs text-black">{_STRINGS.TODAYS_PRICE}</p>
 
           <PropertyPrice
             data={{
@@ -102,7 +99,7 @@ const PublicPropertyCard = ({ data, goToLink }: PublicPropertyCardProps) => (
           {!data.advisor_commission &&
           data.advisor_commission !== 0 &&
           data.attachments_count ? (
-            <div className="absolute left-2 top-2 z-1 flex h-6 w-12 items-center justify-center gap-1.5 rounded-full bg-neutral-900/30 py-[0.2rem] text-white backdrop-blur-[6px]">
+            <div className="absolute left-2 top-2 z-1 flex h-6 min-w-[3rem] items-center justify-center gap-1.5 rounded-full bg-neutral-900/30 px-2 text-white backdrop-blur-[6px]">
               <p className="text-xs font-medium">{data.attachments_count}</p>
 
               <ContentImage
@@ -117,16 +114,14 @@ const PublicPropertyCard = ({ data, goToLink }: PublicPropertyCardProps) => (
 
           {/* Advisor Commission */}
           {data.advisor_commission || data.advisor_commission === 0 ? (
-            <div className="absolute left-2 top-2 z-1 flex h-5 w-16 items-center justify-center gap-0.5 rounded-md bg-neutral-900/30 py-[0.2rem] text-white backdrop-blur-[6px]">
-              <p className="text-xxs">
-                {_STRINGS.ADVISOR_COMMISSION_SHORT}: {data.advisor_commission}%
-              </p>
+            <div className="absolute left-2 top-2 z-1 flex h-6 items-center justify-center gap-0.5 rounded-full bg-red-500 px-3 text-white shadow-sm">
+              <p className="text-xs font-bold">%{data.advisor_commission}</p>
             </div>
           ) : null}
 
           {/* Authorized Badge */}
           {data.is_authorized ? (
-            <div className="absolute bottom-2 right-2 z-1 mx-auto flex h-7 w-fit items-center gap-2 rounded-full bg-neutral-900/30 pl-2 pr-1 text-white backdrop-blur-[6px]">
+            <div className="absolute bottom-2 right-2 z-1 mx-auto flex h-7 w-fit items-center gap-2 rounded-full bg-neutral-900/35 pl-2 pr-1 text-white backdrop-blur-[6px]">
               <ContentImage
                 width={16}
                 height={16}

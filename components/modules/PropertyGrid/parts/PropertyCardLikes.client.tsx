@@ -13,24 +13,27 @@ const PropertyCardLikes = ({
   forceFilled = false,
 }: PropertyCardLikesProps) => {
   const { likes, ssrLikedProducts } = useStoreParams((state) => state);
+
   const isLiked = likes?.includes(propertyId);
 
+  const likesCount = ssrLikedProducts?.[propertyId] ?? favoriteCount ?? 0;
+
+  const heartSrc =
+    forceFilled || isLiked
+      ? "/assets/icons/adds/filled_heart.svg"
+      : "/assets/icons/adds/empty_heart.svg";
+
   return (
-    <div className="flex items-center gap-1">
+    <div className="flex shrink-0 items-center gap-1 text-sm">
       <ContentImage
         width={16}
         height={16}
+        src={heartSrc}
         alt={_STRINGS.LIKES}
-        className="w-4 h-4 aspect-square"
-        src={
-          forceFilled || isLiked
-            ? "/assets/icons/adds/filled_heart.svg"
-            : "/assets/icons/adds/empty_heart.svg"
-        }
+        className="h-4 w-4 shrink-0"
       />
-      <p className="text-xxs opacity-60">
-        {ssrLikedProducts?.[propertyId] || favoriteCount}
-      </p>
+
+      <p className="leading-none text-neutral-700">{likesCount}</p>
     </div>
   );
 };
