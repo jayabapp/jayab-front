@@ -11,23 +11,23 @@ import PropertyPrice from "../PropertyPrice";
 import _STRINGS from "@/utils/LocalStrings";
 
 const PublicPropertyCard = ({ data, goToLink }: PublicPropertyCardProps) => {
-  // Temporary frontend state
-  // Later:
+  // Temporary frontend mock
+  // Later replace with:
   // const hasActiveSubscription = data.has_active_subscription;
   const hasActiveSubscription = true;
 
   return (
-    <div className="property-card-shadow relative w-full overflow-visible rounded-20 bg-white p-3">
-      {/* Active Subscription Indicator - sits on card corner */}
+    <div className="property-card-shadow relative w-full rounded-20 bg-white p-3">
+      {/* Active Subscription Indicator */}
       {hasActiveSubscription ? (
         <div
           className="
-            absolute -left-[5px] -top-[5px] z-20
+            absolute left-[3px] top-[3px] z-20
             h-3 w-3
             rounded-full
             border-2 border-white
             bg-emerald-500
-            shadow-[0_0_5px_rgba(16,185,129,0.95),0_0_11px_rgba(16,185,129,0.65),0_0_18px_rgba(16,185,129,0.32)]
+            shadow-[0_0_4px_rgba(16,185,129,1),0_0_9px_rgba(16,185,129,0.75),0_0_15px_rgba(16,185,129,0.4)]
           "
           role="status"
           aria-label="اشتراک فعال"
