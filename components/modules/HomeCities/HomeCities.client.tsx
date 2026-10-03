@@ -1,7 +1,8 @@
 "use client";
 
+import { useEffect, useRef } from "react";
+
 import type { HomeCitiesProps } from "@/types/components/modules/home";
-import { useRef } from "react";
 
 import HomeCityRow from "./parts/HomeCityRow.client";
 
@@ -14,8 +15,9 @@ const splitByRow = (data: HomeCitiesProps["data"]) => [
 
 const HomeCityFilterContainer = ({ data, title }: HomeCitiesProps) => {
   const rows = splitByRow(data);
+  const scrollerRef = useRef<HTMLDivElement>(null);
+  const removeDocumentListeners = useRef<(() => void) | null>(null);
   const drag = useRef({
-    pointerId: null as number | null,
     startX: 0,
     startScrollLeft: 0,
     isRtl: false,
@@ -24,20 +26,19 @@ const HomeCityFilterContainer = ({ data, title }: HomeCitiesProps) => {
     suppressClick: false,
   });
 
-  const finishMouseDrag = (scroller: HTMLDivElement, pointerId: number) => {
-    if (drag.current.pointerId !== pointerId) return;
-
+  const finishMouseDrag = () => {
     const { hasDragged, previousScrollBehavior } = drag.current;
+    const scroller = scrollerRef.current;
 
-    if (scroller.hasPointerCapture(pointerId)) {
-      scroller.releasePointerCapture(pointerId);
-    }
+    removeDocumentListeners.current?.();
+    removeDocumentListeners.current = null;
 
-    scroller.style.scrollBehavior = previousScrollBehavior;
-    drag.current.pointerId = null;
+    if (scroller) scroller.style.scrollBehavior = previousScrollBehavior;
     drag.current.hasDragged = false;
     drag.current.suppressClick = hasDragged;
   };
+
+  useEffect(() => finishMouseDrag, []);
 
   return (
     <div className="home-tile-row noSelect relative flex w-full select-none flex-col gap-2.5 rounded-20 md:gap-2 lg:gap-3">
@@ -49,25 +50,20 @@ const HomeCityFilterContainer = ({ data, title }: HomeCitiesProps) => {
 
       <div
         className="home-city-scroller padding-x w-full cursor-grab overflow-x-auto overscroll-x-contain scroll-smooth active:cursor-grabbing [scrollbar-width:none] [&::-webkit-scrollbar]:hidden"
+        ref={scrollerRef}
         onClickCapture={(event) => {
           if (!drag.current.suppressClick) return;
-
-          // A drag ends with a click event; do not navigate through the city link.
           event.preventDefault();
           event.stopPropagation();
           drag.current.suppressClick = false;
         }}
         onDragStart={(event) => event.preventDefault()}
-        onPointerDown={(event) => {
-          if (event.pointerType !== "mouse" || event.button !== 0) return;
+        onMouseDown={(event) => {
+          if (event.button !== 0) return;
 
           const scroller = event.currentTarget;
 
-          // Pointer capture keeps the drag active even when the cursor leaves
-          // the scroller. onDragStart below suppresses native image/link drags.
-          scroller.setPointerCapture(event.pointerId);
           drag.current = {
-            pointerId: event.pointerId,
             startX: event.clientX,
             startScrollLeft: scroller.scrollLeft,
             isRtl: getComputedStyle(scroller).direction === "rtl",
@@ -76,37 +72,30 @@ const HomeCityFilterContainer = ({ data, title }: HomeCitiesProps) => {
             suppressClick: false,
           };
           scroller.style.scrollBehavior = "auto";
+
+          const onMouseMove = (moveEvent: MouseEvent) => {
+            const distance = moveEvent.clientX - drag.current.startX;
+            if (
+              !drag.current.hasDragged &&
+              Math.abs(distance) < MOUSE_DRAG_THRESHOLD
+            )
+              return;
+            drag.current.hasDragged = true;
+            moveEvent.preventDefault();
+            scroller.scrollLeft =
+              drag.current.startScrollLeft +
+              (drag.current.isRtl ? distance : -distance);
+          };
+          const onMouseUp = () => finishMouseDrag();
+
+          removeDocumentListeners.current?.();
+          removeDocumentListeners.current = () => {
+            document.removeEventListener("mousemove", onMouseMove);
+            document.removeEventListener("mouseup", onMouseUp);
+          };
+          document.addEventListener("mousemove", onMouseMove);
+          document.addEventListener("mouseup", onMouseUp);
         }}
-        onPointerMove={(event) => {
-          if (drag.current.pointerId !== event.pointerId) return;
-
-          const distance = event.clientX - drag.current.startX;
-
-          if (
-            !drag.current.hasDragged &&
-            Math.abs(distance) < MOUSE_DRAG_THRESHOLD
-          ) {
-            return;
-          }
-
-          drag.current.hasDragged = true;
-          event.preventDefault();
-
-          // Modern browsers use negative scrollLeft values for RTL scrollers.
-          // Inverting the delta keeps the content attached to the mouse in both directions.
-          event.currentTarget.scrollLeft =
-            drag.current.startScrollLeft +
-            (drag.current.isRtl ? distance : -distance);
-        }}
-        onPointerUp={(event) =>
-          finishMouseDrag(event.currentTarget, event.pointerId)
-        }
-        onPointerCancel={(event) =>
-          finishMouseDrag(event.currentTarget, event.pointerId)
-        }
-        onLostPointerCapture={(event) =>
-          finishMouseDrag(event.currentTarget, event.pointerId)
-        }
       >
         <div className="home-city-scroll-track flex min-w-full w-max flex-col gap-2.5 md:gap-2 lg:gap-3">
           {rows.map((row, rowIndex) => (
