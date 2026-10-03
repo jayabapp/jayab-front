@@ -1,14 +1,15 @@
 "use client";
 
-import type { PropertyCardLikesProps } from "@/types/components/modules/property-grid";
-import { ContentImage } from "@elements/Image";
 import { useStoreParams } from "@/store";
+import { ContentImage } from "@elements/Image";
+
+import type { PropertyCardLikesProps } from "@/types/components/modules/property-grid";
 
 import _STRINGS from "@/utils/LocalStrings";
 
 const PropertyCardLikes = ({
-  favoriteCount,
   propertyId,
+  favoriteCount,
   forceFilled = false,
 }: PropertyCardLikesProps) => {
   const { likes, ssrLikedProducts } = useStoreParams((state) => state);
