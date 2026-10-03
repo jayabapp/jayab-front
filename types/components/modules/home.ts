@@ -35,11 +35,8 @@ export type HomeMiddleBannersProps = {
 
 export type HomeCitiesProps = {
   data: HomeLandingDto[];
+  devices?: DeviceInfo;
   title: string;
-};
-
-export type HomeCityRowProps = {
-  row: HomeCitiesProps["data"];
 };
 
 export type HomeHeroBannerProps = {

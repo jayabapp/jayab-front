@@ -1,44 +1,27 @@
 "use client";
 
-import { useEffect, useRef } from "react";
+import {
+  HOME_TILE_BREAKPOINTS,
+  HOME_TILE_DEFAULT_SLIDES_PER_VIEW,
+  HOME_TILE_DEFAULT_SPACE_BETWEEN,
+} from "@modules/HomeSearch/tile-breakpoints";
 
 import type { HomeCitiesProps } from "@/types/components/modules/home";
 
-import HomeCityRow from "./parts/HomeCityRow.client";
+import SwiperSlide from "@elements/Carousel/SwiperSlide";
+import Swiper from "@elements/Carousel/Swiper.client";
+import HomeCityItem from "./parts/HomeCityItem.client";
 
-const MOUSE_DRAG_THRESHOLD = 5;
+const splitIntoColumns = (data: HomeCitiesProps["data"]) =>
+  data.reduce<HomeCitiesProps["data"][]>((columns, city, index) => {
+    if (index % 2 === 0) columns.push([city]);
+    else columns[columns.length - 1]?.push(city);
+    return columns;
+  }, []);
 
-const splitByRow = (data: HomeCitiesProps["data"]) => [
-  data?.filter((_, index) => index % 2 === 0) ?? [],
-  data?.filter((_, index) => index % 2 === 1) ?? [],
-];
-
-const HomeCityFilterContainer = ({ data, title }: HomeCitiesProps) => {
-  const rows = splitByRow(data);
-  const scrollerRef = useRef<HTMLDivElement>(null);
-  const removeDocumentListeners = useRef<(() => void) | null>(null);
-  const drag = useRef({
-    startX: 0,
-    startScrollLeft: 0,
-    isRtl: false,
-    hasDragged: false,
-    previousScrollBehavior: "",
-    suppressClick: false,
-  });
-
-  const finishMouseDrag = () => {
-    const { hasDragged, previousScrollBehavior } = drag.current;
-    const scroller = scrollerRef.current;
-
-    removeDocumentListeners.current?.();
-    removeDocumentListeners.current = null;
-
-    if (scroller) scroller.style.scrollBehavior = previousScrollBehavior;
-    drag.current.hasDragged = false;
-    drag.current.suppressClick = hasDragged;
-  };
-
-  useEffect(() => finishMouseDrag, []);
+const HomeCityFilterContainer = ({ data, title, devices }: HomeCitiesProps) => {
+  const columns = splitIntoColumns(data);
+  const isCompact = !!devices?.isMobile || !!devices?.isTablet;
 
   return (
     <div className="home-tile-row noSelect relative flex w-full select-none flex-col gap-2.5 rounded-20 md:gap-2 lg:gap-3">
@@ -48,61 +31,37 @@ const HomeCityFilterContainer = ({ data, title }: HomeCitiesProps) => {
         </p>
       </div>
 
-      <div
-        className="home-city-scroller padding-x w-full cursor-grab overflow-x-auto overscroll-x-contain scroll-smooth active:cursor-grabbing [scrollbar-width:none] [&::-webkit-scrollbar]:hidden"
-        ref={scrollerRef}
-        onClickCapture={(event) => {
-          if (!drag.current.suppressClick) return;
-          event.preventDefault();
-          event.stopPropagation();
-          drag.current.suppressClick = false;
-        }}
-        onDragStart={(event) => event.preventDefault()}
-        onMouseDown={(event) => {
-          if (event.button !== 0) return;
-
-          const scroller = event.currentTarget;
-
-          drag.current = {
-            startX: event.clientX,
-            startScrollLeft: scroller.scrollLeft,
-            isRtl: getComputedStyle(scroller).direction === "rtl",
-            hasDragged: false,
-            previousScrollBehavior: scroller.style.scrollBehavior,
-            suppressClick: false,
-          };
-          scroller.style.scrollBehavior = "auto";
-
-          const onMouseMove = (moveEvent: MouseEvent) => {
-            const distance = moveEvent.clientX - drag.current.startX;
-            if (
-              !drag.current.hasDragged &&
-              Math.abs(distance) < MOUSE_DRAG_THRESHOLD
-            )
-              return;
-            drag.current.hasDragged = true;
-            moveEvent.preventDefault();
-            scroller.scrollLeft =
-              drag.current.startScrollLeft +
-              (drag.current.isRtl ? distance : -distance);
-          };
-          const onMouseUp = () => finishMouseDrag();
-
-          removeDocumentListeners.current?.();
-          removeDocumentListeners.current = () => {
-            document.removeEventListener("mousemove", onMouseMove);
-            document.removeEventListener("mouseup", onMouseUp);
-          };
-          document.addEventListener("mousemove", onMouseMove);
-          document.addEventListener("mouseup", onMouseUp);
-        }}
+      <Swiper
+        viewportClassName="padding-x"
+        slidesPerView={
+          isCompact
+            ? HOME_TILE_DEFAULT_SLIDES_PER_VIEW.compact
+            : HOME_TILE_DEFAULT_SLIDES_PER_VIEW.wide
+        }
+        spaceBetween={
+          isCompact
+            ? HOME_TILE_DEFAULT_SPACE_BETWEEN.compact
+            : HOME_TILE_DEFAULT_SPACE_BETWEEN.wide
+        }
+        breakPoints={HOME_TILE_BREAKPOINTS}
+        options={{ align: "start", direction: "rtl", dragFree: true, loop: false }}
       >
-        <div className="home-city-scroll-track flex min-w-full w-max flex-col gap-2.5 md:gap-2 lg:gap-3">
-          {rows.map((row, rowIndex) => (
-            <HomeCityRow row={row} key={`city-row-${rowIndex}`} />
-          ))}
-        </div>
-      </div>
+        {columns.map((column, index) => (
+          <SwiperSlide
+            key={`city-column-${index}`}
+            className="home-tile-slide cursor-pointer p-0 md:px-2 md:py-2"
+          >
+            <div className="flex flex-col gap-2.5 md:gap-2 lg:gap-3">
+              {column.map((city, cityIndex) => (
+                <HomeCityItem
+                  item={city}
+                  key={`${city.title}-${cityIndex}`}
+                />
+              ))}
+            </div>
+          </SwiperSlide>
+        ))}
+      </Swiper>
     </div>
   );
 };

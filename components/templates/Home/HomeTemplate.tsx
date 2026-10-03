@@ -74,6 +74,7 @@ const HomeTemplate = ({
             />
             <HomeCities
               data={landings?.popular_city ?? []}
+              devices={devices}
               title={_STRINGS.MOST_VISITED_CITIES}
             />
             <HomeQuickSearch
