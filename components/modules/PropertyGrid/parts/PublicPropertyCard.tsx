@@ -7,6 +7,7 @@ import type { PublicPropertyCardProps } from "@/types/components/modules/propert
 import PropertyCardLikes from "./PropertyCardLikes.client";
 import PropertyCardLink from "./PropertyCardLink.client";
 import PropertyPrice from "../PropertyPrice";
+
 import _STRINGS from "@/utils/LocalStrings";
 
 const PublicPropertyCard = ({ data, goToLink }: PublicPropertyCardProps) => (
@@ -50,13 +51,13 @@ const PublicPropertyCard = ({ data, goToLink }: PublicPropertyCardProps) => (
 
         {/* Rooms / Capacity / Likes */}
         <div className="flex w-full items-center justify-between gap-2">
-          <div className="flex items-center gap-1.5">
-            <div className="flex h-6 items-center justify-center rounded-full bg-neutral-200 px-2.5 text-xs font-normal leading-4 text-black">
-              {data.rooms_count || 0} اتاق
+          <div className="flex min-w-0 items-center gap-1.5">
+            <div className="flex h-6 shrink-0 items-center justify-center rounded-full bg-neutral-200 px-2.5 text-xs font-normal leading-4 text-black">
+              {data.total_bedrooms || 0} اتاق
             </div>
 
-            <div className="flex h-6 items-center justify-center rounded-full bg-neutral-200 px-2.5 text-xs font-normal leading-4 text-black">
-              تا {data.capacity || 0} نفر
+            <div className="flex h-6 shrink-0 items-center justify-center rounded-full bg-neutral-200 px-2.5 text-xs font-normal leading-4 text-black">
+              تا {data.max_capacity || 0} نفر
             </div>
           </div>
 
@@ -97,6 +98,7 @@ const PublicPropertyCard = ({ data, goToLink }: PublicPropertyCardProps) => (
             sizes="(min-width: 1280px) 16vw, (min-width: 768px) 24vw, 46vw"
           />
 
+          {/* Attachments Count */}
           {!data.advisor_commission &&
           data.advisor_commission !== 0 &&
           data.attachments_count ? (
@@ -113,6 +115,7 @@ const PublicPropertyCard = ({ data, goToLink }: PublicPropertyCardProps) => (
             </div>
           ) : null}
 
+          {/* Advisor Commission */}
           {data.advisor_commission || data.advisor_commission === 0 ? (
             <div className="absolute left-2 top-2 z-1 flex h-5 w-16 items-center justify-center gap-0.5 rounded-md bg-neutral-900/30 py-[0.2rem] text-white backdrop-blur-[6px]">
               <p className="text-xxs">
@@ -121,6 +124,7 @@ const PublicPropertyCard = ({ data, goToLink }: PublicPropertyCardProps) => (
             </div>
           ) : null}
 
+          {/* Authorized Badge */}
           {data.is_authorized ? (
             <div className="absolute bottom-2 right-2 z-1 mx-auto flex h-7 w-fit items-center gap-2 rounded-full bg-neutral-900/30 pl-2 pr-1 text-white backdrop-blur-[6px]">
               <ContentImage

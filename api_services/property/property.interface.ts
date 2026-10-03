@@ -289,7 +289,11 @@ export interface SinglePropDto {
   options: Options;
   option_items: PropertyOptionItemDto[];
   canceling_type: CancelationType;
-  owner_info: { avatar: ImageDto; full_name: string; since?: string | Date | null };
+  owner_info: {
+    avatar: ImageDto;
+    full_name: string;
+    since?: string | Date | null;
+  };
   seo_links?: { villa?: string | null; pool?: string | null };
   owner: { id: string | number };
 }
@@ -386,31 +390,31 @@ export interface PropertyDescriptionsDto {
 
 export interface PropertyListDto {
   id: number;
-  favorite_count: number;
   code: string;
-  title: string;
   slug: string;
-  feature_image: ImageDto;
-  attachments_count: number;
+  city: string;
+  title: string;
   images: any[];
+  region: string;
+  status: Status;
+  province: string;
+  has_pool: boolean;
+  bedrooms: Bedrooms;
   std_capacity: number;
   max_capacity: number;
-  total_bedrooms: number;
-  bedrooms: Bedrooms;
-  has_pool: boolean;
-  is_promoted: boolean;
-  province: string;
-  region: string;
-  city: string;
-  advisor_commission: number;
-  today_price: TodayPrice;
-  minimum_price: number | null;
-  is_today_reserved: boolean;
-  is_authorized: boolean;
-  has_blue_tick: boolean;
-  status: Status;
   remaining_days: null;
+  is_promoted: boolean;
   is_chat_enabled: null;
+  total_bedrooms: number;
+  favorite_count: number;
+  has_blue_tick: boolean;
+  is_authorized: boolean;
+  feature_image: ImageDto;
+  today_price: TodayPrice;
+  attachments_count: number;
+  is_today_reserved: boolean;
+  advisor_commission: number;
+  minimum_price: number | null;
   reserve_days: ReserveDaysDto[];
 }
 
