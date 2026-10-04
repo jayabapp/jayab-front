@@ -137,7 +137,7 @@ const PropertyGallery = ({
         </button>
       </div>
 
-      <div className="relative md:hidden">
+      <div className="relative overflow-hidden rounded-20 bg-white md:hidden">
         <Swiper
           selectedIndexCb={setCarouselIndex}
           slidesWidth={{ def: "100%", md: "100%" }}

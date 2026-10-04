@@ -16,7 +16,7 @@ const SECTION_CLASS =
 const PropertyDetailsPageSkeleton = () => (
   <div
     aria-busy="true"
-    className="container flex !h-auto flex-col !overflow-x-visible !pb-48 lg:!pb-36"
+    className="container flex !h-auto flex-col !overflow-x-visible !bg-white !pb-48 lg:!pb-36"
   >
     <PageSurface />
 

@@ -55,14 +55,14 @@ const ModalBottomSheet = ({
       />
 
       <div
-        className={`pointer-events-none fixed inset-0 flex h-screen w-screen flex-col justify-end supports-[height:100dvh]:h-[100dvh] supports-[width:100svw]:w-[100svw] md:justify-center ${options?.parentClass ?? ""}`}
+        className={`pointer-events-none fixed inset-0 flex h-screen w-screen flex-col justify-end supports-[height:100dvh]:h-[100dvh] supports-[width:100svw]:w-[100svw] md:grid md:place-items-center ${options?.parentClass ?? ""}`}
       >
         <DialogPanel
           style={{
             transform: dragOffset ? `translateY(${dragOffset}px)` : undefined,
             transition: isDragging ? "none" : "transform 0.2s ease-out",
           }}
-          className={`pointer-events-auto relative mx-auto max-h-[90vh] w-full overflow-y-auto overscroll-contain rounded-t-20 bg-white pb-6 shadow-2xl motion-reduce:transition-none supports-[height:100dvh]:max-h-[90dvh] md:max-h-[75vh] md:w-[35vw] md:rounded-20 md:pb-4 supports-[height:100dvh]:md:max-h-[75dvh] ${options?.containerClass ?? ""}`}
+          className={`pointer-events-auto relative mx-auto max-h-[90vh] w-full overflow-y-auto overscroll-contain rounded-t-20 bg-white pb-6 shadow-2xl motion-reduce:transition-none supports-[height:100dvh]:max-h-[90dvh] md:mx-0 md:max-h-[75vh] md:w-[35vw] md:rounded-20 md:pb-4 supports-[height:100dvh]:md:max-h-[75dvh] ${options?.containerClass ?? ""}`}
         >
           {/* Decorative drag affordance only — the accessible close control is
           the header's close button (`ModalHeaderPart` with `showX`). */}

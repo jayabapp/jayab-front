@@ -9,7 +9,7 @@ const PropertyDetailsTemplate = ({
   devices,
   property,
 }: PropertyDetailsTemplateProps) => (
-  <div className="container flex !h-auto flex-col !overflow-x-visible !pb-48 lg:!pb-36">
+  <div className="container flex !h-auto flex-col !overflow-x-visible !bg-white !pb-48 lg:!pb-36">
     <PageSurface />
     <ScrollToTopOnMount />
     {schema}
