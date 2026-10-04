@@ -1,16 +1,17 @@
 "use client";
 
-import type { PropertySpecsSectionProps } from "@/types/components/modules/property-details";
-import { getPropertyImageUrl } from "@features/properties/mappers/property-image.mapper";
 import { AMENITY_PREVIEW_COUNT } from "@features/properties/constants/amenities";
-import { toAmenityItems } from "@features/properties/mappers/amenities.mapper";
+import { getPropertyImageUrl } from "@features/properties/mappers/property-image.mapper";
 import { useMemo, useState } from "react";
+import { toAmenityItems } from "@features/properties/mappers/amenities.mapper";
+
+import type { PropertySpecsSectionProps } from "@/types/components/modules/property-details";
 
 import AmenitiesModal from "./AmenitiesModal.client";
 import ShowAllButton from "./ShowAllButton";
-import _STRINGS from "@/utils/LocalStrings";
-import ClampText from "./ClampText.client";
 import IconListItem from "./IconListItem";
+import ClampText from "./ClampText.client";
+import _STRINGS from "@/utils/LocalStrings";
 
 const Amenities = ({ property }: PropertySpecsSectionProps) => {
   const [showAll, setShowAll] = useState(false);
@@ -26,8 +27,9 @@ const Amenities = ({ property }: PropertySpecsSectionProps) => {
       <div className="grid grid-cols-1 gap-x-6 gap-y-4 sm:grid-cols-2">
         {preview.map((item) => (
           <IconListItem
-            key={`${item.group}-${item.title}`}
             label={item.title}
+            icon={item.fallbackIcon}
+            key={`${item.group}-${item.title}`}
             image={item.icon ? getPropertyImageUrl(item.icon) : null}
           />
         ))}

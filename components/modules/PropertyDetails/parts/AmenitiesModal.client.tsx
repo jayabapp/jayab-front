@@ -1,11 +1,12 @@
 "use client";
 
-import { getPropertyImageUrl } from "@features/properties/mappers/property-image.mapper";
-import type { AmenitiesModalProps } from "@/types/components/modules/property-details";
 import { ModalBottomSheet, ModalHeaderPart } from "@elements/Modal";
+import { getPropertyImageUrl } from "@features/properties/mappers/property-image.mapper";
 
-import _STRINGS from "@/utils/LocalStrings";
+import type { AmenitiesModalProps } from "@/types/components/modules/property-details";
+
 import IconListItem from "./IconListItem";
+import _STRINGS from "@/utils/LocalStrings";
 
 const GROUP_TITLES: Record<string, string> = {
   welfare: _STRINGS.WELFARE,
@@ -44,8 +45,9 @@ const AmenitiesModal = ({ amenities, onHide, show }: AmenitiesModalProps) => {
             <div className="grid grid-cols-1 gap-x-6 gap-y-3 sm:grid-cols-2">
               {items.map((item) => (
                 <IconListItem
-                  key={`${group}-${item.title}`}
                   label={item.title}
+                  icon={item.fallbackIcon}
+                  key={`${group}-${item.title}`}
                   image={item.icon ? getPropertyImageUrl(item.icon) : null}
                 />
               ))}

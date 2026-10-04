@@ -2,6 +2,12 @@ import type { IconName, IconProps } from "@/types/components/elements/icon";
 import type { JSX } from "react";
 
 const PATHS: Record<IconName, JSX.Element> = {
+  "air-conditioner": (
+    <>
+      <rect x="3.5" y="7" width="17" height="10" rx="2.5" />
+      <path d="M6.5 11h11M9 20c0-1 .7-1.5 1.5-2 .8-.5 1.5-1 1.5-2M15 20c0-1-.7-1.5-1.5-2-.8-.5-1.5-1-1.5-2" />
+    </>
+  ),
   bath: (
     <>
       <path d="M3 12.25h18" />
@@ -17,6 +23,14 @@ const PATHS: Record<IconName, JSX.Element> = {
       <path d="M3 12h13.5a4.5 4.5 0 0 1 4.5 4.5v2" />
       <path d="M7 12V9.5h4.5V12" />
       <path d="M3 15.75h18" />
+    </>
+  ),
+  billiard: (
+    <>
+      <circle cx="12" cy="12" r="7.75" />
+      <circle cx="9.25" cy="9.25" r=".9" fill="currentColor" stroke="none" />
+      <circle cx="14.75" cy="9.25" r=".9" fill="currentColor" stroke="none" />
+      <circle cx="12" cy="14.5" r=".9" fill="currentColor" stroke="none" />
     </>
   ),
   bookmark: <path d="M6.5 3.75h11v16.5L12 16.3l-5.5 3.95z" />,
@@ -85,6 +99,25 @@ const PATHS: Record<IconName, JSX.Element> = {
       <path d="M4 4l16 16" />
     </>
   ),
+  foosball: (
+    <>
+      <path d="M5 4.5v15M19 4.5v15M3.5 7.5h17M3.5 16.5h17" />
+      <circle cx="9" cy="10" r="1" />
+      <circle cx="15" cy="14" r="1" />
+    </>
+  ),
+  gazebo: (
+    <>
+      <path d="m3.5 10 8.5-6.25L20.5 10z" />
+      <path d="M6.5 10v9.5M17.5 10v9.5M4.5 19.5h15" />
+    </>
+  ),
+  grill: (
+    <>
+      <path d="M5 9.5h14l-1.25 6.25a4.1 4.1 0 0 1-4 3.25h-3.5a4.1 4.1 0 0 1-4-3.25z" />
+      <path d="M8 5.25v4.25M12 5.25v4.25M16 5.25v4.25M9 19l-1 2M15 19l1 2" />
+    </>
+  ),
   heart: (
     <path d="M12 20.25S4.5 15.4 4.5 10.2A4.2 4.2 0 0 1 12 7.4a4.2 4.2 0 0 1 7.5 2.8c0 5.2-7.5 10.05-7.5 10.05Z" />
   ),
@@ -110,10 +143,24 @@ const PATHS: Record<IconName, JSX.Element> = {
       <path d="M12 7.75h.01" />
     </>
   ),
+  kitchen: (
+    <>
+      <path d="M5 3.75v16.5M19 3.75v16.5M5 12h14" />
+      <path d="M9 3.75v5.5M12 3.75v5.5M15 3.75v5.5" />
+    </>
+  ),
   "map-pin": (
     <>
       <path d="M12 20.75s6.75-5.55 6.75-10.75a6.75 6.75 0 1 0-13.5 0C5.25 15.2 12 20.75 12 20.75Z" />
       <circle cx="12" cy="10" r="2.5" />
+    </>
+  ),
+  microwave: (
+    <>
+      <rect x="3.5" y="5.5" width="17" height="13" rx="2" />
+      <rect x="6.5" y="8" width="8" height="8" rx="1" />
+      <circle cx="17.5" cy="10" r=".75" fill="currentColor" stroke="none" />
+      <path d="M17.5 13h.01" />
     </>
   ),
   minus: <path d="M5.5 12h13" />,
@@ -123,6 +170,12 @@ const PATHS: Record<IconName, JSX.Element> = {
       <path d="M12.5 9c0-2.6 1.7-4.75 4-4.75" />
       <circle cx="18.5" cy="4.75" r="1" />
       <circle cx="20.25" cy="8" r=".9" />
+    </>
+  ),
+  parking: (
+    <>
+      <rect x="4" y="3.5" width="16" height="17" rx="3" />
+      <path d="M9 17V7h3.25a2.75 2.75 0 0 1 0 5.5H9" />
     </>
   ),
   paw: (
@@ -150,6 +203,12 @@ const PATHS: Record<IconName, JSX.Element> = {
       <path d="M14.5 16V6.25a2.25 2.25 0 0 1 4.5 0" />
       <path d="M7.5 10.5H12" />
       <path d="M14.5 10.5H19" />
+    </>
+  ),
+  refrigerator: (
+    <>
+      <rect x="6.5" y="3.5" width="11" height="17" rx="1.75" />
+      <path d="M6.5 11.5h11M14.75 7.25v1.5M14.75 14.5V16" />
     </>
   ),
   ruler: (
@@ -198,6 +257,18 @@ const PATHS: Record<IconName, JSX.Element> = {
       <path d="M7.5 20.25h7" />
     </>
   ),
+  terrace: (
+    <>
+      <path d="M4 19.5h16M6 19.5v-7M10 19.5v-7M14 19.5v-7M18 19.5v-7M4 12.5h16" />
+      <path d="M8 8.5c1.3-1.5 2.9-1.5 4.1 0 1.3-1.5 2.9-1.5 4.1 0" />
+    </>
+  ),
+  television: (
+    <>
+      <rect x="3.5" y="5.5" width="17" height="12" rx="2" />
+      <path d="m9 20.5 1.5-3M15 20.5l-1.5-3M9 3.5l3 2 3-2" />
+    </>
+  ),
   "user-plus": (
     <>
       <circle cx="10" cy="8" r="3.25" />
@@ -212,6 +283,19 @@ const PATHS: Record<IconName, JSX.Element> = {
       <path d="M3.25 19.5c0-3.2 2.8-5.25 6.25-5.25s6.25 2.05 6.25 5.25" />
       <path d="M16.25 5.15a3.25 3.25 0 0 1 0 5.7" />
       <path d="M17.5 14.5c1.95.55 3.25 2.05 3.25 4.35" />
+    </>
+  ),
+  "washing-machine": (
+    <>
+      <rect x="4.5" y="3.5" width="15" height="17" rx="2" />
+      <circle cx="12" cy="14" r="3.5" />
+      <path d="M7.5 7.25h.01M10 7.25h.01M4.5 10h15" />
+    </>
+  ),
+  wifi: (
+    <>
+      <path d="M4.5 9a11 11 0 0 1 15 0M7.5 12a6.5 6.5 0 0 1 9 0M10.25 15a2.5 2.5 0 0 1 3.5 0" />
+      <circle cx="12" cy="18.5" r=".75" fill="currentColor" stroke="none" />
     </>
   ),
   x: (

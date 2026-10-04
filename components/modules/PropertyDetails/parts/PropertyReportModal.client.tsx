@@ -1,11 +1,12 @@
 "use client";
 
-import type { PropertyReportModalProps } from "@/types/components/modules/property-details";
-import { useReportProperty } from "@features/properties/hooks/useReportProperty";
 import { SingleSelectPopUpSelect as SinglePopUpSelect } from "@elements/Form";
 import { ModalBottomSheet, ModalHeaderPart } from "@elements/Modal";
 import { MultiLineFormInput } from "@elements/Form";
+import { useReportProperty } from "@features/properties/hooks/useReportProperty";
 import { useState } from "react";
+
+import type { PropertyReportModalProps } from "@/types/components/modules/property-details";
 
 import useCmsContent from "@/hooks/useCmsContent";
 import _STRINGS from "@/utils/LocalStrings";
@@ -33,7 +34,14 @@ const PropertyReportModal = ({
   };
 
   return (
-    <ModalBottomSheet show={show} onHide={onClose}>
+    <ModalBottomSheet
+      show={show}
+      onHide={onClose}
+      options={{
+        parentClass: "items-center",
+        containerClass: "md:w-[32rem]",
+      }}
+    >
       <ModalHeaderPart hideArrow onHide={onClose} title={_STRINGS.REPORT_ADD} />
 
       <div className="w-full flex flex-col items-center justify-center gap-4 px-6 py-4">

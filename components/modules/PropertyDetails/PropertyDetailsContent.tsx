@@ -1,5 +1,5 @@
-import { RateTable, StayCalendarSection } from "@modules/PropertyBooking";
 import { toPropertyDetailsView } from "@features/properties/mappers/property-details.mapper";
+import { StayCalendarSection } from "@modules/PropertyBooking";
 import { PropertyGallery } from "@modules/PropertyGallery";
 import { toAmenityItems } from "@features/properties/mappers/amenities.mapper";
 import { ContactFlow } from "@modules/PropertyContact";
@@ -57,38 +57,28 @@ const PropertyDetailsContent = ({ property }: PropertyDetailsContentProps) => {
       {/*
         SL-18: mobile keeps photo -> section-nav tabs -> title/location/specs
         -> "ویلا به میزبانی" above the fold; desktop keeps the original
-        header-first order. `md:contents` drops the wrapper box on desktop so
-        DOM order (header, gallery, tabs) is what renders there, while the
-        `order-*` utilities only take effect while the wrapper is `flex` (mobile).
+        header-first order. The items stay as direct children of the page flex
+        container, so the sticky tabs are not constrained by a short intro
+        wrapper on mobile.
       */}
-      <div className="flex flex-col md:contents">
-        <div className="order-1">
-          <PropertyGallery
-            title={view.title}
-            images={view.images}
-            hostName={view.ownerName}
-            advisorCommission={view.advisorCommission}
-          />
-        </div>
+      <ListingHeader breadcrumbs={breadCrumbs} property={view} />
 
-        <div className="order-2">
-          <SectionTabs tabs={tabs} />
-        </div>
+      <PropertyGallery
+        title={view.title}
+        images={view.images}
+        hostName={view.ownerName}
+        advisorCommission={view.advisorCommission}
+      />
 
-        <div className="order-3">
-          <ListingHeader breadcrumbs={breadCrumbs} property={view} />
-        </div>
+      <SectionTabs tabs={tabs} />
 
-        {view.ownerName ? (
-          <p className="order-4 pb-4 text-sm text-neutral-600 md:hidden">
-            {_STRINGS.VILLA_HOSTED_BY} {view.ownerName}
-          </p>
-        ) : (
-          <></>
-        )}
-      </div>
+      {view.ownerName ? (
+        <p className="order-4 pb-4 text-sm text-neutral-600 md:hidden">
+          {_STRINGS.VILLA_HOSTED_BY} {view.ownerName}
+        </p>
+      ) : null}
 
-      <div className="grid grid-cols-1 gap-x-8 md:grid-cols-12">
+      <div className="order-5 grid grid-cols-1 gap-x-8 md:grid-cols-12">
         <div className="flex w-full flex-col md:col-span-7 lg:col-span-8">
           <ListingSection id="specs" title={_STRINGS.TAB_SPECS}>
             <KeyFacts property={property} />
@@ -103,24 +93,17 @@ const PropertyDetailsContent = ({ property }: PropertyDetailsContentProps) => {
           {amenities.length ? (
             <ListingSection id="amenities" title={_STRINGS.TAB_AMENITIES}>
               <Amenities property={property} />
-
-              <div className="flex flex-col gap-4">
-                <h3 className={SUB_HEADING_CLASS}>{_STRINGS.EXTRA_COSTS}</h3>
-                <ExtraCosts property={property} />
-              </div>
             </ListingSection>
           ) : (
             <></>
           )}
 
           <ListingSection id="calendar" title={_STRINGS.TAB_CALENDAR}>
+            <div className="flex flex-col gap-4">
+              <h3 className={SUB_HEADING_CLASS}>{_STRINGS.EXTRA_COSTS}</h3>
+              <ExtraCosts property={property} />
+            </div>
             <StayCalendarSection propertyId={view.id} />
-            <RateTable
-              stdCapacity={view.stdCapacity}
-              cleaningFee={view.cleaningFee}
-              dailyPrice={property?.daily_price}
-              extraGuestFee={view.extraGuestFee}
-            />
           </ListingSection>
 
           <ListingSection id="rules" title={_STRINGS.PROP_TERMS}>

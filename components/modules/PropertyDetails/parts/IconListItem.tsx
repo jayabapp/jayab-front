@@ -3,7 +3,12 @@ import type { IconListItemProps } from "@/types/components/modules/property-deta
 import { ContentImage } from "@elements/Image";
 import { Icon } from "@elements/Icon";
 
-const IconListItem = ({ image, label, state = "on" }: IconListItemProps) => (
+const IconListItem = ({
+  image,
+  label,
+  state = "on",
+  icon = "sparkles",
+}: IconListItemProps) => (
   <div
     className={`flex items-center gap-2.5 ${
       state === "off" ? "text-neutral-400 line-through" : "text-neutral-800"
@@ -18,7 +23,7 @@ const IconListItem = ({ image, label, state = "on" }: IconListItemProps) => (
         className="size-5 shrink-0 object-contain"
       />
     ) : (
-      <Icon name="check" size={20} />
+      <Icon name={icon} size={20} />
     )}
     <p className="text-sm">{label}</p>
   </div>

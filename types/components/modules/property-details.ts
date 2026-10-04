@@ -24,6 +24,7 @@ export type IconListItemProps = {
   label: string;
   state?: "on" | "off";
   image?: string | null;
+  icon?: IconName;
 };
 
 export type RuleItemProps = {
