@@ -67,7 +67,7 @@ const SinglePopUpSelect = ({
         options={{
           containerClass: `  ${
             item?.searcheable ? " min-h-[90dvh]" : ""
-          } mx-auto rounded-t-20 !h-[90dvh] md:!h-auto  max-h-[90dvh] absolute pb-[1.5rem] md:pb-10 bottom-0 md:translate-x-1/2 md:right-1/2 w-full md:w-[calc(50svw)]  overflow-y-scroll bg-white `,
+          } !h-[90dvh] max-h-[90dvh] w-full overflow-y-scroll rounded-t-20 bg-white pb-[1.5rem] md:!h-auto md:w-[32rem] md:max-w-[calc(100vw-2rem)] md:rounded-20 md:pb-10 `,
         }}
         onHide={() => {
           setShow(false);

@@ -1,9 +1,11 @@
 "use client";
 
+import { useState } from "react";
+
 import type { CancellationSummaryProps } from "@/types/components/modules/property-details";
+
 import { useContentList } from "@features/home/hooks/useContentList";
 import { ModalBottomSheet, ModalHeaderPart } from "@elements/Modal";
-import { useState } from "react";
 
 import _STRINGS from "@/utils/LocalStrings";
 import CmsText from "@elements/CmsText";
@@ -16,83 +18,378 @@ const CHIP_CLASS: Record<string, string> = {
   STRICT: "bg-danger-50 text-danger-500",
 };
 
+type TimelineColor = "success" | "warning" | "danger";
+
+type TimelineStep = {
+  title: string;
+  description?: string;
+  color: TimelineColor;
+};
+
+type ParsedPolicy = {
+  description?: string;
+  steps: TimelineStep[];
+};
+
+const TIMELINE_COLORS: TimelineColor[] = ["success", "warning", "danger"];
+
+const COLOR_CLASSES: Record<
+  TimelineColor,
+  {
+    border: string;
+    line: string;
+    text: string;
+  }
+> = {
+  success: {
+    border: "border-success-500",
+    line: "bg-success-500",
+    text: "text-success-600",
+  },
+  warning: {
+    border: "border-warning-500",
+    line: "bg-warning-500",
+    text: "text-warning-600",
+  },
+  danger: {
+    border: "border-danger-500",
+    line: "bg-danger-500",
+    text: "text-danger-500",
+  },
+};
+
 /**
- * The cancellation policy has no structured time-window/percentage data
- * anywhere in the API: `canceling_type` on the property is only
- * `{ id, title }` and the matching CMS `propertyRules` item is free-text
- * (`small_text`/`full_text`). So the real policy text is rendered as a
- * timeline, one step per non-empty line, in the order the CMS author wrote
- * it — no percentage or deducted amount is invented here.
+ * CMS policy format:
+ *
+ * Intro description
+ *
+ * Step 1 title
+ * Step 1 description
+ *
+ * Step 2 title
+ * Step 2 description
+ *
+ * Step 3 title
+ * Step 3 description
+ *
+ * Each block is separated by an empty line.
+ *
+ * If CMS content does not contain empty-line-separated blocks,
+ * a fallback parser uses one line per timeline item.
  */
-const buildTimelineSteps = (text?: string | null) =>
-  (text ?? "")
+const parseCancellationPolicy = (text?: string | null): ParsedPolicy => {
+  if (!text?.trim()) {
+    return {
+      description: undefined,
+      steps: [],
+    };
+  }
+
+  const normalizedText = text
+    .replace(/\r\n/g, "\n")
+    .replace(/\r/g, "\n")
+    .trim();
+
+  /*
+   * Preferred CMS format:
+   *
+   * intro paragraph
+   *
+   * step title
+   * step description
+   *
+   * step title
+   * step description
+   */
+  const blocks = normalizedText
+    .split(/\n\s*\n/)
+    .map((block) => block.trim())
+    .filter(Boolean);
+
+  if (blocks.length >= 2) {
+    const [description, ...stepBlocks] = blocks;
+
+    const steps = stepBlocks.map((block, index) => {
+      const lines = block
+        .split("\n")
+        .map((line) => line.trim())
+        .filter(Boolean);
+
+      const [title, ...descriptionLines] = lines;
+
+      return {
+        title,
+        description: descriptionLines.join("\n") || undefined,
+        color: TIMELINE_COLORS[Math.min(index, TIMELINE_COLORS.length - 1)],
+      };
+    });
+
+    return {
+      description,
+      steps,
+    };
+  }
+
+  /*
+   * Backward-compatible fallback for old CMS values
+   * where every non-empty line was considered one timeline item.
+   */
+  const lines = normalizedText
     .split("\n")
     .map((line) => line.trim())
     .filter(Boolean);
 
+  return {
+    description: undefined,
+    steps: lines.map((line, index) => ({
+      title: line,
+      color: TIMELINE_COLORS[Math.min(index, TIMELINE_COLORS.length - 1)],
+    })),
+  };
+};
+
+type StepMarkerProps = {
+  color: TimelineColor;
+  index: number;
+};
+
+const StepMarker = ({ color, index }: StepMarkerProps) => {
+  const classes = COLOR_CLASSES[color];
+
+  return (
+    <span
+      className={[
+        "relative z-10 flex size-8 shrink-0",
+        "items-center justify-center rounded-full",
+        "border-2 bg-white",
+        classes.border,
+        classes.text,
+      ].join(" ")}
+      aria-hidden="true"
+    >
+      {index === 0 ? (
+        /*
+         * First state — check icon.
+         */
+        <svg viewBox="0 0 24 24" fill="none" className="size-4">
+          <path
+            d="M7 12.5L10.2 15.5L17 8.5"
+            stroke="currentColor"
+            strokeWidth="2"
+            strokeLinecap="round"
+            strokeLinejoin="round"
+          />
+        </svg>
+      ) : index === 2 ? (
+        /*
+         * Last state — home icon, matching the Figma.
+         */
+        <svg viewBox="0 0 24 24" fill="none" className="size-[18px]">
+          <path
+            d="M4.5 10.2L12 4L19.5 10.2V18.5C19.5 19.05 19.05 19.5 18.5 19.5H5.5C4.95 19.5 4.5 19.05 4.5 18.5V10.2Z"
+            stroke="currentColor"
+            strokeWidth="1.8"
+            strokeLinecap="round"
+            strokeLinejoin="round"
+          />
+
+          <path
+            d="M9 19.5V14H15V19.5"
+            stroke="currentColor"
+            strokeWidth="1.8"
+            strokeLinecap="round"
+            strokeLinejoin="round"
+          />
+        </svg>
+      ) : (
+        /*
+         * Middle state — simple outlined center.
+         */
+        <span className="size-2 rounded-full bg-current" />
+      )}
+    </span>
+  );
+};
+
 const CancellationSummary = ({ cancelingType }: CancellationSummaryProps) => {
   const [showDetails, setShowDetails] = useState(false);
+
   const { items } = useContentList(
-    { key: PROPERTY_RULES_KEY, page: 1 },
+    {
+      key: PROPERTY_RULES_KEY,
+      page: 1,
+    },
     showDetails,
   );
-  const rule = items.find((item) => item?.key === cancelingType?.id);
-  const steps = buildTimelineSteps(rule?.small_text || rule?.full_text);
-  const timelineSteps = steps.length ? steps : [_STRINGS.CANCELLATION_RULE_FALLBACK];
-  if (!cancelingType?.title) return <></>;
+
+  if (!cancelingType?.title) {
+    return null;
+  }
+
+  const rule = items.find((item) => item?.key === cancelingType.id);
+
+  const policyText = rule?.full_text || rule?.small_text || "";
+
+  const parsedPolicy = parseCancellationPolicy(policyText);
+
+  const timelineSteps =
+    parsedPolicy.steps.length > 0
+      ? parsedPolicy.steps
+      : [
+          {
+            title: _STRINGS.CANCELLATION_RULE_FALLBACK,
+            color: "warning" as const,
+          },
+        ];
+
   return (
     <>
+      {/* --------------------------------
+       * Summary shown in HouseRules
+       * -------------------------------- */}
       <div className="flex flex-wrap items-center gap-2">
         <p className="text-sm font-semibold text-neutral-900">
           {_STRINGS.CANCENLATION_DESC}
         </p>
+
         <span
-          className={`rounded-full px-2.5 py-0.5 text-xs font-semibold ${
-            CHIP_CLASS[cancelingType.id] ?? "bg-neutral-100 text-neutral-700"
-          }`}
+          className={[
+            "rounded-full px-2.5 py-0.5",
+            "text-xs font-semibold",
+            CHIP_CLASS[cancelingType.id] ?? "bg-neutral-100 text-neutral-700",
+          ].join(" ")}
         >
           {cancelingType.title}
         </span>
+
         <button
           type="button"
           onClick={() => setShowDetails(true)}
-          className="cursor-pointer text-sm font-semibold text-brand-700 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-500"
+          className={[
+            "cursor-pointer text-sm font-semibold text-brand-700",
+            "transition-colors hover:text-brand-800",
+            "focus-visible:outline-none",
+            "focus-visible:ring-2",
+            "focus-visible:ring-brand-500",
+            "focus-visible:ring-offset-2",
+          ].join(" ")}
         >
           {_STRINGS.CANCELLATION_DETAILS}
         </button>
       </div>
 
+      {/* --------------------------------
+       * Cancellation policy modal
+       * -------------------------------- */}
       <ModalBottomSheet
         show={showDetails}
         onHide={() => setShowDetails(false)}
-        options={{ containerClass: "md:w-[34rem]" }}
+        options={{
+          containerClass: "md:w-[38rem]",
+        }}
       >
         <ModalHeaderPart
           hideArrow
           title={_STRINGS.CANCENLATION_DESC}
           onHide={() => setShowDetails(false)}
         />
-        <div className="p-4">
-          <ol className="flex flex-col">
-            {timelineSteps.map((step, index) => (
-              <li key={index} className="relative flex gap-3 pb-6 last:pb-0">
-                <div className="flex flex-col items-center">
-                  <span className="flex h-6 w-6 shrink-0 items-center justify-center rounded-full bg-brand-50 text-xs font-bold text-brand-700">
-                    {index + 1}
-                  </span>
-                  {index < timelineSteps.length - 1 ? (
-                    <span className="mt-1 w-px flex-1 bg-neutral-200" />
-                  ) : null}
-                </div>
-                <CmsText
-                  as="p"
-                  whitespace="pre-wrap"
-                  className="pt-0.5 text-sm leading-7 text-neutral-800"
+
+        <div dir="rtl" className="px-5 pb-7 pt-3 md:px-7 md:pb-8">
+          {/* Policy type */}
+          <h3 className="text-lg font-bold leading-8 text-neutral-900 md:text-xl">
+            {cancelingType.title}
+          </h3>
+
+          {/* Main policy description */}
+          {parsedPolicy.description ? (
+            <CmsText
+              as="p"
+              whitespace="pre-wrap"
+              className="mt-3 text-sm leading-7 text-neutral-700 md:text-base md:leading-8"
+            >
+              {parsedPolicy.description}
+            </CmsText>
+          ) : null}
+
+          {/* Timeline */}
+          <ol className="mt-7 flex flex-col">
+            {timelineSteps.map((step, index) => {
+              const isLast = index === timelineSteps.length - 1;
+
+              const nextColor = timelineSteps[index + 1]?.color;
+
+              return (
+                <li
+                  key={`${step.title}-${index}`}
+                  className="relative flex items-stretch gap-4"
                 >
-                  {step}
-                </CmsText>
-              </li>
-            ))}
+                  {/* Stepper */}
+                  <div className="relative flex w-8 shrink-0 flex-col items-center">
+                    <StepMarker index={index} color={step.color} />
+
+                    {!isLast ? (
+                      <div
+                        className="flex min-h-20 flex-1 flex-col items-center"
+                        aria-hidden="true"
+                      >
+                        {/*
+                         * First half of the connector uses the current
+                         * step's color and the second half uses the
+                         * next step's color.
+                         *
+                         * This reproduces the green -> yellow -> red
+                         * transition from Figma.
+                         */}
+                        <span
+                          className={[
+                            "w-[3px] flex-1",
+                            COLOR_CLASSES[step.color].line,
+                          ].join(" ")}
+                        />
+
+                        <span
+                          className={[
+                            "w-[3px] flex-1",
+                            nextColor
+                              ? COLOR_CLASSES[nextColor].line
+                              : COLOR_CLASSES[step.color].line,
+                          ].join(" ")}
+                        />
+                      </div>
+                    ) : null}
+                  </div>
+
+                  {/* Step content */}
+                  <div
+                    className={[
+                      "min-w-0 flex-1",
+                      isLast ? "pb-0" : "pb-8 md:pb-10",
+                    ].join(" ")}
+                  >
+                    <h4 className="text-base font-bold leading-7 text-neutral-900 md:text-lg md:leading-8">
+                      {step.title}
+                    </h4>
+
+                    {step.description ? (
+                      <div className="mt-2 flex items-start gap-2.5">
+                        <span
+                          className="mt-[11px] size-1.5 shrink-0 rounded-full bg-neutral-500"
+                          aria-hidden="true"
+                        />
+
+                        <CmsText
+                          as="p"
+                          whitespace="pre-wrap"
+                          className="min-w-0 text-sm leading-7 text-neutral-700 md:text-base md:leading-8"
+                        >
+                          {step.description}
+                        </CmsText>
+                      </div>
+                    ) : null}
+                  </div>
+                </li>
+              );
+            })}
           </ol>
         </div>
       </ModalBottomSheet>
