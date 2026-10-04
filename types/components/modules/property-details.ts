@@ -110,6 +110,7 @@ export type LocationNavigateLinkProps = {
 export type HostCardProps = {
   name?: string;
   isAuthorized?: boolean;
+  isOnline?: boolean;
   avatar?: PropertyDetailsView["ownerAvatar"];
   since?: PropertyDetailsView["ownerSince"];
 };
@@ -161,6 +162,7 @@ export type PropertyLikeButtonProps = {
 
 export type PropertyOwnerBadgeProps = {
   name?: string;
+  isOnline?: boolean;
   avatar?: PropertyDetailsView["ownerAvatar"];
 };
 

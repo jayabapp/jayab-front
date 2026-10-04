@@ -9,9 +9,9 @@ import moment from "moment-jalaali";
 const formatHostSince = (since: string | Date) =>
   moment(since).format("jMMMM jYYYY");
 
-const HostCard = ({ name, since, avatar, isAuthorized }: HostCardProps) => (
+const HostCard = ({ name, since, avatar, isAuthorized, isOnline }: HostCardProps) => (
   <div className="flex flex-col gap-3 rounded-20 border border-neutral-200 bg-white p-4">
-    <PropertyOwnerBadge avatar={avatar} name={name} />
+    <PropertyOwnerBadge avatar={avatar} name={name} isOnline={isOnline} />
     {since ? (
       <p className="text-sm text-neutral-500">
         {_STRINGS.HOST_SINCE.replace("{date}", formatHostSince(since))}

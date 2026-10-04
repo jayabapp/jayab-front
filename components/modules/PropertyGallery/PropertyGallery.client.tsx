@@ -69,7 +69,7 @@ const PropertyGallery = ({
   };
 
   return (
-    <div className="relative order-1 w-full md:order-2">
+    <div className="relative order-1 w-full md:order-1">
       {userInfo?.advisor_id && advisorCommission ? (
         <div className="absolute right-3 top-3 z-1 flex h-7 items-center rounded-full bg-neutral-900/60 px-3 text-white">
           <p className="text-xs">

@@ -54,15 +54,7 @@ const PropertyDetailsContent = ({ property }: PropertyDetailsContentProps) => {
 
   return (
     <ContactFlow property={view}>
-      {/*
-        SL-18: mobile keeps photo -> section-nav tabs -> title/location/specs
-        -> "ویلا به میزبانی" above the fold; desktop keeps the original
-        header-first order. The items stay as direct children of the page flex
-        container, so the sticky tabs are not constrained by a short intro
-        wrapper on mobile.
-      */}
       <ListingHeader breadcrumbs={breadCrumbs} property={view} />
-
       <PropertyGallery
         title={view.title}
         images={view.images}
@@ -125,6 +117,7 @@ const PropertyDetailsContent = ({ property }: PropertyDetailsContentProps) => {
               name={view.ownerName}
               avatar={view.ownerAvatar}
               isAuthorized={view.isAuthorized}
+              isOnline={view.hasActiveSubscription}
               since={view.ownerSince}
             />
             <div className="pt-2">

@@ -728,6 +728,8 @@ const _STRINGS = {
   TAB_RULES: "قوانین",
   TAB_LOCATION: "موقعیت",
   TAB_HOST: "میزبان",
+  ONLINE: "آنلاین",
+  ACTIVE_SUBSCRIPTION: "اشتراک فعال",
   SECTIONS_NAV: "بخش‌های آگهی",
   GUESTS: "مهمان",
   BEDS: "تخت",

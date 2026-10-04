@@ -267,6 +267,7 @@ export interface SinglePropDto {
   has_pool: boolean;
   has_blue_tick: boolean;
   is_authorized: boolean;
+  has_active_subscription: boolean;
   is_promoted: boolean;
   is_chat_enabled: boolean;
   province: string;

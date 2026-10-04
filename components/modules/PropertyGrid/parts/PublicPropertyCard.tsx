@@ -11,7 +11,7 @@ import PropertyPrice from "../PropertyPrice";
 import _STRINGS from "@/utils/LocalStrings";
 
 const PublicPropertyCard = ({ data, goToLink }: PublicPropertyCardProps) => {
-  const hasActiveSubscription = true;
+  const hasActiveSubscription = data.has_active_subscription;
 
   return (
     <div className="property-card-shadow relative w-full overflow-hidden rounded-20 bg-white p-3">
@@ -27,10 +27,10 @@ const PublicPropertyCard = ({ data, goToLink }: PublicPropertyCardProps) => {
           shadow-[0_0_4px_rgba(16,185,129,1),0_0_8px_rgba(16,185,129,0.75),0_0_13px_rgba(16,185,129,0.45)]
           "
           role="status"
-          aria-label="اشتراک فعال"
-          title="اشتراک فعال"
+          aria-label={_STRINGS.ACTIVE_SUBSCRIPTION}
+          title={_STRINGS.ACTIVE_SUBSCRIPTION}
         >
-          <span className="sr-only">اشتراک فعال</span>
+          <span className="sr-only">{_STRINGS.ACTIVE_SUBSCRIPTION}</span>
         </div>
       ) : null}
 
