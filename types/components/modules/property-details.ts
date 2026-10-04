@@ -194,3 +194,21 @@ export type RelatedLandingLinksProps = {
   city?: string;
   seoLinks?: { villa?: string | null; pool?: string | null };
 };
+
+export type TTimelineColor = "success" | "warning" | "danger";
+
+export type TTimelineStep = {
+  title: string;
+  description?: string;
+  color: TTimelineColor;
+};
+
+export type TParsedPolicy = {
+  description?: string;
+  steps: TTimelineStep[];
+};
+
+export type TStepMarkerProps = {
+  index: number;
+  color: TTimelineColor;
+};

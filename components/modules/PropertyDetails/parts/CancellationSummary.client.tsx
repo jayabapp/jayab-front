@@ -1,11 +1,15 @@
 "use client";
 
+import { ModalBottomSheet, ModalHeaderPart } from "@elements/Modal";
+import { useContentList } from "@features/home/hooks/useContentList";
 import { useState } from "react";
 
-import type { CancellationSummaryProps } from "@/types/components/modules/property-details";
-
-import { useContentList } from "@features/home/hooks/useContentList";
-import { ModalBottomSheet, ModalHeaderPart } from "@elements/Modal";
+import type {
+  CancellationSummaryProps,
+  TParsedPolicy,
+  TStepMarkerProps,
+  TTimelineColor,
+} from "@/types/components/modules/property-details";
 
 import _STRINGS from "@/utils/LocalStrings";
 import CmsText from "@elements/CmsText";
@@ -18,23 +22,10 @@ const CHIP_CLASS: Record<string, string> = {
   STRICT: "bg-danger-50 text-danger-500",
 };
 
-type TimelineColor = "success" | "warning" | "danger";
-
-type TimelineStep = {
-  title: string;
-  description?: string;
-  color: TimelineColor;
-};
-
-type ParsedPolicy = {
-  description?: string;
-  steps: TimelineStep[];
-};
-
-const TIMELINE_COLORS: TimelineColor[] = ["success", "warning", "danger"];
+const TIMELINE_COLORS: TTimelineColor[] = ["success", "warning", "danger"];
 
 const COLOR_CLASSES: Record<
-  TimelineColor,
+  TTimelineColor,
   {
     border: string;
     line: string;
@@ -58,26 +49,7 @@ const COLOR_CLASSES: Record<
   },
 };
 
-/**
- * CMS policy format:
- *
- * Intro description
- *
- * Step 1 title
- * Step 1 description
- *
- * Step 2 title
- * Step 2 description
- *
- * Step 3 title
- * Step 3 description
- *
- * Each block is separated by an empty line.
- *
- * If CMS content does not contain empty-line-separated blocks,
- * a fallback parser uses one line per timeline item.
- */
-const parseCancellationPolicy = (text?: string | null): ParsedPolicy => {
+const parseCancellationPolicy = (text?: string | null): TParsedPolicy => {
   if (!text?.trim()) {
     return {
       description: undefined,
@@ -90,17 +62,6 @@ const parseCancellationPolicy = (text?: string | null): ParsedPolicy => {
     .replace(/\r/g, "\n")
     .trim();
 
-  /*
-   * Preferred CMS format:
-   *
-   * intro paragraph
-   *
-   * step title
-   * step description
-   *
-   * step title
-   * step description
-   */
   const blocks = normalizedText
     .split(/\n\s*\n/)
     .map((block) => block.trim())
@@ -116,24 +77,18 @@ const parseCancellationPolicy = (text?: string | null): ParsedPolicy => {
         .filter(Boolean);
 
       const [title, ...descriptionLines] = lines;
-
       return {
         title,
         description: descriptionLines.join("\n") || undefined,
         color: TIMELINE_COLORS[Math.min(index, TIMELINE_COLORS.length - 1)],
       };
     });
-
     return {
       description,
       steps,
     };
   }
 
-  /*
-   * Backward-compatible fallback for old CMS values
-   * where every non-empty line was considered one timeline item.
-   */
   const lines = normalizedText
     .split("\n")
     .map((line) => line.trim())
@@ -148,12 +103,7 @@ const parseCancellationPolicy = (text?: string | null): ParsedPolicy => {
   };
 };
 
-type StepMarkerProps = {
-  color: TimelineColor;
-  index: number;
-};
-
-const StepMarker = ({ color, index }: StepMarkerProps) => {
+const StepMarker = ({ color, index }: TStepMarkerProps) => {
   const classes = COLOR_CLASSES[color];
 
   return (
@@ -168,9 +118,6 @@ const StepMarker = ({ color, index }: StepMarkerProps) => {
       aria-hidden="true"
     >
       {index === 0 ? (
-        /*
-         * First state — check icon.
-         */
         <svg viewBox="0 0 24 24" fill="none" className="size-4">
           <path
             d="M7 12.5L10.2 15.5L17 8.5"
@@ -181,9 +128,6 @@ const StepMarker = ({ color, index }: StepMarkerProps) => {
           />
         </svg>
       ) : index === 2 ? (
-        /*
-         * Last state — home icon, matching the Figma.
-         */
         <svg viewBox="0 0 24 24" fill="none" className="size-[18px]">
           <path
             d="M4.5 10.2L12 4L19.5 10.2V18.5C19.5 19.05 19.05 19.5 18.5 19.5H5.5C4.95 19.5 4.5 19.05 4.5 18.5V10.2Z"
@@ -202,9 +146,6 @@ const StepMarker = ({ color, index }: StepMarkerProps) => {
           />
         </svg>
       ) : (
-        /*
-         * Middle state — simple outlined center.
-         */
         <span className="size-2 rounded-full bg-current" />
       )}
     </span>
@@ -213,7 +154,6 @@ const StepMarker = ({ color, index }: StepMarkerProps) => {
 
 const CancellationSummary = ({ cancelingType }: CancellationSummaryProps) => {
   const [showDetails, setShowDetails] = useState(false);
-
   const { items } = useContentList(
     {
       key: PROPERTY_RULES_KEY,
@@ -221,17 +161,10 @@ const CancellationSummary = ({ cancelingType }: CancellationSummaryProps) => {
     },
     showDetails,
   );
-
-  if (!cancelingType?.title) {
-    return null;
-  }
-
+  if (!cancelingType?.title) return null;
   const rule = items.find((item) => item?.key === cancelingType.id);
-
   const policyText = rule?.full_text || rule?.small_text || "";
-
   const parsedPolicy = parseCancellationPolicy(policyText);
-
   const timelineSteps =
     parsedPolicy.steps.length > 0
       ? parsedPolicy.steps
@@ -244,14 +177,10 @@ const CancellationSummary = ({ cancelingType }: CancellationSummaryProps) => {
 
   return (
     <>
-      {/* --------------------------------
-       * Summary shown in HouseRules
-       * -------------------------------- */}
       <div className="flex flex-wrap items-center gap-2">
         <p className="text-sm font-semibold text-neutral-900">
           {_STRINGS.CANCENLATION_DESC}
         </p>
-
         <span
           className={[
             "rounded-full px-2.5 py-0.5",
@@ -278,9 +207,6 @@ const CancellationSummary = ({ cancelingType }: CancellationSummaryProps) => {
         </button>
       </div>
 
-      {/* --------------------------------
-       * Cancellation policy modal
-       * -------------------------------- */}
       <ModalBottomSheet
         show={showDetails}
         onHide={() => setShowDetails(false)}
@@ -315,7 +241,6 @@ const CancellationSummary = ({ cancelingType }: CancellationSummaryProps) => {
           <ol className="mt-7 flex flex-col">
             {timelineSteps.map((step, index) => {
               const isLast = index === timelineSteps.length - 1;
-
               const nextColor = timelineSteps[index + 1]?.color;
 
               return (
@@ -326,20 +251,11 @@ const CancellationSummary = ({ cancelingType }: CancellationSummaryProps) => {
                   {/* Stepper */}
                   <div className="relative flex w-8 shrink-0 flex-col items-center">
                     <StepMarker index={index} color={step.color} />
-
                     {!isLast ? (
                       <div
                         className="flex min-h-20 flex-1 flex-col items-center"
                         aria-hidden="true"
                       >
-                        {/*
-                         * First half of the connector uses the current
-                         * step's color and the second half uses the
-                         * next step's color.
-                         *
-                         * This reproduces the green -> yellow -> red
-                         * transition from Figma.
-                         */}
                         <span
                           className={[
                             "w-[3px] flex-1",

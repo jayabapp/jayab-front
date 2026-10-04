@@ -1,8 +1,9 @@
 "use client";
 
-import type { PropertyReportRowProps } from "@/types/components/modules/property-details";
-import { Icon } from "@elements/Icon";
 import { useState } from "react";
+import { Icon } from "@elements/Icon";
+
+import type { PropertyReportRowProps } from "@/types/components/modules/property-details";
 
 import PropertyReportModal from "./PropertyReportModal.client";
 import _STRINGS from "@/utils/LocalStrings";
