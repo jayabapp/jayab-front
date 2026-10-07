@@ -209,7 +209,7 @@ const Footer = () => {
             )}
           </div>
 
-          {/* <div className="flex flex-row w-fit  items-center justify-center gap-5">
+          <div className="flex flex-row w-fit  items-center justify-center gap-5">
             <a
               referrerPolicy="origin"
               className="w-16 h-16"
@@ -224,7 +224,7 @@ const Footer = () => {
                 alt="نماد اعتماد الکترونیکی"
               />
             </a>
-          </div> */}
+          </div>
         </div>
         {/* SOCIALS */}
       </div>
