@@ -1,0 +1,96 @@
+{
+  "common": {
+    "currency": "تومان",
+    "thousandToman": "هزار تومان",
+    "perNight": "/ شب",
+    "search": "جستجو",
+    "enter": "ورود",
+    "home": "خانه",
+    "menu": "منو",
+    "share": "اشتراک‌گذاری",
+    "chat": "چت",
+    "cancel": "انصراف",
+    "confirm": "تایید",
+    "save": "ذخیره",
+    "back": "بازگشت",
+    "showAll": "مشاهده همه",
+    "showMore": "مشاهدهٔ بیشتر",
+    "showLess": "مشاهدهٔ کمتر",
+    "loading": "در حال بارگذاری…",
+    "retry": "تلاش دوباره",
+    "empty": "موردی یافت نشد",
+    "close": "بستن",
+    "unit": {
+      "meter": "متر",
+      "sqm": "متر مربع",
+      "km": "کیلومتر"
+    }
+  },
+  "header": {
+    "advisors": "مشاوران",
+    "listings": "آگهی‌ها",
+    "addListing": "ثبت آگهی",
+    "registerProperty": "ثبت ملک",
+    "myProfile": "جایاب من",
+    "loginToAccount": "ورود به حساب کاربری",
+    "chooseCity": "انتخاب شهر",
+    "searchPlaceholder": "مقصد سفرت کجاست؟"
+  },
+  "theme": {
+    "label": "حالت نمایش",
+    "light": "روشن",
+    "dark": "تیره",
+    "system": "سیستم",
+    "switchToLight": "تغییر به حالت روشن",
+    "switchToDark": "تغییر به حالت تیره"
+  },
+  "language": {
+    "label": "زبان",
+    "fa": "فارسی",
+    "ar": "العربية",
+    "en": "English",
+    "current": "زبان فعلی: {name}",
+    "switchBlocked": "برای تغییر زبان، ابتدا کار جاری را تمام کنید یا تغییرات را ذخیره کنید."
+  },
+  "listing": {
+    "tabs": {
+      "details": "مشخصات",
+      "amenities": "امکانات",
+      "calendar": "تقویم و قیمت",
+      "rules": "قوانین",
+      "location": "موقعیت",
+      "host": "میزبان"
+    },
+    "code": "کد",
+    "viewAllPhotos": "مشاهده همه تصاویر",
+    "upToGuests": "{count, plural, other {تا # مهمان}}",
+    "rooms": "{count, plural, other {# اتاق}}",
+    "area": "{built} متر بنا + {grounds} متر محوطه",
+    "about": "درباره اقامتگاه",
+    "sleeping": "فضای خواب",
+    "extraCharges": "هزینه‌های مازاد",
+    "checkIn": "ساعت ورود",
+    "checkOut": "ساعت خروج",
+    "cancellation": "قوانین لغو (کنسلی)",
+    "requiredDocs": "مدارک مورد نیاز",
+    "hostSince": "میزبان جایاب از {date}",
+    "report": "گزارش تخلف",
+    "reportHint": "مشکلی در این آگهی مشاهده کردید؟ به ما اطلاع دهید",
+    "similar": "اقامتگاه‌های مشابه در {city}",
+    "startsFrom": "شروع قیمت از",
+    "checkInDate": "تاریخ ورود",
+    "checkOutDate": "تاریخ خروج",
+    "guestsCount": "تعداد مسافران",
+    "choose": "انتخاب کنید",
+    "pickDates": "انتخاب تاریخ",
+    "calendar": {
+      "jalali": "تقویم جلالی (شمسی)",
+      "fullPrice": "قیمت هر شب: {price}"
+    }
+  },
+  "errors": {
+    "generic": "مشکلی پیش آمد. دوباره تلاش کنید.",
+    "network": "ارتباط با سرور برقرار نشد.",
+    "preferenceNotSaved": "تنظیمات ذخیره نشد. اجازهٔ ذخیرهٔ کوکی را بررسی کنید."
+  }
+}

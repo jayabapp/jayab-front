@@ -1,0 +1,96 @@
+// STARTER: separate the FILE blocks below; this .txt is not a single TS module.
+// Contracts: 03-i18n-infrastructure.md. No dependency has been installed by this plan.
+// Read public flags consistently on server/client from the same production build.
+
+// FILE: i18n/config.ts
+export const supportedLocales = ["fa", "ar", "en"] as const;
+export type Locale = (typeof supportedLocales)[number];
+export const defaultLocale: Locale = "fa";
+export const LOCALE_COOKIE = "jayab_locale";
+
+export const isLocale = (value: unknown): value is Locale =>
+  typeof value === "string" &&
+  supportedLocales.some((locale) => locale === value);
+
+export const parseEnabledLocales = (raw: string | undefined): readonly Locale[] => {
+  const configured = (raw ?? "fa").split(",").map((value) => value.trim());
+  return supportedLocales.filter((locale) => locale === defaultLocale || configured.includes(locale));
+};
+
+export const enabledLocales = parseEnabledLocales(process.env.NEXT_PUBLIC_ENABLED_LOCALES);
+export const isEnabledLocale = (value: unknown): value is Locale =>
+  isLocale(value) && enabledLocales.includes(value);
+export const resolveLocale = (value: unknown): Locale =>
+  isEnabledLocale(value) ? value : defaultLocale;
+export const dirOf = (locale: Locale): "rtl" | "ltr" => locale === "en" ? "ltr" : "rtl";
+
+export const localeMeta = {
+  fa: { name: "فارسی", lang: "fa-IR", formatLocale: "fa-IR", numberingSystem: "latn" },
+  ar: { name: "العربية", lang: "ar", formatLocale: "ar", numberingSystem: "arab" },
+  en: { name: "English", lang: "en", formatLocale: "en-US", numberingSystem: "latn" },
+} as const;
+// Booking calendar is a domain decision, deliberately absent from localeMeta.
+
+// FILE: i18n/request.ts
+import "server-only";
+
+import { getRequestConfig } from "next-intl/server";
+import { cookies } from "next/headers";
+import { defaultLocale, enabledLocales, LOCALE_COOKIE, resolveLocale } from "@/i18n/config";
+
+const messageLoaders = {
+  fa: () => import("@/messages/fa.json").then((module) => module.default),
+  ar: () => import("@/messages/ar.json").then((module) => module.default),
+  en: () => import("@/messages/en.json").then((module) => module.default),
+};
+
+export default getRequestConfig(async () => {
+  // Do not read Dynamic APIs in the fa-only rollout.
+  const locale = enabledLocales.length === 1
+    ? defaultLocale
+    : resolveLocale((await cookies()).get(LOCALE_COOKIE)?.value);
+  return {
+    locale,
+    timeZone: "Asia/Tehran",
+    messages: await messageLoaders[locale](),
+  };
+});
+// No fake Persian fallback that actually returns a raw message key.
+// Compile-time/CI parity and namespace provisioning are release prerequisites.
+
+// FILE: hooks/useLocaleSwitch.ts
+"use client";
+
+import { useLocale } from "next-intl";
+import { isEnabledLocale, LOCALE_COOKIE, resolveLocale } from "@/i18n/config";
+
+export const useLocaleSwitch = (canSwitch = true) => {
+  const locale = resolveLocale(useLocale());
+  const setLocale = (next: unknown): boolean => {
+    // The application disables switching for dirty forms / pending critical flows.
+    if (!canSwitch || !isEnabledLocale(next)) return false;
+    if (next === locale) return true;
+    try {
+      const secure = window.location.protocol === "https:" ? "; Secure" : "";
+      document.cookie = `${LOCALE_COOKIE}=${next}; Path=/; Max-Age=31536000; SameSite=Lax${secure}`;
+      const saved = document.cookie.split(";").some((cookie) => cookie.trim() === `${LOCALE_COOKIE}=${next}`);
+      if (!saved) return false; // Caller shows a translated persistence error.
+      // Reload preserves URL/query/hash and obtains consistent server HTML + messages.
+      // An intercepted listing becomes its direct page, as specified in feature 03.
+      window.location.reload();
+      return true;
+    } catch {
+      return false;
+    }
+  };
+  return { locale, setLocale };
+};
+
+// INTEGRATION NOTES (not a replacement next.config.ts or RootLayout):
+// Wrap the existing NextConfig with createNextIntlPlugin("./i18n/request.ts").
+// RootLayout: const locale = resolveLocale(await getLocale());
+// Use localeMeta[locale].lang and dirOf(locale) on html.
+// NextIntlClientProvider around the existing LayoutProvider; pass only chrome
+// namespaces. A nested server module supplies the messages its client islands need.
+// Explicitly merge needed parent namespaces; nested messages are not deep-merged.
+// Keep existing MainLayout, AppShell, modal slot, auth and QueryClient ownership.

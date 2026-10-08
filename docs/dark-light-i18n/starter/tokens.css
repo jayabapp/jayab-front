@@ -1,0 +1,68 @@
+/*
+ * PROPOSED semantic layer for feat/new-app@c8e26fff.
+ * Copy to styles/theme-tokens.css and import from globals.css during feature 01.
+ * Keep theme/colors.ts primitive values unchanged: Map/Splash also consume them.
+ * Light values derive from the branch palette. Dark values are design proposals.
+ * RGB channels permit Tailwind: rgb(var(--c-surface) / <alpha-value>).
+ * No global font-size/radius/letter-spacing overrides are part of this starter.
+ */
+:root {
+  --c-page: 248 251 255; /* colors.canvas; body is currently white, review migration */
+  --c-surface: 255 255 255;
+  --c-surface-muted: 243 244 246; /* neutral.100 */
+  --c-surface-hover: 229 231 235; /* neutral.200 */
+  --c-ink: 11 21 36; /* neutral.900 */
+  --c-ink-muted: 74 80 92; /* neutral.600 */
+  --c-ink-subtle: 107 114 128; /* neutral.500: only on measured backgrounds */
+  --c-link: 31 107 201; /* brand.600 */
+  --c-action: 31 107 201;
+  --c-action-hover: 24 86 163; /* brand.700 */
+  --c-on-action: 255 255 255;
+  --c-selected: 240 246 254; /* brand.50 */
+  --c-on-selected: 22 71 128; /* brand.800 */
+  --c-line: 229 231 235; /* decorative neutral.200 */
+  --c-control: 107 114 128; /* functional boundary, neutral.500 */
+  --c-focus: 31 107 201;
+  --c-status-danger: 193 31 31; /* danger.600 */
+  --c-status-danger-bg: 254 242 242;
+  --c-status-success: 21 128 61; /* success.600 */
+  --c-status-success-bg: 236 253 243;
+  --c-status-warning: 180 83 9; /* warning.600 */
+  --c-status-warning-bg: 255 247 237;
+  --c-overlay: 0 0 0;
+  --overlay-opacity: 0.5;
+  --shadow-surface: 0 0 7px 1px rgb(0 0 0 / 0.1);
+  --shadow-elevated: 0 12px 30px -16px rgb(21 60 105 / 0.45);
+  color-scheme: light;
+}
+
+/* The bootstrap is the only theme resolver. No OS media override here. */
+html[data-theme="dark"] {
+  --c-page: 11 21 36;
+  --c-surface: 17 30 49;
+  --c-surface-muted: 30 43 63;
+  --c-surface-hover: 40 56 78;
+  --c-ink: 232 236 244;
+  --c-ink-muted: 174 182 196;
+  --c-ink-subtle: 142 148 158;
+  --c-link: 143 187 245;
+  --c-action: 31 107 201;
+  --c-action-hover: 24 86 163;
+  --c-on-action: 255 255 255;
+  --c-selected: 20 36 61;
+  --c-on-selected: 187 214 250;
+  --c-line: 45 63 86;
+  --c-control: 142 148 158;
+  --c-focus: 143 187 245;
+  --c-status-danger: 255 153 153;
+  --c-status-danger-bg: 51 21 26;
+  --c-status-success: 108 226 153;
+  --c-status-success-bg: 15 42 27;
+  --c-status-warning: 255 190 105;
+  --c-status-warning-bg: 46 33 16;
+  --c-overlay: 0 0 0;
+  --overlay-opacity: 0.65;
+  --shadow-surface: 0 0 7px 1px rgb(0 0 0 / 0.3);
+  --shadow-elevated: 0 12px 30px -16px rgb(0 0 0 / 0.55);
+  color-scheme: dark;
+}

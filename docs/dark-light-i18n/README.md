@@ -1,0 +1,74 @@
+# برنامهٔ دارک/لایت و سه‌زبانهٔ جایاب
+
+نسخهٔ بازنویسی‌شده: ۲۰۲۶-۱۰-۰۸، مبنا: `Front` روی `feat/new-app` در commit `c8e26fff`.
+
+این پوشه مشخصات توسعه و starter است؛ فیچرها هنوز به اپ متصل نشده‌اند. نسخهٔ قبلی با معماری این برنچ سازگار نبود. [گزارش ممیزی](00-branch-audit.md) تفاوت‌ها و شواهد قابل‌بازتولید را ثبت می‌کند. برای شروع توسعه، همین README و سپس فیچر مربوطه خوانده شود.
+
+## قراردادهای مشترک
+
+- محدوده: `Front`، رابط فارسی/عربی/انگلیسی و تم روشن/تیره/سیستم. تغییر Back/Panel، ترجمهٔ محتوای کاربری و تغییر فلو رزرو پروژه‌های جدا هستند.
+- ساختار برنچ: routeها زیر `app/(pages)` و `app/(profile)`؛ UI در `components/elements`, `layouts`, `modules`, `templates`؛ داده و منطق دامنه در `features`؛ typeهای UI در `types/components/...`.
+- `elements` به feature/store وابسته نمی‌شود؛ `modules` از هوک سطح بالای feature استفاده می‌کند؛ `templates` سروری و صرفاً ترکیب‌کننده است. client islandهای module/layout پسوند `.client.tsx` دارند. هر module یک `index.ts` عمومی دارد.
+- `_STRINGS` تا مهاجرت مصرف‌کنندگان باقی می‌ماند. ترجمهٔ سراسری mutable یا وابسته به زبان آخرین درخواست ممنوع است.
+- پالت primitive در `theme/colors.ts` باقی می‌ماند؛ توکن معنایی CSS روی آن ساخته می‌شود. کلیدهای `brand/neutral/success/warning/danger` فعلی حذف یا در دارک وارونه نمی‌شوند.
+- تم در مرحلهٔ زیرساخت **روشن** است. فلگ موتور و فلگ کنترل جدا هستند؛ کوکی یا OS تیره نباید دارک ناقص را فعال کند.
+- زبان بدون کوکی همیشه `fa` است. عرضهٔ اول تشخیص خودکار Accept-Language ندارد. فقط زبان‌های فعال اجازهٔ resolve دارند؛ پنهان‌کردن منو کافی نیست.
+- زبان در کوکی، URL فعلی ثابت؛ این فاز سئوی چندزبانه ندارد. هزینهٔ dynamic rendering قبل از فعال‌سازی چند زبان اندازه‌گیری شود.
+- تقویم رزرو فعلاً برای هر سه زبان **جلالی** است و برچسب ترجمه‌شده دارد. نمایش میلادی milestone جدا با تست قرارداد تاریخ است؛ تغییر زبان نباید تاریخ یا قیمت را عوض کند.
+- طرح قبلی ادعای «artifact تأییدشده» داشت؛ artifact در این پوشه وجود ندارد. پالت دارک و تغییر کارت/فونت پیشنهاد طراحی هستند؛ نمای فعلی برنچ baseline است.
+
+## فیچرها و وابستگی‌ها
+
+| فیچر | خروجی | پیش‌نیاز |
+| --- | --- | --- |
+| [۰۱ رنگ](01-color-tokens.md) | توکن معنایی، حفظ primitive، مهاجرت صفحه‌ای | ممیزی |
+| [۰۲ تم](02-theme-engine.md) | bootstrap، provider، persistence و kill switch | ۰۱ |
+| [۰۳ زیرساخت زبان](03-i18n-infrastructure.md) | next-intl بدون routing و render contract | ممیزی |
+| [۰۴ ترجمه](04-translation-files.md) | JSON، ICU، validation و toast | ۰۳ |
+| [۰۵ کنترل‌ها](05-header-controls.md) | کنترل قابل‌دسترس در SiteHeader | ۰۲، ۰۳؛ عرضه پس از QA |
+| [۰۶ تایپوگرافی](06-typography-spacing.md) | فونت و ارقام locale، حفظ چگالی | ۰۳، ۰۴ |
+| [۰۷ سطح و کادر](07-surface-card-border.md) | الگوی انتخابی روی ساختار موجود | ۰۱ |
+| [۰۸ جهت](08-rtl-ltr-logical.md) | حفظ RTL و پشتیبانی LTR | ۰۳ |
+| [۰۹ فرمت](09-locale-formatting.md) | نمایش با قرارداد ثابت تاریخ/قیمت | ۰۳، ۰۴ |
+| [۱۰ عرضه و QA](10-rollout-and-qa.md) | ترتیب PR، دروازهٔ عرضه و rollback | فیچرهای عرضه‌شونده |
+
+هر PR خروجی، مسیرهای تکمیل‌شده، شواهد QA و rollback داشته باشد. این فایل‌ها مشخصات مستقل دارند ولی **اجرای مستقل و بی‌ترتیب ندارند**. تفکیک PRها در فیچر ۱۰ است.
+
+## تصمیم‌های اجرایی
+
+| موضوع | انتخاب این طرح | شرط تغییر |
+| --- | --- | --- |
+| i18n | next-intl با plugin روی config موجود | peer dependencies نسخهٔ نصب‌شونده بررسی و yarn.lock ثبت شود |
+| routing | کوکی `jayab_locale`، همان URL | پیشوند زبان نیازمند ADR سئو، sitemap، redirects و parallel routes است |
+| زبان پیش‌فرض | fa ثابت | تشخیص خودکار نیازمند تصمیم محصول و مذاکرهٔ کامل زبان است |
+| محتوا/بک‌اند | دادهٔ فعلی، ترجمهٔ UI | پشتیبانی API از locale اثبات نشده؛ هدر کورکورانه اضافه نشود |
+| موتور تم | `NEXT_PUBLIC_THEME_ENABLED=0` | پس از QA تمام مسیرهای قابل‌دسترسی `1` شود |
+| تم پس از عرضه | انتخاب ذخیره‌شده، وگرنه system | موتور خاموش همیشه light |
+| زبان‌های فعال | `NEXT_PUBLIC_ENABLED_LOCALES=fa` | افزودن ar/en پس از تکمیل مسیرهای قابل‌دسترسی آن زبان |
+| تقویم | جلالی، مستقل از زبان | adapter میلادی milestone مستقل |
+| کارت‌ها | opt-in؛ sectionهای تک‌آگهی فعلاً divider دارند | تغییر ساختار در PR طراحی جدا |
+
+فلگ‌های NEXT_PUBLIC هنگام build وارد bundle می‌شوند؛ rollback فلگ مستلزم build/deploy دوباره است. تنظیم سرور و کلاینت باید از یک config و یک build بیاید.
+
+## starter و بررسی
+
+| فایل | نقش |
+| --- | --- |
+| [tokens.css](starter/tokens.css) | توکن رنگ؛ light از پالت برنچ، dark پیشنهادی |
+| [i18n-config.ts.txt](starter/i18n-config.ts.txt) | بلوک‌های مجزا برای config، request و تغییر زبان |
+| [پیام‌ها](starter/messages/fa.json) | نمونهٔ محدود و هم‌کلید در سه زبان، نیازمند بازبینی ترجمه |
+| [audit-branch.mjs](starter/audit-branch.mjs) | شمارش read-only از checkout فعلی |
+| [verify-starter.mjs](starter/verify-starter.mjs) | بررسی قرارداد starter و ارجاعات بسته |
+
+از پوشهٔ Front:
+
+```powershell
+node docs/dark-light-i18n/starter/audit-branch.mjs
+node docs/dark-light-i18n/starter/verify-starter.mjs
+```
+
+این دستورها تست UI یا تأیید ترجمهٔ انسانی نیستند. چک‌های اپ برای PR اجرایی در فیچر ۱۰ آمده‌اند. در این بازنویسی dependency نصب نمی‌شود و کد runtime اپ تغییر نمی‌کند.
+
+## نگهداری در گیت
+
+`Front/.git/info/exclude` فعلاً `*.md` را نادیده می‌گیرد؛ دیده‌نشدن مستندات در git diff به معنی نبود تغییر نیست. starterها در git status دیده می‌شوند. برای انتشار بسته، فقط markdownهای همین پوشه را صریحاً force-add و starterها را با مسیر مشخص اضافه کنید؛ فایل‌های محلی AGENTS.md، CLAUDE.md، project-overview.md و coding-standard.md نباید stage شوند. این بازنویسی هیچ فایلی را stage یا commit نمی‌کند.

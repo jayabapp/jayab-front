@@ -1,0 +1,96 @@
+{
+  "common": {
+    "currency": "تومان",
+    "thousandToman": "ألف تومان",
+    "perNight": "/ ليلة",
+    "search": "بحث",
+    "enter": "دخول",
+    "home": "الرئيسية",
+    "menu": "القائمة",
+    "share": "مشاركة",
+    "chat": "محادثة",
+    "cancel": "إلغاء",
+    "confirm": "تأكيد",
+    "save": "حفظ",
+    "back": "رجوع",
+    "showAll": "عرض الكل",
+    "showMore": "عرض المزيد",
+    "showLess": "عرض أقل",
+    "loading": "جارٍ التحميل…",
+    "retry": "إعادة المحاولة",
+    "empty": "لا توجد نتائج",
+    "close": "إغلاق",
+    "unit": {
+      "meter": "متر",
+      "sqm": "م²",
+      "km": "كم"
+    }
+  },
+  "header": {
+    "advisors": "المستشارون",
+    "listings": "الإعلانات",
+    "addListing": "أضف إعلانًا",
+    "registerProperty": "تسجيل عقار",
+    "myProfile": "جاياب الخاص بي",
+    "loginToAccount": "تسجيل الدخول إلى الحساب",
+    "chooseCity": "اختر المدينة",
+    "searchPlaceholder": "إلى أين وجهتك؟"
+  },
+  "theme": {
+    "label": "وضع العرض",
+    "light": "فاتح",
+    "dark": "داكن",
+    "system": "النظام",
+    "switchToLight": "التبديل إلى الوضع الفاتح",
+    "switchToDark": "التبديل إلى الوضع الداكن"
+  },
+  "language": {
+    "label": "اللغة",
+    "fa": "فارسی",
+    "ar": "العربية",
+    "en": "English",
+    "current": "اللغة الحالية: {name}",
+    "switchBlocked": "أكمل المهمة الحالية أو احفظ التغييرات قبل تغيير اللغة."
+  },
+  "listing": {
+    "tabs": {
+      "details": "التفاصيل",
+      "amenities": "المرافق",
+      "calendar": "التقويم والسعر",
+      "rules": "القوانين",
+      "location": "الموقع",
+      "host": "المضيف"
+    },
+    "code": "الرمز",
+    "viewAllPhotos": "عرض كل الصور",
+    "upToGuests": "{count, plural, zero {لا يتسع لضيوف} one {حتى ضيف واحد} two {حتى ضيفين} few {حتى # ضيوف} many {حتى # ضيفًا} other {حتى # ضيف}}",
+    "rooms": "{count, plural, zero {لا توجد غرف} one {غرفة واحدة} two {غرفتان} few {# غرف} many {# غرفة} other {# غرفة}}",
+    "area": "{built} م² مبنى + {grounds} م² ساحة",
+    "about": "عن الإقامة",
+    "sleeping": "مساحة النوم",
+    "extraCharges": "رسوم إضافية",
+    "checkIn": "وقت الوصول",
+    "checkOut": "وقت المغادرة",
+    "cancellation": "سياسة الإلغاء",
+    "requiredDocs": "المستندات المطلوبة",
+    "hostSince": "مضيف في جاياب منذ {date}",
+    "report": "الإبلاغ عن مخالفة",
+    "reportHint": "هل لاحظت مشكلة في هذا الإعلان؟ أخبرنا",
+    "similar": "إقامات مشابهة في {city}",
+    "startsFrom": "السعر يبدأ من",
+    "checkInDate": "تاريخ الوصول",
+    "checkOutDate": "تاريخ المغادرة",
+    "guestsCount": "عدد الضيوف",
+    "choose": "اختر",
+    "pickDates": "اختيار التاريخ",
+    "calendar": {
+      "jalali": "التقويم الجلالي (الفارسي)",
+      "fullPrice": "السعر لكل ليلة: {price}"
+    }
+  },
+  "errors": {
+    "generic": "حدث خطأ ما. حاول مرة أخرى.",
+    "network": "تعذّر الاتصال بالخادم.",
+    "preferenceNotSaved": "تعذّر حفظ التفضيل. تحقّق من السماح بملفات تعريف الارتباط."
+  }
+}
