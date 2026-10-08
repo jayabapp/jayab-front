@@ -13,16 +13,20 @@
 | نقش | استایل | کاربرد |
 | --- | --- | --- |
 | صفحه | bg-page | ظرف اصلی |
-| panel | bg-surface، border-line، radius فعلی | فرم/گروه مستقل |
+| panel | bg-surface، border-line-strong، radius فعلی | فرم/گروه مستقل؛ line به‌تنهایی برای لبهٔ کارت کم‌رنگ است |
 | floating | bg-surface، border-line، shadow-elevated | popover، modal، باکس شناور |
 | muted | bg-surface-muted | ناحیهٔ ثانویه داخل گروه |
 | field | bg-surface، border-control، focus واضح | مرز قابل‌تشخیص input |
-| separator | border-line | جداکنندهٔ تزئینی |
+| separator | border-line | جداکنندهٔ تزئینی بین ردیف‌ها |
 | selected/status | token معنایی متن/زمینه + نشانهٔ غیررنگی | tab، chip، پیام وضعیت |
 
 برای ترکیب تکراری classes از constant/variant موجود همان element استفاده شود. component جدید Surface فقط اگر تکرار واقعی دارد در `components/elements/Surface` با props در types/components/elements/surface.ts ساخته شود؛ state یا domain import نداشته باشد. کلاس عمومی `.outline` ساخته نشود، چون با utility و focus outline تداخل نام دارد. wrapper اضافی دور semantic section ضروری نیست.
 
 radiusهای rounded-10 و rounded-20 در config فعلی حفظ شوند؛ تبدیل تمام radiusها به سه عدد شرط این فیچر نیست. padding موبایل و دسکتاپ بر اساس نیاز محتواست، نه blanket p-6 روی تمام ردیف‌ها. کارت داخل کارت و box-shadow روی هر row ایجاد نشود.
+
+## Badge و chip
+
+سه خانواده، همه با لبهٔ ۱px و بدون سایه: **وضعیت** (`bg-status-X-bg text-status-X border-status-X-line` برای danger/success/warning)، **انتخاب‌شده** (`bg-selected text-on-selected border-selected-line`) و **خنثی** (`bg-surface-muted text-ink-muted border-line-strong`). متن حداقل `text-xs` است؛ `text-xxs` فقط برای شمارنده‌های عددی داخل دایره، نه برچسب متنی. selected روی surface فقط حدود ۱٫۱:۱ است، پس همیشه با آیکن، تیک یا ضخامت مرز همراه شود و فقط با رنگ تشخیص داده نشود. `CountBadge` و `PulseDot` در `components/elements/Badge` جای مهاجرت هستند؛ کلاس تکراری را در همان element نگه دارید، نه یک Badge تازه. رنگ خام Tailwind در badge ممنوع است و به توکن وضعیت می‌رود.
 
 ## فرم، focus و لایه‌ها
 

@@ -18,17 +18,22 @@
   --c-action: 31 107 201;
   --c-action-hover: 24 86 163; /* brand.700 */
   --c-on-action: 255 255 255;
-  --c-selected: 240 246 254; /* brand.50 */
+  --c-selected: 240 246 254; /* brand.50; ~1.1:1 on surface, so pair with a non-color cue */
   --c-on-selected: 22 71 128; /* brand.800 */
-  --c-line: 229 231 235; /* decorative neutral.200 */
+  --c-selected-line: 187 214 250; /* brand.200 */
+  --c-line: 229 231 235; /* decorative neutral.200: dividers only, 1.24:1 on white */
+  --c-line-strong: 209 213 219; /* neutral.300: card/panel/badge edge, 1.47:1 on white */
   --c-control: 107 114 128; /* functional boundary, neutral.500 */
   --c-focus: 31 107 201;
   --c-status-danger: 193 31 31; /* danger.600 */
   --c-status-danger-bg: 254 242 242;
+  --c-status-danger-line: 254 202 202;
   --c-status-success: 21 128 61; /* success.600 */
   --c-status-success-bg: 236 253 243;
+  --c-status-success-line: 187 235 207;
   --c-status-warning: 180 83 9; /* warning.600 */
   --c-status-warning-bg: 255 247 237;
+  --c-status-warning-line: 253 215 170;
   --c-overlay: 0 0 0;
   --overlay-opacity: 0.5;
   --shadow-surface: 0 0 7px 1px rgb(0 0 0 / 0.1);
@@ -46,20 +51,27 @@ html[data-theme="dark"] {
   --c-ink-muted: 174 182 196;
   --c-ink-subtle: 142 148 158;
   --c-link: 143 187 245;
-  --c-action: 31 107 201;
-  --c-action-hover: 24 86 163;
-  --c-on-action: 255 255 255;
+  /* Dark action is brand.500/400 with navy text: white on brand.600 was only 3.2:1 against the
+     dark surface and its darker hover faded to 2.3:1. Hover now gets lighter, as on a dark UI. */
+  --c-action: 56 134 229; /* brand.500 */
+  --c-action-hover: 92 156 238; /* brand.400 */
+  --c-on-action: 11 21 36; /* neutral.900 */
   --c-selected: 20 36 61;
   --c-on-selected: 187 214 250;
+  --c-selected-line: 40 70 112;
   --c-line: 45 63 86;
+  --c-line-strong: 62 84 112;
   --c-control: 142 148 158;
   --c-focus: 143 187 245;
   --c-status-danger: 255 153 153;
   --c-status-danger-bg: 51 21 26;
+  --c-status-danger-line: 94 38 46;
   --c-status-success: 108 226 153;
   --c-status-success-bg: 15 42 27;
+  --c-status-success-line: 28 74 48;
   --c-status-warning: 255 190 105;
   --c-status-warning-bg: 46 33 16;
+  --c-status-warning-line: 84 60 28;
   --c-overlay: 0 0 0;
   --overlay-opacity: 0.65;
   --shadow-surface: 0 0 7px 1px rgb(0 0 0 / 0.3);

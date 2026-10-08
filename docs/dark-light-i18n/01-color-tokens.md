@@ -40,8 +40,9 @@ export const semanticColors = {
 | سطح ملایم | bg-surface-muted | #F3F4F6 | neutral.100 |
 | متن اصلی/ثانویه | text-ink / text-ink-muted | neutral.900 / neutral.600 | کنتراست روی سطح واقعی سنجیده شود |
 | لینک/دکمه | text-link / bg-action text-on-action | brand.600 / brand.600 + سفید | brand.500 با سفید برای متن کوچک کافی فرض نشود |
-| خط تزئینی/مرز کنترل | border-line / border-control | neutral.200 / neutral.500 | تزئین و مرز ضروری کنترل یکسان نیستند |
-| وضعیت | text-status-danger/success/warning | danger.600 / success.600 / warning.600 | background متناظر جدا دارد |
+| خط تزئینی/لبهٔ کارت/مرز کنترل | border-line / border-line-strong / border-control | neutral.200 / neutral.300 / neutral.500 | تزئین و مرز ضروری کنترل یکسان نیستند. line روی سفید فقط ۱٫۲۴:۱ است و برای جداکننده کافی است، نه لبهٔ کارت؛ لبهٔ کارت، panel و badge از line-strong (۱٫۴۷:۱ لایت، ۲٫۱۶:۱ دارک) استفاده می‌کند |
+| وضعیت | text-status-danger/success/warning | danger.600 / success.600 / warning.600 | background (`-bg`) و لبهٔ (`-line`) متناظر جدا دارد |
+| دکمهٔ اصلی در دارک | bg-action text-on-action | brand.500 + neutral.900 | سفید روی brand.600 در دارک فقط ۳٫۲:۱ نسبت به سطح بود و hover تیره‌تر ۲٫۳:۱ می‌شد؛ در دارک hover روشن‌تر (brand.400) است |
 
 مقادیر dark و hover روی جفت‌های واقعی متن/زمینه سنجیده شوند. ۱۶px bold خودبه‌خود «متن بزرگ» محسوب نمی‌شود؛ هدف متن عادی ۴٫۵:۱، focus و مرز ضروری کنترل ۳:۱ است. disabled استثنای معیار است، ولی باید قابل تشخیص بماند.
 
@@ -60,5 +61,6 @@ export const semanticColors = {
 - modifier مثل bg-surface/80 در CSS کامپایل‌شده درست است.
 - فایل‌های مهاجرت‌شده رنگ UI ثابت ندارند؛ استثناهای asset/brand با دلیل و مسیر ثبت شوند. neutral-* در کد مهاجرت‌نکرده شکست CI نیست.
 - screenshot لایت برای تغییر مکانیکی برابر است؛ تفاوت طراحی body، دکمه و shadow در PR مشخص شود. دارک متن نامرئی یا سطح ناخواسته نداشته باشد.
-- contrast با بررسی حفظ‌شونده کنترل شود؛ اسکریپت پس از اجرا حذف نشود.
+- contrast با بررسی حفظ‌شونده کنترل شود؛ اسکریپت پس از اجرا حذف نشود. verify-starter علاوه بر متن، خود کنترل action و hover (۳:۱)، line-strong، ink-subtle و متن وضعیت روی هر سه سطح را می‌سنجد.
+- رنگ خام Tailwind (`red-*`, `green-*`, `emerald-*`, `amber-*` و مشابه) هم باید به توکن وضعیت مهاجرت کند؛ audit-branch آن را با `rawPaletteColor` می‌شمارد (۴۷ مورد در ۲۷ فایل در baseline).
 - چک‌های فیچر ۱۰ پاس شوند. هر دسته با revert PR و موتور تم خاموش قابل بازگشت باشد.

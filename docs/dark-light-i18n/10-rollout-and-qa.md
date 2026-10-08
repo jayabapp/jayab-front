@@ -60,7 +60,7 @@ yarn build
 
 در PR اجرایی `yarn i18n:check` و تست قرارداد تاریخ/formatter طبق فیچرهای ۰۴ و ۰۹ اضافه شوند؛ امروز این command هنوز وجود ندارد. check معماری فعلی روی app/qa-login خطای baseline دارد؛ این خطا جدا ثبت شود و با تغییر theme/i18n مخفی یا قاعده‌اش حذف نشود.
 
-اسکن رنگ، متن و جهت فقط مسیرهای migrated را enforce کند. manifest پیشنهادی `scripts/ui-migration-manifest.json` شامل مسیر، محور تکمیل‌شده (color/i18n/direction)، استثنا و دلیل است؛ تکمیل رنگ به معنی تکمیل زبان نیست. rg برای یافتن کاندید است؛ AST برای import و متن JSX و ICU parser برای پیام استفاده شود. comment فارسی، regex ارقام، نام بومی زبان، رنگ عکس و left-1/2 استثنای معتبر ممکن‌اند. هیچ شرط کلی «تمام dark/neutral/hex/حروف عربی خالی» برقرار نشود.
+اسکن رنگ، متن و جهت فقط مسیرهای migrated را enforce کند؛ اسکن رنگ علاوه بر neutral و hex، رنگ خام Tailwind (red/green/emerald/amber و ...) را هم می‌گیرد. manifest پیشنهادی `scripts/ui-migration-manifest.json` شامل مسیر، محور تکمیل‌شده (color/i18n/direction)، استثنا و دلیل است؛ تکمیل رنگ به معنی تکمیل زبان نیست. rg برای یافتن کاندید است؛ AST برای import و متن JSX و ICU parser برای پیام استفاده شود. comment فارسی، regex ارقام، نام بومی زبان، رنگ عکس و left-1/2 استثنای معتبر ممکن‌اند. هیچ شرط کلی «تمام dark/neutral/hex/حروف عربی خالی» برقرار نشود.
 
 بررسی starter جداست:
 

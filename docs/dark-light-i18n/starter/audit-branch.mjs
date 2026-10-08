@@ -19,6 +19,8 @@ const patterns = {
   bgWhite: /\bbg-white\b/g,
   darkVariant: /\bdark:/g,
   legacyColor: /\b(?:primary|btnColor)-[\w-]+/g,
+  rawPaletteColor: /\b(?:bg|text|border|ring|fill|stroke)-(?:red|green|emerald|amber|yellow|orange|blue|sky|gray|slate|zinc)-\d{2,3}\b/g,
+  tinyText: /\btext-xxs\b/g,
   localStringsImport: /\bfrom\s+["'][^"']*LocalStrings["']/g,
   momentImport: /\bfrom\s+["']moment-jalaali["']/g,
   arabicScriptCandidate: /[\u0600-\u06ff]/g,

@@ -93,6 +93,17 @@ for (const [selector, variables] of Object.entries(themes)) {
   check("on-action", "action-hover", 4.5);
   check("on-selected", "selected", 4.5);
   for (const status of ["danger", "success", "warning"]) check(`status-${status}`, `status-${status}-bg`, 4.5);
+  // Pairs added after review: the action control itself, card edges, muted text and status text on neutral surfaces.
+  for (const background of ["page", "surface"]) {
+    check("action", background, 3);
+    check("line-strong", background, 1.4);
+  }
+  check("ink-subtle", "surface", 4.5);
+  check("ink-subtle", "page", 4.5);
+  check("action-hover", "surface", 3);
+  check("link", "selected", 4.5);
+  check("line-strong", "surface-muted", selector === ":root" ? 1.2 : 1.8);
+  for (const status of ["danger", "success", "warning"]) for (const background of ["page", "surface", "surface-muted"]) check(`status-${status}`, background, 4.5);
 }
 
 const sample = await load("i18n-config.ts.txt");

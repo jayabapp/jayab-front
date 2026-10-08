@@ -40,6 +40,8 @@
 | legacy primary/btnColor class | ۲ | ۲ |
 | import از LocalStrings | ۲۶۰ | ۲۶۰ |
 | import از moment-jalaali | ۵۳ | ۵۳ |
+| رنگ خام Tailwind (red/green/amber/...) | ۴۷ | ۲۷ |
+| text-xxs (۱۰px) | ۴۰ | ۲۹ |
 | حروف Arabic-script؛ کاندید، شامل comment و regex | ۳۵۰۹ | ۹۵ |
 | کلاس جهت فیزیکی مطابق pattern script | ۳۱۹ | ۱۲۰ |
 
