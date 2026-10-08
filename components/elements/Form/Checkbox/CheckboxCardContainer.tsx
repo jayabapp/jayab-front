@@ -20,7 +20,7 @@ const CheckboxCardContainer = ({
         <p className="-mt-2 leading-3 text-xs opacity-75 font-regular text-neutral-500 ">{item?.hint}</p>
       )}
 
-      <p className="text-xs md:text-sm font-thin text-justify content !leading-relaxed">{description}</p>
+      <p className="text-xs md:text-sm font-light text-justify content !leading-relaxed">{description}</p>
       <span> {children}</span>
     </div>
   );

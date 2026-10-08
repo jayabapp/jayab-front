@@ -4,13 +4,15 @@ export const x_Iransans = localFont({
   display: "swap",
   preload: false,
   src: [
+    // Weights follow each file's OS/2 usWeightClass: Thin=100, Light=300.
+    // They were swapped (Light→200, Thin→300), so `font-light` rendered Thin.
     {
-      path: "./IRANSansX-Light.woff2",
-      weight: "200",
+      path: "./IRANSansX-Thin.woff2",
+      weight: "100",
       style: "normal",
     },
     {
-      path: "./IRANSansX-Thin.woff2",
+      path: "./IRANSansX-Light.woff2",
       weight: "300",
       style: "normal",
     },

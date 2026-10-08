@@ -139,7 +139,7 @@ const ChatHeader = ({
                   <p className="text-sm md:text-base">
                     {name || _STRINGS?.CHAT}
                   </p>
-                  <p className="text-xs font-extralight md:text-sm">
+                  <p className="text-xs font-light md:text-sm">
                     {description}
                   </p>
                   {!!data?.recipient?.user_mobile_number ? (
