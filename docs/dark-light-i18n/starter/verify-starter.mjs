@@ -50,7 +50,7 @@ for (const [locale, catalog] of Object.entries(catalogs)) {
   }
 }
 
-const css = postcss.parse(await load("tokens.css"));
+const css = postcss.parse(await readFile(path.resolve(starter, "../../../styles/theme-tokens.css"), "utf8"));
 const themes = {};
 css.walkRules((rule) => {
   if (![":root", 'html[data-theme="dark"]'].includes(rule.selector)) return;

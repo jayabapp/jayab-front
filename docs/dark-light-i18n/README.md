@@ -54,7 +54,7 @@
 
 | فایل | نقش |
 | --- | --- |
-| [tokens.css](starter/tokens.css) | توکن رنگ؛ light از پالت برنچ، dark پیشنهادی |
+| [tokens.css](starter/tokens.css) | نمونهٔ اولیهٔ توکن رنگ. نسخهٔ زنده `styles/theme-tokens.css` است و verify-starter همان را می‌سنجد؛ تغییر بعدی توکن فقط در فایل زنده انجام شود |
 | [i18n-config.ts.txt](starter/i18n-config.ts.txt) | بلوک‌های مجزا برای config، request و تغییر زبان |
 | [پیام‌ها](starter/messages/fa.json) | نمونهٔ محدود و هم‌کلید در سه زبان، نیازمند بازبینی ترجمه |
 | [audit-branch.mjs](starter/audit-branch.mjs) | شمارش read-only از checkout فعلی |

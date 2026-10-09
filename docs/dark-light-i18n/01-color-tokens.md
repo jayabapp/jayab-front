@@ -48,6 +48,8 @@ export const semanticColors = {
 
 ## مراحل و فایل‌ها
 
+**وضعیت:** گام ۱ انجام شد (`styles/theme-tokens.css`، `theme/semantic-colors.ts`، merge در `tailwind.config.ts`، import در `globals.css`). هنوز هیچ کامپوننتی توکن را مصرف نمی‌کند و `data-theme="dark"` را کسی تنظیم نمی‌کند، پس ظاهر اپ تغییری نکرده است. گام ۲ به بعد (مهاجرت صفحه‌ها) در PRهای جدا.
+
 1. افزودن styles/theme-tokens.css و export معنایی بدون حذف پالت قبلی. اگر variant دارک برای asset خاص لازم شد، selector Tailwind به data-theme وصل شود؛ دارک خودکار media منبع دوم تم نباشد.
 2. مهاجرت SiteHeader، SiteFooter، AppOverlays، فرم و مودال. text-white روی تصویر یا دکمه رنگی ممکن است درست باشد؛ حذف کورکورانه ممنوع.
 3. PropertyDetails، PropertyGallery، PropertyBooking، PropertyContact، فهرست و فیلترها؛ سپس سایر گروه‌های فیچر ۱۰.

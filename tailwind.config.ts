@@ -2,6 +2,7 @@ import type { Config } from "tailwindcss";
 import defaultTheme from "tailwindcss/defaultTheme";
 import plugin from "tailwindcss/plugin";
 import { colors } from "./theme/colors";
+import { semanticColors } from "./theme/semantic-colors";
 
 // Touch devices report `:hover` on tap and only clear it on the next tap
 // elsewhere, so every `hover:` utility below reads as a stuck, flickery
@@ -43,7 +44,7 @@ export default {
         // cell. This is the smallest size any number on the listing page uses.
         "2xs": "0.6875rem",
       },
-      colors,
+      colors: { ...colors, ...semanticColors },
       borderRadius: {
         28: "1.75rem",
         20: "1.25rem",
