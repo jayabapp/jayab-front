@@ -1,0 +1,96 @@
+{
+  "common": {
+    "currency": "Toman",
+    "thousandToman": "Thousand toman",
+    "perNight": "/ night",
+    "search": "Search",
+    "enter": "Log in",
+    "home": "Home",
+    "menu": "Menu",
+    "share": "Share",
+    "chat": "Chat",
+    "cancel": "Cancel",
+    "confirm": "Confirm",
+    "save": "Save",
+    "back": "Back",
+    "showAll": "Show all",
+    "showMore": "Show more",
+    "showLess": "Show less",
+    "loading": "Loading…",
+    "retry": "Try again",
+    "empty": "Nothing found",
+    "close": "Close",
+    "unit": {
+      "meter": "m",
+      "sqm": "m²",
+      "km": "km"
+    }
+  },
+  "header": {
+    "advisors": "Advisors",
+    "listings": "Listings",
+    "addListing": "Add listing",
+    "registerProperty": "List a property",
+    "myProfile": "My Jayab",
+    "loginToAccount": "Log in to your account",
+    "chooseCity": "Choose city",
+    "searchPlaceholder": "Where are you going?"
+  },
+  "theme": {
+    "label": "Appearance",
+    "light": "Light",
+    "dark": "Dark",
+    "system": "System",
+    "switchToLight": "Switch to light mode",
+    "switchToDark": "Switch to dark mode"
+  },
+  "language": {
+    "label": "Language",
+    "fa": "فارسی",
+    "ar": "العربية",
+    "en": "English",
+    "current": "Current language: {name}",
+    "switchBlocked": "Finish your current task or save your changes before changing language."
+  },
+  "listing": {
+    "tabs": {
+      "details": "Details",
+      "amenities": "Amenities",
+      "calendar": "Calendar & price",
+      "rules": "Rules",
+      "location": "Location",
+      "host": "Host"
+    },
+    "code": "Code",
+    "viewAllPhotos": "View all photos",
+    "upToGuests": "{count, plural, one {Up to # guest} other {Up to # guests}}",
+    "rooms": "{count, plural, one {# bedroom} other {# bedrooms}}",
+    "area": "{built} m² built + {grounds} m² grounds",
+    "about": "About this stay",
+    "sleeping": "Sleeping",
+    "extraCharges": "Extra charges",
+    "checkIn": "Check-in",
+    "checkOut": "Check-out",
+    "cancellation": "Cancellation policy",
+    "requiredDocs": "Required documents",
+    "hostSince": "Jayab host since {date}",
+    "report": "Report this listing",
+    "reportHint": "See a problem with this listing? Let us know",
+    "similar": "Similar stays in {city}",
+    "startsFrom": "Prices start from",
+    "checkInDate": "Check-in",
+    "checkOutDate": "Check-out",
+    "guestsCount": "Guests",
+    "choose": "Choose",
+    "pickDates": "Select dates",
+    "calendar": {
+      "jalali": "Jalali (Persian) calendar",
+      "fullPrice": "Nightly price: {price}"
+    }
+  },
+  "errors": {
+    "generic": "Something went wrong. Please try again.",
+    "network": "Could not reach the server.",
+    "preferenceNotSaved": "Could not save your preference. Check whether cookies are allowed."
+  }
+}

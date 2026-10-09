@@ -8,6 +8,12 @@ Next 16.2.10 و React 19.2.7 نصب‌اند؛ next-intl نصب نیست. html �
 
 برای فاز اول next-intl **بدون locale routing** اضافه شود؛ routeهای موجود و parallel/intercepted routeها جابه‌جا نشوند. نسخهٔ سازگار با peer dependencies انتخاب و با Yarn ثبت شود؛ نسخهٔ latest بدون بررسی تضمین سازگاری ندارد. config موجود Next با plugin wrap شود، نه جایگزین؛ تنظیم تصاویر، headers، rewrites و cache باقی بمانند.
 
+## وضعیت پیاده‌سازی
+
+زیرساخت پیاده شد (`next-intl@4.14.6`، pin دقیق؛ نسخهٔ ۱۸ روزه با peer `next ^16`): `i18n/{config,request}.ts`، `messages/{fa,ar,en}.json` (کپی نمونهٔ starter، نه ترجمهٔ کامل)، `types/i18n.ts`، `hooks/useLocaleSwitch.ts`، plugin روی `next.config.ts` و `NextIntlClientProvider` در `app/layout.tsx` برای namespaceهای common/header/theme/language/errors. `NEXT_PUBLIC_ENABLED_LOCALES` در `.env.example` مستند شد و پیش‌فرض خالی = فقط fa. هنوز هیچ کنترل زبانی در UI نیست (فیچر ۰۵) و هیچ متنی مهاجرت نشده (فیچر ۰۴)، پس با چندزبانه فقط `lang`/`dir` و پیام‌های provider عوض می‌شوند، نه متن صفحه‌ها.
+
+خروجی `yarn build` (۲۷ route ایستا قبل از تغییر): با fa-only جدول route **عیناً** برابر قبل است؛ با `fa,ar,en` هر ۲۷ route ایستا dynamic می‌شود (۰ ایستا)، که همان هزینهٔ پیش‌بینی‌شدهٔ بالاست و باید پیش از روشن‌کردن در production با TTFB سنجیده شود. روی build production آزمایش شد: بدون کوکی/`xx`/`de` → `fa-IR`/`rtl`؛ `en` → `en`/`ltr`؛ `ar` → `ar`/`rtl`؛ با fa-only کوکی en/ar/نامعتبر همچنان fa است و هیچ پیام انگلیسی/عربی serialize نمی‌شود؛ در مرورگر cookie + reload، hash را نگه داشت و خطای hydration نداشت. هنوز آزمایش‌نشده: TTFB واقعی، رفتار CDN، intercepted route بعد از reload، Basic Auth/SSO/redirect در حالت چندزبانه و rollback با rebuild.
+
 ## تصمیم قطعی locale
 
 `supportedLocales = fa/ar/en` ظرفیت کد است؛ `enabledLocales` خروجی validate‌شدهٔ NEXT_PUBLIC_ENABLED_LOCALES و همیشه شامل fa است. ترتیب resolve:

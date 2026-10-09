@@ -1,5 +1,8 @@
 import { AppOverlays, AppShell, ImpersonationBanner } from "@modules/AppShell";
+import { dirOf, localeMeta, resolveLocale } from "@/i18n/config";
 import { mobileNavHiddenBlackList } from "@/utils/constantss";
+import { getLocale, getMessages } from "next-intl/server";
+import { NextIntlClientProvider } from "next-intl";
 import { mobileFooterBlackList } from "@/utils/constantss";
 import { footerHiddenBlackList } from "@/utils/constantss";
 import { getServerContentList } from "@features/home/server/home.server";
@@ -100,12 +103,17 @@ const RootLayout = async ({
   children: ReactNode;
   modal: ReactNode;
 }>) => {
-  const [appSettingsResponse, contactsResponse] = await Promise.all([
-    serverCall(baseUrl + apiRoutes.APP_SETTINGS, undefined, {
-      revalidate: REVALIDATE.APP_SETTINGS,
-    }),
-    getServerContentList("contactUs", 1, CONTACT_PER_PAGE),
-  ]);
+  const [locale, messages, appSettingsResponse, contactsResponse] =
+    await Promise.all([
+      getLocale().then(resolveLocale),
+      getMessages(),
+      serverCall(baseUrl + apiRoutes.APP_SETTINGS, undefined, {
+        revalidate: REVALIDATE.APP_SETTINGS,
+      }),
+      getServerContentList("contactUs", 1, CONTACT_PER_PAGE),
+    ]);
+
+  const { common, header, theme, language, errors } = messages;
 
   const appSetting = appSettingsResponse?.data as InnitSettingsDto;
   const contacts: ContentDto[] = contactsResponse?.data?.data ?? [];
@@ -116,7 +124,11 @@ const RootLayout = async ({
   const gtmId = appSetting?.googleTagManagerId?.toString() || "";
 
   return (
-    <html lang="fa" dir="rtl" suppressHydrationWarning>
+    <html
+      lang={localeMeta[locale].lang}
+      dir={dirOf(locale)}
+      suppressHydrationWarning
+    >
       {themeBootstrapScript ? (
         <head>
           <script dangerouslySetInnerHTML={{ __html: themeBootstrapScript }} />
@@ -127,26 +139,31 @@ const RootLayout = async ({
       <body className={x_Iransans.className} suppressHydrationWarning>
         <NavigationProgress />
         <SplashScreen />
-        <LayoutProvider>
-          <ImpersonationBanner />
-          <AppShell>
-            <MainLayout
-              header={<SiteHeader phone={phone} />}
-              footer={<SiteFooter />}
-              overlays={<AppOverlays />}
-              mobileFooter={<MobileNav />}
-              headerHiddenOn={headerBlackList}
-              footerHiddenOn={CHROME_HIDDEN_ROUTES}
-              mobileFooterHiddenOn={[
-                ...CHROME_HIDDEN_ROUTES,
-                ...mobileNavHiddenBlackList,
-              ]}
-            >
-              {children}
-              {modal}
-            </MainLayout>
-          </AppShell>
-        </LayoutProvider>
+        <NextIntlClientProvider
+          locale={locale}
+          messages={{ common, header, theme, language, errors }}
+        >
+          <LayoutProvider>
+            <ImpersonationBanner />
+            <AppShell>
+              <MainLayout
+                header={<SiteHeader phone={phone} />}
+                footer={<SiteFooter />}
+                overlays={<AppOverlays />}
+                mobileFooter={<MobileNav />}
+                headerHiddenOn={headerBlackList}
+                footerHiddenOn={CHROME_HIDDEN_ROUTES}
+                mobileFooterHiddenOn={[
+                  ...CHROME_HIDDEN_ROUTES,
+                  ...mobileNavHiddenBlackList,
+                ]}
+              >
+                {children}
+                {modal}
+              </MainLayout>
+            </AppShell>
+          </LayoutProvider>
+        </NextIntlClientProvider>
         <footer>
           <Script
             id="gtm"
