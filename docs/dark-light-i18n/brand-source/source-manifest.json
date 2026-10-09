@@ -1,0 +1,31 @@
+{
+    "schemaVersion":  1,
+    "recordedAt":  "2026-10-09",
+    "status":  "reference-only; no runtime migration",
+    "sources":  [
+                    {
+                        "originalName":  "Jayab (Pictorial)-03-03.svg",
+                        "file":  "mark.original.svg",
+                        "bytes":  2122,
+                        "sha256":  "12c7fcc508aea58a8dae60b2b30f4f582e71ff94b402ee3a0089de299084a136"
+                    },
+                    {
+                        "originalName":  "Jayab Blue(Eng Logotype)-03.svg",
+                        "file":  "wordmark-en-blue.original.svg",
+                        "bytes":  4177,
+                        "sha256":  "7086ad50a7aca9f8a5130c71e31b3ac5e2732d26eebffe21905c56c558bb37f0"
+                    },
+                    {
+                        "originalName":  "Jayab White(Eng Logotype)-03.svg",
+                        "file":  "wordmark-en-white.original.svg",
+                        "bytes":  4174,
+                        "sha256":  "06ee6a0352b43930c6a86f70953f500e4bea9088811aaab1d028e7a8c7575451"
+                    },
+                    {
+                        "originalName":  "Jayab White(Persian Logotype).svg",
+                        "file":  "wordmark-fa-white.original.svg",
+                        "bytes":  1628,
+                        "sha256":  "5249bbd6f9a25bbbfa67ec0f4bebdccaf64d09ae1c20840736e3b7b5e9141f84"
+                    }
+                ]
+}
