@@ -13,6 +13,7 @@
     "api:generate": "orval --config orval.config.mjs",
     "api:check": "node scripts/check-generated.mjs",
     "architecture:check": "node scripts/check-layer-contracts.mjs",
+    "theme:check": "node scripts/check-theme-contract.mjs",
     "architecture:cycles": "node scripts/check-import-cycles.mjs",
     "architecture:report": "node scripts/report-client-boundaries.mjs",
     "architecture:migration": "node scripts/report-component-migration.mjs",

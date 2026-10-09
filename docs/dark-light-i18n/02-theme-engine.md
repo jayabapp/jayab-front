@@ -8,6 +8,10 @@
 
 منطق خالص در `lib/theme/config.ts` و `lib/theme/bootstrap.ts`؛ state مرورگر در `lib/theme/store.client.ts`؛ هوک در `hooks/useTheme.ts`؛ provider در `components/layouts/ThemeProvider/ThemeProvider.client.tsx` با entry عمومی. typeهای مشترک در `types/theme.ts` و props در `types/components/layouts/theme-provider.ts`. elements از طریق adapter یا props تم می‌گیرد و به store اپ وابسته نمی‌شود.
 
+## وضعیت پیاده‌سازی
+
+موتور پیاده شد و پشت `NEXT_PUBLIC_THEME_ENABLED` (پیش‌فرض خاموش) است: `lib/theme/{config,bootstrap,store.client}.ts`، `hooks/useTheme.ts`، `ThemeProvider` (داخل `app/layout-provider.client.tsx`)، اسکریپت pre-paint در head و `theme` پراپ Toaster در AppOverlays. هنوز کنترلی در UI نیست (فیچر ۰۵) و چیزی توکن را مصرف نمی‌کند، پس حتی با موتور روشن ظاهر صفحه‌ها عوض نمی‌شود. `yarn theme:check` قرارداد اسکریپت و resolver را می‌سنجد (۸۰ حالت). در مرورگر آزمایش شد: کوکی dark، کوکی نامعتبر، OS تیره و تغییر زندهٔ OS، همگام‌سازی BroadcastChannel (پیام نامعتبر رد، بدون بازنویسی کوکی)، و فلگ خاموش با کوکی/OS تیره که `html` را دست‌نخورده می‌گذارد. هنوز آزمایش‌نشده: filmstrip اولین paint با splash، دو تب واقعی، CSP production، JS خاموش.
+
 ## قرارداد حالت
 
 ```ts

@@ -1,8 +1,9 @@
+import { AppOverlays, AppShell, ImpersonationBanner } from "@modules/AppShell";
 import { mobileNavHiddenBlackList } from "@/utils/constantss";
 import { mobileFooterBlackList } from "@/utils/constantss";
 import { footerHiddenBlackList } from "@/utils/constantss";
-import { AppOverlays, AppShell, ImpersonationBanner } from "@modules/AppShell";
 import { getServerContentList } from "@features/home/server/home.server";
+import { themeBootstrapScript } from "@lib/theme/bootstrap";
 import { isNoIndexDeployment } from "@/helpers/indexingPolicy";
 import { Metadata, Viewport } from "next";
 import { apiRoutes, baseUrl } from "@/utils/urls";
@@ -115,7 +116,14 @@ const RootLayout = async ({
   const gtmId = appSetting?.googleTagManagerId?.toString() || "";
 
   return (
-    <html lang="fa" dir="rtl">
+    <html lang="fa" dir="rtl" suppressHydrationWarning>
+      {themeBootstrapScript ? (
+        <head>
+          <script dangerouslySetInnerHTML={{ __html: themeBootstrapScript }} />
+        </head>
+      ) : (
+        <></>
+      )}
       <body className={x_Iransans.className} suppressHydrationWarning>
         <NavigationProgress />
         <SplashScreen />
