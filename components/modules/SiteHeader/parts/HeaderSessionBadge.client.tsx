@@ -1,5 +1,6 @@
 "use client";
 
+import { DisplayPreferences } from "@modules/DisplayPreferences";
 import { useTranslations } from "next-intl";
 import { ContentImage } from "@elements/Image";
 import { CountBadge } from "@elements/Badge";
@@ -57,6 +58,8 @@ const HeaderSessionBadge = ({
       </Link>
 
       {compact ? <></> : <HeaderContactLink isLight={isLight} phone={phone} />}
+
+      <DisplayPreferences overHero={isLight} />
 
       {isLogin ? (
         <Link

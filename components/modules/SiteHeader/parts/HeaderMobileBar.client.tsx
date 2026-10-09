@@ -2,7 +2,9 @@
 
 import { useParams, usePathname, useRouter } from "next/navigation";
 import { headerMobileSearchBlackList } from "@/utils/constantss";
+import { DISPLAY_PREFERENCES_VISIBLE } from "@modules/DisplayPreferences";
 import { headerWithFullSeach } from "@/utils/constantss";
+import { DisplayPreferences } from "@modules/DisplayPreferences";
 import { useTranslations } from "next-intl";
 import { HomeHeroSearch } from "@modules/HomeHeroSearch";
 import { useStoreParams } from "@/store";
@@ -54,12 +56,12 @@ const HeaderMobileBar = ({
       <div className="flex w-full min-w-0 xl:hidden">
         <div className="flex w-full min-w-0 items-center gap-2 py-1">
           <HeaderSessionBadge
-            avatar={avatar}
             compact
+            phone={phone}
+            avatar={avatar}
             isLight={isLight}
             isLogin={isLogin}
             notificationCount={notificationCount}
-            phone={phone}
           />
 
           {topHeaderVisible || homeSearchInView ? (
@@ -87,10 +89,11 @@ const HeaderMobileBar = ({
       <div className="xl:hidden flex w-full">
         <div className="flex items-center w-full justify-between gap-4">
           <HeaderSearchField
-            withCitySelector
             boxId={boxId}
+            withCitySelector
             inputClass="!bg-transparent  !border-none "
           />
+          <DisplayPreferences />
         </div>
       </div>
     );
@@ -102,7 +105,7 @@ const HeaderMobileBar = ({
           type="button"
           onClick={onBack}
           title={t("common.back")}
-          className="cursor-pointer w-12 h-4"
+          className={`cursor-pointer h-4 ${DISPLAY_PREFERENCES_VISIBLE ? "w-24" : "w-12"}`}
         >
           <ContentImage
             alt=""
@@ -115,6 +118,8 @@ const HeaderMobileBar = ({
         <p className="font-bold text-base text-center">
           <HeaderRouteTitle />
         </p>
+
+        <DisplayPreferences />
 
         <div className="w-12 h-10 flex items-center justify-center">
           <div className="cursor-pointer absolute left-4">

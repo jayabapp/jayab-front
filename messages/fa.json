@@ -64,7 +64,8 @@
       "support": "پشتیبانی",
       "message": "پیام",
       "propertyInfo": "اطلاعات ملک"
-    }
+    },
+    "displayPreferences": "تنظیمات نمایش"
   },
   "theme": {
     "label": "حالت نمایش",

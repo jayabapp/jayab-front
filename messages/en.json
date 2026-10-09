@@ -64,7 +64,8 @@
       "support": "Support",
       "message": "Message",
       "propertyInfo": "Property information"
-    }
+    },
+    "displayPreferences": "Display settings"
   },
   "theme": {
     "label": "Appearance",

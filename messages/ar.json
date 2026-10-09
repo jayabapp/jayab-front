@@ -64,7 +64,8 @@
       "support": "الدعم",
       "message": "رسالة",
       "propertyInfo": "معلومات العقار"
-    }
+    },
+    "displayPreferences": "إعدادات العرض"
   },
   "theme": {
     "label": "وضع العرض",
