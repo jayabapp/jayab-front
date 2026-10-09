@@ -1,13 +1,15 @@
 "use client";
 
 import { BreadCrumbSchema } from "@elements/StructuredData";
-import { allRoutes } from "@/utils/constantss";
+import { useTranslations } from "next-intl";
+import { isRouteTitleKey } from "@/utils/constantss";
 import { ContentImage } from "@elements/Image";
 import { usePathname } from "next/navigation";
-import { colors } from "@/theme/colors";
 import { useMemo } from "react";
+import { colors } from "@/theme/colors";
 
 const Breadcrumbs = () => {
+  const t = useTranslations();
   const pathname = usePathname();
   const crumbs = useMemo(() => {
     const segments = pathname
@@ -15,16 +17,16 @@ const Breadcrumbs = () => {
       .filter((segment) => segment && isNaN(Number(segment)));
 
     return [
-      { title: "خانه", route: "", icon: "" },
+      { title: t("common.home"), route: "", icon: "" },
       ...segments.map((segment) => ({
-        title: Object.prototype.hasOwnProperty.call(allRoutes, segment)
-          ? allRoutes[segment]
+        title: isRouteTitleKey(segment)
+          ? t(`routes.${segment}`)
           : decodeURIComponent(segment).replace(/-/g, " "),
         route: segment,
         icon: "",
       })),
     ];
-  }, [pathname]);
+  }, [pathname, t]);
 
   const createRoute = (route: string) => {
     const pathSegments = pathname.split("/");

@@ -1,32 +1,34 @@
 "use client";
 
-import type { HeaderMobileBarProps } from "@/types/components/modules/site-header";
 import { useParams, usePathname, useRouter } from "next/navigation";
 import { headerMobileSearchBlackList } from "@/utils/constantss";
 import { headerWithFullSeach } from "@/utils/constantss";
+import { useTranslations } from "next-intl";
 import { HomeHeroSearch } from "@modules/HomeHeroSearch";
-import { ContentImage } from "@elements/Image";
 import { useStoreParams } from "@/store";
+import { ContentImage } from "@elements/Image";
 
 import HeaderSessionBadge from "./HeaderSessionBadge.client";
 import HeaderSearchField from "./HeaderSearchField.client";
 import HeaderRouteTitle from "./HeaderRouteTitle.client";
-import _STRINGS from "@/utils/LocalStrings";
 import HeaderBrand from "./HeaderBrand";
 import Button from "@elements/Button";
 import Link from "next/link";
 
+import type { HeaderMobileBarProps } from "@/types/components/modules/site-header";
+
 const HeaderMobileBar = ({
   boxId,
+  phone,
   avatar,
   isHome,
   isLight,
   isLogin,
   isAdvisor,
   notificationCount,
-  phone,
   onRegisterAdvisor,
 }: HeaderMobileBarProps) => {
+  const t = useTranslations();
   const router = useRouter();
   const pathname = usePathname();
   const { chat_id, room_slug, slug } = useParams();
@@ -60,8 +62,6 @@ const HeaderMobileBar = ({
             phone={phone}
           />
 
-          {/* The home page's own pill rides the sheet's lip; the header only
-              takes over the search once that pill has scrolled behind it. */}
           {topHeaderVisible || homeSearchInView ? (
             <div className="mr-auto flex min-w-0 items-center justify-end">
               <HeaderBrand isLight={isLight} />
@@ -101,7 +101,7 @@ const HeaderMobileBar = ({
         <button
           type="button"
           onClick={onBack}
-          title={_STRINGS.BACK}
+          title={t("common.back")}
           className="cursor-pointer w-12 h-4"
         >
           <ContentImage
@@ -123,7 +123,7 @@ const HeaderMobileBar = ({
                 <Button
                   onClick={onRegisterAdvisor}
                   roundedClass="rounded-full"
-                  title={_STRINGS.REGISTER_ADVISOR}
+                  title={t("header.registerAdvisor")}
                   width=" !px-3  !text-sm !py-1 w-fit "
                   containerClass="w-fit !px-0.5  items-center justify-center"
                 />
@@ -131,7 +131,7 @@ const HeaderMobileBar = ({
             ) : pathname.includes("/profile") ? (
               <Link
                 href="/"
-                title={_STRINGS.HOME}
+                title={t("common.home")}
                 onClick={() => useStoreParams.setState({ getBackHome: false })}
               >
                 <ContentImage
@@ -149,7 +149,7 @@ const HeaderMobileBar = ({
                 ) ? null : pathname.includes("/rooms/") ? (
                   <Link
                     href="/"
-                    title={_STRINGS.HOME}
+                    title={t("common.home")}
                     className="w-5 h-5 aspect-square"
                   >
                     <ContentImage

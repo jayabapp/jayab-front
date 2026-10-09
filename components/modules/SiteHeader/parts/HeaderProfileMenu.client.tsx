@@ -1,18 +1,19 @@
 "use client";
 
-import { useOwnerActiveReservationCount } from "@features/reservations/hooks/useOwnerActiveReservationCount";
-import type { HeaderProfileMenuProps } from "@/types/components/modules/site-header";
-import { useCurrentProfile } from "@features/auth/hooks/useCurrentProfile";
 import { Menu, MenuButton, MenuItem, MenuItems } from "@headlessui/react";
-import type { ProfileMenuEntry } from "@/types/features/user";
-import { useLogout } from "@features/auth/hooks/useLogout";
+import { useOwnerActiveReservationCount } from "@features/reservations/hooks/useOwnerActiveReservationCount";
+import { useMemo, useRef, useState } from "react";
 import { profileDropDownItems } from "@/utils/constantss";
 import { CountBadge, PulseDot } from "@elements/Badge";
-import { useMemo, useRef, useState } from "react";
+import { useCurrentProfile } from "@features/auth/hooks/useCurrentProfile";
+import { useTranslations } from "next-intl";
 import { ContentImage } from "@elements/Image";
+import { useLogout } from "@features/auth/hooks/useLogout";
+
+import type { HeaderProfileMenuProps } from "@/types/components/modules/site-header";
+import type { ProfileMenuEntry } from "@/types/features/user";
 
 import ConfirmModal from "@elements/Modal/ConfirmModal.client";
-import _STRINGS from "@/utils/LocalStrings";
 import Link from "next/link";
 
 const ROW_CLASS =
@@ -22,6 +23,7 @@ const HeaderProfileMenu = ({
   isLight,
   notificationCount,
 }: HeaderProfileMenuProps) => {
+  const t = useTranslations();
   const buttonRef = useRef<HTMLButtonElement>(null);
   const [showConfirm, setShowConfirm] = useState(false);
   const logout = useLogout();
@@ -36,14 +38,14 @@ const HeaderProfileMenu = ({
         id: "overview",
         imgSrc: "/assets/icons/header/new-face/user.svg",
         route: "/profile",
-        title: _STRINGS.PROFILE_OVERVIEW_MENU,
+        title: t("header.profileOverview"),
       },
       {
         badgeCounter: Number(notificationCount) || undefined,
         id: "notifications",
         imgSrc: "/assets/icons/header/prof_dropdownn_bell.svg",
         route: "/notifications",
-        title: _STRINGS.MY_NOTIFS,
+        title: t("header.myNotifications"),
       },
     ];
 
@@ -53,14 +55,14 @@ const HeaderProfileMenu = ({
           id: "owner-properties",
           imgSrc: "/assets/icons/header/header_my_adds.svg",
           route: "/profile/owner/properties",
-          title: _STRINGS.MY_PROPERTY_ADS,
+          title: t("header.myListings"),
         },
         {
           badgeCounter: Number(activeReserves) || undefined,
           id: "owner-reserves",
           imgSrc: "/assets/icons/header/header_my_adds.svg",
           route: "/profile/owner/reserves",
-          title: _STRINGS.RESERVE_REQUESTS,
+          title: t("header.reserveRequests"),
         },
       );
 
@@ -69,11 +71,17 @@ const HeaderProfileMenu = ({
         id: "advisor-subscription",
         imgSrc: "/assets/icons/header/header_my_sub.svg",
         route: "/profile/advisor/subscription",
-        title: _STRINGS.ADVISOR_SECTION,
+        title: t("header.advisorSection"),
       });
 
-    return [...rows, ...profileDropDownItems];
-  }, [activeReserves, isOwner, notificationCount, profile?.advisor_id]);
+    return [
+      ...rows,
+      ...profileDropDownItems.map(({ titleKey, ...entry }) => ({
+        ...entry,
+        title: t(`header.${titleKey}`),
+      })),
+    ];
+  }, [activeReserves, isOwner, notificationCount, profile?.advisor_id, t]);
 
   return (
     <div className="text-right">
@@ -97,7 +105,7 @@ const HeaderProfileMenu = ({
                 : "text-black group-hover:text-brand-600"
             } shrink-0 font-medium transition-colors duration-150`}
           >
-            {_STRINGS.MY_PROFILE}
+            {t("header.myProfile")}
           </p>
         </MenuButton>
 
@@ -141,7 +149,7 @@ const HeaderProfileMenu = ({
                 className="w-6 h-6 aspect-square"
                 src="/assets/icons/header/header_logout.svg"
               />
-              {_STRINGS.LOGOUT_TITLE}
+              {t("header.logout")}
             </button>
           </MenuItem>
         </MenuItems>
@@ -149,11 +157,11 @@ const HeaderProfileMenu = ({
 
       <ConfirmModal
         isLoading={false}
-        hideText={_STRINGS.NO}
+        hideText={t("common.no")}
         isVisible={showConfirm}
-        confirmText={_STRINGS.YES}
-        title={_STRINGS.LOGGING_OUT}
-        text={_STRINGS.LOG_OUT_MESSAGE}
+        confirmText={t("common.yes")}
+        title={t("header.logout")}
+        text={t("header.logoutMessage")}
         onConfirm={() => void logout()}
         onHide={() => setShowConfirm(false)}
       />

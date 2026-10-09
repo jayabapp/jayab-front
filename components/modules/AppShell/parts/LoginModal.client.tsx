@@ -1,13 +1,14 @@
 "use client";
 
 import { usePathname, useRouter } from "next/navigation";
+import { useTranslations } from "next-intl";
 import { useStoreParams } from "@/store";
+import { memo } from "react";
 
-import _STRINGS from "@/utils/LocalStrings";
 import Modal from "@elements/Modal";
-import React from "react";
 
 const LoginModal = () => {
+  const t = useTranslations("auth.loginModal");
   const router = useRouter();
   const pathname = usePathname();
   const replacer = (url: string) => {
@@ -24,10 +25,10 @@ const LoginModal = () => {
     });
   };
 
-  const title = _STRINGS.LOGIN_MODAL_TITLE,
-    body = _STRINGS.LOGIN_MODAL_DESC,
-    yes = _STRINGS.LOGIN_SUBMIT_YES,
-    no = _STRINGS.NOW_NOW;
+  const title = t("title"),
+    body = t("description"),
+    yes = t("confirm"),
+    no = t("dismiss");
   return (
     <Modal
       show={loginModal}
@@ -69,4 +70,4 @@ const LoginModal = () => {
   );
 };
 
-export default React.memo(LoginModal);
+export default memo(LoginModal);

@@ -14,6 +14,7 @@
     "api:check": "node scripts/check-generated.mjs",
     "architecture:check": "node scripts/check-layer-contracts.mjs",
     "theme:check": "node scripts/check-theme-contract.mjs",
+    "i18n:check": "node scripts/i18n/check.mjs",
     "architecture:cycles": "node scripts/check-import-cycles.mjs",
     "architecture:report": "node scripts/report-client-boundaries.mjs",
     "architecture:migration": "node scripts/report-component-migration.mjs",
@@ -74,6 +75,7 @@
   },
   "devDependencies": {
     "@eslint/eslintrc": "^3",
+    "@formatjs/icu-messageformat-parser": "3.5.19",
     "@types/lodash": "^4.17.13",
     "@types/moment-jalaali": "^0.7.9",
     "@types/node": "^20",

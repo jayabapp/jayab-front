@@ -1,67 +1,69 @@
 "use client";
 
-import { useCreatePropertyEntry } from "@features/owner-property/hooks/useCreatePropertyEntry";
-import { useAdvisorProfile } from "@features/advisors/hooks/useAdvisorProfile";
-import { useUnreadChatCount } from "@features/chat/hooks/useUnreadChatCount";
-import type { MobileNavEntry } from "@/types/components/modules/mobile-nav";
-import { subscriptionStatus } from "@/helpers/subscriptionStatus";
-import { usePathname, useRouter } from "next/navigation";
-import { AnimatePresence, motion } from "framer-motion";
 import { useAuthStore, useStoreParams } from "@/store";
+import { AnimatePresence, motion } from "framer-motion";
+import { useCreatePropertyEntry } from "@features/owner-property/hooks/useCreatePropertyEntry";
+import { usePathname, useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
-import { isIOS } from "react-device-detect";
+import { useUnreadChatCount } from "@features/chat/hooks/useUnreadChatCount";
+import { subscriptionStatus } from "@/helpers/subscriptionStatus";
+import { useAdvisorProfile } from "@features/advisors/hooks/useAdvisorProfile";
+import { useTranslations } from "next-intl";
 import { colors } from "@/theme/colors";
+import { isIOS } from "react-device-detect";
 
 import MobileNavCreateButton from "./parts/MobileNavCreateButton.client";
 import MobileNavItem from "./parts/MobileNavItem.client";
-import _STRINGS from "@/utils/LocalStrings";
 import throttle from "lodash/throttle";
+
+import type { MobileNavEntry } from "@/types/components/modules/mobile-nav";
 
 const SCROLL_DELTA = 20;
 const ADVISOR_PENDING_STATUS_ID = 20;
 const ADVISOR_BADGE_DAYS_LEFT = 3;
-
-const RIGHT_ITEMS: MobileNavEntry[] = [
-  {
-    icon: "/assets/icons/navbar/home_nav.svg",
-    id: 2,
-    route: "/",
-    title: _STRINGS.HOME,
-  },
-  {
-    icon: "/assets/icons/navbar/footer_consultancy.svg",
-    id: 142142,
-    route: "/advisors",
-    title: _STRINGS.CONSULTAMCY,
-  },
-];
-
-const LEFT_ITEMS: MobileNavEntry[] = [
-  {
-    icon: "/assets/icons/navbar/footer_chat.svg",
-    id: 242,
-    route: "/chat",
-    title: _STRINGS.CHAT,
-  },
-  {
-    icon: "/assets/icons/navbar/my_jayab_v2.svg",
-    id: 1442,
-    route: "/profile",
-    title: _STRINGS.MY_PROFILE,
-  },
-];
 
 const isStandalone = () =>
   document.referrer.startsWith("android-app://") ||
   window.matchMedia("(display-mode: standalone)").matches;
 
 const MobileNav = () => {
+  const t = useTranslations();
   const router = useRouter();
   const pathname = usePathname();
   const [isVisible, setIsVisible] = useState(true);
   const { isLogin } = useAuthStore((state) => state);
   const { owmerActiveReservesCount } = useStoreParams((state) => state);
   const { start: onCreateProperty } = useCreatePropertyEntry();
+
+  const RIGHT_ITEMS: MobileNavEntry[] = [
+    {
+      icon: "/assets/icons/navbar/home_nav.svg",
+      id: 2,
+      route: "/",
+      title: t("common.home"),
+    },
+    {
+      icon: "/assets/icons/navbar/footer_consultancy.svg",
+      id: 142142,
+      route: "/advisors",
+      title: t("header.advisors"),
+    },
+  ];
+
+  const LEFT_ITEMS: MobileNavEntry[] = [
+    {
+      icon: "/assets/icons/navbar/footer_chat.svg",
+      id: 242,
+      route: "/chat",
+      title: t("common.chat"),
+    },
+    {
+      icon: "/assets/icons/navbar/my_jayab_v2.svg",
+      id: 1442,
+      route: "/profile",
+      title: t("header.myProfile"),
+    },
+  ];
 
   const { data: chatBadge } = useUnreadChatCount(
     Boolean(isLogin) && (pathname === "/" || pathname === "/chat"),

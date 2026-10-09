@@ -170,108 +170,106 @@ export const SORT_TYPES = [
     icon: "/assets/icons/sort/sort_most_comision.svg",
   },
 ];
-export const allRoutes: { [key: string]: string } = {
-  "test-access": "دسترسی محیط تست",
-  questions: "پرسش ها",
-  notifications: "اعلان ها",
-  rooms: "آگهی ها",
-  invite: "دعوت از دوستان",
-  "my-payments": "پرداخت های من",
-  advisors: "مشاوران",
-  inquery: "استعلام هفتگی",
-  authorize: "احراز  ملک",
-  properties: "املاک",
-  bookmarks: "آگهی های ذخیره شده",
-  panel: "پنل مشاور",
-  chat: "پیام ها",
-  owner: "مالک",
-  blog: "مجله گردشگری",
-  blogs: "مجله گردشگری",
-  orders: "سفارشات",
-  reserves: "رزرو های من",
-  advisor: "مشاور",
-  "is-especial": "مشاور ویژه",
-  assistants: "افزودن دستیار میزبان",
-  initials: _STRINGS.REGISTER_PROPERTY,
-  location: _STRINGS.SUBMIT_PROPERTY,
-  media: _STRINGS.PROPERTY_MEDIA,
-  facility: "امکانات ملک",
-  subscription: "ارتقا آگهی و افزایش بازدید",
-  price: _STRINGS.CAPS_N_PRICES,
-  "is-not-especial": "مشاور",
-  environment: "اطلاعات محیطی ملک",
-  bedroom: "اطلاعات اتاق خواب، سرویس و حمام",
-
-  license: "احراز ملک",
-  podcasts: "پادکست ها",
-  videos: "ویدیوها",
-  "about-us": "درباره ما",
-  branch: "اعطای نمایندگی",
-  requests: "درخواست ها",
-  edit: "اطلاعات شخصی",
-
-  support: "پشتیبانی ",
-
-  profile: "پروفایل",
-  products: "محصولات",
-  addresses: "آدرس ها",
-  "contact-us": "تماس با ما",
-  "photo-upgrade-requests": "درخواست های بهبود ",
-  "categories-list": "دسته بندی ها",
-  "legal-request": "ثبت درخواست حقوقی",
-  "meeting-request": "درخواست ملاقات حضوری",
-  terms: "قوانین و مقررات",
-  "inquiry-list": "لیست استعلام",
-  "online-lawyer": "وکیل آنلاین",
-  faq: "سوالات متداول",
-  cart: "سبد خرید",
-  "repetitive-questions": "  سوالات متداول",
-
-  checkout: "تکمیل فرآیند خرید",
-
-  categories: "دسته بندی ها",
-  compare: "لیست مقایسه",
-  tracking: "پیگیری مرسوله",
-
-  favorites: "علاقه مندی‌ها",
-
-  comments: "دیدگاه‌ها",
-  brands: "برند ها",
-};
+// Segments that have a title in messages `routes.<segment>`. Membership is checked
+// here (not with t.has) because URL segments are user input.
+export const routeTitleKeys = [
+  "test-access",
+  "questions",
+  "notifications",
+  "rooms",
+  "invite",
+  "my-payments",
+  "advisors",
+  "inquery",
+  "authorize",
+  "properties",
+  "bookmarks",
+  "panel",
+  "chat",
+  "owner",
+  "blog",
+  "blogs",
+  "orders",
+  "reserves",
+  "advisor",
+  "is-especial",
+  "assistants",
+  "initials",
+  "location",
+  "media",
+  "facility",
+  "subscription",
+  "price",
+  "is-not-especial",
+  "environment",
+  "bedroom",
+  "license",
+  "podcasts",
+  "videos",
+  "about-us",
+  "branch",
+  "requests",
+  "edit",
+  "support",
+  "profile",
+  "products",
+  "addresses",
+  "contact-us",
+  "photo-upgrade-requests",
+  "categories-list",
+  "legal-request",
+  "meeting-request",
+  "terms",
+  "inquiry-list",
+  "online-lawyer",
+  "faq",
+  "cart",
+  "repetitive-questions",
+  "checkout",
+  "categories",
+  "compare",
+  "tracking",
+  "favorites",
+  "comments",
+  "brands",
+] as const;
+export type RouteTitleKey = (typeof routeTitleKeys)[number];
+export const isRouteTitleKey = (segment: string): segment is RouteTitleKey =>
+  (routeTitleKeys as readonly string[]).includes(segment);
 
 export const profileDropDownItems = [
   // { id: 21, title: "پیام های من", route: "/profile/chat", imgSrc: "/assets/icons/header/header_my_messages.svg" },
   {
     id: 421,
-    title: "پرداخت های من",
+    titleKey: "myPayments",
     route: "/profile/my-payments",
     imgSrc: "/assets/icons/header/header_my_turnovers.svg",
   },
   {
     id: 112423,
-    title: "رزرو های من",
+    titleKey: "myReserves",
     route: "/profile/reserves",
     imgSrc: "/assets/icons/adds/header_reserve.svg",
   },
   {
     id: 123,
-    title: "آگهی های ذخیره شده",
+    titleKey: "savedListings",
     route: "/profile/bookmarks",
     imgSrc: "/assets/icons/header/header_my_saves.svg",
   },
   {
     id: 23,
-    title: "دعوت از دوستان",
+    titleKey: "inviteFriends",
     route: "/profile/invite",
     imgSrc: "/assets/icons/header/header_share.svg",
   },
   {
     id: 253,
-    title: "پشتیبانی",
+    titleKey: "support",
     route: "/profile/support",
     imgSrc: "/assets/icons/header/header_support.svg",
   },
-];
+] as const;
 export const menuDropDownItems = [
   {
     id: 115,
@@ -306,14 +304,14 @@ export const menuDropDownItems = [
 ];
 
 export const footerLinks = [
-  { id: 241, title: "مجله گردشگری جایاب ", route: "/blog" },
+  { id: 241, titleKey: "blog", route: "/blog" },
 
-  { id: 521, title: "سوالات متداول", route: "/faq" },
-  { id: 246, title: "درباره ما", route: "/about-us" },
-  { id: 227, title: "قوانین و مقررات", route: "/terms" },
+  { id: 521, titleKey: "faq", route: "/faq" },
+  { id: 246, titleKey: "about", route: "/about-us" },
+  { id: 227, titleKey: "terms", route: "/terms" },
 
-  { id: 218, title: "تماس با ما", route: "/contact-us" },
-];
+  { id: 218, titleKey: "contact", route: "/contact-us" },
+] as const;
 
 export const profileItems = [
   {

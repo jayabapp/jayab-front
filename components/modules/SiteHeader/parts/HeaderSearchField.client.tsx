@@ -1,10 +1,11 @@
 "use client";
 
-import type { HeaderSearchFieldProps } from "@/types/components/modules/site-header";
 import { HomeCitySelector } from "@modules/HomeCities";
+import { useTranslations } from "next-intl";
 import { Suspense } from "react";
 
-import _STRINGS from "@/utils/LocalStrings";
+import type { HeaderSearchFieldProps } from "@/types/components/modules/site-header";
+
 import dynamic from "next/dynamic";
 
 const PopSearchBox = dynamic(() =>
@@ -18,13 +19,14 @@ const HeaderSearchField = ({
   containerClass,
   withCitySelector,
 }: HeaderSearchFieldProps) => {
+  const t = useTranslations("header");
   const field = (
     <Suspense>
       <PopSearchBox
         boxId={boxId}
         justIcon={justIcon}
-        placeholder={_STRINGS.HERO_STEP_WHERE}
         item={{ bg: inputClass ?? "" }}
+        placeholder={t("searchPlaceholder")}
         containerClass={withCitySelector ? " w-full mx-auto" : containerClass}
       />
     </Suspense>

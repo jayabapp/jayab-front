@@ -941,6 +941,13 @@
   dependencies:
     "@formatjs/icu-skeleton-parser" "2.1.11"
 
+"@formatjs/icu-messageformat-parser@3.5.19":
+  version "3.5.19"
+  resolved "https://registry.yarnpkg.com/@formatjs/icu-messageformat-parser/-/icu-messageformat-parser-3.5.19.tgz#fdbf1c4c515f4651ad15ea8753ef1fe37db5bb68"
+  integrity sha512-a5PAqgd3QPUge635SxrjPLIlTErcGwm3AMyTdmZXl0IqWXTdCx9AnuioEmvEZAV2HpeFdynLPXMvHv7dXGEWWw==
+  dependencies:
+    "@formatjs/icu-skeleton-parser" "2.1.12"
+
 "@formatjs/icu-messageformat-parser@^3.4.0":
   version "3.5.21"
   resolved "https://registry.yarnpkg.com/@formatjs/icu-messageformat-parser/-/icu-messageformat-parser-3.5.21.tgz#f05fc2d981ba1978eeec6907b63a05b0b7f3b311"

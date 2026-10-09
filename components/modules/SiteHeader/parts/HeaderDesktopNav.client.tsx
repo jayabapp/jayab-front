@@ -1,87 +1,96 @@
 "use client";
 
-import type { HeaderDesktopNavProps } from "@/types/components/modules/site-header";
+import { useTranslations } from "next-intl";
 import { CountBadge } from "@elements/Badge";
 
 import HeaderSessionBadge from "./HeaderSessionBadge.client";
 import HeaderProfileMenu from "./HeaderProfileMenu.client";
 import HeaderSearchField from "./HeaderSearchField.client";
 import HeaderNavLink from "./HeaderNavLink.client";
-import _STRINGS from "@/utils/LocalStrings";
 import HeaderBrand from "./HeaderBrand";
+
+import type { HeaderDesktopNavProps } from "@/types/components/modules/site-header";
 
 const HeaderDesktopNav = ({
   boxId,
   avatar,
+  phone,
   isHome,
   isLight,
   isLogin,
   chatCount,
   advisorHasBadge,
   notificationCount,
-  phone,
   onCreateProperty,
-}: HeaderDesktopNavProps) => (
-  <>
-    <div className="text-xs xl:text-md gap-8 font-medium flex-row hidden xl:flex w-[50%] transition-all ease-in-out duration-1000 items-center">
-      <HeaderSessionBadge
-        avatar={avatar}
-        isLight={isLight}
-        isLogin={isLogin}
-        notificationCount={notificationCount}
-        phone={phone}
-      />
+}: HeaderDesktopNavProps) => {
+  const t = useTranslations();
 
-      <HeaderNavLink
-        route="/advisors"
-        isLight={isLight}
-        hasBadge={advisorHasBadge}
-        title={_STRINGS.CONSULTANTS}
-      />
+  return (
+    <>
+      <div className="text-xs xl:text-md gap-8 font-medium flex-row hidden xl:flex w-[50%] transition-all ease-in-out duration-1000 items-center">
+        <HeaderSessionBadge
+          phone={phone}
+          avatar={avatar}
+          isLight={isLight}
+          isLogin={isLogin}
+          notificationCount={notificationCount}
+        />
 
-      {isLogin ? (
-        <div className="relative">
-          <HeaderProfileMenu
-            isLight={isLight}
-            notificationCount={notificationCount}
-          />
-        </div>
-      ) : null}
+        <HeaderNavLink
+          route="/advisors"
+          isLight={isLight}
+          hasBadge={advisorHasBadge}
+          title={t("header.advisors")}
+        />
 
-      <HeaderNavLink route="/rooms" isLight={isLight} title={_STRINGS.ADDS} />
+        {isLogin ? (
+          <div className="relative">
+            <HeaderProfileMenu
+              isLight={isLight}
+              notificationCount={notificationCount}
+            />
+          </div>
+        ) : null}
 
-      {isLogin ? (
-        <div className="relative">
-          <CountBadge count={chatCount} />
-          <HeaderNavLink
-            route="/chat"
-            isLight={isLight}
-            title={_STRINGS.CHAT}
-          />
-        </div>
-      ) : null}
+        <HeaderNavLink
+          route="/rooms"
+          isLight={isLight}
+          title={t("header.listings")}
+        />
 
-      <HeaderNavLink
-        isLight={isLight}
-        title={_STRINGS.ADD_ADD}
-        onSelect={onCreateProperty}
-      />
-    </div>
+        {isLogin ? (
+          <div className="relative">
+            <CountBadge count={chatCount} />
+            <HeaderNavLink
+              route="/chat"
+              isLight={isLight}
+              title={t("common.chat")}
+            />
+          </div>
+        ) : null}
 
-    <div className="hidden md:visible items-center justify-between xl:flex flex-row w-2/5">
-      <div className="w-full flex gap-4 flex-row justify-end h-full">
-        {isHome ? null : (
-          <HeaderSearchField
-            withCitySelector
-            boxId={boxId}
-            containerClass="hidden md:flex"
-            inputClass="!bg-transparent  !border-none "
-          />
-        )}
-        <HeaderBrand asLink isLight={isLight} />
+        <HeaderNavLink
+          isLight={isLight}
+          title={t("header.addListing")}
+          onSelect={onCreateProperty}
+        />
       </div>
-    </div>
-  </>
-);
+
+      <div className="hidden md:visible items-center justify-between xl:flex flex-row w-2/5">
+        <div className="w-full flex gap-4 flex-row justify-end h-full">
+          {isHome ? null : (
+            <HeaderSearchField
+              boxId={boxId}
+              withCitySelector
+              containerClass="hidden md:flex"
+              inputClass="!bg-transparent !border-none"
+            />
+          )}
+          <HeaderBrand asLink isLight={isLight} />
+        </div>
+      </div>
+    </>
+  );
+};
 
 export default HeaderDesktopNav;

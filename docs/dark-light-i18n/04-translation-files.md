@@ -8,6 +8,16 @@
 
 متن UI علاوه بر JSX در feature mapperها، schemaهای Yup، helper فرمت، notify و `api_services/common/apicall.helper.ts` است. `PropertyDetailsContent.tsx` tab/breadcrumb را از _STRINGS می‌سازد؛ مهاجرت آن فقط ترجمهٔ leafها نیست.
 
+## وضعیت پیاده‌سازی
+
+**ابزار:** `yarn i18n:check` (`scripts/i18n/check.mjs`) با parser مستقیم `@formatjs/icu-messageformat-parser@3.5.19` (devDependency، pin دقیق) می‌سنجد: JSON معتبر، رشتهٔ non-empty، برابری leaf keyها با fa، ICU معتبر با `other`، selectorهای plural موجود در `Intl.PluralRules` همان زبان، برابری نام و نوع آرگومان‌ها (و گزینه‌های select) و tag فقط از allowlist (`b i em strong br link`). روی ۱۷۷ پیام پاس است و برای ۱۱ حالت خرابی (کلید کم/اضافه، ICU خراب، آرگومان ناسازگار، پیام خالی، selector ناموجود، tag غیرمجاز، نبود other، مقدار غیررشته، JSON خراب، فایل ناموجود) با پیام مشخص و exit 1 شکست می‌خورد. unused-key scan و `messages/context.json` ساخته نشد.
+
+**مهاجرت دستهٔ اول (chrome)** انجام شد: SiteHeader (همهٔ parts شامل منوی پروفایل، عنوان مسیر، badge ورود، جستجو و label انتخاب شهر)، SiteFooter (ستون‌ها، CTA، copyright با `t.rich`)، MobileNav، ImpersonationBanner، LoginModal و Breadcrumbs. عنوان مسیرها از `allRoutes` به namespace `routes` رفت (`allRoutes` حذف و `routeTitleKeys`/`isRouteTitleKey` جایگزین شد؛ عضویت با لیست ثابت سنجیده می‌شود نه `t.has`، چون segment ورودی کاربر است و `t.has("constructor")` درست برمی‌گرداند). `profileDropDownItems` و `footerLinks` به `titleKey` تبدیل شدند. ۱۸ کلید بی‌مصرف از `_STRINGS` حذف شد؛ `_STRINGS.JAYAB` (نام برند) عمداً می‌ماند. namespaceهای `auth` و `routes` به provider ریشه اضافه شدند (فقط برای client islandهای chrome).
+
+**آزمون:** مقدار fa هر کلید با مقدار اصلی `_STRINGS`/`allRoutes` مقایسه شد و یکی است (فقط فاصلهٔ انتهای دو عنوان حذف شد). در build پیش‌فرض (fa-only) متن و attributeهای `/`، `/rooms`، `/faq`، `/about-us` قبل و بعد یکی است (فقط ترتیب streaming فرق دارد). با `fa,ar,en` هدر، فوتر و نوار پایین موبایل در en و ar ترجمه می‌شوند و خطای missing message یا hydration نیست. جدول route بدون تغییر نسبت به ۰۳ است.
+
+**هنوز مهاجرت‌نشده (هر گروه جدا و با مسیر واقعی):** ماژول Search و CitySelector (از جمله placeholder هیرو و `SELECT_CITY` در مودال شهر)، PropertyDetails/Contact/Booking، پروفایل، رزرو، چت، محتوا، مالک، schemaهای Yup، `apiCall`/toast. `menuDropDownItems` و `profileItems` در `utils/constantss.ts` هنوز فارسی‌اند (اولی بدون مصرف‌کننده، دومی در `useProfileMenu`). ترجمهٔ عربی (و عبارت‌های مالی/رزرو) هنوز بازبینی انسانی ندارد و نباید پیش از آن در production فعال شود؛ در حالت چندزبانهٔ فعلی صفحه‌های مهاجرت‌نشده ترکیبی از فارسی و زبان انتخابی نشان می‌دهند، پس `NEXT_PUBLIC_ENABLED_LOCALES` باید تا پایان گروه‌ها `fa` بماند.
+
 ## قرارداد پیام
 
 namespaceها: common، header، theme، language، auth، listing، search، profile، chat، reserve، owner، errors، validation. کلید بر اساس مفهوم باشد: ورود حساب و ساعت ورود یک کلید ندارند. fa منبع key schema است؛ هر سه زبان leaf key برابر، مقدار non-empty و نام/type آرگومان ICU یکسان دارند.

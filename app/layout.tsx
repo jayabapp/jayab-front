@@ -113,7 +113,7 @@ const RootLayout = async ({
       getServerContentList("contactUs", 1, CONTACT_PER_PAGE),
     ]);
 
-  const { common, header, theme, language, errors } = messages;
+  const { common, header, theme, language, auth, routes, errors } = messages;
 
   const appSetting = appSettingsResponse?.data as InnitSettingsDto;
   const contacts: ContentDto[] = contactsResponse?.data?.data ?? [];
@@ -141,7 +141,7 @@ const RootLayout = async ({
         <SplashScreen />
         <NextIntlClientProvider
           locale={locale}
-          messages={{ common, header, theme, language, errors }}
+          messages={{ common, header, theme, language, auth, routes, errors }}
         >
           <LayoutProvider>
             <ImpersonationBanner />
