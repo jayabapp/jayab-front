@@ -5,6 +5,7 @@ import { useCallback, useState } from "react";
 import { CLEARED_DRAFT_TARGET } from "@features/search/lib/search-option-draft";
 import { searchOptionToDraft } from "@features/search/lib/search-option-draft";
 import { useListSeparator } from "@hooks/useListSeparator";
+import { useJalaliFormat } from "@hooks/useJalaliFormat";
 import { useTranslations } from "next-intl";
 import { useHeroSearch } from "@features/search/hooks/useHeroSearch";
 import { ContentImage } from "@elements/Image";
@@ -13,7 +14,6 @@ import type { HomeHeroSearchProps } from "@/types/components/modules/home-hero-s
 
 import HeroMobileTrigger from "./parts/HeroMobileTrigger";
 import dynamic from "next/dynamic";
-import moment from "moment-jalaali";
 
 const DAY_MONTH_FORMAT = "jD jMMMM";
 
@@ -23,6 +23,7 @@ const HeroSearchSheet = dynamic(importHeroSearchSheet, { ssr: false });
 
 const HomeHeroSearch = ({ isPhone, variant = "hero" }: HomeHeroSearchProps) => {
   const t = useTranslations();
+  const jalali = useJalaliFormat();
   const sep = useListSeparator();
 
   const [isSheetOpen, setIsSheetOpen] = useState(false);
@@ -35,9 +36,9 @@ const HomeHeroSearch = ({ isPhone, variant = "hero" }: HomeHeroSearchProps) => {
     title: draft.cityTitle || draft.q || "",
     detail: [
       draft.checkin
-        ? `${moment(draft.checkin).format(DAY_MONTH_FORMAT)}${
+        ? `${jalali(draft.checkin, DAY_MONTH_FORMAT)}${
             draft.checkout
-              ? ` - ${moment(draft.checkout).format(DAY_MONTH_FORMAT)}`
+              ? ` - ${jalali(draft.checkout, DAY_MONTH_FORMAT)}`
               : ""
           }`
         : "",

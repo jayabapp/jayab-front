@@ -5,6 +5,7 @@ import { contactPrefillValues } from "@features/reservations/lib/contact-prefill
 import { usePropertyContact } from "@features/properties/hooks/usePropertyContact";
 import { isMacOs, isWindows } from "react-device-detect";
 import { useListSeparator } from "@hooks/useListSeparator";
+import { useJalaliFormat } from "@hooks/useJalaliFormat";
 import { formatJalaliDay } from "@features/reservations/mappers/reservation-dates";
 import { useTranslations } from "next-intl";
 import { useFormatToman } from "@hooks/useFormatToman";
@@ -15,8 +16,8 @@ import type { PropertyContactModalProps } from "@/types/components/modules/prope
 
 import PropertyContactRow from "./parts/PropertyContactRow.client";
 import Skeleton from "@elements/Skeleton/Skeleton";
-import Notify from "@elements/Toast";
 import isEmpty from "lodash/isEmpty";
+import Notify from "@elements/Toast";
 
 const PropertyContactModal = ({
   type,
@@ -28,11 +29,13 @@ const PropertyContactModal = ({
   const formatToman = useFormatToman();
 
   const t = useTranslations();
+
+  const jalali = useJalaliFormat();
   const sep = useListSeparator();
 
   const { data: contactInfo, isPending, mutate } = usePropertyContact();
   const smsBody = trip
-    ? t("reserve.contactPrefill", contactPrefillValues(trip))
+    ? t("reserve.contactPrefill", contactPrefillValues(trip, jalali))
     : undefined;
   const isSms = type === "sms";
   const isDesktop = isWindows || isMacOs;
@@ -60,8 +63,8 @@ const PropertyContactModal = ({
         <div className="flex flex-col gap-1 border-b border-line px-4 py-3 text-sm">
           <p className="line-clamp-1 text-ink">{trip.title}</p>
           <p className="text-ink-subtle">
-            {formatJalaliDay(trip.startDate)} {t("common.to")}{" "}
-            {formatJalaliDay(trip.endDate)}
+            {formatJalaliDay(trip.startDate, jalali)} {t("common.to")}{" "}
+            {formatJalaliDay(trip.endDate, jalali)}
             {sep}
             {t("common.people", { count: Number(trip.guests) })}
           </p>

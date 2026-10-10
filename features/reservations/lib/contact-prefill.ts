@@ -1,7 +1,8 @@
-import type { CreateReserveDto } from "@/api_services/reserve/reserve.interface";
-
 import { formatJalaliDay } from "../mappers/reservation-dates";
 import { toDayKey } from "./stay-range";
+
+import type { CreateReserveDto } from "@/api_services/reserve/reserve.interface";
+import type { JalaliFormatter } from "@/helpers/intl/jalali";
 
 export type ContactTrip = {
   code: string;
@@ -12,17 +13,14 @@ export type ContactTrip = {
   startDate: Date;
 };
 
-export const contactPrefillValues = ({
-  code,
-  title,
-  guests,
-  endDate,
-  startDate,
-}: ContactTrip) => ({
+export const contactPrefillValues = (
+  { code, title, guests, endDate, startDate }: ContactTrip,
+  format?: JalaliFormatter,
+) => ({
   title,
   code,
-  checkin: formatJalaliDay(startDate),
-  checkout: formatJalaliDay(endDate),
+  checkin: formatJalaliDay(startDate, format),
+  checkout: formatJalaliDay(endDate, format),
   guests: `${guests}`,
 });
 

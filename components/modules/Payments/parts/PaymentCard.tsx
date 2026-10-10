@@ -1,14 +1,16 @@
+import { useFormatNumber } from "@hooks/useFormatNumber";
+import { useJalaliFormat } from "@hooks/useJalaliFormat";
 import { useTranslations } from "next-intl";
 import { Divider } from "@elements/Divider";
 
 import type { PaymentCardProps } from "@/types/components/modules/profile";
 
-import numberWithCommas from "@/helpers/numberWithCommas";
 import LinearData from "@elements/LinearDataList";
-import moment from "moment-jalaali";
 
 const PaymentCard = ({ payment }: PaymentCardProps) => {
   const t = useTranslations();
+  const formatNumber = useFormatNumber();
+  const jalali = useJalaliFormat();
 
   return (
   <div className="shadow-surface flex flex-col rounded-10 p-4 gap-4">
@@ -27,13 +29,13 @@ const PaymentCard = ({ payment }: PaymentCardProps) => {
     <LinearData
       disableDash
       title={t("common.cost")}
-      value={`${numberWithCommas(payment?.price)} ${t("common.toman")}`}
+      value={`${formatNumber(payment?.price)} ${t("common.toman")}`}
     />
     <Divider />
     <LinearData
       disableDash
       title={t("profile.paymentTime")}
-      value={`${moment(payment?.created_at).format(" jD jMMMM  jYYYY  -  HH:mm")}`}
+      value={`${jalali(payment?.created_at, " jD jMMMM  jYYYY  -  HH:mm")}`}
     />
     <Divider />
     <LinearData

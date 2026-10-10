@@ -1,3 +1,4 @@
+import { useFormatTimestamp } from "@hooks/useFormatTimestamp";
 import { resolveChatImage } from "@features/chat/presentation/chat.presenter";
 import { useTranslations } from "next-intl";
 import { useStoreParams } from "@/store";
@@ -11,6 +12,7 @@ import Link from "next/link";
 
 const ChatListItem = ({ item, onClickCb }: ChatListItemProps) => {
   const t = useTranslations("common");
+  const formatTimestamp = useFormatTimestamp();
 
   moment.locale("fa", { useGregorianParser: true });
   const removeredirectRoomToHome = () => {
@@ -62,7 +64,7 @@ const ChatListItem = ({ item, onClickCb }: ChatListItemProps) => {
           </div>
           {!!item?.last_update && moment(item?.last_update).isValid() ? (
             <p className="text-xs opacity-50   shrink-0 text-end flex justify-end w-fit  ">
-              {moment(item?.last_update).format("HH:mm - jYYYY/jMM/jDD")}
+              {formatTimestamp(item?.last_update)}
             </p>
           ) : (
             <></>

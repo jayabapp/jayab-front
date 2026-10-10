@@ -17,6 +17,7 @@
     "i18n:check": "node scripts/i18n/check.mjs",
     "i18n:namespaces": "node scripts/i18n/namespaces.mjs",
     "direction:check": "node scripts/direction/check.mjs",
+    "test:intl": "node --import ./scripts/test/ts-resolve.mjs --test \"helpers/intl/*.test.ts\" \"features/reservations/mappers/*.test.ts\"",
     "architecture:cycles": "node scripts/check-import-cycles.mjs",
     "architecture:report": "node scripts/report-client-boundaries.mjs",
     "architecture:migration": "node scripts/report-component-migration.mjs",

@@ -9,6 +9,7 @@ import { buildReservePayload } from "@features/reservations/lib/contact-prefill"
 import { trackListingEvent } from "@/helpers/listingAnalytics";
 import { useRef, useState } from "react";
 import { useListSeparator } from "@hooks/useListSeparator";
+import { useJalaliFormat } from "@hooks/useJalaliFormat";
 import { useTranslations } from "next-intl";
 import { useFormatToman } from "@hooks/useFormatToman";
 import { nightsBetween } from "@features/reservations/lib/stay-range";
@@ -38,6 +39,8 @@ const ReserveConfirmSheet = ({
   const formatToman = useFormatToman();
 
   const t = useTranslations();
+
+  const jalali = useJalaliFormat();
   const sep = useListSeparator();
 
   const { isPending, mutate } = useCreateReservation();
@@ -169,8 +172,9 @@ const ReserveConfirmSheet = ({
               <div className="flex items-center gap-2">
                 <Icon name="calendar" size={20} className="text-link" />
                 <span className="flex-1">
-                  {formatJalaliWeekdayDay(stay.startDate)} {t("common.to")}{" "}
-                  {formatJalaliWeekdayDay(stay.endDate)}
+                  {formatJalaliWeekdayDay(stay.startDate, jalali)}{" "}
+                  {t("common.to")}{" "}
+                  {formatJalaliWeekdayDay(stay.endDate, jalali)}
                   {sep}
                   {t("reserve.nights", { count: Number(nights) })}
                 </span>

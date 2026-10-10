@@ -5,6 +5,7 @@ import { usePrefetchStayMonths } from "@features/reservations/hooks/usePrefetchS
 import { trackListingEvent } from "@/helpers/listingAnalytics";
 import { useListSeparator } from "@hooks/useListSeparator";
 import { useTranslations } from "next-intl";
+import { useJalaliFormat } from "@hooks/useJalaliFormat";
 import { formatJalaliDay } from "@features/reservations/mappers/reservation-dates";
 import { useBookingStay } from "@features/reservations/hooks/useBookingStay";
 import { useFormatToman } from "@hooks/useFormatToman";
@@ -36,6 +37,8 @@ const BookingPanel = ({
   const formatToman = useFormatToman();
 
   const t = useTranslations("reserve");
+
+  const jalali = useJalaliFormat();
   const sep = useListSeparator();
 
   const booking = useBookingStay(
@@ -101,7 +104,9 @@ const BookingPanel = ({
 
   const readyBody = () => {
     if (booking.hasQuoteError && !quote)
-      return <p className="ui-body text-status-danger">{t("quoteUnavailable")}</p>;
+      return (
+        <p className="ui-body text-status-danger">{t("quoteUnavailable")}</p>
+      );
 
     if (!quote)
       return (
@@ -118,7 +123,7 @@ const BookingPanel = ({
           <p className="ui-body text-status-danger">
             {t("stayDatesReserved")}:{" "}
             {quote.unavailable_dates
-              .map((date) => formatJalaliDay(date))
+              .map((date) => formatJalaliDay(date, jalali))
               .join(sep)}
           </p>
           <button

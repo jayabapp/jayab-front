@@ -972,7 +972,19 @@
     "shortTue": "س",
     "shortWed": "چ",
     "shortThu": "پ",
-    "shortFri": "ج"
+    "shortFri": "ج",
+    "jMonth1": "فروردین",
+    "jMonth2": "اردیبهشت",
+    "jMonth3": "خرداد",
+    "jMonth4": "تیر",
+    "jMonth5": "مرداد",
+    "jMonth6": "شهریور",
+    "jMonth7": "مهر",
+    "jMonth8": "آبان",
+    "jMonth9": "آذر",
+    "jMonth10": "دی",
+    "jMonth11": "بهمن",
+    "jMonth12": "اسفند"
   },
   "validation": {
     "ticketTitleRequired": "عنوان تیکت الزامی است",

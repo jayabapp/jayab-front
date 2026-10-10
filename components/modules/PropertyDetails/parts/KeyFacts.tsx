@@ -1,12 +1,13 @@
+import { useFormatNumber } from "@hooks/useFormatNumber";
 import { useTranslations } from "next-intl";
 
 import type { PropertySpecsSectionProps } from "@/types/components/modules/property-details";
 
-import numberWithCommas from "@/helpers/numberWithCommas";
 import FactRow from "./FactRow";
 
 const KeyFacts = ({ property }: PropertySpecsSectionProps) => {
   const t = useTranslations();
+  const formatNumber = useFormatNumber();
 
   const propertyType = property?.options?.property_type;
 
@@ -22,10 +23,10 @@ const KeyFacts = ({ property }: PropertySpecsSectionProps) => {
   );
 
   const buildingAreaText = property?.building_area
-    ? `${numberWithCommas(property.building_area)} ${t("common.meter")} ${t("listing.buildingAreaSuffix")}`
+    ? `${formatNumber(property.building_area)} ${t("common.meter")} ${t("listing.buildingAreaSuffix")}`
     : null;
   const surroundingAreaText = property?.land_area
-    ? `${numberWithCommas(property.land_area)} ${t("common.meter")} ${t("listing.surroundingAreaSuffix")}`
+    ? `${formatNumber(property.land_area)} ${t("common.meter")} ${t("listing.surroundingAreaSuffix")}`
     : null;
   const areaTitle = [buildingAreaText, surroundingAreaText]
     .filter(Boolean)

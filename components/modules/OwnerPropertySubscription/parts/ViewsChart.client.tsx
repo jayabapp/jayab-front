@@ -1,14 +1,15 @@
 import { Line, LineChart, XAxis, YAxis } from "recharts";
 import { ResponsiveContainer, Tooltip } from "recharts";
+import { useFormatNumber } from "@hooks/useFormatNumber";
 import { useTranslations } from "next-intl";
 import { chartSteps } from "@/utils/constantss";
 import { colors } from "@/theme/colors";
 
-import numberWithCommas from "@/helpers/numberWithCommas";
 import moment from "moment-jalaali";
 
 const ViewsChart = ({ data }: { data: any }) => {
   const t = useTranslations();
+  const formatNumber = useFormatNumber();
 
   const CustomTooltip = ({ active, payload, label }: any) => {
     if (active && payload && payload.length) {
@@ -16,7 +17,7 @@ const ViewsChart = ({ data }: { data: any }) => {
         <div className="custom-tooltip shadow transition-all bg-surface rounded-lg p-2">
           <p className="label">{`${moment(label).format("jYYYY/jMM/jDD")}`}</p>
           <p className="intro">
-            {t("owner.viewsLabel")} {numberWithCommas(payload[0].value)}
+            {t("owner.viewsLabel")} {formatNumber(payload[0].value)}
           </p>
         </div>
       );
@@ -67,7 +68,7 @@ const ViewsChart = ({ data }: { data: any }) => {
           type="number"
           tickMargin={5}
           textAnchor="start"
-          tickFormatter={(value) => numberWithCommas(value) || ""}
+          tickFormatter={(value) => (value ? formatNumber(value) : "")}
           domain={
             Max ? [0, Max % 2 == 0 ? Max : Max + 1] : ["dataMin", "dataMax"]
           }

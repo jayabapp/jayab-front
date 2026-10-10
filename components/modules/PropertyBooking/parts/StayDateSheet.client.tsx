@@ -3,6 +3,7 @@
 import { useEffect, useMemo, useState } from "react";
 import { formatJalaliWeekdayDay } from "@features/reservations/mappers/reservation-dates";
 import { STAY_MONTH_HORIZON } from "@features/reservations/lib/stay-months";
+import { useJalaliFormat } from "@hooks/useJalaliFormat";
 import { isCompleteRange } from "@features/reservations/lib/stay-range";
 import { useTranslations } from "next-intl";
 import { nightsBetween } from "@features/reservations/lib/stay-range";
@@ -17,11 +18,9 @@ import StayCalendarGrid from "./StayCalendarGrid.client";
 import FullScreenSheet from "./FullScreenSheet.client";
 import moment from "moment-jalaali";
 
-const DateSummary = ({
-  label,
-  value,
-}: TDateSummary) => {
+const DateSummary = ({ label, value }: TDateSummary) => {
   const t = useTranslations("reserve");
+  const jalali = useJalaliFormat();
 
   return (
     <div className="flex flex-1 flex-col gap-0.5">
@@ -29,7 +28,7 @@ const DateSummary = ({
       <span
         className={`text-sm ${value ? "font-semibold text-ink" : "text-ink-subtle"}`}
       >
-        {value ? formatJalaliWeekdayDay(value) : t("emptyDate")}
+        {value ? formatJalaliWeekdayDay(value, jalali) : t("emptyDate")}
       </span>
     </div>
   );

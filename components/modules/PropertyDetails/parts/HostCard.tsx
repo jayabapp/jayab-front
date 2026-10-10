@@ -1,13 +1,10 @@
 import { useTranslations } from "next-intl";
+import { useJalaliFormat } from "@hooks/useJalaliFormat";
 import { Icon } from "@elements/Icon";
 
 import type { HostCardProps } from "@/types/components/modules/property-details";
 
 import PropertyOwnerBadge from "./PropertyOwnerBadge";
-import moment from "moment-jalaali";
-
-const formatHostSince = (since: string | Date) =>
-  moment(since).format("jMMMM jYYYY");
 
 const HostCard = ({
   name,
@@ -17,13 +14,14 @@ const HostCard = ({
   isAuthorized,
 }: HostCardProps) => {
   const t = useTranslations("listing");
+  const jalali = useJalaliFormat();
 
   return (
     <div className="flex flex-col gap-3 rounded-20 border border-line-strong bg-surface p-4">
       <PropertyOwnerBadge avatar={avatar} name={name} isOnline={isOnline} />
       {since ? (
         <p className="text-sm text-ink-subtle">
-          {t("hostSince").replace("{date}", formatHostSince(since))}
+          {t("hostSince").replace("{date}", jalali(since, "jMMMM jYYYY"))}
         </p>
       ) : null}
       {isAuthorized ? (

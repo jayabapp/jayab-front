@@ -1,6 +1,7 @@
 "use client";
 
 import { formatJalaliWeekday } from "@features/reservations/mappers/reservation-dates";
+import { useJalaliFormat } from "@hooks/useJalaliFormat";
 import { formatJalaliDay } from "@features/reservations/mappers/reservation-dates";
 import { useTranslations } from "next-intl";
 import { Icon } from "@elements/Icon";
@@ -19,6 +20,7 @@ const StayDateFields = ({
   activeField,
 }: StayDateFieldsProps) => {
   const t = useTranslations("reserve");
+  const jalali = useJalaliFormat();
 
   const fields = [
     { id: "checkIn", label: t("checkinDate"), value: start },
@@ -47,11 +49,13 @@ const StayDateFields = ({
           <span
             className={`text-sm ${field.value ? "font-semibold text-ink" : "text-ink-subtle"}`}
           >
-            {field.value ? formatJalaliDay(field.value) : t("emptyDate")}
+            {field.value
+              ? formatJalaliDay(field.value, jalali)
+              : t("emptyDate")}
           </span>
           {field.value ? (
             <span className="text-xs text-ink-subtle">
-              {formatJalaliWeekday(field.value)}
+              {formatJalaliWeekday(field.value, jalali)}
             </span>
           ) : (
             <></>

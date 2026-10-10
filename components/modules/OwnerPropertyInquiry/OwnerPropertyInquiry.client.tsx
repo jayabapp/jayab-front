@@ -8,6 +8,7 @@ import { useMemo, useState } from "react";
 import { upcomingWeekDays } from "@features/owner-property/lib/upcoming-week";
 import { useOwnerProperty } from "@features/owner-property/hooks/useOwnerProperty";
 import { useTranslations } from "next-intl";
+import { useJalaliFormat } from "@hooks/useJalaliFormat";
 import { ShareImageItem } from "@modules/PropertyGallery";
 import { ContentImage } from "@elements/Image";
 
@@ -20,6 +21,7 @@ moment.loadPersian();
 
 const OwnerPropertyInquiry = ({ propertyId }: OwnerPropertyRouteProps) => {
   const t = useTranslations();
+  const jalali = useJalaliFormat();
 
   const { data: property, isLoading } = useOwnerProperty(propertyId);
   const week = useMemo(() => upcomingWeekDays(t), [t]);
@@ -49,7 +51,7 @@ const OwnerPropertyInquiry = ({ propertyId }: OwnerPropertyRouteProps) => {
 
           <div className="w-full flex flex-col items-center gap-1 justify-center">
             <div className="text-xs items-center justify-center text-center w-full">
-              {moment().format("jDD / jMMMM / jYYYY  ")}
+              {jalali(undefined, "jDD / jMMMM / jYYYY  ")}
             </div>
             <div className="w-full flex items-start md:items-center justify-between gap-2">
               <p className="font-medium text-lg w-full md:text-2xl">

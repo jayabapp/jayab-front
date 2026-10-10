@@ -1,14 +1,16 @@
 "use client";
 
 import { useEffect, useMemo, useRef, useState } from "react";
+import { useLocale, useTranslations } from "next-intl";
 import { nightsBetween, toDayKey } from "@features/reservations/lib/stay-range";
 import { formatJalaliWeekdayDay } from "@features/reservations/mappers/reservation-dates";
 import { usePropertyCalendar } from "@features/properties/hooks/usePropertyCalendar";
 import { useListSeparator } from "@hooks/useListSeparator";
-import { useTranslations } from "next-intl";
+import { useJalaliFormat } from "@hooks/useJalaliFormat";
 import { useFormatToman } from "@hooks/useFormatToman";
 import { dayRangeState } from "@features/reservations/lib/stay-range";
 import { isDayDisabled } from "@features/reservations/lib/stay-range";
+import { resolveLocale } from "@/i18n/config";
 import { useDir } from "@hooks/useDir";
 
 import { type KeyboardEvent } from "react";
@@ -37,6 +39,8 @@ const StayMonth = ({
   const t = useTranslations("reserve");
   const sep = useListSeparator();
   const rtl = useDir() === "rtl";
+  const locale = resolveLocale(useLocale());
+  const jalali = useJalaliFormat();
   const tCalendar = useTranslations("calendar");
 
   const ref = useRef<HTMLDivElement>(null);
@@ -113,7 +117,7 @@ const StayMonth = ({
       className="flex flex-col gap-3 [contain-intrinsic-size:auto_22rem] [content-visibility:auto]"
     >
       <p className="mx-auto w-fit rounded-full bg-surface-muted px-4 py-1 text-sm font-semibold text-ink">
-        {first.format("jMMMM jYYYY")}
+        {jalali(first.toDate(), "jMMMM jYYYY")}
       </p>
 
       <div className="grid grid-cols-7 gap-1">
@@ -171,9 +175,9 @@ const StayMonth = ({
               isLoading={isCalendarPending}
               onSelect={() => onSelectDay(date)}
               discounted={!!entry?.discounted_price}
-              price={formatCalendarCellPrice(price)}
+              price={formatCalendarCellPrice(price, locale)}
               onKeyDown={(event) => onDayKeyDown(event, date)}
-              label={`${formatJalaliWeekdayDay(date)}${priceLabel}${sep}${availability}`}
+              label={`${formatJalaliWeekdayDay(date, jalali)}${priceLabel}${sep}${availability}`}
               tooltip={
                 state === "end" && stayNights
                   ? `${t("stayNights", { count: Number(stayNights) })}`

@@ -8,20 +8,21 @@ import { usePropertyStatistics } from "@features/owner-property/hooks/usePropert
 import { CheckboxCardContainer } from "@elements/Form";
 import { toDailyViewSeries } from "@features/owner-property/mappers/property-statistics.mapper";
 import { useTranslations } from "next-intl";
+import { useFormatNumber } from "@hooks/useFormatNumber";
 import { PropertyPrice } from "@modules/PropertyGrid";
 import { useState } from "react";
 
 import type { OwnerPropertyRouteProps } from "@/types/components/modules/owner-property";
 
 import FixedBottomContainer from "@elements/FixedBottomContainer";
-import numberWithCommas from "@/helpers/numberWithCommas";
 import ViewsChart from "./parts/ViewsChart.client";
+import isEmpty from "lodash/isEmpty";
 import Button from "@elements/Button";
 import Notify from "@elements/Toast";
-import isEmpty from "lodash/isEmpty";
 
 const OwnerPropertySubscription = ({ propertyId }: OwnerPropertyRouteProps) => {
   const t = useTranslations();
+  const formatNumber = useFormatNumber();
 
   const router = useRouter();
   const searchParams = useSearchParams();
@@ -122,7 +123,7 @@ const OwnerPropertySubscription = ({ propertyId }: OwnerPropertyRouteProps) => {
       <FixedBottomContainer>
         <div className="w-full flex items-center justify-between p-2 md:px-4">
           <p className="text-sm">
-            {t("owner.payableAmount")} : {numberWithCommas(price)}{" "}
+            {t("owner.payableAmount")} : {formatNumber(price)}{" "}
             {t("common.toman")}
           </p>
           <Button

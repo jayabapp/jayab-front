@@ -1,5 +1,3 @@
-"use client";
-
 import { dirOf, resolveLocale } from "@/i18n/config";
 import { useLocale } from "next-intl";
 

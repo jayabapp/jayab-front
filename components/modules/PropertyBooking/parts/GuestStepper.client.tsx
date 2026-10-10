@@ -1,11 +1,11 @@
 "use client";
 
+import { useFormatNumber } from "@hooks/useFormatNumber";
 import { useTranslations } from "next-intl";
 import { Icon } from "@elements/Icon";
 
 import type { GuestStepperProps } from "@/types/components/modules/property-booking";
 
-import numberWithCommas from "@/helpers/numberWithCommas";
 
 const BUTTON_CLASS =
   "flex size-11 cursor-pointer items-center justify-center rounded-full border border-line-strong text-ink md:size-8 transition-colors hover:bg-surface-muted focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-focus disabled:cursor-not-allowed disabled:opacity-40 disabled:hover:bg-transparent";
@@ -19,6 +19,7 @@ const GuestStepper = ({
   extraGuestFee,
 }: GuestStepperProps) => {
   const t = useTranslations();
+  const formatNumber = useFormatNumber();
 
   const isAtMax = value !== null && value >= max;
   const extra = value !== null ? value - std : 0;
@@ -72,7 +73,7 @@ const GuestStepper = ({
         <p className="text-xs text-status-warning">
           {t("reserve.overStandardNote")
             .replace("{count}", `${extra}`)
-            .replace("{fee}", `${numberWithCommas(extraGuestFee)}`)}
+            .replace("{fee}", `${formatNumber(extraGuestFee)}`)}
         </p>
       ) : null}
       {isAtMax ? (

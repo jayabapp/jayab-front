@@ -2,6 +2,7 @@
 
 import { PROPERTY_IMAGE_QUALITY } from "@features/properties/constants/image";
 import { getPropertyImageUrl } from "@features/properties/mappers/property-image.mapper";
+import { useFormatTimestamp } from "@hooks/useFormatTimestamp";
 import { useTranslations } from "next-intl";
 import { useFormatToman } from "@hooks/useFormatToman";
 
@@ -9,7 +10,6 @@ import type { PhotoUpgradeRequestCardProps } from "@/types/components/modules/ph
 import type { PhotoUpgradeInfoItemProps } from "@/types/components/modules/photo-upgrade";
 
 import StatusShower from "@elements/StatusShower";
-import moment from "moment-jalaali";
 import Image from "next/image";
 import Link from "next/link";
 
@@ -24,6 +24,8 @@ const PhotoUpgradeRequestCard = ({ data }: PhotoUpgradeRequestCardProps) => {
   const formatToman = useFormatToman();
 
   const t = useTranslations();
+
+  const formatTimestamp = useFormatTimestamp();
 
   return (
     <Link
@@ -69,7 +71,7 @@ const PhotoUpgradeRequestCard = ({ data }: PhotoUpgradeRequestCardProps) => {
             />
             <InfoItem
               title={t("owner.submittedAt")}
-              value={moment(data?.created_at).format("HH:mm - jYYYY/jMM/jDD")}
+              value={formatTimestamp(data?.created_at)}
             />
           </div>
         </div>

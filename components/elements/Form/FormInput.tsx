@@ -1,5 +1,6 @@
 "use client";
 
+import { useAmountInWords } from "@hooks/useAmountInWords";
 import { useTranslations } from "next-intl";
 import { memo, useRef } from "react";
 import { useDir } from "@hooks/useDir";
@@ -8,7 +9,6 @@ import { p2e } from "@/helpers/NumberConverter";
 import type { FormInputProps } from "@/types/components/elements/form";
 
 import ContentImage from "@elements/Image/ContentImage";
-import Num2persian from "@/helpers/Num2Persian";
 
 const FormInput = ({
   item,
@@ -19,6 +19,7 @@ const FormInput = ({
 }: FormInputProps) => {
   const t = useTranslations("common");
   const dir = useDir();
+  const amountInWords = useAmountInWords();
 
   const inputRef = useRef<HTMLInputElement>(null);
 
@@ -128,7 +129,7 @@ const FormInput = ({
 
       {!!item?.convertToText && !!value && (
         <div id={`${item?.id}`} className="text-xs text-link mt-1">
-          {Num2persian(value)} {t("toman")}
+          {amountInWords(value)} {t("toman")}
         </div>
       )}
     </div>

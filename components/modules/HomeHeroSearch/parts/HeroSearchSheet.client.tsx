@@ -7,6 +7,7 @@ import { useOverlayBackButton } from "@hooks/useOverlayBackButton";
 import { searchOptionToDraft } from "@features/search/lib/search-option-draft";
 import { useBodyScrollLock } from "@hooks/useBodyScrollLock";
 import { SearchInlinePanel } from "@modules/Search";
+import { useJalaliFormat } from "@hooks/useJalaliFormat";
 import { updateDateRange } from "@modules/PropertySearchFilters";
 import { useTranslations } from "next-intl";
 import { createPortal } from "react-dom";
@@ -41,6 +42,7 @@ const HeroSearchSheet = ({
   isCountStale,
 }: HeroSearchSheetProps) => {
   const t = useTranslations();
+  const jalali = useJalaliFormat();
 
   const [step, setStep] = useState<HeroSearchStep>(() =>
     !draft.cities && !draft.q ? "where" : !draft.checkin ? "dates" : "guests",
@@ -69,11 +71,11 @@ const HeroSearchSheet = ({
 
   const datesSummary = useMemo(() => {
     if (!draft.checkin) return "";
-    const checkin = moment(draft.checkin).format(DAY_MONTH_FORMAT);
+    const checkin = jalali(draft.checkin, DAY_MONTH_FORMAT);
     return draft.checkout
-      ? `${checkin} - ${moment(draft.checkout).format(DAY_MONTH_FORMAT)}`
+      ? `${checkin} - ${jalali(draft.checkout, DAY_MONTH_FORMAT)}`
       : `${checkin} - ...`;
-  }, [draft.checkin, draft.checkout]);
+  }, [draft.checkin, draft.checkout, jalali]);
 
   const onPickDay = useCallback(
     (day: string) =>

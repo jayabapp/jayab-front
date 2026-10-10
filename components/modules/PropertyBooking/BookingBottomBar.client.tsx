@@ -2,6 +2,7 @@
 
 import { useCallback, useState } from "react";
 import { trackListingEvent } from "@/helpers/listingAnalytics";
+import { useJalaliFormat } from "@hooks/useJalaliFormat";
 import { formatJalaliDay } from "@features/reservations/mappers/reservation-dates";
 import { useTranslations } from "next-intl";
 import { useBookingStay } from "@features/reservations/hooks/useBookingStay";
@@ -36,6 +37,8 @@ const BookingBottomBar = ({
 
   const t = useTranslations();
 
+  const jalali = useJalaliFormat();
+
   const booking = useBookingStay(
     property.id,
     property.maxCapacity,
@@ -62,7 +65,7 @@ const BookingBottomBar = ({
 
   const nights = stay ? nightsBetween(stay.start, stay.end) : 0;
   const rangeText = stay
-    ? `${formatJalaliDay(stay.start)} ${t("common.to")} ${formatJalaliDay(stay.end)}`
+    ? `${formatJalaliDay(stay.start, jalali)} ${t("common.to")} ${formatJalaliDay(stay.end, jalali)}`
     : "";
 
   const content = () => {
@@ -125,10 +128,7 @@ const BookingBottomBar = ({
               {t("reserve.approxStayCost")}
             </span>
             {quote ? (
-              <span
-                aria-live="polite"
-                className="text-base font-bold text-ink"
-              >
+              <span aria-live="polite" className="text-base font-bold text-ink">
                 {formatToman(quote.stay_total)}
               </span>
             ) : (

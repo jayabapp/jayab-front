@@ -1,11 +1,12 @@
+import { useFormatNumber } from "@hooks/useFormatNumber";
 import { useTranslations } from "next-intl";
 
 import type { PropertyPriceTagProps } from "@/types/components/modules/property-details";
 
-import numberWithCommas from "@/helpers/numberWithCommas";
 
 const PropertyPriceTag = ({ price }: PropertyPriceTagProps) => {
   const t = useTranslations("common");
+  const formatNumber = useFormatNumber();
 
   return (
     <div className="flex flex-row w-fit gap-2 md:gap-2">
@@ -17,12 +18,12 @@ const PropertyPriceTag = ({ price }: PropertyPriceTagProps) => {
 
       {price?.discountedPrice ? (
         <p className="text-sm md:text-base line-through opacity-50">
-          {numberWithCommas(price?.price)} <span>{t("toman")}</span>
+          {formatNumber(price?.price)} <span>{t("toman")}</span>
         </p>
       ) : null}
 
       <p className="font-bold text-sm md:text-base text-link">
-        {numberWithCommas(
+        {formatNumber(
           price?.discountedPrice ? price?.discountedPrice : price?.price,
         )}{" "}
         <span className="text-xs">{t("toman")}</span>

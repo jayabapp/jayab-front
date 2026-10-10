@@ -1,5 +1,6 @@
 "use client";
 
+import { useFormatNumber } from "@hooks/useFormatNumber";
 import { countActiveFilters} from "@features/properties/lib/count-active-filters";
 import { countFilterGroup} from "@features/properties/lib/count-active-filters";
 import { useTranslations } from "next-intl";
@@ -11,7 +12,6 @@ import type { PropertyFilterFormProps } from "@/types/components/modules/propert
 import PropertyModelFilter from "./PropertyModelFilter.client";
 import PropertyRulesFilter from "./parts/PropertyRulesFilter";
 import FilterPanelHeader from "./parts/FilterPanelHeader";
-import numberWithCommas from "@/helpers/numberWithCommas";
 import PriceRangeFilter from "./parts/PriceRangeFilter.client";
 import FilterCounter from "./parts/FilterCounter.client";
 import FilterSection from "./parts/FilterSection.client";
@@ -31,6 +31,7 @@ const PropertyFilterForm = ({
   hiddenFilters = [],
 }: PropertyFilterFormProps) => {
   const t = useTranslations();
+  const formatNumber = useFormatNumber();
 
   const { userInfo } = useStoreInit((data) => data);
   const isHidden = (key: string) => hiddenFilters.includes(key);
@@ -74,8 +75,8 @@ const PropertyFilterForm = ({
       >
         <div className="flex w-full flex-col gap-4 pb-2 pt-1">
           <p className="text-xs text-ink-muted">
-            {t("common.from")} {numberWithCommas(filters?.min_price || 0)}{" "}
-            {t("common.to")} {numberWithCommas(filters?.max_price || PRICE_MAX)}{" "}
+            {t("common.from")} {formatNumber(filters?.min_price || 0)}{" "}
+            {t("common.to")} {formatNumber(filters?.max_price || PRICE_MAX)}{" "}
             {t("common.toman")}
           </p>
           <PriceRangeFilter
@@ -287,8 +288,8 @@ const PropertyFilterForm = ({
         <div className="flex w-full flex-col gap-4 pb-2 pt-1">
           <p className="text-xs text-ink-muted">
             {t("common.from")}{" "}
-            {numberWithCommas(filters?.min_building_area || 0)} {t("common.to")}{" "}
-            {numberWithCommas(filters?.max_building_area || AREA_MAX)}{" "}
+            {formatNumber(filters?.min_building_area || 0)} {t("common.to")}{" "}
+            {formatNumber(filters?.max_building_area || AREA_MAX)}{" "}
             {t("listing.squareMeter")}
           </p>
           <PriceRangeFilter
@@ -319,8 +320,8 @@ const PropertyFilterForm = ({
           <div className="flex w-full flex-col gap-4 pb-2 pt-1">
             <p className="text-xs text-ink-muted">
               {t("common.from")}{" "}
-              {numberWithCommas(filters?.min_commission || 0)}% {t("common.to")}{" "}
-              {numberWithCommas(filters?.max_commission || COMMISSION_MAX)}%
+              {formatNumber(filters?.min_commission || 0)}% {t("common.to")}{" "}
+              {formatNumber(filters?.max_commission || COMMISSION_MAX)}%
             </p>
             <PriceRangeFilter
               steps={5}

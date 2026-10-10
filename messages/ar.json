@@ -972,7 +972,19 @@
     "shortTue": "ث",
     "shortWed": "ر",
     "shortThu": "خ",
-    "shortFri": "ج"
+    "shortFri": "ج",
+    "jMonth1": "فروردين",
+    "jMonth2": "أرديبهشت",
+    "jMonth3": "خرداد",
+    "jMonth4": "تير",
+    "jMonth5": "مرداد",
+    "jMonth6": "شهريور",
+    "jMonth7": "مهر",
+    "jMonth8": "آبان",
+    "jMonth9": "آذر",
+    "jMonth10": "دي",
+    "jMonth11": "بهمن",
+    "jMonth12": "إسفند"
   },
   "validation": {
     "ticketTitleRequired": "عنوان التذكرة مطلوب",

@@ -1,4 +1,5 @@
-
+import { useFormatTimestamp } from "@hooks/useFormatTimestamp";
+import { useJalaliFormat } from "@hooks/useJalaliFormat";
 import { useTranslations } from "next-intl";
 import { useFormatToman } from "@hooks/useFormatToman";
 
@@ -22,6 +23,10 @@ const ReservationSchedule = ({
 
   const t = useTranslations();
 
+  const jalali = useJalaliFormat();
+
+  const formatTimestamp = useFormatTimestamp();
+
   const guests = `${reservation?.guests_count}`;
   const guestLabel = guests.includes("+")
     ? `${t("reserve.moreThan")} ${guests.replace("+", "")}`
@@ -39,13 +44,13 @@ const ReservationSchedule = ({
         dots
         options={ROW_OPTIONS}
         title={t("reserve.startDate")}
-        value={` ${moment(reservation?.check_in).format("ddd - jYYYY/jMM/jD")}`}
+        value={` ${jalali(reservation?.check_in, "ddd - jYYYY/jMM/jD")}`}
       />
       <SpecRow
         dots
         options={ROW_OPTIONS}
         title={t("reserve.exitDate")}
-        value={` ${moment(reservation?.check_out).format("ddd - jYYYY/jMM/jD")}`}
+        value={` ${jalali(reservation?.check_out, "ddd - jYYYY/jMM/jD")}`}
       />
       <SpecRow
         dots
@@ -68,7 +73,7 @@ const ReservationSchedule = ({
           dots
           options={ROW_OPTIONS}
           title={t("reserve.requestDate")}
-          value={`${moment(reservation?.created_at).format("HH:mm - jYYYY/jMM/jD")}`}
+          value={`${formatTimestamp(reservation?.created_at, "numeric")}`}
         />
       ) : null}
     </div>

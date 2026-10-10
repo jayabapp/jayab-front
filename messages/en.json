@@ -972,7 +972,19 @@
     "shortTue": "T",
     "shortWed": "W",
     "shortThu": "T",
-    "shortFri": "F"
+    "shortFri": "F",
+    "jMonth1": "Farvardin",
+    "jMonth2": "Ordibehesht",
+    "jMonth3": "Khordad",
+    "jMonth4": "Tir",
+    "jMonth5": "Mordad",
+    "jMonth6": "Shahrivar",
+    "jMonth7": "Mehr",
+    "jMonth8": "Aban",
+    "jMonth9": "Azar",
+    "jMonth10": "Dey",
+    "jMonth11": "Bahman",
+    "jMonth12": "Esfand"
   },
   "validation": {
     "ticketTitleRequired": "The ticket title is required",

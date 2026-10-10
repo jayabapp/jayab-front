@@ -9,6 +9,7 @@ import { useStartOrFindChat } from "@features/chat/hooks/useStartOrFindChat";
 import { trackListingEvent } from "@/helpers/listingAnalytics";
 import { useContactIntent } from "@features/reservations/hooks/useContactIntent";
 import { useTranslations } from "next-intl";
+import { useJalaliFormat } from "@hooks/useJalaliFormat";
 import { useRouter } from "next/navigation";
 
 import type { ContactFlowAction } from "@/types/components/modules/property-contact";
@@ -31,6 +32,7 @@ export const useContactFlow = () => {
 
 const ContactFlow = ({ children, property }: ContactFlowProps) => {
   const t = useTranslations();
+  const jalali = useJalaliFormat();
   const router = useRouter();
   const isLogin = useAuthStore((state) => state.isLogin);
   const { authUrlFor } = useStaySearchParams(property.maxCapacity);
@@ -55,7 +57,7 @@ const ContactFlow = ({ children, property }: ContactFlowProps) => {
                 text: stay
                   ? t(
                       "reserve.contactPrefill",
-                      contactPrefillValues({ ...stay, ...listing }),
+                      contactPrefillValues({ ...stay, ...listing }, jalali),
                     )
                   : t("reserve.contactPrefillGeneric", listing),
               },
@@ -65,7 +67,7 @@ const ContactFlow = ({ children, property }: ContactFlowProps) => {
         },
       );
     },
-    [findChat, property.code, property.id, property.title, router, t],
+    [findChat, jalali, property.code, property.id, property.title, router, t],
   );
 
   const open = useCallback(

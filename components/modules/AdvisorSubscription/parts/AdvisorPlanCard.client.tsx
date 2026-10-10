@@ -1,12 +1,12 @@
 "use client";
 
 import { usePurchaseAdvisorPlan } from "@features/advisors/hooks/useAdvisorSubscription";
+import { useFormatNumber } from "@hooks/useFormatNumber";
 import { useTranslations } from "next-intl";
 import { useRouter } from "next/navigation";
 
 import type { AdvisorPlanCardProps } from "@/types/components/modules/advisors";
 
-import numberWithCommas from "@/helpers/numberWithCommas";
 import Button from "@elements/Button";
 
 const AdvisorPlanCard = ({
@@ -15,6 +15,7 @@ const AdvisorPlanCard = ({
   onRequireRegistration,
 }: AdvisorPlanCardProps) => {
   const t = useTranslations();
+  const formatNumber = useFormatNumber();
 
   const router = useRouter();
   const { mutate, isPending } = usePurchaseAdvisorPlan();
@@ -47,7 +48,7 @@ const AdvisorPlanCard = ({
       <div className="flex flex-col gap-2 pt-2 w-full items-start">
         <p className="text-sm whitespace-pre-wrap">{plan?.description}</p>
         <p className="text-sm">
-          {t("advisor.amount")} : {numberWithCommas(plan?.price)}{" "}
+          {t("advisor.amount")} : {formatNumber(plan?.price)}{" "}
           {t("common.toman")}
         </p>
       </div>

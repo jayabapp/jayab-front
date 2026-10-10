@@ -1,3 +1,4 @@
+import { useAmountInWords } from "@hooks/useAmountInWords";
 import { useTranslations } from "next-intl";
 import { memo, useRef } from "react";
 import { useDir } from "@hooks/useDir";
@@ -5,7 +6,6 @@ import { useDir } from "@hooks/useDir";
 import type { ExternalUnitInputProps } from "@/types/components/elements/form";
 
 import ContentImage from "@elements/Image/ContentImage";
-import Num2persian from "@/helpers/Num2Persian";
 
 const FormInputWithExternalUnit = ({
   item,
@@ -17,6 +17,7 @@ const FormInputWithExternalUnit = ({
 }: ExternalUnitInputProps) => {
   const t = useTranslations("common");
   const dir = useDir();
+  const amountInWords = useAmountInWords();
 
   const inputRef = useRef<HTMLInputElement>(null);
 
@@ -136,7 +137,7 @@ const FormInputWithExternalUnit = ({
       </div>
       {!!item?.convertToText && !!value && (
         <div id={`${item?.id}`} className="text-xs ps-1  text-link    ">
-          {Num2persian(value)} {t("toman")}
+          {amountInWords(value)} {t("toman")}
         </div>
       )}
     </div>

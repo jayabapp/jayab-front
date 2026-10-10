@@ -1,3 +1,4 @@
+import { useFormatTimestamp } from "@hooks/useFormatTimestamp";
 import { useEffect, useState } from "react";
 import { resolveChatImage } from "@features/chat/presentation/chat.presenter";
 import { useTranslations } from "next-intl";
@@ -14,6 +15,7 @@ moment.loadPersian();
 
 const PrivateOthersMessage = ({ data }: ChatMessageItemProps) => {
   const t = useTranslations("chat");
+  const formatTimestamp = useFormatTimestamp();
 
   const refer = useRef<HTMLDivElement>(null);
   const [show, setShow] = useState(false);
@@ -81,7 +83,7 @@ const PrivateOthersMessage = ({ data }: ChatMessageItemProps) => {
         </p>
         <div className="w-full  mt-2 flex items-center justify-end gap-1">
           <p className="text-2xs opacity-75">
-            {moment(data?.created_at).format(" HH:mm  - jYYYY/jMM/jDD")}
+            {formatTimestamp(data?.created_at)}
           </p>
         </div>
       </div>

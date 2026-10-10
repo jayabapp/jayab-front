@@ -1,8 +1,8 @@
+import { useFormatNumber } from "@hooks/useFormatNumber";
 import { useTranslations } from "next-intl";
 
 import type { PropertyPriceProps } from "@/types/components/modules/property-grid";
 
-import numberWithCommas from "@/helpers/numberWithCommas";
 
 const PropertyPrice = ({
   data,
@@ -12,6 +12,7 @@ const PropertyPrice = ({
   reserveDiscountSpace = false,
 }: PropertyPriceProps) => {
   const t = useTranslations("common");
+  const formatNumber = useFormatNumber();
 
   return (
     <div className={containerClass || "flex flex-col w-fit gap-0 md:gap-0"}>
@@ -34,7 +35,7 @@ const PropertyPrice = ({
               emphasis ? "text-sm" : "text-xs md:text-xs"
             }`}
           >
-            {numberWithCommas(data?.price)}
+            {formatNumber(data?.price)}
           </p>
           {data?.discount_percentage ? (
             <div
@@ -55,7 +56,7 @@ const PropertyPrice = ({
       <p
         className={`font-bold ${emphasis ? "text-xl md:text-2xl" : "text-xs"}`}
       >
-        {numberWithCommas(
+        {formatNumber(
           data?.discounted_price ? data?.discounted_price : data?.price,
         )}{" "}
         <span className={emphasis ? "text-xs" : "text-2xs"}>{t("toman")}</span>

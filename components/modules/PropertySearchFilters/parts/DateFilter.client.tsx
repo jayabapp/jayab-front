@@ -1,5 +1,6 @@
 "use client";
 
+import { useJalaliFormat } from "@hooks/useJalaliFormat";
 import { useTranslations } from "next-intl";
 import { ContentImage } from "@elements/Image";
 import { useState } from "react";
@@ -15,6 +16,7 @@ const DAY_MONTH_FORMAT = "jD  jMMMM";
 
 const DateFilter = ({ filters, setFilters }: DateFilterProps) => {
   const t = useTranslations();
+  const jalali = useJalaliFormat();
 
   const [show, setShow] = useState(false);
   const hasRange = !!filters?.checkin && !!filters?.checkout;
@@ -32,11 +34,11 @@ const DateFilter = ({ filters, setFilters }: DateFilterProps) => {
           <span className="text-sm">
             {t("common.from")}{" "}
             <span className="text-link">
-              {moment(filters?.checkin).format(DAY_MONTH_FORMAT)}
+              {jalali(filters?.checkin, DAY_MONTH_FORMAT)}
             </span>{" "}
             {t("common.to")}{" "}
             <span className="text-link">
-              {moment(filters?.checkout).format(DAY_MONTH_FORMAT)}
+              {jalali(filters?.checkout, DAY_MONTH_FORMAT)}
             </span>
           </span>
         ) : (

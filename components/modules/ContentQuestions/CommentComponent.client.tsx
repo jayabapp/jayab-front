@@ -1,3 +1,4 @@
+import { useJalaliFormat } from "@hooks/useJalaliFormat";
 import { useTranslations } from "next-intl";
 
 import type { ContentQuestionCommentProps } from "@/types/components/modules/blog";
@@ -9,6 +10,7 @@ moment.loadPersian();
 
 export const CommentComponent = ({ item }: ContentQuestionCommentProps) => {
   const t = useTranslations("content");
+  const jalali = useJalaliFormat();
 
   return (
     <div className="w-full flex flex-col ">
@@ -34,7 +36,7 @@ export const CommentComponent = ({ item }: ContentQuestionCommentProps) => {
               src={"/assets/icons/blogs/calendar.svg"}
             />
             <p className="text-xs md:text-sm text-secondary-700 ">
-              {moment(item.created_at).format("jDD jMMMM jYYYY")}
+              {jalali(item.created_at, "jDD jMMMM jYYYY")}
             </p>
           </div>
         </div>
@@ -70,7 +72,7 @@ export const CommentComponent = ({ item }: ContentQuestionCommentProps) => {
                   src={"/assets/icons/blogs/calendar.svg"}
                 />
                 <p className=" text-xs md:text-sm  text-secondary-700 ">
-                  {moment(item.updated_at).format("jDD jMMMM jYYYY")}
+                  {jalali(item.updated_at, "jDD jMMMM jYYYY")}
                 </p>
               </div>
             </div>

@@ -3,6 +3,7 @@
 import { usePhotoUpgradeRequest } from "@features/photo-upgrade/hooks/usePhotoUpgradeRequest";
 import { PROPERTY_IMAGE_QUALITY } from "@features/properties/constants/image";
 import { getPropertyImageUrl } from "@features/properties/mappers/property-image.mapper";
+import { useFormatTimestamp } from "@hooks/useFormatTimestamp";
 import { useTranslations } from "next-intl";
 import { useFormatToman } from "@hooks/useFormatToman";
 
@@ -11,7 +12,6 @@ import type { PhotoUpgradeSummaryItemProps } from "@/types/components/modules/ph
 import PhotoUpgradeDetailSkeleton from "@features/photo-upgrade/components/PhotoUpgradeDetailSkeleton";
 import PhotoUpgradeImagePair from "./PhotoUpgradeImagePair.client";
 import StatusShower from "@elements/StatusShower";
-import moment from "moment-jalaali";
 import Image from "next/image";
 
 const SummaryItem = ({ title, value }: PhotoUpgradeSummaryItemProps) => (
@@ -25,6 +25,8 @@ const OwnerPhotoUpgradeDetails = ({ requestId }: { requestId: number }) => {
   const formatToman = useFormatToman();
 
   const t = useTranslations();
+
+  const formatTimestamp = useFormatTimestamp();
 
   const { data, isPending, isError, refetch } =
     usePhotoUpgradeRequest(requestId);
@@ -104,18 +106,12 @@ const OwnerPhotoUpgradeDetails = ({ requestId }: { requestId: number }) => {
           />
           <SummaryItem
             title={t("owner.requestSubmitted")}
-            value={
-              data?.created_at
-                ? moment(data.created_at).format("HH:mm - jYYYY/jMM/jDD")
-                : "-"
-            }
+            value={data?.created_at ? formatTimestamp(data.created_at) : "-"}
           />
           <SummaryItem
             title={t("owner.requestCompleted")}
             value={
-              data?.completed_at
-                ? moment(data.completed_at).format("HH:mm - jYYYY/jMM/jDD")
-                : "-"
+              data?.completed_at ? formatTimestamp(data.completed_at) : "-"
             }
           />
         </div>

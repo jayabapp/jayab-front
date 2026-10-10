@@ -7,7 +7,9 @@ import { useCallback, useState } from "react";
 import { FILTER_ORDER_PARAM } from "@features/properties/lib/filter-order";
 import { parseFilterOrder } from "@features/properties/lib/filter-order";
 import { useTranslations } from "next-intl";
+import { useJalaliFormat } from "@hooks/useJalaliFormat";
 import { filterOrderRank } from "@features/properties/lib/filter-order";
+import { useFormatNumber } from "@hooks/useFormatNumber";
 import { RegionButton } from "@modules/CitySelector";
 import { ContentImage } from "@elements/Image";
 import { parseIdList } from "@features/cities/lib/city-selection";
@@ -18,7 +20,6 @@ import type { ReactNode } from "react";
 import SearchDateRangePicker from "./parts/DateRangePicker/SearchDateRangePicker.client";
 import SelectiveFilterChip from "./parts/SelectiveFilterChip.client";
 import RemovableFilterChip from "./parts/RemovableFilterChip";
-import numberWithCommas from "@/helpers/numberWithCommas";
 import updateDateRange from "./parts/DateRangePicker/updateDateRange";
 import FilterCounter from "./parts/FilterCounter.client";
 import SwiperSlide from "@elements/Carousel/SwiperSlide";
@@ -36,9 +37,10 @@ const rangeLabel = (
   higher: string | undefined,
   unit: string,
   words: { from: string; to: string },
+  format: (value: string) => string,
 ) => {
-  const from = lower ? `${words.from} ${numberWithCommas(lower)}` : "";
-  const to = higher ? `${words.to} ${numberWithCommas(higher)}` : "";
+  const from = lower ? `${words.from} ${format(lower)}` : "";
+  const to = higher ? `${words.to} ${format(higher)}` : "";
   return `${title} ${[from, to].filter(Boolean).join(" ")} ${unit}`.trim();
 };
 
@@ -69,6 +71,8 @@ const SelectedFiltersBar = ({
   setFilterModalShow,
 }: SelectedFiltersBarProps) => {
   const t = useTranslations();
+  const jalali = useJalaliFormat();
+  const formatNumber = useFormatNumber();
 
   const replaceQuery = useDiscoveryQueryReplace();
   const regionsIds = parseIdList(query?.regions);
@@ -198,7 +202,7 @@ const SelectedFiltersBar = ({
           <RemovableFilterChip
             onRemove={() => removeFiltersKeys(["checkout", "checkin"])}
             onLabelClick={() => setDateEditorOpen(true)}
-            label={`${t("common.from")} ${moment(query?.checkin).format(JALALI_DATE_FORMAT)} ${t("common.to")} ${moment(query?.checkout).format(JALALI_DATE_FORMAT)}`}
+            label={`${t("common.from")} ${jalali(query?.checkin, JALALI_DATE_FORMAT)} ${t("common.to")} ${jalali(query?.checkout, JALALI_DATE_FORMAT)}`}
           />
         </SwiperSlide>
       ),
@@ -219,6 +223,7 @@ const SelectedFiltersBar = ({
               query?.max_commission,
               "%",
               { from: t("common.from"), to: t("common.to") },
+              formatNumber,
             )}
           />
         </SwiperSlide>
@@ -238,6 +243,7 @@ const SelectedFiltersBar = ({
               query?.max_price,
               t("common.toman"),
               { from: t("common.from"), to: t("common.to") },
+              formatNumber,
             )}
           />
         </SwiperSlide>
@@ -259,6 +265,7 @@ const SelectedFiltersBar = ({
               query?.max_building_area,
               t("common.meter"),
               { from: t("common.from"), to: t("common.to") },
+              formatNumber,
             )}
           />
         </SwiperSlide>
