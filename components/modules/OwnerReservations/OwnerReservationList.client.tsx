@@ -26,8 +26,8 @@ const OwnerReservationList = ({ autoRefresh }: OwnerReservationListProps) => {
 
   return (
     <>
-      <div className="flex w-full flex-col gap-3 rounded-10 border border-warning-600 bg-warning-600/5 p-3">
-        <p className="text-xs text-warning-600">
+      <div className="flex w-full flex-col gap-3 rounded-10 border border-status-warning bg-warning-600/5 p-3">
+        <p className="text-xs text-status-warning">
           {t("ownerPlzCallMsg")}
         </p>
       </div>

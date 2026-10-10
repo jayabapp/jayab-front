@@ -84,7 +84,7 @@ const BlogsContainer = ({ title, data, viewAllUrl }: BlogsContainerProps) => {
           style={{ textDecoration: "none" }}
           className="   flex  gap-2  px-3 py-1  w-fit bg-transparent  self-end"
         >
-          <p className="no-underline text-brand-600  text-base    ">
+          <p className="no-underline text-link  text-base    ">
             {t("seeAll")}
           </p>
           <Image

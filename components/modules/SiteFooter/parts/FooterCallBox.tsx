@@ -13,7 +13,7 @@ const FooterCallBox = ({ content }: FooterCallBoxProps) => {
 
   return (
     <div className="w-full p-4 md:px-[10%] -top-24 absolute">
-      <div className="w-full min-h-[10rem] md:w-full px-6 py-6 md:py-0 gap-6 mx-auto bg-brand-600 rounded-20 relative flex flex-col md:flex-row items-center justify-between">
+      <div className="w-full min-h-[10rem] md:w-full px-6 py-6 md:py-0 gap-6 mx-auto bg-action rounded-20 relative flex flex-col md:flex-row items-center justify-between">
         <ImageFallback
           width={512}
           height={384}

@@ -340,7 +340,7 @@ const SelectedFiltersBar = ({
                 event.stopPropagation();
                 removeFiltersKeys(["has_pool"]);
               }}
-              className="flex aspect-square h-4 w-4 cursor-pointer items-center justify-center rounded-full border border-brand-600"
+              className="flex aspect-square h-4 w-4 cursor-pointer items-center justify-center rounded-full border border-action"
             >
               <ContentImage
                 alt=""
@@ -377,7 +377,7 @@ const SelectedFiltersBar = ({
           <button
             type="button"
             onClick={() => setFilterModalShow(true)}
-            className="col-span-3 flex w-fit px-3 h-[1.625rem] rounded-full bg-brand-600 items-center gap-2"
+            className="col-span-3 flex w-fit px-3 h-[1.625rem] rounded-full bg-action items-center gap-2"
           >
             <ContentImage
               alt=""

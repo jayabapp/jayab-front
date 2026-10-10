@@ -57,7 +57,7 @@ const ChatRoomView = ({ chatId }: ChatRoomProps) => {
       <div className="container flex min-h-[60dvh] flex-col items-center justify-center gap-4">
         <p>{t("common.error")}</p>
         <button
-          className="rounded-xl bg-brand-600 px-6 py-2 text-white"
+          className="rounded-xl bg-action px-6 py-2 text-on-action"
           onClick={() =>
             void Promise.all([detailsQuery.refetch(), messagesQuery.refetch()])
           }
@@ -69,7 +69,7 @@ const ChatRoomView = ({ chatId }: ChatRoomProps) => {
   }
 
   return (
-    <div className="chat-container relative col-span-4 flex h-[100dvh] max-h-[100dvh] flex-col overflow-y-clip bg-neutral-100 md:w-1/2">
+    <div className="chat-container relative col-span-4 flex h-[100dvh] max-h-[100dvh] flex-col overflow-y-clip bg-surface-muted md:w-1/2">
       <ChatHeader
         is_recipient_online={isRecipientOnline}
         name={details.property.title}
@@ -77,7 +77,7 @@ const ChatRoomView = ({ chatId }: ChatRoomProps) => {
         image={details.property.feature_image}
       />
       {connecting ? (
-        <div className="absolute top-[var(--chat-header-bottom,12rem)] z-40 w-full bg-amber-100 py-1 text-center text-xs text-amber-800">
+        <div className="absolute top-[var(--chat-header-bottom,12rem)] z-40 w-full bg-status-warning-bg py-1 text-center text-xs text-status-warning">
           {t("chat.chatReconnecting")}
         </div>
       ) : (

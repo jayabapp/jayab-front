@@ -34,11 +34,11 @@ const Pagination = ({
         onClick={onClickPrev}
         disabled={currentPage <= 1}
         aria-label={t("previousPage")}
-        className="ml-2 flex h-9 w-9 items-center justify-center rounded-md border border-neutral-500 bg-white p-1 transition-all enabled:hover:translate-x-2 disabled:cursor-not-allowed disabled:opacity-50"
+        className="ml-2 flex h-9 w-9 items-center justify-center rounded-md border border-control bg-surface p-1 transition-all enabled:hover:translate-x-2 disabled:cursor-not-allowed disabled:opacity-50"
       >
         <PaginationArrow direction="left" />
       </button>
-      <div className="flex items-center rounded-full bg-white px-2">
+      <div className="flex items-center rounded-full bg-surface px-2">
         {paginationRange?.map((page, index) =>
           page === DOTS ? (
             <span aria-hidden="true" key={`dots-${index}`}>
@@ -51,7 +51,7 @@ const Pagination = ({
               aria-current={currentPage === page ? "page" : undefined}
               onClick={() => onPageChange(page)}
               aria-label={`${t("pages")} ${page}`}
-              className={`mx-2 flex h-9 w-9 items-center justify-center rounded-md border border-neutral-500 text-center font-medium ${currentPage === page ? "scale-[1.15] border-0 bg-brand-600 text-white" : "hover:text-brand-600"}`}
+              className={`mx-2 flex h-9 w-9 items-center justify-center rounded-md border border-control text-center font-medium ${currentPage === page ? "scale-[1.15] border-0 bg-action text-on-action" : "hover:text-link"}`}
             >
               {page}
             </button>
@@ -62,7 +62,7 @@ const Pagination = ({
         type="button"
         onClick={onClickNext}
         aria-label={t("nextPage")}
-        className="mr-2 flex h-9 w-9 items-center justify-center rounded-md border border-neutral-500 bg-white p-1 transition-all enabled:hover:-translate-x-2 disabled:cursor-not-allowed disabled:opacity-50"
+        className="mr-2 flex h-9 w-9 items-center justify-center rounded-md border border-control bg-surface p-1 transition-all enabled:hover:-translate-x-2 disabled:cursor-not-allowed disabled:opacity-50"
         disabled={currentPage >= pageCount}
       >
         <PaginationArrow direction="right" />

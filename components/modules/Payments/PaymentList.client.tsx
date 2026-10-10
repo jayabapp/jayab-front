@@ -14,7 +14,7 @@ const JALALI_QUERY_DATE = "jYYYY/jMM/jDD";
 const SKELETON_COUNT = 4;
 
 const PaymentSkeleton = () => (
-  <div className="h-32 animate-pulse rounded-20 bg-neutral-200" />
+  <div className="h-32 animate-pulse rounded-20 bg-surface-hover" />
 );
 
 const PaymentList = () => {

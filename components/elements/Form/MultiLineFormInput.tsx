@@ -1,14 +1,15 @@
 
-import type { MultiLineFormInputProps } from "@/types/components/elements/form";
 import { memo } from "react";
+
+import type { MultiLineFormInputProps } from "@/types/components/elements/form";
 
 import ContentImage from "@elements/Image/ContentImage";
 
 const FormInput = ({
   item,
   value,
-  onChangeText,
   errors,
+  onChangeText,
   errorKey = "",
 }: MultiLineFormInputProps) => {
   return (
@@ -21,7 +22,7 @@ const FormInput = ({
           } ${item?.titleClass || ""}`}
         >
           {item?.title}
-          <span className="fs-8 text-danger-500">{item?.titleHint}</span>
+          <span className="fs-8 text-status-danger">{item?.titleHint}</span>
         </label>
       ) : (
         <></>
@@ -30,14 +31,14 @@ const FormInput = ({
         rows={item?.rows || 3}
         className={`${!!item?.iconUrl ? " !pl-10" : ""}  ${!!item?.iconEndUrl ? " !pr-10" : ""} ${
           item?.direction ? item?.direction : "rtl"
-        }  text-right form-control !transform-none text-base font-normal  bg-white     border  focus:border-brand-600/30 py-4 px-4 w-full rounded-10 placeholder:text-neutral-400 placeholder:text-right   placeholder:font-normal placeholder:text-sm placeholder:opacity-70   ${
+        }  text-right form-control !transform-none text-base font-normal  bg-surface     border border-control  focus:border-action/30 py-4 px-4 w-full rounded-10 placeholder:text-ink-subtle placeholder:text-right   placeholder:font-normal placeholder:text-sm placeholder:opacity-70   ${
           item?.inputClass
         } ${
           item?.disableHover
             ? ""
             : !!errors && !!errors[errorKey]
-              ? "border-red-100"
-              : " hover:border-neutral-300 focus:border-brand-600/30"
+              ? "border-status-danger-line"
+              : " hover:border-ink-muted focus:border-action/30"
         } `}
         id={`input-${item?.id}`}
         placeholder={item?.placeholder || item?.title}
@@ -82,7 +83,7 @@ const FormInput = ({
       {!!item?.hint && (
         <div
           id={`${item?.id}`}
-          className={`text-xs font-light text-neutral-400 mt-1 mr-5 `}
+          className={`text-xs font-light text-ink-subtle mt-1 mr-5 `}
         >
           {item?.hint}
         </div>

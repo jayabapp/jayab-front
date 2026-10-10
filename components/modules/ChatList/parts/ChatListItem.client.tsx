@@ -70,7 +70,7 @@ const ChatListItem = ({ item, onClickCb }: ChatListItemProps) => {
         </div>
       </div>
       {!!item?.unread_count && item?.unread_count != "0" ? (
-        <div className="rounded-full absolute left-0 top-2  flex items-center justify-center w-5 h-5 aspect-square text-sm bg-brand-600 text-white transition-all duration-200 ease-in-out">
+        <div className="rounded-full absolute left-0 top-2  flex items-center justify-center w-5 h-5 aspect-square text-sm bg-action text-on-action transition-all duration-200 ease-in-out">
           {item?.unread_count}
         </div>
       ) : (

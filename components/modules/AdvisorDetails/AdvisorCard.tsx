@@ -19,7 +19,7 @@ const AdvisorCard = ({ advisor, onSelect, isSingle }: AdvisorCardProps) => {
   return (
     <div
       onClick={onSelect}
-      className="rounded-2xl gap-2 shadow-card p-4 w-full flex cursor-pointer flex-col items-center"
+      className="rounded-2xl gap-2 shadow-surface p-4 w-full flex cursor-pointer flex-col items-center"
     >
       <div className="w-full flex items-center gap-2">
         <div className="flex flex-col gap-2 h-full justify-between w-1/4 lg:w-1/5 2xl:w-1/4">
@@ -36,7 +36,7 @@ const AdvisorCard = ({ advisor, onSelect, isSingle }: AdvisorCardProps) => {
               }
             />
           </div>
-          <div className="shrink-0 text-xs md:text-xs flex items-center justify-center px-1 md:px-2 py-1 rounded-md bg-brand-600 text-white">
+          <div className="shrink-0 text-xs md:text-xs flex items-center justify-center px-1 md:px-2 py-1 rounded-md bg-action text-on-action">
             {t("common.code")} {advisor?.user?.referral_code}
           </div>
         </div>
@@ -49,7 +49,7 @@ const AdvisorCard = ({ advisor, onSelect, isSingle }: AdvisorCardProps) => {
             <AdvisorGauge
               textSize="2rem"
               containerClass=" w-[35%]"
-              labelClass="text-brand-600"
+              labelClass="text-link"
               pathColor={colors.brand[500]}
               textColor={colors.brand[500]}
               label={t("advisor.usersSatisfaction")}
@@ -58,7 +58,7 @@ const AdvisorCard = ({ advisor, onSelect, isSingle }: AdvisorCardProps) => {
             <AdvisorGauge
               textSize="2rem"
               containerClass=" w-[35%]"
-              labelClass="text-success-600"
+              labelClass="text-status-success"
               pathColor={colors.success[500]}
               textColor={colors.success[500]}
               label={t("advisor.ownersSatisfaction")}

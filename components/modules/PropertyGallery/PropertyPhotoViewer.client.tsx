@@ -15,7 +15,7 @@ import type { PropertyPhotoViewerProps } from "@/types/components/modules/proper
 import PropertyImageDownloadButton from "./parts/PropertyImageDownloadButton.client";
 
 const ARROW_CLASS =
-  "absolute top-1/2 z-10 flex size-10 -translate-y-1/2 cursor-pointer items-center justify-center rounded-full bg-white/15 text-white backdrop-blur-sm transition-colors hover:bg-white/30 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white/70 disabled:pointer-events-none disabled:opacity-25 md:size-12";
+  "absolute top-1/2 z-10 flex size-10 -translate-y-1/2 cursor-pointer items-center justify-center rounded-full bg-surface/15 text-white backdrop-blur-sm transition-colors hover:bg-surface/30 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-surface/70 disabled:pointer-events-none disabled:opacity-25 md:size-12";
 
 const PropertyPhotoViewer = ({
   alt,
@@ -115,7 +115,7 @@ const PropertyPhotoViewer = ({
               type="button"
               onClick={requestClose}
               aria-label={t("common.close")}
-              className="flex size-10 shrink-0 cursor-pointer items-center justify-center rounded-full bg-white/10 transition-colors hover:bg-white/20 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white/60"
+              className="flex size-10 shrink-0 cursor-pointer items-center justify-center rounded-full bg-surface/10 transition-colors hover:bg-surface/20 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-surface/60"
             >
               <Icon name="x" size={20} />
             </button>
@@ -133,7 +133,7 @@ const PropertyPhotoViewer = ({
 
           <p
             aria-live="polite"
-            className="rounded-full bg-white/10 px-3 py-1 text-xs font-medium tabular-nums md:text-sm"
+            className="rounded-full bg-surface/10 px-3 py-1 text-xs font-medium tabular-nums md:text-sm"
           >
             {activeIndex + 1} {t("listing.photoOf")} {images.length}
           </p>
@@ -220,7 +220,7 @@ const PropertyPhotoViewer = ({
                 }}
                 className={`relative h-14 w-20 shrink-0 cursor-pointer overflow-hidden rounded-10 transition-all md:h-16 md:w-24 ${
                   index === activeIndex
-                    ? "opacity-100 ring-2 ring-white"
+                    ? "opacity-100 ring-2 ring-surface"
                     : "opacity-50 hover:opacity-90"
                 }`}
               >

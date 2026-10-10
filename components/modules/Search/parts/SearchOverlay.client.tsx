@@ -10,18 +10,18 @@ import SearchPanelBody from "./SearchPanelBody.client";
 const SearchOverlay = ({
   term,
   boxId,
-  hasOpened,
-  inputRef,
-  isLoading,
   isOpen,
-  isPending,
+  onPick,
   isStale,
   listRef,
   onClose,
   onHover,
-  onKeyDown,
-  onPick,
   options,
+  inputRef,
+  hasOpened,
+  isLoading,
+  isPending,
+  onKeyDown,
   onSubmit,
   activeIndex,
   onTermChange,
@@ -36,7 +36,7 @@ const SearchOverlay = ({
   return (
     <>
       <div
-        className={`${panelClass} transition-all fixed flex flex-col items-center justify-start pb-4 overflow-y-auto rounded-b-10 border shadow-card left-0 w-full -top-2 duration-500 z-50 bg-white`}
+        className={`${panelClass} transition-all fixed flex flex-col items-center justify-start pb-4 overflow-y-auto rounded-b-10 border shadow-surface left-0 w-full -top-2 duration-500 z-50 bg-surface`}
       >
         <SearchPanelInput
           boxId={boxId}

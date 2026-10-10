@@ -23,7 +23,7 @@ const ImpersonationBanner = () => {
       <button
         type="button"
         onClick={() => void logout()}
-        className="shrink-0 cursor-pointer rounded-full bg-white/20 px-3 py-1 font-semibold transition-colors hover:bg-white/30"
+        className="shrink-0 cursor-pointer rounded-full bg-surface/20 px-3 py-1 font-semibold transition-colors hover:bg-surface/30"
       >
         {t("impersonationExit")}
       </button>

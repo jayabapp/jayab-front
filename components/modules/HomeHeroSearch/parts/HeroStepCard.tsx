@@ -13,8 +13,8 @@ const HeroStepCard = ({
   hasBeenOpened,
 }: HeroStepCardProps) => (
   <section
-    className={`overflow-hidden rounded-20 border bg-white transition-colors ${
-      isActive ? "border-brand-600 shadow-card" : "border-neutral-200"
+    className={`overflow-hidden rounded-20 border bg-surface transition-colors ${
+      isActive ? "border-action shadow-surface" : "border-line"
     }`}
   >
     <button
@@ -23,15 +23,15 @@ const HeroStepCard = ({
       aria-expanded={isActive}
       className="flex w-full items-center gap-3 px-4 py-3.5 text-right"
     >
-      <span className="flex size-9 shrink-0 items-center justify-center rounded-full bg-brand-50">
+      <span className="flex size-9 shrink-0 items-center justify-center rounded-full bg-selected">
         <ContentImage alt="" src={icon} width={18} height={18} className="size-[1.125rem]" />
       </span>
 
       <span className="flex min-w-0 flex-1 flex-col items-start gap-0.5">
-        <span className="text-2xs font-bold leading-tight text-neutral-500">{title}</span>
+        <span className="text-2xs font-bold leading-tight text-ink-subtle">{title}</span>
         <span
           className={`w-full truncate text-sm leading-snug ${
-            summary ? "font-medium text-neutral-900" : "text-neutral-400"
+            summary ? "font-medium text-ink" : "text-ink-subtle"
           }`}
         >
           {summary || "—"}

@@ -63,8 +63,8 @@ const ChatBody = ({
             className="col-span-full flex flex-col gap-2"
             aria-label={t("loadingPrevious")}
           >
-            <div className="h-12 w-1/2 animate-pulse rounded-xl bg-neutral-200" />
-            <div className="mr-auto h-12 w-2/5 animate-pulse rounded-xl bg-white" />
+            <div className="h-12 w-1/2 animate-pulse rounded-xl bg-surface-hover" />
+            <div className="mr-auto h-12 w-2/5 animate-pulse rounded-xl bg-surface" />
           </div>
         ) : (
           <></>

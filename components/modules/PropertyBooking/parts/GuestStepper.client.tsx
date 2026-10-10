@@ -8,7 +8,7 @@ import type { GuestStepperProps } from "@/types/components/modules/property-book
 import numberWithCommas from "@/helpers/numberWithCommas";
 
 const BUTTON_CLASS =
-  "flex size-11 cursor-pointer items-center justify-center rounded-full border border-neutral-300 text-neutral-900 md:size-8 transition-colors hover:bg-neutral-100 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-500 disabled:cursor-not-allowed disabled:opacity-40 disabled:hover:bg-transparent";
+  "flex size-11 cursor-pointer items-center justify-center rounded-full border border-line-strong text-ink md:size-8 transition-colors hover:bg-surface-muted focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-focus disabled:cursor-not-allowed disabled:opacity-40 disabled:hover:bg-transparent";
 
 const GuestStepper = ({
   id,
@@ -24,16 +24,16 @@ const GuestStepper = ({
   const extra = value !== null ? value - std : 0;
 
   return (
-    <div className="flex flex-col gap-1.5 rounded-10 border border-neutral-200 px-3 py-2.5">
+    <div className="flex flex-col gap-1.5 rounded-10 border border-line px-3 py-2.5">
       <div className="flex items-center justify-between gap-3">
         <div className="flex items-center gap-2">
-          <Icon name="users" size={20} className="text-neutral-500" />
+          <Icon name="users" size={20} className="text-ink-subtle" />
           <div className="flex flex-col">
-            <span className="text-xs text-neutral-500">
+            <span className="text-xs text-ink-subtle">
               {t("reserve.guestCount")}
             </span>
             <span
-              className={`text-sm ${value !== null ? "font-semibold text-neutral-900" : "text-neutral-400"}`}
+              className={`text-sm ${value !== null ? "font-semibold text-ink" : "text-ink-subtle"}`}
             >
               {value !== null
                 ? `${t("common.people", { count: Number(value) })}`
@@ -69,14 +69,14 @@ const GuestStepper = ({
       </div>
 
       {extra > 0 && extraGuestFee ? (
-        <p className="text-xs text-warning-600">
+        <p className="text-xs text-status-warning">
           {t("reserve.overStandardNote")
             .replace("{count}", `${extra}`)
             .replace("{fee}", `${numberWithCommas(extraGuestFee)}`)}
         </p>
       ) : null}
       {isAtMax ? (
-        <p className="text-xs text-neutral-500">
+        <p className="text-xs text-ink-subtle">
           {t("reserve.maxCapacityNote").replace("{count}", `${max}`)}
         </p>
       ) : null}

@@ -30,7 +30,7 @@ const MobileNavItem = ({ entry, hasBadge, onSelect }: MobileNavItemProps) => {
       />
 
       <p
-        className={`${dimmed} truncate text-xs md:text-base text-brand-600 select-none`}
+        className={`${dimmed} truncate text-xs md:text-base text-link select-none`}
       >
         {entry?.title}
       </p>

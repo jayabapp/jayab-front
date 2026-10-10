@@ -53,7 +53,7 @@ const AdvisorSubscription = () => {
 
       {profile?.admin_description ? (
         <div className="w-full flex items-center justify-center">
-          <p className="text-sm text-danger-500">
+          <p className="text-sm text-status-danger">
             {t("advisor.adminDescription")} : {profile.admin_description}
           </p>
         </div>
@@ -92,7 +92,7 @@ const AdvisorSubscription = () => {
         text={t("advisor.areUSureCancelAdvisorSub")}
         headerImage="/assets/images/shared/red_crossed_sheet.png"
         confirmTextClassName=" !bg-danger-500 text-white !rounded-full "
-        hideTextClassName=" !border-danger-500 border !bg-white !text-danger-500 !rounded-full "
+        hideTextClassName=" !border-status-danger border !bg-surface !text-status-danger !rounded-full "
         onConfirm={() => {
           if (isCancelling) return;
           cancel(undefined, { onSuccess: () => setShowCancel(false) });

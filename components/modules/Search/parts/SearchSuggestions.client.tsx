@@ -40,7 +40,7 @@ const SearchSuggestions = ({
   if (isEmpty(options))
     return !!searchedText && searchedText.trim().length >= 2 ? (
       <div className="w-full px-4 pb-2 pt-1">
-        <p className="rounded-10 bg-neutral-50 px-3 py-4 text-center text-sm text-neutral-600">
+        <p className="rounded-10 bg-surface-muted px-3 py-4 text-center text-sm text-ink-muted">
           {t("search.searchNoResult")}
         </p>
       </div>
@@ -66,7 +66,7 @@ const SearchSuggestions = ({
         .filter(({ group }) => !isEmpty(group))
         .map(({ group, kind }) => (
           <div className="flex w-full flex-col" key={kind}>
-            <p className="px-2 pb-1 pt-2 text-2xs font-bold text-neutral-500">
+            <p className="px-2 pb-1 pt-2 text-2xs font-bold text-ink-subtle">
               {t(GROUP_LABEL[kind])}
             </p>
             {group.map((option) => {

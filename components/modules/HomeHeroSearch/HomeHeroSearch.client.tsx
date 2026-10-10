@@ -2,8 +2,8 @@
 
 import { HeroDestinationSearch } from "@modules/Search";
 import { useCallback, useState } from "react";
-import {CLEARED_DRAFT_TARGET} from "@features/search/lib/search-option-draft";
-import {searchOptionToDraft} from "@features/search/lib/search-option-draft";
+import { CLEARED_DRAFT_TARGET } from "@features/search/lib/search-option-draft";
+import { searchOptionToDraft } from "@features/search/lib/search-option-draft";
 import { useListSeparator } from "@hooks/useListSeparator";
 import { useTranslations } from "next-intl";
 import { useHeroSearch } from "@features/search/hooks/useHeroSearch";
@@ -16,7 +16,6 @@ import dynamic from "next/dynamic";
 import moment from "moment-jalaali";
 
 const DAY_MONTH_FORMAT = "jD jMMMM";
-
 
 const importHeroSearchSheet = () => import("./parts/HeroSearchSheet.client");
 
@@ -94,14 +93,14 @@ const HomeHeroSearch = ({ isPhone, variant = "hero" }: HomeHeroSearchProps) => {
             onClick={submit}
             disabled={isPending}
             aria-label={t("search.search")}
-            className="btn-primary flex size-8 shrink-0 items-center justify-center rounded-full bg-brand-600 transition-colors hover:bg-brand-700 disabled:bg-neutral-300 md:size-9"
+            className="btn-primary flex size-8 shrink-0 items-center justify-center rounded-full bg-action transition-colors hover:bg-action-hover disabled:bg-line-strong md:size-9"
           >
             <ContentImage
               alt=""
               width={20}
               height={20}
-              className="size-4 shrink-0 brightness-0 invert md:size-[1.125rem]"
               src="/assets/icons/edit/magnifier.svg"
+              className="size-4 shrink-0 brightness-0 invert md:size-[1.125rem]"
             />
           </button>
         </div>

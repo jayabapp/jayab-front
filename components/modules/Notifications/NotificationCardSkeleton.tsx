@@ -4,7 +4,7 @@ import Skeleton from "@elements/Skeleton/Skeleton";
 const NotificationCardSkeleton = () => (
   <div
     aria-hidden="true"
-    className="flex flex-col gap-4 rounded-20 bg-white/60 px-3 py-3 shadow-sm"
+    className="flex flex-col gap-4 rounded-20 bg-surface/60 px-3 py-3 shadow-sm"
   >
     <div className="flex items-start gap-3">
       <SkeletonCircle className="size-5" />

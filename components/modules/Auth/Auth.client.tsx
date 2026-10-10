@@ -64,10 +64,10 @@ const AuthPageComponent = () => {
 
             <div className="mt-6 flex flex-col items-center gap-3">
               <span className="h-1 w-10 rounded-full bg-brand-500/80" />
-              <h1 className="text-xl font-bold tracking-tight text-neutral-900">
+              <h1 className="text-xl font-bold tracking-tight text-ink">
                 {t("auth.authWelcomeTitle")}
               </h1>
-              <p className="max-w-72 text-center text-sm leading-6 text-neutral-600">
+              <p className="max-w-72 text-center text-sm leading-6 text-ink-muted">
                 {t("auth.enterTourMobileNumber")}
               </p>
             </div>
@@ -91,12 +91,12 @@ const AuthPageComponent = () => {
                 }}
               />
 
-              <div className="flex flex-wrap items-center justify-center gap-1 text-xs text-neutral-600">
+              <div className="flex flex-wrap items-center justify-center gap-1 text-xs text-ink-muted">
                 <p>{t("auth.uAccepted")}</p>
                 <button
                   type="button"
                   onClick={() => setVisibleTermsModal(true)}
-                  className="font-medium text-brand-600 underline underline-offset-4"
+                  className="font-medium text-link underline underline-offset-4"
                 >
                   {t("common.terms")}
                 </button>
@@ -116,7 +116,7 @@ const AuthPageComponent = () => {
                 btnClass="auth-primary-button !py-4"
               />
 
-              <div className="flex items-center justify-center gap-1.5 text-xs text-neutral-500">
+              <div className="flex items-center justify-center gap-1.5 text-xs text-ink-subtle">
                 <svg
                   fill="none"
                   width="14"

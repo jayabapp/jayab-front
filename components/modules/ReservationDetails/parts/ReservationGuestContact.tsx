@@ -7,7 +7,7 @@ import type { ReservationGuestContactProps } from "@/types/components/modules/re
 import Button from "@elements/Button";
 
 const ACTION_WIDTH =
-  "w-full h-12 !border-none !text-black !font-normal !py-2 !bg-neutral-50 !text-sm";
+  "w-full h-12 !border-none !text-ink !font-normal !py-2 !bg-surface-muted !text-sm";
 
 const ReservationGuestContact = ({
   isExpired,
@@ -18,7 +18,7 @@ const ReservationGuestContact = ({
 }: ReservationGuestContactProps) => {
   const t = useTranslations();
 
-  const disabledStyle = isExpired ? " !text-neutral-400" : "";
+  const disabledStyle = isExpired ? " !text-ink-subtle" : "";
   const disabledIcon = isExpired ? " opacity-50 grayscale" : "";
 
   return (

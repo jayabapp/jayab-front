@@ -1,10 +1,11 @@
 "use client";
 
-import type { SearchPlaceModalProps } from "@/types/components/modules/property-map";
-import { useMapAddressSearch } from "@features/map/hooks/useMapAddressSearch";
-import type { SearchedLocation } from "@/types/features/map";
 import { useEffect, useRef, useState } from "react";
+import { useMapAddressSearch } from "@features/map/hooks/useMapAddressSearch";
 import { FormInput } from "@elements/Form";
+
+import type { SearchPlaceModalProps } from "@/types/components/modules/property-map";
+import type { SearchedLocation } from "@/types/features/map";
 
 import SearchedLocItem from "./parts/SearchedLocationItem";
 import PopUpDown from "@elements/PopUpDown";
@@ -23,13 +24,9 @@ const SearchPlaceModal = ({
     isFetching,
   } = useMapAddressSearch(search, center, show);
 
-  const handleChange = (v: string) => {
-    setSearch(v);
-  };
+  const handleChange = (v: string) => setSearch(v);
+  const closeFunc = () => setShow(false);
 
-  const closeFunc = () => {
-    setShow(false);
-  };
   const locationClickFunc = (e: SearchedLocation) => {
     setJumpTo({ lat: e?.location?.y, lng: e?.location?.x });
     closeFunc();
@@ -48,7 +45,7 @@ const SearchPlaceModal = ({
       setVisible={closeFunc}
       item={{ title: title, popHieghtType: "full-height" }}
     >
-      <div className="w-full h-full flex flex-col gap-6 bg-white rounded-xl p-4">
+      <div className="w-full h-full flex flex-col gap-6 bg-surface rounded-xl p-4">
         <FormInput
           value={search}
           onChangeText={(e) => handleChange(e)}
@@ -62,7 +59,7 @@ const SearchPlaceModal = ({
           }}
         />
         {isFetching || isDebouncing ? (
-          <div className="h-1 w-full animate-pulse rounded bg-neutral-200" />
+          <div className="h-1 w-full animate-pulse rounded bg-surface-hover" />
         ) : null}
         <div className="flex flex-col gap-4    items-center pb-8 ">
           {searchedAddresses?.length == 0 ? (

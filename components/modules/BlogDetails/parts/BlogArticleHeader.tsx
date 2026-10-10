@@ -26,7 +26,7 @@ const MetaItem = ({ icon, label, value }: TMetaItem) => (
       height={16}
       className="h-4 w-4 shrink-0"
     />
-    <span className="text-neutral-600">{label}:</span>
+    <span className="text-ink-muted">{label}:</span>
     <span className="font-bold">{value}</span>
   </span>
 );
@@ -54,7 +54,7 @@ const BlogArticleHeader = ({
         )}
 
         {!!data?.category?.title ? (
-          <span className="w-fit rounded-full bg-brand-50 px-3 py-1 text-2xs font-bold text-brand-600">
+          <span className="w-fit rounded-full bg-selected px-3 py-1 text-2xs font-bold text-link">
             {data.category.title}
           </span>
         ) : (
@@ -64,14 +64,14 @@ const BlogArticleHeader = ({
         <h1>{data?.title}</h1>
 
         {!!data?.small_text ? (
-          <p className="line-clamp-3 text-sm leading-7 text-neutral-600 md:text-base md:leading-8">
+          <p className="line-clamp-3 text-sm leading-7 text-ink-muted md:text-base md:leading-8">
             {data.small_text}
           </p>
         ) : (
           <></>
         )}
 
-        <div className="flex flex-wrap items-center justify-between gap-x-5 gap-y-3 border-y border-neutral-100 py-3 text-xs md:text-sm">
+        <div className="flex flex-wrap items-center justify-between gap-x-5 gap-y-3 border-y border-surface-muted py-3 text-xs md:text-sm">
           <div className="flex flex-wrap items-center gap-x-5 gap-y-2">
             <MetaItem
               label={t("blogPublishedOn")}

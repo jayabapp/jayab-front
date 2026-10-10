@@ -16,7 +16,7 @@ const ProfileQuickAccess = ({ entries, limit = 6 }: ProfileQuickAccessProps) => 
 
   return (
     <div className="flex w-full flex-col gap-3">
-      <p className="text-sm font-medium text-neutral-600">
+      <p className="text-sm font-medium text-ink-muted">
         {t("profileQuickAccess")}
       </p>
 
@@ -37,7 +37,7 @@ const ProfileQuickAccess = ({ entries, limit = 6 }: ProfileQuickAccessProps) => 
                 className="aspect-square h-6 w-6"
               />
             </span>
-            <p className="flex-1 text-sm font-medium text-neutral-900">
+            <p className="flex-1 text-sm font-medium text-ink">
               {entry?.title}
             </p>
             {entry?.badgeCounter ? (

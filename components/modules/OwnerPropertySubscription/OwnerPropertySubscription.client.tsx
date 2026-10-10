@@ -89,12 +89,12 @@ const OwnerPropertySubscription = ({ propertyId }: OwnerPropertyRouteProps) => {
             }}
           >
             <div className="flex gap-2">
-              <p className="font-bold text-sm text-brand-600">
+              <p className="font-bold text-sm text-link">
                 {t("common.cost")} :
               </p>
               <PropertyPrice
                 ribbon={plan}
-                containerClass="flex gap-2 text-brand-600"
+                containerClass="flex gap-2 text-link"
                 data={{
                   discounted_price: plan.price_with_discount,
                   price: plan.price,
@@ -108,7 +108,7 @@ const OwnerPropertySubscription = ({ propertyId }: OwnerPropertyRouteProps) => {
       {statsLoading ? (
         <>
           <p className="font-bold">{t("owner.viewStats")}</p>
-          <div className="h-96 w-full animate-pulse rounded-2xl bg-neutral-200" />
+          <div className="h-96 w-full animate-pulse rounded-2xl bg-surface-hover" />
         </>
       ) : !isEmpty(statistics?.statistics) ? (
         <div className="w-full">

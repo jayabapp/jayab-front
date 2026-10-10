@@ -71,12 +71,12 @@ const BookingPanel = ({
     if (booking.step !== "READY")
       return (
         <div className="flex flex-col gap-1">
-          <p className="ui-body text-neutral-500">{t("stayStartsFrom")}</p>
+          <p className="ui-body text-ink-subtle">{t("stayStartsFrom")}</p>
           <div className="flex flex-wrap items-end gap-1.5">
             <PropertyPriceTag
               price={{ price: property.minimumPrice ?? undefined }}
             />
-            <span className="pb-0.5 ui-caption text-neutral-600">
+            <span className="pb-0.5 ui-caption text-ink-muted">
               / {t("night")}
             </span>
           </div>
@@ -89,7 +89,7 @@ const BookingPanel = ({
         ? nightsBetween(stay.start, stay.end)
         : 0;
     return (
-      <div className="flex items-baseline gap-2 text-lg font-bold text-neutral-900">
+      <div className="flex items-baseline gap-2 text-lg font-bold text-ink">
         <span>
           {t("nights", { count: Number(nights) })}
           {quote ? ":" : ""}
@@ -101,7 +101,7 @@ const BookingPanel = ({
 
   const readyBody = () => {
     if (booking.hasQuoteError && !quote)
-      return <p className="ui-body text-danger-500">{t("quoteUnavailable")}</p>;
+      return <p className="ui-body text-status-danger">{t("quoteUnavailable")}</p>;
 
     if (!quote)
       return (
@@ -115,7 +115,7 @@ const BookingPanel = ({
     if (!quote.is_available)
       return (
         <div className="flex flex-col gap-3">
-          <p className="ui-body text-danger-500">
+          <p className="ui-body text-status-danger">
             {t("stayDatesReserved")}:{" "}
             {quote.unavailable_dates
               .map((date) => formatJalaliDay(date))
@@ -124,7 +124,7 @@ const BookingPanel = ({
           <button
             type="button"
             onClick={openDates}
-            className="h-11 w-full cursor-pointer rounded-10 bg-brand-600 text-base font-medium text-white transition-colors hover:bg-brand-700"
+            className="h-11 w-full cursor-pointer rounded-10 bg-action text-base font-medium text-on-action transition-colors hover:bg-action-hover"
           >
             {t("changeDates")}
           </button>
@@ -155,7 +155,7 @@ const BookingPanel = ({
       <div
         className={
           isCard
-            ? "flex w-full flex-col gap-4 rounded-20 border border-neutral-200 bg-white p-5 shadow-glass-sm"
+            ? "flex w-full flex-col gap-4 rounded-20 border border-line-strong bg-surface p-5 shadow-glass-sm"
             : "flex w-full flex-col gap-4 p-4"
         }
       >

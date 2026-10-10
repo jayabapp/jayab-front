@@ -34,7 +34,7 @@ const FormInputWithExternalUnit = ({
               } ${item?.titleClass || ""}`}
             >
               {item?.title}
-              <span className="fs-8 text-danger-500">{item?.titleHint}</span>
+              <span className="fs-8 text-status-danger">{item?.titleHint}</span>
             </label>
           ) : (
             <></>
@@ -54,14 +54,14 @@ const FormInputWithExternalUnit = ({
             pattern={item?.keyboard == "number" ? "[0-9]*" : ""}
             className={`${!!item?.iconUrl ? " !pr-[3rem]" : ""}  ${!!item?.iconEndUrl ? " !pl-10" : ""} ${
               item?.direction ? item?.direction : "rtl"
-            }   bg-neutral-50    !text-base   ltr  text-right form-control  font-normal border focus:border-brand-600  py-4 px-4 w-full rounded-10 placeholder:text-neutral-400 placeholder:text-right   placeholder:font-normal placeholder:text-sm placeholder:opacity-70   ${
+            }   bg-surface-muted    !text-base   ltr  text-right form-control  font-normal border focus:border-action  py-4 px-4 w-full rounded-10 placeholder:text-ink-subtle placeholder:text-right   placeholder:font-normal placeholder:text-sm placeholder:opacity-70   ${
               item?.inputClass
             } ${
               item?.disableHover
                 ? ""
                 : !!errors && !!errors[errorKey]
-                  ? "border-red-100"
-                  : " hover:border-neutral-300 focus:border-brand-600/30"
+                  ? "border-status-danger-line"
+                  : " hover:border-line-strong focus:border-action/30"
             } `}
             id={`input-${item?.id}`}
             placeholder={item?.placeholder || item?.title}
@@ -94,9 +94,7 @@ const FormInputWithExternalUnit = ({
                 item?.iconUrlClassName
               } ${item?.iconFunc ? "cursor-pointer" : ""}`}
               onClick={() => {
-                if (item?.iconFunc) {
-                  item?.iconFunc();
-                }
+                if (item?.iconFunc) item?.iconFunc();
               }}
               src={`${item?.iconUrl}`}
             />
@@ -110,9 +108,7 @@ const FormInputWithExternalUnit = ({
                 item?.iconEndFunc ? "cursor-pointer" : ""
               }`}
               onClick={() => {
-                if (item?.iconEndFunc) {
-                  item?.iconEndFunc();
-                }
+                if (item?.iconEndFunc) item?.iconEndFunc();
               }}
               src={`${item?.iconEndUrl}`}
             />
@@ -126,18 +122,18 @@ const FormInputWithExternalUnit = ({
           {!!item?.hint && (
             <div
               id={`${item?.id}`}
-              className={`text-xs font-light text-neutral-400 mt-1 mr-5 `}
+              className={`text-xs font-light text-ink-subtle mt-1 mr-5 `}
             >
               {item?.hint}
             </div>
           )}
         </div>
-        <div className=" border  bg-neutral-50 text-neutral-400 w-1/5 h-[2.875rem] rounded-10   flex items-center justify-center  text-sm font-medium ">
+        <div className=" border  bg-surface-muted text-ink-subtle w-1/5 h-[2.875rem] rounded-10   flex items-center justify-center  text-sm font-medium ">
           {unit || ""}
-        </div>{" "}
-      </div>{" "}
+        </div>
+      </div>
       {!!item?.convertToText && !!value && (
-        <div id={`${item?.id}`} className="text-xs pr-1  text-brand-600    ">
+        <div id={`${item?.id}`} className="text-xs pr-1  text-link    ">
           {Num2persian(value)} {t("toman")}
         </div>
       )}

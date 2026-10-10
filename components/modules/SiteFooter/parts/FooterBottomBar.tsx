@@ -11,7 +11,7 @@ const FooterBottomBar = ({ downloadLinks }: FooterBottomBarProps) => {
   const t = useTranslations("footer");
 
   return (
-    <div className="bg-white padding-x w-full mx-auto shadow-md h-fit lg:h-20 flex flex-col py-2 md:py-0 gap-4 lg:flex-row items-center justify-between">
+    <div className="bg-surface padding-x w-full mx-auto shadow-md h-fit lg:h-20 flex flex-col py-2 md:py-0 gap-4 lg:flex-row items-center justify-between">
       <div className="flex items-center gap-4">
         <div className="w-full text-center text-2xs md:text-sm">
           {t.rich("copyright", {
@@ -20,7 +20,7 @@ const FooterBottomBar = ({ downloadLinks }: FooterBottomBarProps) => {
                 href="/"
                 prefetch={false}
                 title={tc("jayab")}
-                className="text-blue-500 underline underline-offset-2"
+                className="text-link underline underline-offset-2"
               >
                 {chunks}
               </Link>

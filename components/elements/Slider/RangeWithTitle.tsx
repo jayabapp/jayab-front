@@ -5,15 +5,15 @@ import "rc-slider/assets/index.css";
 import Slider from "rc-slider";
 
 const RangeWithTitle = ({
-  value,
-  setValue,
   max,
   min,
-  marks,
-  className,
   step,
-  item = { pathColor: colors.neutral[200], visibleDot: false },
+  marks,
+  value,
+  setValue,
   showMark,
+  className,
+  item = { pathColor: "rgb(var(--c-line))", visibleDot: false },
 }: RangeWithTitleProps) => {
   return (
     <Slider
@@ -25,9 +25,7 @@ const RangeWithTitle = ({
       min={min}
       step={step || 1}
       onChange={(v: number | number[]) => {
-        if (typeof v == "number") {
-          setValue(v);
-        }
+        if (typeof v == "number") setValue(v)
       }}
       defaultValue={0}
       className={className}

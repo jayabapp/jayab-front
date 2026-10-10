@@ -37,12 +37,12 @@ const ListingHeader = ({ breadcrumbs, property }: ListingHeaderProps) => {
             ) : (
               <></>
             )}
-            <h1 className="text-balance text-xl font-bold leading-8 text-neutral-900 md:text-2xl md:leading-9">
+            <h1 className="text-balance text-xl font-bold leading-8 text-ink md:text-2xl md:leading-9">
               {property?.title}
             </h1>
           </div>
 
-          <span className="flex items-center gap-1 text-sm text-neutral-500">
+          <span className="flex items-center gap-1 text-sm text-ink-subtle">
             <Icon name="map-pin" size={16} />
             {place}
           </span>

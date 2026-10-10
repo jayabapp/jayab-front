@@ -156,8 +156,8 @@ const ChatFooter = ({
 
   if (isSuspended)
     return (
-      <div className="absolute bottom-0 left-0 z-30 flex h-fit w-full items-center justify-center border-b bg-white px-4 py-4">
-        <p className="text-center text-sm text-neutral-600">
+      <div className="absolute bottom-0 left-0 z-30 flex h-fit w-full items-center justify-center border-b bg-surface px-4 py-4">
+        <p className="text-center text-sm text-ink-muted">
           {t("chatSuspended")}
         </p>
       </div>
@@ -167,7 +167,7 @@ const ChatFooter = ({
     <div
       className={` flex px-2  flex-1 z-30 w-full left-0 border-b   ${
         isIOS ? " bottom-0   " : "bottom-[0]   pb-1"
-      }  h-fit  transition-all duration-100 ease-in-out  absolute  overflow-clip     left-0   flex-col  bg-white   ${
+      }  h-fit  transition-all duration-100 ease-in-out  absolute  overflow-clip     left-0   flex-col  bg-surface   ${
         product && showProduct ? " pb-4 !h-36 bottom-0" : ""
       }`}
     >
@@ -177,7 +177,7 @@ const ChatFooter = ({
         <></>
       )}
       <div
-        className={` ${isIOS ? "!h-16" : ""} flex   bg-white    w-full   h-full  items-center gap-1  `}
+        className={` ${isIOS ? "!h-16" : ""} flex   bg-surface    w-full   h-full  items-center gap-1  `}
       >
         <div
           onMouseDown={(e) => {
@@ -197,7 +197,7 @@ const ChatFooter = ({
                 (text.trim() || image) && !connecting
                   ? "opacity-100"
                   : "opacity-50 grayscale "
-              }  aspect-square rounded-full flex items-center justify-center bg-brand-600  `}
+              }  aspect-square rounded-full flex items-center justify-center bg-action  `}
             >
               {" "}
               <Image
@@ -228,7 +228,7 @@ const ChatFooter = ({
               alt="XMarkIcon"
               src="/assets/icons/chat/smily_face.svg"
               onClick={() => setShowEmojiPicker(false)}
-              className="w-5 text-neutral-500 h-5 md:!w-6 md:!h-6 "
+              className="w-5 text-ink-subtle h-5 md:!w-6 md:!h-6 "
             />
           ) : (
             <Image
@@ -237,7 +237,7 @@ const ChatFooter = ({
               alt="FaceSmileIcon"
               src="/assets/icons/chat/smily_face.svg"
               onClick={() => setShowEmojiPicker(true)}
-              className="w-5 text-neutral-500 h-5  md:!w-6 md:!h-6 "
+              className="w-5 text-ink-subtle h-5  md:!w-6 md:!h-6 "
             />
           )}
           <ChatUploadField

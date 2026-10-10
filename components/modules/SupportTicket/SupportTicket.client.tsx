@@ -66,7 +66,7 @@ const SupportTicket = ({ ticketId }: SupportTicketModuleProps) => {
       {isError ? (
         <div
           role="alert"
-          className="rounded-lg bg-danger-50 p-4 text-sm text-danger-500"
+          className="rounded-lg bg-status-danger-bg p-4 text-sm text-status-danger"
         >
           {t("profile.supportDetailsError")}
         </div>
@@ -85,7 +85,7 @@ const SupportTicket = ({ ticketId }: SupportTicketModuleProps) => {
               </div>
             ))}
           </div>
-          <div className="responsive-width fixed bottom-0 right-1/2 z-40 flex w-full translate-x-1/2 flex-col items-center border-t bg-white p-4 md:translate-x-1/4 md:border-none md:bg-transparent">
+          <div className="responsive-width fixed bottom-0 right-1/2 z-40 flex w-full translate-x-1/2 flex-col items-center border-t bg-surface p-4 md:translate-x-1/4 md:border-none md:bg-transparent">
             <Button
               disabled={ticket?.status === 100}
               title={
@@ -113,7 +113,9 @@ const SupportTicket = ({ ticketId }: SupportTicketModuleProps) => {
                   errorKey="message"
                 />
                 {errors.message?.[0] ? (
-                  <p className="text-xs text-danger-500">{errors.message[0]}</p>
+                  <p className="text-xs text-status-danger">
+                    {errors.message[0]}
+                  </p>
                 ) : null}
                 <Button
                   width="w-full"

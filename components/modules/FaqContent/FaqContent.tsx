@@ -1,6 +1,7 @@
-import type { FaqContentProps } from "@/types/components/modules/content-pages";
-import { chunkArray } from "@/helpers/chunk-array.helper";
 import { ContentImage } from "@elements/Image";
+import { chunkArray } from "@/helpers/chunk-array.helper";
+
+import type { FaqContentProps } from "@/types/components/modules/content-pages";
 
 import SimpleAccordion from "@elements/Accordion/SimpleAccordion.client";
 import Breadcrumbs from "@elements/Breadcrumbs/Breadcrumbs.client";
@@ -12,7 +13,7 @@ const FaqContent = ({ items }: FaqContentProps) => {
   return (
     <div
       id="homeParent"
-      className="container    transition-all duration-500 ease-in-out "
+      className="container transition-all duration-500 ease-in-out"
     >
       <Breadcrumbs />
 
@@ -22,7 +23,6 @@ const FaqContent = ({ items }: FaqContentProps) => {
             <div key={`chunlk${index}`} className="grid gap-3 h-fit">
               {item?.map((e) => (
                 <Editable key={e?.id} contentId={e?.id}>
-                  {" "}
                   <SimpleAccordion
                     titleIcon={
                       <ContentImage
@@ -34,7 +34,7 @@ const FaqContent = ({ items }: FaqContentProps) => {
                       />
                     }
                     item={{
-                      parenClass: " bg-white z-1 rounded-xl border ",
+                      parenClass: " bg-surface z-1 rounded-xl border ",
                     }}
                     key={e?.id}
                     title={e?.title}

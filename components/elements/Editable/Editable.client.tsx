@@ -43,7 +43,7 @@ const Editable = ({
             onClick={(e) => {
               e.stopPropagation();
             }}
-            className={` text-orange-400 z-2 absolute p-2 rounded-md flex items-center justify-center bg-teal-400 cursor-pointer left-0 top-0 ${editIconClass}`}
+            className={` text-status-warning z-2 absolute p-2 rounded-md flex items-center justify-center bg-teal-400 cursor-pointer left-0 top-0 ${editIconClass}`}
           >
             <ContentImage
               width={16}

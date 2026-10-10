@@ -29,7 +29,7 @@ const PriceDetails = ({ quote }: PriceDetailsProps) => {
         type="button"
         aria-expanded={open}
         onClick={() => setOpen((value) => !value)}
-        className="flex w-fit cursor-pointer items-center gap-1 text-sm text-brand-700 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-500"
+        className="flex w-fit cursor-pointer items-center gap-1 text-sm text-link focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-focus"
       >
         {t("priceDetails")}
         <Icon
@@ -40,11 +40,11 @@ const PriceDetails = ({ quote }: PriceDetailsProps) => {
       </button>
 
       {open ? (
-        <div className="flex flex-col gap-2 rounded-10 bg-neutral-50 p-3">
+        <div className="flex flex-col gap-2 rounded-10 bg-surface-muted p-3">
           {groups.map((group, index) => (
             <div
               key={`${index}-${group.price}`}
-              className="flex items-center justify-between gap-3 ui-body text-neutral-800"
+              className="flex items-center justify-between gap-3 ui-body text-ink"
             >
               <span>
                 {t("nights", { count: Number(group.count) })} ×{" "}
@@ -55,12 +55,12 @@ const PriceDetails = ({ quote }: PriceDetailsProps) => {
           ))}
 
           {quote.discount_total > 0 ? (
-            <span className="w-fit rounded-full bg-danger-50 px-3 py-1 ui-caption text-danger-500">
+            <span className="w-fit rounded-full bg-status-danger-bg px-3 py-1 ui-caption text-status-danger">
               {t("discountLabel")} {formatToman(quote.discount_total)}
             </span>
           ) : null}
 
-          <p className="ui-caption text-neutral-500">{t("priceSetByHost")}</p>
+          <p className="ui-caption text-ink-subtle">{t("priceSetByHost")}</p>
         </div>
       ) : null}
     </div>

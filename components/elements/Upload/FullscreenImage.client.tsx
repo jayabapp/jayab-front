@@ -1,5 +1,6 @@
-import type { FullscreenImageProps } from "@/types/components/elements/upload";
 import { ContentImage } from "@/components/elements/Image";
+
+import type { FullscreenImageProps } from "@/types/components/elements/upload";
 
 import Modal from "@elements/Modal";
 
@@ -12,15 +13,15 @@ const FullscreenImage = ({
 }: FullscreenImageProps) => {
   return (
     <Modal show={show} onHide={() => setShow(false)}>
-      <div className="h-full w-full flex flex-col p-2 gap-2  justify-center items-center bg-white   ">
+      <div className="h-full w-full flex flex-col p-2 gap-2 justify-center items-center bg-surface">
         <div className="w-full h-8 flex items-center justify-between">
           <ContentImage
             alt=""
-            height={16}
             width={16}
-            src="/assets/icons/adds/x_mark.svg"
+            height={16}
             onClick={() => setShow(false)}
-            className="cursor-pointer w-4 m-2  "
+            className="cursor-pointer w-4 m-2"
+            src="/assets/icons/adds/x_mark.svg"
           />
 
           {onDelete ? (
@@ -29,9 +30,9 @@ const FullscreenImage = ({
                 alt=""
                 height={16}
                 width={16}
-                src="/assets/icons/uploader/TrashIcon.svg"
-                className="w-4 h-auto cursor-pointer"
                 onClick={() => onDelete()}
+                className="w-4 h-auto cursor-pointer"
+                src="/assets/icons/uploader/TrashIcon.svg"
               />
             </div>
           ) : (
@@ -45,7 +46,7 @@ const FullscreenImage = ({
           height={1024}
           sizes="100vw"
           unoptimized={isNew}
-          className="object-cover  w-full bg-gradient-to-b aspect-auto max-w-max  rounded-xl"
+          className="object-cover w-full bg-gradient-to-b aspect-auto max-w-max rounded-xl"
         />
       </div>
     </Modal>

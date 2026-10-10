@@ -72,7 +72,7 @@ const SelectiveFilterChip = ({
                 event.stopPropagation();
                 removeFiltersKeys([queryKey]);
               }}
-              className="mr-2 flex aspect-square h-4 w-4 cursor-pointer items-center justify-center rounded-full border border-brand-600"
+              className="mr-2 flex aspect-square h-4 w-4 cursor-pointer items-center justify-center rounded-full border border-action"
             >
               <ContentImage
                 alt=""

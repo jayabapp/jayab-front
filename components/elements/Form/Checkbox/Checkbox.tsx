@@ -24,9 +24,9 @@ const Checkbox = ({
       >
         <div
           className={`${
-            !!isChecked ? "bg-brand-600" : ""
+            !!isChecked ? "bg-action" : ""
           }  w-5 flex transition-all items-center justify-center h-5 relative ${rounded} !shrink-0 !grow-0 border-2   ${
-            isChecked ? "bg-brand-600  border-transparent " : "  border-neutral-300 "
+            isChecked ? "bg-action  border-transparent " : "  border-line-strong "
           } `}
         >
           <svg width="12" height="10" viewBox="0 0 12 10" fill="none" xmlns="http://www.w3.org/2000/svg">

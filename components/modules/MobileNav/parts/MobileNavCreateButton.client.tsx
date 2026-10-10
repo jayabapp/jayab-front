@@ -35,7 +35,7 @@ const MobileNavCreateButton = ({ onSelect }: MobileNavCreateButtonProps) => {
         </span>
       </span>
 
-      <p className="truncate text-xs absolute -bottom-[1.375rem] right-0 left-0 mx-auto md:text-base text-center text-brand-600 select-none opacity-60 grayscale brightness-90">
+      <p className="truncate text-xs absolute -bottom-[1.375rem] right-0 left-0 mx-auto md:text-base text-center text-link select-none opacity-60 grayscale brightness-90">
         {t("addListing")}
       </p>
     </button>

@@ -19,16 +19,16 @@ const HostCard = ({
   const t = useTranslations("listing");
 
   return (
-    <div className="flex flex-col gap-3 rounded-20 border border-neutral-200 bg-white p-4">
+    <div className="flex flex-col gap-3 rounded-20 border border-line-strong bg-surface p-4">
       <PropertyOwnerBadge avatar={avatar} name={name} isOnline={isOnline} />
       {since ? (
-        <p className="text-sm text-neutral-500">
+        <p className="text-sm text-ink-subtle">
           {t("hostSince").replace("{date}", formatHostSince(since))}
         </p>
       ) : null}
       {isAuthorized ? (
-        <div className="flex items-center gap-2 text-sm text-neutral-800">
-          <Icon name="shield" size={20} className="text-success-600" />
+        <div className="flex items-center gap-2 text-sm text-ink">
+          <Icon name="shield" size={20} className="text-status-success" />
           <span>{t("verified")}</span>
         </div>
       ) : null}

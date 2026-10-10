@@ -33,18 +33,16 @@ const LoginModal = () => {
     <Modal
       show={loginModal}
       onHide={() => {
-        if (!!loginModalCancelRoute) {
-          replacer(loginModalCancelRoute);
-        }
+        if (!!loginModalCancelRoute) replacer(loginModalCancelRoute);
         closeDispatch();
       }}
     >
-      <div className="pt-4 pb-4 px-3 text-black ">
+      <div className="pt-4 pb-4 px-3 text-ink ">
         <div className="mb-4 text-lg font-medium text-center">{title}</div>
         <p className=" text-center mb-6 font-light ">{body}</p>
         <div className="flex items-center justify-between gap-5 px-4">
           <button
-            className="bg-brand-600   w-full hover:ring-4 hover:ring-brand-600/50 px-2 py-3 rounded-lg text-white"
+            className="bg-action   w-full hover:ring-4 hover:ring-action/50 px-2 py-3 rounded-lg text-on-action"
             onClick={() => {
               const target = `${pathname}${window.location.search}`;
               router.push(`/auth?redirect_url=${encodeURIComponent(target)}`);
@@ -54,11 +52,9 @@ const LoginModal = () => {
             {yes}
           </button>
           <button
-            className="bg-neutral-300   w-full hover:ring-4 hover:ring-neutral-600/50 px-2 py-3 rounded-lg text-neutral-600 "
+            className="bg-line-strong   w-full hover:ring-4 hover:ring-neutral-600/50 px-2 py-3 rounded-lg text-ink-muted "
             onClick={() => {
-              if (!!loginModalCancelRoute) {
-                replacer(loginModalCancelRoute);
-              }
+              if (!!loginModalCancelRoute) replacer(loginModalCancelRoute);
               closeDispatch();
             }}
           >

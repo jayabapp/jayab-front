@@ -47,8 +47,8 @@ const PriceRangeFilter = ({
           filters?.[lowerKey] || lowLimit,
           filters?.[higherKey] || upLimit,
         ]}
-        railStyle={{ backgroundColor: colors.neutral[300], height: 4 }}
-        trackStyle={{ backgroundColor: colors.brand[600], height: 4 }}
+        railStyle={{ backgroundColor: "rgb(var(--c-line-strong))", height: 4 }}
+        trackStyle={{ backgroundColor: "rgb(var(--c-action))", height: 4 }}
         handleStyle={{
           backgroundColor: colors.brand[500],
           borderWidth: 0,
@@ -66,8 +66,8 @@ const PriceRangeFilter = ({
           bottom: -20,
         }}
         dotStyle={{
-          backgroundColor: colors.neutral[300],
-          borderColor: colors.neutral[300],
+          backgroundColor: "rgb(var(--c-line-strong))",
+          borderColor: "rgb(var(--c-line-strong))",
           borderWidth: 1,
           width: 7,
           height: 7,

@@ -17,7 +17,7 @@ const TermsContent = ({ content: aboutUsWebsite }: TermsContentProps) => {
             <h1 className="    ">{t("terms")}</h1>
           </div>{" "}
           {!aboutUsWebsite ? (
-            <p className="py-12 text-center text-sm text-neutral-500">
+            <p className="py-12 text-center text-sm text-ink-subtle">
               {t("error")}
             </p>
           ) : (

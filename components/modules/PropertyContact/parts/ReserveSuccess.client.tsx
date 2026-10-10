@@ -8,7 +8,7 @@ import type { ReserveSuccessProps } from "@/types/components/modules/property-co
 import Link from "next/link";
 
 const ACTION_CLASS =
-  "flex h-12 flex-1 cursor-pointer items-center justify-center gap-2 rounded-10 text-sm font-medium transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-500 focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-60";
+  "flex h-12 flex-1 cursor-pointer items-center justify-center gap-2 rounded-10 text-sm font-medium transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-focus focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-60";
 
 const ReserveSuccess = ({
   onChat,
@@ -26,17 +26,17 @@ const ReserveSuccess = ({
       role="status"
       className="flex flex-col items-center gap-4 p-6 text-center"
     >
-      <span className="success-pop flex size-12 items-center justify-center rounded-full bg-success-50 text-success-600">
+      <span className="success-pop flex size-12 items-center justify-center rounded-full bg-status-success-bg text-status-success">
         <Icon name="check" size={24} />
       </span>
 
       <div className="flex flex-col gap-2">
-        <p className="text-base font-bold text-success-600">
+        <p className="text-base font-bold text-status-success">
           {created
             ? t("reserve.reserveSentTitle")
             : t("reserve.reserveAlreadySentTitle")}
         </p>
-        <p className="text-sm text-neutral-600">
+        <p className="text-sm text-ink-muted">
           {isExpired
             ? t("reserve.reserveSentExpiredBody")
             : t("reserve.reserveSentBody")}
@@ -48,7 +48,7 @@ const ReserveSuccess = ({
           <button
             type="button"
             onClick={onCall}
-            className={`${ACTION_CLASS} bg-brand-600 text-white hover:bg-brand-700`}
+            className={`${ACTION_CLASS} bg-action text-on-action hover:bg-action-hover`}
           >
             <Icon name="phone" size={20} />
             {t("reserve.callHost")}
@@ -57,7 +57,7 @@ const ReserveSuccess = ({
             <button
               type="button"
               onClick={onSms}
-              className={`${ACTION_CLASS} border border-neutral-200 bg-white text-neutral-900 hover:bg-neutral-50`}
+              className={`${ACTION_CLASS} border border-line bg-surface text-ink hover:bg-surface-muted`}
             >
               <Icon name="sms" size={20} />
               {t("common.sms")}
@@ -68,7 +68,7 @@ const ReserveSuccess = ({
               type="button"
               onClick={onChat}
               disabled={isChatPending}
-              className={`${ACTION_CLASS} border border-neutral-200 bg-white text-neutral-900 hover:bg-neutral-50`}
+              className={`${ACTION_CLASS} border border-line bg-surface text-ink hover:bg-surface-muted`}
             >
               <Icon name="chat" size={20} />
               {t("reserve.chatInJayab")}
@@ -80,7 +80,7 @@ const ReserveSuccess = ({
       <div className="flex items-center gap-4 text-sm">
         <Link
           href="/profile/reserves"
-          className="flex items-center gap-1 text-brand-700"
+          className="flex items-center gap-1 text-link"
         >
           {t("reserve.myRequests")}
           <Icon name="chevron-left" size={16} />
@@ -88,7 +88,7 @@ const ReserveSuccess = ({
         <button
           type="button"
           onClick={onClose}
-          className="cursor-pointer text-neutral-500 hover:text-neutral-900"
+          className="cursor-pointer text-ink-subtle hover:text-ink"
         >
           {t("common.close")}
         </button>

@@ -15,9 +15,9 @@ import moment from "moment-jalaali";
 import Image from "next/image";
 
 const SummaryItem = ({ title, value }: PhotoUpgradeSummaryItemProps) => (
-  <div className="flex items-center justify-between gap-2 rounded-10 bg-neutral-50 px-3 py-2 text-xs md:text-sm">
-    <span className="text-neutral-500">{title}</span>
-    <span className="font-medium text-neutral-900">{value}</span>
+  <div className="flex items-center justify-between gap-2 rounded-10 bg-surface-muted px-3 py-2 text-xs md:text-sm">
+    <span className="text-ink-subtle">{title}</span>
+    <span className="font-medium text-ink">{value}</span>
   </div>
 );
 
@@ -31,19 +31,19 @@ const OwnerPhotoUpgradeDetails = ({ requestId }: { requestId: number }) => {
 
   if (!Number.isInteger(requestId) || requestId <= 0)
     return (
-      <div className="profile-container white-card text-center text-sm text-neutral-500">
+      <div className="profile-container white-card text-center text-sm text-ink-subtle">
         {t("owner.invalidRequestId")}
       </div>
     );
   if (isPending) return <PhotoUpgradeDetailSkeleton />;
   if (isError || !data)
     return (
-      <div className="profile-container white-card flex flex-col items-center gap-3 text-center text-sm text-neutral-500">
+      <div className="profile-container white-card flex flex-col items-center gap-3 text-center text-sm text-ink-subtle">
         <p>{t("owner.requestNotFound")}</p>
         <button
           type="button"
           onClick={() => void refetch()}
-          className="text-brand-600"
+          className="text-link"
         >
           {t("common.tryAgain")}
         </button>
@@ -72,7 +72,7 @@ const OwnerPhotoUpgradeDetails = ({ requestId }: { requestId: number }) => {
                 <h1 className="line-clamp-1 text-base font-medium md:text-xl">
                   {data?.property?.title || t("common.property")}
                 </h1>
-                <p className="mt-1 text-xs text-neutral-500">
+                <p className="mt-1 text-xs text-ink-subtle">
                   {t("common.code")} {data?.property?.code || data?.property_id}
                 </p>
               </div>
@@ -130,7 +130,7 @@ const OwnerPhotoUpgradeDetails = ({ requestId }: { requestId: number }) => {
             />
           ))
         ) : (
-          <div className="white-card text-center text-sm text-neutral-500">
+          <div className="white-card text-center text-sm text-ink-subtle">
             {t("owner.noImagesForRequest")}
           </div>
         )}

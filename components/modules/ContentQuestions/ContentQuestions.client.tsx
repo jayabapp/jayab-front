@@ -40,7 +40,7 @@ export const ContentQuestions = ({
   
   return (
     <div
-      className={`flex w-full  bg-white rounded-10 md:rounded-20  flex-col items-center md:items-start justify-center p-5 ${containerClass}`}
+      className={`flex w-full  bg-surface rounded-10 md:rounded-20  flex-col items-center md:items-start justify-center p-5 ${containerClass}`}
     >
       {data?.length > 0 && (
         <div className="w-full my-4 flex items-center justify-between">
@@ -48,7 +48,7 @@ export const ContentQuestions = ({
             {title ?? t("content.askQuestionTitle")}
           </p>
           {!!meta?.total && meta?.total > 0 && (
-            <p className="  text-brand-600 text-base font-bold ">
+            <p className="  text-link text-base font-bold ">
               {meta?.total}{" "}
               {!!contentId ? t("content.comment") : t("content.question")}
             </p>

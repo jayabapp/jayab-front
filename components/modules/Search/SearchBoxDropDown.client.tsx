@@ -22,19 +22,19 @@ const SearchBoxDropDown = ({
 
   const [showResults, setShowResults] = useState(false);
   const {
-    activeIndex,
+    pick,
+    term,
     close,
+    submit,
+    listRef,
+    setTerm,
+    isStale,
+    options,
     isLoading,
     isPending,
-    isStale,
-    listRef,
     onKeyDown,
-    options,
-    pick,
+    activeIndex,
     setActiveIndex,
-    setTerm,
-    submit,
-    term,
   } = useSearchPanel({
     initValue,
     isOpen: showResults,
@@ -47,7 +47,8 @@ const SearchBoxDropDown = ({
       <div
         className="relative w-full inline-block text-left"
         onBlur={(event) => {
-          if (!event.currentTarget.contains(event.relatedTarget)) setShowResults(false);
+          if (!event.currentTarget.contains(event.relatedTarget))
+            setShowResults(false);
         }}
       >
         <form
@@ -56,7 +57,7 @@ const SearchBoxDropDown = ({
             if (!isPending) submit();
           }}
           onFocus={() => setShowResults(true)}
-          className={`bg-white/50 rounded-20 w-full overflow-hidden pr-4 pl-2 flex justify-between items-center ${item?.bg ?? ""}`}
+          className={`bg-surface/50 rounded-20 w-full overflow-hidden pr-4 pl-2 flex justify-between items-center ${item?.bg ?? ""}`}
         >
           <div className="flex items-center w-full">
             <input
@@ -81,7 +82,7 @@ const SearchBoxDropDown = ({
               type="submit"
               disabled={isPending}
               aria-label={t("search")}
-              className={`${term ? "" : "opacity-0 pointer-events-none"} transition-all cursor-pointer h-10 w-10 top-0 bottom-0 my-0 flex items-center justify-center left-1 aspect-square rounded-full bg-brand-600`}
+              className={`${term ? "" : "opacity-0 pointer-events-none"} transition-all cursor-pointer h-10 w-10 top-0 bottom-0 my-0 flex items-center justify-center left-1 aspect-square rounded-full bg-action`}
             >
               {isPending ? (
                 <BtnLoading />
@@ -108,7 +109,7 @@ const SearchBoxDropDown = ({
           leaveFrom="transform opacity-100 scale-100"
           leaveTo="transform opacity-0 scale-95"
         >
-          <div className="absolute w-full pb-2 md:top-auto left-0 z-20 mt-2 origin-top-center rounded-20 bg-white custome-shadow-card focus:outline-none overflow-scroll">
+          <div className="absolute w-full pb-2 md:top-auto left-0 z-20 mt-2 origin-top-center rounded-20 bg-surface custome-shadow-card focus:outline-none overflow-scroll">
             <div className="flex gap-2 w-full items-center flex-col px-2 py-2">
               <SearchPanelBody
                 term={term}

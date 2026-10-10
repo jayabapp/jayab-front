@@ -51,7 +51,7 @@ const PropertyBedroomStep = ({ propertyId }: OwnerPropertyRouteProps) => {
       propertyId={propertyId}
       submitTitle={t("owner.submitMoveOn")}
     >
-      <p className="font-bold w-full text-start text-sm md:text-base text-brand-600">
+      <p className="font-bold w-full text-start text-sm md:text-base text-link">
         {t("owner.roomsInfo")}
       </p>
 
@@ -95,7 +95,7 @@ const PropertyBedroomStep = ({ propertyId }: OwnerPropertyRouteProps) => {
       </div>
 
       <div className="flex flex-col gap-2 border-b pb-4 w-full">
-        <p className="font-bold w-full text-start text-sm md:text-base text-brand-600">
+        <p className="font-bold w-full text-start text-sm md:text-base text-link">
           {t("owner.restRooms")}
         </p>
         <TitledCounter
@@ -113,7 +113,7 @@ const PropertyBedroomStep = ({ propertyId }: OwnerPropertyRouteProps) => {
       </div>
 
       <div className="flex flex-col gap-2 border-b pb-4 w-full">
-        <p className="font-bold w-full text-start text-sm md:text-base text-brand-600">
+        <p className="font-bold w-full text-start text-sm md:text-base text-link">
           {t("owner.shower")}
         </p>
         <TitledCounter

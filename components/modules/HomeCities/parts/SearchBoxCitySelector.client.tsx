@@ -24,13 +24,13 @@ const SeachBoxCitySelector = ({ options, onSubmitCB }: TSearchBoxProps) => {
         onClick={onShowCities}
         className={` px-0 pb-0 pt-4 w-full relative flex cursor-pointer items-center shrink-0 gap-2   border-t  `}
       >
-        <div className=" rounded-md   bg-neutral-50  size-10  flex items-center  justify-center  border ">
+        <div className=" rounded-md   bg-surface-muted  size-10  flex items-center  justify-center  border ">
           <ContentImage
             alt=""
             width={20}
             height={20}
             src="/assets/icons/home/home_location.svg"
-            className={` size-5 aspect-auto ${!!title ? "   text-black opacity-70 " : "opacity-40"}`}
+            className={` size-5 aspect-auto ${!!title ? "   text-ink opacity-70 " : "opacity-40"}`}
           />{" "}
         </div>
 

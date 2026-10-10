@@ -5,9 +5,9 @@ import type { OwnerActionRowProps } from "@/types/components/modules/owner-prope
 import Link from "next/link";
 
 const toneClass = {
-  brand: "border-neutral-200 text-brand-600",
-  danger: "border-danger-500/50 text-danger-500",
-  default: "border-neutral-200",
+  brand: "border-line text-link",
+  danger: "border-status-danger/50 text-status-danger",
+  default: "border-line",
 };
 
 const OwnerActionRow = ({
@@ -23,7 +23,7 @@ const OwnerActionRow = ({
       <div className="flex items-center gap-2">
         {icon}
         <p
-          className={`text-sm font-bold ${tone === "brand" ? "text-brand-600" : ""} ${tone === "danger" ? "text-danger-500" : ""}`}
+          className={`text-sm font-bold ${tone === "brand" ? "text-link" : ""} ${tone === "danger" ? "text-status-danger" : ""}`}
         >
           {title}
         </p>

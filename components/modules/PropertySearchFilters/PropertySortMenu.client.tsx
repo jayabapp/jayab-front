@@ -45,7 +45,7 @@ const PropertySortMenu = ({ query }: PropertySortMenuProps) => {
     <div className="w-fit flex lg:flex-row shrink-0 gap-3 items-center justify-between rounded-10">
       <Menu as="div" className="relative shrink-0 inline-block text-left mr-1">
         <MenuButton className="md:h-6.5 shrink-0 rounded-lg cursor-pointer flex justify-between items-center">
-          <div className="gap-2 h-6.5 px-2 shrink-0 rounded-full bg-white border-brand-200 border flex items-center justify-center">
+          <div className="gap-2 h-6.5 px-2 shrink-0 rounded-full bg-surface border-selected-line border flex items-center justify-center">
             <p className="shrink-0 text-xs md:text-sm">{activeSort?.title}</p>
             <ContentImage
               alt=""
@@ -59,9 +59,9 @@ const PropertySortMenu = ({ query }: PropertySortMenuProps) => {
 
         <MenuItems
           transition
-          className="absolute shadow-xl top-0 md:top-auto left-0 z-20 mt-2 w-48 origin-top-center rounded-20 bg-white custom-shadow ring-1 ring-black ring-opacity-5 focus:outline-none overflow-scroll transition duration-100 ease-out data-[closed]:scale-95 data-[closed]:opacity-0"
+          className="absolute shadow-xl top-0 md:top-auto left-0 z-20 mt-2 w-48 origin-top-center rounded-20 bg-surface custom-shadow ring-1 ring-black ring-opacity-5 focus:outline-none overflow-scroll transition duration-100 ease-out data-[closed]:scale-95 data-[closed]:opacity-0"
         >
-          <div className="flex gap-2 px-3 items-center flex-col py-2 border-b border-neutral-200">
+          <div className="flex gap-2 px-3 items-center flex-col py-2 border-b border-line">
             <div className="w-full flex items-center justify-between py-1">
               <p className="text-sm">{t("sortBy")}</p>
             </div>
@@ -90,7 +90,7 @@ const PropertySortMenu = ({ query }: PropertySortMenuProps) => {
                     src={entry?.icon}
                     className="w-5 h-5 aspect-square"
                   />
-                  <p className="text-sm text-black opacity-70">
+                  <p className="text-sm text-ink opacity-70">
                     {entry?.title}
                   </p>
                 </button>

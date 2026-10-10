@@ -1,19 +1,20 @@
 "use client";
 
-import { useCreatePropertyEntry } from "@features/owner-property/hooks/useCreatePropertyEntry";
-import { useNotificationBadge } from "@features/notifications/hooks/useNotificationBadge";
-import { useAdvisorProfile } from "@features/advisors/hooks/useAdvisorProfile";
 import { sheetBelowHeader, useHeaderAutoHide } from "@hooks/useHeaderAutoHide";
-import type { SiteHeaderProps } from "@/types/components/modules/site-header";
-import { useUnreadChatCount } from "@features/chat/hooks/useUnreadChatCount";
-import { getUserAvatarUrl } from "@features/user/mappers/user-image.mapper";
-import { useCurrentProfile } from "@features/auth/hooks/useCurrentProfile";
-import { subscriptionStatus } from "@/helpers/subscriptionStatus";
-import { headerWithFullSeach } from "@/utils/constantss";
-import { useParams, usePathname } from "next/navigation";
 import { useAuthStore, useStoreParams } from "@/store";
 import { memo, useEffect, useMemo } from "react";
+import { useParams, usePathname } from "next/navigation";
+import { useCreatePropertyEntry } from "@features/owner-property/hooks/useCreatePropertyEntry";
+import { useNotificationBadge } from "@features/notifications/hooks/useNotificationBadge";
+import { headerWithFullSeach } from "@/utils/constantss";
+import { useUnreadChatCount } from "@features/chat/hooks/useUnreadChatCount";
+import { subscriptionStatus } from "@/helpers/subscriptionStatus";
+import { useCurrentProfile } from "@features/auth/hooks/useCurrentProfile";
+import { useAdvisorProfile } from "@features/advisors/hooks/useAdvisorProfile";
+import { getUserAvatarUrl } from "@features/user/mappers/user-image.mapper";
 import { useRouter } from "next/navigation";
+
+import type { SiteHeaderProps } from "@/types/components/modules/site-header";
 
 import HeaderDesktopNav from "./parts/HeaderDesktopNav.client";
 import HeaderMobileBar from "./parts/HeaderMobileBar.client";
@@ -104,8 +105,8 @@ const SiteHeader = ({ phone, variant = "page" }: SiteHeaderProps) => {
             isLight
               ? " bg-transparent "
               : topHeaderVisible
-                ? " bg-white "
-                : ` bg-white ${headerWithFullSeach.includes(pathname) || !!params?.slug ? " border-b xl:border-b-0 xl:shadow-glass-sm" : "shadow-glass-sm"} `
+                ? " bg-surface "
+                : ` bg-surface ${headerWithFullSeach.includes(pathname) || !!params?.slug ? " border-b xl:border-b-0 xl:shadow-glass-sm" : "shadow-glass-sm"} `
           }`}
         >
           <HeaderMobileBar

@@ -308,9 +308,9 @@ const Day = memo(
     const containerClasses = useMemo(() => {
       const baseClasses =
         "aspect-square m-0.5 md:m-1 rounded-lg relative overflow-hidden";
-      let bgClass = "bg-white border border-neutral-200";
+      let bgClass = "bg-surface border border-line";
       if (dateInfo.isBefore && !dateInfo.isToday) {
-        bgClass = "bg-neutral-300 opacity-50";
+        bgClass = "bg-line-strong opacity-50";
       } else if (dateInfo.isForbidden && !dateInfo?.isSpanEnd) {
         if (dateInfo.isForbiddenSpanStart) {
           if (
@@ -318,21 +318,21 @@ const Day = memo(
             !dateSpan?.end &&
             dateInfo?.isValidForSelection
           ) {
-            bgClass = "bg-green-100/20 border border-green-300";
+            bgClass = "bg-status-success-bg/20 border border-status-success-line";
           } else bgClass = " opacity-60  half-striped-top ";
         } else {
           bgClass = " striped opacity-60";
         }
       } else if (dateInfo.isValidForSelection) {
-        bgClass = "bg-green-100/20 border border-green-300";
+        bgClass = "bg-status-success-bg/20 border border-status-success-line";
       } else if (dateInfo.isExceedsMaxSpan) {
         bgClass = "cursor-pointer";
       } else if (dateInfo.isInSpan) {
-        if (dateInfo.isSpanStart) bgClass = "bg-brand-600 !m-0 !rounded-l-none";
+        if (dateInfo.isSpanStart) bgClass = "bg-action !m-0 !rounded-l-none";
         else if (dateInfo.isSpanEnd)
-          bgClass = "bg-brand-600 !m-0 !rounded-r-none";
+          bgClass = "bg-action !m-0 !rounded-r-none";
         else if (dateInfo.isBetweenSpan)
-          bgClass = "!rounded-none bg-brand-600/10 !m-0";
+          bgClass = "!rounded-none bg-action/10 !m-0";
       } else if (dateInfo.isAfterForbiddenSpan) {
         bgClass = " opacity-60  half-striped-bottom ";
       }
@@ -408,23 +408,23 @@ const Day = memo(
       if (smallerDateFonts) classes.push("text-sm");
       else classes.push("text-base");
       if (dateInfo.isForbidden && !dateInfo?.isSpanEnd) {
-        classes.push("text-neutral-500");
+        classes.push("text-ink-subtle");
       } else if (dateInfo.isFriday) {
-        classes.push("text-red-700");
+        classes.push("text-status-danger");
       } else if (dateInfo.isBefore && !dateInfo.isToday) {
-        classes.push("text-neutral-500");
+        classes.push("text-ink-subtle");
       } else if (dateInfo.isValidForSelection) {
-        classes.push("text-green-800 font-semibold");
+        classes.push("text-status-success font-semibold");
       } else if (dateInfo.isInSpan) {
         if (dateInfo.isSpanStart || dateInfo.isSpanEnd)
           classes.push("text-white font-bold");
-        else if (dateInfo.isBetweenSpan) classes.push("text-neutral-900");
+        else if (dateInfo.isBetweenSpan) classes.push("text-ink");
       } else if (dateInfo.isAfterForbiddenSpan) {
-        classes.push("text-neutral-800");
+        classes.push("text-ink");
       } else if (dateInfo.isSelected) {
         classes.push("text-white");
       } else {
-        classes.push("text-neutral-800");
+        classes.push("text-ink");
       }
 
       return classes.join(" ");
@@ -513,7 +513,7 @@ const Day = memo(
           {dateInfo.isToday &&
             !dateInfo.isForbidden &&
             !dateInfo.isPartOfForbiddenSpan && (
-              <div className="absolute top-0.5 md:top-1 w-1.5 h-1.5 bg-brand-600 rounded-full" />
+              <div className="absolute top-0.5 md:top-1 w-1.5 h-1.5 bg-action rounded-full" />
             )}
 
           {/* Memo indicator */}
@@ -525,7 +525,7 @@ const Day = memo(
                 className={`absolute left-1 top-1 w-1.5 h-1.5 aspect-square rounded-full ${
                   dateInfo.isInSpan &&
                   (dateInfo.isSpanStart || dateInfo.isSpanEnd)
-                    ? "bg-white"
+                    ? "bg-surface"
                     : dateInfo.isValidForSelection
                       ? "bg-green-600"
                       : "bg-success-600"
@@ -561,7 +561,7 @@ const Day = memo(
             !dateInfo.isExceedsMaxSpan &&
             !dateInfo.isForbidden &&
             !dateInfo.isPartOfForbiddenSpan && (
-              <div className="absolute -bottom-1 left-0 right-0 mx-auto w-3 h-0.5 bg-white rounded-full" />
+              <div className="absolute -bottom-1 left-0 right-0 mx-auto w-3 h-0.5 bg-surface rounded-full" />
             )}
         </div>
       </div>

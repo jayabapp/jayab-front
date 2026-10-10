@@ -124,7 +124,7 @@ const OwnerDayPriceModal = ({
 
   return (
     <Modal show={show} onHide={onHide}>
-      <div className="flex flex-col gap-4 p-4 bg-white rounded-20">
+      <div className="flex flex-col gap-4 p-4 bg-surface rounded-20">
         <ContentImage
           alt=""
           width={36}
@@ -132,7 +132,7 @@ const OwnerDayPriceModal = ({
           className="w-9 h-9 aspect-square"
           src="/assets/icons/property/price_label.svg"
         />
-        <p className="text-sm font-bold text-brand-600">
+        <p className="text-sm font-bold text-link">
           {t("owner.immediateChange")}
         </p>
         {isLoading ? (
@@ -161,7 +161,7 @@ const OwnerDayPriceModal = ({
           className="w-9 h-9 aspect-square"
           src="/assets/icons/property/discount_label.svg"
         />
-        <p className="text-sm font-bold text-brand-600">
+        <p className="text-sm font-bold text-link">
           {t("owner.discountedPriceTitle")}
         </p>
         {isDiscountLoading ? (

@@ -26,7 +26,7 @@ import Amenities from "./parts/Amenities.client";
 import HostCard from "./parts/HostCard";
 import KeyFacts from "./parts/KeyFacts";
 
-const SUB_HEADING_CLASS = "text-sm font-bold text-neutral-900";
+const SUB_HEADING_CLASS = "text-sm font-bold text-ink";
 
 const PropertyDetailsContent = ({ property }: PropertyDetailsContentProps) => {
   const t = useTranslations();
@@ -69,7 +69,7 @@ const PropertyDetailsContent = ({ property }: PropertyDetailsContentProps) => {
       <SectionTabs tabs={tabs} />
 
       {view.ownerName ? (
-        <p className="order-4 pb-4 ui-body text-neutral-600 md:hidden">
+        <p className="order-4 pb-4 ui-body text-ink-muted md:hidden">
           {t("listing.villaHostedBy")} {view.ownerName}
         </p>
       ) : null}

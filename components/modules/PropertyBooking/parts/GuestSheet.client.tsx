@@ -29,7 +29,7 @@ const GuestSheet = ({
         title={t("reserve.guestCount")}
       />
       <div className="flex flex-col gap-4 p-4">
-        {summary ? <p className="text-sm text-neutral-500">{summary}</p> : null}
+        {summary ? <p className="text-sm text-ink-subtle">{summary}</p> : null}
         <GuestStepper
           max={max}
           std={std}
@@ -41,7 +41,7 @@ const GuestSheet = ({
           type="button"
           disabled={!value}
           onClick={onConfirm}
-          className="h-11 w-full cursor-pointer rounded-10 bg-brand-600 text-base font-medium text-white transition-colors hover:bg-brand-700 disabled:cursor-not-allowed disabled:bg-neutral-300 disabled:hover:bg-neutral-300"
+          className="h-11 w-full cursor-pointer rounded-10 bg-action text-base font-medium text-on-action transition-colors hover:bg-action-hover disabled:cursor-not-allowed disabled:bg-line-strong disabled:hover:bg-line-strong"
         >
           {t("common.confirmGuests")}
         </button>

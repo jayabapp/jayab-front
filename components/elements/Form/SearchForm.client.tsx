@@ -38,14 +38,14 @@ const FormInput = ({
           !!item?.iconEndUrl ? " !pl-10" : ""
         } ${
           item?.direction ? item?.direction : "rtl"
-        }   bg-neutral-50    !text-base   ltr  text-right form-control  font-normal border focus:border-brand-600  py-4 px-4 w-full rounded-10 placeholder:text-neutral-400 placeholder:text-right   placeholder:font-normal placeholder:text-sm placeholder:opacity-70   ${
+        }   bg-surface-muted    !text-base   ltr  text-right form-control  font-normal border border-control focus:border-action  py-4 px-4 w-full rounded-10 placeholder:text-ink-subtle placeholder:text-right   placeholder:font-normal placeholder:text-sm placeholder:opacity-70   ${
           item?.inputClass
         } ${
           item?.disableHover
             ? ""
             : !!errors && !!errors[errorKey]
-              ? "border-red-100"
-              : " hover:border-neutral-300 focus:border-brand-600/30"
+              ? "border-status-danger-line"
+              : " hover:border-ink-muted focus:border-action/30"
         } `}
         id={`input-${item?.id}`}
         placeholder={item?.placeholder || item?.title}
@@ -80,9 +80,7 @@ const FormInput = ({
             item?.iconFunc ? "cursor-pointer" : ""
           }`}
           onClick={() => {
-            if (item?.iconFunc) {
-              item?.iconFunc();
-            }
+            if (item?.iconFunc)  item?.iconFunc()
           }}
           src={"/assets/icons/edit/blue_edit_pen.svg"}
         />
@@ -96,9 +94,7 @@ const FormInput = ({
             item?.iconEndUrlClassName
           } ${item?.iconEndFunc ? "cursor-pointer" : ""}`}
           onClick={() => {
-            if (item?.iconEndFunc) {
-              item?.iconEndFunc();
-            }
+            if (item?.iconEndFunc) item?.iconEndFunc();
           }}
           src={`${item?.iconEndUrl}`}
         />
@@ -112,7 +108,7 @@ const FormInput = ({
       {!!item?.hint && (
         <div
           id={`${item?.id}`}
-          className={`text-xs font-light text-neutral-400 mt-1 mr-5 `}
+          className={`text-xs font-light text-ink-subtle mt-1 mr-5 `}
         >
           {item?.hint}
         </div>

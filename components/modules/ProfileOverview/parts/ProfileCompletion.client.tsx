@@ -24,14 +24,14 @@ const ProfileCompletion = ({ profile }: ProfileCompletionProps) => {
     <div className="glass-surface flex flex-col gap-4 rounded-28 p-5">
       <div className="flex items-center justify-between gap-3">
         <div className="flex flex-col gap-1">
-          <p className="font-bold text-neutral-900">
+          <p className="font-bold text-ink">
             {t("profileCompletionTitle")}
           </p>
-          <p className="text-xs text-neutral-600">
+          <p className="text-xs text-ink-muted">
             {t("profileCompletionHint")}
           </p>
         </div>
-        <p className="shrink-0 text-2xl font-bold text-brand-600">{percent}%</p>
+        <p className="shrink-0 text-2xl font-bold text-link">{percent}%</p>
       </div>
 
       <div
@@ -40,7 +40,7 @@ const ProfileCompletion = ({ profile }: ProfileCompletionProps) => {
         aria-valuemax={100}
         aria-valuenow={percent}
         aria-label={t("profileCompletionTitle")}
-        className="h-2 w-full overflow-hidden rounded-full bg-white/70"
+        className="h-2 w-full overflow-hidden rounded-full bg-surface/70"
       >
         <div
           style={{ width: `${percent}%` }}
@@ -54,8 +54,8 @@ const ProfileCompletion = ({ profile }: ProfileCompletionProps) => {
             key={`completion${step.id}`}
             className={`rounded-full border px-3 py-1 text-xs ${
               step.done
-                ? "border-success-500/30 bg-success-50 text-success-600"
-                : "border-white/70 bg-white/60 text-neutral-600"
+                ? "border-status-success/30 bg-status-success-bg text-status-success"
+                : "border-white/70 bg-surface/60 text-ink-muted"
             }`}
           >
             {step.done ? "✓ " : ""}

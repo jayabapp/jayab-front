@@ -6,7 +6,7 @@ const ChatSecurityNotice = () => {
   return (
     <aside
       aria-label={t("chatSecurityWarningTitle")}
-      className="border-t border-amber-200 bg-amber-50 px-4 py-2 text-right text-xs leading-5 text-amber-950 md:px-5"
+      className="border-t border-status-warning-line bg-status-warning-bg px-4 py-2 text-right text-xs leading-5 text-status-warning md:px-5"
     >
       <p>
         <strong>{t("chatSecurityWarningTitle")}:</strong>{" "}

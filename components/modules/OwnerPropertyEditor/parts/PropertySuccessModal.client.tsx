@@ -19,7 +19,7 @@ const PropertySuccessModal = ({
 
   return (
     <Modal dismissible={false} show={show} onHide={() => undefined}>
-      <div className="bg-white p-4 rounded-20 gap-4 flex flex-col items-center justify-center">
+      <div className="bg-surface p-4 rounded-20 gap-4 flex flex-col items-center justify-center">
         <ContentImage
           alt=""
           width={256}
@@ -28,7 +28,7 @@ const PropertySuccessModal = ({
           src="/assets/icons/adds/success_prop_add.svg"
         />
         <div className="flex flex-col items-center justify-center w-full gap-2">
-          <p className="text-brand-600 font-bold">
+          <p className="text-link font-bold">
             {t("owner.urPropRegistered")}
           </p>
           <p className="text-sm text-center">

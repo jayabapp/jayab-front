@@ -6,11 +6,11 @@ const ShowAllButton = ({ count, label, onClick }: ShowAllButtonProps) => (
   <button
     type="button"
     onClick={onClick}
-    className="flex w-fit cursor-pointer items-center gap-1.5 rounded-full bg-neutral-100 px-4 py-2 text-sm font-semibold text-neutral-900 transition-colors hover:bg-neutral-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-500"
+    className="flex w-fit cursor-pointer items-center gap-1.5 rounded-full bg-surface-muted px-4 py-2 text-sm font-semibold text-ink transition-colors hover:bg-surface-hover focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-focus"
   >
     <span>{label}</span>
-    {count ? <span className="text-neutral-600">({count})</span> : <></>}
-    <Icon name="chevron-left" size={16} className="text-neutral-600" />
+    {count ? <span className="text-ink-muted">({count})</span> : <></>}
+    <Icon name="chevron-left" size={16} className="text-ink-muted" />
   </button>
 );
 

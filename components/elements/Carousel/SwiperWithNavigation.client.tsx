@@ -10,9 +10,9 @@ import "swiper/css/zoom";
 import "swiper/css";
 
 const SwiperWithNavigation = ({
-  dataLength,
   children,
   reference,
+  dataLength,
   containerClass,
   ...props
 }: any) => {
@@ -32,7 +32,7 @@ const SwiperWithNavigation = ({
             reference.current?.slideNext();
             setisStart(false);
           }}
-          className=" my-auto    flex bottom-0 top-0  items-center justify-center hover:scale-102 group hover:bg-brand-600  transition-all lg:flex md:flex-col absolute z-10 bg-white/40   rounded-full cursor-pointer h-10 w-10 left-4   right-auto"
+          className=" my-auto    flex bottom-0 top-0  items-center justify-center hover:scale-102 group hover:bg-action  transition-all lg:flex md:flex-col absolute z-10 bg-surface/40   rounded-full cursor-pointer h-10 w-10 left-4   right-auto"
         >
           <ContentImage
             width={18}
@@ -52,12 +52,8 @@ const SwiperWithNavigation = ({
           setisStart(true);
           setIsEnd(false);
         }}
-        onSlideNextTransitionStart={() => {
-          setisStart(false);
-        }}
-        onSlidePrevTransitionStart={() => {
-          setIsEnd(false);
-        }}
+        onSlideNextTransitionStart={() => setisStart(false)}
+        onSlidePrevTransitionStart={() => setIsEnd(false)}
         onAfterInit={(swiper) =>
           setslidesPerView(swiper?.params?.slidesPerView || 2)
         }
@@ -77,14 +73,14 @@ const SwiperWithNavigation = ({
             reference.current?.slidePrev();
             setIsEnd(false);
           }}
-          className=" flex   bottom-0 top-0  my-auto hover:scale-102 transition-all group hover:bg-brand-600   lg:flex md:flex-col absolute z-10 bg-white/40   rounded-full cursor-pointer h-10 w-10 right-4  left-auto justify-center items-center"
+          className="flex bottom-0 top-0 my-auto hover:scale-102 transition-all group hover:bg-action lg:flex md:flex-col absolute z-10 bg-surface/40   rounded-full cursor-pointer h-10 w-10 right-4  left-auto justify-center items-center"
         >
           <ContentImage
             width={18}
             height={18}
             alt="chvronSwiper"
             src="/assets/icons/shared/chevron.svg"
-            className="w-[1.125rem] -rotate-90 h-[1.125rem]    select-none group-hover:invert "
+            className="w-[1.125rem] -rotate-90 h-[1.125rem] select-none group-hover:invert"
           />
         </div>
       ) : null}

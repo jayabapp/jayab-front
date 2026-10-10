@@ -41,7 +41,7 @@ const PropertyFilterForm = ({
   return (
     <div className="flex w-full flex-col px-3">
       {onReset ? (
-        <div className="sticky top-0 z-1 bg-white pt-3">
+        <div className="sticky top-0 z-1 bg-surface pt-3">
           <FilterPanelHeader activeCount={activeCount} onReset={onReset} />
         </div>
       ) : (
@@ -73,7 +73,7 @@ const PropertyFilterForm = ({
         count={filters?.min_price || filters?.max_price ? 1 : 0}
       >
         <div className="flex w-full flex-col gap-4 pb-2 pt-1">
-          <p className="text-xs text-neutral-600">
+          <p className="text-xs text-ink-muted">
             {t("common.from")} {numberWithCommas(filters?.min_price || 0)}{" "}
             {t("common.to")} {numberWithCommas(filters?.max_price || PRICE_MAX)}{" "}
             {t("common.toman")}
@@ -119,7 +119,7 @@ const PropertyFilterForm = ({
         )}
       </FilterSection>
 
-      <div className="w-full border-b border-neutral-100 py-1">
+      <div className="w-full border-b border-surface-muted py-1">
         <DateFilter filters={filters} setFilters={setFilters} />
       </div>
 
@@ -173,8 +173,8 @@ const PropertyFilterForm = ({
           {excludesPool || isHidden("pool_type") ? (
             <></>
           ) : (
-            <div className="mt-2 border-t border-neutral-100 pt-2">
-              <p className="pb-1 text-xs text-neutral-500">
+            <div className="mt-2 border-t border-surface-muted pt-2">
+              <p className="pb-1 text-xs text-ink-subtle">
                 {t("common.poolType")}
               </p>
               <PropertyModelFilter
@@ -285,7 +285,7 @@ const PropertyFilterForm = ({
         count={filters?.min_building_area || filters?.max_building_area ? 1 : 0}
       >
         <div className="flex w-full flex-col gap-4 pb-2 pt-1">
-          <p className="text-xs text-neutral-600">
+          <p className="text-xs text-ink-muted">
             {t("common.from")}{" "}
             {numberWithCommas(filters?.min_building_area || 0)} {t("common.to")}{" "}
             {numberWithCommas(filters?.max_building_area || AREA_MAX)}{" "}
@@ -317,7 +317,7 @@ const PropertyFilterForm = ({
           count={filters?.min_commission || filters?.max_commission ? 1 : 0}
         >
           <div className="flex w-full flex-col gap-4 pb-2 pt-1">
-            <p className="text-xs text-neutral-600">
+            <p className="text-xs text-ink-muted">
               {t("common.from")}{" "}
               {numberWithCommas(filters?.min_commission || 0)}% {t("common.to")}{" "}
               {numberWithCommas(filters?.max_commission || COMMISSION_MAX)}%

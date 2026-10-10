@@ -16,8 +16,8 @@ const QaLoginPage = async ({
 
   return (
     <div className="flex min-h-[100dvh] w-full items-center justify-center px-4 py-12">
-      <div className="w-full max-w-sm rounded-20 border border-neutral-200 bg-white p-6 shadow-glass-sm">
-        <SplashLogo className="mb-6 h-10 w-10 text-brand-600" />
+      <div className="w-full max-w-sm rounded-20 border border-line bg-surface p-6 shadow-glass-sm">
+        <SplashLogo className="mb-6 h-10 w-10 text-link" />
         <QaLoginForm next={next} />
       </div>
     </div>

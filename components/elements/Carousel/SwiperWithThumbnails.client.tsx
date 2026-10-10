@@ -1,12 +1,13 @@
 "use client";
 
-import type { ThumbnailCarouselProps } from "@/types/components/elements/carousel";
+import { useCallback, useEffect, useMemo, useState } from "react";
 import { NextButton, PrevButton } from "./EmblaCarouselArrowButtons.client";
 import { usePrevNextButtons } from "./EmblaCarouselArrowButtons.client";
-import { useCallback, useEffect, useMemo, useState } from "react";
-import { ContentImage } from "@/components/elements/Image";
-import { useMediaQuery } from "react-responsive";
 import { NEW_IMAGE_URL } from "@/utils/urls";
+import { useMediaQuery } from "react-responsive";
+import { ContentImage } from "@/components/elements/Image";
+
+import type { ThumbnailCarouselProps } from "@/types/components/elements/carousel";
 
 import useEmblaCarousel from "embla-carousel-react";
 import Autoplay from "embla-carousel-autoplay";
@@ -132,8 +133,8 @@ const SwiperWithThumbnails: React.FC<ThumbnailCarouselProps> = (props) => {
                   onClick={() => onThumbClick(index)}
                   className={`       w-full h-full  overflow-clip rounded-10 border cursor-pointer transition-all ease-in-out duration-300   ${
                     index === selectedIndex
-                      ? "border-brand-600   "
-                      : "border-neutral-300 opacity-60 "
+                      ? "border-action   "
+                      : "border-line-strong opacity-60 "
                   } `}
                 >
                   <ContentImage

@@ -42,7 +42,7 @@ const HomeTemplate = ({
   return (
     <div
       id="homeParent"
-      className="home-container !bg-white !px-0 !pt-0 flex flex-col gap-0"
+      className="home-container !bg-surface !px-0 !pt-0 flex flex-col gap-0"
     >
       <HomeSeo />
       <div className="relative flex w-full flex-col">

@@ -59,7 +59,7 @@ const SupportCreateForm = ({ dataKey }: NewTicketFormProps) => {
         errorKey="title"
       />
       {errors.title?.[0] ? (
-        <p className="text-xs text-danger-500">{errors.title[0]}</p>
+        <p className="text-xs text-status-danger">{errors.title[0]}</p>
       ) : null}
       <MultiLineFormInput
         item={{
@@ -75,7 +75,7 @@ const SupportCreateForm = ({ dataKey }: NewTicketFormProps) => {
         errorKey="message"
       />
       {errors.message?.[0] ? (
-        <p className="text-xs text-danger-500">{errors.message[0]}</p>
+        <p className="text-xs text-status-danger">{errors.message[0]}</p>
       ) : null}
       <Button
         onClick={submit}

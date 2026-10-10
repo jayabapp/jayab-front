@@ -1,7 +1,9 @@
 "use client";
-import { ContentImage } from "@elements/Image";
-import Modal from "@elements/Modal";
+
 import { useTranslations } from "next-intl";
+import { ContentImage } from "@elements/Image";
+
+import Modal from "@elements/Modal";
 
 type TRemoteImageProps = {
   alt: string;
@@ -15,7 +17,7 @@ const RemoteImageModal = ({ show, src, alt, onHide }: TRemoteImageProps) => {
 
   return (
     <Modal show={show} onHide={onHide}>
-      <div className="flex h-full w-full flex-col gap-2 bg-white p-2 ">
+      <div className="flex h-full w-full flex-col gap-2 bg-surface p-2 ">
         <button
           type="button"
           onClick={onHide}

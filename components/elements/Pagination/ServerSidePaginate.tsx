@@ -44,7 +44,7 @@ const ServerSidePaginate = ({
         disabled={currentPage <= 1}
         aria-label={t("previousPage")}
         onClick={() => pushPage(currentPage - 1)}
-        className="ml-2 flex h-9 w-9 items-center justify-center rounded-md border border-neutral-500 p-1 transition-all enabled:hover:translate-x-2 disabled:cursor-not-allowed disabled:opacity-50"
+        className="ml-2 flex h-9 w-9 items-center justify-center rounded-md border border-control p-1 transition-all enabled:hover:translate-x-2 disabled:cursor-not-allowed disabled:opacity-50"
       >
         <PaginationArrow direction="left" />
       </button>
@@ -61,7 +61,7 @@ const ServerSidePaginate = ({
               onClick={() => pushPage(page)}
               aria-label={`${t("pages")} ${page}`}
               aria-current={currentPage === page ? "page" : undefined}
-              className={`mx-2 flex h-9 w-9 items-center justify-center rounded-md border border-neutral-500 text-center font-medium ${currentPage === page ? "scale-[1.15] border-0 bg-brand-600 text-white" : "hover:text-brand-600"}`}
+              className={`mx-2 flex h-9 w-9 items-center justify-center rounded-md border border-control text-center font-medium ${currentPage === page ? "scale-[1.15] border-0 bg-action text-on-action" : "hover:text-link"}`}
             >
               {page}
             </button>
@@ -73,7 +73,7 @@ const ServerSidePaginate = ({
         aria-label={t("nextPage")}
         disabled={currentPage >= pageCount}
         onClick={() => pushPage(currentPage + 1)}
-        className="mr-2 flex h-9 w-9 items-center justify-center rounded-md border border-neutral-500 p-1 transition-all enabled:hover:-translate-x-2 disabled:cursor-not-allowed disabled:opacity-50"
+        className="mr-2 flex h-9 w-9 items-center justify-center rounded-md border border-control p-1 transition-all enabled:hover:-translate-x-2 disabled:cursor-not-allowed disabled:opacity-50"
       >
         <PaginationArrow direction="right" />
       </button>

@@ -98,8 +98,8 @@ const EditImageModal = ({
     <Modal
       options={{
         containerClass:
-          " app-size app-text max-h-[100dvh] flex flex-col items-center justify-center !bg-black  relative  rounded-lg overflow-y-scroll overflow-x-hidden  bg-white !rounded-none ",
-        parentClass: "bg-white",
+          " app-size app-text max-h-[100dvh] flex flex-col items-center justify-center !bg-black  relative  rounded-lg overflow-y-scroll overflow-x-hidden  bg-surface !rounded-none ",
+        parentClass: "bg-surface",
       }}
       show={!!imageUrl}
       onHide={() => onHide()}
@@ -174,7 +174,7 @@ const EditImageModal = ({
             className="cursor-pointer"
           />
 
-          <div className="text-white  text-xs">
+          <div className="text-white text-xs">
             <p onClick={() => reset()} className="cursor-pointer">
               reset
             </p>

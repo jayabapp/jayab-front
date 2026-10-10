@@ -81,7 +81,7 @@ const StayDatePanel = ({
       tabIndex={-1}
       role="dialog"
       aria-label={t("reserve.tripDate")}
-      className="popover-enter absolute left-0 top-0 z-30 flex w-[min(46rem,calc(100vw-2rem))] flex-col gap-4 rounded-20 bg-white p-5 shadow-glass focus:outline-none"
+      className="popover-enter absolute left-0 top-0 z-30 flex w-[min(46rem,calc(100vw-2rem))] flex-col gap-4 rounded-20 bg-surface p-5 shadow-glass focus:outline-none"
     >
       <div className="flex items-center gap-3">
         <div className="flex-1">
@@ -101,7 +101,7 @@ const StayDatePanel = ({
             aria-label={t("common.lastMonth")}
             disabled={offset === 0}
             onClick={() => setOffset((value) => Math.max(0, value - 1))}
-            className="flex size-9 cursor-pointer items-center justify-center rounded-full border border-neutral-200 transition-colors hover:bg-neutral-100 disabled:cursor-not-allowed disabled:opacity-40"
+            className="flex size-9 cursor-pointer items-center justify-center rounded-full border border-line transition-colors hover:bg-surface-muted disabled:cursor-not-allowed disabled:opacity-40"
           >
             <Icon name="chevron-down" size={16} className="-rotate-90" />
           </button>
@@ -114,7 +114,7 @@ const StayDatePanel = ({
                 Math.min(STAY_MONTH_HORIZON - VISIBLE_MONTHS, value + 1),
               )
             }
-            className="flex size-9 cursor-pointer items-center justify-center rounded-full border border-neutral-200 transition-colors hover:bg-neutral-100 disabled:cursor-not-allowed disabled:opacity-40"
+            className="flex size-9 cursor-pointer items-center justify-center rounded-full border border-line transition-colors hover:bg-surface-muted disabled:cursor-not-allowed disabled:opacity-40"
           >
             <Icon name="chevron-down" size={16} className="rotate-90" />
           </button>
@@ -130,13 +130,13 @@ const StayDatePanel = ({
         months={stayMonths(offset, VISIBLE_MONTHS)}
       />
 
-      <div className="flex flex-wrap items-center justify-between gap-3 border-t border-neutral-100 pt-4">
+      <div className="flex flex-wrap items-center justify-between gap-3 border-t border-surface-muted pt-4">
         <StayCalendarLegend />
         <div className="flex items-center gap-3">
           <button
             type="button"
             onClick={() => setDraft({})}
-            className="cursor-pointer text-sm text-neutral-500 transition-colors hover:text-neutral-900"
+            className="cursor-pointer text-sm text-ink-subtle transition-colors hover:text-ink"
           >
             {t("reserve.clearStay")}
           </button>
@@ -144,7 +144,7 @@ const StayDatePanel = ({
             type="button"
             disabled={!complete}
             onClick={() => complete && onConfirm(complete)}
-            className="h-10 cursor-pointer rounded-10 bg-brand-600 px-5 text-sm font-medium text-white transition-colors hover:bg-brand-700 disabled:cursor-not-allowed disabled:bg-neutral-300 disabled:hover:bg-neutral-300"
+            className="h-10 cursor-pointer rounded-10 bg-action px-5 text-sm font-medium text-on-action transition-colors hover:bg-action-hover disabled:cursor-not-allowed disabled:bg-line-strong disabled:hover:bg-line-strong"
           >
             {t("reserve.pickDatesCta")}
             {nights

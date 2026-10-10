@@ -17,7 +17,7 @@ import ConfirmModal from "@elements/Modal/ConfirmModal.client";
 import Link from "next/link";
 
 const ROW_CLASS =
-  "relative text-neutral-600 flex w-full gap-2 items-center rounded-md px-2 py-2 text-sm font-light no-underline hover:bg-brand-600/80 hover:text-white data-[focus]:bg-brand-600/80 data-[focus]:text-white";
+  "relative text-ink-muted flex w-full gap-2 items-center rounded-md px-2 py-2 text-sm font-light no-underline hover:bg-action/80 hover:text-on-action data-[focus]:bg-action/80 data-[focus]:text-white";
 
 const HeaderProfileMenu = ({
   isLight,
@@ -102,7 +102,7 @@ const HeaderProfileMenu = ({
             className={`nav-underline relative text-sm ${
               isLight
                 ? "text-white group-hover:text-brand-200"
-                : "text-black group-hover:text-brand-600"
+                : "text-ink group-hover:text-link"
             } shrink-0 font-medium transition-colors duration-150`}
           >
             {t("header.myProfile")}
@@ -111,7 +111,7 @@ const HeaderProfileMenu = ({
 
         <MenuItems
           transition
-          className="absolute left-0 z-[60] mt-2 w-48 origin-top rounded-xl bg-white shadow-xl ring-1 ring-black/5 focus:outline-none overflow-auto px-1 py-2 transition duration-100 ease-out data-[closed]:scale-95 data-[closed]:opacity-0"
+          className="absolute left-0 z-[60] mt-2 w-48 origin-top rounded-xl bg-surface shadow-xl ring-1 ring-black/5 focus:outline-none overflow-auto px-1 py-2 transition duration-100 ease-out data-[closed]:scale-95 data-[closed]:opacity-0"
         >
           {entries.map((entry) => (
             <MenuItem key={entry.id}>
@@ -140,7 +140,7 @@ const HeaderProfileMenu = ({
             <button
               type="button"
               onClick={() => setShowConfirm(true)}
-              className="text-red-500 flex w-full px-2 items-center rounded-md gap-2 py-2 text-sm font-medium"
+              className="text-status-danger flex w-full px-2 items-center rounded-md gap-2 py-2 text-sm font-medium"
             >
               <ContentImage
                 alt=""

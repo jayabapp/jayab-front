@@ -21,7 +21,7 @@ const DESCRIPTION_MAX_LENGTH = 1024;
 const CHECKBOX_GRID =
   "grid grid-cols-2 md:grid-cols-3 gap-2 border-b pb-4 w-full";
 const GROUP_TITLE =
-  "font-bold mb-2 col-span-full w-full text-start text-sm md:text-base text-brand-600";
+  "font-bold mb-2 col-span-full w-full text-start text-sm md:text-base text-link";
 
 const PropertyFacilityStep = ({ propertyId }: OwnerPropertyRouteProps) => {
   const t = useTranslations();
@@ -91,7 +91,7 @@ const PropertyFacilityStep = ({ propertyId }: OwnerPropertyRouteProps) => {
       submitTitle={t("owner.submitMoveOn")}
     >
       <div className="flex flex-col gap-2 pb-4 w-full">
-        <p className="font-bold w-full text-start text-sm md:text-base text-brand-600">
+        <p className="font-bold w-full text-start text-sm md:text-base text-link">
           {t("common.poolStatus")}
         </p>
         <Checkbox

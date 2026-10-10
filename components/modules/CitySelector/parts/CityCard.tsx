@@ -1,10 +1,5 @@
 import type { CityCardProps } from "@/types/components/modules/city-selector";
 
-/**
- * One row of the city (or region) list. The row and its checkbox used to be two
- * nested click targets that both fired on a direct checkbox click; it is now a
- * single `role="checkbox"` control, following the pattern the shared select rows use.
- */
 const CityCard = ({ callback, isChecked, item }: CityCardProps) => (
   <button
     aria-checked={isChecked}
@@ -16,7 +11,7 @@ const CityCard = ({ callback, isChecked, item }: CityCardProps) => (
     <span className="text-sm font-medium md:text-base">{item?.title}</span>
     <span
       className={`flex h-5 w-5 shrink-0 items-center justify-center rounded-md border-2 ${
-        isChecked ? "border-transparent bg-brand-600" : "border-neutral-300"
+        isChecked ? "border-transparent bg-action" : "border-line-strong"
       }`}
     >
       <svg

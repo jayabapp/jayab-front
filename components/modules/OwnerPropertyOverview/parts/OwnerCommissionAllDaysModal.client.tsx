@@ -1,25 +1,32 @@
 "use client";
 
 import { useOwnerCalendarActions } from "@features/owner-property/hooks/useOwnerCalendarActions";
-import type { OwnerCommissionModalProps } from "@/types/components/modules/owner-property";
+import { useTranslations } from "next-intl";
 import { ContentImage } from "@elements/Image";
-import { Divider } from "@elements/Divider";
-import { colors } from "@/theme/colors";
 import { useState } from "react";
+import { Divider } from "@elements/Divider";
 
-import SkeletonText from "@elements/Skeleton/SkeletonText";
-import useCmsContent from "@/hooks/useCmsContent";
+import type { OwnerCommissionModalProps } from "@/types/components/modules/owner-property";
+
 import RangeWithTitle from "@elements/Slider";
+import useCmsContent from "@/hooks/useCmsContent";
+import SkeletonText from "@elements/Skeleton/SkeletonText";
 import CmsText from "@elements/CmsText";
 import Button from "@elements/Button";
 import Modal from "@elements/Modal";
-import { useTranslations } from "next-intl";
 
 const COMMISSION_MARKS = {
-  0: { label: "0", style: { color: colors.neutral[400], paddingTop: 15 } },
+  0: {
+    label: "0",
+    style: { color: "rgb(var(--c-ink-subtle))", paddingTop: 15 },
+  },
   50: {
     label: "50",
-    style: { color: colors.neutral[400], paddingTop: 15, paddingRight: 20 },
+    style: {
+      color: "rgb(var(--c-ink-subtle))",
+      paddingTop: 15,
+      paddingRight: 20,
+    },
   },
 };
 
@@ -59,7 +66,7 @@ const OwnerCommissionAllDaysModal = ({
 
   return (
     <Modal show={show} onHide={onHide}>
-      <div className="flex flex-col gap-4 p-4 bg-white rounded-20">
+      <div className="flex flex-col gap-4 p-4 bg-surface rounded-20">
         <ContentImage
           alt=""
           width={36}
@@ -67,7 +74,7 @@ const OwnerCommissionAllDaysModal = ({
           className="w-9 h-9 aspect-square"
           src="/assets/icons/property/hand_shake_money.svg"
         />
-        <p className="text-base font-bold text-brand-600">
+        <p className="text-base font-bold text-link">
           {t("changeAdvisorCommission")}
         </p>
         {isLoading ? (
@@ -78,7 +85,7 @@ const OwnerCommissionAllDaysModal = ({
           </CmsText>
         )}
 
-        <div className="flex flex-col gap-3 text-brand-600 pt-6 pb-10">
+        <div className="flex flex-col gap-3 text-link pt-6 pb-10">
           <div className="flex items-center justify-between">
             <span>{t("comitionPerc")}</span>
             <span>{current.value} %</span>

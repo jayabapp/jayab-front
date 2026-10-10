@@ -12,9 +12,9 @@ import CmsText from "@elements/CmsText";
 const PROPERTY_RULES_KEY = "propertyRules";
 
 const CHIP_CLASS: Record<string, string> = {
-  EASY: "bg-success-50 text-success-600",
-  NORMAL: "bg-warning-50 text-warning-600",
-  STRICT: "bg-danger-50 text-danger-500",
+  EASY: "bg-status-success-bg text-status-success",
+  NORMAL: "bg-status-warning-bg text-status-warning",
+  STRICT: "bg-status-danger-bg text-status-danger",
 };
 
 const TIMELINE_COLORS: T.TTimelineColor[] = ["success", "warning", "danger"];
@@ -28,19 +28,19 @@ const COLOR_CLASSES: Record<
   }
 > = {
   success: {
-    border: "border-success-500",
+    border: "border-status-success",
     line: "bg-success-500",
-    text: "text-success-600",
+    text: "text-status-success",
   },
   warning: {
     border: "border-warning-500",
     line: "bg-warning-500",
-    text: "text-warning-600",
+    text: "text-status-warning",
   },
   danger: {
-    border: "border-danger-500",
+    border: "border-status-danger",
     line: "bg-danger-500",
-    text: "text-danger-500",
+    text: "text-status-danger",
   },
 };
 
@@ -106,7 +106,7 @@ const StepMarker = ({ color, index }: T.TStepMarkerProps) => {
       className={[
         "relative z-10 flex size-8 shrink-0",
         "items-center justify-center rounded-full",
-        "border-2 bg-white",
+        "border-2 bg-surface",
         classes.border,
         classes.text,
       ].join(" ")}
@@ -175,14 +175,14 @@ const CancellationSummary = ({ cancelingType }: T.CancellationSummaryProps) => {
   return (
     <>
       <div className="flex flex-wrap items-center gap-2">
-        <p className="ui-body font-semibold text-neutral-900">
+        <p className="ui-body font-semibold text-ink">
           {t("cancenlationDesc")}
         </p>
         <span
           className={[
             "rounded-full px-2.5 py-0.5",
             "text-xs font-semibold",
-            CHIP_CLASS[cancelingType.id] ?? "bg-neutral-100 text-neutral-700",
+            CHIP_CLASS[cancelingType.id] ?? "bg-surface-muted text-ink-muted",
           ].join(" ")}
         >
           {cancelingType.title}
@@ -192,11 +192,11 @@ const CancellationSummary = ({ cancelingType }: T.CancellationSummaryProps) => {
           type="button"
           onClick={() => setShowDetails(true)}
           className={[
-            "cursor-pointer text-sm font-semibold text-brand-700",
-            "transition-colors hover:text-brand-800",
+            "cursor-pointer text-sm font-semibold text-link",
+            "transition-colors hover:text-on-selected",
             "focus-visible:outline-none",
             "focus-visible:ring-2",
-            "focus-visible:ring-brand-500",
+            "focus-visible:ring-focus",
             "focus-visible:ring-offset-2",
           ].join(" ")}
         >
@@ -219,7 +219,7 @@ const CancellationSummary = ({ cancelingType }: T.CancellationSummaryProps) => {
 
         <div dir="rtl" className="px-5 pb-7 pt-3 md:px-7 md:pb-8">
           {/* Policy type */}
-          <h3 className="text-lg font-bold leading-8 text-neutral-900 md:text-xl">
+          <h3 className="text-lg font-bold leading-8 text-ink md:text-xl">
             {cancelingType.title}
           </h3>
 
@@ -228,7 +228,7 @@ const CancellationSummary = ({ cancelingType }: T.CancellationSummaryProps) => {
             <CmsText
               as="p"
               whitespace="pre-wrap"
-              className="mt-3 text-sm leading-7 text-neutral-700 md:text-base md:leading-8"
+              className="mt-3 text-sm leading-7 text-ink-muted md:text-base md:leading-8"
             >
               {parsedPolicy.description}
             </CmsText>
@@ -279,7 +279,7 @@ const CancellationSummary = ({ cancelingType }: T.CancellationSummaryProps) => {
                       isLast ? "pb-0" : "pb-8 md:pb-10",
                     ].join(" ")}
                   >
-                    <h4 className="text-base font-bold leading-7 text-neutral-900 md:text-lg md:leading-8">
+                    <h4 className="text-base font-bold leading-7 text-ink md:text-lg md:leading-8">
                       {step.title}
                     </h4>
 
@@ -293,7 +293,7 @@ const CancellationSummary = ({ cancelingType }: T.CancellationSummaryProps) => {
                         <CmsText
                           as="p"
                           whitespace="pre-wrap"
-                          className="min-w-0 text-sm leading-7 text-neutral-700 md:text-base md:leading-8"
+                          className="min-w-0 text-sm leading-7 text-ink-muted md:text-base md:leading-8"
                         >
                           {step.description}
                         </CmsText>

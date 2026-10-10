@@ -17,7 +17,7 @@ const UploadField = dynamic(() =>
 );
 
 const UPLOAD_BOX =
-  "!bg-white  !border !border-dashed   w-24 h-24 !border-neutral-300 ";
+  "!bg-surface  !border !border-dashed   w-24 h-24 !border-line-strong ";
 const NATIONAL_CODE_LENGTH = 10;
 const TELEPHONE_LENGTH = 11;
 

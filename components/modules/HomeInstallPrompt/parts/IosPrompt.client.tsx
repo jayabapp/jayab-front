@@ -23,11 +23,11 @@ const IosPrompt = ({ callBack }: { callBack: () => void | null }) => {
       <div className="relative flex justify-center items-center w-full h-full">
         <div
           style={{ transform: "translate(50%, 50%) rotate(135deg)" }}
-          className="bg-white absolute w-8 h-8 rotate-45 left-[50%] right-[50%] bottom-4"
+          className="bg-surface absolute w-8 h-8 rotate-45 left-[50%] right-[50%] bottom-4"
         ></div>
         <div
           onClick={(e) => e?.stopPropagation()}
-          className="flex bg-white p-6 rounded-2xl flex-col gap-4 justify-center items-center absolute bottom-2"
+          className="flex bg-surface p-6 rounded-2xl flex-col gap-4 justify-center items-center absolute bottom-2"
         >
           <div className="flex flex-col items-center justify-center gap-8">
             <Image
@@ -59,7 +59,7 @@ const IosPrompt = ({ callBack }: { callBack: () => void | null }) => {
               <p>{tr.rich("content.iosStep2", { b: bold })}</p>
             </div>
             <div className="flex items-start gap-4">
-              <p className="text-brand-700 font-normal w-6 h-6">Add</p>
+              <p className="text-link font-normal w-6 h-6">Add</p>
               <p>{tr.rich("content.iosStep3", { b: bold })}</p>
             </div>
           </div>

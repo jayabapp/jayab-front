@@ -31,7 +31,7 @@ const SearchPopularPlaces = ({ onClose }: SearchPopularPlacesProps) => {
                 onClose();
                 push(`/${landing?.url?.replace(/^\/+/, "")}`);
               }}
-              className="flex px-3 cursor-pointer py-0.5 flex-row text-white bg-brand-600 rounded-full transition-all items-center gap-2"
+              className="flex px-3 cursor-pointer py-0.5 flex-row text-on-action bg-action rounded-full transition-all items-center gap-2"
             >
               <span className="text-sm transition-all">{landing?.title}</span>
             </button>

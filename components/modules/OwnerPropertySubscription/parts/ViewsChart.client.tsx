@@ -13,7 +13,7 @@ const ViewsChart = ({ data }: { data: any }) => {
   const CustomTooltip = ({ active, payload, label }: any) => {
     if (active && payload && payload.length) {
       return (
-        <div className="custom-tooltip shadow transition-all bg-white rounded-lg p-2">
+        <div className="custom-tooltip shadow transition-all bg-surface rounded-lg p-2">
           <p className="label">{`${moment(label).format("jYYYY/jMM/jDD")}`}</p>
           <p className="intro">
             {t("owner.viewsLabel")} {numberWithCommas(payload[0].value)}
@@ -56,7 +56,7 @@ const ViewsChart = ({ data }: { data: any }) => {
             return moment(value).format("jMM/jDD") || "";
           }}
           tickMargin={5}
-          stroke={colors.neutral[300]}
+          stroke="rgb(var(--c-line-strong))"
           fontSize={12}
           textAnchor="middle"
         />
@@ -71,7 +71,7 @@ const ViewsChart = ({ data }: { data: any }) => {
           domain={
             Max ? [0, Max % 2 == 0 ? Max : Max + 1] : ["dataMin", "dataMax"]
           }
-          stroke={colors.neutral[300]}
+          stroke="rgb(var(--c-line-strong))"
           className="bg-red-800"
         />
         <Tooltip

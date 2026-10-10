@@ -84,7 +84,7 @@ const ReservationDateModal = ({
       zIndex={40000000}
       options={{
         containerClass:
-          "mx-auto my-0 md:my-20 w-full md:w-1/2 xl:w-1/3 2xl:w-1/4  rounded-0 md:rounded-2xl overflow-y-hidden  bg-white     relative min-h-[90dvh]  min:min-h-[80dvh] ",
+          "mx-auto my-0 md:my-20 w-full md:w-1/2 xl:w-1/3 2xl:w-1/4  rounded-0 md:rounded-2xl overflow-y-hidden  bg-surface     relative min-h-[90dvh]  min:min-h-[80dvh] ",
       }}
       onHide={onHide}
       show={!!show}
@@ -95,7 +95,7 @@ const ReservationDateModal = ({
         height={24}
         onClick={onHide}
         src="/assets/icons/adds/x_mark.svg"
-        className="absolute top-4 right-4  z-20 cursor-pointer text-neutral-500 hover:text-neutral-600"
+        className="absolute top-4 right-4  z-20 cursor-pointer text-ink-subtle hover:text-ink-muted"
       />
 
       <div
@@ -112,7 +112,7 @@ const ReservationDateModal = ({
               <BtnLoading />
             </div>
           }
-          endMessage={<p className="text-center py-4 text-neutral-500"></p>}
+          endMessage={<p className="text-center py-4 text-ink-subtle"></p>}
           scrollableTarget="modal-content"
           className="w-full flex pb-16 h-full flex-col gap-0 "
         >
@@ -130,8 +130,8 @@ const ReservationDateModal = ({
                 startDate={moment(monthDate).format("jYYYY/jMM/jDD")}
               />
               {index == 0 ? (
-                <div className="flex lg:absolute right-12 bottom-2  px-4 md:px-0 text-neutral-500 text-sm items-center gap-2 ">
-                  <div className="w-5 h-5 striped !bg-neutral-100   rounded-md"></div>
+                <div className="flex lg:absolute right-12 bottom-2  px-4 md:px-0 text-ink-subtle text-sm items-center gap-2 ">
+                  <div className="w-5 h-5 striped !bg-surface-muted   rounded-md"></div>
                   <p className=" text-xs md:text-sm">{t("reservedDays")}</p>
                 </div>
               ) : (

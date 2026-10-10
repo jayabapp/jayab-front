@@ -67,7 +67,7 @@ const ProfileStats = ({ profile, isLogin }: ProfileStatsProps) => {
 
   return (
     <div className="flex w-full flex-col gap-3">
-      <p className="text-sm font-medium text-neutral-600">
+      <p className="text-sm font-medium text-ink-muted">
         {t("profileOverviewTitle")}
       </p>
 
@@ -89,10 +89,10 @@ const ProfileStats = ({ profile, isLogin }: ProfileStatsProps) => {
                 className="aspect-square h-5 w-5"
               />
             </span>
-            <p className="text-2xl font-bold leading-none text-neutral-900">
+            <p className="text-2xl font-bold leading-none text-ink">
               {stat.value}
             </p>
-            <p className="text-xs text-neutral-600">{stat.title}</p>
+            <p className="text-xs text-ink-muted">{stat.title}</p>
           </Link>
         ))}
       </div>

@@ -103,14 +103,14 @@ const HeroSearchSheet = ({
       animate={{ y: 0 }}
       initial={{ y: "100%" }}
       transition={{ duration: 0.28, ease: "easeOut" }}
-      className="fixed inset-0 z-[1000] flex h-[100dvh] w-full flex-col bg-neutral-50"
+      className="fixed inset-0 z-[1000] flex h-[100dvh] w-full flex-col bg-surface-muted"
     >
-      <header className="flex shrink-0 items-center justify-between border-b bg-white px-4 py-3">
+      <header className="flex shrink-0 items-center justify-between border-b bg-surface px-4 py-3">
         <button
           type="button"
           onClick={requestClose}
           aria-label={t("common.close")}
-          className="flex size-9 items-center justify-center rounded-full border border-neutral-200"
+          className="flex size-9 items-center justify-center rounded-full border border-line"
         >
           <ContentImage
             alt=""
@@ -126,7 +126,7 @@ const HeroSearchSheet = ({
         <button
           type="button"
           onClick={onReset}
-          className="text-xs text-neutral-500 underline underline-offset-4"
+          className="text-xs text-ink-subtle underline underline-offset-4"
         >
           {t("search.heroClearAll")}
         </button>
@@ -186,7 +186,7 @@ const HeroSearchSheet = ({
               <button
                 type="button"
                 onClick={onSkipDates}
-                className="self-center py-1 text-xs text-brand-600 underline underline-offset-4"
+                className="self-center py-1 text-xs text-link underline underline-offset-4"
               >
                 {t("search.heroDatesFlexible")}
               </button>
@@ -215,8 +215,8 @@ const HeroSearchSheet = ({
         </div>
       </div>
 
-      <footer className="flex shrink-0 items-center justify-between gap-3 border-t bg-white px-4 pb-[max(env(safe-area-inset-bottom),0.75rem)] pt-3">
-        <p className="min-w-0 flex-1 truncate text-xs text-neutral-600">
+      <footer className="flex shrink-0 items-center justify-between gap-3 border-t bg-surface px-4 pb-[max(env(safe-area-inset-bottom),0.75rem)] pt-3">
+        <p className="min-w-0 flex-1 truncate text-xs text-ink-muted">
           {count === 0 ? (
             <span className={isCountStale ? "opacity-50" : ""}>
               {t("search.heroNoMatch")}
@@ -230,7 +230,7 @@ const HeroSearchSheet = ({
           type="button"
           onClick={onSubmit}
           disabled={isPending}
-          className="btn-primary flex h-11 min-w-32 items-center justify-center gap-2 rounded-full bg-brand-600 px-6 text-sm font-bold disabled:bg-neutral-300"
+          className="btn-primary flex h-11 min-w-32 items-center justify-center gap-2 rounded-full bg-action px-6 text-sm font-bold disabled:bg-line-strong"
         >
           {isPending ? <BtnLoading /> : t("search.search")}
         </button>

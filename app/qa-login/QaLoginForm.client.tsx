@@ -1,12 +1,12 @@
 "use client";
 
-import { Icon } from "@elements/Icon";
+import { useState, type FormEvent } from "react";
 import { safeInternalPath } from "@/helpers/safeRedirect";
 import { useRouter } from "next/navigation";
-import { useState, type FormEvent } from "react";
+import { Icon } from "@elements/Icon";
 
 const INPUT_CLASS =
-  "h-11 w-full rounded-10 border border-neutral-200 px-3 text-sm text-neutral-900 outline-none focus-visible:ring-2 focus-visible:ring-brand-500";
+  "h-11 w-full rounded-10 border border-line px-3 text-sm text-ink outline-none focus-visible:ring-2 focus-visible:ring-focus";
 
 const QaLoginForm = ({ next }: { next?: string }) => {
   const router = useRouter();
@@ -48,52 +48,52 @@ const QaLoginForm = ({ next }: { next?: string }) => {
   return (
     <form onSubmit={onSubmit} className="flex flex-col gap-4">
       <div className="flex flex-col gap-1.5">
-        <label htmlFor="qa-username" className="text-sm font-medium text-neutral-800">
+        <label htmlFor="qa-username" className="text-sm font-medium text-ink">
           نام کاربری
         </label>
         <input
-          id="qa-username"
-          type="text"
-          autoComplete="username"
-          value={username}
-          onChange={(event) => setUsername(event.target.value)}
           required
+          type="text"
+          id="qa-username"
+          value={username}
+          autoComplete="username"
           className={INPUT_CLASS}
+          onChange={(event) => setUsername(event.target.value)}
         />
       </div>
 
       <div className="flex flex-col gap-1.5">
-        <label htmlFor="qa-password" className="text-sm font-medium text-neutral-800">
+        <label htmlFor="qa-password" className="text-sm font-medium text-ink">
           رمز عبور
         </label>
         <div className="relative">
           <input
-            id="qa-password"
-            type={showPassword ? "text" : "password"}
-            autoComplete="current-password"
-            value={password}
-            onChange={(event) => setPassword(event.target.value)}
             required
+            id="qa-password"
+            value={password}
+            autoComplete="current-password"
             className={`${INPUT_CLASS} pl-10`}
+            type={showPassword ? "text" : "password"}
+            onChange={(event) => setPassword(event.target.value)}
           />
           <button
             type="button"
+            aria-pressed={showPassword}
             onClick={() => setShowPassword((value) => !value)}
             aria-label={showPassword ? "پنهان کردن رمز عبور" : "نمایش رمز عبور"}
-            aria-pressed={showPassword}
-            className="absolute inset-y-0 left-0 flex w-10 cursor-pointer items-center justify-center text-neutral-500 hover:text-neutral-800"
+            className="absolute inset-y-0 left-0 flex w-10 cursor-pointer items-center justify-center text-ink-subtle hover:text-ink"
           >
             <Icon name={showPassword ? "eye-off" : "eye"} size={20} />
           </button>
         </div>
       </div>
 
-      {error ? <p className="text-sm text-danger-500">{error}</p> : null}
+      {error ? <p className="text-sm text-status-danger">{error}</p> : null}
 
       <button
         type="submit"
         disabled={isSubmitting}
-        className="h-11 cursor-pointer rounded-10 bg-brand-600 text-base font-medium text-white transition-colors hover:bg-brand-700 disabled:cursor-not-allowed disabled:opacity-60"
+        className="h-11 cursor-pointer rounded-10 bg-action text-base font-medium text-on-action transition-colors hover:bg-action-hover disabled:cursor-not-allowed disabled:opacity-60"
       >
         {isSubmitting ? "در حال ورود..." : "ورود"}
       </button>

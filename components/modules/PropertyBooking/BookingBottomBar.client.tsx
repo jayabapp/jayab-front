@@ -26,7 +26,7 @@ const BookingEditSheet = dynamic(() => import("./BookingEditSheet.client"), {
 });
 
 const PRIMARY_CLASS =
-  "h-11 shrink-0 cursor-pointer rounded-10 bg-brand-600 px-5 text-base font-medium text-white transition-colors hover:bg-brand-700 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-500 focus-visible:ring-offset-2";
+  "h-11 shrink-0 cursor-pointer rounded-10 bg-action px-5 text-base font-medium text-on-action transition-colors hover:bg-action-hover focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-focus focus-visible:ring-offset-2";
 
 const BookingBottomBar = ({
   property,
@@ -70,14 +70,14 @@ const BookingBottomBar = ({
       return (
         <div className="flex items-center justify-between gap-3">
           <div className="flex min-w-0 flex-col">
-            <span className="text-xs text-neutral-500">
+            <span className="text-xs text-ink-subtle">
               {t("reserve.stayStartsFrom")}
             </span>
             <div className="flex items-end gap-1">
               <PropertyPriceTag
                 price={{ price: property.minimumPrice ?? undefined }}
               />
-              <span className="pb-0.5 text-xs text-neutral-600">
+              <span className="pb-0.5 text-xs text-ink-muted">
                 / {t("reserve.night")}
               </span>
             </div>
@@ -96,13 +96,13 @@ const BookingBottomBar = ({
       return (
         <div className="flex items-center justify-between gap-3">
           <div className="flex min-w-0 flex-col">
-            <span className="text-sm font-semibold text-neutral-900">
+            <span className="text-sm font-semibold text-ink">
               {t("reserve.nights", { count: Number(nights) })}: {rangeText}
             </span>
             <button
               type="button"
               onClick={() => setDatesOpen(true)}
-              className="w-fit cursor-pointer text-xs text-brand-700"
+              className="w-fit cursor-pointer text-xs text-link"
             >
               {t("reserve.changeDates")}
             </button>
@@ -121,13 +121,13 @@ const BookingBottomBar = ({
       <div className="flex flex-col gap-3">
         <div className="flex items-center justify-between gap-3">
           <div className="flex min-w-0 flex-col">
-            <span className="text-xs text-neutral-500">
+            <span className="text-xs text-ink-subtle">
               {t("reserve.approxStayCost")}
             </span>
             {quote ? (
               <span
                 aria-live="polite"
-                className="text-base font-bold text-neutral-900"
+                className="text-base font-bold text-ink"
               >
                 {formatToman(quote.stay_total)}
               </span>
@@ -138,7 +138,7 @@ const BookingBottomBar = ({
           <button
             type="button"
             onClick={() => setEditOpen(true)}
-            className="flex cursor-pointer items-center gap-1.5 rounded-full border border-neutral-200 px-3 py-1.5 text-sm text-neutral-700"
+            className="flex cursor-pointer items-center gap-1.5 rounded-full border border-line px-3 py-1.5 text-sm text-ink-muted"
           >
             {t("reserve.editReservationDetails")}
             <Icon name="chevron-down" size={16} />
@@ -147,7 +147,7 @@ const BookingBottomBar = ({
 
         {quote && !quote.is_available ? (
           <div className="flex flex-col gap-2">
-            <p className="text-xs text-danger-500">
+            <p className="text-xs text-status-danger">
               {t("reserve.stayDatesReserved")}
             </p>
             <button
@@ -175,7 +175,7 @@ const BookingBottomBar = ({
 
   return (
     <>
-      <div className="fixed inset-x-0 bottom-0 z-[11] border-t border-neutral-200 bg-white px-4 pt-3 pb-[calc(0.75rem+env(safe-area-inset-bottom))] md:hidden">
+      <div className="fixed inset-x-0 bottom-0 z-[11] border-t border-line bg-surface px-4 pt-3 pb-[calc(0.75rem+env(safe-area-inset-bottom))] md:hidden">
         {content()}
       </div>
 

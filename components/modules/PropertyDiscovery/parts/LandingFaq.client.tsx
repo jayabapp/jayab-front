@@ -43,7 +43,7 @@ const LandingFaq = ({ data }: LandingFaqProps) => {
               <Editable key={`faq-${question.id}`} contentId={question.id}>
                 <SimpleAccordion
                   title={question.question}
-                  item={{ parenClass: "bg-white rounded-xl shadow-md my-2" }}
+                  item={{ parenClass: "bg-surface rounded-xl shadow-md my-2" }}
                 >
                   <div
                     className="content text-xs md:text-sm"

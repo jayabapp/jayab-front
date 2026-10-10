@@ -4,7 +4,7 @@ import type { RelatedLandingLinksProps } from "@/types/components/modules/proper
 
 import Link from "next/link";
 
-const LINK_CLASS = "text-brand-600 hover:underline";
+const LINK_CLASS = "text-link hover:underline";
 
 const toHref = (url: string) => `/${url.replace(/^\/+/, "")}`;
 

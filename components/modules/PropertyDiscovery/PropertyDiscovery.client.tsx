@@ -91,7 +91,7 @@ const PropertyDiscovery = ({ devices }: PropertyDiscoveryProps) => {
           </div>
 
           <div
-            className={`flex fixed pt-1 xl:hidden h-16 right-0 duration-1000 transition-all items-center justify-center z-10 xl:z-1 top-[3rem] xl:top-auto left-0 xl:left-auto bg-white xl:bg-transparent xl:relative flex-col w-full xl:gap-2 ${
+            className={`flex fixed pt-1 xl:hidden h-16 right-0 duration-1000 transition-all items-center justify-center z-10 xl:z-1 top-[3rem] xl:top-auto left-0 xl:left-auto bg-surface xl:bg-transparent xl:relative flex-col w-full xl:gap-2 ${
               topHeaderVisible ? "" : "shadow-lg lg:shadow-none"
             }`}
           >

@@ -18,7 +18,7 @@ const OwnerPriceRangeField = ({
   const t = useTranslations();
 
   return (
-    <div className="flex flex-col gap-3 text-brand-600 pt-6 pb-6">
+    <div className="flex flex-col gap-3 text-link pt-6 pb-6">
       <div className="flex items-center justify-between">
         <span>{title}</span>
         <span>{numberWithCommas(value)}</span>

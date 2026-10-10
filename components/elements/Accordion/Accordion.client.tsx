@@ -3,8 +3,8 @@
 import type { AccordionProps } from "@/types/components/elements/accordion";
 
 import { ContentImage } from "@elements/Image";
-import { motion } from "framer-motion";
 import { useState } from "react";
+import { motion } from "framer-motion";
 
 const Accordion = ({ title = "Default Title", children }: AccordionProps) => {
   const [isOpen, setIsOpen] = useState(false);
@@ -44,7 +44,7 @@ const Accordion = ({ title = "Default Title", children }: AccordionProps) => {
         transition={{ duration: 0.3, ease: "easeInOut" }}
         className="overflow-hidden"
       >
-        <div className="flex items-start gap-4 px-6 py-3 text-neutral-600">
+        <div className="flex items-start gap-4 px-6 py-3 text-ink-muted">
           <ContentImage
             alt=""
             width={24}

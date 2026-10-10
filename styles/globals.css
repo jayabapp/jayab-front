@@ -9,9 +9,9 @@ html,
 body {
   touch-action: pan-x pan-y;
   padding: 0;
-  color: theme("colors.neutral.900");
+  color: rgb(var(--c-ink));
   margin: 0;
-  background: white;
+  background: rgb(var(--c-surface));
 }
 
 a {
@@ -36,14 +36,33 @@ input[type="submit"] {
   -webkit-appearance: none;
   -moz-appearance: none;
   appearance: none;
-  outline: none;
 }
-button:focus {
+
+:where(
+  a,
+  button,
+  input,
+  select,
+  textarea,
+  summary,
+  [role="button"],
+  [tabindex]
+):focus {
   outline: 0;
 }
 
-input:focus {
-  outline: none !important;
+:where(
+  a,
+  button,
+  input,
+  select,
+  textarea,
+  summary,
+  [role="button"],
+  [tabindex]
+):focus-visible {
+  outline: 2px solid rgb(var(--c-focus));
+  outline-offset: 2px;
 }
 
 .text-en {
@@ -72,7 +91,7 @@ ul {
 
 .app-background {
   @apply !h-full;
-  background-color: theme("colors.canvas");
+  background-color: rgb(var(--c-page));
 }
 
 .app-background::before {
@@ -86,11 +105,9 @@ ul {
 }
 
 .app-text {
-  @apply text-neutral-900 font-normal;
+  @apply text-ink font-normal;
 }
-/* ---------------------------------- CARD ---------------------------------- */
 
-/* --------------------------------- HEADER --------------------------------- */
 .header-content-container {
   @apply fixed top-0   right-0 left-0  z-20;
   transition: transform 240ms ease;
@@ -215,24 +232,24 @@ ul {
 
 /* ---------------------------------- FORM ---------------------------------- */
 .form-control {
-  @apply bg-white text-base flex px-3 pt-2 pb-3 focus:outline-none disabled:bg-neutral-200;
+  @apply bg-surface text-base flex px-3 pt-2 pb-3 focus:outline-none disabled:bg-surface-hover;
 }
 
 /* --------------------------------- BUTTON --------------------------------- */
 .btn-primary {
-  @apply text-white   border-2 border-transparent   hover:ring-brand-600/50  cursor-pointer;
+  @apply text-on-action   border-2 border-transparent   hover:ring-action/50  cursor-pointer;
 }
 .btn-brand-outlined {
-  @apply bg-transparent  text-brand-600 border-2 border-brand-600   hover:ring-brand-600/50  cursor-pointer;
+  @apply bg-transparent  text-link border-2 border-action   hover:ring-action/50  cursor-pointer;
 }
 .btn-brand-faded {
-  @apply text-brand-600 bg-neutral-200/75    hover:ring-brand-600/50  cursor-pointer;
+  @apply text-link bg-surface-hover/75    hover:ring-action/50  cursor-pointer;
 }
 .btn-brand-flat {
-  @apply text-brand-600 bg-brand-200/50    hover:ring-brand-600/50  cursor-pointer;
+  @apply text-link bg-brand-200/50    hover:ring-action/50  cursor-pointer;
 }
 .btn-outlined {
-  @apply bg-white   text-black border-2 border-black  hover:ring-1 hover:ring-brand-600/50  cursor-pointer;
+  @apply bg-surface   text-ink border-2 border-ink  hover:ring-1 hover:ring-action/50  cursor-pointer;
 }
 
 /* ---------------------------------- AUTH ---------------------------------- */
@@ -257,7 +274,7 @@ ul {
 }
 
 .auth-container {
-  @apply relative isolate mx-auto flex w-full max-w-full flex-col items-center justify-center overflow-hidden bg-white px-4 pb-12 pt-24 sm:pb-16;
+  @apply relative isolate mx-auto flex w-full max-w-full flex-col items-center justify-center overflow-hidden bg-surface px-4 pb-12 pt-24 sm:pb-16;
   min-height: 100dvh;
   background-image: none;
 }
@@ -270,7 +287,7 @@ ul {
 .aurora-layer {
   opacity: 0.45;
   background-image: var(--aurora-mesh);
-  background-color: theme("colors.canvas");
+  background-color: rgb(var(--c-page));
   @apply pointer-events-none fixed inset-0 z-0;
 }
 
@@ -326,14 +343,13 @@ ul {
 
 /* ------------------------------ GLASS SURFACES ----------------------------- */
 .glass-panel {
-  @apply relative overflow-hidden rounded-[2rem] border border-brand-100/80 bg-white/95;
+  @apply relative overflow-hidden rounded-[2rem] border border-selected-line/80 bg-surface/95;
   box-shadow:
     18px 18px 42px rgb(21 60 105 / 0.12),
-    -12px -12px 28px rgb(255 255 255 / 0.95),
-    inset 0 1px 0 rgb(255 255 255 / 0.98);
+    -12px -12px 28px rgb(var(--c-surface) / 0.95),
+    inset 0 1px 0 rgb(var(--c-surface) / 0.98);
 }
 
-/* Specular highlight along the top edge — the cue that sells "pane of glass". */
 .glass-panel::before {
   content: "";
   @apply pointer-events-none absolute inset-x-8 top-0 h-px;
@@ -346,15 +362,15 @@ ul {
 }
 
 .menu-icon-chip {
-  @apply flex size-10 shrink-0 items-center justify-center rounded-xl border border-white/70 bg-brand-50/80 transition-colors;
+  @apply flex size-10 shrink-0 items-center justify-center rounded-xl border border-surface/70 bg-selected/80 transition-colors;
 }
 
 .group:hover .menu-icon-chip {
-  @apply bg-brand-100;
+  @apply bg-selected;
 }
 
 .glass-surface {
-  @apply relative border border-white/70 shadow-glass-sm;
+  @apply relative border border-surface/70 shadow-glass-sm;
 }
 
 .glass-surface::before {
@@ -363,21 +379,21 @@ ul {
   inset: 0;
   z-index: -1;
   border-radius: inherit;
-  background-color: rgba(255, 255, 255, 0.75);
+  background-color: rgb(var(--c-surface) / 0.75);
   -webkit-backdrop-filter: blur(20px) saturate(170%);
   backdrop-filter: blur(20px) saturate(170%);
 }
 
 .glass-badge {
-  @apply border border-brand-100/80 bg-white;
+  @apply border border-selected-line/80 bg-surface;
   box-shadow:
     8px 8px 18px rgb(21 60 105 / 0.1),
-    -5px -5px 14px rgb(255 255 255 / 0.98),
-    inset 0 1px 0 rgb(255 255 255 / 0.98);
+    -5px -5px 14px rgb(var(--c-surface) / 0.98),
+    inset 0 1px 0 rgb(var(--c-surface) / 0.98);
 }
 
 .glass-header {
-  @apply border-b border-neutral-100 bg-white/95;
+  @apply border-b border-surface-muted bg-surface/95;
   box-shadow: 0 8px 24px -22px rgb(21 60 105 / 0.32);
   -webkit-backdrop-filter: blur(14px) saturate(120%);
   backdrop-filter: blur(14px) saturate(120%);
@@ -443,18 +459,18 @@ ul {
 }
 
 .glass-chip {
-  @apply rounded-full border border-brand-100/80 bg-brand-50/45 px-3 py-1.5;
+  @apply rounded-full border border-selected-line/80 bg-selected/45 px-3 py-1.5;
   box-shadow:
     inset 2px 2px 5px rgb(21 60 105 / 0.07),
-    inset -2px -2px 5px rgb(255 255 255 / 0.95);
+    inset -2px -2px 5px rgb(var(--c-surface) / 0.95);
 }
 
 .glass-field {
-  border-color: theme("colors.neutral.100");
-  background-color: theme("colors.neutral.50");
+  border-color: rgb(var(--c-line-strong));
+  background-color: rgb(var(--c-surface-muted));
   box-shadow:
     inset 3px 3px 7px rgb(21 60 105 / 0.06),
-    inset -3px -3px 7px rgb(255 255 255 / 0.96);
+    inset -3px -3px 7px rgb(var(--c-surface) / 0.96);
   transition:
     border-color 0.2s ease,
     background-color 0.2s ease,
@@ -463,22 +479,22 @@ ul {
 
 @media (hover: hover) {
   .glass-field:hover {
-    border-color: theme("colors.brand.200");
+    border-color: rgb(var(--c-selected-line));
   }
 }
 
 .glass-field:focus {
-  border-color: theme("colors.brand.400");
-  background-color: rgb(255 255 255);
+  border-color: rgb(var(--c-focus));
+  background-color: rgb(var(--c-surface));
   box-shadow:
-    0 0 0 4px theme(colors.brand.500 / 12%),
+    0 0 0 4px rgb(var(--c-focus) / 0.16),
     inset 2px 2px 5px rgb(21 60 105 / 0.04);
 }
 
 .glass-field-filled {
-  border-color: theme("colors.brand.400");
-  background-color: theme("colors.brand.50");
-  color: theme("colors.brand.700");
+  border-color: rgb(var(--c-focus));
+  background-color: rgb(var(--c-selected));
+  color: rgb(var(--c-on-selected));
 }
 
 .btn-glass-primary {
@@ -571,7 +587,7 @@ ul {
 }
 
 .home-container {
-  @apply h-full bg-canvas mx-auto !max-w-full min-h-[100dvh] px-3 md:px-3 lg:px-4 xl:px-[15%]  pt-24 lg:pt-24  pb-32 lg:pb-44 overflow-x-clip;
+  @apply h-full bg-page mx-auto !max-w-full min-h-[100dvh] px-3 md:px-3 lg:px-4 xl:px-[15%]  pt-24 lg:pt-24  pb-32 lg:pb-44 overflow-x-clip;
 }
 .container {
   @apply h-full bg-transparent mx-auto !max-w-full min-h-[100dvh] px-3 md:px-3 lg:px-4 xl:px-[15%]  pt-20 lg:pt-28  pb-32 lg:pb-44 overflow-x-scroll;
@@ -608,7 +624,7 @@ ul {
 .home-sheet {
   @apply relative z-10 rounded-t-20;
   @apply shadow-[0_-18px_40px_-24px_theme(colors.neutral.900/0.45)];
-  background-color: #fff;
+  background-color: rgb(var(--c-surface));
 }
 
 /* ------------------------------ HERO SLIDER ------------------------------- */
@@ -644,8 +660,6 @@ ul {
   animation-play-state: paused;
 }
 
-/* Hovering (or focusing) the slider only holds it from auto-advancing — the
-   photo's own zoom keeps playing, so it never visibly freezes mid-motion. */
 .hero-slider[data-slide-paused="true"] .hero-slide-photo {
   animation-play-state: paused;
 }
@@ -693,27 +707,27 @@ ul {
   @apply h-full bg-transparent mx-auto !max-w-full min-h-[100dvh] px-3 md:px-3 lg:px-4 xl:px-[8%];
 }
 .pop-container {
-  @apply !shadow-card border md:!w-1/2 md:!left-[20%] md:!right-[20%] mx-auto;
+  @apply !shadow-surface border md:!w-1/2 md:!left-[20%] md:!right-[20%] mx-auto;
 }
 .list-container {
-  @apply w-full md:w-[70%] lg:w-[60%] xl:w-1/2 px-2 md:px-6 max-w-[580px]  overflow-x-hidden h-auto     mx-auto bg-white       pb-24  pt-[4.5rem]   md:rounded-20;
+  @apply w-full md:w-[70%] lg:w-[60%] xl:w-1/2 px-2 md:px-6 max-w-[580px]  overflow-x-hidden h-auto     mx-auto bg-surface       pb-24  pt-[4.5rem]   md:rounded-20;
 }
 
 .chat-container {
-  @apply w-full   md:w-[100%]  col-span-5 xl:col-span-3 max-w-screen-2xl overflow-x-hidden      mx-auto bg-white;
+  @apply w-full   md:w-[100%]  col-span-5 xl:col-span-3 max-w-screen-2xl overflow-x-hidden      mx-auto bg-surface;
 }
 .ltr {
   direction: ltr;
 }
 
 .Calendar {
-  @apply bg-white;
+  @apply bg-surface;
   box-shadow: none !important;
 }
 
 .-activeBackground {
-  background: theme("colors.brand.600") !important;
-  color: white !important;
+  background: rgb(var(--c-action)) !important;
+  color: rgb(var(--c-on-action)) !important;
 }
 input::-webkit-outer-spin-button,
 input::-webkit-inner-spin-button {
@@ -752,7 +766,7 @@ input[type="number"] {
 }
 
 .checkoutCards {
-  @apply bg-white border p-2 md:p-6 rounded-20;
+  @apply bg-surface border p-2 md:p-6 rounded-20;
 }
 .app-container-profile {
   @apply h-full bg-transparent mx-auto min-h-[90vh]     mt-4 rounded-20  p-4   px-0  md:px-3 lg:px-4 2xl:px-[5%] pt-12 md:pt-0  pb-32 lg:pb-16 overflow-x-scroll;
@@ -838,35 +852,34 @@ input[type="number"] {
 }
 
 .indicatorWrapper {
-  display: flex;
-  justify-content: center;
-  padding: 10px 0 10px;
   left: 0;
   top: 0%;
   width: 100%;
   z-index: 100;
-  position: absolute;
-
-  min-height: 3px;
+  display: flex;
   max-height: 3px;
+  min-height: 3px;
+  position: absolute;
+  padding: 10px 0 10px;
+  justify-content: center;
 }
 
 .indicator {
-  height: 250x;
   width: 30px;
-  background: theme("colors.neutral.300");
+  height: 250x;
   border-radius: 0.3rem;
+  background: theme("colors.neutral.300");
 }
 
 .keen-slider__slide {
-  min-height: auto !important;
   overflow: visible;
+  min-height: auto !important;
 }
 
 .small {
-  box-sizing: border-box;
-  padding-top: 20px;
   height: 90px;
+  padding-top: 20px;
+  box-sizing: border-box;
 }
 
 .medium {
@@ -893,7 +906,7 @@ input[type="number"] {
   @apply !bg-neutral-100/90      transition-all px-5;
 }
 .form-title-gradient {
-  background: white;
+  background: rgb(var(--c-surface));
   background-repeat: no-repeat;
   background-size:
     100% 50%,
@@ -912,10 +925,10 @@ select {
 }
 
 .canvasSize {
+  z-index: -1;
   width: 100vw;
   height: 100vh;
   position: fixed;
-  z-index: -1;
   background: theme("colors.neutral.900");
 }
 
@@ -972,7 +985,7 @@ select {
 }
 .rc-slider-dot {
   bottom: -3px !important;
-  background-color: white !important;
+  background-color: rgb(var(--c-surface)) !important;
 }
 
 button {
@@ -1031,9 +1044,6 @@ button {
   @apply flex items-center;
 }
 
-/* -------------------------------------------------------------------------- */
-/*                                    EMBLA                                   */
-/* -------------------------------------------------------------------------- */
 .embla {
   width: 100%;
   margin: auto;
@@ -1053,10 +1063,6 @@ button {
   padding-left: var(--slide-spacing);
 }
 
-/* Tablet keeps the literal 141x141 tile: the rows scroll there anyway, so a
-   ragged trailing tile is the affordance that says "there is more". 141px tile
-   plus the slide's own `md:px-2` (2 x 0.5rem) padding, border-box. From `lg`
-   the desktop ladder below takes over, so this stops at 1023px. */
 @media (min-width: 768px) and (max-width: 1023.98px) {
   .home-tile-slide {
     flex: 0 0 9.8125rem !important;
@@ -1089,7 +1095,6 @@ button {
   border: 0;
   padding: 0;
   margin: 0;
-
   display: flex;
   align-items: center;
   justify-content: center;
@@ -1135,32 +1140,32 @@ textarea {
 .content {
   font-kerning: none;
   a {
-    @apply !text-brand-600 !underline !underline-offset-4;
+    @apply !text-link !underline !underline-offset-4;
   }
 }
 
 h1 {
-  @apply text-[1.3rem] font-bold !leading-8 text-brand-800 lg:text-2xl;
+  @apply text-[1.3rem] font-bold !leading-8 text-on-selected lg:text-2xl;
 }
 
 h2 {
-  @apply text-[1.2rem] font-bold leading-7 text-brand-800 lg:text-[1.3rem];
+  @apply text-[1.2rem] font-bold leading-7 text-on-selected lg:text-[1.3rem];
 }
 
 h3 {
-  @apply text-[1.15rem] font-bold leading-7 text-brand-800 lg:text-[1.25rem];
+  @apply text-[1.15rem] font-bold leading-7 text-on-selected lg:text-[1.25rem];
 }
 
 h4 {
-  @apply text-[1.1rem] font-bold leading-7 text-brand-800 lg:text-[1.2rem];
+  @apply text-[1.1rem] font-bold leading-7 text-on-selected lg:text-[1.2rem];
 }
 
 h5 {
-  @apply text-[1.1rem] font-bold leading-7 text-brand-800 lg:text-[1.15rem];
+  @apply text-[1.1rem] font-bold leading-7 text-on-selected lg:text-[1.15rem];
 }
 
 h6 {
-  @apply text-[1.1rem] font-bold leading-7 text-brand-800 lg:text-[1rem];
+  @apply text-[1.1rem] font-bold leading-7 text-on-selected lg:text-[1rem];
 }
 .mce-float-left {
   float: left;
@@ -1180,8 +1185,8 @@ h6 {
 }
 
 .category_table tr:first-child td {
-  background: theme("colors.brand.600");
-  color: white;
+  background: rgb(var(--c-action));
+  color: rgb(var(--c-on-action));
 }
 
 table {
@@ -1202,7 +1207,7 @@ table {
 }
 
 .blogBody a {
-  @apply text-brand-600;
+  @apply text-link;
 }
 
 ul {
@@ -1212,10 +1217,6 @@ ul {
 .text-sm {
   font-size: 0.875rem /* 14px */ !important;
   line-height: 1.25rem /* 20px */ !important;
-}
-
-*:focus {
-  outline: none !important;
 }
 
 .padding-x {
@@ -1349,59 +1350,21 @@ ul {
 
 /* ------------------------- HOME TILE ROW RHYTHM --------------------------- */
 
-/* The three landing rows — property types, popular cities, quick search — have
-   to read as one grid on desktop: same tile width, same tile height, same gap,
-   and the two non-scrolling rows ending flush with the header and the property
-   grid (all four share `.padding-x`, so they already share a content box).
-   A fixed 141px tile can never do that: the content width is never an exact
-   multiple of it, so a partial tile always hangs off the end. The tile is
-   therefore a share of the row, and `--home-tile-count` is the single place
-   that share is decided.
-
-   The home page zeroes `.home-container`'s own padding (`!px-0`), so a row's
-   width is the viewport minus `.padding-x` — exactly the header's box, which
-   is why the two line up once the tile stops being a fixed size.
-
-   `--home-tile-count` is the divisor, and it is *not* a per-breakpoint guess:
-   `HomeTemplate` sets it on the section wrapping all three rows, from the
-   number of items the CMS returned, because the row is only flush when the
-   divisor is the item count. A viewport ladder would land flush at one width
-   and leave a gap or a hanging tile at every other.
-
-   It is read as `var(--home-tile-count, 8)` rather than declared here on
-   purpose: a declaration on `.home-tile-row` would win over the value the
-   section hands down, since an own declaration beats inheritance. The 8 is
-   only a floor for this markup being used outside `HomeTemplate`. */
 .home-tile-row {
   --home-tile-gap: 0.75rem;
 }
 
 @media (min-width: 1024px) {
-  /* Embla pulls its container back by one `--slide-spacing`, so a slide basis
-     of 100%/N lands N tiles and N-1 visible gaps exactly on the row's width.
-     Shadowing the variable on the container (rather than on the section, where
-     Embla's own injected <style> would win on source order) redefines the pull
-     and the slide padding in one move, with no `!important`. */
   .home-tile-row .embla__container {
     --slide-spacing: var(--home-tile-gap);
   }
 
-  /* Beats the injected `[data-embla-id] { --slide-size }` on specificity, and
-     the slide's own `md:px-2` with it. Both paddings are restated here rather
-     than left to `.embla__slide`, which measurably loses the (0,1,0) tie to
-     `md:px-2` and hands the slide an 8px trailing edge: that made every tile
-     4px narrower than a city tile and left the flush edge short by the same.
-     Raising specificity settles it in one place instead of relying on which
-     of two equally specific rules the build happens to emit last. */
   .home-tile-row .home-tile-slide.embla__slide {
     flex: 0 0 calc(100% / var(--home-tile-count, 8));
     padding-left: var(--slide-spacing);
     padding-right: 0;
   }
 
-  /* The city row scrolls, so only its first N tiles are flush — but a
-     percentage inside a scroll container resolves against the visible width,
-     so those N match the carousels' tiles exactly. */
   .home-tile-row .home-city-tile {
     width: calc(
       (100cqw - (var(--home-tile-count, 8) - 1) * var(--home-tile-gap)) /
@@ -1410,9 +1373,6 @@ ul {
   }
 }
 
-/* The two city lines share this one native scroll surface. Synchronizing two
-   independent overflow elements from `scroll` events makes the untouched line
-   visibly trail the line under a finger. */
 .home-city-scroller {
   container-type: inline-size;
   scroll-snap-type: x proximity;
@@ -1428,15 +1388,13 @@ ul {
 }
 
 .home-tile:focus-visible {
-  @apply border-brand-200 outline-none ring-2 ring-brand-500/40;
+  @apply border-selected-line outline-none ring-2 ring-focus/40;
   transform: translateY(-0.25rem);
 }
 
-/* Touch taps report `:hover` with no pointer to ever leave, so the lift would
-   otherwise stick until the next unrelated tap. Real pointer devices only. */
 @media (hover: hover) {
   .home-tile:hover {
-    @apply border-brand-200;
+    @apply border-selected-line;
     transform: translateY(-0.25rem);
   }
 }
@@ -1638,11 +1596,11 @@ ul {
 }
 
 .surface-panel {
-  @apply rounded-20 border border-white bg-white shadow-glass-sm;
+  @apply rounded-20 border border-white bg-surface shadow-glass-sm;
 }
 
 .surface-card {
-  @apply rounded-20 border border-neutral-100 bg-white;
+  @apply rounded-20 border border-surface-muted bg-surface;
 }
 
 .filter-chip {
@@ -1650,19 +1608,19 @@ ul {
 }
 
 .filter-chip-idle {
-  @apply border-neutral-200 bg-white text-neutral-700 hover:border-neutral-300 hover:bg-neutral-50;
+  @apply border-line bg-surface text-ink-muted hover:border-line-strong hover:bg-surface-muted;
 }
 
 .filter-chip-active {
-  @apply border-brand-600 bg-brand-100 text-brand-700;
+  @apply border-action bg-selected text-link;
 }
 
 .hero-field {
-  @apply flex w-full min-w-0 flex-col items-start justify-center rounded-full px-2 py-0.5 text-right transition-colors hover:bg-neutral-50 sm:px-4 md:py-1;
+  @apply flex w-full min-w-0 flex-col items-start justify-center rounded-full px-2 py-0.5 text-right transition-colors hover:bg-surface-muted sm:px-4 md:py-1;
 }
 
 .hero-field-label {
-  @apply text-xs font-normal leading-tight text-neutral-500 md:text-sm;
+  @apply text-xs font-normal leading-tight text-ink-subtle md:text-sm;
 }
 
 .hero-field-value {
@@ -1674,15 +1632,15 @@ ul {
 }
 
 .search-option-active {
-  @apply bg-brand-50;
+  @apply bg-selected;
 }
 
 .search-option-icon {
-  @apply flex size-8 shrink-0 items-center justify-center rounded-full bg-neutral-100 transition-colors;
+  @apply flex size-8 shrink-0 items-center justify-center rounded-full bg-surface-muted transition-colors;
 }
 
 .search-option-active .search-option-icon {
-  @apply bg-white;
+  @apply bg-surface;
 }
 
 @media (prefers-reduced-motion: reduce) {

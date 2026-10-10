@@ -35,13 +35,13 @@ const ProfileWelcome = ({ profile, entries, isLogin }: ProfileWelcomeProps) => {
           </div>
         )}
         <div className="flex flex-col gap-1">
-          <p className="text-lg font-bold text-neutral-900">
+          <p className="text-lg font-bold text-ink">
             {t("profileGreeting")}
             {displayName ? ` ${displayName}` : ""}
             {sep}
             {t("profileWelcomeBack")}
           </p>
-          <p className="text-sm text-neutral-600">
+          <p className="text-sm text-ink-muted">
             {t("profileDashboardHint")}
           </p>
         </div>

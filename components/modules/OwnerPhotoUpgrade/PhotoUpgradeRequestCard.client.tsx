@@ -15,8 +15,8 @@ import Link from "next/link";
 
 const InfoItem = ({ title, value }: PhotoUpgradeInfoItemProps) => (
   <div className="flex items-center justify-between gap-2 text-xs md:text-sm">
-    <span className="text-neutral-500">{title}</span>
-    <span className="font-medium text-neutral-900">{value}</span>
+    <span className="text-ink-subtle">{title}</span>
+    <span className="font-medium text-ink">{value}</span>
   </div>
 );
 
@@ -47,7 +47,7 @@ const PhotoUpgradeRequestCard = ({ data }: PhotoUpgradeRequestCardProps) => {
               <p className="line-clamp-1 text-sm font-medium md:text-base">
                 {data?.property?.title || t("common.property")}
               </p>
-              <p className="mt-1 text-xs text-neutral-500">
+              <p className="mt-1 text-xs text-ink-subtle">
                 {t("common.code")} {data?.property?.code || data?.property_id}
               </p>
             </div>

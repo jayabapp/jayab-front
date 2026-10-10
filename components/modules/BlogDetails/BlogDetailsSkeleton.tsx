@@ -1,11 +1,7 @@
 import Skeleton from "@elements/Skeleton/Skeleton";
 
-// Mirrors BlogDetails.tsx one-for-one: same container paddings, the same
-// two-column header, the same 2/3 + 1/3 body grid. A fallback whose boxes sit
-// where the real content lands is what makes the swap read as the page filling
-// in rather than as a second, unrelated layout flashing past.
 const PANEL_CLASS =
-  "rounded-20 border border-white bg-white p-4 shadow-glass-sm md:p-6";
+  "rounded-20 border border-white bg-surface p-4 shadow-glass-sm md:p-6";
 
 const BODY_LINES = 12;
 const SIDEBAR_ROWS = 6;
@@ -23,7 +19,7 @@ const BlogDetailsSkeleton = () => (
         <Skeleton className="h-8 w-11/12 rounded" />
         <Skeleton className="h-4 w-full rounded" />
         <Skeleton className="h-4 w-4/5 rounded" />
-        <div className="flex flex-wrap items-center gap-x-5 gap-y-2 border-y border-neutral-100 py-3">
+        <div className="flex flex-wrap items-center gap-x-5 gap-y-2 border-y border-surface-muted py-3">
           <Skeleton className="h-3.5 w-32 rounded" />
           <Skeleton className="h-3.5 w-24 rounded" />
           <Skeleton className="h-3.5 w-28 rounded" />
@@ -39,8 +35,6 @@ const BlogDetailsSkeleton = () => (
           {Array.from({ length: BODY_LINES }, (_, index) => (
             <Skeleton
               key={index}
-              // Every fourth line is short so the block reads as paragraphs
-              // breaking rather than as one uniform slab of grey.
               className={`h-4 rounded ${index % 4 === 3 ? "w-2/3" : "w-full"}`}
             />
           ))}

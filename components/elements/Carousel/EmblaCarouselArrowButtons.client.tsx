@@ -1,10 +1,11 @@
 "use client";
 
+import { useCallback, useEffect, useState } from "react";
+import { ContentImage } from "@elements/Image";
+
 import type { CarouselNavigationState } from "@/types/components/elements/carousel";
 import type { CarouselButtonProps } from "@/types/components/elements/carousel";
-import { useCallback, useEffect, useState } from "react";
 import type { EmblaCarouselType } from "embla-carousel";
-import { ContentImage } from "@elements/Image";
 
 export const usePrevNextButtons = (
   emblaApi: EmblaCarouselType | undefined,
@@ -52,7 +53,7 @@ export const PrevButton: React.FC<CarouselButtonProps> = (props) => {
 
   return (
     <button
-      className={` my-auto    flex bottom-0 top-5  items-center justify-center hover:scale-102 group hover:bg-brand-600  transition-all lg:flex md:flex-col absolute z-10 bg-white/40   rounded-full cursor-pointer h-10 w-10 left-4   right-auto ${className}`}
+      className={` my-auto    flex bottom-0 top-5  items-center justify-center hover:scale-102 group hover:bg-action  transition-all lg:flex md:flex-col absolute z-10 bg-surface/40   rounded-full cursor-pointer h-10 w-10 left-4   right-auto ${className}`}
       type="button"
       {...restProps}
     >
@@ -72,7 +73,7 @@ export const NextButton: React.FC<CarouselButtonProps> = (props) => {
 
   return (
     <button
-      className={` my-auto    flex bottom-0 top-5   items-center justify-center hover:scale-102 group hover:bg-brand-600  transition-all lg:flex md:flex-col absolute z-10 bg-white/40   rounded-full cursor-pointer h-10 w-10 right-4   left-auto ${className}`}
+      className={` my-auto    flex bottom-0 top-5   items-center justify-center hover:scale-102 group hover:bg-action  transition-all lg:flex md:flex-col absolute z-10 bg-surface/40   rounded-full cursor-pointer h-10 w-10 right-4   left-auto ${className}`}
       type="button"
       {...restProps}
     >

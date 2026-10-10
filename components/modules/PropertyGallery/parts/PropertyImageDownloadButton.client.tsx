@@ -19,7 +19,7 @@ const PropertyImageDownloadButton = ({
       disabled={isDownloading}
       aria-label={t("downloadImage")}
       onClick={() => void downloadImage(attachmentId)}
-      className="flex h-10 cursor-pointer items-center gap-1.5 rounded-full bg-white/10 px-3 text-xs font-bold text-white transition-colors hover:bg-white/20 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white/60 disabled:cursor-wait disabled:opacity-60"
+      className="flex h-10 cursor-pointer items-center gap-1.5 rounded-full bg-surface/10 px-3 text-xs font-bold text-white transition-colors hover:bg-surface/20 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-surface/60 disabled:cursor-wait disabled:opacity-60"
     >
       <svg
         aria-hidden="true"

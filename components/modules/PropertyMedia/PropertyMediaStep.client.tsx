@@ -69,14 +69,14 @@ const PropertyMediaStep = ({ propertyId }: OwnerPropertyRouteProps) => {
       </div>
 
       <div className="flex items-start w-full flex-wrap gap-4">
-        <div className="bg-warning-600/5 border p-3 w-full rounded-10 border-warning-600 flex flex-col gap-3">
-          <p className="text-xs text-warning-600">
+        <div className="bg-warning-600/5 border p-3 w-full rounded-10 border-status-warning flex flex-col gap-3">
+          <p className="text-xs text-status-warning">
             {t("mediaHintLimit")}
           </p>
-          <p className="text-xs text-warning-600">
+          <p className="text-xs text-status-warning">
             {isEmpty(images) ? "" : t("mediaHintPrimary")}
           </p>
-          <p className="text-xs text-warning-600 content text-justify">
+          <p className="text-xs text-status-warning content text-justify">
             {t("mediaHintNetwork")}
           </p>
         </div>
@@ -137,7 +137,7 @@ const PropertyMediaStep = ({ propertyId }: OwnerPropertyRouteProps) => {
                     featureImageId && featureImageId == image?.data?.id
                       ? "opacity-100"
                       : "opacity-0"
-                  } transition-all absolute text-2xs h-7 bottom-0 w-full flex items-center justify-center bg-white/60 z-5 text-neutral-600`}
+                  } transition-all absolute text-2xs h-7 bottom-0 w-full flex items-center justify-center bg-surface/60 z-5 text-ink-muted`}
                 >
                   {t("primaryImage")}
                 </div>

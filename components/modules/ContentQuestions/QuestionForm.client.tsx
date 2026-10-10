@@ -95,7 +95,7 @@ export const QuestionForm: FC<{
                     key={i}
                     width={24}
                     height={24}
-                    color={colors.neutral[300]}
+                    color="rgb(var(--c-line-strong))"
                     onClick={() => _onRateClick(i)}
                     src="/assets/icons/blogs/empty_star.svg"
                     className={` h-8 aspect-square mx-1 cursor-pointer `}
@@ -112,7 +112,7 @@ export const QuestionForm: FC<{
               title: "",
               placeholder: t("content.askQuestionNamePlaceholder"),
               containerClass: "w-full",
-              inputClass: "bg-white! border-neutral-200! ",
+              inputClass: "bg-surface! border-line! ",
             }}
             onChangeText={setauthor_name}
           />
@@ -126,7 +126,7 @@ export const QuestionForm: FC<{
               keyboard: "number",
               containerClass: "w-full",
               maxLength: 11,
-              inputClass: "bg-white! border-neutral-200! ",
+              inputClass: "bg-surface! border-line! ",
             }}
             onChangeText={setmobile_number}
           />
@@ -139,7 +139,7 @@ export const QuestionForm: FC<{
               rows: 6,
               placeholder: t("content.askQuestionDescriptionPlaceholder"),
               containerClass: "w-full",
-              inputClass: "bg-white! border-neutral-200! w-full!",
+              inputClass: "bg-surface! border-line! w-full!",
             }}
             onChangeText={setquestion}
           />
@@ -162,7 +162,7 @@ export const QuestionForm: FC<{
               placeholder: t("content.askQuestionCaptcha"),
               maxLength: 5,
               containerClass: "w-full! md:w-fit!",
-              inputClass: "bg-white!  border-neutral-200! ",
+              inputClass: "bg-surface!  border-line! ",
               direction: "rtl",
             }}
           />

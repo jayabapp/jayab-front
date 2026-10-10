@@ -24,7 +24,7 @@ const AnimationlessModal = ({
     >
       <div
         aria-hidden="true"
-        className="fixed inset-0 cursor-default bg-black/70"
+        className="fixed inset-0 cursor-default bg-overlay/70"
       />
 
       <div
@@ -33,7 +33,7 @@ const AnimationlessModal = ({
         <DialogPanel
           className={`pointer-events-auto ${
             options?.containerClass ??
-            "mx-auto my-20 max-h-[calc(100vh-10rem)] w-11/12 overflow-y-auto overscroll-contain rounded-2xl bg-white supports-[height:100dvh]:max-h-[calc(100dvh-10rem)] md:w-1/2 xl:w-1/3 2xl:w-1/4"
+            "mx-auto my-20 max-h-[calc(100vh-10rem)] w-11/12 overflow-y-auto overscroll-contain rounded-2xl bg-surface supports-[height:100dvh]:max-h-[calc(100dvh-10rem)] md:w-1/2 xl:w-1/3 2xl:w-1/4"
           }`}
         >
           {children}

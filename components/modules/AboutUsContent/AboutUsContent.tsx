@@ -27,7 +27,7 @@ const AboutUsContent = ({ content: aboutUs }: AboutUsContentProps) => {
           src="/assets/icons/logo/header_logo.svg"
         />
         {!aboutUs ? (
-          <p className="py-12 text-center text-sm text-neutral-500">
+          <p className="py-12 text-center text-sm text-ink-subtle">
             {t("error")}
           </p>
         ) : aboutUs ? (

@@ -56,12 +56,12 @@ const PaymentDateFilter = ({
       >
         <div className=" h-11  rounded-10 cursor-pointer  flex justify-between items-center">
           <div
-            className={`flex bg-white/50 ${
+            className={`flex bg-surface/50 ${
               date ? "custome-shadow-card" : ""
             }   border py-2 px-4 rounded-10 items-center gap-2`}
           >
             <p
-              className={`  ${!!date ? "text-brand-600 font-medium" : "  opacity-60"}    text-sm`}
+              className={`  ${!!date ? "text-link font-medium" : "  opacity-60"}    text-sm`}
             >
               {" "}
               {!!date ? date : placeholder || t("pickDay")}
@@ -77,7 +77,7 @@ const PaymentDateFilter = ({
                   e.stopPropagation();
                   setDate("");
                 }}
-                className="  w-3 h-3 aspect-square  text-red-800"
+                className="  w-3 h-3 aspect-square  text-status-danger"
               />
             ) : (
               <></>

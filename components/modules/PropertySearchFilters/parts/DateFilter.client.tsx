@@ -31,11 +31,11 @@ const DateFilter = ({ filters, setFilters }: DateFilterProps) => {
         {hasRange ? (
           <span className="text-sm">
             {t("common.from")}{" "}
-            <span className="text-brand-600">
+            <span className="text-link">
               {moment(filters?.checkin).format(DAY_MONTH_FORMAT)}
             </span>{" "}
             {t("common.to")}{" "}
-            <span className="text-brand-600">
+            <span className="text-link">
               {moment(filters?.checkout).format(DAY_MONTH_FORMAT)}
             </span>
           </span>

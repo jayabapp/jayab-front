@@ -19,8 +19,8 @@ const HeroMobileTrigger = ({
       data-test="hero-mobile-trigger"
       className={`surface-panel flex w-full items-center !rounded-full text-right ${
         variant === "header"
-          ? "h-10 min-w-0 gap-1.5 !border-neutral-200 bg-white p-1 !shadow-none"
-          : "gap-2 !border-neutral-200/80 p-1 !shadow-[0_10px_28px_-10px_rgb(15_23_42/0.28),0_2px_6px_-1px_rgb(15_23_42/0.08)]"
+          ? "h-10 min-w-0 gap-1.5 !border-line bg-surface p-1 !shadow-none"
+          : "gap-2 !border-line/80 p-1 !shadow-[0_10px_28px_-10px_rgb(15_23_42/0.28),0_2px_6px_-1px_rgb(15_23_42/0.08)]"
       }`}
     >
       <span
@@ -31,20 +31,20 @@ const HeroMobileTrigger = ({
         <span
           className={`w-full truncate text-sm leading-tight ${
             summary.title
-              ? "font-medium text-neutral-900"
-              : "font-normal text-neutral-500"
+              ? "font-medium text-ink"
+              : "font-normal text-ink-subtle"
           }`}
         >
           {summary.title || t("searchPlaceholder")}
         </span>
         {variant === "hero" && summary.detail ? (
-          <span className="w-full truncate text-2xs leading-tight text-neutral-500">
+          <span className="w-full truncate text-2xs leading-tight text-ink-subtle">
             {summary.detail}
           </span>
         ) : null}
       </span>
 
-      <span className="btn-primary flex size-8 shrink-0 items-center justify-center rounded-full bg-brand-600">
+      <span className="btn-primary flex size-8 shrink-0 items-center justify-center rounded-full bg-action">
         <ContentImage
           alt=""
           width={18}

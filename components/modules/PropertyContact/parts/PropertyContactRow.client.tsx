@@ -19,7 +19,7 @@ import Notify from "@elements/Toast";
 const OWNER_AVATAR_FALLBACK = "/assets/images/add/wall_e_lover.png";
 const DIAL_DELAY_MS = 500;
 const ACTION_CLASS =
-  "flex h-10 shrink-0 cursor-pointer items-center justify-center gap-2 rounded-10 px-4 text-sm font-medium transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-500 focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-60";
+  "flex h-10 shrink-0 cursor-pointer items-center justify-center gap-2 rounded-10 px-4 text-sm font-medium transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-focus focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-60";
 
 const PropertyContactRow = ({
   data,
@@ -72,7 +72,7 @@ const PropertyContactRow = ({
           type="button"
           onClick={() => void copyNumber()}
           aria-label={`${t("reserve.copyNumber")} ${number}`}
-          className="flex h-10 cursor-pointer items-center gap-2 px-2 text-base font-semibold tracking-wider text-brand-700"
+          className="flex h-10 cursor-pointer items-center gap-2 px-2 text-base font-semibold tracking-wider text-link"
         >
           {number}
           <Icon name="copy" size={20} />
@@ -85,7 +85,7 @@ const PropertyContactRow = ({
             trackListingEvent("host_contact_number_revealed", { action: type });
             setShowNumber(true);
           }}
-          className={`${ACTION_CLASS} border border-neutral-200 bg-white text-neutral-900 hover:bg-neutral-50`}
+          className={`${ACTION_CLASS} border border-line bg-surface text-ink hover:bg-surface-muted`}
         >
           {t("reserve.showFullNumber")}
         </button>
@@ -97,7 +97,7 @@ const PropertyContactRow = ({
           type="button"
           disabled={!!isPropertyExpired}
           onClick={() => onContactClick("sms")}
-          className={`${ACTION_CLASS} border border-neutral-200 bg-white text-neutral-900 hover:bg-neutral-50`}
+          className={`${ACTION_CLASS} border border-line bg-surface text-ink hover:bg-surface-muted`}
         >
           <Icon name="sms" size={20} />
           {t("common.sms")}
@@ -108,7 +108,7 @@ const PropertyContactRow = ({
       <button
         type="button"
         onClick={() => onContactClick("call")}
-        className={`${ACTION_CLASS} bg-brand-600 text-white hover:bg-brand-700`}
+        className={`${ACTION_CLASS} bg-action text-on-action hover:bg-action-hover`}
       >
         <Icon name="phone" size={20} />
         {t("common.call")}
@@ -117,7 +117,7 @@ const PropertyContactRow = ({
   };
 
   return (
-    <div className="flex w-full flex-row items-center justify-between gap-3 border-t border-neutral-200 py-3 first:border-t-0">
+    <div className="flex w-full flex-row items-center justify-between gap-3 border-t border-line py-3 first:border-t-0">
       <div className="flex min-w-0 flex-row items-center gap-3">
         <ContentImage
           width={56}
@@ -128,16 +128,16 @@ const PropertyContactRow = ({
             hasOwnerAvatar ? getPropertyImageUrl(image) : OWNER_AVATAR_FALLBACK
           }
           className={`aspect-square size-10 shrink-0 rounded-full md:size-14 ${
-            hasOwnerAvatar ? "border border-brand-600" : ""
+            hasOwnerAvatar ? "border border-action" : ""
           }`}
         />
         <div className="flex min-w-0 flex-col items-start gap-1">
-          <p className="truncate text-sm text-neutral-900">
+          <p className="truncate text-sm text-ink">
             {data?.assistant_full_name}
             {sep}
             {data?.is_owner ? t("common.host") : t("reserve.ownerAssist")}
           </p>
-          <p className="text-sm text-neutral-500">{maskPhoneNumber(number)}</p>
+          <p className="text-sm text-ink-subtle">{maskPhoneNumber(number)}</p>
         </div>
       </div>
 

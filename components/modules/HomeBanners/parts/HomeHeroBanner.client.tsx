@@ -253,7 +253,7 @@ const HomeBannerPart = ({ title, devices, banners }: HomeHeroBannerProps) => {
           />
           <h2
             className={`text-balance text-sm font-bold leading-snug md:text-xl ${
-              hasSlides ? "text-white drop-shadow-md" : "text-neutral-900"
+              hasSlides ? "text-white drop-shadow-md" : "text-ink"
             }`}
           >
             {title || t("homeTitle")}

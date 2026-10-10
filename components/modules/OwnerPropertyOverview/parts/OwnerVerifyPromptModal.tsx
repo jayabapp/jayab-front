@@ -15,7 +15,7 @@ const OwnerVerifyPromptModal = ({
 
   return (
     <Modal show={show} onHide={onHide}>
-      <div className="bg-white p-4 rounded-20 gap-4 flex flex-col items-center justify-center">
+      <div className="bg-surface p-4 rounded-20 gap-4 flex flex-col items-center justify-center">
         <ContentImage
           alt=""
           width={256}

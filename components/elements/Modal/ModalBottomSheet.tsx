@@ -57,7 +57,7 @@ const ModalBottomSheet = ({
         className="
           fixed inset-0
           cursor-default
-          bg-black/70
+          bg-overlay/70
           backdrop-blur-xs
         "
       />
@@ -88,15 +88,17 @@ const ModalBottomSheet = ({
           className={`
             pb-6
             w-full
+            border
             md:pb-4
             relative
-            bg-white
-            shadow-2xl
-            max-h-[90vh]
+            bg-surface
             md:w-[35vw]
+            border-line
+            max-h-[90vh]
             rounded-t-20
             md:rounded-20
             overflow-y-auto
+            shadow-elevated
             md:max-h-[75vh]
             overscroll-contain
             pointer-events-auto
@@ -121,13 +123,13 @@ const ModalBottomSheet = ({
               cursor-grab
               touch-none
               justify-center
-              bg-white
+              bg-surface
               pb-1
               pt-2.5
               md:hidden
             "
           >
-            <span className="h-1.5 w-10 rounded-full bg-neutral-200" />
+            <span className="h-1.5 w-10 rounded-full bg-surface-hover" />
           </div>
 
           {children}

@@ -11,7 +11,7 @@ const PaymentCard = ({ payment }: PaymentCardProps) => {
   const t = useTranslations();
 
   return (
-  <div className="shadow-card flex flex-col rounded-10 p-4 gap-4">
+  <div className="shadow-surface flex flex-col rounded-10 p-4 gap-4">
     <LinearData
       disableDash
       title={t("profile.title")}

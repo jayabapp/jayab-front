@@ -41,7 +41,7 @@ const SinglePopUpSelect = ({
           aria-haspopup="dialog"
           className={` ${item?.disableHover ? "" : " "} w-full  ${
             item?.inputClass
-          }   bg-white/80   border  flex items-center placeholder:!opacity-50  placeholder:!text-sm placeholder:!text-black  text-start px-2 py-3 rounded-10 `}
+          }   bg-surface/80   border  flex items-center placeholder:!opacity-50  placeholder:!text-sm placeholder:!text-ink  text-start px-2 py-3 rounded-10 `}
           onClick={() => {
             if (!item?.disable) setShow(true);
           }}
@@ -72,7 +72,7 @@ const SinglePopUpSelect = ({
         options={{
           containerClass: `  ${
             item?.searcheable ? " min-h-[90dvh]" : ""
-          } !h-[90dvh] max-h-[90dvh] w-full overflow-y-scroll rounded-t-20 bg-white pb-[1.5rem] md:!h-auto md:w-[32rem] md:max-w-[calc(100vw-2rem)] md:rounded-20 md:pb-10 `,
+          } !h-[90dvh] max-h-[90dvh] w-full overflow-y-scroll rounded-t-20 bg-surface pb-[1.5rem] md:!h-auto md:w-[32rem] md:max-w-[calc(100vw-2rem)] md:rounded-20 md:pb-10 `,
         }}
         onHide={() => setShow(false)}
         show={show}
@@ -80,18 +80,18 @@ const SinglePopUpSelect = ({
         <ModalHeaderPart
           showX
           hideArrow
-          titleClass="text-brand-600"
+          titleClass="text-link"
           onHide={() => setShow(false)}
           title={item?.title || item?.placeholder || ""}
         />
         <div className="flex flex-col   px-6 py-4">
           {item?.searcheable ? (
-            <div className="form-control !py-1.5 mb-2 !text-sm top-14  transition-all sticky z-2  rounded-10   !bg-neutral-100 ">
+            <div className="form-control !py-1.5 mb-2 !text-sm top-14  transition-all sticky z-2  rounded-10   !bg-surface-muted ">
               <input
                 value={search}
                 placeholder={`${t("searchOf")} ${item?.title}`}
                 onChange={(e) => setSearch(e.target.value)}
-                className={` !text-base !bg-neutral-100   w-5/6 focus:border-brand-600 py-1 `}
+                className={` !text-base !bg-surface-muted   w-5/6 focus:border-action py-1 `}
               />
             </div>
           ) : (

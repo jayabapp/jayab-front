@@ -38,22 +38,19 @@ const Counter = ({
   };
   return (
     <div
-      className={`transition-all p-1 bg-white  duration-150 ease-in-out   w-full flex items-center justify-between ${containerClass} `}
+      className={`transition-all p-1 bg-surface  duration-150 ease-in-out   w-full flex items-center justify-between ${containerClass} `}
     >
       <button
         aria-label={t("increase")}
         onClick={() => {
           setAnimated(true);
           if (!!max) {
-            if (value + (plusMinusNumber || 50000) <= max) {
-              setValue(value + (plusMinusNumber || 50000));
-            }
+            if (value + (plusMinusNumber || 50000) <= max) setValue(value + (plusMinusNumber || 50000));
           } else setValue(value + (plusMinusNumber || 50000));
         }}
-        className="cursor-pointer select-none shrink-0 rounded-md transition-all duration-150 ease-in-out aspect-square flex bg-white border border-brand-600 w-5 h-5 items-center justify-center"
+        className="cursor-pointer select-none shrink-0 rounded-md transition-all duration-150 ease-in-out aspect-square flex bg-surface border border-action w-5 h-5 items-center justify-center"
         type="button"
       >
-        {" "}
         <ContentImage
           alt=""
           width={24}
@@ -73,13 +70,13 @@ const Counter = ({
 						!text-center !tracking-[0.15rem]  ltr  placeholder:!text-center  bg-transparent   text-base !font-semibold space-x-4  w-full h-full  ${
               items?.inpuClass
             }`}
+            value={value}
+            type="tel"
           style={{ fontKerning: "none" }}
-          type="tel"
           placeholder={!!placeholder ? placeholder : "0"}
           step={plusMinusNumber}
           autoComplete="off"
           inputMode="numeric"
-          value={value}
           onChange={handleInput}
           disabled={!!items?.disableInput}
         />
@@ -101,11 +98,10 @@ const Counter = ({
         aria-label={t("decrease")}
         onClick={() => {
           setAnimated(true);
-          if (value <= (plusMinusNumber || 50000)) {
-            setValue(0);
-          } else setValue(value - (plusMinusNumber || 50000));
+          if (value <= (plusMinusNumber || 50000)) setValue(0);
+           else setValue(value - (plusMinusNumber || 50000));
         }}
-        className="cursor-pointer select-none shrink-0 rounded-md border transition-all duration-150 ease-in-out aspect-square flex bg-white border-brand-600 w-5 h-5 items-center justify-center"
+        className="cursor-pointer select-none shrink-0 rounded-md border transition-all duration-150 ease-in-out aspect-square flex bg-surface border-action w-5 h-5 items-center justify-center"
         type="button"
       >
         <ContentImage

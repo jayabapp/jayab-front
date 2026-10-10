@@ -1,20 +1,22 @@
 "use client";
 
-import type { MultiImageUploadProps } from "@/types/components/modules/property-media";
+import { useEffect, useRef, useState } from "react";
+import { compressImageIfNeeded } from "@/helpers/compressImage";
 import { useAttachmentUpload } from "@features/upload/hooks/useAttachmentUpload";
 import { UploadPreviewImage } from "@/components/elements/Image";
-import { compressImageIfNeeded } from "@/helpers/compressImage";
-import { ContentImage } from "@/components/elements/Image";
 import { normalizeApiError } from "@/lib/api/api-error";
-import { useEffect, useRef, useState } from "react";
 import { FullscreenImage } from "@elements/Upload";
-import type { ReactEventHandler } from "react";
+import { useTranslations } from "next-intl";
+import { ContentImage } from "@/components/elements/Image";
 import { BtnLoading } from "@elements/Button";
 import { toast } from "sonner";
 
-import "react-advanced-cropper/dist/style.css";
+import type { MultiImageUploadProps } from "@/types/components/modules/property-media";
+import type { ReactEventHandler } from "react";
+
 import Notify from "@elements/Toast";
-import { useTranslations } from "next-intl";
+
+import "react-advanced-cropper/dist/style.css";
 
 const MAX_TOTAL_IMAGES = 20;
 
@@ -193,7 +195,7 @@ const NewMultUploader = ({
                 ? imagePickerRef?.current?.click()
                 : void null;
             }}
-            className={`cursor-pointer flex flex-col items-center gap-1 border bg-white relative transition-all duration-150 ease-in-out hover:border-neutral-600 justify-center rounded-20 aspect-square ${
+            className={`cursor-pointer flex flex-col items-center gap-1 border bg-surface relative transition-all duration-150 ease-in-out hover:border-neutral-600 justify-center rounded-20 aspect-square ${
               innerClasses?.sizeClass || "h-24 w-24"
             }`}
           >
@@ -203,7 +205,7 @@ const NewMultUploader = ({
               sizes="40px"
               alt=""
               src="/assets/images/uploader/uploader_placeholder.png"
-              className="w-10 h-10 opacity-80 text-brand-600"
+              className="w-10 h-10 opacity-80 text-link"
             />
             {title && <p className="text-xs opacity-70">{title}</p>}
             {loading && (

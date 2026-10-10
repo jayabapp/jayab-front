@@ -89,7 +89,7 @@ const ChatHeader = ({
   return (
     <div
       ref={headerRef}
-      className="fixed left-0 top-0 z-50 mx-auto w-full bg-white shadow-md md:left-[10%] md:right-[10%] md:z-30 md:w-1/2 xl:top-[4.5rem]"
+      className="fixed left-0 top-0 z-50 mx-auto w-full bg-surface shadow-md md:left-[10%] md:right-[10%] md:z-30 md:w-1/2 xl:top-[4.5rem]"
     >
       <div className="flex min-h-[4.25rem] items-center justify-between gap-2 px-2 pb-3 pt-4">
         <div className="flex w-full items-center gap-2">

@@ -49,9 +49,7 @@ const Callender = ({
   }, [chosenDate]);
 
   useEffect(() => {
-    if (!!setChosenDateState) {
-      setChosenDateState(chosenDate);
-    }
+    if (!!setChosenDateState) setChosenDateState(chosenDate);
   }, [chosenDate]);
 
   const doTheMath = (start: number, end: number) => {
@@ -124,7 +122,7 @@ const Callender = ({
       draggable
     >
       <div
-        className={` hidden  text-brand-600 flex-col gap-1 items-start   transition-all ${
+        className={` hidden  text-link flex-col gap-1 items-start   transition-all ${
           !!selectedDate ? " h-[3.75rem]" : " opacity-0 h-0"
         }`}
       >

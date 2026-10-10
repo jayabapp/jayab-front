@@ -16,7 +16,7 @@ const OwnerRegistrationFields = ({ values, onChange }: TEditCreateProps) => {
 
   return (
     <div className="w-full flex flex-col gap-4   ">
-      <div className="p-4  rounded-10 bg-brand-100 items-center justify-center content  text-justify">
+      <div className="p-4  rounded-10 bg-selected items-center justify-center content  text-justify">
         {isLoading ? (
           <BtnLoading />
         ) : (
@@ -49,9 +49,8 @@ const OwnerRegistrationFields = ({ values, onChange }: TEditCreateProps) => {
         />
       </div>
       <div className="flex flex-col gap-1 items-center justify-center ">
-        <div className="p-4  rounded-10 bg-orange-50 items-center my-3 justify-center content  text-justify ">
-          <p className="text-sm   text-center text-orange-700    ">
-            {" "}
+        <div className="p-4 rounded-10 bg-orange-50 items-center my-3 justify-center content  text-justify ">
+          <p className="text-sm text-center text-status-warning">
             {t("profile.addImageWarning")}
           </p>
         </div>

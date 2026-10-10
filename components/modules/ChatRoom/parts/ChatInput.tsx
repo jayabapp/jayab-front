@@ -33,7 +33,7 @@ const ChatInput = ({
         style={{ direction, resize: "none" }}
         onChange={(event) => onChangeText(event.target.value)}
         placeholder={placeholder ?? t("chatInputPlaceholder")}
-        className={`relative my-0 w-full rounded-lg border-0 bg-white ${padding ?? "p-2"} `}
+        className={`relative my-0 w-full rounded-lg border-0 bg-surface ${padding ?? "p-2"} `}
       />
     </div>
   );

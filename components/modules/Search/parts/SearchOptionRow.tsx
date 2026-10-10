@@ -1,8 +1,8 @@
 import { useTranslations } from "next-intl";
 import { ContentImage } from "@elements/Image";
 
-import type {SearchOptionRowProps} from "@/types/features/search";
-import type {SearchOptionKind} from "@/types/features/search";
+import type { SearchOptionRowProps } from "@/types/features/search";
+import type { SearchOptionKind } from "@/types/features/search";
 
 const ICON: Record<SearchOptionKind, string> = {
   place: "/assets/icons/home/literly_map.svg",
@@ -49,7 +49,7 @@ const SearchOptionRow = ({
       <span className="flex min-w-0 flex-1 flex-col items-start">
         <span className="line-clamp-1 text-sm">{option.label}</span>
         {!!option.hint ? (
-          <span className="line-clamp-1 text-2xs text-neutral-500">
+          <span className="line-clamp-1 text-2xs text-ink-subtle">
             {option.hint}
           </span>
         ) : (
@@ -57,7 +57,7 @@ const SearchOptionRow = ({
         )}
       </span>
 
-      <span className="shrink-0 rounded-full bg-neutral-100 px-2 py-0.5 text-2xs text-neutral-600">
+      <span className="shrink-0 rounded-full bg-surface-muted px-2 py-0.5 text-2xs text-ink-muted">
         {option.badge || t(BADGE[option.kind])}
       </span>
     </button>

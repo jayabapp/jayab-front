@@ -1,14 +1,11 @@
+import { semanticColors } from "./theme/semantic-colors";
+import { colors } from "./theme/colors";
+
 import type { Config } from "tailwindcss";
+
 import defaultTheme from "tailwindcss/defaultTheme";
 import plugin from "tailwindcss/plugin";
-import { colors } from "./theme/colors";
-import { semanticColors } from "./theme/semantic-colors";
 
-// Touch devices report `:hover` on tap and only clear it on the next tap
-// elsewhere, so every `hover:` utility below reads as a stuck, flickery
-// "touch effect" with no real pointer behind it. Gating hover variants behind
-// `(hover: hover)` — true everywhere a mouse or trackpad is present, false on
-// touch-only devices — removes that without hand-editing every component.
 const hoverOnlyWithPointer = plugin(({ addVariant }) => {
   addVariant("hover", "@media (hover: hover) { &:hover }");
   addVariant("group-hover", "@media (hover: hover) { :merge(.group):hover & }");
@@ -20,17 +17,14 @@ export default {
     "./pages/**/*.{js,ts,jsx,tsx,mdx}",
     "./components/**/*.{js,ts,jsx,tsx,mdx}",
     "./features/**/*.{js,ts,jsx,tsx,mdx}",
-    "./app/**/*.{js,ts,jsx,tsx,mdx}", // single component styles
-    // Shared class-name constants (e.g. utils/constantss.ts) live here too —
-    // without this, an arbitrary-value utility built there never gets seen by
-    // the scanner and silently never makes it into the compiled CSS.
+    "./app/**/*.{js,ts,jsx,tsx,mdx}",
     "./utils/**/*.{js,ts,jsx,tsx,mdx}",
   ],
   theme: {
     screens: { ...defaultTheme.screens },
     extend: {
       borderColor: {
-        DEFAULT: colors.neutral[200],
+        DEFAULT: semanticColors.line,
       },
       scale: {
         102: "1.02",
@@ -39,9 +33,6 @@ export default {
       zIndex: { 1: "1", 2: "2", 5: "5" },
       fontSize: {
         xxs: "0.625rem",
-        // 11px. `xxs` (10px) is below the floor for a price a guest has to read
-        // at a glance in a calendar cell, and 12px (`text-xs`) does not fit the
-        // cell. This is the smallest size any number on the listing page uses.
         "2xs": "0.6875rem",
       },
       colors: { ...colors, ...semanticColors },
@@ -52,9 +43,8 @@ export default {
       },
       boxShadow: {
         card: "0px 0px 7px 1px rgb(0 ,0 ,0,0.1)",
-        // Glass tokens: a wide, brand-tinted drop shadow reads as depth over the
-        // blurred auth backdrop, where a neutral black shadow just looks dirty
-        // against the blue mesh.
+        surface: "var(--shadow-surface)",
+        elevated: "var(--shadow-elevated)",
         glass: "0 24px 60px -24px rgb(21 60 105 / 0.45), 0 2px 6px -2px rgb(21 60 105 / 0.10)",
         "glass-sm": "0 12px 30px -16px rgb(21 60 105 / 0.45)",
         "glass-btn": "0 14px 30px -12px rgb(31 107 201 / 0.65)",

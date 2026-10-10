@@ -16,7 +16,7 @@ const OwnerPropertyEditHub = ({ propertyId }: OwnerPropertyRouteProps) => {
           href={`${step?.link}`}
           title={step?.full_title}
           key={`editStep${step?.id}`}
-          className="w-full border-neutral-200 flex items-center justify-between h-fit px-4 py-3 rounded-10 border"
+          className="w-full border-line flex items-center justify-between h-fit px-4 py-3 rounded-10 border"
         >
           <p className="text-sm font-bold">{step?.full_title}</p>
           <ContentImage

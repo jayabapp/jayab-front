@@ -31,7 +31,7 @@ const Day = ({
 
   return (
     <div
-      className={`aspect-square   ${!!data?.year && (!isBefore || !!isToday) ? "bg-neutral-100" : " opacity-50 "} ${
+      className={`aspect-square   ${!!data?.year && (!isBefore || !!isToday) ? "bg-surface-muted" : " opacity-50 "} ${
         onSelect && !disableClick ? "cursor-pointer" : ""
       } `}
       onClick={() => {
@@ -49,15 +49,15 @@ const Day = ({
       <div
         key={data?.id}
         className={`text-center flex flex-col gap-0.5 ${data?.is_reserved ? "striped" : " "}   ${
-          isToday ? "  rounded-md bg-neutral-200 border " : ""
+          isToday ? "  rounded-md bg-surface-hover border " : ""
         }  relative  flex items-center ${!!data?.price ? "justify-start" : "justify-center"}  md:justify-center  aspect-square  ${
-          !!data?.isActive ? "border-b-2  border-brand-600" : ""
-        }  ${isSelected ? "!bg-brand-600  rounded-md text-white" : ""}`}
+          !!data?.isActive ? "border-b-2  border-action" : ""
+        }  ${isSelected ? "!bg-action  rounded-md text-on-action" : ""}`}
       >
         {!!data?.has_memo ? (
           <div
             className={` absolute left-1 top-1  w-1 h-1 aspect-square  ${
-              isSelected ? "bg-danger-500" : "bg-brand-600 "
+              isSelected ? "bg-danger-500" : "bg-action "
             }  !rounded-full`}
           >
             {" "}
@@ -74,7 +74,7 @@ const Day = ({
         )}
 
         <p
-          className={`z-1 ${smallerDateFonts ? "font-medium" : "font-bold"}  ${!!isFriday ? "text-red-700" : ""} `}
+          className={`z-1 ${smallerDateFonts ? "font-medium" : "font-bold"}  ${!!isFriday ? "text-status-danger" : ""} `}
         >
           {" "}
           {data?.id}

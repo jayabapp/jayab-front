@@ -33,7 +33,7 @@ const ProfileSessionAction = ({ isLogin }: ProfileSessionActionProps) => {
       <button
         type="button"
         onClick={() => setShowConfirm(true)}
-        className="group py-5 flex items-center w-full gap-3 xl:gap-6 cursor-pointer text-danger-500 transition-colors hover:text-danger-600"
+        className="group py-5 flex items-center w-full gap-3 xl:gap-6 cursor-pointer text-status-danger transition-colors hover:text-status-danger"
       >
         <ContentImage
           alt=""

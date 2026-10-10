@@ -11,7 +11,7 @@ import RangeWithTitle from "@elements/Slider";
 import Button from "@elements/Button";
 
 const SHEET_CLASS =
-  "mx-auto rounded-t-20 absolute pb-[1.5rem] md:pb-10 bottom-0 md:translate-x-1/2 md:right-1/2 w-full md:w-[calc(50svw)]  overflow-y-scroll bg-white ";
+  "mx-auto rounded-t-20 absolute pb-[1.5rem] md:pb-10 bottom-0 md:translate-x-1/2 md:right-1/2 w-full md:w-[calc(50svw)]  overflow-y-scroll bg-surface ";
 const NEUTRAL_SCORE = 50;
 const RATING_MARK_STYLE = { color: "#3886E5", bottom: "2rem" };
 
@@ -74,7 +74,7 @@ const AdvisorRatingSheet = ({
             className="flex text-xs md:text-sm w-full flex-col gap-12 px-4"
           >
             <p>
-              <span className="text-brand-600 font-bold">{index + 1}.</span>
+              <span className="text-link font-bold">{index + 1}.</span>
               {t(question.text)}
             </p>
             <RangeWithTitle

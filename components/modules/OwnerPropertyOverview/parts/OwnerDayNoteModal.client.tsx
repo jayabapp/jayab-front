@@ -46,8 +46,8 @@ const OwnerDayNoteModal = ({
 
   return (
     <Modal show={show} onHide={onHide}>
-      <div className="flex flex-col gap-4 p-4 bg-white rounded-20">
-        <p className="text-sm font-bold text-brand-600">
+      <div className="flex flex-col gap-4 p-4 bg-surface rounded-20">
+        <p className="text-sm font-bold text-link">
           {t("common.edit")} {t("owner.memo")}
         </p>
 

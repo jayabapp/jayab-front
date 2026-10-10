@@ -1,9 +1,10 @@
 "use client";
 
-import type { ModalProps } from "@/types/components/elements/modal";
 import { Dialog, DialogPanel } from "@headlessui/react";
 import { useEffect, useRef } from "react";
 import { createPortal } from "react-dom";
+
+import type { ModalProps } from "@/types/components/elements/modal";
 import type { JSX } from "react";
 
 const Modal = ({
@@ -39,7 +40,7 @@ const Modal = ({
     >
       <div
         aria-hidden="true"
-        className="fixed inset-0 cursor-default bg-black/70"
+        className="fixed inset-0 cursor-default bg-overlay/70"
       />
 
       <div
@@ -48,7 +49,7 @@ const Modal = ({
         <DialogPanel
           className={`pointer-events-auto ${
             options?.containerClass ??
-            "mx-auto my-20 max-h-[calc(100vh-10rem)] w-11/12 overflow-y-auto overscroll-contain rounded-2xl bg-white supports-[height:100dvh]:max-h-[calc(100dvh-10rem)] md:w-1/2 xl:w-1/3 2xl:w-1/4"
+            "mx-auto my-20 max-h-[calc(100vh-10rem)] w-11/12 overflow-y-auto overscroll-contain rounded-2xl border border-line bg-surface shadow-elevated supports-[height:100dvh]:max-h-[calc(100dvh-10rem)] md:w-1/2 xl:w-1/3 2xl:w-1/4"
           }`}
           ref={ref}
           onScroll={(event) => onScroll?.(event.currentTarget.scrollTop)}

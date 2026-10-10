@@ -1,8 +1,9 @@
 "use client";
 
-import Modal from "@elements/Modal";
-import { ContentImage } from "@elements/Image";
 import { useTranslations } from "next-intl";
+import { ContentImage } from "@elements/Image";
+
+import Modal from "@elements/Modal";
 
 type TProfileImageProps = {
   src: string;
@@ -15,13 +16,17 @@ const ProfileImageModal = ({ src, onClose, onDelete }: TProfileImageProps) => {
 
   return (
     <Modal show onHide={onClose}>
-      <div className="flex h-full w-full flex-col gap-3 bg-white p-3 ">
+      <div className="flex h-full w-full flex-col gap-3 bg-surface p-3 ">
         <div className="flex justify-between">
           <button type="button" onClick={onClose} aria-label={t("close")}>
             ×
           </button>
           {onDelete ? (
-            <button type="button" onClick={onDelete} className="text-red-600">
+            <button
+              type="button"
+              onClick={onDelete}
+              className="text-status-danger"
+            >
               {t("remove")}
             </button>
           ) : (

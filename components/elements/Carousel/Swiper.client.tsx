@@ -1,12 +1,13 @@
 "use client";
 
-import { NextButton, PrevButton } from "./EmblaCarouselArrowButtons.client";
-import { DotButton, useDotButton } from "./EmblaCarouselDotButton.client";
-import type { CarouselProps } from "@/types/components/elements/carousel";
-import { usePrevNextButtons } from "./EmblaCarouselArrowButtons.client";
-import type { EmblaPluginType } from "embla-carousel";
 import { useEffect, useId, useMemo } from "react";
+import { DotButton, useDotButton } from "./EmblaCarouselDotButton.client";
+import { NextButton, PrevButton } from "./EmblaCarouselArrowButtons.client";
+import { usePrevNextButtons } from "./EmblaCarouselArrowButtons.client";
 import { ContentImage } from "@elements/Image";
+
+import type { EmblaPluginType } from "embla-carousel";
+import type { CarouselProps } from "@/types/components/elements/carousel";
 import type { FC } from "react";
 
 import useEmblaCarousel from "embla-carousel-react";
@@ -99,9 +100,9 @@ const Swiper: FC<CarouselProps> = (props) => {
               <></>
             ) : (
               <NextButton
-                className="!right-0 !-top-[10%] scale-75  hover:scale-[0.8]  md:hover:scale-102  md:scale-100"
-                onClick={onPrevButtonClick}
                 disabled={prevBtnDisabled}
+                onClick={onPrevButtonClick}
+                className="!right-0 !-top-[10%] scale-75  hover:scale-[0.8]  md:hover:scale-102  md:scale-100"
               />
             )}
           </div>
@@ -125,7 +126,7 @@ const Swiper: FC<CarouselProps> = (props) => {
           onClick={() => {
             onShowCountClick(selectedIndex);
           }}
-          className="absolute cursor-pointer bottom-4 flex items-center justify-evenly left-4 rounded-md right-auto w-11 h-7 bg-white/70"
+          className="absolute cursor-pointer bottom-4 flex items-center justify-evenly left-4 rounded-md right-auto w-11 h-7 bg-surface/70"
         >
           <p className="text-sm h-full text-center flex items-center justify-center mt-0.5">
             {scrollSnaps?.length}

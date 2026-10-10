@@ -54,7 +54,7 @@ export function convertHtmlToReact(htmlString: string, imageQuality = 75) {
           title={title}
           isOpenFirst={isOpen}
           item={{
-            parenClass: "bg-white rounded-xl shadow-md my-2",
+            parenClass: "bg-surface rounded-xl shadow-md my-2",
           }}
         >
           <div dangerouslySetInnerHTML={{ __html: sanitize(node.innerHTML) }} />
@@ -228,7 +228,7 @@ export function convertHtmlToReact(htmlString: string, imageQuality = 75) {
               title={product?.title}
               href={product.href || ""}
               key={idx}
-              className="embla__slide !no-underline p-2 bg-white  shadow-sm md:shadow-md rounded-xl gap-1 flex items-center flex-col justify-center relative"
+              className="embla__slide !no-underline p-2 bg-surface  shadow-sm md:shadow-md rounded-xl gap-1 flex items-center flex-col justify-center relative"
             >
               <Image
                 src={product.img}
@@ -240,10 +240,10 @@ export function convertHtmlToReact(htmlString: string, imageQuality = 75) {
                 className="rounded-lg object-cover !aspect-square w-full"
                 loading="lazy"
               />
-              <h3 className="!no-underline !font-bold !text-black text-right">
+              <h3 className="!no-underline !font-bold !text-ink text-right">
                 {product.title}
               </h3>
-              <p className="!no-underline text-sm !text-black text-right ">
+              <p className="!no-underline text-sm !text-ink text-right ">
                 {numberWithCommas(product.price)} تومان
               </p>
               <Button

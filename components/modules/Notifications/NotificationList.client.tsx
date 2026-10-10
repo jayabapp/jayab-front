@@ -49,7 +49,7 @@ const NotificationList = () => {
     return (
       <div
         role="alert"
-        className="rounded-lg bg-danger-500/10 p-4 text-sm text-danger-500"
+        className="rounded-lg bg-danger-500/10 p-4 text-sm text-status-danger"
       >
         {t("notificationsFailed")}
       </div>

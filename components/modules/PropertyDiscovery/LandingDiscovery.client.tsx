@@ -9,11 +9,11 @@ import { SpecialFilterButtons } from "@modules/PropertySearchFilters";
 import { landingQueryDefaults } from "@features/properties/lib/landing-filters";
 import { PropertyFilterForm } from "@modules/PropertySearchFilters";
 import { SelectedFiltersBar } from "@modules/PropertySearchFilters";
-import {isSameLocationPath} from "@features/cities/lib/location-label";
+import { isSameLocationPath } from "@features/cities/lib/location-label";
 import { PropertySortMenu } from "@modules/PropertySearchFilters";
-import {pickLocationQuery} from "@features/cities/lib/location-label";
+import { pickLocationQuery } from "@features/cities/lib/location-label";
 import { useTranslations } from "next-intl";
-import {hasLocationQuery} from "@features/cities/lib/location-label";
+import { hasLocationQuery } from "@features/cities/lib/location-label";
 import { FilterApplyBar } from "@modules/PropertySearchFilters";
 import { useCitiesStore } from "@/store";
 import { usePathname } from "next/navigation";
@@ -112,7 +112,7 @@ const LandingDiscovery = ({ devices, landing }: LandingDiscoveryProps) => {
       <div
         className={`flex fixed ${
           showShadow ? "shadow-md" : ""
-        } md:shadow-none pt-1 transition-all duration-300 xl:hidden h-16 right-0 items-center justify-center z-10 xl:z-1 top-[3rem] xl:top-auto left-0 xl:left-auto bg-white xl:bg-transparent xl:relative flex-col w-full xl:gap-2`}
+        } md:shadow-none pt-1 transition-all duration-300 xl:hidden h-16 right-0 items-center justify-center z-10 xl:z-1 top-[3rem] xl:top-auto left-0 xl:left-auto bg-surface xl:bg-transparent xl:relative flex-col w-full xl:gap-2`}
       >
         <div className="flex order-1 xl:hidden relative w-full">
           <div className="z-1 px-3 relative w-full items-center gap-1 justify-between">
@@ -153,7 +153,7 @@ const LandingDiscovery = ({ devices, landing }: LandingDiscoveryProps) => {
             </div>
 
             <div className="mb-3 w-full flex items-center justify-between px-3 xl:px-0">
-              <h2 className="text-lg font-medium text-black">
+              <h2 className="text-lg font-medium text-ink">
                 {landing?.content?.title}
               </h2>
               <div className="w-fit items-center justify-end hidden lg:flex">

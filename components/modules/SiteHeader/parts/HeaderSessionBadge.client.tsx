@@ -30,14 +30,14 @@ const HeaderSessionBadge = ({
         href={isLogin ? "/profile" : "/auth"}
         className={`flex shrink-0 items-center justify-center rounded-full border py-1.5 backdrop-blur-[2px] transition-all ${
           compact ? "gap-1 px-1.5 sm:px-2" : "gap-3 px-2.5"
-        } ${isLight ? "border-transparent bg-white/40" : ""}`}
+        } ${isLight ? "border-transparent bg-surface/40" : ""}`}
       >
         <ContentImage
           alt=""
           width={24}
           height={24}
           src={avatar || "/assets/icons/header/new-face/user.svg"}
-          className={`${isLogin && !avatar ? "xl:brightness-0" : !isLogin && !isLight ? "brightness-0" : ""} ${isLight ? "border-white" : "border-neutral-500"} border shrink-0 size-6 rounded-full transform-gpu transition-all`}
+          className={`${isLogin && !avatar ? "xl:brightness-0" : !isLogin && !isLight ? "brightness-0" : ""} ${isLight ? "border-white" : "border-control"} border shrink-0 size-6 rounded-full transform-gpu transition-all`}
         />
 
         {isLogin ? (
@@ -70,8 +70,8 @@ const HeaderSessionBadge = ({
             compact ? "size-8" : "size-9"
           } ${
             isLight
-              ? "border-white/60 bg-white/35 text-white backdrop-blur-[2px]"
-              : "border-brand-100 bg-brand-50 text-neutral-700"
+              ? "border-white/60 bg-surface/35 text-white backdrop-blur-[2px]"
+              : "border-selected-line bg-selected text-ink-muted"
           }`}
         >
           <CountBadge count={notificationCount} />

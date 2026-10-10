@@ -43,8 +43,8 @@ const MyMessageItem = ({ data }: ChatMessageItemProps) => {
       <div
         onClick={() => setShow(true)}
         className={` ${`my-anchor-element${data?.id}`}  ${
-          show ? "bg-brand-50/30 " : ""
-        }  w-[70%] md:w-[40%]  cursor-pointer text-black relative bg-success-50  z-1 ${
+          show ? "bg-selected/30 " : ""
+        }  w-[70%] md:w-[40%]  cursor-pointer text-ink relative bg-status-success-bg  z-1 ${
           data?.media ? "p-1" : "p-4 pb-2 "
         }   rounded-xl   rounded-br-none h-fit`}
       >
@@ -52,7 +52,7 @@ const MyMessageItem = ({ data }: ChatMessageItemProps) => {
           <div
             className={`flex items-center   bg-transparent gap-4 ${
               !!data?.text ? " mb-4" : ""
-            }  bg-white rounded-[10px] relative`}
+            }  bg-surface rounded-[10px] relative`}
           >
             <ContentImage
               src={resolveChatImage(data?.media, "medium")}
@@ -86,7 +86,7 @@ const MyMessageItem = ({ data }: ChatMessageItemProps) => {
             <></>
           )}
           {data.deliveryStatus === "failed" ? (
-            <span className="text-2xs text-red-600">
+            <span className="text-2xs text-status-danger">
               {t("messageSendFailed")}
             </span>
           ) : (

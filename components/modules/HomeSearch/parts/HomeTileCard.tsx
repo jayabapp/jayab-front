@@ -12,7 +12,7 @@ const HomeTileCard = ({ href, title, imageSrc, index }: HomeTileCardProps) => (
     href={href}
     title={title}
     style={{ "--card-index": index ?? 0 } as CSSProperties}
-    className="home-tile stagger-rise flex aspect-square w-full flex-col items-center justify-center gap-2 rounded-2xl border bg-white px-2 md:aspect-auto md:h-[8.8125rem] md:w-[8.8125rem] md:shrink-0 md:gap-2.5 lg:aspect-square lg:h-auto lg:w-full"
+    className="home-tile stagger-rise flex aspect-square w-full flex-col items-center justify-center gap-2 rounded-2xl border bg-surface px-2 md:aspect-auto md:h-[8.8125rem] md:w-[8.8125rem] md:shrink-0 md:gap-2.5 lg:aspect-square lg:h-auto lg:w-full"
   >
     <span className="home-tile-well shrink-0">
       <ContentImage

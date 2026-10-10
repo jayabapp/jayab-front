@@ -12,7 +12,7 @@ const PropertyDescription = ({ property }: PropertyDescriptionProps) => {
   if (!text) return <></>;
   return (
     <section className="flex flex-col gap-2">
-      <h3 className="text-sm font-bold text-neutral-900 md:text-base">
+      <h3 className="text-sm font-bold text-ink md:text-base">
         {t("propDesc")}
       </h3>
       <ClampText lines={2}>{text}</ClampText>

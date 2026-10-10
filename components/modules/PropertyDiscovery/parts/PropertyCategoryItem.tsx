@@ -1,6 +1,7 @@
-import type { PropertyCategoryItemProps } from "@/types/components/modules/property-discovery";
 import { getPropertyTypeImageUrl } from "@features/properties/mappers/property-image.mapper";
 import { ContentImage } from "@elements/Image";
+
+import type { PropertyCategoryItemProps } from "@/types/components/modules/property-discovery";
 
 const PropertyCategoryItem = ({
   cb,
@@ -13,19 +14,17 @@ const PropertyCategoryItem = ({
     onClick={() => cb?.()}
     data-umami-event="Category Select"
     data-umami-event-id={item?.title}
-    // White by default for the same reason the cards are: a tile with no
-    // background is a tinted tile on this canvas, not a neutral one.
     className={`flex aspect-square w-full flex-col items-center justify-center gap-2 rounded-2xl border transition-colors ${
       isSelected
-        ? "border-brand-600 bg-brand-100 text-brand-700"
-        : "border-neutral-100 bg-white hover:border-neutral-300"
+        ? "border-action bg-selected text-link"
+        : "border-surface-muted bg-surface hover:border-line-strong"
     }`}
   >
     <ContentImage
       width={64}
       height={64}
-      sizes="(min-width: 768px) 64px, 32px"
       alt={item?.title || ""}
+      sizes="(min-width: 768px) 64px, 32px"
       className="size-8 md:size-16 rounded-sm"
       src={getPropertyTypeImageUrl(item?.image)}
     />

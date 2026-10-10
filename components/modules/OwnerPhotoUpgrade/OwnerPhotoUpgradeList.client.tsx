@@ -21,7 +21,7 @@ const OwnerPhotoUpgradeList = () => {
         <h1 className="text-base font-medium md:text-xl">
           {t("owner.photoUpgradeRequests")}
         </h1>
-        <p className="text-xs text-neutral-500 md:text-sm">
+        <p className="text-xs text-ink-subtle md:text-sm">
           {t("owner.photoUpgradeHint")}
         </p>
       </div>
@@ -32,12 +32,12 @@ const OwnerPhotoUpgradeList = () => {
           ))}
         </div>
       ) : isError ? (
-        <div className="white-card flex flex-col items-center gap-3 text-sm text-neutral-500">
+        <div className="white-card flex flex-col items-center gap-3 text-sm text-ink-subtle">
           <p>{t("owner.requestsLoadFailed")}</p>
           <button
             type="button"
             onClick={() => void refetch()}
-            className="text-brand-600"
+            className="text-link"
           >
             {t("common.tryAgain")}
           </button>

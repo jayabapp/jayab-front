@@ -1,18 +1,20 @@
 "use client";
 
-import type { AuthUploadFieldProps } from "@/types/components/modules/property-media";
+import { useEffect, useRef, useState } from "react";
 import { getUploadedImageUrl } from "@features/upload/mappers/upload-image.mapper";
 import { useAttachmentUpload } from "@features/upload/hooks/useAttachmentUpload";
-import { useEffect, useRef, useState } from "react";
+import { useTranslations } from "next-intl";
 import { ImageCropModal } from "@elements/Upload";
-import type { ReactEventHandler } from "react";
 import { BtnLoading } from "@elements/Button";
 import { toast } from "sonner";
 
+import type { AuthUploadFieldProps } from "@/types/components/modules/property-media";
+import type { ReactEventHandler } from "react";
+
 import ProfileImageModal from "@features/auth/components/ProfileImageModal";
-import "react-advanced-cropper/dist/style.css";
 import Image from "next/image";
-import { useTranslations } from "next-intl";
+
+import "react-advanced-cropper/dist/style.css";
 
 const resolveProfileImage = (item: any, derivative?: "thumbnail") => {
   if (typeof item === "string") return item;
@@ -123,7 +125,7 @@ const AuthUploader = ({
             onClick={() => {
               !disabled ? imagePickerRef?.current?.click() : void null;
             }}
-            className="cursor-pointer bg-neutral-100 flex flex-col items-center  gap-1      relative transition-all duration-150 ease-in-out  hover:border-brand-600  justify-center rounded-10  aspect-square  h-24 w-24"
+            className="cursor-pointer bg-surface-muted flex flex-col items-center  gap-1      relative transition-all duration-150 ease-in-out  hover:border-action  justify-center rounded-10  aspect-square  h-24 w-24"
           >
             <Image
               width={32}
@@ -163,7 +165,7 @@ const AuthUploader = ({
               />
             </div>
             <div
-              className=" p-1 bg-white    rounded-lg cursor-pointer absolute bottom-4 left-4 "
+              className=" p-1 bg-surface    rounded-lg cursor-pointer absolute bottom-4 left-4 "
               onClick={onDelete}
             >
               <Image

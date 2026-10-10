@@ -14,7 +14,7 @@ const ProfileMenuRow = ({ entry, compact }: ProfileMenuRowProps) => {
       : pathname.includes(entry.route);
 
   const badge = entry?.badgeCounter ? (
-    <div className="aspect-square w-5 h-5 rounded-full text-white border border-brand-100 bg-danger-500 flex z-1 items-center justify-center text-[10px]">
+    <div className="aspect-square w-5 h-5 rounded-full text-white border border-selected-line bg-danger-500 flex z-1 items-center justify-center text-[10px]">
       {entry.badgeCounter}
     </div>
   ) : null;
@@ -25,8 +25,8 @@ const ProfileMenuRow = ({ entry, compact }: ProfileMenuRowProps) => {
       href={entry?.route}
       title={entry?.title}
       className={`${
-        isSelected ? "text-brand-600" : "text-neutral-900"
-      } group flex w-full cursor-pointer items-center justify-between gap-2 border-b border-white/70 px-2 py-3 transition-colors last:border-b-0 hover:bg-white/60 hover:text-brand-600 md:py-4 rounded-2xl`}
+        isSelected ? "text-link" : "text-ink"
+      } group flex w-full cursor-pointer items-center justify-between gap-2 border-b border-white/70 px-2 py-3 transition-colors last:border-b-0 hover:bg-surface/60 hover:text-link md:py-4 rounded-2xl`}
     >
       <div className="flex items-center gap-3 md:gap-4 relative">
         <span className="menu-icon-chip">

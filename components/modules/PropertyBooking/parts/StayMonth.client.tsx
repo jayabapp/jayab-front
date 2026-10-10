@@ -110,7 +110,7 @@ const StayMonth = ({
       data-stay-month={`${year}-${month}`}
       className="flex flex-col gap-3 [contain-intrinsic-size:auto_22rem] [content-visibility:auto]"
     >
-      <p className="mx-auto w-fit rounded-full bg-neutral-100 px-4 py-1 text-sm font-semibold text-neutral-900">
+      <p className="mx-auto w-fit rounded-full bg-surface-muted px-4 py-1 text-sm font-semibold text-ink">
         {first.format("jMMMM jYYYY")}
       </p>
 
@@ -118,7 +118,7 @@ const StayMonth = ({
         {WEEKDAYS.map((weekday) => (
           <p
             key={weekday}
-            className="text-center text-xs font-bold text-neutral-500"
+            className="text-center text-xs font-bold text-ink-subtle"
           >
             {tCalendar(`short${weekday}`)}
           </p>

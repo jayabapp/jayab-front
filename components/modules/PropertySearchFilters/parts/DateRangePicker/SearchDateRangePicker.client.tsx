@@ -100,7 +100,7 @@ const SearchDateRangePicker = ({
         }
         setPrevX(e.pageX);
       }}
-      className="flex transition-all duration-500 ease-in-out bg-neutral-100 rounded-2xl p-4 md:p-12  gap-2 flex-col"
+      className="flex transition-all duration-500 ease-in-out bg-surface-muted rounded-2xl p-4 md:p-12  gap-2 flex-col"
       draggable
     >
       <div className="flex items-center gap-4">

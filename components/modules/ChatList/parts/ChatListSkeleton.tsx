@@ -10,11 +10,11 @@ const ChatListSkeleton = () => {
           className="flex animate-pulse gap-3 border-b pb-4 motion-reduce:animate-none"
           key={index}
         >
-          <div className="size-12 shrink-0 rounded-md bg-neutral-200" />
+          <div className="size-12 shrink-0 rounded-md bg-surface-hover" />
           <div className="flex flex-1 flex-col gap-3">
-            <div className="h-4 w-2/5 rounded bg-neutral-200" />
-            <div className="h-3 w-3/5 rounded bg-neutral-200" />
-            <div className="h-3 w-full rounded bg-neutral-100" />
+            <div className="h-4 w-2/5 rounded bg-surface-hover" />
+            <div className="h-3 w-3/5 rounded bg-surface-hover" />
+            <div className="h-3 w-full rounded bg-surface-muted" />
           </div>
         </div>
       ))}

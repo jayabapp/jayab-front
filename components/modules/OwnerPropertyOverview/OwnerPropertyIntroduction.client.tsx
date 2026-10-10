@@ -47,7 +47,7 @@ const OwnerPropertyIntroduction = ({ property }: OwnerPropertyViewProps) => {
           />
         </div>
         {property?.is_promoted ? (
-          <p className="font-bold text-brand-600 shrink-0 text-xs">
+          <p className="font-bold text-link shrink-0 text-xs">
             {t("common.laddered")}
           </p>
         ) : null}
@@ -69,7 +69,7 @@ const OwnerPropertyIntroduction = ({ property }: OwnerPropertyViewProps) => {
       <div className="w-full flex flex-row items-center gap-2 justify-start">
         <p className="text-sm shrink-0">{t("common.todayStatus")} :</p>
         <p
-          className={`text-sm font-bold ${property?.is_today_reserved ? "text-danger-500" : "text-brand-600"}`}
+          className={`text-sm font-bold ${property?.is_today_reserved ? "text-status-danger" : "text-link"}`}
         >
           {property?.is_today_reserved
             ? t("owner.occupied")
@@ -91,10 +91,10 @@ const OwnerPropertyIntroduction = ({ property }: OwnerPropertyViewProps) => {
         </p>
       </div>
 
-      <div className="w-full flex py-2 border-neutral-200 items-center justify-between">
+      <div className="w-full flex py-2 border-line items-center justify-between">
         <p className="text-xs">{t("owner.subStatus")} :</p>
         <div className="flex items-center gap-2">
-          <div className="rounded-full text-sm text-brand-600 bg-brand-200 flex items-center justify-center h-7 w-24">
+          <div className="rounded-full text-sm text-link bg-selected flex items-center justify-center h-7 w-24">
             {property?.remaining_days
               ? `${t("owner.creditDays", { count: Number(property?.remaining_days) })}`
               : t("owner.noRemainingCredit")}
@@ -103,7 +103,7 @@ const OwnerPropertyIntroduction = ({ property }: OwnerPropertyViewProps) => {
             prefetch={false}
             title={t("common.extendSubs")}
             href={`/profile/owner/properties/${property?.id}/subscription`}
-            className="rounded-full text-xs text-white bg-brand-600 flex items-center justify-center h-7 w-24"
+            className="rounded-full text-xs text-on-action bg-action flex items-center justify-center h-7 w-24"
           >
             {t("common.extendSubs")}
           </Link>

@@ -31,8 +31,8 @@ const DisplayPreferences = ({
         <span
           className={`flex size-9 items-center justify-center rounded-full border transition-all ${
             overHero
-              ? "border-white/60 bg-white/35 text-white backdrop-blur-[2px]"
-              : "border-brand-100 bg-brand-50 text-neutral-700"
+              ? "border-white/60 bg-surface/35 text-white backdrop-blur-[2px]"
+              : "border-selected-line bg-selected text-ink-muted"
           }`}
         >
           <svg

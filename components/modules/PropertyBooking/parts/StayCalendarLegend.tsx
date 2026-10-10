@@ -4,9 +4,9 @@ const StayCalendarLegend = () => {
   const t = useTranslations("reserve");
 
   return (
-    <div className="flex flex-wrap items-center gap-x-5 gap-y-1 text-xs text-neutral-500">
+    <div className="flex flex-wrap items-center gap-x-5 gap-y-1 text-xs text-ink-subtle">
       <span className="flex items-center gap-2">
-        <span className="relative size-4 overflow-hidden rounded-md bg-neutral-100">
+        <span className="relative size-4 overflow-hidden rounded-md bg-surface-muted">
           <span
             aria-hidden="true"
             className="striped absolute inset-0 opacity-20"

@@ -9,13 +9,13 @@ import { useContactFlow } from "./ContactFlow.client";
 import { Icon } from "@elements/Icon";
 
 const BUTTON_BASE =
-  "flex cursor-pointer items-center justify-center rounded-10 font-medium transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-500 focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-60";
+  "flex cursor-pointer items-center justify-center rounded-10 font-medium transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-focus focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-60";
 const CARD_BUTTON = `${BUTTON_BASE} h-12 w-full gap-2 text-sm`;
 const BAR_BUTTON = `${BUTTON_BASE} h-14 min-w-0 flex-1 flex-col gap-1 px-1 text-xs`;
 const BAR_SINGLE_BUTTON = `${BUTTON_BASE} h-11 w-full gap-2 text-base`;
-const PRIMARY_TONE = "bg-brand-600 text-white hover:bg-brand-700";
+const PRIMARY_TONE = "bg-action text-on-action hover:bg-action-hover";
 const SECONDARY_TONE =
-  "border border-neutral-200 bg-white text-neutral-900 hover:bg-neutral-50";
+  "border border-line bg-surface text-ink hover:bg-surface-muted";
 
 const ContactActions = ({ context, property }: ContactActionsProps) => {
   const t = useTranslations();
@@ -99,7 +99,7 @@ const ContactActions = ({ context, property }: ContactActionsProps) => {
 
   return (
     <div className="flex flex-col gap-3">
-      <p className="text-sm font-bold text-neutral-900">
+      <p className="text-sm font-bold text-ink">
         {isExpired
           ? t("reserve.contactHostTitleExpired")
           : t("reserve.contactHostTitle")}
@@ -118,7 +118,7 @@ const ContactActions = ({ context, property }: ContactActionsProps) => {
           </button>
         ))}
       </div>
-      <p className="text-xs text-neutral-500">
+      <p className="text-xs text-ink-subtle">
         {isExpired
           ? t("reserve.expiredRequestNote")
           : t("reserve.directCoordinationNote")}

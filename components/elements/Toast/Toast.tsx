@@ -27,15 +27,15 @@ const Notify = (props: NotifyProps) => {
   const _findTypeData = () => {
     switch (type) {
       case "success":
-        return { icon: successIcon, border: "border-r-green-500" };
+        return { icon: successIcon, border: "border-r-status-success" };
       case "error":
-        return { icon: errorIcon, border: "border-r-rose-500" };
+        return { icon: errorIcon, border: "border-r-status-danger" };
       case "warn":
-        return { icon: warningIcon, border: "border-r-yellow-400" };
+        return { icon: warningIcon, border: "border-r-status-warning" };
       case "info":
-        return { icon: infoIcon, border: "border-r-sky-400" };
+        return { icon: infoIcon, border: "border-r-link" };
       default:
-        return { icon: infoIcon, border: "border-r-sky-400" };
+        return { icon: infoIcon, border: "border-r-link" };
     }
   };
   const LottieHelper = Lottie;
@@ -43,7 +43,7 @@ const Notify = (props: NotifyProps) => {
   toast.custom(
     (t) => (
       <div
-        className={`relative right-0 left-0 z-10 mx-auto flex items-center justify-start rounded-lg border-r-8 bg-white px-3 py-2 text-black shadow-lg transition-all duration-500 ease-in-out hover:translate-y-1 md:w-96 cursor-pointer ${_findTypeData().border}`}
+        className={`relative right-0 left-0 z-10 mx-auto flex items-center justify-start rounded-lg border border-line border-r-8 bg-surface px-3 py-2 text-ink shadow-elevated transition-all duration-500 ease-in-out hover:translate-y-1 md:w-96 cursor-pointer ${_findTypeData().border}`}
         onClick={() => {
           toast.dismiss(t);
           typeof cb == "function" && cb();

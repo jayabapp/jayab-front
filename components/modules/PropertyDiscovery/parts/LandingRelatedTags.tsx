@@ -27,9 +27,9 @@ const LandingRelatedTags = ({ data }: LandingRelatedTagsProps) => {
           href={landing?.url}
           title={landing?.title}
           key={`related-${landing?.url}`}
-          className="w-fit border-neutral-400 py-1 px-1.5 border-2 rounded-full flex items-center gap-2"
+          className="w-fit border-control py-1 px-1.5 border-2 rounded-full flex items-center gap-2"
         >
-          <p className="text-neutral-400 text-sm">{landing?.title}</p>
+          <p className="text-ink-subtle text-sm">{landing?.title}</p>
           <span className="w-4 h-4 aspect-square flex items-center justify-center">
             <ContentImage
               alt=""

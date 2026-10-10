@@ -1,7 +1,8 @@
 "use client";
 
-import type { HeaderNavLinkProps } from "@/types/components/modules/site-header";
 import { PulseDot } from "@elements/Badge";
+
+import type { HeaderNavLinkProps } from "@/types/components/modules/site-header";
 
 import Link from "next/link";
 
@@ -19,10 +20,8 @@ const HeaderNavLink = ({
     <p
       className={`nav-underline relative ${
         isLight
-          ? // Over the hero the header is transparent on a dark gradient, where
-            // brand-600 on white text reads as "dimmed", not "hovered".
-            "text-white group-hover:text-brand-200"
-          : "text-black group-hover:text-brand-600"
+          ? "text-white group-hover:text-brand-200"
+          : "text-ink group-hover:text-link"
       } text-sm xl:text-base transition-colors duration-150 shrink-0 font-medium`}
     >
       {title}
@@ -35,11 +34,7 @@ const HeaderNavLink = ({
 
   if (route)
     return (
-      <Link
-        href={route}
-        title={title}
-        className={CONTAINER_CLASS}
-      >
+      <Link href={route} title={title} className={CONTAINER_CLASS}>
         {badge}
         {label}
       </Link>

@@ -1,6 +1,6 @@
 import { PropertyGallerySkeleton } from "@modules/PropertyGallery";
-
 import { PageSurface } from "@elements/PageSurface";
+
 import Skeleton from "@elements/Skeleton/Skeleton";
 
 const ACTION_COUNT = 4;
@@ -9,14 +9,12 @@ const FACT_COUNT = 4;
 const AMENITY_COUNT = 6;
 
 const SECTION_CLASS =
-  "flex flex-col gap-4 border-b border-neutral-100 py-6 md:py-8";
+  "flex flex-col gap-4 border-b border-surface-muted py-6 md:py-8";
 
-// Mirrors the listing layout: header, gallery, section tabs, sections beside a
-// sticky booking card, and the mobile bottom bar.
 const PropertyDetailsPageSkeleton = () => (
   <div
     aria-busy="true"
-    className="container flex !h-auto flex-col !overflow-x-visible !bg-white !pb-48 lg:!pb-36"
+    className="container flex !h-auto flex-col !overflow-x-visible !bg-surface !pb-48 lg:!pb-36"
   >
     <PageSurface />
 
@@ -44,7 +42,7 @@ const PropertyDetailsPageSkeleton = () => (
 
     <PropertyGallerySkeleton />
 
-    <div className="mb-2 mt-4 flex gap-2 overflow-hidden border-b border-neutral-100 py-2 md:mt-6">
+    <div className="mb-2 mt-4 flex gap-2 overflow-hidden border-b border-surface-muted py-2 md:mt-6">
       {Array.from({ length: TAB_COUNT }, (_, index) => (
         <Skeleton key={index} className="h-8 w-20 shrink-0 rounded-full" />
       ))}
@@ -101,22 +99,25 @@ const PropertyDetailsPageSkeleton = () => (
       </div>
 
       <aside className="hidden w-full md:col-span-5 md:block lg:col-span-4">
-        <div className="flex w-full flex-col gap-4 rounded-20 border border-neutral-200 bg-white p-5 shadow-glass-sm md:sticky md:top-36">
+        <div className="flex w-full flex-col gap-4 rounded-20 border border-line-strong bg-surface p-5 shadow-glass-sm md:sticky md:top-36">
           <div className="flex flex-col gap-2">
             <Skeleton className="h-4 w-24 rounded" />
             <Skeleton className="h-7 w-44 rounded" />
           </div>
 
           <div className="flex flex-col gap-2">
-            <div className="flex divide-x divide-x-reverse divide-neutral-200 overflow-hidden rounded-10 border border-neutral-200">
+            <div className="flex divide-x divide-x-reverse divide-control overflow-hidden rounded-10 border border-control">
               {Array.from({ length: 2 }, (_, index) => (
-                <div key={index} className="flex flex-1 flex-col gap-2 px-3 py-2.5">
+                <div
+                  key={index}
+                  className="flex flex-1 flex-col gap-2 px-3 py-2.5"
+                >
                   <Skeleton className="h-3 w-16 rounded" />
                   <Skeleton className="h-4 w-20 rounded" />
                 </div>
               ))}
             </div>
-            <div className="flex items-center justify-between rounded-10 border border-neutral-200 px-3 py-2.5">
+            <div className="flex items-center justify-between rounded-10 border border-line px-3 py-2.5">
               <div className="flex flex-col gap-2">
                 <Skeleton className="h-3 w-16 rounded" />
                 <Skeleton className="h-4 w-24 rounded" />
@@ -130,7 +131,7 @@ const PropertyDetailsPageSkeleton = () => (
       </aside>
     </div>
 
-    <div className="fixed inset-x-0 bottom-0 z-[11] flex items-center justify-between gap-3 border-t border-neutral-200 bg-white px-4 pb-[calc(0.75rem+env(safe-area-inset-bottom))] pt-3 md:hidden">
+    <div className="fixed inset-x-0 bottom-0 z-[11] flex items-center justify-between gap-3 border-t border-line bg-surface px-4 pb-[calc(0.75rem+env(safe-area-inset-bottom))] pt-3 md:hidden">
       <div className="flex flex-col gap-2">
         <Skeleton className="h-3 w-20 rounded" />
         <Skeleton className="h-5 w-32 rounded" />

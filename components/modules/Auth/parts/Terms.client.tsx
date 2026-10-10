@@ -18,7 +18,7 @@ const Terms = ({
   return (
     <Modal show={visibleTermsModal} onHide={() => setvisibleTermsModal(false)}>
       <div className="app-text">
-        <div className="app-text flex justify-between items-center py-3 px-4 sticky top-0 bg-white  z-10">
+        <div className="app-text flex justify-between items-center py-3 px-4 sticky top-0 bg-surface  z-10">
           <h3 className="mr-2 font-medium">{t("terms")}</h3>
           <Image
             alt=""
@@ -34,7 +34,7 @@ const Terms = ({
           <CmsContentSkeleton withImage={false} />
         ) : (
           <div
-            className="bg-neutral-200 font-light text-sm px-2 py-3 rounded-lg content text-justify mx-2 lg:mx-4 leading-6 my-2 "
+            className="bg-surface-hover font-light text-sm px-2 py-3 rounded-lg content text-justify mx-2 lg:mx-4 leading-6 my-2 "
             dangerouslySetInnerHTML={{ __html: termsContent?.html || "" }}
           />
         )}

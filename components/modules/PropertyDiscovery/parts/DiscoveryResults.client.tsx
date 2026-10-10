@@ -90,7 +90,7 @@ const DiscoveryResults = ({
       {isError ? (
         <div
           role="alert"
-          className="mx-3 mt-2 flex items-center justify-between gap-3 rounded-xl bg-danger-50 px-3 py-2 text-xs text-danger-600 lg:mx-1"
+          className="mx-3 mt-2 flex items-center justify-between gap-3 rounded-xl bg-status-danger-bg px-3 py-2 text-xs text-status-danger lg:mx-1"
         >
           <span>{t("listing.searchResultsLoadError")}</span>
           <button

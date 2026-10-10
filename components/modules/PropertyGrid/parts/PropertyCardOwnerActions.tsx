@@ -17,10 +17,10 @@ const PropertyCardOwnerActions = ({
   return (
     <div className="w-full flex flex-col">
       <Divider moreClass="my-1" />
-      <div className="w-full flex py-2 border-neutral-200 items-center justify-between">
+      <div className="w-full flex py-2 border-line items-center justify-between">
         <p className="text-xs">{t("listing.addDuration")} :</p>
         <div className="flex items-center gap-2">
-          <div className="rounded-full text-sm text-brand-600 bg-brand-200 flex items-center justify-center h-7 w-24">
+          <div className="rounded-full text-sm text-link bg-selected flex items-center justify-center h-7 w-24">
             {data?.remaining_days
               ? `${t("listing.creditDays", { count: Number(data?.remaining_days) })}`
               : t("listing.noCredit")}
@@ -29,7 +29,7 @@ const PropertyCardOwnerActions = ({
             prefetch={false}
             title={t("common.extendSubs")}
             href={`/profile/owner/properties/${data?.id}/subscription`}
-            className="rounded-full !outline-none text-xs text-white bg-brand-600 flex items-center justify-center h-7 w-24"
+            className="rounded-full !outline-none text-xs text-on-action bg-action flex items-center justify-center h-7 w-24"
           >
             {t("common.extendSubs")}
           </Link>
@@ -41,7 +41,7 @@ const PropertyCardOwnerActions = ({
         prefetch={false}
         title={t("listing.upgradeAddDesc")}
         href={`/profile/owner/properties/${data?.id}/subscription`}
-        className="w-full !outline-none flex py-2 border-neutral-200 items-center justify-between"
+        className="w-full !outline-none flex py-2 border-line items-center justify-between"
       >
         <p className="text-xs">{t("listing.upgradeAddDesc")}</p>
         <div className="flex items-center gap-2">
@@ -55,7 +55,7 @@ const PropertyCardOwnerActions = ({
       </Link>
 
       <Divider moreClass="my-1" />
-      <div className="w-full flex py-2 border-neutral-200 items-center justify-between">
+      <div className="w-full flex py-2 border-line items-center justify-between">
         <div className="flex w-full items-start gap-1">
           <ContentImage
             alt=""
@@ -82,7 +82,7 @@ const PropertyCardOwnerActions = ({
           prefetch={false}
           title={t("listing.editPrices")}
           href={`/profile/owner/properties/${data?.id}/edit/price?edit_mode=true`}
-          className="flex min-h-10 items-center justify-center gap-2 rounded-full border border-brand-600 px-2 text-xs font-medium text-brand-600 !outline-none md:text-sm"
+          className="flex min-h-10 items-center justify-center gap-2 rounded-full border border-action px-2 text-xs font-medium text-link !outline-none md:text-sm"
         >
           <ContentImage
             alt=""
@@ -97,7 +97,7 @@ const PropertyCardOwnerActions = ({
           prefetch={false}
           title={t("listing.editCalendar")}
           href={`/profile/owner/properties/${data?.id}#owner-calendar`}
-          className="flex min-h-10 items-center justify-center gap-2 rounded-full border border-brand-600 px-2 text-xs font-medium text-brand-600 !outline-none md:text-sm"
+          className="flex min-h-10 items-center justify-center gap-2 rounded-full border border-action px-2 text-xs font-medium text-link !outline-none md:text-sm"
         >
           <ContentImage
             alt=""

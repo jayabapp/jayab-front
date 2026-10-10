@@ -7,12 +7,12 @@ const RuleItem = ({ allowed, description, label }: RuleItemProps) => (
     <Icon
       size={20}
       name={allowed ? "check" : "x"}
-      className={`mt-0.5 ${allowed ? "text-success-600" : "text-danger-500"}`}
+      className={`mt-0.5 ${allowed ? "text-status-success" : "text-status-danger"}`}
     />
     <div className="flex min-w-0 flex-col gap-0.5">
-      <p className="ui-body text-neutral-800">{label}</p>
+      <p className="ui-body text-ink">{label}</p>
       {description ? (
-        <p className="whitespace-pre-wrap ui-caption text-neutral-500">
+        <p className="whitespace-pre-wrap ui-caption text-ink-subtle">
           {description}
         </p>
       ) : (

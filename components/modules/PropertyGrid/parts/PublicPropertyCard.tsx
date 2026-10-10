@@ -17,7 +17,7 @@ const PublicPropertyCard = ({ data, goToLink }: PublicPropertyCardProps) => {
   const hasActiveSubscription = data.has_active_subscription;
 
   return (
-    <div className="property-card-shadow relative w-full overflow-hidden rounded-20 bg-white p-3">
+    <div className="property-card-shadow relative w-full overflow-hidden rounded-20 bg-surface p-3">
       {/* Active Subscription Indicator */}
       {hasActiveSubscription ? (
         <div
@@ -56,7 +56,7 @@ const PublicPropertyCard = ({ data, goToLink }: PublicPropertyCardProps) => {
               />
             ) : null}
 
-            <p className="line-clamp-2 min-h-[2.75rem] text-right text-sm font-bold leading-7 text-black">
+            <p className="line-clamp-2 min-h-[2.75rem] text-right text-sm font-bold leading-7 text-ink">
               {data.title}
             </p>
           </div>
@@ -65,7 +65,7 @@ const PublicPropertyCard = ({ data, goToLink }: PublicPropertyCardProps) => {
           <div className="flex w-full items-center gap-2 text-xs">
             {data.is_promoted ? (
               <>
-                <p className="shrink-0 font-bold text-brand-600">
+                <p className="shrink-0 font-bold text-link">
                   {t("common.laddered")}
                 </p>
 
@@ -75,7 +75,7 @@ const PublicPropertyCard = ({ data, goToLink }: PublicPropertyCardProps) => {
               </>
             ) : null}
 
-            <p className="line-clamp-1 text-right text-neutral-700">
+            <p className="line-clamp-1 text-right text-ink-muted">
               {data.city}
               {sep}
               {data.region || data.province || ""}
@@ -83,7 +83,7 @@ const PublicPropertyCard = ({ data, goToLink }: PublicPropertyCardProps) => {
           </div>
 
           {/* Rooms / Capacity / Likes */}
-          <div className="flex w-full items-center gap-1.5 text-sm text-neutral-800">
+          <div className="flex w-full items-center gap-1.5 text-sm text-ink">
             <p className="shrink-0">
               {t("listing.roomsCount", {
                 count: Number(data.total_bedrooms || 0),
@@ -107,7 +107,7 @@ const PublicPropertyCard = ({ data, goToLink }: PublicPropertyCardProps) => {
 
           {/* Price */}
           <div className="flex min-h-[52px] w-full items-end justify-between gap-2">
-            <p className="shrink-0 text-xs text-black">
+            <p className="shrink-0 text-xs text-ink">
               {t("common.todaysPrice")}
             </p>
 

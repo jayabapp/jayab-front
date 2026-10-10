@@ -40,7 +40,7 @@ const NestedText: FC<NestedTextProps> = ({
   titleIconContainerClassName = "flex flex-row items-center gap-1",
   valueUnitContainerClassName = "flex flex-row items-center gap-1",
   divider = "none",
-  dividerClassName = "border-neutral-400",
+  dividerClassName = "border-control",
 }) => {
   const formattedValue = formatValue(
     value,
@@ -53,9 +53,9 @@ const NestedText: FC<NestedTextProps> = ({
   if (variant === "inline") {
     const dividerStyle =
       divider === "solid"
-        ? "border-t border-neutral-300"
+        ? "border-t border-line-strong"
         : divider === "dashed"
-          ? "border-t border-dashed border-neutral-300"
+          ? "border-t border-dashed border-line-strong"
           : "";
 
     return (

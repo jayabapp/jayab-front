@@ -14,28 +14,28 @@ const TrustBadges = ({ property }: TrustBadgesProps) => {
       ? {
           icon: "shield",
           label: t("listing.verified"),
-          colorClass: "text-success-600",
+          colorClass: "text-status-success",
         }
       : null,
     property?.isPromoted
       ? {
           icon: "star",
           label: t("common.laddered"),
-          colorClass: "text-warning-600",
+          colorClass: "text-status-warning",
         }
       : null,
     property?.isPetAllowed
       ? {
           icon: "paw",
           label: t("listing.petAllowed"),
-          colorClass: "text-success-600",
+          colorClass: "text-status-success",
         }
       : null,
     property?.isEventsAllowed
       ? {
           icon: "party",
           label: t("listing.eventsAllowed"),
-          colorClass: "text-success-600",
+          colorClass: "text-status-success",
         }
       : null,
     null,
@@ -46,14 +46,14 @@ const TrustBadges = ({ property }: TrustBadgesProps) => {
   if (!isFeatured && !firstSide) return <></>;
 
   return (
-    <div className="grid grid-cols-3 items-start gap-2 border-t border-neutral-100 pt-3">
+    <div className="grid grid-cols-3 items-start gap-2 border-t border-surface-muted pt-3">
       <TrustBadgeSlot badge={firstSide} />
 
       <div className="flex flex-col items-center gap-1 text-center">
         {isFeatured ? (
           <>
-            <Icon name="sparkles" size={32} className="text-brand-600" />
-            <span className="text-sm font-bold text-neutral-900">
+            <Icon name="sparkles" size={32} className="text-link" />
+            <span className="text-sm font-bold text-ink">
               {t("listing.premium")}
             </span>
           </>
@@ -72,7 +72,7 @@ const TrustBadgeSlot = ({ badge }: { badge?: TrustBadge | null }) => {
   return (
     <div className="flex flex-col items-center gap-1 text-center">
       <Icon name={badge.icon} size={24} className={badge.colorClass} />
-      <span className="text-xs font-medium text-neutral-800">
+      <span className="text-xs font-medium text-ink">
         {badge.label}
       </span>
     </div>

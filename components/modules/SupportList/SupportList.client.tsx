@@ -37,7 +37,7 @@ const SupportList = () => {
           ) : isError ? (
             <div
               role="alert"
-              className="rounded-lg bg-danger-50 p-4 text-sm text-danger-500"
+              className="rounded-lg bg-status-danger-bg p-4 text-sm text-status-danger"
             >
               {t("profile.supportListError")}
             </div>
@@ -63,7 +63,7 @@ const SupportList = () => {
           )}
           <Button
             variant="outline"
-            width="!font-bold !bg-white"
+            width="!font-bold !bg-surface"
             title={t("profile.sendNewTicket")}
             onClick={() => router.push("/profile/support/new-ticket")}
             containerClass="flex items-center justify-center 2xl:justify-start"
@@ -71,7 +71,7 @@ const SupportList = () => {
         </>
       ) : (
         <div className="flex w-full flex-col items-center justify-center gap-4">
-          <h2 className="text-brand-600">{t("profile.hi")}!</h2>
+          <h2 className="text-link">{t("profile.hi")}!</h2>
           <p className="text-sm">{t("profile.forSupportLogin")}</p>
           <Button
             width="w-full"

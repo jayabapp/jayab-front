@@ -12,7 +12,7 @@ const IconListItem = ({
 }: IconListItemProps) => (
   <div
     className={`flex items-center gap-2.5 ${
-      state === "off" ? "text-neutral-400 line-through" : "text-neutral-800"
+      state === "off" ? "text-ink-subtle line-through" : "text-ink"
     }`}
   >
     {image ? (

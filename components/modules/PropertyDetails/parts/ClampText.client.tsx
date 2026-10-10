@@ -35,7 +35,7 @@ const ClampText = ({ children, className = "", lines = 4 }: ClampTextProps) => {
     <div className="flex flex-col items-start gap-2">
       <p
         ref={textRef}
-        className={`whitespace-pre-wrap text-sm leading-7 text-neutral-800 md:leading-8 ${
+        className={`whitespace-pre-wrap text-sm leading-7 text-ink md:leading-8 ${
           expanded ? "" : (LINE_CLAMP[lines] ?? "line-clamp-4")
         } ${className}`}
       >
@@ -45,7 +45,7 @@ const ClampText = ({ children, className = "", lines = 4 }: ClampTextProps) => {
         <button
           type="button"
           onClick={() => setExpanded((value) => !value)}
-          className="cursor-pointer text-sm font-semibold text-brand-700 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-500"
+          className="cursor-pointer text-sm font-semibold text-link focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-focus"
         >
           {expanded ? t("showLess") : t("showMore")}
         </button>

@@ -96,9 +96,7 @@ const HeroDestinationSearch = ({
       >
         <span className="hero-field-label">{label}</span>
         {value ? (
-          <span className="hero-field-value font-medium text-neutral-900">
-            {value}
-          </span>
+          <span className="hero-field-value font-medium text-ink">{value}</span>
         ) : null}
       </button>
 

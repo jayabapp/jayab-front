@@ -29,7 +29,7 @@ const AREA_LINE_LAYER = `${AREA_SOURCE}-line`;
 const AREA_FADE_MS = 400;
 
 const CONTROL_CLASS =
-  "absolute left-3 top-3 z-10 flex size-10 cursor-pointer items-center justify-center rounded-full bg-white text-neutral-900 shadow-glass-sm transition-colors hover:bg-neutral-50 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-500";
+  "absolute left-3 top-3 z-10 flex size-10 cursor-pointer items-center justify-center rounded-full bg-surface text-ink shadow-glass-sm transition-colors hover:bg-surface-muted focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-focus";
 
 const ListingMapCanvas = ({
   lat,
@@ -214,7 +214,7 @@ const ListingMapCanvas = ({
   return (
     <div
       ref={containerRef}
-      className="absolute inset-0 overflow-hidden bg-neutral-100 max-md:[&_.maplibregl-ctrl-top-right]:hidden md:rounded-20 md:border md:border-neutral-200"
+      className="absolute inset-0 overflow-hidden bg-surface-muted max-md:[&_.maplibregl-ctrl-top-right]:hidden md:rounded-20 md:border md:border-line"
     >
       <NeshanMap
         onError={onError}
@@ -250,7 +250,7 @@ const ListingMapCanvas = ({
         ? createPortal(
             <div
               ref={fullscreenRef}
-              className="fixed inset-0 z-[1000] bg-white"
+              className="fixed inset-0 z-[1000] bg-surface"
             >
               <button
                 ref={closeRef}

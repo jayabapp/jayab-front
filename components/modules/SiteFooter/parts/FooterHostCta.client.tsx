@@ -1,7 +1,8 @@
 "use client";
 
-import type { FooterHostCtaProps } from "@/types/components/modules/site-footer";
 import { useAuthStore } from "@/store";
+
+import type { FooterHostCtaProps } from "@/types/components/modules/site-footer";
 
 import Button from "@elements/Button";
 import Link from "next/link";
@@ -21,7 +22,7 @@ const FooterHostCta = ({ link, title }: FooterHostCtaProps) => {
         title={title}
         color="themeLight"
         roundedClass="rounded-full"
-        width="w-fit !px-12 !text-brand-600"
+        width="w-fit !px-12 !text-link"
       />
     </Link>
   );

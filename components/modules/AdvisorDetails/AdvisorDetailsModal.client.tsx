@@ -18,7 +18,7 @@ import Button from "@elements/Button";
 import Modal from "@elements/Modal";
 
 const MODAL_CLASS =
-  "mx-auto !my-0 h-[100dvh] md:h-auto md:my-10 w-full md:w-1/2 xl:w-1/3 2xl:w-1/4  rounded-0  md:rounded-2xl overflow-y-scroll bg-white ";
+  "mx-auto !my-0 h-[100dvh] md:h-auto md:my-10 w-full md:w-1/2 xl:w-1/3 2xl:w-1/4  rounded-0  md:rounded-2xl overflow-y-scroll bg-surface ";
 const DEFAULT_SCORE = 100;
 
 const AdvisorDetailsModal = ({
@@ -75,7 +75,7 @@ const AdvisorDetailsModal = ({
         {isPending ? (
           <AdvisorDetailsSkeleton />
         ) : (
-          <div className="w-full p-4 rounded-10 bg-white flex flex-col gap-4">
+          <div className="w-full p-4 rounded-10 bg-surface flex flex-col gap-4">
             <AdvisorCard
               isSingle
               key="advisor-details-card"
@@ -145,7 +145,7 @@ const AdvisorDetailsModal = ({
                     titleClass=" !text-sm"
                     containerClass=" w-full "
                     pathColor={colors.success[500]}
-                    textColor={colors.neutral[900]}
+                    textColor="rgb(var(--c-ink))"
                   />
                 ))}
               </div>

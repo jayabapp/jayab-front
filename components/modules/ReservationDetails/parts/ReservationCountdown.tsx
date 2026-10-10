@@ -16,7 +16,7 @@ const ReservationCountdown = ({
 
   return (
     <div className="w-full flex items-center flex-col pb-1 gap-2 justify-center">
-      <p className="text-xs text-danger-500 text-center w-full">
+      <p className="text-xs text-status-danger text-center w-full">
         {hint ?? t("reserve.reserveOwnerTimeoutHint")}
       </p>
 
@@ -32,7 +32,7 @@ const ReservationCountdown = ({
             value={`${seconds || "00"}` as any}
           />
         </div>
-        <p className="text-black pt-6 font-bold text-lg">:</p>
+        <p className="text-ink pt-6 font-bold text-lg">:</p>
         <div className="flex flex-col gap-1">
           <p className="w-full text-center text-sm">{t("reserve.minute")}</p>
           <NumberFlow

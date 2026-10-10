@@ -58,7 +58,7 @@ const BlogsClientPageComponent = () => {
           }
         >
           {isError ? (
-            <div className="col-span-full rounded-xl bg-danger-50 p-3 text-center text-xs text-danger-600">
+            <div className="col-span-full rounded-xl bg-status-danger-bg p-3 text-center text-xs text-status-danger">
               {t("content.blogListLoadError")}{" "}
               <button
                 type="button"

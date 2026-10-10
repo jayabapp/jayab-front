@@ -27,7 +27,7 @@ const RelatedBlogs = ({ currentId, items }: RelatedBlogsProps) => {
           key={item?.id}
           title={item?.title || ""}
           href={`/blog/${encodeURI(item?.slug || "")}`}
-          className="group flex items-center gap-3 rounded-10 p-1 transition-colors hover:bg-brand-50"
+          className="group flex items-center gap-3 rounded-10 p-1 transition-colors hover:bg-selected"
         >
           <div className="relative aspect-square w-16 shrink-0 overflow-hidden rounded-10">
             <ContentImage
@@ -40,10 +40,10 @@ const RelatedBlogs = ({ currentId, items }: RelatedBlogsProps) => {
             />
           </div>
           <div className="flex min-w-0 flex-col gap-1">
-            <p className="line-clamp-2 text-xs font-bold leading-5 transition-colors group-hover:text-brand-600">
+            <p className="line-clamp-2 text-xs font-bold leading-5 transition-colors group-hover:text-link">
               {item?.title}
             </p>
-            <p className="text-2xs text-neutral-600">
+            <p className="text-2xs text-ink-muted">
               {moment(item?.created_at).format("jYYYY/jMM/jDD")}
             </p>
           </div>

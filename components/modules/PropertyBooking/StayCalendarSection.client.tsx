@@ -32,7 +32,7 @@ const useIsDesktop = () =>
     () => false,
   );
 const NAV_BUTTON_CLASS =
-  "flex size-9 cursor-pointer items-center justify-center rounded-full border border-neutral-200 transition-colors hover:bg-neutral-100 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-500 disabled:cursor-not-allowed disabled:opacity-40";
+  "flex size-9 cursor-pointer items-center justify-center rounded-full border border-line transition-colors hover:bg-surface-muted focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-focus disabled:cursor-not-allowed disabled:opacity-40";
 
 const StayCalendarSection = ({ propertyId }: StayCalendarSectionProps) => {
   const t = useTranslations("common");

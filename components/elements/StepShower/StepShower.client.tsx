@@ -30,21 +30,21 @@ const StepShower = ({ value, steps }: TStepShowerProps) => {
             <div className="w-full relative flex items-center justify-center">
               <div
                 className={` ${index == 0 ? "opacity-0" : ""} flex ${
-                  !!isSelected ? "bg-brand-600" : ""
-                }   bg-neutral-300 h-[5px] w-full`}
+                  !!isSelected ? "bg-action" : ""
+                }   bg-line-strong h-[5px] w-full`}
               >
                 {" "}
               </div>
               <div
                 onClick={() => onClick(e)}
                 className={`${
-                  !!isSelected ? "bg-brand-600" : "bg-neutral-300"
+                  !!isSelected ? "bg-action" : "bg-line-strong"
                 }  w-4 h-4 !shrink-0 aspect-square cursor-pointer rounded-full`}
               >
                 {" "}
               </div>
               <div
-                className={` ${!!isSelected && e?.id < value ? "bg-brand-600 " : "bg-neutral-300 "} ${
+                className={` ${!!isSelected && e?.id < value ? "bg-action " : "bg-line-strong "} ${
                   index == steps?.length - 1 ? "opacity-0" : ""
                 }  flex  h-[5px] w-full`}
               >
@@ -58,7 +58,7 @@ const StepShower = ({ value, steps }: TStepShowerProps) => {
             >
               <p
                 className={`${
-                  !!isSelected ? "text-brand-600" : "  text-neutral-300 "
+                  !!isSelected ? "text-link" : "  text-neutral-300 "
                 }   text-center  text-2xs md:text-xs truncate`}
               >
                 {e?.title}

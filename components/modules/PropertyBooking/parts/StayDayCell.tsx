@@ -1,13 +1,13 @@
 import type { StayDayCellProps } from "@/types/components/modules/property-booking";
 
 const BASE =
-  "relative flex h-[3.25rem] w-full flex-col items-center justify-center gap-0.5 text-sm transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-500";
+  "relative flex h-[3.25rem] w-full flex-col items-center justify-center gap-0.5 text-sm transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-focus";
 
 const STATE_CLASS = {
-  end: "rounded-10 bg-brand-600 text-white",
-  idle: "rounded-10 text-neutral-900 hover:bg-neutral-100",
-  middle: "bg-brand-100 text-neutral-900",
-  start: "rounded-10 bg-brand-600 text-white",
+  end: "rounded-10 bg-action text-on-action",
+  idle: "rounded-10 text-ink hover:bg-surface-muted",
+  middle: "bg-selected text-ink",
+  start: "rounded-10 bg-action text-on-action",
 } as const;
 
 const StayDayCell = ({
@@ -34,7 +34,7 @@ const StayDayCell = ({
   const skin = isEdge
     ? STATE_CLASS[state]
     : isReserved && blocked
-      ? "rounded-10 bg-neutral-100 text-neutral-400"
+      ? "rounded-10 bg-surface-muted text-ink-subtle"
       : blocked
         ? "text-neutral-300"
         : STATE_CLASS[state];
@@ -75,14 +75,14 @@ const StayDayCell = ({
           />
         ) : null}
         <span
-          className={`${isEdge ? "font-bold" : ""} ${isPlainFriday ? "text-danger-500" : ""}`}
+          className={`${isEdge ? "font-bold" : ""} ${isPlainFriday ? "text-status-danger" : ""}`}
         >
           {day}
         </span>
         {isLoading ? (
           <span
             aria-hidden="true"
-            className="h-2.5 w-7 animate-pulse rounded bg-neutral-100 motion-reduce:animate-none"
+            className="h-2.5 w-7 animate-pulse rounded bg-surface-muted motion-reduce:animate-none"
           />
         ) : price && !blocked ? (
           <span
@@ -90,10 +90,10 @@ const StayDayCell = ({
               isEdge
                 ? "text-brand-100"
                 : discounted
-                  ? "text-success-600"
+                  ? "text-status-success"
                   : isPlainFriday
-                    ? "text-danger-500"
-                    : "text-neutral-600"
+                    ? "text-status-danger"
+                    : "text-ink-muted"
             }`}
           >
             {price}

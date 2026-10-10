@@ -103,7 +103,7 @@ const ReserveConfirmSheet = ({
         <button
           type="button"
           onClick={onChangeDates}
-          className="h-11 w-full cursor-pointer rounded-10 bg-brand-600 text-base font-medium text-white transition-colors hover:bg-brand-700"
+          className="h-11 w-full cursor-pointer rounded-10 bg-action text-base font-medium text-on-action transition-colors hover:bg-action-hover"
         >
           {t("reserve.changeDates")}
         </button>
@@ -112,7 +112,7 @@ const ReserveConfirmSheet = ({
       return (
         <Link
           href={`/profile/owner/properties/${property.id}/edit`}
-          className="flex h-11 w-full items-center justify-center rounded-10 bg-brand-600 text-base font-medium text-white transition-colors hover:bg-brand-700"
+          className="flex h-11 w-full items-center justify-center rounded-10 bg-action text-base font-medium text-on-action transition-colors hover:bg-action-hover"
         >
           {t("reserve.manageListing")}
         </Link>
@@ -154,20 +154,20 @@ const ReserveConfirmSheet = ({
                 />
               </div>
               <div className="flex min-w-0 flex-col gap-1">
-                <p className="line-clamp-1 text-sm font-semibold text-neutral-900">
+                <p className="line-clamp-1 text-sm font-semibold text-ink">
                   {property.title}
                 </p>
                 {place ? (
-                  <p className="line-clamp-1 text-xs text-neutral-500">
+                  <p className="line-clamp-1 text-xs text-ink-subtle">
                     {place}
                   </p>
                 ) : null}
               </div>
             </div>
 
-            <div className="flex flex-col gap-2 rounded-10 bg-neutral-50 p-3 text-sm text-neutral-900">
+            <div className="flex flex-col gap-2 rounded-10 bg-surface-muted p-3 text-sm text-ink">
               <div className="flex items-center gap-2">
-                <Icon name="calendar" size={20} className="text-brand-600" />
+                <Icon name="calendar" size={20} className="text-link" />
                 <span className="flex-1">
                   {formatJalaliWeekdayDay(stay.startDate)} {t("common.to")}{" "}
                   {formatJalaliWeekdayDay(stay.endDate)}
@@ -178,21 +178,21 @@ const ReserveConfirmSheet = ({
                   <button
                     type="button"
                     onClick={onChangeDates}
-                    className="cursor-pointer text-xs text-brand-700"
+                    className="cursor-pointer text-xs text-link"
                   >
                     {t("common.edit")}
                   </button>
                 ) : null}
               </div>
               <div className="flex items-center gap-2">
-                <Icon name="users" size={20} className="text-brand-600" />
+                <Icon name="users" size={20} className="text-link" />
                 <span>
                   {t("common.people", { count: Number(stay.guests) })}
                 </span>
               </div>
               {stay.total ? (
-                <div className="flex items-center justify-between border-t border-neutral-200 pt-2">
-                  <span className="text-neutral-600">
+                <div className="flex items-center justify-between border-t border-line pt-2">
+                  <span className="text-ink-muted">
                     {t("reserve.approxStayCost")}
                   </span>
                   <span className="font-bold">{formatToman(stay.total)}</span>
@@ -200,7 +200,7 @@ const ReserveConfirmSheet = ({
               ) : null}
             </div>
 
-            <p className="text-sm text-neutral-600">
+            <p className="text-sm text-ink-muted">
               {isExpired
                 ? t("reserve.expiredRequestNote")
                 : t("reserve.reserveSharesNumber")}
@@ -209,9 +209,9 @@ const ReserveConfirmSheet = ({
             {failure ? (
               <div
                 role="alert"
-                className="flex flex-col gap-3 rounded-10 bg-danger-50 p-3"
+                className="flex flex-col gap-3 rounded-10 bg-status-danger-bg p-3"
               >
-                <p className="text-sm text-danger-600">{failure.message}</p>
+                <p className="text-sm text-status-danger">{failure.message}</p>
                 {failureAction()}
               </div>
             ) : null}
@@ -223,7 +223,7 @@ const ReserveConfirmSheet = ({
                   onClick={onSubmit}
                   disabled={isPending}
                   aria-busy={isPending}
-                  className="h-12 w-full cursor-pointer rounded-10 bg-brand-600 text-base font-medium text-white transition-colors hover:bg-brand-700 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-500 focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-60"
+                  className="h-12 w-full cursor-pointer rounded-10 bg-action text-base font-medium text-on-action transition-colors hover:bg-action-hover focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-focus focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-60"
                 >
                   {isPending ? <BtnLoading /> : t("reserve.submitReserve")}
                 </button>
@@ -231,13 +231,13 @@ const ReserveConfirmSheet = ({
               <button
                 type="button"
                 onClick={onHide}
-                className="w-fit cursor-pointer self-center text-sm text-neutral-500 transition-colors hover:text-neutral-900"
+                className="w-fit cursor-pointer self-center text-sm text-ink-subtle transition-colors hover:text-ink"
               >
                 {t("reserve.cancelAction")}
               </button>
             </div>
 
-            <p className="text-center text-xs text-neutral-500">
+            <p className="text-center text-xs text-ink-subtle">
               {t("reserve.reserveFinalizeHint")}
             </p>
           </div>

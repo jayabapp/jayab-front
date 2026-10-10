@@ -50,7 +50,7 @@ const StayCalendarGrid = ({
       <p
         role="status"
         aria-live="polite"
-        className={`pointer-events-none absolute inset-x-0 -top-2 z-10 mx-auto w-fit rounded-full bg-danger-50 px-3 py-1 text-xs text-danger-500 transition-opacity ${hint ? "opacity-100" : "opacity-0"}`}
+        className={`pointer-events-none absolute inset-x-0 -top-2 z-10 mx-auto w-fit rounded-full bg-status-danger-bg px-3 py-1 text-xs text-status-danger transition-opacity ${hint ? "opacity-100" : "opacity-0"}`}
       >
         {hint}
       </p>

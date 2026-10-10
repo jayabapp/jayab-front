@@ -8,7 +8,7 @@ import { Icon } from "@elements/Icon";
 import type { StayDateFieldsProps } from "@/types/components/modules/property-booking";
 
 const FIELD_BASE =
-  "flex flex-1 cursor-pointer flex-col items-start gap-0.5 px-3 py-2.5 text-start transition-colors hover:bg-neutral-50 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-inset focus-visible:ring-brand-500 disabled:cursor-not-allowed";
+  "flex flex-1 cursor-pointer flex-col items-start gap-0.5 px-3 py-2.5 text-start transition-colors hover:bg-surface-muted focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-inset focus-visible:ring-focus disabled:cursor-not-allowed";
 
 const StayDateFields = ({
   end,
@@ -26,7 +26,7 @@ const StayDateFields = ({
   ] as const;
 
   return (
-    <div className="flex divide-x divide-x-reverse divide-neutral-200 overflow-hidden rounded-10 border border-neutral-200">
+    <div className="flex divide-x divide-x-reverse divide-control overflow-hidden rounded-10 border border-control">
       {fields.map((field) => (
         <button
           key={field.id}
@@ -36,21 +36,21 @@ const StayDateFields = ({
           onClick={() => onOpen(field.id)}
           className={`${FIELD_BASE} ${
             activeField === field.id
-              ? "bg-neutral-50 ring-2 ring-inset ring-neutral-900"
+              ? "bg-surface-muted ring-2 ring-inset ring-neutral-900"
               : ""
           }`}
         >
-          <span className="flex items-center gap-1.5 text-xs text-neutral-500">
+          <span className="flex items-center gap-1.5 text-xs text-ink-subtle">
             <Icon name="calendar" size={16} />
             {field.label}
           </span>
           <span
-            className={`text-sm ${field.value ? "font-semibold text-neutral-900" : "text-neutral-400"}`}
+            className={`text-sm ${field.value ? "font-semibold text-ink" : "text-ink-subtle"}`}
           >
             {field.value ? formatJalaliDay(field.value) : t("emptyDate")}
           </span>
           {field.value ? (
-            <span className="text-xs text-neutral-500">
+            <span className="text-xs text-ink-subtle">
               {formatJalaliWeekday(field.value)}
             </span>
           ) : (

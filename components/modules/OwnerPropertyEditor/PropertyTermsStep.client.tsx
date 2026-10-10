@@ -117,7 +117,7 @@ const PropertyTermsStep = ({ propertyId }: OwnerPropertyRouteProps) => {
         <PropertyEditStepSkeleton variant="form" />
       ) : (
         <div className="flex flex-col gap-2 w-full">
-          <p className="font-bold w-full text-start text-sm md:text-base text-brand-600">
+          <p className="font-bold w-full text-start text-sm md:text-base text-link">
             {propertyRules?.data?.[0]?.category?.title ||
               t("owner.cancelationsTitle")}
           </p>
@@ -146,7 +146,7 @@ const PropertyTermsStep = ({ propertyId }: OwnerPropertyRouteProps) => {
       )}
 
       <div className="flex flex-col gap-2 w-full">
-        <p className="font-bold w-full text-start text-sm md:text-base text-brand-600">
+        <p className="font-bold w-full text-start text-sm md:text-base text-link">
           {t("owner.guestTypeStatus")}
         </p>
         {propertyTypes?.["GUEST_TYPE"]?.map((option) => (
@@ -162,7 +162,7 @@ const PropertyTermsStep = ({ propertyId }: OwnerPropertyRouteProps) => {
       </div>
 
       <div className="flex flex-col gap-2 w-full">
-        <p className="font-bold w-full text-start text-sm md:text-base text-brand-600">
+        <p className="font-bold w-full text-start text-sm md:text-base text-link">
           {t("common.animalRules")}
         </p>
         {propertyTypes?.["PET"]?.map((option) => (
@@ -178,7 +178,7 @@ const PropertyTermsStep = ({ propertyId }: OwnerPropertyRouteProps) => {
       </div>
 
       <div className="flex flex-col gap-2 w-full">
-        <p className="font-bold w-full text-start text-sm md:text-base text-brand-600">
+        <p className="font-bold w-full text-start text-sm md:text-base text-link">
           {t("common.partyRules")}
         </p>
         {propertyTypes?.["PARTY"]?.map((option) => (

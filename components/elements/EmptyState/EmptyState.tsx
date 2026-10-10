@@ -33,12 +33,12 @@ const EmptyState = ({
           width={"50%"}
         />
 
-        <p className="-mt-2 text-center font-medium text-neutral-600">
+        <p className="-mt-2 text-center font-medium text-ink-muted">
           {title || t("emptyList")}
         </p>
 
         {description ? (
-          <p className="mt-2 text-center text-sm font-light leading-6 text-neutral-500">
+          <p className="mt-2 text-center text-sm font-light leading-6 text-ink-subtle">
             {description}
           </p>
         ) : (

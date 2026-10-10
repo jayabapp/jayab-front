@@ -3,7 +3,6 @@ import { ContentImage } from "@elements/Image";
 
 import type { RemovableFilterChipProps } from "@/types/components/modules/property-search-filters";
 
-
 const RemovableFilterChip = ({
   label,
   onRemove,
@@ -28,14 +27,14 @@ const RemovableFilterChip = ({
         type="button"
         onClick={onRemove}
         aria-label={`${t("removeFilters")} ${label}`}
-        className="cursor-pointer w-4 h-4 aspect-square rounded-full border border-brand-600 flex items-center justify-center"
+        className="cursor-pointer w-4 h-4 aspect-square rounded-full border border-action flex items-center justify-center"
       >
         <ContentImage
           alt=""
           width={8}
           height={8}
-          className="w-2 h-2 rotate-45 aspect-square"
           src="/assets/icons/adds/blue_plus.svg"
+          className="w-2 h-2 rotate-45 aspect-square"
         />
       </button>
     </div>

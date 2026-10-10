@@ -39,7 +39,7 @@ const PropertyAuthorizationStatus = ({
         }
       />
       <span
-        className={`${isAuthorized ? "" : "text-danger-500"} shrink-0 text-xs`}
+        className={`${isAuthorized ? "" : "text-status-danger"} shrink-0 text-xs`}
       >
         {isAuthorized ? t("verified") : t("notVerified")}
       </span>

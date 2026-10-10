@@ -8,10 +8,10 @@ export enum BtnVariants {
 }
 
 export enum BtnColors {
-  primary = "bg-brand-600 !ring-brand-600/50",
-  danger = "bg-danger-500 !ring-danger-500/50 !text-danger-500 !border-danger-500",
-  light = "bg-neutral-200/75 !ring-neutral-200/75/50",
-  themeLight = "bg-brand-100 !ring-brand-100/50",
+  primary = "bg-action !ring-action/50",
+  danger = "bg-danger-500 !ring-danger-500/50 !text-status-danger !border-status-danger",
+  light = "bg-surface-hover/75 !ring-line/50",
+  themeLight = "bg-selected !ring-selected-line/50",
 }
 
 export type ButtonProps = {

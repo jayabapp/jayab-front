@@ -50,14 +50,14 @@ const YearMonthPicker = ({
           onClick={() => lastMonth()}
           src={"/assets/icons/property/arrow_right_callendar.svg"}
         />
-        <p className="text-xs text-neutral-400">{t("lastMonth")}</p>
+        <p className="text-xs text-ink-subtle">{t("lastMonth")}</p>
       </div>
-      <p className="text-brand-600 text-sm font-medium ">
+      <p className="text-link text-sm font-medium ">
         {prefix}
         {month} {"  "} {year}
       </p>
       <div className="flex items-center gap-2">
-        <p className="text-xs text-neutral-400 ">{t("nextMonth")}</p>
+        <p className="text-xs text-ink-subtle ">{t("nextMonth")}</p>
         <ContentImage
           alt="`"
           width={24}

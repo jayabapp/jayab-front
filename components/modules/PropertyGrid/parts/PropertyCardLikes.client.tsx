@@ -30,7 +30,7 @@ const PropertyCardLikes = ({
         className="h-4 w-4 shrink-0"
       />
 
-      <p className="leading-none text-neutral-700">{likesCount}</p>
+      <p className="leading-none text-ink-muted">{likesCount}</p>
     </div>
   );
 };

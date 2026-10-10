@@ -5,7 +5,7 @@ import { useTranslations } from "next-intl";
 import type { PriceSummaryProps } from "@/types/components/modules/property-booking";
 
 const ROW_CLASS =
-  "flex items-center justify-between gap-3 text-sm text-neutral-800";
+  "flex items-center justify-between gap-3 text-sm text-ink";
 
 const PriceSummary = ({ isRefreshing, quote }: PriceSummaryProps) => {
   const formatToman = useFormatToman();
@@ -38,13 +38,13 @@ const PriceSummary = ({ isRefreshing, quote }: PriceSummaryProps) => {
         </div>
       ) : null}
 
-      <div className="flex items-center justify-between gap-3 border-t border-neutral-200 pt-3 text-base font-bold text-neutral-900">
+      <div className="flex items-center justify-between gap-3 border-t border-line pt-3 text-base font-bold text-ink">
         <span>{t("approxStayCost")}</span>
         <span>{formatToman(quote.stay_total)}</span>
       </div>
 
       {quote.cleaning_fee > 0 ? (
-        <p className="text-xs text-neutral-500">
+        <p className="text-xs text-ink-subtle">
           {t("cleaningFeeConditionalPrefix")}
           {formatToman(quote.cleaning_fee)}
           {t("cleaningFeeConditionalSuffix")}

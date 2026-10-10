@@ -9,9 +9,9 @@ const TicketDetailsSkeleton = () => {
       role="status"
       aria-label={t("loadingTicket")}
     >
-      <div className="h-32 w-full rounded-lg bg-neutral-200" />
-      <div className="h-24 w-4/5 self-end rounded-lg bg-neutral-200" />
-      <div className="h-24 w-4/5 rounded-lg bg-neutral-200" />
+      <div className="h-32 w-full rounded-lg bg-surface-hover" />
+      <div className="h-24 w-4/5 self-end rounded-lg bg-surface-hover" />
+      <div className="h-24 w-4/5 rounded-lg bg-surface-hover" />
     </div>
   );
 };

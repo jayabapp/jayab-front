@@ -49,7 +49,7 @@ const BlogShare = ({ data }: BlogShareProps) => {
       type="button"
       onClick={() => void onShare()}
       title={t("blogShare")}
-      className="flex items-center gap-1.5 rounded-full bg-brand-50 px-3 py-1.5 text-xs font-bold text-brand-600 transition-colors hover:bg-brand-100"
+      className="flex items-center gap-1.5 rounded-full bg-selected px-3 py-1.5 text-xs font-bold text-link transition-colors hover:bg-selected"
     >
       <Image
         alt=""

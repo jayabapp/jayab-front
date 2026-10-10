@@ -12,13 +12,13 @@ import { useFormatToman } from "@hooks/useFormatToman";
 import type { SelectablePhotoUpgradeImageProps } from "@/types/components/modules/photo-upgrade";
 import type { OwnerPhotoUpgradeModalProps } from "@/types/components/modules/photo-upgrade";
 
+import useCmsContent from "@/hooks/useCmsContent";
 import SwiperSlide from "@elements/Carousel/SwiperSlide";
 import Swiper from "@elements/Carousel/Swiper.client";
-import useCmsContent from "@/hooks/useCmsContent";
 import CmsText from "@elements/CmsText";
+import isEmpty from "lodash/isEmpty";
 import Button from "@elements/Button";
 import Notify from "@elements/Toast";
-import isEmpty from "lodash/isEmpty";
 import chunk from "lodash/chunk";
 import Image from "next/image";
 
@@ -30,26 +30,24 @@ const SelectableImageItem = memo(
         type="button"
         onClick={() => onToggle(image.id)}
         className={`relative aspect-square overflow-hidden rounded-10 border transition-all ${
-          isSelected
-            ? "border-brand-600 ring-2 ring-brand-600/30"
-            : "border-neutral-200"
+          isSelected ? "border-action ring-2 ring-action/30" : "border-line"
         }`}
       >
         <Image
+          fill
           src={
             getUploadedImageUrl(image, "medium") ||
             "/assets/icons/shared/image_placeholder.svg"
           }
           alt={image?.alt || t("owner.propertyImage")}
-          fill
-          sizes="(max-width: 768px) 25vw, 160px"
           className="object-cover"
+          sizes="(max-width: 768px) 25vw, 160px"
         />
         <span
           className={`absolute left-1 top-1 flex h-5 w-5 items-center justify-center rounded-md border text-xs font-bold ${
             isSelected
-              ? "border-brand-600 bg-brand-600 text-white"
-              : "border-white bg-black/40 text-white"
+              ? "border-action bg-action text-on-action"
+              : "border-white bg-black/40 text-on-action"
           }`}
         >
           {isSelected ? "✓" : ""}
@@ -140,24 +138,24 @@ const OwnerPhotoUpgradeModal = ({
       options={{ containerClass: " !max-h-[99dvh] md:!max-h-[85dvh] " }}
     >
       <div className="flex flex-col gap-4 p-3 pt-0">
-        <div className="flex items-center sticky top-0 bg-white py-2 justify-center gap-3">
+        <div className="flex items-center sticky top-0 bg-surface py-2 justify-center gap-3">
           <div className="min-w-0">
             <div className="flex items-center gap-2">
-              <p className="text-base text-center font-bold text-brand-600">
+              <p className="text-base text-center font-bold text-link">
                 {t("owner.photoUpgradeService")}
               </p>
               <div className="new-tag   rotate-[-9deg] text-xs font-bold  text-white rounded-lg  h-6 w-11 flex items-center justify-center ">
                 {t("owner.new")}
               </div>
             </div>
-            <p className="mt-1 line-clamp-1 text-center text-xs text-neutral-500">
+            <p className="mt-1 line-clamp-1 text-center text-xs text-ink-subtle">
               {property?.title}
             </p>
           </div>
           <button
             type="button"
             onClick={onHide}
-            className="flex h-9 absolute left-0  top-2  w-9 shrink-0 items-center justify-center rounded-full bg-neutral-100"
+            className="flex h-9 absolute left-0  top-2  w-9 shrink-0 items-center justify-center rounded-full bg-surface-muted"
           >
             <Image
               width={16}
@@ -169,7 +167,7 @@ const OwnerPhotoUpgradeModal = ({
           </button>
         </div>
         {!!contentLoading ? (
-          <div className="h-36 w-full animate-pulse rounded-10 bg-neutral-100" />
+          <div className="h-36 w-full animate-pulse rounded-10 bg-surface-muted" />
         ) : !!upgradeContent ? (
           <div className="w-full flex flex-col items-center justify-center gap-4 ">
             {!!upgradeContent?.feature_image ? (
@@ -206,12 +204,12 @@ const OwnerPhotoUpgradeModal = ({
             {Array.from({ length: 8 }, (_, index) => (
               <div
                 key={index}
-                className="aspect-square animate-pulse rounded-10 bg-neutral-100"
+                className="aspect-square animate-pulse rounded-10 bg-surface-muted"
               />
             ))}
           </div>
         ) : isEmpty(images) ? (
-          <div className="rounded-10 border border-dashed border-neutral-300 p-6 text-center text-sm text-neutral-500">
+          <div className="rounded-10 border border-dashed border-line-strong p-6 text-center text-sm text-ink-subtle">
             {t("owner.noImagesForListing")}
           </div>
         ) : (
@@ -266,16 +264,16 @@ const OwnerPhotoUpgradeModal = ({
           </Swiper>
         )}
         {!!upgradeContent?.html ? (
-          <p className="text-brand-600  w-full text-sm text-center ">
+          <p className="text-link  w-full text-sm text-center ">
             {t("owner.photoUpgradeDelay")}
           </p>
         ) : (
           <></>
         )}
 
-        <div className="flex flex-col gap-2 rounded-10 border border-neutral-100 p-3 text-sm">
+        <div className="flex flex-col gap-2 rounded-10 border border-surface-muted p-3 text-sm">
           <div className="flex items-center justify-between gap-2">
-            <span className="text-neutral-500">
+            <span className="text-ink-subtle">
               {t("owner.photoCountLabel")}
             </span>
             <span className="font-medium">
@@ -283,24 +281,22 @@ const OwnerPhotoUpgradeModal = ({
             </span>
           </div>
           <div className="flex items-center justify-between gap-2">
-            <span className="text-neutral-500">
+            <span className="text-ink-subtle">
               {t("owner.upgradeCostPerPhoto")}
             </span>
             <span className="font-medium">
               {formatToman(PHOTO_UPGRADE_PRICE)}
             </span>
           </div>
-          <div className="flex items-center justify-between gap-2 border-t pt-2 text-brand-600">
+          <div className="flex items-center justify-between gap-2 border-t pt-2 text-link">
             <span className="font-medium">{t("owner.upgradeFinalCost")}</span>
-            <span className="font-bold">
-              {formatToman(totalAmount)}
-            </span>
+            <span className="font-bold">{formatToman(totalAmount)}</span>
           </div>
           {!isEmpty(selectedPlans) ? (
             selectedPlans?.map((e) => (
               <div
                 key={`slectedPlan${e?.id}`}
-                className="flex items-center justify-between gap-2 border-t pt-2 text-brand-600"
+                className="flex items-center justify-between gap-2 border-t pt-2 text-link"
               >
                 <span className="font-medium">{e?.title}</span>
                 <span className="font-bold">

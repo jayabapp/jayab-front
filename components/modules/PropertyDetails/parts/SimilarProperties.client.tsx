@@ -50,7 +50,7 @@ const SimilarProperties = ({ city, propertyId }: TSimilarPropertiesProps) => {
     >
       <h2
         id="similar-properties-title"
-        className="mb-4 text-base font-bold text-neutral-900 md:text-lg"
+        className="mb-4 text-base font-bold text-ink md:text-lg"
       >
         {city ? t("similarStaysIn").replace("{city}", city) : t("similarStays")}
       </h2>

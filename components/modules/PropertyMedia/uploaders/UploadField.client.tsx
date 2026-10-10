@@ -1,18 +1,20 @@
 "use client";
 
-import { getUploadedImageUrl } from "@features/upload/mappers/upload-image.mapper";
-import type { UploadFieldProps } from "@/types/components/modules/property-media";
-import { useAttachmentUpload } from "@features/upload/hooks/useAttachmentUpload";
 import { useEffect, useRef, useState } from "react";
+import { getUploadedImageUrl } from "@features/upload/mappers/upload-image.mapper";
+import { useAttachmentUpload } from "@features/upload/hooks/useAttachmentUpload";
+import { useTranslations } from "next-intl";
 import { ImageCropModal } from "@elements/Upload";
-import type { ReactEventHandler } from "react";
 import { BtnLoading } from "@elements/Button";
 import { toast } from "sonner";
 
+import type { UploadFieldProps } from "@/types/components/modules/property-media";
+import type { ReactEventHandler } from "react";
+
 import ProfileImageModal from "@features/auth/components/ProfileImageModal";
-import "react-advanced-cropper/dist/style.css";
 import Image from "next/image";
-import { useTranslations } from "next-intl";
+
+import "react-advanced-cropper/dist/style.css";
 
 const MainUploader = ({
   item,
@@ -138,7 +140,7 @@ const MainUploader = ({
             onClick={() => {
               !disabled ? imagePickerRef?.current?.click() : void null;
             }}
-            className={`cursor-pointer flex flex-col items-center  gap-1     relative transition-all duration-150 ease-in-out  hover:border-neutral-600  justify-center bg-neutral-100 rounded-10 aspect-square   ${
+            className={`cursor-pointer flex flex-col items-center  gap-1     relative transition-all duration-150 ease-in-out  hover:border-neutral-600  justify-center bg-surface-muted rounded-10 aspect-square   ${
               !!innerClasses?.sizeClass ? innerClasses?.sizeClass : "h-24 w-24"
             }  `}
           >

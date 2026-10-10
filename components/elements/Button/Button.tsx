@@ -1,4 +1,5 @@
 import { BtnColors, BtnVariants } from "@/types/components/elements/button";
+
 import type { ButtonProps } from "@/types/components/elements/button";
 import type { JSX } from "react";
 
@@ -8,18 +9,18 @@ const Button = ({
   title,
   icon,
   endIcon,
-  variant = "solid",
-  color = "primary",
-  containerClass,
-  btnClass = "",
-  width = "w-fit",
-  roundedClass = "rounded-10",
-  disabled,
-  loading,
-  loadingIndicator,
-  preserveStyleWhileLoading = false,
   onClick,
+  loading,
   passRef,
+  disabled,
+  btnClass = "",
+  containerClass,
+  width = "w-fit",
+  loadingIndicator,
+  color = "primary",
+  variant = "solid",
+  roundedClass = "rounded-10",
+  preserveStyleWhileLoading = false,
 }: ButtonProps): JSX.Element => {
   return (
     <div className={containerClass}>
@@ -31,11 +32,12 @@ const Button = ({
         type="button"
         className={` active:ring-4  flex items-center justify-center relative  transition-all font-medium text-base ${
           !disabled ? ` ${BtnVariants[variant]} ${BtnColors[color]}` : ""
-        } ${"px-7 disabled:bg-neutral-300 py-2.5"}  ${roundedClass} ${width} ${btnClass} ${
+        } ${"px-7 disabled:bg-line-strong py-2.5"}  ${roundedClass} ${width} ${btnClass} ${
           (disabled || loading) &&
           !preserveStyleWhileLoading &&
-          "bg-neutral-200 border-neutral-400 hover:ring-0"
-        } ${loading && preserveStyleWhileLoading ? "btn-loading-preserve" : ""
+          "bg-surface-hover border-control hover:ring-0"
+        } ${
+          loading && preserveStyleWhileLoading ? "btn-loading-preserve" : ""
         }`}
         onClick={typeof onClick == "function" ? onClick : void null}
       >

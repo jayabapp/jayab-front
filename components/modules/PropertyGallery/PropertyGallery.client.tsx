@@ -88,7 +88,7 @@ const PropertyGallery = ({
           type="button"
           onClick={() => openViewer(0, "grid")}
           aria-label={`${title ?? ""} 1`}
-          className={`group relative cursor-pointer overflow-hidden bg-neutral-100 ${
+          className={`group relative cursor-pointer overflow-hidden bg-surface-muted ${
             thumbnails.length
               ? "col-span-2 row-span-2"
               : "col-span-4 row-span-2"
@@ -112,7 +112,7 @@ const PropertyGallery = ({
             key={`gallery-thumb-${image?.id}`}
             onClick={() => openViewer(index + 1, "grid")}
             aria-label={`${title ?? ""} ${index + 2}`}
-            className={`group relative cursor-pointer overflow-hidden bg-neutral-100 ${thumbnailSpan(
+            className={`group relative cursor-pointer overflow-hidden bg-surface-muted ${thumbnailSpan(
               thumbnails.length,
               index,
             )}`}
@@ -132,14 +132,14 @@ const PropertyGallery = ({
         <button
           type="button"
           onClick={() => openViewer(0, "show_all")}
-          className="absolute bottom-4 left-4 flex cursor-pointer items-center gap-2 rounded-full bg-white/90 px-4 py-2 text-sm font-semibold text-neutral-900 shadow-glass-sm transition-colors hover:bg-white focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-500"
+          className="absolute bottom-4 left-4 flex cursor-pointer items-center gap-2 rounded-full bg-surface/90 px-4 py-2 text-sm font-semibold text-ink shadow-glass-sm transition-colors hover:bg-surface focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-focus"
         >
           <Icon name="images" size={20} />
           {t("showAllPhotos")} ({orderedImages.length})
         </button>
       </div>
 
-      <div className="relative overflow-hidden rounded-20 bg-white md:hidden">
+      <div className="relative overflow-hidden rounded-20 bg-surface md:hidden">
         <Swiper
           selectedIndexCb={setCarouselIndex}
           slidesWidth={{ def: "100%", md: "100%" }}
@@ -163,7 +163,7 @@ const PropertyGallery = ({
                   priority={index === 0}
                   alt={image?.alt || title || ""}
                   quality={PROPERTY_IMAGE_QUALITY}
-                  className="bg-neutral-100 object-cover"
+                  className="bg-surface-muted object-cover"
                   src={getPropertyImageUrl(image, "name")}
                   loading={index === 0 ? undefined : "lazy"}
                 />

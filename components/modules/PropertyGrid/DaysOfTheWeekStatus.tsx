@@ -28,7 +28,7 @@ const DaysOfTheWeekStatus = ({
             className="flex w-full flex-col justify-center gap-1"
           >
             <p
-              className={`text-2xs text-center !shrink-0 ${isCard ? "" : "md:text-xs"} text-neutral-400`}
+              className={`text-2xs text-center !shrink-0 ${isCard ? "" : "md:text-xs"} text-ink-subtle`}
             >
               {day?.title}
             </p>
@@ -37,8 +37,8 @@ const DaysOfTheWeekStatus = ({
               <div
                 className={`${
                   isReserved
-                    ? "bg-brand-600 border-brand-600 text-white"
-                    : "bg-white border-neutral-400 text-neutral-400"
+                    ? "bg-action border-action text-on-action"
+                    : "bg-surface border-control text-ink-subtle"
                 } text-xxs border min-w-9 rounded-full h-5 w-full relative flex items-center justify-center`}
               >
                 <p className="text-center leading-4 flex items-center m-auto justify-center">

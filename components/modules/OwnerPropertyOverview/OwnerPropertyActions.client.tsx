@@ -103,9 +103,9 @@ const OwnerPropertyActions = ({ property }: OwnerPropertyViewProps) => {
         isVisible={!!showDelete}
         onConfirm={onDeleteConfirm}
         onHide={() => setShowDelete(false)}
-        messageClass=" !text-black !text-base"
+        messageClass=" !text-ink !text-base"
         text={t("owner.areUSureDeleteProperty")}
-        hideTextClassName=" border !bg-white !rounded-full "
+        hideTextClassName=" border !bg-surface !rounded-full "
         headerImage="/assets/images/shared/red_crossed_sheet.png"
         confirmTextClassName=" !bg-danger-500 text-white !rounded-full "
       />

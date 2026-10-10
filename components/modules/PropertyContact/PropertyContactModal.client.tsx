@@ -57,16 +57,16 @@ const PropertyContactModal = ({
       />
 
       {trip ? (
-        <div className="flex flex-col gap-1 border-b border-neutral-200 px-4 py-3 text-sm">
-          <p className="line-clamp-1 text-neutral-900">{trip.title}</p>
-          <p className="text-neutral-500">
+        <div className="flex flex-col gap-1 border-b border-line px-4 py-3 text-sm">
+          <p className="line-clamp-1 text-ink">{trip.title}</p>
+          <p className="text-ink-subtle">
             {formatJalaliDay(trip.startDate)} {t("common.to")}{" "}
             {formatJalaliDay(trip.endDate)}
             {sep}
             {t("common.people", { count: Number(trip.guests) })}
           </p>
           {trip.total ? (
-            <p className="text-neutral-500">
+            <p className="text-ink-subtle">
               {t("reserve.approxStayCost")} {formatToman(trip.total)}
             </p>
           ) : null}
@@ -103,13 +103,13 @@ const PropertyContactModal = ({
             <button
               type="button"
               onClick={() => void copyMessage()}
-              className="flex h-10 w-full cursor-pointer items-center justify-center gap-2 rounded-10 border border-neutral-200 bg-white text-sm font-medium text-neutral-900 transition-colors hover:bg-neutral-50"
+              className="flex h-10 w-full cursor-pointer items-center justify-center gap-2 rounded-10 border border-line bg-surface text-sm font-medium text-ink transition-colors hover:bg-surface-muted"
             >
               <Icon name="copy" size={20} />
               {t("reserve.copyMessageText")}
             </button>
           ) : null}
-          <p className="text-xs text-neutral-500">
+          <p className="text-xs text-ink-subtle">
             {isSms ? t("reserve.contactSmsHint") : t("reserve.contactCallHint")}
           </p>
         </div>

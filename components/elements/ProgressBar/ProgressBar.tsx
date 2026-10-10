@@ -4,7 +4,7 @@ import { colors } from "@/theme/colors";
 const ProgressBar = ({
   progress,
   color = colors.danger[500],
-  trackColor = `${colors.neutral[300]}80`,
+  trackColor = "rgb(var(--c-line-strong) / 0.5)",
 }: TProgressBarProps) => {
   const clampedProgress = Math.max(0, Math.min(100, progress));
 

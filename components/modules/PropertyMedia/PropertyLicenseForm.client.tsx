@@ -43,7 +43,7 @@ const PropertyLicenseForm = ({ propertyId }: OwnerPropertyRouteProps) => {
   return (
     <>
       <div className="w-full flex items-center justify-between">
-        <p className="font-bold text-brand-600 text-start">
+        <p className="font-bold text-link text-start">
           {t("owner.authoriziationRequest")}
         </p>
         <StatusShower data={status} />

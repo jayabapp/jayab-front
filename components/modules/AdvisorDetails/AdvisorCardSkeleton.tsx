@@ -4,7 +4,7 @@ import Skeleton from "@elements/Skeleton/Skeleton";
 const AdvisorCardSkeleton = () => (
   <div
     aria-hidden="true"
-    className="flex min-h-52 w-full flex-col gap-4 rounded-2xl p-4 shadow-card"
+    className="flex min-h-52 w-full flex-col gap-4 rounded-2xl p-4 shadow-surface"
   >
     <div className="flex gap-3">
       <SkeletonCircle className="size-24" />

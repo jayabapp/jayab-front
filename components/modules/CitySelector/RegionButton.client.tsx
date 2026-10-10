@@ -26,8 +26,8 @@ const RegionButton = ({
     <span
       className={`${containerClass ?? ""} rounded-full shrink-0 !w-auto min-w-16 gap-2 py-1 h-6.5 px-1 items-center justify-center border transition-colors ${
         hasRegions
-          ? "border-brand-600 bg-brand-100 text-brand-700"
-          : "border-neutral-400 bg-neutral-400/5 text-neutral-400"
+          ? "border-action bg-selected text-link"
+          : "border-control bg-neutral-400/5 text-ink-subtle"
       } text-xs flex flex-row`}
     >
       <button
@@ -60,7 +60,7 @@ const RegionButton = ({
             event.stopPropagation();
             onClearRegions();
           }}
-          className="cursor-pointer w-4 h-4 aspect-square rounded-full border border-brand-600 flex items-center justify-center"
+          className="cursor-pointer w-4 h-4 aspect-square rounded-full border border-action flex items-center justify-center"
         >
           <ContentImage
             alt=""

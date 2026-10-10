@@ -66,7 +66,7 @@ const PropertyCard = ({
               <div className="w-full flex flex-row items-start gap-2 justify-start">
                 <p className="text-sm shrink-0">{t("common.todayStatus")} :</p>
                 <p
-                  className={`text-sm font-bold ${data?.is_today_reserved ? "text-danger-500" : "text-brand-600"}`}
+                  className={`text-sm font-bold ${data?.is_today_reserved ? "text-status-danger" : "text-link"}`}
                 >
                   {data?.is_today_reserved
                     ? t("listing.isReserved")
@@ -75,7 +75,7 @@ const PropertyCard = ({
               </div>
 
               <div className="flex items-center gap-2">
-                <div className="bg-neutral-200 font-normal rounded-full text-xs text-black px-2 h-5 leading-4 flex items-center justify-center">
+                <div className="bg-surface-hover font-normal rounded-full text-xs text-ink px-2 h-5 leading-4 flex items-center justify-center">
                   {t("common.code")} {data.code}
                 </div>
                 <PropertyCardLikes
@@ -100,7 +100,7 @@ const PropertyCard = ({
               <div className="flex items-center w-full gap-2">
                 <StatusShower data={data?.status} />
                 {data?.is_promoted ? (
-                  <p className="font-bold text-brand-600 shrink-0 text-xs pr-1 border-r">
+                  <p className="font-bold text-link shrink-0 text-xs pr-1 border-r">
                     {t("common.laddered")}
                   </p>
                 ) : null}
@@ -110,11 +110,11 @@ const PropertyCard = ({
             <div className="flex flex-1 flex-col gap-1.5">
               <div className="flex w-full items-center gap-1">
                 {data?.is_promoted ? (
-                  <p className="font-bold text-brand-600 shrink-0 text-xs pl-1 border-l">
+                  <p className="font-bold text-link shrink-0 text-xs pl-1 border-l">
                     {t("common.laddered")}
                   </p>
                 ) : null}
-                <p className="text-xs line-clamp-1 text-neutral-500">
+                <p className="text-xs line-clamp-1 text-ink-subtle">
                   {data?.city}
                   {sep}
                   <span className="text-xs">
@@ -126,7 +126,7 @@ const PropertyCard = ({
               </div>
 
               <div className="flex w-full items-center justify-between gap-2">
-                <p className="line-clamp-1 text-xs text-neutral-500">
+                <p className="line-clamp-1 text-xs text-ink-subtle">
                   {data?.total_bedrooms
                     ? `${t("listing.roomsCount", { count: Number(data.total_bedrooms) })}${sep}`
                     : ""}
@@ -139,7 +139,7 @@ const PropertyCard = ({
                 />
               </div>
 
-              <p className="mt-auto text-xs text-neutral-500">
+              <p className="mt-auto text-xs text-ink-subtle">
                 {t("common.todaysPrice")}
               </p>
             </div>
@@ -223,7 +223,7 @@ const PropertyCard = ({
           <button
             type="button"
             onClick={() => onPhotoUpgradeClick?.(data)}
-            className="flex w-full items-center justify-center gap-2 rounded-10 border border-brand-600/30 bg-brand-600/10 px-3 py-2 text-sm font-medium text-brand-600 transition-all hover:bg-brand-600/15"
+            className="flex w-full items-center justify-center gap-2 rounded-10 border border-action/30 bg-action/10 px-3 py-2 text-sm font-medium text-link transition-all hover:bg-action/15"
           >
             <ContentImage
               alt=""

@@ -27,7 +27,7 @@ const FilterApplyBar = ({
       : t("showResults", { count, formatted: numberWithCommas(count) });
 
   return (
-    <div className="w-full border-t border-neutral-100 bg-white px-3 pb-3 pt-2.5">
+    <div className="w-full border-t border-surface-muted bg-surface px-3 pb-3 pt-2.5">
       <Button
         width="w-full"
         title={label}

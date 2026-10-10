@@ -26,17 +26,17 @@ const RateTable = ({
 
   return (
     <div className="flex flex-col gap-3">
-      <h3 className="text-sm font-bold text-neutral-900">
+      <h3 className="text-sm font-bold text-ink">
         {t("reserve.calendarPricesTitle")}
       </h3>
-      <dl className="flex flex-col divide-y divide-neutral-100 rounded-10 border border-neutral-200 px-4">
+      <dl className="flex flex-col divide-y divide-surface-muted rounded-10 border border-line px-4">
         {rows.map((row) => (
           <div
             key={row.label}
             className="flex items-center justify-between gap-3 py-2.5 text-sm"
           >
-            <dt className="text-neutral-600">{row.label}</dt>
-            <dd className="font-semibold text-neutral-900">
+            <dt className="text-ink-muted">{row.label}</dt>
+            <dd className="font-semibold text-ink">
               {formatToman(row.price)}
             </dd>
           </div>
@@ -44,14 +44,14 @@ const RateTable = ({
       </dl>
 
       {extraGuestFee ? (
-        <p className="text-xs text-neutral-500">
+        <p className="text-xs text-ink-subtle">
           {t("reserve.extraGuestsLabel")}: {t("reserve.ratePerNight")}{" "}
           {formatToman(extraGuestFee)} ({t("common.overStandardCapacity")}{" "}
           {t("common.people", { count: Number(stdCapacity) })})
         </p>
       ) : null}
       {cleaningFee ? (
-        <p className="text-xs text-neutral-500">
+        <p className="text-xs text-ink-subtle">
           {t("reserve.cleaningOnce")}: {formatToman(cleaningFee)}
         </p>
       ) : null}

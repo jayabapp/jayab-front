@@ -25,7 +25,7 @@ const BlogCard = ({ item, index }: BlogCardProps) => {
       contentId={item?.id}
       containerClass="h-full"
       style={{ "--card-index": index ?? 0 } as CSSProperties}
-      className="lift-card stagger-rise flex h-full flex-col overflow-hidden rounded-20 border border-white bg-white"
+      className="lift-card stagger-rise flex h-full flex-col overflow-hidden rounded-20 border border-white bg-surface"
     >
       <BlogCardLink
         href={href}
@@ -44,7 +44,7 @@ const BlogCard = ({ item, index }: BlogCardProps) => {
           <div className="lift-card-scrim pointer-events-none absolute inset-0" />
 
           {!!item?.category?.title ? (
-            <span className="absolute right-2 top-2 rounded-full bg-white/85 px-2 py-1 text-[0.625rem] font-bold text-brand-600 shadow-sm backdrop-blur-[6px]">
+            <span className="absolute right-2 top-2 rounded-full bg-surface/85 px-2 py-1 text-[0.625rem] font-bold text-link shadow-sm backdrop-blur-[6px]">
               {item.category.title}
             </span>
           ) : (
@@ -56,15 +56,15 @@ const BlogCard = ({ item, index }: BlogCardProps) => {
           <p className="line-clamp-2 text-sm font-bold leading-6 md:text-base">
             {item?.title}
           </p>
-          <p className="line-clamp-2 whitespace-pre-wrap text-xs leading-6 text-neutral-600 md:text-sm">
+          <p className="line-clamp-2 whitespace-pre-wrap text-xs leading-6 text-ink-muted md:text-sm">
             {item?.small_text || item?.full_text || ""}
           </p>
 
-          <div className="mt-auto flex items-center justify-between gap-2 border-t border-neutral-100 pt-2.5 text-2xs text-neutral-600">
+          <div className="mt-auto flex items-center justify-between gap-2 border-t border-surface-muted pt-2.5 text-2xs text-ink-muted">
             <div className="flex items-center gap-2">
               <span>{moment(item?.created_at).format("jYYYY/jMM/jDD")}</span>
               {!!item?.view_count ? (
-                <span className="border-r border-neutral-300 pr-2">
+                <span className="border-r border-line-strong pr-2">
                   {t("views", { count: Number(item.view_count) })}
                 </span>
               ) : (
@@ -72,7 +72,7 @@ const BlogCard = ({ item, index }: BlogCardProps) => {
               )}
             </div>
 
-            <span className="flex items-center gap-1 font-bold text-brand-600">
+            <span className="flex items-center gap-1 font-bold text-link">
               {t("readArticle")}
               <svg
                 fill="none"

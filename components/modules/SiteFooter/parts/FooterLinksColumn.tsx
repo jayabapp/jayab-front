@@ -14,13 +14,13 @@ const FooterLinksColumn = () => {
         {footerLinks?.map((entry) => (
           <Link
             prefetch={false}
-            title={t(`links.${entry.titleKey}`)}
             href={entry.route || "#"}
             key={`footer-link-${entry.id}`}
             style={{ textDecoration: "none" }}
+            title={t(`links.${entry.titleKey}`)}
             className="flex items-center gap-2 mb-2"
           >
-            <p className="text-sm cursor-pointer opacity-100 hover:text-brand-600">
+            <p className="text-sm cursor-pointer opacity-100 hover:text-link">
               {t(`links.${entry.titleKey}`)}
             </p>
           </Link>

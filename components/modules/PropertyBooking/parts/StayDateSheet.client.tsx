@@ -25,9 +25,9 @@ const DateSummary = ({
 
   return (
     <div className="flex flex-1 flex-col gap-0.5">
-      <span className="text-xs text-neutral-500">{label}</span>
+      <span className="text-xs text-ink-subtle">{label}</span>
       <span
-        className={`text-sm ${value ? "font-semibold text-neutral-900" : "text-neutral-400"}`}
+        className={`text-sm ${value ? "font-semibold text-ink" : "text-ink-subtle"}`}
       >
         {value ? formatJalaliWeekdayDay(value) : t("emptyDate")}
       </span>
@@ -73,7 +73,7 @@ const StayDateSheetBody = ({
             <button
               type="button"
               onClick={() => setDraft({})}
-              className="h-11 cursor-pointer rounded-10 border border-neutral-200 px-5 text-sm text-neutral-700 transition-colors hover:bg-neutral-50"
+              className="h-11 cursor-pointer rounded-10 border border-line px-5 text-sm text-ink-muted transition-colors hover:bg-surface-muted"
             >
               {t("clearStay")}
             </button>
@@ -81,7 +81,7 @@ const StayDateSheetBody = ({
               type="button"
               disabled={!complete}
               onClick={() => complete && onConfirm(complete)}
-              className="h-11 flex-1 cursor-pointer rounded-10 bg-brand-600 text-base font-medium text-white transition-colors hover:bg-brand-700 disabled:cursor-not-allowed disabled:bg-neutral-300 disabled:hover:bg-neutral-300"
+              className="h-11 flex-1 cursor-pointer rounded-10 bg-action text-base font-medium text-on-action transition-colors hover:bg-action-hover disabled:cursor-not-allowed disabled:bg-line-strong disabled:hover:bg-line-strong"
             >
               {t("pickDatesCta")}
               {nights ? ` (${t("nights", { count: Number(nights) })})` : ""}

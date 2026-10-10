@@ -6,7 +6,6 @@ import { isRouteTitleKey } from "@/utils/constantss";
 import { ContentImage } from "@elements/Image";
 import { usePathname } from "next/navigation";
 import { useMemo } from "react";
-import { colors } from "@/theme/colors";
 
 const Breadcrumbs = () => {
   const t = useTranslations();
@@ -46,7 +45,7 @@ const Breadcrumbs = () => {
             className="flex flex-row items-center"
           >
             <div
-              className={`${index === crumbs.length - 1 ? "" : "opacity-50"} justify-center cursor-pointer gap-2 flex rounded-md text-black`}
+              className={`${index === crumbs.length - 1 ? "" : "opacity-50"} justify-center cursor-pointer gap-2 flex rounded-md text-ink`}
             >
               {!!crumb.icon ? (
                 <ContentImage
@@ -60,7 +59,7 @@ const Breadcrumbs = () => {
                 <></>
               )}
               <p
-                className={`${index === crumbs.length - 1 ? "font-medium" : "opacity-50"} text-sm text-dark-700 transition-all hover:scale-110 hover:text-neutral-500`}
+                className={`${index === crumbs.length - 1 ? "font-medium" : "opacity-50"} text-sm text-dark-700 transition-all hover:scale-110 hover:text-ink-subtle`}
               >
                 {crumb.title}
               </p>
@@ -76,7 +75,7 @@ const Breadcrumbs = () => {
               >
                 <path
                   d="M7.13395 1.58023L6.07295 0.520235L0.29395 6.29723C0.200796 6.3898 0.126867 6.49988 0.0764193 6.62113C0.0259713 6.74238 0 6.87241 0 7.00373C0 7.13506 0.0259713 7.26509 0.0764193 7.38634C0.126867 7.50759 0.200796 7.61767 0.29395 7.71023L6.07295 13.4902L7.13295 12.4302L1.70895 7.00523L7.13395 1.58023Z"
-                  fill={colors.neutral[300]}
+                  fill="rgb(var(--c-line-strong))"
                 />
               </svg>
             ) : (

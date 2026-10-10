@@ -34,7 +34,7 @@ const ChatItemMoreOptions = ({
       events={["click"]}
       isOpen={show}
       anchorSelect={`.my-anchor-element${data?.id}`}
-      className={`mt-2 !rounded-xl !bg-white z-[50] focus:outline-none overflow-scroll`}
+      className={`mt-2 !rounded-xl !bg-surface z-[50] focus:outline-none overflow-scroll`}
     >
       <div ref={refer} className="flex flex-col justify-center items-start ">
         <div
@@ -46,7 +46,7 @@ const ChatItemMoreOptions = ({
           className="px-0.5 py-0.5 z-[100] w-full cursor-pointer "
         >
           <div
-            className={`hover:bg-brand-600/80 cursor-pointer hover:text-white text-neutral-600  group flex w-full gap-2 items-center rounded-md px-0.5 py-0.5 text-sm font-light no-underline`}
+            className={`hover:bg-action/80 cursor-pointer hover:text-on-action text-ink-muted  group flex w-full gap-2 items-center rounded-md px-0.5 py-0.5 text-sm font-light no-underline`}
           >
             <Image
               width={24}
@@ -66,7 +66,7 @@ const ChatItemMoreOptions = ({
                 f.stopPropagation();
                 deleteMessage();
               }}
-              className={`hover:bg-brand-600/80 cursor-pointer hover:text-white text-neutral-600  group flex w-full gap-2 items-center rounded-md px-0.5 py-0.5 text-sm font-light no-underline`}
+              className={`hover:bg-action/80 cursor-pointer hover:text-on-action text-ink-muted  group flex w-full gap-2 items-center rounded-md px-0.5 py-0.5 text-sm font-light no-underline`}
             >
               <Image
                 width={24}

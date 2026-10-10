@@ -21,7 +21,7 @@ const PropertyPriceTag = ({ price }: PropertyPriceTagProps) => {
         </p>
       ) : null}
 
-      <p className="font-bold text-sm md:text-base text-brand-600">
+      <p className="font-bold text-sm md:text-base text-link">
         {numberWithCommas(
           price?.discountedPrice ? price?.discountedPrice : price?.price,
         )}{" "}

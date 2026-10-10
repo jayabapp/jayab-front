@@ -18,8 +18,8 @@ const HeaderContactLink = ({ phone, isLight }: HeaderContactLinkProps) => {
       title={t("contactUs")}
       className={`icon-parent flex shrink-0 items-center justify-center rounded-full border transition-all hover:scale-105 active:scale-95 size-9 ${
         isLight
-          ? "border-white/60 bg-white/35 backdrop-blur-[2px]"
-          : "border-brand-100 bg-brand-50"
+          ? "border-white/60 bg-surface/35 backdrop-blur-[2px]"
+          : "border-selected-line bg-selected"
       }`}
     >
       <ContentImage

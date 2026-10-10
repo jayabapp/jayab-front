@@ -48,7 +48,7 @@ const Day = ({
 
   return (
     <div
-      className={`aspect-square   ${!!data?.year && (!isBefore || !!isToday) ? " bg-neutral-100 " : "opacity-50"} ${
+      className={`aspect-square   ${!!data?.year && (!isBefore || !!isToday) ? " bg-surface-muted " : "opacity-50"} ${
         onSelect ? "cursor-pointer" : ""
       } `}
       onClick={() => {
@@ -61,14 +61,14 @@ const Day = ({
       <div
         key={data?.id}
         className={`text-center flex flex-col gap-2 ${data?.is_reserved ? "striped" : ""}   ${
-          isToday ? "  bg-neutral-200  " : ""
+          isToday ? "  bg-surface-hover  " : ""
         }  relative  flex items-center justify-center aspect-square    ${
           isSelectedEnd
-            ? "!bg-brand-600  rounded-l-10 text-white"
+            ? "!bg-action  rounded-l-10 text-on-action"
             : isSelectedStart
-              ? "!bg-brand-600  rounded-r-10 text-white"
+              ? "!bg-action  rounded-r-10 text-on-action"
               : ""
-        }  ${!!isinBetween ? "!bg-brand-600  rounded-0 text-white" : ""}`}
+        }  ${!!isinBetween ? "!bg-action  rounded-0 text-on-action" : ""}`}
       >
         {!!data?.has_memo ? (
           <div className="absolute left-1 top-1  w-1 h-1 aspect-square bg-danger-500 !rounded-full">
@@ -86,7 +86,7 @@ const Day = ({
         )}
 
         <p
-          className={`z-1 ${!!isFriday && !isinBetween && !isSelectedEnd && !isSelectedStart ? "text-red-700" : ""} `}
+          className={`z-1 ${!!isFriday && !isinBetween && !isSelectedEnd && !isSelectedStart ? "text-status-danger" : ""} `}
         >
           {" "}
           {data?.id}

@@ -36,11 +36,11 @@ const AuthOtpCard = ({ challenge, onEditNumber }: AuthOtpCardProps) => {
 
       <div className="mt-6 flex flex-col items-center gap-3">
         <span className="h-1 w-10 rounded-full bg-brand-500/80" />
-        <p className="text-sm text-neutral-600">{t("auth.authCodeSentTo")}</p>
+        <p className="text-sm text-ink-muted">{t("auth.authCodeSentTo")}</p>
         <button
           type="button"
           onClick={() => void editNumber()}
-          className="glass-chip text-sm font-medium text-neutral-900"
+          className="glass-chip text-sm font-medium text-ink"
         >
           <bdi dir="ltr" className="inline-block tracking-widest">
             {activeChallenge?.masked_mobile}
@@ -50,7 +50,7 @@ const AuthOtpCard = ({ challenge, onEditNumber }: AuthOtpCardProps) => {
 
       {/* CODE */}
       <div className="mt-8 flex w-full flex-col gap-5">
-        <p className="text-center text-xs text-neutral-600">
+        <p className="text-center text-xs text-ink-muted">
           {t("auth.enterFourDigits")}
         </p>
 
@@ -60,7 +60,7 @@ const AuthOtpCard = ({ challenge, onEditNumber }: AuthOtpCardProps) => {
           <button
             type="button"
             onClick={() => void editNumber()}
-            className="flex cursor-pointer items-center gap-1 text-sm text-brand-600"
+            className="flex cursor-pointer items-center gap-1 text-sm text-link"
           >
             <Image
               width={16}
@@ -76,14 +76,14 @@ const AuthOtpCard = ({ challenge, onEditNumber }: AuthOtpCardProps) => {
               type="button"
               disabled={isResending}
               onClick={resendCode}
-              className="glass-chip cursor-pointer text-sm font-medium text-brand-600 disabled:opacity-50"
+              className="glass-chip cursor-pointer text-sm font-medium text-link disabled:opacity-50"
             >
               {t("auth.sendAgain")}
             </button>
           ) : (
-            <div className="glass-chip flex items-center gap-2 text-xs text-neutral-600">
+            <div className="glass-chip flex items-center gap-2 text-xs text-ink-muted">
               <span>{t("auth.codeExpiTime")}</span>
-              <bdi dir="ltr" className="font-medium text-neutral-900">
+              <bdi dir="ltr" className="font-medium text-ink">
                 {countdown.minutes}:{countdown.seconds}
               </bdi>
             </div>

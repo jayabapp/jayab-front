@@ -35,7 +35,7 @@ const PropertyOwnerBadge = ({
         ) : null}
       </div>
       <div className="flex flex-col items-start gap-1">
-        <p className="text-xs text-neutral-500">
+        <p className="text-xs text-ink-subtle">
           {t("common.host")}
           {isOnline ? ` - ${t("listing.online")}` : null}
         </p>
@@ -45,7 +45,7 @@ const PropertyOwnerBadge = ({
               text={name}
               maxFontSize={14}
               minFontSize={10}
-              className="w-36 text-sm font-bold text-neutral-900"
+              className="w-36 text-sm font-bold text-ink"
             />
           </div>
         ) : null}

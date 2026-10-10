@@ -11,7 +11,7 @@ const CityModalHeader = ({
   const t = useTranslations();
 
   return (
-    <div className="app-text flex justify-between border-b items-center py-5 custome-shadow-card px-4 sticky top-0 bg-white z-10">
+    <div className="app-text flex justify-between border-b items-center py-5 custome-shadow-card px-4 sticky top-0 bg-surface z-10">
       <button
         type="button"
         onClick={onBack}

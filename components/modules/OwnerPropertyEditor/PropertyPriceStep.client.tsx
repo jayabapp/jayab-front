@@ -80,7 +80,7 @@ const PropertyPriceStep = ({ propertyId }: OwnerPropertyRouteProps) => {
       headerClass="w-full px-4 md:px-0 pb-4 pt-8"
     >
       <div className="flex flex-col gap-2 border-b pb-4 w-full">
-        <p className="font-bold w-full text-start text-sm md:text-base text-brand-600">
+        <p className="font-bold w-full text-start text-sm md:text-base text-link">
           {t("owner.guestCap")}
         </p>
         <TitledCounter
@@ -100,14 +100,14 @@ const PropertyPriceStep = ({ propertyId }: OwnerPropertyRouteProps) => {
       <div className="flex flex-col gap-2 border-b pb-8 w-full">
         <div className="w-full flex items-start justify-between">
           <div className="flex flex-col gap-2">
-            <p className="font-bold w-fit text-start text-sm md:text-base text-brand-600">
+            <p className="font-bold w-fit text-start text-sm md:text-base text-link">
               {t("owner.comitionPerc")} ( {t("owner.optional")} )
             </p>
-            <p className="text-xs text-neutral-500 md:text-sm">
+            <p className="text-xs text-ink-subtle md:text-sm">
               {t("owner.howMuchDoUWantToComm")}
             </p>
           </div>
-          <p className="text-brand-600 shrink-0 text-sm">{` % ${values?.advisor_commission} `}</p>
+          <p className="text-link shrink-0 text-sm">{` % ${values?.advisor_commission} `}</p>
         </div>
         <div className="flex px-4 items-center justify-center">
           <RangeWithTitle
@@ -129,7 +129,7 @@ const PropertyPriceStep = ({ propertyId }: OwnerPropertyRouteProps) => {
           setShowNotice(true);
         }}
       >
-        <p className="font-bold w-full cursor-pointer text-start text-sm md:text-base text-brand-600">
+        <p className="font-bold w-full cursor-pointer text-start text-sm md:text-base text-link">
           {t("owner.rendDayliPrice")}
         </p>
         {PRICE_FIELDS.map((field) => (

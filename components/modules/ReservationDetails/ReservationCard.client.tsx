@@ -86,7 +86,7 @@ const ReservationCard = ({
   const isExpired = reservation?.is_subscription_expired;
 
   return (
-    <div className="w-full bg-white shadow-card rounded-2xl justify-between flex flex-col p-3 gap-2">
+    <div className="w-full bg-surface shadow-surface rounded-2xl justify-between flex flex-col p-3 gap-2">
       <ReservationPropertySummary isOwner={isOwner} reservation={reservation} />
 
       <Divider moreClass=" border-dashed  " />

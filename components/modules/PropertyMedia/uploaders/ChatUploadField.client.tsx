@@ -1,16 +1,17 @@
 "use client";
 
-import type { ChatUploadFieldProps } from "@/types/components/modules/property-media";
 import { useAttachmentUpload } from "@features/upload/hooks/useAttachmentUpload";
 import { useEffect, useRef, useState } from "react";
-import type { ReactEventHandler } from "react";
+import { useTranslations } from "next-intl";
 import { BtnLoading } from "@elements/Button";
 import { FormInput } from "@elements/Form";
 import { toast } from "sonner";
 
+import type { ChatUploadFieldProps } from "@/types/components/modules/property-media";
+import type { ReactEventHandler } from "react";
+
 import Modal from "@elements/Modal";
 import Image from "next/image";
-import { useTranslations } from "next-intl";
 
 const ChatUploader = ({
   link,
@@ -153,12 +154,12 @@ const ChatUploader = ({
               <BtnLoading />{" "}
             </div>
           ) : (
-            <div className="  aspect-square shrink-0 md:w-6  items-center justify-center flex  text-neutral-500   h-5 w-5 md:h-6">
+            <div className="  aspect-square shrink-0 md:w-6  items-center justify-center flex  text-ink-subtle   h-5 w-5 md:h-6">
               {" "}
               <Image
                 src="/assets/icons/chat/chat_clip.svg"
                 alt="PaperClipIcon"
-                className="  aspect-square shrink-0 md:w-6 text-neutral-500   h-5 w-5 md:h-6"
+                className="  aspect-square shrink-0 md:w-6 text-ink-subtle   h-5 w-5 md:h-6"
                 onClick={() => {
                   !disabled ? imagePickerRef?.current?.click() : void null;
                 }}
@@ -215,11 +216,10 @@ const ChatUploader = ({
                 uploadImage();
               }
             }}
-            className={`transition-all w-full cursor-pointer flex py-1.5 border rounded-xl border-green-600  gap-3 items-center  border-l justify-center`}
+            className={`transition-all w-full cursor-pointer flex py-1.5 border rounded-xl border-status-success  gap-3 items-center  border-l justify-center`}
           >
             {subLoading ? (
               <div className=" flex items-center justify-center w-full min-h-[1.7rem]">
-                {" "}
                 <BtnLoading />
               </div>
             ) : (
@@ -229,9 +229,9 @@ const ChatUploader = ({
                   height={20}
                   alt="CheckIcon"
                   src="/assets/icons/shared/green_check_icon.svg"
-                  className=" items-center justify-center text-center text-green-600 border-green-600 w-5 "
+                  className=" items-center justify-center text-center text-status-success border-status-success w-5 "
                 />
-                <p className="text-green-600 border-green-600  text-lg font-medium ">
+                <p className="text-status-success border-status-success  text-lg font-medium ">
                   {t("submit")}
                 </p>
               </>
@@ -241,16 +241,18 @@ const ChatUploader = ({
             onClick={() => {
               if (!isCropping) onHide();
             }}
-            className="w-full py-1.5 cursor-pointer gap-3  border rounded-xl border-red-600  flex items-center justify-center"
+            className="w-full py-1.5 cursor-pointer gap-3  border rounded-xl border-status-danger  flex items-center justify-center"
           >
             <Image
               width={20}
               height={20}
               alt="XCircleIcon"
-              className="  text-red-600 w-5 "
+              className="  text-status-danger w-5 "
               src="/assets/icons/adds/red_x_mark.svg"
             />
-            <p className="text-red-600  text-lg font-medium ">{t("close")}</p>
+            <p className="text-status-danger  text-lg font-medium ">
+              {t("close")}
+            </p>
           </div>
         </div>
 

@@ -11,12 +11,12 @@ const MiniInfoCard = ({
   className = "",
 }: MiniInfoCardProps) => (
   <div
-    className={`flex flex-col gap-1 rounded-10 border border-neutral-200 p-4 ${className}`}
+    className={`flex flex-col gap-1 rounded-10 border border-line-strong bg-surface p-4 ${className}`}
   >
-    <Icon name={icon} size={20} className="text-neutral-800" />
-    <p className="text-sm font-semibold text-neutral-900">{title}</p>
-    {value ? <p className="text-sm text-neutral-800">{value}</p> : <></>}
-    {note ? <p className="text-xs text-neutral-500">{note}</p> : <></>}
+    <Icon name={icon} size={20} className="text-ink" />
+    <p className="text-sm font-semibold text-ink">{title}</p>
+    {value ? <p className="text-sm text-ink">{value}</p> : <></>}
+    {note ? <p className="text-xs text-ink-subtle">{note}</p> : <></>}
   </div>
 );
 

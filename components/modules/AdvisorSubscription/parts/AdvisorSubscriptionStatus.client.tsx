@@ -35,11 +35,11 @@ const AdvisorSubscriptionStatus = ({
       </div>
 
       {!expiresAt || !isActive ? (
-        <p className="text-danger-500 text-sm">{t("advisor.noActiveSub")}</p>
+        <p className="text-status-danger text-sm">{t("advisor.noActiveSub")}</p>
       ) : (
         <div className="flex items-center gap-2 justify-between w-full flex-row">
           <p className="text-sm">{t("advisor.remainingCreditDays")} :</p>
-          <div className="rounded-full text-xs md:text-sm text-brand-600 bg-brand-200 flex items-center justify-center h-5 md:h-6 w-16 md:w-20">
+          <div className="rounded-full text-xs md:text-sm text-link bg-selected flex items-center justify-center h-5 md:h-6 w-16 md:w-20">
             {`${t("common.days", { count: Number(moment(expiresAt).diff(moment(), "days")) })}`}
           </div>
         </div>

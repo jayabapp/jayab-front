@@ -36,7 +36,7 @@ const OwnerPropertyInquiry = ({ propertyId }: OwnerPropertyRouteProps) => {
   return (
     <>
       <div className="w-full flex order-2 md:order-1 flex-col gap-4">
-        <ElementToImage className="p-4 rounded-2xl gap-3 bg-brand-50 w-full flex flex-col">
+        <ElementToImage className="p-4 rounded-2xl gap-3 bg-selected w-full flex flex-col">
           <div className="w-full aspect-square relative">
             <ContentImage
               fill
@@ -64,7 +64,7 @@ const OwnerPropertyInquiry = ({ propertyId }: OwnerPropertyRouteProps) => {
             <div className="flex flex-row items-center gap-2 justify-start">
               <p className="text-xs shrink-0">{t("common.todayStatus")} :</p>
               <p
-                className={`font-bold ${property?.is_today_reserved ? "text-danger-500" : "text-brand-600"}`}
+                className={`font-bold ${property?.is_today_reserved ? "text-status-danger" : "text-link"}`}
               >
                 {property?.is_today_reserved
                   ? t("owner.occupied")

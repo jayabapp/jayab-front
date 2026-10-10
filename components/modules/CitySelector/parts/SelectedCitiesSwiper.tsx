@@ -61,7 +61,7 @@ const SelectedCitiesSwiper = ({
             className="size-4 opacity-40"
             src="/assets/icons/uploader/TrashIcon.svg"
           />
-          <span className="text-sm text-neutral-400">
+          <span className="text-sm text-ink-subtle">
             {t("search.removeAll")}
           </span>
         </button>

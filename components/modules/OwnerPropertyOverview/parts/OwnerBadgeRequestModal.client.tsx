@@ -1,16 +1,17 @@
 "use client";
 
-import type { OwnerBadgeRequestModalProps } from "@/types/components/modules/owner-property";
 import { usePropertyBadge } from "@features/owner-property/hooks/usePropertyBadge";
+import { useTranslations } from "next-intl";
 import { ContentImage } from "@elements/Image";
 
-import SkeletonText from "@elements/Skeleton/SkeletonText";
+import type { OwnerBadgeRequestModalProps } from "@/types/components/modules/owner-property";
+
 import useCmsContent from "@/hooks/useCmsContent";
 import StatusShower from "@elements/StatusShower";
+import SkeletonText from "@elements/Skeleton/SkeletonText";
 import CmsText from "@elements/CmsText";
 import Button from "@elements/Button";
 import Modal from "@elements/Modal";
-import { useTranslations } from "next-intl";
 
 const OwnerBadgeRequestModal = ({
   show,
@@ -35,7 +36,7 @@ const OwnerBadgeRequestModal = ({
 
   return (
     <Modal show={show} onHide={onHide}>
-      <div className="flex flex-col gap-4 p-4 w-full bg-white rounded-20">
+      <div className="flex flex-col gap-4 p-4 w-full bg-surface rounded-20">
         <ContentImage
           alt=""
           width={36}
@@ -43,9 +44,7 @@ const OwnerBadgeRequestModal = ({
           className="w-9 h-9 aspect-square"
           src="/assets/icons/property/request_badge.svg"
         />
-        <p className="text-sm text-brand-600 font-bold">
-          {t("requestForBadge")}
-        </p>
+        <p className="text-sm text-link font-bold">{t("requestForBadge")}</p>
         {isLoading ? (
           <SkeletonText lines={2} />
         ) : (

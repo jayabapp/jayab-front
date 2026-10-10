@@ -7,8 +7,8 @@ const LocationChip = ({ onRemove, prefix, title }: LocationChipProps) => {
   const t = useTranslations("common");
 
   return (
-    <div className="rounded-full gap-4 py-1 px-1 flex items-center justify-center border border-brand-600/30 bg-brand-600/5 text-xs">
-      <p className="text-sm text-neutral-900 pr-2">
+    <div className="rounded-full gap-4 py-1 px-1 flex items-center justify-center border border-action/30 bg-action/5 text-xs">
+      <p className="text-sm text-ink pr-2">
         {prefix ? `${prefix} ` : ""}
         {title}
       </p>
@@ -16,14 +16,14 @@ const LocationChip = ({ onRemove, prefix, title }: LocationChipProps) => {
         type="button"
         onClick={onRemove}
         aria-label={`${t("close")} ${title ?? ""}`}
-        className="cursor-pointer w-4 h-4 aspect-square rounded-full border border-brand-600/30 flex items-center justify-center"
+        className="cursor-pointer w-4 h-4 aspect-square rounded-full border border-action/30 flex items-center justify-center"
       >
         <ContentImage
           alt=""
           width={10}
           height={10}
           src="/assets/icons/adds/x_mark.svg"
-          className="w-2.5 h-2.5 opacity-30 p-0.5 text-neutral-900 aspect-square"
+          className="w-2.5 h-2.5 opacity-30 p-0.5 text-ink aspect-square"
         />
       </button>
     </div>

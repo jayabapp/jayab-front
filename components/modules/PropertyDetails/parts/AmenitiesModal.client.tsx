@@ -41,7 +41,7 @@ const AmenitiesModal = ({ amenities, onHide, show }: AmenitiesModalProps) => {
       <div className="flex flex-col gap-6 p-4">
         {Object.entries(groups).map(([group, items]) => (
           <div key={group} className="flex flex-col gap-3">
-            <p className="text-sm font-bold text-neutral-900">
+            <p className="text-sm font-bold text-ink">
               {Object.hasOwn(GROUP_TITLES, group)
                 ? t(GROUP_TITLES[group as keyof typeof GROUP_TITLES])
                 : ""}

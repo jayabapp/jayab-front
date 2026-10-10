@@ -12,7 +12,7 @@ const UploadField = dynamic(() =>
 );
 
 const UPLOAD_BOX =
-  "!bg-white  !border !border-dashed   w-24 h-24 !border-neutral-300 ";
+  "!bg-surface  !border !border-dashed   w-24 h-24 !border-line-strong ";
 
 const AdvisorSimpleFields = ({ values, setValues }: AdvisorFieldsProps) => {
   const t = useTranslations();

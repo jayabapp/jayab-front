@@ -49,7 +49,7 @@ const YearMonthPicker = ({
         <div> </div>
       )}
       <p
-        className={` ${setDate ? "text-brand-50 font-medium" : "font-bold mb-4 text-neutral-900"} text-sm f`}
+        className={` ${setDate ? "text-brand-50 font-medium" : "font-bold mb-4 text-ink"} text-sm f`}
       >
         {prefix}
         {month} {"  "} {year}

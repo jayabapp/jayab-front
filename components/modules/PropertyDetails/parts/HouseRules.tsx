@@ -63,7 +63,7 @@ const HouseRules = ({ property }: PropertySpecsSectionProps) => {
 
       {descriptions?.doc_dscr ? (
         <div className="flex flex-col gap-1">
-          <p className="ui-body font-semibold text-neutral-900">
+          <p className="ui-body font-semibold text-ink">
             {t("common.requiredDocs")}
           </p>
           <ClampText lines={3}>{descriptions.doc_dscr}</ClampText>
@@ -74,7 +74,7 @@ const HouseRules = ({ property }: PropertySpecsSectionProps) => {
 
       {descriptions?.other_dscr ? (
         <div className="flex flex-col gap-1">
-          <p className="ui-body font-semibold text-neutral-900">
+          <p className="ui-body font-semibold text-ink">
             {t("listing.otherTerms")}
           </p>
           <ClampText lines={3}>{descriptions.other_dscr}</ClampText>
