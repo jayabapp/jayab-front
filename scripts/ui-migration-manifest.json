@@ -1,0 +1,1450 @@
+{
+  "paths": [
+    {
+      "path": "app",
+      "axes": [
+        "color",
+        "i18n"
+      ]
+    },
+    {
+      "path": "components",
+      "axes": [
+        "color",
+        "i18n"
+      ]
+    },
+    {
+      "path": "features",
+      "axes": [
+        "color",
+        "i18n"
+      ]
+    }
+  ],
+  "exceptions": [
+    {
+      "axis": "color",
+      "file": "app/(profile)/profile/loading.tsx",
+      "kind": "valid",
+      "reason": "white text, border or ring on a fixed photo or solid brand/status fill; the fill does not change with the theme",
+      "hits": [
+        "border-white"
+      ]
+    },
+    {
+      "axis": "i18n",
+      "file": "app/api/auth/otp/route.ts",
+      "kind": "valid",
+      "reason": "server route message in the API language, not UI copy",
+      "hits": [
+        "شماره موبایل وارد شده صحیح نمی باشد."
+      ]
+    },
+    {
+      "axis": "i18n",
+      "file": "app/api/auth/otp/verify/route.ts",
+      "kind": "valid",
+      "reason": "server route message in the API language, not UI copy",
+      "hits": [
+        "درخواست ورود منقضی شده است. لطفا دوباره ",
+        "کد وارد شده صحیح نمی باشد."
+      ]
+    },
+    {
+      "axis": "i18n",
+      "file": "app/api/backend/[...path]/route.ts",
+      "kind": "valid",
+      "reason": "server route message in the API language, not UI copy",
+      "hits": [
+        "این مسیر در دسترس نیست."
+      ]
+    },
+    {
+      "axis": "i18n",
+      "file": "app/layout.tsx",
+      "kind": "valid",
+      "reason": "Persian metadata/JSON-LD; metadata and CMS stay Persian (10, SEO notes)",
+      "hits": [
+        "جایاب",
+        "%s | جایاب"
+      ]
+    },
+    {
+      "axis": "i18n",
+      "file": "app/qa-login/page.tsx",
+      "kind": "valid",
+      "reason": "internal QA tooling, Persian only, not a public route",
+      "hits": [
+        "ورود به محیط تست"
+      ]
+    },
+    {
+      "axis": "i18n",
+      "file": "app/qa-login/QaLoginForm.client.tsx",
+      "kind": "valid",
+      "reason": "internal QA tooling, Persian only, not a public route",
+      "hits": [
+        "تعداد تلاش‌ها بیش از حد مجاز است؛ کمی بع",
+        "نام کاربری یا رمز عبور اشتباه است.",
+        "خطایی رخ داد. دوباره تلاش کنید.",
+        "نام کاربری",
+        "رمز عبور",
+        "پنهان کردن رمز عبور",
+        "نمایش رمز عبور",
+        "در حال ورود...",
+        "ورود"
+      ]
+    },
+    {
+      "axis": "color",
+      "file": "components/elements/Accordion/Accordion.client.tsx",
+      "kind": "valid",
+      "reason": "neutral shadow colour literal, identical in both themes",
+      "hits": [
+        "rgba(0"
+      ]
+    },
+    {
+      "axis": "color",
+      "file": "components/elements/Form/Checkbox/IosToggle.client.tsx",
+      "kind": "valid",
+      "reason": "white text, border or ring on a fixed photo or solid brand/status fill; the fill does not change with the theme",
+      "hits": [
+        "bg-white"
+      ]
+    },
+    {
+      "axis": "color",
+      "file": "components/elements/Form/MultiRangeSlider.client.tsx",
+      "kind": "valid",
+      "reason": "neutral shadow colour literal, identical in both themes",
+      "hits": [
+        "rgb(1"
+      ]
+    },
+    {
+      "axis": "color",
+      "file": "components/elements/Form/MultiSelectSelecti.tsx",
+      "kind": "valid",
+      "reason": "white text, border or ring on a fixed photo or solid brand/status fill; the fill does not change with the theme",
+      "hits": [
+        "text-white"
+      ]
+    },
+    {
+      "axis": "color",
+      "file": "components/elements/Form/SingleSelectSelecti.tsx",
+      "kind": "valid",
+      "reason": "white text, border or ring on a fixed photo or solid brand/status fill; the fill does not change with the theme",
+      "hits": [
+        "text-white"
+      ]
+    },
+    {
+      "axis": "color",
+      "file": "components/elements/JalaliCalendar/Day.tsx",
+      "kind": "valid",
+      "reason": "solid brand/status fill or gradient paired with white text; kept fixed on purpose (07)",
+      "hits": [
+        "bg-danger-500"
+      ]
+    },
+    {
+      "axis": "color",
+      "file": "components/elements/Map/createPinElement.ts",
+      "kind": "valid",
+      "reason": "solid brand/status fill or gradient paired with white text; kept fixed on purpose (07)",
+      "hits": [
+        "bg-brand-500"
+      ]
+    },
+    {
+      "axis": "color",
+      "file": "components/elements/Map/createPinElement.ts",
+      "kind": "valid",
+      "reason": "white text, border or ring on a fixed photo or solid brand/status fill; the fill does not change with the theme",
+      "hits": [
+        "bg-white"
+      ]
+    },
+    {
+      "axis": "color",
+      "file": "components/elements/Upload/ImageCropModal.client.tsx",
+      "kind": "valid",
+      "reason": "fixed dark surface over a photo, media or overlay; stays dark in both themes (07: surfaces on images are intentionally fixed)",
+      "hits": [
+        "!bg-black"
+      ]
+    },
+    {
+      "axis": "color",
+      "file": "components/elements/Upload/ImageCropModal.client.tsx",
+      "kind": "valid",
+      "reason": "white text, border or ring on a fixed photo or solid brand/status fill; the fill does not change with the theme",
+      "hits": [
+        "text-white"
+      ]
+    },
+    {
+      "axis": "color",
+      "file": "components/layouts/SplashScreen/splashStyles.ts",
+      "kind": "valid",
+      "reason": "splash screen is outside the theme on purpose (07)",
+      "hits": [
+        "rgba(2"
+      ]
+    },
+    {
+      "axis": "color",
+      "file": "components/modules/AdvisorList/parts/AdvisorRegisterCta.client.tsx",
+      "kind": "valid",
+      "reason": "solid brand/status fill or gradient paired with white text; kept fixed on purpose (07)",
+      "hits": [
+        "bg-success-600"
+      ]
+    },
+    {
+      "axis": "color",
+      "file": "components/modules/AdvisorList/parts/AdvisorRegisterCta.client.tsx",
+      "kind": "valid",
+      "reason": "white text, border or ring on a fixed photo or solid brand/status fill; the fill does not change with the theme",
+      "hits": [
+        "text-white"
+      ]
+    },
+    {
+      "axis": "color",
+      "file": "components/modules/AdvisorSubscription/AdvisorSubscription.client.tsx",
+      "kind": "valid",
+      "reason": "solid brand/status fill or gradient paired with white text; kept fixed on purpose (07)",
+      "hits": [
+        "bg-success-600",
+        "!bg-danger-500"
+      ]
+    },
+    {
+      "axis": "color",
+      "file": "components/modules/AdvisorSubscription/AdvisorSubscription.client.tsx",
+      "kind": "valid",
+      "reason": "white text, border or ring on a fixed photo or solid brand/status fill; the fill does not change with the theme",
+      "hits": [
+        "text-white"
+      ]
+    },
+    {
+      "axis": "color",
+      "file": "components/modules/AppShell/parts/ImpersonationBanner.client.tsx",
+      "kind": "valid",
+      "reason": "solid brand/status fill or gradient paired with white text; kept fixed on purpose (07)",
+      "hits": [
+        "bg-warning-500"
+      ]
+    },
+    {
+      "axis": "color",
+      "file": "components/modules/AppShell/parts/ImpersonationBanner.client.tsx",
+      "kind": "valid",
+      "reason": "white text, border or ring on a fixed photo or solid brand/status fill; the fill does not change with the theme",
+      "hits": [
+        "text-white"
+      ]
+    },
+    {
+      "axis": "color",
+      "file": "components/modules/Auth/Auth.client.tsx",
+      "kind": "valid",
+      "reason": "solid brand/status fill or gradient paired with white text; kept fixed on purpose (07)",
+      "hits": [
+        "bg-brand-500"
+      ]
+    },
+    {
+      "axis": "color",
+      "file": "components/modules/AuthOtp/AuthOtpCard.client.tsx",
+      "kind": "valid",
+      "reason": "solid brand/status fill or gradient paired with white text; kept fixed on purpose (07)",
+      "hits": [
+        "bg-brand-500"
+      ]
+    },
+    {
+      "axis": "color",
+      "file": "components/modules/BlogDetails/BlogDetailsSkeleton.tsx",
+      "kind": "valid",
+      "reason": "white text, border or ring on a fixed photo or solid brand/status fill; the fill does not change with the theme",
+      "hits": [
+        "border-white"
+      ]
+    },
+    {
+      "axis": "color",
+      "file": "components/modules/BlogList/parts/BlogCard.tsx",
+      "kind": "valid",
+      "reason": "white text, border or ring on a fixed photo or solid brand/status fill; the fill does not change with the theme",
+      "hits": [
+        "border-white"
+      ]
+    },
+    {
+      "axis": "color",
+      "file": "components/modules/BlogList/parts/BlogGridSkeleton.tsx",
+      "kind": "valid",
+      "reason": "white text, border or ring on a fixed photo or solid brand/status fill; the fill does not change with the theme",
+      "hits": [
+        "border-white"
+      ]
+    },
+    {
+      "axis": "color",
+      "file": "components/modules/ChatRoom/parts/ChatMediaModal.client.tsx",
+      "kind": "valid",
+      "reason": "fixed dark surface over a photo, media or overlay; stays dark in both themes (07: surfaces on images are intentionally fixed)",
+      "hits": [
+        "bg-black"
+      ]
+    },
+    {
+      "axis": "color",
+      "file": "components/modules/ChatRoom/parts/ChatMediaModal.client.tsx",
+      "kind": "valid",
+      "reason": "white text, border or ring on a fixed photo or solid brand/status fill; the fill does not change with the theme",
+      "hits": [
+        "text-white"
+      ]
+    },
+    {
+      "axis": "color",
+      "file": "components/modules/DisplayPreferences/DisplayPreferences.client.tsx",
+      "kind": "valid",
+      "reason": "white text, border or ring on a fixed photo or solid brand/status fill; the fill does not change with the theme",
+      "hits": [
+        "border-white",
+        "text-white"
+      ]
+    },
+    {
+      "axis": "color",
+      "file": "components/modules/HomeAdvisor/HomeAdvisorSubscription.client.tsx",
+      "kind": "valid",
+      "reason": "solid brand/status fill or gradient paired with white text; kept fixed on purpose (07)",
+      "hits": [
+        "bg-warning-600",
+        "bg-danger-500"
+      ]
+    },
+    {
+      "axis": "color",
+      "file": "components/modules/HomeAdvisor/HomeAdvisorSubscription.client.tsx",
+      "kind": "valid",
+      "reason": "white text, border or ring on a fixed photo or solid brand/status fill; the fill does not change with the theme",
+      "hits": [
+        "text-white"
+      ]
+    },
+    {
+      "axis": "color",
+      "file": "components/modules/HomeBanners/parts/HomeHeroBanner.client.tsx",
+      "kind": "valid",
+      "reason": "white text, border or ring on a fixed photo or solid brand/status fill; the fill does not change with the theme",
+      "hits": [
+        "text-white"
+      ]
+    },
+    {
+      "axis": "color",
+      "file": "components/modules/HomeBanners/parts/HomeHeroBanner.client.tsx",
+      "kind": "valid",
+      "reason": "fixed dark surface over a photo, media or overlay; stays dark in both themes (07: surfaces on images are intentionally fixed)",
+      "hits": [
+        "from-black",
+        "via-black"
+      ]
+    },
+    {
+      "axis": "color",
+      "file": "components/modules/HomeCities/parts/HomeCityItem.client.tsx",
+      "kind": "valid",
+      "reason": "white text, border or ring on a fixed photo or solid brand/status fill; the fill does not change with the theme",
+      "hits": [
+        "!text-white"
+      ]
+    },
+    {
+      "axis": "color",
+      "file": "components/modules/HomeReservations/HomeActiveReservations.client.tsx",
+      "kind": "valid",
+      "reason": "solid brand/status fill or gradient paired with white text; kept fixed on purpose (07)",
+      "hits": [
+        "to-warning-600"
+      ]
+    },
+    {
+      "axis": "color",
+      "file": "components/modules/HomeReservations/HomeActiveReservations.client.tsx",
+      "kind": "valid",
+      "reason": "white text, border or ring on a fixed photo or solid brand/status fill; the fill does not change with the theme",
+      "hits": [
+        "text-white"
+      ]
+    },
+    {
+      "axis": "color",
+      "file": "components/modules/HomeReservations/HomeActiveReservations.client.tsx",
+      "kind": "valid",
+      "reason": "fixed dark surface over a photo, media or overlay; stays dark in both themes (07: surfaces on images are intentionally fixed)",
+      "hits": [
+        "bg-black"
+      ]
+    },
+    {
+      "axis": "color",
+      "file": "components/modules/Notifications/NotificationList.client.tsx",
+      "kind": "valid",
+      "reason": "solid brand/status fill or gradient paired with white text; kept fixed on purpose (07)",
+      "hits": [
+        "bg-danger-500"
+      ]
+    },
+    {
+      "axis": "color",
+      "file": "components/modules/OwnerPhotoUpgrade/OwnerPhotoUpgradeModal.client.tsx",
+      "kind": "valid",
+      "reason": "white text, border or ring on a fixed photo or solid brand/status fill; the fill does not change with the theme",
+      "hits": [
+        "border-white",
+        "text-white",
+        "!text-white"
+      ]
+    },
+    {
+      "axis": "color",
+      "file": "components/modules/OwnerPhotoUpgrade/OwnerPhotoUpgradeModal.client.tsx",
+      "kind": "valid",
+      "reason": "fixed dark surface over a photo, media or overlay; stays dark in both themes (07: surfaces on images are intentionally fixed)",
+      "hits": [
+        "bg-black"
+      ]
+    },
+    {
+      "axis": "color",
+      "file": "components/modules/OwnerPhotoUpgrade/PhotoUpgradeImagePair.client.tsx",
+      "kind": "valid",
+      "reason": "fixed dark surface over a photo, media or overlay; stays dark in both themes (07: surfaces on images are intentionally fixed)",
+      "hits": [
+        "bg-black"
+      ]
+    },
+    {
+      "axis": "color",
+      "file": "components/modules/OwnerPhotoUpgrade/PhotoUpgradeImagePair.client.tsx",
+      "kind": "valid",
+      "reason": "white text, border or ring on a fixed photo or solid brand/status fill; the fill does not change with the theme",
+      "hits": [
+        "text-white"
+      ]
+    },
+    {
+      "axis": "color",
+      "file": "components/modules/OwnerPropertyOverview/OwnerPropertyActions.client.tsx",
+      "kind": "valid",
+      "reason": "solid brand/status fill or gradient paired with white text; kept fixed on purpose (07)",
+      "hits": [
+        "!bg-danger-500"
+      ]
+    },
+    {
+      "axis": "color",
+      "file": "components/modules/OwnerPropertyOverview/OwnerPropertyActions.client.tsx",
+      "kind": "valid",
+      "reason": "white text, border or ring on a fixed photo or solid brand/status fill; the fill does not change with the theme",
+      "hits": [
+        "text-white"
+      ]
+    },
+    {
+      "axis": "color",
+      "file": "components/modules/OwnerPropertyOverview/OwnerPropertyIntroduction.client.tsx",
+      "kind": "valid",
+      "reason": "fixed dark surface over a photo, media or overlay; stays dark in both themes (07: surfaces on images are intentionally fixed)",
+      "hits": [
+        "bg-black"
+      ]
+    },
+    {
+      "axis": "color",
+      "file": "components/modules/OwnerReservations/OwnerReservationList.client.tsx",
+      "kind": "valid",
+      "reason": "solid brand/status fill or gradient paired with white text; kept fixed on purpose (07)",
+      "hits": [
+        "bg-warning-600"
+      ]
+    },
+    {
+      "axis": "color",
+      "file": "components/modules/ProfileOverview/parts/ProfileCompletion.client.tsx",
+      "kind": "valid",
+      "reason": "solid brand/status fill or gradient paired with white text; kept fixed on purpose (07)",
+      "hits": [
+        "from-brand-700",
+        "to-brand-400"
+      ]
+    },
+    {
+      "axis": "color",
+      "file": "components/modules/ProfileOverview/parts/ProfileCompletion.client.tsx",
+      "kind": "valid",
+      "reason": "white text, border or ring on a fixed photo or solid brand/status fill; the fill does not change with the theme",
+      "hits": [
+        "border-white"
+      ]
+    },
+    {
+      "axis": "color",
+      "file": "components/modules/ProfileOverview/parts/ProfileMenuRow.client.tsx",
+      "kind": "valid",
+      "reason": "white text, border or ring on a fixed photo or solid brand/status fill; the fill does not change with the theme",
+      "hits": [
+        "text-white",
+        "border-white"
+      ]
+    },
+    {
+      "axis": "color",
+      "file": "components/modules/ProfileOverview/parts/ProfileMenuRow.client.tsx",
+      "kind": "valid",
+      "reason": "solid brand/status fill or gradient paired with white text; kept fixed on purpose (07)",
+      "hits": [
+        "bg-danger-500"
+      ]
+    },
+    {
+      "axis": "color",
+      "file": "components/modules/ProfileOverview/parts/ProfileQuickAccess.client.tsx",
+      "kind": "valid",
+      "reason": "solid brand/status fill or gradient paired with white text; kept fixed on purpose (07)",
+      "hits": [
+        "bg-danger-500"
+      ]
+    },
+    {
+      "axis": "color",
+      "file": "components/modules/ProfileOverview/parts/ProfileQuickAccess.client.tsx",
+      "kind": "valid",
+      "reason": "white text, border or ring on a fixed photo or solid brand/status fill; the fill does not change with the theme",
+      "hits": [
+        "text-white"
+      ]
+    },
+    {
+      "axis": "color",
+      "file": "components/modules/ProfileOverview/parts/ProfileWelcome.client.tsx",
+      "kind": "valid",
+      "reason": "white text, border or ring on a fixed photo or solid brand/status fill; the fill does not change with the theme",
+      "hits": [
+        "border-white",
+        "text-white"
+      ]
+    },
+    {
+      "axis": "color",
+      "file": "components/modules/ProfileOverview/parts/ProfileWelcome.client.tsx",
+      "kind": "valid",
+      "reason": "solid brand/status fill or gradient paired with white text; kept fixed on purpose (07)",
+      "hits": [
+        "from-brand-400",
+        "to-brand-700"
+      ]
+    },
+    {
+      "axis": "color",
+      "file": "components/modules/PropertyAvailability/PropertyCalendarLegend.tsx",
+      "kind": "valid",
+      "reason": "solid brand/status fill or gradient paired with white text; kept fixed on purpose (07)",
+      "hits": [
+        "bg-danger-500"
+      ]
+    },
+    {
+      "axis": "color",
+      "file": "components/modules/PropertyBooking/parts/FullScreenSheet.client.tsx",
+      "kind": "valid",
+      "reason": "fixed dark surface over a photo, media or overlay; stays dark in both themes (07: surfaces on images are intentionally fixed)",
+      "hits": [
+        "bg-neutral-900"
+      ]
+    },
+    {
+      "axis": "color",
+      "file": "components/modules/PropertyBooking/parts/PriceSummary.tsx",
+      "kind": "valid",
+      "reason": "solid brand/status fill or gradient paired with white text; kept fixed on purpose (07)",
+      "hits": [
+        "bg-brand-500"
+      ]
+    },
+    {
+      "axis": "color",
+      "file": "components/modules/PropertyBooking/parts/StayCalendarLegend.tsx",
+      "kind": "valid",
+      "reason": "solid brand/status fill or gradient paired with white text; kept fixed on purpose (07)",
+      "hits": [
+        "bg-warning-500"
+      ]
+    },
+    {
+      "axis": "color",
+      "file": "components/modules/PropertyBooking/parts/StayDateFields.client.tsx",
+      "kind": "valid",
+      "reason": "fixed dark surface over a photo, media or overlay; stays dark in both themes (07: surfaces on images are intentionally fixed)",
+      "hits": [
+        "ring-neutral-900"
+      ]
+    },
+    {
+      "axis": "color",
+      "file": "components/modules/PropertyBooking/parts/StayDayCell.tsx",
+      "kind": "valid",
+      "reason": "fixed dark surface over a photo, media or overlay; stays dark in both themes (07: surfaces on images are intentionally fixed)",
+      "hits": [
+        "bg-neutral-900"
+      ]
+    },
+    {
+      "axis": "color",
+      "file": "components/modules/PropertyBooking/parts/StayDayCell.tsx",
+      "kind": "valid",
+      "reason": "white text, border or ring on a fixed photo or solid brand/status fill; the fill does not change with the theme",
+      "hits": [
+        "text-white"
+      ]
+    },
+    {
+      "axis": "color",
+      "file": "components/modules/PropertyBooking/parts/StayDayCell.tsx",
+      "kind": "valid",
+      "reason": "solid brand/status fill or gradient paired with white text; kept fixed on purpose (07)",
+      "hits": [
+        "bg-warning-500"
+      ]
+    },
+    {
+      "axis": "color",
+      "file": "components/modules/PropertyContact/parts/ReservationDatePicker/Day.tsx",
+      "kind": "valid",
+      "reason": "white text, border or ring on a fixed photo or solid brand/status fill; the fill does not change with the theme",
+      "hits": [
+        "border-white",
+        "text-white"
+      ]
+    },
+    {
+      "axis": "color",
+      "file": "components/modules/PropertyContact/parts/ReservationDatePicker/Day.tsx",
+      "kind": "valid",
+      "reason": "solid brand/status fill or gradient paired with white text; kept fixed on purpose (07)",
+      "hits": [
+        "bg-success-600"
+      ]
+    },
+    {
+      "axis": "color",
+      "file": "components/modules/PropertyDetails/parts/CancellationSummary.client.tsx",
+      "kind": "valid",
+      "reason": "solid brand/status fill or gradient paired with white text; kept fixed on purpose (07)",
+      "hits": [
+        "bg-success-500",
+        "bg-warning-500",
+        "bg-danger-500"
+      ]
+    },
+    {
+      "axis": "i18n",
+      "file": "components/modules/PropertyDetails/parts/HouseRules.tsx",
+      "kind": "valid",
+      "reason": "Persian domain data matched against backend values, not UI copy",
+      "hits": [
+        "نیست"
+      ]
+    },
+    {
+      "axis": "color",
+      "file": "components/modules/PropertyDetails/parts/PropertyOwnerBadge.tsx",
+      "kind": "valid",
+      "reason": "white text, border or ring on a fixed photo or solid brand/status fill; the fill does not change with the theme",
+      "hits": [
+        "border-white"
+      ]
+    },
+    {
+      "axis": "color",
+      "file": "components/modules/PropertyDetails/parts/PropertyReportModal.client.tsx",
+      "kind": "valid",
+      "reason": "white text, border or ring on a fixed photo or solid brand/status fill; the fill does not change with the theme",
+      "hits": [
+        "!text-white"
+      ]
+    },
+    {
+      "axis": "color",
+      "file": "components/modules/PropertyDetails/PropertyPriceTag.tsx",
+      "kind": "valid",
+      "reason": "solid brand/status fill or gradient paired with white text; kept fixed on purpose (07)",
+      "hits": [
+        "bg-danger-500"
+      ]
+    },
+    {
+      "axis": "color",
+      "file": "components/modules/PropertyDetails/PropertyPriceTag.tsx",
+      "kind": "valid",
+      "reason": "white text, border or ring on a fixed photo or solid brand/status fill; the fill does not change with the theme",
+      "hits": [
+        "text-white"
+      ]
+    },
+    {
+      "axis": "color",
+      "file": "components/modules/PropertyGallery/parts/PropertyImageDownloadButton.client.tsx",
+      "kind": "valid",
+      "reason": "white text, border or ring on a fixed photo or solid brand/status fill; the fill does not change with the theme",
+      "hits": [
+        "text-white"
+      ]
+    },
+    {
+      "axis": "color",
+      "file": "components/modules/PropertyGallery/PropertyGallery.client.tsx",
+      "kind": "valid",
+      "reason": "fixed dark surface over a photo, media or overlay; stays dark in both themes (07: surfaces on images are intentionally fixed)",
+      "hits": [
+        "bg-neutral-900"
+      ]
+    },
+    {
+      "axis": "color",
+      "file": "components/modules/PropertyGallery/PropertyGallery.client.tsx",
+      "kind": "valid",
+      "reason": "white text, border or ring on a fixed photo or solid brand/status fill; the fill does not change with the theme",
+      "hits": [
+        "text-white"
+      ]
+    },
+    {
+      "axis": "color",
+      "file": "components/modules/PropertyGallery/PropertyPhotoViewer.client.tsx",
+      "kind": "valid",
+      "reason": "white text, border or ring on a fixed photo or solid brand/status fill; the fill does not change with the theme",
+      "hits": [
+        "text-white"
+      ]
+    },
+    {
+      "axis": "color",
+      "file": "components/modules/PropertyGallery/PropertyPhotoViewer.client.tsx",
+      "kind": "valid",
+      "reason": "fixed dark surface over a photo, media or overlay; stays dark in both themes (07: surfaces on images are intentionally fixed)",
+      "hits": [
+        "bg-black"
+      ]
+    },
+    {
+      "axis": "color",
+      "file": "components/modules/PropertyGrid/parts/PublicPropertyCard.tsx",
+      "kind": "valid",
+      "reason": "white text, border or ring on a fixed photo or solid brand/status fill; the fill does not change with the theme",
+      "hits": [
+        "ring-white",
+        "text-white"
+      ]
+    },
+    {
+      "axis": "color",
+      "file": "components/modules/PropertyGrid/parts/PublicPropertyCard.tsx",
+      "kind": "valid",
+      "reason": "fixed dark surface over a photo, media or overlay; stays dark in both themes (07: surfaces on images are intentionally fixed)",
+      "hits": [
+        "bg-neutral-900"
+      ]
+    },
+    {
+      "axis": "color",
+      "file": "components/modules/PropertyGrid/PropertyAuthorizationStatus.client.tsx",
+      "kind": "valid",
+      "reason": "fixed dark surface over a photo, media or overlay; stays dark in both themes (07: surfaces on images are intentionally fixed)",
+      "hits": [
+        "bg-black"
+      ]
+    },
+    {
+      "axis": "color",
+      "file": "components/modules/PropertyGrid/PropertyCard.tsx",
+      "kind": "valid",
+      "reason": "fixed dark surface over a photo, media or overlay; stays dark in both themes (07: surfaces on images are intentionally fixed)",
+      "hits": [
+        "bg-neutral-900"
+      ]
+    },
+    {
+      "axis": "color",
+      "file": "components/modules/PropertyGrid/PropertyCard.tsx",
+      "kind": "valid",
+      "reason": "white text, border or ring on a fixed photo or solid brand/status fill; the fill does not change with the theme",
+      "hits": [
+        "text-white"
+      ]
+    },
+    {
+      "axis": "color",
+      "file": "components/modules/PropertyGrid/PropertyPrice.tsx",
+      "kind": "valid",
+      "reason": "solid brand/status fill or gradient paired with white text; kept fixed on purpose (07)",
+      "hits": [
+        "bg-danger-500"
+      ]
+    },
+    {
+      "axis": "color",
+      "file": "components/modules/PropertyGrid/PropertyPrice.tsx",
+      "kind": "valid",
+      "reason": "white text, border or ring on a fixed photo or solid brand/status fill; the fill does not change with the theme",
+      "hits": [
+        "text-white"
+      ]
+    },
+    {
+      "axis": "color",
+      "file": "components/modules/PropertyMedia/parts/UploadedMediaItem.client.tsx",
+      "kind": "valid",
+      "reason": "fixed dark surface over a photo, media or overlay; stays dark in both themes (07: surfaces on images are intentionally fixed)",
+      "hits": [
+        "bg-black"
+      ]
+    },
+    {
+      "axis": "color",
+      "file": "components/modules/PropertyMedia/PropertyMediaStep.client.tsx",
+      "kind": "valid",
+      "reason": "solid brand/status fill or gradient paired with white text; kept fixed on purpose (07)",
+      "hits": [
+        "bg-warning-600"
+      ]
+    },
+    {
+      "axis": "color",
+      "file": "components/modules/PropertyMedia/uploaders/ChatUploadField.client.tsx",
+      "kind": "valid",
+      "reason": "fixed dark surface over a photo, media or overlay; stays dark in both themes (07: surfaces on images are intentionally fixed)",
+      "hits": [
+        "bg-neutral-800",
+        "!bg-neutral-800"
+      ]
+    },
+    {
+      "axis": "color",
+      "file": "components/modules/PropertyMedia/uploaders/ChatUploadField.client.tsx",
+      "kind": "valid",
+      "reason": "white text, border or ring on a fixed photo or solid brand/status fill; the fill does not change with the theme",
+      "hits": [
+        "!text-white"
+      ]
+    },
+    {
+      "axis": "color",
+      "file": "components/modules/PropertySearchFilters/parts/DateRangePicker/Day.tsx",
+      "kind": "valid",
+      "reason": "solid brand/status fill or gradient paired with white text; kept fixed on purpose (07)",
+      "hits": [
+        "bg-danger-500"
+      ]
+    },
+    {
+      "axis": "color",
+      "file": "components/modules/PropertySearchFilters/parts/DateRangePicker/Day.tsx",
+      "kind": "valid",
+      "reason": "white text, border or ring on a fixed photo or solid brand/status fill; the fill does not change with the theme",
+      "hits": [
+        "text-white"
+      ]
+    },
+    {
+      "axis": "i18n",
+      "file": "components/modules/PropertySearchFilters/parts/PropertyRulesFilter.tsx",
+      "kind": "valid",
+      "reason": "Persian domain data matched against backend values, not UI copy",
+      "hits": [
+        "مجاز نیست"
+      ]
+    },
+    {
+      "axis": "color",
+      "file": "components/modules/PropertySearchFilters/PropertySortMenu.client.tsx",
+      "kind": "valid",
+      "reason": "fixed dark surface over a photo, media or overlay; stays dark in both themes (07: surfaces on images are intentionally fixed)",
+      "hits": [
+        "ring-black"
+      ]
+    },
+    {
+      "axis": "color",
+      "file": "components/modules/PropertySearchFilters/SelectedFiltersBar.client.tsx",
+      "kind": "valid",
+      "reason": "white text, border or ring on a fixed photo or solid brand/status fill; the fill does not change with the theme",
+      "hits": [
+        "text-white"
+      ]
+    },
+    {
+      "axis": "color",
+      "file": "components/modules/ReservationDetails/parts/ReservationCountdown.tsx",
+      "kind": "valid",
+      "reason": "fixed dark surface over a photo, media or overlay; stays dark in both themes (07: surfaces on images are intentionally fixed)",
+      "hits": [
+        "bg-black"
+      ]
+    },
+    {
+      "axis": "color",
+      "file": "components/modules/ReservationDetails/parts/ReservationCountdown.tsx",
+      "kind": "valid",
+      "reason": "white text, border or ring on a fixed photo or solid brand/status fill; the fill does not change with the theme",
+      "hits": [
+        "text-white"
+      ]
+    },
+    {
+      "axis": "color",
+      "file": "components/modules/Search/parts/SearchOverlay.client.tsx",
+      "kind": "valid",
+      "reason": "fixed dark surface over a photo, media or overlay; stays dark in both themes (07: surfaces on images are intentionally fixed)",
+      "hits": [
+        "bg-black"
+      ]
+    },
+    {
+      "axis": "color",
+      "file": "components/modules/SiteFooter/parts/FooterCallBox.tsx",
+      "kind": "valid",
+      "reason": "white text, border or ring on a fixed photo or solid brand/status fill; the fill does not change with the theme",
+      "hits": [
+        "text-white"
+      ]
+    },
+    {
+      "axis": "color",
+      "file": "components/modules/SiteFooter/parts/FooterQuickSearch.tsx",
+      "kind": "valid",
+      "reason": "fixed dark surface over a photo, media or overlay; stays dark in both themes (07: surfaces on images are intentionally fixed)",
+      "hits": [
+        "shadow-black"
+      ]
+    },
+    {
+      "axis": "color",
+      "file": "components/modules/SiteHeader/parts/HeaderContactLink.tsx",
+      "kind": "valid",
+      "reason": "white text, border or ring on a fixed photo or solid brand/status fill; the fill does not change with the theme",
+      "hits": [
+        "border-white"
+      ]
+    },
+    {
+      "axis": "color",
+      "file": "components/modules/SiteHeader/parts/HeaderNavLink.client.tsx",
+      "kind": "valid",
+      "reason": "white text, border or ring on a fixed photo or solid brand/status fill; the fill does not change with the theme",
+      "hits": [
+        "text-white"
+      ]
+    },
+    {
+      "axis": "color",
+      "file": "components/modules/SiteHeader/parts/HeaderProfileMenu.client.tsx",
+      "kind": "valid",
+      "reason": "white text, border or ring on a fixed photo or solid brand/status fill; the fill does not change with the theme",
+      "hits": [
+        "data-[focus]:text-white",
+        "text-white"
+      ]
+    },
+    {
+      "axis": "color",
+      "file": "components/modules/SiteHeader/parts/HeaderProfileMenu.client.tsx",
+      "kind": "valid",
+      "reason": "fixed dark surface over a photo, media or overlay; stays dark in both themes (07: surfaces on images are intentionally fixed)",
+      "hits": [
+        "ring-black"
+      ]
+    },
+    {
+      "axis": "color",
+      "file": "components/modules/SiteHeader/parts/HeaderSessionBadge.client.tsx",
+      "kind": "valid",
+      "reason": "white text, border or ring on a fixed photo or solid brand/status fill; the fill does not change with the theme",
+      "hits": [
+        "border-white",
+        "text-white"
+      ]
+    },
+    {
+      "axis": "color",
+      "file": "components/modules/SiteHeader/SiteHeader.client.tsx",
+      "kind": "valid",
+      "reason": "fixed dark surface over a photo, media or overlay; stays dark in both themes (07: surfaces on images are intentionally fixed)",
+      "hits": [
+        "from-black",
+        "to-black"
+      ]
+    },
+    {
+      "axis": "color",
+      "file": "components/modules/SupportTicket/parts/TicketMessage.tsx",
+      "kind": "valid",
+      "reason": "white text, border or ring on a fixed photo or solid brand/status fill; the fill does not change with the theme",
+      "hits": [
+        "text-white"
+      ]
+    },
+    {
+      "axis": "color",
+      "file": "components/modules/SupportTicket/SupportTicket.client.tsx",
+      "kind": "valid",
+      "reason": "white text, border or ring on a fixed photo or solid brand/status fill; the fill does not change with the theme",
+      "hits": [
+        "!border-white"
+      ]
+    },
+    {
+      "axis": "i18n",
+      "file": "components/modules/TestAccessManager/TestAccessManager.client.tsx",
+      "kind": "valid",
+      "reason": "internal QA tooling, Persian only, not a public route",
+      "hits": [
+        "شما اجازه مدیریت دسترسی محیط تست را ندار",
+        "دسترسی محیط تست",
+        "فقط شماره‌های فعال این فهرست اجازه ورود ",
+        "شماره موبایل عضو QA",
+        "افزودن عضو QA",
+        "عضوی در فهرست دسترسی وجود ندارد.",
+        "تیم‌لید",
+        "عضو QA",
+        "فعال",
+        "غیرفعال",
+        "در حال ثبت...",
+        "غیرفعال‌کردن",
+        "فعال‌کردن"
+      ]
+    },
+    {
+      "axis": "i18n",
+      "file": "features/properties/constants/amenities.ts",
+      "kind": "valid",
+      "reason": "Persian domain data matched against backend values, not UI copy",
+      "hits": [
+        "پارکینگ",
+        "استخر",
+        "وای فای",
+        "وای‌فای",
+        "اینترنت",
+        "سیستم گرمایشی",
+        "شوفاژ",
+        "سیستم سرمایشی",
+        "اسپیلت",
+        "کولر",
+        "تلویزیون",
+        "یخچال",
+        "ماشین لباسشویی",
+        "باربیکیو",
+        "تراس"
+      ]
+    },
+    {
+      "axis": "i18n",
+      "file": "features/properties/mappers/amenities.mapper.ts",
+      "kind": "valid",
+      "reason": "Persian domain data matched against backend values, not UI copy",
+      "hits": [
+        "استخر",
+        "وای فای",
+        "اینترنت",
+        "پارکینگ",
+        "تلویزیون",
+        "یخچال",
+        "مایکروفر",
+        "لباسشویی",
+        "باربیکیو",
+        "تراس",
+        "آلاچیق",
+        "بیلیارد",
+        "فوتبال دستی",
+        "کولر",
+        "گرمایش"
+      ]
+    },
+    {
+      "axis": "i18n",
+      "file": "features/properties/mappers/property-details.mapper.ts",
+      "kind": "valid",
+      "reason": "Persian domain data matched against backend values, not UI copy",
+      "hits": [
+        "نیست"
+      ]
+    },
+    {
+      "axis": "i18n",
+      "file": "features/search/lib/normalize-persian-search-text.ts",
+      "kind": "valid",
+      "reason": "Persian domain data matched against backend values, not UI copy",
+      "hits": [
+        "ی",
+        "ک"
+      ]
+    },
+    {
+      "axis": "i18n",
+      "file": "features/seo/components/Schemas.tsx",
+      "kind": "valid",
+      "reason": "Persian metadata/JSON-LD; metadata and CMS stay Persian (10, SEO notes)",
+      "hits": [
+        "تهران",
+        "ایران",
+        "جایاب"
+      ]
+    },
+    {
+      "axis": "i18n",
+      "file": "features/test-access/hooks/useTestAccessManager.ts",
+      "kind": "valid",
+      "reason": "internal QA tooling, Persian only, not a public route",
+      "hits": [
+        "شماره موبایل معتبر وارد کنید."
+      ]
+    },
+    {
+      "axis": "color",
+      "file": "components/elements/Button/BtnLoading.tsx",
+      "kind": "pending",
+      "reason": "raw palette colour not yet mapped to a semantic token",
+      "hits": [
+        "text-neutral-200"
+      ]
+    },
+    {
+      "axis": "color",
+      "file": "components/elements/Divider/index.tsx",
+      "kind": "pending",
+      "reason": "raw palette colour not yet mapped to a semantic token",
+      "hits": [
+        "bg-rose-600"
+      ]
+    },
+    {
+      "axis": "color",
+      "file": "components/elements/Editable/Editable.client.tsx",
+      "kind": "pending",
+      "reason": "raw palette colour not yet mapped to a semantic token",
+      "hits": [
+        "bg-teal-400"
+      ]
+    },
+    {
+      "axis": "color",
+      "file": "components/elements/Form/Checkbox/IosToggle.client.tsx",
+      "kind": "pending",
+      "reason": "raw palette colour not yet mapped to a semantic token",
+      "hits": [
+        "bg-emerald-500",
+        "border-emerald-500",
+        "bg-neutral-400"
+      ]
+    },
+    {
+      "axis": "color",
+      "file": "components/elements/Form/MultiSelectPopUpSelect.tsx",
+      "kind": "pending",
+      "reason": "raw palette colour not yet mapped to a semantic token",
+      "hits": [
+        "!bg-neutral-400"
+      ]
+    },
+    {
+      "axis": "i18n",
+      "file": "components/elements/JalaliCalendar/DayPicker.tsx",
+      "kind": "pending",
+      "reason": "legacy Jalali day lookup depends on Persian weekday names (09); needs the calendar rewrite",
+      "hits": [
+        "شنبه",
+        "یک‌شنبه",
+        "دوشنبه",
+        "سه‌شنبه",
+        "چهارشنبه",
+        "پنج‌شنبه",
+        "جمعه"
+      ]
+    },
+    {
+      "axis": "color",
+      "file": "components/elements/Map/createPinElement.ts",
+      "kind": "pending",
+      "reason": "raw palette colour not yet mapped to a semantic token",
+      "hits": [
+        "text-brand-600",
+        "text-neutral-800"
+      ]
+    },
+    {
+      "axis": "color",
+      "file": "components/elements/StepShower/StepShower.client.tsx",
+      "kind": "pending",
+      "reason": "raw palette colour not yet mapped to a semantic token",
+      "hits": [
+        "text-neutral-300"
+      ]
+    },
+    {
+      "axis": "i18n",
+      "file": "components/modules/AdvisorDetails/AdvisorCard.tsx",
+      "kind": "pending",
+      "reason": "strips a word from the Persian timeLeft() helper output; needs a locale-aware timeLeft",
+      "hits": [
+        "پیش"
+      ]
+    },
+    {
+      "axis": "color",
+      "file": "components/modules/AdvisorDetails/parts/AdvisorRatingSheet.client.tsx",
+      "kind": "pending",
+      "reason": "raw palette colour not yet mapped to a semantic token",
+      "hits": [
+        "#3886E5"
+      ]
+    },
+    {
+      "axis": "color",
+      "file": "components/modules/AdvisorList/parts/AdvisorSearchBar.client.tsx",
+      "kind": "pending",
+      "reason": "raw palette colour not yet mapped to a semantic token",
+      "hits": [
+        "text-neutral-200"
+      ]
+    },
+    {
+      "axis": "color",
+      "file": "components/modules/AppShell/parts/LoginModal.client.tsx",
+      "kind": "pending",
+      "reason": "raw palette colour not yet mapped to a semantic token",
+      "hits": [
+        "hover:ring-neutral-600"
+      ]
+    },
+    {
+      "axis": "color",
+      "file": "components/modules/ChatRoom/parts/ChatHeader.client.tsx",
+      "kind": "pending",
+      "reason": "raw palette colour not yet mapped to a semantic token",
+      "hits": [
+        "bg-emerald-400",
+        "bg-neutral-400"
+      ]
+    },
+    {
+      "axis": "color",
+      "file": "components/modules/ChatRoom/parts/ChatReply.tsx",
+      "kind": "pending",
+      "reason": "raw palette colour not yet mapped to a semantic token",
+      "hits": [
+        "border-brand-50"
+      ]
+    },
+    {
+      "axis": "color",
+      "file": "components/modules/CitySelector/RegionButton.client.tsx",
+      "kind": "pending",
+      "reason": "raw palette colour not yet mapped to a semantic token",
+      "hits": [
+        "bg-neutral-400"
+      ]
+    },
+    {
+      "axis": "color",
+      "file": "components/modules/HomeReservations/HomeActiveReservations.client.tsx",
+      "kind": "pending",
+      "reason": "raw palette colour not yet mapped to a semantic token",
+      "hits": [
+        "bg-red-700"
+      ]
+    },
+    {
+      "axis": "color",
+      "file": "components/modules/MobileNav/parts/MobileNavCreateButton.client.tsx",
+      "kind": "pending",
+      "reason": "raw palette colour not yet mapped to a semantic token",
+      "hits": [
+        "border-brand-300"
+      ]
+    },
+    {
+      "axis": "color",
+      "file": "components/modules/OwnerPropertySubscription/parts/ViewsChart.client.tsx",
+      "kind": "pending",
+      "reason": "raw palette colour not yet mapped to a semantic token",
+      "hits": [
+        "bg-red-800"
+      ]
+    },
+    {
+      "axis": "color",
+      "file": "components/modules/ProfileEditor/parts/OwnerRegistrationFields.client.tsx",
+      "kind": "pending",
+      "reason": "raw palette colour not yet mapped to a semantic token",
+      "hits": [
+        "bg-orange-50"
+      ]
+    },
+    {
+      "axis": "color",
+      "file": "components/modules/PropertyBooking/parts/StayDayCell.tsx",
+      "kind": "pending",
+      "reason": "raw palette colour not yet mapped to a semantic token",
+      "hits": [
+        "text-neutral-300",
+        "text-brand-100"
+      ]
+    },
+    {
+      "axis": "color",
+      "file": "components/modules/PropertyContact/parts/ReservationDatePicker/Day.tsx",
+      "kind": "pending",
+      "reason": "raw palette colour not yet mapped to a semantic token",
+      "hits": [
+        "!bg-neutral-500",
+        "bg-green-600",
+        "bg-neutral-500"
+      ]
+    },
+    {
+      "axis": "i18n",
+      "file": "components/modules/PropertyContact/parts/ReservationDatePicker/DayPicker.tsx",
+      "kind": "pending",
+      "reason": "legacy Jalali day lookup depends on Persian weekday names (09); needs the calendar rewrite",
+      "hits": [
+        "شنبه",
+        "یک‌شنبه",
+        "دوشنبه",
+        "سه‌شنبه",
+        "چهارشنبه",
+        "پنج‌شنبه",
+        "جمعه"
+      ]
+    },
+    {
+      "axis": "color",
+      "file": "components/modules/PropertyContact/parts/ReservationDatePicker/YearMonthPicker.tsx",
+      "kind": "pending",
+      "reason": "raw palette colour not yet mapped to a semantic token",
+      "hits": [
+        "text-neutral-50",
+        "text-brand-50"
+      ]
+    },
+    {
+      "axis": "color",
+      "file": "components/modules/PropertyDetails/parts/CancellationSummary.client.tsx",
+      "kind": "pending",
+      "reason": "raw palette colour not yet mapped to a semantic token",
+      "hits": [
+        "border-warning-500",
+        "bg-neutral-500"
+      ]
+    },
+    {
+      "axis": "color",
+      "file": "components/modules/PropertyDetails/parts/PropertyOwnerBadge.tsx",
+      "kind": "pending",
+      "reason": "raw palette colour not yet mapped to a semantic token",
+      "hits": [
+        "bg-emerald-500"
+      ]
+    },
+    {
+      "axis": "color",
+      "file": "components/modules/PropertyGrid/parts/PublicPropertyCard.tsx",
+      "kind": "pending",
+      "reason": "raw palette colour not yet mapped to a semantic token",
+      "hits": [
+        "bg-emerald-500",
+        "text-neutral-300",
+        "bg-red-500"
+      ]
+    },
+    {
+      "axis": "color",
+      "file": "components/modules/PropertyMedia/uploaders/MultiImageUpload.client.tsx",
+      "kind": "pending",
+      "reason": "raw palette colour not yet mapped to a semantic token",
+      "hits": [
+        "hover:border-neutral-600"
+      ]
+    },
+    {
+      "axis": "color",
+      "file": "components/modules/PropertyMedia/uploaders/UploadField.client.tsx",
+      "kind": "pending",
+      "reason": "raw palette colour not yet mapped to a semantic token",
+      "hits": [
+        "hover:border-neutral-600"
+      ]
+    },
+    {
+      "axis": "i18n",
+      "file": "components/modules/PropertySearchFilters/parts/DateRangePicker/DayPicker.tsx",
+      "kind": "pending",
+      "reason": "legacy Jalali day lookup depends on Persian weekday names (09); needs the calendar rewrite",
+      "hits": [
+        "شنبه",
+        "یک‌شنبه",
+        "دوشنبه",
+        "سه‌شنبه",
+        "چهارشنبه",
+        "پنج‌شنبه",
+        "جمعه"
+      ]
+    },
+    {
+      "axis": "color",
+      "file": "components/modules/SiteFooter/SiteFooter.tsx",
+      "kind": "pending",
+      "reason": "raw palette colour not yet mapped to a semantic token",
+      "hits": [
+        "bg-neutral-400"
+      ]
+    },
+    {
+      "axis": "color",
+      "file": "components/modules/SiteHeader/parts/HeaderNavLink.client.tsx",
+      "kind": "pending",
+      "reason": "raw palette colour not yet mapped to a semantic token",
+      "hits": [
+        "group-hover:text-brand-200"
+      ]
+    },
+    {
+      "axis": "color",
+      "file": "components/modules/SiteHeader/parts/HeaderProfileMenu.client.tsx",
+      "kind": "pending",
+      "reason": "raw palette colour not yet mapped to a semantic token",
+      "hits": [
+        "group-hover:text-brand-200"
+      ]
+    },
+    {
+      "axis": "color",
+      "file": "components/modules/SupportTicket/parts/TicketMessage.tsx",
+      "kind": "pending",
+      "reason": "raw palette colour not yet mapped to a semantic token",
+      "hits": [
+        "text-neutral-300"
+      ]
+    }
+  ]
+}

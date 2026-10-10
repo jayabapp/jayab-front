@@ -99,3 +99,45 @@ public envها runtime kill switch نیستند؛ زمان build/deploy مجدد
 ## تحویل به فاز برند
 
 پس از ثبت پذیرش بالا، commit مبنای Front، زبان‌های فعال، قرارداد واقعی locale/resolved theme، screenshotهای chrome/hero/splash و محدودیت‌های باز به [فیچر ۱۱](11-brand-redesign.md) تحویل داده شوند. آماده‌سازی سند برند به معنی اتمام فاز فعلی نیست. لازم نیست برای بستن این فاز لوگوها عوض شوند؛ فاز برند هم نباید به‌تنهایی زبان یا تم غیرفعال را فعال کند.
+
+## وضعیت پیاده‌سازی (commit مبنا: بعد از `c117d04f`)
+
+دروازهٔ عرضه به‌صورت ابزار و شواهد اجرا شد؛ **هیچ پرچم عمومی روشن نشد**: `NEXT_PUBLIC_THEME_ENABLED`، `NEXT_PUBLIC_ENABLED_LOCALES=fa` و `NEXT_PUBLIC_DISPLAY_CONTROLS_ENABLED` در `.env.example` بدون مقدار می‌مانند.
+
+### ابزار تازه
+
+- `yarn ui:check` (`scripts/check-ui-migration.mjs` + `scripts/ui-migration-manifest.json`): با پارسر TypeScript فقط متن JSX و رشته/قالب‌ها را می‌خواند، پس comment و مسیر import شمرده نمی‌شوند. محور `color` رنگ خام Tailwind (neutral، red، emerald، brand/danger/... با عدد، `white/black`)، hex و `rgb()` را می‌گیرد؛ محور `i18n` حروف فارسی/عربی را در متن و رشته‌ها. هر استثنا فایل، محور، `hits` دقیق، `kind` و دلیل دارد؛ فایل دارای استثنا اگر رنگ یا متن تازه بگیرد رد می‌شود و استثنای کهنه (مهاجرت‌شده) هم خطا است. محور direction همچنان با `yarn direction:check` اعمال می‌شود. تست منفی: افزودن `bg-red-600 text-neutral-500 #ff0000` به یک فایل پاک، چک را رد کرد.
+- وضعیت manifest: ۱۱۴ استثنای **valid** (سطح تیرهٔ ثابت روی عکس، سفید روی پرشدگی ثابت status/brand، سایه، splash، پیام‌های route سرور، ابزار QA داخلی، متادیتا/JSON-LD فارسی، دادهٔ دامنه) و ۳۳ مورد **pending** (رنگ خام مهاجرت‌نشده مثل `bg-neutral-400` فوتر و `bg-emerald-500`، و سه DayPicker قدیمی با نام روزهای فارسی و `AdvisorCard` با `timeLeft`). `yarn ui:check -- --report` فهرست pending را چاپ می‌کند.
+
+### نتیجهٔ چک‌ها
+
+| چک | نتیجه |
+| --- | --- |
+| `tsc`، `yarn lint` | بدون خطای تازه؛ ۱۰ خطا/۴ هشدار baseline |
+| `architecture:check` | همان خطای baseline روی `app/qa-login` (ثبت‌شده، پنهان یا حذف نشد) |
+| `architecture:cycles`، `migration:guardrails`، `theme:check`، `i18n:check`، `i18n:namespaces`، `direction:check`، `ui:check`، `test:intl`، `verify-starter`، `audit-branch` | پاس |
+
+### بیلد و cache
+
+با `yarn build` (۱) fa-only پیش‌فرض و (۲) `fa,ar,en` + تم + کنترل‌ها مقایسه شد. fa-only: ۲۶ مسیر ایستا (○) و ۴۱ پویا؛ چندزبانه: **هر ۶۷ مسیر پویا (ƒ)**. این همان هزینهٔ cookie در root layout (فیچر ۰۳) است و باید قبل از روشن‌کردن زبان دوم پذیرفته شود. HTML ایستای fa-only برای همه یکسان است و کوکی را نمی‌خواند؛ در حالت چندزبانه HTML ایستا وجود ندارد، پس CDN نمی‌تواند نسخهٔ en را برای fa برگرداند. حجم `static` (JS+CSS): ۶٬۵۷۶٬۸۵۱ بایت در fa-only و ۶٬۵۷۶٬۶۲۰ چندزبانه (تفاوت ناچیز؛ پیام‌ها سمت سرور هستند). هدرهای واقعی `next start` (Cache-Control/Vary) و RSC اندازه‌گیری **نشد**.
+
+### QA اجراشده (dev server، دادهٔ backend در دسترس نبود)
+
+- ماتریس: light/dark × fa/ar/en × ۳۲۰/۳۹۰/۷۶۸/۱۴۴۰ روی `/terms`، `/faq`، `/route-hub` (۷۲ بارگذاری)؛ ۲۴ screenshot از `/terms`. هیچ overflow افقی، `dir`/`lang` درست (en=ltr، fa/ar=rtl)، خطای console فقط timeout بیرونی E-Namad و بدون hydration error.
+- کنتراست متن (آستانه ۳:۱، ۶ صفحه، ۶ ترکیب تم/زبان، ۱۲۸۰px): بدون مورد. صفحه‌هایی با background-image از این جاروب کنار گذاشته می‌شوند.
+- system: OS روشن→تیره→روشن بدون reload عوض شد؛ در بارگذاری تازه با OS تیره، `data-theme=dark` پیش از DOMContentLoaded بود. reduced-motion: انیمیشن بی‌پایان فعال نبود. focus با Tab: outline ۲px و رنگ `focus` دیده شد.
+- rollback: با build پیش‌فرض (پرچم‌ها خاموش) و کوکی‌های قدیمی `jayab_theme=dark` و `jayab_locale=en` و OS تیره، صفحه روشن، `rtl` و `fa-IR` ماند و کنترل نمایش رندر نشد.
+- **باگ یافت و رفع شد:** برآمدگی میانی نوار پایین موبایل (`footer_bump.svg`) سفید ثابت بود و در دارک مستطیل سفید می‌ساخت. اکنون SVG به‌صورت mask روی `bg-surface` رندر می‌شود؛ لایت بدون تغییر دیده شد و دارک با نوار یکی شد.
+
+### Runbook عرضه و برگشت
+
+پرچم‌ها زمان build خوانده می‌شوند، نه runtime: تغییر هر کدام یعنی build و deploy مجدد (حدود ۲٫۵ دقیقه build محلی هر کدام). ترتیب روشن‌کردن در محیط بررسی: (۱) `NEXT_PUBLIC_DISPLAY_CONTROLS_ENABLED=1` با `NEXT_PUBLIC_THEME_ENABLED=1` و `NEXT_PUBLIC_ENABLED_LOCALES=fa,ar,en`؛ (۲) QA کامل؛ (۳) عمومی: اول دارک (`THEME_ENABLED=1`)، سپس هر زبان جدا (`fa,en` پیش از `fa,ar,en`) فقط پس از بازبینی انسانی ترجمه‌ها. برگشت: همان پرچم را به مقدار پیش‌فرض (خالی/`fa`) برگردانید و rebuild کنید؛ کوکی‌های قدیمی نادیده گرفته می‌شوند (بالا تست شد). `THEME_CONTROL`/picker فقط UI را پنهان می‌کند. `_STRINGS` و primitiveهای رنگ تا پایان مهاجرت حذف نشوند.
+
+### هنوز باز (نیازمند انسان یا محیط)
+
+- QA با دادهٔ واقعی روی jayab.org: تک‌آگهی، فهرست، رزرو، پرداخت، چت، پروفایل، owner/advisor و نقش‌ها؛ screenshot فارسی روشن قبل/بعد برای کل صفحه‌های داده‌دار.
+- بازبینی انسانی ترجمهٔ ar/en (و املای ماه‌های جلالی)؛ تا آن زمان `NEXT_PUBLIC_ENABLED_LOCALES=fa`.
+- بودجهٔ عملکرد (median LCP/TTFB با ≥۵ اجرا، ≥۲۰ درخواست warm/cold)، filmstrip flash تم، CSP production و splash: اندازه‌گیری نشد.
+- zoom ۲۰۰٪، متن بلند و حالت‌های empty/error روی صفحه‌های داده‌دار.
+- ۳۳ مورد pending در manifest، footer، `maximumScale`/`touch-action`، تقویم‌های قدیمی جلالی.
+- پذیرش نهایی این فاز و تحویل به [فیچر ۱۱](11-brand-redesign.md) فقط پس از بستن موارد بالا.

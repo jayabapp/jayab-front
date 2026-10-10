@@ -5,6 +5,8 @@ import { ContentImage } from "@elements/Image";
 
 import type { MobileNavCreateButtonProps } from "@/types/components/modules/mobile-nav";
 
+const BUMP_MASK = "url(/assets/icons/navbar/footer_bump.svg)";
+
 const MobileNavCreateButton = ({ onSelect }: MobileNavCreateButtonProps) => {
   const t = useTranslations("header");
 
@@ -15,12 +17,19 @@ const MobileNavCreateButton = ({ onSelect }: MobileNavCreateButtonProps) => {
       title={t("addListing")}
       className="flex flex-col justify-between shrink-0 w-24 relative"
     >
-      <ContentImage
-        alt=""
-        width={96}
-        height={96}
-        className="-bottom-[2.1rem] h-24 absolute w-24"
-        src="/assets/icons/navbar/footer_bump.svg"
+      <span
+        aria-hidden
+        className="-bottom-[2.1rem] h-24 absolute w-24 bg-surface"
+        style={{
+          WebkitMaskImage: BUMP_MASK,
+          maskImage: BUMP_MASK,
+          WebkitMaskSize: "contain",
+          maskSize: "contain",
+          WebkitMaskRepeat: "no-repeat",
+          maskRepeat: "no-repeat",
+          WebkitMaskPosition: "center",
+          maskPosition: "center",
+        }}
       />
 
       <span className="w-full h-full aspect-square absolute -top-[1.85rem] end-0 start-0 mx-auto rounded-full bg-transparent flex items-center justify-center">
