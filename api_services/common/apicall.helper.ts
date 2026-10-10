@@ -1,6 +1,7 @@
 import { AxiosRequestConfig, AxiosRequestHeaders } from "axios";
 import { readServerAccessToken } from "./server-token";
 import { baseUrl, baseUrlV } from "@/utils/urls";
+import { translateMessage } from "@lib/i18n/browser-translator";
 import { endSession } from "@/helpers/session";
 import { notify } from "@elements/Toast";
 
@@ -9,13 +10,13 @@ import axios from "axios";
 type Methods = "POST" | "PUT" | "DELETE" | "PATCH" | "GET";
 
 export type ApiCallOptions = {
-  headers?: Record<string, string>;
   version?: string;
   passedToken?: string;
   localRoute?: boolean;
   signal?: AbortSignal;
   serverAuth?: boolean;
   showErrorNotification?: boolean;
+  headers?: Record<string, string>;
   progressCallBack?: (e: unknown) => void | null;
 };
 
@@ -88,7 +89,11 @@ export async function apiCall<T, K>(
   } catch (error: any) {
     if (axios.isCancel(error)) throw error;
     handleError(error, options?.showErrorNotification !== false);
-    if (error?.response?.status == 401 && isBrowser && !unauthorizedRedirectStarted) {
+    if (
+      error?.response?.status == 401 &&
+      isBrowser &&
+      !unauthorizedRedirectStarted
+    ) {
       unauthorizedRedirectStarted = true;
       await endSession();
       window?.location?.replace("/");
@@ -110,10 +115,7 @@ export async function apiCall<T, K>(
   }
 }
 
-const headerItems = (
-  type?: "file",
-  passedToken?: string,
-) => {
+const headerItems = (type?: "file", passedToken?: string) => {
   let headers = {
     Accept: `application/json`,
     "Content-Type": `application/json`,
@@ -129,28 +131,31 @@ async function handleError(
   shouldRedirect?: boolean,
 ) {
   let message = "";
-  let title = "خطا";
+  let title = translateMessage("errors.title");
   if (
     !error.response &&
     (error.message === "Network Error" || error.code === "ECONNABORTED")
   )
-    message = "خطا در ارتباط با سرور. لطفا اتصال اینترنت خود را بررسی کنید.";
+    message = translateMessage("errors.network");
   else if (error.response) {
     const status = error.response.status;
     if (status === 401) {
-      message = "نشست شما منقضی شده است. لطفا دوباره وارد شوید.";
-      title = "نشست منقضی";
+      message = translateMessage("errors.sessionExpired");
+      title = translateMessage("errors.sessionTitle");
     } else if (status === 500) {
-      message = "خطای داخلی سرور. لطفا بعدا دوباره تلاش کنید.";
-      title = "خطای سرور";
+      message = translateMessage("errors.server");
+      title = translateMessage("errors.serverTitle");
     } else {
       const responseData = error?.response?.data;
       const errorMessage = responseData?.messages?.fa || responseData?.message;
-      if (Array.isArray(errorMessage)) message = errorMessage.join("، ");
-      else message = errorMessage || error?.message || "خطایی رخ داده است";
+      if (Array.isArray(errorMessage))
+        message = errorMessage.join(translateMessage("common.separator"));
+      else
+        message =
+          errorMessage || error?.message || translateMessage("errors.generic");
     }
   } else {
-    message = error?.message || "خطایی رخ داده است";
+    message = error?.message || translateMessage("errors.generic");
   }
 
   if (shouldRedirect && !isBrowser) {

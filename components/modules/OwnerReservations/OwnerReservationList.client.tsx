@@ -1,18 +1,21 @@
 "use client";
 
-import type { OwnerReservationListProps } from "@/types/components/modules/reservations";
-import { useOwnerReservations } from "@features/reservations/hooks/useOwnerReservations";
 import { ReservationCardSkeleton } from "@modules/ReservationDetails";
+import { useOwnerReservations } from "@features/reservations/hooks/useOwnerReservations";
+import { useTranslations } from "next-intl";
 import { ReservationCard } from "@modules/ReservationDetails";
+
+import type { OwnerReservationListProps } from "@/types/components/modules/reservations";
 
 import InfiniteScroll from "react-infinite-scroll-component";
 import EmptyState from "@elements/EmptyState";
-import _STRINGS from "@/utils/LocalStrings";
 import isEmpty from "lodash/isEmpty";
 
 const SKELETON_COUNT = 4;
 
 const OwnerReservationList = ({ autoRefresh }: OwnerReservationListProps) => {
+  const t = useTranslations("reserve");
+
   const {
     reservations,
     isPending,
@@ -25,7 +28,7 @@ const OwnerReservationList = ({ autoRefresh }: OwnerReservationListProps) => {
     <>
       <div className="flex w-full flex-col gap-3 rounded-10 border border-warning-600 bg-warning-600/5 p-3">
         <p className="text-xs text-warning-600">
-          {_STRINGS.OWNER_PLZ_CALL_MSG}
+          {t("ownerPlzCallMsg")}
         </p>
       </div>
 

@@ -1,10 +1,11 @@
 "use client";
 
-import type { AdvisorSearchBarProps } from "@/types/components/modules/advisors";
-import { CityModal } from "@modules/CitySelector";
 import { Suspense, useState } from "react";
+import { useTranslations } from "next-intl";
+import { CityModal } from "@modules/CitySelector";
 
-import _STRINGS from "@/utils/LocalStrings";
+import type { AdvisorSearchBarProps } from "@/types/components/modules/advisors";
+
 import dynamic from "next/dynamic";
 
 const SearchInput = dynamic(() =>
@@ -16,17 +17,19 @@ const AdvisorSearchBar = ({
   cityTitle,
   onCityTitleChange,
 }: AdvisorSearchBarProps) => {
+  const t = useTranslations();
+
   const [showCityModal, setShowCityModal] = useState(false);
 
   return (
     <>
       <Suspense>
         <SearchInput
-          containerClass=" w-full"
-          passedQuerykey="search"
           boxId="ADVISOR_SEARCH"
-          placeholder={_STRINGS.ADVISOR_SEARCH_PLACEHOLDER}
+          passedQuerykey="search"
+          containerClass=" w-full"
           onClear={() => onFilter("", "search")}
+          placeholder={t("advisor.advisorSearchPlaceholder")}
           onSubmit={(value) => onFilter(value || "", "search")}
         >
           <button
@@ -37,8 +40,8 @@ const AdvisorSearchBar = ({
             <p className="text-3xl text-neutral-200">|</p>
             <p className="text-xs min-w-12">
               {cityTitle
-                ? cityTitle.replace(_STRINGS.SEARCH_IN_PREFIX, "")
-                : _STRINGS.CITY}
+                ? cityTitle.replace(t("advisor.searchInPrefix"), "")
+                : t("common.city")}
             </p>
           </button>
         </SearchInput>

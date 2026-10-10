@@ -4,6 +4,7 @@ import { PROPERTY_IMAGE_QUALITY } from "@features/properties/constants/image";
 import { getPropertyImageUrl } from "@features/properties/mappers/property-image.mapper";
 import { trackListingEvent } from "@/helpers/listingAnalytics";
 import { useMemo, useState } from "react";
+import { useTranslations } from "next-intl";
 import { ContentImage } from "@elements/Image";
 import { useStoreInit } from "@/store";
 import { Icon } from "@elements/Icon";
@@ -13,7 +14,6 @@ import type { PropertyGalleryProps } from "@/types/components/modules/property-g
 import PropertyPhotoViewer from "./PropertyPhotoViewer.client";
 import SwiperSlide from "@elements/Carousel/SwiperSlide";
 import difference from "lodash/difference";
-import _STRINGS from "@/utils/LocalStrings";
 import isEmpty from "lodash/isEmpty";
 import Swiper from "@elements/Carousel/Swiper.client";
 
@@ -34,6 +34,8 @@ const PropertyGallery = ({
   productImageId,
   advisorCommission,
 }: PropertyGalleryProps) => {
+  const t = useTranslations("listing");
+
   const [carouselIndex, setCarouselIndex] = useState(0);
   const [viewerIndex, setViewerIndex] = useState<number | null>(null);
   const { userInfo } = useStoreInit((state) => state);
@@ -73,7 +75,7 @@ const PropertyGallery = ({
       {userInfo?.advisor_id && advisorCommission ? (
         <div className="absolute right-3 top-3 z-1 flex h-7 items-center rounded-full bg-neutral-900/60 px-3 text-white">
           <p className="text-xs">
-            {_STRINGS.ADVISOR_COMMISSION_SHORT}: {advisorCommission}%
+            {t("advisorCommissionShort")}: {advisorCommission}%
           </p>
         </div>
       ) : (
@@ -133,7 +135,7 @@ const PropertyGallery = ({
           className="absolute bottom-4 left-4 flex cursor-pointer items-center gap-2 rounded-full bg-white/90 px-4 py-2 text-sm font-semibold text-neutral-900 shadow-glass-sm transition-colors hover:bg-white focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-500"
         >
           <Icon name="images" size={20} />
-          {_STRINGS.SHOW_ALL_PHOTOS} ({orderedImages.length})
+          {t("showAllPhotos")} ({orderedImages.length})
         </button>
       </div>
 
@@ -171,7 +173,7 @@ const PropertyGallery = ({
         </Swiper>
 
         <p className="pointer-events-none absolute bottom-3 right-3 rounded-full bg-neutral-900/60 px-2.5 py-1 text-xs text-white">
-          {carouselIndex + 1} {_STRINGS.PHOTO_OF} {orderedImages.length}
+          {carouselIndex + 1} {t("photoOf")} {orderedImages.length}
         </p>
       </div>
 

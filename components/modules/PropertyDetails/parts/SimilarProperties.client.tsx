@@ -3,11 +3,11 @@
 import { PropertyCard, PropertyCardSkeleton } from "@modules/PropertyGrid";
 import { useEffect, useRef, useState } from "react";
 import { useSimilarProperties } from "@features/properties/hooks/useSimilarProperties";
+import { useTranslations } from "next-intl";
 
 import type { TSimilarPropertiesProps } from "@/types/components/modules/property-details";
 
 import SwiperSlide from "@elements/Carousel/SwiperSlide";
-import _STRINGS from "@/utils/LocalStrings";
 import Swiper from "@elements/Carousel/Swiper.client";
 
 const SKELETON_SLOTS = [0, 1, 2];
@@ -20,6 +20,8 @@ const BREAKPOINTS = {
 };
 
 const SimilarProperties = ({ city, propertyId }: TSimilarPropertiesProps) => {
+  const t = useTranslations("listing");
+
   const rootRef = useRef<HTMLElement>(null);
   const [isVisible, setIsVisible] = useState(false);
   const { data, isLoading } = useSimilarProperties(propertyId, isVisible);
@@ -50,9 +52,7 @@ const SimilarProperties = ({ city, propertyId }: TSimilarPropertiesProps) => {
         id="similar-properties-title"
         className="mb-4 text-base font-bold text-neutral-900 md:text-lg"
       >
-        {city
-          ? _STRINGS.SIMILAR_STAYS_IN.replace("{city}", city)
-          : _STRINGS.SIMILAR_STAYS}
+        {city ? t("similarStaysIn").replace("{city}", city) : t("similarStays")}
       </h2>
       {isVisible ? (
         <Swiper

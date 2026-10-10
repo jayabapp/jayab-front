@@ -7,10 +7,10 @@ import { ContentImage } from "@elements/Image";
 import SkeletonText from "@elements/Skeleton/SkeletonText";
 import useCmsContent from "@/hooks/useCmsContent";
 import StatusShower from "@elements/StatusShower";
-import _STRINGS from "@/utils/LocalStrings";
 import CmsText from "@elements/CmsText";
 import Button from "@elements/Button";
 import Modal from "@elements/Modal";
+import { useTranslations } from "next-intl";
 
 const OwnerBadgeRequestModal = ({
   show,
@@ -18,6 +18,8 @@ const OwnerBadgeRequestModal = ({
   onHide,
   property,
 }: OwnerBadgeRequestModalProps) => {
+  const t = useTranslations("owner");
+
   const {
     request: { mutate, isPending },
   } = usePropertyBadge(property?.id ?? "");
@@ -42,7 +44,7 @@ const OwnerBadgeRequestModal = ({
           src="/assets/icons/property/request_badge.svg"
         />
         <p className="text-sm text-brand-600 font-bold">
-          {_STRINGS.REQUEST_FOR_BADGE}
+          {t("requestForBadge")}
         </p>
         {isLoading ? (
           <SkeletonText lines={2} />
@@ -65,7 +67,7 @@ const OwnerBadgeRequestModal = ({
             disabled={isPending}
             containerClass="w-full"
             roundedClass="rounded-full"
-            title={_STRINGS.SUBMIT_REQUEST}
+            title={t("submitRequest")}
           />
         )}
       </div>

@@ -2,21 +2,23 @@
 
 import { ModalBottomSheet, ModalHeaderPart } from "@elements/Modal";
 import { getPropertyImageUrl } from "@features/properties/mappers/property-image.mapper";
+import { useTranslations } from "next-intl";
 
 import type { AmenitiesModalProps } from "@/types/components/modules/property-details";
 
 import IconListItem from "./IconListItem";
-import _STRINGS from "@/utils/LocalStrings";
 
-const GROUP_TITLES: Record<string, string> = {
-  welfare: _STRINGS.WELFARE,
-  cool_heat: _STRINGS.COOL_HEAT,
-  kitchen: _STRINGS.KITCHEN_ACC,
-  entertainment: _STRINGS.ENTERTAINMENT,
-  pool_type: _STRINGS.POOL_TYPE,
-};
+const GROUP_TITLES = {
+  welfare: "common.welfare",
+  cool_heat: "common.coolHeat",
+  kitchen: "common.kitchenAcc",
+  entertainment: "common.entertainment",
+  pool_type: "common.poolType",
+} as const;
 
 const AmenitiesModal = ({ amenities, onHide, show }: AmenitiesModalProps) => {
+  const t = useTranslations();
+
   const groups = amenities.reduce<Record<string, typeof amenities>>(
     (grouped, item) => {
       grouped[item.group] = [...(grouped[item.group] ?? []), item];
@@ -34,13 +36,15 @@ const AmenitiesModal = ({ amenities, onHide, show }: AmenitiesModalProps) => {
       <ModalHeaderPart
         hideArrow
         onHide={onHide}
-        title={_STRINGS.PROPERTY_FACILITIES}
+        title={t("listing.propertyFacilities")}
       />
       <div className="flex flex-col gap-6 p-4">
         {Object.entries(groups).map(([group, items]) => (
           <div key={group} className="flex flex-col gap-3">
             <p className="text-sm font-bold text-neutral-900">
-              {GROUP_TITLES[group] ?? ""}
+              {Object.hasOwn(GROUP_TITLES, group)
+                ? t(GROUP_TITLES[group as keyof typeof GROUP_TITLES])
+                : ""}
             </p>
             <div className="grid grid-cols-1 gap-x-6 gap-y-3 sm:grid-cols-2">
               {items.map((item) => (

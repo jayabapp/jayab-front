@@ -1,6 +1,7 @@
-import type { FactRowProps } from "@/types/components/modules/property-details";
 
 import { Icon } from "@elements/Icon";
+
+import type { FactRowProps } from "@/types/components/modules/property-details";
 
 const FactRow = ({ icon, summary, title }: FactRowProps) => {
   const details = summary?.filter(Boolean) ?? [];

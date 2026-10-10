@@ -1,16 +1,18 @@
 "use client";
 
+import { useTranslations } from "next-intl";
 import { HeaderBrand } from "@modules/SiteHeader";
 import { useOtpFlow } from "@features/auth/hooks/useOtpFlow";
 
 import type { AuthOtpCardProps } from "@/types/components/modules/auth";
 
 import OtpInput from "./parts/OtpInput.client";
-import _STRINGS from "@/utils/LocalStrings";
 import Button from "@elements/Button";
 import Image from "next/image";
 
 const AuthOtpCard = ({ challenge, onEditNumber }: AuthOtpCardProps) => {
+  const t = useTranslations();
+
   const {
     setOtp,
     submit,
@@ -34,7 +36,7 @@ const AuthOtpCard = ({ challenge, onEditNumber }: AuthOtpCardProps) => {
 
       <div className="mt-6 flex flex-col items-center gap-3">
         <span className="h-1 w-10 rounded-full bg-brand-500/80" />
-        <p className="text-sm text-neutral-600">{_STRINGS.AUTH_CODE_SENT_TO}</p>
+        <p className="text-sm text-neutral-600">{t("auth.authCodeSentTo")}</p>
         <button
           type="button"
           onClick={() => void editNumber()}
@@ -49,7 +51,7 @@ const AuthOtpCard = ({ challenge, onEditNumber }: AuthOtpCardProps) => {
       {/* CODE */}
       <div className="mt-8 flex w-full flex-col gap-5">
         <p className="text-center text-xs text-neutral-600">
-          {_STRINGS.ENTER_FOUR_DIGITS}
+          {t("auth.enterFourDigits")}
         </p>
 
         <OtpInput setValue={setOtp} key={resetKey} />
@@ -63,10 +65,10 @@ const AuthOtpCard = ({ challenge, onEditNumber }: AuthOtpCardProps) => {
             <Image
               width={16}
               height={16}
-              alt={_STRINGS.EDIT_NUMBER}
+              alt={t("auth.editNumber")}
               src="/assets/icons/edit/blue_edit_pen.svg"
             />
-            <span>{_STRINGS.EDIT_NUMBER}</span>
+            <span>{t("auth.editNumber")}</span>
           </button>
 
           {hasExpired ? (
@@ -76,11 +78,11 @@ const AuthOtpCard = ({ challenge, onEditNumber }: AuthOtpCardProps) => {
               onClick={resendCode}
               className="glass-chip cursor-pointer text-sm font-medium text-brand-600 disabled:opacity-50"
             >
-              {_STRINGS.SEND_AGAIN}
+              {t("auth.sendAgain")}
             </button>
           ) : (
             <div className="glass-chip flex items-center gap-2 text-xs text-neutral-600">
-              <span>{_STRINGS.CODE_EXPI_TIME}</span>
+              <span>{t("auth.codeExpiTime")}</span>
               <bdi dir="ltr" className="font-medium text-neutral-900">
                 {countdown.minutes}:{countdown.seconds}
               </bdi>
@@ -96,7 +98,7 @@ const AuthOtpCard = ({ challenge, onEditNumber }: AuthOtpCardProps) => {
           containerClass="mt-2 w-full"
           roundedClass="rounded-20"
           btnClass="auth-primary-button !py-4"
-          title={_STRINGS.ENTER_AND_MOVE_ON}
+          title={t("common.enterAndMoveOn")}
         />
       </div>
     </>

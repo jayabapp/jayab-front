@@ -1,10 +1,11 @@
-import type { PropertyRulesFilterProps } from "@/types/components/modules/property-search-filters";
 
 import { countFilterGroup } from "@features/properties/lib/count-active-filters";
+import { useTranslations } from "next-intl";
+
+import type { PropertyRulesFilterProps } from "@/types/components/modules/property-search-filters";
 
 import PropertyModelFilter from "../PropertyModelFilter.client";
 import FilterSection from "./FilterSection.client";
-import _STRINGS from "@/utils/LocalStrings";
 
 const DISALLOWED_RULE_TITLE = "مجاز نیست";
 
@@ -23,16 +24,18 @@ const PropertyRulesFilter = ({
   propertyTypes,
   hiddenFilters = [],
 }: PropertyRulesFilterProps) => {
+  const t = useTranslations("listing");
+
   const rules = [
     {
       id: getAllowedRuleIds(propertyTypes?.PARTY),
       queryKey: "party",
-      title: _STRINGS.PARTY,
+      title: t("party"),
     },
     {
       id: getAllowedRuleIds(propertyTypes?.PET),
       queryKey: "pet",
-      title: _STRINGS.PET,
+      title: t("pet"),
     },
   ].filter((rule) => rule.id && !hiddenFilters.includes(rule.queryKey));
 
@@ -40,7 +43,7 @@ const PropertyRulesFilter = ({
 
   return (
     <FilterSection
-      title={_STRINGS.ACCOMMODATION_RULES}
+      title={t("accommodationRules")}
       count={countFilterGroup(
         filters,
         rules.map((rule) => rule.queryKey),

@@ -1,5 +1,7 @@
 import { PROPERTY_IMAGE_QUALITY } from "@features/properties/constants/image";
 import { getPropertyImageUrl } from "@features/properties/mappers/property-image.mapper";
+import { useListSeparator } from "@hooks/useListSeparator";
+import { useTranslations } from "next-intl";
 import { ContentImage } from "@elements/Image";
 
 import type { PublicPropertyCardProps } from "@/types/components/modules/property-grid";
@@ -8,9 +10,10 @@ import PropertyCardLikes from "./PropertyCardLikes.client";
 import PropertyCardLink from "./PropertyCardLink.client";
 import PropertyPrice from "../PropertyPrice";
 
-import _STRINGS from "@/utils/LocalStrings";
-
 const PublicPropertyCard = ({ data, goToLink }: PublicPropertyCardProps) => {
+  const t = useTranslations();
+  const sep = useListSeparator();
+
   const hasActiveSubscription = data.has_active_subscription;
 
   return (
@@ -27,10 +30,10 @@ const PublicPropertyCard = ({ data, goToLink }: PublicPropertyCardProps) => {
           shadow-[0_0_4px_rgba(16,185,129,1),0_0_8px_rgba(16,185,129,0.75),0_0_13px_rgba(16,185,129,0.45)]
           "
           role="status"
-          aria-label={_STRINGS.ACTIVE_SUBSCRIPTION}
-          title={_STRINGS.ACTIVE_SUBSCRIPTION}
+          aria-label={t("listing.activeSubscription")}
+          title={t("listing.activeSubscription")}
         >
-          <span className="sr-only">{_STRINGS.ACTIVE_SUBSCRIPTION}</span>
+          <span className="sr-only">{t("listing.activeSubscription")}</span>
         </div>
       ) : null}
 
@@ -63,7 +66,7 @@ const PublicPropertyCard = ({ data, goToLink }: PublicPropertyCardProps) => {
             {data.is_promoted ? (
               <>
                 <p className="shrink-0 font-bold text-brand-600">
-                  {_STRINGS.LADDERED}
+                  {t("common.laddered")}
                 </p>
 
                 <span aria-hidden="true" className="text-neutral-300">
@@ -73,15 +76,25 @@ const PublicPropertyCard = ({ data, goToLink }: PublicPropertyCardProps) => {
             ) : null}
 
             <p className="line-clamp-1 text-right text-neutral-700">
-              {data.city}، {data.region || data.province || ""}
+              {data.city}
+              {sep}
+              {data.region || data.province || ""}
             </p>
           </div>
 
           {/* Rooms / Capacity / Likes */}
           <div className="flex w-full items-center gap-1.5 text-sm text-neutral-800">
-            <p className="shrink-0">{data.total_bedrooms || 0} اتاق،</p>
+            <p className="shrink-0">
+              {t("listing.roomsCount", {
+                count: Number(data.total_bedrooms || 0),
+              })}
+              {sep.trim()}
+            </p>
 
-            <p className="shrink-0">تا {data.max_capacity || 0} نفر</p>
+            <p className="shrink-0">
+              {t("listing.upTo")}{" "}
+              {t("common.people", { count: Number(data.max_capacity || 0) })}
+            </p>
 
             <div className="mr-1 shrink-0">
               <PropertyCardLikes
@@ -95,7 +108,7 @@ const PublicPropertyCard = ({ data, goToLink }: PublicPropertyCardProps) => {
           {/* Price */}
           <div className="flex min-h-[52px] w-full items-end justify-between gap-2">
             <p className="shrink-0 text-xs text-black">
-              {_STRINGS.TODAYS_PRICE}
+              {t("common.todaysPrice")}
             </p>
 
             <PropertyPrice
@@ -160,7 +173,7 @@ const PublicPropertyCard = ({ data, goToLink }: PublicPropertyCardProps) => {
                 />
 
                 <p className="text-[0.6875rem] font-medium text-white">
-                  {_STRINGS.VERIFIED}
+                  {t("listing.verified")}
                 </p>
               </div>
             ) : null}

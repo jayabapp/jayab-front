@@ -63,3 +63,9 @@ export type NotificationSkeletonGridProps = {
 export type ProfileSectionProps = {
   children: ReactNode;
 };
+
+export type TPaymentDate = {
+  query: any;
+  queryKey: string;
+  placeholder?: string;
+};

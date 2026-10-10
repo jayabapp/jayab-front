@@ -1,46 +1,49 @@
 "use client";
 
+import { FormInputWithExternalUnit } from "@elements/Form";
 import { useOwnerPropertyStep } from "@features/owner-property/hooks/useOwnerPropertyStep";
 import { usePropertyDraftForm } from "@features/owner-property/hooks/usePropertyDraftForm";
 import { emptyPriceValues } from "@features/owner-property/mappers/property-draft.mapper";
+import { useTranslations } from "next-intl";
+import { toPriceValues } from "@features/owner-property/mappers/property-draft.mapper";
+import { useState } from "react";
+import { colors } from "@/theme/colors";
+
 import type { OwnerPropertyRouteProps } from "@/types/components/modules/owner-property";
 import type { PricingPropertySendDto } from "@/types/components/modules/owner-property";
-import { toPriceValues } from "@features/owner-property/mappers/property-draft.mapper";
-import { FormInputWithExternalUnit } from "@elements/Form";
-import { colors } from "@/theme/colors";
-import { useState } from "react";
 
 import PropertyStepFrame from "./parts/PropertyStepFrame.client";
 import numberWithCommas from "@/helpers/numberWithCommas";
 import TitledCounter from "./parts/TitledCounter";
 import CmsInfoPopup from "@elements/CmsInfoPopup";
 import RangeWithTitle from "@elements/Slider";
-import _STRINGS from "@/utils/LocalStrings";
 
 const COMMISSION_MARKS = {
   0: { label: "0", style: { color: colors.brand[500] } },
   50: { label: "50", style: { color: colors.brand[500] } },
 };
 
-const PRICE_FIELDS: {
-  key: keyof PricingPropertySendDto;
-  perNight: boolean;
-  title: string;
-}[] = [
-  { key: "normal", perNight: true, title: _STRINGS.WEEK_STARTER_DAYS_PRICE },
-  { key: "wednesday", perNight: true, title: _STRINGS.WEEK_WENSDAY_PRICE },
-  { key: "thursday", perNight: true, title: _STRINGS.WEEK_THURSDAY_PRICE },
-  { key: "friday", perNight: true, title: _STRINGS.WEEK_FRIDAY_PRICE },
-  { key: "peak", perNight: true, title: _STRINGS.WEEK_PEAK_PRICE },
-  { key: "cleaning", perNight: false, title: _STRINGS.CLEANING_PRiCE },
+const PRICE_FIELDS = [
+  { key: "normal", perNight: true, title: "common.weekStarterDaysPrice" },
+  { key: "wednesday", perNight: true, title: "common.weekWensdayPrice" },
+  { key: "thursday", perNight: true, title: "common.weekThursdayPrice" },
+  { key: "friday", perNight: true, title: "common.weekFridayPrice" },
+  { key: "peak", perNight: true, title: "common.weekPeakPrice" },
+  { key: "cleaning", perNight: false, title: "common.cleaningPrice" },
   {
     key: "additional_person",
     perNight: true,
-    title: _STRINGS.PRICE_EXTRA_PERSON,
+    title: "owner.priceExtraPerson",
   },
-];
+] as const satisfies readonly {
+  key: keyof PricingPropertySendDto;
+  perNight: boolean;
+  title: string;
+}[];
 
 const PropertyPriceStep = ({ propertyId }: OwnerPropertyRouteProps) => {
+  const t = useTranslations();
+
   const { draft, isLoading, onChange, values } = usePropertyDraftForm(
     propertyId,
     emptyPriceValues,
@@ -69,27 +72,27 @@ const PropertyPriceStep = ({ propertyId }: OwnerPropertyRouteProps) => {
   return (
     <PropertyStepFrame
       step="price"
+      onSubmit={onSubmit}
       isPending={isPending}
       isLoading={isLoading}
-      onSubmit={onSubmit}
       propertyId={propertyId}
-      submitTitle={_STRINGS.SUBMIT_MOVE_ON}
+      submitTitle={t("owner.submitMoveOn")}
       headerClass="w-full px-4 md:px-0 pb-4 pt-8"
     >
       <div className="flex flex-col gap-2 border-b pb-4 w-full">
         <p className="font-bold w-full text-start text-sm md:text-base text-brand-600">
-          {_STRINGS.GUEST_CAP}
+          {t("owner.guestCap")}
         </p>
         <TitledCounter
           disableInput
           value={values?.std_capacity}
-          title={_STRINGS.STANDARD_GUEST_CAP}
+          title={t("owner.standardGuestCap")}
           onChange={(next) => onChange(next, "std_capacity")}
         />
         <TitledCounter
           disableInput
           value={values?.max_capacity}
-          title={_STRINGS.MAX_CAPACITY}
+          title={t("owner.maxCapacity")}
           onChange={(next) => onChange(next, "max_capacity")}
         />
       </div>
@@ -98,10 +101,10 @@ const PropertyPriceStep = ({ propertyId }: OwnerPropertyRouteProps) => {
         <div className="w-full flex items-start justify-between">
           <div className="flex flex-col gap-2">
             <p className="font-bold w-fit text-start text-sm md:text-base text-brand-600">
-              {_STRINGS.COMITION_PERC} ( {_STRINGS.OPTIONAL} )
+              {t("owner.comitionPerc")} ( {t("owner.optional")} )
             </p>
             <p className="text-xs text-neutral-500 md:text-sm">
-              {_STRINGS.hOW_MUCH_DO_U_WANT_TO_COMM}
+              {t("owner.howMuchDoUWantToComm")}
             </p>
           </div>
           <p className="text-brand-600 shrink-0 text-sm">{` % ${values?.advisor_commission} `}</p>
@@ -127,12 +130,12 @@ const PropertyPriceStep = ({ propertyId }: OwnerPropertyRouteProps) => {
         }}
       >
         <p className="font-bold w-full cursor-pointer text-start text-sm md:text-base text-brand-600">
-          {_STRINGS.REND_DAYLI_PRICE}
+          {t("owner.rendDayliPrice")}
         </p>
         {PRICE_FIELDS.map((field) => (
           <FormInputWithExternalUnit
             key={field.key}
-            unit={_STRINGS.TOMAN}
+            unit={t("common.toman")}
             onChangeText={(entered) => onDigits(entered, field.key)}
             value={
               !field.perNight || values?.[field.key]
@@ -146,9 +149,9 @@ const PropertyPriceStep = ({ propertyId }: OwnerPropertyRouteProps) => {
               isMandatory: false,
               keyboard: "number",
               placeholder: field.perNight
-                ? _STRINGS.TOMAN_PER_NIGHT
+                ? t("owner.tomanPerNight")
                 : undefined,
-              title: field.title,
+              title: t(field.title),
             }}
           />
         ))}
@@ -166,7 +169,7 @@ const PropertyPriceStep = ({ propertyId }: OwnerPropertyRouteProps) => {
             setDismissedNotice(true);
             setShowNotice(false);
           },
-          title: _STRINGS.UNDERSTOOD,
+          title: t("owner.understood"),
         }}
       />
     </PropertyStepFrame>

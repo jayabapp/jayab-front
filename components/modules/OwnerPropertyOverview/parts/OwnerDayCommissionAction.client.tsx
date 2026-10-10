@@ -4,15 +4,17 @@ import type { OwnerSingleDayActionProps } from "@/types/components/modules/owner
 import { useState } from "react";
 
 import OwnerDayCommissionModal from "./OwnerDayCommissionModal.client";
-import _STRINGS from "@/utils/LocalStrings";
 import Button from "@elements/Button";
 import Notify from "@elements/Toast";
+import { useTranslations } from "next-intl";
 
 const OwnerDayCommissionAction = ({
   day,
   property,
   isDisabled,
 }: OwnerSingleDayActionProps) => {
+  const t = useTranslations("owner");
+
   const [show, setShow] = useState(false);
 
   return (
@@ -20,12 +22,12 @@ const OwnerDayCommissionAction = ({
       <Button
         disabled={!day}
         containerClass="w-full"
-        title={_STRINGS.COMMISSION}
+        title={t("commission")}
         roundedClass="rounded-full"
         width="w-full !text-base !px-0 md:!px-auto md:!text-base !py-1.5"
         onClick={() => {
           if (isDisabled) {
-            Notify({ body: _STRINGS.SELECT_ONE_DAY_ONLY, type: "warn" });
+            Notify({ body: t("selectOneDayOnly"), type: "warn" });
             return;
           }
           setShow(true);

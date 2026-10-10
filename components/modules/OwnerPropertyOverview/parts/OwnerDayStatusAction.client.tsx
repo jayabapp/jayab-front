@@ -6,14 +6,16 @@ import { toJalaaliDays } from "@features/owner-property/lib/calendar-cache";
 import { useState } from "react";
 
 import ConfirmModal from "@elements/Modal/ConfirmModal.client";
-import _STRINGS from "@/utils/LocalStrings";
 import Button from "@elements/Button";
+import { useTranslations } from "next-intl";
 
 const OwnerDayStatusAction = ({
   property,
   selectedDates,
   selectedDaysData,
 }: OwnerDaySelectionProps) => {
+  const t = useTranslations();
+
   const [showConfirm, setShowConfirm] = useState(false);
   const { mutate, isPending } = useUpdateDayStatus(property?.id ?? "");
 
@@ -36,12 +38,14 @@ const OwnerDayStatusAction = ({
     );
   };
 
-  const action = nextReservedStatus ? _STRINGS.RESERVE : _STRINGS.EMPTY;
+  const action = nextReservedStatus
+    ? t("common.reserve")
+    : t("common.emptySlot");
   const target =
     selectedDays.length > 1
-      ? `${selectedDays.length} ${_STRINGS.SELECTED_DAYS_COUNT}`
-      : `${_STRINGS.DAY} ${selectedDates[0] || ""}`;
-  const confirmText = `${_STRINGS.ARE_U_SURE_ABOUT} ${action} ${_STRINGS.MAKING_OF} ${target} ${_STRINGS.ARE_U_SURE_SUFFIX}`;
+      ? `${t("owner.selectedDays", { count: Number(selectedDays.length) })}`
+      : `${t("common.day")} ${selectedDates[0] || ""}`;
+  const confirmText = `${t("owner.areUSureAbout")} ${action} ${t("owner.makingOf")} ${target} ${t("owner.areUSureSuffix")}`;
 
   return (
     <div className="w-full">
@@ -50,7 +54,7 @@ const OwnerDayStatusAction = ({
         width="w-full !py-1.5"
         containerClass="w-full"
         roundedClass="rounded-full"
-        title={_STRINGS.EMPTY_FULL}
+        title={t("owner.emptyFull")}
         onClick={() => setShowConfirm(true)}
         disabled={selectedDays.length === 0 || isPending}
       />

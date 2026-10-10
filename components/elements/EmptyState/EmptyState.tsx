@@ -1,9 +1,10 @@
 "use client";
 
+import { useTranslations } from "next-intl";
+
 import type { EmptyStateProps } from "@/types/components/elements/empty-state";
 
 import LottieAnimationDark from "@/public/assets/lotties/emptyDark.json";
-import _STRINGS from "@/utils/LocalStrings";
 import dynamic from "next/dynamic";
 import Link from "next/link";
 
@@ -14,11 +15,13 @@ const Lottie = dynamic(() => import("react-lottie"), {
 
 const EmptyState = ({
   title,
+  onAction,
   description,
   actionLabel,
   actionRoute,
-  onAction,
 }: EmptyStateProps) => {
+  const t = useTranslations("common");
+
   return (
     <div className="flex w-full justify-center py-6">
       <div className="flex max-w-sm scale-90 flex-col items-center">
@@ -31,7 +34,7 @@ const EmptyState = ({
         />
 
         <p className="-mt-2 text-center font-medium text-neutral-600">
-          {title || _STRINGS?.EMPTY_LIST}
+          {title || t("emptyList")}
         </p>
 
         {description ? (

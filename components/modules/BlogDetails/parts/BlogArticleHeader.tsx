@@ -1,12 +1,13 @@
-import type { BlogArticleHeaderProps } from "@/types/components/modules/blog";
 import { BLOG_DETAIL_IMAGE_QUALITY } from "@features/blog/constants/image";
 import { getHomeImageUrl } from "@features/home/mappers/home-image.mapper";
-import type { TMetaItem } from "@/types/components/modules/blog";
+import { useTranslations } from "next-intl";
 import { ContentImage } from "@elements/Image";
+
+import type { BlogArticleHeaderProps } from "@/types/components/modules/blog";
+import type { TMetaItem } from "@/types/components/modules/blog";
 
 import SingleProductBreadcrumb from "@elements/Breadcrumbs/SingleProductBreadcrumb.client";
 import SmoothScroll from "./SmoothScroll.client";
-import _STRINGS from "@/utils/LocalStrings";
 import BlogShare from "./BlogShare.client";
 import isEmpty from "lodash/isEmpty";
 import moment from "moment-jalaali";
@@ -35,6 +36,8 @@ const BlogArticleHeader = ({
   timeToRead,
   breadcrumb,
 }: BlogArticleHeaderProps) => {
+  const t = useTranslations("content");
+
   if (!data) return <></>;
 
   return (
@@ -71,23 +74,23 @@ const BlogArticleHeader = ({
         <div className="flex flex-wrap items-center justify-between gap-x-5 gap-y-3 border-y border-neutral-100 py-3 text-xs md:text-sm">
           <div className="flex flex-wrap items-center gap-x-5 gap-y-2">
             <MetaItem
-              label={_STRINGS.BLOG_PUBLISHED_ON}
+              label={t("blogPublishedOn")}
               icon="/assets/icons/blogs/calendar.svg"
               value={moment(data?.created_at).format("jYYYY/jMM/jDD")}
             />
             {!!data?.fields?.author ? (
               <MetaItem
                 value={data.fields.author}
-                label={_STRINGS.BLOG_AUTHOR}
+                label={t("blogAuthor")}
                 icon="/assets/icons/blogs/author.svg"
               />
             ) : (
               <></>
             )}
             <MetaItem
-              label={_STRINGS.BLOG_READ_TIME}
+              label={t("blogReadTime")}
               icon="/assets/icons/blogs/time.svg"
-              value={`${timeToRead} ${_STRINGS.BLOG_READ_TIME_UNIT}`}
+              value={`${timeToRead} ${t("blogReadTimeUnit")}`}
             />
           </div>
           <BlogShare data={data} />

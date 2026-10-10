@@ -1,21 +1,24 @@
 "use client";
 
-import { useOwnerCalendarBoard } from "@features/owner-property/hooks/useOwnerCalendarBoard";
-import type { OwnerPropertyViewProps } from "@/types/components/modules/owner-property";
 import { PropertyCalendarLegend } from "@modules/PropertyAvailability";
+import { useOwnerCalendarBoard } from "@features/owner-property/hooks/useOwnerCalendarBoard";
 import { AvailabilityCalendar } from "@elements/JalaliCalendar";
+import { useTranslations } from "next-intl";
 import { useEffect } from "react";
+
+import type { OwnerPropertyViewProps } from "@/types/components/modules/owner-property";
 
 import OwnerDayCommissionAction from "./parts/OwnerDayCommissionAction.client";
 import OwnerDayStatusAction from "./parts/OwnerDayStatusAction.client";
 import OwnerDayPriceAction from "./parts/OwnerDayPriceAction.client";
 import OwnerDayNoteAction from "./parts/OwnerDayNoteAction.client";
-import _STRINGS from "@/utils/LocalStrings";
 import Button from "@elements/Button";
 
 const CALENDAR_ANCHOR = "owner-calendar";
 
 const OwnerPropertyCalendar = ({ property }: OwnerPropertyViewProps) => {
+  const t = useTranslations("owner");
+
   const board = useOwnerCalendarBoard(property?.id ?? "");
 
   useEffect(() => {
@@ -57,14 +60,14 @@ const OwnerPropertyCalendar = ({ property }: OwnerPropertyViewProps) => {
       <PropertyCalendarLegend />
 
       <div className="w-full flex items-center justify-between gap-2">
-        <p className="text-xs">{_STRINGS.SELECT_DAYS_TO_GO_ON}</p>
+        <p className="text-xs">{t("selectDaysToGoOn")}</p>
         {board.selectedDates.length > 0 ? (
           <Button
             variant="outline"
             width="!py-1 !px-3"
             roundedClass="rounded-full"
             onClick={board.clearSelection}
-            title={`${_STRINGS.CLEAR_SELECTION} (${board.selectedDates.length})`}
+            title={`${t("clearSelection")} (${board.selectedDates.length})`}
           />
         ) : null}
       </div>

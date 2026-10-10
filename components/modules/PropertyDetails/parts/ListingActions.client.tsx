@@ -1,12 +1,13 @@
 "use client";
 
-import type { ListingActionsProps } from "@/types/components/modules/property-details";
+import { useTranslations } from "next-intl";
 import { useState } from "react";
+
+import type { ListingActionsProps } from "@/types/components/modules/property-details";
 
 import PropertyBookmarkButton from "./PropertyBookmarkButton.client";
 import PropertyLikeButton from "./PropertyLikeButton.client";
 import ShareLink from "@elements/Share/BrowserShare.client";
-import _STRINGS from "@/utils/LocalStrings";
 import Notify from "@elements/Toast";
 
 const ACTION_CLASS =
@@ -18,6 +19,8 @@ const ListingActions = ({
   propertyId,
   favoriteCount,
 }: ListingActionsProps) => {
+  const t = useTranslations();
+
   const [favourites, setFavourites] = useState(favoriteCount || 0);
   const [origin] = useState(() =>
     typeof window === "undefined" ? "" : window.location.origin,
@@ -26,7 +29,7 @@ const ListingActions = ({
   const copyCode = async () => {
     if (!navigator?.clipboard) return;
     await navigator.clipboard.writeText(code);
-    Notify({ type: "success", body: _STRINGS.CODE_COPIED });
+    Notify({ type: "success", body: t("listing.codeCopied") });
   };
 
   return (
@@ -35,9 +38,9 @@ const ListingActions = ({
         type="button"
         onClick={copyCode}
         className={ACTION_CLASS}
-        aria-label={_STRINGS.COPY_CODE}
+        aria-label={t("listing.copyCode")}
       >
-        <span className="text-neutral-500">{_STRINGS.CODE}</span>
+        <span className="text-neutral-500">{t("common.code")}</span>
         <span className="font-semibold">{code}</span>
       </button>
 

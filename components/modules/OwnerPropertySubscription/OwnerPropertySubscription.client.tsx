@@ -1,25 +1,28 @@
 "use client";
 
 import { useOwnerSubscriptionSelection } from "@features/owner-property/hooks/useOwnerSubscriptionSelection";
-import { toDailyViewSeries } from "@features/owner-property/mappers/property-statistics.mapper";
-import { usePayOwnerSubscription } from "@features/owner-property/hooks/useOwnerSubscription";
-import { usePropertyStatistics } from "@features/owner-property/hooks/usePropertyStatistics";
-import type { OwnerPropertyRouteProps } from "@/types/components/modules/owner-property";
-import { OwnerPhotoUpgradeModal } from "@modules/OwnerPhotoUpgrade";
 import { useRouter, useSearchParams } from "next/navigation";
+import { usePayOwnerSubscription } from "@features/owner-property/hooks/useOwnerSubscription";
+import { OwnerPhotoUpgradeModal } from "@modules/OwnerPhotoUpgrade";
+import { usePropertyStatistics } from "@features/owner-property/hooks/usePropertyStatistics";
 import { CheckboxCardContainer } from "@elements/Form";
+import { toDailyViewSeries } from "@features/owner-property/mappers/property-statistics.mapper";
+import { useTranslations } from "next-intl";
 import { PropertyPrice } from "@modules/PropertyGrid";
 import { useState } from "react";
+
+import type { OwnerPropertyRouteProps } from "@/types/components/modules/owner-property";
 
 import FixedBottomContainer from "@elements/FixedBottomContainer";
 import numberWithCommas from "@/helpers/numberWithCommas";
 import ViewsChart from "./parts/ViewsChart.client";
-import _STRINGS from "@/utils/LocalStrings";
 import Button from "@elements/Button";
 import Notify from "@elements/Toast";
 import isEmpty from "lodash/isEmpty";
 
 const OwnerPropertySubscription = ({ propertyId }: OwnerPropertyRouteProps) => {
+  const t = useTranslations();
+
   const router = useRouter();
   const searchParams = useSearchParams();
   const gatewayRedirectUrl = searchParams?.get("GATE_WAY_REDIRECT_URL");
@@ -48,7 +51,7 @@ const OwnerPropertySubscription = ({ propertyId }: OwnerPropertyRouteProps) => {
   const onSubmit = () => {
     if (isPending) return;
     if (!subscriptionId && !promoteId) {
-      Notify({ body: _STRINGS.SELECT_A_PLAN, type: "warn" });
+      Notify({ body: t("owner.selectAPlan"), type: "warn" });
       return;
     }
     mutate(
@@ -81,13 +84,13 @@ const OwnerPropertySubscription = ({ propertyId }: OwnerPropertyRouteProps) => {
               disabled: !canPromote && plan.id === lockedPromoteId,
               hint:
                 !canPromote && plan.id === lockedPromoteId
-                  ? _STRINGS.PROMOTE_AFTER_ACTIVATION
+                  ? t("owner.promoteAfterActivation")
                   : "",
             }}
           >
             <div className="flex gap-2">
               <p className="font-bold text-sm text-brand-600">
-                {_STRINGS.COST} :
+                {t("common.cost")} :
               </p>
               <PropertyPrice
                 ribbon={plan}
@@ -104,12 +107,12 @@ const OwnerPropertySubscription = ({ propertyId }: OwnerPropertyRouteProps) => {
 
       {statsLoading ? (
         <>
-          <p className="font-bold">{_STRINGS.VIEW_STATS}</p>
+          <p className="font-bold">{t("owner.viewStats")}</p>
           <div className="h-96 w-full animate-pulse rounded-2xl bg-neutral-200" />
         </>
       ) : !isEmpty(statistics?.statistics) ? (
         <div className="w-full">
-          <p className="text-base font-bold mb-4">{_STRINGS.ROOM_STATS}</p>
+          <p className="text-base font-bold mb-4">{t("owner.roomStats")}</p>
           <div className="h-96">
             <ViewsChart data={toDailyViewSeries(statistics?.statistics)} />
           </div>
@@ -119,12 +122,12 @@ const OwnerPropertySubscription = ({ propertyId }: OwnerPropertyRouteProps) => {
       <FixedBottomContainer>
         <div className="w-full flex items-center justify-between p-2 md:px-4">
           <p className="text-sm">
-            {_STRINGS.PAYABLE_AMOUNT} : {numberWithCommas(price)}{" "}
-            {_STRINGS.TOMAN}
+            {t("owner.payableAmount")} : {numberWithCommas(price)}{" "}
+            {t("common.toman")}
           </p>
           <Button
             loading={isPending}
-            title={_STRINGS.PAY}
+            title={t("common.pay")}
             roundedClass="rounded-full"
             width="!py-1.5 !px-10 md:!px-8"
             disabled={isEmpty(selectedPlans)}

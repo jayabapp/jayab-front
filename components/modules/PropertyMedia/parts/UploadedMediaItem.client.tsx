@@ -1,8 +1,9 @@
-import type { UploadedMediaItemProps } from "@/types/components/modules/property-media";
 import { getUploadedImageUrl } from "@features/upload/mappers/upload-image.mapper";
 import { UploadPreviewImage } from "@/components/elements/Image";
 import { ContentImage } from "@/components/elements/Image";
 import { useState } from "react";
+
+import type { UploadedMediaItemProps } from "@/types/components/modules/property-media";
 
 import ProgressBar from "@elements/ProgressBar";
 
@@ -82,9 +83,9 @@ const UploadedItemShowCase = ({
               }}
             >
               <ContentImage
+                alt=""
                 width={20}
                 height={20}
-                alt=""
                 src="/assets/icons/uploader/faded_x_circle.svg"
               />
             </div>

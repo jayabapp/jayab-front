@@ -1,10 +1,11 @@
 "use client";
 
-import type { TReservationDatePickerProps } from "@/types/components/modules/reservation-date-picker";
+import { useTranslations } from "next-intl";
 import { useState } from "react";
 
+import type { TReservationDatePickerProps } from "@/types/components/modules/reservation-date-picker";
+
 import ReservationDateModal from "./ReservationDateModal.client";
-import _STRINGS from "@/utils/LocalStrings";
 import Notify from "@elements/Toast";
 import moment from "moment-jalaali";
 
@@ -12,17 +13,16 @@ const ReservationDatePicker = ({
   dates,
   setDates,
   forbiden_dates,
-  endTitle = _STRINGS.EXIT_DATE,
-  startTitle = _STRINGS.START_DATE,
+  endTitle: endTitleProp,
+  startTitle: startTitleProp,
 }: TReservationDatePickerProps) => {
-  const [show, setShow] = useState(false);
-  const onHide = () => {
-    setShow(false);
-  };
-  const onShowCalender = () => {
-    setShow(true);
-  };
+  const t = useTranslations();
 
+  const endTitle = endTitleProp ?? t("reserve.exitDate");
+  const startTitle = startTitleProp ?? t("reserve.startDate");
+  const [show, setShow] = useState(false);
+  const onHide = () => setShow(false);
+  const onShowCalender = () => setShow(true);
   const START_TITLE = !!dates?.start
     ? moment(dates?.start).format("jYYYY/jMM/jDD")
     : startTitle;
@@ -32,11 +32,13 @@ const ReservationDatePicker = ({
 
   const onConfirmDate = (e: any) => {
     if (!e?.start || !e?.end)
-      return Notify({ body: `${startTitle} و ${endTitle} را انتخاب کنید.` });
-
+      return Notify({
+        body: t("reserve.pickBothDates", { start: startTitle, end: endTitle }),
+      });
     setDates(e);
     onHide();
   };
+  
   return (
     <>
       <div className="flex w-full items-center justify-between gap-2">

@@ -2,12 +2,13 @@
 
 import { useEffect, useRef, useState } from "react";
 import { trackListingEvent } from "@/helpers/listingAnalytics";
+import { useTranslations } from "next-intl";
 
 import type { SectionTabsProps } from "@/types/components/modules/property-details";
 
-import _STRINGS from "@/utils/LocalStrings";
-
 const SectionTabs = ({ tabs }: SectionTabsProps) => {
+  const t = useTranslations("listing");
+
   const [activeId, setActiveId] = useState(tabs[0]?.id ?? "");
   const navRef = useRef<HTMLElement>(null);
   const tabRefs = useRef<Record<string, HTMLButtonElement | null>>({});
@@ -70,7 +71,7 @@ const SectionTabs = ({ tabs }: SectionTabsProps) => {
   return (
     <nav
       ref={navRef}
-      aria-label={_STRINGS.SECTIONS_NAV}
+      aria-label={t("sectionsNav")}
       className="sticky top-16 z-20 order-2 -mx-3 mb-2 border-b border-neutral-100 bg-white/95 px-3 backdrop-blur md:top-20 md:order-3 md:mx-0 md:px-0"
     >
       <ul className="flex list-none gap-2 overflow-x-auto py-2 [scrollbar-width:none] [&::-webkit-scrollbar]:hidden">

@@ -1,19 +1,24 @@
 "use client";
 
 import { useCreateSupportTicket } from "@features/support/hooks/useCreateSupportTicket";
-import { type SupportFormErrors } from "@features/support/model/support.schema";
-import type { NewTicketFormProps } from "@/types/features/support/components";
 import { getSupportFormErrors } from "@features/support/model/support.schema";
 import { supportTicketSchema } from "@features/support/model/support.schema";
 import { MultiLineFormInput } from "@elements/Form";
+import { useTranslations } from "next-intl";
 import { useRouter } from "next/navigation";
 import { FormInput } from "@elements/Form";
 import { useState } from "react";
 
-import _STRINGS from "@/utils/LocalStrings";
+import { type SupportFormErrors } from "@features/support/model/support.schema";
+
+import type { NewTicketFormProps } from "@/types/features/support/components";
+
 import Button from "@elements/Button";
 
 const SupportCreateForm = ({ dataKey }: NewTicketFormProps) => {
+  const t = useTranslations("profile");
+  const tr = useTranslations();
+
   const router = useRouter();
   const [title, setTitle] = useState("");
   const [message, setMessage] = useState("");
@@ -33,7 +38,7 @@ const SupportCreateForm = ({ dataKey }: NewTicketFormProps) => {
       setErrors({});
       mutate({ ...input, type: dataKey });
     } catch (error) {
-      setErrors(getSupportFormErrors(error));
+      setErrors(getSupportFormErrors(error, tr));
     }
   };
 
@@ -42,7 +47,7 @@ const SupportCreateForm = ({ dataKey }: NewTicketFormProps) => {
       <FormInput
         item={{
           keyboard: "text",
-          title: _STRINGS.TICKET_TITLE,
+          title: t("ticketTitle"),
           containerClass: "w-full",
           titleClass: "",
           inputClass: "!rounded-md",
@@ -59,7 +64,7 @@ const SupportCreateForm = ({ dataKey }: NewTicketFormProps) => {
       <MultiLineFormInput
         item={{
           keyboard: "text",
-          title: _STRINGS.TICKET_TEXT,
+          title: t("ticketText"),
           containerClass: "w-full",
           titleClass: "",
           rows: 7,
@@ -76,7 +81,7 @@ const SupportCreateForm = ({ dataKey }: NewTicketFormProps) => {
         onClick={submit}
         loading={isPending}
         disabled={isPending}
-        title={_STRINGS.SEND_TICKET}
+        title={t("sendTicket")}
         containerClass="flex w-full items-center justify-end"
       />
     </div>

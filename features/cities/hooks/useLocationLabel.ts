@@ -11,11 +11,13 @@ import {
 import { useCitiesStore } from "@/store";
 import { usePathname } from "next/navigation";
 import { useCityTree } from "@features/cities/hooks/useCityTree";
+import { useLocationWords } from "@features/cities/hooks/useLocationWords";
 
 import useQueryGet from "@/helpers/queryGet";
 
 export const useLocationLabel = (): string => {
   const pathname = usePathname();
+  const words = useLocationWords();
   const urlQueries = useQueryGet<Record<string, string>>();
   const locationsData = useCitiesStore((state) => state.locationsData);
 
@@ -31,7 +33,9 @@ export const useLocationLabel = (): string => {
   const storedEntries = hasUrlLocation
     ? storedEntriesFor(locationsData, urlLocation)
     : null;
-  const storedLabel = storedEntries ? buildLocationLabel(storedEntries) : "";
+  const storedLabel = storedEntries
+    ? buildLocationLabel(storedEntries, words)
+    : "";
   const needsTree =
     hasLocationQuery(location) &&
     !storedLabel &&
@@ -43,5 +47,5 @@ export const useLocationLabel = (): string => {
     return locationsData.label;
   if (storedLabel) return storedLabel;
   if (!hasLocationQuery(location)) return "";
-  return buildLocationLabel(resolveLocationFromTree(tree, location));
+  return buildLocationLabel(resolveLocationFromTree(tree, location), words);
 };

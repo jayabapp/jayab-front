@@ -1,8 +1,9 @@
-import type { ReservationStatusBarProps } from "@/types/components/modules/reservations";
+import { useTranslations } from "next-intl";
 import { ContentImage } from "@elements/Image";
 
+import type { ReservationStatusBarProps } from "@/types/components/modules/reservations";
+
 import StatusShower from "@elements/StatusShower";
-import _STRINGS from "@/utils/LocalStrings";
 import Button from "@elements/Button";
 
 const AWAITING_OWNER_STATUS_ID = 10;
@@ -15,13 +16,15 @@ const ReservationStatusBar = ({
   onCallGuest,
   isRequestingContact,
 }: ReservationStatusBarProps) => {
+  const t = useTranslations("reserve");
+
   const guestMobile = `${reservation?.guest_mobile}`;
   const isMasked = guestMobile.includes("*");
 
   return (
     <div className="w-full flex flex-col gap-2">
       {isOwner && reservation?.status?.id == AWAITING_OWNER_STATUS_ID ? (
-        <p className="text-center text-sm">{_STRINGS.GUEST_AWAITS_YOU}</p>
+        <p className="text-center text-sm">{t("guestAwaitsYou")}</p>
       ) : null}
 
       <div className="flex items-center justify-between">
@@ -33,7 +36,7 @@ const ReservationStatusBar = ({
             onClick={onCancel}
             className="cursor-pointer bg-neutral-100 border w-fit flex items-center gap-2 px-3 py-2 rounded-xl text-xxs md:text-sm font-medium"
           >
-            {_STRINGS.CANCEL_RESERVE}
+            {t("cancelReserve")}
             <ContentImage
               alt=""
               width={8}
@@ -48,7 +51,7 @@ const ReservationStatusBar = ({
             onClick={onCallGuest}
             loading={isRequestingContact}
             disabled={isRequestingContact}
-            title={isMasked ? _STRINGS.CALL_THE_GUEST : guestMobile}
+            title={isMasked ? t("callTheGuest") : guestMobile}
             icon={
               <ContentImage
                 alt=""

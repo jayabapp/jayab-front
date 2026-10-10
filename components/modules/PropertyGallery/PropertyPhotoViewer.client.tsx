@@ -6,13 +6,13 @@ import { PROPERTY_DETAIL_IMAGE_QUALITY } from "@features/properties/constants/im
 import { useOverlayBackButton } from "@/hooks/useOverlayBackButton";
 import { getPropertyImageUrl } from "@features/properties/mappers/property-image.mapper";
 import { Dialog, DialogPanel } from "@headlessui/react";
+import { useTranslations } from "next-intl";
 import { ContentImage } from "@elements/Image";
 import { Icon } from "@elements/Icon";
 
 import type { PropertyPhotoViewerProps } from "@/types/components/modules/property-gallery";
 
 import PropertyImageDownloadButton from "./parts/PropertyImageDownloadButton.client";
-import _STRINGS from "@/utils/LocalStrings";
 
 const ARROW_CLASS =
   "absolute top-1/2 z-10 flex size-10 -translate-y-1/2 cursor-pointer items-center justify-center rounded-full bg-white/15 text-white backdrop-blur-sm transition-colors hover:bg-white/30 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white/70 disabled:pointer-events-none disabled:opacity-25 md:size-12";
@@ -28,6 +28,8 @@ const PropertyPhotoViewer = ({
   startIndex,
   onIndexChange,
 }: PropertyPhotoViewerProps) => {
+  const t = useTranslations();
+
   const [activeIndex, setActiveIndex] = useState(startIndex ?? 0);
   const slideRefs = useRef<Array<HTMLDivElement | null>>([]);
   const thumbRefs = useRef<Array<HTMLButtonElement | null>>([]);
@@ -101,7 +103,7 @@ const PropertyPhotoViewer = ({
     <Dialog
       open={show}
       onClose={requestClose}
-      aria-label={_STRINGS.PHOTO_VIEWER}
+      aria-label={t("listing.photoViewer")}
       className="fixed inset-0 z-[1000]"
     >
       <div aria-hidden="true" className="fixed inset-0 bg-black" />
@@ -112,7 +114,7 @@ const PropertyPhotoViewer = ({
             <button
               type="button"
               onClick={requestClose}
-              aria-label={_STRINGS.CLOSE}
+              aria-label={t("common.close")}
               className="flex size-10 shrink-0 cursor-pointer items-center justify-center rounded-full bg-white/10 transition-colors hover:bg-white/20 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white/60"
             >
               <Icon name="x" size={20} />
@@ -121,7 +123,7 @@ const PropertyPhotoViewer = ({
               <p className="line-clamp-1 text-sm font-bold">{title}</p>
               {hostName ? (
                 <p className="line-clamp-1 text-xs text-white/60">
-                  {_STRINGS.HOSTED_BY} {hostName}
+                  {t("listing.hostedBy")} {hostName}
                 </p>
               ) : (
                 <></>
@@ -133,7 +135,7 @@ const PropertyPhotoViewer = ({
             aria-live="polite"
             className="rounded-full bg-white/10 px-3 py-1 text-xs font-medium tabular-nums md:text-sm"
           >
-            {activeIndex + 1} {_STRINGS.PHOTO_OF} {images.length}
+            {activeIndex + 1} {t("listing.photoOf")} {images.length}
           </p>
 
           <div className="flex items-center justify-end gap-2">
@@ -168,16 +170,15 @@ const PropertyPhotoViewer = ({
                     wrapperClass="!size-full"
                     contentClass="!relative !size-full"
                   >
-                    {/* Fills the stage and letterboxes on black; the largest stored variant is requested. */}
                     <ContentImage
                       fill
                       sizes="100vw"
                       alt={alt || ""}
+                      className="object-contain"
                       priority={index === (startIndex ?? 0)}
                       quality={PROPERTY_DETAIL_IMAGE_QUALITY}
                       src={getPropertyImageUrl(image, "name")}
                       loading={index === (startIndex ?? 0) ? undefined : "lazy"}
-                      className="object-contain"
                     />
                   </TransformComponent>
                 </TransformWrapper>
@@ -187,7 +188,7 @@ const PropertyPhotoViewer = ({
 
           <button
             type="button"
-            aria-label={_STRINGS.NEXT_PAGE}
+            aria-label={t("common.nextPage")}
             disabled={activeIndex >= lastIndex}
             onClick={() => goTo(activeIndex + 1)}
             className={`${ARROW_CLASS} left-2 md:left-5`}
@@ -198,7 +199,7 @@ const PropertyPhotoViewer = ({
             type="button"
             disabled={activeIndex <= 0}
             onClick={() => goTo(activeIndex - 1)}
-            aria-label={_STRINGS.PREVIOUS_PAGE}
+            aria-label={t("common.previousPage")}
             className={`${ARROW_CLASS} right-2 rotate-180 md:right-5`}
           >
             <Icon name="chevron-left" size={24} />

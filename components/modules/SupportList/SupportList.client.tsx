@@ -1,18 +1,20 @@
 "use client";
 
 import { useSupportTickets } from "@features/support/hooks/useSupportTickets";
-import { useRouter } from "next/navigation";
+import { useTranslations } from "next-intl";
 import { useAuthStore } from "@/store";
+import { useRouter } from "next/navigation";
 
 import SupportCardSkeleton from "./parts/SupportCardSkeleton";
 import SupportListSkeleton from "./parts/SupportListSkeleton";
 import InfiniteScroll from "react-infinite-scroll-component";
 import SupportCard from "./parts/SupportCard";
 import EmptyState from "@elements/EmptyState";
-import _STRINGS from "@/utils/LocalStrings";
 import Button from "@elements/Button";
 
 const SupportList = () => {
+  const t = useTranslations();
+
   const { isLogin } = useAuthStore();
   const router = useRouter();
   const {
@@ -37,14 +39,14 @@ const SupportList = () => {
               role="alert"
               className="rounded-lg bg-danger-50 p-4 text-sm text-danger-500"
             >
-              {_STRINGS.SUPPORT_LIST_ERROR}
+              {t("profile.supportListError")}
             </div>
           ) : tickets.length === 0 ? (
             <EmptyState
-              title={_STRINGS.EMPTY_SUPPORT_TITLE}
+              title={t("profile.emptySupportTitle")}
               actionRoute="/profile/support/new-ticket"
-              description={_STRINGS.EMPTY_SUPPORT_DESC}
-              actionLabel={_STRINGS.SEND_NEW_TICKET}
+              description={t("profile.emptySupportDesc")}
+              actionLabel={t("profile.sendNewTicket")}
             />
           ) : (
             <InfiniteScroll
@@ -62,20 +64,20 @@ const SupportList = () => {
           <Button
             variant="outline"
             width="!font-bold !bg-white"
-            title={_STRINGS.SEND_NEW_TICKET}
+            title={t("profile.sendNewTicket")}
             onClick={() => router.push("/profile/support/new-ticket")}
             containerClass="flex items-center justify-center 2xl:justify-start"
           />
         </>
       ) : (
         <div className="flex w-full flex-col items-center justify-center gap-4">
-          <h2 className="text-brand-600">{_STRINGS.HI}!</h2>
-          <p className="text-sm">{_STRINGS.FOR_SUPPORT_LOGIN}</p>
+          <h2 className="text-brand-600">{t("profile.hi")}!</h2>
+          <p className="text-sm">{t("profile.forSupportLogin")}</p>
           <Button
             width="w-full"
             onClick={goToLogin}
             containerClass="mt-8 w-full"
-            title={_STRINGS.LOGIN_TO_UR_ACCOUNT}
+            title={t("common.loginToUrAccount")}
           />
         </div>
       )}

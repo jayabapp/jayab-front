@@ -3,6 +3,7 @@
 import { buildLocationLabel } from "@features/cities/lib/location-label";
 import { pickLocationQuery } from "@features/cities/lib/location-label";
 import { useSearchHistory } from "@features/search/hooks/useSearchHistory";
+import { useLocationWords } from "@features/cities/hooks/useLocationWords";
 import { useCitiesStore } from "@/store";
 import { useCallback } from "react";
 import { useRouter } from "next/navigation";
@@ -11,6 +12,7 @@ import type { SearchOption } from "@/types/features/search";
 
 export const useSearchOptionPick = (term: string, close: () => void) => {
   const router = useRouter();
+  const words = useLocationWords();
   const { remember } = useSearchHistory();
 
   return useCallback(
@@ -23,7 +25,7 @@ export const useSearchOptionPick = (term: string, close: () => void) => {
         useCitiesStore.setState({
           locationsData: {
             ...locations,
-            label: buildLocationLabel(locations),
+            label: buildLocationLabel(locations, words),
             path,
             query: pickLocationQuery(
               Object.fromEntries(new URLSearchParams(search)),
@@ -34,6 +36,6 @@ export const useSearchOptionPick = (term: string, close: () => void) => {
       close();
       router.push(option.href);
     },
-    [close, remember, router, term],
+    [close, remember, router, term, words],
   );
 };

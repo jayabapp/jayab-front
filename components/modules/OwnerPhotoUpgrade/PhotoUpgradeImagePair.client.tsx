@@ -7,8 +7,9 @@ import type {
   PhotoUpgradeItem,
 } from "@/types/components/modules/photo-upgrade";
 import { getUploadedImageUrl } from "@features/upload/mappers/upload-image.mapper";
-import { colors } from "@/theme/colors";
+import { useTranslations } from "next-intl";
 import { useState } from "react";
+import { colors } from "@/theme/colors";
 
 import RemoteImageModal from "@features/photo-upgrade/components/RemoteImageModal";
 import StatusShower from "@elements/StatusShower";
@@ -28,45 +29,52 @@ const ImageBox = ({
   cb,
   title,
   image,
-  emptyTitle = "عکسی ثبت نشده",
-}: PhotoUpgradeImageBoxProps) => (
-  <div onClick={cb} className="flex min-w-0 cursor-pointer flex-col gap-2">
-    {image ? (
-      <div className="relative overflow-hidden rounded-10 border border-neutral-100 bg-neutral-50">
-        <Image
-          width={640}
-          height={480}
-          alt={image?.alt || title}
-          src={getUploadedImageUrl(image, "medium")}
-          sizes="(max-width: 1024px) 50vw, 320px"
-          className="aspect-[4/3] w-full object-cover"
-        />
-        <span className="absolute right-2 top-2 rounded-10 bg-black/55 px-2 py-1 text-xxs font-medium text-white backdrop-blur">
-          {title}
-        </span>
+  emptyTitle: emptyTitleProp,
+}: PhotoUpgradeImageBoxProps) => {
+  const t = useTranslations();
+  const emptyTitle = emptyTitleProp ?? t("owner.noPhoto");
 
-        <Link
-          onClick={(e) => {
-            e.stopPropagation();
-          }}
-          href={getUploadedImageUrl(image, "medium") || ""}
-          className="absolute left-2 bottom-2  bg-brand-600/50 rounded-md   px-2 py-1 text-xxs font-medium text-white backdrop-blur "
-        >
-          دانلود
-        </Link>
-      </div>
-    ) : (
-      <div className="relative flex aspect-[4/3] w-full items-center justify-center rounded-10 border border-dashed border-neutral-300 bg-neutral-50 px-2 text-center text-xxs text-neutral-400 md:text-xs">
-        <span className="absolute right-2 top-2 rounded-10 bg-white px-2 py-1 text-xxs font-medium text-neutral-500">
-          {title}
-        </span>
-        {emptyTitle}
-      </div>
-    )}
-  </div>
-);
+  return (
+    <div onClick={cb} className="flex min-w-0 cursor-pointer flex-col gap-2">
+      {image ? (
+        <div className="relative overflow-hidden rounded-10 border border-neutral-100 bg-neutral-50">
+          <Image
+            width={640}
+            height={480}
+            alt={image?.alt || title}
+            src={getUploadedImageUrl(image, "medium")}
+            sizes="(max-width: 1024px) 50vw, 320px"
+            className="aspect-[4/3] w-full object-cover"
+          />
+          <span className="absolute right-2 top-2 rounded-10 bg-black/55 px-2 py-1 text-xxs font-medium text-white backdrop-blur">
+            {title}
+          </span>
+
+          <Link
+            onClick={(e) => {
+              e.stopPropagation();
+            }}
+            href={getUploadedImageUrl(image, "medium") || ""}
+            className="absolute left-2 bottom-2  bg-brand-600/50 rounded-md   px-2 py-1 text-xxs font-medium text-white backdrop-blur "
+          >
+            {t("listing.download")}
+          </Link>
+        </div>
+      ) : (
+        <div className="relative flex aspect-[4/3] w-full items-center justify-center rounded-10 border border-dashed border-neutral-300 bg-neutral-50 px-2 text-center text-xxs text-neutral-400 md:text-xs">
+          <span className="absolute right-2 top-2 rounded-10 bg-white px-2 py-1 text-xxs font-medium text-neutral-500">
+            {title}
+          </span>
+          {emptyTitle}
+        </div>
+      )}
+    </div>
+  );
+};
 
 const PhotoUpgradeImagePair = ({ item, index }: PhotoUpgradeImagePairProps) => {
+  const t = useTranslations();
+
   const [image, selectedImage] = useState<PhotoUpgradeImage | null>(null);
   const oldImage = getOldImage(item);
   const newImage = getNewImage(item);
@@ -75,7 +83,9 @@ const PhotoUpgradeImagePair = ({ item, index }: PhotoUpgradeImagePairProps) => {
   return (
     <div className="property-card-shadow flex flex-col gap-3 rounded-20 bg-white p-3">
       <div className="flex items-center justify-between gap-3">
-        <p className="text-sm font-medium">عکس {index + 1}</p>
+        <p className="text-sm font-medium">
+          {t("owner.photoNumber", { number: index + 1 })}
+        </p>
         {item?.status_title ? (
           <StatusShower
             data={{
@@ -92,7 +102,7 @@ const PhotoUpgradeImagePair = ({ item, index }: PhotoUpgradeImagePairProps) => {
           cb={() => {
             selectedImage(oldImage);
           }}
-          title="عکس قبلی"
+          title={t("owner.photoBefore")}
           image={oldImage}
         />
         <ImageBox
@@ -100,9 +110,9 @@ const PhotoUpgradeImagePair = ({ item, index }: PhotoUpgradeImagePairProps) => {
             if (!hasDistinctNewImage) return;
             selectedImage(newImage);
           }}
-          title="عکس جدید"
+          title={t("owner.photoAfter")}
           image={hasDistinctNewImage ? newImage : null}
-          emptyTitle="هنوز آماده نشده"
+          emptyTitle={t("owner.notReadyYet")}
         />
       </div>
       <RemoteImageModal
@@ -111,7 +121,7 @@ const PhotoUpgradeImagePair = ({ item, index }: PhotoUpgradeImagePairProps) => {
           getUploadedImageUrl(image) ||
           "/assets/icons/shared/image_placeholder.svg"
         }
-        alt={image?.alt || `تصویر ${index + 1}`}
+        alt={image?.alt || t("owner.imageNumber", { number: index + 1 })}
         onHide={() => selectedImage(null)}
       />
     </div>

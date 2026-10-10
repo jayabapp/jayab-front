@@ -1,28 +1,29 @@
 "use client";
 
-import type { SelectedFiltersBarProps } from "@/types/components/modules/property-search-filters";
+import { sortDynamicFiltersInOrder } from "@/utils/constantss";
 import { useDiscoveryQueryReplace } from "@features/properties/hooks/useDiscoveryQueryReplace";
+import { zero_filter_remove_keys } from "@/utils/constantss";
+import { useCallback, useState } from "react";
 import { FILTER_ORDER_PARAM } from "@features/properties/lib/filter-order";
 import { parseFilterOrder } from "@features/properties/lib/filter-order";
+import { useTranslations } from "next-intl";
 import { filterOrderRank } from "@features/properties/lib/filter-order";
-import { parseIdList } from "@features/cities/lib/city-selection";
-import { zero_filter_remove_keys } from "@/utils/constantss";
-import { sortDynamicFiltersInOrder } from "@/utils/constantss";
 import { RegionButton } from "@modules/CitySelector";
 import { ContentImage } from "@elements/Image";
+import { parseIdList } from "@features/cities/lib/city-selection";
+
+import type { SelectedFiltersBarProps } from "@/types/components/modules/property-search-filters";
 import type { ReactNode } from "react";
-import { useCallback, useState } from "react";
 
 import SearchDateRangePicker from "./parts/DateRangePicker/SearchDateRangePicker.client";
 import SelectiveFilterChip from "./parts/SelectiveFilterChip.client";
-import updateDateRange from "./parts/DateRangePicker/updateDateRange";
 import RemovableFilterChip from "./parts/RemovableFilterChip";
 import numberWithCommas from "@/helpers/numberWithCommas";
+import updateDateRange from "./parts/DateRangePicker/updateDateRange";
 import FilterCounter from "./parts/FilterCounter.client";
 import SwiperSlide from "@elements/Carousel/SwiperSlide";
-import Swiper from "@elements/Carousel/Swiper.client";
-import _STRINGS from "@/utils/LocalStrings";
 import isEmpty from "lodash/isEmpty";
+import Swiper from "@elements/Carousel/Swiper.client";
 import moment from "moment-jalaali";
 import Modal from "@elements/Modal";
 
@@ -34,16 +35,28 @@ const rangeLabel = (
   lower: string | undefined,
   higher: string | undefined,
   unit: string,
+  words: { from: string; to: string },
 ) => {
-  const from = lower ? `${_STRINGS.FROM} ${numberWithCommas(lower)}` : "";
-  const to = higher ? `${_STRINGS.TO} ${numberWithCommas(higher)}` : "";
+  const from = lower ? `${words.from} ${numberWithCommas(lower)}` : "";
+  const to = higher ? `${words.to} ${numberWithCommas(higher)}` : "";
   return `${title} ${[from, to].filter(Boolean).join(" ")} ${unit}`.trim();
 };
 
 const RULE_FILTERS = [
-  { key: "party", title: _STRINGS.PARTY },
-  { key: "pet", title: _STRINGS.PET },
-];
+  { key: "party", title: "listing.party" },
+  { key: "pet", title: "listing.pet" },
+] as const;
+
+const DYNAMIC_FILTER_TITLES = {
+  PROPERTY_TYPE: "common.propertyType",
+  POOL_TYPE: "common.poolType",
+  PATTERN: "common.envPattern",
+  ENTERTAINMENT: "common.entertainment",
+  WELFARE: "common.welfare",
+  COOL_HEAT: "common.coolHeat",
+  KITCHEN: "listing.kitchen",
+  OWNERSHIP: "listing.ownership",
+} as const;
 
 const LEADING_DYNAMIC_KEY = "PROPERTY_TYPE";
 
@@ -55,13 +68,12 @@ const SelectedFiltersBar = ({
   setShowRegions,
   setFilterModalShow,
 }: SelectedFiltersBarProps) => {
+  const t = useTranslations();
+
   const replaceQuery = useDiscoveryQueryReplace();
   const regionsIds = parseIdList(query?.regions);
   const filterOrder = parseFilterOrder(query?.[FILTER_ORDER_PARAM]);
 
-  // FL-01: the date and guest chips open the same pickers used inside the
-  // filter panel, but scoped to this bar so a click works regardless of
-  // whether the panel/sheet happens to be mounted.
   const [dateEditorOpen, setDateEditorOpen] = useState(false);
   const [guestEditorOpen, setGuestEditorOpen] = useState(false);
 
@@ -81,12 +93,6 @@ const SelectedFiltersBar = ({
     replaceQuery(body);
   };
 
-  // Shared by the date and guest editors below: both edit the applied query
-  // directly (there is no draft/apply step in this bar, unlike the filter
-  // panel), and both may be called either with a next value or, like React's
-  // own state setter, with an updater reading the current one. A guest count
-  // dragged down to zero is dropped rather than persisted as `total_guests=0`,
-  // matching how `total_guests` is cleaned up when the filter panel applies.
   const setQueryFilters = useCallback(
     (
       next:
@@ -126,7 +132,13 @@ const SelectedFiltersBar = ({
           removeFiltersKeys={removeFiltersKeys}
           list={propertyTypes?.[key.toUpperCase()]}
           title={
-            (_STRINGS as Record<string, string>)?.[key.toUpperCase()] || ""
+            Object.hasOwn(DYNAMIC_FILTER_TITLES, key.toUpperCase())
+              ? t(
+                  DYNAMIC_FILTER_TITLES[
+                    key.toUpperCase() as keyof typeof DYNAMIC_FILTER_TITLES
+                  ],
+                )
+              : ""
           }
         />
       </SwiperSlide>
@@ -158,7 +170,7 @@ const SelectedFiltersBar = ({
         <SwiperSlide key="selected-bedrooms" className="!w-auto">
           <RemovableFilterChip
             onRemove={() => removeFiltersKeys(["total_bedrooms"])}
-            label={`${_STRINGS.ROOM_COUNT} : ${query?.total_bedrooms}`}
+            label={`${t("listing.roomCount")} : ${query?.total_bedrooms}`}
           />
         </SwiperSlide>
       ),
@@ -172,7 +184,7 @@ const SelectedFiltersBar = ({
           <RemovableFilterChip
             onRemove={() => removeFiltersKeys(["total_guests"])}
             onLabelClick={() => setGuestEditorOpen(true)}
-            label={`${_STRINGS.PPL_COUNT} : ${query?.total_guests}`}
+            label={`${t("common.pplCount")} : ${query?.total_guests}`}
           />
         </SwiperSlide>
       ),
@@ -186,7 +198,7 @@ const SelectedFiltersBar = ({
           <RemovableFilterChip
             onRemove={() => removeFiltersKeys(["checkout", "checkin"])}
             onLabelClick={() => setDateEditorOpen(true)}
-            label={`${_STRINGS.FROM} ${moment(query?.checkin).format(JALALI_DATE_FORMAT)} ${_STRINGS.TO} ${moment(query?.checkout).format(JALALI_DATE_FORMAT)}`}
+            label={`${t("common.from")} ${moment(query?.checkin).format(JALALI_DATE_FORMAT)} ${t("common.to")} ${moment(query?.checkout).format(JALALI_DATE_FORMAT)}`}
           />
         </SwiperSlide>
       ),
@@ -202,10 +214,11 @@ const SelectedFiltersBar = ({
               removeFiltersKeys(["max_commission", "min_commission"])
             }
             label={rangeLabel(
-              _STRINGS.COMMIS_JUST_PERC,
+              t("listing.commisJustPerc"),
               query?.min_commission,
               query?.max_commission,
               "%",
+              { from: t("common.from"), to: t("common.to") },
             )}
           />
         </SwiperSlide>
@@ -220,10 +233,11 @@ const SelectedFiltersBar = ({
           <RemovableFilterChip
             onRemove={() => removeFiltersKeys(["max_price", "min_price"])}
             label={rangeLabel(
-              _STRINGS.PRICE,
+              t("common.price"),
               query?.min_price,
               query?.max_price,
-              _STRINGS.TOMAN,
+              t("common.toman"),
+              { from: t("common.from"), to: t("common.to") },
             )}
           />
         </SwiperSlide>
@@ -240,10 +254,11 @@ const SelectedFiltersBar = ({
               removeFiltersKeys(["max_building_area", "min_building_area"])
             }
             label={rangeLabel(
-              _STRINGS.ROOM_SIZE,
+              t("listing.roomSize"),
               query?.min_building_area,
               query?.max_building_area,
-              _STRINGS.METER,
+              t("common.meter"),
+              { from: t("common.from"), to: t("common.to") },
             )}
           />
         </SwiperSlide>
@@ -256,7 +271,7 @@ const SelectedFiltersBar = ({
       node: (
         <SwiperSlide key="selected-discount" className="!w-auto">
           <RemovableFilterChip
-            label={_STRINGS.HAS_DISCOUNT}
+            label={t("listing.hasDiscount")}
             onRemove={() => removeFiltersKeys(["has_discount"])}
           />
         </SwiperSlide>
@@ -269,7 +284,7 @@ const SelectedFiltersBar = ({
       node: (
         <SwiperSlide key="selected-premium" className="!w-auto">
           <RemovableFilterChip
-            label={_STRINGS.PERMIUM_PROPS}
+            label={t("listing.permiumProps")}
             onRemove={() => removeFiltersKeys(["is_premium"])}
           />
         </SwiperSlide>
@@ -305,13 +320,15 @@ const SelectedFiltersBar = ({
           className={`filter-chip gap-0 px-1 ${query?.has_pool ? "filter-chip-active" : "filter-chip-idle"}`}
         >
           <span className="text-xs px-2">
-            {query?.has_pool === "0" ? _STRINGS.NO_POOL : _STRINGS.HAS_POOL}
+            {query?.has_pool === "0"
+              ? t("listing.noPool")
+              : t("listing.hasPool")}
           </span>
           {query?.has_pool ? (
             <span
               role="button"
               tabIndex={0}
-              aria-label={`${_STRINGS.REMOVE_FILTERS} ${_STRINGS.HAS_POOL}`}
+              aria-label={`${t("common.removeFilters")} ${t("listing.hasPool")}`}
               onKeyDown={(event) => {
                 if (event.key !== "Enter" && event.key !== " ") return;
                 event.preventDefault();
@@ -369,16 +386,15 @@ const SelectedFiltersBar = ({
               className="cursor-pointer w-3 h-3 shrink-0"
               src="/assets/icons/property/white_filter_icon.svg"
             />
-            <span className="text-white text-xs">{_STRINGS.OTHER_FILTERS}</span>
+            <span className="text-white text-xs">
+              {t("listing.otherFilters")}
+            </span>
           </button>
         </SwiperSlide>
 
         {orderedChips.map((chip) => chip.node)}
       </Swiper>
 
-      {/* FL-01: reopen the same date picker used inside the filter panel,
-          bound directly to the applied query so a change here is visible
-          immediately, the same way removing the chip is. */}
       <Modal show={dateEditorOpen} onHide={() => setDateEditorOpen(false)}>
         <SearchDateRangePicker
           setSelectedDay={(day) =>
@@ -400,16 +416,13 @@ const SelectedFiltersBar = ({
         />
       </Modal>
 
-      {/* FL-01: reopen the guest-count control, editing the applied query
-          directly instead of a draft, since this bar has no separate apply
-          step. */}
       <Modal show={guestEditorOpen} onHide={() => setGuestEditorOpen(false)}>
         <div className="flex w-full flex-col gap-3 p-4">
           <FilterCounter
             query={query}
-            queryKey="total_guests"
-            title={_STRINGS.PPL_COUNT}
             mobileFilters={query}
+            queryKey="total_guests"
+            title={t("common.pplCount")}
             setMobileFilters={setQueryFilters}
           />
           <button
@@ -417,7 +430,7 @@ const SelectedFiltersBar = ({
             onClick={() => setGuestEditorOpen(false)}
             className="filter-chip filter-chip-active w-full items-center justify-center"
           >
-            {_STRINGS.CONFIRM_GUESTS}
+            {t("common.confirmGuests")}
           </button>
         </div>
       </Modal>

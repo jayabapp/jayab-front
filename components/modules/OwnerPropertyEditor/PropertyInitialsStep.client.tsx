@@ -1,20 +1,23 @@
 "use client";
 
-import { emptyInitialsValues } from "@features/owner-property/mappers/property-draft.mapper";
 import { useOwnerPropertyStep } from "@features/owner-property/hooks/useOwnerPropertyStep";
 import { usePropertyDraftForm } from "@features/owner-property/hooks/usePropertyDraftForm";
+import { emptyInitialsValues } from "@features/owner-property/mappers/property-draft.mapper";
 import { toInitialsValues } from "@features/owner-property/mappers/property-draft.mapper";
-import type { OwnerPropertyRouteProps } from "@/types/components/modules/owner-property";
+import { useTranslations } from "next-intl";
 import { p2e } from "@/helpers/NumberConverter";
+
+import type { OwnerPropertyRouteProps } from "@/types/components/modules/owner-property";
 
 import PropertyInitialsFields from "./parts/PropertyInitialsFields.client";
 import PropertyStepFrame from "./parts/PropertyStepFrame.client";
-import _STRINGS from "@/utils/LocalStrings";
 
 const asNumber = (value: string | number | null) =>
   Number(p2e(`${value || ""}`));
 
 const PropertyInitialsStep = ({ propertyId }: OwnerPropertyRouteProps) => {
+  const t = useTranslations("common");
+
   const { draft, isLoading, onChange, values } = usePropertyDraftForm(
     propertyId,
     emptyInitialsValues,
@@ -48,11 +51,11 @@ const PropertyInitialsStep = ({ propertyId }: OwnerPropertyRouteProps) => {
   return (
     <PropertyStepFrame
       step="initials"
+      onSubmit={onSubmit}
       isPending={isPending}
       isLoading={isLoading}
-      onSubmit={onSubmit}
       propertyId={propertyId}
-      submitTitle={_STRINGS.ENTER_AND_MOVE_ON}
+      submitTitle={t("enterAndMoveOn")}
     >
       <PropertyInitialsFields
         values={values}

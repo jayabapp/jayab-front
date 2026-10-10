@@ -2,26 +2,29 @@
 
 /* eslint-disable react-hooks/set-state-in-effect -- Modal open/default-date transitions initialize a bounded month window. */
 
-import type { TReservationDateProps } from "@/types/components/modules/reservation-date-picker";
 import { useCallback, useEffect, useState } from "react";
+import { useTranslations } from "next-intl";
 import { ContentImage } from "@elements/Image";
 import { BtnLoading } from "@elements/Button";
 
+import type { TReservationDateProps } from "@/types/components/modules/reservation-date-picker";
+
 import ReservationCalendar from "./ReservationCalendar.client";
 import InfiniteScroll from "react-infinite-scroll-component";
-import _STRINGS from "@/utils/LocalStrings";
 import Button from "@elements/Button";
-import Modal from "@elements/Modal";
 import moment from "moment-jalaali";
+import Modal from "@elements/Modal";
 
 const ReservationDateModal = ({
-  onConfirm,
   show,
   onHide,
-  startDate = moment().toDate(),
-  defaultSpanDates,
+  onConfirm,
   forbiden_dates,
+  defaultSpanDates,
+  startDate = moment().toDate(),
 }: TReservationDateProps) => {
+  const t = useTranslations("reserve");
+
   const [months, setMonths] = useState<Date[]>([]);
   const [hasMore, setHasMore] = useState<boolean>(true);
   const [isInitialized, setIsInitialized] = useState<boolean>(false);
@@ -31,14 +34,12 @@ const ReservationDateModal = ({
   }>({ start: null, end: null });
 
   useEffect(() => {
-    if (defaultSpanDates?.start || defaultSpanDates?.end) {
-      setDateSpan({
+    if (defaultSpanDates?.start || defaultSpanDates?.end) setDateSpan({
         end: defaultSpanDates?.end || null,
         start: defaultSpanDates?.start || null,
       });
-    } else {
-      setDateSpan({ end: null, start: null });
-    }
+     else setDateSpan({ end: null, start: null });
+    
   }, [defaultSpanDates]);
 
   const initializeMonths = useCallback(() => {
@@ -131,9 +132,7 @@ const ReservationDateModal = ({
               {index == 0 ? (
                 <div className="flex lg:absolute right-12 bottom-2  px-4 md:px-0 text-neutral-500 text-sm items-center gap-2 ">
                   <div className="w-5 h-5 striped !bg-neutral-100   rounded-md"></div>
-                  <p className=" text-xs md:text-sm">
-                    {_STRINGS.RESERVED_DAYS}
-                  </p>
+                  <p className=" text-xs md:text-sm">{t("reservedDays")}</p>
                 </div>
               ) : (
                 <></>
@@ -145,13 +144,11 @@ const ReservationDateModal = ({
 
       {!!onConfirm ? (
         <Button
+        width="w-full"
           onClick={() => onConfirm(dateSpan)}
           disabled={!dateSpan?.start || !dateSpan?.end}
-          width="w-full"
+          title={!!dateSpan?.end ? t("selectDateSpan") : t("selectDate")}
           containerClass=" absolute z-50 bottom-4 mx-auto w-[calc(100%-2rem)] left-4 right-4 "
-          title={
-            !!dateSpan?.end ? _STRINGS.SELECT_DATE_SPAN : _STRINGS.SELECT_DATE
-          }
         />
       ) : (
         <></>

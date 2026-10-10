@@ -1,8 +1,8 @@
 import type { HeaderBrandProps } from "@/types/components/modules/site-header";
 import { ContentImage } from "@elements/Image";
 
-import _STRINGS from "@/utils/LocalStrings";
 import Link from "next/link";
+import { useTranslations } from "next-intl";
 
 const HeaderBrand = ({
   alwaysShowTitle,
@@ -10,6 +10,8 @@ const HeaderBrand = ({
   asLink,
   markOnly = false,
 }: HeaderBrandProps) => {
+  const t = useTranslations("common");
+
   const mark = (
     <div className="flex items-center shrink-0 gap-1 justify-center">
       <ContentImage
@@ -34,7 +36,7 @@ const HeaderBrand = ({
   return (
     <Link
       href="/"
-      title={_STRINGS.JAYAB}
+      title={t("jayab")}
       className={`flex shrink-0 items-center gap-1.5 ${markOnly ? "size-8" : "h-10"}`}
     >
       {mark}

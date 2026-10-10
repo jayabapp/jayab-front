@@ -1,15 +1,18 @@
 "use client";
 
-import type { PropertyAuthorizationStatusProps } from "@/types/components/modules/property-grid";
+import { useTranslations } from "next-intl";
 import { ContentImage } from "@elements/Image";
 import { useRouter } from "next/navigation";
 
-import _STRINGS from "@/utils/LocalStrings";
+import type { PropertyAuthorizationStatusProps } from "@/types/components/modules/property-grid";
+
 
 const PropertyAuthorizationStatus = ({
   data,
   isAuthorized,
 }: PropertyAuthorizationStatusProps) => {
+  const t = useTranslations("listing");
+
   const router = useRouter();
   const canOpenLicense = Boolean(data?.id) && !isAuthorized;
 
@@ -38,7 +41,7 @@ const PropertyAuthorizationStatus = ({
       <span
         className={`${isAuthorized ? "" : "text-danger-500"} shrink-0 text-xs`}
       >
-        {isAuthorized ? _STRINGS.VERIFIED : _STRINGS.NOT_VERIFIED}
+        {isAuthorized ? t("verified") : t("notVerified")}
       </span>
     </button>
   );

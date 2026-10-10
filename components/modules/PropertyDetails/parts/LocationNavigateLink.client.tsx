@@ -2,12 +2,11 @@
 
 import { googleDirectionsHref } from "@/helpers/map.link";
 import { useSyncExternalStore } from "react";
+import { useTranslations } from "next-intl";
 
 import type { LocationNavigateLinkProps } from "@/types/components/modules/property-details";
 
 import mapRedirectHelper from "@/helpers/map.link";
-
-import _STRINGS from "@/utils/LocalStrings";
 
 const subscribe = () => () => {};
 
@@ -16,6 +15,8 @@ const LocationNavigateLink = ({
   longitude,
   className = "",
 }: LocationNavigateLinkProps) => {
+  const t = useTranslations("listing");
+
   const href = useSyncExternalStore(
     subscribe,
     () => mapRedirectHelper({ latitude, longitude }),
@@ -29,7 +30,7 @@ const LocationNavigateLink = ({
       rel="noopener noreferrer"
       className={`flex h-11 cursor-pointer items-center justify-center rounded-full border border-neutral-300 px-5 text-sm font-medium text-neutral-900 transition-colors hover:bg-neutral-50 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-500 focus-visible:ring-offset-2 ${className}`}
     >
-      {_STRINGS.NAVIGATE}
+      {t("navigate")}
     </a>
   );
 };

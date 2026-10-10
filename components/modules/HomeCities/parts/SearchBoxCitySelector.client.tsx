@@ -1,20 +1,20 @@
 "use client";
 
-import type { TSearchBoxProps } from "@/types/components/elements/LinearData";
-import { CityModal } from "@modules/CitySelector";
-import { ContentImage } from "@elements/Image";
 import { Suspense, useState } from "react";
+import { useTranslations } from "next-intl";
+import { ContentImage } from "@elements/Image";
+import { CityModal } from "@modules/CitySelector";
+
+import type { TSearchBoxProps } from "@/types/components/elements/LinearData";
 
 const SeachBoxCitySelector = ({ options, onSubmitCB }: TSearchBoxProps) => {
+  const t = useTranslations("search");
+
   const [showCities, setShowCities] = useState(false);
   const [title, setTitle] = useState("");
-  const onHideCities = () => {
-    setShowCities(false);
-  };
-  const onShowCities = () => {
-    setShowCities(true);
-  };
-
+  const onHideCities = () => setShowCities(false)
+  const onShowCities = () => setShowCities(true)
+  
   return (
     <div
       className={` px-4 w-full relative flex cursor-pointer items-center shrink-0  ${options?.cotainerClass || ""} `}
@@ -27,16 +27,16 @@ const SeachBoxCitySelector = ({ options, onSubmitCB }: TSearchBoxProps) => {
         <div className=" rounded-md   bg-neutral-50  size-10  flex items-center  justify-center  border ">
           <ContentImage
             alt=""
-            height={20}
             width={20}
+            height={20}
             src="/assets/icons/home/home_location.svg"
             className={` size-5 aspect-auto ${!!title ? "   text-black opacity-70 " : "opacity-40"}`}
           />{" "}
         </div>
 
         <div className="flex flex-col items-start justify-start gap-1 ">
-          <p className="text-sm font-bold">لیست شهرها</p>
-          <p className="text-xxs ">لیست تمامی شهرها و استان ها</p>
+          <p className="text-sm font-bold">{t("cityListTitle")}</p>
+          <p className="text-xxs ">{t("cityListHint")}</p>
         </div>
 
         <ContentImage
@@ -48,7 +48,6 @@ const SeachBoxCitySelector = ({ options, onSubmitCB }: TSearchBoxProps) => {
         />
       </div>
       <Suspense>
-        {" "}
         <CityModal
           isHome
           show={showCities}

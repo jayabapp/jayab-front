@@ -1,9 +1,13 @@
+import { useTranslations } from "next-intl";
+
 import type { TicketMessageProps } from "@/types/features/support/components";
 
-import _STRINGS from "@/utils/LocalStrings";
 import moment from "moment-jalaali";
 
-const TicketMessage = ({ item }: TicketMessageProps) => (
+const TicketMessage = ({ item }: TicketMessageProps) => {
+  const t = useTranslations("profile");
+
+  return (
   <div
     className={`w-full rounded-lg p-4 text-white ${
       item?.by_admin
@@ -12,7 +16,7 @@ const TicketMessage = ({ item }: TicketMessageProps) => (
     }`}
   >
     {item?.by_admin ? (
-      <p className="pb-2 text-sm text-neutral-300">{_STRINGS.ADMIN_RESPOND}</p>
+      <p className="pb-2 text-sm text-neutral-300">{t("adminRespond")}</p>
     ) : null}
     <div className="flex items-center gap-2">
       <p className="text-sm font-light">
@@ -30,5 +34,6 @@ const TicketMessage = ({ item }: TicketMessageProps) => (
     </div>
   </div>
 );
+};
 
 export default TicketMessage;

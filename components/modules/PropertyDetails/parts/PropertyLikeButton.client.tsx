@@ -1,16 +1,18 @@
 "use client";
 
-import type { PropertyLikeButtonProps } from "@/types/components/modules/property-details";
-import { useTogglePropertyLike } from "@features/properties/hooks/useTogglePropertyLike";
 import { useAuthStore, useStoreParams } from "@/store";
+import { useTogglePropertyLike } from "@features/properties/hooks/useTogglePropertyLike";
+import { useTranslations } from "next-intl";
 import { ContentImage } from "@elements/Image";
 
-import _STRINGS from "@/utils/LocalStrings";
+import type { PropertyLikeButtonProps } from "@/types/components/modules/property-details";
 
 const PropertyLikeButton = ({
   onCountChange,
   propertyId,
 }: PropertyLikeButtonProps) => {
+  const t = useTranslations("listing");
+
   const { likes } = useStoreParams((state) => state);
   const { isLogin } = useAuthStore((state) => state);
   const { mutate, isPending } = useTogglePropertyLike(propertyId);
@@ -32,7 +34,7 @@ const PropertyLikeButton = ({
       type="button"
       onClick={onToggle}
       aria-pressed={isLiked}
-      aria-label={_STRINGS.LIKES}
+      aria-label={t("likes")}
       className="w-5 cursor-pointer h-5 aspect-square"
     >
       <ContentImage

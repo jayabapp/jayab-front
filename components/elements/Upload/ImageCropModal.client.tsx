@@ -1,20 +1,22 @@
 "use client";
 
-import type { ImageCropModalProps } from "@/types/components/elements/upload";
 import { RatioIcon43, RatioIcon52, RatioIconFree } from "./ratio-icons";
+import { useEffect, useRef, useState } from "react";
 import { RatioIcon21, RatioIcon34 } from "./ratio-icons";
 import { RatioIcon11, RatioIcon12 } from "./ratio-icons";
-import type { CropperRef } from "react-advanced-cropper";
-import { useEffect, useRef, useState } from "react";
-import { Cropper } from "react-advanced-cropper";
+import { useTranslations } from "next-intl";
 import { ContentImage } from "@elements/Image";
+import { Cropper } from "react-advanced-cropper";
 import { colors } from "@/theme/colors";
 
+import type { ImageCropModalProps } from "@/types/components/elements/upload";
+import type { CropperRef } from "react-advanced-cropper";
+
 import FixedBottomContainer from "@elements/FixedBottomContainer";
-import "react-advanced-cropper/dist/themes/compact.css";
-import _STRINGS from "@/utils/LocalStrings";
 import Button from "@elements/Button";
 import Modal from "@elements/Modal";
+
+import "react-advanced-cropper/dist/themes/compact.css";
 
 const aspectRatioList = [
   { value: null, icon: RatioIconFree },
@@ -44,6 +46,8 @@ const EditImageModal = ({
   onComplete,
   isUploading,
 }: ImageCropModalProps) => {
+  const t = useTranslations("common");
+
   const cropperRef = useRef<CropperRef>(null);
   const mountedRef = useRef(true);
   const resetTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
@@ -98,9 +102,7 @@ const EditImageModal = ({
         parentClass: "bg-white",
       }}
       show={!!imageUrl}
-      onHide={() => {
-        onHide();
-      }}
+      onHide={() => onHide()}
     >
       <div className="relative py-4 px-4 md:p-20 w-full h-[90dvh] flex flex-col items-center justify-center">
         <div className="flex w-full   relative  h-[60dvh] items-center justify-center">
@@ -155,7 +157,7 @@ const EditImageModal = ({
             width={24}
             height={24}
             src={"/assets/icons/uploader/flip_icon.svg"}
-            className=" scale-[-1] rotate-90 cursor-pointer   "
+            className="scale-[-1] rotate-90 cursor-pointer"
             onClick={() => cropperRef?.current?.flipImage(true)}
           />
           <ContentImage
@@ -169,12 +171,11 @@ const EditImageModal = ({
               })
             }
             src={"/assets/icons/uploader/rotate_icon.svg"}
-            className=" cursor-pointer    "
+            className="cursor-pointer"
           />
 
           <div className="text-white  text-xs">
             <p onClick={() => reset()} className="cursor-pointer">
-              {" "}
               reset
             </p>
           </div>
@@ -189,7 +190,7 @@ const EditImageModal = ({
               })
             }
             src={"/assets/icons/uploader/rotate_icon.svg"}
-            className="  scale-x-[-1] cursor-pointer r  "
+            className="scale-x-[-1] cursor-pointer r"
           />
           <ContentImage
             alt=""
@@ -207,12 +208,10 @@ const EditImageModal = ({
           <Button
             containerClass="w-full"
             onClick={() => {
-              if (!isUploading && cropperRef?.current) {
-                convertCanvasToFile();
-              }
+              if (!isUploading && cropperRef?.current) convertCanvasToFile();
             }}
-            title={_STRINGS.SUBMIT}
             width="w-full"
+            title={t("submit")}
             loading={isUploading}
             disabled={isUploading}
           />
@@ -220,8 +219,8 @@ const EditImageModal = ({
           <Button
             color="danger"
             width="w-full"
-            title={"فعلا نه"}
             variant="outline"
+            title={t("notNow")}
             loading={isUploading}
             disabled={isUploading}
             containerClass="w-full"

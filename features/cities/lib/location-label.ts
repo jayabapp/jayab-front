@@ -6,8 +6,6 @@ import {
 
 import type { NewCitiesListDto } from "@/api_services/city/city.interface";
 
-import _STRINGS from "@/utils/LocalStrings";
-
 type LocationEntry = {
   id?: number | string | null;
   title?: string;
@@ -23,7 +21,6 @@ type LocationEntries = {
 };
 
 const LOCATION_QUERY_KEYS = ["cities", "provinces", "regions"] as const;
-const LABEL_SEPARATOR = "، ";
 
 export const pickLocationQuery = (
   source?: Record<string, unknown> | null,
@@ -58,22 +55,28 @@ export const isSameLocationPath = (
 ): boolean =>
   !!stored && !!pathname && cleanPath(stored) === cleanPath(pathname);
 
-export const buildLocationLabel = ({
-  cities = [],
-  provinces = [],
-  regions = [],
-}: LocationEntries): string => {
+export type LocationWords = {
+  local: string;
+  province: string;
+  city: string;
+  separator: string;
+};
+
+export const buildLocationLabel = (
+  { cities = [], provinces = [], regions = [] }: LocationEntries,
+  words: LocationWords,
+): string => {
   if (regions.length === 1)
     return [regions[0]?.title, regions[0]?.parent_title || cities[0]?.title]
       .filter(Boolean)
-      .join(LABEL_SEPARATOR);
-  if (regions.length > 1) return `${regions.length} ${_STRINGS.LOCAL}`;
+      .join(words.separator);
+  if (regions.length > 1) return `${regions.length} ${words.local}`;
   if (cities.length === 1 && provinces.length === 0)
     return cities[0]?.title ?? "";
   if (provinces.length === 1 && cities.length === 0)
-    return `${_STRINGS.PROVINCE} ${provinces[0]?.title}`;
+    return `${words.province} ${provinces[0]?.title}`;
   if (cities.length + provinces.length > 1)
-    return `${cities.length + provinces.length} ${_STRINGS.CITY}`;
+    return `${cities.length + provinces.length} ${words.city}`;
   return "";
 };
 

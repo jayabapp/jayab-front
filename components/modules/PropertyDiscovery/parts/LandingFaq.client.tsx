@@ -1,8 +1,10 @@
 "use client";
 
-import type { LandingFaqProps } from "@/types/components/modules/property-discovery";
+import { useTranslations } from "next-intl";
 import { chunkArray } from "@/helpers/chunk-array.helper";
 import { useMemo } from "react";
+
+import type { LandingFaqProps } from "@/types/components/modules/property-discovery";
 
 import SimpleAccordion from "@elements/Accordion/SimpleAccordion.client";
 import DOMPurify from "isomorphic-dompurify";
@@ -14,6 +16,8 @@ const sanitizeAnswer = (answer: string) =>
   DOMPurify.sanitize(answer, { FORCE_BODY: true, SANITIZE_DOM: true });
 
 const LandingFaq = ({ data }: LandingFaqProps) => {
+  const t = useTranslations("content");
+
   const columns = useMemo(
     () =>
       chunkArray(
@@ -30,7 +34,7 @@ const LandingFaq = ({ data }: LandingFaqProps) => {
   return (
     <section className="w-full" aria-labelledby="landing-faq-title">
       <h2 id="landing-faq-title" className="mb-3 text-lg font-bold">
-        سوالات متداول
+        {t("faq")}
       </h2>
       <div className="grid grid-cols-1 md:grid-cols-2 mt-2 gap-3">
         {columns?.map((column, index) => (

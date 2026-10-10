@@ -1,31 +1,30 @@
 "use client";
 
-import {
-  hasLocationQuery,
-  isSameLocationPath,
-  pickLocationQuery,
-} from "@features/cities/lib/location-label";
+import { useEffect, useMemo, useState } from "react";
 import { usePropertyDiscoveryFilters } from "@features/properties/hooks/usePropertyDiscoveryFilters";
 import { usePropertyOptionGroups } from "@features/properties/hooks/usePropertyOptionGroups";
-import type { LandingDiscoveryProps } from "@/types/components/modules/property-discovery";
+import { CityModal, RegionModal } from "@modules/CitySelector";
 import { useUrlCityWithRegions } from "@features/cities/hooks/useUrlCityWithRegions";
-import type { ChildCities } from "@/types/components/modules/property-discovery";
-import { landingQueryDefaults } from "@features/properties/lib/landing-filters";
 import { SpecialFilterButtons } from "@modules/PropertySearchFilters";
+import { landingQueryDefaults } from "@features/properties/lib/landing-filters";
 import { PropertyFilterForm } from "@modules/PropertySearchFilters";
 import { SelectedFiltersBar } from "@modules/PropertySearchFilters";
+import {isSameLocationPath} from "@features/cities/lib/location-label";
 import { PropertySortMenu } from "@modules/PropertySearchFilters";
+import {pickLocationQuery} from "@features/cities/lib/location-label";
+import { useTranslations } from "next-intl";
+import {hasLocationQuery} from "@features/cities/lib/location-label";
 import { FilterApplyBar } from "@modules/PropertySearchFilters";
-import { CityModal, RegionModal } from "@modules/CitySelector";
-import { useEffect, useMemo, useState } from "react";
-import { usePathname } from "next/navigation";
 import { useCitiesStore } from "@/store";
+import { usePathname } from "next/navigation";
+
+import type { LandingDiscoveryProps } from "@/types/components/modules/property-discovery";
+import type { ChildCities } from "@/types/components/modules/property-discovery";
 
 import SingleProductBreadCrumb from "@elements/Breadcrumbs/SingleProductBreadcrumb.client";
 import DiscoveryFilterModal from "./parts/DiscoveryFilterModal.client";
 import DiscoveryResults from "./parts/DiscoveryResults.client";
 import LandingContent from "./parts/LandingContent";
-import _STRINGS from "@/utils/LocalStrings";
 import throttle from "lodash/throttle";
 
 const SIDEBAR_HEIGHT = "calc(100dvh - 90px)";
@@ -33,6 +32,8 @@ const SHADOW_SCROLL_THRESHOLD = 20;
 const SCROLL_THROTTLE_MS = 100;
 
 const LandingDiscovery = ({ devices, landing }: LandingDiscoveryProps) => {
+  const t = useTranslations();
+
   const [modalCityWithRegions, setCityWithRegions] =
     useState<ChildCities | null>(null);
   const [filterModalShow, setFilterModalShow] = useState(false);
@@ -73,10 +74,10 @@ const LandingDiscovery = ({ devices, landing }: LandingDiscoveryProps) => {
 
   const breadCrumbs = useMemo(
     () => [
-      { title: _STRINGS.HOME, link: "/" },
-      { title: landing?.content?.title || _STRINGS.ADDS, link: "" },
+      { title: t("common.home"), link: "/" },
+      { title: landing?.content?.title || t("header.listings"), link: "" },
     ],
-    [landing?.content?.title],
+    [landing?.content?.title, t],
   );
 
   const handleScroll = useMemo(
@@ -131,7 +132,7 @@ const LandingDiscovery = ({ devices, landing }: LandingDiscoveryProps) => {
       <div className="app-container !px-0 md:!px-10 2xl:px-[9%] !pt-[7.5rem] lg:!pt-20 !relative z-2">
         <div className="grid grid-cols-12 col-span-12">
           <aside
-            aria-label={_STRINGS.FILTERS}
+            aria-label={t("listing.filters")}
             style={{ height: SIDEBAR_HEIGHT }}
             className="surface-panel col-span-3 hidden flex-col justify-between overflow-hidden lg:sticky lg:top-20 lg:flex"
           >

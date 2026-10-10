@@ -12,6 +12,7 @@ import { toast } from "sonner";
 import ProfileImageModal from "@features/auth/components/ProfileImageModal";
 import "react-advanced-cropper/dist/style.css";
 import Image from "next/image";
+import { useTranslations } from "next-intl";
 
 const MainUploader = ({
   item,
@@ -26,6 +27,8 @@ const MainUploader = ({
   type = "image",
   containerClass,
 }: UploadFieldProps) => {
+  const t = useTranslations("common");
+
   const imagePickerRef = useRef<HTMLInputElement>(null);
   const [loading, setLoading] = useState(false);
   const [show, setShow] = useState(false);
@@ -79,9 +82,9 @@ const MainUploader = ({
     const file = target?.files ? target?.files[0] : null;
     if (!file) return;
     if (type == "image" && !file.type?.includes("image/"))
-      return toast.error("لطفا از فایل تصویر استفاده نمایید");
+      return toast.error(t("useImageFile"));
     if (type == "image" && file.name.split(".")[1] == "jfif")
-      return toast.error("لطفا از فایل تصویر درست استفاده نمایید");
+      return toast.error(t("useValidImageFile"));
     else {
       if (selectedFile) URL.revokeObjectURL(selectedFile);
       setselectedFile(URL.createObjectURL(file));
@@ -109,7 +112,7 @@ const MainUploader = ({
           <Image
             width={24}
             height={24}
-            alt="تغییر تصویر"
+            alt={t("changeImage")}
             src="/assets/icons/uploader/uploader_camera.svg"
           />
         </div>
@@ -142,7 +145,7 @@ const MainUploader = ({
             <Image
               width={32}
               height={32}
-              alt="انتخاب تصویر"
+              alt={t("chooseImage")}
               className="w-8 opacity-70"
               src="/assets/images/uploader/uploader_placeholder.png"
             />
@@ -183,7 +186,7 @@ const MainUploader = ({
               } `}
             >
               <Image
-                alt={title || "تصویر پروفایل"}
+                alt={title || t("profilePhoto")}
                 src={
                   typeof item === "string"
                     ? item
@@ -205,7 +208,7 @@ const MainUploader = ({
                 <Image
                   width={20}
                   height={20}
-                  alt="حذف تصویر"
+                  alt={t("removeImage")}
                   src="/assets/icons/uploader/faded_x_circle.svg"
                 />
               </div>

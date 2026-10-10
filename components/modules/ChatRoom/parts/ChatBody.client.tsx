@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useRef } from "react";
+import { useTranslations } from "next-intl";
 import { useChatStore } from "@/store";
 
 import type { ChatBodyProps } from "@/types/components/modules/chat";
@@ -16,6 +17,8 @@ const ChatBody = ({
   singleChatData,
   isFetchingNextPage,
 }: ChatBodyProps) => {
+  const t = useTranslations("chat");
+
   const isTyping = useChatStore((state) => state.isTyping);
   const scrollContainerRef = useRef<HTMLDivElement>(null);
   const previousLengthRef = useRef(0);
@@ -58,7 +61,7 @@ const ChatBody = ({
         {isFetchingNextPage ? (
           <div
             className="col-span-full flex flex-col gap-2"
-            aria-label="در حال دریافت پیام‌های قبلی"
+            aria-label={t("loadingPrevious")}
           >
             <div className="h-12 w-1/2 animate-pulse rounded-xl bg-neutral-200" />
             <div className="mr-auto h-12 w-2/5 animate-pulse rounded-xl bg-white" />

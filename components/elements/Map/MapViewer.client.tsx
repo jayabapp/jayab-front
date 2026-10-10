@@ -2,13 +2,13 @@
 
 import { useEffect, useState } from "react";
 import { createPinElement } from "./createPinElement";
+import { useTranslations } from "next-intl";
 
 import type { NeshanMapInstance } from "@/types/components/elements/map";
 import type { MapViewerProps } from "@/types/components/elements/map";
 
 import maplibregl from "@neshan-maps-platform/maplibre-sdk";
 import NeshanMap from "./NeshanMap.client";
-import _STRINGS from "@/utils/LocalStrings";
 
 const VIEWER_ZOOM = 16;
 
@@ -19,6 +19,8 @@ const MapViewer = ({
   jumpToGivenPlace,
   businessMarkersData,
 }: MapViewerProps) => {
+  const t = useTranslations("common");
+
   const [map, setMap] = useState<NeshanMapInstance | null>(null);
   const [initialCenter] = useState<[number, number]>(() => [
     center[0],
@@ -45,13 +47,13 @@ const MapViewer = ({
   return (
     <div className={`map-wrap relative ${containerClass ?? ""}`}>
       <NeshanMap
-        cooperativeGestures
         onError={onError}
-        onMapReady={setMap}
         zoom={VIEWER_ZOOM}
+        cooperativeGestures
+        onMapReady={setMap}
         center={initialCenter}
-        ariaLabel={_STRINGS.MAP_ARIA_LABEL}
         className="map size-full"
+        ariaLabel={t("mapAriaLabel")}
       />
     </div>
   );

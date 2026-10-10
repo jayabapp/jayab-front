@@ -214,3 +214,9 @@ export type TStepMarkerProps = {
   index: number;
   color: TTimelineColor;
 };
+
+export type TSurrounding = {
+  icon: IconName;
+  label: string;
+  value: string;
+};

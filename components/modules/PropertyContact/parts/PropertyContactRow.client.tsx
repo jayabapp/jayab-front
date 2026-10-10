@@ -4,6 +4,8 @@ import { isIOS, isMacOs, isWindows } from "react-device-detect";
 import { getPropertyImageUrl } from "@features/properties/mappers/property-image.mapper";
 import { usePropertyContact } from "@features/properties/hooks/usePropertyContact";
 import { trackListingEvent } from "@/helpers/listingAnalytics";
+import { useListSeparator } from "@hooks/useListSeparator";
+import { useTranslations } from "next-intl";
 import { buildSmsHref } from "@features/reservations/lib/contact-prefill";
 import { ContentImage } from "@elements/Image";
 import { useState } from "react";
@@ -12,7 +14,6 @@ import { Icon } from "@elements/Icon";
 import type { PropertyContactRowProps } from "@/types/components/modules/property-contact";
 
 import maskPhoneNumber from "@/helpers/maskPhoneNumber";
-import _STRINGS from "@/utils/LocalStrings";
 import Notify from "@elements/Toast";
 
 const OWNER_AVATAR_FALLBACK = "/assets/images/add/wall_e_lover.png";
@@ -29,6 +30,9 @@ const PropertyContactRow = ({
   propertySlug,
   isPropertyExpired,
 }: PropertyContactRowProps) => {
+  const t = useTranslations();
+  const sep = useListSeparator();
+
   const [showNumber, setShowNumber] = useState(false);
   const { mutate } = usePropertyContact();
   const number = data?.assistant_mobile_number;
@@ -55,7 +59,7 @@ const PropertyContactRow = ({
   const copyNumber = async () => {
     if (!navigator?.clipboard) return;
     await navigator.clipboard.writeText(number);
-    Notify({ type: "success", body: _STRINGS.NUMBER_COPIED });
+    Notify({ type: "success", body: t("reserve.numberCopied") });
   };
 
   const hasOwnerAvatar = !!image && !!data?.is_owner;
@@ -67,7 +71,7 @@ const PropertyContactRow = ({
         <button
           type="button"
           onClick={() => void copyNumber()}
-          aria-label={`${_STRINGS.COPY_NUMBER} ${number}`}
+          aria-label={`${t("reserve.copyNumber")} ${number}`}
           className="flex h-10 cursor-pointer items-center gap-2 px-2 text-base font-semibold tracking-wider text-brand-700"
         >
           {number}
@@ -83,7 +87,7 @@ const PropertyContactRow = ({
           }}
           className={`${ACTION_CLASS} border border-neutral-200 bg-white text-neutral-900 hover:bg-neutral-50`}
         >
-          {_STRINGS.SHOW_FULL_NUMBER}
+          {t("reserve.showFullNumber")}
         </button>
       );
 
@@ -96,7 +100,7 @@ const PropertyContactRow = ({
           className={`${ACTION_CLASS} border border-neutral-200 bg-white text-neutral-900 hover:bg-neutral-50`}
         >
           <Icon name="sms" size={20} />
-          {_STRINGS.SMS}
+          {t("common.sms")}
         </button>
       );
 
@@ -107,7 +111,7 @@ const PropertyContactRow = ({
         className={`${ACTION_CLASS} bg-brand-600 text-white hover:bg-brand-700`}
       >
         <Icon name="phone" size={20} />
-        {_STRINGS.CALL}
+        {t("common.call")}
       </button>
     );
   };
@@ -129,8 +133,9 @@ const PropertyContactRow = ({
         />
         <div className="flex min-w-0 flex-col items-start gap-1">
           <p className="truncate text-sm text-neutral-900">
-            {data?.assistant_full_name}،{" "}
-            {data?.is_owner ? _STRINGS.HOST : _STRINGS.OWNER_ASSIST}
+            {data?.assistant_full_name}
+            {sep}
+            {data?.is_owner ? t("common.host") : t("reserve.ownerAssist")}
           </p>
           <p className="text-sm text-neutral-500">{maskPhoneNumber(number)}</p>
         </div>

@@ -1,5 +1,6 @@
-import type { PropertyGridProps } from "@/types/components/modules/property-grid";
 import { DEFAULT_GRID_CLASS } from "@/utils/constantss";
+
+import type { PropertyGridProps } from "@/types/components/modules/property-grid";
 
 import PropertyGridItems from "./PropertyGridItems";
 
@@ -12,8 +13,8 @@ const PropertyGrid = ({
 }: PropertyGridProps) => (
   <div className={className}>
     <PropertyGridItems
-      banners={banners}
       data={data}
+      banners={banners}
       devices={devices}
       searchParams={searchParams}
     />

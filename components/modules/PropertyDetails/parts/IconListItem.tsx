@@ -1,7 +1,8 @@
-import type { IconListItemProps } from "@/types/components/modules/property-details";
 
 import { ContentImage } from "@elements/Image";
 import { Icon } from "@elements/Icon";
+
+import type { IconListItemProps } from "@/types/components/modules/property-details";
 
 const IconListItem = ({
   image,

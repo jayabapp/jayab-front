@@ -1,3 +1,5 @@
+import { useTranslations } from "next-intl";
+
 import type { ContentQuestionCommentProps } from "@/types/components/modules/blog";
 
 import moment from "moment-jalaali";
@@ -6,6 +8,8 @@ import Image from "next/image";
 moment.loadPersian();
 
 export const CommentComponent = ({ item }: ContentQuestionCommentProps) => {
+  const t = useTranslations("content");
+
   return (
     <div className="w-full flex flex-col ">
       <div className=" w-full flex flex-col  gap-4 p-3  border border-secondary-400 rounded-xl">
@@ -19,9 +23,9 @@ export const CommentComponent = ({ item }: ContentQuestionCommentProps) => {
               className="w-6 h-6  opacity-60"
               src="/assets/icons/profile/profile_holder.svg"
             />{" "}
-            <p className="text-sm  text-secondary-600 ">{item?.author_name}</p>
+            <p className="text-sm text-secondary-600 ">{item?.author_name}</p>
           </div>
-          <div className="  flex  items-center gap-2 ">
+          <div className="flex items-center gap-2">
             <Image
               alt=""
               width={20}
@@ -29,7 +33,7 @@ export const CommentComponent = ({ item }: ContentQuestionCommentProps) => {
               className="w-5 h-5 "
               src={"/assets/icons/blogs/calendar.svg"}
             />
-            <p className=" text-xs md:text-sm  text-secondary-700 ">
+            <p className="text-xs md:text-sm text-secondary-700 ">
               {moment(item.created_at).format("jDD jMMMM jYYYY")}
             </p>
           </div>
@@ -42,7 +46,7 @@ export const CommentComponent = ({ item }: ContentQuestionCommentProps) => {
             alt=""
             width={16}
             height={16}
-            className="!w-4 shrink-0  aspect-square"
+            className="!w-4 shrink-0 aspect-square"
             src="/assets/icons/contents/arrow_curved_up.svg"
           />
           <div className="p-6 w-full flex flex-col gap-4 bg-secondary-200 rounded-10 ">
@@ -55,7 +59,7 @@ export const CommentComponent = ({ item }: ContentQuestionCommentProps) => {
                   className="w-6 h-6  opacity-60"
                   src="/assets/icons/profile/profile_holder.svg"
                 />
-                <p className="text-sm text-neutral-400 ">پاسخ ادمین</p>
+                <p className="text-sm text-neutral-400 ">{t("adminReply")}</p>
               </div>
               <div className="  flex  items-center gap-2 ">
                 <Image

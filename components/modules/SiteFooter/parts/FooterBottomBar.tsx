@@ -4,10 +4,10 @@ import { ContentImage } from "@elements/Image";
 
 import type { FooterBottomBarProps } from "@/types/components/modules/site-footer";
 
-import _STRINGS from "@/utils/LocalStrings";
 import Link from "next/link";
 
 const FooterBottomBar = ({ downloadLinks }: FooterBottomBarProps) => {
+  const tc = useTranslations("common");
   const t = useTranslations("footer");
 
   return (
@@ -19,7 +19,7 @@ const FooterBottomBar = ({ downloadLinks }: FooterBottomBarProps) => {
               <Link
                 href="/"
                 prefetch={false}
-                title={_STRINGS.JAYAB}
+                title={tc("jayab")}
                 className="text-blue-500 underline underline-offset-2"
               >
                 {chunks}

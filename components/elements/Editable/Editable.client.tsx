@@ -1,18 +1,21 @@
 "use client";
 
-import { ContentImage } from "@elements/Image";
 import { useEffect, useState } from "react";
+import { useTranslations } from "next-intl";
+import { ContentImage } from "@elements/Image";
 import { getCookie } from "cookies-next";
 
 const Editable = ({
-  contentId,
   children,
-  containerClass,
-  isParent,
-  editIconClass,
   isBanner,
+  isParent,
+  contentId,
+  editIconClass,
+  containerClass,
   ...props
 }: any) => {
+  const t = useTranslations("common");
+
   const url = `${process?.env?.NEXT_PUBLIC_PANEL_URL}${
     isParent
       ? "/content-categories/edit/"
@@ -33,7 +36,7 @@ const Editable = ({
       <div {...props}>
         {isAdmin ? (
           <a
-            title={"ویرایش"}
+            title={t("edit")}
             target="_blank"
             referrerPolicy="no-referrer"
             href={url + contentId}

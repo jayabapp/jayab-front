@@ -5,6 +5,7 @@ import type { SupportTicketType } from "@/types/features/support/api";
 import { GC_TIME, STALE_TIME } from "@/helpers/queryCache";
 import { ApiError } from "@lib/api/api-error";
 import { supportKeys } from "./support.keys";
+import { translateMessage } from "@lib/i18n/browser-translator";
 
 export const supportTicketsOptions = (
   type: SupportTicketType,
@@ -14,7 +15,7 @@ export const supportTicketsOptions = (
     queryKey: supportKeys.list(type),
     queryFn: async ({ pageParam, signal }) => {
       const response = await SupportService.getTickets({ page: pageParam, type, signal });
-      if (!response) throw new ApiError("پاسخ فهرست تیکت‌ها معتبر نیست");
+      if (!response) throw new ApiError(translateMessage("errors.invalidTicketList"));
       return response;
     },
     initialPageParam: 1,
@@ -32,7 +33,7 @@ export const supportTicketOptions = (id: number | string) =>
     queryKey: supportKeys.detail(id),
     queryFn: async ({ signal }) => {
       const response = await SupportService.getSingleTicket({ id, signal });
-      if (!response) throw new ApiError("پاسخ تیکت معتبر نیست");
+      if (!response) throw new ApiError(translateMessage("errors.invalidTicket"));
       return response;
     },
     enabled: Boolean(id),

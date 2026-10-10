@@ -1,10 +1,13 @@
 "use client";
 
-import type { SingleRangeSliderProps } from "@/types/components/elements/form-legacy";
+import { useTranslations } from "next-intl";
 import { colors } from "@/theme/colors";
 
-import "rc-slider/assets/index.css";
+import type { SingleRangeSliderProps } from "@/types/components/elements/form-legacy";
+
 import Slider from "rc-slider";
+
+import "rc-slider/assets/index.css";
 
 const SingleRangeSlider = ({
   max,
@@ -12,6 +15,8 @@ const SingleRangeSlider = ({
   value,
   setValue,
 }: SingleRangeSliderProps) => {
+  const t = useTranslations("common");
+
   return (
     <div
       className="slider-container pt-14 relative text-xl font-semibold text-brand-600"
@@ -19,16 +24,18 @@ const SingleRangeSlider = ({
     >
       <div className="flex flex-col gap-4">
         <div className="flex items-center justify-between">
-          <span className="text-base text-brand-600">درصد کمیسیون مشاور</span>
+          <span className="text-base text-brand-600">
+            {t("commissionPercent")}
+          </span>
           <span>{value}</span>
         </div>
         <Slider
           reverse
-          startPoint={min}
-          max={max}
-          value={value}
-          min={min}
           step={1}
+          max={max}
+          min={min}
+          value={value}
+          startPoint={min}
           onChange={(v: number | number[]) => {
             if (typeof v === "number") setValue(v);
           }}

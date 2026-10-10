@@ -1,17 +1,21 @@
+import { ContentImage } from "@elements/Image";
+import { useTranslations } from "next-intl";
+
 import type { SearchLocationChipProps } from "@/types/components/modules/search";
 
-import { ContentImage } from "@elements/Image";
-import _STRINGS from "@/utils/LocalStrings";
 
-const SearchLocationChip = ({ isProvince, onRemove, title }: SearchLocationChipProps) => (
+const SearchLocationChip = ({ isProvince, onRemove, title }: SearchLocationChipProps) => {
+  const t = useTranslations("common");
+
+  return (
   <button
     type="button"
     onClick={onRemove}
-    aria-label={`${_STRINGS.CLOSE} ${title ?? ""}`}
+    aria-label={`${t("close")} ${title ?? ""}`}
     className="rounded-full gap-4 py-0.5 px-2 pl-1 flex items-center justify-center border border-brand-600/30 bg-brand-600/5 text-xs"
   >
     <span className="text-sm">
-      {isProvince ? `${_STRINGS.PROVINCE} ` : ""}
+      {isProvince ? `${t("province")} ` : ""}
       {title}
     </span>
     <span className="w-4 h-4 aspect-square rounded-full border border-brand-600/30 flex items-center justify-center">
@@ -25,5 +29,6 @@ const SearchLocationChip = ({ isProvince, onRemove, title }: SearchLocationChipP
     </span>
   </button>
 );
+};
 
 export default SearchLocationChip;

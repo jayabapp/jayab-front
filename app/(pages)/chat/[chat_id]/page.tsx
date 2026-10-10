@@ -1,4 +1,5 @@
 import { ChatRoomTemplate } from "@templates/ChatRoom";
+import IntlNamespaces from "@/i18n/IntlNamespaces";
 
 const ChatPage = async ({
   params,
@@ -6,7 +7,11 @@ const ChatPage = async ({
   params: Promise<{ chat_id: string }>;
 }) => {
   const { chat_id: chatId } = await params;
-  return <ChatRoomTemplate chatId={chatId} />;
+  return (
+    <IntlNamespaces namespaces={["chat", "owner"]}>
+      <ChatRoomTemplate chatId={chatId} />
+    </IntlNamespaces>
+  );
 };
 
 export default ChatPage;

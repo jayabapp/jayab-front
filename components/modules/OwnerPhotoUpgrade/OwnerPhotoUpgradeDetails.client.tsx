@@ -1,13 +1,15 @@
 "use client";
 
 import { usePhotoUpgradeRequest } from "@features/photo-upgrade/hooks/usePhotoUpgradeRequest";
-import type { PhotoUpgradeSummaryItemProps } from "@/types/components/modules/photo-upgrade";
-import { getPropertyImageUrl } from "@features/properties/mappers/property-image.mapper";
 import { PROPERTY_IMAGE_QUALITY } from "@features/properties/constants/image";
+import { getPropertyImageUrl } from "@features/properties/mappers/property-image.mapper";
+import { useTranslations } from "next-intl";
+import { useFormatToman } from "@hooks/useFormatToman";
+
+import type { PhotoUpgradeSummaryItemProps } from "@/types/components/modules/photo-upgrade";
 
 import PhotoUpgradeDetailSkeleton from "@features/photo-upgrade/components/PhotoUpgradeDetailSkeleton";
 import PhotoUpgradeImagePair from "./PhotoUpgradeImagePair.client";
-import numberWithCommas from "@/helpers/numberWithCommas";
 import StatusShower from "@elements/StatusShower";
 import moment from "moment-jalaali";
 import Image from "next/image";
@@ -20,6 +22,9 @@ const SummaryItem = ({ title, value }: PhotoUpgradeSummaryItemProps) => (
 );
 
 const OwnerPhotoUpgradeDetails = ({ requestId }: { requestId: number }) => {
+  const formatToman = useFormatToman();
+
+  const t = useTranslations();
 
   const { data, isPending, isError, refetch } =
     usePhotoUpgradeRequest(requestId);
@@ -27,20 +32,20 @@ const OwnerPhotoUpgradeDetails = ({ requestId }: { requestId: number }) => {
   if (!Number.isInteger(requestId) || requestId <= 0)
     return (
       <div className="profile-container white-card text-center text-sm text-neutral-500">
-        شناسه درخواست معتبر نیست.
+        {t("owner.invalidRequestId")}
       </div>
     );
   if (isPending) return <PhotoUpgradeDetailSkeleton />;
   if (isError || !data)
     return (
       <div className="profile-container white-card flex flex-col items-center gap-3 text-center text-sm text-neutral-500">
-        <p>درخواست پیدا نشد یا اجازه مشاهده آن را ندارید.</p>
+        <p>{t("owner.requestNotFound")}</p>
         <button
           type="button"
           onClick={() => void refetch()}
           className="text-brand-600"
         >
-          تلاش دوباره
+          {t("common.tryAgain")}
         </button>
       </div>
     );
@@ -53,24 +58,22 @@ const OwnerPhotoUpgradeDetails = ({ requestId }: { requestId: number }) => {
       <div className="white-card flex flex-col gap-4">
         <div className="flex items-start gap-3">
           <Image
-            quality={PROPERTY_IMAGE_QUALITY}
-            src={
-              getPropertyImageUrl(data?.property?.feature_image)
-            }
-            alt={data?.property?.title || ""}
             width={80}
             height={80}
             sizes="80px"
+            quality={PROPERTY_IMAGE_QUALITY}
+            alt={data?.property?.title || ""}
             className="h-20 w-20 shrink-0 rounded-10 object-cover"
+            src={getPropertyImageUrl(data?.property?.feature_image)}
           />
           <div className="flex min-w-0 flex-1 flex-col gap-2">
             <div className="flex flex-col gap-2 md:flex-row md:items-start md:justify-between">
               <div className="min-w-0">
                 <h1 className="line-clamp-1 text-base font-medium md:text-xl">
-                  {data?.property?.title || "اقامتگاه"}
+                  {data?.property?.title || t("common.property")}
                 </h1>
                 <p className="mt-1 text-xs text-neutral-500">
-                  کد {data?.property?.code || data?.property_id}
+                  {t("common.code")} {data?.property?.code || data?.property_id}
                 </p>
               </div>
               {data?.status ? (
@@ -86,19 +89,21 @@ const OwnerPhotoUpgradeDetails = ({ requestId }: { requestId: number }) => {
         </div>
         <div className="grid grid-cols-1 gap-2 lg:grid-cols-2 ">
           <SummaryItem
-            title="تعداد عکس"
-            value={`${data?.image_count || data?._count?.items || 0} عکس`}
+            title={t("owner.photoCount")}
+            value={t("owner.photosCount", {
+              count: Number(data?.image_count || data?._count?.items || 0),
+            })}
           />
           <SummaryItem
-            title="قیمت هر عکس"
-            value={`${numberWithCommas(data?.price_per_image)} تومان`}
+            title={t("owner.pricePerPhoto")}
+            value={formatToman(data?.price_per_image)}
           />
           <SummaryItem
-            title="مبلغ کل"
-            value={`${numberWithCommas(data?.total_amount)} تومان`}
+            title={t("owner.totalAmount")}
+            value={formatToman(data?.total_amount)}
           />
           <SummaryItem
-            title="ثبت درخواست"
+            title={t("owner.requestSubmitted")}
             value={
               data?.created_at
                 ? moment(data.created_at).format("HH:mm - jYYYY/jMM/jDD")
@@ -106,7 +111,7 @@ const OwnerPhotoUpgradeDetails = ({ requestId }: { requestId: number }) => {
             }
           />
           <SummaryItem
-            title="تکمیل درخواست"
+            title={t("owner.requestCompleted")}
             value={
               data?.completed_at
                 ? moment(data.completed_at).format("HH:mm - jYYYY/jMM/jDD")
@@ -126,7 +131,7 @@ const OwnerPhotoUpgradeDetails = ({ requestId }: { requestId: number }) => {
           ))
         ) : (
           <div className="white-card text-center text-sm text-neutral-500">
-            تصویری برای این درخواست ثبت نشده است.
+            {t("owner.noImagesForRequest")}
           </div>
         )}
       </div>

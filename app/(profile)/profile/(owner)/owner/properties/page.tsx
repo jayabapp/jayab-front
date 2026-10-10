@@ -1,11 +1,14 @@
 import { OwnerPropertyList } from "@modules/OwnerPropertyList";
 
 import OwnerPropertiesTemplate from "@templates/OwnerProperties";
+import IntlNamespaces from "@/i18n/IntlNamespaces";
 
 const OwnerPropertiesPage = () => (
-  <OwnerPropertiesTemplate>
-    <OwnerPropertyList />
-  </OwnerPropertiesTemplate>
+  <IntlNamespaces namespaces={["content", "owner"]}>
+    <OwnerPropertiesTemplate>
+      <OwnerPropertyList />
+    </OwnerPropertiesTemplate>
+  </IntlNamespaces>
 );
 
 export default OwnerPropertiesPage;

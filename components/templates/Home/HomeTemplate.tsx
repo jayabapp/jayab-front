@@ -4,6 +4,7 @@ import { HomeActiveReservations } from "@modules/HomeReservations";
 import { resolveHomeTileCount } from "@modules/HomeSearch";
 import { HomeInstallPrompt } from "@modules/HomeInstallPrompt";
 import { HomeSheetSearch } from "@modules/HomeHeroSearch";
+import { useTranslations } from "next-intl";
 import { HomeProperties } from "@modules/HomeProperties";
 import { BannerPosition } from "@/enum/banners.enum";
 import { HomeContent } from "@modules/HomeContent";
@@ -15,7 +16,6 @@ import type { HomeTemplateProps } from "@/types/components/templates/home";
 import type { CSSProperties } from "react";
 
 import pickBanner from "@/helpers/pickBanner";
-import _STRINGS from "@/utils/LocalStrings";
 import isEmpty from "lodash/isEmpty";
 
 const HomeTemplate = ({
@@ -26,6 +26,8 @@ const HomeTemplate = ({
   homeContent,
   propertyTypes,
 }: HomeTemplateProps) => {
+  const t = useTranslations();
+
   const heroBanners = banners?.[BannerPosition.MAIN_1] ?? [];
   const middleBanner = pickBanner(
     banners?.[BannerPosition.MAIN_2]?.filter((banner) =>
@@ -68,18 +70,18 @@ const HomeTemplate = ({
               </div>
             </Suspense>
             <HomePropertyTypes
-              data={propertyTypes}
               devices={devices}
-              title={_STRINGS.PROPERTY_TYPE}
+              data={propertyTypes}
+              title={t("common.propertyType")}
             />
             <HomeCities
-              data={landings?.popular_city ?? []}
               devices={devices}
-              title={_STRINGS.MOST_VISITED_CITIES}
+              data={landings?.popular_city ?? []}
+              title={t("content.mostVisitedCities")}
             />
             <HomeQuickSearch
               devices={devices}
-              title={_STRINGS.FAST_SEARCH}
+              title={t("footer.quickSearch")}
               data={landings?.quick_search ?? []}
             />
             <HomeProperties
@@ -91,8 +93,8 @@ const HomeTemplate = ({
           <HomeInstallPrompt />
           {!!banners && !isEmpty(banners) ? (
             <HomeBanners
-              banners={banners?.[BannerPosition.MAIN_3] ?? []}
               devices={devices}
+              banners={banners?.[BannerPosition.MAIN_3] ?? []}
             />
           ) : (
             <></>

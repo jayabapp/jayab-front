@@ -1,5 +1,6 @@
-import type { PropertyGridSkeletonProps } from "@/types/components/modules/property-grid";
 import { DEFAULT_GRID_CLASS_PROPERTY } from "@/utils/constantss";
+
+import type { PropertyGridSkeletonProps } from "@/types/components/modules/property-grid";
 
 import PropertyCardSkeleton from "./PropertyCardSkeleton";
 

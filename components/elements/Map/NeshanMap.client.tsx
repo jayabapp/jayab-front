@@ -1,27 +1,15 @@
 "use client";
 
 import { useEffect, useEffectEvent, useRef } from "react";
+import { useTranslations } from "next-intl";
 
 import type { NeshanMapProps } from "@/types/components/elements/map";
 
 import "@neshan-maps-platform/maplibre-sdk/style.css";
 
 import maplibregl from "@neshan-maps-platform/maplibre-sdk";
-import _STRINGS from "@/utils/LocalStrings";
 
 const STYLE_BASE_URL = "https://static.neshan.org/sdk/maplibre/styles";
-
-const MAP_LOCALE = {
-  "NavigationControl.ZoomIn": _STRINGS.MAP_ZOOM_IN,
-  "NavigationControl.ZoomOut": _STRINGS.MAP_ZOOM_OUT,
-  "NavigationControl.ResetBearing": _STRINGS.MAP_RESET_BEARING,
-  "GeolocateControl.FindMyLocation": _STRINGS.MAP_FIND_MY_LOCATION,
-  "CooperativeGesturesHandler.WindowsHelpText":
-    _STRINGS.MAP_COOPERATIVE_HINT_DESKTOP,
-  "CooperativeGesturesHandler.MacHelpText": _STRINGS.MAP_COOPERATIVE_HINT_MAC,
-  "CooperativeGesturesHandler.MobileHelpText":
-    _STRINGS.MAP_COOPERATIVE_HINT_MOBILE,
-};
 
 const NeshanMap = ({
   zoom,
@@ -35,6 +23,7 @@ const NeshanMap = ({
   showGeolocate = false,
   cooperativeGestures = false,
 }: NeshanMapProps) => {
+  const t = useTranslations("common");
   const slotRef = useRef<HTMLDivElement>(null);
   const initialRef = useRef({
     zoom,
@@ -47,6 +36,15 @@ const NeshanMap = ({
   });
   const ready = useEffectEvent((map: maplibregl.Map) => onMapReady?.(map));
   const fail = useEffectEvent(() => onError?.());
+  const mapLocale = useEffectEvent(() => ({
+    "NavigationControl.ZoomIn": t("mapZoomIn"),
+    "NavigationControl.ZoomOut": t("mapZoomOut"),
+    "NavigationControl.ResetBearing": t("mapResetBearing"),
+    "GeolocateControl.FindMyLocation": t("mapFindMyLocation"),
+    "CooperativeGesturesHandler.WindowsHelpText": t("mapCooperativeHintDesktop"),
+    "CooperativeGesturesHandler.MacHelpText": t("mapCooperativeHintMac"),
+    "CooperativeGesturesHandler.MobileHelpText": t("mapCooperativeHintMobile"),
+  }));
 
   useEffect(() => {
     const slot = slotRef.current;
@@ -76,7 +74,7 @@ const NeshanMap = ({
         minZoom: 1.5,
         maxZoom: 19,
         cooperativeGestures: initial.cooperativeGestures,
-        locale: MAP_LOCALE,
+        locale: mapLocale(),
       });
     } catch {
       container.remove();

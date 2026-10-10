@@ -15,8 +15,11 @@ import { io } from "socket.io-client";
 import type { ChatRealtimeMessageEvent } from "@/api_services/chat/chat.interface";
 import type { ChatRealtimeDeleteEvent } from "@/api_services/chat/chat.interface";
 import type { ChatTypingEvent } from "@/api_services/chat/chat.interface";
+import { useTranslations } from "next-intl";
 
 export const useRealtimeGateway = () => {
+  const t = useTranslations("common");
+
   const { isLogin } = useAuthStore((state) => state);
   const router = useRouter();
   const queryClient = useQueryClient();
@@ -66,7 +69,7 @@ export const useRealtimeGateway = () => {
         void queryClient.invalidateQueries({ queryKey: notificationKeys.all });
         void notify({
           body: e?.body,
-          title: "پیام جدید",
+          title: t("newMessage"),
           cb: () => {
             if (e?.eventData?.event_type == "NOTIF_FROM_MANAGER")
               router.push(`/notifications`);
@@ -110,7 +113,7 @@ export const useRealtimeGateway = () => {
           );
           void notify({
             body: e?.message?.text ?? undefined,
-            title: "پیام جدید",
+            title: t("newMessage"),
             cb: () => {
               router.push(`/chat/${e?.chatroom_id}`);
             },
@@ -151,5 +154,5 @@ export const useRealtimeGateway = () => {
         chatNotification: null,
       });
     };
-  }, [isLogin, queryClient, router]);
+  }, [isLogin, queryClient, router, t]);
 };

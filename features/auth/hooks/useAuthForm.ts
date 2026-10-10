@@ -6,8 +6,8 @@ import { useAuthStore } from "@/store";
 import { useSendOtp } from "./useSendOtp";
 import { p2e } from "@/helpers/NumberConverter";
 
-import _STRINGS from "@/utils/LocalStrings";
 import Notify from "@elements/Toast";
+import { useTranslations } from "next-intl";
 
 /**
  * Keeps the address bar in step with the flip without a client navigation.
@@ -22,6 +22,8 @@ const syncStepUrl = (pathname: string) => {
 };
 
 export const useAuthForm = () => {
+  const t = useTranslations();
+
   const [mobile, setMobile] = useState<number | string>("");
   const [step, setStep] = useState<"phone" | "otp">("phone");
   const [challenge, setChallenge] = useState<OtpChallengeDto | null>(null);
@@ -38,8 +40,8 @@ export const useAuthForm = () => {
     if (!/^09\d{9}$/.test(mobileNumber)) {
       Notify({
         type: "warn",
-        title: _STRINGS.ATTENTION,
-        body: _STRINGS.WORNG_NUMBER,
+        title: t("common.attention"),
+        body: t("auth.worngNumber"),
       });
       return;
     }
@@ -49,7 +51,7 @@ export const useAuthForm = () => {
         if (sentChallenge?.sandbox_otp_code) {
           Notify({
             type: "info",
-            body: `${_STRINGS.SANDBOX_OTP}: ${sentChallenge.sandbox_otp_code}`,
+            body: `${t("auth.sandboxOtp")}: ${sentChallenge.sandbox_otp_code}`,
           });
         }
         useAuthStore.setState({
@@ -59,7 +61,9 @@ export const useAuthForm = () => {
         // Without a challenge in the response there is nothing to hand the OTP
         // step, so fall back to the route that can read it from the cookie.
         if (!sentChallenge) {
-          const redirectUrl = safeInternalPath(searchParams.get("redirect_url"));
+          const redirectUrl = safeInternalPath(
+            searchParams.get("redirect_url"),
+          );
           const query = redirectUrl
             ? `?redirect_url=${encodeURIComponent(redirectUrl)}`
             : "";

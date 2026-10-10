@@ -1,18 +1,20 @@
 "use client";
 
-import { useBlogList } from "@features/home/hooks/useBlogList";
 import { BlogGridSkeleton } from "./parts/BlogGridSkeleton";
-import { BtnLoading } from "@elements/Button";
+import { useTranslations } from "next-intl";
 import { useStoreSocket } from "@/store";
+import { useBlogList } from "@features/home/hooks/useBlogList";
+import { BtnLoading } from "@elements/Button";
 import { useEffect } from "react";
 
-import Breadcrumbs from "@elements/Breadcrumbs/Breadcrumbs.client";
 import InfiniteScroll from "react-infinite-scroll-component";
 import LatestBlogCard from "./parts/BlogCard";
+import Breadcrumbs from "@elements/Breadcrumbs/Breadcrumbs.client";
 import EmptyState from "@elements/EmptyState";
-import _STRINGS from "@/utils/LocalStrings";
 
 const BlogsClientPageComponent = () => {
+  const t = useTranslations();
+
   const { notification } = useStoreSocket((state) => state);
   const {
     refresh,
@@ -36,9 +38,9 @@ const BlogsClientPageComponent = () => {
         <BlogGridSkeleton />
       ) : isError && data.length === 0 ? (
         <EmptyState
-          title={_STRINGS.ERROR}
-          description={_STRINGS.BLOG_LIST_LOAD_ERROR}
-          actionLabel={_STRINGS.TRY_AGAIN}
+          title={t("common.error")}
+          description={t("content.blogListLoadError")}
+          actionLabel={t("common.tryAgain")}
           onAction={() => void refetch()}
         />
       ) : (
@@ -57,13 +59,13 @@ const BlogsClientPageComponent = () => {
         >
           {isError ? (
             <div className="col-span-full rounded-xl bg-danger-50 p-3 text-center text-xs text-danger-600">
-              {_STRINGS.BLOG_LIST_LOAD_ERROR}{" "}
+              {t("content.blogListLoadError")}{" "}
               <button
                 type="button"
                 className="font-bold underline underline-offset-4"
                 onClick={() => void refetch()}
               >
-                {_STRINGS.TRY_AGAIN}
+                {t("common.tryAgain")}
               </button>
             </div>
           ) : null}

@@ -1,10 +1,14 @@
-import ProfilePageTemplate from "@templates/ProfilePage";
 import { ProfileEditor } from "@modules/ProfileEditor";
 
+import ProfilePageTemplate from "@templates/ProfilePage";
+import IntlNamespaces from "@/i18n/IntlNamespaces";
+
 const ProfileEditPage = () => (
-  <ProfilePageTemplate>
-    <ProfileEditor />
-  </ProfilePageTemplate>
+  <IntlNamespaces namespaces={["owner", "profile"]}>
+    <ProfilePageTemplate>
+      <ProfileEditor />
+    </ProfilePageTemplate>
+  </IntlNamespaces>
 );
 
 export default ProfileEditPage;

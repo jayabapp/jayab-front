@@ -12,6 +12,7 @@ import { toast } from "sonner";
 import ProfileImageModal from "@features/auth/components/ProfileImageModal";
 import "react-advanced-cropper/dist/style.css";
 import Image from "next/image";
+import { useTranslations } from "next-intl";
 
 const resolveProfileImage = (item: any, derivative?: "thumbnail") => {
   if (typeof item === "string") return item;
@@ -30,6 +31,8 @@ const AuthUploader = ({
   containerClass,
   type = "image",
 }: AuthUploadFieldProps) => {
+  const t = useTranslations("common");
+
   const imagePickerRef = useRef<HTMLInputElement>(null);
   const [loading, setLoading] = useState(false);
   const [show, setShow] = useState(false);
@@ -83,9 +86,9 @@ const AuthUploader = ({
     const file = target?.files ? target?.files[0] : null;
     if (!file) return;
     if (type == "image" && !file.type?.includes("image/"))
-      return toast.error("لطفا از فایل تصویر استفاده نمایید");
+      return toast.error(t("useImageFile"));
     if (type == "image" && file.name.split(".")[1] == "jfif")
-      return toast.error("لطفا از فایل تصویر درست استفاده نمایید");
+      return toast.error(t("useValidImageFile"));
     else {
       if (selectedFile) URL.revokeObjectURL(selectedFile);
       setselectedFile(URL.createObjectURL(file));
@@ -125,7 +128,7 @@ const AuthUploader = ({
             <Image
               width={32}
               height={32}
-              alt="انتخاب تصویر"
+              alt={t("chooseImage")}
               className="w-8 opacity-70"
               src="/assets/images/uploader/uploader_placeholder.png"
             />
@@ -154,7 +157,7 @@ const AuthUploader = ({
               <Image
                 width={96}
                 height={96}
-                alt={title || "تصویر پروفایل"}
+                alt={title || t("profilePhoto")}
                 src={resolveProfileImage(item, "thumbnail")}
                 className="object-cover  w-full bg-gradient-to-b rounded-20  aspect-square max-w-max  "
               />
@@ -166,7 +169,7 @@ const AuthUploader = ({
               <Image
                 width={16}
                 height={16}
-                alt="حذف تصویر"
+                alt={t("removeImage")}
                 src="/assets/icons/uploader/TrashIcon.svg"
               />
             </div>

@@ -1,5 +1,6 @@
 "use client";
 
+import { useTranslations } from "next-intl";
 import { useAuthForm } from "@features/auth/hooks/useAuthForm";
 import { AuthOtpCard } from "@modules/AuthOtp";
 import { HeaderBrand } from "@modules/SiteHeader";
@@ -9,11 +10,12 @@ import { useState } from "react";
 
 import useCmsContent from "@/hooks/useCmsContent";
 import DotLoading from "@elements/Button/DotLoading";
-import _STRINGS from "@/utils/LocalStrings";
 import Button from "@elements/Button";
 import Terms from "./parts/Terms.client";
 
 const AuthPageComponent = () => {
+  const t = useTranslations();
+
   const {
     step,
     submit,
@@ -40,7 +42,7 @@ const AuthPageComponent = () => {
   return (
     <div className="auth-container">
       <AuthHeader
-        title={isOtpStep ? _STRINGS.CONFIRM_CODE : _STRINGS.ENTER}
+        title={isOtpStep ? t("auth.confirmCode") : t("common.enter")}
         onBack={isOtpStep ? flipBack : undefined}
       />
 
@@ -63,10 +65,10 @@ const AuthPageComponent = () => {
             <div className="mt-6 flex flex-col items-center gap-3">
               <span className="h-1 w-10 rounded-full bg-brand-500/80" />
               <h1 className="text-xl font-bold tracking-tight text-neutral-900">
-                {_STRINGS.AUTH_WELCOME_TITLE}
+                {t("auth.authWelcomeTitle")}
               </h1>
               <p className="max-w-72 text-center text-sm leading-6 text-neutral-600">
-                {_STRINGS.ENTER_TOUR_MOBILE_NUMBER}
+                {t("auth.enterTourMobileNumber")}
               </p>
             </div>
 
@@ -80,7 +82,7 @@ const AuthPageComponent = () => {
                   keyboard: "number",
                   autoFocus: false,
                   containerClass: "relative w-full",
-                  placeholder: _STRINGS.MOBILE_PLACEHOLDER,
+                  placeholder: t("auth.mobilePlaceholder"),
                   inputClass:
                     "glass-field !h-14 !rounded-20 !py-3 !text-lg tracking-[0.25em] !text-center placeholder:!text-center placeholder:!text-base placeholder:tracking-[0.25em]",
                 }}
@@ -90,15 +92,15 @@ const AuthPageComponent = () => {
               />
 
               <div className="flex flex-wrap items-center justify-center gap-1 text-xs text-neutral-600">
-                <p>{_STRINGS.U_ACCEPTED}</p>
+                <p>{t("auth.uAccepted")}</p>
                 <button
                   type="button"
                   onClick={() => setVisibleTermsModal(true)}
                   className="font-medium text-brand-600 underline underline-offset-4"
                 >
-                  {_STRINGS?.TERMS}
+                  {t("common.terms")}
                 </button>
-                <p>{_STRINGS.AUTH_TERMS_SUFFIX}</p>
+                <p>{t("auth.authTermsSuffix")}</p>
               </div>
 
               <Button
@@ -110,7 +112,7 @@ const AuthPageComponent = () => {
                 roundedClass="rounded-20"
                 preserveStyleWhileLoading
                 loadingIndicator={<DotLoading />}
-                title={_STRINGS?.ENTER_AND_MOVE_ON}
+                title={t("common.enterAndMoveOn")}
                 btnClass="auth-primary-button !py-4"
               />
 
@@ -131,7 +133,7 @@ const AuthPageComponent = () => {
                     d="M6 10V8a6 6 0 1 1 12 0v2m-13 0h14a1 1 0 0 1 1 1v9a1 1 0 0 1-1 1H5a1 1 0 0 1-1-1v-9a1 1 0 0 1 1-1Z"
                   />
                 </svg>
-                <span>{_STRINGS.AUTH_SECURE_NOTE}</span>
+                <span>{t("auth.authSecureNote")}</span>
               </div>
             </div>
           </div>

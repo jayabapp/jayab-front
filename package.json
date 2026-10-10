@@ -15,6 +15,7 @@
     "architecture:check": "node scripts/check-layer-contracts.mjs",
     "theme:check": "node scripts/check-theme-contract.mjs",
     "i18n:check": "node scripts/i18n/check.mjs",
+    "i18n:namespaces": "node scripts/i18n/namespaces.mjs",
     "architecture:cycles": "node scripts/check-import-cycles.mjs",
     "architecture:report": "node scripts/report-client-boundaries.mjs",
     "architecture:migration": "node scripts/report-component-migration.mjs",

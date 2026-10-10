@@ -1,19 +1,20 @@
 "use client";
 
+import { useCallback, useState } from "react";
 import { useOwnerPropertyStep } from "@features/owner-property/hooks/useOwnerPropertyStep";
 import { usePropertyDraftForm } from "@features/owner-property/hooks/usePropertyDraftForm";
-import { emptyMediaValues } from "@features/owner-property/mappers/property-draft.mapper";
-import type { OwnerPropertyRouteProps } from "@/types/components/modules/owner-property";
-import { toMediaValues } from "@features/owner-property/mappers/property-draft.mapper";
 import { createPropertySteps } from "@/utils/constantss";
-import { useCallback, useState } from "react";
+import { emptyMediaValues } from "@features/owner-property/mappers/property-draft.mapper";
+import { useTranslations } from "next-intl";
+import { toMediaValues } from "@features/owner-property/mappers/property-draft.mapper";
+
+import type { OwnerPropertyRouteProps } from "@/types/components/modules/owner-property";
 
 import PropertyEditStepSkeleton from "@features/owner-property/steps/PropertyEditStepSkeleton";
-import MultiImageUpload from "./uploaders/MultiImageUpload.client";
 import FixedBottomContainer from "@elements/FixedBottomContainer";
 import UploadedMediaItem from "./parts/UploadedMediaItem.client";
+import MultiImageUpload from "./uploaders/MultiImageUpload.client";
 import StepShower from "@elements/StepShower";
-import _STRINGS from "@/utils/LocalStrings";
 import Button from "@elements/Button";
 import isEmpty from "lodash/isEmpty";
 
@@ -21,6 +22,9 @@ const MEDIA_STEP_INDEX = 3;
 const THUMB_SIZE = " w-28 md:w-36  ";
 
 const PropertyMediaStep = ({ propertyId }: OwnerPropertyRouteProps) => {
+  const t = useTranslations("owner");
+  const tr = useTranslations();
+
   const { draft, isLoading, setValues, values } = usePropertyDraftForm(
     propertyId,
     emptyMediaValues,
@@ -60,20 +64,20 @@ const PropertyMediaStep = ({ propertyId }: OwnerPropertyRouteProps) => {
       <div className="w-full px-4 md:px-0 pb-4 pt-8">
         <StepShower
           value={MEDIA_STEP_INDEX}
-          steps={createPropertySteps(Number(propertyId)) || []}
+          steps={createPropertySteps(Number(propertyId), tr) || []}
         />
       </div>
 
       <div className="flex items-start w-full flex-wrap gap-4">
         <div className="bg-warning-600/5 border p-3 w-full rounded-10 border-warning-600 flex flex-col gap-3">
           <p className="text-xs text-warning-600">
-            {_STRINGS.MEDIA_HINT_LIMIT}
+            {t("mediaHintLimit")}
           </p>
           <p className="text-xs text-warning-600">
-            {isEmpty(images) ? "" : _STRINGS.MEDIA_HINT_PRIMARY}
+            {isEmpty(images) ? "" : t("mediaHintPrimary")}
           </p>
           <p className="text-xs text-warning-600 content text-justify">
-            {_STRINGS.MEDIA_HINT_NETWORK}
+            {t("mediaHintNetwork")}
           </p>
         </div>
 
@@ -84,14 +88,14 @@ const PropertyMediaStep = ({ propertyId }: OwnerPropertyRouteProps) => {
             <MultiImageUpload
               item={null}
               images={images}
-              key="propertyMediaUploader"
-              loading={isUploading}
               onDelete={() => {}}
+              loading={isUploading}
               setImages={setImages}
-              title={_STRINGS.ADD_IMAGE}
+              title={t("addImage")}
+              key="propertyMediaUploader"
               setLoading={setIsUploading}
-              imagesLoadings={uploadProgress}
               containerClass={THUMB_SIZE}
+              imagesLoadings={uploadProgress}
               setimagesLoadings={setUploadProgress}
               link="/attachments?type=OWNER_PROPERTY_IMAGE"
               innerClasses={{
@@ -135,7 +139,7 @@ const PropertyMediaStep = ({ propertyId }: OwnerPropertyRouteProps) => {
                       : "opacity-0"
                   } transition-all absolute text-xxs h-7 bottom-0 w-full flex items-center justify-center bg-white/60 z-5 text-neutral-600`}
                 >
-                  {_STRINGS.PRIMARY_IMAGE}
+                  {t("primaryImage")}
                 </div>
               </button>
             ))}
@@ -148,8 +152,8 @@ const PropertyMediaStep = ({ propertyId }: OwnerPropertyRouteProps) => {
           onClick={onSubmit}
           loading={isPending}
           width=" w-[90%] md:w-1/2"
+          title={t("submitMoveOn")}
           roundedClass="rounded-full"
-          title={_STRINGS.SUBMIT_MOVE_ON}
           disabled={isUploading || isPending}
           containerClass="w-full flex items-center justify-center"
         />

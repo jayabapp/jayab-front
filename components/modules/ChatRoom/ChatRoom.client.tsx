@@ -4,6 +4,7 @@ import { isChatAccountMismatch } from "@features/chat/lib/chat-error";
 import { useDeleteMessage } from "@features/chat/hooks/useDeleteMessage";
 import { useChatMessages } from "@features/chat/hooks/useChatMessages";
 import { useSearchParams } from "next/navigation";
+import { useTranslations } from "next-intl";
 import { useChatRealtime } from "@features/chat/hooks/useChatRealtime";
 import { useChatDetails } from "@features/chat/hooks/useChatDetails";
 import { useChatStore } from "@/store";
@@ -11,14 +12,15 @@ import { useChatStore } from "@/store";
 import type { ChatRoomProps } from "@/types/components/modules/chat";
 
 import ChatAccessDenied from "./parts/ChatAccessDenied.client";
-import ConfirmModal from "@elements/Modal/ConfirmModal.client";
 import ChatRoomSkeleton from "./parts/ChatRoomSkeleton";
+import ConfirmModal from "@elements/Modal/ConfirmModal.client";
 import ChatFooter from "./parts/ChatFooter.client";
 import ChatHeader from "./parts/ChatHeader.client";
 import ChatBody from "./parts/ChatBody.client";
-import _STRINGS from "@/utils/LocalStrings";
 
 const ChatRoomView = ({ chatId }: ChatRoomProps) => {
+  const t = useTranslations();
+
   const searchParams = useSearchParams();
   const chatProduct = useChatStore((state) => state.chatProduct);
   const chatDelete = useChatStore((state) => state.chatDelete);
@@ -53,14 +55,14 @@ const ChatRoomView = ({ chatId }: ChatRoomProps) => {
   if (detailsQuery.isError || messagesQuery.isError || !details) {
     return (
       <div className="container flex min-h-[60dvh] flex-col items-center justify-center gap-4">
-        <p>{_STRINGS.ERROR}</p>
+        <p>{t("common.error")}</p>
         <button
           className="rounded-xl bg-brand-600 px-6 py-2 text-white"
           onClick={() =>
             void Promise.all([detailsQuery.refetch(), messagesQuery.refetch()])
           }
         >
-          {_STRINGS.TRY_AGAIN}
+          {t("common.tryAgain")}
         </button>
       </div>
     );
@@ -76,7 +78,7 @@ const ChatRoomView = ({ chatId }: ChatRoomProps) => {
       />
       {connecting ? (
         <div className="absolute top-[var(--chat-header-bottom,12rem)] z-40 w-full bg-amber-100 py-1 text-center text-xs text-amber-800">
-          {_STRINGS.CHAT_RECONNECTING}
+          {t("chat.chatReconnecting")}
         </div>
       ) : (
         <></>
@@ -105,7 +107,7 @@ const ChatRoomView = ({ chatId }: ChatRoomProps) => {
             );
         }}
         isVisible={!!chatDelete}
-        text={_STRINGS.ARE_U_SURE_DELETE_MESSAGE}
+        text={t("chat.areUSureDeleteMessage")}
         onHide={closeDelete}
       />
     </div>

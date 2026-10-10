@@ -1,8 +1,9 @@
-import type { ReservationGuestContactProps } from "@/types/components/modules/reservations";
+import { useTranslations } from "next-intl";
 import { ContentImage } from "@elements/Image";
 import { Divider } from "@elements/Divider";
 
-import _STRINGS from "@/utils/LocalStrings";
+import type { ReservationGuestContactProps } from "@/types/components/modules/reservations";
+
 import Button from "@elements/Button";
 
 const ACTION_WIDTH =
@@ -10,11 +11,13 @@ const ACTION_WIDTH =
 
 const ReservationGuestContact = ({
   isExpired,
-  isChatEnabled = true,
   onStartChat,
   isChatPending,
   onContactRequest,
+  isChatEnabled = true,
 }: ReservationGuestContactProps) => {
+  const t = useTranslations();
+
   const disabledStyle = isExpired ? " !text-neutral-400" : "";
   const disabledIcon = isExpired ? " opacity-50 grayscale" : "";
 
@@ -26,7 +29,7 @@ const ReservationGuestContact = ({
           <>
             <Button
               variant="outline"
-              title={_STRINGS.CALL}
+              title={t("common.call")}
               roundedClass=" rounded-xl"
               containerClass="w-full lg:w-1/2 "
               width={`${ACTION_WIDTH}${disabledStyle}`}
@@ -43,7 +46,7 @@ const ReservationGuestContact = ({
             />
             <Button
               variant="outline"
-              title={_STRINGS.SMS}
+              title={t("common.sms")}
               roundedClass=" rounded-xl"
               containerClass="w-full lg:w-1/2 "
               width={`${ACTION_WIDTH}${disabledStyle}`}
@@ -70,7 +73,7 @@ const ReservationGuestContact = ({
             disabled={isChatPending}
             roundedClass=" rounded-xl"
             containerClass="w-full lg:w-1/2 "
-            title={_STRINGS.CHAT_IN_JAYAB}
+            title={t("reserve.chatInJayab")}
             icon={
               <ContentImage
                 alt=""

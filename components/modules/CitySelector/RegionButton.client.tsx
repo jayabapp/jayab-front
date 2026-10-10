@@ -1,9 +1,10 @@
 "use client";
 
+import { useTranslations } from "next-intl";
+import { ContentImage } from "@elements/Image";
+
 import type { RegionButtonProps } from "@/types/components/modules/city-selector";
 
-import { ContentImage } from "@elements/Image";
-import _STRINGS from "@/utils/LocalStrings";
 import isEmpty from "lodash/isEmpty";
 
 const RegionButton = ({
@@ -13,6 +14,8 @@ const RegionButton = ({
   setShowRegions,
   onClearRegions,
 }: RegionButtonProps) => {
+  const t = useTranslations();
+
   const hasRegions = !isEmpty(regionsIds);
   const singleTitle =
     regionsIds?.length === 1 && regionTitles?.length === 1
@@ -38,20 +41,20 @@ const RegionButton = ({
       >
         <span className="text-xs pr-1 shrink-0">
           {!hasRegions
-            ? _STRINGS.SELECT_LOCAL
+            ? t("search.selectLocal")
             : singleTitle
-              ? `${_STRINGS.LOCAL}: ${singleTitle}`
+              ? `${t("common.local")}: ${singleTitle}`
               : null}
         </span>
         {hasRegions && !singleTitle ? (
-          <span className="shrink-0">{`${regionsIds?.length} ${_STRINGS.LOCAL}`}</span>
+          <span className="shrink-0">{`${regionsIds?.length} ${t("common.local")}`}</span>
         ) : null}
       </button>
 
       {hasRegions ? (
         <button
           type="button"
-          aria-label={`${_STRINGS.REMOVE_FILTERS} ${_STRINGS.LOCAL}`}
+          aria-label={`${t("common.removeFilters")} ${t("common.local")}`}
           onClick={(event) => {
             event.preventDefault();
             event.stopPropagation();

@@ -1,27 +1,32 @@
 "use client";
 
-import type { SpecialFilterButtonsProps } from "@/types/components/modules/property-search-filters";
 import { usePathname, useRouter } from "next/navigation";
+import { useTranslations } from "next-intl";
 import { FiltersEnum } from "@/enum/filters.enum";
+
+import type { SpecialFilterButtonsProps } from "@/types/components/modules/property-search-filters";
 
 import SpecialFilterButton from "./parts/SpecialFilterButton";
 import queryBuilder from "@/helpers/queryBuilder";
-import _STRINGS from "@/utils/LocalStrings";
 
 const SPECIAL_FILTERS = [
   {
     key: FiltersEnum.HAS_BLUE_TICK,
     img: "/assets/icons/adds/verified_hexy_badge.svg",
-    title: _STRINGS.PREMIUM,
+    title: "listing.premium",
   },
   {
     key: FiltersEnum.IS_AUTHORIZED,
     img: "/assets/icons/adds/green_circular_tick.svg",
-    title: _STRINGS.VERIFIED,
+    title: "listing.verified",
   },
-];
+] as const;
 
-const SpecialFilterButtons = ({ containerClass, query }: SpecialFilterButtonsProps) => {
+const SpecialFilterButtons = ({
+  query,
+  containerClass,
+}: SpecialFilterButtonsProps) => {
+  const t = useTranslations();
   const { replace } = useRouter();
   const pathname = usePathname();
 
@@ -34,14 +39,16 @@ const SpecialFilterButtons = ({ containerClass, query }: SpecialFilterButtonsPro
   };
 
   return (
-    <div className={`flex items-center justify-start gap-2 ${containerClass ?? ""}`}>
+    <div
+      className={`flex items-center justify-start gap-2 ${containerClass ?? ""}`}
+    >
       {SPECIAL_FILTERS.map((filter) => {
         const isChecked = query?.[filter.key] === "1";
         return (
           <SpecialFilterButton
             key={filter.key}
             isChecked={isChecked}
-            item={{ img: filter.img, title: filter.title }}
+            item={{ img: filter.img, title: t(filter.title) }}
             cb={() => toggle(filter.key, !!query?.[filter.key])}
           />
         );

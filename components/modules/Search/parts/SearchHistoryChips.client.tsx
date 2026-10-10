@@ -1,20 +1,23 @@
 "use client";
 
-import type { SearchHistoryChipsProps } from "@/types/components/modules/search";
 import { useSearchHistory } from "@features/search/hooks/useSearchHistory";
-
+import { useTranslations } from "next-intl";
 import { ContentImage } from "@elements/Image";
-import _STRINGS from "@/utils/LocalStrings";
+
+import type { SearchHistoryChipsProps } from "@/types/components/modules/search";
+
 import isEmpty from "lodash/isEmpty";
 
 const SearchHistoryChips = ({ onSelect }: SearchHistoryChipsProps) => {
+  const t = useTranslations();
+
   const { entries, forget } = useSearchHistory();
 
   return (
     <div className="flex w-full flex-col px-4 pt-4">
       {isEmpty(entries) ? null : (
         <div className="w-full flex items-center gap-2 mb-2">
-          <p className="text-sm md:text-base md:font-medium">{_STRINGS.UR_SEARCH_HISTORY}</p>
+          <p className="text-sm md:text-base md:font-medium">{t("search.urSearchHistory")}</p>
         </div>
       )}
       <div className="w-full flex flex-wrap gap-2">
@@ -33,7 +36,7 @@ const SearchHistoryChips = ({ onSelect }: SearchHistoryChipsProps) => {
             <button
               type="button"
               onClick={() => forget(entry.id)}
-              aria-label={`${_STRINGS.REMOVE_FILTERS} ${entry.title}`}
+              aria-label={`${t("common.removeFilters")} ${entry.title}`}
               className="cursor-pointer w-4 h-4 aspect-square rounded-full border border-brand-600/30 flex items-center justify-center"
             >
               <ContentImage

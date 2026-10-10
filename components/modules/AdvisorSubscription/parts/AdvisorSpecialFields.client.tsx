@@ -1,13 +1,14 @@
 "use client";
 
-import { useAdvisorLocations } from "@features/advisors/hooks/useAdvisorLocations";
-import type { AdvisorFieldsProps } from "@/types/components/modules/advisors";
 import { SingleSelectPopUpSelect as SinglePopUpSelect } from "@elements/Form";
 import { MultiSelectPopUpSelect as MultyPopUpSelect } from "@elements/Form";
+import { useAdvisorLocations } from "@features/advisors/hooks/useAdvisorLocations";
 import { MultiLineFormInput } from "@elements/Form";
+import { useTranslations } from "next-intl";
 import { FormInput } from "@elements/Form";
 
-import _STRINGS from "@/utils/LocalStrings";
+import type { AdvisorFieldsProps } from "@/types/components/modules/advisors";
+
 import isArray from "lodash/isArray";
 import dynamic from "next/dynamic";
 
@@ -23,22 +24,27 @@ const TELEPHONE_LENGTH = 11;
 const DOCUMENT_UPLOADS = [
   {
     key: "document_image",
-    label: `${_STRINGS.UPLOAD_RENTAL_DOC}*`,
+    label: "advisor.uploadRentalDoc",
+    star: true,
     link: "/attachments?type=ADVISOR_DOCUMENT_IMAGE",
   },
   {
     key: "national_card_image",
-    label: `${_STRINGS.NATIONAL_CARD_IMAGE}*`,
+    label: "advisor.nationalCardImage",
+    star: true,
     link: "/attachments?type=ADVISOR_NATIONAL_CARD_IMAGE",
   },
   {
     key: "profile_image",
-    label: _STRINGS.YOUR_IMAGE,
+    label: "common.yourImage",
+    star: false,
     link: "/attachments?type=PROFILE",
   },
 ] as const;
 
 const AdvisorSpecialFields = ({ values, setValues }: AdvisorFieldsProps) => {
+  const t = useTranslations();
+
   const { provinces, cities } = useAdvisorLocations(values?.province);
 
   const onChange = (value: unknown, key: string) =>
@@ -65,7 +71,7 @@ const AdvisorSpecialFields = ({ values, setValues }: AdvisorFieldsProps) => {
           item={{
             containerClass: "w-full",
             isMandatory: true,
-            title: _STRINGS.FULL_NAME,
+            title: t("advisor.fullName"),
           }}
         />
         <FormInput
@@ -78,7 +84,7 @@ const AdvisorSpecialFields = ({ values, setValues }: AdvisorFieldsProps) => {
             isMandatory: true,
             keyboard: "number",
             maxLength: NATIONAL_CODE_LENGTH,
-            title: _STRINGS.NATIONAL_CODE,
+            title: t("advisor.nationalCode"),
           }}
         />
       </div>
@@ -94,7 +100,7 @@ const AdvisorSpecialFields = ({ values, setValues }: AdvisorFieldsProps) => {
             isMandatory: true,
             keyboard: "number",
             maxLength: TELEPHONE_LENGTH,
-            title: _STRINGS.TELEPHONE_NUMBER,
+            title: t("advisor.telephoneNumber"),
           }}
         />
       </div>
@@ -108,13 +114,13 @@ const AdvisorSpecialFields = ({ values, setValues }: AdvisorFieldsProps) => {
             containerClass: " w-full md:w-1/2",
             isMandatory: true,
             list: provinces || [],
-            title: _STRINGS.PROVINCE,
+            title: t("common.province"),
           }}
         />
         <MultyPopUpSelect
           onSelect={toggleCity}
           value={values?.cityIds || []}
-          title={_STRINGS.SELECT_ACTIVE_CITIES}
+          title={t("advisor.selectActiveCities")}
           item={{ full_item: true, list: cities || [] }}
         />
       </div>
@@ -126,12 +132,12 @@ const AdvisorSpecialFields = ({ values, setValues }: AdvisorFieldsProps) => {
           containerClass: "w-full",
           isMandatory: true,
           rows: 3,
-          title: _STRINGS.STATIONERY_PLACE,
+          title: t("advisor.stationeryPlace"),
         }}
       />
 
       <p className="w-full text-start text-base md:text-lg font-medium">
-        {_STRINGS.ADDRESS_DOCS_IMAGES}
+        {t("advisor.addressDocsImages")}
       </p>
 
       {DOCUMENT_UPLOADS.map((upload) => (
@@ -140,13 +146,14 @@ const AdvisorSpecialFields = ({ values, setValues }: AdvisorFieldsProps) => {
           className="w-full flex items-center justify-center flex-col"
         >
           <p className="w-full text-start text-sm md:text-base">
-            {upload.label}
+            {t(upload.label)}
+            {upload.star ? "*" : ""}
           </p>
           <UploadField
             withCrop
             link={upload.link}
             key={`advisor-${upload.key}`}
-            title={_STRINGS.IMAGE}
+            title={t("common.image")}
             item={values?.[upload.key]}
             innerClasses={{ sizeClass: UPLOAD_BOX }}
             onDelete={() => onChange(null, upload.key)}
@@ -164,7 +171,7 @@ const AdvisorSpecialFields = ({ values, setValues }: AdvisorFieldsProps) => {
           direction: "ltr",
           inputClass: "ltr text-left",
           maxLength: NATIONAL_CODE_LENGTH,
-          title: _STRINGS.REFRAL_CODE,
+          title: t("common.refralCode"),
         }}
       />
     </div>

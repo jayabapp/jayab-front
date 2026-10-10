@@ -1,7 +1,8 @@
 "use client";
 
-import type { PropertyCardLinkProps } from "@/types/components/modules/property-grid";
 import { useStoreParams } from "@/store";
+
+import type { PropertyCardLinkProps } from "@/types/components/modules/property-grid";
 
 import Link from "next/link";
 

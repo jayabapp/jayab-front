@@ -4,14 +4,16 @@ import type { GetProfileDto, ProfileMenuEntry } from "@/types/features/user";
 import { useOwnerActiveReservationCount } from "@features/reservations/hooks/useOwnerActiveReservationCount";
 import { useTestAccessMe } from "@features/test-access/hooks/useTestAccessMe";
 import { profileItems } from "@/utils/constantss";
-import _STRINGS from "@/utils/LocalStrings";
 import { isMobile, isTablet } from "react-device-detect";
 import { useMemo } from "react";
+import { useTranslations } from "next-intl";
 
 export const useProfileMenu = (
   profile?: GetProfileDto,
   options?: { includeMobileOnly?: boolean; isLogin?: boolean },
 ) => {
+  const t = useTranslations();
+
   const isOwner = !!profile?.owner_id;
   const isAdvisor = !!profile?.advisor_id;
   const { data: activeReserveCount } = useOwnerActiveReservationCount(isOwner);
@@ -28,7 +30,7 @@ export const useProfileMenu = (
         id: "overview",
         imgSrc: "/assets/icons/header/new-face/user.svg",
         route: "/profile",
-        title: _STRINGS.PROFILE_OVERVIEW_MENU,
+        title: t("header.profileOverview"),
       });
     }
 
@@ -38,20 +40,20 @@ export const useProfileMenu = (
           id: "owner-properties",
           imgSrc: "/assets/icons/header/header_my_adds.svg",
           route: "/profile/owner/properties",
-          title: "آگهی های من",
+          title: t("header.myListings"),
         },
         {
           badgeCounter: activeReserveCount ?? undefined,
           id: "owner-reserves",
           imgSrc: "/assets/icons/header/header_my_adds.svg",
           route: "/profile/owner/reserves",
-          title: "درخواست های رزرو",
+          title: t("header.reserveRequests"),
         },
         {
           id: "owner-photo-upgrades",
           imgSrc: "/assets/icons/adds/header_upgrade_image.svg",
           route: "/profile/owner/photo-upgrade-requests",
-          title: "درخواست های بهبود تصویر",
+          title: t("owner.photoUpgradeRequests"),
         },
       );
     }
@@ -61,7 +63,7 @@ export const useProfileMenu = (
         id: "advisor-subscription",
         imgSrc: "/assets/icons/header/header_my_sub.svg",
         route: "/profile/advisor/subscription",
-        title: "بخش مشاور",
+        title: t("header.advisorSection"),
       });
     }
 
@@ -70,7 +72,7 @@ export const useProfileMenu = (
         id: "my-payments",
         imgSrc: "/assets/icons/header/header_my_turnovers.svg",
         route: "/profile/my-payments",
-        title: "پرداخت های من",
+        title: t("header.myPayments"),
       });
     }
 
@@ -79,7 +81,7 @@ export const useProfileMenu = (
         id: "test-access",
         imgSrc: "/assets/icons/header/new-face/user.svg",
         route: "/profile/test-access",
-        title: "دسترسی محیط تست",
+        title: t("routes.test-access"),
       });
     }
 
@@ -88,16 +90,17 @@ export const useProfileMenu = (
       : profileItems.filter((entry) => !entry?.isMobile);
 
     const shared = platformEntries
-      .filter((entry) => isLogin || !entry?.guard)
+      .filter((entry) => isLogin || !("guard" in entry && entry.guard))
       .map((entry) => ({
         id: entry.id,
         imgSrc: entry.imgSrc,
         route: entry.route,
-        title: entry.title,
+        title: t(entry.titleKey),
       }));
 
     return [...roleEntries, ...shared];
   }, [
+    t,
     activeReserveCount,
     includeMobileOnly,
     isAdvisor,

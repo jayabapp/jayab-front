@@ -2,6 +2,7 @@
 
 import { useState, useSyncExternalStore } from "react";
 import { useEffect, useMemo, useRef } from "react";
+import { useTranslations } from "next-intl";
 import { getHomeImageUrl } from "@features/home/mappers/home-image.mapper";
 import { HomeHeroSearch } from "@modules/HomeHeroSearch";
 import { getImageProps } from "next/image";
@@ -13,7 +14,6 @@ import type { HeroSlideImageProps } from "@/types/components/modules/home";
 import type { HomeBannerDto } from "@/types/components/templates/home";
 import type { HeroSlide } from "@/types/components/modules/home";
 
-import _STRINGS from "@/utils/LocalStrings";
 import Editable from "@elements/Editable";
 
 const SWIPE_THRESHOLD_PX = 40;
@@ -112,6 +112,8 @@ const HeroSlideImage = ({ slide, isFirst, onLoad }: HeroSlideImageProps) => {
 };
 
 const HomeBannerPart = ({ title, devices, banners }: HomeHeroBannerProps) => {
+  const t = useTranslations("content");
+
   const isPhone = !!devices?.isMobile;
 
   const slides = useMemo(
@@ -217,7 +219,7 @@ const HomeBannerPart = ({ title, devices, banners }: HomeHeroBannerProps) => {
       ref={rootRef}
       role="region"
       aria-roledescription="carousel"
-      aria-label={_STRINGS.HERO_SLIDER}
+      aria-label={t("heroSlider")}
       data-paused={!playing}
       data-slide-paused={slideMotionPaused}
       style={{ "--hero-interval": `${AUTOPLAY_MS}ms` } as CSSProperties}
@@ -244,7 +246,7 @@ const HomeBannerPart = ({ title, devices, banners }: HomeHeroBannerProps) => {
           <ContentImage
             width={320}
             height={166}
-            alt={_STRINGS.HOME_TITLE}
+            alt={t("homeTitle")}
             sizes="(max-width: 1024px) 96px, 160px"
             className={`h-auto !w-24 lg:!w-40 ${hasSlides ? "drop-shadow-md" : ""}`}
             src="/assets/images/home/home_banner_logo.webp"
@@ -254,7 +256,7 @@ const HomeBannerPart = ({ title, devices, banners }: HomeHeroBannerProps) => {
               hasSlides ? "text-white drop-shadow-md" : "text-neutral-900"
             }`}
           >
-            {title || _STRINGS.HOME_TITLE}
+            {title || t("homeTitle")}
           </h2>
         </div>
 

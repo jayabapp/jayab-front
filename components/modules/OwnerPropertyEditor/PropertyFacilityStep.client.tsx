@@ -1,19 +1,20 @@
 "use client";
 
+import { MultiSelectPopUpSelect as MultyPopUpSelect } from "@elements/Form";
 import { useOwnerPropertyOptions } from "@features/owner-property/hooks/useOwnerPropertyOptions";
-import { emptyFacilityValues } from "@features/owner-property/mappers/property-draft.mapper";
 import { useOwnerPropertyStep } from "@features/owner-property/hooks/useOwnerPropertyStep";
 import { usePropertyDraftForm } from "@features/owner-property/hooks/usePropertyDraftForm";
+import { emptyFacilityValues } from "@features/owner-property/mappers/property-draft.mapper";
+import { MultiLineFormInput } from "@elements/Form";
 import { toFacilityValues } from "@features/owner-property/mappers/property-draft.mapper";
+import { useTranslations } from "next-intl";
+import { Checkbox } from "@elements/Form";
+
 import type { OwnerPropertyRouteProps } from "@/types/components/modules/owner-property";
 import type { FacilitiesValuesDto } from "@/types/components/modules/owner-property";
-import { MultiSelectPopUpSelect as MultyPopUpSelect } from "@elements/Form";
-import { MultiLineFormInput } from "@elements/Form";
-import { Checkbox } from "@elements/Form";
 
 import FieldCharacterCounter from "./parts/FieldCharacterCounter";
 import PropertyStepFrame from "./parts/PropertyStepFrame.client";
-import _STRINGS from "@/utils/LocalStrings";
 import isArray from "lodash/isArray";
 
 const DESCRIPTION_MAX_LENGTH = 1024;
@@ -23,6 +24,8 @@ const GROUP_TITLE =
   "font-bold mb-2 col-span-full w-full text-start text-sm md:text-base text-brand-600";
 
 const PropertyFacilityStep = ({ propertyId }: OwnerPropertyRouteProps) => {
+  const t = useTranslations();
+
   const { draft, isLoading, onChange, setValues, values } =
     usePropertyDraftForm(propertyId, emptyFacilityValues, {
       map: toFacilityValues,
@@ -81,40 +84,40 @@ const PropertyFacilityStep = ({ propertyId }: OwnerPropertyRouteProps) => {
   return (
     <PropertyStepFrame
       step="facility"
+      onSubmit={onSubmit}
       isPending={isPending}
       isLoading={isLoading}
-      onSubmit={onSubmit}
       propertyId={propertyId}
-      submitTitle={_STRINGS.SUBMIT_MOVE_ON}
+      submitTitle={t("owner.submitMoveOn")}
     >
       <div className="flex flex-col gap-2 pb-4 w-full">
         <p className="font-bold w-full text-start text-sm md:text-base text-brand-600">
-          {_STRINGS.POOL_STATUS}
+          {t("common.poolStatus")}
         </p>
         <Checkbox
           rounded="rounded-full"
-          title={_STRINGS.POOL_YES}
+          title={t("owner.poolYes")}
           isChecked={values?.has_pool}
           onSelect={() => onChange(true, "has_pool")}
         />
         <Checkbox
           rounded="rounded-full"
-          title={_STRINGS.HAS_NO_POOL}
+          title={t("owner.hasNoPool")}
           isChecked={!values?.has_pool}
           onSelect={() => onChange(false, "has_pool")}
         />
         {values?.has_pool ? (
           <MultyPopUpSelect
             value={values?.pool_type}
-            title={_STRINGS.POOL_TYPE}
+            title={t("common.poolType")}
             onSelect={(selected) => toggleOption(selected, "pool_type")}
             item={{ list: propertyTypes?.["POOL_TYPE"] || [] }}
           />
         ) : null}
       </div>
 
-      {optionGroup("ENTERTAINMENT", _STRINGS.ENTERTAINMENT, "entertainment")}
-      {optionGroup("KITCHEN", _STRINGS.KITCHEN_ACC, "kitchen")}
+      {optionGroup("ENTERTAINMENT", t("common.entertainment"), "entertainment")}
+      {optionGroup("KITCHEN", t("common.kitchenAcc"), "kitchen")}
 
       <MultiLineFormInput
         value={values?.facility_dscr || ""}
@@ -129,12 +132,12 @@ const PropertyFacilityStep = ({ propertyId }: OwnerPropertyRouteProps) => {
           ),
           maxLength: DESCRIPTION_MAX_LENGTH,
           rows: 3,
-          title: _STRINGS.OTHER_ACCESSES,
+          title: t("owner.otherAccesses"),
         }}
       />
 
-      {optionGroup("COOL_HEAT", _STRINGS.COOL_HEAT, "cool_heat")}
-      {optionGroup("WELFARE", _STRINGS.WELFARE, "welfare")}
+      {optionGroup("COOL_HEAT", t("common.coolHeat"), "cool_heat")}
+      {optionGroup("WELFARE", t("common.welfare"), "welfare")}
     </PropertyStepFrame>
   );
 };

@@ -5,6 +5,7 @@ import { useStoreInit, useStoreParams } from "@/store";
 import { useTrackPropertyView } from "@features/properties/hooks/useTrackPropertyView";
 import { PropertyShareModal } from "@modules/PropertyContact";
 import { trackListingEvent } from "@/helpers/listingAnalytics";
+import { useTranslations } from "next-intl";
 import { ContactActions } from "@modules/PropertyContact";
 import { useEffect } from "react";
 import { useState } from "react";
@@ -12,10 +13,11 @@ import { useState } from "react";
 import type { PropertySummaryCardProps } from "@/types/components/modules/property-details";
 import type { BookingRenderActions } from "@/types/components/modules/property-booking";
 
-import _STRINGS from "@/utils/LocalStrings";
 import Button from "@elements/Button";
 
 const PropertySummaryCard = ({ property }: PropertySummaryCardProps) => {
+  const t = useTranslations("common");
+
   const { userInfo } = useStoreInit((state) => state);
   const { isAdvisor } = useStoreParams((state) => state);
   const [showShare, setShowShare] = useState(false);
@@ -49,7 +51,7 @@ const PropertySummaryCard = ({ property }: PropertySummaryCardProps) => {
             color="themeLight"
             width="w-full !py-2"
             containerClass="w-full"
-            title={_STRINGS.SEND_INFO}
+            title={t("sendInfo")}
             roundedClass="rounded-full"
             onClick={() => setShowShare(true)}
           />

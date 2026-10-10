@@ -1,14 +1,15 @@
 "use client";
 
 import { useOwnerPropertyStep } from "@features/owner-property/hooks/useOwnerPropertyStep";
-import type { OwnerPropertyRouteProps } from "@/types/components/modules/owner-property";
 import { usePropertyDraft } from "@features/owner-property/hooks/usePropertyDraft";
 import { SearchPlaceModal } from "@modules/PropertyMap";
+import { useTranslations } from "next-intl";
 import { SearchInput } from "@modules/Search";
 import { useState } from "react";
 
+import type { OwnerPropertyRouteProps } from "@/types/components/modules/owner-property";
+
 import PropertyStepFrame from "./parts/PropertyStepFrame.client";
-import _STRINGS from "@/utils/LocalStrings";
 import dynamic from "next/dynamic";
 
 const PropertyLocationMap = dynamic(
@@ -20,6 +21,8 @@ const PropertyLocationMap = dynamic(
 const TEHRAN_CENTER = [51.37, 35.767];
 
 const PropertyLocationStep = ({ propertyId }: OwnerPropertyRouteProps) => {
+  const t = useTranslations("owner");
+
   const { data: draft, isLoading } = usePropertyDraft(propertyId);
   const { isPending, submit } = useOwnerPropertyStep("location", propertyId);
 
@@ -51,11 +54,11 @@ const PropertyLocationStep = ({ propertyId }: OwnerPropertyRouteProps) => {
     <PropertyStepFrame
       step="location"
       skeleton="map"
+      onSubmit={onSubmit}
       isPending={isPending}
       isLoading={isLoading}
-      onSubmit={onSubmit}
       propertyId={propertyId}
-      submitTitle={_STRINGS.SUBMIT_MOVE_ON}
+      submitTitle={t("submitMoveOn")}
       headerClass="w-full px-4 md:px-0 pb-4 pt-8"
     >
       <div className="w-full h-[70dvh] relative">
@@ -72,7 +75,7 @@ const PropertyLocationStep = ({ propertyId }: OwnerPropertyRouteProps) => {
             passedText={centerAddress}
             boxId="SEARCH_BOX_Mobile"
             item={{ disable_cancel: true }}
-            placeholder={_STRINGS?.SEARCH_PLACE_INPUT}
+            placeholder={t("searchPlaceInput")}
           />
         </div>
         <PropertyLocationMap
@@ -90,7 +93,7 @@ const PropertyLocationStep = ({ propertyId }: OwnerPropertyRouteProps) => {
         show={showSearch}
         setJumpTo={setJumpTo}
         setShow={setShowSearch}
-        title={_STRINGS?.SEARCH_PLACE_INPUT}
+        title={t("searchPlaceInput")}
       />
     </PropertyStepFrame>
   );

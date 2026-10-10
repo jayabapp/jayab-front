@@ -1,6 +1,6 @@
-import type { ShowAllButtonProps } from "@/types/components/modules/property-details";
-
 import { Icon } from "@elements/Icon";
+
+import type { ShowAllButtonProps } from "@/types/components/modules/property-details";
 
 const ShowAllButton = ({ count, label, onClick }: ShowAllButtonProps) => (
   <button

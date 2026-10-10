@@ -1,16 +1,19 @@
 "use client";
 
-import type { ProfileSessionActionProps } from "@/types/components/modules/profile";
-import { useLogout } from "@features/auth/hooks/useLogout";
+import { useTranslations } from "next-intl";
 import { ContentImage } from "@elements/Image";
 import { useRouter } from "next/navigation";
+import { useLogout } from "@features/auth/hooks/useLogout";
 import { useState } from "react";
 
+import type { ProfileSessionActionProps } from "@/types/components/modules/profile";
+
 import ConfirmModal from "@elements/Modal/ConfirmModal.client";
-import _STRINGS from "@/utils/LocalStrings";
 import Button from "@elements/Button";
 
 const ProfileSessionAction = ({ isLogin }: ProfileSessionActionProps) => {
+  const t = useTranslations();
+
   const router = useRouter();
   const logout = useLogout();
   const [showConfirm, setShowConfirm] = useState(false);
@@ -20,7 +23,7 @@ const ProfileSessionAction = ({ isLogin }: ProfileSessionActionProps) => {
       <Button
         width="w-full"
         containerClass="mt-8 w-full"
-        title={_STRINGS?.LOGIN_TO_UR_ACCOUNT}
+        title={t("common.loginToUrAccount")}
         onClick={() => router.push("/auth")}
       />
     );
@@ -40,17 +43,17 @@ const ProfileSessionAction = ({ isLogin }: ProfileSessionActionProps) => {
           src="/assets/icons/header/header_logout.svg"
         />
         <p className="nav-underline relative text-sm xl:text-base font-medium">
-          {_STRINGS?.LOGOUT_TITLE}
+          {t("header.logout")}
         </p>
       </button>
 
       <ConfirmModal
         isLoading={false}
-        hideText={_STRINGS.NO}
+        hideText={t("common.no")}
         isVisible={showConfirm}
-        confirmText={_STRINGS.YES}
-        title={_STRINGS.LOGGING_OUT}
-        text={_STRINGS.LOG_OUT_MESSAGE}
+        confirmText={t("common.yes")}
+        title={t("header.logout")}
+        text={t("header.logoutMessage")}
         onConfirm={() => void logout()}
         onHide={() => setShowConfirm(false)}
       />

@@ -1,8 +1,9 @@
 "use client";
 
-import type { BlogCardLinkProps } from "@/types/components/modules/blog";
-import { useRouter } from "next/navigation";
 import { useCallback, useRef } from "react";
+import { useRouter } from "next/navigation";
+
+import type { BlogCardLinkProps } from "@/types/components/modules/blog";
 
 import Link from "next/link";
 

@@ -9,9 +9,10 @@ import PropertyDetailsTemplate from "@templates/PropertyDetails";
 import deviceTypeDetector from "@/helpers/device.detector";
 import MehaHeaderHelper from "@/helpers/MetaHeaderHelper";
 import getQueryClient from "@lib/query/query-client";
+import IntlNamespaces from "@/i18n/IntlNamespaces";
 
-import type { Metadata } from "next";
 import type { PropertyDetailsRouteProps } from "@/types/app/routes";
+import type { Metadata } from "next";
 
 export const generateMetadata = async ({
   params,
@@ -34,18 +35,20 @@ const PropertyDetailsPage = async ({ params }: PropertyDetailsRouteProps) => {
   queryClient.setQueryData(propertyDetailOptions(room_slug).queryKey, property);
 
   return (
-    <HydrationBoundary state={dehydrate(queryClient)}>
-      <PropertyDetailsTemplate
-        devices={devices}
-        property={property}
-        schema={
-          <>
-            <ProductSchema data={property} />
-            <PlaceSchema data={property} />
-          </>
-        }
-      />
-    </HydrationBoundary>
+    <IntlNamespaces namespaces={["content", "reserve"]}>
+      <HydrationBoundary state={dehydrate(queryClient)}>
+        <PropertyDetailsTemplate
+          devices={devices}
+          property={property}
+          schema={
+            <>
+              <ProductSchema data={property} />
+              <PlaceSchema data={property} />
+            </>
+          }
+        />
+      </HydrationBoundary>
+    </IntlNamespaces>
   );
 };
 

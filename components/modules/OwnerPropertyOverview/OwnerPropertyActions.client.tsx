@@ -1,21 +1,24 @@
 "use client";
 
 import { useDeleteOwnerProperty } from "@features/owner-property/hooks/useDeleteOwnerProperty";
-import type { OwnerPropertyViewProps } from "@/types/components/modules/owner-property";
 import { usePropertyBadge } from "@features/owner-property/hooks/usePropertyBadge";
+import { useTranslations } from "next-intl";
 import { ContentImage } from "@elements/Image";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
 
+import type { OwnerPropertyViewProps } from "@/types/components/modules/owner-property";
+
 import OwnerCommissionAllDaysModal from "./parts/OwnerCommissionAllDaysModal.client";
 import OwnerBadgeRequestModal from "./parts/OwnerBadgeRequestModal.client";
-import ConfirmModal from "@elements/Modal/ConfirmModal.client";
 import OwnerActionRow from "./parts/OwnerActionRow";
-import _STRINGS from "@/utils/LocalStrings";
+import ConfirmModal from "@elements/Modal/ConfirmModal.client";
 
 const BADGE_PENDING_STATUS_ID = 100;
 
 const OwnerPropertyActions = ({ property }: OwnerPropertyViewProps) => {
+  const t = useTranslations();
+
   const router = useRouter();
   const [showBadgeRequest, setShowBadgeRequest] = useState(false);
   const [showCommission, setShowCommission] = useState(false);
@@ -37,19 +40,19 @@ const OwnerPropertyActions = ({ property }: OwnerPropertyViewProps) => {
   return (
     <div className="w-full flex order-5 flex-col gap-4">
       <OwnerActionRow
-        title={_STRINGS.PROP_STATS}
+        title={t("owner.propStats")}
         href={`${base}/subscription`}
       />
       <OwnerActionRow
-        title={_STRINGS.CHANGE_ADVISOR_COMMISSION}
+        title={t("owner.changeAdvisorCommission")}
         onClick={() => setShowCommission(true)}
       />
       <OwnerActionRow
-        title={_STRINGS.AUTHORiZIATION_REQUEST}
+        title={t("owner.authoriziationRequest")}
         href={`${base}/license`}
       />
       <OwnerActionRow
-        title={_STRINGS.REQUEST_FOR_BADGE}
+        title={t("owner.requestForBadge")}
         onClick={() => setShowBadgeRequest(true)}
         badge={
           badge?.status?.id == BADGE_PENDING_STATUS_ID ? (
@@ -63,11 +66,11 @@ const OwnerPropertyActions = ({ property }: OwnerPropertyViewProps) => {
           ) : null
         }
       />
-      <OwnerActionRow title={_STRINGS.EDIT_INFO} href={`${base}/edit`} />
+      <OwnerActionRow title={t("common.editInfo")} href={`${base}/edit`} />
       <OwnerActionRow
         tone="brand"
         href={`${base}/inquery`}
-        title={_STRINGS.WEEKLY_INQUERY}
+        title={t("owner.weeklyInquery")}
         icon={
           <ContentImage
             alt=""
@@ -81,7 +84,7 @@ const OwnerPropertyActions = ({ property }: OwnerPropertyViewProps) => {
       <OwnerActionRow
         tone="danger"
         onClick={() => setShowDelete(true)}
-        title={_STRINGS.ARE_U_SURE_DELETE_PROPERTY_TITLE}
+        title={t("owner.areUSureDeletePropertyTitle")}
       />
 
       <OwnerCommissionAllDaysModal
@@ -101,7 +104,7 @@ const OwnerPropertyActions = ({ property }: OwnerPropertyViewProps) => {
         onConfirm={onDeleteConfirm}
         onHide={() => setShowDelete(false)}
         messageClass=" !text-black !text-base"
-        text={_STRINGS.ARE_U_SURE_DELETE_PROPERTY}
+        text={t("owner.areUSureDeleteProperty")}
         hideTextClassName=" border !bg-white !rounded-full "
         headerImage="/assets/images/shared/red_crossed_sheet.png"
         confirmTextClassName=" !bg-danger-500 text-white !rounded-full "

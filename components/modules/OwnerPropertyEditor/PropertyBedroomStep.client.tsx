@@ -1,16 +1,19 @@
 "use client";
 
-import { emptyBedroomValues } from "@features/owner-property/mappers/property-draft.mapper";
 import { useOwnerPropertyStep } from "@features/owner-property/hooks/useOwnerPropertyStep";
 import { usePropertyDraftForm } from "@features/owner-property/hooks/usePropertyDraftForm";
-import type { OwnerPropertyRouteProps } from "@/types/components/modules/owner-property";
+import { emptyBedroomValues } from "@features/owner-property/mappers/property-draft.mapper";
 import { toBedroomValues } from "@features/owner-property/mappers/property-draft.mapper";
+import { useTranslations } from "next-intl";
+
+import type { OwnerPropertyRouteProps } from "@/types/components/modules/owner-property";
 
 import PropertyStepFrame from "./parts/PropertyStepFrame.client";
 import TitledCounter from "./parts/TitledCounter";
-import _STRINGS from "@/utils/LocalStrings";
 
 const PropertyBedroomStep = ({ propertyId }: OwnerPropertyRouteProps) => {
+  const t = useTranslations();
+
   const { draft, isLoading, onChange, values } = usePropertyDraftForm(
     propertyId,
     emptyBedroomValues,
@@ -42,21 +45,21 @@ const PropertyBedroomStep = ({ propertyId }: OwnerPropertyRouteProps) => {
   return (
     <PropertyStepFrame
       step="bedroom"
+      onSubmit={onSubmit}
       isPending={isPending}
       isLoading={isLoading}
-      onSubmit={onSubmit}
       propertyId={propertyId}
-      submitTitle={_STRINGS.SUBMIT_MOVE_ON}
+      submitTitle={t("owner.submitMoveOn")}
     >
       <p className="font-bold w-full text-start text-sm md:text-base text-brand-600">
-        {_STRINGS.ROOMS_INFO}
+        {t("owner.roomsInfo")}
       </p>
 
       <div className="flex flex-col gap-2 border-b pb-4 w-full">
         <TitledCounter
           disableInput
           onChange={setRoomCount}
-          title={_STRINGS.ROOM_COUNTS}
+          title={t("owner.roomCounts")}
           value={values?.bedrooms?.length}
         />
         {values?.bedrooms?.map((beds, index) => (
@@ -65,7 +68,7 @@ const PropertyBedroomStep = ({ propertyId }: OwnerPropertyRouteProps) => {
             value={beds}
             key={`bedroom${index + 1}`}
             onChange={(next) => setRoomBeds(next, index)}
-            title={`${_STRINGS.BED_COUNT_OF_ROOM} ${index + 1}`}
+            title={`${t("owner.bedCountOfRoom")} ${index + 1}`}
           />
         ))}
       </div>
@@ -73,19 +76,19 @@ const PropertyBedroomStep = ({ propertyId }: OwnerPropertyRouteProps) => {
       <div className="flex flex-col gap-2 border-b pb-4 w-full">
         <TitledCounter
           disableInput
-          title={_STRINGS.EXTRA_BED}
+          title={t("owner.extraBed")}
           value={values?.additional_bed}
           onChange={(next) => onChange(next, "additional_bed")}
         />
         <TitledCounter
           disableInput
-          title={_STRINGS.MASTER_ROOM}
+          title={t("common.masterRoom")}
           value={values?.master_room}
           onChange={(next) => onChange(next, "master_room")}
         />
         <TitledCounter
           disableInput
-          title={_STRINGS.SOFA_BED}
+          title={t("common.sofaBed")}
           value={values?.sofa_bed}
           onChange={(next) => onChange(next, "sofa_bed")}
         />
@@ -93,47 +96,47 @@ const PropertyBedroomStep = ({ propertyId }: OwnerPropertyRouteProps) => {
 
       <div className="flex flex-col gap-2 border-b pb-4 w-full">
         <p className="font-bold w-full text-start text-sm md:text-base text-brand-600">
-          {_STRINGS.REST_ROOMS}
+          {t("owner.restRooms")}
         </p>
         <TitledCounter
           disableInput
           value={values?.wc}
-          title={_STRINGS.WC_IR}
+          title={t("common.wcIr")}
           onChange={(next) => onChange(next, "wc")}
         />
         <TitledCounter
           disableInput
           value={values?.wc_ir}
-          title={_STRINGS.WC_INTERNATIONAL}
+          title={t("common.wcInternational")}
           onChange={(next) => onChange(next, "wc_ir")}
         />
       </div>
 
       <div className="flex flex-col gap-2 border-b pb-4 w-full">
         <p className="font-bold w-full text-start text-sm md:text-base text-brand-600">
-          {_STRINGS.SHOWER}
+          {t("owner.shower")}
         </p>
         <TitledCounter
           disableInput
-          title={_STRINGS.BATHROOM_MASTER}
+          title={t("owner.bathroomMaster")}
           value={values?.bathroom_master}
           onChange={(next) => onChange(next, "bathroom_master")}
         />
         <TitledCounter
           disableInput
-          title={_STRINGS.ALL_SHOWER}
+          title={t("owner.allShower")}
           value={values?.bathroom_general}
           onChange={(next) => onChange(next, "bathroom_general")}
         />
         <TitledCounter
           disableInput
-          title={_STRINGS.SHOWE_IN_WC}
+          title={t("owner.showeInWc")}
           value={values?.bathroom_in_wc}
           onChange={(next) => onChange(next, "bathroom_in_wc")}
         />
         <TitledCounter
           disableInput
-          title={_STRINGS.TUB_SHOWER}
+          title={t("owner.tubShower")}
           value={values?.bathroom_tub}
           onChange={(next) => onChange(next, "bathroom_tub")}
         />

@@ -1,41 +1,45 @@
+import { useTranslations } from "next-intl";
+import { ContentImage } from "@elements/Image";
+
 import type { RemovableFilterChipProps } from "@/types/components/modules/property-search-filters";
 
-import { ContentImage } from "@elements/Image";
-import _STRINGS from "@/utils/LocalStrings";
 
-/** The active-filter pill: a label plus the control that clears that filter. */
 const RemovableFilterChip = ({
   label,
   onRemove,
   onLabelClick,
-}: RemovableFilterChipProps) => (
-  <div className="filter-chip filter-chip-active gap-4 px-1">
-    {onLabelClick ? (
+}: RemovableFilterChipProps) => {
+  const t = useTranslations("common");
+
+  return (
+    <div className="filter-chip filter-chip-active gap-4 px-1">
+      {onLabelClick ? (
+        <button
+          type="button"
+          onClick={onLabelClick}
+          className="cursor-pointer text-xs pr-2"
+        >
+          {label}
+        </button>
+      ) : (
+        <p className="text-xs pr-2">{label}</p>
+      )}
       <button
         type="button"
-        onClick={onLabelClick}
-        className="cursor-pointer text-xs pr-2"
+        onClick={onRemove}
+        aria-label={`${t("removeFilters")} ${label}`}
+        className="cursor-pointer w-4 h-4 aspect-square rounded-full border border-brand-600 flex items-center justify-center"
       >
-        {label}
+        <ContentImage
+          alt=""
+          width={8}
+          height={8}
+          className="w-2 h-2 rotate-45 aspect-square"
+          src="/assets/icons/adds/blue_plus.svg"
+        />
       </button>
-    ) : (
-      <p className="text-xs pr-2">{label}</p>
-    )}
-    <button
-      type="button"
-      onClick={onRemove}
-      aria-label={`${_STRINGS.REMOVE_FILTERS} ${label}`}
-      className="cursor-pointer w-4 h-4 aspect-square rounded-full border border-brand-600 flex items-center justify-center"
-    >
-      <ContentImage
-        alt=""
-        width={8}
-        height={8}
-        className="w-2 h-2 rotate-45 aspect-square"
-        src="/assets/icons/adds/blue_plus.svg"
-      />
-    </button>
-  </div>
-);
+    </div>
+  );
+};
 
 export default RemovableFilterChip;

@@ -1,12 +1,13 @@
 "use client";
 
-import { useOwnerPropertyOptions } from "@features/owner-property/hooks/useOwnerPropertyOptions";
-import type { PropertyEnvironmentFieldsProps } from "@/types/components/modules/owner-property";
 import { SingleSelectPopUpSelect as SinglePopUpSelect } from "@elements/Form";
+import { useOwnerPropertyOptions } from "@features/owner-property/hooks/useOwnerPropertyOptions";
 import { MultiLineFormInput } from "@elements/Form";
+import { useTranslations } from "next-intl";
+
+import type { PropertyEnvironmentFieldsProps } from "@/types/components/modules/owner-property";
 
 import FieldCharacterCounter from "./FieldCharacterCounter";
-import _STRINGS from "@/utils/LocalStrings";
 
 const DESCRIPTION_MAX_LENGTH = 1024;
 
@@ -14,6 +15,8 @@ const PropertyEnvironmentFields = ({
   values,
   onChange,
 }: PropertyEnvironmentFieldsProps) => {
+  const t = useTranslations();
+
   const { data: patterns } = useOwnerPropertyOptions([
     "PATTERN",
     "ACCESS",
@@ -29,7 +32,7 @@ const PropertyEnvironmentFields = ({
         item={{
           isMandatory: true,
           list: patterns?.["PATTERN"] || [],
-          title: _STRINGS.ENV_PATTERN,
+          title: t("common.envPattern"),
         }}
       />
       <SinglePopUpSelect
@@ -39,7 +42,7 @@ const PropertyEnvironmentFields = ({
         item={{
           isMandatory: true,
           list: patterns?.["ACCESS"] || [],
-          title: _STRINGS.ACCESS_ROUTE,
+          title: t("common.accessRoute"),
         }}
       />
       <MultiLineFormInput
@@ -53,9 +56,9 @@ const PropertyEnvironmentFields = ({
               value={values?.pattern_dscr || ""}
             />
           ),
-          placeholder: _STRINGS.ENVIRONMENT_DESCRIPTION,
+          placeholder: t("owner.environmentDescription"),
           rows: 3,
-          title: _STRINGS.ACCESS_ROUTE_DESC,
+          title: t("owner.accessRouteDesc"),
         }}
       />
       <SinglePopUpSelect
@@ -65,7 +68,7 @@ const PropertyEnvironmentFields = ({
         item={{
           isMandatory: true,
           list: patterns?.["NEIGHBORHOOD"] || [],
-          title: _STRINGS.NEIGHBORHOOD_TYPE,
+          title: t("owner.neighborhoodType"),
         }}
       />
       <MultiLineFormInput
@@ -80,9 +83,9 @@ const PropertyEnvironmentFields = ({
             />
           ),
           isMandatory: true,
-          placeholder: _STRINGS.PLACES_DESCRIPTION,
+          placeholder: t("owner.placesDescription"),
           rows: 3,
-          title: _STRINGS.DISTANCETO_POINT,
+          title: t("common.distancetoPoint"),
         }}
       />
     </div>

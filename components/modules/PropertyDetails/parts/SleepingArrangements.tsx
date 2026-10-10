@@ -1,23 +1,26 @@
+import { useTranslations } from "next-intl";
+
 import type { PropertySpecsSectionProps } from "@/types/components/modules/property-details";
 
-import _STRINGS from "@/utils/LocalStrings";
 import MiniInfoCard from "./MiniInfoCard";
 import FactRow from "./FactRow";
 
 const SleepingArrangements = ({ property }: PropertySpecsSectionProps) => {
+  const t = useTranslations();
+
   const bedrooms = property?.bedrooms;
   const rooms = bedrooms?.bedrooms ?? [];
 
   const sharedBits = [
     bedrooms?.additional_bed
-      ? `${bedrooms.additional_bed} ${_STRINGS.EXTRA_BEDDING}`
+      ? `${bedrooms.additional_bed} ${t("listing.extraBedding")}`
       : null,
-    bedrooms?.sofa_bed ? _STRINGS.SOFA_BED : null,
+    bedrooms?.sofa_bed ? t("common.sofaBed") : null,
   ].filter(Boolean);
 
   const toilets = [
-    bedrooms?.wc ? `${bedrooms.wc} ${_STRINGS.WC_IR}` : null,
-    bedrooms?.wc_ir ? `${bedrooms.wc_ir} ${_STRINGS.WC_INTERNATIONAL}` : null,
+    bedrooms?.wc ? `${bedrooms.wc} ${t("common.wcIr")}` : null,
+    bedrooms?.wc_ir ? `${bedrooms.wc_ir} ${t("common.wcInternational")}` : null,
   ].filter(Boolean);
 
   const bathrooms =
@@ -38,11 +41,11 @@ const SleepingArrangements = ({ property }: PropertySpecsSectionProps) => {
               icon="bed"
               className="min-w-[8.5rem] shrink-0"
               key={`bedroom-${index}`}
-              title={`${_STRINGS.ROOM} ${index + 1}`}
-              value={`${beds} ${_STRINGS.BEDS}`}
+              title={`${t("listing.room")} ${index + 1}`}
+              value={t("listing.bedsCount", { count: Number(beds) })}
               note={
                 index === 0 && bedrooms?.master_room
-                  ? _STRINGS.MASTER_ROOM
+                  ? t("common.masterRoom")
                   : null
               }
             />
@@ -52,7 +55,7 @@ const SleepingArrangements = ({ property }: PropertySpecsSectionProps) => {
             <MiniInfoCard
               icon="bed"
               className="min-w-[8.5rem] shrink-0"
-              title={_STRINGS.SHARED_SPACE}
+              title={t("listing.sharedSpace")}
               value={sharedBits.join(" • ")}
             />
           ) : (
@@ -66,15 +69,17 @@ const SleepingArrangements = ({ property }: PropertySpecsSectionProps) => {
       {toilets.length || bathrooms ? (
         <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
           {toilets.length ? (
-            <FactRow icon="toilet" title={_STRINGS.WC} summary={toilets} />
+            <FactRow icon="toilet" title={t("listing.wc")} summary={toilets} />
           ) : (
             <></>
           )}
           {bathrooms ? (
             <FactRow
               icon="bath"
-              title={_STRINGS.BATHROOM}
-              summary={[`${bathrooms} ${_STRINGS.ADAD}`]}
+              title={t("listing.bathroom")}
+              summary={[
+                `${t("listing.bathroomCount", { count: Number(bathrooms) })}`,
+              ]}
             />
           ) : (
             <></>

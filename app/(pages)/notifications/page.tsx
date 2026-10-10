@@ -1,10 +1,13 @@
 import { NotificationList } from "@modules/Notifications";
 import NotificationsTemplate from "@templates/Notifications";
+import IntlNamespaces from "@/i18n/IntlNamespaces";
 
 const NotificationsPage = () => (
-  <NotificationsTemplate>
-    <NotificationList />
-  </NotificationsTemplate>
+  <IntlNamespaces namespaces={["profile"]}>
+    <NotificationsTemplate>
+      <NotificationList />
+    </NotificationsTemplate>
+  </IntlNamespaces>
 );
 
 export default NotificationsPage;

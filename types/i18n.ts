@@ -7,3 +7,9 @@ declare module "next-intl" {
     Messages: typeof fa;
   }
 }
+
+// For pure helpers that receive a translator. Keys are plain strings here; the
+// namespaces script flags any "ns.key" literal that does not exist in messages.
+export type Translate = {
+  bivarianceHack(key: string, values?: Record<string, string | number>): string;
+}["bivarianceHack"];

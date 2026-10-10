@@ -1,16 +1,17 @@
 "use client";
 
+import { Fragment, useEffect, useState } from "react";
 import { useSubmitContentQuestion } from "@features/home/hooks/useContentQuestions";
 import { useRecaptchaGenerator } from "@/helpers/captcha.helper";
-import { Fragment, useEffect, useState } from "react";
 import { MultiLineFormInput } from "@elements/Form";
-import { p2e } from "@/helpers/NumberConverter";
+import { useTranslations } from "next-intl";
+import { useStoreInit } from "@/store";
 import { FormInput } from "@elements/Form";
 import { colors } from "@/theme/colors";
-import { useStoreInit } from "@/store";
+import { p2e } from "@/helpers/NumberConverter";
+
 import type { FC } from "react";
 
-import _STRINGS from "@/utils/LocalStrings";
 import Button from "@elements/Button";
 import Notify from "@elements/Toast";
 import Image from "next/image";
@@ -20,6 +21,8 @@ export const QuestionForm: FC<{
   productId?: string | number;
   captchaKey?: string;
 }> = ({ contentId, productId, captchaKey }) => {
+  const t = useTranslations();
+
   const { userInfo } = useStoreInit((data) => data);
   const [author_name, setauthor_name] = useState(``);
   const [mobile_number, setmobile_number] = useState(
@@ -48,7 +51,7 @@ export const QuestionForm: FC<{
   }, [regenerate]);
   const onSendClick = () => {
     if (!validateCaptcha(recaptcha)) {
-      Notify({ body: _STRINGS.RECAPTHCA_ERROR });
+      Notify({ body: t("content.recapthcaError") });
       regenerate();
     } else {
       mutate({
@@ -69,7 +72,7 @@ export const QuestionForm: FC<{
     <Fragment>
       <div className="grid w-full grid-cols-1 md:grid-cols-2 gap-4 ">
         <div className="md:col-span-2 flex flex-col md:flex-row md:items-center justify-start gap-5">
-          <p className="col-span-1">امتیاز خود را ثبت کنید</p>
+          <p className="col-span-1">{t("content.rateYourself")}</p>
           <div className="flex flex-row w-fit justify-between">
             {[5, 4, 3, 2, 1].map((i) => {
               if (Number(rate) >= i) {
@@ -106,8 +109,8 @@ export const QuestionForm: FC<{
           <FormInput
             value={author_name}
             item={{
-              title: _STRINGS.ASK_QUESTION_NAME,
-              placeholder: _STRINGS.ASK_QUESTION_NAME_PLACEHOLDER,
+              title: "",
+              placeholder: t("content.askQuestionNamePlaceholder"),
               containerClass: "w-full",
               inputClass: "bg-white! border-neutral-200! ",
             }}
@@ -118,8 +121,8 @@ export const QuestionForm: FC<{
           <FormInput
             value={mobile_number}
             item={{
-              title: _STRINGS.ASK_QUESTION_PHONE,
-              placeholder: _STRINGS.ASK_QUESTION_PHONE_PLACEHOLDER,
+              title: "",
+              placeholder: t("content.askQuestionPhonePlaceholder"),
               keyboard: "number",
               containerClass: "w-full",
               maxLength: 11,
@@ -134,7 +137,7 @@ export const QuestionForm: FC<{
             item={{
               title: "",
               rows: 6,
-              placeholder: _STRINGS.ASK_QUESTION_DESCRIPTION_PLACEHOLDER,
+              placeholder: t("content.askQuestionDescriptionPlaceholder"),
               containerClass: "w-full",
               inputClass: "bg-white! border-neutral-200! w-full!",
             }}
@@ -156,7 +159,7 @@ export const QuestionForm: FC<{
             value={recaptcha}
             onChangeText={setRecaptcha}
             item={{
-              placeholder: _STRINGS.ASK_QUESTION_CAPTCHA,
+              placeholder: t("content.askQuestionCaptcha"),
               maxLength: 5,
               containerClass: "w-full! md:w-fit!",
               inputClass: "bg-white!  border-neutral-200! ",
@@ -169,7 +172,7 @@ export const QuestionForm: FC<{
           loading={isSending}
           onClick={onSendClick}
           roundedClass="rounded-full"
-          title={_STRINGS.ASK_QUESTION_SUBMIT}
+          title={t("content.askQuestionSubmit")}
           containerClass="w-full md:w-fit self-start"
         />
       </div>

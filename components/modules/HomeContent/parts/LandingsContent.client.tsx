@@ -1,11 +1,12 @@
 "use client";
 
-import { type Content } from "@/types/components/modules/home";
+import { useTranslations } from "next-intl";
 import { HTMLGenerator } from "@/helpers/html.generator";
 import { ContentImage } from "@elements/Image";
 import { useState } from "react";
 
-import _STRINGS from "@/utils/LocalStrings";
+import { type Content } from "@/types/components/modules/home";
+
 
 const LandingsContentSection = ({
   data,
@@ -14,6 +15,8 @@ const LandingsContentSection = ({
   data: Content;
   options: { parentPadding?: string };
 }) => {
+  const t = useTranslations("content");
+
   const [isOpen, setIsOpen] = useState(false);
   const { html } = HTMLGenerator(data?.html || "", {
     hasHeading: true,
@@ -34,10 +37,10 @@ const LandingsContentSection = ({
       className={`flex w-full  scroll-mt-40  relative ${options?.parentPadding ?? "pt-12   padding-x  md:px-[15%]  2xl:px-[20%] "}  items-center justify-center flex-col gap-4`}
     >
       <div
-        className={`  ${isOpen ? "is-opend    " : " "} accardion-class   rounded-b-md transition-all `}
+        className={`${isOpen ? "is-opend" : " "} accardion-class rounded-b-md transition-all `}
       >
         <div
-          className={`   ${isOpen ? "  min-h-[15rem] " : " h-[15rem] "}  transition-all  content leading-7   blogBody category_table   text-[0.8125rem] opacity-85  !text-justify `}
+          className={`${isOpen ? "  min-h-[15rem] " : " h-[15rem] "}  transition-all  content leading-7   blogBody category_table   text-[0.8125rem] opacity-85  !text-justify `}
           dangerouslySetInnerHTML={{ __html: `${html}` }}
         />
       </div>
@@ -49,14 +52,14 @@ const LandingsContentSection = ({
           className={` cursor-pointer flex items-center gap-2  transition-all`}
         >
           <p className="text-sm font-medium">
-            {isOpen ? _STRINGS.SEE_LESS : _STRINGS.WATCH_ALL}
+            {isOpen ? t("seeLess") : t("watchAll")}
           </p>
           <ContentImage
             alt=""
-            height={16}
             width={16}
-            className={`  w-4 h-4 ${isOpen ? "rotate-[90deg]" : "-rotate-[90deg]"} transition-all `}
+            height={16}
             src={"/assets/icons/shared/chevron-left.svg"}
+            className={`  w-4 h-4 ${isOpen ? `rotate-[90deg]` : "-rotate-[90deg]"} transition-all `}
           />
         </div>
       </div>

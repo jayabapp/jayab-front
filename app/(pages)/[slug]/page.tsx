@@ -9,6 +9,7 @@ import { headers } from "next/headers";
 
 import deviceTypeDetector from "@/helpers/device.detector";
 import LandingTemplate from "@templates/Landing";
+import IntlNamespaces from "@/i18n/IntlNamespaces";
 import getQueryClient from "@/api_services/common/get-query-client";
 
 import type { Metadata } from "next";
@@ -54,15 +55,17 @@ const LandingPage = async ({ params, searchParams }: LandingPageProps) => {
   seedPropertyList(queryClient, filters, page?.data);
 
   return (
-    <>
-      <LandingFAQSchema
-        faqData={landing?.content?.questions || []}
-        url={`${process.env.NEXT_PUBLIC_WEB_SITE}/${paramData.slug}`}
-      />
-      <HydrationBoundary state={dehydrate(queryClient)}>
-        <LandingTemplate devices={devices} landing={landing} />
-      </HydrationBoundary>
-    </>
+    <IntlNamespaces namespaces={["content"]}>
+      <>
+        <LandingFAQSchema
+          faqData={landing?.content?.questions || []}
+          url={`${process.env.NEXT_PUBLIC_WEB_SITE}/${paramData.slug}`}
+        />
+        <HydrationBoundary state={dehydrate(queryClient)}>
+          <LandingTemplate devices={devices} landing={landing} />
+        </HydrationBoundary>
+      </>
+    </IntlNamespaces>
   );
 };
 

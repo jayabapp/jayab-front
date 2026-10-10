@@ -1,11 +1,12 @@
 "use client";
 
-import { type ContentByKeyDto, type ContentDto } from "@/types/components/modules/home";
+import { useTranslations } from "next-intl";
 import { HTMLGenerator } from "@/helpers/html.generator";
 import { ContentImage } from "@elements/Image";
 import { useState } from "react";
 
-import _STRINGS from "@/utils/LocalStrings";
+import { type ContentByKeyDto, type ContentDto } from "@/types/components/modules/home";
+
 
 const HomeContentSection = ({
   data,
@@ -14,6 +15,8 @@ const HomeContentSection = ({
   data: ContentDto | ContentByKeyDto | null;
   options?: { parentPadding?: string };
 }) => {
+  const t = useTranslations("content");
+
   const [isOpen, setIsOpen] = useState(false);
 
   const { html } = HTMLGenerator(data?.html || "", {
@@ -47,17 +50,17 @@ const HomeContentSection = ({
 
       <div
         onClick={onOpenClick}
-        className={` cursor-pointer flex items-center gap-2  transition-all`}
+        className={` cursor-pointer flex items-center gap-2 transition-all`}
       >
         <p className="text-sm font-medium">
-          {isOpen ? _STRINGS.SEE_LESS : _STRINGS.WATCH_ALL}
+          {isOpen ? t("seeLess") : t("watchAll")}
         </p>
         <ContentImage
           alt=""
-          height={16}
           width={16}
-          className={`  w-4 h-4 ${isOpen ? "rotate-[90deg]" : "-rotate-[90deg]"} transition-all `}
+          height={16}
           src={"/assets/icons/shared/chevron-left.svg"}
+          className={`  w-4 h-4 ${isOpen ? "rotate-[90deg]" : "-rotate-[90deg]"} transition-all `}
         />
       </div>
     </div>

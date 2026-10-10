@@ -3,6 +3,7 @@
 import { useEffect, useRef, useState } from "react";
 import { STAY_MONTH_HORIZON } from "@features/reservations/lib/stay-months";
 import { isCompleteRange } from "@features/reservations/lib/stay-range";
+import { useTranslations } from "next-intl";
 import { nightsBetween } from "@features/reservations/lib/stay-range";
 import { stayMonths } from "@features/reservations/lib/stay-months";
 import { Icon } from "@elements/Icon";
@@ -13,7 +14,6 @@ import type { StayRange } from "@features/reservations/lib/stay-range";
 import StayCalendarLegend from "./StayCalendarLegend";
 import StayCalendarGrid from "./StayCalendarGrid.client";
 import StayDateFields from "./StayDateFields.client";
-import _STRINGS from "@/utils/LocalStrings";
 import moment from "moment-jalaali";
 
 const SCROLL_CLOSE_PX = 240;
@@ -35,6 +35,8 @@ const StayDatePanel = ({
   onConfirm,
   propertyId,
 }: StayDatePickerProps) => {
+  const t = useTranslations();
+
   const ref = useRef<HTMLDivElement>(null);
   const closeRef = useRef(onClose);
   const [draft, setDraft] = useState<StayRange>(initial);
@@ -78,7 +80,7 @@ const StayDatePanel = ({
       ref={ref}
       tabIndex={-1}
       role="dialog"
-      aria-label={_STRINGS.TRIP_DATE}
+      aria-label={t("reserve.tripDate")}
       className="popover-enter absolute left-0 top-0 z-30 flex w-[min(46rem,calc(100vw-2rem))] flex-col gap-4 rounded-20 bg-white p-5 shadow-glass focus:outline-none"
     >
       <div className="flex items-center gap-3">
@@ -96,7 +98,7 @@ const StayDatePanel = ({
         <div className="flex items-center gap-2">
           <button
             type="button"
-            aria-label={_STRINGS.LAST_MONTH}
+            aria-label={t("common.lastMonth")}
             disabled={offset === 0}
             onClick={() => setOffset((value) => Math.max(0, value - 1))}
             className="flex size-9 cursor-pointer items-center justify-center rounded-full border border-neutral-200 transition-colors hover:bg-neutral-100 disabled:cursor-not-allowed disabled:opacity-40"
@@ -105,7 +107,7 @@ const StayDatePanel = ({
           </button>
           <button
             type="button"
-            aria-label={_STRINGS.NEXT_MONTH}
+            aria-label={t("common.nextMonth")}
             disabled={offset >= STAY_MONTH_HORIZON - VISIBLE_MONTHS}
             onClick={() =>
               setOffset((value) =>
@@ -136,7 +138,7 @@ const StayDatePanel = ({
             onClick={() => setDraft({})}
             className="cursor-pointer text-sm text-neutral-500 transition-colors hover:text-neutral-900"
           >
-            {_STRINGS.CLEAR_STAY}
+            {t("reserve.clearStay")}
           </button>
           <button
             type="button"
@@ -144,8 +146,10 @@ const StayDatePanel = ({
             onClick={() => complete && onConfirm(complete)}
             className="h-10 cursor-pointer rounded-10 bg-brand-600 px-5 text-sm font-medium text-white transition-colors hover:bg-brand-700 disabled:cursor-not-allowed disabled:bg-neutral-300 disabled:hover:bg-neutral-300"
           >
-            {_STRINGS.PICK_DATES_CTA}
-            {nights ? ` (${nights} ${_STRINGS.NIGHT})` : ""}
+            {t("reserve.pickDatesCta")}
+            {nights
+              ? ` (${t("reserve.nights", { count: Number(nights) })})`
+              : ""}
           </button>
         </div>
       </div>

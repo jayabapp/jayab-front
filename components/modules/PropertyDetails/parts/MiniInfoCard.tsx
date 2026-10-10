@@ -1,6 +1,7 @@
-import type { MiniInfoCardProps } from "@/types/components/modules/property-details";
 
 import { Icon } from "@elements/Icon";
+
+import type { MiniInfoCardProps } from "@/types/components/modules/property-details";
 
 const MiniInfoCard = ({
   icon,

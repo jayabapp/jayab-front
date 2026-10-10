@@ -1,20 +1,23 @@
 "use client";
 
-import type { BlogsContainerProps } from "@/types/components/modules/blog";
 import { BlogGridSkeleton } from "./BlogGridSkeleton";
+import { useTranslations } from "next-intl";
 import { SwiperSlide } from "swiper/react";
-import type { Swiper } from "swiper";
 import { useRef } from "react";
+
+import type { BlogsContainerProps } from "@/types/components/modules/blog";
+import type { Swiper } from "swiper";
 
 import SwiperWithNavigation from "@elements/Carousel/SwiperWithNavigation.client";
 import EmptyState from "@elements/EmptyState";
-import _STRINGS from "@/utils/LocalStrings";
 import isEmpty from "lodash/isEmpty";
 import BlogCard from "./BlogCard";
 import Image from "next/image";
 import Link from "next/link";
 
 const BlogsContainer = ({ title, data, viewAllUrl }: BlogsContainerProps) => {
+  const t = useTranslations("content");
+
   const ref = useRef<Swiper>(null);
   const tempData = data;
 
@@ -77,12 +80,12 @@ const BlogsContainer = ({ title, data, viewAllUrl }: BlogsContainerProps) => {
         {" "}
         <Link
           href={viewAllUrl}
-          title={_STRINGS.SEE_ALL}
+          title={t("seeAll")}
           style={{ textDecoration: "none" }}
           className="   flex  gap-2  px-3 py-1  w-fit bg-transparent  self-end"
         >
           <p className="no-underline text-brand-600  text-base    ">
-            {_STRINGS?.SEE_ALL}
+            {t("seeAll")}
           </p>
           <Image
             alt=""

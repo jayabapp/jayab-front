@@ -1,19 +1,20 @@
 "use client";
 
-import type { StayCalendarSectionProps } from "@/types/components/modules/property-booking";
-import { useStaySearchParams } from "@features/reservations/hooks/useStaySearchParams";
-import { useReservedDates } from "@features/properties/hooks/useReservedDates";
-import { reservedKeysFromDates } from "@features/reservations/lib/stay-range";
-import { STAY_MONTH_HORIZON } from "@features/reservations/lib/stay-months";
-import { isCompleteRange } from "@features/reservations/lib/stay-range";
 import { useMemo, useRef, useState, useSyncExternalStore } from "react";
-import type { StayRange } from "@features/reservations/lib/stay-range";
+import { reservedKeysFromDates } from "@features/reservations/lib/stay-range";
+import { useStaySearchParams } from "@features/reservations/hooks/useStaySearchParams";
+import { STAY_MONTH_HORIZON } from "@features/reservations/lib/stay-months";
+import { useReservedDates } from "@features/properties/hooks/useReservedDates";
+import { isCompleteRange } from "@features/reservations/lib/stay-range";
+import { useTranslations } from "next-intl";
 import { stayMonths } from "@features/reservations/lib/stay-months";
 import { Icon } from "@elements/Icon";
 
+import type { StayRange } from "@features/reservations/lib/stay-range";
+import type { StayCalendarSectionProps } from "@/types/components/modules/property-booking";
+
 import StayCalendarGrid from "./parts/StayCalendarGrid.client";
 import StayCalendarLegend from "./parts/StayCalendarLegend";
-import _STRINGS from "@/utils/LocalStrings";
 
 const SWIPE_PX = 50;
 const DESKTOP_QUERY = "(min-width: 768px)";
@@ -34,6 +35,8 @@ const NAV_BUTTON_CLASS =
   "flex size-9 cursor-pointer items-center justify-center rounded-full border border-neutral-200 transition-colors hover:bg-neutral-100 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-500 disabled:cursor-not-allowed disabled:opacity-40";
 
 const StayCalendarSection = ({ propertyId }: StayCalendarSectionProps) => {
+  const t = useTranslations("common");
+
   const { setStay, stay } = useStaySearchParams();
   const { data: reservedDates } = useReservedDates(propertyId);
   const reserved = useMemo(
@@ -85,7 +88,7 @@ const StayCalendarSection = ({ propertyId }: StayCalendarSectionProps) => {
             type="button"
             disabled={!canPrev}
             className={NAV_BUTTON_CLASS}
-            aria-label={_STRINGS.LAST_MONTH}
+            aria-label={t("lastMonth")}
             onClick={() => setOffset((value) => value - 1)}
           >
             <Icon name="chevron-down" size={16} className="-rotate-90" />
@@ -94,7 +97,7 @@ const StayCalendarSection = ({ propertyId }: StayCalendarSectionProps) => {
             type="button"
             disabled={!canNext}
             className={NAV_BUTTON_CLASS}
-            aria-label={_STRINGS.NEXT_MONTH}
+            aria-label={t("nextMonth")}
             onClick={() => setOffset((value) => value + 1)}
           >
             <Icon name="chevron-down" size={16} className="rotate-90" />

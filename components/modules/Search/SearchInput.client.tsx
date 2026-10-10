@@ -1,36 +1,32 @@
 "use client";
 
-import type { SearchInputProps } from "@/types/components/modules/search";
 import { Suspense, useEffect, useRef, useState } from "react";
 import { useDebouncedValue } from "@hooks/useDebouncedValue";
+import { useTranslations } from "next-intl";
 import { ContentImage } from "@elements/Image";
 
-import SearchQueryParamSync from "./parts/SearchQueryParamSync.client";
-import _STRINGS from "@/utils/LocalStrings";
+import type { SearchInputProps } from "@/types/components/modules/search";
 
-/**
- * A debounced text field that reports the typed term to its owner.
- *
- * `onSubmit` fires from exactly one source at a time: while the URL carries the
- * search param the field mirrors it, and only once the user edits the field does
- * the debounced value drive submissions. That is what keeps a single keystroke
- * from producing two requests.
- */
+import SearchQueryParamSync from "./parts/SearchQueryParamSync.client";
+
 const SearchInput = ({
-  autofocus = false,
-  boxId = "SEARCH_BOX",
-  cancelText = _STRINGS.CANCEL,
-  children,
-  containerClass = "w-[90%] mx-auto",
-  disableTypeing = false,
-  initValue,
   item,
   onClear,
+  children,
   onSubmit,
-  passedQuerykey = "q",
+  initValue,
   passedText,
+  autofocus = false,
+  boxId = "SEARCH_BOX",
+  passedQuerykey = "q",
+  disableTypeing = false,
   placeholder = "search...",
+  cancelText: cancelTextProp,
+  containerClass = "w-[90%] mx-auto",
 }: SearchInputProps) => {
+  const t = useTranslations();
+
+  const cancelText = cancelTextProp ?? t("search.cancel");
   const inputRef = useRef<HTMLInputElement>(null);
   const [text, setText] = useState(initValue || "");
   const [hasParam, setHasParam] = useState(false);

@@ -1,9 +1,10 @@
 "use client";
 
-import type { FilterCounterProps } from "@/types/components/modules/property-search-filters";
 import { usePathname, useRouter } from "next/navigation";
 import { useCallback, useMemo } from "react";
 import { Counter } from "@elements/Form";
+
+import type { FilterCounterProps } from "@/types/components/modules/property-search-filters";
 
 import queryBuilder from "@/helpers/queryBuilder";
 
@@ -18,9 +19,7 @@ const FilterCounter = ({
   const pathname = usePathname();
 
   const queryData = useMemo(() => {
-    if (mobileFilters && queryKey in mobileFilters) {
-      return Number(mobileFilters[queryKey]) || 0;
-    }
+    if (mobileFilters && queryKey in mobileFilters) return Number(mobileFilters[queryKey]) || 0;
     const raw = query[queryKey];
     return raw ? Number(String(raw).split(",")[0]) || 0 : 0;
   }, [mobileFilters, queryKey, query]);

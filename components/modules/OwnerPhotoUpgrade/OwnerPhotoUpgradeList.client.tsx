@@ -1,12 +1,15 @@
 "use client";
 
 import { usePhotoUpgradeRequests } from "@features/photo-upgrade/hooks/usePhotoUpgradeRequests";
+import { useTranslations } from "next-intl";
 
 import PhotoUpgradeRequestCardSkeleton from "@features/photo-upgrade/components/PhotoUpgradeRequestCardSkeleton";
 import PhotoUpgradeRequestCard from "./PhotoUpgradeRequestCard.client";
 import EmptyState from "@elements/EmptyState";
 
 const OwnerPhotoUpgradeList = () => {
+  const t = useTranslations();
+
   const { data = [], isPending, isError, refetch } = usePhotoUpgradeRequests();
 
   return (
@@ -16,10 +19,10 @@ const OwnerPhotoUpgradeList = () => {
     >
       <div className="flex flex-col gap-1">
         <h1 className="text-base font-medium md:text-xl">
-          درخواست های بهبود تصویر
+          {t("owner.photoUpgradeRequests")}
         </h1>
         <p className="text-xs text-neutral-500 md:text-sm">
-          وضعیت درخواست ها و نتیجه ویرایش هر تصویر را اینجا ببینید.
+          {t("owner.photoUpgradeHint")}
         </p>
       </div>
       {isPending ? (
@@ -30,13 +33,13 @@ const OwnerPhotoUpgradeList = () => {
         </div>
       ) : isError ? (
         <div className="white-card flex flex-col items-center gap-3 text-sm text-neutral-500">
-          <p>دریافت درخواست‌ها ناموفق بود.</p>
+          <p>{t("owner.requestsLoadFailed")}</p>
           <button
             type="button"
             onClick={() => void refetch()}
             className="text-brand-600"
           >
-            تلاش دوباره
+            {t("common.tryAgain")}
           </button>
         </div>
       ) : data && data.length > 0 ? (

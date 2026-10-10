@@ -1,10 +1,13 @@
 import { SupportListModule } from "@modules/SupportList";
 import SupportTemplate from "@templates/SupportTemplate";
+import IntlNamespaces from "@/i18n/IntlNamespaces";
 
 const SupportPage = () => (
-  <SupportTemplate>
-    <SupportListModule />
-  </SupportTemplate>
+  <IntlNamespaces namespaces={["profile"]}>
+    <SupportTemplate>
+      <SupportListModule />
+    </SupportTemplate>
+  </IntlNamespaces>
 );
 
 export default SupportPage;

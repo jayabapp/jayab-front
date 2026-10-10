@@ -1,13 +1,14 @@
 "use client";
 
-import type { HeroDestinationSearchProps } from "@/types/components/modules/search";
-import { useSearchPanel } from "@features/search/hooks/useSearchPanel";
 import { useCallback, useEffect, useRef, useState } from "react";
+import { useTranslations } from "next-intl";
+import { useSearchPanel } from "@features/search/hooks/useSearchPanel";
 import { useDropdownFit } from "@/hooks/useDropdownFit";
 import { useCitiesStore } from "@/store";
 
+import type { HeroDestinationSearchProps } from "@/types/components/modules/search";
+
 import SearchOverlay from "./parts/SearchOverlay.client";
-import _STRINGS from "@/utils/LocalStrings";
 
 const CLOSE_ON_SCROLL_PX = 24;
 
@@ -17,12 +18,14 @@ const CLOSED_PANEL_CLASS =
   "!absolute !top-[calc(100%+0.5rem)] -z-50 hidden h-0 opacity-0";
 
 const HeroDestinationSearch = ({
-  boxId = "HERO_SEARCH_BOX",
   label,
+  value,
   onPickPlace,
   onTermChange,
-  value,
+  boxId = "HERO_SEARCH_BOX",
 }: HeroDestinationSearchProps) => {
+  const t = useTranslations("search");
+
   const [isOpen, setIsOpen] = useState(false);
   const anchorRef = useRef<HTMLDivElement>(null);
   useDropdownFit(isOpen, anchorRef);
@@ -107,8 +110,8 @@ const HeroDestinationSearch = ({
         isOpen={isOpen}
         options={options}
         listRef={listRef}
-        inputRef={inputRef}
         isStale={isStale}
+        inputRef={inputRef}
         isLoading={isLoading}
         isPending={isPending}
         onKeyDown={onKeyDown}
@@ -117,7 +120,7 @@ const HeroDestinationSearch = ({
         activeIndex={activeIndex}
         onTermChange={onChangeTerm}
         onSubmit={() => setIsOpen(false)}
-        placeholder={_STRINGS.HERO_WHERE_PLACEHOLDER}
+        placeholder={t("heroWherePlaceholder")}
         panelClass={isOpen ? OPEN_PANEL_CLASS : CLOSED_PANEL_CLASS}
       />
     </div>

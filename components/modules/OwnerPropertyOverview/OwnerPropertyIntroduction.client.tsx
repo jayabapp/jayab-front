@@ -1,19 +1,22 @@
 "use client";
 
-import { useVerifyPropertyPrompt } from "@features/owner-property/hooks/useVerifyPropertyPrompt";
-import type { OwnerPropertyViewProps } from "@/types/components/modules/owner-property";
 import { PropertyAuthorizationStatus } from "@modules/PropertyGrid";
+import { useVerifyPropertyPrompt } from "@features/owner-property/hooks/useVerifyPropertyPrompt";
 import { PropertyPriceTag } from "@modules/PropertyDetails";
+import { useTranslations } from "next-intl";
 import { ContentImage } from "@elements/Image";
 import { useRouter } from "next/navigation";
 
+import type { OwnerPropertyViewProps } from "@/types/components/modules/owner-property";
+
 import OwnerVerifyPromptModal from "./parts/OwnerVerifyPromptModal";
-import ShareLink from "@elements/Share/BrowserShare.client";
 import StatusShower from "@elements/StatusShower";
-import _STRINGS from "@/utils/LocalStrings";
+import ShareLink from "@elements/Share/BrowserShare.client";
 import Link from "next/link";
 
 const OwnerPropertyIntroduction = ({ property }: OwnerPropertyViewProps) => {
+  const t = useTranslations();
+
   const router = useRouter();
   const prompt = useVerifyPropertyPrompt(property?.id, property?.is_authorized);
 
@@ -37,7 +40,7 @@ const OwnerPropertyIntroduction = ({ property }: OwnerPropertyViewProps) => {
       <div className="w-full flex items-center justify-between">
         <div className="flex items-center gap-4">
           <div className="bg-black/10 rounded-md text-base px-2 py-1 flex items-center justify-center">
-            {_STRINGS.CODE} {property?.code}
+            {t("common.code")} {property?.code}
           </div>
           <ShareLink
             passedHref={`${process.env.NEXT_PUBLIC_WEBSITE_URL}/rooms/${property?.code}`}
@@ -45,14 +48,14 @@ const OwnerPropertyIntroduction = ({ property }: OwnerPropertyViewProps) => {
         </div>
         {property?.is_promoted ? (
           <p className="font-bold text-brand-600 shrink-0 text-xs">
-            {_STRINGS.LADDERED}
+            {t("common.laddered")}
           </p>
         ) : null}
       </div>
 
       <div className="flex items-start gap-4 w-full">
         <div className="flex text-sm items-center gap-1">
-          <p>{_STRINGS.TODAYS_PRICE}</p>
+          <p>{t("common.todaysPrice")}</p>
         </div>
         <PropertyPriceTag
           price={{
@@ -64,11 +67,13 @@ const OwnerPropertyIntroduction = ({ property }: OwnerPropertyViewProps) => {
       </div>
 
       <div className="w-full flex flex-row items-center gap-2 justify-start">
-        <p className="text-sm shrink-0">{_STRINGS.TODAY_STATUS} :</p>
+        <p className="text-sm shrink-0">{t("common.todayStatus")} :</p>
         <p
           className={`text-sm font-bold ${property?.is_today_reserved ? "text-danger-500" : "text-brand-600"}`}
         >
-          {property?.is_today_reserved ? _STRINGS.OCCUPIED : _STRINGS.EMPTY}
+          {property?.is_today_reserved
+            ? t("owner.occupied")
+            : t("common.emptySlot")}
         </p>
       </div>
 
@@ -87,20 +92,20 @@ const OwnerPropertyIntroduction = ({ property }: OwnerPropertyViewProps) => {
       </div>
 
       <div className="w-full flex py-2 border-neutral-200 items-center justify-between">
-        <p className="text-xs">{_STRINGS.SUB_STATUS} :</p>
+        <p className="text-xs">{t("owner.subStatus")} :</p>
         <div className="flex items-center gap-2">
           <div className="rounded-full text-sm text-brand-600 bg-brand-200 flex items-center justify-center h-7 w-24">
             {property?.remaining_days
-              ? `${property?.remaining_days} ${_STRINGS.DAYS_OF_CREDIT}`
-              : _STRINGS.NO_REMAINING_CREDIT}
+              ? `${t("owner.creditDays", { count: Number(property?.remaining_days) })}`
+              : t("owner.noRemainingCredit")}
           </div>
           <Link
             prefetch={false}
-            title={_STRINGS.EXTEND_SUBS}
+            title={t("common.extendSubs")}
             href={`/profile/owner/properties/${property?.id}/subscription`}
             className="rounded-full text-xs text-white bg-brand-600 flex items-center justify-center h-7 w-24"
           >
-            {_STRINGS.EXTEND_SUBS}
+            {t("common.extendSubs")}
           </Link>
         </div>
       </div>

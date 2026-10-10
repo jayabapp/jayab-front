@@ -1,14 +1,23 @@
 "use client";
 
-import type { FormInputProps } from "@/types/components/elements/form";
-import { p2e } from "@/helpers/NumberConverter";
+import { useTranslations } from "next-intl";
 import { memo, useRef } from "react";
+import { p2e } from "@/helpers/NumberConverter";
+
+import type { FormInputProps } from "@/types/components/elements/form";
 
 import ContentImage from "@elements/Image/ContentImage";
 import Num2persian from "@/helpers/Num2Persian";
-import _STRINGS from "@/utils/LocalStrings";
 
-const FormInput = ({ item, value, onChangeText, errors, errorKey = "" }: FormInputProps) => {
+const FormInput = ({
+  item,
+  value,
+  errors,
+  onChangeText,
+  errorKey = "",
+}: FormInputProps) => {
+  const t = useTranslations("common");
+
   const inputRef = useRef<HTMLInputElement>(null);
 
   return (
@@ -29,7 +38,13 @@ const FormInput = ({ item, value, onChangeText, errors, errorKey = "" }: FormInp
 
       <input
         onClick={item?.onClick}
-        type={item?.keyboard == "password" ? "password" : item?.keyboard == "number" ? "tel" : "text"}
+        type={
+          item?.keyboard == "password"
+            ? "password"
+            : item?.keyboard == "number"
+              ? "tel"
+              : "text"
+        }
         ref={item?.passedRef || inputRef}
         inputMode={item?.keyboard == "number" ? "tel" : "text"}
         pattern={item?.keyboard == "number" ? "[0-9]*" : ""}
@@ -48,8 +63,14 @@ const FormInput = ({ item, value, onChangeText, errors, errorKey = "" }: FormInp
         placeholder={item?.placeholder || item?.title}
         onChange={(v) => {
           if (item?.keyboard != "number") onChangeText(v.target.value);
-          else if (!isNaN(Number(p2e(v.target.value)))) onChangeText(v.target.value);
-          if (inputRef.current && item?.maxLength && v.target.value.length >= item?.maxLength) inputRef.current.blur();
+          else if (!isNaN(Number(p2e(v.target.value))))
+            onChangeText(v.target.value);
+          if (
+            inputRef.current &&
+            item?.maxLength &&
+            v.target.value.length >= item?.maxLength
+          )
+            inputRef.current.blur();
         }}
         maxLength={item?.maxLength || 256}
         disabled={item?.disabled}
@@ -61,7 +82,9 @@ const FormInput = ({ item, value, onChangeText, errors, errorKey = "" }: FormInp
       />
 
       {!!item?.iconUrl && (
-        <ContentImage height={24} width={24}
+        <ContentImage
+          height={24}
+          width={24}
           alt="before_icon"
           className={`absolute ${item?.title ? "top-[61%]" : "top-[32%]"} w-4 aspect-square right-4 ${
             item?.iconUrlClassName
@@ -75,7 +98,9 @@ const FormInput = ({ item, value, onChangeText, errors, errorKey = "" }: FormInp
         />
       )}
       {!!item?.iconEndUrl && (
-        <ContentImage height={24} width={24}
+        <ContentImage
+          height={24}
+          width={24}
           alt="after_icon"
           className={`absolute top-[28%] w-5 aspect-square left-4 ${item?.iconEndUrlClassName} ${
             item?.iconEndFunc ? "cursor-pointer" : ""
@@ -95,14 +120,17 @@ const FormInput = ({ item, value, onChangeText, errors, errorKey = "" }: FormInp
       )}
       {!!item?.extraElement && <span>{item?.extraElement}</span>}
       {!!item?.hint && (
-        <div id={`${item?.id}`} className={`text-xs font-light text-neutral-400 mt-1 mr-5 `}>
+        <div
+          id={`${item?.id}`}
+          className={`text-xs font-light text-neutral-400 mt-1 mr-5 `}
+        >
           {item?.hint}
         </div>
       )}
 
       {!!item?.convertToText && !!value && (
         <div id={`${item?.id}`} className="text-xs text-brand-600 mt-1">
-          {Num2persian(value)} {_STRINGS?.TOMAN}
+          {Num2persian(value)} {t("toman")}
         </div>
       )}
     </div>

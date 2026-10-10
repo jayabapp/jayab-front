@@ -1,9 +1,9 @@
 "use client";
 
-import type { ClampTextProps } from "@/types/components/modules/property-details";
 import { useLayoutEffect, useRef, useState } from "react";
+import { useTranslations } from "next-intl";
 
-import _STRINGS from "@/utils/LocalStrings";
+import type { ClampTextProps } from "@/types/components/modules/property-details";
 
 const LINE_CLAMP: Record<number, string> = {
   2: "line-clamp-2",
@@ -14,6 +14,8 @@ const LINE_CLAMP: Record<number, string> = {
 };
 
 const ClampText = ({ children, className = "", lines = 4 }: ClampTextProps) => {
+  const t = useTranslations("listing");
+
   const [expanded, setExpanded] = useState(false);
   const [isClamped, setIsClamped] = useState(false);
   const textRef = useRef<HTMLParagraphElement>(null);
@@ -45,7 +47,7 @@ const ClampText = ({ children, className = "", lines = 4 }: ClampTextProps) => {
           onClick={() => setExpanded((value) => !value)}
           className="cursor-pointer text-sm font-semibold text-brand-700 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-500"
         >
-          {expanded ? _STRINGS.SHOW_LESS : _STRINGS.SHOW_MORE}
+          {expanded ? t("showLess") : t("showMore")}
         </button>
       ) : (
         <></>

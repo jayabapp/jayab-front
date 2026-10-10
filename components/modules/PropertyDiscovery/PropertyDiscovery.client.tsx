@@ -2,31 +2,34 @@
 
 import { usePropertyDiscoveryFilters } from "@features/properties/hooks/usePropertyDiscoveryFilters";
 import { usePropertyOptionGroups } from "@features/properties/hooks/usePropertyOptionGroups";
-import type { PropertyDiscoveryProps } from "@/types/components/modules/property-discovery";
+import { CityModal, RegionModal } from "@modules/CitySelector";
 import { useUrlCityWithRegions } from "@features/cities/hooks/useUrlCityWithRegions";
-import type { ChildCities } from "@/types/components/modules/property-discovery";
 import { SpecialFilterButtons } from "@modules/PropertySearchFilters";
 import { PropertyFilterForm } from "@modules/PropertySearchFilters";
 import { SelectedFiltersBar } from "@modules/PropertySearchFilters";
 import { PropertySortMenu } from "@modules/PropertySearchFilters";
+import { useTranslations } from "next-intl";
 import { FilterApplyBar } from "@modules/PropertySearchFilters";
-import { CityModal, RegionModal } from "@modules/CitySelector";
 import { useStoreParams } from "@/store";
 import { useState } from "react";
+
+import type { PropertyDiscoveryProps } from "@/types/components/modules/property-discovery";
+import type { ChildCities } from "@/types/components/modules/property-discovery";
 
 import SingleProductBreadCrumb from "@elements/Breadcrumbs/SingleProductBreadcrumb.client";
 import PropertyCategoryStrip from "./parts/PropertyCategoryStrip.client";
 import DiscoveryFilterModal from "./parts/DiscoveryFilterModal.client";
 import DiscoveryResults from "./parts/DiscoveryResults.client";
-import _STRINGS from "@/utils/LocalStrings";
 
-const BREAD_CRUMBS = [
-  { title: _STRINGS.HOME, link: "/" },
-  { title: _STRINGS.ADDS, link: "/rooms" },
-];
 const SIDEBAR_HEIGHT = "calc(100dvh - 90px)";
 
 const PropertyDiscovery = ({ devices }: PropertyDiscoveryProps) => {
+  const t = useTranslations();
+
+  const BREAD_CRUMBS = [
+    { title: t("common.home"), link: "/" },
+    { title: t("header.listings"), link: "/rooms" },
+  ];
   const [modalCityWithRegions, setCityWithRegions] =
     useState<ChildCities | null>(null);
   const [filterModalShow, setFilterModalShow] = useState(false);
@@ -61,7 +64,7 @@ const PropertyDiscovery = ({ devices }: PropertyDiscoveryProps) => {
     <div className="app-container !px-0 md:!px-10 2xl:px-[9%] !pt-[7.5rem] xl:!pt-20 z-2 flex flex-col !gap-2">
       <div className="grid grid-cols-12 col-span-12">
         <aside
-          aria-label={_STRINGS.FILTERS}
+          aria-label={t("listing.filters")}
           style={{ height: SIDEBAR_HEIGHT }}
           className="surface-panel col-span-3 hidden flex-col justify-between overflow-hidden lg:sticky lg:top-20 lg:flex"
         >
@@ -80,7 +83,7 @@ const PropertyDiscovery = ({ devices }: PropertyDiscoveryProps) => {
         <div className="col-span-12 md:col-span-12 lg:col-span-9 px-0 xl:pr-4 xl:pl-0 xl:mt-0">
           <div className="hidden z-1 w-full xl:flex flex-col xl:flex-row items-center justify-between mb-2">
             <SingleProductBreadCrumb dataArray={BREAD_CRUMBS} />
-            <h1 className="sr-only">{_STRINGS.ROOMS_PAGE_TITLE}</h1>
+            <h1 className="sr-only">{t("listing.roomsPageTitle")}</h1>
             <div className="w-full items-center justify-end hidden lg:flex">
               <SpecialFilterButtons query={queries} />
               <PropertySortMenu query={queries} />

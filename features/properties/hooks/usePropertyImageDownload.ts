@@ -3,6 +3,7 @@
 import { PUBLIC_PROPERTY_IMAGE_DOWNLOAD } from "@/utils/urls";
 import { useCallback, useEffect, useRef, useState } from "react";
 import { toast } from "sonner";
+import { useTranslations } from "next-intl";
 
 const hasWebpSignature = async (blob: Blob) => {
   if (blob.size < 12) return false;
@@ -20,6 +21,8 @@ const validateImageDecode = async (objectUrl: string) => {
 };
 
 export const usePropertyImageDownload = () => {
+  const t = useTranslations("listing");
+
   const controllerRef = useRef<AbortController | null>(null);
   const [isDownloading, setIsDownloading] = useState(false);
 
@@ -69,14 +72,14 @@ export const usePropertyImageDownload = () => {
       }
     } catch (error) {
       if (error instanceof DOMException && error.name === "AbortError") return;
-      toast.error("دانلود تصویر انجام نشد. لطفاً دوباره تلاش کنید.");
+      toast.error(t("downloadFailed"));
     } finally {
       if (controllerRef.current === controller) {
         controllerRef.current = null;
         setIsDownloading(false);
       }
     }
-  }, []);
+  }, [t]);
 
   return { downloadImage, isDownloading };
 };

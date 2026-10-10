@@ -1,17 +1,20 @@
-import type { AboutUsContentProps } from "@/types/components/modules/content-pages";
 import { getHomeImageUrl } from "@features/home/mappers/home-image.mapper";
 import { sanitizeCmsHtml } from "@/helpers/html.generator";
+import { useTranslations } from "next-intl";
 import { ContentImage } from "@elements/Image";
 
+import type { AboutUsContentProps } from "@/types/components/modules/content-pages";
+
 import Breadcrumbs from "@elements/Breadcrumbs/Breadcrumbs.client";
-import _STRINGS from "@/utils/LocalStrings";
 import Editable from "@elements/Editable";
 
 const AboutUsContent = ({ content: aboutUs }: AboutUsContentProps) => {
+  const t = useTranslations("common");
+
   return (
     <div
       id="homeParent"
-      className="container     transition-all duration-500 ease-in-out "
+      className="container transition-all duration-500 ease-in-out"
     >
       <Breadcrumbs />
 
@@ -20,12 +23,12 @@ const AboutUsContent = ({ content: aboutUs }: AboutUsContentProps) => {
           alt=""
           width={208}
           height={64}
-          src="/assets/icons/logo/header_logo.svg"
           className="h-auto max-w-52"
+          src="/assets/icons/logo/header_logo.svg"
         />
         {!aboutUs ? (
           <p className="py-12 text-center text-sm text-neutral-500">
-            {_STRINGS.ERROR}
+            {t("error")}
           </p>
         ) : aboutUs ? (
           <Editable contentId={aboutUs?.id}>

@@ -3,8 +3,6 @@ import type { CreateReserveDto } from "@/api_services/reserve/reserve.interface"
 import { formatJalaliDay } from "../mappers/reservation-dates";
 import { toDayKey } from "./stay-range";
 
-import _STRINGS from "@/utils/LocalStrings";
-
 export type ContactTrip = {
   code: string;
   title: string;
@@ -14,27 +12,19 @@ export type ContactTrip = {
   startDate: Date;
 };
 
-export const buildContactPrefill = ({
+export const contactPrefillValues = ({
   code,
   title,
   guests,
   endDate,
   startDate,
-}: ContactTrip) =>
-  _STRINGS.CONTACT_PREFILL.replace("{title}", () => title)
-    .replace("{code}", () => code)
-    .replace("{checkin}", () => formatJalaliDay(startDate))
-    .replace("{checkout}", () => formatJalaliDay(endDate))
-    .replace("{guests}", () => `${guests}`);
-
-export const buildGenericPrefill = ({
-  code,
+}: ContactTrip) => ({
   title,
-}: Pick<ContactTrip, "code" | "title">) =>
-  _STRINGS.CONTACT_PREFILL_GENERIC.replace("{title}", () => title).replace(
-    "{code}",
-    () => code,
-  );
+  code,
+  checkin: formatJalaliDay(startDate),
+  checkout: formatJalaliDay(endDate),
+  guests: `${guests}`,
+});
 
 export const buildSmsHref = (number: string, body: string, isIOS: boolean) =>
   `sms:${number}${isIOS ? "&" : "?"}body=${encodeURIComponent(body)}`;

@@ -1,11 +1,12 @@
 "use client";
 
 import { usePurchaseAdvisorPlan } from "@features/advisors/hooks/useAdvisorSubscription";
-import type { AdvisorPlanCardProps } from "@/types/components/modules/advisors";
+import { useTranslations } from "next-intl";
 import { useRouter } from "next/navigation";
 
+import type { AdvisorPlanCardProps } from "@/types/components/modules/advisors";
+
 import numberWithCommas from "@/helpers/numberWithCommas";
-import _STRINGS from "@/utils/LocalStrings";
 import Button from "@elements/Button";
 
 const AdvisorPlanCard = ({
@@ -13,6 +14,8 @@ const AdvisorPlanCard = ({
   subscriptionKind,
   onRequireRegistration,
 }: AdvisorPlanCardProps) => {
+  const t = useTranslations();
+
   const router = useRouter();
   const { mutate, isPending } = usePurchaseAdvisorPlan();
 
@@ -44,7 +47,8 @@ const AdvisorPlanCard = ({
       <div className="flex flex-col gap-2 pt-2 w-full items-start">
         <p className="text-sm whitespace-pre-wrap">{plan?.description}</p>
         <p className="text-sm">
-          {_STRINGS.AMOUNT} : {numberWithCommas(plan?.price)} {_STRINGS.TOMAN}
+          {t("advisor.amount")} : {numberWithCommas(plan?.price)}{" "}
+          {t("common.toman")}
         </p>
       </div>
 
@@ -55,7 +59,7 @@ const AdvisorPlanCard = ({
         width="w-full !py-1"
         roundedClass="rounded-full"
         containerClass="w-full pt-4"
-        title={subscriptionKind ? _STRINGS.PAY : _STRINGS.CONTINUE}
+        title={subscriptionKind ? t("common.pay") : t("advisor.continue")}
       />
     </div>
   );

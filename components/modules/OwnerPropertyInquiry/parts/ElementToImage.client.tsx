@@ -1,11 +1,14 @@
-import type { ElementToImageProps } from "@/types/components/modules/owner-property-inquiry";
+import { useTranslations } from "next-intl";
 import { useRef } from "react";
 
+import type { ElementToImageProps } from "@/types/components/modules/owner-property-inquiry";
+
 import FixedBottomContainer from "@elements/FixedBottomContainer";
-import _STRINGS from "@/utils/LocalStrings";
 import Button from "@elements/Button";
 
 const ElementToImage = ({ children, ...props }: ElementToImageProps) => {
+  const t = useTranslations("common");
+
   const ref = useRef<HTMLDivElement>(null);
   const onShare = async (files: File[]) => {
     const shareDetails = { files };
@@ -33,7 +36,7 @@ const ElementToImage = ({ children, ...props }: ElementToImageProps) => {
       </div>
       <FixedBottomContainer>
         <Button
-          title={_STRINGS.SHARE}
+          title={t("shareAction")}
           width=" w-[90%] md:w-1/2"
           roundedClass="rounded-full"
           onClick={onButtonClickCanvas}

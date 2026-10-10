@@ -1,15 +1,18 @@
 import { getAdvisorAvatarUrl } from "@features/advisors/mappers/advisor-image.mapper";
-import type { AdvisorCardProps } from "@/types/components/modules/advisors";
+import { useTranslations } from "next-intl";
 import { ContentImage } from "@elements/Image";
 import { colors } from "@/theme/colors";
 
+import type { AdvisorCardProps } from "@/types/components/modules/advisors";
+
 import AdvisorGauge from "./parts/AdvisorGauge";
-import _STRINGS from "@/utils/LocalStrings";
 import timeLeft from "@/helpers/timeLeft";
 
 const LIST_CITY_LIMIT = 4;
 
 const AdvisorCard = ({ advisor, onSelect, isSingle }: AdvisorCardProps) => {
+  const t = useTranslations();
+
   const allCities = advisor?.cities ?? [];
   const cities = isSingle ? allCities : allCities.slice(0, LIST_CITY_LIMIT);
 
@@ -29,12 +32,12 @@ const AdvisorCard = ({ advisor, onSelect, isSingle }: AdvisorCardProps) => {
               alt={
                 advisor?.user?.profile_image?.alt ||
                 advisor?.user?.full_name ||
-                _STRINGS.ADVISOR_IMAGE
+                t("advisor.advisorImage")
               }
             />
           </div>
           <div className="shrink-0 text-xs md:text-xs flex items-center justify-center px-1 md:px-2 py-1 rounded-md bg-brand-600 text-white">
-            {_STRINGS.CODE} {advisor?.user?.referral_code}
+            {t("common.code")} {advisor?.user?.referral_code}
           </div>
         </div>
 
@@ -49,21 +52,22 @@ const AdvisorCard = ({ advisor, onSelect, isSingle }: AdvisorCardProps) => {
               labelClass="text-brand-600"
               pathColor={colors.brand[500]}
               textColor={colors.brand[500]}
-              label={_STRINGS.USERS_SATISFACTION}
+              label={t("advisor.usersSatisfaction")}
               value={advisor?.users_satisfaction || 100}
             />
             <AdvisorGauge
               textSize="2rem"
               containerClass=" w-[35%]"
+              labelClass="text-success-600"
               pathColor={colors.success[500]}
               textColor={colors.success[500]}
-              labelClass="text-success-600"
-              label={_STRINGS.OWNERS_SATISFACTION}
+              label={t("advisor.ownersSatisfaction")}
               value={advisor?.owners_satisfaction || 100}
             />
           </div>
           <p className="text-sm">
-            {_STRINGS.XP} : {timeLeft(advisor?.created_at).replace("پیش", "")}
+            {t("advisor.xp")} :{" "}
+            {timeLeft(advisor?.created_at).replace("پیش", "")}
           </p>
         </div>
       </div>
@@ -71,7 +75,7 @@ const AdvisorCard = ({ advisor, onSelect, isSingle }: AdvisorCardProps) => {
       <div
         className={`flex ${isSingle ? "" : "line-clamp-1"} text-sm items-start gap-2 w-full`}
       >
-        <p className="shrink-0">{_STRINGS.ACTIVITY_FIELD} :</p>
+        <p className="shrink-0">{t("advisor.activityField")} :</p>
         <div
           className={`flex gap-1 flex-wrap ${isSingle ? "" : "line-clamp-1"} items-center`}
         >

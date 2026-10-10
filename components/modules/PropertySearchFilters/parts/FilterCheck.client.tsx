@@ -1,9 +1,10 @@
 "use client";
 
-import type { FilterCheckProps } from "@/types/components/modules/property-search-filters";
 import { usePathname, useRouter } from "next/navigation";
 import { ContentImage } from "@elements/Image";
 import { Checkbox } from "@elements/Form";
+
+import type { FilterCheckProps } from "@/types/components/modules/property-search-filters";
 
 import queryBuilder from "@/helpers/queryBuilder";
 
@@ -30,12 +31,7 @@ const FilterCheck = ({
       delete body.specifications;
       delete body.categories;
     }
-    // Unchecking removes the key instead of writing `0`. These are one-sided
-    // filters — the API only acts on `=== 1` — so a lingering `has_discount=0`
-    // filtered nothing while still splitting the React Query cache and putting
-    // a meaningless pair into every shared link.
     if (!value) delete body[queryKey];
-
     if (setMobileFilters) setMobileFilters(body);
     else router.replace(`${pathname}?${queryBuilder(body)}`);
   };

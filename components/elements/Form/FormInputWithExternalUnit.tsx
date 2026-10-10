@@ -1,18 +1,30 @@
+import { useTranslations } from "next-intl";
+import { memo, useRef } from "react";
 
 import type { ExternalUnitInputProps } from "@/types/components/elements/form";
-import { memo, useRef } from "react";
 
 import ContentImage from "@elements/Image/ContentImage";
 import Num2persian from "@/helpers/Num2Persian";
-import _STRINGS from "@/utils/LocalStrings";
 
-const FormInputWithExternalUnit = ({ item, unit, value, onChangeText, errors, errorKey = "" }: ExternalUnitInputProps) => {
+const FormInputWithExternalUnit = ({
+  item,
+  unit,
+  value,
+  errors,
+  onChangeText,
+  errorKey = "",
+}: ExternalUnitInputProps) => {
+  const t = useTranslations("common");
+
   const inputRef = useRef<HTMLInputElement>(null);
 
   return (
-    <div className={item?.containerClass + " w-full  flex flex-col gap-2 items-start"}>
+    <div
+      className={
+        item?.containerClass + " w-full flex flex-col gap-2 items-start"
+      }
+    >
       <div className=" w-full flex gap-2 items-end">
-        {" "}
         <div className="w-4/5">
           {item?.title ? (
             <label
@@ -30,7 +42,13 @@ const FormInputWithExternalUnit = ({ item, unit, value, onChangeText, errors, er
 
           <input
             onClick={item?.onClick}
-            type={item?.keyboard == "password" ? "password" : item?.keyboard == "number" ? "tel" : "text"}
+            type={
+              item?.keyboard == "password"
+                ? "password"
+                : item?.keyboard == "number"
+                  ? "tel"
+                  : "text"
+            }
             ref={inputRef}
             inputMode={item?.keyboard == "number" ? "tel" : "text"}
             pattern={item?.keyboard == "number" ? "[0-9]*" : ""}
@@ -42,15 +60,20 @@ const FormInputWithExternalUnit = ({ item, unit, value, onChangeText, errors, er
               item?.disableHover
                 ? ""
                 : !!errors && !!errors[errorKey]
-                ? "border-red-100"
-                : " hover:border-neutral-300 focus:border-brand-600/30"
+                  ? "border-red-100"
+                  : " hover:border-neutral-300 focus:border-brand-600/30"
             } `}
             id={`input-${item?.id}`}
             placeholder={item?.placeholder || item?.title}
             onChange={(v) => {
               if (item?.keyboard != "number") onChangeText(v.target.value);
-              else if (!isNaN(Number(v.target.value)) || item?.convertToText) onChangeText(v.target.value);
-              if (inputRef.current && item?.maxLength && v.target.value.length >= item?.maxLength)
+              else if (!isNaN(Number(v.target.value)) || item?.convertToText)
+                onChangeText(v.target.value);
+              if (
+                inputRef.current &&
+                item?.maxLength &&
+                v.target.value.length >= item?.maxLength
+              )
                 inputRef.current.blur();
             }}
             maxLength={item?.maxLength || 256}
@@ -63,7 +86,10 @@ const FormInputWithExternalUnit = ({ item, unit, value, onChangeText, errors, er
           />
 
           {!!item?.iconUrl && (
-            <ContentImage alt="" height={24} width={24}
+            <ContentImage
+              alt=""
+              height={24}
+              width={24}
               className={`absolute ${item?.title ? "top-[61%]" : "top-[32%]"} w-4 aspect-square right-4 ${
                 item?.iconUrlClassName
               } ${item?.iconFunc ? "cursor-pointer" : ""}`}
@@ -76,7 +102,10 @@ const FormInputWithExternalUnit = ({ item, unit, value, onChangeText, errors, er
             />
           )}
           {!!item?.iconEndUrl && (
-            <ContentImage alt="" height={24} width={24}
+            <ContentImage
+              alt=""
+              height={24}
+              width={24}
               className={`absolute top-[28%] w-5 aspect-square left-4 ${item?.iconEndUrlClassName} ${
                 item?.iconEndFunc ? "cursor-pointer" : ""
               }`}
@@ -95,7 +124,10 @@ const FormInputWithExternalUnit = ({ item, unit, value, onChangeText, errors, er
           )}
           {!!item?.extraElement && <span>{item?.extraElement}</span>}
           {!!item?.hint && (
-            <div id={`${item?.id}`} className={`text-xs font-light text-neutral-400 mt-1 mr-5 `}>
+            <div
+              id={`${item?.id}`}
+              className={`text-xs font-light text-neutral-400 mt-1 mr-5 `}
+            >
               {item?.hint}
             </div>
           )}
@@ -106,7 +138,7 @@ const FormInputWithExternalUnit = ({ item, unit, value, onChangeText, errors, er
       </div>{" "}
       {!!item?.convertToText && !!value && (
         <div id={`${item?.id}`} className="text-xs pr-1  text-brand-600    ">
-          {Num2persian(value)} {_STRINGS?.TOMAN}
+          {Num2persian(value)} {t("toman")}
         </div>
       )}
     </div>

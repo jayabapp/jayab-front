@@ -3,6 +3,7 @@
 import { useLayoutEffect, useRef, useState } from "react";
 import { resolveChatImage } from "@features/chat/presentation/chat.presenter";
 import { useBlockChatUser } from "@features/chat/hooks/useBlockChatUser";
+import { useTranslations } from "next-intl";
 import { ContentImage } from "@elements/Image";
 import { BtnLoading } from "@elements/Button";
 import { useRouter } from "next/navigation";
@@ -11,7 +12,6 @@ import type { ChatHeaderProps } from "@/types/components/modules/chat";
 
 import ChatSecurityNotice from "./ChatSecurityNotice";
 import ConfirmModal from "@elements/Modal/ConfirmModal.client";
-import _STRINGS from "@/utils/LocalStrings";
 import Image from "next/image";
 import Link from "next/link";
 
@@ -22,17 +22,17 @@ const ChatHeader = ({
   description,
   is_recipient_online,
 }: ChatHeaderProps) => {
+  const tr = useTranslations();
+
+  const t = useTranslations("common");
+
   const router = useRouter();
   const headerRef = useRef<HTMLDivElement>(null);
   const [showBlock, setShowBlock] = useState(false);
   const isBlocked = !!data?.is_blocked;
 
-  const showBlockFunc = () => {
-    setShowBlock(true);
-  };
-  const hideBlockFunc = () => {
-    setShowBlock(false);
-  };
+  const showBlockFunc = () => setShowBlock(true);
+  const hideBlockFunc = () => setShowBlock(false);
 
   const { mutate, isPending } = useBlockChatUser(`${data?.id ?? ""}`);
 
@@ -58,7 +58,6 @@ const ChatHeader = ({
     const header = headerRef.current;
     const chatContainer = header?.closest<HTMLElement>(".chat-container");
     if (!header || !chatContainer) return;
-
     const setChatOffsets = () => {
       const headerBottom = Math.ceil(
         header.getBoundingClientRect().bottom -
@@ -68,7 +67,6 @@ const ChatHeader = ({
         "--chat-header-bottom",
         `${headerBottom}px`,
       );
-      // Keep enough room for the reconnecting status if it appears below header.
       chatContainer.style.setProperty(
         "--chat-body-top-offset",
         `${headerBottom + 44}px`,
@@ -97,7 +95,7 @@ const ChatHeader = ({
         <div className="flex w-full items-center gap-2">
           <Image
             src="/assets/icons/shared/chevron.svg"
-            alt="بازگشت"
+            alt={tr("common.back")}
             width={16}
             height={16}
             onClick={(e) => {
@@ -105,9 +103,9 @@ const ChatHeader = ({
               e.stopPropagation();
               handleBackClick();
             }}
-            className="  h-4 aspect-square w-4 -rotate-90  justify-start  "
+            className="h-4 aspect-square w-4 -rotate-90 justify-start"
           />
-          <div className="flex items-center   w-full gap-2">
+          <div className="flex items-center w-full gap-2">
             {image ? (
               <div className="w-10 shrink-0 relative flex items-center aspect-square">
                 <div
@@ -119,7 +117,7 @@ const ChatHeader = ({
                       ? resolveChatImage(image)
                       : "/assets/icons/logo/logo.svg"
                   }
-                  alt={name || _STRINGS.CHAT}
+                  alt={name || t("chat")}
                   width={56}
                   height={56}
                   className="w-10 col-span-1 md:w-14 rounded-full  clear-left  aspect-square"
@@ -130,26 +128,22 @@ const ChatHeader = ({
             )}
             <Link
               href={goToLink}
-              title={name || _STRINGS.CHAT}
+              title={name || t("chat")}
               className="flex h-full flex-col justify-around col-span-3"
             >
               {!!name || !!data?.recipient?.user_mobile_number ? (
                 <>
                   {" "}
-                  <p className="text-sm md:text-base">
-                    {name || _STRINGS?.CHAT}
-                  </p>
-                  <p className="text-xs font-light md:text-sm">
-                    {description}
-                  </p>
+                  <p className="text-sm md:text-base">{name || t("chat")}</p>
+                  <p className="text-xs font-light md:text-sm">{description}</p>
                   {!!data?.recipient?.user_mobile_number ? (
                     <div className="w-full flex items-center gap-0.5 ">
                       <Image
-                        className="w-5 h-5"
-                        src="/assets/icons/chat/basil_user.svg"
-                        alt="کاربر"
                         width={20}
                         height={20}
+                        className="w-5 h-5"
+                        alt={tr("common.user")}
+                        src="/assets/icons/chat/basil_user.svg"
                       />
                       <p className="text-xs !leading-2 opacity-50 mt-1 ">
                         {data?.recipient?.user_mobile_number}
@@ -173,7 +167,7 @@ const ChatHeader = ({
             isBlocked ? "" : "grayscale"
           }   transition-all ml-4 opacity-65 hover:opacity-100 hover:grayscale-0 `}
           src="/assets/icons/chat/chat_block.svg"
-          alt="مسدود کردن کاربر"
+          alt={tr("chat.blockUser")}
           width={24}
           height={24}
         />
@@ -182,15 +176,11 @@ const ChatHeader = ({
       <ChatSecurityNotice />
 
       <ConfirmModal
-        text={
-          !!isBlocked
-            ? "آیا از آنبلاک کردن کاربر مطمئنید ؟"
-            : "آیا از بلاک کردن کاربر مطمئنید ؟"
-        }
         isLoading={isPending}
         onConfirm={blockuser}
         isVisible={showBlock}
         onHide={hideBlockFunc}
+        text={!!isBlocked ? tr("chat.confirmUnblock") : tr("chat.confirmBlock")}
       />
     </div>
   );

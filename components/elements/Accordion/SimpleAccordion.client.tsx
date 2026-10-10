@@ -1,8 +1,10 @@
 "use client";
 
-import type { SimpleAccordionProps } from "@/types/components/elements/accordion";
+import { useTranslations } from "next-intl";
 import { ContentImage } from "@elements/Image";
 import { useState } from "react";
+
+import type { SimpleAccordionProps } from "@/types/components/elements/accordion";
 
 import DOMPurify from "isomorphic-dompurify";
 const SimpleAccordion = ({
@@ -13,6 +15,7 @@ const SimpleAccordion = ({
   isOpenFirst,
   ExtraElement,
 }: SimpleAccordionProps) => {
+  const t = useTranslations("common");
   const [isOpen, setIsOpen] = useState(isOpenFirst || false);
   return (
     <div
@@ -42,7 +45,7 @@ const SimpleAccordion = ({
           {" "}
           {ExtraElement ? (
             <div>
-              <p>تعداد کالا ها {ExtraElement?.length}</p>
+              <p>{t("productCount", { count: ExtraElement?.length ?? 0 })}</p>
             </div>
           ) : (
             <></>

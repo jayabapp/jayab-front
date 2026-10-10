@@ -1,29 +1,31 @@
 "use client";
 
-import { CLEARED_DRAFT_TARGET, searchOptionToDraft } from "@features/search/lib/search-option-draft";
-import type { HomeHeroSearchProps } from "@/types/components/modules/home-hero-search";
-import { useHeroSearch } from "@features/search/hooks/useHeroSearch";
 import { HeroDestinationSearch } from "@modules/Search";
-import { ContentImage } from "@elements/Image";
 import { useCallback, useState } from "react";
+import {CLEARED_DRAFT_TARGET} from "@features/search/lib/search-option-draft";
+import {searchOptionToDraft} from "@features/search/lib/search-option-draft";
+import { useListSeparator } from "@hooks/useListSeparator";
+import { useTranslations } from "next-intl";
+import { useHeroSearch } from "@features/search/hooks/useHeroSearch";
+import { ContentImage } from "@elements/Image";
+
+import type { HomeHeroSearchProps } from "@/types/components/modules/home-hero-search";
 
 import HeroMobileTrigger from "./parts/HeroMobileTrigger";
-import _STRINGS from "@/utils/LocalStrings";
-import moment from "moment-jalaali";
 import dynamic from "next/dynamic";
+import moment from "moment-jalaali";
 
 const DAY_MONTH_FORMAT = "jD jMMMM";
 
-const SUMMARY_SEPARATOR = "، ";
 
 const importHeroSearchSheet = () => import("./parts/HeroSearchSheet.client");
 
 const HeroSearchSheet = dynamic(importHeroSearchSheet, { ssr: false });
 
-const HomeHeroSearch = ({
-  isPhone,
-  variant = "hero",
-}: HomeHeroSearchProps) => {
+const HomeHeroSearch = ({ isPhone, variant = "hero" }: HomeHeroSearchProps) => {
+  const t = useTranslations();
+  const sep = useListSeparator();
+
   const [isSheetOpen, setIsSheetOpen] = useState(false);
   const { count, draft, isCountStale, isPending, patch, reset, submit } =
     useHeroSearch(isSheetOpen);
@@ -40,10 +42,12 @@ const HomeHeroSearch = ({
               : ""
           }`
         : "",
-      draft.total_guests ? `${draft.total_guests} ${_STRINGS.PERSON}` : "",
+      draft.total_guests
+        ? `${t("common.people", { count: Number(draft.total_guests) })}`
+        : "",
     ]
       .filter(Boolean)
-      .join(SUMMARY_SEPARATOR),
+      .join(sep),
   };
 
   return (
@@ -75,7 +79,7 @@ const HomeHeroSearch = ({
       ) : (
         <div className="surface-panel relative flex w-full flex-nowrap items-center gap-0 !rounded-full p-1 shadow-glass">
           <HeroDestinationSearch
-            label={_STRINGS.HERO_WHERE_LABEL}
+            label={t("search.heroWhereLabel")}
             value={draft.cityTitle || draft.q}
             onTermChange={(term) =>
               patch({ ...CLEARED_DRAFT_TARGET, q: term, cityTitle: undefined })
@@ -89,7 +93,7 @@ const HomeHeroSearch = ({
             type="button"
             onClick={submit}
             disabled={isPending}
-            aria-label={_STRINGS.SEARCH}
+            aria-label={t("search.search")}
             className="btn-primary flex size-8 shrink-0 items-center justify-center rounded-full bg-brand-600 transition-colors hover:bg-brand-700 disabled:bg-neutral-300 md:size-9"
           >
             <ContentImage

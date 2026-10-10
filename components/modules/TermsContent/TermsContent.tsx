@@ -1,20 +1,24 @@
-import type { TermsContentProps } from "@/types/components/modules/content-pages";
 import { sanitizeCmsHtml } from "@/helpers/html.generator";
+import { useTranslations } from "next-intl";
+
+import type { TermsContentProps } from "@/types/components/modules/content-pages";
+
 import Breadcrumbs from "@elements/Breadcrumbs/Breadcrumbs.client";
-import _STRINGS from "@/utils/LocalStrings";
 
 const TermsContent = ({ content: aboutUsWebsite }: TermsContentProps) => {
+  const t = useTranslations("common");
+
   return (
     <div className="container  !overflow-visible">
       <Breadcrumbs />
       <div className="grid grid-cols-3 gap-4">
         <div className=" col-span-3 md:col-span-3 md:mt-6 md:px-4 flex flex-col gap-4 ">
           <div className=" flex flex-col justify-center w-full items-center gap-2">
-            <h1 className="    ">{_STRINGS.TERMS}</h1>
+            <h1 className="    ">{t("terms")}</h1>
           </div>{" "}
           {!aboutUsWebsite ? (
             <p className="py-12 text-center text-sm text-neutral-500">
-              {_STRINGS.ERROR}
+              {t("error")}
             </p>
           ) : (
             <div

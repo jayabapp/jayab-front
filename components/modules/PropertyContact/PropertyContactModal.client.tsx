@@ -1,18 +1,20 @@
 "use client";
 
-import type { PropertyContactModalProps } from "@/types/components/modules/property-contact";
-import { usePropertyContact } from "@features/properties/hooks/usePropertyContact";
-import { formatJalaliDay } from "@features/reservations/mappers/reservation-dates";
-import { buildContactPrefill } from "@features/reservations/lib/contact-prefill";
 import { ModalBottomSheet, ModalHeaderPart } from "@elements/Modal";
+import { contactPrefillValues } from "@features/reservations/lib/contact-prefill";
+import { usePropertyContact } from "@features/properties/hooks/usePropertyContact";
 import { isMacOs, isWindows } from "react-device-detect";
-import { Icon } from "@elements/Icon";
+import { useListSeparator } from "@hooks/useListSeparator";
+import { formatJalaliDay } from "@features/reservations/mappers/reservation-dates";
+import { useTranslations } from "next-intl";
+import { useFormatToman } from "@hooks/useFormatToman";
 import { useEffect } from "react";
+import { Icon } from "@elements/Icon";
+
+import type { PropertyContactModalProps } from "@/types/components/modules/property-contact";
 
 import PropertyContactRow from "./parts/PropertyContactRow.client";
 import Skeleton from "@elements/Skeleton/Skeleton";
-import formatToman from "@/helpers/formatToman";
-import _STRINGS from "@/utils/LocalStrings";
 import Notify from "@elements/Toast";
 import isEmpty from "lodash/isEmpty";
 
@@ -23,8 +25,15 @@ const PropertyContactModal = ({
   onHide,
   propertySlug,
 }: PropertyContactModalProps) => {
+  const formatToman = useFormatToman();
+
+  const t = useTranslations();
+  const sep = useListSeparator();
+
   const { data: contactInfo, isPending, mutate } = usePropertyContact();
-  const smsBody = trip ? buildContactPrefill(trip) : undefined;
+  const smsBody = trip
+    ? t("reserve.contactPrefill", contactPrefillValues(trip))
+    : undefined;
   const isSms = type === "sms";
   const isDesktop = isWindows || isMacOs;
 
@@ -35,7 +44,7 @@ const PropertyContactModal = ({
   const copyMessage = async () => {
     if (!smsBody || !navigator?.clipboard) return;
     await navigator.clipboard.writeText(smsBody);
-    Notify({ type: "success", body: _STRINGS.MESSAGE_TEXT_COPIED });
+    Notify({ type: "success", body: t("reserve.messageTextCopied") });
   };
 
   return (
@@ -44,19 +53,21 @@ const PropertyContactModal = ({
         showX
         hideArrow
         onHide={onHide}
-        title={isSms ? _STRINGS.SMS_HOST : _STRINGS.CALL_HOST}
+        title={isSms ? t("reserve.smsHost") : t("reserve.callHost")}
       />
 
       {trip ? (
         <div className="flex flex-col gap-1 border-b border-neutral-200 px-4 py-3 text-sm">
           <p className="line-clamp-1 text-neutral-900">{trip.title}</p>
           <p className="text-neutral-500">
-            {formatJalaliDay(trip.startDate)} {_STRINGS.TO}{" "}
-            {formatJalaliDay(trip.endDate)}، {trip.guests} {_STRINGS.PERSON}
+            {formatJalaliDay(trip.startDate)} {t("common.to")}{" "}
+            {formatJalaliDay(trip.endDate)}
+            {sep}
+            {t("common.people", { count: Number(trip.guests) })}
           </p>
           {trip.total ? (
             <p className="text-neutral-500">
-              {_STRINGS.APPROX_STAY_COST} {formatToman(trip.total)}
+              {t("reserve.approxStayCost")} {formatToman(trip.total)}
             </p>
           ) : null}
         </div>
@@ -69,7 +80,7 @@ const PropertyContactModal = ({
             <Skeleton className="h-10 w-full rounded-10" />
           </div>
         ) : isEmpty(contactInfo) ? (
-          <p className="w-full text-center">{_STRINGS.EMPTY_CONTACT_LIST}</p>
+          <p className="w-full text-center">{t("reserve.emptyContactList")}</p>
         ) : (
           contactInfo?.list?.map((contact) => (
             <PropertyContactRow
@@ -95,11 +106,11 @@ const PropertyContactModal = ({
               className="flex h-10 w-full cursor-pointer items-center justify-center gap-2 rounded-10 border border-neutral-200 bg-white text-sm font-medium text-neutral-900 transition-colors hover:bg-neutral-50"
             >
               <Icon name="copy" size={20} />
-              {_STRINGS.COPY_MESSAGE_TEXT}
+              {t("reserve.copyMessageText")}
             </button>
           ) : null}
           <p className="text-xs text-neutral-500">
-            {isSms ? _STRINGS.CONTACT_SMS_HINT : _STRINGS.CONTACT_CALL_HINT}
+            {isSms ? t("reserve.contactSmsHint") : t("reserve.contactCallHint")}
           </p>
         </div>
       ) : null}

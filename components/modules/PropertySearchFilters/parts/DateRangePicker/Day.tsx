@@ -1,6 +1,7 @@
+import { useTranslations } from "next-intl";
+
 import type { SearchDateRangeDayProps } from "@/types/components/modules/search-date-range-picker";
 
-import _STRINGS from "@/utils/LocalStrings";
 import DayPricePart from "./DayPricePart";
 import moment from "moment-jalaali";
 
@@ -13,6 +14,8 @@ const Day = ({
   selectedDayIds,
   freeDaysOfMonth,
 }: SearchDateRangeDayProps) => {
+  const t = useTranslations();
+
   const isBefore = !!freeDaysOfMonth
     ? false
     : moment(moment(`${year}/${month}/${data?.id}`, "jYYYY/jMM/jD")).isBefore();
@@ -93,7 +96,7 @@ const Day = ({
             {" "}
             <p className=" text-white text-[0.526rem]">
               {" "}
-              {isSelectedStart ? _STRINGS.ENTER : _STRINGS.EXIT}{" "}
+              {isSelectedStart ? t("common.enter") : t("listing.exit")}{" "}
             </p>
           </div>
         ) : (

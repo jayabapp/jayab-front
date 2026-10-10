@@ -1,13 +1,17 @@
 import { resolveChatImage } from "@features/chat/presentation/chat.presenter";
-import type { ChatListItemProps } from "@/types/components/modules/chat";
-import { ContentImage } from "@elements/Image";
+import { useTranslations } from "next-intl";
 import { useStoreParams } from "@/store";
+import { ContentImage } from "@elements/Image";
+
+import type { ChatListItemProps } from "@/types/components/modules/chat";
 
 import moment from "moment-jalaali";
 import Image from "next/image";
 import Link from "next/link";
 
 const ChatListItem = ({ item, onClickCb }: ChatListItemProps) => {
+  const t = useTranslations("common");
+
   moment.locale("fa", { useGregorianParser: true });
   const removeredirectRoomToHome = () => {
     useStoreParams.setState({ getBackHome: false });
@@ -38,9 +42,9 @@ const ChatListItem = ({ item, onClickCb }: ChatListItemProps) => {
           </p>
           <div className="w-full flex items-center gap-0.5 ">
             <Image
-              alt="کاربر"
               width={20}
               height={20}
+              alt={t("user")}
               className="w-5 h-5"
               src="/assets/icons/chat/basil_user.svg"
             />

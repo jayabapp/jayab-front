@@ -30,6 +30,19 @@ import Script from "next/script";
 
 import "../styles/globals.css";
 
+const ROOT_NAMESPACES = [
+  "auth",
+  "calendar",
+  "common",
+  "errors",
+  "header",
+  "language",
+  "listing",
+  "routes",
+  "search",
+  "theme",
+] as const;
+
 const CHROME_HIDDEN_ROUTES = [
   ...mobileFooterBlackList,
   ...footerHiddenBlackList,
@@ -113,7 +126,9 @@ const RootLayout = async ({
       getServerContentList("contactUs", 1, CONTACT_PER_PAGE),
     ]);
 
-  const { common, header, theme, language, auth, routes, errors } = messages;
+  const rootMessages = Object.fromEntries(
+    ROOT_NAMESPACES.map((name) => [name, messages[name]]),
+  );
 
   const appSetting = appSettingsResponse?.data as InnitSettingsDto;
   const contacts: ContentDto[] = contactsResponse?.data?.data ?? [];
@@ -139,10 +154,7 @@ const RootLayout = async ({
       <body className={x_Iransans.className} suppressHydrationWarning>
         <NavigationProgress />
         <SplashScreen />
-        <NextIntlClientProvider
-          locale={locale}
-          messages={{ common, header, theme, language, auth, routes, errors }}
-        >
+        <NextIntlClientProvider locale={locale} messages={rootMessages}>
           <LayoutProvider>
             <ImpersonationBanner />
             <AppShell>

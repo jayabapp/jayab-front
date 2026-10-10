@@ -1,8 +1,9 @@
-import type { CategoryBlogsProps } from "@/types/components/modules/blog";
-import { useContentList } from "@features/home/hooks/useContentList";
 import { useRouter, usePathname } from "next/navigation";
-import { BlogGridSkeleton } from "./BlogGridSkeleton";
 import { useEffect, useState } from "react";
+import { BlogGridSkeleton } from "./BlogGridSkeleton";
+import { useContentList } from "@features/home/hooks/useContentList";
+
+import type { CategoryBlogsProps } from "@/types/components/modules/blog";
 
 import queryBuilder from "@/helpers/queryBuilder";
 import EmptyState from "@elements/EmptyState";

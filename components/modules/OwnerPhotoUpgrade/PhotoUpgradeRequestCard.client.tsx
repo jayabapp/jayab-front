@@ -1,11 +1,13 @@
 "use client";
 
+import { PROPERTY_IMAGE_QUALITY } from "@features/properties/constants/image";
+import { getPropertyImageUrl } from "@features/properties/mappers/property-image.mapper";
+import { useTranslations } from "next-intl";
+import { useFormatToman } from "@hooks/useFormatToman";
+
 import type { PhotoUpgradeRequestCardProps } from "@/types/components/modules/photo-upgrade";
 import type { PhotoUpgradeInfoItemProps } from "@/types/components/modules/photo-upgrade";
-import { getPropertyImageUrl } from "@features/properties/mappers/property-image.mapper";
-import { PROPERTY_IMAGE_QUALITY } from "@features/properties/constants/image";
 
-import numberWithCommas from "@/helpers/numberWithCommas";
 import StatusShower from "@elements/StatusShower";
 import moment from "moment-jalaali";
 import Image from "next/image";
@@ -19,6 +21,10 @@ const InfoItem = ({ title, value }: PhotoUpgradeInfoItemProps) => (
 );
 
 const PhotoUpgradeRequestCard = ({ data }: PhotoUpgradeRequestCardProps) => {
+  const formatToman = useFormatToman();
+
+  const t = useTranslations();
+
   return (
     <Link
       prefetch={false}
@@ -27,11 +33,11 @@ const PhotoUpgradeRequestCard = ({ data }: PhotoUpgradeRequestCardProps) => {
     >
       <div className="flex items-start gap-3 p-3">
         <Image
-          quality={PROPERTY_IMAGE_QUALITY}
           width={80}
           height={80}
           sizes="80px"
-          alt={data?.property?.title || "تصویر اقامتگاه"}
+          quality={PROPERTY_IMAGE_QUALITY}
+          alt={data?.property?.title || t("owner.propertyImage")}
           className="h-20 w-20 shrink-0 rounded-10 object-cover"
           src={getPropertyImageUrl(data?.property?.feature_image)}
         />
@@ -39,10 +45,10 @@ const PhotoUpgradeRequestCard = ({ data }: PhotoUpgradeRequestCardProps) => {
           <div className="flex items-start justify-between gap-2">
             <div className="min-w-0">
               <p className="line-clamp-1 text-sm font-medium md:text-base">
-                {data?.property?.title || "اقامتگاه"}
+                {data?.property?.title || t("common.property")}
               </p>
               <p className="mt-1 text-xs text-neutral-500">
-                کد {data?.property?.code || data?.property_id}
+                {t("common.code")} {data?.property?.code || data?.property_id}
               </p>
             </div>
             <StatusShower
@@ -52,15 +58,17 @@ const PhotoUpgradeRequestCard = ({ data }: PhotoUpgradeRequestCardProps) => {
           </div>
           <div className="grid grid-cols-1 gap-2">
             <InfoItem
-              title="تعداد عکس"
-              value={`${data?.image_count || data?._count?.items || 0} عکس`}
+              title={t("owner.photoCount")}
+              value={t("owner.photosCount", {
+                count: Number(data?.image_count || data?._count?.items || 0),
+              })}
             />
             <InfoItem
-              title="مبلغ کل"
-              value={`${numberWithCommas(data?.total_amount)} تومان`}
+              title={t("owner.totalAmount")}
+              value={formatToman(data?.total_amount)}
             />
             <InfoItem
-              title="تاریخ ثبت"
+              title={t("owner.submittedAt")}
               value={moment(data?.created_at).format("HH:mm - jYYYY/jMM/jDD")}
             />
           </div>

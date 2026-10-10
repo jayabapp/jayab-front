@@ -2,6 +2,7 @@ import { OwnerPropertyStepTemplate } from "@templates/OwnerPropertyEdit";
 import { PropertyEnvironmentStep } from "@modules/OwnerPropertyEditor";
 
 import type { OwnerPropertyPageProps } from "@/types/components/templates/owner-property";
+import IntlNamespaces from "@/i18n/IntlNamespaces";
 
 const PropertyEnvironmentStepPage = async ({
   params,
@@ -9,9 +10,11 @@ const PropertyEnvironmentStepPage = async ({
   const { property_id } = await params;
 
   return (
-    <OwnerPropertyStepTemplate>
-      <PropertyEnvironmentStep propertyId={property_id} />
-    </OwnerPropertyStepTemplate>
+    <IntlNamespaces namespaces={["owner"]}>
+      <OwnerPropertyStepTemplate>
+        <PropertyEnvironmentStep propertyId={property_id} />
+      </OwnerPropertyStepTemplate>
+    </IntlNamespaces>
   );
 };
 

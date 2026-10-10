@@ -1,20 +1,21 @@
 "use client";
 
-import type { StayCalendarGridProps } from "@/types/components/modules/property-booking";
-import { selectDay, startOfDay } from "@features/reservations/lib/stay-range";
-import type { StayBlockReason } from "@features/reservations/lib/stay-range";
 import { useEffect, useRef, useState } from "react";
+import { selectDay, startOfDay } from "@features/reservations/lib/stay-range";
+import { useTranslations } from "next-intl";
 
-import _STRINGS from "@/utils/LocalStrings";
+import type { StayCalendarGridProps } from "@/types/components/modules/property-booking";
+import type { StayBlockReason } from "@features/reservations/lib/stay-range";
+
 import StayMonth from "./StayMonth.client";
 
 const HINT_MS = 2800;
 
-const HINT_TEXT: Record<StayBlockReason, string> = {
-  past: _STRINGS.RANGE_IN_PAST,
-  reserved: _STRINGS.RANGE_HAS_RESERVED_DAY,
-  too_long: _STRINGS.RANGE_TOO_LONG,
-};
+const HINT_TEXT = {
+  past: "reserve.rangeInPast",
+  reserved: "reserve.rangeHasReservedDay",
+  too_long: "reserve.rangeTooLong",
+} as const satisfies Record<StayBlockReason, string>;
 
 const StayCalendarGrid = ({
   range,
@@ -25,6 +26,7 @@ const StayCalendarGrid = ({
   columns = 1,
   lazy = false,
 }: StayCalendarGridProps) => {
+  const t = useTranslations();
   const [hint, setHint] = useState<string | null>(null);
   const timer = useRef<ReturnType<typeof setTimeout>>(undefined);
   const today = startOfDay(new Date());
@@ -35,7 +37,7 @@ const StayCalendarGrid = ({
     const result = selectDay(date, range, reserved, today);
     clearTimeout(timer.current);
     if (result.blocked) {
-      setHint(HINT_TEXT[result.blocked]);
+      setHint(t(HINT_TEXT[result.blocked]));
       timer.current = setTimeout(() => setHint(null), HINT_MS);
       return;
     }

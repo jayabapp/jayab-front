@@ -12,6 +12,7 @@ import { cancelPropertyDiscoveryQueries } from "@features/properties/api/propert
 import { usePathname, useRouter } from "next/navigation";
 import { buildLocationLabel } from "@features/cities/lib/location-label";
 import { pickLocationQuery } from "@features/cities/lib/location-label";
+import { useLocationWords } from "@features/cities/hooks/useLocationWords";
 import { useMemo, useState } from "react";
 import { useQueryClient } from "@tanstack/react-query";
 import { useCitiesStore } from "@/store";
@@ -35,6 +36,7 @@ export const useCitySelection = ({
   onSubmitCustomValues,
 }: CitySelectionInput): CitySelectionState => {
   const router = useRouter();
+  const words = useLocationWords();
   const queryClient = useQueryClient();
   const pathname = usePathname();
   const urlQueries = useQueryGet<Record<string, string>>();
@@ -112,8 +114,8 @@ export const useCitySelection = ({
   );
 
   const title = useMemo(
-    () => buildCitySelectionTitle(queryProvinces, queryCities),
-    [queryProvinces, queryCities],
+    () => buildCitySelectionTitle(queryProvinces, queryCities, words),
+    [queryProvinces, queryCities, words],
   );
 
   const regionCity = useMemo(
@@ -176,10 +178,10 @@ export const useCitySelection = ({
             locationsData: {
               cities: storedCities,
               provinces: storedProvinces,
-              label: buildLocationLabel({
-                cities: storedCities,
-                provinces: storedProvinces,
-              }),
+              label: buildLocationLabel(
+                { cities: storedCities, provinces: storedProvinces },
+                words,
+              ),
               path,
               query: pickLocationQuery({
                 cities: cityIds,

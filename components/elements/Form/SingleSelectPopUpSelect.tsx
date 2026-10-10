@@ -1,30 +1,35 @@
+import { ModalBottomSheet, ModalHeaderPart } from "@elements/Modal";
+import { useTranslations } from "next-intl";
+import { useState } from "react";
+import { p2e } from "@/helpers/NumberConverter";
 
 import type { SingleSelectProps } from "@/types/components/elements/form";
-import { ModalBottomSheet, ModalHeaderPart } from "@elements/Modal";
-import { p2e } from "@/helpers/NumberConverter";
-import { useState } from "react";
 
 import ContentImage from "@elements/Image/ContentImage";
 import Selecti from "./SingleSelectSelecti";
-import _STRINGS from "@/utils/LocalStrings";
 import isEmpty from "lodash/isEmpty";
 
 const SinglePopUpSelect = ({
   item,
-
   value,
   onSelect,
-  closeOnSelect,
   velueString,
+  closeOnSelect,
 }: SingleSelectProps) => {
+  const t = useTranslations("common");
+
   const [show, setShow] = useState(false);
 
   const [search, setSearch] = useState("");
   return (
-    <div className={`relative  inline-block w-full ${item?.containerClass} ${item?.disable ? "opacity-60" : ""} `}>
+    <div
+      className={`relative  inline-block w-full ${item?.containerClass} ${item?.disable ? "opacity-60" : ""} `}
+    >
       <div className="flex flex-col">
         {item?.title ? (
-          <p className={`text-sm opacity-90 pr-2 pb-3 ${item?.isMandatory && "after:content-['*'] after:mr-1 "}  `}>
+          <p
+            className={`text-sm opacity-90 pr-2 pb-3 ${item?.isMandatory && "after:content-['*'] after:mr-1 "}  `}
+          >
             {item?.title}
           </p>
         ) : (
@@ -56,10 +61,10 @@ const SinglePopUpSelect = ({
           </div>
           <ContentImage
             alt=""
+            width={24}
             height={24}
             src="/assets/icons/shared/chevron.svg"
-            className={`h-4 w-4   transition-all  ${show ? "rotate-180" : ""}`}
-            width={24}
+            className={`h-4 w-4 transition-all ${show ? "rotate-180" : ""}`}
           />
         </button>
       </div>
@@ -69,26 +74,22 @@ const SinglePopUpSelect = ({
             item?.searcheable ? " min-h-[90dvh]" : ""
           } !h-[90dvh] max-h-[90dvh] w-full overflow-y-scroll rounded-t-20 bg-white pb-[1.5rem] md:!h-auto md:w-[32rem] md:max-w-[calc(100vw-2rem)] md:rounded-20 md:pb-10 `,
         }}
-        onHide={() => {
-          setShow(false);
-        }}
+        onHide={() => setShow(false)}
         show={show}
       >
         <ModalHeaderPart
-          hideArrow
           showX
+          hideArrow
           titleClass="text-brand-600"
+          onHide={() => setShow(false)}
           title={item?.title || item?.placeholder || ""}
-          onHide={() => {
-            setShow(false);
-          }}
         />
         <div className="flex flex-col   px-6 py-4">
           {item?.searcheable ? (
             <div className="form-control !py-1.5 mb-2 !text-sm top-14  transition-all sticky z-2  rounded-10   !bg-neutral-100 ">
               <input
                 value={search}
-                placeholder={`${_STRINGS.SEARCH_OF} ${item?.title}`}
+                placeholder={`${t("searchOf")} ${item?.title}`}
                 onChange={(e) => setSearch(e.target.value)}
                 className={` !text-base !bg-neutral-100   w-5/6 focus:border-brand-600 py-1 `}
               />
@@ -96,23 +97,24 @@ const SinglePopUpSelect = ({
           ) : (
             <></>
           )}
-          {/* <div className="w-full p-4 pt-0 flex items-center justify-center border-b border-neutral-50">
-            <p className="">{item?.title}</p>
-          </div> */}
           {isEmpty(item?.list) ? (
-            <p className="w-full text-center mt-4"> {_STRINGS.NODATA_LIST}</p>
+            <p className="w-full text-center mt-4"> {t("nodataList")}</p>
           ) : (
             item?.list
-              ?.filter((item) => item?.title?.toLocaleLowerCase().includes(p2e(search).toLowerCase()))
+              ?.filter((item) =>
+                item?.title
+                  ?.toLocaleLowerCase()
+                  .includes(p2e(search).toLowerCase()),
+              )
               ?.map((item) => (
                 <Selecti
-                  velueString={velueString}
-                  key={item?.id}
                   item={item}
                   value={value}
-                  onSelect={onSelect}
-                  closeOnSelect={closeOnSelect}
+                  key={item?.id}
                   setShow={setShow}
+                  onSelect={onSelect}
+                  velueString={velueString}
+                  closeOnSelect={closeOnSelect}
                 />
               ))
           )}

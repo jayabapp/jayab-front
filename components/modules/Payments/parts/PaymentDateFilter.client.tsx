@@ -1,34 +1,32 @@
 import { useRouter, usePathname, useSearchParams } from "next/navigation";
 import { JalaliDatePicker } from "@elements/JalaliCalendar";
+import { useTranslations } from "next-intl";
 import { ContentImage } from "@elements/Image";
 import { useState } from "react";
 
 import queryBuilder from "@/helpers/queryBuilder";
-import Modal from "@elements/Modal";
 import moment from "moment-jalaali";
+import Modal from "@elements/Modal";
+import type { TPaymentDate } from "@/types/components/modules/profile";
 
 const PaymentDateFilter = ({
   query,
-  placeholder,
   queryKey,
-}: {
-  queryKey: string;
-  query: any;
-  placeholder?: string;
-}) => {
+  placeholder,
+}:TPaymentDate) => {
+  const t = useTranslations("common");
+
   const searchParams = useSearchParams();
   const date = searchParams.get(queryKey);
 
   const router = useRouter();
   const pathname = usePathname();
   const [show, setShow] = useState(false);
-  const onHide = () => {
-    setShow(false);
-  };
+  const onHide = () => setShow(false);
+  
 
   const setDate = (selectedDate: string | number | null) => {
     let temp = { ...query };
-
     if (date == selectedDate || !selectedDate) {
       delete temp?.[queryKey];
       router.replace(
@@ -47,12 +45,14 @@ const PaymentDateFilter = ({
     }
   };
 
-  const showModal = () => {
-    setShow(true);
-  };
+  const showModal = () => setShow(true);
+  
   return (
     <div className="w-fit flex lg:flex-row  gap-3 items-center justify-between rounded-10  ">
-      <div onClick={showModal} className="relative inline-block cursor-pointer text-left mr-1">
+      <div
+        onClick={showModal}
+        className="relative inline-block cursor-pointer text-left mr-1"
+      >
         <div className=" h-11  rounded-10 cursor-pointer  flex justify-between items-center">
           <div
             className={`flex bg-white/50 ${
@@ -63,7 +63,7 @@ const PaymentDateFilter = ({
               className={`  ${!!date ? "text-brand-600 font-medium" : "  opacity-60"}    text-sm`}
             >
               {" "}
-              {!!date ? date : placeholder || "انتخاب روز"}
+              {!!date ? date : placeholder || t("pickDay")}
             </p>
             {!!date ? (
               <ContentImage

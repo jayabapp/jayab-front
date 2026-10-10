@@ -1,9 +1,10 @@
 "use client";
 
-import type { AdvisorFieldsProps } from "@/types/components/modules/advisors";
+import { useTranslations } from "next-intl";
 import { FormInput } from "@elements/Form";
 
-import _STRINGS from "@/utils/LocalStrings";
+import type { AdvisorFieldsProps } from "@/types/components/modules/advisors";
+
 import dynamic from "next/dynamic";
 
 const UploadField = dynamic(() =>
@@ -14,6 +15,8 @@ const UPLOAD_BOX =
   "!bg-white  !border !border-dashed   w-24 h-24 !border-neutral-300 ";
 
 const AdvisorSimpleFields = ({ values, setValues }: AdvisorFieldsProps) => {
+  const t = useTranslations();
+
   const onChange = (value: unknown, key: string) =>
     setValues((previous) => ({ ...previous, [key]: value }));
 
@@ -26,18 +29,18 @@ const AdvisorSimpleFields = ({ values, setValues }: AdvisorFieldsProps) => {
           item={{
             containerClass: "w-full",
             isMandatory: true,
-            title: _STRINGS.FULL_NAME,
+            title: t("advisor.fullName"),
           }}
         />
       </div>
 
       <div className="w-full flex items-center justify-center flex-col">
         <p className="w-full text-start text-sm md:text-base">
-          {_STRINGS.YOUR_IMAGE}
+          {t("common.yourImage")}
         </p>
         <UploadField
           withCrop
-          title={_STRINGS.IMAGE}
+          title={t("common.image")}
           key="advisor-profile-image"
           item={values?.profile_image}
           link="/attachments?type=PROFILE"

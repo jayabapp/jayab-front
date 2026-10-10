@@ -1,7 +1,9 @@
+
+import { useTranslations } from "next-intl";
+import { useFormatToman } from "@hooks/useFormatToman";
+
 import type { ReservationViewProps } from "@/types/components/modules/reservations";
 
-import formatToman from "@/helpers/formatToman";
-import _STRINGS from "@/utils/LocalStrings";
 import SpecRow from "@elements/SpecRow";
 import moment from "moment-jalaali";
 
@@ -16,9 +18,13 @@ const ReservationSchedule = ({
   isOwner,
   reservation,
 }: ReservationViewProps) => {
+  const formatToman = useFormatToman();
+
+  const t = useTranslations();
+
   const guests = `${reservation?.guests_count}`;
   const guestLabel = guests.includes("+")
-    ? `${_STRINGS.MORE_THAN} ${guests.replace("+", "")}`
+    ? `${t("reserve.moreThan")} ${guests.replace("+", "")}`
     : guests;
 
   return (
@@ -26,42 +32,42 @@ const ReservationSchedule = ({
       <SpecRow
         dots
         options={ROW_OPTIONS}
-        title={_STRINGS.PPL_COUNT}
-        value={`${guestLabel} ${_STRINGS.PERSON}`}
+        title={t("common.pplCount")}
+        value={`${t("common.people", { count: Number(guestLabel) })}`}
       />
       <SpecRow
         dots
         options={ROW_OPTIONS}
-        title={_STRINGS.START_DATE}
+        title={t("reserve.startDate")}
         value={` ${moment(reservation?.check_in).format("ddd - jYYYY/jMM/jD")}`}
       />
       <SpecRow
         dots
         options={ROW_OPTIONS}
-        title={_STRINGS.EXIT_DATE}
+        title={t("reserve.exitDate")}
         value={` ${moment(reservation?.check_out).format("ddd - jYYYY/jMM/jD")}`}
       />
       <SpecRow
         dots
         options={ROW_OPTIONS}
-        title={_STRINGS.DURATION}
-        value={` ${moment(reservation?.check_out).diff(reservation?.check_in, "days")} ${_STRINGS.NIGHT}`}
+        title={t("reserve.duration")}
+        value={` ${t("reserve.nights", { count: Number(moment(reservation?.check_out).diff(reservation?.check_in, "days")) })}`}
       />
       <SpecRow
         dots
         options={ROW_OPTIONS}
-        title={_STRINGS.TOTAL_STAY_COST}
+        title={t("reserve.totalStayCost")}
         value={
           reservation?.quoted_total
             ? formatToman(reservation.quoted_total)
-            : _STRINGS.RESERVE_AMOUNT_NOT_RECORDED
+            : t("reserve.reserveAmountNotRecorded")
         }
       />
       {isOwner ? (
         <SpecRow
           dots
           options={ROW_OPTIONS}
-          title={_STRINGS.REQUEST_DATE}
+          title={t("reserve.requestDate")}
           value={`${moment(reservation?.created_at).format("HH:mm - jYYYY/jMM/jD")}`}
         />
       ) : null}

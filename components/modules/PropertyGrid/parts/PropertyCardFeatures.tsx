@@ -1,9 +1,8 @@
+import { useTranslations } from "next-intl";
 import { ContentImage } from "@elements/Image";
 
 import type { PropertyCardFeaturesProps } from "@/types/components/modules/property-grid";
 import type { TFeatureItem } from "@/types/components/modules/property-discovery";
-
-import _STRINGS from "@/utils/LocalStrings";
 
 const FeatureItem = ({ disabled, iconUrl, title }: TFeatureItem) => (
   <div
@@ -22,22 +21,26 @@ const FeatureItem = ({ disabled, iconUrl, title }: TFeatureItem) => (
   </div>
 );
 
-const PropertyCardFeatures = ({ data }: PropertyCardFeaturesProps) => (
-  <div className="flex min-w-0 items-center justify-start gap-4">
-    <FeatureItem
-      iconUrl="/assets/icons/adds/max_cap_house.svg"
-      title={`${_STRINGS.UP_TO} ${data?.max_capacity} ${_STRINGS.PERSON}`}
-    />
-    <FeatureItem
-      iconUrl="/assets/icons/adds/prop_card_bed.svg"
-      title={`${data?.total_bedrooms} ${_STRINGS.ROOM}`}
-    />
-    <FeatureItem
-      disabled={!data?.has_pool}
-      iconUrl="/assets/icons/adds/prop_card_pool.svg"
-      title={data?.has_pool ? _STRINGS.HAS_POOL : _STRINGS.POOL_LESS}
-    />
-  </div>
-);
+const PropertyCardFeatures = ({ data }: PropertyCardFeaturesProps) => {
+  const t = useTranslations();
+
+  return (
+    <div className="flex min-w-0 items-center justify-start gap-4">
+      <FeatureItem
+        iconUrl="/assets/icons/adds/max_cap_house.svg"
+        title={`${t("listing.upTo")} ${t("common.people", { count: Number(data?.max_capacity) })}`}
+      />
+      <FeatureItem
+        iconUrl="/assets/icons/adds/prop_card_bed.svg"
+        title={`${t("listing.roomsCount", { count: Number(data?.total_bedrooms) })}`}
+      />
+      <FeatureItem
+        disabled={!data?.has_pool}
+        iconUrl="/assets/icons/adds/prop_card_pool.svg"
+        title={data?.has_pool ? t("listing.hasPool") : t("listing.poolLess")}
+      />
+    </div>
+  );
+};
 
 export default PropertyCardFeatures;

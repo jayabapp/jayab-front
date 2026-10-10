@@ -1,10 +1,10 @@
-/* eslint-disable react-hooks/exhaustive-deps -- The memoized day renderer intentionally keys calculations to date-span values used by the legacy selection contract. */
 
-import type { ReservationDayProps } from "@/types/components/modules/reservation-date-picker";
 import { memo, useCallback, useMemo } from "react";
+import { useTranslations } from "next-intl";
 import { toast } from "sonner";
 
-import _STRINGS from "@/utils/LocalStrings";
+import type { ReservationDayProps } from "@/types/components/modules/reservation-date-picker";
+
 import DayPricePart from "./DayPricePart";
 import Notify from "@elements/Toast";
 import moment from "moment-jalaali";
@@ -26,6 +26,8 @@ const Day = memo(
     freeDaysOfMonth,
     smallerDateFonts,
   }: ReservationDayProps) => {
+    const t = useTranslations("reserve");
+
     const isDateForbidden = useCallback(
       (dateToCheck: moment.Moment | null) => {
         if (!dateToCheck || !forbiden_dates?.length) return false;
@@ -276,7 +278,7 @@ const Day = memo(
         !(!!dateSpan?.start && !!dateInfo?.isForbiddenSpanStart)
       ) {
         Notify({
-          body: _STRINGS.DATE_IS_FILLED,
+          body: t("dateIsFilled"),
           type: "warn",
           id: RESERVED_DATE_TOAST_ID,
           duration: 3000,
@@ -300,6 +302,7 @@ const Day = memo(
       dateInfo.isForbidden,
       dateInfo.isForbiddenSpanStart,
       dateSpan?.start,
+      t,
     ]);
 
     const containerClasses = useMemo(() => {

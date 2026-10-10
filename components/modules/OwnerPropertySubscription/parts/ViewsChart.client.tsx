@@ -1,5 +1,6 @@
 import { Line, LineChart, XAxis, YAxis } from "recharts";
 import { ResponsiveContainer, Tooltip } from "recharts";
+import { useTranslations } from "next-intl";
 import { chartSteps } from "@/utils/constantss";
 import { colors } from "@/theme/colors";
 
@@ -7,19 +8,19 @@ import numberWithCommas from "@/helpers/numberWithCommas";
 import moment from "moment-jalaali";
 
 const ViewsChart = ({ data }: { data: any }) => {
+  const t = useTranslations();
+
   const CustomTooltip = ({ active, payload, label }: any) => {
     if (active && payload && payload.length) {
       return (
         <div className="custom-tooltip shadow transition-all bg-white rounded-lg p-2">
-          <p className="label">{`${moment(label).format("jYYYY/jMM/jDD")} `}</p>
+          <p className="label">{`${moment(label).format("jYYYY/jMM/jDD")}`}</p>
           <p className="intro">
-            {" "}
-            نمایش : {numberWithCommas(payload[0].value)}{" "}
+            {t("owner.viewsLabel")} {numberWithCommas(payload[0].value)}
           </p>
         </div>
       );
     }
-
     return null;
   };
 
@@ -51,7 +52,7 @@ const ViewsChart = ({ data }: { data: any }) => {
         <XAxis
           dataKey="date"
           tickFormatter={(value) => {
-            if (moment(value).isSame(moment(), "day")) return "امروز";
+            if (moment(value).isSame(moment(), "day")) return t("common.today");
             return moment(value).format("jMM/jDD") || "";
           }}
           tickMargin={5}

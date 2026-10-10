@@ -1,10 +1,11 @@
 "use client";
 
-import type { PropertySuccessModalProps } from "@/types/components/modules/owner-property";
+import { useTranslations } from "next-intl";
 import { ContentImage } from "@elements/Image";
 import { useRouter } from "next/navigation";
 
-import _STRINGS from "@/utils/LocalStrings";
+import type { PropertySuccessModalProps } from "@/types/components/modules/owner-property";
+
 import Button from "@elements/Button";
 import Modal from "@elements/Modal";
 
@@ -12,6 +13,8 @@ const PropertySuccessModal = ({
   show,
   onConfirm,
 }: PropertySuccessModalProps) => {
+  const t = useTranslations();
+
   const router = useRouter();
 
   return (
@@ -26,10 +29,10 @@ const PropertySuccessModal = ({
         />
         <div className="flex flex-col items-center justify-center w-full gap-2">
           <p className="text-brand-600 font-bold">
-            {_STRINGS.UR_PROP_REGISTERED}
+            {t("owner.urPropRegistered")}
           </p>
           <p className="text-sm text-center">
-            {_STRINGS.UR_PROP_REGISTERED_DESC}
+            {t("owner.urPropRegisteredDesc")}
           </p>
         </div>
         <div className="w-full flex items-center justify-center gap-4">
@@ -37,13 +40,13 @@ const PropertySuccessModal = ({
             width="w-full"
             onClick={onConfirm}
             containerClass="w-full"
-            title={_STRINGS.PAY}
+            title={t("common.pay")}
           />
           <Button
             width="w-full"
             variant="outline"
             containerClass="w-full"
-            title={_STRINGS.HOME}
+            title={t("common.home")}
             onClick={() => router.push("/")}
           />
         </div>

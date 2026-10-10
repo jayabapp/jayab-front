@@ -1,10 +1,11 @@
-import { getPropertyImageUrl } from "@features/properties/mappers/property-image.mapper";
-import type { ReservationViewProps } from "@/types/components/modules/reservations";
 import { PROPERTY_IMAGE_QUALITY } from "@features/properties/constants/image";
-import { ContentImage } from "@elements/Image";
+import { getPropertyImageUrl } from "@features/properties/mappers/property-image.mapper";
+import { useTranslations } from "next-intl";
 import { useStoreParams } from "@/store";
+import { ContentImage } from "@elements/Image";
 
-import _STRINGS from "@/utils/LocalStrings";
+import type { ReservationViewProps } from "@/types/components/modules/reservations";
+
 import Link from "next/link";
 
 const IMAGE_PLACEHOLDER = "/assets/icons/shared/image_placeholder.svg";
@@ -13,6 +14,8 @@ const ReservationPropertySummary = ({
   isOwner,
   reservation,
 }: ReservationViewProps) => {
+  const t = useTranslations("reserve");
+
   const property = reservation?.property;
   const href = `/rooms/${property?.slug}`;
   const clearReturnHome = () => useStoreParams.setState({ getBackHome: false });
@@ -27,7 +30,7 @@ const ReservationPropertySummary = ({
       >
         <div className="flex items-start gap-2">
           <p className="text-sm text-right font-semibold">
-            {_STRINGS.RESERVE_REQUEST_FOR} {property?.title}
+            {t("reserveRequestFor")} {property?.title}
           </p>
         </div>
         <div className="w-full flex flex-col gap-2">

@@ -1,14 +1,16 @@
 "use client";
 
+import { useTranslations } from "next-intl";
 import { useState } from "react";
 import { Icon } from "@elements/Icon";
 
 import type { PropertyReportRowProps } from "@/types/components/modules/property-details";
 
 import PropertyReportModal from "./PropertyReportModal.client";
-import _STRINGS from "@/utils/LocalStrings";
 
 const PropertyReportRow = ({ propertyId }: PropertyReportRowProps) => {
+  const t = useTranslations("listing");
+
   const [show, setShow] = useState(false);
 
   return (
@@ -21,10 +23,10 @@ const PropertyReportRow = ({ propertyId }: PropertyReportRowProps) => {
         <Icon name="info" size={20} className="shrink-0 text-neutral-500" />
         <span className="flex min-w-0 flex-1 flex-col gap-0.5">
           <span className="text-sm font-bold text-neutral-900 md:text-base">
-            {_STRINGS.REPORT_WRONG}
+            {t("reportWrong")}
           </span>
           <span className="text-xs text-neutral-500 md:text-sm">
-            {_STRINGS.REPORT_WRONG_DESC}
+            {t("reportWrongDesc")}
           </span>
         </span>
         <Icon

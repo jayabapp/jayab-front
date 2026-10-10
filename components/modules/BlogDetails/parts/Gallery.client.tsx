@@ -1,13 +1,15 @@
 "use client";
 
-import { getUploadedImageUrl } from "@features/upload/mappers/upload-image.mapper";
-import type { BlogGalleryModalProps } from "@/types/components/modules/blog";
 import { BLOG_DETAIL_IMAGE_QUALITY } from "@features/blog/constants/image";
+import { getUploadedImageUrl } from "@features/upload/mappers/upload-image.mapper";
+import { Fragment, useState } from "react";
+import { BLOG_IMAGE_QUALITY } from "@features/blog/constants/image";
+import { useTranslations } from "next-intl";
+import { ContentImage } from "@/components/elements/Image";
+
+import type { BlogGalleryModalProps } from "@/types/components/modules/blog";
 import type { BlogGalleryProps } from "@/types/components/modules/blog";
 import type { TGalleryItem } from "@/types/components/modules/blog";
-import { BLOG_IMAGE_QUALITY } from "@features/blog/constants/image";
-import { ContentImage } from "@/components/elements/Image";
-import { Fragment, useState } from "react";
 
 import SwiperSlide from "@elements/Carousel/SwiperSlide";
 import Modal from "@elements/Modal";
@@ -25,8 +27,8 @@ const GalleryItem = ({ item, _onPress }: TGalleryItem) => {
     >
       <ContentImage
         fill
-        quality={BLOG_IMAGE_QUALITY}
         alt={item?.alt as string}
+        quality={BLOG_IMAGE_QUALITY}
         src={getUploadedImageUrl(item)}
         sizes="(min-width: 768px) 9vw, 28vw"
         className="w-full h-full rounded-md object-cover"
@@ -36,9 +38,9 @@ const GalleryItem = ({ item, _onPress }: TGalleryItem) => {
 };
 
 const GalleryModal = ({
-  isVisible,
-  _onHide,
   images,
+  _onHide,
+  isVisible,
 }: BlogGalleryModalProps) => {
   return (
     <Modal show={isVisible > 0} onHide={_onHide}>
@@ -58,10 +60,10 @@ const GalleryModal = ({
               className="!w-full flex  justify-center items-center  aspect-square relative "
             >
               <ContentImage
-                quality={BLOG_DETAIL_IMAGE_QUALITY}
                 width={1024}
                 height={1024}
                 alt={i?.alt as string}
+                quality={BLOG_DETAIL_IMAGE_QUALITY}
                 src={getUploadedImageUrl(i, "name")}
                 sizes="(min-width: 768px) 50vw, 75vw"
                 className="w-3/4 aspect-square rounded-md object-contain"
@@ -75,6 +77,8 @@ const GalleryModal = ({
 };
 
 const Gallery = ({ images }: BlogGalleryProps) => {
+  const t = useTranslations("content");
+
   const [isVisible, setIsVisible] = useState(0);
 
   const _onPress = (index: number) => {
@@ -87,7 +91,7 @@ const Gallery = ({ images }: BlogGalleryProps) => {
     return (
       <Fragment>
         <div className="grid grid-cols-3 gap-4">
-          <p className="col-span-3">گالری تصاویر</p>
+          <p className="col-span-3">{t("gallery")}</p>
           {images?.map((i, index) => (
             <GalleryItem
               item={i}

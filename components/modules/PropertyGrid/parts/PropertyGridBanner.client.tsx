@@ -1,14 +1,18 @@
 "use client";
 
-import type { TPropertyGrid } from "@/types/components/modules/property-discovery";
 import { useTrackBannerView } from "@features/home/hooks/useTrackBannerView";
+import { useTranslations } from "next-intl";
 import { getHomeImageUrl } from "@features/home/mappers/home-image.mapper";
 import { ContentImage } from "@elements/Image";
+
+import type { TPropertyGrid } from "@/types/components/modules/property-discovery";
 
 import Editable from "@elements/Editable";
 import Link from "next/link";
 
 const PropertyGridBanner = ({ bannerItem, devices }: TPropertyGrid) => {
+  const t = useTranslations("content");
+
   const { mutate } = useTrackBannerView();
 
   const isPhone = devices?.isMobile;
@@ -51,7 +55,7 @@ const PropertyGridBanner = ({ bannerItem, devices }: TPropertyGrid) => {
       }`}
     >
       <Link
-        title={"بنر"}
+        title={t("banner")}
         href={href}
         prefetch={false}
         onClick={() => {

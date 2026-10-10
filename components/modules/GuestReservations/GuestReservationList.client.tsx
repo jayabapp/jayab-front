@@ -1,21 +1,24 @@
 "use client";
 
 import { useCancelReservationFlow } from "@features/reservations/hooks/useCancelReservationFlow";
-import type { ReservationContactChannel } from "@/types/components/modules/reservations";
-import { useUserReservations } from "@features/reservations/hooks/useUserReservations";
 import { ReservationCardSkeleton } from "@modules/ReservationDetails";
 import { PropertyContactModal } from "@modules/PropertyContact";
+import { useUserReservations } from "@features/reservations/hooks/useUserReservations";
 import { ReservationCard } from "@modules/ReservationDetails";
+import { useTranslations } from "next-intl";
 import { useState } from "react";
+
+import type { ReservationContactChannel } from "@/types/components/modules/reservations";
 
 import ConfirmModal from "@elements/Modal/ConfirmModal.client";
 import EmptyState from "@elements/EmptyState";
-import _STRINGS from "@/utils/LocalStrings";
 import isEmpty from "lodash/isEmpty";
 
 const SKELETON_COUNT = 4;
 
 const GuestReservationList = () => {
+  const t = useTranslations();
+
   const { data: reservations, isLoading } = useUserReservations("active");
   const cancel = useCancelReservationFlow();
   const [contactChannel, setContactChannel] =
@@ -38,9 +41,9 @@ const GuestReservationList = () => {
           <div className="col-span-2">
             <EmptyState
               actionRoute="/rooms"
-              title={_STRINGS.EMPTY_RESERVES_TITLE}
-              description={_STRINGS.EMPTY_RESERVES_DESC}
-              actionLabel={_STRINGS.SEARCH_PROPERTY_CTA}
+              title={t("reserve.emptyReservesTitle")}
+              description={t("reserve.emptyReservesDesc")}
+              actionLabel={t("common.searchPropertyCta")}
             />
           </div>
         ) : (
@@ -70,7 +73,7 @@ const GuestReservationList = () => {
         onConfirm={cancel.confirm}
         isLoading={cancel.isPending}
         isVisible={!!cancel.selected}
-        text={`${_STRINGS.ARE_U_SURE_CANCEL_RESERVE} ${cancel.selected?.property?.title} ${_STRINGS.ARE_U_SURE_SHORT}`}
+        text={`${t("reserve.areUSureCancelReserve")} ${cancel.selected?.property?.title} ${t("reserve.areUSureShort")}`}
       />
     </>
   );

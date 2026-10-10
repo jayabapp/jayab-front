@@ -1,19 +1,20 @@
 "use client";
 
-import type { SelectablePhotoUpgradeImageProps } from "@/types/components/modules/photo-upgrade";
-import { usePhotoUpgradeCheckout } from "@features/photo-upgrade/hooks/usePhotoUpgradeCheckout";
-import type { OwnerPhotoUpgradeModalProps } from "@/types/components/modules/photo-upgrade";
-import { getUploadedImageUrl } from "@features/upload/mappers/upload-image.mapper";
-import { PROPERTY_IMAGE_QUALITY } from "@features/properties/constants/image";
-import { getHomeImageUrl } from "@features/home/mappers/home-image.mapper";
 import { memo, useCallback, useMemo, useState } from "react";
+import { usePhotoUpgradeCheckout } from "@features/photo-upgrade/hooks/usePhotoUpgradeCheckout";
+import { PROPERTY_IMAGE_QUALITY } from "@features/properties/constants/image";
+import { getUploadedImageUrl } from "@features/upload/mappers/upload-image.mapper";
 import { ModalBottomSheet } from "@elements/Modal";
+import { getHomeImageUrl } from "@features/home/mappers/home-image.mapper";
+import { useTranslations } from "next-intl";
+import { useFormatToman } from "@hooks/useFormatToman";
 
-import numberWithCommas from "@/helpers/numberWithCommas";
+import type { SelectablePhotoUpgradeImageProps } from "@/types/components/modules/photo-upgrade";
+import type { OwnerPhotoUpgradeModalProps } from "@/types/components/modules/photo-upgrade";
+
 import SwiperSlide from "@elements/Carousel/SwiperSlide";
 import Swiper from "@elements/Carousel/Swiper.client";
 import useCmsContent from "@/hooks/useCmsContent";
-import _STRINGS from "@/utils/LocalStrings";
 import CmsText from "@elements/CmsText";
 import Button from "@elements/Button";
 import Notify from "@elements/Toast";
@@ -23,6 +24,7 @@ import Image from "next/image";
 
 const SelectableImageItem = memo(
   ({ image, isSelected, onToggle }: SelectablePhotoUpgradeImageProps) => {
+    const t = useTranslations();
     return (
       <button
         type="button"
@@ -38,7 +40,7 @@ const SelectableImageItem = memo(
             getUploadedImageUrl(image, "medium") ||
             "/assets/icons/shared/image_placeholder.svg"
           }
-          alt={image?.alt || "تصویر اقامتگاه"}
+          alt={image?.alt || t("owner.propertyImage")}
           fill
           sizes="(max-width: 768px) 25vw, 160px"
           className="object-cover"
@@ -68,6 +70,10 @@ const OwnerPhotoUpgradeModal = ({
   selectedPlans,
   mutationOptions,
 }: OwnerPhotoUpgradeModalProps) => {
+  const formatToman = useFormatToman();
+
+  const t = useTranslations();
+
   const [selectedImageIds, setSelectedImageIds] = useState<number[]>([]);
 
   const {
@@ -102,7 +108,7 @@ const OwnerPhotoUpgradeModal = ({
   const onSubmit = () => {
     if (!property?.id) return;
     if (isEmpty(selectedImageIds)) {
-      Notify({ type: "warn", body: "لطفا حداقل یک تصویر را انتخاب کنید" });
+      Notify({ type: "warn", body: t("owner.pickOneImage") });
       return;
     }
 
@@ -138,10 +144,10 @@ const OwnerPhotoUpgradeModal = ({
           <div className="min-w-0">
             <div className="flex items-center gap-2">
               <p className="text-base text-center font-bold text-brand-600">
-                سرویس بهبود تصویر
+                {t("owner.photoUpgradeService")}
               </p>
               <div className="new-tag   rotate-[-9deg] text-xs font-bold  text-white rounded-lg  h-6 w-11 flex items-center justify-center ">
-                {_STRINGS.NEW}
+                {t("owner.new")}
               </div>
             </div>
             <p className="mt-1 line-clamp-1 text-center text-xs text-neutral-500">
@@ -155,9 +161,9 @@ const OwnerPhotoUpgradeModal = ({
           >
             <Image
               width={16}
-              alt="بستن"
               height={16}
               className="h-4 w-4"
+              alt={t("common.close")}
               src="/assets/icons/shared/close.svg"
             />
           </button>
@@ -173,7 +179,7 @@ const OwnerPhotoUpgradeModal = ({
                   getHomeImageUrl(upgradeContent?.feature_image) ||
                   "/assets/icons/shared/image_placeholder.svg"
                 }
-                alt="نمونه بهبود تصویر"
+                alt={t("owner.photoUpgradeSample")}
                 width={600}
                 height={150}
                 sizes="(max-width: 768px) 90vw, 600px"
@@ -206,7 +212,7 @@ const OwnerPhotoUpgradeModal = ({
           </div>
         ) : isEmpty(images) ? (
           <div className="rounded-10 border border-dashed border-neutral-300 p-6 text-center text-sm text-neutral-500">
-            تصویری برای این آگهی ثبت نشده است.
+            {t("owner.noImagesForListing")}
           </div>
         ) : (
           <Swiper
@@ -261,7 +267,7 @@ const OwnerPhotoUpgradeModal = ({
         )}
         {!!upgradeContent?.html ? (
           <p className="text-brand-600  w-full text-sm text-center ">
-            تصاویر بهینه شده بعد از 24 ساعت جایگزین میشوند
+            {t("owner.photoUpgradeDelay")}
           </p>
         ) : (
           <></>
@@ -269,19 +275,25 @@ const OwnerPhotoUpgradeModal = ({
 
         <div className="flex flex-col gap-2 rounded-10 border border-neutral-100 p-3 text-sm">
           <div className="flex items-center justify-between gap-2">
-            <span className="text-neutral-500">تعداد تصاویر</span>
-            <span className="font-medium">{selectedImageIds.length} عکس</span>
+            <span className="text-neutral-500">
+              {t("owner.photoCountLabel")}
+            </span>
+            <span className="font-medium">
+              {t("owner.photosCount", { count: selectedImageIds.length })}
+            </span>
           </div>
           <div className="flex items-center justify-between gap-2">
-            <span className="text-neutral-500">هزینه بهبود هر تصویر</span>
+            <span className="text-neutral-500">
+              {t("owner.upgradeCostPerPhoto")}
+            </span>
             <span className="font-medium">
-              {numberWithCommas(PHOTO_UPGRADE_PRICE)} تومان
+              {formatToman(PHOTO_UPGRADE_PRICE)}
             </span>
           </div>
           <div className="flex items-center justify-between gap-2 border-t pt-2 text-brand-600">
-            <span className="font-medium">هزینه نهایی بهبود تصویر</span>
+            <span className="font-medium">{t("owner.upgradeFinalCost")}</span>
             <span className="font-bold">
-              {numberWithCommas(totalAmount)} تومان
+              {formatToman(totalAmount)}
             </span>
           </div>
           {!isEmpty(selectedPlans) ? (
@@ -292,7 +304,7 @@ const OwnerPhotoUpgradeModal = ({
               >
                 <span className="font-medium">{e?.title}</span>
                 <span className="font-bold">
-                  {numberWithCommas(e?.price_with_discount || e?.price)} تومان
+                  {formatToman(e?.price_with_discount || e?.price)}
                 </span>
               </div>
             ))
@@ -315,7 +327,7 @@ const OwnerPhotoUpgradeModal = ({
             }
             width="w-full"
             containerClass={`${extraPrice ? "col-span-3" : "col-span-2"}  `}
-            title={`پرداخت ${totalAmount || !!extraPrice ? `${numberWithCommas(totalAmount + Number(extraPrice || 0))} ${_STRINGS.TOMAN}` : ""} `}
+            title={`${t("common.pay")} ${totalAmount || !!extraPrice ? formatToman(totalAmount + Number(extraPrice || 0)) : ""} `}
           />
           {!!extraPrice ? (
             <></>
@@ -323,7 +335,7 @@ const OwnerPhotoUpgradeModal = ({
             <Button
               color="danger"
               containerClass={` `}
-              title={_STRINGS.NOW_NOW}
+              title={t("owner.nowNow")}
               width="w-full !text-white "
               onClick={onHideClick ?? onHide}
             />

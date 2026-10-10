@@ -1,21 +1,22 @@
+import { useTranslations } from "next-intl";
+import { useState } from "react";
 
 import type { MultiSelectProps } from "@/types/components/elements/form";
-import React, { useState } from "react";
 
 import ContentImage from "@elements/Image/ContentImage";
-import _STRINGS from "@/utils/LocalStrings";
 import PopUpDown from "@elements/PopUpDown";
 import Selecti from "./MultiSelectSelecti";
 import Button from "@elements/Button";
 
 const MultyPopUpSelect = ({
   item,
-
+  title,
   value,
   onSelect,
   closeOnSelect,
-  title,
 }: MultiSelectProps) => {
+  const t = useTranslations("common");
+
   const [show, setShow] = useState(false);
 
   return (
@@ -29,7 +30,7 @@ const MultyPopUpSelect = ({
           <div className="flex items-center gap-2">
             <p>{title}</p>
             <button
-              aria-label={_STRINGS.INCREASE}
+              aria-label={t("increase")}
               onClick={() => {
                 if (!item?.disable) setShow(true);
               }}
@@ -37,27 +38,45 @@ const MultyPopUpSelect = ({
               disabled={item?.disable}
               type="button"
             >
-              <ContentImage alt="" height={24} width={24} src="/assets/icons/adds/blue_plus.svg" className="w-2.5 h-2.5 aspect-square cursor-pointer " />
+              <ContentImage
+                alt=""
+                height={24}
+                width={24}
+                src="/assets/icons/adds/blue_plus.svg"
+                className="w-2.5 h-2.5 aspect-square cursor-pointer "
+              />
             </button>
           </div>
 
-          <div className={`${value.length > 0 ? "opacity-100" : "opacity-50"} gap-2 w-full flex flex-wrap`}>
+          <div
+            className={`${value.length > 0 ? "opacity-100" : "opacity-50"} gap-2 w-full flex flex-wrap`}
+          >
             {value.length > 0
               ? value.map((val) => (
                   <div
                     key={`selectedItems${val?.id || val}`}
                     className="rounded-full gap-4 py-1 px-1 flex items-center justify-center border border-brand-600  bg-brand-600/5 text-brand-600  text-xs "
                   >
-                    <p className="text-xs pr-2">{item?.list?.find((e) => e?.id == val)?.title || val?.title || ""} </p>
+                    <p className="text-xs pr-2">
+                      {item?.list?.find((e) => e?.id == val)?.title ||
+                        val?.title ||
+                        ""}{" "}
+                    </p>
                     <button
-                      aria-label={_STRINGS.CLOSE}
+                      aria-label={t("close")}
                       onClick={() => {
                         onSelect(val);
                       }}
                       className=" cursor-pointer w-4 h-4 aspect-square rounded-full border border-brand-600 flex items-center justify-center"
                       type="button"
                     >
-                      <ContentImage alt="" height={24} width={24} src="/assets/icons/adds/blue_plus.svg" className="w-2 h-2 rotate-45 aspect-square " />
+                      <ContentImage
+                        alt=""
+                        height={24}
+                        width={24}
+                        src="/assets/icons/adds/blue_plus.svg"
+                        className="w-2 h-2 rotate-45 aspect-square "
+                      />
                     </button>
                   </div>
                 ))
@@ -70,24 +89,22 @@ const MultyPopUpSelect = ({
           {" "}
           {item?.list?.map((listItem) => (
             <Selecti
-              key={listItem?.id}
-              item={listItem}
               value={value}
-              onSelect={onSelect}
-              closeOnSelect={closeOnSelect}
+              item={listItem}
               setShow={setShow}
+              key={listItem?.id}
+              onSelect={onSelect}
               full_item={item?.full_item}
+              closeOnSelect={closeOnSelect}
             />
           ))}
         </div>
         {!item?.disable ? (
           <Button
-            onClick={() => {
-              setShow(false);
-            }}
-            title={_STRINGS.SUBMIT}
+            width="w-full"
+            title={t("submit")}
+            onClick={() => setShow(false)}
             containerClass="w-full absolute bottom-0  flex items-center justify-center px-[10%] pb-6 "
-            width="w-full "
           />
         ) : (
           <></>

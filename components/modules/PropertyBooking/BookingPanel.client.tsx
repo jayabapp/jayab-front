@@ -3,8 +3,11 @@
 import { useCallback, useState } from "react";
 import { usePrefetchStayMonths } from "@features/reservations/hooks/usePrefetchStayMonths";
 import { trackListingEvent } from "@/helpers/listingAnalytics";
+import { useListSeparator } from "@hooks/useListSeparator";
+import { useTranslations } from "next-intl";
 import { formatJalaliDay } from "@features/reservations/mappers/reservation-dates";
 import { useBookingStay } from "@features/reservations/hooks/useBookingStay";
+import { useFormatToman } from "@hooks/useFormatToman";
 import { nightsBetween } from "@features/reservations/lib/stay-range";
 
 import type { BookingPanelProps } from "@/types/components/modules/property-booking";
@@ -14,9 +17,7 @@ import StayDateFields from "./parts/StayDateFields.client";
 import GuestStepper from "./parts/GuestStepper.client";
 import PriceDetails from "./parts/PriceDetails.client";
 import PriceSummary from "./parts/PriceSummary";
-import formatToman from "@/helpers/formatToman";
 import Skeleton from "@elements/Skeleton/Skeleton";
-import _STRINGS from "@/utils/LocalStrings";
 import StepCta from "./parts/StepCta.client";
 import dynamic from "next/dynamic";
 
@@ -28,10 +29,15 @@ const StayDateSheet = dynamic(() => import("./parts/StayDateSheet.client"), {
 });
 
 const BookingPanel = ({
+  variant,
   property,
   renderActions,
-  variant,
 }: BookingPanelProps) => {
+  const formatToman = useFormatToman();
+
+  const t = useTranslations("reserve");
+  const sep = useListSeparator();
+
   const booking = useBookingStay(
     property.id,
     property.maxCapacity,
@@ -65,13 +71,13 @@ const BookingPanel = ({
     if (booking.step !== "READY")
       return (
         <div className="flex flex-col gap-1">
-          <p className="text-sm text-neutral-500">
-            {_STRINGS.STAY_STARTS_FROM}
-          </p>
+          <p className="text-sm text-neutral-500">{t("stayStartsFrom")}</p>
           <div className="flex flex-wrap items-end gap-1.5">
-            <PropertyPriceTag price={{ price: property.minimumPrice ?? undefined }} />
+            <PropertyPriceTag
+              price={{ price: property.minimumPrice ?? undefined }}
+            />
             <span className="pb-0.5 text-xs text-neutral-600">
-              / {_STRINGS.NIGHT}
+              / {t("night")}
             </span>
           </div>
         </div>
@@ -85,7 +91,7 @@ const BookingPanel = ({
     return (
       <div className="flex items-baseline gap-2 text-lg font-bold text-neutral-900">
         <span>
-          {nights} {_STRINGS.NIGHT}
+          {t("nights", { count: Number(nights) })}
           {quote ? ":" : ""}
         </span>
         {quote ? <span>{formatToman(quote.stay_total)}</span> : null}
@@ -95,9 +101,7 @@ const BookingPanel = ({
 
   const readyBody = () => {
     if (booking.hasQuoteError && !quote)
-      return (
-        <p className="text-sm text-danger-500">{_STRINGS.QUOTE_UNAVAILABLE}</p>
-      );
+      return <p className="text-sm text-danger-500">{t("quoteUnavailable")}</p>;
 
     if (!quote)
       return (
@@ -112,17 +116,17 @@ const BookingPanel = ({
       return (
         <div className="flex flex-col gap-3">
           <p className="text-sm text-danger-500">
-            {_STRINGS.STAY_DATES_RESERVED}:{" "}
+            {t("stayDatesReserved")}:{" "}
             {quote.unavailable_dates
               .map((date) => formatJalaliDay(date))
-              .join("، ")}
+              .join(sep)}
           </p>
           <button
             type="button"
             onClick={openDates}
             className="h-11 w-full cursor-pointer rounded-10 bg-brand-600 text-base font-medium text-white transition-colors hover:bg-brand-700"
           >
-            {_STRINGS.CHANGE_DATES}
+            {t("changeDates")}
           </button>
         </div>
       );

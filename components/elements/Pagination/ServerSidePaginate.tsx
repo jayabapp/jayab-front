@@ -1,14 +1,24 @@
 "use client";
 
-import type { ServerSidePaginationProps } from "@/types/components/elements/pagination";
 import { usePathname, useRouter } from "next/navigation";
 import { DOTS, usePagination } from "./usePagination";
+import { useTranslations } from "next-intl";
 
-import queryBuilder from "@/helpers/queryBuilder";
+import type { ServerSidePaginationProps } from "@/types/components/elements/pagination";
+
 import PaginationArrow from "./PaginationArrow";
-import _STRINGS from "@/utils/LocalStrings";
+import queryBuilder from "@/helpers/queryBuilder";
 
-const ServerSidePaginate = ({ totalCount, siblingCount = 1, currentPage, pageSize, q, query }: ServerSidePaginationProps) => {
+const ServerSidePaginate = ({
+  q,
+  query,
+  pageSize,
+  totalCount,
+  currentPage,
+  siblingCount = 1,
+}: ServerSidePaginationProps) => {
+  const t = useTranslations("common");
+
   const pathname = usePathname();
   const router = useRouter();
   const pageCount = Math.ceil(totalCount / pageSize);
@@ -17,23 +27,54 @@ const ServerSidePaginate = ({ totalCount, siblingCount = 1, currentPage, pageSiz
     if (page === 1) delete body.page;
     router.replace(`${pathname}?${queryBuilder(body)}`);
   };
-  const paginationRange = usePagination({ currentPage, totalCount, siblingCount, pageSize });
+  const paginationRange = usePagination({
+    currentPage,
+    totalCount,
+    siblingCount,
+    pageSize,
+  });
   if (totalCount < pageSize || !totalCount) return null;
   return (
-    <nav aria-label={_STRINGS.PAGES} className="ltr mt-16 mb-4 flex items-center justify-center">
-      <button aria-label={_STRINGS.PREVIOUS_PAGE} className="ml-2 flex h-9 w-9 items-center justify-center rounded-md border border-neutral-500 p-1 transition-all enabled:hover:translate-x-2 disabled:cursor-not-allowed disabled:opacity-50" disabled={currentPage <= 1} onClick={() => pushPage(currentPage - 1)} type="button">
+    <nav
+      aria-label={t("pages")}
+      className="ltr mt-16 mb-4 flex items-center justify-center"
+    >
+      <button
+        type="button"
+        disabled={currentPage <= 1}
+        aria-label={t("previousPage")}
+        onClick={() => pushPage(currentPage - 1)}
+        className="ml-2 flex h-9 w-9 items-center justify-center rounded-md border border-neutral-500 p-1 transition-all enabled:hover:translate-x-2 disabled:cursor-not-allowed disabled:opacity-50"
+      >
         <PaginationArrow direction="left" />
       </button>
       <div className="flex items-center rounded-full px-2">
-        {paginationRange?.map((page, index) => page === DOTS ? (
-          <span aria-hidden="true" key={`dots-${index}`}>…</span>
-        ) : (
-          <button aria-current={currentPage === page ? "page" : undefined} aria-label={`${_STRINGS.PAGES} ${page}`} className={`mx-2 flex h-9 w-9 items-center justify-center rounded-md border border-neutral-500 text-center font-medium ${currentPage === page ? "scale-[1.15] border-0 bg-brand-600 text-white" : "hover:text-brand-600"}`} key={page} onClick={() => pushPage(page)} type="button">
-            {page}
-          </button>
-        ))}
+        {paginationRange?.map((page, index) =>
+          page === DOTS ? (
+            <span aria-hidden="true" key={`dots-${index}`}>
+              …
+            </span>
+          ) : (
+            <button
+              type="button"
+              key={page}
+              onClick={() => pushPage(page)}
+              aria-label={`${t("pages")} ${page}`}
+              aria-current={currentPage === page ? "page" : undefined}
+              className={`mx-2 flex h-9 w-9 items-center justify-center rounded-md border border-neutral-500 text-center font-medium ${currentPage === page ? "scale-[1.15] border-0 bg-brand-600 text-white" : "hover:text-brand-600"}`}
+            >
+              {page}
+            </button>
+          ),
+        )}
       </div>
-      <button aria-label={_STRINGS.NEXT_PAGE} className="mr-2 flex h-9 w-9 items-center justify-center rounded-md border border-neutral-500 p-1 transition-all enabled:hover:-translate-x-2 disabled:cursor-not-allowed disabled:opacity-50" disabled={currentPage >= pageCount} onClick={() => pushPage(currentPage + 1)} type="button">
+      <button
+        type="button"
+        aria-label={t("nextPage")}
+        disabled={currentPage >= pageCount}
+        onClick={() => pushPage(currentPage + 1)}
+        className="mr-2 flex h-9 w-9 items-center justify-center rounded-md border border-neutral-500 p-1 transition-all enabled:hover:-translate-x-2 disabled:cursor-not-allowed disabled:opacity-50"
+      >
         <PaginationArrow direction="right" />
       </button>
     </nav>

@@ -1,8 +1,9 @@
 "use client";
 
-import type { PropertyModelFilterProps } from "@/types/components/modules/property-search-filters";
 import { usePathname, useRouter } from "next/navigation";
 import { Checkbox } from "@elements/Form";
+
+import type { PropertyModelFilterProps } from "@/types/components/modules/property-search-filters";
 
 import queryBuilder from "@/helpers/queryBuilder";
 import isArray from "lodash/isArray";

@@ -3,6 +3,7 @@
 import { AMENITY_PREVIEW_COUNT } from "@features/properties/constants/amenities";
 import { getPropertyImageUrl } from "@features/properties/mappers/property-image.mapper";
 import { useMemo, useState } from "react";
+import { useTranslations } from "next-intl";
 import { toAmenityItems } from "@features/properties/mappers/amenities.mapper";
 
 import type { PropertySpecsSectionProps } from "@/types/components/modules/property-details";
@@ -11,9 +12,10 @@ import AmenitiesModal from "./AmenitiesModal.client";
 import ShowAllButton from "./ShowAllButton";
 import IconListItem from "./IconListItem";
 import ClampText from "./ClampText.client";
-import _STRINGS from "@/utils/LocalStrings";
 
 const Amenities = ({ property }: PropertySpecsSectionProps) => {
+  const t = useTranslations("listing");
+
   const [showAll, setShowAll] = useState(false);
   const amenities = useMemo(() => toAmenityItems(property), [property]);
 
@@ -39,7 +41,7 @@ const Amenities = ({ property }: PropertySpecsSectionProps) => {
         <ShowAllButton
           count={amenities.length}
           onClick={() => setShowAll(true)}
-          label={_STRINGS.PROPERTY_FACILITIES}
+          label={t("propertyFacilities")}
         />
       ) : (
         <></>

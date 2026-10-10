@@ -2,23 +2,23 @@ import { CitiesSuggestTypes } from "@/enum/cities_suggest.enum";
 
 import type { CitySuggestDto } from "@/api_services/home/home.interface";
 import type { SearchSuggDto } from "@/api_services/home/home.interface";
+import type { LocationWords } from "@features/cities/lib/location-label";
 import type { SearchOption } from "@/types/features/search";
 
-import _STRINGS from "@/utils/LocalStrings";
-
-const PLACE_BADGE: Record<string, string> = {
-  [CitiesSuggestTypes.PROVINCE]: _STRINGS.PROVINCE,
-  [CitiesSuggestTypes.CITY]: _STRINGS.CITY,
-  [CitiesSuggestTypes.REGION]: _STRINGS.LOCAL,
-};
-
-const placeHint = (city: CitySuggestDto) => {
+const placeHint = (city: CitySuggestDto, words: LocationWords) => {
   if (city?.level === CitiesSuggestTypes.PROVINCE) return "";
   if (city?.level === CitiesSuggestTypes.REGION)
     return [city?.parent_title, city?.grandparent_title]
       .filter(Boolean)
-      .join("، ");
-  return city?.parent_title ? `${_STRINGS.PROVINCE} ${city.parent_title}` : "";
+      .join(words.separator);
+  return city?.parent_title ? `${words.province} ${city.parent_title}` : "";
+};
+
+const placeBadge = (level: string | undefined, words: LocationWords) => {
+  if (level === CitiesSuggestTypes.PROVINCE) return words.province;
+  if (level === CitiesSuggestTypes.CITY) return words.city;
+  if (level === CitiesSuggestTypes.REGION) return words.local;
+  return undefined;
 };
 
 const placeTarget = (city: CitySuggestDto) => {
@@ -42,14 +42,16 @@ const placeTarget = (city: CitySuggestDto) => {
 };
 
 export const buildSearchOptions = (
-  data?: SearchSuggDto | null,
+  data: SearchSuggDto | null | undefined,
+  words: LocationWords,
+  codeWord: string,
 ): SearchOption[] => [
   ...(data?.cities ?? []).map<SearchOption>((city) => ({
     id: `city-${city?.id}`,
     kind: "place",
     label: city?.title ?? "",
-    hint: placeHint(city),
-    badge: PLACE_BADGE[city?.level ?? ""],
+    hint: placeHint(city, words),
+    badge: placeBadge(city?.level, words),
     city,
     ...placeTarget(city),
   })),
@@ -58,7 +60,7 @@ export const buildSearchOptions = (
     kind: "property",
     label: property?.title ?? "",
     code: property?.code,
-    hint: property?.code ? `${_STRINGS.CODE} ${property.code}` : undefined,
+    hint: property?.code ? `${codeWord} ${property.code}` : undefined,
     href: `/rooms/${property?.slug}`,
   })),
   ...(data?.landings ?? []).map<SearchOption>((landing) => ({

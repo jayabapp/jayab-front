@@ -1,11 +1,12 @@
 import { resolveChatImage } from "@features/chat/presentation/chat.presenter";
-import type { ExpiredPropertyProps } from "@/types/components/modules/chat";
+import { useTranslations } from "next-intl";
 import { ContentImage } from "@/components/elements/Image";
 import { useRouter } from "next/navigation";
 
+import type { ExpiredPropertyProps } from "@/types/components/modules/chat";
+
 import CmsContentSkeleton from "@elements/Skeleton/CmsContentSkeleton";
 import useCmsContent from "@/hooks/useCmsContent";
-import _STRINGS from "@/utils/LocalStrings";
 import CmsText from "@elements/CmsText";
 import Button from "@elements/Button";
 import Modal from "@elements/Modal";
@@ -15,10 +16,10 @@ const ExpiredPropertyModal = ({
   singleChatData,
   setVisibleModal,
 }: ExpiredPropertyProps) => {
+  const t = useTranslations();
+
   const { push } = useRouter();
-  const onHideFunc = () => {
-    setVisibleModal(false);
-  };
+  const onHideFunc = () => setVisibleModal(false);
 
   const goExtend = () => {
     push(
@@ -54,7 +55,7 @@ const ExpiredPropertyModal = ({
             />
             <div className="flex flex-col w-full gap-2 items-center justify-center">
               <CmsText className=" font-medium">
-                {data?.small_text || _STRINGS.ROOM_EXPIRED_NOTICE}
+                {data?.small_text || t("chat.roomExpiredNotice")}
               </CmsText>
               <CmsText className="  opacity-65  text-sm text-center  ">
                 {data?.full_text}
@@ -65,13 +66,13 @@ const ExpiredPropertyModal = ({
                 width="w-full"
                 onClick={goExtend}
                 containerClass="w-full"
-                title={_STRINGS.EXTEND_SUBS}
+                title={t("common.extendSubs")}
               />
               <Button
                 width="w-full"
                 variant="outline"
                 onClick={onHideFunc}
-                title={_STRINGS.LATER}
+                title={t("chat.later")}
                 containerClass="w-full"
               />
             </div>

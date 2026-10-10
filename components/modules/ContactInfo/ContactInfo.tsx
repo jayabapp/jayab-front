@@ -1,14 +1,17 @@
-import type { ContactUsPageProps } from "@/types/components/modules/contact-us";
+import { useTranslations } from "next-intl";
 import { HTMLGenerator } from "@/helpers/html.generator";
 
-import Breadcrumbs from "@elements/Breadcrumbs/Breadcrumbs.client";
+import type { ContactUsPageProps } from "@/types/components/modules/contact-us";
+
 import ContactUsPageItem from "./parts/ContactUsPageItem";
-import ContactMap from "./parts/ContactMap.client";
+import Breadcrumbs from "@elements/Breadcrumbs/Breadcrumbs.client";
 import ContactItem from "./parts/ContactItem";
-import _STRINGS from "@/utils/LocalStrings";
+import ContactMap from "./parts/ContactMap.client";
 import Editable from "@elements/Editable";
 
 const ContactUsPageHelper = ({ data }: ContactUsPageProps) => {
+  const t = useTranslations();
+
   const socials = data?.data?.filter((e: any) => e?.fields?.key == "social");
   const others = data?.data?.filter(
     (e: any) => e?.fields?.key !== "social" && !!e?.small_text,
@@ -27,7 +30,7 @@ const ContactUsPageHelper = ({ data }: ContactUsPageProps) => {
   return (
     <div
       id="homeParent"
-      className="container    transition-all duration-500 ease-in-out "
+      className="container transition-all duration-500 ease-in-out"
     >
       <Breadcrumbs />
 
@@ -38,7 +41,7 @@ const ContactUsPageHelper = ({ data }: ContactUsPageProps) => {
       >
         <div className="flex  col-span-full w-full items-center justify-center">
           <p className=" text-brand-600 text-lg text-center font-extrabold  md:text-2xl">
-            {_STRINGS.CONTACT_US}
+            {t("header.contactUs")}
           </p>
         </div>
         {hasMap ? (
@@ -67,9 +70,9 @@ const ContactUsPageHelper = ({ data }: ContactUsPageProps) => {
           ) : (
             <></>
           )}
-          <div className="flex flex-col mt-8 gap-4 w-full   ">
-            <p className=" text-base md:text-xl font-bold">
-              {_STRINGS.CONTACT_WAYS}
+          <div className="flex flex-col mt-8 gap-4 w-full">
+            <p className="text-base md:text-xl font-bold">
+              {t("profile.contactWays")}
             </p>
             {others && others?.length > 0 ? (
               others?.map((e: any) => (
@@ -84,15 +87,15 @@ const ContactUsPageHelper = ({ data }: ContactUsPageProps) => {
               socials?.map((e: any) => (
                 <ContactItem
                   e={e}
-                  key={`${e?.id}SocialcONT`}
                   disableText={true}
+                  key={`${e?.id}SocialcONT`}
                 />
               ))
             ) : (
               <></>
             )}
           </div>
-        </div>{" "}
+        </div>
       </Editable>
     </div>
   );

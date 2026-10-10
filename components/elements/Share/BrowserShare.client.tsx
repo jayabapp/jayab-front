@@ -1,8 +1,9 @@
 "use client";
 
 import { Transition, TransitionChild } from "@headlessui/react";
-import { shareLinks } from "@/utils/constantss";
+import { useTranslations } from "next-intl";
 import { ContentImage } from "@elements/Image";
+import { shareLinks } from "@/utils/constantss";
 import { isMobile } from "react-device-detect";
 import { useState } from "react";
 
@@ -15,6 +16,8 @@ const ShareLink = ({
   itemChildClass = "",
   passedHref = "",
 }) => {
+  const t = useTranslations("common");
+
   const [visibleSocials, setvisibleSocials] = useState(false);
   const url =
     passedHref ||
@@ -22,7 +25,7 @@ const ShareLink = ({
       ? ""
       : `${window.location.href}?utm_source=true`);
   const onShare = async () => {
-    const title = "جایاب";
+    const title = t("brandName");
     const text = "";
     if (isMobile) {
       const shareDetails = { url, title, text };
@@ -44,12 +47,15 @@ const ShareLink = ({
     navigator.clipboard.writeText(url);
     Notify({
       type: "success",
-      body: "لینک مورد نظر کپی شد",
+      body: t("linkCopied"),
     });
   };
 
   return (
-    <div className={`flex ${containerClass} cursor-pointer items-center`} onClick={onShare}>
+    <div
+      className={`flex ${containerClass} cursor-pointer items-center`}
+      onClick={onShare}
+    >
       {" "}
       <div
         className={`flex items-center  rounded-md   justify-center    cursor-pointer     transition-all  ${

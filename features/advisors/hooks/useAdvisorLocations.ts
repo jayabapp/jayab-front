@@ -1,6 +1,7 @@
 "use client";
-import { useQuery } from "@tanstack/react-query";
+
 import { CityService } from "@/api_services/city/city.service";
+import { useQuery } from "@tanstack/react-query";
 
 export const useAdvisorLocations = (provinceId?: string | number | null) => {
   const provinces = useQuery({

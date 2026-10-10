@@ -1,11 +1,11 @@
 import { normalizePersianSearchText } from "@features/search/lib/normalize-persian-search-text";
 
+import type { LocationWords } from "@features/cities/lib/location-label";
 import type { CitySelectionQuery } from "@/types/features/cities";
 import type { NewCitiesListDto } from "@/api_services/city/city.interface";
 import type { CityQueryValues } from "@/types/features/cities";
 import type { ChildCities } from "@/api_services/city/city.interface";
 
-import _STRINGS from "@/utils/LocalStrings";
 import isEmpty from "lodash/isEmpty";
 
 export const parseIdList = (value?: string | number | null): string[] =>
@@ -73,13 +73,14 @@ export const hasMatchingChild = (
 export const buildCitySelectionTitle = (
   queryProvinces: NewCitiesListDto[],
   queryCities: ChildCities[],
+  words: Pick<LocationWords, "city" | "province">,
 ): string => {
   if (queryProvinces.length === 1 && isEmpty(queryCities))
-    return `${_STRINGS.PROVINCE} ${queryProvinces[0]?.title}`;
+    return `${words.province} ${queryProvinces[0]?.title}`;
   if (queryCities.length === 1 && isEmpty(queryProvinces))
     return `${queryCities[0]?.title}`;
   if (!isEmpty(queryProvinces) || !isEmpty(queryCities))
-    return `${queryCities.length + queryProvinces.length} ${_STRINGS.CITY}`;
+    return `${queryCities.length + queryProvinces.length} ${words.city}`;
   return "";
 };
 

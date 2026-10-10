@@ -3,35 +3,38 @@
 import { useOwnerPropertyOptions } from "@features/owner-property/hooks/useOwnerPropertyOptions";
 import { useOwnerPropertyStep } from "@features/owner-property/hooks/useOwnerPropertyStep";
 import { usePropertyDraftForm } from "@features/owner-property/hooks/usePropertyDraftForm";
-import { emptyTermsValues } from "@features/owner-property/mappers/property-draft.mapper";
-import type { OwnerPropertyRouteProps } from "@/types/components/modules/owner-property";
-import { toTermsValues } from "@features/owner-property/mappers/property-draft.mapper";
-import type { PropertyTermsSendDto } from "@/types/components/modules/owner-property";
-import { usePropertyRules } from "@features/owner-property/hooks/usePropertyRules";
 import { MultiLineFormInput } from "@elements/Form";
+import { usePropertyRules } from "@features/owner-property/hooks/usePropertyRules";
+import { emptyTermsValues } from "@features/owner-property/mappers/property-draft.mapper";
+import { useTranslations } from "next-intl";
+import { toTermsValues } from "@features/owner-property/mappers/property-draft.mapper";
 import { useRouter } from "next/navigation";
 import { FormInput } from "@elements/Form";
 import { Checkbox } from "@elements/Form";
 import { useState } from "react";
 
+import type { OwnerPropertyRouteProps } from "@/types/components/modules/owner-property";
+import type { PropertyTermsSendDto } from "@/types/components/modules/owner-property";
+
 import PropertyEditStepSkeleton from "@features/owner-property/steps/PropertyEditStepSkeleton";
-import PropertySuccessModal from "./parts/PropertySuccessModal.client";
 import FieldCharacterCounter from "./parts/FieldCharacterCounter";
-import PropertyStepFrame from "./parts/PropertyStepFrame.client";
+import PropertySuccessModal from "./parts/PropertySuccessModal.client";
 import PropertyTermOption from "./parts/PropertyTermOption";
-import _STRINGS from "@/utils/LocalStrings";
-import Notify from "@elements/Toast";
+import PropertyStepFrame from "./parts/PropertyStepFrame.client";
 import isArray from "lodash/isArray";
+import Notify from "@elements/Toast";
 
 const DESCRIPTION_MAX_LENGTH = 1024;
 const CANCELING_TYPES = ["STRICT", "NORMAL", "EASY"] as const;
 const FALLBACK_RULE_TITLE = {
-  EASY: _STRINGS.EASY_RULER,
-  NORMAL: _STRINGS.NORMAL_RULER,
-  STRICT: _STRINGS.STRICT_RULER,
-};
+  EASY: "owner.easyRuler",
+  NORMAL: "owner.normalRuler",
+  STRICT: "owner.strictRuler",
+} as const;
 
 const PropertyTermsStep = ({ propertyId }: OwnerPropertyRouteProps) => {
+  const t = useTranslations();
+
   const router = useRouter();
   const [showSuccess, setShowSuccess] = useState(false);
 
@@ -57,7 +60,7 @@ const PropertyTermsStep = ({ propertyId }: OwnerPropertyRouteProps) => {
 
   const onSubmit = () => {
     if (!values?.property_dscr)
-      return Notify({ body: _STRINGS.PLACE_DESC_MAND, type: "warn" });
+      return Notify({ body: t("owner.placeDescMand"), type: "warn" });
     if (!draft?.id) return;
     submit({ ...values, propertyId: draft?.id });
   };
@@ -92,7 +95,7 @@ const PropertyTermsStep = ({ propertyId }: OwnerPropertyRouteProps) => {
         ),
         isMandatory: options?.isMandatory,
         maxLength: DESCRIPTION_MAX_LENGTH,
-        placeholder: options?.placeholder ?? _STRINGS.DESCRIPTION_DOTS,
+        placeholder: options?.placeholder ?? t("owner.descriptionDots"),
         rows: options?.rows ?? 3,
         title,
       }}
@@ -107,7 +110,7 @@ const PropertyTermsStep = ({ propertyId }: OwnerPropertyRouteProps) => {
       propertyId={propertyId}
       headerClass="w-full px-4 md:px-0 pb-4 pt-8"
       submitTitle={
-        draft?.canceling_type ? _STRINGS.EDIT : _STRINGS.SUBMIT_PROPERTY
+        draft?.canceling_type ? t("common.edit") : t("owner.submitProperty")
       }
     >
       {rulesLoading ? (
@@ -116,10 +119,11 @@ const PropertyTermsStep = ({ propertyId }: OwnerPropertyRouteProps) => {
         <div className="flex flex-col gap-2 w-full">
           <p className="font-bold w-full text-start text-sm md:text-base text-brand-600">
             {propertyRules?.data?.[0]?.category?.title ||
-              _STRINGS.CANCELATIONS_TITLE}
+              t("owner.cancelationsTitle")}
           </p>
           <p className="text-xs md:text-sm">
-            {propertyRules?.data?.[0]?.category?.description || _STRINGS.LOREM}
+            {propertyRules?.data?.[0]?.category?.description ||
+              t("owner.lorem")}
           </p>
 
           <div className="flex flex-col my-2 gap-3">
@@ -131,7 +135,7 @@ const PropertyTermsStep = ({ propertyId }: OwnerPropertyRouteProps) => {
                 <PropertyTermOption
                   key={type}
                   desc={rule?.small_text || ""}
-                  title={rule?.title || FALLBACK_RULE_TITLE[type]}
+                  title={rule?.title || t(FALLBACK_RULE_TITLE[type])}
                   isChecked={values?.canceling_type == type}
                   onSelect={() => onChange(type, "canceling_type")}
                 />
@@ -143,7 +147,7 @@ const PropertyTermsStep = ({ propertyId }: OwnerPropertyRouteProps) => {
 
       <div className="flex flex-col gap-2 w-full">
         <p className="font-bold w-full text-start text-sm md:text-base text-brand-600">
-          {_STRINGS.GUEST_TYPE_STATUS}
+          {t("owner.guestTypeStatus")}
         </p>
         {propertyTypes?.["GUEST_TYPE"]?.map((option) => (
           <Checkbox
@@ -154,12 +158,12 @@ const PropertyTermsStep = ({ propertyId }: OwnerPropertyRouteProps) => {
             isChecked={!!values?.guest_type?.includes(option?.id)}
           />
         ))}
-        {descriptionField("guest_dscr", _STRINGS.MORE_DESC)}
+        {descriptionField("guest_dscr", t("owner.moreDesc"))}
       </div>
 
       <div className="flex flex-col gap-2 w-full">
         <p className="font-bold w-full text-start text-sm md:text-base text-brand-600">
-          {_STRINGS.ANIMAL_RULES}
+          {t("common.animalRules")}
         </p>
         {propertyTypes?.["PET"]?.map((option) => (
           <Checkbox
@@ -170,12 +174,12 @@ const PropertyTermsStep = ({ propertyId }: OwnerPropertyRouteProps) => {
             onSelect={() => onChange(option?.id, "pet")}
           />
         ))}
-        {descriptionField("pet_dscr", _STRINGS.MORE_DESC)}
+        {descriptionField("pet_dscr", t("owner.moreDesc"))}
       </div>
 
       <div className="flex flex-col gap-2 w-full">
         <p className="font-bold w-full text-start text-sm md:text-base text-brand-600">
-          {_STRINGS.PARTY_RULES}
+          {t("common.partyRules")}
         </p>
         {propertyTypes?.["PARTY"]?.map((option) => (
           <Checkbox
@@ -186,12 +190,12 @@ const PropertyTermsStep = ({ propertyId }: OwnerPropertyRouteProps) => {
             onSelect={() => onChange(option?.id, "party")}
           />
         ))}
-        {descriptionField("party_dscr", _STRINGS.MORE_DESC)}
+        {descriptionField("party_dscr", t("owner.moreDesc"))}
       </div>
 
       <div className="flex w-full items-center gap-4">
         <div className="flex items-center gap-2">
-          <p className="shrink-0">{_STRINGS.ENTER_HOUR} :</p>
+          <p className="shrink-0">{t("common.enterHour")} :</p>
           <FormInput
             item={{}}
             value={values?.check_in_hour || ""}
@@ -199,7 +203,7 @@ const PropertyTermsStep = ({ propertyId }: OwnerPropertyRouteProps) => {
           />
         </div>
         <div className="flex items-center gap-2">
-          <p className="shrink-0">{_STRINGS.END_HOUR} :</p>
+          <p className="shrink-0">{t("common.endHour")} :</p>
           <FormInput
             item={{}}
             value={values?.check_out_hour || ""}
@@ -208,15 +212,15 @@ const PropertyTermsStep = ({ propertyId }: OwnerPropertyRouteProps) => {
         </div>
       </div>
 
-      {descriptionField("doc_dscr", _STRINGS.REQUIRED_DOCS, {
+      {descriptionField("doc_dscr", t("common.requiredDocs"), {
         isMandatory: true,
       })}
-      {descriptionField("property_dscr", _STRINGS.PROP_DESC, {
+      {descriptionField("property_dscr", t("common.propDesc"), {
         isMandatory: true,
-        placeholder: `${_STRINGS.PROPERTY_DESCRIPTION_HINT}\n${_STRINGS.ABOUT_PROPERTY_DESCRIPTION}`,
+        placeholder: `${t("owner.propertyDescriptionHint")}\n${t("owner.aboutPropertyDescription")}`,
         rows: 6,
       })}
-      {descriptionField("other_dscr", _STRINGS.CANCEL_OTHER_DESC)}
+      {descriptionField("other_dscr", t("owner.cancelOtherDesc"))}
 
       <PropertySuccessModal
         show={showSuccess}

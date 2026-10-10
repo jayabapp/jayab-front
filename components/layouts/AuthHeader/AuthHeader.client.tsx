@@ -1,10 +1,10 @@
 "use client";
 
-import type { AuthHeaderProps } from "@/types/components/layouts/main-layout";
+import { useTranslations } from "next-intl";
 import { useRouter } from "next/navigation";
 import { colors } from "@/theme/colors";
 
-import _STRINGS from "@/utils/LocalStrings";
+import type { AuthHeaderProps } from "@/types/components/layouts/main-layout";
 
 const AuthHeader = ({
   title,
@@ -12,6 +12,8 @@ const AuthHeader = ({
   backRoute,
   disableBack,
 }: AuthHeaderProps) => {
+  const t = useTranslations("common");
+
   const router = useRouter();
 
   return (
@@ -21,7 +23,7 @@ const AuthHeader = ({
       ) : (
         <button
           type="button"
-          aria-label={_STRINGS.BACK}
+          aria-label={t("back")}
           className="flex size-10 items-center justify-center rounded-full border border-neutral-100 bg-white shadow-[4px_4px_10px_rgb(21_60_105_/_0.08),-3px_-3px_8px_rgb(255_255_255_/_0.95)] transition-transform hover:scale-105 active:scale-95"
           onClick={() => {
             if (onBack) return onBack();

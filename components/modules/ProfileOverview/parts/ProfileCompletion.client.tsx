@@ -1,24 +1,23 @@
 "use client";
 
+import { useTranslations } from "next-intl";
+
 import type { ProfileCompletionProps } from "@/types/components/modules/profile";
 
-import _STRINGS from "@/utils/LocalStrings";
 import Link from "next/link";
 
 const ProfileCompletion = ({ profile }: ProfileCompletionProps) => {
-  // Only the fields the user can actually act on from their account page count
-  // here; owner verification lives in its own flow and would leave every guest
-  // permanently "incomplete".
+  const t = useTranslations("profile");
+
   const steps = [
-    { id: "mobile", done: !!profile?.mobile_number, title: _STRINGS.PROFILE_COMPLETION_MOBILE },
-    { id: "name", done: !!profile?.full_name?.trim(), title: _STRINGS.PROFILE_COMPLETION_NAME },
-    { id: "image", done: !!profile?.profile_image, title: _STRINGS.PROFILE_COMPLETION_IMAGE },
+    { id: "mobile", done: !!profile?.mobile_number, title: t("profileCompletionMobile") },
+    { id: "name", done: !!profile?.full_name?.trim(), title: t("profileCompletionName") },
+    { id: "image", done: !!profile?.profile_image, title: t("profileCompletionImage") },
   ];
 
   const doneCount = steps.filter((step) => step.done).length;
   const percent = Math.round((doneCount / steps.length) * 100);
 
-  // A finished profile has nothing to nag about.
   if (percent === 100) return <></>;
 
   return (
@@ -26,10 +25,10 @@ const ProfileCompletion = ({ profile }: ProfileCompletionProps) => {
       <div className="flex items-center justify-between gap-3">
         <div className="flex flex-col gap-1">
           <p className="font-bold text-neutral-900">
-            {_STRINGS.PROFILE_COMPLETION_TITLE}
+            {t("profileCompletionTitle")}
           </p>
           <p className="text-xs text-neutral-600">
-            {_STRINGS.PROFILE_COMPLETION_HINT}
+            {t("profileCompletionHint")}
           </p>
         </div>
         <p className="shrink-0 text-2xl font-bold text-brand-600">{percent}%</p>
@@ -40,7 +39,7 @@ const ProfileCompletion = ({ profile }: ProfileCompletionProps) => {
         aria-valuemin={0}
         aria-valuemax={100}
         aria-valuenow={percent}
-        aria-label={_STRINGS.PROFILE_COMPLETION_TITLE}
+        aria-label={t("profileCompletionTitle")}
         className="h-2 w-full overflow-hidden rounded-full bg-white/70"
       >
         <div
@@ -70,7 +69,7 @@ const ProfileCompletion = ({ profile }: ProfileCompletionProps) => {
         href="/profile/edit"
         className="btn-glass-primary w-fit rounded-2xl px-6 py-2.5 text-sm font-medium"
       >
-        {_STRINGS.PROFILE_COMPLETION_CTA}
+        {t("profileCompletionCta")}
       </Link>
     </div>
   );

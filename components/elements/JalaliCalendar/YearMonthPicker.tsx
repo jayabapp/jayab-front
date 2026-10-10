@@ -1,7 +1,8 @@
-import type { JalaliYearMonthPickerProps } from "@/types/components/elements/jalali-calendar";
+import { useTranslations } from "next-intl";
 import { ContentImage } from "@elements/Image";
 
-import _STRINGS from "@/utils/LocalStrings";
+import type { JalaliYearMonthPickerProps } from "@/types/components/elements/jalali-calendar";
+
 import moment from "moment-jalaali";
 
 moment.loadPersian({ dialect: "persian-modern" });
@@ -13,6 +14,8 @@ const YearMonthPicker = ({
   setDate,
   disablePrevMonths,
 }: JalaliYearMonthPickerProps) => {
+  const t = useTranslations("common");
+
   const nextMonth = () => {
     setDate(
       moment(date, "jYYYY/jMM/jDD")
@@ -43,30 +46,26 @@ const YearMonthPicker = ({
           alt="`"
           width={24}
           height={24}
-          className="cursor-pointer "
+          className="cursor-pointer"
+          onClick={() => lastMonth()}
           src={"/assets/icons/property/arrow_right_callendar.svg"}
-          onClick={() => {
-            lastMonth();
-          }}
         />
-        <p className="text-xs text-neutral-400">{_STRINGS.LAST_MONTH}</p>
+        <p className="text-xs text-neutral-400">{t("lastMonth")}</p>
       </div>
       <p className="text-brand-600 text-sm font-medium ">
         {prefix}
         {month} {"  "} {year}
       </p>
       <div className="flex items-center gap-2">
-        <p className="text-xs text-neutral-400 ">{_STRINGS.NEXT_MONTH}</p>
+        <p className="text-xs text-neutral-400 ">{t("nextMonth")}</p>
         <ContentImage
           alt="`"
           width={24}
           height={24}
-          onClick={() => {
-            nextMonth();
-          }}
-          className="cursor-pointer  -rotate-180 "
+          onClick={() => nextMonth()}
+          className="cursor-pointer  -rotate-180"
           src={"/assets/icons/property/arrow_right_callendar.svg"}
-        />{" "}
+        />
       </div>
     </div>
   );

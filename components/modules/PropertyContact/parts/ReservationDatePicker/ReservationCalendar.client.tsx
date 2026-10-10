@@ -2,8 +2,9 @@
 
 /* eslint-disable react-hooks/set-state-in-effect -- Gesture navigation synchronizes the displayed Jalali month labels. */
 
-import type { ReservationCalendarProps } from "@/types/components/modules/reservation-date-picker";
 import { useEffect, useState } from "react";
+
+import type { ReservationCalendarProps } from "@/types/components/modules/reservation-date-picker";
 
 import YearMonthPicker from "./YearMonthPicker";
 import DaysOfTheWeel from "./DaysOfTheWeek";
@@ -48,9 +49,8 @@ const SingleDatePicker = ({
   }, [chosenDate]);
 
   const doTheMath = (start: number, end: number) => {
-    if (Math.abs(start - end) > 150) {
-      return true;
-    } else return false;
+    if (Math.abs(start - end) > 150) return true;
+     else return false;
   };
   const nextMonth = () => {
     setChosenDate(

@@ -1,46 +1,43 @@
-import type {
-  TrustBadge,
-  TrustBadgesProps,
-} from "@/types/components/modules/property-details";
+import { useTranslations } from "next-intl";
 import { Icon } from "@elements/Icon";
 
-import _STRINGS from "@/utils/LocalStrings";
+import type {TrustBadgesProps} from "@/types/components/modules/property-details";
+import type {TrustBadge} from "@/types/components/modules/property-details";
 
-// FEATURE.md §4.7/§13.4: replaces the old oval-pill row. A center "ممتاز"
-// (featured) slot, plus up to two side badges chosen by priority from real
-// data only — never a fabricated badge (FEATURE.md §1 explicitly forbids a
-// premium badge without real backing data).
 const TrustBadges = ({ property }: TrustBadgesProps) => {
-  // No dedicated "ممتاز" flag exists on the property-details response today
-  // (only `is_promoted` / "نردبان‌شده" does) — keep this false until the
-  // backend exposes a real featured flag, rather than reusing `is_promoted`
-  // for two different badges.
+  const t = useTranslations();
+
   const isFeatured = false;
 
   const sideBadges: Array<TrustBadge | null> = [
     property?.isAuthorized
       ? {
           icon: "shield",
-          label: _STRINGS.VERIFIED,
+          label: t("listing.verified"),
           colorClass: "text-success-600",
         }
       : null,
     property?.isPromoted
-      ? { icon: "star", label: _STRINGS.LADDERED, colorClass: "text-warning-600" }
+      ? {
+          icon: "star",
+          label: t("common.laddered"),
+          colorClass: "text-warning-600",
+        }
       : null,
     property?.isPetAllowed
-      ? { icon: "paw", label: _STRINGS.PET_ALLOWED, colorClass: "text-success-600" }
+      ? {
+          icon: "paw",
+          label: t("listing.petAllowed"),
+          colorClass: "text-success-600",
+        }
       : null,
     property?.isEventsAllowed
       ? {
           icon: "party",
-          label: _STRINGS.EVENTS_ALLOWED,
+          label: t("listing.eventsAllowed"),
           colorClass: "text-success-600",
         }
       : null,
-    // Smoking allowed: `options` has no such field yet. Kept as the
-    // documented 5th priority so wiring it later only means adding the
-    // condition here.
     null,
   ].filter((item): item is TrustBadge => Boolean(item));
 
@@ -57,7 +54,7 @@ const TrustBadges = ({ property }: TrustBadgesProps) => {
           <>
             <Icon name="sparkles" size={32} className="text-brand-600" />
             <span className="text-sm font-bold text-neutral-900">
-              {_STRINGS.PREMIUM}
+              {t("listing.premium")}
             </span>
           </>
         ) : (
@@ -72,7 +69,6 @@ const TrustBadges = ({ property }: TrustBadgesProps) => {
 
 const TrustBadgeSlot = ({ badge }: { badge?: TrustBadge | null }) => {
   if (!badge) return <div />;
-
   return (
     <div className="flex flex-col items-center gap-1 text-center">
       <Icon name={badge.icon} size={24} className={badge.colorClass} />

@@ -1,18 +1,19 @@
 import { PROPERTY_IMAGE_QUALITY } from "@features/properties/constants/image";
 import { getPropertyImageUrl } from "@features/properties/mappers/property-image.mapper";
+import { useListSeparator } from "@hooks/useListSeparator";
+import { useTranslations } from "next-intl";
 import { ContentImage } from "@elements/Image";
 
 import type { PropertyCardProps } from "@/types/components/modules/property-grid";
 
 import PropertyCardOwnerActions from "./parts/PropertyCardOwnerActions";
 import PropertyCardFeatures from "./parts/PropertyCardFeatures";
+import PublicPropertyCard from "./parts/PublicPropertyCard";
 import PropertyCardLikes from "./parts/PropertyCardLikes.client";
 import PropertyCardLink from "./parts/PropertyCardLink.client";
-import PublicPropertyCard from "./parts/PublicPropertyCard";
-import queryBuilder from "@/helpers/queryBuilder";
 import PropertyPrice from "./PropertyPrice";
+import queryBuilder from "@/helpers/queryBuilder";
 import StatusShower from "@elements/StatusShower";
-import _STRINGS from "@/utils/LocalStrings";
 
 const PropertyCard = ({
   data,
@@ -20,6 +21,9 @@ const PropertyCard = ({
   searchParams,
   onPhotoUpgradeClick,
 }: PropertyCardProps) => {
+  const t = useTranslations();
+  const sep = useListSeparator();
+
   const staySearch = isOwner
     ? ""
     : queryBuilder({
@@ -60,19 +64,19 @@ const PropertyCard = ({
           {isOwner ? (
             <>
               <div className="w-full flex flex-row items-start gap-2 justify-start">
-                <p className="text-sm shrink-0">{_STRINGS.TODAY_STATUS} :</p>
+                <p className="text-sm shrink-0">{t("common.todayStatus")} :</p>
                 <p
                   className={`text-sm font-bold ${data?.is_today_reserved ? "text-danger-500" : "text-brand-600"}`}
                 >
                   {data?.is_today_reserved
-                    ? _STRINGS.IS_RESERVED
-                    : _STRINGS.EMPTY}
+                    ? t("listing.isReserved")
+                    : t("common.emptySlot")}
                 </p>
               </div>
 
               <div className="flex items-center gap-2">
                 <div className="bg-neutral-200 font-normal rounded-full text-xs text-black px-2 h-5 leading-4 flex items-center justify-center">
-                  {_STRINGS.CODE} {data.code}
+                  {t("common.code")} {data.code}
                 </div>
                 <PropertyCardLikes
                   propertyId={data?.id}
@@ -82,7 +86,7 @@ const PropertyCard = ({
 
               <div className="w-full min-h-10 flex flex-row items-end justify-between gap-2">
                 <p className="text-xs 2xl:text-xs shrink-0">
-                  {_STRINGS.TODAYS_PRICE}
+                  {t("common.todaysPrice")}
                 </p>
                 <PropertyPrice
                   data={{
@@ -97,7 +101,7 @@ const PropertyCard = ({
                 <StatusShower data={data?.status} />
                 {data?.is_promoted ? (
                   <p className="font-bold text-brand-600 shrink-0 text-xs pr-1 border-r">
-                    {_STRINGS.LADDERED}
+                    {t("common.laddered")}
                   </p>
                 ) : null}
               </div>
@@ -107,11 +111,12 @@ const PropertyCard = ({
               <div className="flex w-full items-center gap-1">
                 {data?.is_promoted ? (
                   <p className="font-bold text-brand-600 shrink-0 text-xs pl-1 border-l">
-                    {_STRINGS.LADDERED}
+                    {t("common.laddered")}
                   </p>
                 ) : null}
                 <p className="text-xs line-clamp-1 text-neutral-500">
-                  {data?.city}،{" "}
+                  {data?.city}
+                  {sep}
                   <span className="text-xs">
                     {data?.province || data?.region
                       ? `${data?.region || data?.province}`
@@ -123,9 +128,10 @@ const PropertyCard = ({
               <div className="flex w-full items-center justify-between gap-2">
                 <p className="line-clamp-1 text-xs text-neutral-500">
                   {data?.total_bedrooms
-                    ? `${data.total_bedrooms} ${_STRINGS.ROOM}، `
+                    ? `${t("listing.roomsCount", { count: Number(data.total_bedrooms) })}${sep}`
                     : ""}
-                  {_STRINGS.UP_TO} {data?.max_capacity} {_STRINGS.PERSON}
+                  {t("listing.upTo")}{" "}
+                  {t("common.people", { count: Number(data?.max_capacity) })}
                 </p>
                 <PropertyCardLikes
                   propertyId={data?.id}
@@ -134,7 +140,7 @@ const PropertyCard = ({
               </div>
 
               <p className="mt-auto text-xs text-neutral-500">
-                {_STRINGS.TODAYS_PRICE}
+                {t("common.todaysPrice")}
               </p>
             </div>
           )}
@@ -159,7 +165,7 @@ const PropertyCard = ({
               {data?.advisor_commission || data?.advisor_commission === 0 ? (
                 <div className="w-16 gap-0.5 h-5 rounded-md transition-all py-[0.2rem] backdrop-blur-[6px] bg-neutral-900/30 text-white absolute z-1 left-2 flex-row top-2 aspect-square flex items-center justify-center">
                   <p className="text-xxs">
-                    {_STRINGS.ADVISOR_COMMISSION_SHORT}:{" "}
+                    {t("listing.advisorCommissionShort")}:{" "}
                     {data.advisor_commission}%
                   </p>
                 </div>
@@ -186,7 +192,7 @@ const PropertyCard = ({
                     src="/assets/icons/adds/green_circular_tick.svg"
                   />
                   <p className="text-[0.6875rem] font-medium text-white">
-                    {_STRINGS.VERIFIED}
+                    {t("listing.verified")}
                   </p>
                 </div>
               ) : null}
@@ -194,19 +200,9 @@ const PropertyCard = ({
           </PropertyCardLink>
 
           {isOwner ? null : (
-            // `mt-auto` anchors this to the bottom of the stretched grid
-            // row, matching the "قیمت امروز" label's own `mt-auto` in the
-            // text column (PropertyCard.tsx's public branch above) — both
-            // columns are stretched to the same row height by
-            // `items-stretch`, so anchoring both pieces to the bottom is
-            // what keeps the label and the price on the same visual row
-            // regardless of how tall the title/location content makes that
-            // row. Without it, the price sat right under the photo while
-            // the label (pushed down on the other side) ended up well below
-            // it whenever the text column was taller than the photo.
             <PropertyCardLink
+            href={goToLink}
               title={data.title}
-              href={goToLink}
               className="mt-auto flex w-full !outline-none"
             >
               <PropertyPrice
@@ -236,7 +232,7 @@ const PropertyCard = ({
               className="h-5 w-5"
               src="/assets/icons/header/upgrade_image.svg"
             />
-            {_STRINGS.IMAGE_UPGRADE}
+            {t("listing.imageUpgrade")}
           </button>
           <PropertyCardOwnerActions goToLink={goToLink} data={data} />
         </div>

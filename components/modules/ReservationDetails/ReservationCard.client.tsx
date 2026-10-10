@@ -2,12 +2,14 @@
 
 import { useReservationCountdown } from "@features/reservations/hooks/useReservationCountdown";
 import { useOwnerContactRequest } from "@features/reservations/hooks/useOwnerContactRequest";
-import { useMarkReserveSeen } from "@features/reservations/hooks/useMarkReserveSeen";
-import type { ReservationCardProps } from "@/types/components/modules/reservations";
-import { useStartOrFindChat } from "@features/chat/hooks/useStartOrFindChat";
 import { usePathname, useRouter } from "next/navigation";
-import { Divider } from "@elements/Divider";
 import { useEffect, useState } from "react";
+import { useMarkReserveSeen } from "@features/reservations/hooks/useMarkReserveSeen";
+import { useStartOrFindChat } from "@features/chat/hooks/useStartOrFindChat";
+import { useTranslations } from "next-intl";
+import { Divider } from "@elements/Divider";
+
+import type { ReservationCardProps } from "@/types/components/modules/reservations";
 
 import ReservationPropertySummary from "./parts/ReservationPropertySummary";
 import ReservationGuestContact from "./parts/ReservationGuestContact";
@@ -15,7 +17,6 @@ import ReservationCountdown from "./parts/ReservationCountdown";
 import ReservationStatusBar from "./parts/ReservationStatusBar";
 import ReservationSchedule from "./parts/ReservationSchedule";
 import CmsInfoPopup from "@elements/CmsInfoPopup";
-import _STRINGS from "@/utils/LocalStrings";
 
 const AWAITING_OWNER_STATUS_ID = 10;
 
@@ -25,6 +26,8 @@ const ReservationCard = ({
   reservation,
   onContactRequest,
 }: ReservationCardProps) => {
+  const t = useTranslations();
+
   const router = useRouter();
   const pathname = usePathname();
   const [showCounter, setShowCounter] = useState(
@@ -37,14 +40,15 @@ const ReservationCard = ({
   const { mutate: startChat, isPending: isChatPending } = useStartOrFindChat();
   const { mutate: markSeen } = useMarkReserveSeen();
 
-  const countdown = useReservationCountdown(reservation?.ttl_seconds, showCounter);
+  const countdown = useReservationCountdown(
+    reservation?.ttl_seconds,
+    showCounter,
+  );
 
   useEffect(() => {
     if (!isOwner || reservation?.owner_seen_at) return;
     if (reservation?.status?.id !== AWAITING_OWNER_STATUS_ID) return;
     markSeen({ id: reservation.id });
-    // Fires once per mount of an unseen, still-pending card; markSeen is
-    // idempotent server-side so a stray re-render can't double-count it.
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [isOwner, reservation?.id]);
 
@@ -95,15 +99,15 @@ const ReservationCard = ({
               seconds={countdown.seconds}
               hint={
                 isOwner
-                  ? _STRINGS.RESERVE_OWNER_TIMEOUT_HINT
-                  : _STRINGS.RESERVE_GUEST_TIMEOUT_HINT
+                  ? t("reserve.reserveOwnerTimeoutHint")
+                  : t("reserve.reserveGuestTimeoutHint")
               }
             />
           ) : (
             <p className="text-center text-sm">
               {isOwner
-                ? _STRINGS.RESERVE_ANSWER_TIME_UP
-                : _STRINGS.RESERVE_ANSWER_TIME_UP_GUEST}
+                ? t("reserve.reserveAnswerTimeUp")
+                : t("reserve.reserveAnswerTimeUpGuest")}
             </p>
           )}
 
@@ -124,10 +128,10 @@ const ReservationCard = ({
       {isOwner ? null : (
         <ReservationGuestContact
           isExpired={isExpired}
-          isChatEnabled={reservation?.is_chat_enabled !== false}
           onStartChat={onStartChat}
           isChatPending={isChatPending}
           onContactRequest={onContactRequest}
+          isChatEnabled={reservation?.is_chat_enabled !== false}
         />
       )}
 
@@ -136,7 +140,7 @@ const ReservationCard = ({
           <Divider moreClass=" " />
           <div className="flex flex-col gap-1">
             <p className="text-center whitespace-pre-wrap text-sm">
-              {_STRINGS.RESERVE_FINALIZE_NOTE}
+              {t("reserve.reserveFinalizeNote")}
             </p>
           </div>
         </>
@@ -148,7 +152,7 @@ const ReservationCard = ({
         onHide={() => setShowSubscriptionNotice(false)}
         action={{
           href: `/profile/owner/properties/${reservation?.property?.id}/subscription?GATE_WAY_REDIRECT_URL=${pathname}`,
-          title: _STRINGS.EXTEND_SUBS,
+          title: t("common.extendSubs"),
         }}
       />
     </div>

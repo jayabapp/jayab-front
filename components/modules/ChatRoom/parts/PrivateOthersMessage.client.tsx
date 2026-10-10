@@ -1,26 +1,27 @@
-import { resolveChatImage } from "@features/chat/presentation/chat.presenter";
-import type { ChatMessageItemProps } from "@/types/components/modules/chat";
-import { ContentImage } from "@elements/Image";
 import { useEffect, useState } from "react";
+import { resolveChatImage } from "@features/chat/presentation/chat.presenter";
+import { useTranslations } from "next-intl";
+import { ContentImage } from "@elements/Image";
 import { useRef } from "react";
+
+import type { ChatMessageItemProps } from "@/types/components/modules/chat";
 
 import ChatItemMoreOptions from "./ChatItemMoreOptions.client";
 import ChatMediaModal from "./ChatMediaModal.client";
-import _STRINGS from "@/utils/LocalStrings";
 import moment from "moment-jalaali";
 
 moment.loadPersian();
 
 const PrivateOthersMessage = ({ data }: ChatMessageItemProps) => {
+  const t = useTranslations("chat");
+
   const refer = useRef<HTMLDivElement>(null);
   const [show, setShow] = useState(false);
   const [showFullImage, setShowFullImage] = useState(false);
 
   useEffect(() => {
     const handleOutSideClick = (event: any) => {
-      if (!refer?.current?.contains(event.target)) {
-        setShow(false);
-      }
+      if (!refer?.current?.contains(event.target)) setShow(false);
     };
     window.addEventListener("mousedown", handleOutSideClick);
     return () => {
@@ -28,9 +29,7 @@ const PrivateOthersMessage = ({ data }: ChatMessageItemProps) => {
     };
   }, [refer]);
 
-  const close = () => {
-    setShow(false);
-  };
+  const close = () => setShow(false);
 
   const removeEmojis = (string: string | null) => {
     const regex =
@@ -46,22 +45,20 @@ const PrivateOthersMessage = ({ data }: ChatMessageItemProps) => {
       className={`col-span-4 w-[100%]   relative  flex justify-end `}
     >
       <div
-        onClick={() => {
-          setShow(true);
-        }}
-        className={`  ${`my-anchor-element${data?.id}`}   cursor-pointer select-none bg-white  w-[70%] md:w-[40%] h-fit bg-white-200 ${
-          data?.media ? "p-1" : "p-4  pb-2"
-        } rounded-xl rounded-bl-none    ${show ? "!bg-brand-50/30 " : ""}  ${data?.media ? "pt-3" : ""} `}
+        onClick={() => setShow(true)}
+        className={`${`my-anchor-element${data?.id}`} cursor-pointer select-none bg-white w-[70%] md:w-[40%] h-fit bg-white-200 ${
+          data?.media ? "p-1" : "p-4 pb-2"
+        } rounded-xl rounded-bl-none ${show ? "!bg-brand-50/30 " : ""}  ${data?.media ? "pt-3" : ""} `}
       >
         {data?.media ? (
           <div
             className={`flex items-center bg-white   gap-4 ${
               !!data?.text ? " mb-4" : ""
-            } rounded-[10px] `}
+            } rounded-[10px]`}
           >
             <ContentImage
               src={resolveChatImage(data?.media, "medium")}
-              alt="تصویر پیام"
+              alt={t("messageImage")}
               width={480}
               height={480}
               onClick={(e) => {
@@ -80,7 +77,7 @@ const PrivateOthersMessage = ({ data }: ChatMessageItemProps) => {
             isEmojisOnly(data?.text) ? "text-2xl " : " text-xs md:text-sm"
           }   font-medium  whitespace-pre-line ${!data?.media && !data?.text ? "opacity-60" : ""}`}
         >
-          {!data?.media && !data?.text ? _STRINGS.DELETED_MESSAGE : data?.text}
+          {!data?.media && !data?.text ? t("deletedMessage") : data?.text}
         </p>
         <div className="w-full  mt-2 flex items-center justify-end gap-1">
           <p className="text-xxs opacity-75">
@@ -90,10 +87,10 @@ const PrivateOthersMessage = ({ data }: ChatMessageItemProps) => {
       </div>
       {show && (
         <ChatItemMoreOptions
-          close={close}
           data={data}
-          refer={refer}
           show={show}
+          refer={refer}
+          close={close}
         />
       )}
       {data?.media && showFullImage ? (

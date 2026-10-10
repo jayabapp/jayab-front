@@ -1,6 +1,6 @@
-import type { RuleItemProps } from "@/types/components/modules/property-details";
-
 import { Icon } from "@elements/Icon";
+
+import type { RuleItemProps } from "@/types/components/modules/property-details";
 
 const RuleItem = ({ allowed, description, label }: RuleItemProps) => (
   <div className="flex items-start gap-2.5">

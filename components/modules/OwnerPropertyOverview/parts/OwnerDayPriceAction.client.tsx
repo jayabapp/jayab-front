@@ -4,14 +4,16 @@ import type { OwnerDaySelectionProps } from "@/types/components/modules/owner-pr
 import { useState } from "react";
 
 import OwnerDayPriceModal from "./OwnerDayPriceModal.client";
-import _STRINGS from "@/utils/LocalStrings";
 import Button from "@elements/Button";
+import { useTranslations } from "next-intl";
 
 const OwnerDayPriceAction = ({
   property,
   selectedDates,
   selectedDaysData,
 }: OwnerDaySelectionProps) => {
+  const t = useTranslations("owner");
+
   const [show, setShow] = useState(false);
 
   return (
@@ -21,7 +23,7 @@ const OwnerDayPriceAction = ({
         containerClass="w-full"
         roundedClass="rounded-full"
         onClick={() => setShow(true)}
-        title={_STRINGS.CHANGE_PRICE}
+        title={t("changePrice")}
         disabled={selectedDates.length === 0}
       />
       <OwnerDayPriceModal

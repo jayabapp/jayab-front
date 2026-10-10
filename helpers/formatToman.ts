@@ -1,7 +1,6 @@
 import numberWithCommas from "./numberWithCommas";
-import _STRINGS from "@/utils/LocalStrings";
 
-const formatToman = (value?: number | string | null) =>
-  `${numberWithCommas(value ?? 0)} ${_STRINGS.TOMAN}`;
+const formatToman = (value: number | string | null | undefined, unit: string) =>
+  `${numberWithCommas(value ?? 0)} ${unit}`;
 
 export default formatToman;

@@ -1,13 +1,14 @@
 "use client";
 
-import type { PropertyShareModalProps } from "@/types/components/modules/property-contact";
 import { useShareProperty } from "@features/properties/hooks/useShareProperty";
 import { shareButtonItems } from "@/utils/constantss";
 import { ModalHeaderPart } from "@elements/Modal";
+import { useTranslations } from "next-intl";
 import { useState } from "react";
 
+import type { PropertyShareModalProps } from "@/types/components/modules/property-contact";
+
 import ShareChannelRow from "./parts/ShareChannelRow";
-import _STRINGS from "@/utils/LocalStrings";
 import PopUpDown from "@elements/PopUpDown";
 import Button from "@elements/Button";
 import Notify from "@elements/Toast";
@@ -17,20 +18,22 @@ const PropertyShareModal = ({
   onHide,
   property,
 }: PropertyShareModalProps) => {
+  const t = useTranslations();
+
   const [selected, setSelected] = useState<string[]>([]);
   const { mutate, isPending } = useShareProperty();
 
   const onShare = async (url: string, title: string) => {
     if (!navigator.share) {
       await navigator.clipboard.writeText(url);
-      Notify({ type: "success", body: _STRINGS.SHARE_LINK_COPIED });
+      Notify({ type: "success", body: t("reserve.shareLinkCopied") });
       return;
     }
     try {
       await navigator.share({ url, title, text: "" });
     } catch {
       await navigator.clipboard.writeText(url);
-      Notify({ type: "success", body: _STRINGS.SHARE_LINK_COPIED });
+      Notify({ type: "success", body: t("reserve.shareLinkCopied") });
     }
   };
 
@@ -43,21 +46,21 @@ const PropertyShareModal = ({
 
   return (
     <PopUpDown setVisible={onHide} visible={show}>
-      <ModalHeaderPart hideArrow title={_STRINGS.SEND_INFO} onHide={onHide} />
+      <ModalHeaderPart hideArrow title={t("common.sendInfo")} onHide={onHide} />
 
       <div className="w-full p-4 flex flex-col gap-2">
         {shareButtonItems?.map((channel) => (
           <ShareChannelRow
-            data={channel}
-            key={`share-${channel?.id}`}
-            cb={() => toggleChannel(channel?.id)}
-            isChecked={selected.includes(channel?.id)}
+          key={`share-${channel?.id}`}
+          cb={() => toggleChannel(channel?.id)}
+          isChecked={selected.includes(channel?.id)}
+            data={{ ...channel, title: t(channel.titleKey) }}
           />
         ))}
       </div>
 
       <Button
-        title={_STRINGS.SEND}
+        title={t("common.send")}
         loading={isPending}
         width="w-full md:w-1/2"
         containerClass="w-full flex items-center justify-center py-4 px-8"

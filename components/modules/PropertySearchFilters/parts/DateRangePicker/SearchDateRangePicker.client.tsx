@@ -2,9 +2,10 @@
 
 /* eslint-disable react-hooks/set-state-in-effect -- Gesture navigation synchronizes the displayed Jalali month labels. */
 
-import type { SearchDateRangePickerProps } from "@/types/components/modules/search-date-range-picker";
-import { YearMonthPicker } from "@elements/JalaliCalendar";
 import { useState, useEffect } from "react";
+import { YearMonthPicker } from "@elements/JalaliCalendar";
+
+import type { SearchDateRangePickerProps } from "@/types/components/modules/search-date-range-picker";
 
 import DaysOfTheWeel from "./DaysOfTheWeek";
 import DayPicker from "./DayPicker";

@@ -10,6 +10,7 @@ import { DESKTOP_MEDIA_QUERY } from "@features/map/constants/flight";
 import { useBodyScrollLock } from "@/hooks/useBodyScrollLock";
 import { trackListingEvent } from "@/helpers/listingAnalytics";
 import { FLIGHT_END_ZOOM } from "@features/map/constants/flight";
+import { useTranslations } from "next-intl";
 import { circlePolygon } from "@features/map/lib/circle-polygon";
 import { createPortal } from "react-dom";
 import { useMapFlight } from "@features/map/hooks/useMapFlight";
@@ -21,7 +22,6 @@ import type { NeshanMapInstance } from "@/types/components/elements/map";
 import type { MapFlightLanding } from "@/types/features/map";
 
 import maplibregl from "@neshan-maps-platform/maplibre-sdk";
-import _STRINGS from "@/utils/LocalStrings";
 
 const AREA_SOURCE = "listing-approx-area";
 const AREA_FILL_LAYER = `${AREA_SOURCE}-fill`;
@@ -38,6 +38,8 @@ const ListingMapCanvas = ({
   onError,
   radiusMeters,
 }: ListingMapCanvasProps) => {
+  const t = useTranslations();
+
   const isDesktop = useIsDesktop();
   const [map, setMap] = useState<NeshanMapInstance | null>(null);
   const [landing, setLanding] = useState<MapFlightLanding | null>(null);
@@ -94,8 +96,6 @@ const ListingMapCanvas = ({
     };
   }, [map]);
 
-  // Globe is only worth drawing while the camera is high above Iran; MapLibre
-  // hands over to the flat map by itself as the flight zooms in.
   useEffect(() => {
     if (!map || !isStyleReady || !camera.animated) return;
     try {
@@ -147,7 +147,7 @@ const ListingMapCanvas = ({
         "line-opacity-transition": { duration: AREA_FADE_MS, delay: 0 },
       },
     });
-    const label = createAreaLabelElement(_STRINGS.APPROXIMATE_AREA);
+    const label = createAreaLabelElement(t("listing.approximateArea"));
     label.style.opacity = landing.animated ? "0" : "1";
     label.style.transition = `opacity ${AREA_FADE_MS}ms ease-out`;
     const labelMarker = new maplibregl.Marker({ element: label })
@@ -177,11 +177,8 @@ const ListingMapCanvas = ({
         // The map was already torn down with the section.
       }
     };
-  }, [map, landing, mode, isStyleReady, lat, lng, radiusMeters]);
+  }, [map, landing, mode, isStyleReady, lat, lng, radiusMeters, t]);
 
-  // The layout wraps the page in a z-1 stacking context, so an in-place fixed
-  // overlay would sit under the site header. Fullscreen renders into a body
-  // portal and the map element itself moves there, keeping the one WebGL context.
   useLayoutEffect(() => {
     if (!map || !isFullscreen) return;
     const host = map.getContainer();
@@ -217,18 +214,17 @@ const ListingMapCanvas = ({
   return (
     <div
       ref={containerRef}
-      // Inline on phones the map is a preview (a tap opens fullscreen), so its zoom buttons are hidden.
       className="absolute inset-0 overflow-hidden bg-neutral-100 max-md:[&_.maplibregl-ctrl-top-right]:hidden md:rounded-20 md:border md:border-neutral-200"
     >
       <NeshanMap
         onError={onError}
-        onMapReady={setMap}
         zoom={camera.zoom}
+        onMapReady={setMap}
+        className="size-full"
         center={camera.center}
         mapStyle="monochrome_light"
         cooperativeGestures={false}
-        ariaLabel={_STRINGS.MAP_ARIA_LABEL}
-        className="size-full"
+        ariaLabel={t("common.mapAriaLabel")}
       />
       {isFullscreen ? (
         <></>
@@ -237,7 +233,7 @@ const ListingMapCanvas = ({
           <button
             type="button"
             onClick={() => setIsFullscreen(true)}
-            aria-label={_STRINGS.MAP_EXPAND}
+            aria-label={t("listing.mapExpand")}
             className={`${CONTROL_CLASS} hidden md:flex`}
           >
             <Icon name="expand" size={20} />
@@ -245,7 +241,7 @@ const ListingMapCanvas = ({
           <button
             type="button"
             onClick={() => setIsFullscreen(true)}
-            aria-label={_STRINGS.MAP_EXPAND}
+            aria-label={t("listing.mapExpand")}
             className="absolute inset-0 z-[5] cursor-pointer md:hidden"
           />
         </>
@@ -260,7 +256,7 @@ const ListingMapCanvas = ({
                 ref={closeRef}
                 type="button"
                 onClick={requestClose}
-                aria-label={_STRINGS.MAP_COLLAPSE}
+                aria-label={t("listing.mapCollapse")}
                 className={`${CONTROL_CLASS} z-10`}
               >
                 <Icon name="x" size={20} />

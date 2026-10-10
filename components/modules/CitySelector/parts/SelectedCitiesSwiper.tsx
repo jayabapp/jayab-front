@@ -1,12 +1,13 @@
-import type { SelectedCitiesSwiperProps } from "@/types/components/modules/city-selector";
+import { useTranslations } from "next-intl";
 import { ContentImage } from "@elements/Image";
 import { useMemo } from "react";
 
-import SwiperSlide from "@elements/Carousel/SwiperSlide";
-import Swiper from "@elements/Carousel/Swiper.client";
-import _STRINGS from "@/utils/LocalStrings";
+import type { SelectedCitiesSwiperProps } from "@/types/components/modules/city-selector";
+
 import LocationChip from "./LocationChip";
+import SwiperSlide from "@elements/Carousel/SwiperSlide";
 import isEmpty from "lodash/isEmpty";
+import Swiper from "@elements/Carousel/Swiper.client";
 
 const SelectedCitiesSwiper = ({
   provinces,
@@ -15,6 +16,8 @@ const SelectedCitiesSwiper = ({
   selectedCities,
   onProvCancelClick,
 }: SelectedCitiesSwiperProps) => {
+  const t = useTranslations();
+
   const touchedProvinces = useMemo(
     () =>
       (provinces ?? [])
@@ -40,10 +43,10 @@ const SelectedCitiesSwiper = ({
         } flex flex-row items-center justify-between transition-all`}
       >
         <p>
-          {`${_STRINGS.SELECTED_CITIES} ${
+          {`${t("search.selectedCities")} ${
             isEmpty(selectedCities)
               ? ""
-              : `(${selectedCities?.length} ${_STRINGS.CITY})`
+              : `(${selectedCities?.length} ${t("common.city")})`
           }`}
         </p>
         <button
@@ -59,7 +62,7 @@ const SelectedCitiesSwiper = ({
             src="/assets/icons/uploader/TrashIcon.svg"
           />
           <span className="text-sm text-neutral-400">
-            {_STRINGS.REMOVE_ALL}
+            {t("search.removeAll")}
           </span>
         </button>
       </div>
@@ -74,7 +77,7 @@ const SelectedCitiesSwiper = ({
               <SwiperSlide key={`selected-province-${province?.id}`}>
                 <LocationChip
                   title={province?.title}
-                  prefix={_STRINGS.PROVINCE}
+                  prefix={t("common.province")}
                   onRemove={() => onProvCancelClick(province)}
                 />
               </SwiperSlide>,

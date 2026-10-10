@@ -1,12 +1,14 @@
 "use client";
 
-import type { SearchFormProps } from "@/types/components/elements/form-legacy";
-import { p2e } from "@/helpers/NumberConverter";
+import { useTranslations } from "next-intl";
 import { ContentImage } from "@elements/Image";
 import { useRef, memo } from "react";
+import { p2e } from "@/helpers/NumberConverter";
+
+import type { SearchFormProps } from "@/types/components/elements/form-legacy";
 
 import Num2persian from "@/helpers/Num2Persian";
-import _STRINGS from "@/utils/LocalStrings";
+
 const FormInput = ({
   item,
   value,
@@ -14,6 +16,8 @@ const FormInput = ({
   onChangeText,
   errorKey = "",
 }: SearchFormProps) => {
+  const t = useTranslations("common");
+
   const inputRef = useRef<HTMLInputElement>(null);
 
   return (
@@ -116,7 +120,7 @@ const FormInput = ({
 
       {!!item?.convertToText && !!value && (
         <div id={`${item?.id}`} className="text-sm text-primary mt-1">
-          {Num2persian(value)} {_STRINGS?.TOMAN}
+          {Num2persian(value)} {t("toman")}
         </div>
       )}
     </div>

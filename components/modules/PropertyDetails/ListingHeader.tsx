@@ -1,3 +1,5 @@
+import { useListSeparator } from "@hooks/useListSeparator";
+import { useTranslations } from "next-intl";
 import { ContentImage } from "@elements/Image";
 import { Icon } from "@elements/Icon";
 
@@ -6,12 +8,14 @@ import type { ListingHeaderProps } from "@/types/components/modules/property-det
 import SingleProductBreadCrumb from "@elements/Breadcrumbs/SingleProductBreadcrumb.client";
 import ListingActions from "./parts/ListingActions.client";
 import TrustBadges from "./parts/TrustBadges";
-import _STRINGS from "@/utils/LocalStrings";
 
 const ListingHeader = ({ breadcrumbs, property }: ListingHeaderProps) => {
+  const t = useTranslations("listing");
+  const sep = useListSeparator();
+
   const place = [property?.city, property?.region || property?.province]
     .filter(Boolean)
-    .join("، ");
+    .join(sep);
 
   return (
     <header className="enter-from-right order-3 flex flex-col gap-3 pb-4 pt-2 md:order-2 md:pb-6">
@@ -26,7 +30,7 @@ const ListingHeader = ({ breadcrumbs, property }: ListingHeaderProps) => {
               <ContentImage
                 width={20}
                 height={20}
-                alt={_STRINGS.VERIFIED}
+                alt={t("verified")}
                 className="mt-1 size-5 shrink-0"
                 src="/assets/icons/adds/verified_badge.svg"
               />

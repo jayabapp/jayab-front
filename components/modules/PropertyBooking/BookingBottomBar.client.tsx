@@ -3,16 +3,16 @@
 import { useCallback, useState } from "react";
 import { trackListingEvent } from "@/helpers/listingAnalytics";
 import { formatJalaliDay } from "@features/reservations/mappers/reservation-dates";
+import { useTranslations } from "next-intl";
 import { useBookingStay } from "@features/reservations/hooks/useBookingStay";
+import { useFormatToman } from "@hooks/useFormatToman";
 import { nightsBetween } from "@features/reservations/lib/stay-range";
 import { Icon } from "@elements/Icon";
 
 import type { BookingBottomBarProps } from "@/types/components/modules/property-booking";
 
 import PropertyPriceTag from "@modules/PropertyDetails/PropertyPriceTag";
-import formatToman from "@/helpers/formatToman";
 import Skeleton from "@elements/Skeleton/Skeleton";
-import _STRINGS from "@/utils/LocalStrings";
 import dynamic from "next/dynamic";
 
 const StayDateSheet = dynamic(() => import("./parts/StayDateSheet.client"), {
@@ -32,6 +32,10 @@ const BookingBottomBar = ({
   property,
   renderActions,
 }: BookingBottomBarProps) => {
+  const formatToman = useFormatToman();
+
+  const t = useTranslations();
+
   const booking = useBookingStay(
     property.id,
     property.maxCapacity,
@@ -58,7 +62,7 @@ const BookingBottomBar = ({
 
   const nights = stay ? nightsBetween(stay.start, stay.end) : 0;
   const rangeText = stay
-    ? `${formatJalaliDay(stay.start)} ${_STRINGS.TO} ${formatJalaliDay(stay.end)}`
+    ? `${formatJalaliDay(stay.start)} ${t("common.to")} ${formatJalaliDay(stay.end)}`
     : "";
 
   const content = () => {
@@ -67,12 +71,14 @@ const BookingBottomBar = ({
         <div className="flex items-center justify-between gap-3">
           <div className="flex min-w-0 flex-col">
             <span className="text-xs text-neutral-500">
-              {_STRINGS.STAY_STARTS_FROM}
+              {t("reserve.stayStartsFrom")}
             </span>
             <div className="flex items-end gap-1">
-              <PropertyPriceTag price={{ price: property.minimumPrice ?? undefined }} />
+              <PropertyPriceTag
+                price={{ price: property.minimumPrice ?? undefined }}
+              />
               <span className="pb-0.5 text-xs text-neutral-600">
-                / {_STRINGS.NIGHT}
+                / {t("reserve.night")}
               </span>
             </div>
           </div>
@@ -81,7 +87,7 @@ const BookingBottomBar = ({
             className={PRIMARY_CLASS}
             onClick={() => setDatesOpen(true)}
           >
-            {_STRINGS.PICK_DATES_CTA}
+            {t("reserve.pickDatesCta")}
           </button>
         </div>
       );
@@ -91,14 +97,14 @@ const BookingBottomBar = ({
         <div className="flex items-center justify-between gap-3">
           <div className="flex min-w-0 flex-col">
             <span className="text-sm font-semibold text-neutral-900">
-              {nights} {_STRINGS.NIGHT}: {rangeText}
+              {t("reserve.nights", { count: Number(nights) })}: {rangeText}
             </span>
             <button
               type="button"
               onClick={() => setDatesOpen(true)}
               className="w-fit cursor-pointer text-xs text-brand-700"
             >
-              {_STRINGS.CHANGE_DATES}
+              {t("reserve.changeDates")}
             </button>
           </div>
           <button
@@ -106,7 +112,7 @@ const BookingBottomBar = ({
             className={PRIMARY_CLASS}
             onClick={() => setGuestsOpen(true)}
           >
-            {_STRINGS.GUEST_COUNT}
+            {t("reserve.guestCount")}
           </button>
         </div>
       );
@@ -116,7 +122,7 @@ const BookingBottomBar = ({
         <div className="flex items-center justify-between gap-3">
           <div className="flex min-w-0 flex-col">
             <span className="text-xs text-neutral-500">
-              {_STRINGS.APPROX_STAY_COST}
+              {t("reserve.approxStayCost")}
             </span>
             {quote ? (
               <span
@@ -134,7 +140,7 @@ const BookingBottomBar = ({
             onClick={() => setEditOpen(true)}
             className="flex cursor-pointer items-center gap-1.5 rounded-full border border-neutral-200 px-3 py-1.5 text-sm text-neutral-700"
           >
-            {_STRINGS.EDIT_RESERVATION_DETAILS}
+            {t("reserve.editReservationDetails")}
             <Icon name="chevron-down" size={16} />
           </button>
         </div>
@@ -142,14 +148,14 @@ const BookingBottomBar = ({
         {quote && !quote.is_available ? (
           <div className="flex flex-col gap-2">
             <p className="text-xs text-danger-500">
-              {_STRINGS.STAY_DATES_RESERVED}
+              {t("reserve.stayDatesReserved")}
             </p>
             <button
               type="button"
               className={`${PRIMARY_CLASS} w-full`}
               onClick={() => setDatesOpen(true)}
             >
-              {_STRINGS.CHANGE_DATES}
+              {t("reserve.changeDates")}
             </button>
           </div>
         ) : quote && stay && guests ? (
@@ -191,7 +197,9 @@ const BookingBottomBar = ({
         onConfirm={() => setGuestsOpen(false)}
         extraGuestFee={property.extraGuestFee}
         summary={
-          stay ? `${nights} ${_STRINGS.NIGHT}: ${rangeText}` : undefined
+          stay
+            ? `${t("reserve.nights", { count: Number(nights) })}: ${rangeText}`
+            : undefined
         }
       />
       <BookingEditSheet

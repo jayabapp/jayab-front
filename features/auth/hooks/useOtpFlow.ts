@@ -10,8 +10,8 @@ import { AuthService } from "@/api_services/auth/auth.service";
 import { useSendOtp } from "./useSendOtp";
 import { p2e } from "@/helpers/NumberConverter";
 
-import _STRINGS from "@/utils/LocalStrings";
 import Notify from "@elements/Toast";
+import { useTranslations } from "next-intl";
 
 type OtpFlowOptions = {
   /**
@@ -28,6 +28,8 @@ export const useOtpFlow = ({
   challenge: providedChallenge = null,
   onEditNumber,
 }: OtpFlowOptions = {}) => {
+  const t = useTranslations();
+
   const [otp, setOtp] = useState("");
   const [resetKey, setResetKey] = useState(0);
   const autoSubmittedCodeRef = useRef<string | null>(null);
@@ -52,8 +54,8 @@ export const useOtpFlow = ({
     if (!/^\d{4}$/.test(numericCode)) {
       Notify({
         type: "warn",
-        title: _STRINGS.ATTENTION,
-        body: _STRINGS.SHORT_CODE,
+        title: t("common.attention"),
+        body: t("auth.shortCode"),
       });
       return;
     }
@@ -88,7 +90,12 @@ export const useOtpFlow = ({
     if (providedChallenge) return;
     if (!challengeQuery.isPending && !challengeQuery.data)
       router.replace("/auth");
-  }, [providedChallenge, challengeQuery.data, challengeQuery.isPending, router]);
+  }, [
+    providedChallenge,
+    challengeQuery.data,
+    challengeQuery.isPending,
+    router,
+  ]);
 
   useEffect(() => {
     if (!codeExpiry) return;
@@ -130,7 +137,7 @@ export const useOtpFlow = ({
         if (challenge?.sandbox_otp_code) {
           Notify({
             type: "info",
-            body: `${_STRINGS.SANDBOX_OTP}: ${challenge.sandbox_otp_code}`,
+            body: `${t("auth.sandboxOtp")}: ${challenge.sandbox_otp_code}`,
           });
         }
         setOtp("");

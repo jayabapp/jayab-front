@@ -1,10 +1,14 @@
-import type { LandingRelatedTagsProps } from "@/types/components/modules/property-discovery";
+import { useTranslations } from "next-intl";
 import { ContentImage } from "@elements/Image";
 
-import _STRINGS from "@/utils/LocalStrings";
+import type { LandingRelatedTagsProps } from "@/types/components/modules/property-discovery";
+
 import Link from "next/link";
 
-const LandingRelatedTags = ({ data }: LandingRelatedTagsProps) => (
+const LandingRelatedTags = ({ data }: LandingRelatedTagsProps) => {
+  const t = useTranslations("listing");
+
+  return (
   <div className="w-full flex flex-col gap-2">
     <div className="flex items-center gap-1">
       <ContentImage
@@ -14,7 +18,7 @@ const LandingRelatedTags = ({ data }: LandingRelatedTagsProps) => (
         className="w-4 h-4 aspect-square"
         src="/assets/icons/property/blue_link.svg"
       />
-      <p className="text-sm font-medium">{_STRINGS.RELATED_RESULTS}</p>
+      <p className="text-sm font-medium">{t("relatedResults")}</p>
     </div>
     <div className="flex flex-wrap gap-2 w-full">
       {data?.map((landing) => (
@@ -40,5 +44,6 @@ const LandingRelatedTags = ({ data }: LandingRelatedTagsProps) => (
     </div>
   </div>
 );
+};
 
 export default LandingRelatedTags;

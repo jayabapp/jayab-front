@@ -8,6 +8,9 @@ import { getPropertyImageUrl } from "@features/properties/mappers/property-image
 import { buildReservePayload } from "@features/reservations/lib/contact-prefill";
 import { trackListingEvent } from "@/helpers/listingAnalytics";
 import { useRef, useState } from "react";
+import { useListSeparator } from "@hooks/useListSeparator";
+import { useTranslations } from "next-intl";
+import { useFormatToman } from "@hooks/useFormatToman";
 import { nightsBetween } from "@features/reservations/lib/stay-range";
 import { ContentImage } from "@elements/Image";
 import { Icon } from "@elements/Icon";
@@ -17,9 +20,7 @@ import type { ReserveFailure } from "@/types/components/modules/property-contact
 
 import ReserveSuccess from "./ReserveSuccess.client";
 import CmsInfoPopup from "@elements/CmsInfoPopup";
-import formatToman from "@/helpers/formatToman";
 import BtnLoading from "@elements/Button/BtnLoading";
-import _STRINGS from "@/utils/LocalStrings";
 import Link from "next/link";
 
 const MAX_RESERVE_ERROR = "RESERVE6";
@@ -34,6 +35,11 @@ const ReserveConfirmSheet = ({
   onHide,
   property,
 }: ReserveConfirmSheetProps) => {
+  const formatToman = useFormatToman();
+
+  const t = useTranslations();
+  const sep = useListSeparator();
+
   const { isPending, mutate } = useCreateReservation();
   const [created, setCreated] = useState<boolean | null>(null);
   const [failure, setFailure] = useState<ReserveFailure | null>(null);
@@ -44,7 +50,7 @@ const ReserveConfirmSheet = ({
   const nights = stay.nights ?? nightsBetween(stay.startDate, stay.endDate);
   const place = [property.city, property.region || property.province]
     .filter(Boolean)
-    .join("، ");
+    .join(sep);
 
   const onSubmit = () => {
     if (submitting.current) return;
@@ -61,10 +67,10 @@ const ReserveConfirmSheet = ({
           return;
         }
         const message =
-          error?.messages?.fa || error?.message || _STRINGS.RESERVE_FAILED;
+          error?.messages?.fa || error?.message || t("reserve.reserveFailed");
         setFailure({
           code: error?.message_code,
-          message: Array.isArray(message) ? message.join("، ") : message,
+          message: Array.isArray(message) ? message.join(sep) : message,
         });
       },
       onSuccess: (result) => {
@@ -77,7 +83,7 @@ const ReserveConfirmSheet = ({
           return;
         }
         submitting.current = false;
-        setFailure({ message: _STRINGS.RESERVE_FAILED });
+        setFailure({ message: t("reserve.reserveFailed") });
       },
     });
   };
@@ -99,7 +105,7 @@ const ReserveConfirmSheet = ({
           onClick={onChangeDates}
           className="h-11 w-full cursor-pointer rounded-10 bg-brand-600 text-base font-medium text-white transition-colors hover:bg-brand-700"
         >
-          {_STRINGS.CHANGE_DATES}
+          {t("reserve.changeDates")}
         </button>
       );
     if (failure?.code === OWN_PROPERTY_ERROR)
@@ -108,7 +114,7 @@ const ReserveConfirmSheet = ({
           href={`/profile/owner/properties/${property.id}/edit`}
           className="flex h-11 w-full items-center justify-center rounded-10 bg-brand-600 text-base font-medium text-white transition-colors hover:bg-brand-700"
         >
-          {_STRINGS.MANAGE_LISTING}
+          {t("reserve.manageListing")}
         </Link>
       );
     return null;
@@ -121,7 +127,7 @@ const ReserveConfirmSheet = ({
           showX
           hideArrow
           onHide={onHide}
-          title={_STRINGS.RESERVE_SHEET_TITLE}
+          title={t("reserve.reserveSheetTitle")}
         />
 
         {created !== null ? (
@@ -163,9 +169,10 @@ const ReserveConfirmSheet = ({
               <div className="flex items-center gap-2">
                 <Icon name="calendar" size={20} className="text-brand-600" />
                 <span className="flex-1">
-                  {formatJalaliWeekdayDay(stay.startDate)} {_STRINGS.TO}{" "}
-                  {formatJalaliWeekdayDay(stay.endDate)}، {nights}{" "}
-                  {_STRINGS.NIGHT}
+                  {formatJalaliWeekdayDay(stay.startDate)} {t("common.to")}{" "}
+                  {formatJalaliWeekdayDay(stay.endDate)}
+                  {sep}
+                  {t("reserve.nights", { count: Number(nights) })}
                 </span>
                 {stay.onEdit ? (
                   <button
@@ -173,20 +180,20 @@ const ReserveConfirmSheet = ({
                     onClick={onChangeDates}
                     className="cursor-pointer text-xs text-brand-700"
                   >
-                    {_STRINGS.EDIT}
+                    {t("common.edit")}
                   </button>
                 ) : null}
               </div>
               <div className="flex items-center gap-2">
                 <Icon name="users" size={20} className="text-brand-600" />
                 <span>
-                  {stay.guests} {_STRINGS.PERSON}
+                  {t("common.people", { count: Number(stay.guests) })}
                 </span>
               </div>
               {stay.total ? (
                 <div className="flex items-center justify-between border-t border-neutral-200 pt-2">
                   <span className="text-neutral-600">
-                    {_STRINGS.APPROX_STAY_COST}
+                    {t("reserve.approxStayCost")}
                   </span>
                   <span className="font-bold">{formatToman(stay.total)}</span>
                 </div>
@@ -195,8 +202,8 @@ const ReserveConfirmSheet = ({
 
             <p className="text-sm text-neutral-600">
               {isExpired
-                ? _STRINGS.EXPIRED_REQUEST_NOTE
-                : _STRINGS.RESERVE_SHARES_NUMBER}
+                ? t("reserve.expiredRequestNote")
+                : t("reserve.reserveSharesNumber")}
             </p>
 
             {failure ? (
@@ -218,7 +225,7 @@ const ReserveConfirmSheet = ({
                   aria-busy={isPending}
                   className="h-12 w-full cursor-pointer rounded-10 bg-brand-600 text-base font-medium text-white transition-colors hover:bg-brand-700 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-500 focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-60"
                 >
-                  {isPending ? <BtnLoading /> : _STRINGS.SUBMIT_RESERVE}
+                  {isPending ? <BtnLoading /> : t("reserve.submitReserve")}
                 </button>
               )}
               <button
@@ -226,12 +233,12 @@ const ReserveConfirmSheet = ({
                 onClick={onHide}
                 className="w-fit cursor-pointer self-center text-sm text-neutral-500 transition-colors hover:text-neutral-900"
               >
-                {_STRINGS.CANCEL_ACTION}
+                {t("reserve.cancelAction")}
               </button>
             </div>
 
             <p className="text-center text-xs text-neutral-500">
-              {_STRINGS.RESERVE_FINALIZE_HINT}
+              {t("reserve.reserveFinalizeHint")}
             </p>
           </div>
         )}
@@ -242,7 +249,7 @@ const ReserveConfirmSheet = ({
         contentKey="max-reserve-content"
         onHide={() => setShowMax(false)}
         action={{
-          title: _STRINGS.MY_REQUESTS,
+          title: t("reserve.myRequests"),
           href: "/profile/reserves",
         }}
       />

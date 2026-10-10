@@ -1,5 +1,10 @@
 import { ChatListTemplate } from "@templates/ChatList";
+import IntlNamespaces from "@/i18n/IntlNamespaces";
 
-const ChatListPage = () => <ChatListTemplate profile />;
+const ChatListPage = () => (
+  <IntlNamespaces namespaces={["chat"]}>
+    <ChatListTemplate profile />
+  </IntlNamespaces>
+);
 
 export default ChatListPage;

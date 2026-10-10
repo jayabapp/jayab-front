@@ -1,9 +1,10 @@
 "use client";
 
 import { useUpdateProfileImage } from "@features/user/hooks/useUpdateProfileImage";
+import { useTranslations } from "next-intl";
+
 import type { ProfileIdentityProps } from "@/types/components/modules/profile";
 
-import _STRINGS from "@/utils/LocalStrings";
 import dynamic from "next/dynamic";
 
 const UploadField = dynamic(() =>
@@ -18,6 +19,8 @@ const AVATAR_CLASSES = {
 };
 
 const ProfileIdentity = ({ profile }: ProfileIdentityProps) => {
+  const t = useTranslations("common");
+
   const { mutate } = useUpdateProfileImage();
 
   return (
@@ -25,8 +28,8 @@ const ProfileIdentity = ({ profile }: ProfileIdentityProps) => {
       <UploadField
         withCrop
         showCamera
+        title={t("image")}
         key="profile-avatar"
-        title={_STRINGS.IMAGE}
         innerClasses={AVATAR_CLASSES}
         item={profile?.profile_image}
         link="/attachments?type=PROFILE"

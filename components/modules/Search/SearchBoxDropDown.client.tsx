@@ -1,23 +1,25 @@
 "use client";
 
-import type { SearchBoxDropDownProps } from "@/types/components/modules/search";
+import { Fragment, useState } from "react";
+import { useTranslations } from "next-intl";
 import { useSearchPanel } from "@features/search/hooks/useSearchPanel";
 import { ContentImage } from "@elements/Image";
 import { Transition } from "@headlessui/react";
 import { BtnLoading } from "@elements/Button";
-import { Fragment, useState } from "react";
+
+import type { SearchBoxDropDownProps } from "@/types/components/modules/search";
 
 import SearchPanelBody from "./parts/SearchPanelBody.client";
-import _STRINGS from "@/utils/LocalStrings";
 
-/** Desktop variant: the input stays inline and the results hang below it. */
 const SearchBoxDropDown = ({
-  boxId = "SEARCH_BOX",
-  containerClass = "w-[90%] mx-auto",
-  initValue,
   item,
+  initValue,
+  boxId = "SEARCH_BOX",
   placeholder = "search...",
+  containerClass = "w-[90%] mx-auto",
 }: SearchBoxDropDownProps) => {
+  const t = useTranslations("search");
+
   const [showResults, setShowResults] = useState(false);
   const {
     activeIndex,
@@ -45,8 +47,6 @@ const SearchBoxDropDown = ({
       <div
         className="relative w-full inline-block text-left"
         onBlur={(event) => {
-          // Only close once focus actually leaves the dropdown, otherwise moving
-          // from the input to a result would dismiss the list before the click.
           if (!event.currentTarget.contains(event.relatedTarget)) setShowResults(false);
         }}
       >
@@ -64,10 +64,10 @@ const SearchBoxDropDown = ({
               value={term}
               role="combobox"
               autoComplete="off"
+              onKeyDown={onKeyDown}
               aria-controls={listId}
               aria-autocomplete="list"
               placeholder={placeholder}
-              onKeyDown={onKeyDown}
               aria-expanded={showResults && options.length > 0}
               onChange={(event) => setTerm(event.target.value)}
               className={`bg-transparent py-1 pl-0.5 pr-3 outline-none w-full ${item?.bg ?? ""}`}
@@ -80,7 +80,7 @@ const SearchBoxDropDown = ({
             <button
               type="submit"
               disabled={isPending}
-              aria-label={_STRINGS.SEARCH}
+              aria-label={t("search")}
               className={`${term ? "" : "opacity-0 pointer-events-none"} transition-all cursor-pointer h-10 w-10 top-0 bottom-0 my-0 flex items-center justify-center left-1 aspect-square rounded-full bg-brand-600`}
             >
               {isPending ? (
@@ -112,8 +112,8 @@ const SearchBoxDropDown = ({
             <div className="flex gap-2 w-full items-center flex-col px-2 py-2">
               <SearchPanelBody
                 term={term}
-                listId={listId}
                 onPick={pick}
+                listId={listId}
                 onClose={close}
                 options={options}
                 listRef={listRef}

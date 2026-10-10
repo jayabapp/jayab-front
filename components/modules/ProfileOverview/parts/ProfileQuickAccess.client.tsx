@@ -1,12 +1,15 @@
 "use client";
 
-import type { ProfileQuickAccessProps } from "@/types/components/modules/profile";
+import { useTranslations } from "next-intl";
 import { ContentImage } from "@elements/Image";
 
-import _STRINGS from "@/utils/LocalStrings";
+import type { ProfileQuickAccessProps } from "@/types/components/modules/profile";
+
 import Link from "next/link";
 
 const ProfileQuickAccess = ({ entries, limit = 6 }: ProfileQuickAccessProps) => {
+  const t = useTranslations("profile");
+
   const shortcuts = entries.slice(0, limit);
 
   if (!shortcuts.length) return <></>;
@@ -14,7 +17,7 @@ const ProfileQuickAccess = ({ entries, limit = 6 }: ProfileQuickAccessProps) => 
   return (
     <div className="flex w-full flex-col gap-3">
       <p className="text-sm font-medium text-neutral-600">
-        {_STRINGS.PROFILE_QUICK_ACCESS}
+        {t("profileQuickAccess")}
       </p>
 
       <div className="grid grid-cols-2 gap-3 xl:grid-cols-3">

@@ -1,7 +1,8 @@
-import type { ReservationMonthPickerProps } from "@/types/components/modules/reservation-date-picker";
+import { useTranslations } from "next-intl";
 import { ContentImage } from "@elements/Image";
 
-import _STRINGS from "@/utils/LocalStrings";
+import type { ReservationMonthPickerProps } from "@/types/components/modules/reservation-date-picker";
+
 import moment from "moment-jalaali";
 
 moment.loadPersian({ dialect: "persian-modern" });
@@ -13,6 +14,8 @@ const YearMonthPicker = ({
   prefix,
   setDate,
 }: ReservationMonthPickerProps) => {
+  const t = useTranslations("common");
+
   const nextMonth = () => {
     setDate?.(
       moment(date, "jYYYY/jMM/jDD").add(1, "month").format("jYYYY/jMM/jDD"),
@@ -36,36 +39,32 @@ const YearMonthPicker = ({
             alt="`"
             width={24}
             height={24}
-            className="cursor-pointer "
+            className="cursor-pointer"
+            onClick={() => lastMonth()}
             src={"/assets/icons/property/arrow_right_callendar.svg"}
-            onClick={() => {
-              lastMonth();
-            }}
           />
-          <p className="text-xs text-neutral-50">{_STRINGS.LAST_MONTH}</p>
+          <p className="text-xs text-neutral-50">{t("lastMonth")}</p>
         </div>
       ) : (
         <div> </div>
       )}
       <p
-        className={` ${setDate ? "text-brand-50 font-medium  " : "  font-bold mb-4 text-neutral-900"} text-sm f`}
+        className={` ${setDate ? "text-brand-50 font-medium" : "font-bold mb-4 text-neutral-900"} text-sm f`}
       >
         {prefix}
         {month} {"  "} {year}
       </p>
       {!!setDate ? (
         <div className="flex items-center gap-2">
-          <p className="text-xs text-neutral-50 ">{_STRINGS.NEXT_MONTH}</p>
+          <p className="text-xs text-neutral-50 ">{t("nextMonth")}</p>
           <ContentImage
+            alt="`"
             width={24}
             height={24}
-            alt="`"
-            onClick={() => {
-              nextMonth();
-            }}
+            onClick={() => nextMonth()}
             className="cursor-pointer  -rotate-180 "
             src={"/assets/icons/property/arrow_right_callendar.svg"}
-          />{" "}
+          />
         </div>
       ) : (
         <div> </div>

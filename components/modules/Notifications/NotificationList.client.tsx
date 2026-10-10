@@ -1,32 +1,39 @@
 "use client";
 
-import type { NotificationSkeletonGridProps } from "@/types/components/modules/profile";
 import { useNotifications } from "@features/notifications/hooks/useNotifications";
+import { useTranslations } from "next-intl";
+
+import type { NotificationSkeletonGridProps } from "@/types/components/modules/profile";
 
 import NotificationCardSkeleton from "./NotificationCardSkeleton";
-import InfiniteScroll from "react-infinite-scroll-component";
 import NotificationCard from "./parts/NotificationCard";
+import InfiniteScroll from "react-infinite-scroll-component";
 import EmptyState from "@elements/EmptyState";
-import _STRINGS from "@/utils/LocalStrings";
 
 const SKELETON_COUNT = 4;
 const GRID_CLASS = "grid grid-cols-1 gap-4 pb-4 md:grid-cols-2 md:p-4";
 
 const NotificationSkeletonGrid = ({
   count = SKELETON_COUNT,
-}: NotificationSkeletonGridProps) => (
+}: NotificationSkeletonGridProps) => {
+  const t = useTranslations("profile");
+
+  return (
   <div
     role="status"
     className={GRID_CLASS}
-    aria-label={_STRINGS.LOADING_NOTIFICATIONS}
+    aria-label={t("loadingNotifications")}
   >
     {Array.from({ length: count }, (_, index) => (
       <NotificationCardSkeleton key={index} />
     ))}
   </div>
 );
+};
 
 const NotificationList = () => {
+  const t = useTranslations("profile");
+
   const {
     isError,
     isPending,
@@ -44,13 +51,13 @@ const NotificationList = () => {
         role="alert"
         className="rounded-lg bg-danger-500/10 p-4 text-sm text-danger-500"
       >
-        {_STRINGS.NOTIFICATIONS_FAILED}
+        {t("notificationsFailed")}
       </div>
     );
 
   if (notifications.length === 0) return <EmptyState
-        title={_STRINGS.EMPTY_NOTIFICATIONS_TITLE}
-        description={_STRINGS.EMPTY_NOTIFICATIONS_DESC}
+        title={t("emptyNotificationsTitle")}
+        description={t("emptyNotificationsDesc")}
       />;
 
   return (

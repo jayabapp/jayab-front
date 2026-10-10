@@ -1,27 +1,35 @@
 "use client";
 
-import type { RegionModalProps } from "@/types/components/modules/city-selector";
 import { useRegionSelection } from "@features/cities/hooks/useRegionSelection";
 import { ModalHeaderPart } from "@elements/Modal";
+import { useTranslations } from "next-intl";
+
+import type { RegionModalProps } from "@/types/components/modules/city-selector";
 
 import SelectedRegionChips from "./parts/SelectedRegionChips";
 import CitySearchInput from "./parts/CitySearchInput";
 import EmptyState from "@elements/EmptyState";
-import _STRINGS from "@/utils/LocalStrings";
 import CityCard from "./parts/CityCard";
-import Button from "@elements/Button";
 import isEmpty from "lodash/isEmpty";
+import Button from "@elements/Button";
 import Modal from "@elements/Modal";
 
-const RegionModal = ({ cityWithRegions, onHide, passedUrl, show }: RegionModalProps) => {
+const RegionModal = ({
+  cityWithRegions,
+  onHide,
+  passedUrl,
+  show,
+}: RegionModalProps) => {
+  const t = useTranslations();
+
   const {
-    regions,
-    search,
-    selectedRegions,
-    setSearch,
     submit,
+    search,
+    regions,
+    setSearch,
     toggleRegion,
     visibleRegions,
+    selectedRegions,
   } = useRegionSelection({ cityWithRegions, navigateUrl: passedUrl });
 
   const onSubmitClick = () => {
@@ -39,15 +47,13 @@ const RegionModal = ({ cityWithRegions, onHide, passedUrl, show }: RegionModalPr
           "mx-auto my-0 md:my-20 w-full md:w-1/2 xl:w-1/3 2xl:w-1/4 rounded-0 md:rounded-2xl overflow-y-scroll bg-white relative min-h-[100dvh] min:min-h-[80dvh]",
       }}
     >
-      <ModalHeaderPart showX onHide={onHide} title={_STRINGS.LOCAL} />
-
+      <ModalHeaderPart showX onHide={onHide} title={t("common.local")} />
       <div className="w-full flex flex-col gap-4 mt-4 p-3 h-auto min-h-full">
         <CitySearchInput
           value={search}
           onChange={setSearch}
-          options={{ placeholder: _STRINGS.SEARCH_REGION }}
+          options={{ placeholder: t("search.searchRegion") }}
         />
-
         <SelectedRegionChips
           onRegionClick={toggleRegion}
           selectedRegions={selectedRegions}
@@ -61,7 +67,9 @@ const RegionModal = ({ cityWithRegions, onHide, passedUrl, show }: RegionModalPr
               item={region}
               key={`region-${region?.id}`}
               callback={() => toggleRegion(region)}
-              isChecked={selectedRegions.some((entry) => entry?.id === region?.id)}
+              isChecked={selectedRegions.some(
+                (entry) => entry?.id === region?.id,
+              )}
             />
           ))
         )}
@@ -71,7 +79,7 @@ const RegionModal = ({ cityWithRegions, onHide, passedUrl, show }: RegionModalPr
         <Button
           width="w-full"
           onClick={onSubmitClick}
-          title={_STRINGS.SUBMIT}
+          title={t("common.submit")}
           containerClass="flex w-full items-center justify-center"
         />
       </div>

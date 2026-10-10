@@ -1,13 +1,13 @@
 "use client";
 
 import { useUserSubscriptions } from "@features/user/hooks/useUserSubscriptions";
+import { useTranslations } from "next-intl";
 
 import PaymentDateFilter from "./parts/PaymentDateFilter.client";
 import InfiniteScroll from "react-infinite-scroll-component";
 import PaymentCard from "./parts/PaymentCard";
 import EmptyState from "@elements/EmptyState";
 import useQueryGet from "@/helpers/queryGet";
-import _STRINGS from "@/utils/LocalStrings";
 import moment from "moment-jalaali";
 
 const JALALI_QUERY_DATE = "jYYYY/jMM/jDD";
@@ -18,6 +18,8 @@ const PaymentSkeleton = () => (
 );
 
 const PaymentList = () => {
+  const t = useTranslations();
+
   const query = useQueryGet<Record<string, string>>();
   const {
     subscriptions,
@@ -36,17 +38,17 @@ const PaymentList = () => {
     <div className="flex flex-col gap-4 w-full">
       <div className="w-full flex flex-col gap-2">
         <p className="font-light w-full text-start text-sm">
-          {_STRINGS.SELECT_TIME_WINDOW}
+          {t("profile.selectTimeWindow")}
         </p>
         <div className="flex items-center gap-4">
           <div className="w-full flex items-start md:items-center flex-col md:flex-row gap-4 justify-between">
             <div className="flex items-center gap-4">
               <div className="flex w-fit shrink-0 items-center gap-2">
-                <p>{_STRINGS.FROM}</p>
+                <p>{t("common.from")}</p>
                 <PaymentDateFilter query={query} queryKey="from" />
               </div>
               <div className="flex w-fit shrink-0 items-center justify-end gap-2">
-                <p>{_STRINGS.TO}</p>
+                <p>{t("common.to")}</p>
                 <PaymentDateFilter query={query} queryKey="to" />
               </div>
             </div>
@@ -75,8 +77,8 @@ const PaymentList = () => {
       ) : (
         <div className="col-span-4">
           <EmptyState
-            title={_STRINGS.EMPTY_PAYMENTS_TITLE}
-            description={_STRINGS.EMPTY_PAYMENTS_DESC}
+            title={t("profile.emptyPaymentsTitle")}
+            description={t("profile.emptyPaymentsDesc")}
           />
         </div>
       )}

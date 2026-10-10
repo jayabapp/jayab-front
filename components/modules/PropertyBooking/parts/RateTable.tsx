@@ -1,7 +1,8 @@
-import type { RateTableProps } from "@/types/components/modules/property-booking";
 
-import formatToman from "@/helpers/formatToman";
-import _STRINGS from "@/utils/LocalStrings";
+import { useFormatToman } from "@hooks/useFormatToman";
+import { useTranslations } from "next-intl";
+
+import type { RateTableProps } from "@/types/components/modules/property-booking";
 
 const RateTable = ({
   dailyPrice,
@@ -9,20 +10,24 @@ const RateTable = ({
   cleaningFee,
   extraGuestFee,
 }: RateTableProps) => {
+  const formatToman = useFormatToman();
+
+  const t = useTranslations();
+
   if (!dailyPrice) return <></>;
 
   const rows = [
-    { label: _STRINGS.WEEK_STARTER_DAYS_PRICE, price: dailyPrice.normal },
-    { label: _STRINGS.WEEK_WENSDAY_PRICE, price: dailyPrice.wednesday },
-    { label: _STRINGS.WEEK_THURSDAY_PRICE, price: dailyPrice.thursday },
-    { label: _STRINGS.WEEK_FRIDAY_PRICE, price: dailyPrice.friday },
-    { label: _STRINGS.WEEK_PEAK_PRICE, price: dailyPrice.peak },
+    { label: t("common.weekStarterDaysPrice"), price: dailyPrice.normal },
+    { label: t("common.weekWensdayPrice"), price: dailyPrice.wednesday },
+    { label: t("common.weekThursdayPrice"), price: dailyPrice.thursday },
+    { label: t("common.weekFridayPrice"), price: dailyPrice.friday },
+    { label: t("common.weekPeakPrice"), price: dailyPrice.peak },
   ].filter((row) => row.price > 0);
 
   return (
     <div className="flex flex-col gap-3">
       <h3 className="text-sm font-bold text-neutral-900">
-        {_STRINGS.CALENDAR_PRICES_TITLE}
+        {t("reserve.calendarPricesTitle")}
       </h3>
       <dl className="flex flex-col divide-y divide-neutral-100 rounded-10 border border-neutral-200 px-4">
         {rows.map((row) => (
@@ -40,14 +45,14 @@ const RateTable = ({
 
       {extraGuestFee ? (
         <p className="text-xs text-neutral-500">
-          {_STRINGS.EXTRA_GUESTS_LABEL}: {_STRINGS.RATE_PER_NIGHT}{" "}
-          {formatToman(extraGuestFee)} ({_STRINGS.OVER_STANDARD_CAPACITY}{" "}
-          {stdCapacity} {_STRINGS.PERSON})
+          {t("reserve.extraGuestsLabel")}: {t("reserve.ratePerNight")}{" "}
+          {formatToman(extraGuestFee)} ({t("common.overStandardCapacity")}{" "}
+          {t("common.people", { count: Number(stdCapacity) })})
         </p>
       ) : null}
       {cleaningFee ? (
         <p className="text-xs text-neutral-500">
-          {_STRINGS.CLEANING_ONCE}: {formatToman(cleaningFee)}
+          {t("reserve.cleaningOnce")}: {formatToman(cleaningFee)}
         </p>
       ) : null}
     </div>

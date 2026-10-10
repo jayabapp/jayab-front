@@ -8,26 +8,17 @@ import { cookies } from "next/headers";
 
 import type { Metadata } from "next";
 
-import MehaHeaderHelper from "@/helpers/MetaHeaderHelper";
 import deviceTypeDetector from "@/helpers/device.detector";
-import _STRINGS from "@/utils/LocalStrings";
+import MehaHeaderHelper from "@/helpers/MetaHeaderHelper";
 import getQueryClient from "@/api_services/common/get-query-client";
+import IntlNamespaces from "@/i18n/IntlNamespaces";
 import RoomsTemplate from "@templates/Rooms";
+import _STRINGS from "@/utils/LocalStrings";
 
 type RoomsPageProps = {
   searchParams: Promise<Record<string, string | string[] | undefined>>;
 };
 
-/**
- * The listing had no metadata of its own at all — no title, no description, no
- * canonical — while the property pages it links to each had theirs. Search
- * engines were left to name the site's main commercial page themselves.
- *
- * Filtered variants are marked `noindex, follow`: `?welfare=3,7&min_price=…`
- * produces effectively unbounded near-duplicate URLs of the same catalogue.
- * `follow` still lets the crawler walk through them to the property pages,
- * which are the pages worth indexing.
- */
 export const generateMetadata = async ({
   searchParams,
 }: RoomsPageProps): Promise<Metadata> => {
@@ -63,11 +54,13 @@ const PropertiesPage = async ({ searchParams }: RoomsPageProps) => {
   }
 
   return (
-    <HydrationBoundary state={dehydrate(queryClient)}>
-      <Suspense fallback={<PropertyGridSkeleton />}>
-        <RoomsTemplate devices={devices} />
-      </Suspense>
-    </HydrationBoundary>
+    <IntlNamespaces namespaces={["content"]}>
+      <HydrationBoundary state={dehydrate(queryClient)}>
+        <Suspense fallback={<PropertyGridSkeleton />}>
+          <RoomsTemplate devices={devices} />
+        </Suspense>
+      </HydrationBoundary>
+    </IntlNamespaces>
   );
 };
 

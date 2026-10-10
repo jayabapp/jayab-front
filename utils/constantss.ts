@@ -1,5 +1,4 @@
-import { ReserveUserAction } from "@/enum/reserve.enum";
-import _STRINGS from "./LocalStrings";
+import type { Translate } from "@/types/i18n";
 
 export const connectingWhiteList = ["/chat"];
 export const footerBlacklist = [
@@ -86,58 +85,61 @@ export const footerHiddenBlackList = [
   "/profile/advisor/subscription/",
 ];
 
-export const createPropertySteps = (id?: null | number) => [
+export const createPropertySteps = (
+  id: null | number | undefined,
+  t: Translate,
+) => [
   {
-    full_title: "اطلاعات اصلی ملک",
-    title: "اطلاعات عمومی",
+    full_title: t("owner.stepMainInfo"),
+    title: t("owner.stepGeneral"),
     id: 1,
     link: `/profile/owner/properties/${id}/edit/initials?edit_mode=true`,
   },
   {
-    full_title: "موقعیت مکانی ملک",
-    title: "موقعیت مکانی",
+    full_title: t("owner.stepLocationFull"),
+    title: t("owner.stepLocation"),
     id: 2,
     link: `/profile/owner/properties/${id}/edit/location?edit_mode=true`,
   },
   {
-    full_title: "تصاویر  ملک",
-    title: "تصاویر",
+    full_title: t("owner.stepPhotosFull"),
+    title: t("owner.stepPhotos"),
     id: 3,
     link: `/profile/owner/properties/${id}/edit/media?edit_mode=true`,
   },
   {
-    full_title: "اطلاعات محیطی",
-    title: "اطلاعات محیطی",
+    full_title: t("owner.stepEnvironment"),
+    title: t("owner.stepEnvironment"),
     id: 4,
     link: `/profile/owner/properties/${id}/edit/environment?edit_mode=true`,
   },
   {
-    full_title: "اطلاعات اتاق و رخت خواب",
-    title: "اتاق خواب",
+    full_title: t("owner.stepRoomsFull"),
+    title: t("owner.stepRooms"),
     id: 5,
     link: `/profile/owner/properties/${id}/edit/bedroom?edit_mode=true`,
   },
   {
-    full_title: "امکانات ملک",
-    title: "امکانات",
+    full_title: t("owner.stepAmenitiesFull"),
+    title: t("owner.stepAmenities"),
     id: 6,
     link: `/profile/owner/properties/${id}/edit/facility?edit_mode=true`,
   },
   {
-    full_title: "تعداد نفرات و قیمت ها",
-    title: "ظرفیت",
+    full_title: t("owner.stepCapacityFull"),
+    title: t("owner.stepCapacity"),
     id: 7,
     link: `/profile/owner/properties/${id}/edit/price?edit_mode=true`,
   },
   {
-    full_title: "اطلاعات دستیار میزبان",
-    title: "دستیار",
+    full_title: t("owner.stepAssistantFull"),
+    title: t("owner.stepAssistant"),
     id: 8,
     link: `/profile/owner/properties/${id}/edit/assistants?edit_mode=true`,
   },
   {
-    full_title: "قوانین اقامتگاه",
-    title: "قوانین",
+    full_title: t("owner.stepRulesFull"),
+    title: t("owner.stepRules"),
     id: 9,
     link: `/profile/owner/properties/${id}/edit/terms?edit_mode=true`,
   },
@@ -146,30 +148,30 @@ export const createPropertySteps = (id?: null | number) => [
 export const SORT_TYPES = [
   {
     id: "newset",
-    title: "جدیدترین",
+    titleKey: "listing.sortNewest",
     icon: "/assets/icons/sort/sort_newest.svg",
   },
   {
     id: "popular",
-    title: "محبوب ترین",
+    titleKey: "listing.sortPopular",
     icon: "/assets/icons/sort/sort_star.svg",
   },
   {
     id: "price_desc",
-    title: "گران ترین",
+    titleKey: "listing.sortPriceDesc",
     icon: "/assets/icons/sort/sort_expensive.svg",
   },
   {
     id: "price_asc",
-    title: "ارزان ترین",
+    titleKey: "listing.sortPriceAsc",
     icon: "/assets/icons/sort/sort_piggy_banl.svg",
   },
   {
     id: "commission_desc",
-    title: "بیشترین کمیسیون",
+    titleKey: "listing.sortCommission",
     icon: "/assets/icons/sort/sort_most_comision.svg",
   },
-];
+] as const;
 // Segments that have a title in messages `routes.<segment>`. Membership is checked
 // here (not with t.has) because URL segments are user input.
 export const routeTitleKeys = [
@@ -270,39 +272,6 @@ export const profileDropDownItems = [
     imgSrc: "/assets/icons/header/header_support.svg",
   },
 ] as const;
-export const menuDropDownItems = [
-  {
-    id: 115,
-    title: "درباره ما",
-    route: "/about-us",
-    imgSrc: "/assets/icons/header/header_menu_about_us.svg",
-  },
-  {
-    id: 230,
-    title: "قوانین و مقررات",
-    route: "/terms",
-    imgSrc: "/assets/icons/header/header_menu_terms.svg",
-  },
-  {
-    id: 251,
-    title: "مجله گردشگری جایاب",
-    route: "/blog",
-    imgSrc: "/assets/icons/header/header_menu_blog.svg",
-  },
-  {
-    id: 1238,
-    title: "سوالات متداول",
-    route: "/faq",
-    imgSrc: "/assets/icons/header/header_menu_faq.svg",
-  },
-  {
-    id: 4261,
-    title: "تماس با ما",
-    route: "/contact-us",
-    imgSrc: "/assets/icons/header/header_menu_call.svg",
-  },
-];
-
 export const footerLinks = [
   { id: 241, titleKey: "blog", route: "/blog" },
 
@@ -316,7 +285,7 @@ export const footerLinks = [
 export const profileItems = [
   {
     id: 1251769,
-    title: "رزرو های من",
+    titleKey: "header.myReserves",
     route: "/profile/reserves",
     imgSrc: "/assets/icons/adds/header_reserve.svg",
     guard: true,
@@ -324,7 +293,7 @@ export const profileItems = [
   },
   {
     id: 769,
-    title: "آگهی های ذخیره شده",
+    titleKey: "header.savedListings",
     route: "/profile/bookmarks",
     imgSrc: "/assets/icons/header/header_my_saves.svg",
     guard: true,
@@ -333,7 +302,7 @@ export const profileItems = [
 
   {
     id: 42311124,
-    title: "دعوت از دوستان",
+    titleKey: "header.inviteFriends",
     route: "/profile/invite",
     imgSrc: "/assets/icons/header/header_share.svg",
     guard: true,
@@ -342,7 +311,7 @@ export const profileItems = [
 
   {
     id: 42324,
-    title: "پشتیبانی",
+    titleKey: "header.support",
     route: "/profile/support",
     imgSrc: "/assets/icons/header/header_support.svg",
     guard: false,
@@ -350,21 +319,21 @@ export const profileItems = [
   },
   {
     id: 2125232,
-    title: "مجله گردشگری",
+    titleKey: "routes.blog",
     route: "/blog",
     imgSrc: "/assets/icons/header/header_menu_blog.svg",
     isMobile: true,
   },
   {
     id: 212565232,
-    title: "قوانین و مقررات",
+    titleKey: "routes.terms",
     route: "/terms",
     imgSrc: "/assets/icons/header/header_menu_terms.svg",
     isMobile: true,
   },
   {
     id: 21232,
-    title: "سوالات متداول",
+    titleKey: "routes.faq",
     route: "/faq",
     guard: false,
     imgSrc: "/assets/icons/header/header_menu_faq.svg",
@@ -372,7 +341,7 @@ export const profileItems = [
   },
   {
     id: 2152625632,
-    title: "درباره ما",
+    titleKey: "routes.about-us",
     route: "/about-us",
     imgSrc: "/assets/icons/header/header_menu_about_us.svg",
     guard: false,
@@ -380,44 +349,18 @@ export const profileItems = [
   },
   {
     id: 2531232,
-    title: "تماس با ما",
+    titleKey: "routes.contact-us",
     route: "/contact-us",
     imgSrc: "/assets/icons/header/header_menu_call.svg",
     guard: false,
     isMobile: true,
   },
-];
-
-export const WeekDays = [
-  { title: "شـنبه", id: 6 },
-  { title: "یکشنبه", id: 0 },
-  { title: "دوشنبه", id: 1 },
-  { title: "سه شنبه", id: 2 },
-  { title: "چهارشنبه", id: 3 },
-  { title: "پنجشنبه", id: 4 },
-  { title: "جـمعه", id: 5 },
-];
-export const simpleWeekDays = [
-  "یکشنبه",
-  "دوشنبه",
-  "سه شنبه",
-  "چهارشنبه",
-  "پنجشنبه",
-  "جمعه",
-  "شنبه",
-];
-
-export const easyRatingItems = {
-  100: { label: "عالی", style: { color: "#3886E5", bottom: "2rem" } },
-  75: { label: "خوب", style: { color: "#3886E5", bottom: "2rem" } },
-  50: { label: "متوسط", style: { color: "#3886E5", bottom: "2rem" } },
-  25: { label: "ضعیف", style: { color: "#3886E5", bottom: "2rem" } },
-};
+] as const;
 
 export const poolFilterTypes = [
-  { title: "فقط ملک‌های استخردار", id: 1 },
-  { title: "فقط ملک‌های بدون استخر", id: 0 },
-];
+  { titleKey: "listing.onlyWithPool", id: 1 },
+  { titleKey: "listing.onlyNoPool", id: 0 },
+] as const;
 export const shareLinks = [
   {
     id: 0,
@@ -434,31 +377,24 @@ export const shareLinks = [
 
 export const shareButtonItems = [
   {
-    title: "اشتراک گذاری تصاویر",
+    titleKey: "listing.shareImages",
     icon: "/assets/icons/share/blue_pic.svg",
     id: "1",
   },
   {
-    title: "اشتراک گذاری اطلاعات",
+    titleKey: "listing.shareInfo",
     icon: "/assets/icons/share/blue_exclemation.svg",
     id: "2",
   },
   {
-    title: "اشتراک گذاری موقعیت مکانی",
+    titleKey: "listing.shareLocation",
     icon: "/assets/icons/adds/blue_pinpoint_location.svg",
     id: "3",
   },
-];
+] as const;
 
-export const randomeTitlePlaceholder = [
-  "ویلا استخردار دوخوابه در ماسال",
-  "کلبه جنگلی دوبلکس سه‌خوابه در ماسال",
-  " ویلا لوکس استخردار چهارخوابه در رامسر",
-  "سوییت یک‌خوابه ساحلی نزدیک دریا در کیش",
-  "ویلا برای تولد با سالن بزرگ در شهریار",
-  "باغ ویلا برای مهمانی فضای سرسبز در کردان",
-  "کلبه چوبی مثلثی(سوئیسی) با جکوزی در جنگل های رشت",
-];
+export const titlePlaceholderExamples = (t: Translate) =>
+  [1, 2, 3, 4, 5, 6, 7].map((index) => t(`owner.titleExample${index}`));
 
 export const chartSteps = {
   1: [0, 10],
@@ -471,13 +407,6 @@ export const chartSteps = {
   8: [71, 80],
   9: [81, 90],
   10: [91, 100],
-};
-
-export const ReserveReqTypes = {
-  [ReserveUserAction.CALL]: _STRINGS.CALL,
-  [ReserveUserAction.SMS]: _STRINGS.SMS,
-  [ReserveUserAction.RESERVE]: _STRINGS.RESERVE,
-  [ReserveUserAction.CHAT]: _STRINGS.CHAT,
 };
 
 export const sortDynamicFiltersInOrder = [

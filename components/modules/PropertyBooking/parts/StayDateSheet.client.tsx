@@ -1,36 +1,39 @@
 "use client";
 
+import { useEffect, useMemo, useState } from "react";
 import { formatJalaliWeekdayDay } from "@features/reservations/mappers/reservation-dates";
-import type { StayDateSheetProps } from "@/types/components/modules/property-booking";
 import { STAY_MONTH_HORIZON } from "@features/reservations/lib/stay-months";
 import { isCompleteRange } from "@features/reservations/lib/stay-range";
-import type { StayRange } from "@features/reservations/lib/stay-range";
+import { useTranslations } from "next-intl";
 import { nightsBetween } from "@features/reservations/lib/stay-range";
 import { stayMonths } from "@features/reservations/lib/stay-months";
-import { useEffect, useMemo, useState } from "react";
 
+import type { StayDateSheetProps } from "@/types/components/modules/property-booking";
+import type { StayRange } from "@features/reservations/lib/stay-range";
+
+import StayCalendarLegend from "./StayCalendarLegend";
 import StayCalendarGrid from "./StayCalendarGrid.client";
 import FullScreenSheet from "./FullScreenSheet.client";
-import StayCalendarLegend from "./StayCalendarLegend";
-import _STRINGS from "@/utils/LocalStrings";
 import moment from "moment-jalaali";
+import type { TDateSummary } from "@/types/components/modules/property-booking";
 
 const DateSummary = ({
   label,
   value,
-}: {
-  label: string;
-  value?: Date | null;
-}) => (
-  <div className="flex flex-1 flex-col gap-0.5">
-    <span className="text-xs text-neutral-500">{label}</span>
-    <span
-      className={`text-sm ${value ? "font-semibold text-neutral-900" : "text-neutral-400"}`}
-    >
-      {value ? formatJalaliWeekdayDay(value) : _STRINGS.EMPTY_DATE}
-    </span>
-  </div>
-);
+}: TDateSummary) => {
+  const t = useTranslations("reserve");
+
+  return (
+    <div className="flex flex-1 flex-col gap-0.5">
+      <span className="text-xs text-neutral-500">{label}</span>
+      <span
+        className={`text-sm ${value ? "font-semibold text-neutral-900" : "text-neutral-400"}`}
+      >
+        {value ? formatJalaliWeekdayDay(value) : t("emptyDate")}
+      </span>
+    </div>
+  );
+};
 
 const StayDateSheetBody = ({
   initial,
@@ -39,6 +42,8 @@ const StayDateSheetBody = ({
   onConfirm,
   propertyId,
 }: Omit<StayDateSheetProps, "show">) => {
+  const t = useTranslations("reserve");
+
   const [draft, setDraft] = useState<StayRange>(initial);
   const months = useMemo(() => stayMonths(0, STAY_MONTH_HORIZON), []);
 
@@ -57,12 +62,12 @@ const StayDateSheetBody = ({
     <FullScreenSheet
       show
       onHide={onClose}
-      title={_STRINGS.TRIP_DATE}
+      title={t("tripDate")}
       footer={
         <div className="flex flex-col gap-3">
           <div className="flex items-center gap-3">
-            <DateSummary label={_STRINGS.CHECKIN_DATE} value={draft.start} />
-            <DateSummary label={_STRINGS.CHECKOUT_DATE} value={draft.end} />
+            <DateSummary label={t("checkinDate")} value={draft.start} />
+            <DateSummary label={t("checkoutDate")} value={draft.end} />
           </div>
           <div className="flex items-center gap-3">
             <button
@@ -70,7 +75,7 @@ const StayDateSheetBody = ({
               onClick={() => setDraft({})}
               className="h-11 cursor-pointer rounded-10 border border-neutral-200 px-5 text-sm text-neutral-700 transition-colors hover:bg-neutral-50"
             >
-              {_STRINGS.CLEAR_STAY}
+              {t("clearStay")}
             </button>
             <button
               type="button"
@@ -78,8 +83,8 @@ const StayDateSheetBody = ({
               onClick={() => complete && onConfirm(complete)}
               className="h-11 flex-1 cursor-pointer rounded-10 bg-brand-600 text-base font-medium text-white transition-colors hover:bg-brand-700 disabled:cursor-not-allowed disabled:bg-neutral-300 disabled:hover:bg-neutral-300"
             >
-              {_STRINGS.PICK_DATES_CTA}
-              {nights ? ` (${nights} ${_STRINGS.NIGHT})` : ""}
+              {t("pickDatesCta")}
+              {nights ? ` (${t("nights", { count: Number(nights) })})` : ""}
             </button>
           </div>
         </div>

@@ -1,29 +1,20 @@
-import React from "react";
+import { useTranslations } from "next-intl";
+
+const WEEKDAYS = ["Sat", "Sun", "Mon", "Tue", "Wed", "Thu", "Fri"] as const;
 
 const DaysOfTheWeel = () => {
+  const t = useTranslations("calendar");
+
   return (
     <div className="w-full gap-1 items-center grid grid-cols-7">
-      <p className="md:text-base text-sm truncate text-center font-bold ">
-        {/* شنبه */}ش
-      </p>
-      <p className="md:text-base text-sm truncate text-center font-bold ">
-        {/* یکشنبه */}ی
-      </p>
-      <p className="md:text-base text-sm truncate text-center font-bold ">
-        {/* دوشنبه */}د
-      </p>
-      <p className="md:text-base text-sm truncate text-center font-bold ">
-        {/* سه شنبه */}س
-      </p>
-      <p className="md:text-base text-sm truncate text-center font-bold ">
-        {/* چهارشنبه */}چ
-      </p>
-      <p className="md:text-base text-sm truncate text-center font-bold ">
-        {/* پنجشنبه */}پ{" "}
-      </p>
-      <p className="md:text-base text-sm truncate text-center font-bold ">
-        {/* جمعه */}ج{" "}
-      </p>
+      {WEEKDAYS.map((day) => (
+        <p
+          key={day}
+          className="md:text-base text-sm truncate text-center font-bold "
+        >
+          {t(`short${day}`)}
+        </p>
+      ))}
     </div>
   );
 };

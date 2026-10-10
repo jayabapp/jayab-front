@@ -1,12 +1,12 @@
 "use client";
 
+import { useEffect, useEffectEvent, useRef, useState } from "react";
+import { useTranslations } from "next-intl";
+
 import type { InteractiveMapProps } from "@/types/components/elements/map";
 import type { NeshanMapInstance } from "@/types/components/elements/map";
 
-import { useEffect, useEffectEvent, useRef, useState } from "react";
-
 import NeshanMap from "./NeshanMap.client";
-import _STRINGS from "@/utils/LocalStrings";
 import Image from "next/image";
 
 const INITIAL_ZOOM = 15;
@@ -19,6 +19,8 @@ const Map = ({
   disableCenter,
   containerClass,
 }: InteractiveMapProps) => {
+  const t = useTranslations("common");
+
   const [map, setMap] = useState<NeshanMapInstance | null>(null);
   const [initialCenter] = useState<[number, number]>(() => [
     center[0],
@@ -49,7 +51,6 @@ const Map = ({
         number,
       ],
     };
-    // A saved pin restored on load should appear in place; only later searches fly.
     if (hasJumpedRef.current) map.flyTo({ ...target, essential: true });
     else map.jumpTo(target);
     hasJumpedRef.current = true;
@@ -63,7 +64,7 @@ const Map = ({
         onMapReady={setMap}
         zoom={INITIAL_ZOOM}
         center={initialCenter}
-        ariaLabel={_STRINGS.MAP_ARIA_LABEL}
+        ariaLabel={t("mapAriaLabel")}
         className={`map ${containerClass || "w-screen aspect-square"}`}
       />
       {!disableCenter ? (

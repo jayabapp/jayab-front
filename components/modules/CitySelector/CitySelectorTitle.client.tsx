@@ -1,25 +1,27 @@
 "use client";
 
-import type { CitySelectorTitleProps } from "@/types/components/modules/city-selector";
-import { parseIdList } from "@features/cities/lib/city-selection";
 import { usePathname, useRouter } from "next/navigation";
+import { useTranslations } from "next-intl";
 import { ContentImage } from "@elements/Image";
+import { parseIdList } from "@features/cities/lib/city-selection";
 import { useCallback } from "react";
+
+import type { CitySelectorTitleProps } from "@/types/components/modules/city-selector";
 
 import queryBuilder from "@/helpers/queryBuilder";
 import RegionButton from "./RegionButton.client";
-import _STRINGS from "@/utils/LocalStrings";
 import isEmpty from "lodash/isEmpty";
 
-/** The "choose a city" trigger shown above the property results, plus its region shortcut. */
 const CitySelectorTitle = ({
   cb,
-  cityWithRegions,
-  hideCityPart,
-  queries,
-  setShowRegions,
   title,
+  queries,
+  hideCityPart,
+  setShowRegions,
+  cityWithRegions,
 }: CitySelectorTitleProps) => {
+  const t = useTranslations("header");
+
   const pathname = usePathname();
   const router = useRouter();
   const regionsIds = parseIdList(queries?.regions);
@@ -44,7 +46,7 @@ const CitySelectorTitle = ({
             height={16}
             src="/assets/icons/adds/pin_point_location.svg"
           />
-          <p className="shrink-0">{title || _STRINGS.SELECT_CITY}</p>
+          <p className="shrink-0">{title || t("chooseCity")}</p>
           {title ? (
             <ContentImage
               alt=""
@@ -60,9 +62,9 @@ const CitySelectorTitle = ({
       {isEmpty(cityWithRegions?.child) ? null : (
         <RegionButton
           regionsIds={regionsIds}
-          containerClass="hidden lg:flex"
           onClearRegions={clearRegions}
           setShowRegions={setShowRegions}
+          containerClass="hidden lg:flex"
         />
       )}
     </div>

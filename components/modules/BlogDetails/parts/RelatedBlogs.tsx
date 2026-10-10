@@ -1,9 +1,10 @@
-import { getHomeImageUrl } from "@features/home/mappers/home-image.mapper";
-import type { RelatedBlogsProps } from "@/types/components/modules/blog";
 import { BLOG_IMAGE_QUALITY } from "@features/blog/constants/image";
+import { getHomeImageUrl } from "@features/home/mappers/home-image.mapper";
+import { useTranslations } from "next-intl";
 import { ContentImage } from "@elements/Image";
 
-import _STRINGS from "@/utils/LocalStrings";
+import type { RelatedBlogsProps } from "@/types/components/modules/blog";
+
 import isEmpty from "lodash/isEmpty";
 import moment from "moment-jalaali";
 import Link from "next/link";
@@ -11,13 +12,15 @@ import Link from "next/link";
 moment.loadPersian();
 
 const RelatedBlogs = ({ currentId, items }: RelatedBlogsProps) => {
+  const t = useTranslations("content");
+
   const related = items?.filter((item) => item?.id !== currentId) ?? [];
 
   if (isEmpty(related)) return <></>;
 
   return (
     <div className="flex flex-col gap-3">
-      <p className="text-sm font-bold">{_STRINGS.BLOG_RELATED}</p>
+      <p className="text-sm font-bold">{t("blogRelated")}</p>
 
       {related.map((item) => (
         <Link

@@ -1,9 +1,10 @@
 "use client";
 
-import type { OwnerPropertyRouteProps } from "@/types/components/modules/owner-property";
-import { useOwnerProperty } from "@features/owner-property/hooks/useOwnerProperty";
 import { PropertyDetailsSkeleton } from "@modules/PropertyDetails";
+import { useOwnerProperty } from "@features/owner-property/hooks/useOwnerProperty";
 import { PropertyGallery } from "@modules/PropertyGallery";
+
+import type { OwnerPropertyRouteProps } from "@/types/components/modules/owner-property";
 
 import OwnerPropertyIntroduction from "./OwnerPropertyIntroduction.client";
 import OwnerPropertyCalendar from "./OwnerPropertyCalendar.client";

@@ -1,5 +1,7 @@
 import { toPropertyDetailsView } from "@features/properties/mappers/property-details.mapper";
 import { StayCalendarSection } from "@modules/PropertyBooking";
+import { useListSeparator } from "@hooks/useListSeparator";
+import { useTranslations } from "next-intl";
 import { PropertyGallery } from "@modules/PropertyGallery";
 import { toAmenityItems } from "@features/properties/mappers/amenities.mapper";
 import { ContactFlow } from "@modules/PropertyContact";
@@ -21,35 +23,37 @@ import SectionTabs from "./parts/SectionTabs.client";
 import ExtraCosts from "./parts/ExtraCosts";
 import HouseRules from "./parts/HouseRules";
 import Amenities from "./parts/Amenities.client";
-import _STRINGS from "@/utils/LocalStrings";
 import HostCard from "./parts/HostCard";
 import KeyFacts from "./parts/KeyFacts";
 
 const SUB_HEADING_CLASS = "text-sm font-bold text-neutral-900";
 
 const PropertyDetailsContent = ({ property }: PropertyDetailsContentProps) => {
+  const t = useTranslations();
+  const sep = useListSeparator();
+
   const view = toPropertyDetailsView(property);
   const amenities = toAmenityItems(property);
 
   const place = [view?.city, view?.region || view?.province]
     .filter(Boolean)
-    .join("، ");
+    .join(sep);
 
   const breadCrumbs = [
-    { title: _STRINGS.HOME, link: "/" },
-    { title: _STRINGS.ADDS, link: "/rooms" },
+    { title: t("common.home"), link: "/" },
+    { title: t("header.listings"), link: "/rooms" },
     { title: property?.title || "", link: "#" },
   ];
 
   const tabs: SectionTab[] = [
-    { id: "specs", label: _STRINGS.TAB_SPECS },
+    { id: "specs", label: t("listing.tabSpecs") },
     ...(amenities.length
-      ? [{ id: "amenities", label: _STRINGS.TAB_AMENITIES }]
+      ? [{ id: "amenities", label: t("listing.tabAmenities") }]
       : []),
-    { id: "calendar", label: _STRINGS.TAB_CALENDAR },
-    { id: "rules", label: _STRINGS.TAB_RULES },
-    { id: "location", label: _STRINGS.TAB_LOCATION },
-    { id: "host", label: _STRINGS.TAB_HOST },
+    { id: "calendar", label: t("listing.tabCalendar") },
+    { id: "rules", label: t("listing.tabRules") },
+    { id: "location", label: t("listing.tabLocation") },
+    { id: "host", label: t("listing.tabHost") },
   ];
 
   return (
@@ -66,43 +70,48 @@ const PropertyDetailsContent = ({ property }: PropertyDetailsContentProps) => {
 
       {view.ownerName ? (
         <p className="order-4 pb-4 text-sm text-neutral-600 md:hidden">
-          {_STRINGS.VILLA_HOSTED_BY} {view.ownerName}
+          {t("listing.villaHostedBy")} {view.ownerName}
         </p>
       ) : null}
 
       <div className="order-5 grid grid-cols-1 gap-x-8 md:grid-cols-12">
         <div className="flex w-full flex-col md:col-span-7 lg:col-span-8">
-          <ListingSection id="specs" title={_STRINGS.TAB_SPECS}>
+          <ListingSection id="specs" title={t("listing.tabSpecs")}>
             <KeyFacts property={property} />
             <PropertyDescription property={property} />
 
             <div className="flex flex-col gap-4">
-              <h3 className={SUB_HEADING_CLASS}>{_STRINGS.SLEEPING_SPACE}</h3>
+              <h3 className={SUB_HEADING_CLASS}>
+                {t("listing.sleepingSpace")}
+              </h3>
               <SleepingArrangements property={property} />
             </div>
           </ListingSection>
 
           {amenities.length ? (
-            <ListingSection id="amenities" title={_STRINGS.TAB_AMENITIES}>
+            <ListingSection id="amenities" title={t("listing.tabAmenities")}>
               <Amenities property={property} />
             </ListingSection>
           ) : (
             <></>
           )}
 
-          <ListingSection id="calendar" title={_STRINGS.TAB_CALENDAR}>
+          <ListingSection id="calendar" title={t("listing.tabCalendar")}>
             <div className="flex flex-col gap-4">
-              <h3 className={SUB_HEADING_CLASS}>{_STRINGS.EXTRA_COSTS}</h3>
+              <h3 className={SUB_HEADING_CLASS}>{t("listing.extraCosts")}</h3>
               <ExtraCosts property={property} />
             </div>
             <StayCalendarSection propertyId={view.id} />
           </ListingSection>
 
-          <ListingSection id="rules" title={_STRINGS.PROP_TERMS}>
+          <ListingSection id="rules" title={t("listing.propTerms")}>
             <HouseRules property={property} />
           </ListingSection>
 
-          <ListingSection id="location" title={_STRINGS.LOCATION_SECTION_TITLE}>
+          <ListingSection
+            id="location"
+            title={t("listing.locationSectionTitle")}
+          >
             <LocationSection
               place={place}
               latitude={property?.latitude}
@@ -112,13 +121,17 @@ const PropertyDetailsContent = ({ property }: PropertyDetailsContentProps) => {
             <Surroundings property={property} />
           </ListingSection>
 
-          <ListingSection id="host" title={_STRINGS.TAB_HOST} divider={false}>
+          <ListingSection
+            id="host"
+            divider={false}
+            title={t("listing.tabHost")}
+          >
             <HostCard
               name={view.ownerName}
+              since={view.ownerSince}
               avatar={view.ownerAvatar}
               isAuthorized={view.isAuthorized}
               isOnline={view.hasActiveSubscription}
-              since={view.ownerSince}
             />
             <div className="pt-2">
               <PropertyReportRow propertyId={view.id} />

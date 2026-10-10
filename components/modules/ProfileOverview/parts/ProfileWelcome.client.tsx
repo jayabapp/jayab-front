@@ -1,19 +1,22 @@
 "use client";
 
-import type { ProfileWelcomeProps } from "@/types/components/modules/profile";
 import { getUserAvatarUrl } from "@features/user/mappers/user-image.mapper";
+import { useListSeparator } from "@hooks/useListSeparator";
+import { useTranslations } from "next-intl";
 import { ContentImage } from "@elements/Image";
+
+import type { ProfileWelcomeProps } from "@/types/components/modules/profile";
 
 import ProfileQuickAccess from "./ProfileQuickAccess.client";
 import ProfileCompletion from "./ProfileCompletion.client";
 import ProfileStats from "./ProfileStats.client";
-import _STRINGS from "@/utils/LocalStrings";
 
 const ProfileWelcome = ({ profile, entries, isLogin }: ProfileWelcomeProps) => {
+  const t = useTranslations("profile");
+  const sep = useListSeparator();
+
   const displayName = profile?.full_name?.trim();
-  // The desktop pane used to be a faded logo and one line of instructions; the
-  // account the user already has is a better source of content than a blank page.
-  const initial = displayName ? displayName.slice(0, 1) : "؟";
+  const initial = displayName ? displayName.slice(0, 1) : t("unknownInitial");
 
   return (
     <div className="mx-auto flex w-full max-w-3xl flex-col gap-6 pt-4">
@@ -33,12 +36,13 @@ const ProfileWelcome = ({ profile, entries, isLogin }: ProfileWelcomeProps) => {
         )}
         <div className="flex flex-col gap-1">
           <p className="text-lg font-bold text-neutral-900">
-            {_STRINGS.PROFILE_GREETING}
-            {displayName ? ` ${displayName}` : ""}،{" "}
-            {_STRINGS.PROFILE_WELCOME_BACK}
+            {t("profileGreeting")}
+            {displayName ? ` ${displayName}` : ""}
+            {sep}
+            {t("profileWelcomeBack")}
           </p>
           <p className="text-sm text-neutral-600">
-            {_STRINGS.PROFILE_DASHBOARD_HINT}
+            {t("profileDashboardHint")}
           </p>
         </div>
       </div>

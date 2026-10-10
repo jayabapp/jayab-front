@@ -1,22 +1,23 @@
 "use client";
 
-import type { HeroSearchSheetProps } from "@/types/components/modules/home-hero-search";
-import type { HeroSearchStep } from "@/types/components/modules/home-hero-search";
-import { CLEARED_DRAFT_TARGET } from "@features/search/lib/search-option-draft";
-import { searchOptionToDraft } from "@features/search/lib/search-option-draft";
-import { SearchDateRangePicker } from "@modules/PropertySearchFilters";
-import { useOverlayBackButton } from "@hooks/useOverlayBackButton";
 import { useCallback, useEffect, useMemo, useState } from "react";
-import { updateDateRange } from "@modules/PropertySearchFilters";
+import { SearchDateRangePicker } from "@modules/PropertySearchFilters";
+import { CLEARED_DRAFT_TARGET } from "@features/search/lib/search-option-draft";
+import { useOverlayBackButton } from "@hooks/useOverlayBackButton";
+import { searchOptionToDraft } from "@features/search/lib/search-option-draft";
 import { useBodyScrollLock } from "@hooks/useBodyScrollLock";
 import { SearchInlinePanel } from "@modules/Search";
+import { updateDateRange } from "@modules/PropertySearchFilters";
+import { useTranslations } from "next-intl";
+import { createPortal } from "react-dom";
 import { ContentImage } from "@elements/Image";
 import { BtnLoading } from "@elements/Button";
-import { createPortal } from "react-dom";
 import { motion } from "framer-motion";
 
+import type { HeroSearchSheetProps } from "@/types/components/modules/home-hero-search";
+import type { HeroSearchStep } from "@/types/components/modules/home-hero-search";
+
 import HeroGuestsStep from "./HeroGuestsStep";
-import _STRINGS from "@/utils/LocalStrings";
 import HeroStepCard from "./HeroStepCard";
 import moment from "moment-jalaali";
 
@@ -39,6 +40,8 @@ const HeroSearchSheet = ({
   isPending,
   isCountStale,
 }: HeroSearchSheetProps) => {
+  const t = useTranslations();
+
   const [step, setStep] = useState<HeroSearchStep>(() =>
     !draft.cities && !draft.q ? "where" : !draft.checkin ? "dates" : "guests",
   );
@@ -106,7 +109,7 @@ const HeroSearchSheet = ({
         <button
           type="button"
           onClick={requestClose}
-          aria-label={_STRINGS.CLOSE}
+          aria-label={t("common.close")}
           className="flex size-9 items-center justify-center rounded-full border border-neutral-200"
         >
           <ContentImage
@@ -118,14 +121,14 @@ const HeroSearchSheet = ({
           />
         </button>
 
-        <p className="text-sm font-bold">{_STRINGS.HERO_SHEET_TITLE}</p>
+        <p className="text-sm font-bold">{t("search.heroSheetTitle")}</p>
 
         <button
           type="button"
           onClick={onReset}
           className="text-xs text-neutral-500 underline underline-offset-4"
         >
-          {_STRINGS.HERO_CLEAR_ALL}
+          {t("search.heroClearAll")}
         </button>
       </header>
 
@@ -134,7 +137,7 @@ const HeroSearchSheet = ({
           <HeroStepCard
             icon={STEP_ICON.where}
             isActive={step === "where"}
-            title={_STRINGS.HERO_STEP_WHERE}
+            title={t("header.searchPlaceholder")}
             onOpen={() => openStep("where")}
             hasBeenOpened={visited.includes("where")}
             summary={draft.cityTitle || draft.q || ""}
@@ -161,11 +164,11 @@ const HeroSearchSheet = ({
           <HeroStepCard
             icon={STEP_ICON.dates}
             isActive={step === "dates"}
-            title={_STRINGS.HERO_STEP_DATES}
+            title={t("search.heroStepDates")}
             onOpen={() => openStep("dates")}
             hasBeenOpened={visited.includes("dates")}
             summary={
-              datesSummary || skippedSummary("dates", _STRINGS.HERO_ANY_DATE)
+              datesSummary || skippedSummary("dates", t("search.heroAnyDate"))
             }
           >
             <div className="flex flex-col gap-2 p-3">
@@ -185,7 +188,7 @@ const HeroSearchSheet = ({
                 onClick={onSkipDates}
                 className="self-center py-1 text-xs text-brand-600 underline underline-offset-4"
               >
-                {_STRINGS.HERO_DATES_FLEXIBLE}
+                {t("search.heroDatesFlexible")}
               </button>
             </div>
           </HeroStepCard>
@@ -195,13 +198,13 @@ const HeroSearchSheet = ({
           <HeroStepCard
             icon={STEP_ICON.guests}
             isActive={step === "guests"}
-            title={_STRINGS.HERO_STEP_GUESTS}
+            title={t("search.heroStepGuests")}
             onOpen={() => openStep("guests")}
             hasBeenOpened={visited.includes("guests")}
             summary={
               draft.total_guests
-                ? `${draft.total_guests} ${_STRINGS.PERSON}`
-                : skippedSummary("guests", _STRINGS.HERO_ANY_GUESTS)
+                ? `${t("common.people", { count: Number(draft.total_guests) })}`
+                : skippedSummary("guests", t("search.heroAnyGuests"))
             }
           >
             <HeroGuestsStep
@@ -216,10 +219,10 @@ const HeroSearchSheet = ({
         <p className="min-w-0 flex-1 truncate text-xs text-neutral-600">
           {count === 0 ? (
             <span className={isCountStale ? "opacity-50" : ""}>
-              {_STRINGS.HERO_NO_MATCH}
+              {t("search.heroNoMatch")}
             </span>
           ) : (
-            _STRINGS.HERO_MOBILE_TRIGGER_HINT
+            t("search.heroMobileTriggerHint")
           )}
         </p>
 
@@ -229,7 +232,7 @@ const HeroSearchSheet = ({
           disabled={isPending}
           className="btn-primary flex h-11 min-w-32 items-center justify-center gap-2 rounded-full bg-brand-600 px-6 text-sm font-bold disabled:bg-neutral-300"
         >
-          {isPending ? <BtnLoading /> : _STRINGS.SEARCH}
+          {isPending ? <BtnLoading /> : t("search.search")}
         </button>
       </footer>
     </motion.div>,

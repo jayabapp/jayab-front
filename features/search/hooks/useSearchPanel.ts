@@ -5,6 +5,8 @@ import { useSearchSuggestions } from "@features/search/hooks/useSearchSuggestion
 import { useListboxNavigation } from "@features/search/hooks/useListboxNavigation";
 import { useSearchOptionPick } from "@features/search/hooks/useSearchOptionPick";
 import { buildSearchOptions } from "@features/search/lib/build-search-options";
+import { useLocationWords } from "@features/cities/hooks/useLocationWords";
+import { useTranslations } from "next-intl";
 import { usePropertySearch } from "@features/search/hooks/usePropertySearch";
 import { useBodyScrollLock } from "@hooks/useBodyScrollLock";
 
@@ -40,7 +42,12 @@ export const useSearchPanel = ({
     data: suggestions,
   } = useSearchSuggestions(term, isOpen);
 
-  const options = useMemo(() => buildSearchOptions(suggestions), [suggestions]);
+  const words = useLocationWords();
+  const codeWord = useTranslations("common")("code");
+  const options = useMemo(
+    () => buildSearchOptions(suggestions, words, codeWord),
+    [suggestions, words, codeWord],
+  );
   const {
     activeIndex,
     listRef,
@@ -88,7 +95,8 @@ export const useSearchPanel = ({
   );
 
   return {
-    activeIndex,
+    term,
+    pick,
     close,
     hasOpened,
     inputRef,
@@ -96,15 +104,14 @@ export const useSearchPanel = ({
     isStale,
     isPending,
     listRef,
-    onKeyDown,
-    onSearchParam,
-    pick,
-    open: useCallback(() => onOpenChange(true), [onOpenChange]),
     options,
-    setActiveIndex,
     setTerm,
-    submit: useCallback(() => mutate({ q: term }), [mutate, term]),
+    onKeyDown,
     suggestions,
-    term,
+    activeIndex,
+    onSearchParam,
+    setActiveIndex,
+    open: useCallback(() => onOpenChange(true), [onOpenChange]),
+    submit: useCallback(() => mutate({ q: term }), [mutate, term]),
   };
 };

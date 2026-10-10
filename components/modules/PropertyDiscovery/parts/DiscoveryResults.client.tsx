@@ -1,18 +1,19 @@
 "use client";
 
-import type { DiscoveryResultsProps } from "@/types/components/modules/property-discovery";
 import { PropertyGridItems, PropertyGridSkeleton } from "@modules/PropertyGrid";
-import { useProperties } from "@features/properties/hooks/useProperties";
-import { useHomeBanners } from "@features/home/hooks/useHomeBanners";
 import { useLoadMoreOnScroll } from "@hooks/useLoadMoreOnScroll";
 import { ServerSidePaginate } from "@elements/Pagination";
+import { useTranslations } from "next-intl";
+import { useHomeBanners } from "@features/home/hooks/useHomeBanners";
 import { BannerPosition } from "@/enum/banners.enum";
-import { GRID_CLASS } from "@/utils/constantss";
-import { BtnLoading } from "@elements/Button";
+import { useProperties } from "@features/properties/hooks/useProperties";
 import { useCallback } from "react";
+import { BtnLoading } from "@elements/Button";
+import { GRID_CLASS } from "@/utils/constantss";
+
+import type { DiscoveryResultsProps } from "@/types/components/modules/property-discovery";
 
 import EmptyState from "@elements/EmptyState";
-import _STRINGS from "@/utils/LocalStrings";
 
 const BANNER_POSITIONS = [BannerPosition.MAIN_2];
 const ITEMS_PER_BANNER = 6;
@@ -23,6 +24,8 @@ const DiscoveryResults = ({
   devices,
   onClearFilters,
 }: DiscoveryResultsProps) => {
+  const t = useTranslations();
+
   const hasPaginate = Boolean(query?.page);
 
   const {
@@ -61,9 +64,9 @@ const DiscoveryResults = ({
       <div className="col-span-full">
         <EmptyState
           onAction={() => void refetch()}
-          title={_STRINGS.ERROR}
-          description={_STRINGS.SEARCH_RESULTS_LOAD_ERROR}
-          actionLabel={_STRINGS.TRY_AGAIN}
+          title={t("common.error")}
+          description={t("listing.searchResultsLoadError")}
+          actionLabel={t("common.tryAgain")}
         />
       </div>
     );
@@ -74,9 +77,9 @@ const DiscoveryResults = ({
       <div className="col-span-full">
         <EmptyState
           onAction={onClearFilters}
-          title={_STRINGS.NO_RESULT_TITLE}
-          description={_STRINGS.NO_RESULT_DESCRIPTION}
-          actionLabel={onClearFilters ? _STRINGS.REMOVE_FILTERS : undefined}
+          title={t("listing.noResultTitle")}
+          description={t("listing.noResultDescription")}
+          actionLabel={onClearFilters ? t("common.removeFilters") : undefined}
         />
       </div>
     );
@@ -89,13 +92,13 @@ const DiscoveryResults = ({
           role="alert"
           className="mx-3 mt-2 flex items-center justify-between gap-3 rounded-xl bg-danger-50 px-3 py-2 text-xs text-danger-600 lg:mx-1"
         >
-          <span>{_STRINGS.SEARCH_RESULTS_LOAD_ERROR}</span>
+          <span>{t("listing.searchResultsLoadError")}</span>
           <button
             type="button"
             onClick={() => void refetch()}
             className="shrink-0 font-bold underline underline-offset-4"
           >
-            {_STRINGS.TRY_AGAIN}
+            {t("common.tryAgain")}
           </button>
         </div>
       ) : null}

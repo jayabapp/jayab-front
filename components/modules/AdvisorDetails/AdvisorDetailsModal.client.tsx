@@ -1,17 +1,18 @@
 "use client";
 
 import { useStartAdvisorContact } from "@features/advisors/hooks/useStartAdvisorContact";
-import type { AdvisorDetailsModalProps } from "@/types/components/modules/advisors";
 import { useAdvisorDetails } from "@features/advisors/hooks/useAdvisorDetails";
+import { useTranslations } from "next-intl";
 import { ModalHeaderPart } from "@elements/Modal";
 import { ContentImage } from "@elements/Image";
-import { colors } from "@/theme/colors";
 import { useState } from "react";
+import { colors } from "@/theme/colors";
 
-import AdvisorRatingSheet from "./parts/AdvisorRatingSheet.client";
+import type { AdvisorDetailsModalProps } from "@/types/components/modules/advisors";
+
 import AdvisorDetailsSkeleton from "./AdvisorDetailsSkeleton";
+import AdvisorRatingSheet from "./parts/AdvisorRatingSheet.client";
 import AdvisorGauge from "./parts/AdvisorGauge";
-import _STRINGS from "@/utils/LocalStrings";
 import AdvisorCard from "./AdvisorCard";
 import Button from "@elements/Button";
 import Modal from "@elements/Modal";
@@ -25,6 +26,8 @@ const AdvisorDetailsModal = ({
   onHide,
   advisor,
 }: AdvisorDetailsModalProps) => {
+  const t = useTranslations();
+
   const [showRating, setShowRating] = useState(false);
   const { data, isPending } = useAdvisorDetails(advisor?.id ?? undefined);
   const { mutate, isPending: isContacting } = useStartAdvisorContact();
@@ -44,17 +47,17 @@ const AdvisorDetailsModal = ({
   const gaugeRows = [
     [
       {
-        title: _STRINGS.CONSULTANT_APPROACHES,
+        title: t("advisor.consultantApproaches"),
         value: data?.advisor_behavior || DEFAULT_SCORE,
       },
       {
-        title: _STRINGS.CONSULTANT_RESPONSIBILITY,
+        title: t("advisor.consultantResponsibility"),
         value: data?.advisor_responsibility || DEFAULT_SCORE,
       },
     ],
     [
       {
-        title: _STRINGS.FOLLOWUP_SPEED_RESPONSE,
+        title: t("advisor.followupSpeedResponse"),
         value: data?.response_speed_and_followup || DEFAULT_SCORE,
       },
     ],
@@ -67,7 +70,7 @@ const AdvisorDetailsModal = ({
         onHide={onHide}
         options={{ containerClass: MODAL_CLASS }}
       >
-        <ModalHeaderPart onHide={onHide} title={_STRINGS.CONSULTANT_INFO} />
+        <ModalHeaderPart onHide={onHide} title={t("advisor.consultantInfo")} />
 
         {isPending ? (
           <AdvisorDetailsSkeleton />
@@ -94,7 +97,7 @@ const AdvisorDetailsModal = ({
                 loading={isContacting}
                 disabled={isContacting}
                 containerClass="w-full"
-                title={_STRINGS.CALL}
+                title={t("common.call")}
                 roundedClass="rounded-full"
                 onClick={() => onContact("tel")}
                 icon={
@@ -113,7 +116,7 @@ const AdvisorDetailsModal = ({
                 loading={isContacting}
                 disabled={isContacting}
                 containerClass="w-full"
-                title={_STRINGS.MESSAGE}
+                title={t("common.message")}
                 roundedClass="rounded-full"
                 onClick={() => onContact("sms")}
                 icon={
@@ -152,7 +155,7 @@ const AdvisorDetailsModal = ({
               width="w-full"
               containerClass="w-full"
               roundedClass="rounded-full"
-              title={_STRINGS.RECORD_SCORE}
+              title={t("advisor.recordScore")}
               onClick={() => setShowRating(true)}
               disabled={!data?.can_user_add_rate}
             />

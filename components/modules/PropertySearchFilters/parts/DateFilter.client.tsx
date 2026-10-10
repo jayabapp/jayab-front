@@ -1,18 +1,21 @@
 "use client";
 
-import type { DateFilterProps } from "@/types/components/modules/property-search-filters";
+import { useTranslations } from "next-intl";
 import { ContentImage } from "@elements/Image";
 import { useState } from "react";
 
+import type { DateFilterProps } from "@/types/components/modules/property-search-filters";
+
 import SearchDateRangePicker from "./DateRangePicker/SearchDateRangePicker.client";
 import updateDateRange from "./DateRangePicker/updateDateRange";
-import _STRINGS from "@/utils/LocalStrings";
-import Modal from "@elements/Modal";
 import moment from "moment-jalaali";
+import Modal from "@elements/Modal";
 
 const DAY_MONTH_FORMAT = "jD  jMMMM";
 
 const DateFilter = ({ filters, setFilters }: DateFilterProps) => {
+  const t = useTranslations();
+
   const [show, setShow] = useState(false);
   const hasRange = !!filters?.checkin && !!filters?.checkout;
 
@@ -27,17 +30,17 @@ const DateFilter = ({ filters, setFilters }: DateFilterProps) => {
       >
         {hasRange ? (
           <span className="text-sm">
-            {_STRINGS.FROM}{" "}
+            {t("common.from")}{" "}
             <span className="text-brand-600">
               {moment(filters?.checkin).format(DAY_MONTH_FORMAT)}
             </span>{" "}
-            {_STRINGS.TO}{" "}
+            {t("common.to")}{" "}
             <span className="text-brand-600">
               {moment(filters?.checkout).format(DAY_MONTH_FORMAT)}
             </span>
           </span>
         ) : (
-          <span className="font-medium">{_STRINGS.PICK_EMPTY_DAYS}</span>
+          <span className="font-medium">{t("listing.pickEmptyDays")}</span>
         )}
 
         {hasRange ? (
@@ -65,7 +68,7 @@ const DateFilter = ({ filters, setFilters }: DateFilterProps) => {
               }));
             }}
           >
-            <span className="text-xs">{_STRINGS.ERASE}</span>
+            <span className="text-xs">{t("listing.erase")}</span>
             <ContentImage
               alt=""
               width={16}

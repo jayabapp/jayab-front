@@ -1,10 +1,12 @@
 "use client";
 
-import type { CityModalProps } from "@/types/components/modules/city-selector";
-import { useCitySelection } from "@features/cities/hooks/useCitySelection";
 import { matchesCitySearch } from "@features/cities/lib/city-selection";
+import { useCitySelection } from "@features/cities/hooks/useCitySelection";
 import { hasMatchingChild } from "@features/cities/lib/city-selection";
+import { useTranslations } from "next-intl";
 import { useEffect } from "react";
+
+import type { CityModalProps } from "@/types/components/modules/city-selector";
 
 import CityModalAllCitiesButton from "./parts/CityModalAllCitiesButton";
 import SelectedCitiesSwiper from "./parts/SelectedCitiesSwiper";
@@ -13,10 +15,9 @@ import CityRowSkeleton from "./parts/CityRowSkeleton";
 import CitySearchInput from "./parts/CitySearchInput";
 import ProvinceCard from "./parts/ProvinceCard";
 import EmptyState from "@elements/EmptyState";
-import _STRINGS from "@/utils/LocalStrings";
 import CityCard from "./parts/CityCard";
-import Button from "@elements/Button";
 import isEmpty from "lodash/isEmpty";
+import Button from "@elements/Button";
 import Modal from "@elements/Modal";
 
 const CityModal = ({
@@ -31,22 +32,24 @@ const CityModal = ({
   onSubmitCustomeCB,
   onSubmitExtendedCB,
 }: CityModalProps) => {
+  const t = useTranslations();
+
   const {
     cities,
-    clearSelected,
+    search,
+    title,
+    submit,
     isLoading,
+    setSearch,
     provinces,
     regionCity,
+    toggleCity,
+    clearSelected,
     removeProvince,
-    search,
     selectedCities,
     selectedProvince,
-    setSearch,
     setSelectedCities,
     setSelectedProvince,
-    submit,
-    title,
-    toggleCity,
     visibleProvinces,
   } = useCitySelection({
     enabled: show,
@@ -77,7 +80,7 @@ const CityModal = ({
 
   const submitTitle =
     item?.submitTitle ||
-    (onSubmitCustomeCB ? _STRINGS.SUBMIT : _STRINGS.SEARCH);
+    (onSubmitCustomeCB ? t("common.submit") : t("search.search"));
 
   return (
     <Modal
@@ -108,8 +111,8 @@ const CityModal = ({
 
         <p>
           {selectedProvince
-            ? `${_STRINGS.CITY_LISTS} ${selectedProvince?.title}`
-            : _STRINGS.PROV_LISTS}
+            ? `${t("search.cityLists")} ${selectedProvince?.title}`
+            : t("search.provLists")}
         </p>
 
         {selectedProvince ? (
@@ -160,7 +163,7 @@ const CityModal = ({
           <Button
             width="w-full"
             variant="outline"
-            title={_STRINGS.RETURN}
+            title={t("search.return")}
             onClick={backToProvinces}
             containerClass="flex w-full items-center justify-center"
           />

@@ -2,18 +2,20 @@
 
 import { useReferralProfile } from "@features/user/hooks/useReferralProfile";
 import { buildInviteShare } from "@features/user/lib/invite-share";
+import { useTranslations } from "next-intl";
 import { ContentImage } from "@elements/Image";
 
-import _STRINGS from "@/utils/LocalStrings";
 import Button from "@elements/Button";
 
 const InvitePanel = () => {
+  const t = useTranslations();
+
   const { data: referral } = useReferralProfile();
 
   const onShare = async () => {
     if (!navigator.share) return;
     try {
-      await navigator.share(buildInviteShare(referral, window.origin));
+      await navigator.share(buildInviteShare(referral, window.origin, t));
     } catch {
       // A dismissed share sheet rejects; that is not an error worth surfacing.
     }
@@ -25,15 +27,15 @@ const InvitePanel = () => {
         width={768}
         height={512}
         className="h-auto w-full"
-        alt={_STRINGS.INVITE_TEXT}
+        alt={t("profile.inviteText")}
         sizes="(min-width: 768px) 40vw, 100vw"
         src="/assets/images/shared/invite_image.png"
       />
-      <p className="text-center">{_STRINGS.INVITE_TEXT}</p>
+      <p className="text-center">{t("profile.inviteText")}</p>
 
       {referral?.is_special ? (
         <div className="flex flex-col w-full items-center justify-center gap-2">
-          <p className="text-sm">{_STRINGS.REFRAL_CODE}</p>
+          <p className="text-sm">{t("common.refralCode")}</p>
           <div className="w-32 h-10 flex items-center justify-center border rounded-10 text-sm">
             <p>{referral?.user?.referral_code}</p>
           </div>
@@ -44,7 +46,7 @@ const InvitePanel = () => {
         width="w-full"
         onClick={onShare}
         containerClass="w-full"
-        title={_STRINGS.SHARE}
+        title={t("common.shareAction")}
       />
     </div>
   );

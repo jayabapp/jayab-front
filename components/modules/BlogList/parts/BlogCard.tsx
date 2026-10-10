@@ -1,11 +1,12 @@
-import { getHomeImageUrl } from "@features/home/mappers/home-image.mapper";
-import type { BlogCardProps } from "@/types/components/modules/blog";
 import { BLOG_IMAGE_QUALITY } from "@features/blog/constants/image";
+import { getHomeImageUrl } from "@features/home/mappers/home-image.mapper";
+import { useTranslations } from "next-intl";
 import { ContentImage } from "@elements/Image";
+
+import type { BlogCardProps } from "@/types/components/modules/blog";
 import type { CSSProperties } from "react";
 
 import BlogCardLink from "./BlogCardLink.client";
-import _STRINGS from "@/utils/LocalStrings";
 import Editable from "@elements/Editable";
 import moment from "moment-jalaali";
 
@@ -15,6 +16,8 @@ const BLOG_IMAGE_SIZES =
   "(min-width: 1536px) 26vw, (min-width: 768px) 30vw, 92vw";
 
 const BlogCard = ({ item, index }: BlogCardProps) => {
+  const t = useTranslations("content");
+
   const href = `/blog/${item?.slug}`;
 
   return (
@@ -62,7 +65,7 @@ const BlogCard = ({ item, index }: BlogCardProps) => {
               <span>{moment(item?.created_at).format("jYYYY/jMM/jDD")}</span>
               {!!item?.view_count ? (
                 <span className="border-r border-neutral-300 pr-2">
-                  {item.view_count} {_STRINGS.VIEW_COUNT_SUFFIX}
+                  {t("views", { count: Number(item.view_count) })}
                 </span>
               ) : (
                 <></>
@@ -70,7 +73,7 @@ const BlogCard = ({ item, index }: BlogCardProps) => {
             </div>
 
             <span className="flex items-center gap-1 font-bold text-brand-600">
-              {_STRINGS.READ_ARTICLE}
+              {t("readArticle")}
               <svg
                 fill="none"
                 aria-hidden="true"

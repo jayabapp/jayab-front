@@ -6,6 +6,7 @@ import { buildLocationLabel } from "@features/cities/lib/location-label";
 import { CitiesSuggestTypes } from "@/enum/cities_suggest.enum";
 import { pickLocationQuery } from "@features/cities/lib/location-label";
 import { useEffect, useRef } from "react";
+import { useLocationWords } from "@features/cities/hooks/useLocationWords";
 import { useCitiesStore } from "@/store";
 import { HomeService } from "@/api_services/home/home.service";
 import { useMutation } from "@tanstack/react-query";
@@ -18,6 +19,7 @@ const MAX_TERM_LENGTH = 80;
 
 export const usePropertySearch = (onNavigate?: () => void) => {
   const router = useRouter();
+  const words = useLocationWords();
   const sequence = useRef(0);
   const controller = useRef<AbortController | null>(null);
 
@@ -61,7 +63,7 @@ export const usePropertySearch = (onNavigate?: () => void) => {
         useCitiesStore.setState({
           locationsData: {
             ...entries,
-            label: buildLocationLabel(entries),
+            label: buildLocationLabel(entries, words),
             path,
             query: pickLocationQuery(data.client_query),
           },

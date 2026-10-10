@@ -1,8 +1,9 @@
-import type { AuthTermsProps } from "@/types/components/modules/auth";
+import { useTranslations } from "next-intl";
 import { Divider } from "@elements/Divider";
 
+import type { AuthTermsProps } from "@/types/components/modules/auth";
+
 import CmsContentSkeleton from "@elements/Skeleton/CmsContentSkeleton";
-import _STRINGS from "@/utils/LocalStrings";
 import Modal from "@elements/Modal";
 import Image from "next/image";
 
@@ -12,11 +13,13 @@ const Terms = ({
   visibleTermsModal,
   setvisibleTermsModal,
 }: AuthTermsProps) => {
+  const t = useTranslations("common");
+
   return (
     <Modal show={visibleTermsModal} onHide={() => setvisibleTermsModal(false)}>
       <div className="app-text">
         <div className="app-text flex justify-between items-center py-3 px-4 sticky top-0 bg-white  z-10">
-          <h3 className="mr-2 font-medium">{_STRINGS.TERMS}</h3>
+          <h3 className="mr-2 font-medium">{t("terms")}</h3>
           <Image
             alt=""
             width={16}
@@ -31,7 +34,7 @@ const Terms = ({
           <CmsContentSkeleton withImage={false} />
         ) : (
           <div
-            className="  bg-neutral-200  font-light text-sm px-2 py-3 rounded-lg  content text-justify mx-2 lg:mx-4 leading-6 my-2 "
+            className="bg-neutral-200 font-light text-sm px-2 py-3 rounded-lg content text-justify mx-2 lg:mx-4 leading-6 my-2 "
             dangerouslySetInnerHTML={{ __html: termsContent?.html || "" }}
           />
         )}

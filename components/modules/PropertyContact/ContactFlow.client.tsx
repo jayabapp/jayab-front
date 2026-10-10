@@ -3,12 +3,12 @@
 import { useContext, useMemo, useRef, useState } from "react";
 import { useAuthStore, useChatStore } from "@/store";
 import { createContext, useCallback } from "react";
+import { contactPrefillValues } from "@features/reservations/lib/contact-prefill";
 import { useStaySearchParams } from "@features/reservations/hooks/useStaySearchParams";
-import { buildGenericPrefill } from "@features/reservations/lib/contact-prefill";
-import { buildContactPrefill } from "@features/reservations/lib/contact-prefill";
 import { useStartOrFindChat } from "@features/chat/hooks/useStartOrFindChat";
 import { trackListingEvent } from "@/helpers/listingAnalytics";
 import { useContactIntent } from "@features/reservations/hooks/useContactIntent";
+import { useTranslations } from "next-intl";
 import { useRouter } from "next/navigation";
 
 import type { ContactFlowAction } from "@/types/components/modules/property-contact";
@@ -30,6 +30,7 @@ export const useContactFlow = () => {
 };
 
 const ContactFlow = ({ children, property }: ContactFlowProps) => {
+  const t = useTranslations();
   const router = useRouter();
   const isLogin = useAuthStore((state) => state.isLogin);
   const { authUrlFor } = useStaySearchParams(property.maxCapacity);
@@ -52,8 +53,11 @@ const ContactFlow = ({ children, property }: ContactFlowProps) => {
               chatDraft: {
                 chatId: `${response.chatroom_id}`,
                 text: stay
-                  ? buildContactPrefill({ ...stay, ...listing })
-                  : buildGenericPrefill(listing),
+                  ? t(
+                      "reserve.contactPrefill",
+                      contactPrefillValues({ ...stay, ...listing }),
+                    )
+                  : t("reserve.contactPrefillGeneric", listing),
               },
             });
             router.push(`/chat/${response.chatroom_id}`);
@@ -61,7 +65,7 @@ const ContactFlow = ({ children, property }: ContactFlowProps) => {
         },
       );
     },
-    [findChat, property.code, property.id, property.title, router],
+    [findChat, property.code, property.id, property.title, router, t],
   );
 
   const open = useCallback(

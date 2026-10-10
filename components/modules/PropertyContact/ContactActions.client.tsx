@@ -4,10 +4,9 @@ import type { ContactActionsProps } from "@/types/components/modules/property-co
 import type { ContactFlowAction } from "@/types/components/modules/property-contact";
 import type { ContactActionItem } from "@/types/components/modules/property-contact";
 
+import { useTranslations } from "next-intl";
 import { useContactFlow } from "./ContactFlow.client";
 import { Icon } from "@elements/Icon";
-
-import _STRINGS from "@/utils/LocalStrings";
 
 const BUTTON_BASE =
   "flex cursor-pointer items-center justify-center rounded-10 font-medium transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-500 focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-60";
@@ -19,6 +18,8 @@ const SECONDARY_TONE =
   "border border-neutral-200 bg-white text-neutral-900 hover:bg-neutral-50";
 
 const ContactActions = ({ context, property }: ContactActionsProps) => {
+  const t = useTranslations();
+
   const { isChatPending, start } = useContactFlow();
   const isExpired = !property.remainingDays;
   const isBar = context.variant === "bar";
@@ -28,39 +29,39 @@ const ContactActions = ({ context, property }: ContactActionsProps) => {
     ? [
         {
           action: "reserve",
-          barLabel: _STRINGS.RESERVE_REQUEST_ACTION,
+          barLabel: t("reserve.reserveRequestAction"),
           icon: "calendar",
           isPrimary: true,
-          label: _STRINGS.RESERVE_REQUEST_ACTION,
+          label: t("reserve.reserveRequestAction"),
         },
       ]
     : [
         {
           action: "call",
-          barLabel: _STRINGS.CALL,
+          barLabel: t("common.call"),
           icon: "phone",
           isPrimary: true,
-          label: _STRINGS.CALL_HOST,
+          label: t("reserve.callHost"),
         },
         {
           action: "sms",
-          barLabel: _STRINGS.SMS,
+          barLabel: t("common.sms"),
           icon: "sms",
-          label: _STRINGS.SMS,
+          label: t("common.sms"),
         },
         {
           action: "reserve",
-          barLabel: _STRINGS.RESERVE_REQUEST_ACTION,
+          barLabel: t("reserve.reserveRequestAction"),
           icon: "calendar",
-          label: _STRINGS.RESERVE_REQUEST_ACTION,
+          label: t("reserve.reserveRequestAction"),
         },
         ...(canChat
           ? [
               {
                 action: "chat" as const,
-                barLabel: _STRINGS.CHAT_IN_JAYAB,
+                barLabel: t("reserve.chatInJayab"),
                 icon: "chat" as const,
-                label: _STRINGS.CHAT_IN_JAYAB,
+                label: t("reserve.chatInJayab"),
               },
             ]
           : []),
@@ -100,8 +101,8 @@ const ContactActions = ({ context, property }: ContactActionsProps) => {
     <div className="flex flex-col gap-3">
       <p className="text-sm font-bold text-neutral-900">
         {isExpired
-          ? _STRINGS.CONTACT_HOST_TITLE_EXPIRED
-          : _STRINGS.CONTACT_HOST_TITLE}
+          ? t("reserve.contactHostTitleExpired")
+          : t("reserve.contactHostTitle")}
       </p>
       <div className="grid grid-cols-2 gap-2">
         {items.map((item, index) => (
@@ -119,8 +120,8 @@ const ContactActions = ({ context, property }: ContactActionsProps) => {
       </div>
       <p className="text-xs text-neutral-500">
         {isExpired
-          ? _STRINGS.EXPIRED_REQUEST_NOTE
-          : _STRINGS.DIRECT_COORDINATION_NOTE}
+          ? t("reserve.expiredRequestNote")
+          : t("reserve.directCoordinationNote")}
       </p>
     </div>
   );

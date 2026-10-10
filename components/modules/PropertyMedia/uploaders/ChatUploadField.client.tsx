@@ -8,9 +8,9 @@ import { BtnLoading } from "@elements/Button";
 import { FormInput } from "@elements/Form";
 import { toast } from "sonner";
 
-import _STRINGS from "@/utils/LocalStrings";
 import Modal from "@elements/Modal";
 import Image from "next/image";
+import { useTranslations } from "next-intl";
 
 const ChatUploader = ({
   link,
@@ -22,6 +22,8 @@ const ChatUploader = ({
   type = "image",
   containerClass,
 }: ChatUploadFieldProps) => {
+  const t = useTranslations("common");
+
   const imagePickerRef = useRef<HTMLInputElement>(null);
   const [loading, setLoading] = useState(false);
   const [subLoading, setSubLoading] = useState(false);
@@ -104,9 +106,9 @@ const ChatUploader = ({
     const file = target?.files ? target?.files[0] : null;
     if (!file) return;
     if (type == "image" && !file.type?.includes("image/"))
-      return toast.error("لطفا از فایل تصویر استفاده نمایید");
+      return toast.error(t("useImageFile"));
     if (type == "image" && file.name.split(".")[1] == "jfif")
-      return toast.error("لطفا از فایل تصویر درست استفاده نمایید");
+      return toast.error(t("useValidImageFile"));
     else {
       if (previewUrl) URL.revokeObjectURL(previewUrl);
       setPreviewUrl(URL.createObjectURL(file));
@@ -190,7 +192,7 @@ const ChatUploader = ({
                 width={1024}
                 height={1024}
                 src={previewUrl}
-                alt="پیش‌نمایش تصویر"
+                alt={t("imagePreview")}
                 sizes="(min-width: 1280px) 25vw, (min-width: 768px) 50vw, 92vw"
                 className="max-h-[60dvh] bg-neutral-800 object-contain xl:max-h-[70dvh]"
               />
@@ -203,7 +205,7 @@ const ChatUploader = ({
           item={{
             inputClass: " !bg-neutral-800 !text-white",
             containerClass: " !bg-neutral-800 px-4",
-            placeholder: _STRINGS.MESSAGE_TEXT,
+            placeholder: t("messageText"),
           }}
         />
         <div className=" w-full grid overflow-clip   p-2 gap-2 items-center  bg-neutral-800  justify-center grid-cols-2 ">
@@ -230,7 +232,7 @@ const ChatUploader = ({
                   className=" items-center justify-center text-center text-green-600 border-green-600 w-5 "
                 />
                 <p className="text-green-600 border-green-600  text-lg font-medium ">
-                  تایید
+                  {t("submit")}
                 </p>
               </>
             )}{" "}
@@ -248,7 +250,7 @@ const ChatUploader = ({
               className="  text-red-600 w-5 "
               src="/assets/icons/adds/red_x_mark.svg"
             />
-            <p className="text-red-600  text-lg font-medium ">بستن</p>
+            <p className="text-red-600  text-lg font-medium ">{t("close")}</p>
           </div>
         </div>
 

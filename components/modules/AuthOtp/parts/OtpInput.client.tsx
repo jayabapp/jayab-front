@@ -1,13 +1,15 @@
 "use client";
 
-import type { OtpInputProps } from "@/types/components/modules/auth";
-
 import { useEffect, useRef, useState } from "react";
+import { useTranslations } from "next-intl";
 import { p2e } from "@/helpers/NumberConverter";
+
+import type { OtpInputProps } from "@/types/components/modules/auth";
 
 const OTP_LENGTH = 4;
 
 const OtpInput = ({ setValue }: OtpInputProps) => {
+  const t = useTranslations();
   const [digits, setDigits] = useState(() =>
     Array<string>(OTP_LENGTH).fill(""),
   );
@@ -55,7 +57,7 @@ const OtpInput = ({ setValue }: OtpInputProps) => {
           ref={(element) => {
             inputRefs.current[index] = element;
           }}
-          aria-label={`رقم ${index + 1} کد ورود`}
+          aria-label={t("auth.otpDigitLabel", { number: index + 1 })}
           autoComplete={index === 0 ? "one-time-code" : "off"}
           autoFocus={index === 0}
           inputMode="numeric"

@@ -1,44 +1,57 @@
-import type { PriceSummaryProps } from "@/types/components/modules/property-booking";
 
-import formatToman from "@/helpers/formatToman";
-import _STRINGS from "@/utils/LocalStrings";
+import { useFormatToman } from "@hooks/useFormatToman";
+import { useTranslations } from "next-intl";
+
+import type { PriceSummaryProps } from "@/types/components/modules/property-booking";
 
 const ROW_CLASS =
   "flex items-center justify-between gap-3 text-sm text-neutral-800";
 
-const PriceSummary = ({ isRefreshing, quote }: PriceSummaryProps) => (
-  <div className={`relative flex flex-col gap-2 transition-opacity motion-reduce:transition-none ${isRefreshing ? "opacity-60" : ""}`} aria-live="polite">
-    {isRefreshing ? <span aria-hidden="true" className="absolute inset-x-0 top-0 h-0.5 bg-brand-500" /> : null}
-    <div className={ROW_CLASS}>
-      <span>
-        {quote.nights} {_STRINGS.NIGHTS_OF_STAY}
-      </span>
-      <span>{formatToman(quote.rent_total)}</span>
-    </div>
+const PriceSummary = ({ isRefreshing, quote }: PriceSummaryProps) => {
+  const formatToman = useFormatToman();
 
-    {quote.extra_guests > 0 ? (
+  const t = useTranslations("reserve");
+
+  return (
+    <div
+      className={`relative flex flex-col gap-2 transition-opacity motion-reduce:transition-none ${isRefreshing ? "opacity-60" : ""}`}
+      aria-live="polite"
+    >
+      {isRefreshing ? (
+        <span
+          aria-hidden="true"
+          className="absolute inset-x-0 top-0 h-0.5 bg-brand-500"
+        />
+      ) : null}
       <div className={ROW_CLASS}>
-        <span>
-          {quote.extra_guests} {_STRINGS.EXTRA_GUESTS_LABEL} × {quote.nights}{" "}
-          {_STRINGS.NIGHT}
-        </span>
-        <span>{formatToman(quote.extra_guest_total)}</span>
+        <span>{t("stayNights", { count: Number(quote.nights) })}</span>
+        <span>{formatToman(quote.rent_total)}</span>
       </div>
-    ) : null}
 
-    <div className="flex items-center justify-between gap-3 border-t border-neutral-200 pt-3 text-base font-bold text-neutral-900">
-      <span>{_STRINGS.APPROX_STAY_COST}</span>
-      <span>{formatToman(quote.stay_total)}</span>
+      {quote.extra_guests > 0 ? (
+        <div className={ROW_CLASS}>
+          <span>
+            {t("extraGuestsCount", { count: Number(quote.extra_guests) })} ×{" "}
+            {t("nights", { count: Number(quote.nights) })}
+          </span>
+          <span>{formatToman(quote.extra_guest_total)}</span>
+        </div>
+      ) : null}
+
+      <div className="flex items-center justify-between gap-3 border-t border-neutral-200 pt-3 text-base font-bold text-neutral-900">
+        <span>{t("approxStayCost")}</span>
+        <span>{formatToman(quote.stay_total)}</span>
+      </div>
+
+      {quote.cleaning_fee > 0 ? (
+        <p className="text-xs text-neutral-500">
+          {t("cleaningFeeConditionalPrefix")}
+          {formatToman(quote.cleaning_fee)}
+          {t("cleaningFeeConditionalSuffix")}
+        </p>
+      ) : null}
     </div>
-
-    {quote.cleaning_fee > 0 ? (
-      <p className="text-xs text-neutral-500">
-        {_STRINGS.CLEANING_FEE_CONDITIONAL_PREFIX}
-        {formatToman(quote.cleaning_fee)}
-        {_STRINGS.CLEANING_FEE_CONDITIONAL_SUFFIX}
-      </p>
-    ) : null}
-  </div>
-);
+  );
+};
 
 export default PriceSummary;

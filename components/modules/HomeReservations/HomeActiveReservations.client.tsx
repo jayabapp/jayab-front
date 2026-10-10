@@ -1,22 +1,25 @@
 "use client";
 
-import { useHomeActiveReserves } from "@features/home/hooks/useHomeActiveReserves";
-import { PROPERTY_IMAGE_QUALITY } from "@features/properties/constants/image";
-import { getHomeImageUrl } from "@features/home/mappers/home-image.mapper";
 import { useAuthStore, useStoreParams } from "@/store";
+import { PROPERTY_IMAGE_QUALITY } from "@features/properties/constants/image";
+import { useHomeActiveReserves } from "@features/home/hooks/useHomeActiveReserves";
+import { getHomeImageUrl } from "@features/home/mappers/home-image.mapper";
+import { useTranslations } from "next-intl";
 import { ContentImage } from "@elements/Image";
 
-import _STRINGS from "@/utils/LocalStrings";
 import isEmpty from "lodash/isEmpty";
 import Link from "next/link";
 
 const HomeActiveReserve = () => {
+  const tr = useTranslations();
+
+  const t = useTranslations("reserve");
+
   const { isLogin } = useAuthStore((state) => state);
   const { activeReserves } = useHomeActiveReserves(isLogin);
 
-  const removeredirectRoomToHome = () => {
-    useStoreParams.setState({ getBackHome: false });
-  };
+  const removeredirectRoomToHome = () => useStoreParams.setState({ getBackHome: false });
+  
   return (
     <>
       {isEmpty(activeReserves) ? (
@@ -27,17 +30,17 @@ const HomeActiveReserve = () => {
             <div className="flex  items-center gap-1">
               <p className=" font-semibold !text-sm  lg:text-black text-white lg:!text-base ">
                 {" "}
-                {activeReserves?.length} درخواست رزرو فعال
+                {tr("reserve.activeRequests", { count: activeReserves?.length ?? 0 })}
               </p>
               <div className=" size-2 mb-3  rounded-full bg-red-700 animate-pulse  duration-700" />
             </div>
             <Link
-              title={_STRINGS.WATCH}
+              title={t("watch")}
               href="/profile/reserves"
               className="flex items-center gap-1.5"
             >
               <p className="text-white lg:text-black !text-sm  lg:!text-base">
-                {_STRINGS.WATCH} همه
+                {t("watch")} {tr("common.allWord")}
               </p>
               <ContentImage
                 alt=""
@@ -74,7 +77,7 @@ const HomeActiveReserve = () => {
                     {/* CODE  - LIKES */}
                     <div className="flex items-center justify-between gap-4">
                       <div className="bg-black/10 font-normal rounded-md text-xs   px-2 py-1  leading-4  flex items-center justify-center">
-                        کد {data?.property?.code}
+                        {tr("common.code")} {data?.property?.code}
                       </div>{" "}
                     </div>
 

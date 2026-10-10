@@ -1,21 +1,23 @@
 "use client";
 
 import { usePropertyImageDownload } from "@features/properties/hooks/usePropertyImageDownload";
+import { useTranslations } from "next-intl";
 
 import type { PropertyImageDownloadButtonProps } from "@/types/components/modules/property-gallery";
 
-import _STRINGS from "@/utils/LocalStrings";
 
 const PropertyImageDownloadButton = ({
   attachmentId,
 }: PropertyImageDownloadButtonProps) => {
+  const t = useTranslations("listing");
+
   const { downloadImage, isDownloading } = usePropertyImageDownload();
 
   return (
     <button
       type="button"
       disabled={isDownloading}
-      aria-label={_STRINGS.DOWNLOAD_IMAGE}
+      aria-label={t("downloadImage")}
       onClick={() => void downloadImage(attachmentId)}
       className="flex h-10 cursor-pointer items-center gap-1.5 rounded-full bg-white/10 px-3 text-xs font-bold text-white transition-colors hover:bg-white/20 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white/60 disabled:cursor-wait disabled:opacity-60"
     >
@@ -35,7 +37,7 @@ const PropertyImageDownloadButton = ({
         <path d="M5 21h14" />
       </svg>
       <span className="hidden sm:inline">
-        {isDownloading ? _STRINGS.DOWNLOADING : _STRINGS.DOWNLOAD}
+        {isDownloading ? t("downloading") : t("download")}
       </span>
     </button>
   );

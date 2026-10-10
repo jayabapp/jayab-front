@@ -14,6 +14,7 @@ import { toast } from "sonner";
 
 import "react-advanced-cropper/dist/style.css";
 import Notify from "@elements/Toast";
+import { useTranslations } from "next-intl";
 
 const MAX_TOTAL_IMAGES = 20;
 
@@ -34,6 +35,8 @@ const NewMultUploader = ({
   imagesLoadings,
   setimagesLoadings,
 }: MultiImageUploadProps) => {
+  const t = useTranslations("common");
+
   const imagePickerRef = useRef<HTMLInputElement>(null);
   const blobUrlsRef = useRef(new Set<string>());
   const uploadControllersRef = useRef(
@@ -108,10 +111,7 @@ const NewMultUploader = ({
       const { status } = normalizeApiError(error);
       Notify({
         type: "error",
-        body:
-          status === 413
-            ? "حجم این تصویر برای آپلود زیاد است."
-            : "آپلود این تصویر ناموفق بود.",
+        body: status === 413 ? t("imageTooLarge") : t("imageUploadFailed"),
       });
       setimagesLoadings((e) => ({ ...e, [id]: 1 }));
       setImages((e) => e?.filter((x) => x?.id != id));
@@ -128,14 +128,14 @@ const NewMultUploader = ({
     if (images.length + files.length > MAX_TOTAL_IMAGES) {
       return Notify({
         type: "error",
-        body: `حداکثر ${MAX_TOTAL_IMAGES} تصویر می‌توانید انتخاب کنید.`,
+        body: t("maxImagesAllowed", { count: MAX_TOTAL_IMAGES }),
       });
     }
 
     if (files.length > 10) {
       return Notify({
         type: "error",
-        body: "در هر تلاش بیشتر از 10 عدد عکس انتخاب نکنید.",
+        body: t("maxPhotosPerTry"),
       });
     }
 
@@ -146,11 +146,11 @@ const NewMultUploader = ({
       let file = files?.[i];
       const id = `id_${file.lastModified}_${Math.random().toString(36).slice(2)}`;
       if (type === "image" && !file.type.includes("image/")) {
-        toast.error("لطفا از فایل تصویر استفاده نمایید");
+        toast.error(t("useImageFile"));
         continue;
       }
       if (type === "image" && file.name.split(".")[1] === "jfif") {
-        toast.error("لطفا از فایل تصویر درست استفاده نمایید");
+        toast.error(t("useValidImageFile"));
         continue;
       }
       loadingsObj[id] = 0;

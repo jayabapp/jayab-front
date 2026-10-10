@@ -2,11 +2,10 @@
 
 import { formatJalaliWeekday } from "@features/reservations/mappers/reservation-dates";
 import { formatJalaliDay } from "@features/reservations/mappers/reservation-dates";
+import { useTranslations } from "next-intl";
 import { Icon } from "@elements/Icon";
 
 import type { StayDateFieldsProps } from "@/types/components/modules/property-booking";
-
-import _STRINGS from "@/utils/LocalStrings";
 
 const FIELD_BASE =
   "flex flex-1 cursor-pointer flex-col items-start gap-0.5 px-3 py-2.5 text-start transition-colors hover:bg-neutral-50 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-inset focus-visible:ring-brand-500 disabled:cursor-not-allowed";
@@ -19,9 +18,11 @@ const StayDateFields = ({
   disabled,
   activeField,
 }: StayDateFieldsProps) => {
+  const t = useTranslations("reserve");
+
   const fields = [
-    { id: "checkIn", label: _STRINGS.CHECKIN_DATE, value: start },
-    { id: "checkOut", label: _STRINGS.CHECKOUT_DATE, value: end },
+    { id: "checkIn", label: t("checkinDate"), value: start },
+    { id: "checkOut", label: t("checkoutDate"), value: end },
   ] as const;
 
   return (
@@ -46,7 +47,7 @@ const StayDateFields = ({
           <span
             className={`text-sm ${field.value ? "font-semibold text-neutral-900" : "text-neutral-400"}`}
           >
-            {field.value ? formatJalaliDay(field.value) : _STRINGS.EMPTY_DATE}
+            {field.value ? formatJalaliDay(field.value) : t("emptyDate")}
           </span>
           {field.value ? (
             <span className="text-xs text-neutral-500">

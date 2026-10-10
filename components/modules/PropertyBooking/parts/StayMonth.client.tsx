@@ -4,19 +4,21 @@ import { useEffect, useMemo, useRef, useState } from "react";
 import { nightsBetween, toDayKey } from "@features/reservations/lib/stay-range";
 import { formatJalaliWeekdayDay } from "@features/reservations/mappers/reservation-dates";
 import { usePropertyCalendar } from "@features/properties/hooks/usePropertyCalendar";
+import { useListSeparator } from "@hooks/useListSeparator";
+import { useTranslations } from "next-intl";
+import { useFormatToman } from "@hooks/useFormatToman";
 import { dayRangeState } from "@features/reservations/lib/stay-range";
 import { isDayDisabled } from "@features/reservations/lib/stay-range";
 
 import { type KeyboardEvent } from "react";
+
 import type { StayMonthProps } from "@/types/components/modules/property-booking";
 
 import formatCalendarCellPrice from "@/helpers/formatCalendarCellPrice";
-import formatToman from "@/helpers/formatToman";
 import StayDayCell from "./StayDayCell";
-import _STRINGS from "@/utils/LocalStrings";
 import moment from "moment-jalaali";
 
-const WEEKDAYS = ["ش", "ی", "د", "س", "چ", "پ", "ج"];
+const WEEKDAYS = ["Sat", "Sun", "Mon", "Tue", "Wed", "Thu", "Fri"] as const;
 const JALALI_PARSE = "jYYYY/jM/jD";
 
 const StayMonth = ({
@@ -29,6 +31,12 @@ const StayMonth = ({
   propertyId,
   onSelectDay,
 }: StayMonthProps) => {
+  const formatToman = useFormatToman();
+
+  const t = useTranslations("reserve");
+  const sep = useListSeparator();
+  const tCalendar = useTranslations("calendar");
+
   const ref = useRef<HTMLDivElement>(null);
   const [seen, setSeen] = useState(!lazy);
 
@@ -59,10 +67,6 @@ const StayMonth = ({
   const daysInMonth = moment.jDaysInMonth(year, month - 1);
   const weekdayOfFirst = (first.day() + 1) % 7;
 
-  // Always render every day of the month, 1 through the last — a full grid
-  // reads as a complete calendar even when most of it is disabled. Past days
-  // stay in the grid but greyed out via `isDayDisabled`; they are never
-  // dropped from the layout.
   const firstDay = 1;
   const lead = weekdayOfFirst;
 
@@ -116,7 +120,7 @@ const StayMonth = ({
             key={weekday}
             className="text-center text-xs font-bold text-neutral-500"
           >
-            {weekday}
+            {tCalendar(`short${weekday}`)}
           </p>
         ))}
       </div>
@@ -144,33 +148,33 @@ const StayMonth = ({
           const isDisabled = isDayDisabled(date, range, reserved, today);
           const isFriday = moment(date).day() === 5;
           const availability = isReserved
-            ? _STRINGS.DAY_RESERVED
+            ? t("dayReserved")
             : isDisabled
-              ? _STRINGS.DAY_UNAVAILABLE
-              : _STRINGS.DAY_AVAILABLE;
-          const priceLabel = price ? `، ${formatToman(price)}` : "";
+              ? t("dayUnavailable")
+              : t("dayAvailable");
+          const priceLabel = price ? `${sep}${formatToman(price)}` : "";
 
           return (
             <StayDayCell
               key={day}
               day={day}
               row={row}
-              column={column}
               state={state}
-              isReserved={isReserved}
-              isPeak={!!entry?.is_peak}
-              price={formatCalendarCellPrice(price)}
-              onSelect={() => onSelectDay(date)}
-              onKeyDown={(event) => onDayKeyDown(event, date)}
-              dateKey={toDayKey(date)}
-              isLoading={isCalendarPending}
-              label={`${formatJalaliWeekdayDay(date)}${priceLabel}، ${availability}`}
-              discounted={!!entry?.discounted_price}
-              disabled={isDisabled}
+              column={column}
               isFriday={isFriday}
+              disabled={isDisabled}
+              isReserved={isReserved}
+              dateKey={toDayKey(date)}
+              isPeak={!!entry?.is_peak}
+              isLoading={isCalendarPending}
+              onSelect={() => onSelectDay(date)}
+              discounted={!!entry?.discounted_price}
+              price={formatCalendarCellPrice(price)}
+              onKeyDown={(event) => onDayKeyDown(event, date)}
+              label={`${formatJalaliWeekdayDay(date)}${priceLabel}${sep}${availability}`}
               tooltip={
                 state === "end" && stayNights
-                  ? `${stayNights} ${_STRINGS.NIGHTS_OF_STAY}`
+                  ? `${t("stayNights", { count: Number(stayNights) })}`
                   : undefined
               }
             />

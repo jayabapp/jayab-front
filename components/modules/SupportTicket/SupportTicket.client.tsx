@@ -1,22 +1,26 @@
 "use client";
 
 import { useReplyToSupportTicket } from "@features/support/hooks/useReplyToSupportTicket";
-import type { SupportTicketModuleProps } from "@/types/features/support/components";
-import { type SupportFormErrors } from "@features/support/model/support.schema";
 import { getSupportFormErrors } from "@features/support/model/support.schema";
-import { useSupportTicket } from "@features/support/hooks/useSupportTicket";
+import { useEffect, useState } from "react";
 import { supportReplySchema } from "@features/support/model/support.schema";
 import { MultiLineFormInput } from "@elements/Form";
-import { useEffect, useState } from "react";
+import { useSupportTicket } from "@features/support/hooks/useSupportTicket";
+import { useTranslations } from "next-intl";
 import { useStoreSocket } from "@/store";
+
+import { type SupportFormErrors } from "@features/support/model/support.schema";
+
+import type { SupportTicketModuleProps } from "@/types/features/support/components";
 
 import TicketDetailsSkeleton from "./parts/TicketDetailsSkeleton";
 import TicketMessage from "./parts/TicketMessage";
-import _STRINGS from "@/utils/LocalStrings";
 import Button from "@elements/Button";
 import Modal from "@elements/Modal";
 
 const SupportTicket = ({ ticketId }: SupportTicketModuleProps) => {
+  const t = useTranslations();
+
   const { notification } = useStoreSocket((state) => state);
   const [message, setMessage] = useState("");
   const [errors, setErrors] = useState<SupportFormErrors>({});
@@ -30,7 +34,7 @@ const SupportTicket = ({ ticketId }: SupportTicketModuleProps) => {
       supportReplySchema.validateSync({ message }, { abortEarly: false });
       setErrors({});
     } catch (error) {
-      setErrors(getSupportFormErrors(error));
+      setErrors(getSupportFormErrors(error, t));
       return;
     }
 
@@ -64,7 +68,7 @@ const SupportTicket = ({ ticketId }: SupportTicketModuleProps) => {
           role="alert"
           className="rounded-lg bg-danger-50 p-4 text-sm text-danger-500"
         >
-          {_STRINGS.SUPPORT_DETAILS_ERROR}
+          {t("profile.supportDetailsError")}
         </div>
       ) : (
         <>
@@ -86,8 +90,8 @@ const SupportTicket = ({ ticketId }: SupportTicketModuleProps) => {
               disabled={ticket?.status === 100}
               title={
                 ticket?.status === 100
-                  ? _STRINGS.TICKET_CLOSED
-                  : _STRINGS.ANSWER_MESSAGE
+                  ? t("profile.ticketClosed")
+                  : t("profile.answerMessage")
               }
               onClick={() => setVisibleModal(true)}
               width="!w-full !border !border-white"
@@ -97,8 +101,8 @@ const SupportTicket = ({ ticketId }: SupportTicketModuleProps) => {
               <div className="flex flex-col gap-4 px-3 py-5">
                 <MultiLineFormInput
                   item={{
-                    title: _STRINGS.MESSAGE_TEXT,
-                    placeholder: _STRINGS.WRITE_MESSAGE_TEXT,
+                    title: t("common.messageText"),
+                    placeholder: t("profile.writeMessageText"),
                     isMandatory: true,
                     maxLength: 5000,
                     rows: 6,
@@ -113,7 +117,7 @@ const SupportTicket = ({ ticketId }: SupportTicketModuleProps) => {
                 ) : null}
                 <Button
                   width="w-full"
-                  title={_STRINGS.SEND}
+                  title={t("common.send")}
                   loading={isReplyPending}
                   disabled={isReplyPending}
                   onClick={handleSubmitMessage}

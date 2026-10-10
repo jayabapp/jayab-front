@@ -1,25 +1,28 @@
 "use client";
 
-import type { OwnerPropertyRouteProps } from "@/types/components/modules/owner-property";
-import { getPropertyImageUrl } from "@features/properties/mappers/property-image.mapper";
-import { useOwnerProperty } from "@features/owner-property/hooks/useOwnerProperty";
-import { upcomingWeekDays } from "@features/owner-property/lib/upcoming-week";
 import { PropertyDetailsSkeleton } from "@modules/PropertyDetails";
+import { getPropertyImageUrl } from "@features/properties/mappers/property-image.mapper";
 import { DaysOfTheWeekStatus } from "@modules/PropertyGrid";
-import { ShareImageItem } from "@modules/PropertyGallery";
 import { MultiLineFormInput } from "@elements/Form";
-import { ContentImage } from "@elements/Image";
 import { useMemo, useState } from "react";
+import { upcomingWeekDays } from "@features/owner-property/lib/upcoming-week";
+import { useOwnerProperty } from "@features/owner-property/hooks/useOwnerProperty";
+import { useTranslations } from "next-intl";
+import { ShareImageItem } from "@modules/PropertyGallery";
+import { ContentImage } from "@elements/Image";
+
+import type { OwnerPropertyRouteProps } from "@/types/components/modules/owner-property";
 
 import ElementToImage from "./parts/ElementToImage.client";
-import _STRINGS from "@/utils/LocalStrings";
 import moment from "moment-jalaali";
 
 moment.loadPersian();
 
 const OwnerPropertyInquiry = ({ propertyId }: OwnerPropertyRouteProps) => {
+  const t = useTranslations();
+
   const { data: property, isLoading } = useOwnerProperty(propertyId);
-  const week = useMemo(() => upcomingWeekDays(), []);
+  const week = useMemo(() => upcomingWeekDays(t), [t]);
   const [description, setDescription] = useState("");
   const [selectedImageId, setSelectedImageId] = useState<number | null>(null);
 
@@ -59,13 +62,13 @@ const OwnerPropertyInquiry = ({ propertyId }: OwnerPropertyRouteProps) => {
 
           <div className="w-full flex items-center gap-5">
             <div className="flex flex-row items-center gap-2 justify-start">
-              <p className="text-xs shrink-0">{_STRINGS.TODAY_STATUS} :</p>
+              <p className="text-xs shrink-0">{t("common.todayStatus")} :</p>
               <p
                 className={`font-bold ${property?.is_today_reserved ? "text-danger-500" : "text-brand-600"}`}
               >
                 {property?.is_today_reserved
-                  ? _STRINGS.OCCUPIED
-                  : _STRINGS.EMPTY}
+                  ? t("owner.occupied")
+                  : t("common.emptySlot")}
               </p>
             </div>
             <div className="flex items-start gap-1">
@@ -87,7 +90,7 @@ const OwnerPropertyInquiry = ({ propertyId }: OwnerPropertyRouteProps) => {
 
           {description ? (
             <div className="w-full flex flex-col gap-2">
-              <p>{_STRINGS.DESCRIPTION} :</p>
+              <p>{t("owner.description")} :</p>
               <p className="w-full whitespace-pre-wrap break-words">
                 {description}
               </p>
@@ -101,8 +104,8 @@ const OwnerPropertyInquiry = ({ propertyId }: OwnerPropertyRouteProps) => {
           item={{
             containerClass: "w-full",
             inputClass: "w-full",
-            placeholder: _STRINGS.YOUR_TEXT,
-            title: _STRINGS.DESCRIPTION,
+            placeholder: t("owner.yourText"),
+            title: t("owner.description"),
           }}
         />
 
@@ -114,13 +117,13 @@ const OwnerPropertyInquiry = ({ propertyId }: OwnerPropertyRouteProps) => {
             className="w-5 h-5 aspect-square"
             src="/assets/icons/property/alert_icon.svg"
           />
-          <p>{_STRINGS.SHARE_PROP_MESSAGE}</p>
+          <p>{t("owner.sharePropMessage")}</p>
         </div>
       </div>
 
       <div className="grid grid-cols-4 w-full order-1 md:order-2 gap-2 border-b pb-4 md:border-0">
         <div className="w-full col-span-full mb-2">
-          {_STRINGS.SELECT_YOUR_IMAGE} :
+          {t("owner.selectYourImage")} :
         </div>
         {property?.images?.map((image) => (
           <ShareImageItem

@@ -7,6 +7,7 @@ import { Metadata } from "next";
 import MehaHeaderHelper from "@/helpers/MetaHeaderHelper";
 import BlogListTemplate from "@templates/BlogList";
 import getQueryClient from "@lib/query/query-client";
+import IntlNamespaces from "@/i18n/IntlNamespaces";
 
 export async function generateMetadata(): Promise<Metadata> {
   const { data: blogContent } = await getServerContentCategory("blog");
@@ -24,9 +25,11 @@ const BlogsPage = async () => {
   }
 
   return (
-    <HydrationBoundary state={dehydrate(queryClient)}>
-      <BlogListTemplate />
-    </HydrationBoundary>
+    <IntlNamespaces namespaces={["content"]}>
+      <HydrationBoundary state={dehydrate(queryClient)}>
+        <BlogListTemplate />
+      </HydrationBoundary>
+    </IntlNamespaces>
   );
 };
 

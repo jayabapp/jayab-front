@@ -1,19 +1,21 @@
 "use client";
 
 import { useCancelAdvisorSubscription } from "@features/advisors/hooks/useAdvisorSubscription";
+import { useRouter, useSearchParams } from "next/navigation";
 import { useAdvisorPlanCheckout } from "@features/advisors/hooks/useAdvisorPlanCheckout";
 import { useAdvisorProfile } from "@features/advisors/hooks/useAdvisorProfile";
 import { useAdvisorPlans } from "@features/advisors/hooks/useAdvisorPlans";
-import { useRouter, useSearchParams } from "next/navigation";
+import { useTranslations } from "next-intl";
 import { useState } from "react";
 
-import AdvisorSubscriptionStatus from "./parts/AdvisorSubscriptionStatus.client";
 import AdvisorSubscriptionSkeleton from "./AdvisorSubscriptionSkeleton";
-import ConfirmModal from "@elements/Modal/ConfirmModal.client";
+import AdvisorSubscriptionStatus from "./parts/AdvisorSubscriptionStatus.client";
 import AdvisorPlanCard from "./parts/AdvisorPlanCard.client";
-import _STRINGS from "@/utils/LocalStrings";
+import ConfirmModal from "@elements/Modal/ConfirmModal.client";
 
 const AdvisorSubscription = () => {
+  const t = useTranslations();
+
   const router = useRouter();
   const searchParams = useSearchParams();
   const payKey = searchParams.get("pay_key");
@@ -52,7 +54,7 @@ const AdvisorSubscription = () => {
       {profile?.admin_description ? (
         <div className="w-full flex items-center justify-center">
           <p className="text-sm text-danger-500">
-            {_STRINGS.ADMIN_DESCRIPTION} : {profile.admin_description}
+            {t("advisor.adminDescription")} : {profile.admin_description}
           </p>
         </div>
       ) : null}
@@ -73,11 +75,11 @@ const AdvisorSubscription = () => {
       ) : null}
 
       <ConfirmModal
-        hideText={_STRINGS.BACK}
+        hideText={t("common.back")}
         isVisible={showRegisterFirst}
-        confirmText={_STRINGS.CONTINUE}
+        confirmText={t("advisor.continue")}
         onHide={() => setShowRegisterFirst(false)}
-        text={`${_STRINGS.BUY_REQUIRES_REGISTRATION_PREFIX} ${specialPlanTitle} ${_STRINGS.BUY_REQUIRES_REGISTRATION_SUFFIX}`}
+        text={`${t("advisor.buyRequiresRegistrationPrefix")} ${specialPlanTitle} ${t("advisor.buyRequiresRegistrationSuffix")}`}
         onConfirm={() =>
           router.push("/profile/advisor/subscription/is-especial")
         }
@@ -87,7 +89,7 @@ const AdvisorSubscription = () => {
         isVisible={showCancel}
         isLoading={isCancelling}
         onHide={() => setShowCancel(false)}
-        text={_STRINGS.ARE_U_SURE_CANCEL_ADVISOR_SUB}
+        text={t("advisor.areUSureCancelAdvisorSub")}
         headerImage="/assets/images/shared/red_crossed_sheet.png"
         confirmTextClassName=" !bg-danger-500 text-white !rounded-full "
         hideTextClassName=" !border-danger-500 border !bg-white !text-danger-500 !rounded-full "

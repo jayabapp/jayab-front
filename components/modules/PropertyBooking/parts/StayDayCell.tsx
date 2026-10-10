@@ -30,7 +30,6 @@ const StayDayCell = ({
 }: StayDayCellProps) => {
   const isEdge = state === "start" || state === "end";
   const blocked = disabled && !isEdge;
-  // Precedence (FEATURE.md §4.6): selected > reserved/disabled > Friday > normal.
   const isPlainFriday = isFriday && !isEdge && !blocked;
   const skin = isEdge
     ? STATE_CLASS[state]
@@ -40,12 +39,6 @@ const StayDayCell = ({
         ? "text-neutral-300"
         : STATE_CLASS[state];
 
-  // Collision-aware tooltip (FEATURE.md §11.1): flip below the cell in the
-  // first grid row so it doesn't get clipped by the sheet header above, and
-  // anchor to the physical edge in the first/last column instead of
-  // centering so it can't run off either side of a 320px viewport. Columns
-  // are DOM order, and this grid renders under dir="rtl", so column 0 sits
-  // at the physical right edge and column 6 at the physical left edge.
   const verticalClass = row === 0 ? "top-full mt-1" : "bottom-full mb-1";
   const horizontalClass =
     column === 0

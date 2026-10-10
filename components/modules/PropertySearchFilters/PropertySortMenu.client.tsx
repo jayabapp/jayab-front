@@ -1,29 +1,37 @@
 "use client";
 
-import type { PropertySortMenuProps } from "@/types/components/modules/property-search-filters";
 import { Menu, MenuButton, MenuItem, MenuItems } from "@headlessui/react";
 import { usePathname, useRouter } from "next/navigation";
-import { SORT_TYPES } from "@/utils/constantss";
+import { useTranslations } from "next-intl";
 import { ContentImage } from "@elements/Image";
 import { useStoreInit } from "@/store";
+import { SORT_TYPES } from "@/utils/constantss";
+
+import type { PropertySortMenuProps } from "@/types/components/modules/property-search-filters";
 
 import queryBuilder from "@/helpers/queryBuilder";
-import _STRINGS from "@/utils/LocalStrings";
 
 const ADVISOR_ONLY_SORT = "commission_desc";
 
 const PropertySortMenu = ({ query }: PropertySortMenuProps) => {
+  const t = useTranslations("listing");
+  const tr = useTranslations();
+
   const router = useRouter();
   const pathname = usePathname();
   const { userInfo } = useStoreInit((state) => state);
 
+  const allSortTypes = SORT_TYPES.map(({ titleKey, ...type }) => ({
+    ...type,
+    title: tr(titleKey),
+  }));
   const sortTypes = userInfo?.advisor_id
-    ? SORT_TYPES
-    : SORT_TYPES.filter((entry) => entry?.id !== ADVISOR_ONLY_SORT);
+    ? allSortTypes
+    : allSortTypes.filter((entry) => entry?.id !== ADVISOR_ONLY_SORT);
 
   const activeSort =
     sortTypes.find((entry) => entry?.id === query?.sort_type) ||
-    SORT_TYPES?.[0];
+    allSortTypes[0];
 
   const setSort = (id?: string | number | null) => {
     const body: Record<string, unknown> = { ...query };
@@ -55,7 +63,7 @@ const PropertySortMenu = ({ query }: PropertySortMenuProps) => {
         >
           <div className="flex gap-2 px-3 items-center flex-col py-2 border-b border-neutral-200">
             <div className="w-full flex items-center justify-between py-1">
-              <p className="text-sm">{_STRINGS.SORT_BY}</p>
+              <p className="text-sm">{t("sortBy")}</p>
             </div>
 
             {sortTypes.map((entry, index) => (

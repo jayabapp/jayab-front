@@ -1,16 +1,17 @@
 "use client";
 
-import type { BlogShareProps } from "@/types/components/modules/blog";
-import { isMobile } from "react-device-detect";
 import { useEffect, useState } from "react";
+import { useTranslations } from "next-intl";
+import { isMobile } from "react-device-detect";
 
-import _STRINGS from "@/utils/LocalStrings";
+import type { BlogShareProps } from "@/types/components/modules/blog";
+
 import Notify from "@elements/Toast";
 import Image from "next/image";
 
 const BlogShare = ({ data }: BlogShareProps) => {
+  const t = useTranslations("content");
   const [url, setUrl] = useState("");
-
   useEffect(() => {
     const getURL = () => {
       const url = window.location.href;
@@ -39,7 +40,7 @@ const BlogShare = ({ data }: BlogShareProps) => {
     navigator.clipboard.writeText(url);
     Notify({
       type: "success",
-      body: _STRINGS.BLOG_LINK_COPIED,
+      body: t("blogLinkCopied"),
     });
   };
 
@@ -47,7 +48,7 @@ const BlogShare = ({ data }: BlogShareProps) => {
     <button
       type="button"
       onClick={() => void onShare()}
-      title={_STRINGS.BLOG_SHARE}
+      title={t("blogShare")}
       className="flex items-center gap-1.5 rounded-full bg-brand-50 px-3 py-1.5 text-xs font-bold text-brand-600 transition-colors hover:bg-brand-100"
     >
       <Image
@@ -57,7 +58,7 @@ const BlogShare = ({ data }: BlogShareProps) => {
         className="h-4 w-4"
         src="/assets/icons/blogs/share.svg"
       />
-      {_STRINGS.BLOG_SHARE}
+      {t("blogShare")}
     </button>
   );
 };

@@ -12,11 +12,11 @@ import { useMemo, useState } from "react";
 import SkeletonText from "@elements/Skeleton/SkeletonText";
 import OwnerPriceRangeField from "./OwnerPriceRangeField";
 import useCmsContent from "@/hooks/useCmsContent";
-import _STRINGS from "@/utils/LocalStrings";
 import CmsText from "@elements/CmsText";
 import Button from "@elements/Button";
 import Notify from "@elements/Toast";
 import Modal from "@elements/Modal";
+import { useTranslations } from "next-intl";
 
 const MAX_PROPERTY_PRICE = 1000000000;
 const DEFAULT_SLIDER_MAX = 20000000;
@@ -29,6 +29,8 @@ const OwnerDayPriceModal = ({
   selectedDates,
   selectedDaysData,
 }: OwnerDayPriceModalProps) => {
+  const t = useTranslations();
+
   const selectedDays = useMemo(
     () => toJalaaliDays(selectedDates),
     [selectedDates],
@@ -90,7 +92,7 @@ const OwnerDayPriceModal = ({
   const onSubmit = () => {
     if (isPending) return;
     if (current.hasDiscount && current.discount >= current.price) {
-      Notify({ body: _STRINGS.DISCOUNT_BIGGER_THAN_PRICE, type: "warn" });
+      Notify({ body: t("owner.discountBiggerThanPrice"), type: "warn" });
       return;
     }
     mutate(
@@ -116,7 +118,7 @@ const OwnerDayPriceModal = ({
 
   const selectedDaysTitle =
     selectedDays.length > 1
-      ? `${selectedDays.length} ${_STRINGS.SELECTED_DAYS_COUNT}`
+      ? `${t("owner.selectedDays", { count: Number(selectedDays.length) })}`
       : selectedDates[0] || "";
 
   return (
@@ -130,7 +132,7 @@ const OwnerDayPriceModal = ({
           src="/assets/icons/property/price_label.svg"
         />
         <p className="text-sm font-bold text-brand-600">
-          {_STRINGS.IMMEDIATE_CHANGE}
+          {t("owner.immediateChange")}
         </p>
         {isLoading ? (
           <SkeletonText lines={3} />
@@ -145,7 +147,7 @@ const OwnerDayPriceModal = ({
           min={minPrice}
           max={sliderCeiling}
           value={current.price}
-          title={`${_STRINGS.PRICE} ${selectedDaysTitle}`}
+          title={`${t("common.price")} ${selectedDaysTitle}`}
           setValue={(value) => applyPrice(value, "price")}
         />
 
@@ -159,7 +161,7 @@ const OwnerDayPriceModal = ({
           src="/assets/icons/property/discount_label.svg"
         />
         <p className="text-sm font-bold text-brand-600">
-          {_STRINGS.DISCOUNTED_PRICE_TITLE}
+          {t("owner.discountedPriceTitle")}
         </p>
         {isDiscountLoading ? (
           <SkeletonText lines={3} />
@@ -171,7 +173,7 @@ const OwnerDayPriceModal = ({
 
         <Checkbox
           isChecked={current.hasDiscount}
-          title={_STRINGS.APPLY_DISCOUNT}
+          title={t("owner.applyDiscount")}
           onSelect={() =>
             setDraft((previous) => ({
               ...previous,
@@ -186,7 +188,7 @@ const OwnerDayPriceModal = ({
             max={sliderCeiling}
             value={current.discount}
             setValue={(value) => applyPrice(value, "discount")}
-            title={`${_STRINGS.DISCOUNTED_PRICE_TITLE} ${selectedDaysTitle}`}
+            title={`${t("owner.discountedPriceTitle")} ${selectedDaysTitle}`}
           />
         ) : null}
 
@@ -198,7 +200,7 @@ const OwnerDayPriceModal = ({
           disabled={isPending}
           containerClass="w-full"
           roundedClass="rounded-full"
-          title={_STRINGS.RECORD_CHANGES}
+          title={t("owner.recordChanges")}
         />
       </div>
     </Modal>

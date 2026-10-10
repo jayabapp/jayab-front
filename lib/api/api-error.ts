@@ -1,4 +1,5 @@
 import axios from "axios";
+import { translateMessage } from "@lib/i18n/browser-translator";
 
 export type ApiErrorDetails = {
   code?: string;
@@ -27,7 +28,9 @@ export const normalizeApiError = (error: unknown): ApiError => {
 
   if (axios.isAxiosError<ApiErrorDetails>(error)) {
     const data = error.response?.data;
-    return new ApiError(data?.messages?.fa || error.message || "خطایی در ارتباط با سرور رخ داده است", {
+    return new ApiError(data?.messages?.fa ||
+        error.message ||
+        translateMessage("errors.connection"), {
       status: error.response?.status,
       code: data?.code || error.code,
       details: data?.details || data,
@@ -35,5 +38,5 @@ export const normalizeApiError = (error: unknown): ApiError => {
   }
 
   if (error instanceof Error) return new ApiError(error.message);
-  return new ApiError("خطایی ناشناخته رخ داده است", { details: error });
+  return new ApiError(translateMessage("errors.unknown"), { details: error });
 };

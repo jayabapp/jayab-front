@@ -1,15 +1,17 @@
 "use client";
 
-import { useTogglePropertyBookmark } from "@features/properties/hooks/useTogglePropertyBookmark";
-import type { PropertyBookmarkButtonProps } from "@/types/components/modules/property-details";
 import { useAuthStore, useStoreParams } from "@/store";
+import { useTogglePropertyBookmark } from "@features/properties/hooks/useTogglePropertyBookmark";
+import { useTranslations } from "next-intl";
 import { ContentImage } from "@elements/Image";
 
-import _STRINGS from "@/utils/LocalStrings";
+import type { PropertyBookmarkButtonProps } from "@/types/components/modules/property-details";
 
 const PropertyBookmarkButton = ({
   propertyId,
 }: PropertyBookmarkButtonProps) => {
+  const t = useTranslations("listing");
+
   const { bookmarks } = useStoreParams((state) => state);
   const { isLogin } = useAuthStore((state) => state);
   const { mutate, isPending } = useTogglePropertyBookmark(propertyId);
@@ -20,7 +22,7 @@ const PropertyBookmarkButton = ({
       type="button"
       disabled={isPending}
       aria-pressed={isBookmarked}
-      aria-label={_STRINGS.BOOKMARKS}
+      aria-label={t("bookmarks")}
       className="w-5 cursor-pointer h-5 aspect-square"
       onClick={() => {
         if (isLogin) mutate();

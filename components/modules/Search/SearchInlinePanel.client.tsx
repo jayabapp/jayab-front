@@ -1,13 +1,14 @@
 "use client";
 
-import type { SearchInlinePanelProps } from "@/types/components/modules/search";
+import { useTranslations } from "next-intl";
 import { useSearchPanel } from "@features/search/hooks/useSearchPanel";
 import { useCitiesStore } from "@/store";
 import { useCallback } from "react";
 
+import type { SearchInlinePanelProps } from "@/types/components/modules/search";
+
 import SearchPanelInput from "./parts/SearchPanelInput.client";
 import SearchPanelBody from "./parts/SearchPanelBody.client";
-import _STRINGS from "@/utils/LocalStrings";
 
 const SearchInlinePanel = ({
   isActive,
@@ -15,8 +16,11 @@ const SearchInlinePanel = ({
   onSubmitTerm,
   onTermChange,
   boxId = "HERO_SHEET_SEARCH",
-  placeholder = _STRINGS.HERO_WHERE_PLACEHOLDER,
+  placeholder: placeholderProp,
 }: SearchInlinePanelProps) => {
+  const t = useTranslations();
+
+  const placeholder = placeholderProp ?? t("search.heroWherePlaceholder");
   const onPickOption = useCallback(
     (option?: Parameters<NonNullable<typeof onPickPlace>>[0]) => {
       if (!option) return;
@@ -82,17 +86,17 @@ const SearchInlinePanel = ({
 
       <SearchPanelBody
         term={term}
-        listId={listId}
         hideCityList
         onPick={pick}
         onClose={close}
+        listId={listId}
         options={options}
         listRef={listRef}
         isStale={isStale}
         isLoading={isLoading}
-        onTermChange={onChangeTerm}
         onHover={setActiveIndex}
         activeIndex={activeIndex}
+        onTermChange={onChangeTerm}
       />
     </div>
   );

@@ -10,10 +10,10 @@ import { useState } from "react";
 import SkeletonText from "@elements/Skeleton/SkeletonText";
 import useCmsContent from "@/hooks/useCmsContent";
 import RangeWithTitle from "@elements/Slider";
-import _STRINGS from "@/utils/LocalStrings";
 import CmsText from "@elements/CmsText";
 import Button from "@elements/Button";
 import Modal from "@elements/Modal";
+import { useTranslations } from "next-intl";
 
 const COMMISSION_MARKS = {
   0: { label: "0", style: { color: colors.neutral[400], paddingTop: 15 } },
@@ -29,6 +29,8 @@ const OwnerDayCommissionModal = ({
   onHide,
   property,
 }: OwnerSingleDayModalProps) => {
+  const t = useTranslations("owner");
+
   const {
     commission: { mutate, isPending },
   } = useOwnerCalendarActions(property?.id ?? "");
@@ -70,7 +72,7 @@ const OwnerDayCommissionModal = ({
           src="/assets/icons/property/hand_shake_money.svg"
         />
         <p className="text-sm font-bold text-brand-600">
-          {_STRINGS.CHANGE_ADVISOR_COMMISSION}
+          {t("changeAdvisorCommission")}
         </p>
         {isLoading ? (
           <SkeletonText lines={3} />
@@ -82,7 +84,7 @@ const OwnerDayCommissionModal = ({
 
         <div className="flex flex-col gap-3 text-brand-600 pt-6 pb-10">
           <div className="flex items-center justify-between">
-            <span>{_STRINGS.COMITION_PERC}</span>
+            <span>{t("comitionPerc")}</span>
             <span>{current.value} %</span>
           </div>
           <RangeWithTitle
@@ -105,7 +107,7 @@ const OwnerDayCommissionModal = ({
           disabled={isPending}
           containerClass="w-full"
           roundedClass="rounded-full"
-          title={_STRINGS.RECORD_CHANGES}
+          title={t("recordChanges")}
         />
       </div>
     </Modal>

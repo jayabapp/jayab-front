@@ -4,19 +4,20 @@ import { mapAdvisorProfileToForm } from "@features/advisors/mappers/advisor-prof
 import { mapAdvisorFormToRequest } from "@features/advisors/mappers/advisor-profile.mapper";
 import { findMissingAdvisorField } from "@features/advisors/mappers/advisor-profile.mapper";
 import { useUpsertAdvisorProfile } from "@features/advisors/hooks/useUpsertAdvisorProfile";
-import type { AdvisorProfileFormProps } from "@/types/components/modules/advisors";
-import type { AdvisorFormBodyProps } from "@/types/components/modules/advisors";
 import { useAdvisorProfile } from "@features/advisors/hooks/useAdvisorProfile";
 import { normalizeApiError } from "@/lib/api/api-error";
+import { useTranslations } from "next-intl";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
 import { toast } from "sonner";
+
+import type { AdvisorProfileFormProps } from "@/types/components/modules/advisors";
+import type { AdvisorFormBodyProps } from "@/types/components/modules/advisors";
 
 import AdvisorSpecialFields from "./parts/AdvisorSpecialFields.client";
 import AdvisorProfileFormSkeleton from "./AdvisorProfileFormSkeleton";
 import AdvisorSimpleFields from "./parts/AdvisorSimpleFields.client";
 import FixedBottomContainer from "@elements/FixedBottomContainer";
-import _STRINGS from "@/utils/LocalStrings";
 import Button from "@elements/Button";
 
 const SPECIAL_KEY = "is-especial";
@@ -25,18 +26,19 @@ const AdvisorFormBody = ({
   initialValues,
   subscriptionKey,
 }: AdvisorFormBodyProps) => {
+  const t = useTranslations("common");
+  const tr = useTranslations();
+
   const router = useRouter();
   const [values, setValues] = useState(initialValues);
   const { mutate, isPending } = useUpsertAdvisorProfile();
   const onSubmit = () => {
     if (isPending) return;
-
     const missingField = findMissingAdvisorField(values);
     if (missingField) {
-      toast.error(`لطفا فیلد «${missingField}» را تکمیل کنید.`);
+      toast.error(tr("advisor.fillRequiredField", { field: tr(missingField) }));
       return;
     }
-
     mutate(mapAdvisorFormToRequest(values), {
       onSuccess: () =>
         router.replace(
@@ -61,7 +63,7 @@ const AdvisorFormBody = ({
           disabled={isPending}
           width="w-[90%] md:w-1/2"
           roundedClass="rounded-full"
-          title={_STRINGS.ENTER_AND_MOVE_ON}
+          title={t("enterAndMoveOn")}
           containerClass="flex w-full items-center justify-center"
         />
       </FixedBottomContainer>

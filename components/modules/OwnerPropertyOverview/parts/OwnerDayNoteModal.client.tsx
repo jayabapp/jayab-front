@@ -6,9 +6,9 @@ import { MultiLineFormInput } from "@elements/Form";
 import { Divider } from "@elements/Divider";
 import { useState } from "react";
 
-import _STRINGS from "@/utils/LocalStrings";
 import Button from "@elements/Button";
 import Modal from "@elements/Modal";
+import { useTranslations } from "next-intl";
 
 const OwnerDayNoteModal = ({
   day,
@@ -16,6 +16,8 @@ const OwnerDayNoteModal = ({
   onHide,
   property,
 }: OwnerSingleDayModalProps) => {
+  const t = useTranslations();
+
   const {
     note: { mutate, isPending },
   } = useOwnerCalendarActions(property?.id ?? "");
@@ -45,12 +47,12 @@ const OwnerDayNoteModal = ({
     <Modal show={show} onHide={onHide}>
       <div className="flex flex-col gap-4 p-4 bg-white rounded-20">
         <p className="text-sm font-bold text-brand-600">
-          {_STRINGS.EDIT} {_STRINGS.MEMO}
+          {t("common.edit")} {t("owner.memo")}
         </p>
 
         <MultiLineFormInput
           value={current.value}
-          item={{ containerClass: "w-full", rows: 3, title: _STRINGS.MEMO }}
+          item={{ containerClass: "w-full", rows: 3, title: t("owner.memo") }}
           onChangeText={(value) =>
             setDraft((previous) => ({ ...previous, value }))
           }
@@ -64,7 +66,7 @@ const OwnerDayNoteModal = ({
           disabled={isPending}
           containerClass="w-full"
           roundedClass="rounded-full"
-          title={_STRINGS.RECORD_CHANGES}
+          title={t("owner.recordChanges")}
         />
       </div>
     </Modal>

@@ -1,17 +1,12 @@
 "use client";
 
 import { ModalBottomSheet, ModalHeaderPart } from "@elements/Modal";
+import { useTranslations } from "next-intl";
 import { useContentList } from "@features/home/hooks/useContentList";
 import { useState } from "react";
 
-import type {
-  CancellationSummaryProps,
-  TParsedPolicy,
-  TStepMarkerProps,
-  TTimelineColor,
-} from "@/types/components/modules/property-details";
+import type * as T from "@/types/components/modules/property-details";
 
-import _STRINGS from "@/utils/LocalStrings";
 import CmsText from "@elements/CmsText";
 
 const PROPERTY_RULES_KEY = "propertyRules";
@@ -22,10 +17,10 @@ const CHIP_CLASS: Record<string, string> = {
   STRICT: "bg-danger-50 text-danger-500",
 };
 
-const TIMELINE_COLORS: TTimelineColor[] = ["success", "warning", "danger"];
+const TIMELINE_COLORS: T.TTimelineColor[] = ["success", "warning", "danger"];
 
 const COLOR_CLASSES: Record<
-  TTimelineColor,
+  T.TTimelineColor,
   {
     border: string;
     line: string;
@@ -49,7 +44,7 @@ const COLOR_CLASSES: Record<
   },
 };
 
-const parseCancellationPolicy = (text?: string | null): TParsedPolicy => {
+const parseCancellationPolicy = (text?: string | null): T.TParsedPolicy => {
   if (!text?.trim()) {
     return {
       description: undefined,
@@ -103,7 +98,7 @@ const parseCancellationPolicy = (text?: string | null): TParsedPolicy => {
   };
 };
 
-const StepMarker = ({ color, index }: TStepMarkerProps) => {
+const StepMarker = ({ color, index }: T.TStepMarkerProps) => {
   const classes = COLOR_CLASSES[color];
 
   return (
@@ -152,7 +147,9 @@ const StepMarker = ({ color, index }: TStepMarkerProps) => {
   );
 };
 
-const CancellationSummary = ({ cancelingType }: CancellationSummaryProps) => {
+const CancellationSummary = ({ cancelingType }: T.CancellationSummaryProps) => {
+  const t = useTranslations("listing");
+
   const [showDetails, setShowDetails] = useState(false);
   const { items } = useContentList(
     {
@@ -170,7 +167,7 @@ const CancellationSummary = ({ cancelingType }: CancellationSummaryProps) => {
       ? parsedPolicy.steps
       : [
           {
-            title: _STRINGS.CANCELLATION_RULE_FALLBACK,
+            title: t("cancellationRuleFallback"),
             color: "warning" as const,
           },
         ];
@@ -179,7 +176,7 @@ const CancellationSummary = ({ cancelingType }: CancellationSummaryProps) => {
     <>
       <div className="flex flex-wrap items-center gap-2">
         <p className="text-sm font-semibold text-neutral-900">
-          {_STRINGS.CANCENLATION_DESC}
+          {t("cancenlationDesc")}
         </p>
         <span
           className={[
@@ -203,7 +200,7 @@ const CancellationSummary = ({ cancelingType }: CancellationSummaryProps) => {
             "focus-visible:ring-offset-2",
           ].join(" ")}
         >
-          {_STRINGS.CANCELLATION_DETAILS}
+          {t("cancellationDetails")}
         </button>
       </div>
 
@@ -216,7 +213,7 @@ const CancellationSummary = ({ cancelingType }: CancellationSummaryProps) => {
       >
         <ModalHeaderPart
           hideArrow
-          title={_STRINGS.CANCENLATION_DESC}
+          title={t("cancenlationDesc")}
           onHide={() => setShowDetails(false)}
         />
 

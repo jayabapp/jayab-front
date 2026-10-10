@@ -1,18 +1,19 @@
 "use client";
 
-import { usePropertyLocationOptions } from "@features/owner-property/hooks/usePropertyLocationOptions";
-import { useOwnerPropertyOptions } from "@features/owner-property/hooks/useOwnerPropertyOptions";
-import type { PropertyInitialsFieldsProps } from "@/types/components/modules/owner-property";
 import { SingleSelectPopUpSelect as SinglePopUpSelect } from "@elements/Form";
-import { randomeTitlePlaceholder } from "@/utils/constantss";
+import { usePropertyLocationOptions } from "@features/owner-property/hooks/usePropertyLocationOptions";
 import { FormInputWithExternalUnit } from "@elements/Form";
+import { titlePlaceholderExamples } from "@/utils/constantss";
+import { useOwnerPropertyOptions } from "@features/owner-property/hooks/useOwnerPropertyOptions";
 import { MultiLineFormInput } from "@elements/Form";
+import { useTranslations } from "next-intl";
+import { useAuthStore } from "@/store";
 import { FormInput } from "@elements/Form";
 import { Checkbox } from "@elements/Form";
-import { useAuthStore } from "@/store";
+
+import type { PropertyInitialsFieldsProps } from "@/types/components/modules/owner-property";
 
 import FieldCharacterCounter from "./FieldCharacterCounter";
-import _STRINGS from "@/utils/LocalStrings";
 import isEmpty from "lodash/isEmpty";
 import sample from "lodash/sample";
 
@@ -25,6 +26,8 @@ const PropertyInitialsFields = ({
   status,
   onChange,
 }: PropertyInitialsFieldsProps) => {
+  const t = useTranslations();
+
   const { isAdminSso } = useAuthStore();
   const { data: propertyTypes } = useOwnerPropertyOptions([
     "PROPERTY_TYPE",
@@ -45,7 +48,7 @@ const PropertyInitialsFields = ({
         item={{
           isMandatory: true,
           list: propertyTypes?.["PROPERTY_TYPE"] || [],
-          title: _STRINGS.PROPERTY_TYPE,
+          title: t("common.propertyType"),
         }}
       />
 
@@ -65,53 +68,53 @@ const PropertyInitialsFields = ({
           ),
           isMandatory: true,
           maxLength: TITLE_MAX_LENGTH,
-          placeholder: `${_STRINGS.FOR_EXAMPLE}: ${sample(randomeTitlePlaceholder)}`,
-          title: _STRINGS.ADD_TITLE,
+          placeholder: `${t("owner.forExample")}: ${sample(titlePlaceholderExamples(t))}`,
+          title: t("owner.addTitle"),
         }}
       />
 
       <FormInputWithExternalUnit
-        unit={_STRINGS.METER}
+        unit={t("common.meter")}
         value={values?.land_area || ""}
         onChangeText={(entered) => onChange(entered, "land_area")}
         item={{
           containerClass: "w-full",
           isMandatory: true,
           keyboard: "number",
-          title: _STRINGS.LAND_AREA,
+          title: t("owner.landArea"),
         }}
       />
       <FormInputWithExternalUnit
-        unit={_STRINGS.METER}
+        unit={t("common.meter")}
         value={values?.building_area || ""}
         onChangeText={(entered) => onChange(entered, "building_area")}
         item={{
           containerClass: "w-full",
           isMandatory: true,
           keyboard: "number",
-          title: _STRINGS.PROPERTY_AREA,
+          title: t("owner.propertyArea"),
         }}
       />
       <FormInputWithExternalUnit
-        unit={_STRINGS.FLOOR}
+        unit={t("owner.floor")}
         value={values?.floor_count || ""}
         onChangeText={(entered) => onChange(entered, "floor_count")}
         item={{
           containerClass: "w-full",
           isMandatory: true,
           keyboard: "number",
-          title: _STRINGS.FLOOR_COUNT,
+          title: t("owner.floorCount"),
         }}
       />
       <FormInputWithExternalUnit
-        unit={_STRINGS.UNIT}
+        unit={t("owner.unit")}
         value={values?.units_in_floor || ""}
         onChangeText={(entered) => onChange(entered, "units_in_floor")}
         item={{
           containerClass: "w-full",
           isMandatory: true,
           keyboard: "number",
-          title: _STRINGS.UNITS_IN_FLOOR,
+          title: t("owner.unitsInFloor"),
         }}
       />
       <FormInput
@@ -121,7 +124,7 @@ const PropertyInitialsFields = ({
           containerClass: "w-full",
           isMandatory: true,
           keyboard: "number",
-          title: _STRINGS.FLOOR,
+          title: t("owner.floor"),
         }}
       />
       <SinglePopUpSelect
@@ -131,7 +134,7 @@ const PropertyInitialsFields = ({
         item={{
           isMandatory: true,
           list: propertyTypes?.["OWNERSHIP"] || [],
-          title: _STRINGS.OWNERSHIP,
+          title: t("owner.ownership"),
         }}
       />
 
@@ -147,7 +150,7 @@ const PropertyInitialsFields = ({
             isMandatory: true,
             list: provinces,
             searcheable: true,
-            title: _STRINGS.PROVINCE,
+            title: t("common.province"),
           }}
           onSelect={(selected) => {
             onChange(selected, "province");
@@ -163,7 +166,7 @@ const PropertyInitialsFields = ({
             isMandatory: true,
             list: cities,
             searcheable: true,
-            title: _STRINGS.CITY,
+            title: t("common.city"),
           }}
           onSelect={(selected) => {
             onChange(selected, "city");
@@ -180,7 +183,7 @@ const PropertyInitialsFields = ({
               isMandatory: true,
               list: regions,
               searcheable: true,
-              title: _STRINGS.LOCAL,
+              title: t("common.local"),
             }}
           />
         )}
@@ -194,7 +197,7 @@ const PropertyInitialsFields = ({
           isMandatory: true,
           keyboard: "number",
           maxLength: 4,
-          title: _STRINGS.CREATED_AT_YEAR,
+          title: t("owner.createdAtYear"),
         }}
       />
       <SinglePopUpSelect
@@ -204,7 +207,7 @@ const PropertyInitialsFields = ({
         item={{
           isMandatory: true,
           list: propertyTypes?.["BUILDING_DIRECTION"] || [],
-          title: _STRINGS.BUILDING_DIRECTION,
+          title: t("owner.buildingDirection"),
         }}
       />
       <MultiLineFormInput
@@ -220,20 +223,20 @@ const PropertyInitialsFields = ({
           ),
           isMandatory: true,
           rows: 3,
-          title: _STRINGS.EXACT_ADDRESS,
+          title: t("owner.exactAddress"),
         }}
       />
 
       <div className="flex flex-col gap-5 col-span-full">
         <Checkbox
           containerClass="w-full"
-          title={_STRINGS.CAN_CHAT_SET}
+          title={t("owner.canChatSet")}
           isChecked={!!values?.can_chat}
           onSelect={() => onChange(!values?.can_chat, "can_chat")}
         />
         <Checkbox
           containerClass="w-full"
-          title={_STRINGS.LOC_ACCESS}
+          title={t("owner.locAccess")}
           isChecked={!!values?.location_access}
           onSelect={() => onChange(!values?.location_access, "location_access")}
         />

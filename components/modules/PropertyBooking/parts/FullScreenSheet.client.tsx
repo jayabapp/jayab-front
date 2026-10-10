@@ -1,12 +1,12 @@
 "use client";
 
-import type { FullScreenSheetProps } from "@/types/components/modules/property-booking";
 
 import { Dialog, DialogPanel } from "@headlessui/react";
+import { useTranslations } from "next-intl";
 import { createPortal } from "react-dom";
 import { Icon } from "@elements/Icon";
 
-import _STRINGS from "@/utils/LocalStrings";
+import type { FullScreenSheetProps } from "@/types/components/modules/property-booking";
 
 const SHEET_Z_INDEX = 1100;
 
@@ -17,6 +17,8 @@ const FullScreenSheet = ({
   footer,
   children,
 }: FullScreenSheetProps) => {
+  const t = useTranslations("common");
+
   if (!show || typeof document === "undefined") return null;
 
   return createPortal(
@@ -31,7 +33,7 @@ const FullScreenSheet = ({
           <button
             type="button"
             onClick={onHide}
-            aria-label={_STRINGS.CLOSE}
+            aria-label={t("close")}
             className="flex size-9 cursor-pointer items-center justify-center rounded-full transition-colors hover:bg-neutral-100 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-500"
           >
             <Icon name="x" size={20} />

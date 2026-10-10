@@ -1,18 +1,22 @@
-import _STRINGS from "@/utils/LocalStrings";
+import { useTranslations } from "next-intl";
 
-const ChatSecurityNotice = () => (
-  <aside
-    aria-label={_STRINGS.CHAT_SECURITY_WARNING_TITLE}
-    className="border-t border-amber-200 bg-amber-50 px-4 py-2 text-right text-xs leading-5 text-amber-950 md:px-5"
-  >
-    <p>
-      <strong>{_STRINGS.CHAT_SECURITY_WARNING_TITLE}:</strong>{" "}
-      {_STRINGS.CHAT_SECURITY_WARNING_START}{" "}
-      <strong>{_STRINGS.CHAT_SECURITY_WARNING_SENSITIVE_INFO}</strong>{" "}
-      {_STRINGS.CHAT_SECURITY_WARNING_END}
-    </p>
-    <p className="mt-1">{_STRINGS.CHAT_SECURITY_WARNING_LEGAL}</p>
-  </aside>
-);
+const ChatSecurityNotice = () => {
+  const t = useTranslations("chat");
+
+  return (
+    <aside
+      aria-label={t("chatSecurityWarningTitle")}
+      className="border-t border-amber-200 bg-amber-50 px-4 py-2 text-right text-xs leading-5 text-amber-950 md:px-5"
+    >
+      <p>
+        <strong>{t("chatSecurityWarningTitle")}:</strong>{" "}
+        {t("chatSecurityWarningStart")}{" "}
+        <strong>{t("chatSecurityWarningSensitiveInfo")}</strong>{" "}
+        {t("chatSecurityWarningEnd")}
+      </p>
+      <p className="mt-1">{t("chatSecurityWarningLegal")}</p>
+    </aside>
+  );
+};
 
 export default ChatSecurityNotice;

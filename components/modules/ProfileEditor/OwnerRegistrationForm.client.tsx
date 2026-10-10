@@ -1,17 +1,20 @@
 "use client";
 
-import type { OwnerRegistrationFormProps } from "@/types/components/modules/profile-editor";
 import { useOwnerRegistrationForm } from "@features/auth/hooks/useOwnerRegistrationForm";
+import { useTranslations } from "next-intl";
+
+import type { OwnerRegistrationFormProps } from "@/types/components/modules/profile-editor";
 
 import OwnerRegistrationFields from "./parts/OwnerRegistrationFields.client";
 import FixedBottomContainer from "@elements/FixedBottomContainer";
-import _STRINGS from "@/utils/LocalStrings";
 import Button from "@elements/Button";
 
 const OwnerRegistrationForm = ({
   profile,
   ownerProfile,
 }: OwnerRegistrationFormProps) => {
+  const t = useTranslations("profile");
+
   const { values, onChange, submit, isPending } = useOwnerRegistrationForm(
     profile,
     ownerProfile,
@@ -25,7 +28,7 @@ const OwnerRegistrationForm = ({
           loading={isPending}
           width="w-[90%] md:w-1/2"
           roundedClass="rounded-full"
-          title={_STRINGS.CHECK_CREDENTIOALS}
+          title={t("checkCredentioals")}
           containerClass="flex w-full items-center justify-center"
         />
       </FixedBottomContainer>

@@ -1,61 +1,45 @@
 "use client";
 
-import { countActiveFilters, countFilterGroup } from "@features/properties/lib/count-active-filters";
-import type { PropertyFilterFormProps } from "@/types/components/modules/property-search-filters";
+import { countActiveFilters} from "@features/properties/lib/count-active-filters";
+import { countFilterGroup} from "@features/properties/lib/count-active-filters";
+import { useTranslations } from "next-intl";
 import { poolFilterTypes } from "@/utils/constantss";
 import { useStoreInit } from "@/store";
 
-import PriceRangeFilter from "./parts/PriceRangeFilter.client";
+import type { PropertyFilterFormProps } from "@/types/components/modules/property-search-filters";
+
 import PropertyModelFilter from "./PropertyModelFilter.client";
 import PropertyRulesFilter from "./parts/PropertyRulesFilter";
 import FilterPanelHeader from "./parts/FilterPanelHeader";
 import numberWithCommas from "@/helpers/numberWithCommas";
+import PriceRangeFilter from "./parts/PriceRangeFilter.client";
 import FilterCounter from "./parts/FilterCounter.client";
 import FilterSection from "./parts/FilterSection.client";
 import FilterCheck from "./parts/FilterCheck.client";
 import DateFilter from "./parts/DateFilter.client";
-import _STRINGS from "@/utils/LocalStrings";
 
 const COMMISSION_MAX = 50;
 const PRICE_MAX = 40000000;
 const AREA_MAX = 1000;
 
-/**
- * The filter panel, shared by the desktop sidebar and the mobile sheet.
- *
- * Ordered by how often a filter actually decides a booking rather than by the
- * shape of the API: type, then price, then who is coming and when. The long
- * amenity lists sit below that, because a visitor who cares about the kind of
- * kitchen has already narrowed by the three things above.
- *
- * Every edit lands in a draft; nothing here writes the URL. What makes that
- * bearable is `FilterApplyBar`, which keeps a live count of what the draft
- * would return.
- */
 const PropertyFilterForm = ({
   filters,
-  hiddenFilters = [],
   onReset,
-  propertyTypes,
   queries,
   setFilters,
+  propertyTypes,
+  hiddenFilters = [],
 }: PropertyFilterFormProps) => {
+  const t = useTranslations();
+
   const { userInfo } = useStoreInit((data) => data);
   const isHidden = (key: string) => hiddenFilters.includes(key);
   const activeCount = countActiveFilters(filters, hiddenFilters);
 
-  // Read from the draft, not from `queries`. Reading the URL here meant that
-  // choosing "بدون استخر" left the pool-type list on screen until the filters
-  // were submitted, so the user could pick a pool type for a property they had
-  // just said must not have a pool, and both went to the API together.
   const excludesPool = `${filters?.has_pool ?? ""}` === "0";
 
   return (
     <div className="flex w-full flex-col px-3">
-      {/* Pinned to the top of whichever container is scrolling — the desktop
-          sidebar or the mobile sheet. The active count and the reset are the two
-          things a user reaches for after scrolling deep into the amenity lists,
-          which is exactly where a header that scrolls away is out of reach. */}
       {onReset ? (
         <div className="sticky top-0 z-1 bg-white pt-3">
           <FilterPanelHeader activeCount={activeCount} onReset={onReset} />
@@ -69,7 +53,7 @@ const PropertyFilterForm = ({
       ) : (
         <FilterSection
           defaultOpen
-          title={_STRINGS.PROPERTY_TYPE}
+          title={t("common.propertyType")}
           count={countFilterGroup(filters, ["property_type"])}
         >
           <PropertyModelFilter
@@ -85,14 +69,14 @@ const PropertyFilterForm = ({
 
       <FilterSection
         defaultOpen
-        title={_STRINGS.PRICE_RANGE}
+        title={t("listing.priceRange")}
         count={filters?.min_price || filters?.max_price ? 1 : 0}
       >
         <div className="flex w-full flex-col gap-4 pb-2 pt-1">
           <p className="text-xs text-neutral-600">
-            {_STRINGS.FROM} {numberWithCommas(filters?.min_price || 0)}{" "}
-            {_STRINGS.TO} {numberWithCommas(filters?.max_price || PRICE_MAX)}{" "}
-            {_STRINGS.TOMAN}
+            {t("common.from")} {numberWithCommas(filters?.min_price || 0)}{" "}
+            {t("common.to")} {numberWithCommas(filters?.max_price || PRICE_MAX)}{" "}
+            {t("common.toman")}
           </p>
           <PriceRangeFilter
             lowLimit={0}
@@ -108,7 +92,7 @@ const PropertyFilterForm = ({
 
       <FilterSection
         defaultOpen
-        title={_STRINGS.CAPACITY}
+        title={t("listing.capacity")}
         count={countFilterGroup(filters, ["total_guests", "total_bedrooms"])}
       >
         {isHidden("total_guests") ? (
@@ -118,7 +102,7 @@ const PropertyFilterForm = ({
             query={queries}
             mobileFilters={filters}
             queryKey="total_guests"
-            title={_STRINGS.PPL_COUNT}
+            title={t("common.pplCount")}
             setMobileFilters={setFilters}
           />
         )}
@@ -129,7 +113,7 @@ const PropertyFilterForm = ({
             query={queries}
             mobileFilters={filters}
             queryKey="total_bedrooms"
-            title={_STRINGS.ROOM_COUNT}
+            title={t("listing.roomCount")}
             setMobileFilters={setFilters}
           />
         )}
@@ -140,7 +124,7 @@ const PropertyFilterForm = ({
       </div>
 
       <FilterSection
-        title={_STRINGS.QUICK_FILTERS}
+        title={t("listing.quickFilters")}
         defaultOpen
         count={countFilterGroup(filters, ["has_discount", "is_premium"])}
       >
@@ -152,7 +136,7 @@ const PropertyFilterForm = ({
             queryKey="has_discount"
             mobileFilters={filters}
             setMobileFilters={setFilters}
-            title={_STRINGS.HAS_DISCOUNT}
+            title={t("listing.hasDiscount")}
           />
         )}
         {isHidden("is_premium") ? (
@@ -164,7 +148,7 @@ const PropertyFilterForm = ({
             queryKey="is_premium"
             mobileFilters={filters}
             setMobileFilters={setFilters}
-            title={_STRINGS.PERMIUM_PROPS}
+            title={t("listing.permiumProps")}
           />
         )}
       </FilterSection>
@@ -173,14 +157,17 @@ const PropertyFilterForm = ({
         <></>
       ) : (
         <FilterSection
-          title={_STRINGS.POOL_STATUS}
+          title={t("common.poolStatus")}
           count={countFilterGroup(filters, ["has_pool", "pool_type"])}
         >
           <PropertyModelFilter
             query={queries}
             queryKey="has_pool"
             mobileFilters={filters}
-            list={poolFilterTypes || []}
+            list={poolFilterTypes.map(({ titleKey, ...type }) => ({
+              ...type,
+              title: t(titleKey),
+            }))}
             setMobileFilters={setFilters}
           />
           {excludesPool || isHidden("pool_type") ? (
@@ -188,7 +175,7 @@ const PropertyFilterForm = ({
           ) : (
             <div className="mt-2 border-t border-neutral-100 pt-2">
               <p className="pb-1 text-xs text-neutral-500">
-                {_STRINGS.POOL_TYPE}
+                {t("common.poolType")}
               </p>
               <PropertyModelFilter
                 isMulty
@@ -207,7 +194,7 @@ const PropertyFilterForm = ({
         <></>
       ) : (
         <FilterSection
-          title={_STRINGS.WELFARE}
+          title={t("common.welfare")}
           count={countFilterGroup(filters, ["welfare"])}
         >
           <PropertyModelFilter
@@ -225,7 +212,7 @@ const PropertyFilterForm = ({
         <></>
       ) : (
         <FilterSection
-          title={_STRINGS.ENTERTAINMENT}
+          title={t("common.entertainment")}
           count={countFilterGroup(filters, ["entertainment"])}
         >
           <PropertyModelFilter
@@ -243,7 +230,7 @@ const PropertyFilterForm = ({
         <></>
       ) : (
         <FilterSection
-          title={_STRINGS.KITCHEN_ACC}
+          title={t("common.kitchenAcc")}
           count={countFilterGroup(filters, ["kitchen"])}
         >
           <PropertyModelFilter
@@ -261,7 +248,7 @@ const PropertyFilterForm = ({
         <></>
       ) : (
         <FilterSection
-          title={_STRINGS.COOL_HEAT}
+          title={t("common.coolHeat")}
           count={countFilterGroup(filters, ["cool_heat"])}
         >
           <PropertyModelFilter
@@ -279,7 +266,7 @@ const PropertyFilterForm = ({
         <></>
       ) : (
         <FilterSection
-          title={_STRINGS.ENV_PATTERN}
+          title={t("common.envPattern")}
           count={countFilterGroup(filters, ["pattern"])}
         >
           <PropertyModelFilter
@@ -294,17 +281,15 @@ const PropertyFilterForm = ({
       )}
 
       <FilterSection
-        title={_STRINGS.ROOM_SIZE}
-        count={
-          filters?.min_building_area || filters?.max_building_area ? 1 : 0
-        }
+        title={t("listing.roomSize")}
+        count={filters?.min_building_area || filters?.max_building_area ? 1 : 0}
       >
         <div className="flex w-full flex-col gap-4 pb-2 pt-1">
           <p className="text-xs text-neutral-600">
-            {_STRINGS.FROM} {numberWithCommas(filters?.min_building_area || 0)}{" "}
-            {_STRINGS.TO}{" "}
+            {t("common.from")}{" "}
+            {numberWithCommas(filters?.min_building_area || 0)} {t("common.to")}{" "}
             {numberWithCommas(filters?.max_building_area || AREA_MAX)}{" "}
-            {_STRINGS.SQUARE_METER}
+            {t("listing.squareMeter")}
           </p>
           <PriceRangeFilter
             steps={50}
@@ -328,13 +313,13 @@ const PropertyFilterForm = ({
 
       {userInfo?.advisor_id ? (
         <FilterSection
-          title={_STRINGS.COMIISH_RANGE_PERC}
+          title={t("listing.comiishRangePerc")}
           count={filters?.min_commission || filters?.max_commission ? 1 : 0}
         >
           <div className="flex w-full flex-col gap-4 pb-2 pt-1">
             <p className="text-xs text-neutral-600">
-              {_STRINGS.FROM} {numberWithCommas(filters?.min_commission || 0)}%{" "}
-              {_STRINGS.TO}{" "}
+              {t("common.from")}{" "}
+              {numberWithCommas(filters?.min_commission || 0)}% {t("common.to")}{" "}
               {numberWithCommas(filters?.max_commission || COMMISSION_MAX)}%
             </p>
             <PriceRangeFilter

@@ -1,20 +1,16 @@
-import type { PropertySpecsSectionProps } from "@/types/components/modules/property-details";
-import type { IconName } from "@/types/components/elements/icon";
-
-import _STRINGS from "@/utils/LocalStrings";
-import ClampText from "./ClampText.client";
+import { useTranslations } from "next-intl";
 import { Icon } from "@elements/Icon";
 
-/** A single "label: value" row — label bold, value regular, per §14.4. */
+import type { PropertySpecsSectionProps } from "@/types/components/modules/property-details";
+
+import ClampText from "./ClampText.client";
+import type { TSurrounding } from "@/types/components/modules/property-details";
+
 const SurroundingFact = ({
   icon,
   label,
   value,
-}: {
-  icon: IconName;
-  label: string;
-  value: string;
-}) => (
+}: TSurrounding) => (
   <div className="flex items-start gap-3">
     <Icon name={icon} size={20} className="mt-0.5 shrink-0 text-neutral-500" />
     <p className="text-sm text-neutral-800 md:text-base">
@@ -24,8 +20,9 @@ const SurroundingFact = ({
   </div>
 );
 
-/** Neighbourhood, access road and distances — how the place sits in its area. */
 const Surroundings = ({ property }: PropertySpecsSectionProps) => {
+  const t = useTranslations();
+
   const descriptions = property?.property_descriptions;
   const options = property?.options;
 
@@ -39,7 +36,7 @@ const Surroundings = ({ property }: PropertySpecsSectionProps) => {
         {options?.pattern ? (
           <SurroundingFact
             icon="home"
-            label={_STRINGS.ENV_PATTERN}
+            label={t("common.envPattern")}
             value={options.pattern}
           />
         ) : (
@@ -48,7 +45,7 @@ const Surroundings = ({ property }: PropertySpecsSectionProps) => {
         {options?.access ? (
           <SurroundingFact
             icon="map-pin"
-            label={_STRINGS.ACCESS_ROUTE}
+            label={t("common.accessRoute")}
             value={options.access}
           />
         ) : (
@@ -57,7 +54,7 @@ const Surroundings = ({ property }: PropertySpecsSectionProps) => {
         {options?.neighborhood ? (
           <SurroundingFact
             icon="users"
-            label={_STRINGS.PROP_NEIGHTBOUR}
+            label={t("listing.propNeightbour")}
             value={options.neighborhood}
           />
         ) : (
@@ -68,7 +65,7 @@ const Surroundings = ({ property }: PropertySpecsSectionProps) => {
       {descriptions?.pattern_dscr ? (
         <div className="flex flex-col gap-1">
           <p className="text-sm font-semibold text-neutral-900">
-            {_STRINGS.ACCSESS_ROUTE_DESC}
+            {t("listing.accsessRouteDesc")}
           </p>
           <ClampText lines={3}>{descriptions.pattern_dscr}</ClampText>
         </div>
@@ -79,7 +76,7 @@ const Surroundings = ({ property }: PropertySpecsSectionProps) => {
       {descriptions?.distance_dscr ? (
         <div className="flex flex-col gap-1">
           <p className="text-sm font-semibold text-neutral-900">
-            {_STRINGS.DISTANCETO_POINT}
+            {t("common.distancetoPoint")}
           </p>
           <ClampText lines={3}>{descriptions.distance_dscr}</ClampText>
         </div>

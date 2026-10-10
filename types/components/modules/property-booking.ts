@@ -152,3 +152,8 @@ export type FullScreenSheetProps = {
   onHide: () => void;
   children: ReactNode;
 };
+
+export type TDateSummary = {
+  label: string;
+  value?: Date | null;
+};

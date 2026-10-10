@@ -1,28 +1,30 @@
 "use client";
 
 import { useSelectedLocationFilters } from "@features/cities/hooks/useSelectedLocationFilters";
+import { useTranslations } from "next-intl";
+
 import type { SearchSelectedLocationsProps } from "@/types/components/modules/search";
 
 import SearchLocationChip from "./SearchLocationChip";
-import _STRINGS from "@/utils/LocalStrings";
 
-/** Location chips for whatever the last search resolved to; removing one rewrites the URL. */
 const SearchSelectedLocations = ({ onClose }: SearchSelectedLocationsProps) => {
+  const t = useTranslations("search");
+
   const {
     cities,
-    hasSelection,
-    provinces,
     regions,
+    provinces,
     toggleCity,
-    toggleProvince,
+    hasSelection,
     toggleRegion,
+    toggleProvince,
   } = useSelectedLocationFilters(onClose);
 
   if (!hasSelection) return null;
 
   return (
     <div className="w-full p-4 flex flex-col gap-2">
-      <p>{_STRINGS.SELECTED_CITIES}</p>
+      <p>{t("selectedCities")}</p>
       <div className="w-full flex flex-wrap gap-2">
         {provinces.map((province) => (
           <SearchLocationChip

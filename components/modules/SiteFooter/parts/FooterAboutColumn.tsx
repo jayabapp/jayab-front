@@ -2,16 +2,19 @@ import type { FooterAboutColumnProps } from "@/types/components/modules/site-foo
 import { ContentImage } from "@elements/Image";
 
 import FooterSocialRow from "./FooterSocialRow";
-import _STRINGS from "@/utils/LocalStrings";
 import CmsText from "@elements/CmsText";
 import Link from "next/link";
+import { useTranslations } from "next-intl";
 
-const FooterAboutColumn = ({ about, socials }: FooterAboutColumnProps) => (
+const FooterAboutColumn = ({ about, socials }: FooterAboutColumnProps) => {
+  const t = useTranslations("common");
+
+  return (
   <div className="col-span-4 lg:col-span-2 flex w-full flex-col justify-between gap-6 h-fit order-2 lg:order-1">
     <Link
       href="/"
       prefetch={false}
-      title={_STRINGS.JAYAB}
+      title={t("jayab")}
       referrerPolicy="no-referrer"
       className="flex items-center gap-4 justify-start"
     >
@@ -37,5 +40,6 @@ const FooterAboutColumn = ({ about, socials }: FooterAboutColumnProps) => (
     />
   </div>
 );
+};
 
 export default FooterAboutColumn;

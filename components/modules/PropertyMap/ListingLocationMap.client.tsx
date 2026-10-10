@@ -3,13 +3,13 @@
 import { useEffect, useRef, useState } from "react";
 import { MAP_LAZY_ROOT_MARGIN } from "@features/map/constants/flight";
 import { googleDirectionsHref } from "@/helpers/map.link";
+import { useTranslations } from "next-intl";
 import { MapFallbackCard } from "@elements/MapFallback";
 import { useMapSupport } from "@features/map/hooks/useMapSupport";
 
 import type { ListingLocationMapProps } from "@/types/components/modules/property-map";
 
 import Skeleton from "@elements/Skeleton/Skeleton";
-import _STRINGS from "@/utils/LocalStrings";
 import dynamic from "next/dynamic";
 
 const ListingMapCanvas = dynamic(
@@ -22,6 +22,8 @@ const ListingLocationMap = ({
   longitude,
   approxLocation,
 }: ListingLocationMapProps) => {
+  const t = useTranslations("common");
+
   const rootRef = useRef<HTMLDivElement>(null);
   const isSupported = useMapSupport();
   const [isNear, setIsNear] = useState(false);
@@ -59,8 +61,8 @@ const ListingLocationMap = ({
       {isSupported === false || hasFailed ? (
         <MapFallbackCard
           className="size-full"
-          message={_STRINGS.MAP_BROWSER_UNSUPPORTED}
-          actionLabel={hasExact ? _STRINGS.VIEW_ON_MAP : undefined}
+          message={t("mapBrowserUnsupported")}
+          actionLabel={hasExact ? t("viewOnMap") : undefined}
           href={
             hasExact
               ? googleDirectionsHref({
@@ -75,8 +77,8 @@ const ListingLocationMap = ({
           lat={target.lat}
           lng={target.lng}
           radiusMeters={target.radius}
-          mode={hasExact ? "exact" : "approx"}
           onError={() => setHasFailed(true)}
+          mode={hasExact ? "exact" : "approx"}
         />
       ) : (
         <Skeleton className="absolute inset-0 md:rounded-20" />

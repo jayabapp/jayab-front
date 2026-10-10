@@ -1,10 +1,12 @@
-import type { TChatFooterTypes } from "@/types/components/modules/property-map";
 import { useEffect, useEffectEvent, useMemo, useRef, useState } from "react";
-import { useSendMessage } from "@features/chat/hooks/useSendMessage";
-import { ChatUploadField } from "@modules/PropertyMedia";
 import { useChatStore, useStoreSocket } from "@/store";
+import { useTranslations } from "next-intl";
+import { ChatUploadField } from "@modules/PropertyMedia";
+import { useSendMessage } from "@features/chat/hooks/useSendMessage";
 import { BtnLoading } from "@elements/Button";
 import { isIOS } from "react-device-detect";
+
+import type { TChatFooterTypes } from "@/types/components/modules/property-map";
 
 import ExpiredPropertyModal from "./ExpiredPropertyModal.client";
 import randomId from "@/helpers/randomId";
@@ -13,7 +15,6 @@ import ChatInput from "./ChatInput";
 import ChatReply from "./ChatReply";
 import dynamic from "next/dynamic";
 import Image from "next/image";
-import _STRINGS from "@/utils/LocalStrings";
 
 const EmojiPicker = dynamic(
   () => {
@@ -29,6 +30,10 @@ const ChatFooter = ({
   cancleButton,
   singleChatData,
 }: TChatFooterTypes) => {
+  const tr = useTranslations();
+
+  const t = useTranslations("chat");
+
   const [showExpired, setShowExpired] = useState(false);
   const [suspended, setSuspended] = useState(false);
   const [isTyping, setIsTyping] = useState<boolean | null>(false);
@@ -104,7 +109,8 @@ const ChatFooter = ({
   }, [chatId, isTyping, singleChatData?.self?.participant_id, socket]);
 
   const submit = () => {
-    if (isSuspended || submittingRef.current || connecting || sedLoading) return;
+    if (isSuspended || submittingRef.current || connecting || sedLoading)
+      return;
     if (
       !!singleChatData?.property?.is_expired &&
       singleChatData?.self?.user_id == singleChatData?.property?.owner?.user?.id
@@ -140,9 +146,8 @@ const ChatFooter = ({
     };
   }, []);
 
-  const cancelReply = () => {
-    useChatStore.setState({ chatReply: null });
-  };
+  const cancelReply = () => useChatStore.setState({ chatReply: null });
+
   const handleTextChange = (e: string) => {
     setText(e);
     setIsTyping(true);
@@ -153,7 +158,7 @@ const ChatFooter = ({
     return (
       <div className="absolute bottom-0 left-0 z-30 flex h-fit w-full items-center justify-center border-b bg-white px-4 py-4">
         <p className="text-center text-sm text-neutral-600">
-          {_STRINGS.CHAT_SUSPENDED}
+          {t("chatSuspended")}
         </p>
       </div>
     );
@@ -196,12 +201,12 @@ const ChatFooter = ({
             >
               {" "}
               <Image
-                tabIndex={1}
-                className={`  transition-all  w-4 aspect-square   duration-200 ease-in-out text-lightBlue-100`}
-                src="/assets/icons/chat/chat_arrow_head.svg"
-                alt="ارسال"
                 width={16}
                 height={16}
+                tabIndex={1}
+                alt={tr("common.send")}
+                src="/assets/icons/chat/chat_arrow_head.svg"
+                className={`transition-all w-4 aspect-square duration-200 ease-in-out text-lightBlue-100`}
               />
             </div>
           )}
@@ -212,9 +217,7 @@ const ChatFooter = ({
           inputRef={inputRef}
           onChangeText={handleTextChange}
           maxRows={product && showProduct ? 1 : 4}
-          onFocus={() => {
-            setShowEmojiPicker(false);
-          }}
+          onFocus={() => setShowEmojiPicker(false)}
         />
 
         <div className="flex shrink-0 items-center gap-1">
@@ -259,18 +262,14 @@ const ChatFooter = ({
               )
             }
             link={"/attachments?type=CHAT"}
-            onSelect={(file) => {
-              setImage(file);
-            }}
-            onDelete={() => {
-              setImage(null);
-            }}
-          />{" "}
+            onDelete={() => setImage(null)}
+            onSelect={(file) => setImage(file)}
+          />
         </div>
       </div>
 
       <div
-        className={`  ${showEmojiPicker ? " is-opend " : ""} accardion-class    ease-in-out w-full duration-500 `}
+        className={`${showEmojiPicker ? " is-opend " : ""} accardion-class ease-in-out w-full duration-500 `}
       >
         <div>
           <EmojiPicker
@@ -280,10 +279,8 @@ const ChatFooter = ({
             lazyLoadEmojis={true}
             skinTonesDisabled={true}
             previewConfig={{ showPreview: false }}
+            onEmojiClick={(e) => setText((t) => `${t}${e?.emoji}`)}
             className={"!w-full !p-0 !border-none !bg-transparent !h-[50dvh]"}
-            onEmojiClick={(e) => {
-              setText((t) => `${t}${e?.emoji}`);
-            }}
           />
         </div>
       </div>

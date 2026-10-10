@@ -3,11 +3,11 @@
 import { useEffect, useState } from "react";
 import { useReverseGeocode } from "@features/map/hooks/useReverseGeocode";
 import { MapFallbackCard } from "@elements/MapFallback";
+import { useTranslations } from "next-intl";
 import { useMapSupport } from "@features/map/hooks/useMapSupport";
 
 import type { PropertyLocationMapProps } from "@/types/components/modules/property-map";
 
-import _STRINGS from "@/utils/LocalStrings";
 import dynamic from "next/dynamic";
 
 const InteractiveMap = dynamic(
@@ -24,6 +24,8 @@ const PropertyLocationMap = ({
   setCenterAddress,
   setCenterAddressLoading,
 }: PropertyLocationMapProps) => {
+  const t = useTranslations("listing");
+
   const isSupported = useMapSupport();
   const [hasFailed, setHasFailed] = useState(false);
   const isMapUnavailable = isSupported === false || hasFailed;
@@ -38,9 +40,7 @@ const PropertyLocationMap = ({
   }, [reverseGeocode.isFetching, setCenterAddressLoading]);
 
   useEffect(() => {
-    if (reverseGeocode.data !== undefined) {
-      setCenterAddress?.(reverseGeocode.data);
-    }
+    if (reverseGeocode.data !== undefined) setCenterAddress?.(reverseGeocode.data);
   }, [reverseGeocode.data, setCenterAddress]);
 
   useEffect(() => {
@@ -52,7 +52,7 @@ const PropertyLocationMap = ({
     return (
       <MapFallbackCard
         className="size-full"
-        message={_STRINGS.MAP_PICK_UNSUPPORTED}
+        message={t("mapPickUnsupported")}
       />
     );
   if (isSupported === null) return <></>;

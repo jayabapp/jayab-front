@@ -1,26 +1,28 @@
 "use client";
 
-import type { SelectiveFilterChipProps } from "@/types/components/modules/property-search-filters";
 import { ModalBottomSheet, ModalHeaderPart } from "@elements/Modal";
-import { parseIdList } from "@features/cities/lib/city-selection";
 import { usePathname, useRouter } from "next/navigation";
+import { useTranslations } from "next-intl";
 import { useModalVisible } from "@/hooks/modal.hook";
 import { ContentImage } from "@elements/Image";
+import { parseIdList } from "@features/cities/lib/city-selection";
 import { useState } from "react";
+
+import type { SelectiveFilterChipProps } from "@/types/components/modules/property-search-filters";
 
 import PropertyModelFilter from "../PropertyModelFilter.client";
 import queryBuilder from "@/helpers/queryBuilder";
 import useQueryGet from "@/helpers/queryGet";
-import _STRINGS from "@/utils/LocalStrings";
 import Button from "@elements/Button";
 
-/** One dynamic attribute filter: a chip that opens its own bottom-sheet picker. */
 const SelectiveFilterChip = ({
   list,
+  title,
   queryKey,
   removeFiltersKeys,
-  title,
 }: SelectiveFilterChipProps) => {
+  const t = useTranslations();
+
   const { _onHide, _onShow, isVisible } = useModalVisible();
   const { replace } = useRouter();
   const pathname = usePathname();
@@ -29,7 +31,6 @@ const SelectiveFilterChip = ({
   const selectedCount = parseIdList(queriesParams?.[queryKey]).length;
 
   const openSheet = () => {
-    // The sheet edits a copy of the current URL filters and only commits on submit.
     setDraft({ ...queriesParams });
     _onShow();
   };
@@ -53,12 +54,13 @@ const SelectiveFilterChip = ({
         {selectedCount ? (
           <>
             <span className="text-sm font-medium pr-2">
-              {selectedCount} <span className="text-xxs font-normal">{_STRINGS.ITEM}</span>
+              {selectedCount}{" "}
+              <span className="text-xxs font-normal">{t("listing.item")}</span>
             </span>
             <span
               role="button"
               tabIndex={0}
-              aria-label={`${_STRINGS.REMOVE_FILTERS} ${title}`}
+              aria-label={`${t("common.removeFilters")} ${title}`}
               onKeyDown={(event) => {
                 if (event.key !== "Enter" && event.key !== " ") return;
                 event.preventDefault();
@@ -92,14 +94,14 @@ const SelectiveFilterChip = ({
             list={list}
             queryKey={queryKey}
             query={queriesParams}
-            mobileFilters={draft ?? queriesParams}
             setMobileFilters={setDraft}
+            mobileFilters={draft ?? queriesParams}
           />
           <Button
             width=" w-full "
             onClick={submit}
             containerClass=" w-full "
-            title={_STRINGS.SUBMIT_DO}
+            title={t("listing.submitDo")}
           />
         </div>
       </ModalBottomSheet>
