@@ -65,7 +65,7 @@ const HeaderMobileBar = ({
           />
 
           {topHeaderVisible || homeSearchInView ? (
-            <div className="mr-auto flex min-w-0 items-center justify-end">
+            <div className="ms-auto flex min-w-0 items-center justify-end">
               <HeaderBrand isLight={isLight} />
             </div>
           ) : (
@@ -112,6 +112,7 @@ const HeaderMobileBar = ({
             width={16}
             height={16}
             src="/assets/icons/shared/chevron-right.svg"
+            className="ltr:rotate-180"
           />
         </button>
 
@@ -122,7 +123,7 @@ const HeaderMobileBar = ({
         <DisplayPreferences />
 
         <div className="w-12 h-10 flex items-center justify-center">
-          <div className="cursor-pointer absolute left-4">
+          <div className="cursor-pointer absolute end-4">
             {pathname === "/advisors" ? (
               isAdvisor ? null : (
                 <Button

@@ -66,9 +66,9 @@ const SearchInput = ({
         />
       </Suspense>
       <div
-        className={`rounded-full overflow-hidden pr-4 pl-2 py-2 bg-surface border flex justify-between items-center ${item?.bg ?? ""}`}
+        className={`rounded-full overflow-hidden ps-4 pe-2 py-2 bg-surface border flex justify-between items-center ${item?.bg ?? ""}`}
       >
-        <div className="md:mr-2">
+        <div className="md:ms-2">
           <ContentImage
             alt=""
             width={30}
@@ -82,7 +82,7 @@ const SearchInput = ({
             ref={inputRef}
             placeholder={placeholder}
             value={passedText || text}
-            className={`bg-transparent py-1 pl-0.5 pr-3 outline-none placeholder:text-ink-subtle w-full ${item?.bg ?? ""}`}
+            className={`bg-transparent py-1 pe-0.5 ps-3 outline-none placeholder:text-ink-subtle w-full ${item?.bg ?? ""}`}
             onChange={(event) => {
               if (disableTypeing) return;
               setHasParam(false);
@@ -95,7 +95,7 @@ const SearchInput = ({
             <button
               type="button"
               onClick={cancelSearch}
-              className="text-link text-xs mr-2 cursor-pointer"
+              className="text-link text-xs ms-2 cursor-pointer"
             >
               {cancelText}
             </button>

@@ -29,7 +29,7 @@ const PopUpDown = ({
         ></Sheet.Backdrop>
         <Sheet.Container className=" pop-container !fixed bg-transparent bottom-0 ">
           <Sheet.Header className="pb-0 px-4 pt-6 relative">
-            <div className=" w-8 h-1 absolute left-0 mx-auto top-2 right-0 rounded-full bg-line-strong "></div>
+            <div className=" w-8 h-1 absolute end-0 mx-auto top-2 start-0 rounded-full bg-line-strong "></div>
             {item?.title ? (
               <>
                 <div className="w-full text-center text-link font-bold">

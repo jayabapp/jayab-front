@@ -17,7 +17,7 @@ const HeroMobileTrigger = ({
       onClick={onOpen}
       onPointerDown={onPreload}
       data-test="hero-mobile-trigger"
-      className={`surface-panel flex w-full items-center !rounded-full text-right ${
+      className={`surface-panel flex w-full items-center !rounded-full text-start ${
         variant === "header"
           ? "h-10 min-w-0 gap-1.5 !border-line bg-surface p-1 !shadow-none"
           : "gap-2 !border-line/80 p-1 !shadow-[0_10px_28px_-10px_rgb(15_23_42/0.28),0_2px_6px_-1px_rgb(15_23_42/0.08)]"
@@ -25,7 +25,7 @@ const HeroMobileTrigger = ({
     >
       <span
         className={`flex min-w-0 flex-1 flex-col items-start ${
-          variant === "header" ? "pr-1.5" : "gap-0.5 pr-2"
+          variant === "header" ? "ps-1.5" : "gap-0.5 ps-2"
         }`}
       >
         <span

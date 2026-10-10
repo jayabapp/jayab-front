@@ -89,7 +89,7 @@ const ChatHeader = ({
   return (
     <div
       ref={headerRef}
-      className="fixed left-0 top-0 z-50 mx-auto w-full bg-surface shadow-md md:left-[10%] md:right-[10%] md:z-30 md:w-1/2 xl:top-[4.5rem]"
+      className="fixed end-0 top-0 z-50 mx-auto w-full bg-surface shadow-md md:end-[10%] md:start-[10%] md:z-30 md:w-1/2 xl:top-[4.5rem]"
     >
       <div className="flex min-h-[4.25rem] items-center justify-between gap-2 px-2 pb-3 pt-4">
         <div className="flex w-full items-center gap-2">
@@ -109,7 +109,7 @@ const ChatHeader = ({
             {image ? (
               <div className="w-10 shrink-0 relative flex items-center aspect-square">
                 <div
-                  className={`absolute bottom-0 left-0 z-10 size-2 rounded-full ${is_recipient_online ? "bg-emerald-400" : "bg-neutral-400"}`}
+                  className={`absolute bottom-0 end-0 z-10 size-2 rounded-full ${is_recipient_online ? "bg-emerald-400" : "bg-neutral-400"}`}
                 />
                 <ContentImage
                   src={
@@ -165,7 +165,7 @@ const ChatHeader = ({
           onClick={showBlockFunc}
           className={`w-6 h-6 cursor-pointer aspect-square ${
             isBlocked ? "" : "grayscale"
-          }   transition-all ml-4 opacity-65 hover:opacity-100 hover:grayscale-0 `}
+          }   transition-all me-4 opacity-65 hover:opacity-100 hover:grayscale-0 `}
           src="/assets/icons/chat/chat_block.svg"
           alt={tr("chat.blockUser")}
           width={24}

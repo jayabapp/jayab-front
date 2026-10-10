@@ -21,7 +21,7 @@ const HeroStepCard = ({
       type="button"
       onClick={onOpen}
       aria-expanded={isActive}
-      className="flex w-full items-center gap-3 px-4 py-3.5 text-right"
+      className="flex w-full items-center gap-3 px-4 py-3.5 text-start"
     >
       <span className="flex size-9 shrink-0 items-center justify-center rounded-full bg-selected">
         <ContentImage alt="" src={icon} width={18} height={18} className="size-[1.125rem]" />

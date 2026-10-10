@@ -48,7 +48,7 @@ const PrivateOthersMessage = ({ data }: ChatMessageItemProps) => {
         onClick={() => setShow(true)}
         className={`${`my-anchor-element${data?.id}`} cursor-pointer select-none bg-surface w-[70%] md:w-[40%] h-fit bg-white-200 ${
           data?.media ? "p-1" : "p-4 pb-2"
-        } rounded-xl rounded-bl-none ${show ? "!bg-selected/30 " : ""}  ${data?.media ? "pt-3" : ""} `}
+        } rounded-xl rounded-ee-none ${show ? "!bg-selected/30 " : ""}  ${data?.media ? "pt-3" : ""} `}
       >
         {data?.media ? (
           <div

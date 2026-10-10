@@ -21,10 +21,10 @@ const SpecialFilterButton = ({
         src={item?.img}
         className="size-5 transition-all"
       />
-      <span className="text-xs pr-2 shrink-0">{item?.title}</span>
+      <span className="text-xs ps-2 shrink-0">{item?.title}</span>
     </span>
     {isChecked ? (
-      <span className="w-4 h-4 mr-2 aspect-square rounded-full border border-action flex items-center justify-center">
+      <span className="w-4 h-4 ms-2 aspect-square rounded-full border border-action flex items-center justify-center">
         <ContentImage
           alt=""
           width={8}

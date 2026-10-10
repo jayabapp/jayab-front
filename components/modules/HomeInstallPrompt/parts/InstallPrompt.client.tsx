@@ -14,11 +14,11 @@ const InstallPromt = ({
 
   return (
     <div
-      className="fixed   right-0 left-0 bottom-0 app-text  w-full md:w-2/3 xl:w-1/2  mx-auto bg-surface shadow-surface rounded-t-lg px-3 pt-8 pb-6 gap-2 z-30 cart-shadow "
+      className="fixed   start-0 end-0 bottom-0 app-text  w-full md:w-2/3 xl:w-1/2  mx-auto bg-surface shadow-surface rounded-t-lg px-3 pt-8 pb-6 gap-2 z-30 cart-shadow "
     >
       <div
         onClick={() => cacelCallBack()}
-        className="absolute cursor-pointer top-2 right-3 text-lg "
+        className="absolute cursor-pointer top-2 start-3 text-lg "
       >
         &#x2715;
       </div>

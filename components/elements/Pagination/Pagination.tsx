@@ -34,7 +34,7 @@ const Pagination = ({
         onClick={onClickPrev}
         disabled={currentPage <= 1}
         aria-label={t("previousPage")}
-        className="ml-2 flex h-9 w-9 items-center justify-center rounded-md border border-control bg-surface p-1 transition-all enabled:hover:translate-x-2 disabled:cursor-not-allowed disabled:opacity-50"
+        className="me-2 flex h-9 w-9 items-center justify-center rounded-md border border-control bg-surface p-1 transition-all rtl:enabled:hover:translate-x-2 ltr:enabled:hover:-translate-x-2 disabled:cursor-not-allowed disabled:opacity-50"
       >
         <PaginationArrow direction="left" />
       </button>
@@ -62,7 +62,7 @@ const Pagination = ({
         type="button"
         onClick={onClickNext}
         aria-label={t("nextPage")}
-        className="mr-2 flex h-9 w-9 items-center justify-center rounded-md border border-control bg-surface p-1 transition-all enabled:hover:-translate-x-2 disabled:cursor-not-allowed disabled:opacity-50"
+        className="ms-2 flex h-9 w-9 items-center justify-center rounded-md border border-control bg-surface p-1 transition-all rtl:enabled:hover:-translate-x-2 ltr:enabled:hover:translate-x-2 disabled:cursor-not-allowed disabled:opacity-50"
         disabled={currentPage >= pageCount}
       >
         <PaginationArrow direction="right" />

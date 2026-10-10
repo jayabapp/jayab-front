@@ -28,7 +28,7 @@ const CitySearchInput = ({
         type="button"
         aria-label={t("clearSearch")}
         onClick={() => onChange("")}
-        className={`cursor-pointer absolute left-4 z-5 ${
+        className={`cursor-pointer absolute end-4 z-5 ${
           value ? "opacity-75" : "opacity-0 pointer-events-none"
         } transition-all`}
       >

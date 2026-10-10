@@ -49,6 +49,7 @@ const PropertyCardOwnerActions = ({
             alt=""
             width={16}
             height={16}
+            className="ltr:rotate-180"
             src="/assets/icons/shared/chevron-left.svg"
           />
         </div>
@@ -126,7 +127,7 @@ const PropertyCardOwnerActions = ({
               alt=""
               width={20}
               height={20}
-              className="w-5 h-5 absolute left-4 top-0 bottom-0 my-auto"
+              className="w-5 h-5 absolute end-4 top-0 bottom-0 my-auto ltr:rotate-180"
               src="/assets/icons/property/white_arrow_left.svg"
             />
           }

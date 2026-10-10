@@ -72,7 +72,7 @@ const QaLoginForm = ({ next }: { next?: string }) => {
             id="qa-password"
             value={password}
             autoComplete="current-password"
-            className={`${INPUT_CLASS} pl-10`}
+            className={`${INPUT_CLASS} pe-10`}
             type={showPassword ? "text" : "password"}
             onChange={(event) => setPassword(event.target.value)}
           />
@@ -81,7 +81,7 @@ const QaLoginForm = ({ next }: { next?: string }) => {
             aria-pressed={showPassword}
             onClick={() => setShowPassword((value) => !value)}
             aria-label={showPassword ? "پنهان کردن رمز عبور" : "نمایش رمز عبور"}
-            className="absolute inset-y-0 left-0 flex w-10 cursor-pointer items-center justify-center text-ink-subtle hover:text-ink"
+            className="absolute inset-y-0 end-0 flex w-10 cursor-pointer items-center justify-center text-ink-subtle hover:text-ink"
           >
             <Icon name={showPassword ? "eye-off" : "eye"} size={20} />
           </button>

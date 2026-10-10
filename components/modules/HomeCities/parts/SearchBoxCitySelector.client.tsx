@@ -12,9 +12,9 @@ const SeachBoxCitySelector = ({ options, onSubmitCB }: TSearchBoxProps) => {
 
   const [showCities, setShowCities] = useState(false);
   const [title, setTitle] = useState("");
-  const onHideCities = () => setShowCities(false)
-  const onShowCities = () => setShowCities(true)
-  
+  const onHideCities = () => setShowCities(false);
+  const onShowCities = () => setShowCities(true);
+
   return (
     <div
       className={` px-4 w-full relative flex cursor-pointer items-center shrink-0  ${options?.cotainerClass || ""} `}
@@ -30,7 +30,7 @@ const SeachBoxCitySelector = ({ options, onSubmitCB }: TSearchBoxProps) => {
             width={20}
             height={20}
             src="/assets/icons/home/home_location.svg"
-            className={` size-5 aspect-auto ${!!title ? "   text-ink opacity-70 " : "opacity-40"}`}
+            className={` size-5 aspect-auto ${!!title ? " text-ink opacity-70 " : "opacity-40"}`}
           />{" "}
         </div>
 
@@ -43,8 +43,8 @@ const SeachBoxCitySelector = ({ options, onSubmitCB }: TSearchBoxProps) => {
           alt=""
           width={12}
           height={12}
-          className="size-3 absolute left-0"
           src="/assets/icons/shared/chevron-left.svg"
+          className="size-3 absolute end-0 ltr:rotate-180"
         />
       </div>
       <Suspense>

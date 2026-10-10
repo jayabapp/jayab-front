@@ -19,14 +19,14 @@ const SearchPanelInput = ({
   placeholder,
   activeIndex,
   boxId = "SEARCH_BOX",
-  submitButtonClass = "left-1",
+  submitButtonClass = "end-1",
 }: SearchPanelInputProps) => {
   const t = useTranslations("search");
 
   return (
     <div className="flex px-4 pt-4 items-center relative w-full gap-2 flex-row">
       <form
-        className="relative flex items-center rounded-full border-line w-full py-1.5 gap-1 px-1.5 pr-3 border-2 focus-within:border-action transition-colors"
+        className="relative flex items-center rounded-full border-line w-full py-1.5 gap-1 px-1.5 ps-3 border-2 focus-within:border-action transition-colors"
         onSubmit={(event) => {
           event.preventDefault();
           if (!isPending) onSubmit();

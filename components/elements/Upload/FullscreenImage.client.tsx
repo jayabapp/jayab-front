@@ -25,7 +25,7 @@ const FullscreenImage = ({
           />
 
           {onDelete ? (
-            <div className="ml-2">
+            <div className="me-2">
               <ContentImage
                 alt=""
                 height={16}

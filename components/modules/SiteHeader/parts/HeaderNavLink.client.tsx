@@ -29,7 +29,7 @@ const HeaderNavLink = ({
   );
 
   const badge = hasBadge ? (
-    <PulseDot className="absolute -left-2 -top-0.5 z-1" />
+    <PulseDot className="absolute -end-2 -top-0.5 z-1" />
   ) : null;
 
   if (route)

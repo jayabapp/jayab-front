@@ -81,7 +81,7 @@ const StayDatePanel = ({
       tabIndex={-1}
       role="dialog"
       aria-label={t("reserve.tripDate")}
-      className="popover-enter absolute left-0 top-0 z-30 flex w-[min(46rem,calc(100vw-2rem))] flex-col gap-4 rounded-20 bg-surface p-5 shadow-glass focus:outline-none"
+      className="popover-enter absolute end-0 top-0 z-30 flex w-[min(46rem,calc(100vw-2rem))] flex-col gap-4 rounded-20 bg-surface p-5 shadow-glass focus:outline-none"
     >
       <div className="flex items-center gap-3">
         <div className="flex-1">
@@ -103,7 +103,7 @@ const StayDatePanel = ({
             onClick={() => setOffset((value) => Math.max(0, value - 1))}
             className="flex size-9 cursor-pointer items-center justify-center rounded-full border border-line transition-colors hover:bg-surface-muted disabled:cursor-not-allowed disabled:opacity-40"
           >
-            <Icon name="chevron-down" size={16} className="-rotate-90" />
+            <Icon name="chevron-down" size={16} className="-rotate-90 ltr:rotate-90" />
           </button>
           <button
             type="button"
@@ -116,7 +116,7 @@ const StayDatePanel = ({
             }
             className="flex size-9 cursor-pointer items-center justify-center rounded-full border border-line transition-colors hover:bg-surface-muted disabled:cursor-not-allowed disabled:opacity-40"
           >
-            <Icon name="chevron-down" size={16} className="rotate-90" />
+            <Icon name="chevron-down" size={16} className="rotate-90 ltr:-rotate-90" />
           </button>
         </div>
       </div>

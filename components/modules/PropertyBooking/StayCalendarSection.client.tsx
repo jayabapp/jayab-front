@@ -91,7 +91,7 @@ const StayCalendarSection = ({ propertyId }: StayCalendarSectionProps) => {
             aria-label={t("lastMonth")}
             onClick={() => setOffset((value) => value - 1)}
           >
-            <Icon name="chevron-down" size={16} className="-rotate-90" />
+            <Icon name="chevron-down" size={16} className="-rotate-90 ltr:rotate-90" />
           </button>
           <button
             type="button"
@@ -100,7 +100,7 @@ const StayCalendarSection = ({ propertyId }: StayCalendarSectionProps) => {
             aria-label={t("nextMonth")}
             onClick={() => setOffset((value) => value + 1)}
           >
-            <Icon name="chevron-down" size={16} className="rotate-90" />
+            <Icon name="chevron-down" size={16} className="rotate-90 ltr:-rotate-90" />
           </button>
         </div>
       </div>

@@ -91,6 +91,7 @@ const BlogsContainer = ({ title, data, viewAllUrl }: BlogsContainerProps) => {
             alt=""
             width={16}
             height={16}
+            className="ltr:rotate-180"
             src="/assets/icons/shared/blue_chevron_left.svg"
           />
         </Link>

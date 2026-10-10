@@ -112,7 +112,7 @@ const LandingDiscovery = ({ devices, landing }: LandingDiscoveryProps) => {
       <div
         className={`flex fixed ${
           showShadow ? "shadow-md" : ""
-        } md:shadow-none pt-1 transition-all duration-300 xl:hidden h-16 right-0 items-center justify-center z-10 xl:z-1 top-[3rem] xl:top-auto left-0 xl:left-auto bg-surface xl:bg-transparent xl:relative flex-col w-full xl:gap-2`}
+        } md:shadow-none pt-1 transition-all duration-300 xl:hidden h-16 start-0 items-center justify-center z-10 xl:z-1 top-[3rem] xl:top-auto end-0 xl:end-auto bg-surface xl:bg-transparent xl:relative flex-col w-full xl:gap-2`}
       >
         <div className="flex order-1 xl:hidden relative w-full">
           <div className="z-1 px-3 relative w-full items-center gap-1 justify-between">
@@ -147,7 +147,7 @@ const LandingDiscovery = ({ devices, landing }: LandingDiscoveryProps) => {
             <FilterApplyBar draft={filters} onApply={onApplyFilters} />
           </aside>
 
-          <div className="col-span-12 md:col-span-12 lg:col-span-9 px-0 xl:pr-4 xl:pl-0 xl:mt-0">
+          <div className="col-span-12 md:col-span-12 lg:col-span-9 px-0 xl:ps-4 xl:pe-0 xl:mt-0">
             <div className="hidden mb-2 z-1 w-full xl:flex flex-col xl:flex-row items-center justify-between">
               <SingleProductBreadCrumb dataArray={breadCrumbs} />
             </div>

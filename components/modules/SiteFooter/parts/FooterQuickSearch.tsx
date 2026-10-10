@@ -22,7 +22,7 @@ const FooterQuickSearch = ({ links }: FooterQuickSearchProps) => {
               prefetch={false}
               title={link?.title}
               href={link?.link || ""}
-              className="bg-surface border shadow-sm min-w-[140px] shrink-0 shadow-black/10 border-line-strong relative rounded-20 h-6 md:h-8 flex items-center justify-start pr-4 font-medium text-xs text-start"
+              className="bg-surface border shadow-sm min-w-[140px] shrink-0 shadow-black/10 border-line-strong relative rounded-20 h-6 md:h-8 flex items-center justify-start ps-4 font-medium text-xs text-start"
             >
               {link?.title}
             </Link>

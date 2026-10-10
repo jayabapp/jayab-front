@@ -2,6 +2,7 @@
 
 import { Keyboard, Pagination, Zoom } from "swiper/modules";
 import { ContentImage } from "@elements/Image";
+import { useDir } from "@hooks/useDir";
 import { Swiper } from "swiper/react";
 import { useState } from "react";
 
@@ -21,17 +22,26 @@ const SwiperWithNavigation = ({
     !props?.initialSlide || props?.initialSlide == 0,
   );
   const [slidesPerView, setslidesPerView] = useState<number | string>(2);
+  const rtl = useDir() === "rtl";
+  const canScroll = dataLength > slidesPerView;
+  const showLeft = canScroll && (rtl ? !isEnd : !isStart);
+  const showRight = canScroll && (rtl ? !isStart : !isEnd);
+  const goForward = () => {
+    reference.current?.slideNext();
+    setisStart(false);
+  };
+  const goBack = () => {
+    reference.current?.slidePrev();
+    setIsEnd(false);
+  };
 
   return (
     <div
       className={`w-full  flex items-center !select-none  ${containerClass}`}
     >
-      {!isEnd && dataLength > slidesPerView ? (
+      {showLeft ? (
         <div
-          onClick={() => {
-            reference.current?.slideNext();
-            setisStart(false);
-          }}
+          onClick={rtl ? goForward : goBack}
           className=" my-auto    flex bottom-0 top-0  items-center justify-center hover:scale-102 group hover:bg-action  transition-all lg:flex md:flex-col absolute z-10 bg-surface/40   rounded-full cursor-pointer h-10 w-10 left-4   right-auto"
         >
           <ContentImage
@@ -67,12 +77,9 @@ const SwiperWithNavigation = ({
         {children}
       </Swiper>
 
-      {!isStart && dataLength > slidesPerView ? (
+      {showRight ? (
         <div
-          onClick={() => {
-            reference.current?.slidePrev();
-            setIsEnd(false);
-          }}
+          onClick={rtl ? goBack : goForward}
           className="flex bottom-0 top-0 my-auto hover:scale-102 transition-all group hover:bg-action lg:flex md:flex-col absolute z-10 bg-surface/40   rounded-full cursor-pointer h-10 w-10 right-4  left-auto justify-center items-center"
         >
           <ContentImage

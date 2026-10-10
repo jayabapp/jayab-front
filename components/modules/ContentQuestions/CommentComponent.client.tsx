@@ -14,7 +14,7 @@ export const CommentComponent = ({ item }: ContentQuestionCommentProps) => {
     <div className="w-full flex flex-col ">
       <div className=" w-full flex flex-col  gap-4 p-3  border border-secondary-400 rounded-xl">
         <div className="flex  flex-row items-center justify-between">
-          <div className=" flex items-center gap-1 border  border-line  rounded-full pl-2 p-[1px]  ">
+          <div className=" flex items-center gap-1 border  border-line  rounded-full pe-2 p-[1px]  ">
             {" "}
             <Image
               alt=""
@@ -51,7 +51,7 @@ export const CommentComponent = ({ item }: ContentQuestionCommentProps) => {
           />
           <div className="p-6 w-full flex flex-col gap-4 bg-secondary-200 rounded-10 ">
             <div className="flex flex-row items-center justify-between">
-              <div className=" flex items-center gap-1 border  border-line  rounded-full pl-2 p-[1px]  ">
+              <div className=" flex items-center gap-1 border  border-line  rounded-full pe-2 p-[1px]  ">
                 <Image
                   alt=""
                   width={24}

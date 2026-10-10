@@ -38,7 +38,7 @@ const Counter = ({
   };
   return (
     <div
-      className={`transition-all p-1 bg-surface  duration-150 ease-in-out   w-full flex items-center justify-between ${containerClass} `}
+      className={`transition-all p-1 bg-surface  duration-150 ease-in-out   w-full flex items-center justify-between ltr:flex-row-reverse ${containerClass} `}
     >
       <button
         aria-label={t("increase")}

@@ -5,6 +5,8 @@ import { DotButton, useDotButton } from "./EmblaCarouselDotButton.client";
 import { NextButton, PrevButton } from "./EmblaCarouselArrowButtons.client";
 import { usePrevNextButtons } from "./EmblaCarouselArrowButtons.client";
 import { ContentImage } from "@elements/Image";
+import { arrowSides } from "./EmblaCarouselArrowButtons.client";
+import { useDir } from "@hooks/useDir";
 
 import type { EmblaPluginType } from "embla-carousel";
 import type { CarouselProps } from "@/types/components/elements/carousel";
@@ -15,17 +17,17 @@ import Autoplay from "embla-carousel-autoplay";
 
 const Swiper: FC<CarouselProps> = (props) => {
   const {
-    options = { align: "start", direction: "rtl", dragFree: true },
+    autoFit,
     children,
-    dir = "rtl",
-    autoplay = false,
     pagination,
     withArrows,
-    selectedIndexCb,
-    viewportClassName,
     parentClass,
-    autoFit,
+    dir: dirProp,
+    selectedIndexCb,
+    autoplay = false,
     onShowCountClick,
+    viewportClassName,
+    options = { align: "start", dragFree: true },
   } = props;
 
   const extraOptions = useMemo<EmblaPluginType[]>(
@@ -33,7 +35,13 @@ const Swiper: FC<CarouselProps> = (props) => {
     [autoplay],
   );
 
-  const [emblaRef, emblaApi] = useEmblaCarousel(options, extraOptions);
+  const localeDir = useDir();
+  const dir = dirProp ?? localeDir;
+
+  const [emblaRef, emblaApi] = useEmblaCarousel(
+    { ...options, direction: dir },
+    extraOptions,
+  );
 
   const instanceId = useId().replace(/[^a-zA-Z0-9]/g, "");
 
@@ -61,12 +69,8 @@ const Swiper: FC<CarouselProps> = (props) => {
 
   const { selectedIndex, scrollSnaps, onDotButtonClick } =
     useDotButton(emblaApi);
-  const {
-    prevBtnDisabled,
-    nextBtnDisabled,
-    onPrevButtonClick,
-    onNextButtonClick,
-  } = usePrevNextButtons(emblaApi);
+  const nav = usePrevNextButtons(emblaApi);
+  const { showLeft, showRight, onLeft, onRight } = arrowSides(nav, dir);
 
   useEffect(() => {
     if (!!selectedIndexCb) {
@@ -86,24 +90,22 @@ const Swiper: FC<CarouselProps> = (props) => {
 
         {!!withArrows && (
           <div className="  embla__buttons ">
-            {!!nextBtnDisabled ? (
-              <></>
-            ) : (
+            {showLeft ? (
               <PrevButton
                 className=" !-top-[10%] !left-0 scale-75 hover:scale-[0.8]  md:hover:scale-102   md:scale-100"
-                onClick={onNextButtonClick}
-                disabled={nextBtnDisabled}
+                onClick={onLeft}
               />
+            ) : (
+              <></>
             )}
 
-            {!!prevBtnDisabled ? (
-              <></>
-            ) : (
+            {showRight ? (
               <NextButton
-                disabled={prevBtnDisabled}
-                onClick={onPrevButtonClick}
+                onClick={onRight}
                 className="!right-0 !-top-[10%] scale-75  hover:scale-[0.8]  md:hover:scale-102  md:scale-100"
               />
+            ) : (
+              <></>
             )}
           </div>
         )}
@@ -126,7 +128,7 @@ const Swiper: FC<CarouselProps> = (props) => {
           onClick={() => {
             onShowCountClick(selectedIndex);
           }}
-          className="absolute cursor-pointer bottom-4 flex items-center justify-evenly left-4 rounded-md right-auto w-11 h-7 bg-surface/70"
+          className="absolute cursor-pointer bottom-4 flex items-center justify-evenly end-4 rounded-md start-auto w-11 h-7 bg-surface/70"
         >
           <p className="text-sm h-full text-center flex items-center justify-center mt-0.5">
             {scrollSnaps?.length}

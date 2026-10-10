@@ -6,7 +6,7 @@ const FieldCharacterCounter = ({
   containerClass,
 }: FieldCharacterCounterProps) => (
   <div
-    className={`absolute left-2 text-xs text-ink-subtle bottom-0 ${containerClass ?? ""}`}
+    className={`absolute end-2 text-xs text-ink-subtle bottom-0 ${containerClass ?? ""}`}
   >
     {max - `${value}`?.length}/{max}
   </div>

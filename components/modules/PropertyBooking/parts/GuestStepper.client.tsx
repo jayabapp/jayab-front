@@ -42,7 +42,7 @@ const GuestStepper = ({
           </div>
         </div>
 
-        <div className="flex items-center gap-3">
+        <div className="flex items-center gap-3 ltr:flex-row-reverse">
           <button
             id={id}
             type="button"

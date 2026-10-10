@@ -30,7 +30,7 @@ const PropertyOwnerBadge = ({
           <span
             role="status"
             aria-label={t("listing.online")}
-            className="absolute -bottom-0.5 -left-0.5 size-3 rounded-full border-2 border-white bg-emerald-500 shadow-[0_0_4px_rgba(16,185,129,0.9)]"
+            className="absolute -bottom-0.5 -end-0.5 size-3 rounded-full border-2 border-white bg-emerald-500 shadow-[0_0_4px_rgba(16,185,129,0.9)]"
           />
         ) : null}
       </div>

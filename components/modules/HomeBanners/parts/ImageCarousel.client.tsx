@@ -1,11 +1,12 @@
-import type { HomeImageCarouselProps } from "@/types/components/modules/home";
 import { useTrackBannerView } from "@features/home/hooks/useTrackBannerView";
 import { getHomeImageUrl } from "@features/home/mappers/home-image.mapper";
 import { ContentImage } from "@elements/Image";
 
+import type { HomeImageCarouselProps } from "@/types/components/modules/home";
+
 import SwiperSlide from "@elements/Carousel/SwiperSlide";
-import Swiper from "@elements/Carousel/Swiper.client";
 import Editable from "@elements/Editable";
+import Swiper from "@elements/Carousel/Swiper.client";
 import Link from "next/link";
 
 const ImageCarousel = ({ list, item, devices }: HomeImageCarouselProps) => {
@@ -49,7 +50,7 @@ const ImageCarousel = ({ list, item, devices }: HomeImageCarouselProps) => {
         }}
         options={{
           align: "center",
-          direction: "rtl",
+
           dragFree: false,
           loop: true,
           skipSnaps: false,

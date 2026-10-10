@@ -10,7 +10,7 @@ const PropertyPriceTag = ({ price }: PropertyPriceTagProps) => {
   return (
     <div className="flex flex-row w-fit gap-2 md:gap-2">
       {price?.discountPercentage ? (
-        <div className="w-7 gap-0.5 hidden md:flex left-2 flex-col h-5 rounded-md transition-all px-1 py-[0.2rem] bg-danger-500 text-white aspect-square items-center justify-center">
+        <div className="w-7 gap-0.5 hidden md:flex end-2 flex-col h-5 rounded-md transition-all px-1 py-[0.2rem] bg-danger-500 text-white aspect-square items-center justify-center">
           <p className="text-xxs">%{price?.discountPercentage}</p>
         </div>
       ) : null}
@@ -29,7 +29,7 @@ const PropertyPriceTag = ({ price }: PropertyPriceTagProps) => {
       </p>
 
       {price?.discountPercentage ? (
-        <div className="w-7 gap-0.5 absolute md:hidden left-2 flex-col h-5 rounded-md transition-all px-1 py-[0.2rem] bg-danger-500 text-white aspect-square flex items-center justify-center">
+        <div className="w-7 gap-0.5 absolute md:hidden end-2 flex-col h-5 rounded-md transition-all px-1 py-[0.2rem] bg-danger-500 text-white aspect-square flex items-center justify-center">
           <p className="text-xxs">%{price?.discountPercentage}</p>
         </div>
       ) : null}

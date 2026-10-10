@@ -40,7 +40,7 @@ const ReservationGuestContact = ({
                   width={16}
                   height={16}
                   src="/assets/icons/advisor/blue_phone.svg"
-                  className={`w-4 h-4 absolute right-3 top-0 bottom-0 my-auto aspect-square${disabledIcon}`}
+                  className={`w-4 h-4 absolute start-3 top-0 bottom-0 my-auto aspect-square${disabledIcon}`}
                 />
               }
             />
@@ -57,7 +57,7 @@ const ReservationGuestContact = ({
                   width={16}
                   height={16}
                   src="/assets/icons/advisor/blue_sms.svg"
-                  className={`w-4 h-4 absolute right-3 top-0 bottom-0 my-auto ml-1 aspect-square${disabledIcon}`}
+                  className={`w-4 h-4 absolute start-3 top-0 bottom-0 my-auto me-1 aspect-square${disabledIcon}`}
                 />
               }
             />
@@ -79,7 +79,7 @@ const ReservationGuestContact = ({
                 alt=""
                 width={16}
                 height={16}
-                className="w-4 h-4 absolute right-3 top-0 bottom-0 my-auto ml-1 aspect-square"
+                className="w-4 h-4 absolute start-3 top-0 bottom-0 my-auto me-1 aspect-square"
                 src="/assets/icons/reserve/blue_chat_reserve.svg"
               />
             }

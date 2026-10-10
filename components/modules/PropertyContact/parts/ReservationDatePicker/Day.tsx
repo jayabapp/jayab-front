@@ -328,9 +328,9 @@ const Day = memo(
       } else if (dateInfo.isExceedsMaxSpan) {
         bgClass = "cursor-pointer";
       } else if (dateInfo.isInSpan) {
-        if (dateInfo.isSpanStart) bgClass = "bg-action !m-0 !rounded-l-none";
+        if (dateInfo.isSpanStart) bgClass = "bg-action !m-0 !rounded-e-none";
         else if (dateInfo.isSpanEnd)
-          bgClass = "bg-action !m-0 !rounded-r-none";
+          bgClass = "bg-action !m-0 !rounded-s-none";
         else if (dateInfo.isBetweenSpan)
           bgClass = "!rounded-none bg-action/10 !m-0";
       } else if (dateInfo.isAfterForbiddenSpan) {
@@ -522,7 +522,7 @@ const Day = memo(
             !dateInfo.isForbidden &&
             !dateInfo.isPartOfForbiddenSpan && (
               <div
-                className={`absolute left-1 top-1 w-1.5 h-1.5 aspect-square rounded-full ${
+                className={`absolute end-1 top-1 w-1.5 h-1.5 aspect-square rounded-full ${
                   dateInfo.isInSpan &&
                   (dateInfo.isSpanStart || dateInfo.isSpanEnd)
                     ? "bg-surface"
@@ -542,7 +542,7 @@ const Day = memo(
             !dateInfo.isForbidden &&
             !dateInfo.isPartOfForbiddenSpan && (
               <div
-                className="absolute bottom-1 left-0 right-0 mx-auto h-1 w-2/3 bg-neutral-500 rounded-full"
+                className="absolute bottom-1 end-0 start-0 mx-auto h-1 w-2/3 bg-neutral-500 rounded-full"
                 aria-label="Peak day"
               />
             )}
@@ -561,7 +561,7 @@ const Day = memo(
             !dateInfo.isExceedsMaxSpan &&
             !dateInfo.isForbidden &&
             !dateInfo.isPartOfForbiddenSpan && (
-              <div className="absolute -bottom-1 left-0 right-0 mx-auto w-3 h-0.5 bg-surface rounded-full" />
+              <div className="absolute -bottom-1 end-0 start-0 mx-auto w-3 h-0.5 bg-surface rounded-full" />
             )}
         </div>
       </div>

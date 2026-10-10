@@ -18,9 +18,9 @@ const formatValue = (
 };
 
 const alignClassMap = {
-  start: "items-start text-right",
+  start: "items-start text-start",
   center: "items-center text-center",
-  end: "items-end text-left",
+  end: "items-end text-end",
 };
 
 const NestedText: FC<NestedTextProps> = ({
@@ -34,7 +34,7 @@ const NestedText: FC<NestedTextProps> = ({
   locale = "fa",
   maximumFractionDigits,
   titleClassName = "text-14 md:text-16",
-  valueClassName = "text-14 md:text-16 font-bold text-secondary-500 text-right whitespace-pre-line",
+  valueClassName = "text-14 md:text-16 font-bold text-secondary-500 text-start whitespace-pre-line",
   unitClassName = "text-14 md:text-16 font-bold text-secondary-500",
   containerClassName = "",
   titleIconContainerClassName = "flex flex-row items-center gap-1",

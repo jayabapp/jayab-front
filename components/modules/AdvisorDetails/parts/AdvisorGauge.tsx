@@ -1,4 +1,5 @@
 import { buildStyles, CircularProgressbar } from "react-circular-progressbar";
+
 import type { AdvisorGaugeProps } from "@/types/components/modules/advisors";
 
 import "react-circular-progressbar/dist/styles.css";
@@ -7,9 +8,9 @@ const AdvisorGauge = ({
   label,
   title,
   value,
+  textSize,
   pathColor,
   textColor,
-  textSize,
   labelClass,
   titleClass,
   containerClass,
@@ -25,7 +26,7 @@ const AdvisorGauge = ({
         value={value}
         strokeWidth={10}
         text={`${value}`}
-        className="max-w-20 md:p-2 !pr-0"
+        className="max-w-20 md:p-2 !ps-0"
         styles={buildStyles({ pathColor, textColor, textSize })}
       />
       {title ? (

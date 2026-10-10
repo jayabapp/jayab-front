@@ -29,7 +29,7 @@ const AREA_LINE_LAYER = `${AREA_SOURCE}-line`;
 const AREA_FADE_MS = 400;
 
 const CONTROL_CLASS =
-  "absolute left-3 top-3 z-10 flex size-10 cursor-pointer items-center justify-center rounded-full bg-surface text-ink shadow-glass-sm transition-colors hover:bg-surface-muted focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-focus";
+  "absolute end-3 top-3 z-10 flex size-10 cursor-pointer items-center justify-center rounded-full bg-surface text-ink shadow-glass-sm transition-colors hover:bg-surface-muted focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-focus";
 
 const ListingMapCanvas = ({
   lat,

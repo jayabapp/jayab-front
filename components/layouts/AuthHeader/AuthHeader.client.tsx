@@ -16,7 +16,7 @@ const AuthHeader = ({
   const router = useRouter();
 
   return (
-    <div className="glass-header fixed left-0 top-0 z-10 flex h-16 w-full items-center justify-between px-5 py-4 transition-all">
+    <div className="glass-header fixed end-0 top-0 z-10 flex h-16 w-full items-center justify-between px-5 py-4 transition-all">
       {disableBack ? (
         <span aria-hidden className="w-10 opacity-0" />
       ) : (

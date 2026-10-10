@@ -1,7 +1,7 @@
 "use client";
 
-import { useAttachmentUpload } from "@features/upload/hooks/useAttachmentUpload";
 import { useEffect, useRef, useState } from "react";
+import { useAttachmentUpload } from "@features/upload/hooks/useAttachmentUpload";
 import { useTranslations } from "next-intl";
 import { BtnLoading } from "@elements/Button";
 import { FormInput } from "@elements/Form";
@@ -150,22 +150,22 @@ const ChatUploader = ({
         {typeof onSelect == "function" &&
           item == null &&
           (loading ? (
-            <div className="w-full h-full absolute top-0 left-0 rounded-20 flex items-center justify-center   backdrop-blur-md">
+            <div className="w-full h-full absolute top-0 end-0 rounded-20 flex items-center justify-center backdrop-blur-md">
               <BtnLoading />{" "}
             </div>
           ) : (
-            <div className="  aspect-square shrink-0 md:w-6  items-center justify-center flex  text-ink-subtle   h-5 w-5 md:h-6">
+            <div className="aspect-square shrink-0 md:w-6 items-center justify-center flex text-ink-subtle h-5 w-5 md:h-6">
               {" "}
               <Image
-                src="/assets/icons/chat/chat_clip.svg"
                 alt="PaperClipIcon"
-                className="  aspect-square shrink-0 md:w-6 text-ink-subtle   h-5 w-5 md:h-6"
+                src="/assets/icons/chat/chat_clip.svg"
+                className="  aspect-square shrink-0 md:w-6 text-ink-subtle h-5 w-5 md:h-6"
                 onClick={() => {
                   !disabled ? imagePickerRef?.current?.click() : void null;
                 }}
                 width={24}
                 height={24}
-              />{" "}
+              />
             </div>
           ))}
       </div>
@@ -179,7 +179,7 @@ const ChatUploader = ({
         onHide={onHide}
       >
         <div
-          className="flex    items-center justify-center min-h-[60dvh]"
+          className="flex items-center justify-center min-h-[60dvh]"
           style={{
             position: "relative",
             width: "100%",
@@ -209,14 +209,12 @@ const ChatUploader = ({
             placeholder: t("messageText"),
           }}
         />
-        <div className=" w-full grid overflow-clip   p-2 gap-2 items-center  bg-neutral-800  justify-center grid-cols-2 ">
+        <div className="w-full grid overflow-clip p-2 gap-2 items-center  bg-neutral-800 justify-center grid-cols-2 ">
           <div
             onClick={() => {
-              if (!subLoading) {
-                uploadImage();
-              }
+              if (!subLoading) uploadImage();
             }}
-            className={`transition-all w-full cursor-pointer flex py-1.5 border rounded-xl border-status-success  gap-3 items-center  border-l justify-center`}
+            className={`transition-all w-full cursor-pointer flex py-1.5 border rounded-xl border-status-success  gap-3 items-center  border-e justify-center`}
           >
             {subLoading ? (
               <div className=" flex items-center justify-center w-full min-h-[1.7rem]">
@@ -235,7 +233,7 @@ const ChatUploader = ({
                   {t("submit")}
                 </p>
               </>
-            )}{" "}
+            )}
           </div>
           <div
             onClick={() => {

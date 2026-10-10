@@ -41,8 +41,7 @@ const HomePropertyTypes = ({
         breakPoints={HOME_TILE_BREAKPOINTS}
         slidesWidth={{ def: "25%", md: "10%" }}
         options={{
-          align: "start",
-          direction: "rtl",
+          align: "start",
           dragFree: true,
           loop: false,
         }}

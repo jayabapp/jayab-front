@@ -8,7 +8,7 @@ const LocationChip = ({ onRemove, prefix, title }: LocationChipProps) => {
 
   return (
     <div className="rounded-full gap-4 py-1 px-1 flex items-center justify-center border border-action/30 bg-action/5 text-xs">
-      <p className="text-sm text-ink pr-2">
+      <p className="text-sm text-ink ps-2">
         {prefix ? `${prefix} ` : ""}
         {title}
       </p>

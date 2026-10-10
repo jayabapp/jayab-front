@@ -44,7 +44,7 @@ const BlogCard = ({ item, index }: BlogCardProps) => {
           <div className="lift-card-scrim pointer-events-none absolute inset-0" />
 
           {!!item?.category?.title ? (
-            <span className="absolute right-2 top-2 rounded-full bg-surface/85 px-2 py-1 text-[0.625rem] font-bold text-link shadow-sm backdrop-blur-[6px]">
+            <span className="absolute start-2 top-2 rounded-full bg-surface/85 px-2 py-1 text-[0.625rem] font-bold text-link shadow-sm backdrop-blur-[6px]">
               {item.category.title}
             </span>
           ) : (
@@ -64,7 +64,7 @@ const BlogCard = ({ item, index }: BlogCardProps) => {
             <div className="flex items-center gap-2">
               <span>{moment(item?.created_at).format("jYYYY/jMM/jDD")}</span>
               {!!item?.view_count ? (
-                <span className="border-r border-line-strong pr-2">
+                <span className="border-s border-line-strong ps-2">
                   {t("views", { count: Number(item.view_count) })}
                 </span>
               ) : (

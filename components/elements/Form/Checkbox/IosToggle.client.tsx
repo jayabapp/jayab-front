@@ -23,7 +23,7 @@ const IosToggle = ({
       }}
     >
       <label
-        className={`absolute flex items-center justify-center left-0.5      mt-0.5 w-6 h-6 rounded-full transition ${
+        className={`absolute flex items-center justify-center end-0.5      mt-0.5 w-6 h-6 rounded-full transition ${
           disableTransform ? "" : "transform"
         } duration-100 ease-linear cursor-pointer ${
           toggle === true

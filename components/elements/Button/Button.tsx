@@ -42,14 +42,14 @@ const Button = ({
         onClick={typeof onClick == "function" ? onClick : void null}
       >
         {loading ? (
-          <div className="flex w-full h-full items-center justify-center right-2 mb-1">
+          <div className="flex w-full h-full items-center justify-center start-2 mb-1">
             {loadingIndicator ?? <BtnLoading />}
           </div>
         ) : (
           <>
-            {!!icon && <span className="ml-1">{icon}</span>}
+            {!!icon && <span className="me-1">{icon}</span>}
             {title}
-            {!!endIcon && <span className="mr-1">{endIcon}</span>}
+            {!!endIcon && <span className="ms-1">{endIcon}</span>}
           </>
         )}
       </button>

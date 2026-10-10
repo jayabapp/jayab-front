@@ -55,7 +55,7 @@ const ChatListItem = ({ item, onClickCb }: ChatListItemProps) => {
         </div>
       </div>
 
-      <div className="flex relative w-full flex-col gap-2 pr-14  mt-2  ">
+      <div className="flex relative w-full flex-col gap-2 ps-14  mt-2  ">
         <div className=" w-full flex   flex-row  items-center gap-2 justify-between">
           <div className="   rounded-md w-full p-1">
             <p className="text-xs line-clamp-1">{item?.last_message?.text}</p>
@@ -70,7 +70,7 @@ const ChatListItem = ({ item, onClickCb }: ChatListItemProps) => {
         </div>
       </div>
       {!!item?.unread_count && item?.unread_count != "0" ? (
-        <div className="rounded-full absolute left-0 top-2  flex items-center justify-center w-5 h-5 aspect-square text-sm bg-action text-on-action transition-all duration-200 ease-in-out">
+        <div className="rounded-full absolute end-0 top-2  flex items-center justify-center w-5 h-5 aspect-square text-sm bg-action text-on-action transition-all duration-200 ease-in-out">
           {item?.unread_count}
         </div>
       ) : (

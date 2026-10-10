@@ -137,7 +137,7 @@ const AuthUploader = ({
 
             {title && <p className=" text-sm  opacity-70 ">{title}</p>}
             {loading ? (
-              <div className="w-full h-full absolute top-0 left-0 rounded-20  flex items-center justify-center   backdrop-blur-md">
+              <div className="w-full h-full absolute top-0 end-0 rounded-20  flex items-center justify-center   backdrop-blur-md">
                 <BtnLoading />{" "}
               </div>
             ) : (
@@ -165,7 +165,7 @@ const AuthUploader = ({
               />
             </div>
             <div
-              className=" p-1 bg-surface    rounded-lg cursor-pointer absolute bottom-4 left-4 "
+              className=" p-1 bg-surface    rounded-lg cursor-pointer absolute bottom-4 end-4 "
               onClick={onDelete}
             >
               <Image

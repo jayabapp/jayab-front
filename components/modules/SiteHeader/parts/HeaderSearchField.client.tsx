@@ -36,7 +36,7 @@ const HeaderSearchField = ({
 
   return (
     <div
-      className={`flex w-full border bg-surface rounded-full items-center gap-2 pl-4 ${containerClass ?? ""}`}
+      className={`flex w-full border bg-surface rounded-full items-center gap-2 pe-4 ${containerClass ?? ""}`}
     >
       {field}
       <div className="w-[1px] h-8 bg-line-strong" />

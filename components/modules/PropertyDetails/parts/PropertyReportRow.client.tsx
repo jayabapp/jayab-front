@@ -18,7 +18,7 @@ const PropertyReportRow = ({ propertyId }: PropertyReportRowProps) => {
       <button
         type="button"
         onClick={() => setShow(true)}
-        className="flex w-full cursor-pointer items-center gap-3 rounded-10 border border-line px-4 py-3 text-right transition-colors hover:bg-surface-muted"
+        className="flex w-full cursor-pointer items-center gap-3 rounded-10 border border-line px-4 py-3 text-start transition-colors hover:bg-surface-muted"
       >
         <Icon name="info" size={20} className="shrink-0 text-ink-subtle" />
         <span className="flex min-w-0 flex-1 flex-col gap-0.5">
@@ -32,7 +32,7 @@ const PropertyReportRow = ({ propertyId }: PropertyReportRowProps) => {
         <Icon
           name="chevron-left"
           size={16}
-          className="shrink-0 text-ink-subtle"
+          className="shrink-0 text-ink-subtle ltr:rotate-180"
         />
       </button>
       {show ? (

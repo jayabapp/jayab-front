@@ -83,7 +83,7 @@ const ReserveSuccess = ({
           className="flex items-center gap-1 text-link"
         >
           {t("reserve.myRequests")}
-          <Icon name="chevron-left" size={16} />
+          <Icon name="chevron-left" size={16} className="ltr:rotate-180" />
         </Link>
         <button
           type="button"

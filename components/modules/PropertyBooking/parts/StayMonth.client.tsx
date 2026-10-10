@@ -9,6 +9,7 @@ import { useTranslations } from "next-intl";
 import { useFormatToman } from "@hooks/useFormatToman";
 import { dayRangeState } from "@features/reservations/lib/stay-range";
 import { isDayDisabled } from "@features/reservations/lib/stay-range";
+import { useDir } from "@hooks/useDir";
 
 import { type KeyboardEvent } from "react";
 
@@ -35,6 +36,7 @@ const StayMonth = ({
 
   const t = useTranslations("reserve");
   const sep = useListSeparator();
+  const rtl = useDir() === "rtl";
   const tCalendar = useTranslations("calendar");
 
   const ref = useRef<HTMLDivElement>(null);
@@ -92,8 +94,8 @@ const StayMonth = ({
     const visualWeekday = (moment(date).day() + 1) % 7;
     const offsets: Record<string, number> = {
       ArrowDown: 7,
-      ArrowLeft: 1,
-      ArrowRight: -1,
+      ArrowLeft: rtl ? 1 : -1,
+      ArrowRight: rtl ? -1 : 1,
       ArrowUp: -7,
       End: 6 - visualWeekday,
       Home: -visualWeekday,

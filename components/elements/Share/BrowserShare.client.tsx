@@ -93,7 +93,7 @@ const ShareLink = ({
                   width={20}
                   height={20}
                   src={e.icon}
-                  className={`w-5 h-5 mr-4 opacity-100 hover:opacity-40 cursor-pointer ${itemChildClass}`}
+                  className={`w-5 h-5 ms-4 opacity-100 hover:opacity-40 cursor-pointer ${itemChildClass}`}
                 />
               </a>
             </TransitionChild>
@@ -112,7 +112,7 @@ const ShareLink = ({
                 width={20}
                 height={20}
                 src={"/assets/icons/share/copy.svg"}
-                className={`w-5 h-5 mr-3 opacity-100 hover:opacity-40 cursor-pointer ${itemChildClass}`}
+                className={`w-5 h-5 ms-3 opacity-100 hover:opacity-40 cursor-pointer ${itemChildClass}`}
               />
             </div>
           </TransitionChild>

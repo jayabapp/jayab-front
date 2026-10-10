@@ -1054,13 +1054,14 @@ button {
 .embla__container {
   display: flex;
   touch-action: pan-y pinch-zoom;
-  margin-left: calc(var(--slide-spacing) * -1);
+  /* The gap sits on the end side (physical left in RTL), as it always did in fa. */
+  margin-inline-end: calc(var(--slide-spacing) * -1);
 }
 .embla__slide {
   min-width: 0;
   flex: 0 0 var(--slide-size);
   transform: translate3d(0, 0, 0);
-  padding-left: var(--slide-spacing);
+  padding-inline-end: var(--slide-spacing);
 }
 
 @media (min-width: 768px) and (max-width: 1023.98px) {
@@ -1080,7 +1081,7 @@ button {
   position: absolute;
   align-items: center;
   justify-content: center;
-  margin-right: calc((2.6rem - 1.4rem) / 2 * -1);
+  margin-inline-start: calc((2.6rem - 1.4rem) / 2 * -1);
 }
 
 .embla__dot {
@@ -1121,12 +1122,12 @@ textarea {
 .embla-thumbs__container {
   display: flex;
   flex-direction: row;
-  margin-left: calc(var(--thumbs-slide-spacing) * -1);
+  margin-inline-end: calc(var(--thumbs-slide-spacing) * -1);
 }
 .embla-thumbs__slide {
   flex: 0 0 20%;
   min-width: 0;
-  padding-left: var(--thumbs-slide-spacing);
+  padding-inline-end: var(--thumbs-slide-spacing);
 }
 @media (min-width: 576px) {
   .embla-thumbs__slide {
@@ -1361,8 +1362,8 @@ ul {
 
   .home-tile-row .home-tile-slide.embla__slide {
     flex: 0 0 calc(100% / var(--home-tile-count, 8));
-    padding-left: var(--slide-spacing);
-    padding-right: 0;
+    padding-inline-end: var(--slide-spacing);
+    padding-inline-start: 0;
   }
 
   .home-tile-row .home-city-tile {
@@ -1478,7 +1479,7 @@ ul {
 .nav-progress {
   position: fixed;
   top: 0;
-  right: 0;
+  inset-inline-start: 0;
   z-index: 100;
   width: 0;
   height: 2px;

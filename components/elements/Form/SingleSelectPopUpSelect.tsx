@@ -28,7 +28,7 @@ const SinglePopUpSelect = ({
       <div className="flex flex-col">
         {item?.title ? (
           <p
-            className={`text-sm opacity-90 pr-2 pb-3 ${item?.isMandatory && "after:content-['*'] after:mr-1 "}  `}
+            className={`text-sm opacity-90 ps-2 pb-3 ${item?.isMandatory && "after:content-['*'] after:ms-1 "}  `}
           >
             {item?.title}
           </p>
@@ -48,13 +48,14 @@ const SinglePopUpSelect = ({
           disabled={item?.disable}
           type="button"
         >
-          <div className={`${value ? "opacity-100" : "opacity-50"} w-full truncate`}>
+          <div
+            className={`${value ? "opacity-100" : "opacity-50"} w-full truncate`}
+          >
             {value
               ? `${
                   item?.list?.find((e) => {
-                    if (velueString) {
-                      return e?.[velueString] == value;
-                    } else return e?.id == value;
+                    if (velueString) return e?.[velueString] == value;
+                    else return e?.id == value;
                   })?.title
                 }`
               : item?.placeholder || item?.title}

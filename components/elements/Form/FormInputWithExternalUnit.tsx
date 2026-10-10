@@ -1,5 +1,6 @@
 import { useTranslations } from "next-intl";
 import { memo, useRef } from "react";
+import { useDir } from "@hooks/useDir";
 
 import type { ExternalUnitInputProps } from "@/types/components/elements/form";
 
@@ -15,6 +16,7 @@ const FormInputWithExternalUnit = ({
   errorKey = "",
 }: ExternalUnitInputProps) => {
   const t = useTranslations("common");
+  const dir = useDir();
 
   const inputRef = useRef<HTMLInputElement>(null);
 
@@ -29,8 +31,8 @@ const FormInputWithExternalUnit = ({
           {item?.title ? (
             <label
               htmlFor={`input-${item?.id}`}
-              className={`block  mb-3 ml-1 text-sm  pr-1 font-normal  ${
-                item?.isMandatory && "after:content-['*'] after:mr-1 "
+              className={`block  mb-3 me-1 text-sm  ps-1 font-normal  ${
+                item?.isMandatory && "after:content-['*'] after:ms-1 "
               } ${item?.titleClass || ""}`}
             >
               {item?.title}
@@ -52,9 +54,9 @@ const FormInputWithExternalUnit = ({
             ref={inputRef}
             inputMode={item?.keyboard == "number" ? "tel" : "text"}
             pattern={item?.keyboard == "number" ? "[0-9]*" : ""}
-            className={`${!!item?.iconUrl ? " !pr-[3rem]" : ""}  ${!!item?.iconEndUrl ? " !pl-10" : ""} ${
-              item?.direction ? item?.direction : "rtl"
-            }   bg-surface-muted    !text-base   ltr  text-right form-control  font-normal border focus:border-action  py-4 px-4 w-full rounded-10 placeholder:text-ink-subtle placeholder:text-right   placeholder:font-normal placeholder:text-sm placeholder:opacity-70   ${
+            className={`${!!item?.iconUrl ? " !ps-[3rem]" : ""}  ${!!item?.iconEndUrl ? " !pe-10" : ""} ${
+              item?.direction ? item?.direction : dir
+            }   bg-surface-muted    !text-base   ltr  text-start form-control  font-normal border focus:border-action  py-4 px-4 w-full rounded-10 placeholder:text-ink-subtle placeholder:text-start   placeholder:font-normal placeholder:text-sm placeholder:opacity-70   ${
               item?.inputClass
             } ${
               item?.disableHover
@@ -90,7 +92,7 @@ const FormInputWithExternalUnit = ({
               alt=""
               height={24}
               width={24}
-              className={`absolute ${item?.title ? "top-[61%]" : "top-[32%]"} w-4 aspect-square right-4 ${
+              className={`absolute ${item?.title ? "top-[61%]" : "top-[32%]"} w-4 aspect-square start-4 ${
                 item?.iconUrlClassName
               } ${item?.iconFunc ? "cursor-pointer" : ""}`}
               onClick={() => {
@@ -104,7 +106,7 @@ const FormInputWithExternalUnit = ({
               alt=""
               height={24}
               width={24}
-              className={`absolute top-[28%] w-5 aspect-square left-4 ${item?.iconEndUrlClassName} ${
+              className={`absolute top-[28%] w-5 aspect-square end-4 ${item?.iconEndUrlClassName} ${
                 item?.iconEndFunc ? "cursor-pointer" : ""
               }`}
               onClick={() => {
@@ -114,7 +116,7 @@ const FormInputWithExternalUnit = ({
             />
           )}
           {!!item?.maxLengthShower && (
-            <p className={`absolute top-[0.75rem] w-5 aspect-square left-8 `}>
+            <p className={`absolute top-[0.75rem] w-5 aspect-square end-8 `}>
               {`${value}`?.split("").length}/{item?.maxLength}
             </p>
           )}
@@ -122,7 +124,7 @@ const FormInputWithExternalUnit = ({
           {!!item?.hint && (
             <div
               id={`${item?.id}`}
-              className={`text-xs font-light text-ink-subtle mt-1 mr-5 `}
+              className={`text-xs font-light text-ink-subtle mt-1 ms-5 `}
             >
               {item?.hint}
             </div>
@@ -133,7 +135,7 @@ const FormInputWithExternalUnit = ({
         </div>
       </div>
       {!!item?.convertToText && !!value && (
-        <div id={`${item?.id}`} className="text-xs pr-1  text-link    ">
+        <div id={`${item?.id}`} className="text-xs ps-1  text-link    ">
           {Num2persian(value)} {t("toman")}
         </div>
       )}

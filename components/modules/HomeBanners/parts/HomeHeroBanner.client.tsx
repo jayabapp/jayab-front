@@ -7,6 +7,7 @@ import { getHomeImageUrl } from "@features/home/mappers/home-image.mapper";
 import { HomeHeroSearch } from "@modules/HomeHeroSearch";
 import { getImageProps } from "next/image";
 import { ContentImage } from "@elements/Image";
+import { useDir } from "@hooks/useDir";
 
 import type { CSSProperties, FocusEvent, PointerEvent } from "react";
 import type { HomeHeroBannerProps } from "@/types/components/modules/home";
@@ -113,6 +114,7 @@ const HeroSlideImage = ({ slide, isFirst, onLoad }: HeroSlideImageProps) => {
 
 const HomeBannerPart = ({ title, devices, banners }: HomeHeroBannerProps) => {
   const t = useTranslations("content");
+  const rtl = useDir() === "rtl";
 
   const isPhone = !!devices?.isMobile;
 
@@ -203,7 +205,8 @@ const HomeBannerPart = ({ title, devices, banners }: HomeHeroBannerProps) => {
     const dy = event.clientY - start.y;
     if (Math.abs(dx) < SWIPE_THRESHOLD_PX || Math.abs(dx) < Math.abs(dy))
       return;
-    goTo(dx > 0 ? nextIndex : (index - 1 + count) % count);
+    const toNext = rtl ? dx > 0 : dx < 0;
+    goTo(toNext ? nextIndex : (index - 1 + count) % count);
   };
 
   const onBlur = (event: FocusEvent<HTMLDivElement>) => {
@@ -218,9 +221,11 @@ const HomeBannerPart = ({ title, devices, banners }: HomeHeroBannerProps) => {
     <div
       ref={rootRef}
       role="region"
-      aria-roledescription="carousel"
-      aria-label={t("heroSlider")}
+      onBlur={onBlur}
       data-paused={!playing}
+      aria-label={t("heroSlider")}
+      aria-roledescription="carousel"
+      onFocus={() => setFocused(true)}
       data-slide-paused={slideMotionPaused}
       style={{ "--hero-interval": `${AUTOPLAY_MS}ms` } as CSSProperties}
       className="hero-slider relative w-full h-full px-0"
@@ -230,8 +235,6 @@ const HomeBannerPart = ({ title, devices, banners }: HomeHeroBannerProps) => {
       onPointerLeave={(event) =>
         event.pointerType === "mouse" && setHovered(false)
       }
-      onFocus={() => setFocused(true)}
-      onBlur={onBlur}
     >
       <div
         className={
@@ -248,8 +251,8 @@ const HomeBannerPart = ({ title, devices, banners }: HomeHeroBannerProps) => {
             height={166}
             alt={t("homeTitle")}
             sizes="(max-width: 1024px) 96px, 160px"
-            className={`h-auto !w-24 lg:!w-40 ${hasSlides ? "drop-shadow-md" : ""}`}
             src="/assets/images/home/home_banner_logo.webp"
+            className={`h-auto !w-24 lg:!w-40 ${hasSlides ? "drop-shadow-md" : ""}`}
           />
           <h2
             className={`text-balance text-sm font-bold leading-snug md:text-xl ${

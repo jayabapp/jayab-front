@@ -56,7 +56,7 @@ const PublicPropertyCard = ({ data, goToLink }: PublicPropertyCardProps) => {
               />
             ) : null}
 
-            <p className="line-clamp-2 min-h-[2.75rem] text-right text-sm font-bold leading-7 text-ink">
+            <p className="line-clamp-2 min-h-[2.75rem] text-start text-sm font-bold leading-7 text-ink">
               {data.title}
             </p>
           </div>
@@ -75,7 +75,7 @@ const PublicPropertyCard = ({ data, goToLink }: PublicPropertyCardProps) => {
               </>
             ) : null}
 
-            <p className="line-clamp-1 text-right text-ink-muted">
+            <p className="line-clamp-1 text-start text-ink-muted">
               {data.city}
               {sep}
               {data.region || data.province || ""}
@@ -96,7 +96,7 @@ const PublicPropertyCard = ({ data, goToLink }: PublicPropertyCardProps) => {
               {t("common.people", { count: Number(data.max_capacity || 0) })}
             </p>
 
-            <div className="mr-1 shrink-0">
+            <div className="ms-1 shrink-0">
               <PropertyCardLikes
                 forceFilled
                 propertyId={data.id}
@@ -142,7 +142,7 @@ const PublicPropertyCard = ({ data, goToLink }: PublicPropertyCardProps) => {
             {!data.advisor_commission &&
             data.advisor_commission !== 0 &&
             data.attachments_count ? (
-              <div className="absolute left-2 top-2 z-1 flex h-6 min-w-[3rem] items-center justify-center gap-1.5 rounded-full bg-neutral-900/30 px-2 text-white backdrop-blur-[6px]">
+              <div className="absolute end-2 top-2 z-1 flex h-6 min-w-[3rem] items-center justify-center gap-1.5 rounded-full bg-neutral-900/30 px-2 text-white backdrop-blur-[6px]">
                 <p className="text-xs font-medium">{data.attachments_count}</p>
 
                 <ContentImage
@@ -157,14 +157,14 @@ const PublicPropertyCard = ({ data, goToLink }: PublicPropertyCardProps) => {
 
             {/* Advisor Commission */}
             {data.advisor_commission || data.advisor_commission === 0 ? (
-              <div className="absolute left-2 top-2 z-1 flex h-6 items-center justify-center rounded-full bg-red-500 px-3 text-white shadow-sm">
+              <div className="absolute end-2 top-2 z-1 flex h-6 items-center justify-center rounded-full bg-red-500 px-3 text-white shadow-sm">
                 <p className="text-xs font-bold">%{data.advisor_commission}</p>
               </div>
             ) : null}
 
             {/* Authorized Badge */}
             {data.is_authorized ? (
-              <div className="absolute bottom-2 right-2 z-1 mx-auto flex h-7 w-fit items-center gap-2 rounded-full bg-neutral-900/35 pl-2 pr-1 text-white backdrop-blur-[6px]">
+              <div className="absolute bottom-2 start-2 z-1 mx-auto flex h-7 w-fit items-center gap-2 rounded-full bg-neutral-900/35 pe-2 ps-1 text-white backdrop-blur-[6px]">
                 <ContentImage
                   width={16}
                   height={16}

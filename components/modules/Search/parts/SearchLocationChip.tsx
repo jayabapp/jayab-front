@@ -15,7 +15,7 @@ const SearchLocationChip = ({
       type="button"
       onClick={onRemove}
       aria-label={`${t("close")} ${title ?? ""}`}
-      className="rounded-full gap-4 py-0.5 px-2 pl-1 flex items-center justify-center border border-action/30 bg-action/5 text-xs"
+      className="rounded-full gap-4 py-0.5 px-2 pe-1 flex items-center justify-center border border-action/30 bg-action/5 text-xs"
     >
       <span className="text-sm">
         {isProvince ? `${t("province")} ` : ""}

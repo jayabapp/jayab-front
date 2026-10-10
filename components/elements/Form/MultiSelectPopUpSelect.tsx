@@ -57,7 +57,7 @@ const MultyPopUpSelect = ({
                     key={`selectedItems${val?.id || val}`}
                     className="rounded-full gap-4 py-1 px-1 flex items-center justify-center border border-action  bg-action/5 text-link  text-xs "
                   >
-                    <p className="text-xs pr-2">
+                    <p className="text-xs ps-2">
                       {item?.list?.find((e) => e?.id == val)?.title ||
                         val?.title ||
                         ""}

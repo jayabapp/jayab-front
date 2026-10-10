@@ -56,7 +56,7 @@ const PropertyCard = ({
                 src="/assets/icons/adds/verified_hexy_badge.svg"
               />
             ) : null}
-            <p className="line-clamp-2 h-10 text-right text-sm font-bold">
+            <p className="line-clamp-2 h-10 text-start text-sm font-bold">
               {data.title}
             </p>
           </div>
@@ -100,7 +100,7 @@ const PropertyCard = ({
               <div className="flex items-center w-full gap-2">
                 <StatusShower data={data?.status} />
                 {data?.is_promoted ? (
-                  <p className="font-bold text-link shrink-0 text-xs pr-1 border-r">
+                  <p className="font-bold text-link shrink-0 text-xs ps-1 border-s">
                     {t("common.laddered")}
                   </p>
                 ) : null}
@@ -110,7 +110,7 @@ const PropertyCard = ({
             <div className="flex flex-1 flex-col gap-1.5">
               <div className="flex w-full items-center gap-1">
                 {data?.is_promoted ? (
-                  <p className="font-bold text-link shrink-0 text-xs pl-1 border-l">
+                  <p className="font-bold text-link shrink-0 text-xs pe-1 border-e">
                     {t("common.laddered")}
                   </p>
                 ) : null}
@@ -163,14 +163,14 @@ const PropertyCard = ({
                 sizes="(min-width: 1280px) 16vw, (min-width: 768px) 24vw, 46vw"
               />
               {data?.advisor_commission || data?.advisor_commission === 0 ? (
-                <div className="w-16 gap-0.5 h-5 rounded-md transition-all py-[0.2rem] backdrop-blur-[6px] bg-neutral-900/30 text-white absolute z-1 left-2 flex-row top-2 aspect-square flex items-center justify-center">
+                <div className="w-16 gap-0.5 h-5 rounded-md transition-all py-[0.2rem] backdrop-blur-[6px] bg-neutral-900/30 text-white absolute z-1 end-2 flex-row top-2 aspect-square flex items-center justify-center">
                   <p className="text-xxs">
                     {t("listing.advisorCommissionShort")}:{" "}
                     {data.advisor_commission}%
                   </p>
                 </div>
               ) : data?.attachments_count ? (
-                <div className="w-12 gap-1.5 h-6 rounded-full transition-all py-[0.2rem] backdrop-blur-[6px] bg-neutral-900/30 text-white absolute z-1 left-2 flex-row top-2 aspect-square flex items-center justify-center">
+                <div className="w-12 gap-1.5 h-6 rounded-full transition-all py-[0.2rem] backdrop-blur-[6px] bg-neutral-900/30 text-white absolute z-1 end-2 flex-row top-2 aspect-square flex items-center justify-center">
                   <p className="text-xs font-medium">
                     {data.attachments_count}
                   </p>
@@ -184,7 +184,7 @@ const PropertyCard = ({
                 </div>
               ) : null}
               {data?.is_authorized ? (
-                <div className="right-2 w-fit h-7 absolute pr-1 pl-2 backdrop-blur-[6px] bg-neutral-900/30 rounded-full flex items-center gap-2 mx-auto bottom-2">
+                <div className="start-2 w-fit h-7 absolute ps-1 pe-2 backdrop-blur-[6px] bg-neutral-900/30 rounded-full flex items-center gap-2 mx-auto bottom-2">
                   <ContentImage
                     width={16}
                     height={16}
@@ -201,7 +201,7 @@ const PropertyCard = ({
 
           {isOwner ? null : (
             <PropertyCardLink
-            href={goToLink}
+              href={goToLink}
               title={data.title}
               className="mt-auto flex w-full !outline-none"
             >

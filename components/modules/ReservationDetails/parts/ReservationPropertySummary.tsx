@@ -29,7 +29,7 @@ const ReservationPropertySummary = ({
         className={`col-span-6 !outline-none ${isOwner ? "order-2" : "order-1"} flex flex-col gap-1`}
       >
         <div className="flex items-start gap-2">
-          <p className="text-sm text-right font-semibold">
+          <p className="text-sm text-start font-semibold">
             {t("reserveRequestFor")} {property?.title}
           </p>
         </div>

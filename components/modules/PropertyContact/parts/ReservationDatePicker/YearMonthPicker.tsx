@@ -39,7 +39,7 @@ const YearMonthPicker = ({
             alt="`"
             width={24}
             height={24}
-            className="cursor-pointer"
+            className="cursor-pointer ltr:rotate-180"
             onClick={() => lastMonth()}
             src={"/assets/icons/property/arrow_right_callendar.svg"}
           />
@@ -62,7 +62,7 @@ const YearMonthPicker = ({
             width={24}
             height={24}
             onClick={() => nextMonth()}
-            className="cursor-pointer  -rotate-180 "
+            className="cursor-pointer  -rotate-180 ltr:rotate-0"
             src={"/assets/icons/property/arrow_right_callendar.svg"}
           />
         </div>

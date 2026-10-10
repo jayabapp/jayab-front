@@ -18,8 +18,9 @@ const HomeActiveReserve = () => {
   const { isLogin } = useAuthStore((state) => state);
   const { activeReserves } = useHomeActiveReserves(isLogin);
 
-  const removeredirectRoomToHome = () => useStoreParams.setState({ getBackHome: false });
-  
+  const removeredirectRoomToHome = () =>
+    useStoreParams.setState({ getBackHome: false });
+
   return (
     <>
       {isEmpty(activeReserves) ? (
@@ -29,8 +30,9 @@ const HomeActiveReserve = () => {
           <div className="col-span-full w-full flex items-center justify-between">
             <div className="flex  items-center gap-1">
               <p className=" font-semibold !text-sm  lg:text-ink text-white lg:!text-base ">
-                {" "}
-                {tr("reserve.activeRequests", { count: activeReserves?.length ?? 0 })}
+                {tr("reserve.activeRequests", {
+                  count: activeReserves?.length ?? 0,
+                })}
               </p>
               <div className=" size-2 mb-3  rounded-full bg-red-700 animate-pulse  duration-700" />
             </div>
@@ -46,7 +48,7 @@ const HomeActiveReserve = () => {
                 alt=""
                 width={16}
                 height={16}
-                className="w-4  lg:brightness-0 "
+                className="w-4  lg:brightness-0 ltr:rotate-180"
                 src="/assets/icons/property/white_arrow_left.svg"
               />
             </Link>
@@ -57,9 +59,9 @@ const HomeActiveReserve = () => {
             return (
               <div
                 key={`reserved${data?.id}`}
-                className="w-full   bg-surface  rounded-2xl    justify-between flex flex-col shadow-md  lg:shadow-surface p-2   gap-2  "
+                className="w-full bg-surface rounded-2xl justify-between flex flex-col shadow-md lg:shadow-surface p-2 gap-2"
               >
-                <div className="w-full  grid grid-cols-8 gap-2   ">
+                <div className="w-full grid grid-cols-8 gap-2">
                   {/* INFO */}
                   <Link
                     href={`${goToLink}`}
@@ -69,8 +71,8 @@ const HomeActiveReserve = () => {
                   >
                     {/* TITLE */}
                     <div className="flex items-start gap-2">
-                      <p className="text-sm line-clamp-1  text-right font-medium ">
-                        {data?.property?.title}{" "}
+                      <p className="text-sm line-clamp-1  text-start font-medium ">
+                        {data?.property?.title}
                       </p>
                     </div>
 
@@ -78,7 +80,7 @@ const HomeActiveReserve = () => {
                     <div className="flex items-center justify-between gap-4">
                       <div className="bg-black/10 font-normal rounded-md text-xs   px-2 py-1  leading-4  flex items-center justify-center">
                         {tr("common.code")} {data?.property?.code}
-                      </div>{" "}
+                      </div>
                     </div>
 
                     <div className="w-full flex  flex-col  gap-2">

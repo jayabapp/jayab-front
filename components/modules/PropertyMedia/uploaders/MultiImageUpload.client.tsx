@@ -209,7 +209,7 @@ const NewMultUploader = ({
             />
             {title && <p className="text-xs opacity-70">{title}</p>}
             {loading && (
-              <div className="w-full h-full absolute top-0 left-0 rounded-20 flex items-center justify-center backdrop-blur-md">
+              <div className="w-full h-full absolute top-0 end-0 rounded-20 flex items-center justify-center backdrop-blur-md">
                 <BtnLoading />
               </div>
             )}
@@ -273,7 +273,7 @@ const NewMultUploader = ({
             </div>
             {!!onDelete && (
               <div
-                className="bg-transparent cursor-pointer absolute top-2 left-2"
+                className="bg-transparent cursor-pointer absolute top-2 end-2"
                 onClick={() => {
                   if (item?.url?.startsWith("blob:")) {
                     URL.revokeObjectURL(item.url);

@@ -8,9 +8,9 @@ const ChatRoomSkeleton = () => (
       <div className="h-20 border-t border-status-warning-line bg-status-warning-bg" />
     </div>
     <div className="flex flex-1 flex-col justify-end gap-5 p-4">
-      <div className="h-16 w-2/3 rounded-xl rounded-br-none bg-surface-hover" />
-      <div className="mr-auto h-24 w-3/5 rounded-xl rounded-bl-none bg-surface" />
-      <div className="h-12 w-1/2 rounded-xl rounded-br-none bg-surface-hover" />
+      <div className="h-16 w-2/3 rounded-xl rounded-es-none bg-surface-hover" />
+      <div className="ms-auto h-24 w-3/5 rounded-xl rounded-ee-none bg-surface" />
+      <div className="h-12 w-1/2 rounded-xl rounded-es-none bg-surface-hover" />
     </div>
     <div className="m-2 h-14 rounded-xl bg-surface" />
   </div>

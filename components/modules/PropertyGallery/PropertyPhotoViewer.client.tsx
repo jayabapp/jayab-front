@@ -8,6 +8,7 @@ import { getPropertyImageUrl } from "@features/properties/mappers/property-image
 import { Dialog, DialogPanel } from "@headlessui/react";
 import { useTranslations } from "next-intl";
 import { ContentImage } from "@elements/Image";
+import { useDir } from "@hooks/useDir";
 import { Icon } from "@elements/Icon";
 
 import type { PropertyPhotoViewerProps } from "@/types/components/modules/property-gallery";
@@ -29,6 +30,7 @@ const PropertyPhotoViewer = ({
   onIndexChange,
 }: PropertyPhotoViewerProps) => {
   const t = useTranslations();
+  const rtl = useDir() === "rtl";
 
   const [activeIndex, setActiveIndex] = useState(startIndex ?? 0);
   const slideRefs = useRef<Array<HTMLDivElement | null>>([]);
@@ -90,12 +92,14 @@ const PropertyPhotoViewer = ({
   useEffect(() => {
     if (!show) return;
     const onKeyDown = (event: KeyboardEvent) => {
-      if (event.key === "ArrowLeft") goTo(Math.min(activeIndex + 1, lastIndex));
-      if (event.key === "ArrowRight") goTo(Math.max(activeIndex - 1, 0));
+      const forward = rtl ? "ArrowLeft" : "ArrowRight";
+      const back = rtl ? "ArrowRight" : "ArrowLeft";
+      if (event.key === forward) goTo(Math.min(activeIndex + 1, lastIndex));
+      if (event.key === back) goTo(Math.max(activeIndex - 1, 0));
     };
     window.addEventListener("keydown", onKeyDown);
     return () => window.removeEventListener("keydown", onKeyDown);
-  }, [activeIndex, goTo, lastIndex, show]);
+  }, [activeIndex, goTo, lastIndex, rtl, show]);
 
   if (!show || !images?.length) return <></>;
 
@@ -103,8 +107,8 @@ const PropertyPhotoViewer = ({
     <Dialog
       open={show}
       onClose={requestClose}
-      aria-label={t("listing.photoViewer")}
       className="fixed inset-0 z-[1000]"
+      aria-label={t("listing.photoViewer")}
     >
       <div aria-hidden="true" className="fixed inset-0 bg-black" />
 
@@ -191,7 +195,7 @@ const PropertyPhotoViewer = ({
             aria-label={t("common.nextPage")}
             disabled={activeIndex >= lastIndex}
             onClick={() => goTo(activeIndex + 1)}
-            className={`${ARROW_CLASS} left-2 md:left-5`}
+            className={`${ARROW_CLASS} ${rtl ? "left-2 md:left-5" : "right-2 rotate-180 md:right-5"}`}
           >
             <Icon name="chevron-left" size={24} />
           </button>
@@ -200,7 +204,7 @@ const PropertyPhotoViewer = ({
             disabled={activeIndex <= 0}
             onClick={() => goTo(activeIndex - 1)}
             aria-label={t("common.previousPage")}
-            className={`${ARROW_CLASS} right-2 rotate-180 md:right-5`}
+            className={`${ARROW_CLASS} ${rtl ? "right-2 rotate-180 md:right-5" : "left-2 md:left-5"}`}
           >
             <Icon name="chevron-left" size={24} />
           </button>

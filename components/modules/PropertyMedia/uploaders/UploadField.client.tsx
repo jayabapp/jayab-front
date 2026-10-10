@@ -109,7 +109,7 @@ const MainUploader = ({
           onClick={() => {
             !disabled ? imagePickerRef?.current?.click() : void null;
           }}
-          className="  z-2  bg-transparent cursor-pointer absolute bottom-0  w-6 h-6 aspect-square right-0 "
+          className="  z-2  bg-transparent cursor-pointer absolute bottom-0  w-6 h-6 aspect-square start-0 "
         >
           <Image
             width={24}
@@ -153,7 +153,7 @@ const MainUploader = ({
             />
             {title && <p className=" text-sm  opacity-70 ">{title}</p>}
             {loading ? (
-              <div className="w-full h-full absolute top-0 left-0 rounded-20 flex items-center justify-center   backdrop-blur-md">
+              <div className="w-full h-full absolute top-0 end-0 rounded-20 flex items-center justify-center   backdrop-blur-md">
                 <BtnLoading />{" "}
               </div>
             ) : (
@@ -204,7 +204,7 @@ const MainUploader = ({
             </div>
             {!!onDelete ? (
               <div
-                className="   bg-transparent cursor-pointer absolute top-2 left-2 shadow-2xl "
+                className="   bg-transparent cursor-pointer absolute top-2 end-2 shadow-2xl "
                 onClick={onDelete}
               >
                 <Image

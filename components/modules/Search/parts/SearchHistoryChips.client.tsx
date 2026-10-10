@@ -24,7 +24,7 @@ const SearchHistoryChips = ({ onSelect }: SearchHistoryChipsProps) => {
         {entries.map((entry) => (
           <div
             key={entry.id}
-            className="rounded-full gap-4 py-0.5 px-2 pl-1 flex items-center justify-center border border-action/30 bg-action/5 text-xs"
+            className="rounded-full gap-4 py-0.5 px-2 pe-1 flex items-center justify-center border border-action/30 bg-action/5 text-xs"
           >
             <button
               type="button"

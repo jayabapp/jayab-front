@@ -64,7 +64,7 @@ const PropertyLocationStep = ({ propertyId }: OwnerPropertyRouteProps) => {
       <div className="w-full h-[70dvh] relative">
         <div
           onClick={() => setShowSearch(true)}
-          className="absolute top-2 z-1 left-0 right-0 w-[70%] md:w-1/2 mx-auto cursor-pointer"
+          className="absolute top-2 z-1 end-0 start-0 w-[70%] md:w-1/2 mx-auto cursor-pointer"
         >
           <SearchInput
             autofocus={false}
@@ -72,8 +72,8 @@ const PropertyLocationStep = ({ propertyId }: OwnerPropertyRouteProps) => {
             onSubmit={() => {}}
             containerClass="  "
             disableTypeing={true}
-            passedText={centerAddress}
             boxId="SEARCH_BOX_Mobile"
+            passedText={centerAddress}
             item={{ disable_cancel: true }}
             placeholder={t("searchPlaceInput")}
           />
@@ -82,7 +82,7 @@ const PropertyLocationStep = ({ propertyId }: OwnerPropertyRouteProps) => {
           center={center}
           jumpToState={jumpTo}
           setCenter={setCenter}
-          containerClass="  w-full "
+          containerClass="w-full"
           setCenterAddress={setCenterAddress}
           setCenterAddressLoading={setCenterAddressLoading}
         />

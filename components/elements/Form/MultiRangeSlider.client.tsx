@@ -1,5 +1,7 @@
 "use client";
 
+import { useDir } from "@hooks/useDir";
+
 import type { MultiRangeSliderProps } from "@/types/components/elements/form-legacy";
 
 import Slider from "rc-slider";
@@ -12,13 +14,14 @@ const MultiRangeSlider = ({
   value,
   setValue,
 }: MultiRangeSliderProps) => {
+  const dir = useDir();
   return (
     <div
-    style={{ direction: "rtl" }}
+      style={{ direction: dir }}
       className="slider-container pt-14 relative text-xl font-semibold text-link"
     >
       <Slider
-        reverse
+        reverse={dir === "rtl"}
         startPoint={min}
         max={max}
         value={value}

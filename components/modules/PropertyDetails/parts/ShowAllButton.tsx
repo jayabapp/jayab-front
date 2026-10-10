@@ -10,7 +10,7 @@ const ShowAllButton = ({ count, label, onClick }: ShowAllButtonProps) => (
   >
     <span>{label}</span>
     {count ? <span className="text-ink-muted">({count})</span> : <></>}
-    <Icon name="chevron-left" size={16} className="text-ink-muted" />
+    <Icon name="chevron-left" size={16} className="text-ink-muted ltr:rotate-180" />
   </button>
 );
 

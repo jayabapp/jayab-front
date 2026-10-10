@@ -34,7 +34,7 @@ const Breadcrumbs = () => {
   };
 
   return (
-    <div id="BREADCRUMB" className="md:pr-4 md:mt-4 mb-3 w-full">
+    <div id="BREADCRUMB" className="md:ps-4 md:mt-4 mb-3 w-full">
       <BreadCrumbSchema breadcrumbs={crumbs} />
       <div className="flex w-11/12 flex-wrap">
         {crumbs.map((crumb, index, items) => (

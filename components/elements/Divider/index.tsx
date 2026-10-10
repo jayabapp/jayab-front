@@ -25,7 +25,7 @@ export const PrimaryDivider = ({ moreClass }: DividerProps) => {
 export const LineTextStart = ({ moreClass, title }: LineTextStartProps) => {
   return (
     <div className={`flex items-center justify-start ${moreClass}  w-full relative`}>
-      <p className="text-sm bg-surface      text-dark-200  pl-4 z-1">{title}</p>
+      <p className="text-sm bg-surface      text-dark-200  pe-4 z-1">{title}</p>
       <hr className="w-full h-1 top-1/2 opacity-80 absolute"></hr>
     </div>
   );

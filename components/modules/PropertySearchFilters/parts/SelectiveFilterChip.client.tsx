@@ -50,10 +50,10 @@ const SelectiveFilterChip = ({
         onClick={openSheet}
         className={`filter-chip ${selectedCount ? "filter-chip-active" : "filter-chip-idle"}`}
       >
-        <span className="text-xs pr-2">{title}</span>
+        <span className="text-xs ps-2">{title}</span>
         {selectedCount ? (
           <>
-            <span className="text-sm font-medium pr-2">
+            <span className="text-sm font-medium ps-2">
               {selectedCount}{" "}
               <span className="text-2xs font-normal">{t("listing.item")}</span>
             </span>
@@ -72,7 +72,7 @@ const SelectiveFilterChip = ({
                 event.stopPropagation();
                 removeFiltersKeys([queryKey]);
               }}
-              className="mr-2 flex aspect-square h-4 w-4 cursor-pointer items-center justify-center rounded-full border border-action"
+              className="ms-2 flex aspect-square h-4 w-4 cursor-pointer items-center justify-center rounded-full border border-action"
             >
               <ContentImage
                 alt=""

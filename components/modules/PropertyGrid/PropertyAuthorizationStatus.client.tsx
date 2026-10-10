@@ -23,7 +23,7 @@ const PropertyAuthorizationStatus = ({
       onClick={() =>
         router.push(`/profile/owner/properties/${data?.id}/license`)
       }
-      className={`bg-black/5 pl-2 pr-1 py-1 shrink-0 flex items-center rounded-full gap-2 ${
+      className={`bg-black/5 pe-2 ps-1 py-1 shrink-0 flex items-center rounded-full gap-2 ${
         isAuthorized ? "" : "custome-shadow-card"
       }`}
     >

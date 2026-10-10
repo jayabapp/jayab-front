@@ -151,7 +151,7 @@ const EditImageModal = ({
               );
             })}
         </div>
-        <div className="lg:absolute mt-8 lg:mt-0 flex justify-center lg:flex-col gap-6 left-3  lg:top-1/3">
+        <div className="lg:absolute mt-8 lg:mt-0 flex justify-center lg:flex-col gap-6 end-3  lg:top-1/3">
           <ContentImage
             alt=""
             width={24}

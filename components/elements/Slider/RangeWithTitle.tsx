@@ -1,8 +1,11 @@
-import type { RangeWithTitleProps } from "@/types/components/elements/slider";
+import { useDir } from "@hooks/useDir";
 import { colors } from "@/theme/colors";
 
-import "rc-slider/assets/index.css";
+import type { RangeWithTitleProps } from "@/types/components/elements/slider";
+
 import Slider from "rc-slider";
+
+import "rc-slider/assets/index.css";
 
 const RangeWithTitle = ({
   max,
@@ -15,9 +18,10 @@ const RangeWithTitle = ({
   className,
   item = { pathColor: "rgb(var(--c-line))", visibleDot: false },
 }: RangeWithTitleProps) => {
+  const dir = useDir();
   return (
     <Slider
-      reverse={item?.reverse}
+      reverse={!!item?.reverse && dir === "rtl"}
       marks={showMark ? marks : {}}
       startPoint={min || 0}
       max={max}
@@ -25,7 +29,7 @@ const RangeWithTitle = ({
       min={min}
       step={step || 1}
       onChange={(v: number | number[]) => {
-        if (typeof v == "number") setValue(v)
+        if (typeof v == "number") setValue(v);
       }}
       defaultValue={0}
       className={className}

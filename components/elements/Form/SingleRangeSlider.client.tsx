@@ -1,6 +1,7 @@
 "use client";
 
 import { useTranslations } from "next-intl";
+import { useDir } from "@hooks/useDir";
 
 import type { SingleRangeSliderProps } from "@/types/components/elements/form-legacy";
 
@@ -15,26 +16,25 @@ const SingleRangeSlider = ({
   setValue,
 }: SingleRangeSliderProps) => {
   const t = useTranslations("common");
+  const dir = useDir();
 
   return (
     <div
       className="slider-container pt-14 relative text-xl font-semibold text-link"
-      style={{ direction: "rtl" }}
+      style={{ direction: dir }}
     >
       <div className="flex flex-col gap-4">
         <div className="flex items-center justify-between">
-          <span className="text-base text-link">
-            {t("commissionPercent")}
-          </span>
+          <span className="text-base text-link">{t("commissionPercent")}</span>
           <span>{value}</span>
         </div>
         <Slider
-          reverse
           step={1}
           max={max}
           min={min}
           value={value}
           startPoint={min}
+          reverse={dir === "rtl"}
           onChange={(v: number | number[]) => {
             if (typeof v === "number") setValue(v);
           }}

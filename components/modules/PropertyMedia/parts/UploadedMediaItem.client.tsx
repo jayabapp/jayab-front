@@ -28,7 +28,7 @@ const UploadedItemShowCase = ({
       style={{ zIndex: 4 }}
     >
       {isUploading && (
-        <div className="rounded-20 absolute left-0 top-0 w-full h-full flex items-center justify-center bg-black/40 z-1 px-4">
+        <div className="rounded-20 absolute end-0 top-0 w-full h-full flex items-center justify-center bg-black/40 z-1 px-4">
           <ProgressBar progress={percent} />
         </div>
       )}
@@ -75,7 +75,7 @@ const UploadedItemShowCase = ({
 
           {onDelete && item?.data && (
             <div
-              className="bg-transparent cursor-pointer absolute top-2 left-2 shadow-2xl"
+              className="bg-transparent cursor-pointer absolute top-2 end-2 shadow-2xl"
               onClick={(e) => {
                 e.preventDefault();
                 e.stopPropagation();

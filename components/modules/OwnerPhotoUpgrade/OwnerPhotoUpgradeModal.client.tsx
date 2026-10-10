@@ -44,7 +44,7 @@ const SelectableImageItem = memo(
           sizes="(max-width: 768px) 25vw, 160px"
         />
         <span
-          className={`absolute left-1 top-1 flex h-5 w-5 items-center justify-center rounded-md border text-xs font-bold ${
+          className={`absolute end-1 top-1 flex h-5 w-5 items-center justify-center rounded-md border text-xs font-bold ${
             isSelected
               ? "border-action bg-action text-on-action"
               : "border-white bg-black/40 text-on-action"
@@ -155,7 +155,7 @@ const OwnerPhotoUpgradeModal = ({
           <button
             type="button"
             onClick={onHide}
-            className="flex h-9 absolute left-0  top-2  w-9 shrink-0 items-center justify-center rounded-full bg-surface-muted"
+            className="flex h-9 absolute end-0  top-2  w-9 shrink-0 items-center justify-center rounded-full bg-surface-muted"
           >
             <Image
               width={16}

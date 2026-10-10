@@ -3,6 +3,7 @@
 import { useTranslations } from "next-intl";
 import { ContentImage } from "@elements/Image";
 import { useRef, memo } from "react";
+import { useDir } from "@hooks/useDir";
 import { p2e } from "@/helpers/NumberConverter";
 
 import type { SearchFormProps } from "@/types/components/elements/form-legacy";
@@ -17,6 +18,7 @@ const FormInput = ({
   errorKey = "",
 }: SearchFormProps) => {
   const t = useTranslations("common");
+  const dir = useDir();
 
   const inputRef = useRef<HTMLInputElement>(null);
 
@@ -34,11 +36,11 @@ const FormInput = ({
         ref={inputRef}
         inputMode={item?.keyboard == "number" ? "tel" : "text"}
         pattern={item?.keyboard == "number" ? "[0-9]*" : ""}
-        className={`${!!item?.iconUrl ? " !pr-[3rem]" : ""}  ${
-          !!item?.iconEndUrl ? " !pl-10" : ""
+        className={`${!!item?.iconUrl ? " !ps-[3rem]" : ""}  ${
+          !!item?.iconEndUrl ? " !pe-10" : ""
         } ${
-          item?.direction ? item?.direction : "rtl"
-        }   bg-surface-muted    !text-base   ltr  text-right form-control  font-normal border border-control focus:border-action  py-4 px-4 w-full rounded-10 placeholder:text-ink-subtle placeholder:text-right   placeholder:font-normal placeholder:text-sm placeholder:opacity-70   ${
+          item?.direction ? item?.direction : dir
+        }   bg-surface-muted    !text-base   ltr  text-start form-control  font-normal border border-control focus:border-action  py-4 px-4 w-full rounded-10 placeholder:text-ink-subtle placeholder:text-start   placeholder:font-normal placeholder:text-sm placeholder:opacity-70   ${
           item?.inputClass
         } ${
           item?.disableHover
@@ -76,11 +78,11 @@ const FormInput = ({
           height={16}
           className={`absolute ${
             item?.title ? "top-[61%]" : "top-[32%]"
-          } w-4 aspect-square right-4 ${item?.iconUrlClassName} ${
+          } w-4 aspect-square start-4 ${item?.iconUrlClassName} ${
             item?.iconFunc ? "cursor-pointer" : ""
           }`}
           onClick={() => {
-            if (item?.iconFunc)  item?.iconFunc()
+            if (item?.iconFunc) item?.iconFunc();
           }}
           src={"/assets/icons/edit/blue_edit_pen.svg"}
         />
@@ -90,7 +92,7 @@ const FormInput = ({
           alt=""
           width={20}
           height={20}
-          className={`absolute top-[28%] w-5 aspect-square left-4 ${
+          className={`absolute top-[28%] w-5 aspect-square end-4 ${
             item?.iconEndUrlClassName
           } ${item?.iconEndFunc ? "cursor-pointer" : ""}`}
           onClick={() => {
@@ -100,7 +102,7 @@ const FormInput = ({
         />
       )}
       {!!item?.maxLengthShower && (
-        <p className={`absolute top-[0.75rem] w-5 aspect-square left-8 `}>
+        <p className={`absolute top-[0.75rem] w-5 aspect-square end-8 `}>
           {`${value}`?.split("").length}/{item?.maxLength}
         </p>
       )}
@@ -108,7 +110,7 @@ const FormInput = ({
       {!!item?.hint && (
         <div
           id={`${item?.id}`}
-          className={`text-xs font-light text-ink-subtle mt-1 mr-5 `}
+          className={`text-xs font-light text-ink-subtle mt-1 ms-5 `}
         >
           {item?.hint}
         </div>

@@ -30,21 +30,31 @@ export const usePrevNextButtons = (
 
   useEffect(() => {
     if (!emblaApi) return;
-
     const animationFrame = requestAnimationFrame(() => onSelect(emblaApi));
     emblaApi.on("reInit", onSelect).on("select", onSelect);
-
     return () => {
       cancelAnimationFrame(animationFrame);
       emblaApi.off("reInit", onSelect).off("select", onSelect);
     };
   }, [emblaApi, onSelect]);
-
   return {
     prevBtnDisabled,
     nextBtnDisabled,
     onPrevButtonClick,
     onNextButtonClick,
+  };
+};
+
+export const arrowSides = (
+  nav: CarouselNavigationState,
+  dir: "rtl" | "ltr",
+) => {
+  const rtl = dir === "rtl";
+  return {
+    showLeft: rtl ? !nav.nextBtnDisabled : !nav.prevBtnDisabled,
+    showRight: rtl ? !nav.prevBtnDisabled : !nav.nextBtnDisabled,
+    onLeft: rtl ? nav.onNextButtonClick : nav.onPrevButtonClick,
+    onRight: rtl ? nav.onPrevButtonClick : nav.onNextButtonClick,
   };
 };
 
@@ -62,7 +72,7 @@ export const PrevButton: React.FC<CarouselButtonProps> = (props) => {
         height={18}
         alt="chvronSwiper"
         src="/assets/icons/shared/chevron.svg"
-        className="w-[1.125rem] h-[1.125rem]  rotate-90   select-none group-hover:invert"
+        className="w-[1.125rem] h-[1.125rem] rotate-90 select-none group-hover:invert"
       />
     </button>
   );

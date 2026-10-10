@@ -80,13 +80,17 @@ const ConfirmModal = ({
         )}
         <div className="flex flex-row w-full px-4  gap-4 justify-evenly mx-auto mb-4">
           <div
-            onClick={() => {if (!isLoading) onConfirm()}
+            onClick={() => {
+              if (!isLoading) onConfirm();
+            }}
             className={`bg-action w-full hover:opacity-80 transition-all duration-200 ease-in-out text-on-action mx-2 text-center py-2.5 rounded-md cursor-pointer flex justify-center items-center ${confirmTextClassName} `}
           >
             {isLoading ? <BtnLoading /> : confirmText}
           </div>
           <div
-            onClick={() =>  if (!isLoading) onHide()}
+            onClick={() => {
+              if (!isLoading) onHide();
+            }}
             className={`bg-line-strong hover:opacity-80 transition-all duration-200 ease-in-out w-full mx-2 text-center py-2.5 rounded-md cursor-pointer ${hideTextClassName}`}
           >
             {hideText}

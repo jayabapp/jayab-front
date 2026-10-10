@@ -16,12 +16,12 @@ const RemovableFilterChip = ({
         <button
           type="button"
           onClick={onLabelClick}
-          className="cursor-pointer text-xs pr-2"
+          className="cursor-pointer text-xs ps-2"
         >
           {label}
         </button>
       ) : (
-        <p className="text-xs pr-2">{label}</p>
+        <p className="text-xs ps-2">{label}</p>
       )}
       <button
         type="button"

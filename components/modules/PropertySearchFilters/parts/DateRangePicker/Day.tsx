@@ -64,21 +64,21 @@ const Day = ({
           isToday ? "  bg-surface-hover  " : ""
         }  relative  flex items-center justify-center aspect-square    ${
           isSelectedEnd
-            ? "!bg-action  rounded-l-10 text-on-action"
+            ? "!bg-action  rounded-e-10 text-on-action"
             : isSelectedStart
-              ? "!bg-action  rounded-r-10 text-on-action"
+              ? "!bg-action  rounded-s-10 text-on-action"
               : ""
         }  ${!!isinBetween ? "!bg-action  rounded-0 text-on-action" : ""}`}
       >
         {!!data?.has_memo ? (
-          <div className="absolute left-1 top-1  w-1 h-1 aspect-square bg-danger-500 !rounded-full">
+          <div className="absolute end-1 top-1  w-1 h-1 aspect-square bg-danger-500 !rounded-full">
             {" "}
           </div>
         ) : (
           <></>
         )}
         {!!data?.is_peak ? (
-          <div className="absolute left-0 right-0 mx-auto  bottom-0.5   h-1  w-1/2  bg-danger-500 !rounded-full">
+          <div className="absolute end-0 start-0 mx-auto  bottom-0.5   h-1  w-1/2  bg-danger-500 !rounded-full">
             {" "}
           </div>
         ) : (

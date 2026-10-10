@@ -13,7 +13,7 @@ import SearchOverlay from "./parts/SearchOverlay.client";
 const CLOSE_ON_SCROLL_PX = 24;
 
 const OPEN_PANEL_CLASS =
-  "!absolute !left-0 !right-0 !top-[calc(100%+0.5rem)] w-full min-h-[12rem] hero-dropdown opacity-100 !rounded-20 min-w-[25dvw]";
+  "!absolute !end-0 !start-0 !top-[calc(100%+0.5rem)] w-full min-h-[12rem] hero-dropdown opacity-100 !rounded-20 min-w-[25dvw]";
 const CLOSED_PANEL_CLASS =
   "!absolute !top-[calc(100%+0.5rem)] -z-50 hidden h-0 opacity-0";
 

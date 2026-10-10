@@ -1,5 +1,6 @@
-import type { TProgressBarProps } from "@/types/components/elements/LinearData";
 import { colors } from "@/theme/colors";
+
+import type { TProgressBarProps } from "@/types/components/elements/LinearData";
 
 const ProgressBar = ({
   progress,
@@ -19,7 +20,7 @@ const ProgressBar = ({
             backgroundColor: color,
             width: `${clampedProgress}%`,
           }}
-          className="absolute rounded-full left-0 h-1 transition-all duration-500 ease-in-out"
+          className="absolute rounded-full end-0 h-1 transition-all duration-500 ease-in-out"
         />
       </div>
     </div>

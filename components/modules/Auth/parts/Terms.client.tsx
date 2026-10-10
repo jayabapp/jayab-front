@@ -19,7 +19,7 @@ const Terms = ({
     <Modal show={visibleTermsModal} onHide={() => setvisibleTermsModal(false)}>
       <div className="app-text">
         <div className="app-text flex justify-between items-center py-3 px-4 sticky top-0 bg-surface  z-10">
-          <h3 className="mr-2 font-medium">{t("terms")}</h3>
+          <h3 className="ms-2 font-medium">{t("terms")}</h3>
           <Image
             alt=""
             width={16}

@@ -217,7 +217,7 @@ const CancellationSummary = ({ cancelingType }: T.CancellationSummaryProps) => {
           onHide={() => setShowDetails(false)}
         />
 
-        <div dir="rtl" className="px-5 pb-7 pt-3 md:px-7 md:pb-8">
+        <div className="px-5 pb-7 pt-3 md:px-7 md:pb-8">
           {/* Policy type */}
           <h3 className="text-lg font-bold leading-8 text-ink md:text-xl">
             {cancelingType.title}

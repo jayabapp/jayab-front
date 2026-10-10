@@ -27,23 +27,24 @@ const Notify = (props: NotifyProps) => {
   const _findTypeData = () => {
     switch (type) {
       case "success":
-        return { icon: successIcon, border: "border-r-status-success" };
+        return { icon: successIcon, border: "border-s-status-success" };
       case "error":
-        return { icon: errorIcon, border: "border-r-status-danger" };
+        return { icon: errorIcon, border: "border-s-status-danger" };
       case "warn":
-        return { icon: warningIcon, border: "border-r-status-warning" };
+        return { icon: warningIcon, border: "border-s-status-warning" };
       case "info":
-        return { icon: infoIcon, border: "border-r-link" };
+        return { icon: infoIcon, border: "border-s-link" };
       default:
-        return { icon: infoIcon, border: "border-r-link" };
+        return { icon: infoIcon, border: "border-s-link" };
     }
   };
   const LottieHelper = Lottie;
+  const rtl = document.documentElement.dir !== "ltr";
 
   toast.custom(
     (t) => (
       <div
-        className={`relative right-0 left-0 z-10 mx-auto flex items-center justify-start rounded-lg border border-line border-r-8 bg-surface px-3 py-2 text-ink shadow-elevated transition-all duration-500 ease-in-out hover:translate-y-1 md:w-96 cursor-pointer ${_findTypeData().border}`}
+        className={`relative start-0 end-0 z-10 mx-auto flex items-center justify-start rounded-lg border border-line border-s-8 bg-surface px-3 py-2 text-ink shadow-elevated transition-all duration-500 ease-in-out hover:translate-y-1 md:w-96 cursor-pointer ${_findTypeData().border}`}
         onClick={() => {
           toast.dismiss(t);
           typeof cb == "function" && cb();
@@ -54,7 +55,7 @@ const Notify = (props: NotifyProps) => {
             options={{ animationData: _findTypeData()?.icon, loop }}
           />
         </div>
-        <div className="mr-3 app-text">
+        <div className="ms-3 app-text">
           <p className="font-light w-full text-[13px]  app-text  md:font-normal md:text-sm mx-2">
             {body}
           </p>
@@ -65,8 +66,9 @@ const Notify = (props: NotifyProps) => {
     {
       id,
       duration,
-      className: " left-0  md:left-4",
-      position: isMobile ? "top-center" : "bottom-left",
+      // Desktop toasts sit at the end corner: bottom-left in RTL, bottom-right in LTR.
+      className: rtl ? " left-0  md:left-4" : " right-0  md:right-4",
+      position: isMobile ? "top-center" : rtl ? "bottom-left" : "bottom-right",
     },
   );
 };

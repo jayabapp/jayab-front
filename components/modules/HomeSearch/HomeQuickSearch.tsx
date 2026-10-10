@@ -49,7 +49,7 @@ const MainFiltersContainer = ({
               : HOME_TILE_DEFAULT_SPACE_BETWEEN.wide
           }
           breakPoints={HOME_TILE_BREAKPOINTS}
-          options={{ align: "start", direction: "rtl", dragFree: true }}
+          options={{ align: "start", dragFree: true }}
         >
           {data?.map((i, index: number) => (
             <SwiperSlide

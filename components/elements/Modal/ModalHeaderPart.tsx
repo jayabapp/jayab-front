@@ -25,7 +25,7 @@ const ModalHeaderPart = ({
           type="button"
           onClick={onHide}
           aria-label={t("back")}
-          className="absolute top-3 right-2 md:hidden"
+          className="absolute top-3 start-2 md:hidden"
         >
           <ContentImage
             alt=""

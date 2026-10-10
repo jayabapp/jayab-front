@@ -30,7 +30,7 @@ const FooterCallBox = ({ content }: FooterCallBoxProps) => {
 
         <Editable
           contentId={content?.id}
-          className="flex flex-col md:flex-row justify-between items-center gap-3 py-4 md:pr-[15rem]"
+          className="flex flex-col md:flex-row justify-between items-center gap-3 py-4 md:ps-[15rem]"
         >
           <div className="flex flex-col gap-4">
             <p className="font-bold text-white text-base md:text-xl">

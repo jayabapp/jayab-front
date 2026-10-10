@@ -56,7 +56,7 @@ const Day = ({
       >
         {!!data?.has_memo ? (
           <div
-            className={` absolute left-1 top-1  w-1 h-1 aspect-square  ${
+            className={` absolute end-1 top-1  w-1 h-1 aspect-square  ${
               isSelected ? "bg-danger-500" : "bg-action "
             }  !rounded-full`}
           >
@@ -66,7 +66,7 @@ const Day = ({
           <></>
         )}
         {!!data?.is_peak ? (
-          <div className="absolute left-0 right-0 mx-auto  bottom-0.5   h-1  w-1/2  bg-danger-500 !rounded-full">
+          <div className="absolute end-0 start-0 mx-auto  bottom-0.5   h-1  w-1/2  bg-danger-500 !rounded-full">
             {" "}
           </div>
         ) : (

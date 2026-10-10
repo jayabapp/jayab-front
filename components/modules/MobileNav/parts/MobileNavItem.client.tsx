@@ -1,9 +1,10 @@
 "use client";
 
-import type { MobileNavItemProps } from "@/types/components/modules/mobile-nav";
 import { ContentImage } from "@elements/Image";
 import { usePathname } from "next/navigation";
 import { PulseDot } from "@elements/Badge";
+
+import type { MobileNavItemProps } from "@/types/components/modules/mobile-nav";
 
 const MobileNavItem = ({ entry, hasBadge, onSelect }: MobileNavItemProps) => {
   const pathname = usePathname();
@@ -18,7 +19,7 @@ const MobileNavItem = ({ entry, hasBadge, onSelect }: MobileNavItemProps) => {
       className="w-full relative cursor-pointer select-none flex flex-col items-center gap-1 justify-center transition-all duration-1000 ease-in-out"
     >
       {hasBadge && !isFocused ? (
-        <PulseDot className="absolute left-2 -top-0.5 z-1" />
+        <PulseDot className="absolute end-2 -top-0.5 z-1" />
       ) : null}
 
       <ContentImage

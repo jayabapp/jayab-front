@@ -46,7 +46,7 @@ const MyMessageItem = ({ data }: ChatMessageItemProps) => {
           show ? "bg-selected/30 " : ""
         }  w-[70%] md:w-[40%]  cursor-pointer text-ink relative bg-status-success-bg  z-1 ${
           data?.media ? "p-1" : "p-4 pb-2 "
-        }   rounded-xl   rounded-br-none h-fit`}
+        }   rounded-xl   rounded-es-none h-fit`}
       >
         {!!data?.media ? (
           <div
@@ -78,7 +78,7 @@ const MyMessageItem = ({ data }: ChatMessageItemProps) => {
           {!data?.media && !data?.text ? t("deletedMessage") : data?.text}
         </p>
 
-        <div className="w-full absolute left-4 bottom-1 flex items-center justify-end gap-1"></div>
+        <div className="w-full absolute end-4 bottom-1 flex items-center justify-end gap-1"></div>
         <div className="w-full  mt-2 flex items-center justify-end gap-1">
           {data.deliveryStatus === "sending" ? (
             <span className="text-2xs opacity-60">{t("messageSending")}</span>

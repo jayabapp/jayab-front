@@ -44,7 +44,7 @@ const HomeCityFilterContainer = ({ data, title, devices }: HomeCitiesProps) => {
             : HOME_TILE_DEFAULT_SPACE_BETWEEN.wide
         }
         breakPoints={HOME_TILE_BREAKPOINTS}
-        options={{ align: "start", direction: "rtl", dragFree: true, loop: false }}
+        options={{ align: "start", dragFree: true, loop: false }}
       >
         {columns.map((column, index) => (
           <SwiperSlide

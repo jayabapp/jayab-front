@@ -6,7 +6,7 @@ import isEmpty from "lodash/isEmpty";
 import Link from "next/link";
 
 const LIST_CLASS =
-  "flex max-h-72 list-none flex-col overflow-y-auto border-r border-line pr-0";
+  "flex max-h-72 list-none flex-col overflow-y-auto border-s border-line ps-0";
 
 const BlogTableOfContents = ({ headings }: BlogTableOfContentsProps) => {
   const t = useTranslations("content");
@@ -22,7 +22,7 @@ const BlogTableOfContents = ({ headings }: BlogTableOfContentsProps) => {
               replace
               href={`#${heading.id}`}
               title={t("blogTableOfContents")}
-              className="group -mr-px flex items-start gap-2 border-r-2 border-transparent py-2 pr-3 text-xs leading-6 transition-colors hover:border-action hover:text-link md:text-sm"
+              className="group -ms-px flex items-start gap-2 border-s-2 border-transparent py-2 ps-3 text-xs leading-6 transition-colors hover:border-action hover:text-link md:text-sm"
             >
               <span className="shrink-0 text-xxs text-ink-subtle transition-colors group-hover:text-link">
                 {index + 1}

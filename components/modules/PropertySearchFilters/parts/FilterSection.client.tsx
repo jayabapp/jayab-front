@@ -22,7 +22,7 @@ const FilterSection = ({
           aria-expanded={isOpen}
           aria-controls={panelId}
           onClick={() => setIsOpen((current) => !current)}
-          className="flex w-full items-center justify-between gap-2 py-3.5 text-right"
+          className="flex w-full items-center justify-between gap-2 py-3.5 text-start"
         >
           <span className="flex items-center gap-2">
             <span className="text-sm font-medium text-ink">{title}</span>

@@ -6,6 +6,8 @@ import { usePrevNextButtons } from "./EmblaCarouselArrowButtons.client";
 import { NEW_IMAGE_URL } from "@/utils/urls";
 import { useMediaQuery } from "react-responsive";
 import { ContentImage } from "@/components/elements/Image";
+import { arrowSides } from "./EmblaCarouselArrowButtons.client";
+import { useDir } from "@hooks/useDir";
 
 import type { ThumbnailCarouselProps } from "@/types/components/elements/carousel";
 
@@ -18,15 +20,15 @@ const SwiperWithThumbnails: React.FC<ThumbnailCarouselProps> = (props) => {
     query: "(min-width: 768px)",
   });
   const {
-    options = { align: "start", direction: "rtl" },
-    children,
-    dir = "rtl",
-    slidesWidth,
-    spacing,
-    autoplay = false,
     slides,
-    defaultSelectedIndex,
+    spacing,
+    children,
+    slidesWidth,
+    dir: dirProp,
     LoadingSkeleton,
+    autoplay = false,
+    defaultSelectedIndex,
+    options = { align: "start" },
   } = props;
 
   const extraOptions = useMemo(
@@ -34,12 +36,18 @@ const SwiperWithThumbnails: React.FC<ThumbnailCarouselProps> = (props) => {
     [autoplay],
   );
 
-  const [emblaRef, emblaMainApi] = useEmblaCarousel(options, [...extraOptions]);
+  const localeDir = useDir();
+  const dir = dirProp ?? localeDir;
+
+  const [emblaRef, emblaMainApi] = useEmblaCarousel(
+    { ...options, direction: dir },
+    [...extraOptions],
+  );
   const [emblaThumbsRef, emblaThumbsApi] = useEmblaCarousel({
     containScroll: "keepSnaps",
     dragFree: false,
     align: "center",
-    direction: "rtl",
+    direction: dir,
   });
 
   const slideWidth = isDesktopOrLaptop
@@ -80,12 +88,8 @@ const SwiperWithThumbnails: React.FC<ThumbnailCarouselProps> = (props) => {
     };
   }, [emblaMainApi, onSelect]);
 
-  const {
-    prevBtnDisabled,
-    nextBtnDisabled,
-    onPrevButtonClick,
-    onNextButtonClick,
-  } = usePrevNextButtons(emblaMainApi);
+  const nav = usePrevNextButtons(emblaMainApi);
+  const { showLeft, showRight, onLeft, onRight } = arrowSides(nav, dir);
   return (
     <section
       style={{
@@ -105,22 +109,8 @@ const SwiperWithThumbnails: React.FC<ThumbnailCarouselProps> = (props) => {
           )}
         </div>
         <div className="  embla__buttons">
-          {!!nextBtnDisabled ? (
-            <></>
-          ) : (
-            <PrevButton
-              onClick={onNextButtonClick}
-              disabled={nextBtnDisabled}
-            />
-          )}
-          {!!prevBtnDisabled ? (
-            <> </>
-          ) : (
-            <NextButton
-              onClick={onPrevButtonClick}
-              disabled={prevBtnDisabled}
-            />
-          )}
+          {showLeft ? <PrevButton onClick={onLeft} /> : <></>}
+          {showRight ? <NextButton onClick={onRight} /> : <></>}
         </div>
       </div>
 

@@ -29,7 +29,7 @@ const Accordion = ({ title = "Default Title", children }: AccordionProps) => {
         </div>
         <motion.img
           alt="Toggle"
-          className="w-5 h-5 ml-2"
+          className="w-5 h-5 me-2"
           animate={{ rotate: isOpen ? 0 : 180 }}
           src="/assets/icons/shared/caret-down.svg"
           transition={{ duration: 0.3, ease: "easeInOut" }}
@@ -49,7 +49,7 @@ const Accordion = ({ title = "Default Title", children }: AccordionProps) => {
             alt=""
             width={24}
             height={24}
-            className="pr-1"
+            className="ps-1"
             src="/assets/icons/accordion/Group.svg"
           />
           <div className="text-start">{children}</div>

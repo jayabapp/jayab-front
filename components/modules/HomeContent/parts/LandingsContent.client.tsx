@@ -45,7 +45,7 @@ const LandingsContentSection = ({
         />
       </div>
       <div
-        className={` absolute  z-1 !rounded-b-10 md:!rounded-b-20 ${isOpen ? "-bottom-12" : "bottom-0"}  left-0 right-0 w-full py-8 md:py-8 bg-gradient-to-b from-surface/0 via-surface/80 to-surface/100 flex items-center justify-center`}
+        className={` absolute  z-1 !rounded-b-10 md:!rounded-b-20 ${isOpen ? "-bottom-12" : "bottom-0"}  end-0 start-0 w-full py-8 md:py-8 bg-gradient-to-b from-surface/0 via-surface/80 to-surface/100 flex items-center justify-center`}
       >
         <div
           onClick={onOpenClick}

@@ -73,7 +73,7 @@ const PropertyGallery = ({
   return (
     <div className="relative order-1 w-full md:order-1">
       {userInfo?.advisor_id && advisorCommission ? (
-        <div className="absolute right-3 top-3 z-1 flex h-7 items-center rounded-full bg-neutral-900/60 px-3 text-white">
+        <div className="absolute start-3 top-3 z-1 flex h-7 items-center rounded-full bg-neutral-900/60 px-3 text-white">
           <p className="text-xs">
             {t("advisorCommissionShort")}: {advisorCommission}%
           </p>
@@ -132,7 +132,7 @@ const PropertyGallery = ({
         <button
           type="button"
           onClick={() => openViewer(0, "show_all")}
-          className="absolute bottom-4 left-4 flex cursor-pointer items-center gap-2 rounded-full bg-surface/90 px-4 py-2 text-sm font-semibold text-ink shadow-glass-sm transition-colors hover:bg-surface focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-focus"
+          className="absolute bottom-4 end-4 flex cursor-pointer items-center gap-2 rounded-full bg-surface/90 px-4 py-2 text-sm font-semibold text-ink shadow-glass-sm transition-colors hover:bg-surface focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-focus"
         >
           <Icon name="images" size={20} />
           {t("showAllPhotos")} ({orderedImages.length})
@@ -143,7 +143,7 @@ const PropertyGallery = ({
         <Swiper
           selectedIndexCb={setCarouselIndex}
           slidesWidth={{ def: "100%", md: "100%" }}
-          options={{ align: "center", direction: "rtl", dragFree: false }}
+          options={{ align: "center", dragFree: false }}
         >
           {orderedImages.map((image, index) => (
             <SwiperSlide
@@ -172,7 +172,7 @@ const PropertyGallery = ({
           ))}
         </Swiper>
 
-        <p className="pointer-events-none absolute bottom-3 right-3 rounded-full bg-neutral-900/60 px-2.5 py-1 text-xs text-white">
+        <p className="pointer-events-none absolute bottom-3 start-3 rounded-full bg-neutral-900/60 px-2.5 py-1 text-xs text-white">
           {carouselIndex + 1} {t("photoOf")} {orderedImages.length}
         </p>
       </div>

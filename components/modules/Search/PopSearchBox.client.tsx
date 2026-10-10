@@ -1,26 +1,27 @@
 "use client";
 
-import type { PopSearchBoxProps } from "@/types/components/modules/search";
+import { Suspense, useState } from "react";
 import { useSearchPanel } from "@features/search/hooks/useSearchPanel";
 import { ContentImage } from "@elements/Image";
-import { Suspense, useState } from "react";
+
+import type { PopSearchBoxProps } from "@/types/components/modules/search";
 
 import SearchQueryParamSync from "./parts/SearchQueryParamSync.client";
 import SearchOverlay from "./parts/SearchOverlay.client";
 
 const OPEN_PANEL_CLASS =
   "w-full top-0 min-h-[25dvh] max-h-[90dvh] lg:max-h-[50dvh] xl:h-auto xl:absolute opacity-100 min-w-[25dvw] lg:min-h-[25dvh]";
-const CLOSED_PANEL_CLASS = "top-[-200dvh] xl:top-0 -z-50 xl:hidden h-0 xl:opacity-0";
+const CLOSED_PANEL_CLASS =
+  "top-[-200dvh] xl:top-0 -z-50 xl:hidden h-0 xl:opacity-0";
 
-/** The compact search trigger used by the header and the home search bar. */
 const PopSearchBox = ({
-  boxId = "SEARCH_BOX",
-  containerClass = " w-full md:w-[80%] mx-auto",
-  initValue,
   item,
-  justIcon = false,
   onSubmit,
+  initValue,
+  justIcon = false,
+  boxId = "SEARCH_BOX",
   placeholder = "search...",
+  containerClass = " w-full md:w-[80%] mx-auto",
 }: PopSearchBoxProps) => {
   const [showPop, setShowPop] = useState(false);
   const {
@@ -41,7 +42,12 @@ const PopSearchBox = ({
     setTerm,
     submit,
     term,
-  } = useSearchPanel({ initValue, isOpen: showPop, onOpenChange: setShowPop, onSubmit });
+  } = useSearchPanel({
+    initValue,
+    isOpen: showPop,
+    onOpenChange: setShowPop,
+    onSubmit,
+  });
 
   return (
     <div className={`${containerClass} relative`}>
@@ -67,7 +73,7 @@ const PopSearchBox = ({
         >
           <span className="flex items-center gap-1 w-full">
             <span
-              className={`bg-transparent text-base lg:text-sm line-clamp-1 py-1 pl-3 pr-0.5 w-full text-right ${term ? "" : "opacity-50"}`}
+              className={`bg-transparent text-base lg:text-sm line-clamp-1 py-1 pe-3 ps-0.5 w-full text-start ${term ? "" : "opacity-50"}`}
             >
               {term || placeholder}
             </span>

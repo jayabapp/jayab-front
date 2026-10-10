@@ -49,7 +49,6 @@ const GalleryModal = ({
           options={{
             startIndex: isVisible - 1,
             align: "start",
-            direction: "rtl",
           }}
           withArrows
           slidesWidth={{ def: "100%", md: "100%" }}

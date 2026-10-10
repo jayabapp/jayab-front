@@ -1,5 +1,6 @@
 "use client";
 
+import { useDir } from "@hooks/useDir";
 import { colors } from "@/theme/colors";
 
 import type { PriceRangeFilterProps } from "@/types/components/modules/property-search-filters";
@@ -20,6 +21,7 @@ const PriceRangeFilter = ({
   lowLimit = 0,
   upLimit = DEFAULT_UPPER_BOUND,
 }: PriceRangeFilterProps) => {
+  const dir = useDir();
   
   const onChange = (value: number | number[]) => {
     if (!Array.isArray(value) || !setFilters) return;
@@ -37,7 +39,7 @@ const PriceRangeFilter = ({
     <div className="mx-2">
       <Slider
         range
-        reverse
+        reverse={dir === "rtl"}
         min={lowLimit}
         max={upLimit}
         onChange={onChange}

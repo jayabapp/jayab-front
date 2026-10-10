@@ -1,9 +1,10 @@
 "use client";
 
 import { getHomeImageUrl } from "@features/home/mappers/home-image.mapper";
-import { type HomeLandingDto } from "@/types/components/modules/home";
-import { ContentImage } from "@elements/Image";
 import { useCitiesStore } from "@/store";
+import { ContentImage } from "@elements/Image";
+
+import { type HomeLandingDto } from "@/types/components/modules/home";
 
 import Link from "next/link";
 
@@ -44,7 +45,7 @@ const HomeCityItem = ({ item }: { item: HomeLandingDto }) => {
         />
       </div>
 
-      <div className="absolute left-0 bottom-0 flex items-center  justify-start  py-1.5  pr-1.5  lg:pr-2.5 w-full ">
+      <div className="absolute end-0 bottom-0 flex items-center  justify-start  py-1.5  ps-1.5  lg:ps-2.5 w-full ">
         <h2
           className={`col-span-3 !text-white w-fit text-start text-xs  md:text-base`}
         >

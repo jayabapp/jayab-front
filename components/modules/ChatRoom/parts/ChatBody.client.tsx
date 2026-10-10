@@ -64,7 +64,7 @@ const ChatBody = ({
             aria-label={t("loadingPrevious")}
           >
             <div className="h-12 w-1/2 animate-pulse rounded-xl bg-surface-hover" />
-            <div className="mr-auto h-12 w-2/5 animate-pulse rounded-xl bg-surface" />
+            <div className="ms-auto h-12 w-2/5 animate-pulse rounded-xl bg-surface" />
           </div>
         ) : (
           <></>

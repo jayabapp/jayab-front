@@ -84,10 +84,10 @@ const HeaderProfileMenu = ({
   }, [activeReserves, isOwner, notificationCount, profile?.advisor_id, t]);
 
   return (
-    <div className="text-right">
+    <div className="text-start">
       <Menu
         as="div"
-        className="relative group inline-block text-left"
+        className="relative group inline-block text-end"
         onMouseEnter={() => buttonRef.current?.click()}
         onMouseLeave={() => buttonRef.current?.click()}
       >
@@ -96,7 +96,7 @@ const HeaderProfileMenu = ({
           className="flex items-center transition-all justify-center col-span-1 gap-2 flex-row"
         >
           {activeReserves ? (
-            <PulseDot className="absolute -left-2 -top-0.5 z-1" />
+            <PulseDot className="absolute -end-2 -top-0.5 z-1" />
           ) : null}
           <p
             className={`nav-underline relative text-sm ${
@@ -111,7 +111,7 @@ const HeaderProfileMenu = ({
 
         <MenuItems
           transition
-          className="absolute left-0 z-[60] mt-2 w-48 origin-top rounded-xl bg-surface shadow-xl ring-1 ring-black/5 focus:outline-none overflow-auto px-1 py-2 transition duration-100 ease-out data-[closed]:scale-95 data-[closed]:opacity-0"
+          className="absolute end-0 z-[60] mt-2 w-48 origin-top rounded-xl bg-surface shadow-xl ring-1 ring-black/5 focus:outline-none overflow-auto px-1 py-2 transition duration-100 ease-out data-[closed]:scale-95 data-[closed]:opacity-0"
         >
           {entries.map((entry) => (
             <MenuItem key={entry.id}>

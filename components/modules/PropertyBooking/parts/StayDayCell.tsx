@@ -42,9 +42,9 @@ const StayDayCell = ({
   const verticalClass = row === 0 ? "top-full mt-1" : "bottom-full mb-1";
   const horizontalClass =
     column === 0
-      ? "right-0"
+      ? "start-0"
       : column === 6
-        ? "left-0"
+        ? "end-0"
         : "left-1/2 -translate-x-1/2";
 
   return (
@@ -102,7 +102,7 @@ const StayDayCell = ({
         {isPeak && !isEdge ? (
           <span
             aria-hidden="true"
-            className="absolute right-1.5 top-1.5 size-1 rounded-full bg-warning-500"
+            className="absolute start-1.5 top-1.5 size-1 rounded-full bg-warning-500"
           />
         ) : null}
       </button>

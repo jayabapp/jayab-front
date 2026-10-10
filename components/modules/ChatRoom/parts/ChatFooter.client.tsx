@@ -156,7 +156,7 @@ const ChatFooter = ({
 
   if (isSuspended)
     return (
-      <div className="absolute bottom-0 left-0 z-30 flex h-fit w-full items-center justify-center border-b bg-surface px-4 py-4">
+      <div className="absolute bottom-0 end-0 z-30 flex h-fit w-full items-center justify-center border-b bg-surface px-4 py-4">
         <p className="text-center text-sm text-ink-muted">
           {t("chatSuspended")}
         </p>
@@ -165,9 +165,9 @@ const ChatFooter = ({
 
   return (
     <div
-      className={` flex px-2  flex-1 z-30 w-full left-0 border-b   ${
+      className={` flex px-2  flex-1 z-30 w-full end-0 border-b   ${
         isIOS ? " bottom-0   " : "bottom-[0]   pb-1"
-      }  h-fit  transition-all duration-100 ease-in-out  absolute  overflow-clip     left-0   flex-col  bg-surface   ${
+      }  h-fit  transition-all duration-100 ease-in-out  absolute  overflow-clip     end-0   flex-col  bg-surface   ${
         product && showProduct ? " pb-4 !h-36 bottom-0" : ""
       }`}
     >

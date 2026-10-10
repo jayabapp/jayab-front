@@ -39,7 +39,7 @@ const RegionButton = ({
           setShowRegions(true);
         }}
       >
-        <span className="text-xs pr-1 shrink-0">
+        <span className="text-xs ps-1 shrink-0">
           {!hasRegions
             ? t("search.selectLocal")
             : singleTitle

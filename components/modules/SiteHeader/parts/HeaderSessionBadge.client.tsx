@@ -46,11 +46,11 @@ const HeaderSessionBadge = ({
             width={20}
             height={20}
             src="/assets/icons/header/new-face/dots-three-vertical.svg"
-            className={`${compact ? "hidden sm:block" : ""} size-5 pl-1 transition-all ${isLight ? "invert brightness-200" : ""}`}
+            className={`${compact ? "hidden sm:block" : ""} size-5 pe-1 transition-all ${isLight ? "invert brightness-200" : ""}`}
           />
         ) : (
           <p
-            className={`${compact ? "hidden min-[360px]:block" : ""} pl-1 text-xs transition-all ${isLight ? "text-white" : ""}`}
+            className={`${compact ? "hidden min-[360px]:block" : ""} pe-1 text-xs transition-all ${isLight ? "text-white" : ""}`}
           >
             {t("common.enter")}
           </p>

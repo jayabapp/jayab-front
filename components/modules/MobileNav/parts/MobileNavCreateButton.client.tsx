@@ -23,7 +23,7 @@ const MobileNavCreateButton = ({ onSelect }: MobileNavCreateButtonProps) => {
         src="/assets/icons/navbar/footer_bump.svg"
       />
 
-      <span className="w-full h-full aspect-square absolute -top-[1.85rem] left-0 right-0 mx-auto rounded-full bg-transparent flex items-center justify-center">
+      <span className="w-full h-full aspect-square absolute -top-[1.85rem] end-0 start-0 mx-auto rounded-full bg-transparent flex items-center justify-center">
         <span className="footer-plus-shadow flex items-center justify-center size-[3.250rem] rounded-full border border-brand-300">
           <ContentImage
             alt=""
@@ -35,7 +35,7 @@ const MobileNavCreateButton = ({ onSelect }: MobileNavCreateButtonProps) => {
         </span>
       </span>
 
-      <p className="truncate text-xs absolute -bottom-[1.375rem] right-0 left-0 mx-auto md:text-base text-center text-link select-none opacity-60 grayscale brightness-90">
+      <p className="truncate text-xs absolute -bottom-[1.375rem] start-0 end-0 mx-auto md:text-base text-center text-link select-none opacity-60 grayscale brightness-90">
         {t("addListing")}
       </p>
     </button>

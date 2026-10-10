@@ -45,7 +45,7 @@ const SearchBoxDropDown = ({
   return (
     <div className={containerClass}>
       <div
-        className="relative w-full inline-block text-left"
+        className="relative w-full inline-block text-end"
         onBlur={(event) => {
           if (!event.currentTarget.contains(event.relatedTarget))
             setShowResults(false);
@@ -57,7 +57,7 @@ const SearchBoxDropDown = ({
             if (!isPending) submit();
           }}
           onFocus={() => setShowResults(true)}
-          className={`bg-surface/50 rounded-20 w-full overflow-hidden pr-4 pl-2 flex justify-between items-center ${item?.bg ?? ""}`}
+          className={`bg-surface/50 rounded-20 w-full overflow-hidden ps-4 pe-2 flex justify-between items-center ${item?.bg ?? ""}`}
         >
           <div className="flex items-center w-full">
             <input
@@ -71,7 +71,7 @@ const SearchBoxDropDown = ({
               placeholder={placeholder}
               aria-expanded={showResults && options.length > 0}
               onChange={(event) => setTerm(event.target.value)}
-              className={`bg-transparent py-1 pl-0.5 pr-3 outline-none w-full ${item?.bg ?? ""}`}
+              className={`bg-transparent py-1 pe-0.5 ps-3 outline-none w-full ${item?.bg ?? ""}`}
               aria-activedescendant={
                 activeIndex >= 0 ? `search-option-${activeIndex}` : undefined
               }
@@ -82,7 +82,7 @@ const SearchBoxDropDown = ({
               type="submit"
               disabled={isPending}
               aria-label={t("search")}
-              className={`${term ? "" : "opacity-0 pointer-events-none"} transition-all cursor-pointer h-10 w-10 top-0 bottom-0 my-0 flex items-center justify-center left-1 aspect-square rounded-full bg-action`}
+              className={`${term ? "" : "opacity-0 pointer-events-none"} transition-all cursor-pointer h-10 w-10 top-0 bottom-0 my-0 flex items-center justify-center end-1 aspect-square rounded-full bg-action`}
             >
               {isPending ? (
                 <BtnLoading />
@@ -109,7 +109,7 @@ const SearchBoxDropDown = ({
           leaveFrom="transform opacity-100 scale-100"
           leaveTo="transform opacity-0 scale-95"
         >
-          <div className="absolute w-full pb-2 md:top-auto left-0 z-20 mt-2 origin-top-center rounded-20 bg-surface custome-shadow-card focus:outline-none overflow-scroll">
+          <div className="absolute w-full pb-2 md:top-auto end-0 z-20 mt-2 origin-top-center rounded-20 bg-surface custome-shadow-card focus:outline-none overflow-scroll">
             <div className="flex gap-2 w-full items-center flex-col px-2 py-2">
               <SearchPanelBody
                 term={term}

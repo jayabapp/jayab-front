@@ -1,7 +1,7 @@
-import type { ProvinceCardProps } from "@/types/components/modules/city-selector";
 import { getCityImageUrl } from "@features/cities/mappers/city-image.mapper";
-
 import { ContentImage } from "@elements/Image";
+
+import type { ProvinceCardProps } from "@/types/components/modules/city-selector";
 
 const PREVIEW_CITY_COUNT = 5;
 
@@ -9,7 +9,7 @@ const ProvinceCard = ({ callback, item }: ProvinceCardProps) => (
   <button
     type="button"
     onClick={callback}
-    className="flex w-full cursor-pointer flex-row items-center justify-start gap-4 text-right"
+    className="flex w-full cursor-pointer flex-row items-center justify-start gap-4 text-start"
   >
     <span className="relative block h-10 w-10 shrink-0 aspect-square rounded-md">
       <ContentImage

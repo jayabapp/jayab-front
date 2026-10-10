@@ -95,7 +95,7 @@ const ReservationDateModal = ({
         height={24}
         onClick={onHide}
         src="/assets/icons/adds/x_mark.svg"
-        className="absolute top-4 right-4  z-20 cursor-pointer text-ink-subtle hover:text-ink-muted"
+        className="absolute top-4 start-4  z-20 cursor-pointer text-ink-subtle hover:text-ink-muted"
       />
 
       <div
@@ -130,7 +130,7 @@ const ReservationDateModal = ({
                 startDate={moment(monthDate).format("jYYYY/jMM/jDD")}
               />
               {index == 0 ? (
-                <div className="flex lg:absolute right-12 bottom-2  px-4 md:px-0 text-ink-subtle text-sm items-center gap-2 ">
+                <div className="flex lg:absolute start-12 bottom-2  px-4 md:px-0 text-ink-subtle text-sm items-center gap-2 ">
                   <div className="w-5 h-5 striped !bg-surface-muted   rounded-md"></div>
                   <p className=" text-xs md:text-sm">{t("reservedDays")}</p>
                 </div>
@@ -148,7 +148,7 @@ const ReservationDateModal = ({
           onClick={() => onConfirm(dateSpan)}
           disabled={!dateSpan?.start || !dateSpan?.end}
           title={!!dateSpan?.end ? t("selectDateSpan") : t("selectDate")}
-          containerClass=" absolute z-50 bottom-4 mx-auto w-[calc(100%-2rem)] left-4 right-4 "
+          containerClass=" absolute z-50 bottom-4 mx-auto w-[calc(100%-2rem)] end-4 start-4 "
         />
       ) : (
         <></>

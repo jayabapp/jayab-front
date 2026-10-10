@@ -105,7 +105,7 @@ const AdvisorDetailsModal = ({
                     alt=""
                     width={16}
                     height={16}
-                    className="w-4 h-4 ml-2 aspect-square"
+                    className="w-4 h-4 me-2 aspect-square"
                     src="/assets/icons/advisor/white_phone.svg"
                   />
                 }
@@ -124,7 +124,7 @@ const AdvisorDetailsModal = ({
                     alt=""
                     width={16}
                     height={16}
-                    className="w-4 h-4 ml-2 aspect-square"
+                    className="w-4 h-4 me-2 aspect-square"
                     src="/assets/icons/advisor/blue_message.svg"
                   />
                 }

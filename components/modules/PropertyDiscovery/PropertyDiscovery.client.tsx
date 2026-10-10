@@ -80,7 +80,7 @@ const PropertyDiscovery = ({ devices }: PropertyDiscoveryProps) => {
           <FilterApplyBar draft={filters} onApply={onApplyFilters} />
         </aside>
 
-        <div className="col-span-12 md:col-span-12 lg:col-span-9 px-0 xl:pr-4 xl:pl-0 xl:mt-0">
+        <div className="col-span-12 md:col-span-12 lg:col-span-9 px-0 xl:ps-4 xl:pe-0 xl:mt-0">
           <div className="hidden z-1 w-full xl:flex flex-col xl:flex-row items-center justify-between mb-2">
             <SingleProductBreadCrumb dataArray={BREAD_CRUMBS} />
             <h1 className="sr-only">{t("listing.roomsPageTitle")}</h1>
@@ -91,7 +91,7 @@ const PropertyDiscovery = ({ devices }: PropertyDiscoveryProps) => {
           </div>
 
           <div
-            className={`flex fixed pt-1 xl:hidden h-16 right-0 duration-1000 transition-all items-center justify-center z-10 xl:z-1 top-[3rem] xl:top-auto left-0 xl:left-auto bg-surface xl:bg-transparent xl:relative flex-col w-full xl:gap-2 ${
+            className={`flex fixed pt-1 xl:hidden h-16 start-0 duration-1000 transition-all items-center justify-center z-10 xl:z-1 top-[3rem] xl:top-auto end-0 xl:end-auto bg-surface xl:bg-transparent xl:relative flex-col w-full xl:gap-2 ${
               topHeaderVisible ? "" : "shadow-lg lg:shadow-none"
             }`}
           >
