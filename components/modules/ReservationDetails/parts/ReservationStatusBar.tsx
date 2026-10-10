@@ -34,7 +34,7 @@ const ReservationStatusBar = ({
           <button
             type="button"
             onClick={onCancel}
-            className="cursor-pointer bg-neutral-100 border w-fit flex items-center gap-2 px-3 py-2 rounded-xl text-xxs md:text-sm font-medium"
+            className="cursor-pointer bg-neutral-100 border w-fit flex items-center gap-2 px-3 py-2 rounded-xl text-2xs md:text-sm font-medium"
           >
             {t("cancelReserve")}
             <ContentImage

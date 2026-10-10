@@ -55,7 +55,7 @@ const SelectiveFilterChip = ({
           <>
             <span className="text-sm font-medium pr-2">
               {selectedCount}{" "}
-              <span className="text-xxs font-normal">{t("listing.item")}</span>
+              <span className="text-2xs font-normal">{t("listing.item")}</span>
             </span>
             <span
               role="button"

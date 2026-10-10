@@ -3,6 +3,8 @@ import localFont from "next/font/local";
 export const x_Iransans = localFont({
   display: "swap",
   preload: false,
+  // Exposed as --font-fa so typography.css can switch family per :lang().
+  variable: "--font-fa",
   src: [
     // Weights follow each file's OS/2 usWeightClass: Thin=100, Light=300.
     // They were swapped (Light→200, Thin→300), so `font-light` rendered Thin.

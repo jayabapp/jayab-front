@@ -1,10 +1,11 @@
-import type { OwnerPriceRangeFieldProps } from "@/types/components/modules/owner-property";
 import { FormInputWithExternalUnit } from "@elements/Form";
+import { useTranslations } from "next-intl";
 import { p2e } from "@/helpers/NumberConverter";
+
+import type { OwnerPriceRangeFieldProps } from "@/types/components/modules/owner-property";
 
 import numberWithCommas from "@/helpers/numberWithCommas";
 import RangeWithTitle from "@elements/Slider";
-import { useTranslations } from "next-intl";
 
 const OwnerPriceRangeField = ({
   min,

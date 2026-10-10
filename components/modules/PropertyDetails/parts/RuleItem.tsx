@@ -10,9 +10,9 @@ const RuleItem = ({ allowed, description, label }: RuleItemProps) => (
       className={`mt-0.5 ${allowed ? "text-success-600" : "text-danger-500"}`}
     />
     <div className="flex min-w-0 flex-col gap-0.5">
-      <p className="text-sm text-neutral-800">{label}</p>
+      <p className="ui-body text-neutral-800">{label}</p>
       {description ? (
-        <p className="whitespace-pre-wrap text-xs text-neutral-500">
+        <p className="whitespace-pre-wrap ui-caption text-neutral-500">
           {description}
         </p>
       ) : (

@@ -1,9 +1,10 @@
-import type { OwnerConfirmPromptProps } from "@/types/components/modules/owner-property";
+import { useTranslations } from "next-intl";
 import { ContentImage } from "@elements/Image";
+
+import type { OwnerConfirmPromptProps } from "@/types/components/modules/owner-property";
 
 import Button from "@elements/Button";
 import Modal from "@elements/Modal";
-import { useTranslations } from "next-intl";
 
 const OwnerVerifyPromptModal = ({
   show,
@@ -28,10 +29,10 @@ const OwnerVerifyPromptModal = ({
         <div className="w-full flex items-center justify-center gap-4">
           <Button
             width="w-full"
-            containerClass="w-full"
             onClick={onConfirm}
-            roundedClass="rounded-full"
             title={t("verifyProp")}
+            containerClass="w-full"
+            roundedClass="rounded-full"
           />
         </div>
       </div>

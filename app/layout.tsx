@@ -142,6 +142,7 @@ const RootLayout = async ({
     <html
       lang={localeMeta[locale].lang}
       dir={dirOf(locale)}
+      className={x_Iransans.variable}
       suppressHydrationWarning
     >
       {themeBootstrapScript ? (

@@ -25,7 +25,6 @@ const OwnerRegistrationFields = ({ values, onChange }: TEditCreateProps) => {
       </div>
 
       <div className="w-full flex gap-4 flex-col md:flex-row items-center">
-        {" "}
         <FormInput
           item={{
             title: t("profile.totalName"),
@@ -63,15 +62,11 @@ const OwnerRegistrationFields = ({ values, onChange }: TEditCreateProps) => {
           key={`uploader`}
           item={values?.image}
           title={t("profile.profileImage")}
+          onDelete={() => onChange(null, "image")}
           link="/attachments?type=OWNER_SELFIE_IMAGE"
+          onSelect={(file) => onChange(file, "image")}
           containerClass={" w-full flex items-center justify-center "}
-          onSelect={(file) => {
-            onChange(file, "image");
-          }}
-          onDelete={() => {
-            onChange(null, "image");
-          }}
-        />{" "}
+        />
       </div>
     </div>
   );

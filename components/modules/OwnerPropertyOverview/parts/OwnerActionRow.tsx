@@ -1,5 +1,6 @@
-import type { OwnerActionRowProps } from "@/types/components/modules/owner-property";
 import { ContentImage } from "@elements/Image";
+
+import type { OwnerActionRowProps } from "@/types/components/modules/owner-property";
 
 import Link from "next/link";
 

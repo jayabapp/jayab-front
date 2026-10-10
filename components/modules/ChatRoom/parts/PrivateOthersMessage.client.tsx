@@ -80,7 +80,7 @@ const PrivateOthersMessage = ({ data }: ChatMessageItemProps) => {
           {!data?.media && !data?.text ? t("deletedMessage") : data?.text}
         </p>
         <div className="w-full  mt-2 flex items-center justify-end gap-1">
-          <p className="text-xxs opacity-75">
+          <p className="text-2xs opacity-75">
             {moment(data?.created_at).format(" HH:mm  - jYYYY/jMM/jDD")}
           </p>
         </div>

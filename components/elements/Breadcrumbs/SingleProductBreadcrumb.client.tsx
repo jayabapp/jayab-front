@@ -27,7 +27,7 @@ const SingleProductBreadCrumb = ({
             >
               {e?.link == "/" ? <></> : <></>}{" "}
               <p
-                className={`  text-xxs md:text-sm text-dark-700  transition-all     ${
+                className={`  text-2xs md:text-sm text-dark-700  transition-all     ${
                   index == arr?.length - 1
                     ? "font-normal hover:text-neutral-500 "
                     : " hover:opacity-100 opacity-50"

@@ -43,7 +43,7 @@ const RelatedBlogs = ({ currentId, items }: RelatedBlogsProps) => {
             <p className="line-clamp-2 text-xs font-bold leading-5 transition-colors group-hover:text-brand-600">
               {item?.title}
             </p>
-            <p className="text-xxs text-neutral-600">
+            <p className="text-2xs text-neutral-600">
               {moment(item?.created_at).format("jYYYY/jMM/jDD")}
             </p>
           </div>

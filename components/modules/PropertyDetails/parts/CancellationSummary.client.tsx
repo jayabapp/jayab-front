@@ -175,7 +175,7 @@ const CancellationSummary = ({ cancelingType }: T.CancellationSummaryProps) => {
   return (
     <>
       <div className="flex flex-wrap items-center gap-2">
-        <p className="text-sm font-semibold text-neutral-900">
+        <p className="ui-body font-semibold text-neutral-900">
           {t("cancenlationDesc")}
         </p>
         <span

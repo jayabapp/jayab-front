@@ -38,7 +38,7 @@ const HeroMobileTrigger = ({
           {summary.title || t("searchPlaceholder")}
         </span>
         {variant === "hero" && summary.detail ? (
-          <span className="w-full truncate text-xxs leading-tight text-neutral-500">
+          <span className="w-full truncate text-2xs leading-tight text-neutral-500">
             {summary.detail}
           </span>
         ) : null}

@@ -46,7 +46,7 @@ const ImageBox = ({
             sizes="(max-width: 1024px) 50vw, 320px"
             className="aspect-[4/3] w-full object-cover"
           />
-          <span className="absolute right-2 top-2 rounded-10 bg-black/55 px-2 py-1 text-xxs font-medium text-white backdrop-blur">
+          <span className="absolute right-2 top-2 rounded-10 bg-black/55 px-2 py-1 text-2xs font-medium text-white backdrop-blur">
             {title}
           </span>
 
@@ -55,14 +55,14 @@ const ImageBox = ({
               e.stopPropagation();
             }}
             href={getUploadedImageUrl(image, "medium") || ""}
-            className="absolute left-2 bottom-2  bg-brand-600/50 rounded-md   px-2 py-1 text-xxs font-medium text-white backdrop-blur "
+            className="absolute left-2 bottom-2  bg-brand-600/50 rounded-md   px-2 py-1 text-2xs font-medium text-white backdrop-blur "
           >
             {t("listing.download")}
           </Link>
         </div>
       ) : (
-        <div className="relative flex aspect-[4/3] w-full items-center justify-center rounded-10 border border-dashed border-neutral-300 bg-neutral-50 px-2 text-center text-xxs text-neutral-400 md:text-xs">
-          <span className="absolute right-2 top-2 rounded-10 bg-white px-2 py-1 text-xxs font-medium text-neutral-500">
+        <div className="relative flex aspect-[4/3] w-full items-center justify-center rounded-10 border border-dashed border-neutral-300 bg-neutral-50 px-2 text-center text-2xs text-neutral-400 md:text-xs">
+          <span className="absolute right-2 top-2 rounded-10 bg-white px-2 py-1 text-2xs font-medium text-neutral-500">
             {title}
           </span>
           {emptyTitle}

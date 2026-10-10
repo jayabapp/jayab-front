@@ -66,7 +66,7 @@ const SearchSuggestions = ({
         .filter(({ group }) => !isEmpty(group))
         .map(({ group, kind }) => (
           <div className="flex w-full flex-col" key={kind}>
-            <p className="px-2 pb-1 pt-2 text-xxs font-bold text-neutral-500">
+            <p className="px-2 pb-1 pt-2 text-2xs font-bold text-neutral-500">
               {t(GROUP_LABEL[kind])}
             </p>
             {group.map((option) => {

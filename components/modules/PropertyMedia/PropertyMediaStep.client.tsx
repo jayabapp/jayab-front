@@ -137,7 +137,7 @@ const PropertyMediaStep = ({ propertyId }: OwnerPropertyRouteProps) => {
                     featureImageId && featureImageId == image?.data?.id
                       ? "opacity-100"
                       : "opacity-0"
-                  } transition-all absolute text-xxs h-7 bottom-0 w-full flex items-center justify-center bg-white/60 z-5 text-neutral-600`}
+                  } transition-all absolute text-2xs h-7 bottom-0 w-full flex items-center justify-center bg-white/60 z-5 text-neutral-600`}
                 >
                   {t("primaryImage")}
                 </div>

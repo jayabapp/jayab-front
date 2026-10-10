@@ -46,3 +46,23 @@ viewport فعلی maximumScale=1 و userScalable=false دارد. در PR دست�
 - در ۳۲۰/۳۹۰/۷۶۸/۱۴۴۰ و zoom ۲۰۰٪ clipping، overflow و overlap رخ ندهد.
 - سلول تقویم، قیمت‌های طولانی، header sticky و modal هم‌اندازهٔ موردنیاز بمانند؛ تغییر عمدی طراحی screenshot داشته باشد.
 - چک‌های فیچر ۱۰ پاس شوند. rollback با revert PR تایپوگرافی بدون حذف زیرساخت زبان ممکن باشد.
+
+## وضعیت پیاده‌سازی
+
+انجام‌شده (فارسی بدون تغییر؛ فقط اصلاحات عمدهٔ زیر):
+
+- `styles/typography.css` به globals.css وصل شد. `ss01` از html/body برداشته شد و فقط روی `:where(:lang(fa))` اعمال می‌شود؛ ar/en روی `normal` هستند. در آزمایش واقعی، ss01 روی عربی شکل کاف/یای فارسی و ارقام ٤٥٦ فارسی می‌دهد، پس برای ar خاموش ماندنش لازم است.
+- فونت عربی: IRANSansX حروف، اعراب (فتحه تا سکون، شدّه، تنوین) و ارقام عربی-هندی را دارد و در نمونهٔ واقعی درست متصل می‌شود؛ فونت تازه لازم نشد. این فایل‌ها فقط لاتین پایه دارند (۴۶۲ glyph).
+- انگلیسی: stack سیستم؛ IRANSansX آخر زنجیره می‌ماند تا اسم فارسی داخل صفحهٔ en glyph داشته باشد (فقط در صورت نیاز دانلود می‌شود). `localFont` حالا `--font-fa` را روی `<html>` می‌دهد و `[lang]:lang(fa)` خانوادهٔ فارسی را برای بلوک فارسیِ داخل صفحهٔ زبان دیگر نگه می‌دارد. preload همچنان خاموش است.
+- نقش‌ها: `ui-body`، `ui-caption`، `ui-heading` با متغیرهای هر زبان. مقدار fa برابر `text-sm/xs/lg` فعلی است (۱۴px/۲۰px و ...)، ar بالاتر (۱٫۷۵) و en پایین‌تر (۱٫۵). اعمال‌شده در PropertyDetails (RuleItem، HouseRules، CancellationSummary، PropertyDetailsContent)، PropertyBooking (BookingPanel، PriceDetails) و منوی پروفایل header. بقیهٔ moduleها بعداً؛ header ثابت‌ارتفاع عمداً دست‌نخورده ماند.
+- `.text-latin-code` (ltr + isolate + tabular-nums) روی ورودی OTP و تلفن ورود. رقم فارسی در fa تا فیچر ۰۹ با ss01 همان قبل است.
+- `text-xxs`: ۴۰ مصرف بررسی شد. ۳۱ برچسب متنی به `text-2xs` رفتند؛ ۹ مورد xxs ماند: قیمت خط‌خوردهٔ سلول تقویم (۲ فایل)، درصد تخفیف (۲)، شمارندهٔ فیلتر، شمارهٔ فهرست مقاله، زمان پیام چت، و دو pill با عرض ثابت (کمیسیون مشاور، آزاد/رزرو هفته) که بزرگ‌کردنشان بریدگی می‌دهد.
+- `font-extrabold` در ContactInfo به `font-bold` رفت (فونت ۸۰۰ ندارد؛ ظاهر همان است). نگاشت وزن Thin/Light از قبل درست بود.
+
+انجام‌نشده، عمداً:
+
+- `maximumScale/userScalable` و `touch-action: pan-x pan-y` همان‌طور ماندند: برداشتنشان با input موبایل (zoom خودکار iOS زیر ۱۶px) و focus-visible فیچر ۰۷ باید یک‌جا انجام شود (PR دسترس‌پذیری).
+- touch target، فونت لاتین اختصاصی، و اعمال نقش‌ها روی همهٔ moduleها.
+- baseline تصویری لیست/تقویم با داده: backend محلی در دسترس نبود (۵۰۰ روی property/banners)، پس فقط shell صفحه‌ها در ۳۲۰/۳۹۰/۷۶۸/۱۴۴۰ برای fa/ar/en بدون overflow افقی بررسی شد. QA بصری سلول تقویم و کارت‌ها روی QA (jayab.org) باقی است.
+
+بررسی: `tsc` و `i18n:check` پاک، lint بدون خطای تازه (۱۰ خطا/۴ هشدار پایه)، build حالت fa-only موفق و ۲۷ مسیر ایستا ایستا ماندند، computed style در سه زبان: fa=`ss01` و ۱۴/۲۰px، ar=`normal` و ۱۴/۲۴٫۵px، en=stack سیستم و ۱۴/۲۱px.

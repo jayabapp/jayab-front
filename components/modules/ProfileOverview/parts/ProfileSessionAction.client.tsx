@@ -49,12 +49,12 @@ const ProfileSessionAction = ({ isLogin }: ProfileSessionActionProps) => {
 
       <ConfirmModal
         isLoading={false}
-        hideText={t("common.no")}
         isVisible={showConfirm}
-        confirmText={t("common.yes")}
+        hideText={t("common.no")}
         title={t("header.logout")}
-        text={t("header.logoutMessage")}
+        confirmText={t("common.yes")}
         onConfirm={() => void logout()}
+        text={t("header.logoutMessage")}
         onHide={() => setShowConfirm(false)}
       />
     </>

@@ -1,11 +1,13 @@
 "use client";
 
 import { useOwnerCalendarActions } from "@features/owner-property/hooks/useOwnerCalendarActions";
-import type { OwnerSingleDayModalProps } from "@/types/components/modules/owner-property";
+import { useTranslations } from "next-intl";
 import { ContentImage } from "@elements/Image";
+import { useState } from "react";
 import { Divider } from "@elements/Divider";
 import { colors } from "@/theme/colors";
-import { useState } from "react";
+
+import type { OwnerSingleDayModalProps } from "@/types/components/modules/owner-property";
 
 import SkeletonText from "@elements/Skeleton/SkeletonText";
 import useCmsContent from "@/hooks/useCmsContent";
@@ -13,7 +15,6 @@ import RangeWithTitle from "@elements/Slider";
 import CmsText from "@elements/CmsText";
 import Button from "@elements/Button";
 import Modal from "@elements/Modal";
-import { useTranslations } from "next-intl";
 
 const COMMISSION_MARKS = {
   0: { label: "0", style: { color: colors.neutral[400], paddingTop: 15 } },

@@ -60,7 +60,7 @@ const BlogCard = ({ item, index }: BlogCardProps) => {
             {item?.small_text || item?.full_text || ""}
           </p>
 
-          <div className="mt-auto flex items-center justify-between gap-2 border-t border-neutral-100 pt-2.5 text-xxs text-neutral-600">
+          <div className="mt-auto flex items-center justify-between gap-2 border-t border-neutral-100 pt-2.5 text-2xs text-neutral-600">
             <div className="flex items-center gap-2">
               <span>{moment(item?.created_at).format("jYYYY/jMM/jDD")}</span>
               {!!item?.view_count ? (

@@ -13,7 +13,7 @@ const FooterBottomBar = ({ downloadLinks }: FooterBottomBarProps) => {
   return (
     <div className="bg-white padding-x w-full mx-auto shadow-md h-fit lg:h-20 flex flex-col py-2 md:py-0 gap-4 lg:flex-row items-center justify-between">
       <div className="flex items-center gap-4">
-        <div className="w-full text-center text-xxs md:text-sm">
+        <div className="w-full text-center text-2xs md:text-sm">
           {t.rich("copyright", {
             link: (chunks) => (
               <Link

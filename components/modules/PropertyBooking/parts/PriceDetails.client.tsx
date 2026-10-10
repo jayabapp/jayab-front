@@ -44,7 +44,7 @@ const PriceDetails = ({ quote }: PriceDetailsProps) => {
           {groups.map((group, index) => (
             <div
               key={`${index}-${group.price}`}
-              className="flex items-center justify-between gap-3 text-sm text-neutral-800"
+              className="flex items-center justify-between gap-3 ui-body text-neutral-800"
             >
               <span>
                 {t("nights", { count: Number(group.count) })} ×{" "}
@@ -55,12 +55,12 @@ const PriceDetails = ({ quote }: PriceDetailsProps) => {
           ))}
 
           {quote.discount_total > 0 ? (
-            <span className="w-fit rounded-full bg-danger-50 px-3 py-1 text-xs text-danger-500">
+            <span className="w-fit rounded-full bg-danger-50 px-3 py-1 ui-caption text-danger-500">
               {t("discountLabel")} {formatToman(quote.discount_total)}
             </span>
           ) : null}
 
-          <p className="text-xs text-neutral-500">{t("priceSetByHost")}</p>
+          <p className="ui-caption text-neutral-500">{t("priceSetByHost")}</p>
         </div>
       ) : null}
     </div>

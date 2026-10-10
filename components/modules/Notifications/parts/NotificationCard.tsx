@@ -21,10 +21,10 @@ const NotificationCard = ({ notification }: NotificationCardProps) => (
       </div>
     </div>
     <div className="flex flex-row w-full justify-end text-brand-600 gap-1">
-      <p className="text-xxs md:text-xs text-end w-full">
+      <p className="text-2xs md:text-xs text-end w-full">
         {moment(notification?.created_at).format("HH:mm")}
       </p>
-      <p className="text-xxs md:text-xs">
+      <p className="text-2xs md:text-xs">
         {moment(notification?.created_at).format("jYYYY/jMM/jDD")}
       </p>
     </div>

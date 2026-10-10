@@ -131,7 +131,7 @@ const HeaderProfileMenu = ({
                     className="w-6 h-6 aspect-square"
                   />
                 </span>
-                <span className="text-sm">{entry.title}</span>
+                <span className="ui-body">{entry.title}</span>
               </Link>
             </MenuItem>
           ))}
@@ -157,12 +157,12 @@ const HeaderProfileMenu = ({
 
       <ConfirmModal
         isLoading={false}
-        hideText={t("common.no")}
         isVisible={showConfirm}
-        confirmText={t("common.yes")}
+        hideText={t("common.no")}
         title={t("header.logout")}
-        text={t("header.logoutMessage")}
+        confirmText={t("common.yes")}
         onConfirm={() => void logout()}
+        text={t("header.logoutMessage")}
         onHide={() => setShowConfirm(false)}
       />
     </div>

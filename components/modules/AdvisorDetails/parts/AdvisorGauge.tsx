@@ -16,7 +16,7 @@ const AdvisorGauge = ({
 }: AdvisorGaugeProps) => (
   <div className="w-full flex items-center gap-1 md:gap-2">
     {label ? (
-      <p className={`text-xxs shrink-0 md:text-sm ${labelClass ?? ""}`}>
+      <p className={`text-2xs shrink-0 md:text-sm ${labelClass ?? ""}`}>
         {label} :
       </p>
     ) : null}
@@ -29,7 +29,7 @@ const AdvisorGauge = ({
         styles={buildStyles({ pathColor, textColor, textSize })}
       />
       {title ? (
-        <p className={`text-xxs shrink-0 md:text-sm w-fit ${titleClass ?? ""}`}>
+        <p className={`text-2xs shrink-0 md:text-sm w-fit ${titleClass ?? ""}`}>
           {title}
         </p>
       ) : null}

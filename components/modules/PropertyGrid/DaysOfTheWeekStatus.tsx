@@ -28,7 +28,7 @@ const DaysOfTheWeekStatus = ({
             className="flex w-full flex-col justify-center gap-1"
           >
             <p
-              className={`text-xxs text-center !shrink-0 ${isCard ? "" : "md:text-xs"} text-neutral-400`}
+              className={`text-2xs text-center !shrink-0 ${isCard ? "" : "md:text-xs"} text-neutral-400`}
             >
               {day?.title}
             </p>

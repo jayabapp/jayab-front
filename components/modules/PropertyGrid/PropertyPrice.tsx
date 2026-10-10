@@ -42,7 +42,7 @@ const PropertyPrice = ({
                 emphasis ? "h-6 w-9" : "h-5 w-7"
               }`}
             >
-              <p className={emphasis ? "text-xs" : "text-xxs"}>
+              <p className={emphasis ? "text-xs" : "text-2xs"}>
                 %{data?.discount_percentage}
               </p>
             </div>
@@ -58,7 +58,7 @@ const PropertyPrice = ({
         {numberWithCommas(
           data?.discounted_price ? data?.discounted_price : data?.price,
         )}{" "}
-        <span className={emphasis ? "text-xs" : "text-xxs"}>{t("toman")}</span>
+        <span className={emphasis ? "text-xs" : "text-2xs"}>{t("toman")}</span>
       </p>
     </div>
   );

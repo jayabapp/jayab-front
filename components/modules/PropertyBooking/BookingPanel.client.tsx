@@ -71,12 +71,12 @@ const BookingPanel = ({
     if (booking.step !== "READY")
       return (
         <div className="flex flex-col gap-1">
-          <p className="text-sm text-neutral-500">{t("stayStartsFrom")}</p>
+          <p className="ui-body text-neutral-500">{t("stayStartsFrom")}</p>
           <div className="flex flex-wrap items-end gap-1.5">
             <PropertyPriceTag
               price={{ price: property.minimumPrice ?? undefined }}
             />
-            <span className="pb-0.5 text-xs text-neutral-600">
+            <span className="pb-0.5 ui-caption text-neutral-600">
               / {t("night")}
             </span>
           </div>
@@ -101,7 +101,7 @@ const BookingPanel = ({
 
   const readyBody = () => {
     if (booking.hasQuoteError && !quote)
-      return <p className="text-sm text-danger-500">{t("quoteUnavailable")}</p>;
+      return <p className="ui-body text-danger-500">{t("quoteUnavailable")}</p>;
 
     if (!quote)
       return (
@@ -115,7 +115,7 @@ const BookingPanel = ({
     if (!quote.is_available)
       return (
         <div className="flex flex-col gap-3">
-          <p className="text-sm text-danger-500">
+          <p className="ui-body text-danger-500">
             {t("stayDatesReserved")}:{" "}
             {quote.unavailable_dates
               .map((date) => formatJalaliDay(date))

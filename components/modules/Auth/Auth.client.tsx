@@ -84,7 +84,7 @@ const AuthPageComponent = () => {
                   containerClass: "relative w-full",
                   placeholder: t("auth.mobilePlaceholder"),
                   inputClass:
-                    "glass-field !h-14 !rounded-20 !py-3 !text-lg tracking-[0.25em] !text-center placeholder:!text-center placeholder:!text-base placeholder:tracking-[0.25em]",
+                    "glass-field !h-14 !rounded-20 !py-3 !text-lg text-latin-code tracking-[0.25em] !text-center placeholder:!text-center placeholder:!text-base placeholder:tracking-[0.25em]",
                 }}
                 onChangeText={(v: number) => {
                   setMobile(v);

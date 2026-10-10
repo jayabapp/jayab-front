@@ -9,13 +9,13 @@ import { nightsBetween } from "@features/reservations/lib/stay-range";
 import { stayMonths } from "@features/reservations/lib/stay-months";
 
 import type { StayDateSheetProps } from "@/types/components/modules/property-booking";
+import type { TDateSummary } from "@/types/components/modules/property-booking";
 import type { StayRange } from "@features/reservations/lib/stay-range";
 
 import StayCalendarLegend from "./StayCalendarLegend";
 import StayCalendarGrid from "./StayCalendarGrid.client";
 import FullScreenSheet from "./FullScreenSheet.client";
 import moment from "moment-jalaali";
-import type { TDateSummary } from "@/types/components/modules/property-booking";
 
 const DateSummary = ({
   label,

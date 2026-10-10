@@ -69,7 +69,7 @@ const PropertyDetailsContent = ({ property }: PropertyDetailsContentProps) => {
       <SectionTabs tabs={tabs} />
 
       {view.ownerName ? (
-        <p className="order-4 pb-4 text-sm text-neutral-600 md:hidden">
+        <p className="order-4 pb-4 ui-body text-neutral-600 md:hidden">
           {t("listing.villaHostedBy")} {view.ownerName}
         </p>
       ) : null}

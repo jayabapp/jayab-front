@@ -1,13 +1,15 @@
 "use client";
 
-import type { OwnerDayPriceModalProps } from "@/types/components/modules/owner-property";
 import { useOwnerPriceLimits } from "@features/owner-property/hooks/useOwnerPriceLimits";
 import { useUpdateDayPrice } from "@features/owner-property/hooks/useUpdateDayPrice";
+import { useMemo, useState } from "react";
+import { useTranslations } from "next-intl";
 import { toJalaaliDays } from "@features/owner-property/lib/calendar-cache";
 import { ContentImage } from "@elements/Image";
-import { Divider } from "@elements/Divider";
 import { Checkbox } from "@elements/Form";
-import { useMemo, useState } from "react";
+import { Divider } from "@elements/Divider";
+
+import type { OwnerDayPriceModalProps } from "@/types/components/modules/owner-property";
 
 import SkeletonText from "@elements/Skeleton/SkeletonText";
 import OwnerPriceRangeField from "./OwnerPriceRangeField";
@@ -16,7 +18,6 @@ import CmsText from "@elements/CmsText";
 import Button from "@elements/Button";
 import Notify from "@elements/Toast";
 import Modal from "@elements/Modal";
-import { useTranslations } from "next-intl";
 
 const MAX_PROPERTY_PRICE = 1000000000;
 const DEFAULT_SLIDER_MAX = 20000000;
@@ -147,8 +148,8 @@ const OwnerDayPriceModal = ({
           min={minPrice}
           max={sliderCeiling}
           value={current.price}
-          title={`${t("common.price")} ${selectedDaysTitle}`}
           setValue={(value) => applyPrice(value, "price")}
+          title={`${t("common.price")} ${selectedDaysTitle}`}
         />
 
         <Divider moreClass="w-full " />

@@ -59,7 +59,7 @@ const StepShower = ({ value, steps }: TStepShowerProps) => {
               <p
                 className={`${
                   !!isSelected ? "text-brand-600" : "  text-neutral-300 "
-                }   text-center  text-xxs md:text-xs truncate`}
+                }   text-center  text-2xs md:text-xs truncate`}
               >
                 {e?.title}
               </p>

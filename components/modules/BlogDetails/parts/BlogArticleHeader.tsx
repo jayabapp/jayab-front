@@ -54,7 +54,7 @@ const BlogArticleHeader = ({
         )}
 
         {!!data?.category?.title ? (
-          <span className="w-fit rounded-full bg-brand-50 px-3 py-1 text-xxs font-bold text-brand-600">
+          <span className="w-fit rounded-full bg-brand-50 px-3 py-1 text-2xs font-bold text-brand-600">
             {data.category.title}
           </span>
         ) : (

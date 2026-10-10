@@ -36,7 +36,7 @@ const SeachBoxCitySelector = ({ options, onSubmitCB }: TSearchBoxProps) => {
 
         <div className="flex flex-col items-start justify-start gap-1 ">
           <p className="text-sm font-bold">{t("cityListTitle")}</p>
-          <p className="text-xxs ">{t("cityListHint")}</p>
+          <p className="text-2xs ">{t("cityListHint")}</p>
         </div>
 
         <ContentImage

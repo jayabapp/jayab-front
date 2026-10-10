@@ -1,13 +1,14 @@
 "use client";
 
-import type { OwnerDaySelectionProps } from "@/types/components/modules/owner-property";
 import { useUpdateDayStatus } from "@features/owner-property/hooks/useUpdateDayStatus";
+import { useTranslations } from "next-intl";
 import { toJalaaliDays } from "@features/owner-property/lib/calendar-cache";
 import { useState } from "react";
 
+import type { OwnerDaySelectionProps } from "@/types/components/modules/owner-property";
+
 import ConfirmModal from "@elements/Modal/ConfirmModal.client";
 import Button from "@elements/Button";
-import { useTranslations } from "next-intl";
 
 const OwnerDayStatusAction = ({
   property,
@@ -60,8 +61,8 @@ const OwnerDayStatusAction = ({
       />
       <ConfirmModal
         text={confirmText}
-        isLoading={isPending}
         onConfirm={onSubmit}
+        isLoading={isPending}
         isVisible={!!showConfirm}
         onHide={() => setShowConfirm(false)}
       />

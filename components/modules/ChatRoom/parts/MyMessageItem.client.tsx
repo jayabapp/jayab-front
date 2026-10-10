@@ -81,12 +81,12 @@ const MyMessageItem = ({ data }: ChatMessageItemProps) => {
         <div className="w-full absolute left-4 bottom-1 flex items-center justify-end gap-1"></div>
         <div className="w-full  mt-2 flex items-center justify-end gap-1">
           {data.deliveryStatus === "sending" ? (
-            <span className="text-xxs opacity-60">{t("messageSending")}</span>
+            <span className="text-2xs opacity-60">{t("messageSending")}</span>
           ) : (
             <></>
           )}
           {data.deliveryStatus === "failed" ? (
-            <span className="text-xxs text-red-600">
+            <span className="text-2xs text-red-600">
               {t("messageSendFailed")}
             </span>
           ) : (
