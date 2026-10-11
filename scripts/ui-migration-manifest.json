@@ -315,12 +315,27 @@
     },
     {
       "axis": "color",
-      "file": "components/modules/DisplayPreferences/DisplayPreferences.client.tsx",
+      "file": "components/modules/DisplayPreferences/parts/LanguagePicker.client.tsx",
       "kind": "valid",
-      "reason": "white text, border or ring on a fixed photo or solid brand/status fill; the fill does not change with the theme",
+      "reason": "overHero controls use a fixed dark translucent backing and white ink over photography in either theme; ordinary surfaces use semantic tokens",
       "hits": [
         "border-white",
-        "text-white"
+        "bg-black",
+        "text-white",
+        "hover:bg-white"
+      ]
+    },
+    {
+      "axis": "color",
+      "file": "components/modules/DisplayPreferences/parts/ThemeSwitcher.client.tsx",
+      "kind": "valid",
+      "reason": "overHero controls keep fixed white ink, selection and hover on a dark photo backing; the popover and ordinary theme control use semantic tokens",
+      "hits": [
+        "border-white",
+        "bg-black",
+        "text-white",
+        "bg-white",
+        "hover:bg-white"
       ]
     },
     {

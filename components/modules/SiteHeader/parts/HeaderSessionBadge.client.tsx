@@ -50,6 +50,7 @@ const HeaderSessionBadge = ({
           />
         ) : (
           <p
+          dir="auto"
             className={`${compact ? "hidden min-[360px]:block" : ""} pe-1 text-xs transition-all ${isLight ? "text-white" : ""}`}
           >
             {t("common.enter")}

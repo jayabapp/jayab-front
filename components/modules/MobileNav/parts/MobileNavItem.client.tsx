@@ -16,7 +16,7 @@ const MobileNavItem = ({ entry, hasBadge, onSelect }: MobileNavItemProps) => {
       type="button"
       title={entry?.title}
       onClick={() => onSelect(entry?.route)}
-      className="w-full relative cursor-pointer select-none flex flex-col items-center gap-1 justify-center transition-all duration-1000 ease-in-out"
+      className="min-w-0 flex-1 relative cursor-pointer select-none flex flex-col items-center gap-1 justify-center transition-all duration-1000 ease-in-out"
     >
       {hasBadge && !isFocused ? (
         <PulseDot className="absolute end-2 -top-0.5 z-1" />
@@ -31,7 +31,8 @@ const MobileNavItem = ({ entry, hasBadge, onSelect }: MobileNavItemProps) => {
       />
 
       <p
-        className={`${dimmed} truncate text-xs md:text-base text-link select-none`}
+        dir="auto"
+        className={`${dimmed} max-w-full truncate text-xs md:text-base text-link select-none`}
       >
         {entry?.title}
       </p>

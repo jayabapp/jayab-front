@@ -2,13 +2,13 @@
 
 import { useParams, usePathname, useRouter } from "next/navigation";
 import { headerMobileSearchBlackList } from "@/utils/constantss";
-import { DISPLAY_PREFERENCES_VISIBLE } from "@modules/DisplayPreferences";
 import { headerWithFullSeach } from "@/utils/constantss";
 import { DisplayPreferences } from "@modules/DisplayPreferences";
 import { useTranslations } from "next-intl";
 import { HomeHeroSearch } from "@modules/HomeHeroSearch";
 import { useStoreParams } from "@/store";
 import { ContentImage } from "@elements/Image";
+import { useDir } from "@hooks/useDir";
 
 import HeaderSessionBadge from "./HeaderSessionBadge.client";
 import HeaderSearchField from "./HeaderSearchField.client";
@@ -31,6 +31,7 @@ const HeaderMobileBar = ({
   onRegisterAdvisor,
 }: HeaderMobileBarProps) => {
   const t = useTranslations();
+  const dir = useDir();
   const router = useRouter();
   const pathname = usePathname();
   const { chat_id, room_slug, slug } = useParams();
@@ -70,7 +71,7 @@ const HeaderMobileBar = ({
             </div>
           ) : (
             <>
-              <div className="min-w-0 flex-1">
+              <div dir={dir} className="min-w-0 flex-1">
                 <HomeHeroSearch isPhone variant="header" />
               </div>
               <HeaderBrand asLink markOnly isLight={false} />
@@ -87,7 +88,7 @@ const HeaderMobileBar = ({
   if (showsFullSearch)
     return (
       <div className="xl:hidden flex w-full">
-        <div className="flex items-center w-full justify-between gap-4">
+        <div className="flex min-w-0 items-center w-full justify-between gap-2">
           <HeaderSearchField
             boxId={boxId}
             withCitySelector
@@ -100,30 +101,31 @@ const HeaderMobileBar = ({
 
   return (
     <div className="xl:hidden flex w-full">
-      <div className="flex items-center w-full justify-between gap-4">
+      <div className="grid w-full grid-cols-[2.75rem_minmax(0,1fr)_auto] items-center gap-2">
         <button
           type="button"
           onClick={onBack}
           title={t("common.back")}
-          className={`cursor-pointer h-4 ${DISPLAY_PREFERENCES_VISIBLE ? "w-24" : "w-12"}`}
+          className="flex size-11 items-center justify-start"
         >
           <ContentImage
             alt=""
             width={16}
             height={16}
             src="/assets/icons/shared/chevron-right.svg"
-            className="ltr:rotate-180"
           />
         </button>
 
-        <p className="font-bold text-base text-center">
+        <p
+          dir={dir}
+          className="min-w-0 truncate font-bold text-base text-center"
+        >
           <HeaderRouteTitle />
         </p>
 
-        <DisplayPreferences />
-
-        <div className="w-12 h-10 flex items-center justify-center">
-          <div className="cursor-pointer absolute end-4">
+        <div className="flex shrink-0 items-center gap-1">
+          <DisplayPreferences />
+          <div className="flex min-h-11 shrink-0 items-center justify-center">
             {pathname === "/advisors" ? (
               isAdvisor ? null : (
                 <Button

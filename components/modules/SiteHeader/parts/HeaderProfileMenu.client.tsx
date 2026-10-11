@@ -9,6 +9,7 @@ import { useCurrentProfile } from "@features/auth/hooks/useCurrentProfile";
 import { useTranslations } from "next-intl";
 import { ContentImage } from "@elements/Image";
 import { useLogout } from "@features/auth/hooks/useLogout";
+import { useDir } from "@hooks/useDir";
 
 import type { HeaderProfileMenuProps } from "@/types/components/modules/site-header";
 import type { ProfileMenuEntry } from "@/types/features/user";
@@ -24,6 +25,7 @@ const HeaderProfileMenu = ({
   notificationCount,
 }: HeaderProfileMenuProps) => {
   const t = useTranslations();
+  const dir = useDir();
   const buttonRef = useRef<HTMLButtonElement>(null);
   const [showConfirm, setShowConfirm] = useState(false);
   const logout = useLogout();
@@ -99,6 +101,7 @@ const HeaderProfileMenu = ({
             <PulseDot className="absolute -end-2 -top-0.5 z-1" />
           ) : null}
           <p
+            dir={dir}
             className={`nav-underline relative text-sm ${
               isLight
                 ? "text-white group-hover:text-brand-200"
@@ -116,6 +119,7 @@ const HeaderProfileMenu = ({
           {entries.map((entry) => (
             <MenuItem key={entry.id}>
               <Link
+                dir={dir}
                 prefetch
                 href={entry.route}
                 title={entry.title}
@@ -138,6 +142,7 @@ const HeaderProfileMenu = ({
 
           <MenuItem>
             <button
+              dir={dir}
               type="button"
               onClick={() => setShowConfirm(true)}
               className="text-status-danger flex w-full px-2 items-center rounded-md gap-2 py-2 text-sm font-medium"

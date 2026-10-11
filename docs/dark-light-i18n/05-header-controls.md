@@ -4,13 +4,17 @@
 
 ## وضعیت پیاده‌سازی
 
-کنترل پیاده شد پشت فلگ build-time جدید `NEXT_PUBLIC_DISPLAY_CONTROLS_ENABLED=1` (پیش‌فرض خاموش؛ در `.env.example` مستند است). ماژول `components/modules/DisplayPreferences` (index، `config.ts`، parts: PreferenceSelect/ThemeSelect/LocaleSelect، types در `types/components/modules/display-preferences.ts`) یک دکمهٔ ۴۴×۴۴ با Popover از Headless UI و دو `<select>` بومی با label می‌دهد. تم فقط با `NEXT_PUBLIC_THEME_ENABLED=1` و زبان فقط با بیش از یک زبان در `NEXT_PUBLIC_ENABLED_LOCALES` دیده می‌شود؛ اگر هیچ‌کدام نباشد کامپوننت `null` برمی‌گرداند. select تم مقدار choice را نشان می‌دهد (نه resolved)؛ select زبان نام بومی با `lang` مستقل دارد و انتخاب نامعتبر در `useLocaleSwitch` رد می‌شود. idها با `useId` یکتا هستند و writer/listener تم همچنان فقط یکی (provider) است.
+اصلاح مصوب ۲۰۲۶-۱۰-۱۱: دکمهٔ عمومی تنظیمات و دو select حذف شدند. `DisplayPreferences` اکنون دو کنترل مستقل دارد: `LanguagePicker.client.tsx` با آیکون کرهٔ زمین و فهرست مستقیم نام بومی زبان‌ها، و `ThemeSwitcher.client.tsx` با انتخاب خورشید/سیستم/ماه. دسکتاپ انتخاب تم مستقیماً در هدر است؛ موبایل برای حفظ فضا یک آیکون وضعیت جاری و پنل سه گزینهٔ آیکون‌دار با برچسب دارد. تم از radio بومی با نام گروه یکتا استفاده می‌کند؛ مقدار choice نمایش داده می‌شود، نه resolved. زبان با دکمهٔ مستقیم، lang/dir مستقل و نشان انتخاب فعلی مشخص است.
 
-جانمایی: داخل `HeaderSessionBadge` (دسکتاپ کنار تماس/اعلان و موبایل خانه)، کنار فیلد جستجو در شاخهٔ `showsFullSearch` موبایل، و در نوار موبایل داخلی کنار action فعلی (دکمهٔ برگشت و slot در این حالت عرض متقارن می‌گیرند تا عنوان وسط بماند). روی هیچ route جدید اضافه نشد.
+فلگ‌های قبلی حفظ شدند: `NEXT_PUBLIC_DISPLAY_CONTROLS_ENABLED` برای کنترل‌ها، `NEXT_PUBLIC_THEME_ENABLED` برای موتور و `NEXT_PUBLIC_ENABLED_LOCALES` برای زبان‌های قابل انتخاب. اگر هیچ کنترلی فعال نباشد خروجی null است. provider یا writer/listener تم جدیدی ایجاد نشد. Popoverهای موجود Headless UI مدیریت focus و Escape را انجام می‌دهند.
 
-قفل زبان: روی مسیرهای `/auth*`، `/chat/<id>`، `/profile/edit`، `/profile/support/new-ticket` و `/profile/owner/properties/<id>/edit*` select زبان disabled است و دلیل ترجمه‌شده (`language.switchBlocked`) با `aria-describedby` نمایش داده می‌شود؛ این قفل مسیرمحور و محتاطانه است. ردیابی dirty هر فرم و پرداخت/رزرو در حال ارسال هنوز نیست (به registryای نیاز دارد که فرم‌ها گزارش دهند).
+جانمایی: داخل `HeaderSessionBadge` برای دسکتاپ/موبایل خانه، کنار جست‌وجوی موبایل و کنار action هدر داخلی. هدر داخلی grid با slot برگشت، عنوان قابل کوتاه‌شدن و actionها دارد؛ عنوان بلند کنترل‌ها را از viewport خارج نکند. نسبت‌های ثابت قبلی دسکتاپ با فضای انعطاف‌پذیر جستجو و منوی shrink-0 جایگزین شدند. route جدیدی اضافه نشد.
 
-آزمون روی build production با هر سه فلگ روشن: دسکتاپ ۱۳۶۰px — دکمه ۴۴×۴۴، انتخاب dark کوکی `jayab_theme` و `data-theme` و meta theme-color را می‌گذارد؛ انتخاب en کوکی `jayab_locale` می‌گذارد، همان URL را reload می‌کند و `lang=en dir=ltr` می‌شود و تم باقی می‌ماند. موبایل ۳۲۰px روی `/`، `/rooms`، `/about-us`، `/faq` بدون overflow افقی؛ پنل داخل viewport می‌ماند، Escape می‌بندد و focus به دکمه برمی‌گردد. با فلگ خاموش هیچ دکمه‌ای در HTML نیست. هنوز آزمایش‌نشده: header روی hero شفاف با تم تیره، هدر modal (variant=modal) در مرورگر، screen reader واقعی، روی هم‌افتادن با عنوان‌های بلند در موبایل داخلی (عنوان کوتاه‌ها بدون مشکل، «About us» در ۳۲۰px دو خطی شد)، و جهت LTR هدر که به فیچر ۰۸ می‌رسد.
+قفل زبان: روی مسیرهای `/auth*`، `/chat/<id>`، `/profile/edit`، `/profile/support/new-ticket` و `/profile/owner/properties/<id>/edit*` دکمه‌های گزینهٔ زبان disabled هستند و دلیل ترجمه‌شده (`language.switchBlocked`) با `aria-describedby` نمایش داده می‌شود؛ این قفل مسیرمحور و محتاطانه است. ردیابی dirty هر فرم و پرداخت/رزرو در حال ارسال هنوز نیست (به registryای نیاز دارد که فرم‌ها گزارش دهند).
+
+قرارداد موقعیت: SiteHeader و MobileNav جهت چیدمان ثابت rtl دارند تا جای اجزا در fa/ar/en مانند فارسی بماند. متن‌ها، ورودی جستجو و محتوای پنل جهت locale می‌گیرند. html انگلیسی همچنان ltr است؛ کل صفحه RTL نشده است. فلش برگشت هدر در سمت ثابت باقی می‌ماند و با زبان نمی‌چرخد. نوار پایین slotهای هم‌اندازه دارد تا متن بلند جای آیتم‌ها را تغییر ندهد.
+
+بررسی اصلاح: ایراد نسخهٔ select و ترتیب انگلیسی روی jayab.org مشاهده شد. تست تعاملی تغییرات در پیش‌نمایش ایزولهٔ بدون شبکه با کامپوننت‌های واقعی هدر، next-intl، Headless UI و موتور تم انجام شد؛ دادهٔ نشست/جستجو mock و کوکی آزمایشی در حافظه بود. انتخاب تم، arrow key/Space، Escape و بازگشت focus، نام زبان‌ها و محدودیت مسیر ورود بررسی شدند. این پیش‌نمایش جای تست یکپارچهٔ نسخهٔ منتشرشده روی دامنه را نمی‌گیرد؛ screen reader واقعی، هدر modal و فلوهای متصل به داده باید پس از انتشار در محیط تست بررسی شوند. خطاهای lint/معماری پایه جدا از regression گزارش شوند.
 
 ## محل واقعی تغییر
 
@@ -20,9 +24,9 @@
 
 ## ساختار پیشنهادی
 
-کنترل ترجیح اپ module باشد، چون به state تم و locale متصل است: `components/modules/DisplayPreferences/DisplayPreferences.client.tsx` با index.ts عمومی و parts خصوصی ThemeSelect/LocaleSelect. typeهای UI در `types/components/modules/display-preferences.ts`. SiteHeader فقط entry عمومی module را مصرف کند. اگر select پایه لازم شد، element آن صرفاً value/options/onChange دریافت کند و feature/store import نکند.
+کنترل ترجیح اپ module باشد، چون به state تم و locale متصل است: `components/modules/DisplayPreferences/DisplayPreferences.client.tsx` با index.ts عمومی و parts خصوصی ThemeSwitcher/LanguagePicker. typeهای UI در `types/components/modules/display-preferences.ts`. SiteHeader فقط entry عمومی module را مصرف کند. Icon پایه صرفاً نام/اندازه دریافت می‌کند و feature/store import نمی‌کند.
 
-برای نسخهٔ اول native select با label معتبر انتخاب مطمئن و کم‌هزینه‌ای است. اگر طراحی dropdown سفارشی خواست، از Listbox موجود Headless UI استفاده شود؛ نقش ARIA منو برای فرم select به‌صورت دستی اختراع نشود.
+تم با radio بومی و ظاهر آیکونی انتخاب شود؛ arrow key و Space رفتار بومی داشته باشند. زبان با یک کلیک روی نام انتخاب شود؛ نقش ARIA منو یا listbox بدون رفتار کامل آن‌ها اضافه نشود. الگوی بصری از [Geist Theme Switcher](https://vercel.com/geist/theme-switcher) و قرارداد کیبورد از [WAI Radio Group](https://www.w3.org/WAI/ARIA/apg/patterns/radio/) الهام می‌گیرد؛ کتابخانهٔ تم پروژه تغییر نمی‌کند.
 
 | کنترل | گزینه‌ها | قرارداد |
 | --- | --- | --- |
@@ -32,8 +36,8 @@
 
 ## جانمایی
 
-- دسکتاپ: داخل HeaderDesktopNav کنار session/profile، با shrink-0 و بدون افزودن فلو ورود جدید. نسبت‌های فعلی w-50% و w-2/5 بررسی شوند؛ کنترل‌ها نباید search را بیرون viewport ببرند.
-- موبایل خانه: یک دکمهٔ preferences با پنل دو select یا جای مناسب در منوی پروفایل موجود؛ حالت homeSearchInView و جایگزینی search هنگام scroll پوشش داده شود.
+- دسکتاپ: داخل HeaderDesktopNav کنار session/profile، با shrink-0 و بدون افزودن فلو ورود جدید. فضای انعطاف‌پذیر search و عرض متن انگلیسی بررسی شوند؛ کنترل‌ها نباید search را بیرون viewport ببرند.
+- موبایل خانه: آیکون زبان و آیکون وضعیت تم با پنل انتخاب آیکونی؛ حالت homeSearchInView و جایگزینی search هنگام scroll پوشش داده شود.
 - موبایل جستجو: HeaderMobileBar برای showsFullSearch زود return می‌کند؛ کنترل در این شاخه نیز قابل‌دسترسی باشد و به input عرض منفی ندهد.
 - موبایل داخلی: برگشت، عنوان route و action فعلی حفظ شوند؛ preferences در پنل/منوی مناسب جای بگیرد. اگر header طبق blacklist پنهان است، تنظیمات از ورودی دیگر موجود قابل‌دسترسی باشد؛ برای این کار route عمومی جدید در root app ساخته نشود.
 - هدر modal با variant=modal و شناسهٔ جدا وجود دارد؛ idهای کنترل یکتا باشند و دو header باعث دو writer یا listener مستقل برای preference نشوند.

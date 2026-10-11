@@ -88,8 +88,9 @@ const SiteHeader = ({ phone, variant = "page" }: SiteHeaderProps) => {
     ? getUserAvatarUrl(profile.profile_image)
     : null;
 
+  // Keep navigation slots in their Persian positions; text/search keep locale direction.
   return (
-    <header className="relative">
+    <header dir="rtl" className="relative">
       <Script
         id="mediaad-retargeting"
         strategy="lazyOnload"
@@ -101,7 +102,7 @@ const SiteHeader = ({ phone, variant = "page" }: SiteHeaderProps) => {
         className={`${isLight ? "bg-gradient-to-b from-black/30 to-black/0 md:pb-24" : ""} transition-all ease-out duration-300 header-content-container w-full mx-auto`}
       >
         <div
-          className={`flex justify-between transition-all items-center xl:gap-[10%] duration-300 padding-x py-2 xl:py-4 ${
+          className={`flex justify-between transition-all items-center xl:gap-8 duration-300 padding-x py-2 xl:py-4 ${
             isLight
               ? " bg-transparent "
               : topHeaderVisible

@@ -18,6 +18,7 @@ const HeaderNavLink = ({
 }: HeaderNavLinkProps) => {
   const label = (
     <p
+      dir="auto"
       className={`nav-underline relative ${
         isLight
           ? "text-white group-hover:text-brand-200"

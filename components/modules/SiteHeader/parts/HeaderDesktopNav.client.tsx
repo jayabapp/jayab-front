@@ -2,7 +2,6 @@
 
 import { useTranslations } from "next-intl";
 import { CountBadge } from "@elements/Badge";
-import { useDir } from "@hooks/useDir";
 
 import HeaderSessionBadge from "./HeaderSessionBadge.client";
 import HeaderProfileMenu from "./HeaderProfileMenu.client";
@@ -25,10 +24,9 @@ const HeaderDesktopNav = ({
   onCreateProperty,
 }: HeaderDesktopNavProps) => {
   const t = useTranslations();
-  const rtl = useDir() === "rtl";
 
   const navBlock = (
-    <div className="text-xs xl:text-md gap-8 font-medium flex-row hidden xl:flex w-[50%] transition-all ease-in-out duration-1000 items-center">
+    <div className="hidden shrink-0 items-center gap-4 text-xs font-medium xl:flex xl:text-md 2xl:gap-6">
       <HeaderSessionBadge
         phone={phone}
         avatar={avatar}
@@ -82,32 +80,24 @@ const HeaderDesktopNav = ({
     <HeaderSearchField
       boxId={boxId}
       withCitySelector
-      containerClass="hidden md:flex"
+      containerClass="hidden min-w-0 max-w-md md:flex"
       inputClass="!bg-transparent !border-none"
     />
   );
 
   const brandBlock = (
-    <div className="hidden md:visible items-center justify-between xl:flex flex-row w-2/5">
-      <div
-        className={`w-full flex gap-4 flex-row h-full ${rtl ? "justify-end" : "justify-start"}`}
-      >
-        {rtl ? search : null}
+    <div className="hidden min-w-0 flex-1 items-center xl:flex">
+      <div className="flex h-full w-full items-center justify-end gap-4">
+        {search}
         <HeaderBrand asLink isLight={isLight} />
-        {rtl ? null : search}
       </div>
     </div>
   );
 
-  return rtl ? (
+  return (
     <>
       {navBlock}
       {brandBlock}
-    </>
-  ) : (
-    <>
-      {brandBlock}
-      {navBlock}
     </>
   );
 };

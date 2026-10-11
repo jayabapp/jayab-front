@@ -19,6 +19,8 @@
 
 ## قرارداد اجرا
 
+اصلاح مصوب ۲۰۲۶-۱۰-۱۱: موقعیت اجزای SiteHeader و MobileNav در همهٔ زبان‌ها مانند فارسی ثابت است. ظرف چیدمان آن‌ها `dir="rtl"` می‌گیرد؛ متن‌ها، ورودی جستجو و محتوای پنل‌ها جهت locale دارند. html و بدنهٔ انگلیسی همچنان LTR هستند. این قرارداد جای رفتار اولیهٔ mirror شدن آیتم‌های ناوبری را می‌گیرد؛ جهت سایر بخش‌های برنامه تغییری ندارد.
+
 - گرهٔ html از سرور dir می‌گیرد. جهت از locale config، و برای زیر‌درخت متفاوت از dir خود آن گرفته شود؛ constant global که آخرین locale را نگه می‌دارد ممنوع.
 - flex-row در RTL خودش جریان راست‌به‌چپ دارد؛ row-reverse برای «رفع RTL» پیش‌فرض نیست. ترتیب DOM و خواندن screen reader بررسی شود.
 - جهت فلش back/next از معنای فلش و جهت واقعی baseline آن بیاید. rotate-180 عمومی روی تمام آیکون‌ها ممنوع؛ لوگو، قلب، ساعت و عکس آینه نمی‌شوند.
@@ -55,7 +57,7 @@
 
 - **نگاشت (۱۰۴ فایل، ۲۷۲ کلاس):** `ml/mr→me/ms`، `pl/pr→pe/ps`، `left/right→end/start` (با منفی و prefix)، `text-left/right→text-end/start`، `border-l/r→border-e/s`، `rounded-l/r→rounded-e/s` و گوشه‌ها (`tl→se`، `tr→ss`، `bl→ee`، `br→es`). جفت‌های وسط‌چین (`left-1/2`، `left-[50%]`) و فایل‌های دارای `ltr`/`dir` صریح دست نخوردند. CSS سراسری: فاصلهٔ Embla/thumbs و نقطه‌ها به `margin/padding-inline-*` و `nav-progress` به `inset-inline-start`.
 - **جهت از locale:** `hooks/useDir.ts`. `Swiper` و `SwiperWithThumbnails` جهت Embla را از locale می‌گیرند (قبلاً `"rtl"` ثابت بود؛ ۷ مصرف‌کننده پاک شدند). فلش‌های carousel روی سمت فیزیکی می‌مانند و عملشان با `arrowSides()` از جهت می‌آید؛ همین برای `SwiperWithNavigation`. کلیدهای ← → و swipe در PropertyPhotoViewer، HomeHeroBanner و تقویم اقامت، sliderها (`reverse` فقط در RTL و `direction` از locale)، ورودی‌های فرم (`direction` پیش‌فرض و `text-start`) و toast (گوشهٔ end و `border-s`) جهت‌دار شدند.
-- **آیکن‌ها:** فلش‌های جهت‌دار (back در موبایل، «ادامه»، ماه قبل/بعد، «دیدن همه») با `ltr:rotate-180` برگشتند؛ شمارندهٔ +/− در LTR به ترتیب − ۰ + دیده می‌شود (`ltr:flex-row-reverse`، ترتیب DOM همان RTL). header دسکتاپ در LTR لوگو را اول رندر می‌کند و ترتیب DOM همان چیزی است که دیده می‌شود. pagination با `me-2/ms-2` و hover جهت‌دار با `rtl:/ltr:`.
+- **آیکن‌ها:** فلش‌های جهت‌دار («ادامه»، ماه قبل/بعد، «دیدن همه») با `ltr:rotate-180` برگشتند؛ شمارندهٔ +/− در LTR به ترتیب − ۰ + دیده می‌شود (`ltr:flex-row-reverse`، ترتیب DOM همان RTL). اصلاح ۲۰۲۶-۱۰-۱۱ شرط جابه‌جایی لوگو در header را حذف کرد؛ ترتیب هدر و نوار پایین ثابت RTL است و فلش back هدر در سمت ثابت می‌ماند و با زبان نمی‌چرخد. pagination با `me-2/ms-2` و hover جهت‌دار با `rtl:/ltr:`.
 - **استثنای فیزیکی ثبت‌شده:** `scripts/direction/exceptions.json` با دلیل هر مسیر (carousel arrowها، ServerSidePaginate، Toast، فیلدهای LTR مشاور و TestAccess، فلش‌های PhotoViewer، روبان مایل قیمت). Map، SplashScreen و محتوای CMS (`float-left/right`) خارج از محدودهٔ مهاجرت‌اند. `yarn direction:check` فقط کلاس فیزیکی جدید خارج از این فهرست را رد می‌کند.
 - **مانده:** ViewsChart و برچسب‌های slider (`paddingRight`) هنوز فیزیکی‌اند؛ کنترل‌های Map top-right عمداً ثابت؛ ترتیب Tab در شمارندهٔ LTR با ترتیب بصری یکی نیست.
 

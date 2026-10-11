@@ -108,6 +108,7 @@ const MobileNav = () => {
     <AnimatePresence mode="sync">
       {isVisible ? (
         <motion.div
+          dir="rtl"
           key="mobile-nav"
           exit={{ y: 140, opacity: 0 }}
           animate={{ y: 0, opacity: 1 }}

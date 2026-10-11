@@ -3,6 +3,7 @@
 import { HomeCitySelector } from "@modules/HomeCities";
 import { useTranslations } from "next-intl";
 import { Suspense } from "react";
+import { useDir } from "@hooks/useDir";
 
 import type { HeaderSearchFieldProps } from "@/types/components/modules/site-header";
 
@@ -20,6 +21,7 @@ const HeaderSearchField = ({
   withCitySelector,
 }: HeaderSearchFieldProps) => {
   const t = useTranslations("header");
+  const dir = useDir();
   const field = (
     <Suspense>
       <PopSearchBox
@@ -32,11 +34,12 @@ const HeaderSearchField = ({
     </Suspense>
   );
 
-  if (!withCitySelector) return field;
+  if (!withCitySelector) return <div dir={dir}>{field}</div>;
 
   return (
     <div
-      className={`flex w-full border bg-surface rounded-full items-center gap-2 pe-4 ${containerClass ?? ""}`}
+      dir={dir}
+      className={`flex min-w-0 w-full border bg-surface rounded-full items-center gap-2 pe-4 ${containerClass ?? ""}`}
     >
       {field}
       <div className="w-[1px] h-8 bg-line-strong" />
