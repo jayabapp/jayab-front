@@ -1,13 +1,13 @@
-export type {
-  ContentByKeyDto,
-  ContentDto,
-  HomeLandingDto,
-} from "@/api_services/home/home.interface";
+export type { ContentByKeyDto } from "@/api_services/home/home.interface";
 export type { PropertyListDto } from "@/api_services/property/property.interface";
 import type { PropertyListDto } from "@/api_services/property/property.interface";
+import type { ContentByKeyDto } from "@/api_services/home/home.interface";
+export type { HomeLandingDto } from "@/api_services/home/home.interface";
 import type { HomeLandingDto } from "@/api_services/home/home.interface";
 export type { HomeBannerDto } from "@/types/components/templates/home";
 import type { HomeBannerDto } from "@/types/components/templates/home";
+export type { ContentDto } from "@/api_services/home/home.interface";
+import type { ContentDto } from "@/api_services/home/home.interface";
 import type { DeviceInfo } from "@/helpers/device.detector";
 export type { DeviceInfo } from "@/helpers/device.detector";
 export type { Content } from "@/api_services/property/property.interface";
@@ -84,4 +84,9 @@ export type THomePropertyTypesProps = {
   title: string;
   devices?: DeviceInfo;
   data: HomeLandingDto[];
+};
+
+export type THomeContentSection = {
+  options?: { parentPadding?: string };
+  data: ContentDto | ContentByKeyDto | null;
 };

@@ -1,6 +1,8 @@
 import { ImageDto } from "../auth/auth.interface";
+import type { Locale } from "@/i18n/config";
 
 export interface ContentByKeyDto {
+  content_locale?: Locale;
   id: number;
   title: string;
   slug: string;

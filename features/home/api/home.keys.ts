@@ -1,4 +1,5 @@
 import { canonicalizeQueryKey } from "@lib/query/canonical-key";
+import type { Locale } from "@/i18n/config";
 
 export type ContentListFilters = {
   key: string;
@@ -23,7 +24,8 @@ export const homeKeys = {
 
 export const cmsKeys = {
   all: ["cms"] as const,
-  content: (key: string) => [...cmsKeys.all, "content", key] as const,
+  content: (key: string, locale: Locale = "fa") =>
+    [...cmsKeys.all, "content", key, locale] as const,
   lists: () => [...cmsKeys.all, "list"] as const,
   list: (filters: ContentListFilters) =>
     [...cmsKeys.lists(), canonicalizeQueryKey(filters)] as const,

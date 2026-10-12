@@ -1,11 +1,11 @@
 import { dehydrate, HydrationBoundary } from "@tanstack/react-query";
+import { getLocalizedHomeContent } from "@features/home/server/home-content.server";
 import { getServerPropertyTypes } from "@features/home/server/home.server";
 import { getServerPropertyList } from "@features/home/server/home.server";
 import { LandingsPlacements } from "@/enum/landings.enum";
 import { getServerLandings } from "@features/home/server/home.server";
 import { getServerBanners } from "@features/home/server/home.server";
 import { BannerPosition } from "@/enum/banners.enum";
-import { getCmsContent } from "@/api_services/home/cms-content.server";
 import { homeKeys } from "@features/home/api/home.keys";
 
 import deviceTypeDetector from "@/helpers/device.detector";
@@ -22,8 +22,22 @@ const HOME_BANNER_POSITIONS = [
   BannerPosition.MAIN_3,
 ];
 
-export const generateMetadata = async (): Promise<Metadata> =>
-  MehaHeaderHelper(await getCmsContent("homeContent"));
+export const generateMetadata = async (): Promise<Metadata> => {
+  const { content, fallback, locale } = await getLocalizedHomeContent();
+  const metadata = await MehaHeaderHelper(
+    content ?? {
+      ...fallback,
+      title: fallback.small_text,
+    },
+  );
+  return {
+    ...metadata,
+    openGraph: {
+      ...metadata.openGraph,
+      locale: { fa: "fa_IR", ar: "ar", en: "en_US" }[locale],
+    },
+  };
+};
 
 const HomePage = async () => {
   const [
@@ -31,14 +45,14 @@ const HomePage = async () => {
     { data: landings },
     { data: propertyData },
     { data: propertyTypes },
-    homeContent,
+    { content: homeContent },
     devices,
   ] = await Promise.all([
     getServerBanners(HOME_BANNER_POSITIONS),
     getServerLandings(LandingsPlacements.HOME),
     getServerPropertyList(1, 12),
     getServerPropertyTypes(),
-    getCmsContent("homeContent"),
+    getLocalizedHomeContent(),
     deviceTypeDetector(),
   ]);
 

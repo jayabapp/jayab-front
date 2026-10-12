@@ -7,6 +7,7 @@ import { BannerPosition } from "@/enum/banners.enum";
 import { apiRoutes } from "@/utils/urls";
 import { apiCall } from "../common/apicall.helper";
 import { Meta } from "../chat/chat.interface";
+import type { Locale } from "@/i18n/config";
 
 export class HomeService {
   static BANNERS_RANDOM_CACHEKEY = "BANNERS_RANDOM";
@@ -111,12 +112,15 @@ export class HomeService {
     }
   }
 
-  static async GetContentByKey(dto: { key: string }, signal?: AbortSignal) {
+  static async GetContentByKey(
+    dto: { key: string; locale?: Locale },
+    signal?: AbortSignal,
+  ) {
     try {
       const result = await apiCall<unknown, ContentByKeyDto>(
         "GET",
         apiRoutes.CONTENT_BY_KEY(dto?.key),
-        undefined,
+        dto.locale ? { locale: dto.locale } : undefined,
         { signal },
       );
       return result;

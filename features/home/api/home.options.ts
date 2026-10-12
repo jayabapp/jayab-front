@@ -8,6 +8,7 @@ import { type ContentListFilters } from "./home.keys";
 
 import type { LandingsPlacements } from "@/enum/landings.enum";
 import type { BannerPosition } from "@/enum/banners.enum";
+import type { Locale } from "@/i18n/config";
 
 export const homeBannersOptions = (positions: BannerPosition[]) =>
   queryOptions({
@@ -23,10 +24,10 @@ export const homeLandingsOptions = (placement?: LandingsPlacements) =>
     staleTime: STALE_TIME.MEDIUM,
   });
 
-export const cmsContentOptions = (key: string) =>
+export const cmsContentOptions = (key: string, locale: Locale = "fa") =>
   queryOptions({
-    queryKey: cmsKeys.content(key),
-    queryFn: ({ signal }) => HomeService.GetContentByKey({ key }, signal),
+    queryKey: cmsKeys.content(key, locale),
+    queryFn: ({ signal }) => HomeService.GetContentByKey({ key, locale }, signal),
     staleTime: STALE_TIME.LONG,
     gcTime: GC_TIME.LONG,
   });

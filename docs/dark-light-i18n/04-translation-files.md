@@ -20,6 +20,18 @@
 
 ## قرارداد پیام
 
+### تکمیل محتوای سه‌زبانهٔ صفحهٔ اصلی
+
+در ادامهٔ فاز UI، `homeContent` نیز به CMS سه‌زبانه متصل شد. فارسی در ستون‌های اصلی حفظ می‌شود؛ `Content.translations` نسخه‌های مستقل `ar` و `en` را با `title`، `small_text`، `full_text`، `html` و `seo.{metaTitle,metaDescription}` نگه می‌دارد. canonical و تنظیمات sitemap در رکورد اصلی مشترک‌اند. پنل در ایجاد/ویرایش رکورد با کلید `homeContent` بخش‌های عربی و انگلیسی دارد؛ ذخیرهٔ فوری تغییرات ویرایشگر از جاافتادن آخرین تغییر متن هنگام ذخیره جلوگیری می‌کند. ارسال‌نکردن `translations` از پنل قدیمی ترجمه‌ها را حذف نمی‌کند؛ ارسال `{}` حذف صریح آن‌هاست.
+
+قرارداد خواندن: `GET /contents/by-key/homeContent?locale=fa|ar|en`؛ زبان نامعتبر ۴۲۲، نبود پارامتر = فارسی. پاسخ `content_locale` را گزارش می‌کند و نسخه‌های دیگر را serialize نمی‌کند. ترجمه باید یک نسخهٔ کامل باشد تا متن/سئوی فارسی با آن ترکیب نشود. CacheInterceptor بک بر اساس URL شامل query، fetch سرور با locale در URL، React cache با آرگومان locale، و query key کلاینت با locale جدا می‌شوند. تغییر زبان همان reload قرارداد فعلی را دارد. HTML ترجمه نیز از مسیر `HTMLGenerator` و sanitizer موجود عبور می‌کند.
+
+صفحه و metadata از یک resolver مشترک استفاده می‌کنند؛ عنوان، توضیحات و Open Graph صفحهٔ اصلی با زبان هماهنگ‌اند. اگر API قدیمی باشد یا نسخهٔ زبان موجود نباشد، شعار و عنوان از پیام‌های سه‌زبانه می‌آیند و مقالهٔ فارسی زیر عنوان انگلیسی/عربی نمایش داده نمی‌شود. این fallback جای ترجمهٔ CMS را نمی‌گیرد. سایر محتوای backend و JSON-LD همچنان خارج از این تغییرند.
+
+ترتیب انتشار: ابتدا migration بک `20261011090000_add_content_translations` با `prisma migrate deploy` و سپس build/restart بک؛ بعد پنل و فرانت. migration فقط ستون JSONB را اضافه و ترجمهٔ اولیهٔ متن فعلی صفحهٔ اصلی را برای همان کلید درج می‌کند؛ فیلدهای فارسی، دیگر محتوا و تنظیمات SEO را تغییر نمی‌دهد. migration روی دیتابیس این نشست اجرا نشده است. کش CMS فرانت ۶۰۰ ثانیه و کش پاسخ بک ۱۸۰ ثانیه است؛ ویرایش محتوا ممکن است تا پایان این بازه‌ها دیده نشود. revalidation عمومی فعلی نیازمند مجوز ادمین است.
+
+تست‌ها: serializer و نسخه‌های اولیهٔ migration، validation تو‌در‌توی DTO، حفظ ترجمه در ویرایش پنل قدیمی، GET زبان و جداسازی واقعی cache با Nest/Supertest؛ fallback فرانت در `features/home/mappers/home-content.mapper.test.ts`.
+
 namespaceها: common، header، theme، language، auth، listing، search، profile، chat، reserve، owner، errors، validation. کلید بر اساس مفهوم باشد: ورود حساب و ساعت ورود یک کلید ندارند. fa منبع key schema است؛ هر سه زبان leaf key برابر، مقدار non-empty و نام/type آرگومان ICU یکسان دارند.
 
 - از ICU parser استفاده شود؛ regex برای parse nesting و plural کافی نیست.
