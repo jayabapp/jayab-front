@@ -1,17 +1,19 @@
+import type { PropertyTranslations } from "@/api_services/property/property.interface";
 import type { PropInitDto } from "@/api_services/property/property.interface";
 
 export type PropertyDraftStep =
-  | "assistants"
+  | "media"
+  | "price"
+  | "terms"
   | "bedroom"
-  | "environment"
   | "facility"
   | "initials"
   | "location"
-  | "media"
-  | "price"
-  | "terms";
+  | "assistants"
+  | "environment";
 
 export type PropertyInitialsValues = {
+  translations: PropertyTranslations;
   can_chat: boolean | null;
   city: string | number | null;
   floor: string | number | null;

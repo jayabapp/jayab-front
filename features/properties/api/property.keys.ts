@@ -1,4 +1,5 @@
 import type { PropertyFilters } from "@features/properties/lib/normalize-property-filters";
+import type { Locale } from "@/i18n/config";
 
 export const propertyKeys = {
   all: ["properties"] as const,
@@ -8,8 +9,10 @@ export const propertyKeys = {
   count: (filters: PropertyFilters) =>
     [...propertyKeys.all, "count", filters] as const,
   details: () => [...propertyKeys.all, "detail"] as const,
-  detail: (slug: string) => [...propertyKeys.details(), { slug }] as const,
-  similar: (id: number | string) => [...propertyKeys.all, "similar", { id: String(id) }] as const,
+  detail: (slug: string, locale: Locale = "fa") =>
+    [...propertyKeys.details(), { slug }, locale] as const,
+  similar: (id: number | string, locale: Locale = "fa") =>
+    [...propertyKeys.all, "similar", { id: String(id) }, locale] as const,
   calendar: (id: number | string, range: string) =>
     [...propertyKeys.all, "calendar", { id: String(id), range }] as const,
   reservedDates: (id: number | string) =>

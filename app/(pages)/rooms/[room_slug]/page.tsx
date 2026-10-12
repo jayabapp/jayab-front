@@ -1,8 +1,10 @@
 import { dehydrate, HydrationBoundary } from "@tanstack/react-query";
 import { getServerPropertyDetail } from "@features/properties/server/property.server";
 import { propertyDetailOptions } from "@features/properties/api/property.options";
+import { resolveLocale } from "@/i18n/config";
 import { ProductSchema } from "@features/seo/components/Schemas";
 import { PlaceSchema } from "@features/seo/components/Schemas";
+import { getLocale } from "next-intl/server";
 import { redirect } from "next/navigation";
 
 import PropertyDetailsTemplate from "@templates/PropertyDetails";
@@ -23,6 +25,7 @@ export const generateMetadata = async ({
 };
 
 const PropertyDetailsPage = async ({ params }: PropertyDetailsRouteProps) => {
+  const locale = resolveLocale(await getLocale());
   const { room_slug } = await params;
   const [{ data: property }, devices] = await Promise.all([
     getServerPropertyDetail(room_slug),
@@ -32,7 +35,10 @@ const PropertyDetailsPage = async ({ params }: PropertyDetailsRouteProps) => {
   if (property?.slug && decodeURI(property.slug) !== decodeURI(room_slug))
     redirect(`/rooms/${encodeURI(property.slug)}`);
   const queryClient = getQueryClient();
-  queryClient.setQueryData(propertyDetailOptions(room_slug).queryKey, property);
+  queryClient.setQueryData(
+    propertyDetailOptions(room_slug, locale).queryKey,
+    property,
+  );
 
   return (
     <IntlNamespaces namespaces={["content", "reserve"]}>

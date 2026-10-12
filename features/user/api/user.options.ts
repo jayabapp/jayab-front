@@ -1,9 +1,11 @@
-import type { UserSubscriptionFilters } from "@/types/features/user";
 import { infiniteQueryOptions, queryOptions } from "@tanstack/react-query";
-import { AdvisorService } from "@/api_services/advisor/advisor.propery";
 import { PropertyService } from "@/api_services/property/property.service";
+import { AdvisorService } from "@/api_services/advisor/advisor.propery";
 import { UserService } from "@/api_services/user/user.service";
 import { userKeys } from "@features/user/api/user.keys";
+
+import type { UserSubscriptionFilters } from "@/types/features/user";
+import type { Locale } from "@/i18n/config";
 
 const DEFAULT_PAGE_SIZE = 20;
 
@@ -31,10 +33,10 @@ export const userSubscriptionsOptions = (filters: UserSubscriptionFilters) => {
   });
 };
 
-export const userBookmarksOptions = () =>
+export const userBookmarksOptions = (locale: Locale = "fa") =>
   queryOptions({
-    queryKey: userKeys.bookmarks(),
-    queryFn: ({ signal }) => PropertyService.getBookMarks(signal),
+    queryKey: userKeys.bookmarks(locale),
+    queryFn: ({ signal }) => PropertyService.getBookMarks(signal, locale),
     staleTime: 30_000,
   });
 

@@ -13,9 +13,10 @@ const ListingHeader = ({ breadcrumbs, property }: ListingHeaderProps) => {
   const t = useTranslations("listing");
   const sep = useListSeparator();
 
-  const place = [property?.city, property?.region || property?.province]
-    .filter(Boolean)
-    .join(sep);
+  const secondaryPlace = property?.region || property?.province;
+  const secondaryLocale = property?.region
+    ? property?.textLocales?.region
+    : property?.textLocales?.province;
 
   return (
     <header className="enter-from-right order-3 flex flex-col gap-3 pb-4 pt-2 md:order-2 md:pb-6">
@@ -37,14 +38,24 @@ const ListingHeader = ({ breadcrumbs, property }: ListingHeaderProps) => {
             ) : (
               <></>
             )}
-            <h1 className="text-balance text-xl font-bold leading-8 text-ink md:text-2xl md:leading-9">
+            <h1
+              lang={property?.textLocales?.title ?? "fa"}
+              dir="auto"
+              className="text-balance text-xl font-bold leading-8 text-ink md:text-2xl md:leading-9"
+            >
               {property?.title}
             </h1>
           </div>
 
           <span className="flex items-center gap-1 text-sm text-ink-subtle">
             <Icon name="map-pin" size={16} />
-            {place}
+            <span>
+              <bdi lang={property?.textLocales?.city ?? "fa"}>
+                {property?.city}
+              </bdi>
+              {property?.city && secondaryPlace ? sep : ""}
+              <bdi lang={secondaryLocale ?? "fa"}>{secondaryPlace}</bdi>
+            </span>
           </span>
         </div>
 

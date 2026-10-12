@@ -56,7 +56,11 @@ const PublicPropertyCard = ({ data, goToLink }: PublicPropertyCardProps) => {
               />
             ) : null}
 
-            <p className="line-clamp-2 min-h-[2.75rem] text-start text-sm font-bold leading-7 text-ink">
+            <p
+              lang={data.text_locales?.title ?? "fa"}
+              dir="auto"
+              className="line-clamp-2 min-h-[2.75rem] text-start text-sm font-bold leading-7 text-ink"
+            >
               {data.title}
             </p>
           </div>
@@ -76,9 +80,17 @@ const PublicPropertyCard = ({ data, goToLink }: PublicPropertyCardProps) => {
             ) : null}
 
             <p className="line-clamp-1 text-start text-ink-muted">
-              {data.city}
-              {sep}
-              {data.region || data.province || ""}
+              <bdi lang={data.text_locales?.city ?? "fa"}>{data.city}</bdi>
+              {data.city && (data.region || data.province) ? sep : ""}
+              <bdi
+                lang={
+                  (data.region
+                    ? data.text_locales?.region
+                    : data.text_locales?.province) ?? "fa"
+                }
+              >
+                {data.region || data.province || ""}
+              </bdi>
             </p>
           </div>
 

@@ -50,7 +50,7 @@ const PropertiesPage = async ({ searchParams }: RoomsPageProps) => {
 
   if (!cookieStore.get("isLogin")?.value) {
     const page = await getServerPropertyPage(filters);
-    seedPropertyList(queryClient, filters, page?.data);
+    await seedPropertyList(queryClient, filters, page?.data);
   }
 
   return (

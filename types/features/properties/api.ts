@@ -1,10 +1,10 @@
-export type {
-  PropertyListDto,
-  RelatedLandings,
-  SingleLandingDto,
-} from "@/api_services/property/property.interface";
-
-import type { PageMetaDto, PropertyListDto } from "@/api_services/property/property.interface";
+import type { PropertyTextLocales } from "@/api_services/property/property.interface";
+export type { SingleLandingDto } from "@/api_services/property/property.interface";
+export type { PropertyListDto } from "@/api_services/property/property.interface";
+export type { RelatedLandings } from "@/api_services/property/property.interface";
+import type { PropertyListDto } from "@/api_services/property/property.interface";
+import type { PageMetaDto } from "@/api_services/property/property.interface";
+import type { ImageDto } from "@/api_services/auth/auth.interface";
 
 export type PropertyDiscoveryFilters = Record<string, any>;
 
@@ -13,51 +13,44 @@ export type PropertyListPage = {
   meta: PageMetaDto;
 };
 
-import type { ImageDto } from "@/api_services/auth/auth.interface";
-
 export type PropertyPriceView = {
-  discountPercentage?: number;
-  discountedPrice?: number;
   price?: number;
+  discountedPrice?: number;
+  discountPercentage?: number;
 };
 
-/**
- * The trimmed, serializable slice of a listing that the interactive detail
- * islands need. The full DTO stays on the server, where the spec accordions read
- * it directly, so the nested option/description/pricing trees never cross the
- * client boundary.
- */
 export type PropertyDetailsView = {
-  advisorCommission?: number;
-  buildingArea: number;
-  city: string;
-  cleaningFee: number;
-  code: string;
-  extraGuestFee: number;
-  favoriteCount: number;
-  featureImage?: ImageDto | null;
-  hasBlueTick: boolean;
-  hasActiveSubscription: boolean;
-  hasPool: boolean;
   id: number;
-  images: ImageDto[];
-  isAuthorized: boolean;
-  isChatEnabled: boolean;
-  isPromoted: boolean;
-  isPetAllowed: boolean;
-  isEventsAllowed: boolean;
-  maxCapacity: number;
-  ownerAvatar?: ImageDto | null;
-  ownerName: string;
-  ownerSince?: string | Date | null;
-  seoLinks?: { villa?: string | null; pool?: string | null };
-  province: string;
-  region: string;
-  remainingDays: number;
+  city: string;
+  code: string;
   slug: string;
-  stdCapacity: number;
   title: string;
-  todayPrice: PropertyPriceView;
-  minimumPrice: number | null;
+  region: string;
+  hasPool: boolean;
+  province: string;
+  ownerName: string;
+  images: ImageDto[];
+  maxCapacity: number;
+  cleaningFee: number;
+  isPromoted: boolean;
+  stdCapacity: number;
+  hasBlueTick: boolean;
+  buildingArea: number;
+  extraGuestFee: number;
+  isPetAllowed: boolean;
+  isAuthorized: boolean;
+  remainingDays: number;
   totalBedrooms: number;
+  favoriteCount: number;
+  isChatEnabled: boolean;
+  isEventsAllowed: boolean;
+  advisorCommission?: number;
+  minimumPrice: number | null;
+  ownerAvatar?: ImageDto | null;
+  todayPrice: PropertyPriceView;
+  featureImage?: ImageDto | null;
+  hasActiveSubscription: boolean;
+  ownerSince?: string | Date | null;
+  textLocales?: PropertyTextLocales;
+  seoLinks?: { villa?: string | null; pool?: string | null };
 };

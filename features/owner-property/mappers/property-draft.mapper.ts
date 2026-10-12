@@ -20,6 +20,7 @@ const optionsOf = (draft: PropInitDto, group: string) =>
     ?.map((option) => option?.option_id) || [];
 
 export const emptyInitialsValues = (): PropertyInitialsValues => ({
+  translations: {},
   address: "",
   building_area: "",
   can_chat: false,
@@ -41,6 +42,7 @@ export const emptyInitialsValues = (): PropertyInitialsValues => ({
 export const toInitialsValues = (
   draft: PropInitDto,
 ): PropertyInitialsValues => ({
+  translations: draft?.translations ?? {},
   address: draft?.address,
   building_area: draft?.building_area || null,
   can_chat: draft?.is_chat_enabled,

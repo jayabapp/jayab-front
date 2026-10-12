@@ -52,7 +52,7 @@ const LandingPage = async ({ params, searchParams }: LandingPageProps) => {
 
   const queryClient = getQueryClient();
   const page = await getServerPropertyPage(filters);
-  seedPropertyList(queryClient, filters, page?.data);
+  await seedPropertyList(queryClient, filters, page?.data);
 
   return (
     <IntlNamespaces namespaces={["content"]}>

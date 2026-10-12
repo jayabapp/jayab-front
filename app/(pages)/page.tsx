@@ -6,6 +6,8 @@ import { LandingsPlacements } from "@/enum/landings.enum";
 import { getServerLandings } from "@features/home/server/home.server";
 import { getServerBanners } from "@features/home/server/home.server";
 import { BannerPosition } from "@/enum/banners.enum";
+import { resolveLocale } from "@/i18n/config";
+import { getLocale } from "next-intl/server";
 import { homeKeys } from "@features/home/api/home.keys";
 
 import deviceTypeDetector from "@/helpers/device.detector";
@@ -40,6 +42,7 @@ export const generateMetadata = async (): Promise<Metadata> => {
 };
 
 const HomePage = async () => {
+  const locale = resolveLocale(await getLocale());
   const [
     { data: banners },
     { data: landings },
@@ -49,16 +52,16 @@ const HomePage = async () => {
     devices,
   ] = await Promise.all([
     getServerBanners(HOME_BANNER_POSITIONS),
-    getServerLandings(LandingsPlacements.HOME),
+    getServerLandings(LandingsPlacements.HOME, locale),
     getServerPropertyList(1, 12),
-    getServerPropertyTypes(),
+    getServerPropertyTypes(locale),
     getLocalizedHomeContent(),
     deviceTypeDetector(),
   ]);
 
   const queryClient = getQueryClient();
   queryClient.setQueryData(
-    homeKeys.landings(LandingsPlacements.HOME),
+    homeKeys.landings(LandingsPlacements.HOME, locale),
     landings,
   );
 

@@ -151,7 +151,9 @@
     "maxImagesAllowed": "يمكنك اختيار {count} صورة كحد أقصى.",
     "brandName": "جاياب",
     "productCount": "عدد المنتجات {count}",
-    "separator": "، "
+    "separator": "، ",
+    "termsOriginalLanguageNotice": "????? ?????? ??? ????? ???????? ??? ????? ???? ????? ???? ?????? ?????????.",
+    "termsDescription": "???? ?????? ??????? ???????? ????? ?????."
   },
   "header": {
     "advisors": "المستشارون",
@@ -582,6 +584,14 @@
     "cityListHint": "قائمة جميع المدن والمحافظات"
   },
   "owner": {
+    "propertyTranslationsTitle": "ترجمة عنوان الإقامة والعنوان التفصيلي",
+    "propertyTranslationsHint": "العنوانان الأصليان بالفارسية. ترجمة كل حقل اختيارية؛ إفراغه وحفظه يحذف ترجمته. عند غياب الترجمة يظهر النص الفارسي. لا يُعرض العنوان التفصيلي المترجم إلا عند تفعيل إظهار الموقع.",
+    "arPropertyTitle": "عنوان الإقامة بالعربية",
+    "enPropertyTitle": "عنوان الإقامة بالإنجليزية",
+    "arPropertyAddress": "العنوان التفصيلي بالعربية",
+    "enPropertyAddress": "العنوان التفصيلي بالإنجليزية",
+    "originalPropertyTitle": "عنوان الإقامة الأصلي (بالفارسية)",
+    "originalPropertyAddress": "العنوان التفصيلي الأصلي (بالفارسية)",
     "occupied": "محجوز",
     "description": "الوصف",
     "understood": "فهمت",

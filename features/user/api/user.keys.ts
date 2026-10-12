@@ -1,3 +1,5 @@
+import type { Locale } from "@/i18n/config";
+
 export const userKeys = {
   all: ["user"] as const,
   profile: () => [...userKeys.all, "profile"] as const,
@@ -5,5 +7,8 @@ export const userKeys = {
   subscriptions: () => [...userKeys.all, "subscriptions"] as const,
   subscriptionList: (filters: { from?: string; to?: string }) =>
     [...userKeys.subscriptions(), filters] as const,
-  bookmarks: () => [...userKeys.all, "bookmarks"] as const,
+  bookmarks: (locale?: Locale) =>
+    locale
+      ? ([...userKeys.all, "bookmarks", locale] as const)
+      : ([...userKeys.all, "bookmarks"] as const),
 };

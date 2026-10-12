@@ -1,7 +1,8 @@
 "use client";
 
-import { useTranslations } from "next-intl";
+import { useLocale, useTranslations } from "next-intl";
 import { useRouter } from "next/navigation";
+import { dirOf } from "@/i18n/config";
 
 import type { AuthHeaderProps } from "@/types/components/layouts/main-layout";
 
@@ -12,11 +13,15 @@ const AuthHeader = ({
   disableBack,
 }: AuthHeaderProps) => {
   const t = useTranslations("common");
+  const locale = useLocale();
 
   const router = useRouter();
 
   return (
-    <div className="glass-header fixed end-0 top-0 z-10 flex h-16 w-full items-center justify-between px-5 py-4 transition-all">
+    <div
+      dir="rtl"
+      className="glass-header fixed end-0 top-0 z-10 flex h-16 w-full items-center justify-between px-5 py-4 transition-all"
+    >
       {disableBack ? (
         <span aria-hidden className="w-10 opacity-0" />
       ) : (
@@ -45,7 +50,9 @@ const AuthHeader = ({
         </button>
       )}
 
-      <p className="text-base font-bold text-ink">{title}</p>
+      <p dir={dirOf(locale)} className="text-base font-bold text-ink">
+        {title}
+      </p>
       <span aria-hidden className="w-10 opacity-0" />
     </div>
   );

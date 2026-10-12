@@ -3,6 +3,7 @@ import { apiRoutes } from "@/utils/urls";
 import { ImageDto } from "../auth/auth.interface";
 import { apiCall } from "../common/apicall.helper";
 import { p2e } from "@/helpers/NumberConverter";
+import type { Locale } from "@/i18n/config";
 import {
   PageMetaDto,
   PropInitDto,
@@ -575,6 +576,7 @@ export class PropertyService {
         province_id: dto.province_id,
         region_id: dto.region_id,
         title: dto.title,
+        translations: dto.translations,
         unit_per_floor: dto.unit_per_floor,
       });
       return result;
@@ -809,14 +811,14 @@ export class PropertyService {
   }
 
   static async GetSinglePropertyWithSlug(
-    dto: { Property_slug: string },
+    dto: { Property_slug: string; locale?: Locale },
     signal?: AbortSignal,
   ) {
     try {
       const result = await apiCall<unknown, SinglePropDto>(
         "GET",
         apiRoutes.GET_SINGLEPROPERTY_SlUG(dto.Property_slug),
-        undefined,
+        { locale: dto.locale },
         { signal },
       );
       return result;
@@ -828,11 +830,12 @@ export class PropertyService {
   static async GetSimilarProperties(
     propertyId: string | number,
     signal?: AbortSignal,
+    locale: Locale = "fa",
   ) {
     return apiCall<unknown, PropertyListDto[]>(
       "GET",
       apiRoutes.SIMILAR_PROPERTIES(propertyId),
-      undefined,
+      { locale },
       { signal, showErrorNotification: false },
     );
   }
@@ -867,12 +870,12 @@ export class PropertyService {
     }
   }
 
-  static async getBookMarks(signal?: AbortSignal) {
+  static async getBookMarks(signal?: AbortSignal, locale: Locale = "fa") {
     try {
       const result = await apiCall<unknown, PropertyListDto[]>(
         "GET",
         apiRoutes.BOOKMARKS,
-        undefined,
+        { locale },
         { signal },
       );
       return result;

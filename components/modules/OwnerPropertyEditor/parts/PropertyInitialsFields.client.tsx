@@ -3,7 +3,6 @@
 import { SingleSelectPopUpSelect as SinglePopUpSelect } from "@elements/Form";
 import { usePropertyLocationOptions } from "@features/owner-property/hooks/usePropertyLocationOptions";
 import { FormInputWithExternalUnit } from "@elements/Form";
-import { titlePlaceholderExamples } from "@/utils/constantss";
 import { useOwnerPropertyOptions } from "@features/owner-property/hooks/useOwnerPropertyOptions";
 import { MultiLineFormInput } from "@elements/Form";
 import { useTranslations } from "next-intl";
@@ -14,8 +13,8 @@ import { Checkbox } from "@elements/Form";
 import type { PropertyInitialsFieldsProps } from "@/types/components/modules/owner-property";
 
 import FieldCharacterCounter from "./FieldCharacterCounter";
+import PropertyTranslationsFields from "./PropertyTranslationsFields.client";
 import isEmpty from "lodash/isEmpty";
-import sample from "lodash/sample";
 
 const TITLE_MAX_LENGTH = 55;
 const DESCRIPTION_MAX_LENGTH = 1024;
@@ -68,8 +67,8 @@ const PropertyInitialsFields = ({
           ),
           isMandatory: true,
           maxLength: TITLE_MAX_LENGTH,
-          placeholder: `${t("owner.forExample")}: ${sample(titlePlaceholderExamples(t))}`,
-          title: t("owner.addTitle"),
+          direction: "rtl",
+          title: t("owner.originalPropertyTitle"),
         }}
       />
 
@@ -223,10 +222,18 @@ const PropertyInitialsFields = ({
           ),
           isMandatory: true,
           rows: 3,
-          title: t("owner.exactAddress"),
+          direction: "rtl",
+          title: t("owner.originalPropertyAddress"),
         }}
       />
 
+      <PropertyTranslationsFields
+        value={values.translations}
+        onChange={(translations) => onChange(translations, "translations")}
+        isTitleLocked={
+          TITLE_LOCKED_STATUSES.includes(Number(status)) && !isAdminSso
+        }
+      />
       <div className="flex flex-col gap-5 col-span-full">
         <Checkbox
           containerClass="w-full"

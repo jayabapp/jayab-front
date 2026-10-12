@@ -68,12 +68,12 @@ export class HomeService {
   }
 
   static async getLandings(
-    dto?: { placement?: LandingsPlacements },
+    dto?: { placement?: LandingsPlacements; locale?: Locale },
     signal?: AbortSignal,
   ) {
     try {
       const result = await apiCall<
-        { placement?: LandingsPlacements },
+        { placement?: LandingsPlacements; locale?: Locale },
         MostVisitedPlaces
       >("GET", apiRoutes.USER_LANDING_PAGES, dto, { signal });
       return result;

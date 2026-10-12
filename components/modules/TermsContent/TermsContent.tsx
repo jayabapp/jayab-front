@@ -1,5 +1,6 @@
 import { sanitizeCmsHtml } from "@/helpers/html.generator";
-import { useTranslations } from "next-intl";
+import { useLocale, useTranslations } from "next-intl";
+import { dirOf } from "@/i18n/config";
 
 import type { TermsContentProps } from "@/types/components/modules/content-pages";
 
@@ -7,6 +8,8 @@ import Breadcrumbs from "@elements/Breadcrumbs/Breadcrumbs.client";
 
 const TermsContent = ({ content: aboutUsWebsite }: TermsContentProps) => {
   const t = useTranslations("common");
+  const locale = useLocale();
+  const contentLocale = aboutUsWebsite?.content_locale ?? "fa";
 
   return (
     <div className="container  !overflow-visible">
@@ -21,14 +24,23 @@ const TermsContent = ({ content: aboutUsWebsite }: TermsContentProps) => {
               {t("error")}
             </p>
           ) : (
-            <div
-              className=" font-light !text-base text-start  content mt-2 leading-8"
-              dangerouslySetInnerHTML={{
-                __html: sanitizeCmsHtml(
-                  aboutUsWebsite?.html || aboutUsWebsite?.full_text || "",
-                ),
-              }}
-            />
+            <>
+              {contentLocale !== locale && (
+                <p role="status" className="text-sm text-ink-muted">
+                  {t("termsOriginalLanguageNotice")}
+                </p>
+              )}
+              <div
+                lang={contentLocale}
+                dir={dirOf(contentLocale)}
+                className=" font-light !text-base text-start  content mt-2 leading-8"
+                dangerouslySetInnerHTML={{
+                  __html: sanitizeCmsHtml(
+                    aboutUsWebsite?.html || aboutUsWebsite?.full_text || "",
+                  ),
+                }}
+              />
+            </>
           )}
         </div>
       </div>

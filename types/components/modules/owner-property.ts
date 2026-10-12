@@ -9,6 +9,7 @@ import type {
   PropertyInitialsValues,
   PropertySubsDto,
   PropertyTermsSendDto,
+  PropertyTranslations,
   RoomInfosDto,
   SingleOwnerPropertyDto,
 } from "@/types/features/owner-property";
@@ -113,7 +114,10 @@ export type OwnerPropertyStepFrameProps = {
 export type PropertyInitialsFieldsProps = {
   status?: number;
   values: PropertyInitialsValues;
-  onChange: (value: boolean | number | string | null, key: string) => void;
+  onChange: (
+    value: boolean | number | string | null | PropertyTranslations,
+    key: string,
+  ) => void;
 };
 
 export type PropertyEnvironmentFieldsProps = {

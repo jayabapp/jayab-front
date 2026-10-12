@@ -7,6 +7,7 @@ const isRuleAllowed = (value?: string | number | null) =>
 export const toPropertyDetailsView = (
   property: SinglePropDto,
 ): PropertyDetailsView => ({
+  textLocales: property?.text_locales,
   advisorCommission: property?.advisor_commission,
   buildingArea: property?.building_area,
   city: property?.city,

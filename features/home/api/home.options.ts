@@ -17,17 +17,22 @@ export const homeBannersOptions = (positions: BannerPosition[]) =>
     staleTime: STALE_TIME.SHORT,
   });
 
-export const homeLandingsOptions = (placement?: LandingsPlacements) =>
+export const homeLandingsOptions = (
+  placement?: LandingsPlacements,
+  locale: Locale = "fa",
+) =>
   queryOptions({
-    queryKey: homeKeys.landings(placement),
-    queryFn: ({ signal }) => HomeService.getLandings({ placement }, signal),
+    queryKey: homeKeys.landings(placement, locale),
+    queryFn: ({ signal }) =>
+      HomeService.getLandings({ placement, locale }, signal),
     staleTime: STALE_TIME.MEDIUM,
   });
 
 export const cmsContentOptions = (key: string, locale: Locale = "fa") =>
   queryOptions({
     queryKey: cmsKeys.content(key, locale),
-    queryFn: ({ signal }) => HomeService.GetContentByKey({ key, locale }, signal),
+    queryFn: ({ signal }) =>
+      HomeService.GetContentByKey({ key, locale }, signal),
     staleTime: STALE_TIME.LONG,
     gcTime: GC_TIME.LONG,
   });

@@ -18,8 +18,8 @@ export const homeKeys = {
   all: ["home"] as const,
   banners: (positions: string[]) =>
     [...homeKeys.all, "banners", [...positions].sort()] as const,
-  landings: (placement?: string) =>
-    [...homeKeys.all, "landings", placement ?? "all"] as const,
+  landings: (placement?: string, locale: Locale = "fa") =>
+    [...homeKeys.all, "landings", placement ?? "all", locale] as const,
 };
 
 export const cmsKeys = {

@@ -71,6 +71,7 @@ export interface Category {
 }
 
 export interface HomeLandingDto {
+  title_locale?: Locale;
   url: string;
   title: string;
   image: ImageDto | null;

@@ -151,7 +151,9 @@
     "maxImagesAllowed": "You can select up to {count} photos.",
     "brandName": "Jayab",
     "productCount": "Number of products {count}",
-    "separator": ", "
+    "separator": ", ",
+    "termsOriginalLanguageNotice": "The terms are not yet available in your selected language. The original Persian text is shown.",
+    "termsDescription": "Terms and conditions for registering and using Jayab services."
   },
   "header": {
     "advisors": "Advisors",
@@ -582,6 +584,14 @@
     "cityListHint": "All cities and provinces"
   },
   "owner": {
+    "propertyTranslationsTitle": "Property title and address translations",
+    "propertyTranslationsHint": "The original title and address are in Persian. Each translation is optional; clear a field and save to remove its translation. Missing translations fall back to Persian. A translated street address is only shown when location visibility is enabled.",
+    "arPropertyTitle": "Property title in Arabic",
+    "enPropertyTitle": "Property title in English",
+    "arPropertyAddress": "Street address in Arabic",
+    "enPropertyAddress": "Street address in English",
+    "originalPropertyTitle": "Original property title (Persian)",
+    "originalPropertyAddress": "Original street address (Persian)",
     "occupied": "Reserved",
     "description": "Description",
     "understood": "Got it",

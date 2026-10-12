@@ -28,7 +28,9 @@ const AuthPageComponent = () => {
     setVisibleTermsModal,
   } = useAuthForm();
 
-  const { content: terms, isLoading: termsLoading } = useCmsContent("terms");
+  const { content: terms, isLoading: termsLoading } = useCmsContent("terms", {
+    enabled: visibleTermsModal,
+  });
   const isOtpStep = step === "otp";
 
   const [rotatingBack, setRotatingBack] = useState(false);
@@ -58,7 +60,8 @@ const AuthPageComponent = () => {
             inert={isOtpStep}
             className="flip-face glass-panel px-6 pb-8 pt-10 md:px-9"
           >
-            <div className="flex justify-end">
+            {/* Keep the brand at the physical left in every language. */}
+            <div dir="rtl" className="flex justify-end">
               <HeaderBrand asLink alwaysShowTitle />
             </div>
 
@@ -156,7 +159,7 @@ const AuthPageComponent = () => {
         termsLoading={termsLoading}
         visibleTermsModal={visibleTermsModal}
         setvisibleTermsModal={setVisibleTermsModal}
-        termsContent={terms ? terms : { full_text: "", html: "" }}
+        termsContent={terms ?? null}
       />
     </div>
   );

@@ -151,7 +151,9 @@
     "maxImagesAllowed": "حداکثر {count} تصویر می‌توانید انتخاب کنید.",
     "brandName": "جایاب",
     "productCount": "تعداد کالا ها {count}",
-    "separator": "، "
+    "separator": "، ",
+    "termsOriginalLanguageNotice": "?????? ?????? ???? ???? ?????????? ???? ????? ????? ??? ???? ????? ????? ???? ??????.",
+    "termsDescription": "?????? ? ?????? ??????? ? ??????? ?? ????? ?????."
   },
   "header": {
     "advisors": "مشاوران",
@@ -582,6 +584,14 @@
     "cityListHint": "لیست تمامی شهرها و استان ها"
   },
   "owner": {
+    "propertyTranslationsTitle": "ترجمه عنوان و آدرس اقامتگاه",
+    "propertyTranslationsHint": "عنوان و آدرس اصلی فارسی هستند. ترجمه هر بخش اختیاری است؛ خالی کردن و ذخیره، ترجمه همان بخش را حذف می‌کند. در نبود ترجمه، متن فارسی نمایش داده می‌شود. ترجمه آدرس دقیق فقط در صورت فعال بودن نمایش موقعیت منتشر می‌شود.",
+    "arPropertyTitle": "عنوان عربی",
+    "enPropertyTitle": "عنوان انگلیسی",
+    "arPropertyAddress": "آدرس دقیق عربی",
+    "enPropertyAddress": "آدرس دقیق انگلیسی",
+    "originalPropertyTitle": "عنوان اصلی اقامتگاه (فارسی)",
+    "originalPropertyAddress": "آدرس دقیق اصلی (فارسی)",
     "occupied": "رزرو",
     "description": "توضیحات",
     "understood": "متوجه شدم",

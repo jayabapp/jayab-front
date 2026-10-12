@@ -6,6 +6,7 @@ import { PropertyService } from "@/api_services/property/property.service";
 import { propertyKeys } from "./property.keys";
 
 import type { PropertyFilters } from "@features/properties/lib/normalize-property-filters";
+import type { Locale } from "@/i18n/config";
 
 const PAGE_SIZE = 30;
 
@@ -36,8 +37,11 @@ export const propertyOptionGroupsOptions = (
     gcTime: GC_TIME.LONG,
   });
 
-export const propertiesOptions = (filters: PropertyFilters) => {
-  const normalized = normalizePropertyFilters(filters);
+export const propertiesOptions = (
+  filters: PropertyFilters,
+  locale: Locale = "fa",
+) => {
+  const normalized = normalizePropertyFilters({ ...filters, locale });
   const requestedPage = normalized.page ? Number(normalized.page) : undefined;
 
   return infiniteQueryOptions({
@@ -57,7 +61,11 @@ export const propertiesOptions = (filters: PropertyFilters) => {
       if (requestedPage || !lastPage?.meta?.next) return undefined;
       return lastPage.meta.next;
     },
-    placeholderData: keepPreviousData,
+    placeholderData: (previous, previousQuery) =>
+      (previousQuery?.queryKey[2] as PropertyFilters | undefined)?.locale ===
+      locale
+        ? previous
+        : undefined,
     staleTime: 30_000,
   });
 };
@@ -95,24 +103,28 @@ export const propertyCountOptions = (
   });
 };
 
-export const propertyDetailOptions = (slug: string) =>
+export const propertyDetailOptions = (slug: string, locale: Locale = "fa") =>
   queryOptions({
-    queryKey: propertyKeys.detail(slug),
+    queryKey: propertyKeys.detail(slug, locale),
     queryFn: ({ signal }) =>
       PropertyService.GetSinglePropertyWithSlug(
-        { Property_slug: slug },
+        { Property_slug: slug, locale },
         signal,
       ),
     enabled: Boolean(slug),
     staleTime: 60_000,
   });
 
-export const similarPropertiesOptions = (id: number | string, enabled = true) =>
+export const similarPropertiesOptions = (
+  id: number | string,
+  enabled = true,
+  locale: Locale = "fa",
+) =>
   queryOptions({
-    queryKey: propertyKeys.similar(id),
+    queryKey: propertyKeys.similar(id, locale),
     // The section hides itself on an empty list, so a missing payload is the same as none.
     queryFn: async ({ signal }) =>
-      (await PropertyService.GetSimilarProperties(id, signal)) ?? [],
+      (await PropertyService.GetSimilarProperties(id, signal, locale)) ?? [],
     enabled: enabled && Boolean(id),
     staleTime: 10 * 60_000,
   });

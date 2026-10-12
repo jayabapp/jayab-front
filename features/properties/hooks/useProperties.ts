@@ -1,18 +1,22 @@
 "use client";
 
-import { useInfiniteQuery } from "@tanstack/react-query";
 import { useDebouncedValue } from "@hooks/useDebouncedValue";
 import { propertiesOptions } from "@features/properties/api/property.options";
+import { useInfiniteQuery } from "@tanstack/react-query";
+import { resolveLocale } from "@/i18n/config";
+import { useLocale } from "next-intl";
 import { useMemo } from "react";
 
 import type { PropertyFilters } from "@features/properties/lib/normalize-property-filters";
 import type { PropertyListDto } from "@/api_services/property/property.interface";
 
 export const useProperties = (filters: PropertyFilters, enabled = true) => {
+  const locale = resolveLocale(useLocale());
   const debouncedQuery = useDebouncedValue(filters.q, 400);
-  const query = useInfiniteQuery(
-    { ...propertiesOptions({ ...filters, q: debouncedQuery }), enabled },
-  );
+  const query = useInfiniteQuery({
+    ...propertiesOptions({ ...filters, q: debouncedQuery }, locale),
+    enabled,
+  });
   const properties = useMemo(() => {
     const uniqueProperties = new Map<number, PropertyListDto>();
 

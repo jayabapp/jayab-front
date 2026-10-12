@@ -1,5 +1,6 @@
 "use client";
 
+import { preparePropertyTranslations } from "@features/owner-property/mappers/property-translations.mapper";
 import { useOwnerPropertyStep } from "@features/owner-property/hooks/useOwnerPropertyStep";
 import { usePropertyDraftForm } from "@features/owner-property/hooks/usePropertyDraftForm";
 import { emptyInitialsValues } from "@features/owner-property/mappers/property-draft.mapper";
@@ -44,6 +45,7 @@ const PropertyInitialsStep = ({ propertyId }: OwnerPropertyRouteProps) => {
       province_id: values?.province,
       region_id: values?.region,
       title: values?.title,
+      translations: preparePropertyTranslations(values.translations),
       unit_per_floor: asNumber(values?.units_in_floor),
     });
   };

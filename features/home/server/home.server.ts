@@ -1,11 +1,14 @@
 import { apiRoutes, baseUrl, baseUrlV } from "@/utils/urls";
+import { resolveLocale } from "@/i18n/config";
 import { REVALIDATE } from "@/helpers/revalidate";
+import { getLocale } from "next-intl/server";
 import { cache } from "react";
 
 import serverCall from "@/helpers/serverCall";
 
-import type { BannerPosition } from "@/enum/banners.enum";
 import type { LandingsPlacements } from "@/enum/landings.enum";
+import type { BannerPosition } from "@/enum/banners.enum";
+import type { Locale } from "@/i18n/config";
 
 export const getServerBanners = cache((positions: BannerPosition[]) =>
   serverCall(
@@ -17,14 +20,15 @@ export const getServerBanners = cache((positions: BannerPosition[]) =>
   ),
 );
 
-export const getServerLandings = cache((placement: LandingsPlacements) =>
-  serverCall(
-    baseUrl + apiRoutes.USER_LANDING_PAGES,
-    { placement },
-    {
-      revalidate: REVALIDATE.LANDINGS,
-    },
-  ),
+export const getServerLandings = cache(
+  (placement: LandingsPlacements, locale: Locale = "fa") =>
+    serverCall(
+      baseUrl + apiRoutes.USER_LANDING_PAGES,
+      { placement, locale },
+      {
+        revalidate: REVALIDATE.LANDINGS,
+      },
+    ),
 );
 
 export const getServerContentList = cache(
@@ -57,19 +61,22 @@ export const getServerLanding = cache((slug: string) =>
   }),
 );
 
-export const getServerPropertyList = cache((page: number, perPage: number) =>
-  serverCall(
-    baseUrl + apiRoutes.GET_PROPERTIES,
-    { page, per_page: perPage },
-    {
-      revalidate: REVALIDATE.PROPERTY_LIST,
-    },
-  ),
+export const getServerPropertyList = cache(
+  async (page: number, perPage: number) => {
+    const locale = resolveLocale(await getLocale());
+    return serverCall(
+      baseUrl + apiRoutes.GET_PROPERTIES,
+      { page, per_page: perPage, locale },
+      {
+        revalidate: REVALIDATE.PROPERTY_LIST,
+      },
+    );
+  },
 );
 
-export const getServerPropertyTypes = cache(() =>
+export const getServerPropertyTypes = cache((locale: Locale = "fa") =>
   serverCall(
-    `${baseUrl}${apiRoutes.USER_PROP_OPTIONS}?group[]=PROPERTY_TYPE`,
+    `${baseUrl}${apiRoutes.USER_PROP_OPTIONS}?group[]=PROPERTY_TYPE&locale=${locale}`,
     undefined,
     { revalidate: REVALIDATE.PROPERTY_OPTIONS },
   ),

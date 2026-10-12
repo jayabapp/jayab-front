@@ -53,10 +53,7 @@ const HomeCityFilterContainer = ({ data, title, devices }: HomeCitiesProps) => {
           >
             <div className="flex flex-col gap-2.5 md:gap-2 lg:gap-3">
               {column.map((city, cityIndex) => (
-                <HomeCityItem
-                  item={city}
-                  key={`${city.title}-${cityIndex}`}
-                />
+                <HomeCityItem item={city} key={`${city.url}-${cityIndex}`} />
               ))}
             </div>
           </SwiperSlide>

@@ -1,4 +1,12 @@
 import { ImageDto } from "../auth/auth.interface";
+import type { Locale } from "@/i18n/config";
+
+export type PropertyTranslations = Partial<
+  Record<"ar" | "en", { title?: string; address?: string }>
+>;
+export type PropertyTextLocales = Partial<
+  Record<"title" | "city" | "province" | "region" | "address", Locale>
+>;
 
 export interface ProvienceTypesDto {
   id: number;
@@ -8,6 +16,7 @@ export interface ProvienceTypesDto {
 }
 
 export interface CreatePropertyStepOneDto {
+  translations?: PropertyTranslations;
   floor: number | string | null;
   title: number | string | null;
   floors: number | string | null;
@@ -27,6 +36,7 @@ export interface CreatePropertyStepOneDto {
 }
 
 export interface PropInitDto {
+  translations?: PropertyTranslations;
   id: number | null;
   code: string;
   owner_id: number;
@@ -246,6 +256,7 @@ export interface PayPropertySubSendDto {
 }
 
 export interface SinglePropDto {
+  text_locales?: PropertyTextLocales;
   id: number;
   code: string;
   rent_type: "DAILY";
@@ -390,6 +401,7 @@ export interface PropertyDescriptionsDto {
 }
 
 export interface PropertyListDto {
+  text_locales?: PropertyTextLocales;
   id: number;
   code: string;
   slug: string;
@@ -588,6 +600,7 @@ export interface Statistic {
 }
 
 export interface GetPropertiesPlusFilters {
+  locale?: Locale;
   cities?: any;
   regions?: any;
   sort_type?: any;

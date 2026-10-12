@@ -30,7 +30,7 @@ const AuthOtpCard = ({ challenge, onEditNumber }: AuthOtpCardProps) => {
   return (
     <>
       {/* BRAND */}
-      <div className="flex justify-end">
+      <div dir="rtl" className="flex justify-end">
         <HeaderBrand asLink alwaysShowTitle />
       </div>
 
