@@ -1,4 +1,3 @@
-
 import { useTranslations } from "next-intl";
 import { useFormatToman } from "@hooks/useFormatToman";
 
@@ -15,29 +14,32 @@ const ExtraCosts = ({ property }: PropertySpecsSectionProps) => {
   const cleaning = property?.daily_price?.cleaning ?? 0;
   if (!extraPerson && !cleaning) return <></>;
   return (
-    <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
-      {extraPerson ? (
-        <FactRow
-          icon="user-plus"
-          title={formatToman(extraPerson)}
-          summary={[
-            t("listing.perNight"),
-            `${t("common.overStandardCapacity")} ${t("listing.people", { count: Number(property?.std_capacity) })}`,
-          ]}
-        />
-      ) : (
-        <></>
-      )}
+    <div className="flex flex-col gap-4 rounded-20 border border-line-strong bg-surface-muted p-4">
+      <h3 className="text-sm font-bold text-ink">{t("listing.extraCosts")}</h3>
+      <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
+        {extraPerson ? (
+          <FactRow
+            icon="user-plus"
+            title={formatToman(extraPerson)}
+            summary={[
+              t("listing.perNight"),
+              `${t("common.overStandardCapacity")} ${t("listing.people", { count: Number(property?.std_capacity) })}`,
+            ]}
+          />
+        ) : (
+          <></>
+        )}
 
-      {cleaning ? (
-        <FactRow
-          icon="broom"
-          title={formatToman(cleaning)}
-          summary={[t("common.cleaningPrice"), t("listing.oncePerStay")]}
-        />
-      ) : (
-        <></>
-      )}
+        {cleaning ? (
+          <FactRow
+            icon="broom"
+            title={formatToman(cleaning)}
+            summary={[t("common.cleaningPrice"), t("listing.oncePerStay")]}
+          />
+        ) : (
+          <></>
+        )}
+      </div>
     </div>
   );
 };

@@ -150,6 +150,7 @@ const ContactFlow = ({ children, property }: ContactFlowProps) => {
           type={session.action}
           onHide={closeSession}
           propertySlug={property.slug}
+          property={property}
           trip={
             session.stay && {
               ...session.stay,

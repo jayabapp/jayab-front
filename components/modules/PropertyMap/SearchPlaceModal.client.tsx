@@ -14,10 +14,11 @@ const SearchPlaceModal = ({
   show,
   title,
   center,
+  initialSearch = "",
   setShow,
   setJumpTo,
 }: SearchPlaceModalProps) => {
-  const [search, setSearch] = useState("");
+  const [search, setSearch] = useState(initialSearch);
   const {
     addresses: searchedAddresses,
     isDebouncing,

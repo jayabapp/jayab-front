@@ -43,7 +43,7 @@ const RegionButton = ({
           {!hasRegions
             ? t("search.selectLocal")
             : singleTitle
-              ? `${t("common.local")}: ${singleTitle}`
+              ? singleTitle
               : null}
         </span>
         {hasRegions && !singleTitle ? (

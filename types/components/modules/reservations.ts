@@ -20,6 +20,7 @@ export type ReservationCountdownProps = {
   minutes: string;
   seconds: string;
   hint?: string;
+  hintBelow?: boolean;
 };
 
 export type ReservationStatusBarProps = {

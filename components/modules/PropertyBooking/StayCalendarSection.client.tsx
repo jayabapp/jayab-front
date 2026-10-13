@@ -81,8 +81,7 @@ const StayCalendarSection = ({ propertyId }: StayCalendarSectionProps) => {
 
   return (
     <div className="flex flex-col gap-4">
-      <div className="flex items-center justify-between gap-3">
-        <StayCalendarLegend />
+      <div className="flex items-center justify-end gap-3">
         <div className="flex items-center gap-2">
           <button
             type="button"
@@ -122,6 +121,7 @@ const StayCalendarSection = ({ propertyId }: StayCalendarSectionProps) => {
           columns={isDesktop ? 2 : 1}
         />
       </div>
+      <StayCalendarLegend />
     </div>
   );
 };

@@ -54,6 +54,9 @@ const HomeTemplate = ({
           />
         </div>
         <div className="home-sheet -mt-5 flex w-full flex-col gap-0 md:-mt-8">
+          <Suspense fallback={null}>
+            <HomeActiveReservations />
+          </Suspense>
           {devices?.isMobile ? <HomeSheetSearch /> : <></>}
           <section
             style={{ "--home-tile-count": homeTileCount } as CSSProperties}
@@ -64,11 +67,6 @@ const HomeTemplate = ({
                 : ""
             }`}
           >
-            <Suspense fallback={null}>
-              <div className="w-full px-0">
-                <HomeActiveReservations />
-              </div>
-            </Suspense>
             <HomePropertyTypes
               devices={devices}
               data={propertyTypes}

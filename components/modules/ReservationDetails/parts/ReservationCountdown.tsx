@@ -9,6 +9,7 @@ const DIGIT_CLASS =
 
 const ReservationCountdown = ({
   hint,
+  hintBelow = false,
   minutes,
   seconds,
 }: ReservationCountdownProps) => {
@@ -16,7 +17,9 @@ const ReservationCountdown = ({
 
   return (
     <div className="w-full flex items-center flex-col pb-1 gap-2 justify-center">
-      <p className="text-xs text-status-danger text-center w-full">
+      <p
+        className={`text-xs text-center w-full ${hintBelow ? "order-last text-ink-muted" : "text-status-danger"}`}
+      >
         {hint ?? t("reserve.reserveOwnerTimeoutHint")}
       </p>
 

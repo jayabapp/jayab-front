@@ -9,9 +9,9 @@ import ClampText from "./ClampText.client";
 const SurroundingFact = ({ icon, label, value }: TSurrounding) => (
   <div className="flex items-start gap-3">
     <Icon name={icon} size={20} className="mt-0.5 shrink-0 text-ink-subtle" />
-    <p className="text-sm text-ink md:text-base">
-      <span className="font-bold text-ink">{label}:</span>{" "}
-      <span className="font-normal">{value}</span>
+    <p className="flex flex-col gap-1 text-sm text-ink md:text-base">
+      <span className="font-bold text-ink">{label}</span>
+      <span className="block font-normal">{value}</span>
     </p>
   </div>
 );

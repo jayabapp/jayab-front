@@ -1,12 +1,14 @@
-import { useFormatNumber } from "@hooks/useFormatNumber";
-import { useTranslations } from "next-intl";
+import { formatListingPriceFor } from "@/helpers/intl/number";
+import { useLocale, useTranslations } from "next-intl";
+import { resolveLocale } from "@/i18n/config";
 
 import type { PropertyPriceTagProps } from "@/types/components/modules/property-details";
 
-
 const PropertyPriceTag = ({ price }: PropertyPriceTagProps) => {
   const t = useTranslations("common");
-  const formatNumber = useFormatNumber();
+  const locale = resolveLocale(useLocale());
+  const formatNumber = (value?: number | null) =>
+    formatListingPriceFor(value, locale);
 
   return (
     <div className="flex flex-row w-fit gap-2 md:gap-2">

@@ -14,7 +14,6 @@ const HINT_MS = 2800;
 const HINT_TEXT = {
   past: "reserve.rangeInPast",
   reserved: "reserve.rangeHasReservedDay",
-  too_long: "reserve.rangeTooLong",
 } as const satisfies Record<StayBlockReason, string>;
 
 const StayCalendarGrid = ({

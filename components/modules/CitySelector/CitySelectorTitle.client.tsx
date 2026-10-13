@@ -25,6 +25,9 @@ const CitySelectorTitle = ({
   const pathname = usePathname();
   const router = useRouter();
   const regionsIds = parseIdList(queries?.regions);
+  const regionTitles = (cityWithRegions?.child ?? [])
+    .filter((region) => regionsIds.includes(`${region.id}`))
+    .map((region) => region.title);
 
   const clearRegions = useCallback(() => {
     const body = { ...queries };
@@ -62,6 +65,7 @@ const CitySelectorTitle = ({
       {isEmpty(cityWithRegions?.child) ? null : (
         <RegionButton
           regionsIds={regionsIds}
+          regionTitles={regionTitles}
           onClearRegions={clearRegions}
           setShowRegions={setShowRegions}
           containerClass="hidden lg:flex"

@@ -20,7 +20,7 @@ const ListingHeader = ({ breadcrumbs, property }: ListingHeaderProps) => {
 
   return (
     <header className="enter-from-right order-3 flex flex-col gap-3 pb-4 pt-2 md:order-2 md:pb-6">
-      <div className="hidden md:flex">
+      <div className="flex min-w-0">
         <SingleProductBreadCrumb dataArray={breadcrumbs} />
       </div>
 

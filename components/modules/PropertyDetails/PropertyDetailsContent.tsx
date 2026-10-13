@@ -12,6 +12,7 @@ import type { SectionTab } from "@/types/components/modules/property-details";
 import SleepingArrangements from "./parts/SleepingArrangements";
 import PropertySummaryCard from "./PropertySummaryCard.client";
 import PropertyDescription from "./parts/PropertyDescription";
+import PropertyOwnerBadge from "./parts/PropertyOwnerBadge";
 import RelatedLandingLinks from "./parts/RelatedLandingLinks";
 import PropertyReportRow from "./parts/PropertyReportRow.client";
 import SimilarProperties from "./parts/SimilarProperties.client";
@@ -59,20 +60,25 @@ const PropertyDetailsContent = ({ property }: PropertyDetailsContentProps) => {
   return (
     <ContactFlow property={view}>
       <ListingHeader breadcrumbs={breadCrumbs} property={view} />
-      <PropertyGallery
-        title={view.title}
-        images={view.images}
-        hostName={view.ownerName}
-        advisorCommission={view.advisorCommission}
-      />
+      <div className="order-1 w-full">
+        <PropertyGallery
+          title={view.title}
+          images={view.images}
+          hostName={view.ownerName}
+          advisorCommission={view.advisorCommission}
+        />
+        {view.ownerName || view.ownerAvatar ? (
+          <div className="py-4">
+            <PropertyOwnerBadge
+              avatar={view.ownerAvatar}
+              name={view.ownerName}
+              isOnline={view.hasActiveSubscription}
+            />
+          </div>
+        ) : null}
+      </div>
 
       <SectionTabs tabs={tabs} />
-
-      {view.ownerName ? (
-        <p className="order-4 pb-4 ui-body text-ink-muted md:hidden">
-          {t("listing.villaHostedBy")} {view.ownerName}
-        </p>
-      ) : null}
 
       <div className="order-5 grid grid-cols-1 gap-x-8 md:grid-cols-12">
         <div className="flex w-full flex-col md:col-span-7 lg:col-span-8">
@@ -97,11 +103,8 @@ const PropertyDetailsContent = ({ property }: PropertyDetailsContentProps) => {
           )}
 
           <ListingSection id="calendar" title={t("listing.tabCalendar")}>
-            <div className="flex flex-col gap-4">
-              <h3 className={SUB_HEADING_CLASS}>{t("listing.extraCosts")}</h3>
-              <ExtraCosts property={property} />
-            </div>
             <StayCalendarSection propertyId={view.id} />
+            <ExtraCosts property={property} />
           </ListingSection>
 
           <ListingSection id="rules" title={t("listing.propTerms")}>

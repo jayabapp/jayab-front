@@ -1,6 +1,7 @@
 "use client";
 
 import { useOwnerPropertyStep } from "@features/owner-property/hooks/useOwnerPropertyStep";
+import { usePropertyLocation } from "@features/owner-property/hooks/usePropertyLocation";
 import { usePropertyDraft } from "@features/owner-property/hooks/usePropertyDraft";
 import { SearchPlaceModal } from "@modules/PropertyMap";
 import { useTranslations } from "next-intl";
@@ -18,8 +19,6 @@ const PropertyLocationMap = dynamic(
   { ssr: false },
 );
 
-const TEHRAN_CENTER = [51.37, 35.767];
-
 const PropertyLocationStep = ({ propertyId }: OwnerPropertyRouteProps) => {
   const t = useTranslations("owner");
 
@@ -27,26 +26,13 @@ const PropertyLocationStep = ({ propertyId }: OwnerPropertyRouteProps) => {
   const { isPending, submit } = useOwnerPropertyStep("location", propertyId);
 
   const [showSearch, setShowSearch] = useState(false);
-  const [center, setCenter] = useState(TEHRAN_CENTER);
-  const [, setCenterAddressLoading] = useState(false);
   const [centerAddress, setCenterAddress] = useState("");
-  const [jumpTo, setJumpTo] = useState<{
-    lat: number | string;
-    lng: number | string;
-  } | null>(null);
-
-  const savedPin = draft?.lat
-    ? { lat: Number(draft?.lat), lng: Number(draft?.lng) }
-    : null;
-  const [pinKey, setPinKey] = useState("");
-  const savedPinKey = `${draft?.id ?? ""}:${draft?.lat ?? ""}`;
-  if (savedPin && pinKey !== savedPinKey) {
-    setPinKey(savedPinKey);
-    setJumpTo(savedPin);
-  }
+  const { address, center, setCenter, jumpTo, selectPoint, hasMoved, isLocating } =
+    usePropertyLocation(draft);
+  const displayedAddress = hasMoved ? centerAddress || address : address;
 
   const onSubmit = () => {
-    if (!draft?.id) return;
+    if (!draft?.id || isLocating) return;
     submit({ lat: center[1], lng: center[0], propertyId: draft?.id });
   };
 
@@ -55,7 +41,7 @@ const PropertyLocationStep = ({ propertyId }: OwnerPropertyRouteProps) => {
       step="location"
       skeleton="map"
       onSubmit={onSubmit}
-      isPending={isPending}
+      isPending={isPending || isLocating}
       isLoading={isLoading}
       propertyId={propertyId}
       submitTitle={t("submitMoveOn")}
@@ -73,7 +59,7 @@ const PropertyLocationStep = ({ propertyId }: OwnerPropertyRouteProps) => {
             containerClass="  "
             disableTypeing={true}
             boxId="SEARCH_BOX_Mobile"
-            passedText={centerAddress}
+            passedText={displayedAddress}
             item={{ disable_cancel: true }}
             placeholder={t("searchPlaceInput")}
           />
@@ -84,14 +70,15 @@ const PropertyLocationStep = ({ propertyId }: OwnerPropertyRouteProps) => {
           setCenter={setCenter}
           containerClass="w-full"
           setCenterAddress={setCenterAddress}
-          setCenterAddressLoading={setCenterAddressLoading}
         />
       </div>
 
       <SearchPlaceModal
+        key={showSearch ? "open" : "closed"}
         center={center}
+        initialSearch={displayedAddress}
         show={showSearch}
-        setJumpTo={setJumpTo}
+        setJumpTo={selectPoint}
         setShow={setShowSearch}
         title={t("searchPlaceInput")}
       />

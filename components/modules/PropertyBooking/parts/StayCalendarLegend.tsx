@@ -21,7 +21,6 @@ const StayCalendarLegend = () => {
         />
         {t("peakDays")}
       </span>
-      <span>{t("priceUnitHint")}</span>
     </div>
   );
 };

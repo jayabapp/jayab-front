@@ -20,10 +20,20 @@ export const formatTomanAmount = (
   locale: DisplayLocale = "fa",
 ): string => `${formatNumber(value ?? 0, locale)} ${unit}`;
 
+export const formatListingPriceFor = (
+  value: number | string | null | undefined,
+  locale: DisplayLocale = "fa",
+): string => {
+  const formatted = formatNumber(value, locale);
+  return locale === "fa"
+    ? formatted.replace(/\d/g, (digit) => "۰۱۲۳۴۵۶۷۸۹"[Number(digit)])
+    : formatted;
+};
+
 export const formatCalendarCellPriceFor = (
   value: number | null | undefined,
   locale: DisplayLocale = "fa",
 ): string => {
   if (!value || value <= 0) return "";
-  return localizeDigits(`${Math.round(value / 1000)}`, locale);
+  return formatListingPriceFor(Math.round(value / 1000), locale);
 };

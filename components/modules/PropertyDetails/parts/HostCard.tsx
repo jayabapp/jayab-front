@@ -21,7 +21,7 @@ const HostCard = ({
       <PropertyOwnerBadge avatar={avatar} name={name} isOnline={isOnline} />
       {since ? (
         <p className="text-sm text-ink-subtle">
-          {t("hostSince").replace("{date}", jalali(since, "jMMMM jYYYY"))}
+          {t("hostSince", { date: jalali(since, "jMMMM jYYYY") })}
         </p>
       ) : null}
       {isAuthorized ? (

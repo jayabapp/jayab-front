@@ -4,7 +4,7 @@ import { describe, it } from "node:test";
 import { formatTimestamp } from "./chat-time";
 import { localizeDigits, normalizeDigits } from "./digits";
 import { formatJalaliDisplay } from "./jalali";
-import { formatCalendarCellPriceFor, formatNumber, formatTomanAmount } from "./number";
+import { formatCalendarCellPriceFor, formatListingPriceFor, formatNumber, formatTomanAmount } from "./number";
 
 const labels = {
   months: ["Farvardin", "Ordibehesht", "Khordad", "Tir", "Mordad", "Shahrivar", "Mehr", "Aban", "Azar", "Dey", "Bahman", "Esfand"],
@@ -41,17 +41,24 @@ describe("numbers and toman", () => {
 });
 
 describe("calendar cell price", () => {
-  it("is toman / 1000 rounded with no suffix", () => {
-    assert.equal(formatCalendarCellPriceFor(3100000), "3100");
-    assert.equal(formatCalendarCellPriceFor(2500499), "2500");
-    assert.equal(formatCalendarCellPriceFor(2500500), "2501");
+  it("groups thousands of toman with Persian digits and no suffix", () => {
+    assert.equal(formatCalendarCellPriceFor(3000000), "۳,۰۰۰");
+    assert.equal(formatCalendarCellPriceFor(40000000), "۴۰,۰۰۰");
+    assert.equal(formatCalendarCellPriceFor(3650000), "۳,۶۵۰");
+    assert.equal(formatCalendarCellPriceFor(2500499), "۲,۵۰۰");
+    assert.equal(formatCalendarCellPriceFor(2500500), "۲,۵۰۱");
   });
   it("is empty without a positive price", () => {
     for (const value of [0, -5, null, undefined]) assert.equal(formatCalendarCellPriceFor(value), "");
   });
-  it("only the digits change per language", () => {
-    assert.equal(formatCalendarCellPriceFor(3100000, "en"), "3100");
-    assert.equal(formatCalendarCellPriceFor(3100000, "ar"), "٣١٠٠");
+  it("uses the correct digits and thousands separator per language", () => {
+    assert.equal(formatCalendarCellPriceFor(3100000, "en"), "3,100");
+    assert.equal(formatCalendarCellPriceFor(3100000, "ar"), "٣٬١٠٠");
+  });
+  it("keeps the full nightly starting price in toman", () => {
+    assert.equal(formatListingPriceFor(2700000), "۲,۷۰۰,۰۰۰");
+    assert.equal(formatListingPriceFor(2700000, "en"), "2,700,000");
+    assert.equal(formatListingPriceFor(2700000, "ar"), "٢٬٧٠٠٬٠٠٠");
   });
 });
 

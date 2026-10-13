@@ -81,7 +81,7 @@ const BookingBottomBar = ({
                 price={{ price: property.minimumPrice ?? undefined }}
               />
               <span className="pb-0.5 text-xs text-ink-muted">
-                / {t("reserve.night")}
+                / {t("reserve.ratePerNight")}
               </span>
             </div>
           </div>

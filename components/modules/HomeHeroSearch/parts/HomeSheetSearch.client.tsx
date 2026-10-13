@@ -33,7 +33,7 @@ const HomeSheetSearch = () => {
   return (
     <div
       ref={wrapperRef}
-      className="relative z-10 mx-auto -mt-5 mb-1 w-[calc(100%-1.5rem)] max-w-[20rem]"
+      className="home-sheet-search relative z-10 mx-auto -mt-5 mb-1 w-[calc(100%-1.5rem)] max-w-[20rem]"
     >
       <HomeHeroSearch isPhone />
     </div>

@@ -15,6 +15,7 @@ import { Icon } from "@elements/Icon";
 import type { PropertyContactModalProps } from "@/types/components/modules/property-contact";
 
 import PropertyContactRow from "./parts/PropertyContactRow.client";
+import PropertyRequestSummary from "./parts/PropertyRequestSummary";
 import Skeleton from "@elements/Skeleton/Skeleton";
 import isEmpty from "lodash/isEmpty";
 import Notify from "@elements/Toast";
@@ -25,6 +26,7 @@ const PropertyContactModal = ({
   trip,
   onHide,
   propertySlug,
+  property,
 }: PropertyContactModalProps) => {
   const formatToman = useFormatToman();
 
@@ -59,7 +61,11 @@ const PropertyContactModal = ({
         title={isSms ? t("reserve.smsHost") : t("reserve.callHost")}
       />
 
-      {trip ? (
+      {property ? (
+        <div className="flex flex-col gap-4 p-4 pb-0">
+          <PropertyRequestSummary property={property} stay={trip} />
+        </div>
+      ) : trip ? (
         <div className="flex flex-col gap-1 border-b border-line px-4 py-3 text-sm">
           <p className="line-clamp-1 text-ink">{trip.title}</p>
           <p className="text-ink-subtle">

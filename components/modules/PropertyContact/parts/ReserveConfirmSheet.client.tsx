@@ -1,24 +1,17 @@
 "use client";
 
 import { ModalBottomSheet, ModalHeaderPart } from "@elements/Modal";
-import { formatJalaliWeekdayDay } from "@features/reservations/mappers/reservation-dates";
-import { PROPERTY_IMAGE_QUALITY } from "@features/properties/constants/image";
 import { useCreateReservation } from "@features/reservations/hooks/useCreateReservation";
-import { getPropertyImageUrl } from "@features/properties/mappers/property-image.mapper";
 import { buildReservePayload } from "@features/reservations/lib/contact-prefill";
 import { trackListingEvent } from "@/helpers/listingAnalytics";
 import { useRef, useState } from "react";
 import { useListSeparator } from "@hooks/useListSeparator";
-import { useJalaliFormat } from "@hooks/useJalaliFormat";
 import { useTranslations } from "next-intl";
-import { useFormatToman } from "@hooks/useFormatToman";
-import { nightsBetween } from "@features/reservations/lib/stay-range";
-import { ContentImage } from "@elements/Image";
-import { Icon } from "@elements/Icon";
 
 import type { ReserveConfirmSheetProps } from "@/types/components/modules/property-contact";
 import type { ReserveFailure } from "@/types/components/modules/property-contact";
 
+import PropertyRequestSummary from "./PropertyRequestSummary";
 import ReserveSuccess from "./ReserveSuccess.client";
 import CmsInfoPopup from "@elements/CmsInfoPopup";
 import BtnLoading from "@elements/Button/BtnLoading";
@@ -36,11 +29,8 @@ const ReserveConfirmSheet = ({
   onHide,
   property,
 }: ReserveConfirmSheetProps) => {
-  const formatToman = useFormatToman();
-
   const t = useTranslations();
 
-  const jalali = useJalaliFormat();
   const sep = useListSeparator();
 
   const { isPending, mutate } = useCreateReservation();
@@ -50,10 +40,6 @@ const ReserveConfirmSheet = ({
   const submitting = useRef(false);
 
   const isExpired = !property.remainingDays;
-  const nights = stay.nights ?? nightsBetween(stay.startDate, stay.endDate);
-  const place = [property.city, property.region || property.province]
-    .filter(Boolean)
-    .join(sep);
 
   const onSubmit = () => {
     if (submitting.current) return;
@@ -144,65 +130,11 @@ const ReserveConfirmSheet = ({
           />
         ) : (
           <div className="flex flex-col gap-4 p-4">
-            <div className="flex items-center gap-3">
-              <div className="relative size-16 shrink-0 overflow-hidden rounded-10">
-                <ContentImage
-                  fill
-                  sizes="64px"
-                  loading="lazy"
-                  className="object-cover"
-                  quality={PROPERTY_IMAGE_QUALITY}
-                  alt={property.featureImage?.alt || ""}
-                  src={getPropertyImageUrl(property.featureImage)}
-                />
-              </div>
-              <div className="flex min-w-0 flex-col gap-1">
-                <p className="line-clamp-1 text-sm font-semibold text-ink">
-                  {property.title}
-                </p>
-                {place ? (
-                  <p className="line-clamp-1 text-xs text-ink-subtle">
-                    {place}
-                  </p>
-                ) : null}
-              </div>
-            </div>
-
-            <div className="flex flex-col gap-2 rounded-10 bg-surface-muted p-3 text-sm text-ink">
-              <div className="flex items-center gap-2">
-                <Icon name="calendar" size={20} className="text-link" />
-                <span className="flex-1">
-                  {formatJalaliWeekdayDay(stay.startDate, jalali)}{" "}
-                  {t("common.to")}{" "}
-                  {formatJalaliWeekdayDay(stay.endDate, jalali)}
-                  {sep}
-                  {t("reserve.nights", { count: Number(nights) })}
-                </span>
-                {stay.onEdit ? (
-                  <button
-                    type="button"
-                    onClick={onChangeDates}
-                    className="cursor-pointer text-xs text-link"
-                  >
-                    {t("common.edit")}
-                  </button>
-                ) : null}
-              </div>
-              <div className="flex items-center gap-2">
-                <Icon name="users" size={20} className="text-link" />
-                <span>
-                  {t("common.people", { count: Number(stay.guests) })}
-                </span>
-              </div>
-              {stay.total ? (
-                <div className="flex items-center justify-between border-t border-line pt-2">
-                  <span className="text-ink-muted">
-                    {t("reserve.approxStayCost")}
-                  </span>
-                  <span className="font-bold">{formatToman(stay.total)}</span>
-                </div>
-              ) : null}
-            </div>
+            <PropertyRequestSummary
+              property={property}
+              stay={stay}
+              onEdit={stay.onEdit ? onChangeDates : undefined}
+            />
 
             <p className="text-sm text-ink-muted">
               {isExpired

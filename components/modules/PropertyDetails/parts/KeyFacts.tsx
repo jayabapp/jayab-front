@@ -1,5 +1,6 @@
-import { useFormatNumber } from "@hooks/useFormatNumber";
-import { useTranslations } from "next-intl";
+import { useLocale, useTranslations } from "next-intl";
+import { formatListingPriceFor } from "@/helpers/intl/number";
+import { resolveLocale } from "@/i18n/config";
 
 import type { PropertySpecsSectionProps } from "@/types/components/modules/property-details";
 
@@ -7,7 +8,13 @@ import FactRow from "./FactRow";
 
 const KeyFacts = ({ property }: PropertySpecsSectionProps) => {
   const t = useTranslations();
-  const formatNumber = useFormatNumber();
+  const locale = resolveLocale(useLocale());
+  const formatNumber = (value: number | string) =>
+    formatListingPriceFor(value, locale);
+  const formatText = (value: string) =>
+    locale === "fa"
+      ? value.replace(/\d/g, (digit) => "۰۱۲۳۴۵۶۷۸۹"[Number(digit)])
+      : value;
 
   const propertyType = property?.options?.property_type;
 
@@ -33,12 +40,12 @@ const KeyFacts = ({ property }: PropertySpecsSectionProps) => {
     .join(" + ");
 
   return (
-    <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
+    <div className="grid grid-cols-1 gap-4">
       {propertyType ? (
         <FactRow
           icon="home"
           title={propertyType}
-          summary={[property?.options?.ownership]}
+          value={property?.options?.ownership}
         />
       ) : (
         <></>
@@ -47,13 +54,22 @@ const KeyFacts = ({ property }: PropertySpecsSectionProps) => {
       {maxCapacity ? (
         <FactRow
           icon="users"
-          title={`${t("listing.upTo")} ${t("listing.guestsCount", { count: Number(maxCapacity) })}`}
+          title={t("listing.capacity")}
+          value={formatText(
+            `${t("listing.upTo")} ${t("listing.guestsCount", { count: Number(maxCapacity) })}`,
+          )}
           summary={[
             stdCapacity
-              ? `${t("listing.standardGuestsCount", { count: Number(stdCapacity) })}`
+              ? formatText(
+                  t("listing.standardGuestsCount", {
+                    count: Number(stdCapacity),
+                  }),
+                )
               : null,
             extraGuests
-              ? `${t("listing.extraGuestsCount", { count: Number(extraGuests) })}`
+              ? formatText(
+                  t("listing.extraGuestsCount", { count: Number(extraGuests) }),
+                )
               : null,
           ]}
         />
@@ -61,16 +77,22 @@ const KeyFacts = ({ property }: PropertySpecsSectionProps) => {
         <></>
       )}
 
-      {totalBedrooms ? (
+      {totalBedrooms ||
+      bedCount ||
+      bedrooms?.additional_bed ||
+      bedrooms?.sofa_bed ? (
         <FactRow
           icon="bed"
-          title={`${t("listing.roomsCount", { count: Number(totalBedrooms) })}`}
+          title={t("listing.sleepingService")}
+          value={formatText(
+            t("listing.roomsCount", { count: Number(totalBedrooms) }),
+          )}
           summary={[
             bedCount
-              ? t("listing.bedsCount", { count: Number(bedCount) })
+              ? formatText(t("listing.bedsCount", { count: Number(bedCount) }))
               : null,
             bedrooms?.additional_bed
-              ? `${bedrooms.additional_bed} ${t("listing.extraBedding")}`
+              ? `${formatNumber(bedrooms.additional_bed)} ${t("listing.extraBedding")}`
               : null,
             bedrooms?.sofa_bed ? t("common.sofaBed") : null,
           ]}
@@ -79,7 +101,15 @@ const KeyFacts = ({ property }: PropertySpecsSectionProps) => {
         <></>
       )}
 
-      {areaTitle ? <FactRow icon="ruler" title={areaTitle} /> : <></>}
+      {areaTitle ? (
+        <FactRow
+          icon="ruler"
+          title={t("listing.areaLabel")}
+          value={areaTitle}
+        />
+      ) : (
+        <></>
+      )}
     </div>
   );
 };

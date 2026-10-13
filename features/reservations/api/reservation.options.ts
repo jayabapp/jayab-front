@@ -11,6 +11,14 @@ export const userReservationsOptions = (type: string) =>
     queryKey: reservationKeys.user(type),
     queryFn: ({ signal }) => ReserveService.userReserves({ type }, signal),
     staleTime: 30_000,
+    refetchInterval: (query) =>
+      query.state.data?.some(
+        (reservation) =>
+          reservation.status?.id === 10 &&
+          !reservation.owner_clicked_guest_mobile,
+      )
+        ? 30_000
+        : false,
   });
 
 export const ownerReservationsOptions = (

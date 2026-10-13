@@ -1,11 +1,9 @@
 import moment from "moment-jalaali";
 
-export const MAX_STAY_NIGHTS = 15;
-
 const API_DATE = "YYYY-MM-DD";
 
 export type StayRange = { end?: Date | null; start?: Date | null };
-export type StayBlockReason = "past" | "reserved" | "too_long";
+export type StayBlockReason = "past" | "reserved";
 export type DayRangeState = "start" | "end" | "middle" | "idle";
 
 export const toDayKey = (value: Date | string) =>
@@ -25,11 +23,13 @@ export const lastSelectableCheckout = (
   start: Date,
   reserved: ReadonlySet<string>,
 ) => {
-  for (let night = 1; night <= MAX_STAY_NIGHTS; night += 1) {
-    const day = moment(start).add(night, "day");
-    if (reserved.has(day.format(API_DATE))) return day.toDate();
+  const startKey = toDayKey(start);
+  let firstReserved: string | null = null;
+  for (const key of reserved) {
+    if (key > startKey && (!firstReserved || key < firstReserved))
+      firstReserved = key;
   }
-  return moment(start).add(MAX_STAY_NIGHTS, "day").toDate();
+  return firstReserved ? moment(firstReserved, API_DATE).toDate() : null;
 };
 
 export const isDayDisabled = (
@@ -39,8 +39,10 @@ export const isDayDisabled = (
   today: Date,
 ) => {
   if (day < today) return true;
-  if (range.start && !range.end && day > range.start)
-    return day > lastSelectableCheckout(range.start, reserved);
+  if (range.start && !range.end && day > range.start) {
+    const checkout = lastSelectableCheckout(range.start, reserved);
+    return checkout ? day > checkout : false;
+  }
   return reserved.has(toDayKey(day));
 };
 
@@ -59,10 +61,8 @@ export const selectDay = (
     return { range: { end: null, start: picked } };
   }
 
-  if (nightsBetween(range.start as Date, picked) > MAX_STAY_NIGHTS)
-    return { blocked: "too_long", range };
-  if (picked > lastSelectableCheckout(range.start as Date, reserved))
-    return { blocked: "reserved", range };
+  const checkout = lastSelectableCheckout(range.start as Date, reserved);
+  if (checkout && picked > checkout) return { blocked: "reserved", range };
 
   return { range: { end: picked, start: range.start } };
 };

@@ -90,7 +90,6 @@ const StayDateSheetBody = ({
       }
     >
       <div className="flex flex-col gap-4">
-        <StayCalendarLegend />
         <StayCalendarGrid
           lazy
           range={draft}
@@ -99,6 +98,7 @@ const StayDateSheetBody = ({
           reserved={reserved}
           propertyId={propertyId}
         />
+        <StayCalendarLegend />
       </div>
     </FullScreenSheet>
   );

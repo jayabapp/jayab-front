@@ -4,7 +4,6 @@ import { isIOS, isMacOs, isWindows } from "react-device-detect";
 import { getPropertyImageUrl } from "@features/properties/mappers/property-image.mapper";
 import { usePropertyContact } from "@features/properties/hooks/usePropertyContact";
 import { trackListingEvent } from "@/helpers/listingAnalytics";
-import { useListSeparator } from "@hooks/useListSeparator";
 import { useTranslations } from "next-intl";
 import { buildSmsHref } from "@features/reservations/lib/contact-prefill";
 import { ContentImage } from "@elements/Image";
@@ -31,7 +30,6 @@ const PropertyContactRow = ({
   isPropertyExpired,
 }: PropertyContactRowProps) => {
   const t = useTranslations();
-  const sep = useListSeparator();
 
   const [showNumber, setShowNumber] = useState(false);
   const { mutate } = usePropertyContact();
@@ -132,10 +130,10 @@ const PropertyContactRow = ({
           }`}
         />
         <div className="flex min-w-0 flex-col items-start gap-1">
-          <p className="truncate text-sm text-ink">
-            {data?.assistant_full_name}
-            {sep}
+          <p className="break-words text-sm text-ink">
             {data?.is_owner ? t("common.host") : t("reserve.ownerAssist")}
+            {". "}
+            <bdi>{data?.assistant_full_name}</bdi>
           </p>
           <p className="text-sm text-ink-subtle">{maskPhoneNumber(number)}</p>
         </div>

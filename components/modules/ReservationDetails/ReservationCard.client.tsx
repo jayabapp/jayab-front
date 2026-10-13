@@ -97,6 +97,7 @@ const ReservationCard = ({
             <ReservationCountdown
               minutes={countdown.minutes}
               seconds={countdown.seconds}
+              hintBelow={!isOwner}
               hint={
                 isOwner
                   ? t("reserve.reserveOwnerTimeoutHint")

@@ -16,6 +16,7 @@ export type ListingSectionProps = {
 
 export type FactRowProps = {
   title: string;
+  value?: string;
   icon: IconName;
   summary?: ReadonlyArray<string | number | null | undefined>;
 };

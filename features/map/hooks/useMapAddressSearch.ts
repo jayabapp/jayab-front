@@ -10,7 +10,9 @@ export const useMapAddressSearch = (
   center: number[],
   enabled: boolean,
 ) => {
-  const normalizedSearch = search.trim();
+  // The map proxy accepts at most 100 characters; keep the full address in the
+  // input while searching its leading, geographically useful part.
+  const normalizedSearch = search.trim().slice(0, 100);
   const debouncedSearch = useDebouncedValue(normalizedSearch, 500);
   const query = useQuery({
     queryKey: mapKeys.search(debouncedSearch, center),

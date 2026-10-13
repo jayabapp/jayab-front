@@ -80,7 +80,7 @@ const BookingPanel = ({
               price={{ price: property.minimumPrice ?? undefined }}
             />
             <span className="pb-0.5 ui-caption text-ink-muted">
-              / {t("night")}
+              / {t("ratePerNight")}
             </span>
           </div>
         </div>

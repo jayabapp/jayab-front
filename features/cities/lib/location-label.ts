@@ -66,17 +66,13 @@ export const buildLocationLabel = (
   { cities = [], provinces = [], regions = [] }: LocationEntries,
   words: LocationWords,
 ): string => {
-  if (regions.length === 1)
-    return [regions[0]?.title, regions[0]?.parent_title || cities[0]?.title]
-      .filter(Boolean)
-      .join(words.separator);
-  if (regions.length > 1) return `${regions.length} ${words.local}`;
   if (cities.length === 1 && provinces.length === 0)
     return cities[0]?.title ?? "";
   if (provinces.length === 1 && cities.length === 0)
     return `${words.province} ${provinces[0]?.title}`;
   if (cities.length + provinces.length > 1)
     return `${cities.length + provinces.length} ${words.city}`;
+  if (regions.length) return regions[0]?.parent_title ?? "";
   return "";
 };
 
@@ -101,8 +97,16 @@ export const resolveLocationFromTree = (
   tree: NewCitiesListDto[] | undefined,
   query: LocationQuery,
 ): LocationEntries => {
-  const cities = resolveQueryCities(tree, query.cities);
   const regionIds = parseIdList(query.regions);
+  const cities = query.cities
+    ? resolveQueryCities(tree, query.cities)
+    : regionIds.length
+      ? (tree ?? [])
+          .flatMap((province) => province.child ?? [])
+          .filter((city) =>
+            city.child?.some((region) => regionIds.includes(`${region.id}`)),
+          )
+      : [];
 
   return {
     cities,

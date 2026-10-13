@@ -13,9 +13,8 @@ export type PropertyLocationMapProps = {
 
 export type SearchPlaceModalProps = {
   center: number[];
-  setJumpTo: React.Dispatch<
-    React.SetStateAction<{ lat: string | number; lng: string | number } | null>
-  >;
+  initialSearch?: string;
+  setJumpTo: (point: { lat: string | number; lng: string | number }) => void;
   setShow: (show: boolean) => void;
   show: boolean;
   title: string;

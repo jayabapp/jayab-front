@@ -1,27 +1,24 @@
 "use client";
 
-import { useTranslations } from "next-intl";
-import { useFormatToman } from "@hooks/useFormatToman";
+import { useLocale, useTranslations } from "next-intl";
+import { groupNightsByPrice } from "@features/reservations/lib/price-groups";
+import { formatListingPriceFor } from "@/helpers/intl/number";
+import { resolveLocale } from "@/i18n/config";
 import { useState } from "react";
 import { Icon } from "@elements/Icon";
 
 import type { PriceDetailsProps } from "@/types/components/modules/property-booking";
 
-const groupNights = (nights: PriceDetailsProps["quote"]["nights_breakdown"]) =>
-  nights.reduce<{ count: number; price: number }[]>((groups, night) => {
-    const last = groups[groups.length - 1];
-    if (last && last.price === night.final_price) last.count += 1;
-    else groups.push({ count: 1, price: night.final_price });
-    return groups;
-  }, []);
-
 const PriceDetails = ({ quote }: PriceDetailsProps) => {
-  const formatToman = useFormatToman();
+  const locale = resolveLocale(useLocale());
+  const unit = useTranslations("common")("toman");
+  const formatToman = (value: number) =>
+    `${formatListingPriceFor(value, locale)} ${unit}`;
 
   const t = useTranslations("reserve");
 
   const [open, setOpen] = useState(false);
-  const groups = groupNights(quote.nights_breakdown);
+  const groups = groupNightsByPrice(quote.nights_breakdown);
 
   return (
     <div className="flex flex-col gap-2">
@@ -41,16 +38,21 @@ const PriceDetails = ({ quote }: PriceDetailsProps) => {
 
       {open ? (
         <div className="flex flex-col gap-2 rounded-10 bg-surface-muted p-3">
-          {groups.map((group, index) => (
+          {groups.map((group) => (
             <div
-              key={`${index}-${group.price}`}
-              className="flex items-center justify-between gap-3 ui-body text-ink"
+              key={group.price}
+              className="flex items-start justify-between gap-3 ui-body text-ink"
             >
               <span>
-                {t("nights", { count: Number(group.count) })} ×{" "}
-                {formatToman(group.price)}
+                {t("nightRateGroup", {
+                  count: group.count,
+                  nights: formatListingPriceFor(group.count, locale),
+                  price: formatToman(group.price),
+                })}
               </span>
-              <span>{formatToman(group.count * group.price)}</span>
+              <span className="shrink-0 whitespace-nowrap tabular-nums">
+                {formatToman(group.count * group.price)}
+              </span>
             </div>
           ))}
 

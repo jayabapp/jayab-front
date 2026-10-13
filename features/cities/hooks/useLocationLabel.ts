@@ -24,14 +24,19 @@ export const useLocationLabel = (): string => {
   const urlLocation = pickLocationQuery(urlQueries);
   const hasUrlLocation = hasLocationQuery(urlLocation);
   const isStoredForPage = isSameLocationPath(locationsData?.path, pathname);
+  const storedLocation = isStoredForPage
+    ? pickLocationQuery(locationsData?.query)
+    : {};
   const location = hasUrlLocation
-    ? urlLocation
+    ? !urlLocation.cities && !urlLocation.provinces
+      ? { ...storedLocation, ...urlLocation }
+      : urlLocation
     : isStoredForPage
-      ? pickLocationQuery(locationsData?.query)
+      ? storedLocation
       : {};
 
   const storedEntries = hasUrlLocation
-    ? storedEntriesFor(locationsData, urlLocation)
+    ? storedEntriesFor(locationsData, location)
     : null;
   const storedLabel = storedEntries
     ? buildLocationLabel(storedEntries, words)

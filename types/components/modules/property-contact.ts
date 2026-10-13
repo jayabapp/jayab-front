@@ -40,9 +40,16 @@ export type ContactActionsProps = {
 export type PropertyContactModalProps = {
   onHide: () => void | null;
   propertySlug?: string;
+  property?: PropertyRequestSummaryProps["property"];
   show: boolean;
   trip?: ContactTrip;
   type: PropertyContactAction;
+};
+
+export type PropertyRequestSummaryProps = {
+  property: Pick<PropertyDetailsView, "title" | "featureImage" | "city" | "region" | "province">;
+  stay?: ContactStay;
+  onEdit?: () => void;
 };
 
 export type PropertyContactRowProps = {
