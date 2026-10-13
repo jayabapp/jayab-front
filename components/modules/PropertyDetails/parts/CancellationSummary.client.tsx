@@ -12,9 +12,10 @@ import CmsText from "@elements/CmsText";
 const PROPERTY_RULES_KEY = "propertyRules";
 
 const CHIP_CLASS: Record<string, string> = {
-  EASY: "bg-status-success-bg text-status-success",
-  NORMAL: "bg-status-warning-bg text-status-warning",
-  STRICT: "bg-status-danger-bg text-status-danger",
+  EASY: "border-status-success-line bg-status-success-bg text-status-success",
+  NORMAL:
+    "border-status-warning-line bg-status-warning-bg text-status-warning",
+  STRICT: "border-status-danger-line bg-status-danger-bg text-status-danger",
 };
 
 const TIMELINE_COLORS: T.TTimelineColor[] = ["success", "warning", "danger"];
@@ -174,25 +175,26 @@ const CancellationSummary = ({ cancelingType }: T.CancellationSummaryProps) => {
 
   return (
     <>
-      <div className="flex flex-wrap items-center gap-2">
-        <p className="ui-body font-semibold text-ink">
+      <div className="flex w-full flex-wrap items-center justify-between gap-x-3 gap-y-1">
+        <p className="flex flex-wrap items-center gap-2 ui-body font-semibold text-ink">
           {t("cancenlationDesc")}
+          <span
+            className={[
+              "rounded-full border px-2.5 py-0.5",
+              "text-xs font-semibold",
+              CHIP_CLASS[cancelingType.id] ??
+                "border-line-strong bg-surface-muted text-ink-muted",
+            ].join(" ")}
+          >
+            {cancelingType.title}
+          </span>
         </p>
-        <span
-          className={[
-            "rounded-full px-2.5 py-0.5",
-            "text-xs font-semibold",
-            CHIP_CLASS[cancelingType.id] ?? "bg-surface-muted text-ink-muted",
-          ].join(" ")}
-        >
-          {cancelingType.title}
-        </span>
 
         <button
           type="button"
           onClick={() => setShowDetails(true)}
           className={[
-            "cursor-pointer text-sm font-semibold text-link",
+            "cursor-pointer py-2 text-sm font-semibold text-link",
             "transition-colors hover:text-on-selected",
             "focus-visible:outline-none",
             "focus-visible:ring-2",

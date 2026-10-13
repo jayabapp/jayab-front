@@ -1,19 +1,15 @@
 import { useTranslations } from "next-intl";
-import { Icon } from "@elements/Icon";
 
 import type { PropertySpecsSectionProps } from "@/types/components/modules/property-details";
 import type { TSurrounding } from "@/types/components/modules/property-details";
 
 import ClampText from "./ClampText.client";
 
-const SurroundingFact = ({ icon, label, value }: TSurrounding) => (
-  <div className="flex items-start gap-3">
-    <Icon name={icon} size={20} className="mt-0.5 shrink-0 text-ink-subtle" />
-    <p className="flex flex-col gap-1 text-sm text-ink md:text-base">
-      <span className="font-bold text-ink">{label}</span>
-      <span className="block font-normal">{value}</span>
-    </p>
-  </div>
+const SurroundingFact = ({ label, value }: TSurrounding) => (
+  <p className="flex min-w-0 flex-col gap-0.5">
+    <span className="text-xs text-ink-subtle">{label}</span>
+    <span className="text-sm font-semibold text-ink">{value}</span>
+  </p>
 );
 
 const Surroundings = ({ property }: PropertySpecsSectionProps) => {
@@ -28,10 +24,9 @@ const Surroundings = ({ property }: PropertySpecsSectionProps) => {
 
   return (
     <div className="flex flex-col gap-4">
-      <div className="grid grid-cols-1 gap-3 sm:grid-cols-2">
+      <div className="grid grid-cols-2 gap-4 sm:grid-cols-3">
         {options?.pattern ? (
           <SurroundingFact
-            icon="home"
             label={t("common.envPattern")}
             value={options.pattern}
           />
@@ -40,7 +35,6 @@ const Surroundings = ({ property }: PropertySpecsSectionProps) => {
         )}
         {options?.access ? (
           <SurroundingFact
-            icon="map-pin"
             value={options.access}
             label={t("common.accessRoute")}
           />
@@ -49,7 +43,6 @@ const Surroundings = ({ property }: PropertySpecsSectionProps) => {
         )}
         {options?.neighborhood ? (
           <SurroundingFact
-            icon="users"
             value={options.neighborhood}
             label={t("listing.propNeightbour")}
           />

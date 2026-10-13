@@ -18,12 +18,12 @@ const RelatedLandingLinks = ({ city, seoLinks }: RelatedLandingLinksProps) => {
     >
       {seoLinks.villa ? (
         <Link href={toHref(seoLinks.villa)} className={LINK_CLASS}>
-          {t("rentVillaIn").replace("{city}", city)}
+          {t("rentVillaIn", { city })}
         </Link>
       ) : null}
       {seoLinks.pool ? (
         <Link href={toHref(seoLinks.pool)} className={LINK_CLASS}>
-          {t("poolVillaIn").replace("{city}", city)}
+          {t("poolVillaIn", { city })}
         </Link>
       ) : null}
     </nav>

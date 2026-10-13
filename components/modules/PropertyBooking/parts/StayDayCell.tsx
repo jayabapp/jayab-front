@@ -36,7 +36,7 @@ const StayDayCell = ({
     : isReserved && blocked
       ? "rounded-10 bg-surface-muted text-ink-subtle"
       : blocked
-        ? "text-neutral-300"
+        ? "text-ink-subtle/75"
         : STATE_CLASS[state];
 
   const verticalClass = row === 0 ? "top-full mt-1" : "bottom-full mb-1";
@@ -52,7 +52,7 @@ const StayDayCell = ({
       {tooltip ? (
         <span
           role="status"
-          className={`pointer-events-none absolute z-10 whitespace-nowrap rounded-full bg-neutral-900 px-3 py-1 text-xs text-white shadow-glass-sm ${verticalClass} ${horizontalClass}`}
+          className={`pointer-events-none absolute z-10 whitespace-nowrap rounded-full bg-neutral-900 px-3 py-1 text-xs text-white shadow-elevated ${verticalClass} ${horizontalClass}`}
         >
           {tooltip}
         </span>
@@ -71,7 +71,7 @@ const StayDayCell = ({
         {isReserved && blocked ? (
           <span
             aria-hidden="true"
-            className="striped absolute inset-0 rounded-10 opacity-20"
+            className="striped absolute inset-0 rounded-10 opacity-30"
           />
         ) : null}
         <span
@@ -86,14 +86,12 @@ const StayDayCell = ({
           />
         ) : price && !blocked ? (
           <span
-            className={`text-2xs ${
+            className={`text-xs ${
               isEdge
-                ? "text-brand-100"
+                ? "text-on-action/80"
                 : discounted
                   ? "text-status-success"
-                  : isPlainFriday
-                    ? "text-status-danger"
-                    : "text-ink-muted"
+                  : "text-ink-muted"
             }`}
           >
             {price}

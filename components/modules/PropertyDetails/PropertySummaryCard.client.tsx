@@ -38,7 +38,7 @@ const PropertySummaryCard = ({ property }: PropertySummaryCardProps) => {
 
   return (
     <>
-      <div className="enter-from-left hidden w-full flex-col gap-3 md:sticky md:top-36 md:flex">
+      <div className="enter-from-left hidden w-full flex-col gap-3 md:sticky md:top-24 md:flex">
         <BookingPanel
           variant="card"
           property={property}

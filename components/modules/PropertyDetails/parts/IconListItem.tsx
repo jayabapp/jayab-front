@@ -24,7 +24,7 @@ const IconListItem = ({
         className="size-5 shrink-0 object-contain"
       />
     ) : (
-      <Icon name={icon} size={20} />
+      <Icon name={icon} size={20} className="text-ink-muted" />
     )}
     <p className="text-sm">{label}</p>
   </div>

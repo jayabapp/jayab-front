@@ -57,7 +57,7 @@ const ListingLocationMap = ({
 
   if (!target) return null;
   return (
-    <div ref={rootRef} className="relative -mx-3 h-64 md:mx-0 md:h-[22rem]">
+    <div ref={rootRef} className="relative h-64 md:h-[22rem]">
       {isSupported === false || hasFailed ? (
         <MapFallbackCard
           className="size-full"
@@ -81,7 +81,7 @@ const ListingLocationMap = ({
           mode={hasExact ? "exact" : "approx"}
         />
       ) : (
-        <Skeleton className="absolute inset-0 md:rounded-20" />
+        <Skeleton className="absolute inset-0 rounded-20" />
       )}
     </div>
   );

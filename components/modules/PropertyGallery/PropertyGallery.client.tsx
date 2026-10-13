@@ -3,6 +3,7 @@
 import { PROPERTY_IMAGE_QUALITY } from "@features/properties/constants/image";
 import { getPropertyImageUrl } from "@features/properties/mappers/property-image.mapper";
 import { trackListingEvent } from "@/helpers/listingAnalytics";
+import { useLocalizeDigits } from "@hooks/useLocalizeDigits";
 import { useMemo, useState } from "react";
 import { useTranslations } from "next-intl";
 import { ContentImage } from "@elements/Image";
@@ -19,9 +20,15 @@ import Swiper from "@elements/Carousel/Swiper.client";
 
 const THUMBNAIL_COUNT = 4;
 
+const MAIN_SPAN: Record<number, string> = {
+  0: "col-span-4 row-span-2",
+  2: "col-span-3 row-span-2",
+};
+
 const thumbnailSpan = (count: number, index: number) => {
   if (count === 1) return "col-span-2 row-span-2";
-  if (count === 2) return "col-span-2 row-span-1";
+  // Two thumbnails stack in one narrow column; as two wide tiles they cropped a 4:3 photo to 2.3:1.
+  if (count === 2) return "col-span-1 row-span-1";
   if (count === 3) return index === 0 ? "col-span-2 row-span-1" : "col-span-1";
   return "col-span-1";
 };
@@ -35,6 +42,7 @@ const PropertyGallery = ({
   advisorCommission,
 }: PropertyGalleryProps) => {
   const t = useTranslations("listing");
+  const digits = useLocalizeDigits();
 
   const [carouselIndex, setCarouselIndex] = useState(0);
   const [viewerIndex, setViewerIndex] = useState<number | null>(null);
@@ -89,9 +97,7 @@ const PropertyGallery = ({
           onClick={() => openViewer(0, "grid")}
           aria-label={`${title ?? ""} 1`}
           className={`group relative cursor-pointer overflow-hidden bg-surface-muted ${
-            thumbnails.length
-              ? "col-span-2 row-span-2"
-              : "col-span-4 row-span-2"
+            MAIN_SPAN[thumbnails.length] ?? "col-span-2 row-span-2"
           }`}
         >
           <ContentImage
@@ -129,14 +135,18 @@ const PropertyGallery = ({
           </button>
         ))}
 
-        <button
-          type="button"
-          onClick={() => openViewer(0, "show_all")}
-          className="absolute bottom-4 end-4 flex cursor-pointer items-center gap-2 rounded-full bg-surface/90 px-4 py-2 text-sm font-semibold text-ink shadow-glass-sm transition-colors hover:bg-surface focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-focus"
-        >
-          <Icon name="images" size={20} />
-          {t("showAllPhotos")} ({orderedImages.length})
-        </button>
+        {orderedImages.length > 1 ? (
+          <button
+            type="button"
+            onClick={() => openViewer(0, "show_all")}
+            className="absolute bottom-4 end-4 flex h-11 cursor-pointer items-center gap-2 rounded-full border border-line bg-surface px-4 text-sm font-semibold text-ink shadow-elevated transition-colors hover:bg-surface-muted focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-focus"
+          >
+            <Icon name="images" size={20} />
+            {t("showAllPhotos")} ({digits(orderedImages.length)})
+          </button>
+        ) : (
+          <></>
+        )}
       </div>
 
       <div className="relative overflow-hidden rounded-20 bg-surface md:hidden">
@@ -173,7 +183,7 @@ const PropertyGallery = ({
         </Swiper>
 
         <p className="pointer-events-none absolute bottom-3 start-3 rounded-full bg-neutral-900/60 px-2.5 py-1 text-xs text-white">
-          {carouselIndex + 1} {t("photoOf")} {orderedImages.length}
+          {digits(carouselIndex + 1)} {t("photoOf")} {digits(orderedImages.length)}
         </p>
       </div>
 

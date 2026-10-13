@@ -43,7 +43,7 @@ export type BookingEditSheetProps = {
 };
 
 export type StayDayCellProps = {
-  day: number;
+  day: number | string;
   row?: number;
   column?: number;
   label: string;

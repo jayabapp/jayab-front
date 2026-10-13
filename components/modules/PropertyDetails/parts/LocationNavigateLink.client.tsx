@@ -28,7 +28,7 @@ const LocationNavigateLink = ({
       href={href}
       target="_blank"
       rel="noopener noreferrer"
-      className={`flex h-11 cursor-pointer items-center justify-center rounded-full border border-line-strong px-5 text-sm font-medium text-ink transition-colors hover:bg-surface-muted focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-focus focus-visible:ring-offset-2 ${className}`}
+      className={`flex h-11 cursor-pointer items-center justify-center rounded-full border border-line-strong px-5 text-sm font-semibold text-ink transition-colors hover:bg-surface-muted focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-focus focus-visible:ring-offset-2 ${className}`}
     >
       {t("navigate")}
     </a>

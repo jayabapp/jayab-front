@@ -3,13 +3,15 @@
 import { useAuthStore, useStoreParams } from "@/store";
 import { useTogglePropertyLike } from "@features/properties/hooks/useTogglePropertyLike";
 import { useTranslations } from "next-intl";
-import { ContentImage } from "@elements/Image";
+import { Icon } from "@elements/Icon";
 
 import type { PropertyLikeButtonProps } from "@/types/components/modules/property-details";
 
 const PropertyLikeButton = ({
-  onCountChange,
+  children,
+  className,
   propertyId,
+  onCountChange,
 }: PropertyLikeButtonProps) => {
   const t = useTranslations("listing");
 
@@ -33,21 +35,15 @@ const PropertyLikeButton = ({
     <button
       type="button"
       onClick={onToggle}
+      className={className}
       aria-pressed={isLiked}
       aria-label={t("likes")}
-      className="w-5 cursor-pointer h-5 aspect-square"
     >
-      <ContentImage
-        alt=""
-        width={20}
-        height={20}
-        className="w-5 h-5 aspect-square"
-        src={
-          isLiked
-            ? "/assets/icons/adds/filled_heart.svg"
-            : "/assets/icons/adds/empty_heart.svg"
-        }
+      <Icon
+        name="heart"
+        className={isLiked ? "fill-current text-status-danger" : ""}
       />
+      {children}
     </button>
   );
 };

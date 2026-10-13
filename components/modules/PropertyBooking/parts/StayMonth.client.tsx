@@ -8,9 +8,10 @@ import { usePropertyCalendar } from "@features/properties/hooks/usePropertyCalen
 import { useListSeparator } from "@hooks/useListSeparator";
 import { useJalaliFormat } from "@hooks/useJalaliFormat";
 import { useFormatToman } from "@hooks/useFormatToman";
+import { localizeDigits } from "@/helpers/intl/digits";
+import { resolveLocale } from "@/i18n/config";
 import { dayRangeState } from "@features/reservations/lib/stay-range";
 import { isDayDisabled } from "@features/reservations/lib/stay-range";
-import { resolveLocale } from "@/i18n/config";
 import { useDir } from "@hooks/useDir";
 
 import { type KeyboardEvent } from "react";
@@ -116,7 +117,7 @@ const StayMonth = ({
       data-stay-month={`${year}-${month}`}
       className="flex flex-col gap-3 [contain-intrinsic-size:auto_22rem] [content-visibility:auto]"
     >
-      <p className="mx-auto w-fit rounded-full bg-surface-muted px-4 py-1 text-sm font-semibold text-ink">
+      <p className="flex h-11 items-center justify-center text-base font-bold text-ink">
         {jalali(first.toDate(), "jMMMM jYYYY")}
       </p>
 
@@ -163,7 +164,6 @@ const StayMonth = ({
           return (
             <StayDayCell
               key={day}
-              day={day}
               row={row}
               state={state}
               column={column}
@@ -175,6 +175,7 @@ const StayMonth = ({
               isLoading={isCalendarPending}
               onSelect={() => onSelectDay(date)}
               discounted={!!entry?.discounted_price}
+              day={localizeDigits(String(day), locale)}
               price={formatCalendarCellPrice(price, locale)}
               onKeyDown={(event) => onDayKeyDown(event, date)}
               label={`${formatJalaliWeekdayDay(date, jalali)}${priceLabel}${sep}${availability}`}

@@ -27,7 +27,7 @@ const BookingEditSheet = dynamic(() => import("./BookingEditSheet.client"), {
 });
 
 const PRIMARY_CLASS =
-  "h-11 shrink-0 cursor-pointer rounded-10 bg-action px-5 text-base font-medium text-on-action transition-colors hover:bg-action-hover focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-focus focus-visible:ring-offset-2";
+  "h-12 shrink-0 cursor-pointer rounded-10 bg-action px-6 text-base font-semibold text-on-action transition-colors hover:bg-action-hover focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-focus focus-visible:ring-offset-2";
 
 const BookingBottomBar = ({
   property,
@@ -76,11 +76,12 @@ const BookingBottomBar = ({
             <span className="text-xs text-ink-subtle">
               {t("reserve.stayStartsFrom")}
             </span>
-            <div className="flex items-end gap-1">
+            <div className="flex items-baseline gap-1">
               <PropertyPriceTag
+                sizeClass="text-lg"
                 price={{ price: property.minimumPrice ?? undefined }}
               />
-              <span className="pb-0.5 text-xs text-ink-muted">
+              <span className="text-xs text-ink-muted">
                 / {t("reserve.ratePerNight")}
               </span>
             </div>

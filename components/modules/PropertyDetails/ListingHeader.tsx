@@ -19,12 +19,12 @@ const ListingHeader = ({ breadcrumbs, property }: ListingHeaderProps) => {
     : property?.textLocales?.province;
 
   return (
-    <header className="enter-from-right order-3 flex flex-col gap-3 pb-4 pt-2 md:order-2 md:pb-6">
+    <header className="enter-from-right order-2 flex flex-col gap-3 pt-4 md:order-1 md:pb-6 md:pt-0">
       <div className="flex min-w-0">
         <SingleProductBreadCrumb dataArray={breadcrumbs} />
       </div>
 
-      <div className="flex flex-col gap-3 md:flex-row md:items-start md:justify-between md:gap-6">
+      <div className="flex flex-col gap-4 md:flex-row md:items-end md:justify-between md:gap-6">
         <div className="flex min-w-0 flex-col gap-2">
           <div className="flex items-start gap-2">
             {property?.hasBlueTick ? (
@@ -32,7 +32,7 @@ const ListingHeader = ({ breadcrumbs, property }: ListingHeaderProps) => {
                 width={20}
                 height={20}
                 alt={t("verified")}
-                className="mt-1 size-5 shrink-0"
+                className="mt-1.5 size-5 shrink-0 md:mt-2.5"
                 src="/assets/icons/adds/verified_badge.svg"
               />
             ) : (
@@ -41,13 +41,14 @@ const ListingHeader = ({ breadcrumbs, property }: ListingHeaderProps) => {
             <h1
               lang={property?.textLocales?.title ?? "fa"}
               dir="auto"
-              className="text-balance text-xl font-bold leading-8 text-ink md:text-2xl md:leading-9"
+              // !leading: the global h1 rule in globals.css pins line-height with !important.
+              className="text-balance text-xl font-bold text-ink md:text-3xl md:!leading-10"
             >
               {property?.title}
             </h1>
           </div>
 
-          <span className="flex items-center gap-1 text-sm text-ink-subtle">
+          <span className="flex items-center gap-1.5 text-sm text-ink-muted">
             <Icon name="map-pin" size={16} />
             <span>
               <bdi lang={property?.textLocales?.city ?? "fa"}>
@@ -57,6 +58,8 @@ const ListingHeader = ({ breadcrumbs, property }: ListingHeaderProps) => {
               <bdi lang={secondaryLocale ?? "fa"}>{secondaryPlace}</bdi>
             </span>
           </span>
+
+          <TrustBadges property={property} />
         </div>
 
         <div className="shrink-0 overflow-x-auto">
@@ -68,8 +71,6 @@ const ListingHeader = ({ breadcrumbs, property }: ListingHeaderProps) => {
           />
         </div>
       </div>
-
-      <TrustBadges property={property} />
     </header>
   );
 };

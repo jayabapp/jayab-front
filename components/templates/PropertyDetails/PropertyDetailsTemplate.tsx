@@ -9,7 +9,8 @@ const PropertyDetailsTemplate = ({
   devices,
   property,
 }: PropertyDetailsTemplateProps) => (
-  <div className="container flex !h-auto flex-col !overflow-x-visible !bg-surface !pb-48 lg:!pb-36">
+  <div // xl:!px-4 cancels the container's 15% side padding; PropertyDetailsContent caps the width instead.
+    className="container flex !h-auto flex-col !overflow-x-visible !bg-surface !pb-28 md:!pb-36 xl:!px-4">
     <PageSurface />
     <ScrollToTopOnMount />
     {schema}

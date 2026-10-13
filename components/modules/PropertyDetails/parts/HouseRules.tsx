@@ -1,3 +1,4 @@
+import { useLocalizeDigits } from "@hooks/useLocalizeDigits";
 import { useTranslations } from "next-intl";
 
 import type { PropertySpecsSectionProps } from "@/types/components/modules/property-details";
@@ -13,6 +14,7 @@ const isAllowed = (value?: string | null) =>
 
 const HouseRules = ({ property }: PropertySpecsSectionProps) => {
   const t = useTranslations();
+  const digits = useLocalizeDigits();
 
   const descriptions = property?.property_descriptions;
   const options = property?.options;
@@ -20,22 +22,28 @@ const HouseRules = ({ property }: PropertySpecsSectionProps) => {
 
   return (
     <div className="flex flex-col gap-5">
-      <div className="grid grid-cols-2 gap-3 sm:max-w-md">
+      {/* Same four-column grid as the sleeping cards, so both card rows line up. */}
+      <div className="grid grid-cols-2 gap-3 lg:grid-cols-4">
         <MiniInfoCard
           icon="clock"
-          title={t("common.enterHour")}
-          value={formatHour(property?.check_in_hour)}
+          value={t("common.enterHour")}
+          title={digits(formatHour(property?.check_in_hour))}
         />
         <MiniInfoCard
           icon="clock"
-          title={t("common.endHour")}
-          value={formatHour(property?.check_out_hour)}
+          value={t("common.endHour")}
+          title={digits(formatHour(property?.check_out_hour))}
         />
+        {property?.canceling_type?.title ? (
+          <div className="col-span-2 flex items-center rounded-10 border border-line-strong bg-surface p-4">
+            <CancellationSummary cancelingType={property.canceling_type} />
+          </div>
+        ) : (
+          <></>
+        )}
       </div>
 
-      <CancellationSummary cancelingType={property?.canceling_type} />
-
-      <div className="flex flex-col gap-3">
+      <div className="grid grid-cols-1 gap-3 sm:grid-cols-2">
         {guestTypes.map((type) => (
           <RuleItem allowed key={`guest-type-${type}`} label={type} />
         ))}

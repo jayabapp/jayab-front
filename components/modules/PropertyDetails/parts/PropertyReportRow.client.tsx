@@ -18,11 +18,11 @@ const PropertyReportRow = ({ propertyId }: PropertyReportRowProps) => {
       <button
         type="button"
         onClick={() => setShow(true)}
-        className="flex w-full cursor-pointer items-center gap-3 rounded-10 border border-line px-4 py-3 text-start transition-colors hover:bg-surface-muted"
+        className="flex w-full cursor-pointer items-center gap-3 rounded-20 border border-line-strong px-4 py-3.5 text-start transition-colors hover:bg-surface-muted focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-focus md:px-5"
       >
         <Icon name="info" size={20} className="shrink-0 text-ink-subtle" />
         <span className="flex min-w-0 flex-1 flex-col gap-0.5">
-          <span className="text-sm font-bold text-ink md:text-base">
+          <span className="text-sm font-semibold text-ink">
             {t("reportWrong")}
           </span>
           <span className="text-xs text-ink-subtle md:text-sm">

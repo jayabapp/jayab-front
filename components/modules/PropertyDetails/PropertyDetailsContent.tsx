@@ -27,7 +27,7 @@ import Amenities from "./parts/Amenities.client";
 import HostCard from "./parts/HostCard";
 import KeyFacts from "./parts/KeyFacts";
 
-const SUB_HEADING_CLASS = "text-sm font-bold text-ink";
+const SUB_HEADING_CLASS = "text-base font-bold text-ink";
 
 const PropertyDetailsContent = ({ property }: PropertyDetailsContentProps) => {
   const t = useTranslations();
@@ -39,6 +39,11 @@ const PropertyDetailsContent = ({ property }: PropertyDetailsContentProps) => {
   const place = [view?.city, view?.region || view?.province]
     .filter(Boolean)
     .join(sep);
+
+  const hasDescription = Boolean(
+    property?.property_descriptions?.ad_dscr ||
+    property?.property_descriptions?.property_dscr,
+  );
 
   const breadCrumbs = [
     { title: t("common.home"), link: "/" },
@@ -59,95 +64,107 @@ const PropertyDetailsContent = ({ property }: PropertyDetailsContentProps) => {
 
   return (
     <ContactFlow property={view}>
-      <ListingHeader breadcrumbs={breadCrumbs} property={view} />
-      <div className="order-1 w-full">
-        <PropertyGallery
-          title={view.title}
-          images={view.images}
-          hostName={view.ownerName}
-          advisorCommission={view.advisorCommission}
-        />
-        {view.ownerName || view.ownerAvatar ? (
-          <div className="py-4">
-            <PropertyOwnerBadge
-              avatar={view.ownerAvatar}
-              name={view.ownerName}
-              isOnline={view.hasActiveSubscription}
-            />
-          </div>
-        ) : null}
-      </div>
+      <div className="mx-auto flex w-full max-w-6xl flex-col">
+        <ListingHeader breadcrumbs={breadCrumbs} property={view} />
 
-      <SectionTabs tabs={tabs} />
+        <div className="order-1 w-full md:order-2">
+          <PropertyGallery
+            title={view.title}
+            images={view.images}
+            hostName={view.ownerName}
+            advisorCommission={view.advisorCommission}
+          />
+        </div>
 
-      <div className="order-5 grid grid-cols-1 gap-x-8 md:grid-cols-12">
-        <div className="flex w-full flex-col md:col-span-7 lg:col-span-8">
-          <ListingSection id="specs" title={t("listing.tabSpecs")}>
-            <KeyFacts property={property} />
-            <PropertyDescription property={property} />
+        <div className="order-3 grid grid-cols-1 gap-x-12 pt-6 md:grid-cols-12 md:pt-8">
+          <div className="flex w-full min-w-0 flex-col md:col-span-7 lg:col-span-8">
+            {view.ownerName || view.ownerAvatar ? (
+              <div className="pb-5">
+                <PropertyOwnerBadge
+                  avatar={view.ownerAvatar}
+                  name={view.ownerName}
+                  isOnline={view.hasActiveSubscription}
+                />
+              </div>
+            ) : null}
 
-            <div className="flex flex-col gap-4">
-              <h3 className={SUB_HEADING_CLASS}>
-                {t("listing.sleepingSpace")}
-              </h3>
-              <SleepingArrangements property={property} />
+            <div className="pb-6">
+              <KeyFacts property={property} />
             </div>
-          </ListingSection>
 
-          {amenities.length ? (
-            <ListingSection id="amenities" title={t("listing.tabAmenities")}>
-              <Amenities property={property} />
+            <SectionTabs tabs={tabs} />
+
+            <ListingSection
+              id="specs"
+              title={
+                hasDescription ? t("common.propDesc") : t("listing.tabSpecs")
+              }
+            >
+              <PropertyDescription property={property} />
+
+              <div className="flex flex-col gap-3">
+                <h3 className={SUB_HEADING_CLASS}>
+                  {t("listing.sleepingSpace")}
+                </h3>
+                <SleepingArrangements property={property} />
+              </div>
             </ListingSection>
-          ) : (
-            <></>
-          )}
 
-          <ListingSection id="calendar" title={t("listing.tabCalendar")}>
-            <StayCalendarSection propertyId={view.id} />
-            <ExtraCosts property={property} />
-          </ListingSection>
+            {amenities.length ? (
+              <ListingSection id="amenities" title={t("listing.tabAmenities")}>
+                <Amenities property={property} />
+              </ListingSection>
+            ) : (
+              <></>
+            )}
 
-          <ListingSection id="rules" title={t("listing.propTerms")}>
-            <HouseRules property={property} />
-          </ListingSection>
+            <ListingSection id="calendar" title={t("listing.tabCalendar")}>
+              <StayCalendarSection propertyId={view.id} />
+              <ExtraCosts property={property} />
+            </ListingSection>
 
-          <ListingSection
-            id="location"
-            title={t("listing.locationSectionTitle")}
-          >
-            <LocationSection
-              place={place}
-              latitude={property?.latitude}
-              longitude={property?.longitude}
-              approxLocation={property?.approx_location}
-            />
-            <Surroundings property={property} />
-          </ListingSection>
+            <ListingSection id="rules" title={t("listing.propTerms")}>
+              <HouseRules property={property} />
+            </ListingSection>
 
-          <ListingSection
-            id="host"
-            divider={false}
-            title={t("listing.tabHost")}
-          >
-            <HostCard
-              name={view.ownerName}
-              since={view.ownerSince}
-              avatar={view.ownerAvatar}
-              isAuthorized={view.isAuthorized}
-              isOnline={view.hasActiveSubscription}
-            />
-            <div className="pt-2">
+            <ListingSection
+              id="location"
+              title={t("listing.locationSectionTitle")}
+            >
+              <LocationSection
+                place={place}
+                latitude={property?.latitude}
+                longitude={property?.longitude}
+                approxLocation={property?.approx_location}
+              />
+              <Surroundings property={property} />
+            </ListingSection>
+
+            <ListingSection
+              id="host"
+              divider={false}
+              title={t("listing.tabHost")}
+            >
+              <HostCard
+                name={view.ownerName}
+                since={view.ownerSince}
+                avatar={view.ownerAvatar}
+                isAuthorized={view.isAuthorized}
+                isOnline={view.hasActiveSubscription}
+              />
               <PropertyReportRow propertyId={view.id} />
-            </div>
-          </ListingSection>
+            </ListingSection>
+          </div>
 
+          <aside className="w-full md:col-span-5 lg:col-span-4">
+            <PropertySummaryCard property={view} />
+          </aside>
+        </div>
+
+        <div className="order-4 flex flex-col">
           <SimilarProperties propertyId={view.id} city={view.city} />
           <RelatedLandingLinks city={view.city} seoLinks={view.seoLinks} />
         </div>
-
-        <aside className="w-full md:col-span-5 lg:col-span-4">
-          <PropertySummaryCard property={view} />
-        </aside>
       </div>
     </ContactFlow>
   );

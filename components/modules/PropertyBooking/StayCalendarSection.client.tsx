@@ -32,7 +32,7 @@ const useIsDesktop = () =>
     () => false,
   );
 const NAV_BUTTON_CLASS =
-  "flex size-9 cursor-pointer items-center justify-center rounded-full border border-line transition-colors hover:bg-surface-muted focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-focus disabled:cursor-not-allowed disabled:opacity-40";
+  "absolute top-0 z-1 flex size-11 cursor-pointer items-center justify-center rounded-full border border-line-strong bg-surface transition-colors hover:bg-surface-muted focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-focus disabled:cursor-not-allowed disabled:opacity-40";
 
 const StayCalendarSection = ({ propertyId }: StayCalendarSectionProps) => {
   const t = useTranslations("common");
@@ -81,30 +81,9 @@ const StayCalendarSection = ({ propertyId }: StayCalendarSectionProps) => {
 
   return (
     <div className="flex flex-col gap-4">
-      <div className="flex items-center justify-end gap-3">
-        <div className="flex items-center gap-2">
-          <button
-            type="button"
-            disabled={!canPrev}
-            className={NAV_BUTTON_CLASS}
-            aria-label={t("lastMonth")}
-            onClick={() => setOffset((value) => value - 1)}
-          >
-            <Icon name="chevron-down" size={16} className="-rotate-90 ltr:rotate-90" />
-          </button>
-          <button
-            type="button"
-            disabled={!canNext}
-            className={NAV_BUTTON_CLASS}
-            aria-label={t("nextMonth")}
-            onClick={() => setOffset((value) => value + 1)}
-          >
-            <Icon name="chevron-down" size={16} className="rotate-90 ltr:-rotate-90" />
-          </button>
-        </div>
-      </div>
-
+      {/* The arrows share the month-title row instead of floating above the grid. */}
       <div
+        className="relative"
         onTouchStart={(event) => {
           touchStart.current = event.touches[0]?.clientX ?? null;
         }}
@@ -112,6 +91,24 @@ const StayCalendarSection = ({ propertyId }: StayCalendarSectionProps) => {
           onTouchEnd(event.changedTouches[0]?.clientX ?? 0)
         }
       >
+        <button
+          type="button"
+          disabled={!canPrev}
+          className={`${NAV_BUTTON_CLASS} start-0`}
+          aria-label={t("lastMonth")}
+          onClick={() => setOffset((value) => value - 1)}
+        >
+          <Icon name="chevron-down" size={16} className="-rotate-90 ltr:rotate-90" />
+        </button>
+        <button
+          type="button"
+          disabled={!canNext}
+          className={`${NAV_BUTTON_CLASS} end-0`}
+          aria-label={t("nextMonth")}
+          onClick={() => setOffset((value) => value + 1)}
+        >
+          <Icon name="chevron-down" size={16} className="rotate-90 ltr:-rotate-90" />
+        </button>
         <StayCalendarGrid
           range={range}
           months={months}

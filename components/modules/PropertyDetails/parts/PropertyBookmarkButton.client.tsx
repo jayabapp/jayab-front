@@ -3,11 +3,12 @@
 import { useAuthStore, useStoreParams } from "@/store";
 import { useTogglePropertyBookmark } from "@features/properties/hooks/useTogglePropertyBookmark";
 import { useTranslations } from "next-intl";
-import { ContentImage } from "@elements/Image";
+import { Icon } from "@elements/Icon";
 
 import type { PropertyBookmarkButtonProps } from "@/types/components/modules/property-details";
 
 const PropertyBookmarkButton = ({
+  className,
   propertyId,
 }: PropertyBookmarkButtonProps) => {
   const t = useTranslations("listing");
@@ -23,22 +24,15 @@ const PropertyBookmarkButton = ({
       disabled={isPending}
       aria-pressed={isBookmarked}
       aria-label={t("bookmarks")}
-      className="w-5 cursor-pointer h-5 aspect-square"
+      className={className}
       onClick={() => {
         if (isLogin) mutate();
         else useStoreParams.setState({ loginModal: true });
       }}
     >
-      <ContentImage
-        alt=""
-        width={20}
-        height={20}
-        className="w-5 h-5 aspect-square"
-        src={
-          isBookmarked
-            ? "/assets/icons/adds/filled_bookmark.svg"
-            : "/assets/icons/adds/empty_bookmark.svg"
-        }
+      <Icon
+        name="bookmark"
+        className={isBookmarked ? "fill-current text-link" : ""}
       />
     </button>
   );

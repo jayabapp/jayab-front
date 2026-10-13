@@ -20,16 +20,14 @@ const SingleProductBreadCrumb = ({
           >
             {" "}
             <div
-              className={`${
-                index == arr?.length - 1 ? "  " : " opacity-50"
-              } justify-center  cursor-pointer gap-2 flex  rounded-md   text-ink`}
+              className="justify-center  cursor-pointer gap-2 flex  rounded-md"
             >
               {e?.link == "/" ? <></> : <></>}{" "}
               <p
-                className={`  text-2xs md:text-sm text-dark-700  transition-all     ${
+                className={`text-xs md:text-sm transition-colors ${
                   index == arr?.length - 1
-                    ? "font-normal hover:text-ink-subtle "
-                    : " hover:opacity-100 opacity-50"
+                    ? "text-ink"
+                    : "text-ink-subtle hover:text-ink"
                 }`}
               >
                 {e.title}

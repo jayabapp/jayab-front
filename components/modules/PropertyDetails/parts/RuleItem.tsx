@@ -13,7 +13,7 @@ const RuleItem = ({ allowed, description, label }: RuleItemProps) => (
       <p className="ui-body text-ink">{label}</p>
       {description ? (
         <p className="whitespace-pre-wrap ui-caption text-ink-subtle">
-          {description}
+          <bdi>{description}</bdi>
         </p>
       ) : (
         <></>

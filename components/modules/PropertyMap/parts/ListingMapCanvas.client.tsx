@@ -28,8 +28,10 @@ const AREA_FILL_LAYER = `${AREA_SOURCE}-fill`;
 const AREA_LINE_LAYER = `${AREA_SOURCE}-line`;
 const AREA_FADE_MS = 400;
 
+// The map SDK pins its zoom buttons to the physical top-right corner in every
+// language, so this button sits on the physical left: `end` in RTL, `start` in LTR.
 const CONTROL_CLASS =
-  "absolute end-3 top-3 z-10 flex size-10 cursor-pointer items-center justify-center rounded-full bg-surface text-ink shadow-glass-sm transition-colors hover:bg-surface-muted focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-focus";
+  "absolute top-3 z-10 ltr:start-3 rtl:end-3 flex size-10 cursor-pointer items-center justify-center rounded-full bg-surface text-ink shadow-elevated transition-colors hover:bg-surface-muted focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-focus";
 
 const ListingMapCanvas = ({
   lat,
@@ -214,7 +216,7 @@ const ListingMapCanvas = ({
   return (
     <div
       ref={containerRef}
-      className="absolute inset-0 overflow-hidden bg-surface-muted max-md:[&_.maplibregl-ctrl-top-right]:hidden md:rounded-20 md:border md:border-line"
+      className="absolute inset-0 overflow-hidden bg-surface-muted max-md:[&_.maplibregl-ctrl-top-right]:hidden rounded-20 border border-line-strong"
     >
       <NeshanMap
         onError={onError}

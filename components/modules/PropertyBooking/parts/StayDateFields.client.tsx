@@ -28,17 +28,17 @@ const StayDateFields = ({
   ] as const;
 
   return (
-    <div className="flex divide-x divide-x-reverse divide-control overflow-hidden rounded-10 border border-control">
-      {fields.map((field) => (
+    <div className="flex overflow-hidden rounded-10 border border-control">
+      {fields.map((field, index) => (
         <button
           key={field.id}
           type="button"
           disabled={disabled}
           aria-expanded={!!expanded}
           onClick={() => onOpen(field.id)}
-          className={`${FIELD_BASE} ${
+          className={`${FIELD_BASE} ${index ? "border-s border-control" : ""} ${
             activeField === field.id
-              ? "bg-surface-muted ring-2 ring-inset ring-neutral-900"
+              ? "bg-surface-muted ring-2 ring-inset ring-ink"
               : ""
           }`}
         >

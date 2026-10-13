@@ -25,7 +25,7 @@ const GuestStepper = ({
   const extra = value !== null ? value - std : 0;
 
   return (
-    <div className="flex flex-col gap-1.5 rounded-10 border border-line px-3 py-2.5">
+    <div className="flex flex-col gap-1.5 rounded-10 border border-control px-3 py-2.5">
       <div className="flex items-center justify-between gap-3">
         <div className="flex items-center gap-2">
           <Icon name="users" size={20} className="text-ink-subtle" />
@@ -55,7 +55,7 @@ const GuestStepper = ({
             <Icon name="plus" size={16} />
           </button>
           <span className="min-w-4 text-center text-sm font-semibold">
-            {value ?? ""}
+            {value === null ? "" : formatNumber(value)}
           </span>
           <button
             type="button"
@@ -71,14 +71,15 @@ const GuestStepper = ({
 
       {extra > 0 && extraGuestFee ? (
         <p className="text-xs text-status-warning">
-          {t("reserve.overStandardNote")
-            .replace("{count}", `${extra}`)
-            .replace("{fee}", `${formatNumber(extraGuestFee)}`)}
+          {t("reserve.overStandardNote", {
+            count: formatNumber(extra),
+            fee: formatNumber(extraGuestFee),
+          })}
         </p>
       ) : null}
       {isAtMax ? (
         <p className="text-xs text-ink-subtle">
-          {t("reserve.maxCapacityNote").replace("{count}", `${max}`)}
+          {t("reserve.maxCapacityNote", { count: formatNumber(max) })}
         </p>
       ) : null}
     </div>

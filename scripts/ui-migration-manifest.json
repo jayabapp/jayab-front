@@ -609,15 +609,6 @@
     },
     {
       "axis": "color",
-      "file": "components/modules/PropertyBooking/parts/StayDateFields.client.tsx",
-      "kind": "valid",
-      "reason": "fixed dark surface over a photo, media or overlay; stays dark in both themes (07: surfaces on images are intentionally fixed)",
-      "hits": [
-        "ring-neutral-900"
-      ]
-    },
-    {
-      "axis": "color",
       "file": "components/modules/PropertyBooking/parts/StayDayCell.tsx",
       "kind": "valid",
       "reason": "fixed dark surface over a photo, media or overlay; stays dark in both themes (07: surfaces on images are intentionally fixed)",
@@ -680,15 +671,6 @@
       "reason": "Persian domain data matched against backend values, not UI copy",
       "hits": [
         "نیست"
-      ]
-    },
-    {
-      "axis": "color",
-      "file": "components/modules/PropertyDetails/parts/PropertyOwnerBadge.tsx",
-      "kind": "valid",
-      "reason": "white text, border or ring on a fixed photo or solid brand/status fill; the fill does not change with the theme",
-      "hits": [
-        "border-white"
       ]
     },
     {
@@ -1318,16 +1300,6 @@
     },
     {
       "axis": "color",
-      "file": "components/modules/PropertyBooking/parts/StayDayCell.tsx",
-      "kind": "pending",
-      "reason": "raw palette colour not yet mapped to a semantic token",
-      "hits": [
-        "text-neutral-300",
-        "text-brand-100"
-      ]
-    },
-    {
-      "axis": "color",
       "file": "components/modules/PropertyContact/parts/ReservationDatePicker/Day.tsx",
       "kind": "pending",
       "reason": "raw palette colour not yet mapped to a semantic token",
@@ -1370,15 +1342,6 @@
       "hits": [
         "border-warning-500",
         "bg-neutral-500"
-      ]
-    },
-    {
-      "axis": "color",
-      "file": "components/modules/PropertyDetails/parts/PropertyOwnerBadge.tsx",
-      "kind": "pending",
-      "reason": "raw palette colour not yet mapped to a semantic token",
-      "hits": [
-        "bg-emerald-500"
       ]
     },
     {

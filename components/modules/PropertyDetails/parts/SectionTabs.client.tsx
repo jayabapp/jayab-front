@@ -72,9 +72,9 @@ const SectionTabs = ({ tabs }: SectionTabsProps) => {
     <nav
       ref={navRef}
       aria-label={t("sectionsNav")}
-      className="sticky top-16 z-20 order-2 -mx-3 mb-2 border-b border-surface-muted bg-surface/95 px-3 backdrop-blur md:top-20 md:order-3 md:mx-0 md:px-0"
+      className="sticky top-[3.75rem] z-10 -mx-3 border-b border-line bg-surface/95 px-3 backdrop-blur md:top-20 md:z-20 md:mx-0 md:px-0"
     >
-      <ul className="flex list-none gap-2 overflow-x-auto py-2 [scrollbar-width:none] [&::-webkit-scrollbar]:hidden">
+      <ul className="flex list-none gap-6 overflow-x-auto [scrollbar-width:none] [&::-webkit-scrollbar]:hidden">
         {tabs.map((tab) => (
           <li key={tab.id}>
             <button
@@ -84,10 +84,10 @@ const SectionTabs = ({ tabs }: SectionTabsProps) => {
               }}
               onClick={() => onTabClick(tab.id)}
               aria-current={activeId === tab.id ? "true" : undefined}
-              className={`cursor-pointer whitespace-nowrap rounded-full px-4 py-1.5 text-sm transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-focus ${
+              className={`cursor-pointer whitespace-nowrap border-b-2 py-3 text-sm transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-inset focus-visible:ring-focus ${
                 activeId === tab.id
-                  ? "bg-selected font-semibold text-link"
-                  : "text-ink-muted hover:bg-surface-muted"
+                  ? "border-action font-semibold text-link"
+                  : "border-transparent text-ink-muted hover:text-ink"
               }`}
             >
               {tab.label}

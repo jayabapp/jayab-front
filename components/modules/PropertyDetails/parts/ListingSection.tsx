@@ -10,14 +10,14 @@ const ListingSection = ({
   <section
     id={id}
     aria-labelledby={`${id}-title`}
-    className={`flex scroll-mt-28 flex-col gap-4 py-6 md:scroll-mt-32 md:py-8 ${
-      divider ? "border-b border-surface-muted" : ""
+    className={`flex scroll-mt-28 flex-col gap-5 py-8 md:scroll-mt-32 md:py-10 ${
+      divider ? "border-b border-line" : ""
     }`}
   >
     <div className="flex items-center justify-between gap-3">
       <h2
         id={`${id}-title`}
-        className="text-balance text-base font-bold text-ink md:text-lg"
+        className="text-balance text-lg font-bold leading-8 text-ink md:text-xl md:leading-8"
       >
         {title}
       </h2>

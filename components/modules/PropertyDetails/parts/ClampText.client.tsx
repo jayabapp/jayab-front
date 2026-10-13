@@ -13,7 +13,11 @@ const LINE_CLAMP: Record<number, string> = {
   6: "line-clamp-6",
 };
 
-const ClampText = ({ children, className = "", lines = 4 }: ClampTextProps) => {
+const ClampText = ({
+  children,
+  lines = 4,
+  className = "ui-body leading-7",
+}: ClampTextProps) => {
   const t = useTranslations("listing");
 
   const [expanded, setExpanded] = useState(false);
@@ -35,11 +39,11 @@ const ClampText = ({ children, className = "", lines = 4 }: ClampTextProps) => {
     <div className="flex flex-col items-start gap-2">
       <p
         ref={textRef}
-        className={`whitespace-pre-wrap text-sm leading-7 text-ink md:leading-8 ${
+        className={`whitespace-pre-wrap text-ink ${
           expanded ? "" : (LINE_CLAMP[lines] ?? "line-clamp-4")
         } ${className}`}
       >
-        {children}
+        <bdi>{children}</bdi>
       </p>
       {isClamped || expanded ? (
         <button

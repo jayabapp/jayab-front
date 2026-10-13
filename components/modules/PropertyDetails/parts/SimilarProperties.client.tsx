@@ -46,13 +46,13 @@ const SimilarProperties = ({ city, propertyId }: TSimilarPropertiesProps) => {
     <section
       ref={rootRef}
       aria-labelledby="similar-properties-title"
-      className="pt-8 pb-4"
+      className="border-t border-line pb-4 pt-8 md:pt-10"
     >
       <h2
         id="similar-properties-title"
-        className="mb-4 text-base font-bold text-ink md:text-lg"
+        className="mb-5 text-lg font-bold leading-8 text-ink md:text-xl md:leading-8"
       >
-        {city ? t("similarStaysIn").replace("{city}", city) : t("similarStays")}
+        {city ? t("similarStaysIn", { city }) : t("similarStays")}
       </h2>
       {isVisible ? (
         <Swiper

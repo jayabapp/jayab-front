@@ -1,12 +1,13 @@
+import { useLocalizeDigits } from "@hooks/useLocalizeDigits";
 import { useTranslations } from "next-intl";
 
 import type { PropertySpecsSectionProps } from "@/types/components/modules/property-details";
 
 import MiniInfoCard from "./MiniInfoCard";
-import FactRow from "./FactRow";
 
 const SleepingArrangements = ({ property }: PropertySpecsSectionProps) => {
   const t = useTranslations();
+  const digits = useLocalizeDigits();
 
   const bedrooms = property?.bedrooms;
   const rooms = bedrooms?.bedrooms ?? [];
@@ -33,58 +34,47 @@ const SleepingArrangements = ({ property }: PropertySpecsSectionProps) => {
     return <></>;
 
   return (
-    <div className="flex flex-col gap-4">
-      {rooms.length || sharedBits.length ? (
-        <div className="flex gap-3 overflow-x-auto pb-1 md:grid md:grid-cols-4 md:overflow-visible">
-          {rooms.map((beds, index) => (
-            <MiniInfoCard
-              icon="bed"
-              className="min-w-[8.5rem] shrink-0"
-              key={`bedroom-${index}`}
-              title={`${t("listing.room")} ${index + 1}`}
-              value={t("listing.bedsCount", { count: Number(beds) })}
-              note={
-                index === 0 && bedrooms?.master_room
-                  ? t("common.masterRoom")
-                  : null
-              }
-            />
-          ))}
+    <div className="grid grid-cols-2 gap-3 lg:grid-cols-4">
+      {rooms.map((beds, index) => (
+        <MiniInfoCard
+          icon="bed"
+          key={`bedroom-${index}`}
+          title={digits(`${t("listing.room")} ${index + 1}`)}
+          value={digits(t("listing.bedsCount", { count: Number(beds) }))}
+          note={
+            index === 0 && bedrooms?.master_room ? t("common.masterRoom") : null
+          }
+        />
+      ))}
 
-          {sharedBits.length ? (
-            <MiniInfoCard
-              icon="bed"
-              className="min-w-[8.5rem] shrink-0"
-              title={t("listing.sharedSpace")}
-              value={sharedBits.join(" • ")}
-            />
-          ) : (
-            <></>
-          )}
-        </div>
+      {sharedBits.length ? (
+        <MiniInfoCard
+          icon="bed"
+          title={t("listing.sharedSpace")}
+          value={digits(sharedBits.join(" • "))}
+        />
       ) : (
         <></>
       )}
 
-      {toilets.length || bathrooms ? (
-        <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
-          {toilets.length ? (
-            <FactRow icon="toilet" title={t("listing.wc")} summary={toilets} />
-          ) : (
-            <></>
+      {toilets.length ? (
+        <MiniInfoCard
+          icon="toilet"
+          title={t("listing.wc")}
+          value={digits(toilets.join(" • "))}
+        />
+      ) : (
+        <></>
+      )}
+
+      {bathrooms ? (
+        <MiniInfoCard
+          icon="bath"
+          title={t("listing.bathroom")}
+          value={digits(
+            t("listing.bathroomCount", { count: Number(bathrooms) }),
           )}
-          {bathrooms ? (
-            <FactRow
-              icon="bath"
-              title={t("listing.bathroom")}
-              summary={[
-                `${t("listing.bathroomCount", { count: Number(bathrooms) })}`,
-              ]}
-            />
-          ) : (
-            <></>
-          )}
-        </div>
+        />
       ) : (
         <></>
       )}

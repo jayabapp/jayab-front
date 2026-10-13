@@ -12,18 +12,19 @@ const StepCta = ({ canClear, onClear, onPrimary, step }: StepCtaProps) => {
       <button
         type="button"
         onClick={onPrimary}
-        className="h-11 w-full cursor-pointer rounded-10 bg-action text-base font-medium text-on-action transition-colors hover:bg-action-hover focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-focus focus-visible:ring-offset-2"
+        className="h-12 w-full cursor-pointer rounded-10 bg-action text-base font-semibold text-on-action transition-colors hover:bg-action-hover focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-focus focus-visible:ring-offset-2"
       >
         {step === "PICK_DATES" ? t("pickDatesCta") : t("pickGuestsCta")}
       </button>
-      <button
-        type="button"
-        onClick={onClear}
-        disabled={!canClear}
-        className="w-fit cursor-pointer self-center text-sm text-ink-subtle transition-colors hover:text-ink disabled:cursor-not-allowed disabled:opacity-40 disabled:hover:text-ink-subtle"
-      >
-        {t("clearStay")}
-      </button>
+      {canClear ? (
+        <button
+          type="button"
+          onClick={onClear}
+          className="w-fit cursor-pointer self-center py-1 text-sm text-ink-subtle transition-colors hover:text-ink"
+        >
+          {t("clearStay")}
+        </button>
+      ) : null}
     </div>
   );
 };

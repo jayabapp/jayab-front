@@ -4,12 +4,12 @@ const StayCalendarLegend = () => {
   const t = useTranslations("reserve");
 
   return (
-    <div className="flex flex-wrap items-center gap-x-5 gap-y-1 text-xs text-ink-subtle">
+    <div className="flex flex-wrap items-center gap-x-5 gap-y-1 text-xs text-ink-muted">
       <span className="flex items-center gap-2">
-        <span className="relative size-4 overflow-hidden rounded-md bg-surface-muted">
+        <span className="relative size-4 overflow-hidden rounded border border-line-strong bg-surface-muted">
           <span
             aria-hidden="true"
-            className="striped absolute inset-0 opacity-20"
+            className="striped absolute inset-0 opacity-30"
           />
         </span>
         {t("reservedDays")}
@@ -21,6 +21,7 @@ const StayCalendarLegend = () => {
         />
         {t("peakDays")}
       </span>
+      <span className="text-ink-subtle">{t("pricesInThousands")}</span>
     </div>
   );
 };

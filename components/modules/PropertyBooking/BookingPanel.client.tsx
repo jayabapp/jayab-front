@@ -73,13 +73,14 @@ const BookingPanel = ({
   const header = () => {
     if (booking.step !== "READY")
       return (
-        <div className="flex flex-col gap-1">
-          <p className="ui-body text-ink-subtle">{t("stayStartsFrom")}</p>
-          <div className="flex flex-wrap items-end gap-1.5">
+        <div className="flex flex-col gap-0.5">
+          <p className="ui-caption text-ink-subtle">{t("stayStartsFrom")}</p>
+          <div className="flex flex-wrap items-baseline gap-1.5">
             <PropertyPriceTag
+              sizeClass="text-2xl"
               price={{ price: property.minimumPrice ?? undefined }}
             />
-            <span className="pb-0.5 ui-caption text-ink-muted">
+            <span className="ui-body text-ink-muted">
               / {t("ratePerNight")}
             </span>
           </div>
@@ -129,7 +130,7 @@ const BookingPanel = ({
           <button
             type="button"
             onClick={openDates}
-            className="h-11 w-full cursor-pointer rounded-10 bg-action text-base font-medium text-on-action transition-colors hover:bg-action-hover"
+            className="h-12 w-full cursor-pointer rounded-10 bg-action text-base font-semibold text-on-action transition-colors hover:bg-action-hover"
           >
             {t("changeDates")}
           </button>
@@ -160,7 +161,7 @@ const BookingPanel = ({
       <div
         className={
           isCard
-            ? "flex w-full flex-col gap-4 rounded-20 border border-line-strong bg-surface p-5 shadow-glass-sm"
+            ? "flex w-full flex-col gap-4 rounded-20 border border-line-strong bg-surface p-5 shadow-elevated lg:p-6"
             : "flex w-full flex-col gap-4 p-4"
         }
       >

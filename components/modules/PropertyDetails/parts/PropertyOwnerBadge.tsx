@@ -20,26 +20,26 @@ const PropertyOwnerBadge = ({
           width={48}
           height={48}
           alt={name || t("common.host")}
-          sizes="(min-width: 768px) 48px, 40px"
-          className="size-10 aspect-square rounded-full object-cover md:size-12"
-          src={avatar ? getPropertyImageUrl(avatar) : OWNER_AVATAR_FALLBACK}
           fallbackSrc={OWNER_AVATAR_FALLBACK}
+          sizes="(min-width: 768px) 48px, 40px"
+          src={avatar ? getPropertyImageUrl(avatar) : OWNER_AVATAR_FALLBACK}
+          className="size-10 aspect-square rounded-full object-cover md:size-12"
         />
         {isOnline ? (
           <span
             role="status"
             aria-label={t("listing.online")}
-            className="absolute -top-0.5 -start-0.5 size-3 rounded-full border-2 border-white bg-emerald-500 shadow-[0_0_4px_rgba(16,185,129,0.9)]"
+            className="absolute -bottom-0.5 -end-0.5 size-3 rounded-full border-2 border-surface bg-status-success"
           />
         ) : null}
       </div>
-      <div className="flex min-w-0 flex-1 flex-col items-start gap-1">
+      <div className="flex min-w-0 flex-1 flex-col items-start gap-0.5">
         <p className="text-xs text-ink-subtle">
           {t("common.host")}
           {isOnline ? (
             <>
               {" - "}
-              <span className="text-emerald-500">{t("listing.online")}</span>
+              <span className="text-status-success">{t("listing.online")}</span>
             </>
           ) : null}
         </p>

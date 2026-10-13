@@ -14,13 +14,6 @@ export type ListingSectionProps = {
   children: ReactNode;
 };
 
-export type FactRowProps = {
-  title: string;
-  value?: string;
-  icon: IconName;
-  summary?: ReadonlyArray<string | number | null | undefined>;
-};
-
 export type IconListItemProps = {
   label: string;
   state?: "on" | "off";
@@ -67,6 +60,11 @@ export type TrustBadge = {
   icon: IconName;
   label: string;
   colorClass: string;
+};
+
+export type ListingActionButtonProps = {
+  className?: string;
+  children?: ReactNode;
 };
 
 export type ListingActionsProps = {
@@ -152,11 +150,11 @@ export type PropertyReportModalProps = {
   propertyId: number;
 };
 
-export type PropertyBookmarkButtonProps = {
+export type PropertyBookmarkButtonProps = ListingActionButtonProps & {
   propertyId: number;
 };
 
-export type PropertyLikeButtonProps = {
+export type PropertyLikeButtonProps = ListingActionButtonProps & {
   propertyId: number;
   onCountChange: (delta: number) => void;
 };
@@ -169,6 +167,7 @@ export type PropertyOwnerBadgeProps = {
 
 export type PropertyPriceTagProps = {
   price: PropertyDetailsView["todayPrice"];
+  sizeClass?: string;
 };
 
 export type PropertyDetailsSkeletonProps = {
@@ -217,7 +216,18 @@ export type TStepMarkerProps = {
 };
 
 export type TSurrounding = {
-  icon: IconName;
   label: string;
   value: string;
+};
+
+export type TKeyFact = {
+  icon: IconName;
+  title: string;
+  note?: string;
+};
+
+export type TExtraCost = {
+  icon: IconName;
+  label: string;
+  amount: number;
 };
