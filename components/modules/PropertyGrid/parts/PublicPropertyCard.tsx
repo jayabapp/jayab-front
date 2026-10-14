@@ -3,6 +3,7 @@ import { getPropertyImageUrl } from "@features/properties/mappers/property-image
 import { useListSeparator } from "@hooks/useListSeparator";
 import { useTranslations } from "next-intl";
 import { ContentImage } from "@elements/Image";
+import { CallBadge } from "@elements/Badge";
 
 import type { PublicPropertyCardProps } from "@/types/components/modules/property-grid";
 
@@ -14,29 +15,8 @@ const PublicPropertyCard = ({ data, goToLink }: PublicPropertyCardProps) => {
   const t = useTranslations();
   const sep = useListSeparator();
 
-  const hasActiveSubscription = data.has_active_subscription;
-
   return (
     <div className="property-card-shadow relative w-full overflow-hidden rounded-20 bg-surface p-3">
-      {/* Active Subscription Indicator */}
-      {hasActiveSubscription ? (
-        <div
-          className="
-          h-3 w-3
-          rounded-full
-          bg-emerald-500
-          ring-1 ring-white
-          absolute left-[4px] top-[8px] z-20
-          shadow-[0_0_4px_rgba(16,185,129,1),0_0_8px_rgba(16,185,129,0.75),0_0_13px_rgba(16,185,129,0.45)]
-          "
-          role="status"
-          aria-label={t("listing.activeSubscription")}
-          title={t("listing.activeSubscription")}
-        >
-          <span className="sr-only">{t("listing.activeSubscription")}</span>
-        </div>
-      ) : null}
-
       <div className="grid w-full grid-cols-5 gap-3">
         {/* Right Side - Information */}
         <PropertyCardLink
@@ -137,8 +117,15 @@ const PublicPropertyCard = ({ data, goToLink }: PublicPropertyCardProps) => {
         <PropertyCardLink
           title={data.title}
           href={goToLink}
-          className="order-2 col-span-2 flex w-full !outline-none"
+          className="relative order-2 col-span-2 flex w-full !outline-none"
         >
+          {data.has_active_subscription ? (
+            <CallBadge
+              label={t("listing.activeSubscription")}
+              className="absolute -end-2.5 -top-2.5 z-2"
+            />
+          ) : null}
+
           <div className="relative aspect-square w-full shrink-0 overflow-hidden rounded-2xl">
             <ContentImage
               fill

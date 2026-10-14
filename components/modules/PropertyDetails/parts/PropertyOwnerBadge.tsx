@@ -1,6 +1,7 @@
 import { getPropertyImageUrl } from "@features/properties/mappers/property-image.mapper";
 import { useTranslations } from "next-intl";
 import { ContentImage } from "@elements/Image";
+import { CallBadge } from "@elements/Badge";
 
 import type { PropertyOwnerBadgeProps } from "@/types/components/modules/property-details";
 
@@ -26,10 +27,9 @@ const PropertyOwnerBadge = ({
           className="size-10 aspect-square rounded-full object-cover md:size-12"
         />
         {isOnline ? (
-          <span
-            role="status"
-            aria-label={t("listing.online")}
-            className="absolute -bottom-0.5 -end-0.5 size-3 rounded-full border-2 border-surface bg-status-success"
+          <CallBadge
+            label={t("listing.activeSubscription")}
+            className="absolute -end-1 -top-1"
           />
         ) : null}
       </div>
