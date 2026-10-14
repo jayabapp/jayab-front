@@ -3,6 +3,6 @@ export type DisplayPreferencesProps = {
   className?: string;
 };
 
-export type PreferenceControlProps = {
-  overHero?: boolean;
+export type PreferenceSectionProps = {
+  large?: boolean;
 };

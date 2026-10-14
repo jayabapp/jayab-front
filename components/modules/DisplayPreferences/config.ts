@@ -20,3 +20,15 @@ const LOCALE_LOCKED_PATHS = [
 
 export const isLocaleSwitchLocked = (pathname: string | null) =>
   !!pathname && LOCALE_LOCKED_PATHS.some((pattern) => pattern.test(pathname));
+
+export const SEGMENT_CLASS =
+  "grid grid-flow-col auto-cols-fr gap-1 rounded-2xl bg-surface-muted p-1";
+
+export const segmentOptionClass = (active: boolean, large: boolean) =>
+  `flex w-full min-w-0 items-center justify-center gap-1.5 rounded-xl px-2 text-sm transition-colors ${
+    large ? "h-12" : "h-10"
+  } ${
+    active
+      ? "bg-surface font-bold text-ink shadow-sm ring-1 ring-line-strong"
+      : "font-medium text-ink-muted hover:text-ink"
+  }`;
