@@ -32,10 +32,16 @@ export const getServerLandings = cache(
 );
 
 export const getServerContentList = cache(
-  (key: string, page: number, perPage: number, summary = false) =>
+  (
+    key: string,
+    page: number,
+    perPage: number,
+    summary = false,
+    locale?: Locale,
+  ) =>
     serverCall(
       baseUrl + apiRoutes.CONTENTS,
-      { key, page, per_page: perPage, summary: summary || undefined },
+      { key, page, per_page: perPage, summary: summary || undefined, locale },
       {
         revalidate: key === "blog" ? REVALIDATE.BLOG : REVALIDATE.CMS_PAGE,
       },

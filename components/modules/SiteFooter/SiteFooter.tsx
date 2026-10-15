@@ -1,6 +1,8 @@
 import type { FooterContentEntry } from "@/types/components/modules/site-footer";
 import { getServerContentList } from "@features/home/server/home.server";
 import { getServerCmsContent } from "@features/home/server/home.server";
+import { resolveLocale } from "@/i18n/config";
+import { getLocale } from "next-intl/server";
 
 import FooterContactColumn from "./parts/FooterContactColumn";
 import FooterAboutColumn from "./parts/FooterAboutColumn";
@@ -15,22 +17,36 @@ const DOWNLOAD_PER_PAGE = 20;
 const QUICK_LINK_PER_PAGE = 100;
 
 const SiteFooter = async () => {
+  const locale = resolveLocale(await getLocale());
   const [about, callUs, contactsResponse, downloadsResponse, quickResponse] =
     await Promise.all([
-      getServerCmsContent("aboutUs"),
-      getServerCmsContent("footerCallUs"),
+      getServerCmsContent("aboutUs", locale),
+      getServerCmsContent("footerCallUs", locale),
       getServerContentList("contactUs", 1, CONTACT_PER_PAGE),
       getServerContentList("downloadLinks", 1, DOWNLOAD_PER_PAGE),
-      getServerContentList("footer-quick-search-links", 1, QUICK_LINK_PER_PAGE),
+      getServerContentList(
+        "footer-quick-search-links",
+        1,
+        QUICK_LINK_PER_PAGE,
+        false,
+        locale,
+      ),
     ]);
 
+  // Quick-search titles are Persian search phrases; other languages show only translated ones.
+  const quickLinks: FooterContentEntry[] = (
+    quickResponse?.data?.data ?? []
+  ).filter(
+    (link: FooterContentEntry) =>
+      locale === "fa" || link.content_locale === locale,
+  );
   const contacts: FooterContentEntry[] = contactsResponse?.data?.data ?? [];
   const socials = contacts.filter((entry) => entry?.fields?.key === "social");
   const others = contacts.filter((entry) => entry?.fields?.key !== "social");
   return (
     <footer className="w-full z-2 bg-neutral-400/40 flex flex-col items-center justify-center bg-dark-500 bg-no-repeat bg-cover relative pt-[28rem] md:pt-[16rem] lg:pt-[6rem]">
       <FooterCallBox content={callUs} />
-      <FooterQuickSearch links={quickResponse?.data?.data ?? []} />
+      {quickLinks.length ? <FooterQuickSearch links={quickLinks} /> : <></>}
 
       <div className="w-full padding-x lg:w-full mx-auto py-4 grid grid-cols-4 lg:grid-cols-7 gap-5">
         <FooterAboutColumn about={about} socials={socials} />

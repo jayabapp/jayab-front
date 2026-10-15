@@ -30,6 +30,7 @@ export interface ContentByKeyDto {
 export interface Fields {}
 
 export interface ContentDto {
+  content_locale?: Locale;
   id: number;
   title: string;
   slug: null;
