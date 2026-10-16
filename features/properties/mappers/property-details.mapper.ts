@@ -1,8 +1,16 @@
 import type { PropertyDetailsView } from "@/types/features/properties";
 import type { SinglePropDto } from "@/api_services/property/property.interface";
 
-const isRuleAllowed = (value?: string | number | null) =>
+// Rules are decided from the Persian title, which is the same in every language.
+export const isRuleAllowed = (value?: string | number | null) =>
   Boolean(value) && !`${value}`.includes("نیست");
+
+export const canonicalRuleTitle = (
+  property: SinglePropDto | undefined,
+  group: "pet" | "party",
+) =>
+  property?.option_items?.find((item) => item.group === group)
+    ?.canonical_title ?? property?.options?.[group];
 
 export const toPropertyDetailsView = (
   property: SinglePropDto,
@@ -24,11 +32,12 @@ export const toPropertyDetailsView = (
   isAuthorized: !!property?.is_authorized,
   isChatEnabled: !!property?.is_chat_enabled,
   isPromoted: !!property?.is_promoted,
-  isPetAllowed: isRuleAllowed(property?.options?.pet),
-  isEventsAllowed: isRuleAllowed(property?.options?.party),
+  isPetAllowed: isRuleAllowed(canonicalRuleTitle(property, "pet")),
+  isEventsAllowed: isRuleAllowed(canonicalRuleTitle(property, "party")),
   maxCapacity: property?.max_capacity,
   ownerAvatar: property?.owner_info?.avatar ?? null,
   ownerName: property?.owner_info?.full_name ?? "",
+  ownerNameLocale: property?.owner_info?.full_name_locale,
   ownerSince: property?.owner_info?.since ?? null,
   seoLinks: property?.seo_links,
   province: property?.province,

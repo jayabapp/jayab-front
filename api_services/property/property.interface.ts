@@ -4,6 +4,20 @@ import type { Locale } from "@/i18n/config";
 export type PropertyTranslations = Partial<
   Record<"ar" | "en", { title?: string; address?: string }>
 >;
+export type PropertyDescriptionField =
+  | "property_dscr"
+  | "ad_dscr"
+  | "facility_dscr"
+  | "pattern_dscr"
+  | "distance_dscr"
+  | "guest_dscr"
+  | "pet_dscr"
+  | "party_dscr"
+  | "doc_dscr"
+  | "other_dscr";
+export type PropertyDescriptionLocales = Partial<
+  Record<PropertyDescriptionField, Locale>
+>;
 export type PropertyTextLocales = Partial<
   Record<"title" | "city" | "province" | "region" | "address", Locale>
 >;
@@ -257,6 +271,7 @@ export interface PayPropertySubSendDto {
 
 export interface SinglePropDto {
   text_locales?: PropertyTextLocales;
+  description_locales?: PropertyDescriptionLocales;
   id: number;
   code: string;
   rent_type: "DAILY";
@@ -304,6 +319,7 @@ export interface SinglePropDto {
   owner_info: {
     avatar: ImageDto;
     full_name: string;
+    full_name_locale?: Locale;
     since?: string | Date | null;
   };
   seo_links?: { villa?: string | null; pool?: string | null };
@@ -355,8 +371,12 @@ export interface DailyPrice {
  * is null for options that never got one.
  */
 export interface PropertyOptionItemDto {
+  id?: number | null;
   group: string;
   title: string;
+  /** Persian title; stays the same in every language. */
+  canonical_title?: string;
+  title_locale?: Locale;
   icon: ImageDto | null;
 }
 

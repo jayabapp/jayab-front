@@ -1,4 +1,5 @@
 import type { PropertyTextLocales } from "@/api_services/property/property.interface";
+import type { Locale } from "@/i18n/config";
 export type { SingleLandingDto } from "@/api_services/property/property.interface";
 export type { PropertyListDto } from "@/api_services/property/property.interface";
 export type { RelatedLandings } from "@/api_services/property/property.interface";
@@ -29,6 +30,7 @@ export type PropertyDetailsView = {
   hasPool: boolean;
   province: string;
   ownerName: string;
+  ownerNameLocale?: Locale;
   images: ImageDto[];
   maxCapacity: number;
   cleaningFee: number;

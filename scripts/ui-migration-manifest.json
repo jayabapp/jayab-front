@@ -652,15 +652,6 @@
       ]
     },
     {
-      "axis": "i18n",
-      "file": "components/modules/PropertyDetails/parts/HouseRules.tsx",
-      "kind": "valid",
-      "reason": "Persian domain data matched against backend values, not UI copy",
-      "hits": [
-        "نیست"
-      ]
-    },
-    {
       "axis": "color",
       "file": "components/modules/PropertyDetails/parts/PropertyReportModal.client.tsx",
       "kind": "valid",

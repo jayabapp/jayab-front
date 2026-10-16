@@ -50,6 +50,7 @@ const AmenitiesModal = ({ amenities, onHide, show }: AmenitiesModalProps) => {
               {items.map((item) => (
                 <IconListItem
                   label={item.title}
+                  labelLang={item.titleLang}
                   icon={item.fallbackIcon}
                   key={`${group}-${item.title}`}
                   image={item.icon ? getPropertyImageUrl(item.icon) : null}

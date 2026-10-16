@@ -7,6 +7,7 @@ import type { IconListItemProps } from "@/types/components/modules/property-deta
 const IconListItem = ({
   image,
   label,
+  labelLang,
   state = "on",
   icon = "sparkles",
 }: IconListItemProps) => (
@@ -26,7 +27,9 @@ const IconListItem = ({
     ) : (
       <Icon name={icon} size={20} className="text-ink-muted" />
     )}
-    <p className="text-sm">{label}</p>
+    <p className="text-sm" lang={labelLang}>
+      <bdi>{label}</bdi>
+    </p>
   </div>
 );
 

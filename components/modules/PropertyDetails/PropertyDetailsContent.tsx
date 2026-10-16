@@ -83,6 +83,7 @@ const PropertyDetailsContent = ({ property }: PropertyDetailsContentProps) => {
                 <PropertyOwnerBadge
                   avatar={view.ownerAvatar}
                   name={view.ownerName}
+                  nameLang={view.ownerNameLocale}
                   isOnline={view.hasActiveSubscription}
                 />
               </div>
@@ -147,6 +148,7 @@ const PropertyDetailsContent = ({ property }: PropertyDetailsContentProps) => {
             >
               <HostCard
                 name={view.ownerName}
+                nameLang={view.ownerNameLocale}
                 since={view.ownerSince}
                 avatar={view.ownerAvatar}
                 isAuthorized={view.isAuthorized}

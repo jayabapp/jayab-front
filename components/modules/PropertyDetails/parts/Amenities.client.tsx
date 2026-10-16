@@ -30,6 +30,7 @@ const Amenities = ({ property }: PropertySpecsSectionProps) => {
         {preview.map((item) => (
           <IconListItem
             label={item.title}
+            labelLang={item.titleLang}
             icon={item.fallbackIcon}
             key={`${item.group}-${item.title}`}
             image={item.icon ? getPropertyImageUrl(item.icon) : null}
@@ -47,7 +48,16 @@ const Amenities = ({ property }: PropertySpecsSectionProps) => {
         <></>
       )}
 
-      {facilityNote ? <ClampText lines={3}>{facilityNote}</ClampText> : <></>}
+      {facilityNote ? (
+        <ClampText
+          lines={3}
+          lang={property?.description_locales?.facility_dscr}
+        >
+          {facilityNote}
+        </ClampText>
+      ) : (
+        <></>
+      )}
 
       <AmenitiesModal
         show={showAll}

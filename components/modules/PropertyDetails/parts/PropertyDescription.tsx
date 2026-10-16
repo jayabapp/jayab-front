@@ -3,12 +3,17 @@ import type { PropertyDescriptionProps } from "@/types/components/modules/proper
 import ClampText from "./ClampText.client";
 
 const PropertyDescription = ({ property }: PropertyDescriptionProps) => {
-  const text =
-    property?.property_descriptions?.ad_dscr ||
-    property?.property_descriptions?.property_dscr;
+  const field = property?.property_descriptions?.ad_dscr
+    ? "ad_dscr"
+    : "property_dscr";
+  const text = property?.property_descriptions?.[field];
   if (!text) return <></>;
   return (
-    <ClampText lines={4} className="text-base leading-8">
+    <ClampText
+      lines={4}
+      className="text-base leading-8"
+      lang={property?.description_locales?.[field]}
+    >
       {text}
     </ClampText>
   );

@@ -8,9 +8,10 @@ import MiniInfoCard from "./MiniInfoCard";
 import formatHour from "@/helpers/formatHour";
 import ClampText from "./ClampText.client";
 import RuleItem from "./RuleItem";
-
-const isAllowed = (value?: string | null) =>
-  Boolean(value) && !`${value}`.includes("نیست");
+import {
+  canonicalRuleTitle,
+  isRuleAllowed,
+} from "@features/properties/mappers/property-details.mapper";
 
 const HouseRules = ({ property }: PropertySpecsSectionProps) => {
   const t = useTranslations();
@@ -19,6 +20,11 @@ const HouseRules = ({ property }: PropertySpecsSectionProps) => {
   const descriptions = property?.property_descriptions;
   const options = property?.options;
   const guestTypes = options?.guest_type ?? [];
+  const locales = property?.description_locales;
+  const guestLang = (title: string) =>
+    property?.option_items?.find(
+      (item) => item.group === "guest_type" && item.title === title,
+    )?.title_locale;
 
   return (
     <div className="flex flex-col gap-5">
@@ -45,12 +51,18 @@ const HouseRules = ({ property }: PropertySpecsSectionProps) => {
 
       <div className="grid grid-cols-1 gap-3 sm:grid-cols-2">
         {guestTypes.map((type) => (
-          <RuleItem allowed key={`guest-type-${type}`} label={type} />
+          <RuleItem
+            allowed
+            label={type}
+            labelLang={guestLang(type)}
+            key={`guest-type-${type}`}
+          />
         ))}
 
         {options?.pet ? (
           <RuleItem
-            allowed={isAllowed(options.pet)}
+            descriptionLang={locales?.pet_dscr}
+            allowed={isRuleAllowed(canonicalRuleTitle(property, "pet"))}
             description={descriptions?.pet_dscr}
             label={`${t("common.animalRules")}: ${options.pet}`}
           />
@@ -60,7 +72,8 @@ const HouseRules = ({ property }: PropertySpecsSectionProps) => {
 
         {options?.party ? (
           <RuleItem
-            allowed={isAllowed(options.party)}
+            descriptionLang={locales?.party_dscr}
+            allowed={isRuleAllowed(canonicalRuleTitle(property, "party"))}
             description={descriptions?.party_dscr}
             label={`${t("common.partyRules")}: ${options.party}`}
           />
@@ -74,7 +87,9 @@ const HouseRules = ({ property }: PropertySpecsSectionProps) => {
           <p className="ui-body font-semibold text-ink">
             {t("common.requiredDocs")}
           </p>
-          <ClampText lines={3}>{descriptions.doc_dscr}</ClampText>
+          <ClampText lines={3} lang={locales?.doc_dscr}>
+            {descriptions.doc_dscr}
+          </ClampText>
         </div>
       ) : (
         <></>
@@ -85,7 +100,9 @@ const HouseRules = ({ property }: PropertySpecsSectionProps) => {
           <p className="ui-body font-semibold text-ink">
             {t("listing.otherTerms")}
           </p>
-          <ClampText lines={3}>{descriptions.other_dscr}</ClampText>
+          <ClampText lines={3} lang={locales?.other_dscr}>
+            {descriptions.other_dscr}
+          </ClampText>
         </div>
       ) : (
         <></>

@@ -5,6 +5,7 @@ import type { AmenityItem } from "@features/properties/mappers/amenities.mapper"
 import type { DeviceInfo } from "@/helpers/device.detector";
 import type { ReactNode } from "react";
 import type { IconName } from "@/types/components/elements/icon";
+import type { Locale } from "@/i18n/config";
 
 export type ListingSectionProps = {
   id: string;
@@ -16,6 +17,7 @@ export type ListingSectionProps = {
 
 export type IconListItemProps = {
   label: string;
+  labelLang?: Locale;
   state?: "on" | "off";
   image?: string | null;
   icon?: IconName;
@@ -24,7 +26,9 @@ export type IconListItemProps = {
 export type RuleItemProps = {
   label: string;
   allowed: boolean;
+  labelLang?: Locale;
   description?: string | null;
+  descriptionLang?: Locale;
 };
 
 export type MiniInfoCardProps = {
@@ -42,6 +46,7 @@ export type ShowAllButtonProps = {
 };
 
 export type ClampTextProps = {
+  lang?: Locale;
   className?: string;
   children: ReactNode;
   lines?: 2 | 3 | 4 | 5 | 6;
@@ -108,6 +113,7 @@ export type LocationNavigateLinkProps = {
 
 export type HostCardProps = {
   name?: string;
+  nameLang?: Locale;
   isAuthorized?: boolean;
   isOnline?: boolean;
   avatar?: PropertyDetailsView["ownerAvatar"];
@@ -161,6 +167,7 @@ export type PropertyLikeButtonProps = ListingActionButtonProps & {
 
 export type PropertyOwnerBadgeProps = {
   name?: string;
+  nameLang?: Locale;
   isOnline?: boolean;
   avatar?: PropertyDetailsView["ownerAvatar"];
 };
@@ -218,6 +225,7 @@ export type TStepMarkerProps = {
 export type TSurrounding = {
   label: string;
   value: string;
+  valueLang?: Locale;
 };
 
 export type TKeyFact = {

@@ -14,6 +14,7 @@ const LINE_CLAMP: Record<number, string> = {
 };
 
 const ClampText = ({
+  lang,
   children,
   lines = 4,
   className = "ui-body leading-7",
@@ -38,6 +39,7 @@ const ClampText = ({
   return (
     <div className="flex flex-col items-start gap-2">
       <p
+        lang={lang}
         ref={textRef}
         className={`whitespace-pre-wrap text-ink ${
           expanded ? "" : (LINE_CLAMP[lines] ?? "line-clamp-4")

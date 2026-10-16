@@ -5,10 +5,12 @@ import type { TSurrounding } from "@/types/components/modules/property-details";
 
 import ClampText from "./ClampText.client";
 
-const SurroundingFact = ({ label, value }: TSurrounding) => (
+const SurroundingFact = ({ label, value, valueLang }: TSurrounding) => (
   <p className="flex min-w-0 flex-col gap-0.5">
     <span className="text-xs text-ink-subtle">{label}</span>
-    <span className="text-sm font-semibold text-ink">{value}</span>
+    <span className="text-sm font-semibold text-ink" lang={valueLang}>
+      <bdi>{value}</bdi>
+    </span>
   </p>
 );
 
@@ -17,6 +19,8 @@ const Surroundings = ({ property }: PropertySpecsSectionProps) => {
 
   const descriptions = property?.property_descriptions;
   const options = property?.options;
+  const langOf = (group: string) =>
+    property?.option_items?.find((item) => item.group === group)?.title_locale;
 
   const hasFacts = options?.pattern || options?.access || options?.neighborhood;
   if (!hasFacts && !descriptions?.pattern_dscr && !descriptions?.distance_dscr)
@@ -29,6 +33,7 @@ const Surroundings = ({ property }: PropertySpecsSectionProps) => {
           <SurroundingFact
             label={t("common.envPattern")}
             value={options.pattern}
+            valueLang={langOf("pattern")}
           />
         ) : (
           <></>
@@ -36,6 +41,7 @@ const Surroundings = ({ property }: PropertySpecsSectionProps) => {
         {options?.access ? (
           <SurroundingFact
             value={options.access}
+            valueLang={langOf("access")}
             label={t("common.accessRoute")}
           />
         ) : (
@@ -44,6 +50,7 @@ const Surroundings = ({ property }: PropertySpecsSectionProps) => {
         {options?.neighborhood ? (
           <SurroundingFact
             value={options.neighborhood}
+            valueLang={langOf("neighborhood")}
             label={t("listing.propNeightbour")}
           />
         ) : (
@@ -56,7 +63,12 @@ const Surroundings = ({ property }: PropertySpecsSectionProps) => {
           <p className="text-sm font-semibold text-ink">
             {t("listing.accsessRouteDesc")}
           </p>
-          <ClampText lines={3}>{descriptions.pattern_dscr}</ClampText>
+          <ClampText
+            lines={3}
+            lang={property?.description_locales?.pattern_dscr}
+          >
+            {descriptions.pattern_dscr}
+          </ClampText>
         </div>
       ) : (
         <></>
@@ -67,7 +79,12 @@ const Surroundings = ({ property }: PropertySpecsSectionProps) => {
           <p className="text-sm font-semibold text-ink">
             {t("common.distancetoPoint")}
           </p>
-          <ClampText lines={3}>{descriptions.distance_dscr}</ClampText>
+          <ClampText
+            lines={3}
+            lang={property?.description_locales?.distance_dscr}
+          >
+            {descriptions.distance_dscr}
+          </ClampText>
         </div>
       ) : (
         <></>

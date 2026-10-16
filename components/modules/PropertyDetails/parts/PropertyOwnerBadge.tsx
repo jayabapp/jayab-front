@@ -9,6 +9,7 @@ const OWNER_AVATAR_FALLBACK = "/assets/images/add/wall_e_lover.png";
 
 const PropertyOwnerBadge = ({
   name,
+  nameLang,
   avatar,
   isOnline = false,
 }: PropertyOwnerBadgeProps) => {
@@ -44,7 +45,7 @@ const PropertyOwnerBadge = ({
           ) : null}
         </p>
         {name ? (
-          <p className="break-words text-sm font-bold text-ink">
+          <p lang={nameLang} className="break-words text-sm font-bold text-ink">
             <bdi>{name}</bdi>
           </p>
         ) : null}
