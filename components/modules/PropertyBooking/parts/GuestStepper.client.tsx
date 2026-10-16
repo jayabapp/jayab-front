@@ -55,7 +55,7 @@ const GuestStepper = ({
             <Icon name="plus" size={16} />
           </button>
           <span className="min-w-4 text-center text-sm font-semibold">
-            {value === null ? "" : formatNumber(value)}
+            {formatNumber(value ?? 0)}
           </span>
           <button
             type="button"

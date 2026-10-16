@@ -29,8 +29,9 @@ const PropertyOwnerBadge = ({
         />
         {isOnline ? (
           <CallBadge
+            size="sm"
             label={t("listing.activeSubscription")}
-            className="absolute -end-1 -top-1"
+            className="absolute -end-0.5 -top-0.5"
           />
         ) : null}
       </div>

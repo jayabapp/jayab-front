@@ -5,6 +5,7 @@ export type CountBadgeProps = {
 
 export type CallBadgeProps = {
   label: string;
+  size?: "sm" | "md";
   className?: string;
 };
 

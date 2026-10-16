@@ -1,17 +1,22 @@
 import type { CallBadgeProps } from "@/types/components/elements/badge";
 
-const CallBadge = ({ label, className = "" }: CallBadgeProps) => (
+const SIZES = {
+  md: { badge: "size-6", icon: "size-3" },
+  sm: { badge: "size-4", icon: "size-2" },
+};
+
+const CallBadge = ({ label, size = "md", className = "" }: CallBadgeProps) => (
   <span
     role="img"
     title={label}
     aria-label={label}
-    className={`flex size-6 items-center justify-center rounded-full border-2 border-white bg-success-600 text-white shadow ${className}`}
+    className={`flex items-center justify-center rounded-full border-2 border-white bg-success-600 text-white shadow ${SIZES[size].badge} ${className}`}
   >
     <svg
       viewBox="0 0 24 24"
       aria-hidden="true"
       focusable="false"
-      className="size-3"
+      className={SIZES[size].icon}
       fill="none"
       stroke="currentColor"
       strokeWidth={2.5}
