@@ -374,7 +374,9 @@
     "onlyNoPool": "العقارات بدون مسبح فقط",
     "shareImages": "مشاركة الصور",
     "shareInfo": "مشاركة المعلومات",
-    "shareLocation": "مشاركة الموقع"
+    "shareLocation": "مشاركة الموقع",
+    "sleepingLabel": "ترتيبات النوم",
+    "areaLabel": "المساحة"
   },
   "footer": {
     "becomeHost": "كن مضيفًا",
@@ -866,7 +868,10 @@
     "stayNights": "{count, plural, zero {لا ليالي إقامة} one {ليلة إقامة واحدة} two {ليلتا إقامة} few {{count} ليالي إقامة} many {{count} ليلة إقامة} other {{count} ليلة إقامة}}",
     "extraGuestsCount": "{count, plural, zero {بلا ضيوف إضافيين} one {ضيف إضافي واحد} two {ضيفان إضافيان} few {{count} ضيوف إضافيين} many {{count} ضيفًا إضافيًا} other {{count} ضيف إضافي}}",
     "activeRequests": "{count, plural, zero {لا طلبات حجز نشطة} one {طلب حجز نشط واحد} two {طلبا حجز نشطان} few {{count} طلبات حجز نشطة} many {{count} طلب حجز نشط} other {{count} طلب حجز نشط}}",
-    "pickBothDates": "يرجى اختيار {start} و{end}."
+    "pickBothDates": "يرجى اختيار {start} و{end}.",
+    "statusPending": "بانتظار مراجعة المضيف",
+    "statusCanceledByUser": "ألغاه الضيف",
+    "statusOwnerCalled": "اطّلع عليه المضيف"
   },
   "profile": {
     "totalName": "الاسم الكامل",

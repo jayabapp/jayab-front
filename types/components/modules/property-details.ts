@@ -230,7 +230,12 @@ export type TSurrounding = {
 
 export type TKeyFact = {
   icon: IconName;
+  /** Small caption above the value, e.g. "Capacity". */
+  label?: string;
   title: string;
+  /** Shown in parentheses after the title. */
+  detail?: string;
+  /** Shown on its own line under the title. */
   note?: string;
 };
 

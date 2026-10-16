@@ -9,6 +9,13 @@ import Button from "@elements/Button";
 const AWAITING_OWNER_STATUS_ID = 10;
 const ANSWERED_STATUS_ID = 20;
 
+// The backend sends fixed Persian titles; the status id picks the localized one.
+const STATUS_TITLE_KEYS = {
+  10: "statusPending",
+  20: "statusCanceledByUser",
+  30: "statusOwnerCalled",
+} as const;
+
 const ReservationStatusBar = ({
   isOwner,
   onCancel,
@@ -20,6 +27,14 @@ const ReservationStatusBar = ({
 
   const guestMobile = `${reservation?.guest_mobile}`;
   const isMasked = guestMobile.includes("*");
+  const status = reservation?.status;
+  const titleKey =
+    STATUS_TITLE_KEYS[Number(status?.id) as keyof typeof STATUS_TITLE_KEYS];
+  // Same rule as the backend: guests see "seen" once the host called them.
+  const seenByHost =
+    !isOwner &&
+    status?.id === AWAITING_OWNER_STATUS_ID &&
+    Number(reservation?.owner_clicked_guest_mobile) > 0;
 
   return (
     <div className="w-full flex flex-col gap-2">
@@ -28,7 +43,16 @@ const ReservationStatusBar = ({
       ) : null}
 
       <div className="flex items-center justify-between">
-        <StatusShower data={reservation?.status} />
+        <StatusShower
+          data={
+            status && titleKey
+              ? {
+                  ...status,
+                  title: t(seenByHost ? "statusOwnerCalled" : titleKey),
+                }
+              : status
+          }
+        />
 
         {!isOwner && onCancel ? (
           <button

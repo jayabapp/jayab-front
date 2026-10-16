@@ -23,19 +23,8 @@ const ReservationCountdown = ({
         {hint ?? t("reserve.reserveOwnerTimeoutHint")}
       </p>
 
-      <div className="flex items-center gap-2">
-        <div className="flex flex-col gap-1">
-          <p className="w-full text-center text-sm">{t("reserve.seconds")}</p>
-          <NumberFlow
-            willChange
-            aria-hidden
-            animated={true}
-            className={DIGIT_CLASS}
-            format={{ useGrouping: false }}
-            value={`${seconds || "00"}` as any}
-          />
-        </div>
-        <p className="text-ink pt-6 font-bold text-lg">:</p>
+      {/* A clock reads minutes:seconds left to right in every language. */}
+      <div dir="ltr" className="flex items-center gap-2">
         <div className="flex flex-col gap-1">
           <p className="w-full text-center text-sm">{t("reserve.minute")}</p>
           <NumberFlow
@@ -45,6 +34,18 @@ const ReservationCountdown = ({
             className={DIGIT_CLASS}
             format={{ useGrouping: false }}
             value={`${minutes || "00"}` as any}
+          />
+        </div>
+        <p className="text-ink pt-6 font-bold text-lg">:</p>
+        <div className="flex flex-col gap-1">
+          <p className="w-full text-center text-sm">{t("reserve.seconds")}</p>
+          <NumberFlow
+            willChange
+            aria-hidden
+            animated={true}
+            className={DIGIT_CLASS}
+            format={{ useGrouping: false }}
+            value={`${seconds || "00"}` as any}
           />
         </div>
       </div>

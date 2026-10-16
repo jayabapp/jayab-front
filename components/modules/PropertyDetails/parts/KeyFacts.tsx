@@ -58,10 +58,11 @@ const KeyFacts = ({ property }: PropertySpecsSectionProps) => {
   if (maxCapacity)
     facts.push({
       icon: "users",
+      label: t("listing.capacity"),
       title: formatText(
         `${t("listing.upTo")} ${t("listing.guestsCount", { count: Number(maxCapacity) })}`,
       ),
-      note: formatText(
+      detail: formatText(
         join([
           stdCapacity
             ? t("listing.standardGuestsCount", { count: Number(stdCapacity) })
@@ -81,10 +82,11 @@ const KeyFacts = ({ property }: PropertySpecsSectionProps) => {
   )
     facts.push({
       icon: "bed",
+      label: t("listing.sleepingLabel"),
       title: formatText(
         t("listing.roomsCount", { count: Number(totalBedrooms) }),
       ),
-      note: join([
+      detail: join([
         bedCount
           ? formatText(t("listing.bedsCount", { count: Number(bedCount) }))
           : null,
@@ -98,8 +100,8 @@ const KeyFacts = ({ property }: PropertySpecsSectionProps) => {
   if (buildingArea || landArea)
     facts.push({
       icon: "ruler",
-      title: buildingArea ?? landArea ?? "",
-      note: buildingArea && landArea ? landArea : undefined,
+      label: t("listing.areaLabel"),
+      title: join([buildingArea, landArea]),
     });
 
   if (!facts.length) return <></>;
@@ -114,7 +116,24 @@ const KeyFacts = ({ property }: PropertySpecsSectionProps) => {
           className="flex flex-col gap-1 bg-surface p-4 odd:last:col-span-2 lg:p-5 lg:odd:last:col-span-1"
         >
           <Icon name={fact.icon} size={24} className="text-ink-muted" />
-          <p className="pt-1 text-base font-bold text-ink">{fact.title}</p>
+          {fact.label ? (
+            <p className="pt-1 text-xs text-ink-subtle">{fact.label}</p>
+          ) : (
+            <></>
+          )}
+          <p
+            className={`text-base font-bold text-ink ${fact.label ? "" : "pt-1"}`}
+          >
+            {fact.title}
+            {fact.detail ? (
+              <span className="text-sm font-normal text-ink-muted">
+                {" "}
+                ({fact.detail})
+              </span>
+            ) : (
+              <></>
+            )}
+          </p>
           {fact.note ? (
             <p className="text-xs text-ink-subtle md:text-sm">{fact.note}</p>
           ) : (

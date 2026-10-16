@@ -374,7 +374,9 @@
     "onlyNoPool": "فقط ملک‌های بدون استخر",
     "shareImages": "اشتراک گذاری تصاویر",
     "shareInfo": "اشتراک گذاری اطلاعات",
-    "shareLocation": "اشتراک گذاری موقعیت مکانی"
+    "shareLocation": "اشتراک گذاری موقعیت مکانی",
+    "sleepingLabel": "سرویس خواب",
+    "areaLabel": "متراژ"
   },
   "footer": {
     "becomeHost": "میزبان شوید",
@@ -866,7 +868,10 @@
     "stayNights": "{count, plural, other {{count} شب اقامت}}",
     "extraGuestsCount": "{count, plural, other {{count} نفر اضافه}}",
     "activeRequests": "{count, plural, other {{count} درخواست رزرو فعال}}",
-    "pickBothDates": "{start} و {end} را انتخاب کنید."
+    "pickBothDates": "{start} و {end} را انتخاب کنید.",
+    "statusPending": "در انتظار بررسی میزبان",
+    "statusCanceledByUser": "لغو شده توسط مهمان",
+    "statusOwnerCalled": "مشاهده شده توسط میزبان"
   },
   "profile": {
     "totalName": "نام و نام خانوادگی",

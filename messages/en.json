@@ -374,7 +374,9 @@
     "onlyNoPool": "Only properties without a pool",
     "shareImages": "Share photos",
     "shareInfo": "Share details",
-    "shareLocation": "Share location"
+    "shareLocation": "Share location",
+    "sleepingLabel": "Sleeping arrangements",
+    "areaLabel": "Size"
   },
   "footer": {
     "becomeHost": "Become a host",
@@ -866,7 +868,10 @@
     "stayNights": "{count, plural, one {{count} night of stay} other {{count} nights of stay}}",
     "extraGuestsCount": "{count, plural, one {{count} extra guest} other {{count} extra guests}}",
     "activeRequests": "{count, plural, one {{count} active reservation request} other {{count} active reservation requests}}",
-    "pickBothDates": "Please select {start} and {end}."
+    "pickBothDates": "Please select {start} and {end}.",
+    "statusPending": "Awaiting host review",
+    "statusCanceledByUser": "Canceled by guest",
+    "statusOwnerCalled": "Seen by host"
   },
   "profile": {
     "totalName": "Full name",
