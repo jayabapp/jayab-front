@@ -15,6 +15,22 @@ const PublicPropertyCard = ({ data, goToLink }: PublicPropertyCardProps) => {
   const t = useTranslations();
   const sep = useListSeparator();
 
+  const hasRegion = Boolean(data.region);
+  const broadPlace = hasRegion ? data.city : data.province;
+  const narrowPlace = hasRegion ? data.region : data.city;
+  const broadLocale = hasRegion
+    ? data.text_locales?.city
+    : data.text_locales?.province;
+  const narrowLocale = hasRegion
+    ? data.text_locales?.region
+    : data.text_locales?.city;
+
+  const facts = [
+    `${t("listing.upTo")} ${t("common.people", { count: Number(data.max_capacity || 0) })}`,
+    t("listing.roomsCount", { count: Number(data.total_bedrooms || 0) }),
+    ...(data.has_pool ? [t("listing.hasPool")] : []),
+  ];
+
   return (
     <div className="property-card-shadow relative w-full overflow-hidden rounded-20 bg-surface p-3">
       <div className="grid w-full grid-cols-5 gap-3">
@@ -45,56 +61,47 @@ const PublicPropertyCard = ({ data, goToLink }: PublicPropertyCardProps) => {
             </p>
           </div>
 
-          {/* Location */}
-          <div className="flex w-full items-center gap-2 text-xs">
+          {/* Location, then "promoted" after a dot */}
+          <div className="flex w-full min-w-0 items-center gap-2 text-sm font-medium">
+            <p className="line-clamp-1 min-w-0 text-start text-ink-muted">
+              {/* Broad to specific: province then city, or city then region. */}
+              <bdi lang={broadLocale ?? "fa"}>{broadPlace}</bdi>
+              {broadPlace && narrowPlace ? sep : ""}
+              <bdi lang={narrowLocale ?? "fa"}>{narrowPlace}</bdi>
+            </p>
+
             {data.is_promoted ? (
               <>
-                <p className="shrink-0 font-bold text-link">
-                  {t("common.laddered")}
-                </p>
-
-                <span aria-hidden="true" className="text-neutral-300">
-                  |
-                </span>
+                <span
+                  aria-hidden="true"
+                  className="size-1 shrink-0 rounded-full bg-ink-subtle"
+                />
+                <p className="shrink-0 text-link">{t("common.laddered")}</p>
               </>
             ) : null}
-
-            <p className="line-clamp-1 text-start text-ink-muted">
-              <bdi lang={data.text_locales?.city ?? "fa"}>{data.city}</bdi>
-              {data.city && (data.region || data.province) ? sep : ""}
-              <bdi
-                lang={
-                  (data.region
-                    ? data.text_locales?.region
-                    : data.text_locales?.province) ?? "fa"
-                }
-              >
-                {data.region || data.province || ""}
-              </bdi>
-            </p>
           </div>
 
-          {/* Rooms / Capacity / Likes */}
-          <div className="flex w-full items-center gap-1.5 text-sm text-ink">
-            <p className="shrink-0">
-              {t("listing.roomsCount", {
-                count: Number(data.total_bedrooms || 0),
-              })}
-              {sep.trim()}
-            </p>
+          {/* Capacity | rooms | pool, likes at the end */}
+          <div className="flex w-full items-center justify-between gap-2">
+            <ul className="flex min-w-0 flex-wrap items-center gap-x-2 gap-y-1 text-xs text-ink-subtle">
+              {facts.map((fact, index) => (
+                <li key={fact} className="flex shrink-0 items-center gap-2">
+                  {index ? (
+                    <span
+                      aria-hidden="true"
+                      className="h-3 w-px bg-line-strong"
+                    />
+                  ) : null}
+                  {fact}
+                </li>
+              ))}
+            </ul>
 
-            <p className="shrink-0">
-              {t("listing.upTo")}{" "}
-              {t("common.people", { count: Number(data.max_capacity || 0) })}
-            </p>
-
-            <div className="ms-1 shrink-0">
-              <PropertyCardLikes
-                forceFilled
-                propertyId={data.id}
-                favoriteCount={data.favorite_count}
-              />
-            </div>
+            <PropertyCardLikes
+              forceFilled
+              propertyId={data.id}
+              favoriteCount={data.favorite_count}
+            />
           </div>
 
           {/* Price */}

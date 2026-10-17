@@ -1319,7 +1319,6 @@
       "kind": "pending",
       "reason": "raw palette colour not yet mapped to a semantic token",
       "hits": [
-        "text-neutral-300",
         "bg-red-500"
       ]
     },
