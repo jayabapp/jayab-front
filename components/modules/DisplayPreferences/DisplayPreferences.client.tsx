@@ -2,13 +2,13 @@
 
 import { DISPLAY_PREFERENCES_VISIBLE, SHOW_LOCALE_CONTROL } from "./config";
 import { Popover, PopoverButton, PopoverPanel } from "@headlessui/react";
-import { localeMeta, resolveLocale } from "@/i18n/config";
 import { useLocale, useTranslations } from "next-intl";
-import { ModalBottomSheet } from "@elements/Modal";
+import { localeMeta, resolveLocale } from "@/i18n/config";
 import { SHOW_THEME_CONTROL } from "./config";
+import { ModalBottomSheet } from "@elements/Modal";
 import { useState } from "react";
-import { Icon } from "@elements/Icon";
 import { useDir } from "@hooks/useDir";
+import { Icon } from "@elements/Icon";
 
 import type { DisplayPreferencesProps } from "@/types/components/modules/display-preferences";
 
@@ -17,6 +17,7 @@ import ThemeSwitcher from "./parts/ThemeSwitcher.client";
 
 const DisplayPreferences = ({
   overHero = false,
+  compact = false,
   className = "",
 }: DisplayPreferencesProps) => {
   const t = useTranslations();
@@ -34,6 +35,14 @@ const DisplayPreferences = ({
   const shellClass = overHero
     ? "border-white/60 bg-black/15 text-white backdrop-blur-sm hover:bg-white/20"
     : "border-line bg-surface text-ink-muted hover:bg-selected hover:text-ink";
+
+  const phoneTriggerClass = compact
+    ? `relative size-8 after:absolute after:-inset-1.5 after:content-[''] ${
+        overHero
+          ? "text-white drop-shadow-[0_1px_2px_rgb(0_0_0/0.35)]"
+          : "text-ink-muted hover:text-ink"
+      }`
+    : `size-11 rounded-full border ${shellClass}`;
 
   const sections = (large: boolean) => (
     <>
@@ -74,9 +83,9 @@ const DisplayPreferences = ({
         title={label}
         aria-label={label}
         onClick={() => setSheetOpen(true)}
-        className={`flex size-11 items-center justify-center rounded-full border transition-colors xl:hidden ${shellClass}`}
+        className={`flex items-center justify-center transition-colors xl:hidden ${phoneTriggerClass}`}
       >
-        <Icon name={icon} size={20} />
+        <Icon name={icon} size={compact ? 24 : 20} />
       </button>
       <ModalBottomSheet show={sheetOpen} onHide={() => setSheetOpen(false)}>
         <div dir={dir} className="flex flex-col gap-5 px-4 pb-2 text-ink">
