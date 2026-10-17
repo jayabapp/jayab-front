@@ -76,6 +76,7 @@ const PATHS: Record<IconName, JSX.Element> = {
   check: <path d="m5.5 12.5 4.5 4.5 8.5-9" />,
   "chevron-down": <path d="m6 9.5 6 6 6-6" />,
   "chevron-left": <path d="M14.5 5.5 8 12l6.5 6.5" />,
+  "chevrons-up": <path d="m6 12.5 6-6 6 6M6 18.5l6-6 6 6" />,
   cigarette: (
     <>
       <rect x="3.75" y="13" width="13.5" height="3.75" rx="1" />

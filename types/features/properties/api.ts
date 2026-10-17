@@ -39,13 +39,11 @@ export type PropertyDetailsView = {
   hasBlueTick: boolean;
   buildingArea: number;
   extraGuestFee: number;
-  isPetAllowed: boolean;
   isAuthorized: boolean;
   remainingDays: number;
   totalBedrooms: number;
   favoriteCount: number;
   isChatEnabled: boolean;
-  isEventsAllowed: boolean;
   advisorCommission?: number;
   minimumPrice: number | null;
   ownerAvatar?: ImageDto | null;

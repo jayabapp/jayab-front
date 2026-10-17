@@ -64,7 +64,7 @@ export type TrustBadgesProps = {
 export type TrustBadge = {
   icon: IconName;
   label: string;
-  colorClass: string;
+  iconClass: string;
 };
 
 export type ListingActionButtonProps = {

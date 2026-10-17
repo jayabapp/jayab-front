@@ -32,8 +32,6 @@ export const toPropertyDetailsView = (
   isAuthorized: !!property?.is_authorized,
   isChatEnabled: !!property?.is_chat_enabled,
   isPromoted: !!property?.is_promoted,
-  isPetAllowed: isRuleAllowed(canonicalRuleTitle(property, "pet")),
-  isEventsAllowed: isRuleAllowed(canonicalRuleTitle(property, "party")),
   maxCapacity: property?.max_capacity,
   ownerAvatar: property?.owner_info?.avatar ?? null,
   ownerName: property?.owner_info?.full_name ?? "",
