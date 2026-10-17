@@ -25,6 +25,8 @@ const KeyFacts = ({ property }: PropertySpecsSectionProps) => {
       : localizeDigits(value, locale);
   const join = (parts: Array<string | null | undefined>) =>
     parts.filter(Boolean).join(" + ");
+  const withDetail = (main: string, detail: string) =>
+    detail ? `${main} (${detail})` : main;
 
   const propertyType = property?.options?.property_type;
 
@@ -58,19 +60,21 @@ const KeyFacts = ({ property }: PropertySpecsSectionProps) => {
   if (maxCapacity)
     facts.push({
       icon: "users",
-      label: t("listing.capacity"),
-      title: formatText(
-        `${t("listing.upTo")} ${t("listing.guestsCount", { count: Number(maxCapacity) })}`,
-      ),
-      detail: formatText(
-        join([
-          stdCapacity
-            ? t("listing.standardGuestsCount", { count: Number(stdCapacity) })
-            : null,
-          extraGuests
-            ? t("listing.extraGuestsCount", { count: Number(extraGuests) })
-            : null,
-        ]),
+      title: t("listing.capacity"),
+      note: withDetail(
+        formatText(
+          `${t("listing.upTo")} ${t("listing.guestsCount", { count: Number(maxCapacity) })}`,
+        ),
+        formatText(
+          join([
+            stdCapacity
+              ? t("listing.standardGuestsCount", { count: Number(stdCapacity) })
+              : null,
+            extraGuests
+              ? t("listing.extraGuestsCount", { count: Number(extraGuests) })
+              : null,
+          ]),
+        ),
       ),
     });
 
@@ -82,26 +86,26 @@ const KeyFacts = ({ property }: PropertySpecsSectionProps) => {
   )
     facts.push({
       icon: "bed",
-      label: t("listing.sleepingLabel"),
-      title: formatText(
-        t("listing.roomsCount", { count: Number(totalBedrooms) }),
+      title: t("listing.sleepingLabel"),
+      note: withDetail(
+        formatText(t("listing.roomsCount", { count: Number(totalBedrooms) })),
+        join([
+          bedCount
+            ? formatText(t("listing.bedsCount", { count: Number(bedCount) }))
+            : null,
+          bedrooms?.additional_bed
+            ? `${formatNumber(bedrooms.additional_bed)} ${t("listing.extraBedding")}`
+            : null,
+          bedrooms?.sofa_bed ? t("common.sofaBed") : null,
+        ]),
       ),
-      detail: join([
-        bedCount
-          ? formatText(t("listing.bedsCount", { count: Number(bedCount) }))
-          : null,
-        bedrooms?.additional_bed
-          ? `${formatNumber(bedrooms.additional_bed)} ${t("listing.extraBedding")}`
-          : null,
-        bedrooms?.sofa_bed ? t("common.sofaBed") : null,
-      ]),
     });
 
   if (buildingArea || landArea)
     facts.push({
       icon: "ruler",
-      label: t("listing.areaLabel"),
-      title: join([buildingArea, landArea]),
+      title: t("listing.areaLabel"),
+      note: join([buildingArea, landArea]),
     });
 
   if (!facts.length) return <></>;
@@ -116,26 +120,10 @@ const KeyFacts = ({ property }: PropertySpecsSectionProps) => {
           className="flex flex-col gap-1 bg-surface p-4 odd:last:col-span-2 lg:p-5 lg:odd:last:col-span-1"
         >
           <Icon name={fact.icon} size={24} className="text-ink-muted" />
-          {fact.label ? (
-            <p className="pt-1 text-xs text-ink-subtle">{fact.label}</p>
-          ) : (
-            <></>
-          )}
-          <p
-            className={`text-base font-bold text-ink ${fact.label ? "" : "pt-1"}`}
-          >
-            {fact.title}
-            {fact.detail ? (
-              <span className="text-sm font-normal text-ink-muted">
-                {" "}
-                ({fact.detail})
-              </span>
-            ) : (
-              <></>
-            )}
-          </p>
+          {/* Same two styles in every card: heading, then its description. */}
+          <p className="pt-1 text-base font-bold text-ink">{fact.title}</p>
           {fact.note ? (
-            <p className="text-xs text-ink-subtle md:text-sm">{fact.note}</p>
+            <p className="text-sm text-ink-muted">{fact.note}</p>
           ) : (
             <></>
           )}

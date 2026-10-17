@@ -627,10 +627,6 @@ ul {
   background-color: rgb(var(--c-surface));
 }
 
-.home-sheet:has([data-home-active-reserves]) .home-sheet-search {
-  @apply mt-1 mb-5;
-}
-
 /* ------------------------------ HERO SLIDER ------------------------------- */
 .hero-slide {
   opacity: 0;

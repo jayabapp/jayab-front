@@ -197,6 +197,8 @@ export type PropertyDescriptionProps = {
 export type TSimilarPropertiesProps = {
   city?: string;
   propertyId: number;
+  /** Rendered under the cards (the link to the city's full list). */
+  children?: ReactNode;
 };
 
 export type RelatedLandingLinksProps = {
@@ -230,12 +232,8 @@ export type TSurrounding = {
 
 export type TKeyFact = {
   icon: IconName;
-  /** Small caption above the value, e.g. "Capacity". */
-  label?: string;
+  /** Card heading, e.g. the property type or "Capacity". */
   title: string;
-  /** Shown in parentheses after the title. */
-  detail?: string;
-  /** Shown on its own line under the title. */
   note?: string;
 };
 

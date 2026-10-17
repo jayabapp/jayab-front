@@ -14,7 +14,7 @@ const RelatedLandingLinks = ({ city, seoLinks }: RelatedLandingLinksProps) => {
   return (
     <nav
       aria-label={t("relatedLinks")}
-      className="flex flex-wrap gap-x-4 gap-y-2 pb-8 text-sm"
+      className="flex flex-wrap gap-x-4 gap-y-2 pt-4 text-sm font-medium"
     >
       {seoLinks.villa ? (
         <Link href={toHref(seoLinks.villa)} className={LINK_CLASS}>

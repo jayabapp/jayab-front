@@ -2,7 +2,7 @@ import type { CallBadgeProps } from "@/types/components/elements/badge";
 
 const SIZES = {
   md: { badge: "size-6", icon: "size-3" },
-  sm: { badge: "size-4", icon: "size-2" },
+  sm: { badge: "size-5", icon: "size-2.5" },
 };
 
 const CallBadge = ({ label, size = "md", className = "" }: CallBadgeProps) => (

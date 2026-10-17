@@ -7,19 +7,15 @@ import { useTranslations } from "next-intl";
 
 import type { TSimilarPropertiesProps } from "@/types/components/modules/property-details";
 
-import SwiperSlide from "@elements/Carousel/SwiperSlide";
-import Swiper from "@elements/Carousel/Swiper.client";
+// Two cards only; the city link under them opens the full list.
+const CARD_COUNT = 2;
+const SKELETON_SLOTS = [0, 1];
 
-const SKELETON_SLOTS = [0, 1, 2];
-const BREAKPOINTS = {
-  320: { slidesPerView: 1.15, spaceBetween: 12 },
-  640: { slidesPerView: 2, spaceBetween: 12 },
-  768: { slidesPerView: 2, spaceBetween: 12 },
-  1024: { slidesPerView: 3, spaceBetween: 16 },
-  1600: { slidesPerView: 3, spaceBetween: 16 },
-};
-
-const SimilarProperties = ({ city, propertyId }: TSimilarPropertiesProps) => {
+const SimilarProperties = ({
+  city,
+  children,
+  propertyId,
+}: TSimilarPropertiesProps) => {
   const t = useTranslations("listing");
 
   const rootRef = useRef<HTMLElement>(null);
@@ -41,12 +37,14 @@ const SimilarProperties = ({ city, propertyId }: TSimilarPropertiesProps) => {
     return () => observer.disconnect();
   }, [isVisible]);
 
-  if (isVisible && !isLoading && !data?.length) return null;
+  // No similar stays: the city link still shows.
+  if (isVisible && !isLoading && !data?.length)
+    return <div className="pb-8">{children}</div>;
   return (
     <section
       ref={rootRef}
       aria-labelledby="similar-properties-title"
-      className="border-t border-line pb-4 pt-8 md:pt-10"
+      className="border-t border-line pb-8 pt-8 md:pt-10"
     >
       <h2
         id="similar-properties-title"
@@ -55,27 +53,17 @@ const SimilarProperties = ({ city, propertyId }: TSimilarPropertiesProps) => {
         {city ? t("similarStaysIn", { city }) : t("similarStays")}
       </h2>
       {isVisible ? (
-        <Swiper
-          withArrows
-          spaceBetween={12}
-          slidesPerView={1.15}
-          breakPoints={BREAKPOINTS}
-        >
+        <div className="grid grid-cols-1 gap-3 pb-2 sm:grid-cols-2 md:gap-4">
           {isLoading
-            ? SKELETON_SLOTS.map((slot) => (
-                <SwiperSlide key={slot} className="pb-2">
-                  <PropertyCardSkeleton />
-                </SwiperSlide>
-              ))
-            : data?.map((item) => (
-                <SwiperSlide key={item.id} className="pb-2">
-                  <PropertyCard data={item} />
-                </SwiperSlide>
-              ))}
-        </Swiper>
+            ? SKELETON_SLOTS.map((slot) => <PropertyCardSkeleton key={slot} />)
+            : data
+                ?.slice(0, CARD_COUNT)
+                .map((item) => <PropertyCard key={item.id} data={item} />)}
+        </div>
       ) : (
         <div className="h-48" aria-hidden />
       )}
+      {children}
     </section>
   );
 };

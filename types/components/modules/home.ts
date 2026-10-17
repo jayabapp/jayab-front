@@ -10,7 +10,13 @@ export type { ContentDto } from "@/api_services/home/home.interface";
 import type { ContentDto } from "@/api_services/home/home.interface";
 import type { DeviceInfo } from "@/helpers/device.detector";
 export type { DeviceInfo } from "@/helpers/device.detector";
+import type { ReactNode } from "react";
 export type { Content } from "@/api_services/property/property.interface";
+
+export type HomeActiveReservationsProps = {
+  /** Rendered at the top of the orange block (the phone search pill), or alone when there are no requests. */
+  top?: ReactNode;
+};
 
 export type HomeBannersProps = {
   banners?: HomeBannerDto[];

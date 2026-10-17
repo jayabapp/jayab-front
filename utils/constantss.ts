@@ -239,39 +239,6 @@ export type RouteTitleKey = (typeof routeTitleKeys)[number];
 export const isRouteTitleKey = (segment: string): segment is RouteTitleKey =>
   (routeTitleKeys as readonly string[]).includes(segment);
 
-export const profileDropDownItems = [
-  // { id: 21, title: "پیام های من", route: "/profile/chat", imgSrc: "/assets/icons/header/header_my_messages.svg" },
-  {
-    id: 421,
-    titleKey: "myPayments",
-    route: "/profile/my-payments",
-    imgSrc: "/assets/icons/header/header_my_turnovers.svg",
-  },
-  {
-    id: 112423,
-    titleKey: "myReserves",
-    route: "/profile/reserves",
-    imgSrc: "/assets/icons/adds/header_reserve.svg",
-  },
-  {
-    id: 123,
-    titleKey: "savedListings",
-    route: "/profile/bookmarks",
-    imgSrc: "/assets/icons/header/header_my_saves.svg",
-  },
-  {
-    id: 23,
-    titleKey: "inviteFriends",
-    route: "/profile/invite",
-    imgSrc: "/assets/icons/header/header_share.svg",
-  },
-  {
-    id: 253,
-    titleKey: "support",
-    route: "/profile/support",
-    imgSrc: "/assets/icons/header/header_support.svg",
-  },
-] as const;
 export const footerLinks = [
   { id: 241, titleKey: "blog", route: "/blog" },
 

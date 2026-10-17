@@ -35,6 +35,9 @@ const HomeTemplate = ({
     ),
   );
 
+  // The phone search keeps its place on the sheet lip, above any active requests.
+  const sheetSearch = devices?.isMobile ? <HomeSheetSearch /> : null;
+
   const homeTileCount = resolveHomeTileCount(
     propertyTypes?.length,
     landings?.quick_search?.length,
@@ -54,13 +57,12 @@ const HomeTemplate = ({
           />
         </div>
         <div className="home-sheet -mt-5 flex w-full flex-col gap-0 md:-mt-8">
-          <Suspense fallback={null}>
-            <HomeActiveReservations />
+          <Suspense fallback={sheetSearch}>
+            <HomeActiveReservations top={sheetSearch} />
           </Suspense>
-          {devices?.isMobile ? <HomeSheetSearch /> : <></>}
           <section
             style={{ "--home-tile-count": homeTileCount } as CSSProperties}
-            className={`flex flex-col gap-5 lg:gap-6 select-none px-0 md:py-0 w-full ${
+            className={`flex flex-col gap-5 lg:gap-6 select-none px-0 md:pb-0 md:pt-8 w-full ${
               !isEmpty(landings?.popular_city) &&
               !isEmpty(landings?.quick_search)
                 ? "min-h-[30dvh]"

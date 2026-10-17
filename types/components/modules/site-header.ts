@@ -36,11 +36,6 @@ export type HeaderContactLinkProps = {
   phone?: ContentDto;
 };
 
-export type HeaderProfileMenuProps = {
-  isLight?: boolean;
-  notificationCount?: number;
-};
-
 export type HeaderSearchFieldProps = {
   boxId: string;
   justIcon?: boolean;

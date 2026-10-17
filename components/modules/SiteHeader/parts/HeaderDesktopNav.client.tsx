@@ -4,7 +4,6 @@ import { useTranslations } from "next-intl";
 import { CountBadge } from "@elements/Badge";
 
 import HeaderSessionBadge from "./HeaderSessionBadge.client";
-import HeaderProfileMenu from "./HeaderProfileMenu.client";
 import HeaderSearchField from "./HeaderSearchField.client";
 import HeaderNavLink from "./HeaderNavLink.client";
 import HeaderBrand from "./HeaderBrand";
@@ -41,15 +40,6 @@ const HeaderDesktopNav = ({
         hasBadge={advisorHasBadge}
         title={t("header.advisors")}
       />
-
-      {isLogin ? (
-        <div className="relative">
-          <HeaderProfileMenu
-            isLight={isLight}
-            notificationCount={notificationCount}
-          />
-        </div>
-      ) : null}
 
       <HeaderNavLink
         route="/rooms"

@@ -7,8 +7,8 @@ import ClampText from "./ClampText.client";
 
 const SurroundingFact = ({ label, value, valueLang }: TSurrounding) => (
   <p className="flex min-w-0 flex-col gap-0.5">
-    <span className="text-xs text-ink-subtle">{label}</span>
-    <span className="text-sm font-semibold text-ink" lang={valueLang}>
+    <span className="text-sm font-bold text-ink">{label}</span>
+    <span className="text-sm text-ink-muted" lang={valueLang}>
       <bdi>{value}</bdi>
     </span>
   </p>

@@ -81,8 +81,8 @@ const PropertyDetailsContent = ({ property }: PropertyDetailsContentProps) => {
             {view.ownerName || view.ownerAvatar ? (
               <div className="pb-5">
                 <PropertyOwnerBadge
-                  avatar={view.ownerAvatar}
                   name={view.ownerName}
+                  avatar={view.ownerAvatar}
                   nameLang={view.ownerNameLocale}
                   isOnline={view.hasActiveSubscription}
                 />
@@ -148,9 +148,9 @@ const PropertyDetailsContent = ({ property }: PropertyDetailsContentProps) => {
             >
               <HostCard
                 name={view.ownerName}
-                nameLang={view.ownerNameLocale}
                 since={view.ownerSince}
                 avatar={view.ownerAvatar}
+                nameLang={view.ownerNameLocale}
                 isAuthorized={view.isAuthorized}
                 isOnline={view.hasActiveSubscription}
               />
@@ -164,8 +164,9 @@ const PropertyDetailsContent = ({ property }: PropertyDetailsContentProps) => {
         </div>
 
         <div className="order-4 flex flex-col">
-          <SimilarProperties propertyId={view.id} city={view.city} />
-          <RelatedLandingLinks city={view.city} seoLinks={view.seoLinks} />
+          <SimilarProperties propertyId={view.id} city={view.city}>
+            <RelatedLandingLinks city={view.city} seoLinks={view.seoLinks} />
+          </SimilarProperties>
         </div>
       </div>
     </ContactFlow>

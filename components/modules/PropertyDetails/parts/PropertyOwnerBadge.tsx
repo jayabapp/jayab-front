@@ -16,16 +16,16 @@ const PropertyOwnerBadge = ({
   const t = useTranslations();
 
   return (
-    <div className="flex min-w-0 flex-row items-center gap-2">
+    <div className="flex min-w-0 flex-row items-center gap-3">
       <div className="relative shrink-0">
         <ContentImage
-          width={48}
-          height={48}
+          width={56}
+          height={56}
           alt={name || t("common.host")}
           fallbackSrc={OWNER_AVATAR_FALLBACK}
-          sizes="(min-width: 768px) 48px, 40px"
+          sizes="(min-width: 768px) 56px, 48px"
           src={avatar ? getPropertyImageUrl(avatar) : OWNER_AVATAR_FALLBACK}
-          className="size-10 aspect-square rounded-full object-cover md:size-12"
+          className="size-12 aspect-square rounded-full object-cover md:size-14"
         />
         {isOnline ? (
           <CallBadge
