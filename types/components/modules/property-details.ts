@@ -57,6 +57,7 @@ export type ListingHeaderProps = {
 };
 
 export type TrustBadgesProps = {
+  className?: string;
   property: PropertyDetailsView;
 };
 

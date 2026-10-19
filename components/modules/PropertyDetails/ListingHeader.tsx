@@ -47,9 +47,10 @@ const ListingHeader = ({ breadcrumbs, property }: ListingHeaderProps) => {
           </h1>
         </div>
 
-        {/* One line on desktop: location at the start, badges and actions at the end, all centered. */}
-        <div className="flex flex-col gap-3 md:flex-row md:items-center md:justify-between md:gap-6">
-          <span className="flex min-w-0 items-center gap-1.5 text-sm text-ink-muted">
+        {/* Phone: location and badges share a row, the actions drop to the next one.
+            Desktop: one row, location at the start and badges + actions at the end. */}
+        <div className="flex flex-wrap items-center gap-x-3 gap-y-3 md:flex-nowrap md:gap-x-3">
+          <span className="flex min-w-0 items-center gap-1.5 text-sm text-ink-muted md:me-auto">
             <Icon name="map-pin" size={16} className="text-status-warning" />
             <span>
               <bdi lang={property?.textLocales?.city ?? "fa"}>
@@ -60,16 +61,17 @@ const ListingHeader = ({ breadcrumbs, property }: ListingHeaderProps) => {
             </span>
           </span>
 
-          <div className="flex flex-wrap items-center gap-x-3 gap-y-2 md:flex-nowrap">
-            <TrustBadges property={property} />
-            <div className="shrink-0 overflow-x-auto">
-              <ListingActions
-                code={property?.code}
-                propertyId={property?.id}
-                favoriteCount={property?.favoriteCount}
-                slug={property?.slug || `${property?.code}-s`}
-              />
-            </div>
+          <TrustBadges
+            property={property}
+            className="ms-auto shrink-0 md:ms-0"
+          />
+          <div className="w-full overflow-x-auto md:w-auto md:shrink-0">
+            <ListingActions
+              code={property?.code}
+              propertyId={property?.id}
+              favoriteCount={property?.favoriteCount}
+              slug={property?.slug || `${property?.code}-s`}
+            />
           </div>
         </div>
       </div>

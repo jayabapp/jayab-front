@@ -4,7 +4,7 @@ import { Icon } from "@elements/Icon";
 import type { TrustBadgesProps } from "@/types/components/modules/property-details";
 import type { TrustBadge } from "@/types/components/modules/property-details";
 
-const TrustBadges = ({ property }: TrustBadgesProps) => {
+const TrustBadges = ({ property, className = "" }: TrustBadgesProps) => {
   const t = useTranslations();
 
   const badges = [
@@ -27,15 +27,21 @@ const TrustBadges = ({ property }: TrustBadgesProps) => {
   if (!badges.length) return <></>;
 
   return (
-    <ul className="inline-flex h-9 w-fit max-w-full list-none items-stretch rounded-full border border-line-strong bg-surface shadow-sm md:h-11">
+    <ul
+      className={`inline-flex h-9 w-fit max-w-full list-none items-stretch rounded-full border border-line-strong bg-surface shadow-sm md:h-11 ${className}`}
+    >
       {badges.map((badge, index) => (
         <li
           key={badge.icon}
-          className={`flex items-center gap-2 whitespace-nowrap px-3.5 text-xs font-bold text-ink md:text-sm ${
+          className={`flex items-center gap-1.5 whitespace-nowrap px-2.5 text-xs font-bold text-ink md:gap-2 md:px-3.5 md:text-sm ${
             index ? "border-s border-line" : ""
           }`}
         >
-          <Icon name={badge.icon} size={20} className={badge.iconClass} />
+          <Icon
+            name={badge.icon}
+            size={20}
+            className={`size-4 md:size-5 ${badge.iconClass}`}
+          />
           {badge.label}
         </li>
       ))}
