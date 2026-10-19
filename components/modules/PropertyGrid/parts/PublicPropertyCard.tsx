@@ -55,62 +55,69 @@ const PublicPropertyCard = ({ data, goToLink }: PublicPropertyCardProps) => {
             <p
               lang={data.text_locales?.title ?? "fa"}
               dir="auto"
-              className="line-clamp-2 min-h-[2.75rem] text-start text-sm font-bold leading-7 text-ink"
+              className="line-clamp-2 text-start text-sm font-bold text-ink"
             >
               {data.title}
             </p>
           </div>
 
-          {/* Location, then "promoted" after a dot */}
-          <div className="flex w-full min-w-0 items-center gap-2 text-sm font-medium">
-            <p className="line-clamp-1 min-w-0 text-start text-ink-muted">
-              {/* Broad to specific: province then city, or city then region. */}
-              <bdi lang={broadLocale ?? "fa"}>{broadPlace}</bdi>
-              {broadPlace && narrowPlace ? sep : ""}
-              <bdi lang={narrowLocale ?? "fa"}>{narrowPlace}</bdi>
-            </p>
+          {/* Three blocks spread by the column's justify-between: title, details, price.
+              The details block spreads location and facts the same way, so every row lines up
+              whatever the title length; the gap keeps the two apart when space is tight. */}
+          <div className="flex min-w-0 flex-col justify-between gap-1.5">
+            {/* Location, then "promoted" after a dot */}
+            <div className="flex w-full min-w-0 items-center gap-2 text-sm font-medium">
+              <p className="line-clamp-1 min-w-0 text-start text-ink-muted">
+                {/* Broad to specific: province then city, or city then region. */}
+                <bdi lang={broadLocale ?? "fa"}>{broadPlace}</bdi>
+                {broadPlace && narrowPlace ? sep : ""}
+                <bdi lang={narrowLocale ?? "fa"}>{narrowPlace}</bdi>
+              </p>
 
-            {data.is_promoted ? (
-              <>
-                <span
-                  aria-hidden="true"
-                  className="size-1 shrink-0 rounded-full bg-ink-subtle"
-                />
-                <p className="shrink-0 text-link">{t("common.laddered")}</p>
-              </>
-            ) : null}
-          </div>
-
-          {/* Capacity | rooms | pool, likes at the end */}
-          <div className="flex w-full items-center justify-between gap-2">
-            {/* Each item carries its own leading divider; the -ms-4 shift and the clipping wrapper hide the one that starts a wrapped line. */}
-            <div className="min-w-0 overflow-hidden">
-              <ul className="-ms-4 flex flex-wrap gap-y-1 text-xs text-ink-subtle">
-                {facts.map((fact) => (
-                  <li
-                    key={fact}
-                    className="relative ps-4 before:absolute before:start-2 before:top-1/2 before:h-3 before:w-px before:-translate-y-1/2 before:bg-line-strong"
-                  >
-                    {fact}
-                  </li>
-                ))}
-              </ul>
+              {data.is_promoted ? (
+                <>
+                  <span
+                    aria-hidden="true"
+                    className="size-1 shrink-0 rounded-full bg-ink-subtle"
+                  />
+                  <p className="shrink-0 text-link">{t("common.laddered")}</p>
+                </>
+              ) : null}
             </div>
 
-            <PropertyCardLikes
-              forceFilled
-              propertyId={data.id}
-              favoriteCount={data.favorite_count}
-            />
+            {/* Capacity | rooms | pool, likes at the end */}
+            <div className="flex w-full items-center justify-between gap-2">
+              {/* Each item carries its own leading divider; the -ms-4 shift and the clipping wrapper hide the one that starts a wrapped line. */}
+              <div className="min-w-0 overflow-hidden">
+                <ul className="-ms-4 flex list-none flex-wrap gap-y-1 text-xs text-ink-subtle">
+                  {facts.map((fact) => (
+                    <li
+                      key={fact}
+                      className="relative ps-4 before:absolute before:start-2 before:top-1/2 before:h-3 before:w-px before:-translate-y-1/2 before:bg-line-strong"
+                    >
+                      {fact}
+                    </li>
+                  ))}
+                </ul>
+              </div>
+
+              <PropertyCardLikes
+                forceFilled
+                propertyId={data.id}
+                favoriteCount={data.favorite_count}
+              />
+            </div>
           </div>
 
           {/* Price */}
-          <div className="flex min-h-[52px] w-full items-end justify-between gap-2">
+          <div className="flex w-full items-end justify-between gap-2">
             <p className="shrink-0 text-xs text-ink">
               {t("common.todaysPrice")}
             </p>
 
+            {/* The discount line keeps its space, so a discount never makes the card taller. */}
             <PropertyPrice
+              reserveDiscountSpace
               data={{
                 discounted_price: data.today_price?.discounted_price,
                 price: data.today_price?.price,
