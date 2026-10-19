@@ -19,8 +19,7 @@ const FilterCounter = ({
   const pathname = usePathname();
 
   const queryData = useMemo(() => {
-    if (mobileFilters && queryKey in mobileFilters) return Number(mobileFilters[queryKey]) || 0;
-    const raw = query[queryKey];
+    const raw = (mobileFilters ?? query)[queryKey];
     return raw ? Number(String(raw).split(",")[0]) || 0 : 0;
   }, [mobileFilters, queryKey, query]);
 

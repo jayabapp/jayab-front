@@ -19,10 +19,7 @@ const FilterCheck = ({
   const router = useRouter();
   const pathname = usePathname();
 
-  const isChecked =
-    mobileFilters && (mobileFilters[queryKey] || mobileFilters[queryKey] === 0)
-      ? Number(mobileFilters[queryKey]) === 1
-      : Number(query?.[queryKey]) === 1;
+  const isChecked = Number((mobileFilters ?? query)?.[queryKey]) === 1;
 
   const queryMaker = (value: number) => {
     const source = mobileFilters ? { ...mobileFilters } : { ...query };

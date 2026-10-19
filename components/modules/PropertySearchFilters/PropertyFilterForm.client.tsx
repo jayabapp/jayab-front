@@ -1,8 +1,9 @@
 "use client";
 
+import { extraDiscoveryFilters } from "@features/properties/lib/discovery-filter-policy";
+import { countActiveFilters } from "@features/properties/lib/count-active-filters";
+import { countFilterGroup } from "@features/properties/lib/count-active-filters";
 import { useFormatNumber } from "@hooks/useFormatNumber";
-import { countActiveFilters} from "@features/properties/lib/count-active-filters";
-import { countFilterGroup} from "@features/properties/lib/count-active-filters";
 import { useTranslations } from "next-intl";
 import { poolFilterTypes } from "@/utils/constantss";
 import { useStoreInit } from "@/store";
@@ -28,6 +29,7 @@ const PropertyFilterForm = ({
   queries,
   setFilters,
   propertyTypes,
+  baselineFilters,
   hiddenFilters = [],
 }: PropertyFilterFormProps) => {
   const t = useTranslations();
@@ -35,7 +37,8 @@ const PropertyFilterForm = ({
 
   const { userInfo } = useStoreInit((data) => data);
   const isHidden = (key: string) => hiddenFilters.includes(key);
-  const activeCount = countActiveFilters(filters, hiddenFilters);
+  const countFilters = extraDiscoveryFilters(filters, baselineFilters);
+  const activeCount = countActiveFilters(countFilters, hiddenFilters);
 
   const excludesPool = `${filters?.has_pool ?? ""}` === "0";
 
@@ -55,7 +58,7 @@ const PropertyFilterForm = ({
         <FilterSection
           defaultOpen
           title={t("common.propertyType")}
-          count={countFilterGroup(filters, ["property_type"])}
+          count={countFilterGroup(countFilters, ["property_type"])}
         >
           <PropertyModelFilter
             isMulty
@@ -71,7 +74,7 @@ const PropertyFilterForm = ({
       <FilterSection
         defaultOpen
         title={t("listing.priceRange")}
-        count={filters?.min_price || filters?.max_price ? 1 : 0}
+        count={countFilters.min_price || countFilters.max_price ? 1 : 0}
       >
         <div className="flex w-full flex-col gap-4 pb-2 pt-1">
           <p className="text-xs text-ink-muted">
@@ -82,8 +85,8 @@ const PropertyFilterForm = ({
           <PriceRangeFilter
             lowLimit={0}
             steps={500000}
-            upLimit={PRICE_MAX}
             filters={filters}
+            upLimit={PRICE_MAX}
             lowerKey="min_price"
             higherKey="max_price"
             setFilters={setFilters}
@@ -94,15 +97,18 @@ const PropertyFilterForm = ({
       <FilterSection
         defaultOpen
         title={t("listing.capacity")}
-        count={countFilterGroup(filters, ["total_guests", "total_bedrooms"])}
+        count={countFilterGroup(countFilters, [
+          "total_guests",
+          "total_bedrooms",
+        ])}
       >
         {isHidden("total_guests") ? (
           <></>
         ) : (
           <FilterCounter
             query={queries}
-            mobileFilters={filters}
             queryKey="total_guests"
+            mobileFilters={filters}
             title={t("common.pplCount")}
             setMobileFilters={setFilters}
           />
@@ -114,8 +120,8 @@ const PropertyFilterForm = ({
             query={queries}
             mobileFilters={filters}
             queryKey="total_bedrooms"
-            title={t("listing.roomCount")}
             setMobileFilters={setFilters}
+            title={t("listing.roomCount")}
           />
         )}
       </FilterSection>
@@ -125,9 +131,9 @@ const PropertyFilterForm = ({
       </div>
 
       <FilterSection
-        title={t("listing.quickFilters")}
         defaultOpen
-        count={countFilterGroup(filters, ["has_discount", "is_premium"])}
+        title={t("listing.quickFilters")}
+        count={countFilterGroup(countFilters, ["has_discount", "is_premium"])}
       >
         {isHidden("has_discount") ? (
           <></>
@@ -159,7 +165,7 @@ const PropertyFilterForm = ({
       ) : (
         <FilterSection
           title={t("common.poolStatus")}
-          count={countFilterGroup(filters, ["has_pool", "pool_type"])}
+          count={countFilterGroup(countFilters, ["has_pool", "pool_type"])}
         >
           <PropertyModelFilter
             query={queries}
@@ -196,7 +202,7 @@ const PropertyFilterForm = ({
       ) : (
         <FilterSection
           title={t("common.welfare")}
-          count={countFilterGroup(filters, ["welfare"])}
+          count={countFilterGroup(countFilters, ["welfare"])}
         >
           <PropertyModelFilter
             isMulty
@@ -214,7 +220,7 @@ const PropertyFilterForm = ({
       ) : (
         <FilterSection
           title={t("common.entertainment")}
-          count={countFilterGroup(filters, ["entertainment"])}
+          count={countFilterGroup(countFilters, ["entertainment"])}
         >
           <PropertyModelFilter
             isMulty
@@ -232,7 +238,7 @@ const PropertyFilterForm = ({
       ) : (
         <FilterSection
           title={t("common.kitchenAcc")}
-          count={countFilterGroup(filters, ["kitchen"])}
+          count={countFilterGroup(countFilters, ["kitchen"])}
         >
           <PropertyModelFilter
             isMulty
@@ -250,7 +256,7 @@ const PropertyFilterForm = ({
       ) : (
         <FilterSection
           title={t("common.coolHeat")}
-          count={countFilterGroup(filters, ["cool_heat"])}
+          count={countFilterGroup(countFilters, ["cool_heat"])}
         >
           <PropertyModelFilter
             isMulty
@@ -268,7 +274,7 @@ const PropertyFilterForm = ({
       ) : (
         <FilterSection
           title={t("common.envPattern")}
-          count={countFilterGroup(filters, ["pattern"])}
+          count={countFilterGroup(countFilters, ["pattern"])}
         >
           <PropertyModelFilter
             isMulty
@@ -283,12 +289,16 @@ const PropertyFilterForm = ({
 
       <FilterSection
         title={t("listing.roomSize")}
-        count={filters?.min_building_area || filters?.max_building_area ? 1 : 0}
+        count={
+          countFilters.min_building_area || countFilters.max_building_area
+            ? 1
+            : 0
+        }
       >
         <div className="flex w-full flex-col gap-4 pb-2 pt-1">
           <p className="text-xs text-ink-muted">
-            {t("common.from")}{" "}
-            {formatNumber(filters?.min_building_area || 0)} {t("common.to")}{" "}
+            {t("common.from")} {formatNumber(filters?.min_building_area || 0)}{" "}
+            {t("common.to")}{" "}
             {formatNumber(filters?.max_building_area || AREA_MAX)}{" "}
             {t("listing.squareMeter")}
           </p>
@@ -305,6 +315,7 @@ const PropertyFilterForm = ({
       </FilterSection>
 
       <PropertyRulesFilter
+        countFilters={countFilters}
         filters={filters}
         queries={queries}
         setFilters={setFilters}
@@ -315,12 +326,14 @@ const PropertyFilterForm = ({
       {userInfo?.advisor_id ? (
         <FilterSection
           title={t("listing.comiishRangePerc")}
-          count={filters?.min_commission || filters?.max_commission ? 1 : 0}
+          count={
+            countFilters.min_commission || countFilters.max_commission ? 1 : 0
+          }
         >
           <div className="flex w-full flex-col gap-4 pb-2 pt-1">
             <p className="text-xs text-ink-muted">
-              {t("common.from")}{" "}
-              {formatNumber(filters?.min_commission || 0)}% {t("common.to")}{" "}
+              {t("common.from")} {formatNumber(filters?.min_commission || 0)}%{" "}
+              {t("common.to")}{" "}
               {formatNumber(filters?.max_commission || COMMISSION_MAX)}%
             </p>
             <PriceRangeFilter

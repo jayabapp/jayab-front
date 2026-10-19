@@ -90,6 +90,7 @@ export const buildCitySelectionQuery = (
   baseQuery: CityQueryValues,
 ): CitySelectionQuery => {
   const body: Record<string, unknown> = { ...baseQuery };
+  delete body.province_id;
   const provinceList = provinces ?? [];
   const isSelected = (city: { id: number }) =>
     selectedCities.some((selected) => selected?.id === city?.id);
@@ -124,6 +125,13 @@ export const buildCitySelectionQuery = (
     body.cities = selectedCities.map((city) => city?.id);
     delete body.provinces;
   }
+
+  // Empty arrays serialize as `cities=`. Omit them so clearing the destination
+  // also produces a valid, unrestricted request during server rendering.
+  if (Array.isArray(body.cities) && body.cities.length === 0)
+    delete body.cities;
+  if (Array.isArray(body.provinces) && body.provinces.length === 0)
+    delete body.provinces;
 
   delete body.page;
   const keptRegions = parseIdList(

@@ -5,13 +5,14 @@ import { cancelPropertyDiscoveryQueries } from "@features/properties/api/propert
 import { zero_filter_remove_keys } from "@/utils/constantss";
 import { usePathname, useRouter } from "next/navigation";
 import { useQueryClient } from "@tanstack/react-query";
+import { resetDiscoveryFilters } from "@features/properties/lib/discovery-filter-policy";
+import { extraDiscoveryFilters } from "@features/properties/lib/discovery-filter-policy";
+import { countActiveFilters } from "@features/properties/lib/count-active-filters";
 
 import type { PropertyDiscoveryFilters } from "@/types/features/properties";
 
 import queryBuilder from "@/helpers/queryBuilder";
 import useQueryGet from "@/helpers/queryGet";
-
-const KEPT_ON_RESET = ["sort_type", "q", "cities", "provinces", "regions"] as const;
 
 export const usePropertyDiscoveryFilters = ({
   defaults,
@@ -76,16 +77,16 @@ export const usePropertyDiscoveryFilters = ({
   );
 
   const clearExtraFilters = useCallback(() => {
-    const body: Record<string, unknown> = {};
-    for (const key of KEPT_ON_RESET) {
-      if (queries?.[key]) body[key] = queries[key];
-    }
+    const body = resetDiscoveryFilters(queries, defaults);
     // Clear the draft too. When the ticked filters were never applied the URL
     // does not change, the draft never re-syncs, and every box stayed ticked,
     // so "remove all" looked like it did nothing.
-    setDraft((current) => ({ ...current, filters: body as PropertyDiscoveryFilters }));
+    setDraft((current) => ({
+      ...current,
+      filters: body as PropertyDiscoveryFilters,
+    }));
     replaceWith(body);
-  }, [queries, replaceWith]);
+  }, [defaults, queries, replaceWith]);
 
   return {
     queries,
@@ -93,6 +94,11 @@ export const usePropertyDiscoveryFilters = ({
     setFilters,
     applyFilters,
     clearExtraFilters,
+    hasExtraFilters:
+      countActiveFilters(
+        extraDiscoveryFilters(queries, defaults),
+        hiddenFilters,
+      ) > 0,
     filters: draft.filters,
   };
 };

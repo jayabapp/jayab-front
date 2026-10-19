@@ -1,12 +1,6 @@
 import type { PropertyFilterDraft } from "@/types/components/modules/property-search-filters";
 
-const NON_FILTER_KEYS = new Set([
-  "categories",
-  "page",
-  "per_page",
-  "q",
-  "sort_type",
-]);
+import { NON_FILTER_KEYS } from "./discovery-filter-policy";
 
 const RANGE_PAIRS: readonly (readonly [string, string])[] = [
   ["min_price", "max_price"],
@@ -73,7 +67,11 @@ export const countActiveFilters = (
       (hasValue(filters[lower]) || hasValue(filters[higher])),
   ).length;
 
-  const dates = DATE_KEYS.some((key) => hasValue(filters[key])) ? 1 : 0;
+  const dates = DATE_KEYS.some(
+    (key) => !hidden.has(key) && hasValue(filters[key]),
+  )
+    ? 1
+    : 0;
 
   return plain + ranges + dates;
 };

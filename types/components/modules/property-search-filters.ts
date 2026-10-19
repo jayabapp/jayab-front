@@ -79,6 +79,7 @@ export type FilterApplyBarProps = {
 
 export type PropertyFilterFormProps = {
   onReset?: () => void;
+  baselineFilters?: PropertyFilterDraft;
   hiddenFilters?: string[];
   filters: PropertyFilterDraft;
   queries: Record<string, string>;
@@ -123,6 +124,7 @@ export type PriceRangeFilterProps = {
 };
 
 export type PropertyRulesFilterProps = {
+  countFilters?: PropertyFilterDraft;
   hiddenFilters?: string[];
   filters: PropertyFilterDraft;
   queries: Record<string, string>;

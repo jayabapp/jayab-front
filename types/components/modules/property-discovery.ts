@@ -46,6 +46,7 @@ export type PropertyCategoryItemProps = {
 export type DiscoveryFilterModalProps = {
   filters: Record<string, any>;
   hiddenFilters?: string[];
+  baselineFilters?: Record<string, string>;
   onApply: () => void;
   onClose: () => void;
   onShowCityModal: () => void;

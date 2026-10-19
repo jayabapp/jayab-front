@@ -20,12 +20,10 @@ const PropertyModelFilter = ({
   const router = useRouter();
   const pathname = usePathname();
 
-  const selectedValues =
-    mobileFilters && mobileFilters[queryKey]
-      ? `${mobileFilters[queryKey]}`.split(",")
-      : query?.[queryKey]
-        ? `${query[queryKey]}`.split(",")
-        : "";
+  const source = mobileFilters ?? query;
+  const selectedValues = source?.[queryKey]
+    ? `${source[queryKey]}`.split(",")
+    : "";
 
   const queryMaker = (items: string | string[]) => {
     const current = mobileFilters ? { ...mobileFilters } : { ...query };

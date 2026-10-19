@@ -31,6 +31,7 @@ const PropertyRulesFilter = ({
   setFilters,
   propertyTypes,
   hiddenFilters = [],
+  countFilters = filters,
 }: PropertyRulesFilterProps) => {
   const t = useTranslations("listing");
 
@@ -53,7 +54,7 @@ const PropertyRulesFilter = ({
     <FilterSection
       title={t("accommodationRules")}
       count={countFilterGroup(
-        filters,
+        countFilters,
         rules.map((rule) => rule.queryKey),
       )}
     >

@@ -43,8 +43,15 @@ const LandingDiscovery = ({ devices, landing }: LandingDiscoveryProps) => {
   const [showShadow, setShowShadow] = useState(false);
 
   const defaults = useMemo(() => landingQueryDefaults(landing), [landing]);
-  const { applyFilters, filters, queries, resetDraft, setFilters } =
-    usePropertyDiscoveryFilters({ defaults });
+  const {
+    applyFilters,
+    clearExtraFilters,
+    hasExtraFilters,
+    filters,
+    queries,
+    resetDraft,
+    setFilters,
+  } = usePropertyDiscoveryFilters({ defaults });
   const { data: propertyTypes } = usePropertyOptionGroups();
   const urlCityWithRegions = useUrlCityWithRegions(queries);
   const cityWithRegions = modalCityWithRegions ?? urlCityWithRegions;
@@ -142,6 +149,8 @@ const LandingDiscovery = ({ devices, landing }: LandingDiscoveryProps) => {
                 queries={queries}
                 setFilters={setFilters}
                 propertyTypes={propertyTypes}
+                baselineFilters={defaults}
+                onReset={clearExtraFilters}
               />
             </div>
             <FilterApplyBar draft={filters} onApply={onApplyFilters} />
@@ -185,7 +194,11 @@ const LandingDiscovery = ({ devices, landing }: LandingDiscoveryProps) => {
             </div>
 
             <div className="min-h-[80dvh] mb-12 xl:mb-20">
-              <DiscoveryResults devices={devices} query={queries} />
+              <DiscoveryResults
+                devices={devices}
+                query={queries}
+                onClearFilters={hasExtraFilters ? clearExtraFilters : undefined}
+              />
             </div>
 
             <div className="px-3 xl:px-0">
@@ -202,6 +215,8 @@ const LandingDiscovery = ({ devices, landing }: LandingDiscoveryProps) => {
           onApply={onApplyFilters}
           onClose={onCloseFilterModal}
           propertyTypes={propertyTypes}
+          baselineFilters={defaults}
+          onClearExtraFilters={clearExtraFilters}
           setShowRegions={setShowRegions}
           cityWithRegions={cityWithRegions}
           show={filterModalShow && !showCityModal}

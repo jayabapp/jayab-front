@@ -12,7 +12,11 @@ type LocationEntry = {
   parent_title?: string;
 };
 
-type LocationQuery = { cities?: string; provinces?: string; regions?: string };
+export type LocationQuery = {
+  cities?: string;
+  provinces?: string;
+  regions?: string;
+};
 
 type LocationEntries = {
   cities?: LocationEntry[];
@@ -26,7 +30,10 @@ export const pickLocationQuery = (
   source?: Record<string, unknown> | null,
 ): LocationQuery =>
   LOCATION_QUERY_KEYS.reduce<LocationQuery>((result, key) => {
-    const value = source?.[key];
+    const value =
+      key === "provinces"
+        ? (source?.provinces ?? source?.province_id)
+        : source?.[key];
     const list = Array.isArray(value)
       ? value.join(",")
       : value === undefined || value === null
@@ -54,6 +61,25 @@ export const isSameLocationPath = (
   pathname?: string | null,
 ): boolean =>
   !!stored && !!pathname && cleanPath(stored) === cleanPath(pathname);
+
+export const currentLocationQuery = (
+  urlQuery: Record<string, unknown>,
+  stored: { path?: string; query?: Record<string, unknown> } | undefined,
+  pathname: string,
+): LocationQuery => {
+  const url = pickLocationQuery(urlQuery);
+  if (url.cities || url.provinces) return url;
+  const fallback = isSameLocationPath(stored?.path, pathname)
+    ? pickLocationQuery(stored?.query)
+    : {};
+  // The landing path may encode the destination. Neighbourhoods are additional
+  // filters owned by the URL, so removing them must never revive stored ones.
+  return pickLocationQuery({
+    cities: fallback.cities,
+    provinces: fallback.provinces,
+    regions: url.regions,
+  });
+};
 
 export type LocationWords = {
   local: string;

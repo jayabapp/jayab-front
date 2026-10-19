@@ -40,6 +40,7 @@ const PropertyDiscovery = ({ devices }: PropertyDiscoveryProps) => {
   const {
     applyFilters,
     clearExtraFilters,
+    hasExtraFilters,
     filters,
     queries,
     resetDraft,
@@ -143,7 +144,7 @@ const PropertyDiscovery = ({ devices }: PropertyDiscoveryProps) => {
           <DiscoveryResults
             query={queries}
             devices={devices}
-            onClearFilters={clearExtraFilters}
+            onClearFilters={hasExtraFilters ? clearExtraFilters : undefined}
           />
         </div>
       </div>

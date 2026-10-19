@@ -9,11 +9,12 @@ import {
   resolveQueryProvinces,
 } from "@features/cities/lib/city-selection";
 import { cancelPropertyDiscoveryQueries } from "@features/properties/api/property-discovery.cache";
+import { useCurrentLocationQuery } from "@features/cities/hooks/useCurrentLocationQuery";
 import { usePathname, useRouter } from "next/navigation";
 import { buildLocationLabel } from "@features/cities/lib/location-label";
 import { pickLocationQuery } from "@features/cities/lib/location-label";
-import { useLocationWords } from "@features/cities/hooks/useLocationWords";
 import { useMemo, useState } from "react";
+import { useLocationWords } from "@features/cities/hooks/useLocationWords";
 import { useQueryClient } from "@tanstack/react-query";
 import { useCitiesStore } from "@/store";
 import { HomeService } from "@/api_services/home/home.service";
@@ -40,7 +41,8 @@ export const useCitySelection = ({
   const queryClient = useQueryClient();
   const pathname = usePathname();
   const urlQueries = useQueryGet<Record<string, string>>();
-  const queries = customValues ?? urlQueries;
+  const location = useCurrentLocationQuery();
+  const queries = customValues ?? { ...urlQueries, ...location };
   const citiesQuery = queries?.cities;
   const provincesQuery = queries?.provinces;
 
@@ -128,10 +130,10 @@ export const useCitySelection = ({
 
   const submit = async () => {
     if (onSubmitCustomValues) {
-      onSubmitCustomValues((current: any) => ({
-        ...current,
-        cities: selectedCities.map((city) => city?.id),
-      }));
+      onSubmitCustomValues(
+        (current: any) =>
+          buildCitySelectionQuery(provinces, selectedCities, current).body,
+      );
       return;
     }
 

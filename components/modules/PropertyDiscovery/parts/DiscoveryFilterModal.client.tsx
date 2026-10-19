@@ -18,6 +18,7 @@ const DiscoveryFilterModal = ({
   cityTitle,
   setFilters,
   hiddenFilters,
+  baselineFilters,
   propertyTypes,
   setShowRegions,
   onShowCityModal,
@@ -52,6 +53,7 @@ const DiscoveryFilterModal = ({
         onReset={onClearExtraFilters}
         propertyTypes={propertyTypes}
         hiddenFilters={hiddenFilters}
+        baselineFilters={baselineFilters}
       />
     </div>
 
