@@ -3,8 +3,10 @@
 import { useEffect, useRef, useState } from "react";
 import { getUploadedImageUrl } from "@features/upload/mappers/upload-image.mapper";
 import { useAttachmentUpload } from "@features/upload/hooks/useAttachmentUpload";
+import { IMAGE_UPLOAD_ACCEPT } from "@features/upload/lib/image-upload";
 import { useTranslations } from "next-intl";
 import { ImageCropModal } from "@elements/Upload";
+import { uploadErrorKey } from "@features/upload/lib/upload-error";
 import { BtnLoading } from "@elements/Button";
 import { toast } from "sonner";
 
@@ -13,6 +15,7 @@ import type { ReactEventHandler } from "react";
 
 import ProfileImageModal from "@features/auth/components/ProfileImageModal";
 import Image from "next/image";
+import ImageUploadHint from "../parts/ImageUploadHint";
 
 import "react-advanced-cropper/dist/style.css";
 
@@ -71,9 +74,11 @@ const AuthUploader = ({
               if (selectedFile) URL.revokeObjectURL(selectedFile);
               setselectedFile(null);
             },
-            onError: () => {
+            onError: (error) => {
               if (controller.signal.aborted) return;
               setLoading(false);
+              const key = uploadErrorKey(error);
+              if (key) toast.error(t(key));
             },
           },
         );
@@ -87,13 +92,13 @@ const AuthUploader = ({
     const target = e.target as HTMLInputElement;
     const file = target?.files ? target?.files[0] : null;
     if (!file) return;
-    if (type == "image" && !file.type?.includes("image/"))
-      return toast.error(t("useImageFile"));
-    if (type == "image" && file.name.split(".")[1] == "jfif")
-      return toast.error(t("useValidImageFile"));
-    else {
+    try {
+      const uploadable = type === "image" ? prepareImageUpload(file) : file;
       if (selectedFile) URL.revokeObjectURL(selectedFile);
-      setselectedFile(URL.createObjectURL(file));
+      setselectedFile(URL.createObjectURL(uploadable));
+    } catch (error) {
+      const key = uploadErrorKey(error);
+      if (key) toast.error(t(key));
     }
   };
 
@@ -105,13 +110,14 @@ const AuthUploader = ({
 
   return (
     <div
-      className={`flex w-fit  ${containerClass}`}
+      className={`flex w-fit flex-col gap-2 ${containerClass}`}
       style={{ zIndex: "4 !important" }}
     >
       <div className="flex w-fit flex-col relative items-center justify-start rounded-20 ">
         <input
           className="  hidden "
           type="file"
+          accept={type === "image" ? IMAGE_UPLOAD_ACCEPT : undefined}
           id={`formFile-${type}`}
           ref={imagePickerRef}
           onChange={pick}
@@ -178,6 +184,7 @@ const AuthUploader = ({
           </div>
         )}
       </div>
+      {type === "image" ? <ImageUploadHint link={link} /> : null}
       {show && (
         <ProfileImageModal
           src={showImage}
@@ -193,6 +200,7 @@ const AuthUploader = ({
         <ImageCropModal
           onHide={onHide}
           cropRatio={cropRatio}
+          maxDimension={imageUploadMaxDimension(link)}
           isUploading={loading}
           onComplete={uploadTemp}
           imageUrl={selectedFile || ""}

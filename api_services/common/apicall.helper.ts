@@ -16,6 +16,7 @@ export type ApiCallOptions = {
   signal?: AbortSignal;
   serverAuth?: boolean;
   showErrorNotification?: boolean;
+  timeoutMs?: number;
   headers?: Record<string, string>;
   progressCallBack?: (e: unknown) => void | null;
 };
@@ -58,7 +59,7 @@ export async function apiCall<T, K>(
       },
       data: body,
       signal: options?.signal,
-      timeout: API_TIMEOUT_MS,
+      timeout: options?.timeoutMs ?? API_TIMEOUT_MS,
       onUploadProgress: options?.progressCallBack,
     };
     if (method == "GET") {

@@ -1,6 +1,7 @@
 import { YupValidator } from "@/utils/YupValidator";
 import { apiRoutes } from "@/utils/urls";
 import { apiCall } from "../common/apicall.helper";
+import { IMAGE_UPLOAD_TIMEOUT_MS, prepareImageUpload } from "@features/upload/lib/image-upload";
 import {
   ConfirmForgetOtpDto,
   GetProfileDto,
@@ -208,6 +209,9 @@ export class AuthService {
     onProgressCallBack?: (e: any) => void | null;
   }) {
     try {
+      const file = dto.formData.get("file");
+      if (file instanceof File && /^\/attachments(?:\?|$)/.test(dto.link))
+        dto.formData.set("file", prepareImageUpload(file));
       const result = await apiCall<FormData, SetPasswordResponse>(
         "POST",
         dto.link,
@@ -215,8 +219,11 @@ export class AuthService {
         {
           progressCallBack: dto.onProgressCallBack,
           signal: dto.signal,
+          timeoutMs: IMAGE_UPLOAD_TIMEOUT_MS,
+          showErrorNotification: false,
         },
       );
+      if (!result) throw new Error("The upload did not return an attachment");
       return { result, id: dto?.id };
     } catch (e: any) {
       e.id = dto.id;

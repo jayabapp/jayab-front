@@ -8,8 +8,9 @@ export type FullscreenImageProps = {
 
 export type ImageCropModalProps = {
   imageUrl: string;
-  cropRatio?: number;
   onHide: () => void;
+  cropRatio?: number;
+  maxDimension?: number;
   isUploading: boolean;
   onComplete: (image: File) => void;
 };

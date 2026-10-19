@@ -12,7 +12,10 @@ export class ApiError extends Error {
   readonly code?: string;
   readonly details?: unknown;
 
-  constructor(message: string, options?: { status?: number; code?: string; details?: unknown }) {
+  constructor(
+    message: string,
+    options?: { status?: number; code?: string; details?: unknown },
+  ) {
     super(message);
     this.name = "ApiError";
     this.status = options?.status;
@@ -28,15 +31,33 @@ export const normalizeApiError = (error: unknown): ApiError => {
 
   if (axios.isAxiosError<ApiErrorDetails>(error)) {
     const data = error.response?.data;
-    return new ApiError(data?.messages?.fa ||
+    return new ApiError(
+      data?.messages?.fa ||
         error.message ||
-        translateMessage("errors.connection"), {
-      status: error.response?.status,
-      code: data?.code || error.code,
-      details: data?.details || data,
-    });
+        translateMessage("errors.connection"),
+      {
+        status: error.response?.status,
+        code: data?.code || error.code,
+        details: data?.details || data,
+      },
+    );
   }
 
   if (error instanceof Error) return new ApiError(error.message);
+  if (error && typeof error === "object") {
+    const response = error as ApiErrorDetails & {
+      httpStatus?: number;
+      statusCode?: number;
+      message_code?: string;
+    };
+    return new ApiError(
+      response.messages?.fa || translateMessage("errors.unknown"),
+      {
+        status: response.httpStatus ?? response.statusCode,
+        code: response.message_code || response.code,
+        details: error,
+      },
+    );
+  }
   return new ApiError(translateMessage("errors.unknown"), { details: error });
 };

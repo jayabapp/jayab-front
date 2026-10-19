@@ -1,20 +1,21 @@
 "use client";
 
 import { useEffect, useRef, useState } from "react";
-import { compressImageIfNeeded } from "@/helpers/compressImage";
+import { IMAGE_UPLOAD_ACCEPT } from "@features/upload/lib/image-upload";
 import { useAttachmentUpload } from "@features/upload/hooks/useAttachmentUpload";
+import { prepareImageUpload } from "@features/upload/lib/image-upload";
 import { UploadPreviewImage } from "@/components/elements/Image";
-import { normalizeApiError } from "@/lib/api/api-error";
 import { FullscreenImage } from "@elements/Upload";
 import { useTranslations } from "next-intl";
+import { uploadErrorKey } from "@features/upload/lib/upload-error";
 import { ContentImage } from "@/components/elements/Image";
 import { BtnLoading } from "@elements/Button";
-import { toast } from "sonner";
 
 import type { MultiImageUploadProps } from "@/types/components/modules/property-media";
 import type { ReactEventHandler } from "react";
 
 import Notify from "@elements/Toast";
+import ImageUploadHint from "../parts/ImageUploadHint";
 
 import "react-advanced-cropper/dist/style.css";
 
@@ -66,11 +67,6 @@ const NewMultUploader = ({
           : current;
       });
     },
-
-    onError: (error: any) => {
-      setImages((e) => e?.filter((x) => x?.id != error?.id));
-      setLoading(false);
-    },
   });
 
   useEffect(() => {
@@ -91,10 +87,8 @@ const NewMultUploader = ({
 
   const uploadTemp = async (file: File, id: number | string) => {
     try {
-      const uploadable =
-        type === "image" ? await compressImageIfNeeded(file) : file;
       const formData = new FormData();
-      formData.append("file", uploadable);
+      formData.append("file", file);
       const controller = new AbortController();
       uploadControllersRef.current.set(id, controller);
       await mutateAsync({
@@ -110,13 +104,23 @@ const NewMultUploader = ({
         },
       });
     } catch (error) {
-      const { status } = normalizeApiError(error);
-      Notify({
-        type: "error",
-        body: status === 413 ? t("imageTooLarge") : t("imageUploadFailed"),
-      });
+      const key = uploadErrorKey(error);
+      if (key)
+        Notify({
+          type: "error",
+          body: t(key),
+        });
       setimagesLoadings((e) => ({ ...e, [id]: 1 }));
-      setImages((e) => e?.filter((x) => x?.id != id));
+      setImages((current) =>
+        current.filter((image) => {
+          if (image.id !== id) return true;
+          if (image.url?.startsWith("blob:")) {
+            URL.revokeObjectURL(image.url);
+            blobUrlsRef.current.delete(image.url);
+          }
+          return false;
+        }),
+      );
     } finally {
       uploadControllersRef.current.delete(id);
       file = null as any;
@@ -145,14 +149,13 @@ const NewMultUploader = ({
     setLoading(true);
     let filesUploding = [];
     for (let i = 0; i < files.length; i++) {
-      let file = files?.[i];
+      let file = files[i];
       const id = `id_${file.lastModified}_${Math.random().toString(36).slice(2)}`;
-      if (type === "image" && !file.type.includes("image/")) {
-        toast.error(t("useImageFile"));
-        continue;
-      }
-      if (type === "image" && file.name.split(".")[1] === "jfif") {
-        toast.error(t("useValidImageFile"));
+      try {
+        if (type === "image") file = prepareImageUpload(file);
+      } catch (error) {
+        const key = uploadErrorKey(error);
+        if (key) Notify({ type: "error", body: t(key) });
         continue;
       }
       loadingsObj[id] = 0;
@@ -160,6 +163,10 @@ const NewMultUploader = ({
       const objectUrl = URL.createObjectURL(file);
       blobUrlsRef.current.add(objectUrl);
       setImages((prev) => [...prev, { url: objectUrl, id }]);
+    }
+    if (!filesUploding.length) {
+      setLoading(false);
+      return;
     }
     setimagesLoadings(loadingsObj);
     for (let i = 0; i < filesUploding.length; i++) {
@@ -170,7 +177,10 @@ const NewMultUploader = ({
     }
   };
   return (
-    <div className={`flex w-fit ${containerClass}`} style={{ zIndex: 4 }}>
+    <div
+      className={`flex w-fit flex-col gap-2 ${containerClass}`}
+      style={{ zIndex: 4 }}
+    >
       <div
         className={`flex w-fit flex-col items-center justify-start rounded-20 ${innerClasses?.secontParentClass}`}
       >
@@ -178,7 +188,7 @@ const NewMultUploader = ({
           multiple
           className="hidden"
           type="file"
-          accept="image/png, image/jpeg"
+          accept={IMAGE_UPLOAD_ACCEPT}
           id={`formFile-${type}`}
           ref={imagePickerRef}
           onChange={pick}
@@ -294,6 +304,8 @@ const NewMultUploader = ({
           </div>
         )}
       </div>
+
+      {type === "image" && !item ? <ImageUploadHint link={link} /> : null}
 
       {show && (
         <FullscreenImage

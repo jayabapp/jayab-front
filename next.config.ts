@@ -31,7 +31,7 @@ const nextConfig: NextConfig = {
     formats: ["image/webp"],
 
     // Sources are capped at upload time by `resizeWidth`: 1600 for property,
-    // 1024 for content / chat images, 512 for profiles, 256 for categories and
+    // 1024 for content / chat / profiles, 2560 for documents, 256 for categories and
     // 2048-2880 for banners. `optimizeImage` uses `withoutEnlargement`, so Next
     // never upscales. Keeping a compact width ladder prevents duplicate cache
     // entries for sources that are smaller than the requested output.
@@ -68,6 +68,9 @@ const nextConfig: NextConfig = {
   productionBrowserSourceMaps: false,
 
   experimental: {
+    // Multer accepts a 30 MiB image; allow multipart overhead without Proxy
+    // truncating the upload at its default 10 MiB boundary.
+    proxyClientMaxBodySize: "32mb",
     // Client Router Cache lifetimes, in seconds. Next 15+ ships `dynamic: 0`,
     // which means a dynamic page is thrown away the moment you leave it: going
     // Back re-runs the whole server render and the remote API round trips with

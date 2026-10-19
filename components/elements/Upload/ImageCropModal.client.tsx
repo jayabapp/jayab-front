@@ -28,21 +28,11 @@ const aspectRatioList = [
   { value: 5 / 2, icon: RatioIcon52 },
 ];
 
-const MAX_OUTPUT_DIMENSION_PX = 2000;
-const JPEG_QUALITY = 0.9;
-
-const downscaleCanvas = (source: HTMLCanvasElement, scale: number) => {
-  const canvas = document.createElement("canvas");
-  canvas.width = Math.round(source.width * scale);
-  canvas.height = Math.round(source.height * scale);
-  canvas.getContext("2d")?.drawImage(source, 0, 0, canvas.width, canvas.height);
-  return canvas;
-};
-
 const EditImageModal = ({
   onHide,
   imageUrl,
   cropRatio,
+  maxDimension = 2560,
   onComplete,
   isUploading,
 }: ImageCropModalProps) => {
@@ -52,30 +42,42 @@ const EditImageModal = ({
   const mountedRef = useRef(true);
   const resetTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
   const [aspectRatio, setAspectRatio] = useState<number | null>(cropRatio ?? 1);
+  const [ready, setReady] = useState(false);
+  const [preparing, setPreparing] = useState(false);
+  const [error, setError] = useState<string | null>(null);
 
   const convertCanvasToFile = () => {
-    const sourceCanvas = cropperRef?.current?.getCanvas();
-    if (!sourceCanvas) return;
-    const scale = Math.min(
-      1,
-      MAX_OUTPUT_DIMENSION_PX /
-        Math.max(sourceCanvas.width, sourceCanvas.height),
-    );
-    const canvas =
-      scale < 1 ? downscaleCanvas(sourceCanvas, scale) : sourceCanvas;
-
-    canvas.toBlob(
-      (blob) => {
-        if (blob && mountedRef.current) {
-          const cropped = new File([blob], "cropped-image.jpg", {
-            type: "image/jpeg",
-          });
-          onComplete(cropped);
+    setError(null);
+    setPreparing(true);
+    try {
+      // Bound the cropper's canvas before allocation. PNG avoids an extra
+      // lossy JPEG encode before the server processes the cropped image.
+      const canvas = cropperRef.current?.getCanvas({
+        maxWidth: maxDimension,
+        maxHeight: maxDimension,
+        imageSmoothingQuality: "high",
+      });
+      if (!canvas) throw new Error("No cropped image");
+      if (canvas.width < 32 || canvas.height < 32) {
+        setError(t("imageUploadTooSmall"));
+        setPreparing(false);
+        return;
+      }
+      canvas.toBlob((blob) => {
+        if (!mountedRef.current) return;
+        setPreparing(false);
+        if (!blob) {
+          setError(t("imageUploadInvalid"));
+          return;
         }
-      },
-      "image/jpeg",
-      JPEG_QUALITY,
-    );
+        onComplete(
+          new File([blob], "cropped-image.png", { type: "image/png" }),
+        );
+      }, "image/png");
+    } catch {
+      setPreparing(false);
+      setError(t("imageUploadInvalid"));
+    }
   };
 
   useEffect(() => {
@@ -116,6 +118,14 @@ const EditImageModal = ({
             }}
             style={{ height: "60dvh" }}
             ref={cropperRef}
+            onReady={() => {
+              setReady(true);
+              setError(null);
+            }}
+            onError={() => {
+              setReady(false);
+              setError(t("imageUploadInvalid"));
+            }}
             stencilProps={{
               aspectRatio: cropRatio || aspectRatio || undefined,
             }}
@@ -123,6 +133,14 @@ const EditImageModal = ({
             className={"cropper"}
           />
         </div>
+        <p className="mt-2 text-center text-xs text-white/80">
+          {t("imageUploadHint", { maxDimension })}
+        </p>
+        {error ? (
+          <p role="alert" className="mt-2 text-center text-sm text-red-300">
+            {error}
+          </p>
+        ) : null}
         <div className="mt-4  flex flex-row h-24 justify-center !overflow-x-scroll  items-center gap-2  w-full ">
           {aspectRatioList
             .filter((e) => {
@@ -208,12 +226,13 @@ const EditImageModal = ({
           <Button
             containerClass="w-full"
             onClick={() => {
-              if (!isUploading && cropperRef?.current) convertCanvasToFile();
+              if (!isUploading && !preparing && ready && cropperRef.current)
+                convertCanvasToFile();
             }}
             width="w-full"
             title={t("submit")}
-            loading={isUploading}
-            disabled={isUploading}
+            loading={isUploading || preparing}
+            disabled={isUploading || preparing || !ready}
           />
 
           <Button

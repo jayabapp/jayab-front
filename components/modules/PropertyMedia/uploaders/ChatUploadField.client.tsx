@@ -2,6 +2,7 @@
 
 import { useEffect, useRef, useState } from "react";
 import { useAttachmentUpload } from "@features/upload/hooks/useAttachmentUpload";
+import { uploadErrorKey } from "@features/upload/lib/upload-error";
 import { useTranslations } from "next-intl";
 import { BtnLoading } from "@elements/Button";
 import { FormInput } from "@elements/Form";
@@ -94,9 +95,11 @@ const ChatUploader = ({
           if (controller.signal.aborted) return;
           submit(e?.result);
         },
-        onError: () => {
+        onError: (error) => {
           if (controller.signal.aborted) return;
           setLoading(false);
+          const key = uploadErrorKey(error);
+          if (key) toast.error(t(key));
         },
       },
     );
