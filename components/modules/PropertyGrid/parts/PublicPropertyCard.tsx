@@ -61,14 +61,9 @@ const PublicPropertyCard = ({ data, goToLink }: PublicPropertyCardProps) => {
             </p>
           </div>
 
-          {/* Three blocks spread by the column's justify-between: title, details, price.
-              The details block spreads location and facts the same way, so every row lines up
-              whatever the title length; the gap keeps the two apart when space is tight. */}
-          <div className="flex min-w-0 flex-col justify-between gap-1.5">
-            {/* Location, then "promoted" after a dot */}
+          <div className="flex min-w-0 flex-col justify-between gap-3.5">
             <div className="flex w-full min-w-0 items-center gap-2 text-sm font-medium">
               <p className="line-clamp-1 min-w-0 text-start text-ink-muted">
-                {/* Broad to specific: province then city, or city then region. */}
                 <bdi lang={broadLocale ?? "fa"}>{broadPlace}</bdi>
                 {broadPlace && narrowPlace ? sep : ""}
                 <bdi lang={narrowLocale ?? "fa"}>{narrowPlace}</bdi>
@@ -85,9 +80,7 @@ const PublicPropertyCard = ({ data, goToLink }: PublicPropertyCardProps) => {
               ) : null}
             </div>
 
-            {/* Capacity | rooms | pool, likes at the end */}
             <div className="flex w-full items-center justify-between gap-2">
-              {/* Each item carries its own leading divider; the -ms-4 shift and the clipping wrapper hide the one that starts a wrapped line. */}
               <div className="min-w-0 overflow-hidden">
                 <ul className="-ms-4 flex list-none flex-wrap gap-y-1 text-xs text-ink-subtle">
                   {facts.map((fact) => (
@@ -115,7 +108,6 @@ const PublicPropertyCard = ({ data, goToLink }: PublicPropertyCardProps) => {
               {t("common.todaysPrice")}
             </p>
 
-            {/* The discount line keeps its space, so a discount never makes the card taller. */}
             <PropertyPrice
               reserveDiscountSpace
               data={{
@@ -129,8 +121,8 @@ const PublicPropertyCard = ({ data, goToLink }: PublicPropertyCardProps) => {
 
         {/* Image */}
         <PropertyCardLink
-          title={data.title}
           href={goToLink}
+          title={data.title}
           className="relative order-2 col-span-2 flex w-full !outline-none"
         >
           {data.has_active_subscription ? (

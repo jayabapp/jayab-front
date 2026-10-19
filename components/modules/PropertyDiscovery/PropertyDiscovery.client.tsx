@@ -82,7 +82,7 @@ const PropertyDiscovery = ({ devices }: PropertyDiscoveryProps) => {
 
         <div className="col-span-12 md:col-span-12 lg:col-span-9 px-0 xl:ps-4 xl:pe-0 xl:mt-0">
           {/* Desktop filter bar (breadcrumb, quick filters, sort, chips) stays under the header while scrolling. */}
-          <div className="xl:sticky xl:top-[4.5rem] xl:z-10 xl:bg-page xl:pb-1 xl:pt-2">
+          <div className="xl:sticky xl:top-[4.5rem] xl:z-10 xl:rounded-b-20 xl:bg-page xl:pb-2 xl:pt-2">
             <div className="hidden z-1 w-full xl:flex flex-col xl:flex-row items-center justify-between mb-2">
               <SingleProductBreadCrumb dataArray={BREAD_CRUMBS} />
               <h1 className="sr-only">{t("listing.roomsPageTitle")}</h1>
