@@ -5,7 +5,7 @@ import { groupNightsByPrice } from "./price-groups";
 const nights = (prices: number[]) =>
   prices.map((price, index) => ({
     date: `2026-10-${index + 1}`,
-    day_column: "normal",
+    day_column: "normal" as const,
     base_price: price + 100_000,
     final_price: price,
     is_discounted: true,

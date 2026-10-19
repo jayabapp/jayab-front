@@ -3,7 +3,11 @@
 import { useEffect, useRef, useState } from "react";
 import { getUploadedImageUrl } from "@features/upload/mappers/upload-image.mapper";
 import { useAttachmentUpload } from "@features/upload/hooks/useAttachmentUpload";
-import { IMAGE_UPLOAD_ACCEPT } from "@features/upload/lib/image-upload";
+import {
+  IMAGE_UPLOAD_ACCEPT,
+  imageUploadMaxDimension,
+  prepareImageUpload,
+} from "@features/upload/lib/image-upload";
 import { useTranslations } from "next-intl";
 import { ImageCropModal } from "@elements/Upload";
 import { uploadErrorKey } from "@features/upload/lib/upload-error";
