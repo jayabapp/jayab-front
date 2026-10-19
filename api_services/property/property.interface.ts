@@ -25,6 +25,8 @@ export type PropertyTextLocales = Partial<
 export interface ProvienceTypesDto {
   id: number;
   title: string;
+  /** Persian title of an option; stays the same in every language. */
+  canonical_title?: string;
   image: ImageDto;
   child: { id: number; title: string }[];
 }

@@ -40,11 +40,12 @@ const PropertyCard = ({
 
   return (
     <div className="surface-card property-card-shadow flex w-full flex-col justify-between gap-2 p-3">
-      <div className="grid w-full grid-cols-2 items-stretch gap-2">
+      {/* Owner card: photo on top, details below. */}
+      <div className="flex w-full flex-col gap-3">
         <PropertyCardLink
           href={goToLink}
           title={data.title}
-          className="order-1 flex flex-col gap-1.5 !outline-none"
+          className="order-2 flex flex-col gap-1.5 !outline-none"
         >
           <div className="flex items-start gap-2">
             {data?.has_blue_tick ? (
@@ -146,13 +147,13 @@ const PropertyCard = ({
           )}
         </PropertyCardLink>
 
-        <div className="order-2 flex w-full flex-col gap-1.5">
+        <div className="order-1 flex w-full flex-col gap-1.5">
           <PropertyCardLink
             title={data.title}
             href={goToLink}
             className="flex w-full items-start justify-start !outline-none"
           >
-            <div className="relative w-full aspect-square">
+            <div className="relative w-full aspect-video">
               <ContentImage
                 fill
                 loading="lazy"
@@ -160,7 +161,7 @@ const PropertyCard = ({
                 alt={data?.feature_image?.alt || ""}
                 src={getPropertyImageUrl(data?.feature_image)}
                 className="w-full rounded-2xl h-full object-cover"
-                sizes="(min-width: 1280px) 16vw, (min-width: 768px) 24vw, 46vw"
+                sizes="(min-width: 1280px) 30vw, (min-width: 768px) 46vw, 92vw"
               />
               {data?.advisor_commission || data?.advisor_commission === 0 ? (
                 <div className="w-16 gap-0.5 h-5 rounded-md transition-all py-[0.2rem] backdrop-blur-[6px] bg-neutral-900/30 text-white absolute z-1 end-2 flex-row top-2 aspect-square flex items-center justify-center">

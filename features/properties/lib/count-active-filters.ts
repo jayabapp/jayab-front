@@ -27,6 +27,9 @@ const hasValue = (value: unknown) =>
 
 const ZERO_IS_A_CHOICE = new Set(["has_pool"]);
 
+// One checkbox that stands for a list of option ids ("2,3"), so it counts once.
+const SINGLE_TOGGLE_KEYS = new Set(["party", "pet"]);
+
 export const countFilterValues = (
   filters: PropertyFilterDraft | undefined,
   key: string,
@@ -34,6 +37,7 @@ export const countFilterValues = (
   const value = filters?.[key];
   if (ZERO_IS_A_CHOICE.has(key) && (value === 0 || value === "0")) return 1;
   if (!hasValue(value)) return 0;
+  if (SINGLE_TOGGLE_KEYS.has(key)) return 1;
   if (Array.isArray(value))
     return value.filter((entry) => hasValue(entry)).length;
   return `${value}`.split(",").filter((entry) => hasValue(entry.trim())).length;

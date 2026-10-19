@@ -20,7 +20,7 @@ const HeroMobileTrigger = ({
       className={`surface-panel flex w-full items-center !rounded-full text-start ${
         variant === "header"
           ? "h-10 min-w-0 gap-1.5 !border-line bg-surface p-1 !shadow-none"
-          : "gap-2 !border-line/80 p-1 !shadow-[0_10px_28px_-10px_rgb(15_23_42/0.28),0_2px_6px_-1px_rgb(15_23_42/0.08)]"
+          : "gap-2 !border-line/80 p-1 !shadow-[0_6px_16px_-8px_rgb(15_23_42/0.2),0_1px_3px_-1px_rgb(15_23_42/0.06)]"
       }`}
     >
       <span

@@ -1,4 +1,3 @@
-
 import { countFilterGroup } from "@features/properties/lib/count-active-filters";
 import { useTranslations } from "next-intl";
 
@@ -10,10 +9,19 @@ import FilterSection from "./FilterSection.client";
 const DISALLOWED_RULE_TITLE = "مجاز نیست";
 
 const getAllowedRuleIds = (
-  options: { id: string | number; title: string }[] = [],
+  options: {
+    id: string | number;
+    title: string;
+    canonical_title?: string;
+  }[] = [],
 ) =>
   options
-    .filter((option) => option.title.trim() !== DISALLOWED_RULE_TITLE)
+    // The Persian title is the stable one; `title` follows the page language.
+    .filter(
+      (option) =>
+        (option.canonical_title ?? option.title).trim() !==
+        DISALLOWED_RULE_TITLE,
+    )
     .map((option) => option.id)
     .join(",");
 

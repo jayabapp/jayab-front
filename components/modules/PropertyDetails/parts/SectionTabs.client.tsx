@@ -11,6 +11,7 @@ const SectionTabs = ({ tabs }: SectionTabsProps) => {
 
   const [activeId, setActiveId] = useState(tabs[0]?.id ?? "");
   const navRef = useRef<HTMLElement>(null);
+  const listRef = useRef<HTMLUListElement>(null);
   const tabRefs = useRef<Record<string, HTMLButtonElement | null>>({});
 
   useEffect(() => {
@@ -48,11 +49,18 @@ const SectionTabs = ({ tabs }: SectionTabsProps) => {
     };
   }, [tabs]);
 
+  // Keep the active tab visible by scrolling the tab strip only. Element.scrollIntoView would also
+  // scroll the page to the sticky bar, so a listing opened below the fold at the middle of the page.
   useEffect(() => {
-    tabRefs.current[activeId]?.scrollIntoView({
-      block: "nearest",
-      inline: "nearest",
-    });
+    const list = listRef.current;
+    const tab = tabRefs.current[activeId];
+    if (!list || !tab) return;
+    const listBox = list.getBoundingClientRect();
+    const tabBox = tab.getBoundingClientRect();
+    if (tabBox.left < listBox.left)
+      list.scrollBy({ left: tabBox.left - listBox.left });
+    else if (tabBox.right > listBox.right)
+      list.scrollBy({ left: tabBox.right - listBox.right });
   }, [activeId]);
 
   const onTabClick = (id: string) => {
@@ -74,7 +82,10 @@ const SectionTabs = ({ tabs }: SectionTabsProps) => {
       aria-label={t("sectionsNav")}
       className="sticky top-[3.75rem] z-10 -mx-3 border-b border-line bg-surface/95 px-3 backdrop-blur md:top-20 md:z-20 md:mx-0 md:px-0"
     >
-      <ul className="flex list-none gap-6 overflow-x-auto [scrollbar-width:none] [&::-webkit-scrollbar]:hidden">
+      <ul
+        ref={listRef}
+        className="flex list-none gap-6 overflow-x-auto [scrollbar-width:none] [&::-webkit-scrollbar]:hidden"
+      >
         {tabs.map((tab) => (
           <li key={tab.id}>
             <button

@@ -127,5 +127,8 @@ export type PropertyRulesFilterProps = {
   filters: PropertyFilterDraft;
   queries: Record<string, string>;
   setFilters: Dispatch<PropertyFilterDraft>;
-  propertyTypes?: Record<string, { id: string | number; title: string }[]>;
+  propertyTypes?: Record<
+    string,
+    { id: string | number; title: string; canonical_title?: string }[]
+  >;
 };

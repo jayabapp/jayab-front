@@ -24,54 +24,53 @@ const ListingHeader = ({ breadcrumbs, property }: ListingHeaderProps) => {
         <SingleProductBreadCrumb dataArray={breadcrumbs} />
       </div>
 
-      <div className="flex flex-col gap-4 md:flex-row md:items-end md:justify-between md:gap-6">
-        <div className="flex min-w-0 flex-1 flex-col gap-2">
-          <div className="flex items-start gap-2">
-            {property?.hasBlueTick ? (
-              <ContentImage
-                width={20}
-                height={20}
-                alt={t("verified")}
-                className="mt-1.5 size-5 shrink-0 md:mt-2.5"
-                src="/assets/icons/adds/verified_badge.svg"
-              />
-            ) : (
-              <></>
-            )}
-            <h1
-              lang={property?.textLocales?.title ?? "fa"}
-              dir="auto"
-              // !leading: the global h1 rule in globals.css pins line-height with !important.
-              className="text-balance text-xl font-bold text-ink md:text-3xl md:!leading-10"
-            >
-              {property?.title}
-            </h1>
-          </div>
-
-          {/* Location on one side, verified/promoted badges fill the other. */}
-          <div className="flex flex-wrap items-center justify-between gap-x-4 gap-y-2">
-            <span className="flex items-center gap-1.5 text-sm text-ink-muted">
-              <Icon name="map-pin" size={16} className="text-status-warning" />
-              <span>
-                <bdi lang={property?.textLocales?.city ?? "fa"}>
-                  {property?.city}
-                </bdi>
-                {property?.city && secondaryPlace ? sep : ""}
-                <bdi lang={secondaryLocale ?? "fa"}>{secondaryPlace}</bdi>
-              </span>
-            </span>
-
-            <TrustBadges property={property} />
-          </div>
+      <div className="flex flex-col gap-3 md:gap-4">
+        <div className="flex items-start gap-2">
+          {property?.hasBlueTick ? (
+            <ContentImage
+              width={20}
+              height={20}
+              alt={t("verified")}
+              className="mt-1.5 size-5 shrink-0 md:mt-2.5"
+              src="/assets/icons/adds/verified_badge.svg"
+            />
+          ) : (
+            <></>
+          )}
+          <h1
+            lang={property?.textLocales?.title ?? "fa"}
+            dir="auto"
+            // !leading: the global h1 rule in globals.css pins line-height with !important.
+            className="text-balance text-xl font-bold text-ink md:text-3xl md:!leading-10"
+          >
+            {property?.title}
+          </h1>
         </div>
 
-        <div className="shrink-0 overflow-x-auto">
-          <ListingActions
-            code={property?.code}
-            propertyId={property?.id}
-            favoriteCount={property?.favoriteCount}
-            slug={property?.slug || `${property?.code}-s`}
-          />
+        {/* One line on desktop: location at the start, badges and actions at the end, all centered. */}
+        <div className="flex flex-col gap-3 md:flex-row md:items-center md:justify-between md:gap-6">
+          <span className="flex min-w-0 items-center gap-1.5 text-sm text-ink-muted">
+            <Icon name="map-pin" size={16} className="text-status-warning" />
+            <span>
+              <bdi lang={property?.textLocales?.city ?? "fa"}>
+                {property?.city}
+              </bdi>
+              {property?.city && secondaryPlace ? sep : ""}
+              <bdi lang={secondaryLocale ?? "fa"}>{secondaryPlace}</bdi>
+            </span>
+          </span>
+
+          <div className="flex flex-wrap items-center gap-x-3 gap-y-2 md:flex-nowrap">
+            <TrustBadges property={property} />
+            <div className="shrink-0 overflow-x-auto">
+              <ListingActions
+                code={property?.code}
+                propertyId={property?.id}
+                favoriteCount={property?.favoriteCount}
+                slug={property?.slug || `${property?.code}-s`}
+              />
+            </div>
+          </div>
         </div>
       </div>
     </header>

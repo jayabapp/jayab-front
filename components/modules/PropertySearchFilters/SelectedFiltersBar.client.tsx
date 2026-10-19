@@ -304,7 +304,7 @@ const SelectedFiltersBar = ({
       node: (
         <SwiperSlide key={`selected-${rule.key}`} className="!w-auto">
           <RemovableFilterChip
-            label={rule.title}
+            label={t(rule.title)}
             onRemove={() => removeFiltersKeys([rule.key])}
           />
         </SwiperSlide>

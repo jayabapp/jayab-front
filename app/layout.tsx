@@ -15,6 +15,7 @@ import { x_Iransans } from "./fonts/x_iran/x_Iransans";
 import { MainLayout } from "@layouts/MainLayout";
 import { SiteFooter } from "@modules/SiteFooter";
 import { SiteHeader } from "@modules/SiteHeader";
+import { ScrollToTopOnNavigate } from "@elements/ScrollToTop";
 import { REVALIDATE } from "@/helpers/revalidate";
 import { MobileNav } from "@modules/MobileNav";
 import { ReactNode } from "react";
@@ -154,6 +155,7 @@ const RootLayout = async ({
       )}
       <body className={x_Iransans.className} suppressHydrationWarning>
         <NavigationProgress />
+        <ScrollToTopOnNavigate />
         <SplashScreen />
         <NextIntlClientProvider locale={locale} messages={rootMessages}>
           <LayoutProvider>

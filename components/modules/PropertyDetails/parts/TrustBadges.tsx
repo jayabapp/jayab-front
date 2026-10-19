@@ -27,11 +27,11 @@ const TrustBadges = ({ property }: TrustBadgesProps) => {
   if (!badges.length) return <></>;
 
   return (
-    <ul className="inline-flex w-fit max-w-full list-none items-stretch rounded-2xl border border-line-strong bg-surface shadow-sm">
+    <ul className="inline-flex h-9 w-fit max-w-full list-none items-stretch rounded-full border border-line-strong bg-surface shadow-sm md:h-11">
       {badges.map((badge, index) => (
         <li
           key={badge.icon}
-          className={`flex items-center gap-2 whitespace-nowrap px-3.5 py-2 text-sm font-bold text-ink ${
+          className={`flex items-center gap-2 whitespace-nowrap px-3.5 text-xs font-bold text-ink md:text-sm ${
             index ? "border-s border-line" : ""
           }`}
         >

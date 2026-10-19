@@ -22,9 +22,12 @@ const FooterQuickSearch = ({ links }: FooterQuickSearchProps) => {
               prefetch={false}
               title={link?.title}
               href={link?.link || ""}
-              className="bg-surface border shadow-sm min-w-[140px] shrink-0 shadow-black/10 border-line-strong relative rounded-20 min-h-6 md:min-h-8 py-1 flex items-center justify-start ps-4 pe-3 font-medium text-xs leading-snug text-start break-words"
+              className="bg-surface border shadow-sm min-w-[140px] shrink-0 shadow-black/10 border-line-strong relative rounded-20 h-10 py-1 flex items-center justify-start ps-4 pe-3 font-medium text-xs text-start"
             >
-              {link?.title}
+              {/* Every chip has one height; long titles take a second line and are clamped there. */}
+              <span className="line-clamp-2 break-words leading-4">
+                {link?.title}
+              </span>
             </Link>
           ))}
         </div>
