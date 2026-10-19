@@ -51,7 +51,7 @@ const Amenities = ({ property }: PropertySpecsSectionProps) => {
 
       {facilityNote ? (
         <div className="flex flex-col gap-1">
-          <p className="ui-body font-semibold text-ink">{t("moreDetails")}</p>
+          <p className="ui-body font-semibold text-ink">{t("moreAmenities")}</p>
           <ClampText
             lines={3}
             lang={property?.description_locales?.facility_dscr}

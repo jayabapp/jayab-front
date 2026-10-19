@@ -257,7 +257,7 @@
     "roomSize": "مساحة البناء",
     "propertyFacilities": "مرافق العقار",
     "showAllAmenities": "عرض جميع المرافق ({count, plural, one {مرفق واحد} two {مرفقان} few {{count} مرافق} many {{count} مرفقًا} other {{count} مرفق}})",
-    "moreDetails": "مزيد من التفاصيل",
+    "moreAmenities": "مرافق إضافية",
     "accommodationRules": "قوانين الإقامة",
     "party": "إمكانية إقامة الحفلات",
     "pet": "إمكانية اصطحاب الحيوانات الأليفة",

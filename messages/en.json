@@ -257,7 +257,7 @@
     "roomSize": "Built area",
     "propertyFacilities": "Property amenities",
     "showAllAmenities": "Show all amenities ({count, plural, one {{count} item} other {{count} items}})",
-    "moreDetails": "More details",
+    "moreAmenities": "More amenities",
     "accommodationRules": "House rules",
     "party": "Events allowed",
     "pet": "Pets allowed",

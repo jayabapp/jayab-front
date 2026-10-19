@@ -257,7 +257,7 @@
     "roomSize": "متراژ بنا",
     "propertyFacilities": "امکانات ملک",
     "showAllAmenities": "مشاهده همه امکانات ({count, plural, other {{count} مورد}})",
-    "moreDetails": "توضیحات بیشتر",
+    "moreAmenities": "امکانات بیشتر",
     "accommodationRules": "مقررات اقامتگاه",
     "party": "امکان برگزاری مراسم",
     "pet": "امکان ورود حیوان خانگی",
