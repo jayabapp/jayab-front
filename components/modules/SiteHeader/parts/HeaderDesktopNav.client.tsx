@@ -1,6 +1,7 @@
 "use client";
 
 import { useTranslations } from "next-intl";
+import { useStoreParams } from "@/store";
 import { CountBadge } from "@elements/Badge";
 
 import HeaderSessionBadge from "./HeaderSessionBadge.client";
@@ -23,6 +24,7 @@ const HeaderDesktopNav = ({
   onCreateProperty,
 }: HeaderDesktopNavProps) => {
   const t = useTranslations();
+  const { topHeaderVisible } = useStoreParams((state) => state);
 
   const navBlock = (
     <div className="hidden shrink-0 items-center gap-4 text-xs font-medium xl:flex xl:text-md 2xl:gap-6">
@@ -66,14 +68,17 @@ const HeaderDesktopNav = ({
     </div>
   );
 
-  const search = isHome ? null : (
-    <HeaderSearchField
-      boxId={boxId}
-      withCitySelector
-      containerClass="hidden min-w-0 max-w-md md:flex"
-      inputClass="!bg-transparent !border-none"
-    />
-  );
+  // On the landing page the hero already has the search box. Once the sheet scrolls over it (header
+  // no longer sits on the hero), the header takes over so search stays one click away.
+  const search =
+    isHome && topHeaderVisible ? null : (
+      <HeaderSearchField
+        boxId={boxId}
+        withCitySelector
+        containerClass="hidden min-w-0 max-w-md md:flex"
+        inputClass="!bg-transparent !border-none"
+      />
+    );
 
   const brandBlock = (
     <div className="hidden min-w-0 flex-1 items-center xl:flex">
