@@ -42,7 +42,6 @@ export type MiniInfoCardProps = {
 export type ShowAllButtonProps = {
   label: string;
   onClick: () => void;
-  count?: number | string;
 };
 
 export type ClampTextProps = {

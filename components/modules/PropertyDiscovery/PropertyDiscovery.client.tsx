@@ -81,59 +81,62 @@ const PropertyDiscovery = ({ devices }: PropertyDiscoveryProps) => {
         </aside>
 
         <div className="col-span-12 md:col-span-12 lg:col-span-9 px-0 xl:ps-4 xl:pe-0 xl:mt-0">
-          <div className="hidden z-1 w-full xl:flex flex-col xl:flex-row items-center justify-between mb-2">
-            <SingleProductBreadCrumb dataArray={BREAD_CRUMBS} />
-            <h1 className="sr-only">{t("listing.roomsPageTitle")}</h1>
-            <div className="w-full items-center justify-end hidden lg:flex">
-              <SpecialFilterButtons query={queries} />
-              <PropertySortMenu query={queries} />
+          {/* Desktop filter bar (breadcrumb, quick filters, sort, chips) stays under the header while scrolling. */}
+          <div className="xl:sticky xl:top-[4.5rem] xl:z-10 xl:bg-page xl:pb-1 xl:pt-2">
+            <div className="hidden z-1 w-full xl:flex flex-col xl:flex-row items-center justify-between mb-2">
+              <SingleProductBreadCrumb dataArray={BREAD_CRUMBS} />
+              <h1 className="sr-only">{t("listing.roomsPageTitle")}</h1>
+              <div className="w-full items-center justify-end hidden lg:flex">
+                <SpecialFilterButtons query={queries} />
+                <PropertySortMenu query={queries} />
+              </div>
             </div>
-          </div>
 
-          <div
-            className={`flex fixed pt-1 xl:hidden h-16 start-0 duration-1000 transition-all items-center justify-center z-10 xl:z-1 top-[3rem] xl:top-auto end-0 xl:end-auto bg-surface xl:bg-transparent xl:relative flex-col w-full xl:gap-2 ${
-              topHeaderVisible ? "" : "shadow-lg lg:shadow-none"
-            }`}
-          >
-            <div className="flex order-1 xl:hidden relative w-full">
-              <div className="z-1 px-3 relative w-full items-center gap-1 justify-between">
-                <div className="!col-span-9">
-                  <SelectedFiltersBar
-                    query={queries}
-                    setShowRegions={setShowRegions}
-                    cityWithRegions={cityWithRegions}
-                    propertyTypes={propertyTypes || {}}
-                    setFilterModalShow={setFilterModalShow}
-                  />
+            <div
+              className={`flex fixed pt-1 xl:hidden h-16 start-0 duration-1000 transition-all items-center justify-center z-10 xl:z-1 top-[3rem] xl:top-auto end-0 xl:end-auto bg-surface xl:bg-transparent xl:relative flex-col w-full xl:gap-2 ${
+                topHeaderVisible ? "" : "shadow-lg lg:shadow-none"
+              }`}
+            >
+              <div className="flex order-1 xl:hidden relative w-full">
+                <div className="z-1 px-3 relative w-full items-center gap-1 justify-between">
+                  <div className="!col-span-9">
+                    <SelectedFiltersBar
+                      query={queries}
+                      setShowRegions={setShowRegions}
+                      cityWithRegions={cityWithRegions}
+                      propertyTypes={propertyTypes || {}}
+                      setFilterModalShow={setFilterModalShow}
+                    />
+                  </div>
                 </div>
               </div>
             </div>
-          </div>
 
-          <div className="w-full flex px-3 xl:hidden">
-            <PropertyCategoryStrip
-              query={queries}
-              propertyKey="property_type"
-              data={propertyTypes?.PROPERTY_TYPE}
-            />
-          </div>
-
-          <div className="w-full grow-0 shrink-0 flex flex-row px-3 xl:px-0 relative justify-between">
-            <div className="flex flex-row w-fit md:w-[90%] gap-1 lg:w-full items-center justify-start">
-              <div className="flex lg:hidden">
-                <SpecialFilterButtons query={queries} />
-              </div>
-              <SelectedFiltersBar
+            <div className="w-full flex px-3 xl:hidden">
+              <PropertyCategoryStrip
                 query={queries}
-                setShowRegions={setShowRegions}
-                cityWithRegions={cityWithRegions}
-                propertyTypes={propertyTypes || {}}
-                setFilterModalShow={setFilterModalShow}
-                containerClass="!hidden xl:!contents xl:!w-full"
+                propertyKey="property_type"
+                data={propertyTypes?.PROPERTY_TYPE}
               />
             </div>
-            <div className="w-fit md:w-1/3 items-center justify-end flex lg:hidden">
-              <PropertySortMenu query={queries} />
+
+            <div className="w-full grow-0 shrink-0 flex flex-row px-3 xl:px-0 relative justify-between">
+              <div className="flex flex-row w-fit md:w-[90%] gap-1 lg:w-full items-center justify-start">
+                <div className="flex lg:hidden">
+                  <SpecialFilterButtons query={queries} />
+                </div>
+                <SelectedFiltersBar
+                  query={queries}
+                  setShowRegions={setShowRegions}
+                  cityWithRegions={cityWithRegions}
+                  propertyTypes={propertyTypes || {}}
+                  setFilterModalShow={setFilterModalShow}
+                  containerClass="!hidden xl:!contents xl:!w-full"
+                />
+              </div>
+              <div className="w-fit md:w-1/3 items-center justify-end flex lg:hidden">
+                <PropertySortMenu query={queries} />
+              </div>
             </div>
           </div>
 

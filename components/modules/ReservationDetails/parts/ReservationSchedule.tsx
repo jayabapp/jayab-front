@@ -15,10 +15,7 @@ const ROW_OPTIONS = {
   value_class: "!text-sm",
 };
 
-const ReservationSchedule = ({
-  isOwner,
-  reservation,
-}: ReservationViewProps) => {
+const ReservationSchedule = ({ reservation }: ReservationViewProps) => {
   const formatToman = useFormatToman();
 
   const t = useTranslations();
@@ -68,14 +65,12 @@ const ReservationSchedule = ({
             : t("reserve.reserveAmountNotRecorded")
         }
       />
-      {isOwner ? (
-        <SpecRow
-          dots
-          options={ROW_OPTIONS}
-          title={t("reserve.requestDate")}
-          value={`${formatTimestamp(reservation?.created_at, "numeric")}`}
-        />
-      ) : null}
+      <SpecRow
+        dots
+        options={ROW_OPTIONS}
+        title={t("reserve.requestDate")}
+        value={`${formatTimestamp(reservation?.created_at, "numeric")}`}
+      />
     </div>
   );
 };

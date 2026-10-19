@@ -83,19 +83,19 @@ const PublicPropertyCard = ({ data, goToLink }: PublicPropertyCardProps) => {
 
           {/* Capacity | rooms | pool, likes at the end */}
           <div className="flex w-full items-center justify-between gap-2">
-            <ul className="flex min-w-0 flex-wrap items-center gap-x-2 gap-y-1 text-xs text-ink-subtle">
-              {facts.map((fact, index) => (
-                <li key={fact} className="flex shrink-0 items-center gap-2">
-                  {index ? (
-                    <span
-                      aria-hidden="true"
-                      className="h-3 w-px bg-line-strong"
-                    />
-                  ) : null}
-                  {fact}
-                </li>
-              ))}
-            </ul>
+            {/* Each item carries its own leading divider; the -ms-4 shift and the clipping wrapper hide the one that starts a wrapped line. */}
+            <div className="min-w-0 overflow-hidden">
+              <ul className="-ms-4 flex flex-wrap gap-y-1 text-xs text-ink-subtle">
+                {facts.map((fact) => (
+                  <li
+                    key={fact}
+                    className="relative ps-4 before:absolute before:start-2 before:top-1/2 before:h-3 before:w-px before:-translate-y-1/2 before:bg-line-strong"
+                  >
+                    {fact}
+                  </li>
+                ))}
+              </ul>
+            </div>
 
             <PropertyCardLikes
               forceFilled

@@ -12,9 +12,9 @@ import ShareLink from "@elements/Share/BrowserShare.client";
 import Notify from "@elements/Toast";
 
 const SHELL_CLASS =
-  "flex h-11 shrink-0 items-center rounded-full border border-line-strong bg-surface text-sm text-ink transition-colors hover:bg-surface-muted";
+  "flex h-9 shrink-0 items-center rounded-full border border-line-strong bg-surface text-xs text-ink transition-colors hover:bg-surface-muted md:h-11 md:text-sm";
 
-const ACTION_CLASS = `${SHELL_CLASS} cursor-pointer justify-center gap-1.5 px-3.5 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-focus`;
+const ACTION_CLASS = `${SHELL_CLASS} cursor-pointer justify-center gap-1 px-2.5 md:gap-1.5 md:px-3.5 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-focus`;
 
 const ListingActions = ({
   code,
@@ -37,7 +37,7 @@ const ListingActions = ({
   };
 
   return (
-    <div className="flex items-center gap-2">
+    <div className="flex items-center gap-1.5 md:gap-2">
       <button
         type="button"
         onClick={copyCode}
@@ -51,7 +51,7 @@ const ListingActions = ({
       <div className={SHELL_CLASS}>
         <ShareLink
           passedHref={`${origin}/rooms/${slug}`}
-          containerClass="h-11 flex-row relative justify-center px-3.5"
+          containerClass="h-9 flex-row relative justify-center px-2.5 md:h-11 md:px-3.5"
         />
       </div>
 

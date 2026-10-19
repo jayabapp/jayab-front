@@ -33,7 +33,7 @@ const TermsContent = ({ content: aboutUsWebsite }: TermsContentProps) => {
               <div
                 lang={contentLocale}
                 dir={dirOf(contentLocale)}
-                className=" font-light !text-base text-start  content mt-2 leading-8"
+                className=" font-light !text-base text-justify  content mt-2 leading-8"
                 dangerouslySetInnerHTML={{
                   __html: sanitizeCmsHtml(
                     aboutUsWebsite?.html || aboutUsWebsite?.full_text || "",

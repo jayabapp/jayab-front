@@ -3,6 +3,7 @@
 import { AMENITY_PREVIEW_COUNT } from "@features/properties/constants/amenities";
 import { getPropertyImageUrl } from "@features/properties/mappers/property-image.mapper";
 import { useMemo, useState } from "react";
+import { useLocalizeDigits } from "@hooks/useLocalizeDigits";
 import { useTranslations } from "next-intl";
 import { toAmenityItems } from "@features/properties/mappers/amenities.mapper";
 
@@ -15,6 +16,7 @@ import ClampText from "./ClampText.client";
 
 const Amenities = ({ property }: PropertySpecsSectionProps) => {
   const t = useTranslations("listing");
+  const digits = useLocalizeDigits();
 
   const [showAll, setShowAll] = useState(false);
   const amenities = useMemo(() => toAmenityItems(property), [property]);
@@ -40,21 +42,23 @@ const Amenities = ({ property }: PropertySpecsSectionProps) => {
 
       {amenities.length > preview.length ? (
         <ShowAllButton
-          count={amenities.length}
           onClick={() => setShowAll(true)}
-          label={t("propertyFacilities")}
+          label={digits(t("showAllAmenities", { count: amenities.length }))}
         />
       ) : (
         <></>
       )}
 
       {facilityNote ? (
-        <ClampText
-          lines={3}
-          lang={property?.description_locales?.facility_dscr}
-        >
-          {facilityNote}
-        </ClampText>
+        <div className="flex flex-col gap-1">
+          <p className="ui-body font-semibold text-ink">{t("moreDetails")}</p>
+          <ClampText
+            lines={3}
+            lang={property?.description_locales?.facility_dscr}
+          >
+            {facilityNote}
+          </ClampText>
+        </div>
       ) : (
         <></>
       )}

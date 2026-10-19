@@ -116,7 +116,7 @@ const ReservationCard = ({
         </>
       ) : null}
 
-      <ReservationSchedule isOwner={isOwner} reservation={reservation} />
+      <ReservationSchedule reservation={reservation} />
 
       <ReservationStatusBar
         isOwner={isOwner}

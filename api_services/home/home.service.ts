@@ -88,12 +88,19 @@ export class HomeService {
       page: number;
       per_page?: number;
       summary?: boolean;
+      locale?: Locale;
     },
     signal?: AbortSignal,
   ) {
     try {
       const result = await apiCall<
-        { key: string; page: number; per_page?: number; summary?: boolean },
+        {
+          key: string;
+          page: number;
+          per_page?: number;
+          summary?: boolean;
+          locale?: Locale;
+        },
         { data: ContentDto[]; meta: Meta }
       >(
         "GET",
@@ -103,6 +110,7 @@ export class HomeService {
           page: dto?.page,
           per_page: dto?.per_page,
           summary: dto?.summary,
+          locale: dto?.locale,
         },
         { signal },
       );

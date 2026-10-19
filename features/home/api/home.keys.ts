@@ -5,6 +5,7 @@ export type ContentListFilters = {
   key: string;
   page: number;
   perPage?: number;
+  locale?: Locale;
 };
 
 export type ContentQuestionFilters = {

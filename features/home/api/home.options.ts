@@ -42,7 +42,12 @@ export const contentListOptions = (filters: ContentListFilters) =>
     queryKey: cmsKeys.list(filters),
     queryFn: ({ signal }) =>
       HomeService.GetContent(
-        { key: filters.key, page: filters.page, per_page: filters.perPage },
+        {
+          key: filters.key,
+          page: filters.page,
+          per_page: filters.perPage,
+          locale: filters.locale,
+        },
         signal,
       ),
     staleTime: STALE_TIME.MEDIUM,

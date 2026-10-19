@@ -6,6 +6,8 @@ import { FormInputWithExternalUnit } from "@elements/Form";
 import { useOwnerPropertyOptions } from "@features/owner-property/hooks/useOwnerPropertyOptions";
 import { MultiLineFormInput } from "@elements/Form";
 import { useTranslations } from "next-intl";
+import { titlePlaceholderExamples } from "@/utils/constantss";
+import { useEffect, useState } from "react";
 import { useAuthStore } from "@/store";
 import { FormInput } from "@elements/Form";
 import { Checkbox } from "@elements/Form";
@@ -26,6 +28,15 @@ const PropertyInitialsFields = ({
   onChange,
 }: PropertyInitialsFieldsProps) => {
   const t = useTranslations();
+
+  // Random example title; the first one renders on the server and a random one replaces it after mount.
+  const [exampleIndex, setExampleIndex] = useState(0);
+  useEffect(() => {
+    // eslint-disable-next-line react-hooks/set-state-in-effect -- random only after mount so server and client markup match
+    setExampleIndex(
+      Math.floor(Math.random() * titlePlaceholderExamples(t).length),
+    );
+  }, [t]);
 
   const { isAdminSso } = useAuthStore();
   const { data: propertyTypes } = useOwnerPropertyOptions([
@@ -68,6 +79,7 @@ const PropertyInitialsFields = ({
           isMandatory: true,
           maxLength: TITLE_MAX_LENGTH,
           direction: "rtl",
+          placeholder: `${t("owner.forExample")}: ${titlePlaceholderExamples(t)[exampleIndex]}`,
           title: t("owner.originalPropertyTitle"),
         }}
       />

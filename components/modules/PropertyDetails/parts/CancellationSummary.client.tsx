@@ -1,7 +1,8 @@
 "use client";
 
 import { ModalBottomSheet, ModalHeaderPart } from "@elements/Modal";
-import { useTranslations } from "next-intl";
+import { useLocale, useTranslations } from "next-intl";
+import { resolveLocale } from "@/i18n/config";
 import { useContentList } from "@features/home/hooks/useContentList";
 import { useState } from "react";
 
@@ -13,8 +14,7 @@ const PROPERTY_RULES_KEY = "propertyRules";
 
 const CHIP_CLASS: Record<string, string> = {
   EASY: "border-status-success-line bg-status-success-bg text-status-success",
-  NORMAL:
-    "border-status-warning-line bg-status-warning-bg text-status-warning",
+  NORMAL: "border-status-warning-line bg-status-warning-bg text-status-warning",
   STRICT: "border-status-danger-line bg-status-danger-bg text-status-danger",
 };
 
@@ -150,16 +150,25 @@ const StepMarker = ({ color, index }: T.TStepMarkerProps) => {
 
 const CancellationSummary = ({ cancelingType }: T.CancellationSummaryProps) => {
   const t = useTranslations("listing");
+  const locale = resolveLocale(useLocale());
 
   const [showDetails, setShowDetails] = useState(false);
   const { items } = useContentList(
     {
       key: PROPERTY_RULES_KEY,
       page: 1,
+      locale,
     },
     showDetails,
   );
   if (!cancelingType?.title) return null;
+  // The API title is Persian; the type id picks the localized one.
+  const typeTitle =
+    cancelingType.id === "EASY" ||
+    cancelingType.id === "NORMAL" ||
+    cancelingType.id === "STRICT"
+      ? t(`cancellationType${cancelingType.id}`)
+      : cancelingType.title;
   const rule = items.find((item) => item?.key === cancelingType.id);
   const policyText = rule?.full_text || rule?.small_text || "";
   const parsedPolicy = parseCancellationPolicy(policyText);
@@ -186,7 +195,7 @@ const CancellationSummary = ({ cancelingType }: T.CancellationSummaryProps) => {
                 "border-line-strong bg-surface-muted text-ink-muted",
             ].join(" ")}
           >
-            {cancelingType.title}
+            {typeTitle}
           </span>
         </p>
 
@@ -222,7 +231,7 @@ const CancellationSummary = ({ cancelingType }: T.CancellationSummaryProps) => {
         <div className="px-5 pb-7 pt-3 md:px-7 md:pb-8">
           {/* Policy type */}
           <h3 className="text-lg font-bold leading-8 text-ink md:text-xl">
-            {cancelingType.title}
+            {typeTitle}
           </h3>
 
           {/* Main policy description */}

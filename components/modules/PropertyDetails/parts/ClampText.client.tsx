@@ -39,9 +39,10 @@ const ClampText = ({
   return (
     <div className="flex flex-col items-start gap-2">
       <p
+        dir="auto"
         lang={lang}
         ref={textRef}
-        className={`whitespace-pre-wrap text-ink ${
+        className={`whitespace-pre-wrap text-justify text-ink ${
           expanded ? "" : (LINE_CLAMP[lines] ?? "line-clamp-4")
         } ${className}`}
       >

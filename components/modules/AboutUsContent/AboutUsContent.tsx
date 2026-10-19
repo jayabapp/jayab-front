@@ -34,7 +34,7 @@ const AboutUsContent = ({ content: aboutUs }: AboutUsContentProps) => {
           <Editable contentId={aboutUs?.id}>
             {" "}
             <div
-              className="w-full mt-4 text-sm md:text-base text-center px-3"
+              className="w-full mt-4 text-sm md:text-base text-justify px-3"
               dangerouslySetInnerHTML={{
                 __html: sanitizeCmsHtml(
                   aboutUs && aboutUs

@@ -7,7 +7,6 @@ import type {
   BlogStructuredDataProps,
   ContentFaqStructuredDataProps,
   FaqStructuredDataProps,
-  LandingFaqStructuredDataProps,
   PropertyStructuredDataProps,
   ServiceStructuredDataProps,
 } from "@/types/features/seo";
@@ -300,18 +299,6 @@ export const ContentFAQSchema = ({
     faqData.map((item) => ({
       answer: item.innerText,
       question: item.title,
-    })),
-    url,
-  );
-
-export const LandingFAQSchema = ({
-  faqData,
-  url,
-}: LandingFaqStructuredDataProps) =>
-  createFaqSchema(
-    faqData.map((item) => ({
-      answer: item.answer || "",
-      question: item.question,
     })),
     url,
   );

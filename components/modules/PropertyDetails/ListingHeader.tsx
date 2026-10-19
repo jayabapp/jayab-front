@@ -25,7 +25,7 @@ const ListingHeader = ({ breadcrumbs, property }: ListingHeaderProps) => {
       </div>
 
       <div className="flex flex-col gap-4 md:flex-row md:items-end md:justify-between md:gap-6">
-        <div className="flex min-w-0 flex-col gap-2">
+        <div className="flex min-w-0 flex-1 flex-col gap-2">
           <div className="flex items-start gap-2">
             {property?.hasBlueTick ? (
               <ContentImage
@@ -48,18 +48,21 @@ const ListingHeader = ({ breadcrumbs, property }: ListingHeaderProps) => {
             </h1>
           </div>
 
-          <span className="flex items-center gap-1.5 text-sm text-ink-muted">
-            <Icon name="map-pin" size={16} />
-            <span>
-              <bdi lang={property?.textLocales?.city ?? "fa"}>
-                {property?.city}
-              </bdi>
-              {property?.city && secondaryPlace ? sep : ""}
-              <bdi lang={secondaryLocale ?? "fa"}>{secondaryPlace}</bdi>
+          {/* Location on one side, verified/promoted badges fill the other. */}
+          <div className="flex flex-wrap items-center justify-between gap-x-4 gap-y-2">
+            <span className="flex items-center gap-1.5 text-sm text-ink-muted">
+              <Icon name="map-pin" size={16} className="text-status-warning" />
+              <span>
+                <bdi lang={property?.textLocales?.city ?? "fa"}>
+                  {property?.city}
+                </bdi>
+                {property?.city && secondaryPlace ? sep : ""}
+                <bdi lang={secondaryLocale ?? "fa"}>{secondaryPlace}</bdi>
+              </span>
             </span>
-          </span>
 
-          <TrustBadges property={property} />
+            <TrustBadges property={property} />
+          </div>
         </div>
 
         <div className="shrink-0 overflow-x-auto">

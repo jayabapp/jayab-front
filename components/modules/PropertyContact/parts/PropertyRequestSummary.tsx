@@ -1,4 +1,3 @@
-import { formatJalaliWeekdayDay } from "@features/reservations/mappers/reservation-dates";
 import { getPropertyImageUrl } from "@features/properties/mappers/property-image.mapper";
 import { PROPERTY_IMAGE_QUALITY } from "@features/properties/constants/image";
 import { nightsBetween } from "@features/reservations/lib/stay-range";
@@ -10,6 +9,9 @@ import { ContentImage } from "@elements/Image";
 import { Icon } from "@elements/Icon";
 
 import type { PropertyRequestSummaryProps } from "@/types/components/modules/property-contact";
+
+// Weekday and day without a comma: "سه‌شنبه ۵ آبان تا سه‌شنبه ۱۲ آبان | ۷ شب".
+const WEEKDAY_DAY = "dddd jD jMMMM";
 
 const PropertyRequestSummary = ({
   property,
@@ -53,9 +55,9 @@ const PropertyRequestSummary = ({
           <div className="flex items-center gap-2">
             <Icon name="calendar" size={20} className="text-link" />
             <span className="flex-1">
-              {formatJalaliWeekdayDay(stay.startDate, jalali)} {t("common.to")}{" "}
-              {formatJalaliWeekdayDay(stay.endDate, jalali)}
-              {sep}
+              {jalali(stay.startDate, WEEKDAY_DAY)} {t("common.to")}{" "}
+              {jalali(stay.endDate, WEEKDAY_DAY)}
+              {" | "}
               {t("reserve.nights", {
                 count:
                   stay.nights ?? nightsBetween(stay.startDate, stay.endDate),

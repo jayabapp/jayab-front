@@ -27,7 +27,7 @@ const TrustBadges = ({ property }: TrustBadgesProps) => {
   if (!badges.length) return <></>;
 
   return (
-    <ul className="mt-1 inline-flex w-fit max-w-full list-none items-stretch rounded-2xl border border-line-strong bg-surface shadow-sm">
+    <ul className="inline-flex w-fit max-w-full list-none items-stretch rounded-2xl border border-line-strong bg-surface shadow-sm">
       {badges.map((badge, index) => (
         <li
           key={badge.icon}

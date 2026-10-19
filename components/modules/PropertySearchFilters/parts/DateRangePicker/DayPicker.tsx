@@ -97,7 +97,17 @@ const DayPicker = ({
   );
 
   useEffect(() => {
-    if (!!active_days)
+    // Without active_days (search pickers) the grid still follows the month: 30 days after Shahrivar, not the first month's 31.
+    if (!active_days)
+      setDaysData(
+        Array.from({ length: numberOfDays }, (e, i) => ({
+          id: i + 1,
+          month: month,
+          year: year,
+          isActive: false,
+        })),
+      );
+    else
       setDaysData(
         Array.from({ length: numberOfDays }, (e, i) => {
           return {

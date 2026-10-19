@@ -38,7 +38,7 @@ const BlogDetails = ({
         style={{ "--card-index": 1 } as CSSProperties}
         className={`enter-from-right col-span-1 w-full md:col-span-2 ${PANEL_CLASS}`}
       >
-        <div className="content mx-auto max-w-[68ch] break-words leading-8">
+        <div className="content mx-auto max-w-[68ch] break-words text-justify leading-8">
           {convertHtmlToReact(html, BLOG_IMAGE_QUALITY)}
         </div>
         <ContentQuestions

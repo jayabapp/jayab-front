@@ -65,6 +65,21 @@ input[type="submit"] {
   outline-offset: 2px;
 }
 
+/* Text fields mark focus on their own box (border or ring on the wrapper); the ring above would draw a second border inside it. */
+:where(
+  input:not(
+    [type="checkbox"],
+    [type="radio"],
+    [type="range"],
+    [type="file"],
+    [type="submit"],
+    [type="button"]
+  ),
+  textarea
+):focus-visible {
+  outline: 0;
+}
+
 .text-en {
   font-family: sans-serif !important;
 }
@@ -916,6 +931,12 @@ input[type="number"] {
 
 p {
   @apply font-normal text-start;
+}
+
+/* Paragraphs inside a justified wrapper (CMS html, landing text) follow it; the p rule above would reset them. */
+.text-justify p,
+.\!text-justify p {
+  text-align: inherit;
 }
 
 select {

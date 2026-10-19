@@ -8,7 +8,6 @@ export type {
 
 import type {
   ProvienceTypesDto,
-  Question,
   RelatedLandings,
   SingleLandingDto,
 } from "@/api_services/property/property.interface";
@@ -66,10 +65,6 @@ export type LandingContentProps = {
 
 export type LandingRelatedTagsProps = {
   data: RelatedLandings[];
-};
-
-export type LandingFaqProps = {
-  data: Question[];
 };
 
 export type THomeProper = {

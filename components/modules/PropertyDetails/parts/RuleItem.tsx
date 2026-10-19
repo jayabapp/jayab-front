@@ -21,8 +21,9 @@ const RuleItem = ({
       </p>
       {description ? (
         <p
+          dir="auto"
           lang={descriptionLang}
-          className="whitespace-pre-wrap ui-caption text-ink-subtle"
+          className="whitespace-pre-wrap text-justify ui-caption text-ink-subtle"
         >
           <bdi>{description}</bdi>
         </p>
