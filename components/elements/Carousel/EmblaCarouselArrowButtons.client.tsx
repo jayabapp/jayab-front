@@ -2,6 +2,7 @@
 
 import { useCallback, useEffect, useState } from "react";
 import { ContentImage } from "@elements/Image";
+import { Icon } from "@elements/Icon";
 
 import type { CarouselNavigationState } from "@/types/components/elements/carousel";
 import type { CarouselButtonProps } from "@/types/components/elements/carousel";
@@ -57,6 +58,29 @@ export const arrowSides = (
     onRight: rtl ? nav.onPrevButtonClick : nav.onNextButtonClick,
   };
 };
+
+type TEdgeArrow = {
+  label: string;
+  onClick: () => void;
+  side: "left" | "right";
+};
+
+export const EdgeArrowButton = ({ side, label, onClick }: TEdgeArrow) => (
+  <button
+    type="button"
+    onClick={onClick}
+    aria-label={label}
+    className={`absolute top-1/2 z-10 hidden size-9 -translate-y-1/2 cursor-pointer items-center justify-center rounded-full border border-line bg-surface text-ink shadow-card transition-colors hover:bg-surface-muted md:flex ${
+      side === "left" ? "left-1" : "right-1"
+    }`}
+  >
+    <Icon
+      name="chevron-left"
+      size={20}
+      className={side === "right" ? "rotate-180" : ""}
+    />
+  </button>
+);
 
 export const PrevButton: React.FC<CarouselButtonProps> = (props) => {
   const { className, ...restProps } = props;

@@ -384,29 +384,45 @@ ul {
   @apply bg-selected;
 }
 
-/* Row divider: a brand-tinted line in light, the bright hairline in dark.
-   On hover/selection it takes the link color instead of growing an
-   underline under the label. */
+/* Row divider: a brand-tinted line in light, the bright hairline in dark. On hover a
+   link-colored line of the same weight (and the same curved ends) grows from the center
+   across the row; the selected row keeps it fully drawn. */
 .menu-row-line {
-  @apply border-b border-selected-line transition-colors;
+  @apply relative border-b border-selected-line;
 }
 
-.menu-row-line:hover,
-.menu-row-line.menu-row-line-active {
-  @apply border-link;
+.menu-row-line::after {
+  content: "";
+  position: absolute;
+  inset: 0 0 -1px;
+  border-bottom: 1px solid rgb(var(--c-link));
+  border-radius: inherit;
+  pointer-events: none;
+  clip-path: inset(0 50%);
+  transition: clip-path 0.3s ease;
+}
+
+.menu-row-line:hover::after,
+.menu-row-line.menu-row-line-active::after {
+  clip-path: inset(0);
 }
 
 .menu-row-line:last-child {
   @apply border-b-0;
 }
 
+.menu-row-line:last-child::after {
+  display: none;
+}
+
 html[data-theme="dark"] .menu-row-line {
   @apply border-white/70;
 }
 
-html[data-theme="dark"] .menu-row-line:hover,
-html[data-theme="dark"] .menu-row-line.menu-row-line-active {
-  @apply border-link;
+@media (prefers-reduced-motion: reduce) {
+  .menu-row-line::after {
+    transition: none;
+  }
 }
 
 .glass-surface {
@@ -1657,15 +1673,87 @@ html[data-theme="dark"] .property-card-shadow {
 }
 
 .filter-chip {
-  @apply flex h-6.5 w-auto shrink-0 cursor-pointer items-center justify-center gap-0 rounded-full border py-1 pl-2 pr-1 text-xs transition-colors;
+  @apply flex h-10 w-auto shrink-0 cursor-pointer items-center justify-center gap-1.5 whitespace-nowrap rounded-full border px-3.5 text-sm font-medium transition-colors md:h-11;
 }
 
 .filter-chip-idle {
-  @apply border-line bg-surface text-ink-muted hover:border-line-strong hover:bg-surface-muted;
+  @apply border-line bg-surface text-ink hover:border-line-strong hover:bg-surface-muted;
 }
 
 .filter-chip-active {
-  @apply border-action bg-selected text-link;
+  @apply border-selected-line bg-selected font-semibold text-on-selected;
+}
+
+/* The one filled chip in the row ("more filters"); dark mode drops the glow. */
+.filter-chip-primary {
+  @apply border-transparent bg-action font-semibold text-on-action shadow-glass-btn;
+}
+
+html[data-theme="dark"] .filter-chip-primary {
+  box-shadow: none;
+}
+
+/* Filter chip row: the edge that still has chips beyond it fades out under its scroll
+   button. Swiper sets data-fade-left / data-fade-right (physical sides) from its state. */
+.chip-row-fade .embla__viewport {
+  --fade-left: 0rem;
+  --fade-right: 0rem;
+  mask-image: linear-gradient(
+    to right,
+    transparent,
+    #000 var(--fade-left),
+    #000 calc(100% - var(--fade-right)),
+    transparent
+  );
+}
+
+.chip-row-fade[data-fade-left="true"] .embla__viewport {
+  --fade-left: 4rem;
+}
+
+.chip-row-fade[data-fade-right="true"] .embla__viewport {
+  --fade-right: 4rem;
+}
+
+/* Sticky bar: no box while it sits in the page flow, a blurred page-colored strip once it
+   has stuck under the header and content scrolls beneath it. */
+.discovery-filter-bar {
+  transition:
+    background-color 0.2s ease,
+    box-shadow 0.2s ease;
+}
+
+.discovery-filter-bar[data-stuck="true"] {
+  background-color: rgb(var(--c-page) / 0.92);
+  @apply shadow-glass-sm;
+  -webkit-backdrop-filter: blur(12px);
+  backdrop-filter: blur(12px);
+}
+
+.discovery-filter-bar {
+  top: 3.9rem;
+}
+
+.discovery-sidebar {
+  --discovery-sidebar-top: 7.95rem;
+  top: var(--discovery-sidebar-top);
+  height: calc(100dvh - var(--discovery-sidebar-top) - 1rem);
+}
+
+@media (min-width: 768px) {
+  .discovery-filter-bar {
+    top: 3.65rem;
+  }
+}
+
+@media (min-width: 1280px) {
+  .discovery-filter-bar {
+    top: 4.6rem;
+  }
+
+  .discovery-sidebar {
+    --discovery-sidebar-top: 8.9rem;
+  }
 }
 
 .hero-field {

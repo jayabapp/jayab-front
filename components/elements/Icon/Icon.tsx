@@ -99,6 +99,14 @@ const PATHS: Record<IconName, JSX.Element> = {
       <path d="M15.25 8.75V6.5a2.75 2.75 0 0 0-2.75-2.75H6.5A2.75 2.75 0 0 0 3.75 6.5v6A2.75 2.75 0 0 0 6.5 15.25h2.25" />
     </>
   ),
+  filter: (
+    <>
+      <path d="M4 7h9M17 7h3" />
+      <path d="M4 17h3M11 17h9" />
+      <circle cx="15" cy="7" r="2" />
+      <circle cx="9" cy="17" r="2" />
+    </>
+  ),
   expand: (
     <>
       <path d="M14.5 4.5h5v5" />

@@ -1,5 +1,5 @@
 import { useTranslations } from "next-intl";
-import { ContentImage } from "@elements/Image";
+import { Icon } from "@elements/Icon";
 
 import type { RemovableFilterChipProps } from "@/types/components/modules/property-search-filters";
 
@@ -11,31 +11,21 @@ const RemovableFilterChip = ({
   const t = useTranslations("common");
 
   return (
-    <div className="filter-chip filter-chip-active gap-4 px-1">
+    <div className="filter-chip filter-chip-active gap-2 pe-2">
       {onLabelClick ? (
-        <button
-          type="button"
-          onClick={onLabelClick}
-          className="cursor-pointer text-xs ps-2"
-        >
+        <button type="button" onClick={onLabelClick} className="cursor-pointer">
           {label}
         </button>
       ) : (
-        <p className="text-xs ps-2">{label}</p>
+        <p>{label}</p>
       )}
       <button
         type="button"
         onClick={onRemove}
         aria-label={`${t("removeFilters")} ${label}`}
-        className="cursor-pointer w-4 h-4 aspect-square rounded-full border border-action flex items-center justify-center"
+        className="flex size-5 cursor-pointer items-center justify-center rounded-full border border-action"
       >
-        <ContentImage
-          alt=""
-          width={8}
-          height={8}
-          src="/assets/icons/adds/blue_plus.svg"
-          className="w-2 h-2 rotate-45 aspect-square"
-        />
+        <Icon name="x" size={16} />
       </button>
     </div>
   );

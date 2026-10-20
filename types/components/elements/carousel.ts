@@ -10,6 +10,8 @@ export type CarouselProps = {
   breakPoints?: Record<CarouselMediaSize, { slidesPerView?: number; spaceBetween?: number | string }>;
   children: ReactNode;
   dir?: "rtl" | "ltr";
+  /** Round scroll buttons at the row edges, shown only while there is more in that direction. */
+  edgeArrows?: boolean;
   onShowCountClick?: (index: number) => void | null;
   options?: EmblaOptionsType;
   pagination?: boolean;

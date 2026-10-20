@@ -42,7 +42,7 @@ const ProfileStats = ({ profile, isLogin }: ProfileStatsProps) => {
       route: "/profile/bookmarks",
       title: t("statBookmarks"),
       value: bookmarks?.length ?? 0,
-      imgSrc: "/assets/icons/header/header_my_saves.svg",
+      imgSrc: "/assets/icons/profile/menu/saved.svg",
     },
     ...(isOwner
       ? [
@@ -51,7 +51,7 @@ const ProfileStats = ({ profile, isLogin }: ProfileStatsProps) => {
             route: "/profile/owner/reserves",
             title: t("statActiveReserves"),
             value: activeReserves ?? 0,
-            imgSrc: "/assets/icons/adds/header_reserve.svg",
+            imgSrc: "/assets/icons/profile/menu/reserves.svg",
           },
         ]
       : [
@@ -60,7 +60,7 @@ const ProfileStats = ({ profile, isLogin }: ProfileStatsProps) => {
             route: "/profile/bookmarks",
             title: t("statLikes"),
             value: likes?.length ?? 0,
-            imgSrc: "/assets/icons/adds/filled_heart_blue.svg",
+            imgSrc: "/assets/icons/profile/menu/likes.svg",
           },
         ]),
   ];

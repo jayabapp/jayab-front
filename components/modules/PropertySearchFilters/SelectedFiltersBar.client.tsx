@@ -4,8 +4,7 @@ import { sortDynamicFiltersInOrder } from "@/utils/constantss";
 import { useDiscoveryQueryReplace } from "@features/properties/hooks/useDiscoveryQueryReplace";
 import { zero_filter_remove_keys } from "@/utils/constantss";
 import { useCallback, useState } from "react";
-import { FILTER_ORDER_PARAM } from "@features/properties/lib/filter-order";
-import { parseFilterOrder } from "@features/properties/lib/filter-order";
+import { countActiveFilters } from "@features/properties/lib/count-active-filters";
 import { useTranslations } from "next-intl";
 import { useJalaliFormat } from "@hooks/useJalaliFormat";
 import { filterOrderRank } from "@features/properties/lib/filter-order";
@@ -13,6 +12,7 @@ import { useFormatNumber } from "@hooks/useFormatNumber";
 import { RegionButton } from "@modules/CitySelector";
 import { ContentImage } from "@elements/Image";
 import { parseIdList } from "@features/cities/lib/city-selection";
+import { Icon } from "@elements/Icon";
 
 import type { SelectedFiltersBarProps } from "@/types/components/modules/property-search-filters";
 import type { ReactNode } from "react";
@@ -21,6 +21,7 @@ import SearchDateRangePicker from "./parts/DateRangePicker/SearchDateRangePicker
 import SelectiveFilterChip from "./parts/SelectiveFilterChip.client";
 import RemovableFilterChip from "./parts/RemovableFilterChip";
 import updateDateRange from "./parts/DateRangePicker/updateDateRange";
+import TripFilterPill from "./parts/TripFilterPill.client";
 import FilterCounter from "./parts/FilterCounter.client";
 import SwiperSlide from "@elements/Carousel/SwiperSlide";
 import isEmpty from "lodash/isEmpty";
@@ -28,7 +29,7 @@ import Swiper from "@elements/Carousel/Swiper.client";
 import moment from "moment-jalaali";
 import Modal from "@elements/Modal";
 
-const JALALI_DATE_FORMAT = "jDD/jMMMM/jYYYY";
+const TRIP_DATE_FORMAT = "jD jMMMM";
 const JALALI_INPUT_DATE_FORMAT = "jYYYY/jMM/jD";
 
 const rangeLabel = (
@@ -56,7 +57,7 @@ const DYNAMIC_FILTER_TITLES = {
   ENTERTAINMENT: "common.entertainment",
   WELFARE: "common.welfare",
   COOL_HEAT: "common.coolHeat",
-  KITCHEN: "listing.kitchen",
+  KITCHEN: "common.kitchenAcc",
   OWNERSHIP: "listing.ownership",
 } as const;
 
@@ -76,7 +77,6 @@ const SelectedFiltersBar = ({
 
   const replaceQuery = useDiscoveryQueryReplace();
   const regionsIds = parseIdList(query?.regions);
-  const filterOrder = parseFilterOrder(query?.[FILTER_ORDER_PARAM]);
 
   const [dateEditorOpen, setDateEditorOpen] = useState(false);
   const [guestEditorOpen, setGuestEditorOpen] = useState(false);
@@ -127,279 +127,214 @@ const SelectedFiltersBar = ({
     .map((region) => region?.title)
     .filter((title): title is string => !!title);
 
-  const renderDynamicChip = (key: string) => ({
-    key: key.toLowerCase(),
-    node: (
-      <SwiperSlide className="!w-auto" key={`dynamic-${key}`}>
-        <SelectiveFilterChip
-          queryKey={key.toLowerCase()}
-          removeFiltersKeys={removeFiltersKeys}
-          list={propertyTypes?.[key.toUpperCase()]}
-          title={
-            Object.hasOwn(DYNAMIC_FILTER_TITLES, key.toUpperCase())
-              ? t(
-                  DYNAMIC_FILTER_TITLES[
-                    key.toUpperCase() as keyof typeof DYNAMIC_FILTER_TITLES
-                  ],
-                )
-              : ""
-          }
-        />
-      </SwiperSlide>
-    ),
-  });
+  const renderDynamicChip = (key: string) => (
+    <SwiperSlide className="!w-auto" key={`dynamic-${key}`}>
+      <SelectiveFilterChip
+        queryKey={key.toLowerCase()}
+        removeFiltersKeys={removeFiltersKeys}
+        list={propertyTypes?.[key.toUpperCase()]}
+        title={
+          Object.hasOwn(DYNAMIC_FILTER_TITLES, key.toUpperCase())
+            ? t(
+                DYNAMIC_FILTER_TITLES[
+                  key.toUpperCase() as keyof typeof DYNAMIC_FILTER_TITLES
+                ],
+              )
+            : ""
+        }
+      />
+    </SwiperSlide>
+  );
 
-  const chips: { key: string; node: ReactNode }[] = [];
+  // Filters set elsewhere (sidebar, sheet, URL) show up after the fixed set so they can be seen and cleared.
+  const appliedChips: ReactNode[] = [];
 
   if (!isEmpty(cityWithRegions?.child))
-    chips.push({
-      key: "regions",
-      node: (
-        <SwiperSlide key="selected-regions" className="!w-auto flex">
-          <RegionButton
-            containerClass=""
-            regionsIds={regionsIds}
-            regionTitles={regionTitles}
-            setShowRegions={setShowRegions}
-            onClearRegions={() => removeFiltersKeys(["regions"])}
-          />
-        </SwiperSlide>
-      ),
-    });
+    appliedChips.push(
+      <SwiperSlide key="selected-regions" className="!w-auto flex">
+        <RegionButton
+          containerClass=""
+          regionsIds={regionsIds}
+          regionTitles={regionTitles}
+          setShowRegions={setShowRegions}
+          onClearRegions={() => removeFiltersKeys(["regions"])}
+        />
+      </SwiperSlide>,
+    );
 
   if (query?.total_bedrooms)
-    chips.push({
-      key: "total_bedrooms",
-      node: (
-        <SwiperSlide key="selected-bedrooms" className="!w-auto">
-          <RemovableFilterChip
-            onRemove={() => removeFiltersKeys(["total_bedrooms"])}
-            label={`${t("listing.roomCount")} : ${query?.total_bedrooms}`}
-          />
-        </SwiperSlide>
-      ),
-    });
-
-  if (query?.total_guests)
-    chips.push({
-      key: "total_guests",
-      node: (
-        <SwiperSlide key="selected-guests" className="!w-auto">
-          <RemovableFilterChip
-            onRemove={() => removeFiltersKeys(["total_guests"])}
-            onLabelClick={() => setGuestEditorOpen(true)}
-            label={`${t("common.pplCount")} : ${query?.total_guests}`}
-          />
-        </SwiperSlide>
-      ),
-    });
-
-  if (query?.checkout && query?.checkin)
-    chips.push({
-      key: "checkin",
-      node: (
-        <SwiperSlide key="selected-date" className="!w-auto">
-          <RemovableFilterChip
-            onRemove={() => removeFiltersKeys(["checkout", "checkin"])}
-            onLabelClick={() => setDateEditorOpen(true)}
-            label={`${t("common.from")} ${jalali(query?.checkin, JALALI_DATE_FORMAT)} ${t("common.to")} ${jalali(query?.checkout, JALALI_DATE_FORMAT)}`}
-          />
-        </SwiperSlide>
-      ),
-    });
+    appliedChips.push(
+      <SwiperSlide key="selected-bedrooms" className="!w-auto">
+        <RemovableFilterChip
+          onRemove={() => removeFiltersKeys(["total_bedrooms"])}
+          label={`${t("listing.roomCount")} : ${query?.total_bedrooms}`}
+        />
+      </SwiperSlide>,
+    );
 
   if (query?.max_commission || query?.min_commission)
-    chips.push({
-      key: "min_commission",
-      node: (
-        <SwiperSlide key="selected-commission" className="!w-auto">
-          <RemovableFilterChip
-            onRemove={() =>
-              removeFiltersKeys(["max_commission", "min_commission"])
-            }
-            label={rangeLabel(
-              t("listing.commisJustPerc"),
-              query?.min_commission,
-              query?.max_commission,
-              "%",
-              { from: t("common.from"), to: t("common.to") },
-              formatNumber,
-            )}
-          />
-        </SwiperSlide>
-      ),
-    });
+    appliedChips.push(
+      <SwiperSlide key="selected-commission" className="!w-auto">
+        <RemovableFilterChip
+          onRemove={() =>
+            removeFiltersKeys(["max_commission", "min_commission"])
+          }
+          label={rangeLabel(
+            t("listing.commisJustPerc"),
+            query?.min_commission,
+            query?.max_commission,
+            "%",
+            { from: t("common.from"), to: t("common.to") },
+            formatNumber,
+          )}
+        />
+      </SwiperSlide>,
+    );
 
   if (query?.max_price || query?.min_price)
-    chips.push({
-      key: "min_price",
-      node: (
-        <SwiperSlide key="selected-price" className="!w-auto">
-          <RemovableFilterChip
-            onRemove={() => removeFiltersKeys(["max_price", "min_price"])}
-            label={rangeLabel(
-              t("common.price"),
-              query?.min_price,
-              query?.max_price,
-              t("common.toman"),
-              { from: t("common.from"), to: t("common.to") },
-              formatNumber,
-            )}
-          />
-        </SwiperSlide>
-      ),
-    });
+    appliedChips.push(
+      <SwiperSlide key="selected-price" className="!w-auto">
+        <RemovableFilterChip
+          onRemove={() => removeFiltersKeys(["max_price", "min_price"])}
+          label={rangeLabel(
+            t("common.price"),
+            query?.min_price,
+            query?.max_price,
+            t("common.toman"),
+            { from: t("common.from"), to: t("common.to") },
+            formatNumber,
+          )}
+        />
+      </SwiperSlide>,
+    );
 
   if (query?.max_building_area || query?.min_building_area)
-    chips.push({
-      key: "min_building_area",
-      node: (
-        <SwiperSlide key="selected-area" className="!w-auto">
-          <RemovableFilterChip
-            onRemove={() =>
-              removeFiltersKeys(["max_building_area", "min_building_area"])
-            }
-            label={rangeLabel(
-              t("listing.roomSize"),
-              query?.min_building_area,
-              query?.max_building_area,
-              t("common.meter"),
-              { from: t("common.from"), to: t("common.to") },
-              formatNumber,
-            )}
-          />
-        </SwiperSlide>
-      ),
-    });
+    appliedChips.push(
+      <SwiperSlide key="selected-area" className="!w-auto">
+        <RemovableFilterChip
+          onRemove={() =>
+            removeFiltersKeys(["max_building_area", "min_building_area"])
+          }
+          label={rangeLabel(
+            t("listing.roomSize"),
+            query?.min_building_area,
+            query?.max_building_area,
+            t("common.meter"),
+            { from: t("common.from"), to: t("common.to") },
+            formatNumber,
+          )}
+        />
+      </SwiperSlide>,
+    );
 
   if (query?.has_discount === "1")
-    chips.push({
-      key: "has_discount",
-      node: (
-        <SwiperSlide key="selected-discount" className="!w-auto">
-          <RemovableFilterChip
-            label={t("listing.hasDiscount")}
-            onRemove={() => removeFiltersKeys(["has_discount"])}
-          />
-        </SwiperSlide>
-      ),
-    });
+    appliedChips.push(
+      <SwiperSlide key="selected-discount" className="!w-auto">
+        <RemovableFilterChip
+          label={t("listing.hasDiscount")}
+          onRemove={() => removeFiltersKeys(["has_discount"])}
+        />
+      </SwiperSlide>,
+    );
 
   if (query?.is_premium === "1")
-    chips.push({
-      key: "is_premium",
-      node: (
-        <SwiperSlide key="selected-premium" className="!w-auto">
-          <RemovableFilterChip
-            label={t("listing.permiumProps")}
-            onRemove={() => removeFiltersKeys(["is_premium"])}
-          />
-        </SwiperSlide>
-      ),
-    });
+    appliedChips.push(
+      <SwiperSlide key="selected-premium" className="!w-auto">
+        <RemovableFilterChip
+          label={t("listing.permiumProps")}
+          onRemove={() => removeFiltersKeys(["is_premium"])}
+        />
+      </SwiperSlide>,
+    );
 
   for (const rule of RULE_FILTERS.filter((entry) => query?.[entry.key]))
-    chips.push({
-      key: rule.key,
-      node: (
-        <SwiperSlide key={`selected-${rule.key}`} className="!w-auto">
-          <RemovableFilterChip
-            label={t(rule.title)}
-            onRemove={() => removeFiltersKeys([rule.key])}
-          />
-        </SwiperSlide>
-      ),
-    });
-
-  chips.push(
-    ...dynamicKeys
-      .filter((key) => key === LEADING_DYNAMIC_KEY)
-      .map(renderDynamicChip),
-  );
-
-  chips.push({
-    key: "has_pool",
-    node: (
-      <SwiperSlide key="selected-pool" className="!w-auto">
-        <button
-          type="button"
-          onClick={() => setFilterValue("has_pool", 1)}
-          className={`filter-chip gap-0 px-1 ${query?.has_pool ? "filter-chip-active" : "filter-chip-idle"}`}
-        >
-          <span className="text-xs px-2">
-            {query?.has_pool === "0"
-              ? t("listing.noPool")
-              : t("listing.hasPool")}
-          </span>
-          {query?.has_pool ? (
-            <span
-              role="button"
-              tabIndex={0}
-              aria-label={`${t("common.removeFilters")} ${t("listing.hasPool")}`}
-              onKeyDown={(event) => {
-                if (event.key !== "Enter" && event.key !== " ") return;
-                event.preventDefault();
-                event.stopPropagation();
-                removeFiltersKeys(["has_pool"]);
-              }}
-              onClick={(event) => {
-                event.preventDefault();
-                event.stopPropagation();
-                removeFiltersKeys(["has_pool"]);
-              }}
-              className="flex aspect-square h-4 w-4 cursor-pointer items-center justify-center rounded-full border border-action"
-            >
-              <ContentImage
-                alt=""
-                width={8}
-                height={8}
-                className="w-2 h-2 rotate-45 aspect-square"
-                src="/assets/icons/adds/blue_plus.svg"
-              />
-            </span>
-          ) : null}
-        </button>
-      </SwiperSlide>
-    ),
-  });
-
-  chips.push(
-    ...dynamicKeys
-      .filter((key) => key !== LEADING_DYNAMIC_KEY)
-      .map(renderDynamicChip),
-  );
-
-  const orderedChips = chips
-    .map((chip, index) => ({ ...chip, index }))
-    .sort(
-      (left, right) =>
-        filterOrderRank(filterOrder, left.key) -
-          filterOrderRank(filterOrder, right.key) || left.index - right.index,
+    appliedChips.push(
+      <SwiperSlide key={`selected-${rule.key}`} className="!w-auto">
+        <RemovableFilterChip
+          label={t(rule.title)}
+          onRemove={() => removeFiltersKeys([rule.key])}
+        />
+      </SwiperSlide>,
     );
+
+  const activeCount = countActiveFilters(query);
 
   return (
     <>
-      <Swiper autoFit parentClass={containerClass}>
-        <SwiperSlide className="z-5 flex lg:hidden !w-auto">
+      <Swiper autoFit edgeArrows parentClass={`chip-row-fade ${containerClass ?? ""}`}>
+        <SwiperSlide className="z-5 flex !w-auto">
           <button
             type="button"
             onClick={() => setFilterModalShow(true)}
-            className="col-span-3 flex w-fit px-3 h-[1.625rem] rounded-full bg-action items-center gap-2"
+            className="filter-chip filter-chip-primary"
           >
             <ContentImage
               alt=""
-              width={12}
-              height={12}
-              className="cursor-pointer w-3 h-3 shrink-0"
+              width={16}
+              height={16}
+              className="size-4 shrink-0"
               src="/assets/icons/property/white_filter_icon.svg"
             />
-            <span className="text-white text-xs">
-              {t("listing.otherFilters")}
-            </span>
+            <span>{t("listing.otherFilters")}</span>
+            {activeCount ? (
+              <span className="flex h-5 min-w-5 items-center justify-center rounded-full bg-on-action px-1.5 text-xs font-bold text-action">
+                {formatNumber(activeCount)}
+              </span>
+            ) : null}
           </button>
         </SwiperSlide>
 
-        {orderedChips.map((chip) => chip.node)}
+        <SwiperSlide className="!w-auto">
+          <TripFilterPill
+            dateLabel={
+              query?.checkin && query?.checkout
+                ? `${jalali(query.checkin, TRIP_DATE_FORMAT)} ${t("common.to")} ${jalali(query.checkout, TRIP_DATE_FORMAT)}`
+                : null
+            }
+            guestLabel={
+              query?.total_guests
+                ? t("common.people", { count: Number(query.total_guests) })
+                : null
+            }
+            onDateClick={() => setDateEditorOpen(true)}
+            onGuestClick={() => setGuestEditorOpen(true)}
+            onClearDate={() => removeFiltersKeys(["checkout", "checkin"])}
+            onClearGuests={() => removeFiltersKeys(["total_guests"])}
+          />
+        </SwiperSlide>
+
+        {dynamicKeys
+          .filter((key) => key === LEADING_DYNAMIC_KEY)
+          .map(renderDynamicChip)}
+
+        <SwiperSlide key="selected-pool" className="!w-auto">
+          <button
+            type="button"
+            aria-pressed={!!query?.has_pool}
+            onClick={() =>
+              query?.has_pool
+                ? removeFiltersKeys(["has_pool"])
+                : setFilterValue("has_pool", 1)
+            }
+            className={`filter-chip ${query?.has_pool ? "filter-chip-active" : "filter-chip-idle"}`}
+          >
+            <Icon name="pool" size={20} className="text-link" />
+            <span>
+              {query?.has_pool === "0"
+                ? t("listing.noPool")
+                : t("listing.hasPool")}
+            </span>
+            {query?.has_pool ? (
+              <Icon name="check" size={16} className="text-link" />
+            ) : null}
+          </button>
+        </SwiperSlide>
+
+        {dynamicKeys
+          .filter((key) => key !== LEADING_DYNAMIC_KEY)
+          .map(renderDynamicChip)}
+
+        {appliedChips}
       </Swiper>
 
       <Modal show={dateEditorOpen} onHide={() => setDateEditorOpen(false)}>

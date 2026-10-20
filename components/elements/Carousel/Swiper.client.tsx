@@ -4,6 +4,8 @@ import { useEffect, useId, useMemo } from "react";
 import { DotButton, useDotButton } from "./EmblaCarouselDotButton.client";
 import { NextButton, PrevButton } from "./EmblaCarouselArrowButtons.client";
 import { usePrevNextButtons } from "./EmblaCarouselArrowButtons.client";
+import { EdgeArrowButton } from "./EmblaCarouselArrowButtons.client";
+import { useTranslations } from "next-intl";
 import { ContentImage } from "@elements/Image";
 import { arrowSides } from "./EmblaCarouselArrowButtons.client";
 import { useDir } from "@hooks/useDir";
@@ -19,6 +21,7 @@ const Swiper: FC<CarouselProps> = (props) => {
   const {
     autoFit,
     children,
+    edgeArrows,
     pagination,
     withArrows,
     parentClass,
@@ -35,6 +38,7 @@ const Swiper: FC<CarouselProps> = (props) => {
     [autoplay],
   );
 
+  const t = useTranslations("common");
   const localeDir = useDir();
   const dir = dirProp ?? localeDir;
 
@@ -83,6 +87,8 @@ const Swiper: FC<CarouselProps> = (props) => {
       data-embla-id={instanceId}
       className={`embla relative ${parentClass}`}
       dir={dir}
+      data-fade-left={edgeArrows ? showLeft : undefined}
+      data-fade-right={edgeArrows ? showRight : undefined}
     >
       <style>{slideVarsCss}</style>
       <div className={`embla__viewport ${viewportClassName}`} ref={emblaRef}>
@@ -110,6 +116,21 @@ const Swiper: FC<CarouselProps> = (props) => {
           </div>
         )}
       </div>
+
+      {edgeArrows && showLeft ? (
+        <EdgeArrowButton
+          side="left"
+          onClick={onLeft}
+          label={t(dir === "rtl" ? "scrollNext" : "scrollPrev")}
+        />
+      ) : null}
+      {edgeArrows && showRight ? (
+        <EdgeArrowButton
+          side="right"
+          onClick={onRight}
+          label={t(dir === "rtl" ? "scrollPrev" : "scrollNext")}
+        />
+      ) : null}
 
       {pagination ? (
         <div className="embla__dots">

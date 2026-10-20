@@ -17,6 +17,7 @@ export type IconName =
   | "expand"
   | "eye"
   | "eye-off"
+  | "filter"
   | "foosball"
   | "gazebo"
   | "globe"

@@ -16,6 +16,7 @@ const PropertyModelFilter = ({
   onClickCb,
   mobileFilters,
   setMobileFilters,
+  containerClass = "w-full my-2",
 }: PropertyModelFilterProps) => {
   const router = useRouter();
   const pathname = usePathname();
@@ -48,7 +49,7 @@ const PropertyModelFilter = ({
   };
 
   return (
-    <div className="w-full my-2">
+    <div className={containerClass}>
       {list?.map((item) => (
         <div key={`model-${item?.id}`} className="flex items-center my-2 gap-2">
           <Checkbox

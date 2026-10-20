@@ -1,7 +1,7 @@
 "use client";
 
 import { useId, useState } from "react";
-import { ContentImage } from "@elements/Image";
+import { Icon } from "@elements/Icon";
 
 import type { FilterSectionProps } from "@/types/components/modules/property-search-filters";
 
@@ -34,12 +34,10 @@ const FilterSection = ({
               <></>
             )}
           </span>
-          <ContentImage
-            alt=""
-            width={16}
-            height={16}
-            src="/assets/icons/shared/chevron.svg"
-            className={`aspect-square w-4 shrink-0 object-contain transition-transform duration-200 ${
+          <Icon
+            name="chevron-down"
+            size={16}
+            className={`text-ink-subtle transition-transform duration-200 ${
               isOpen ? "rotate-180" : ""
             }`}
           />

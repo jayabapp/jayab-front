@@ -507,8 +507,7 @@
       "kind": "valid",
       "reason": "white text, border or ring on a fixed photo or solid brand/status fill; the fill does not change with the theme",
       "hits": [
-        "text-white",
-        "border-white"
+        "text-white"
       ]
     },
     {
@@ -859,24 +858,6 @@
       "reason": "Persian domain data matched against backend values, not UI copy",
       "hits": [
         "مجاز نیست"
-      ]
-    },
-    {
-      "axis": "color",
-      "file": "components/modules/PropertySearchFilters/PropertySortMenu.client.tsx",
-      "kind": "valid",
-      "reason": "fixed dark surface over a photo, media or overlay; stays dark in both themes (07: surfaces on images are intentionally fixed)",
-      "hits": [
-        "ring-black"
-      ]
-    },
-    {
-      "axis": "color",
-      "file": "components/modules/PropertySearchFilters/SelectedFiltersBar.client.tsx",
-      "kind": "valid",
-      "reason": "white text, border or ring on a fixed photo or solid brand/status fill; the fill does not change with the theme",
-      "hits": [
-        "text-white"
       ]
     },
     {

@@ -1,5 +1,5 @@
 import { useTranslations } from "next-intl";
-import { ContentImage } from "@elements/Image";
+import { Icon } from "@elements/Icon";
 
 import type { FilterPanelHeaderProps } from "@/types/components/modules/property-search-filters";
 
@@ -12,13 +12,7 @@ const FilterPanelHeader = ({
   return (
     <div className="flex w-full items-center justify-between gap-2 border-b border-surface-muted pb-3">
       <div className="flex items-center gap-2">
-        <ContentImage
-          alt=""
-          width={18}
-          height={18}
-          className="size-4.5 shrink-0"
-          src="/assets/icons/property/filter_icon.svg"
-        />
+        <Icon name="filter" size={20} className="text-ink" />
         <p className="text-base font-medium text-ink">
           {t("listing.filters")}
         </p>

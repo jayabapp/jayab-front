@@ -1,4 +1,5 @@
 import type { Dispatch, ReactNode, SetStateAction } from "react";
+import type { IconName } from "@/types/components/elements/icon";
 export type { ProvienceTypesDto } from "@/api_services/property/property.interface";
 import type { ProvienceTypesDto } from "@/api_services/property/property.interface";
 import type { ChildCities } from "@/api_services/city/city.interface";
@@ -39,7 +40,26 @@ export type PropertyModelFilterProps = {
   list: any[] | undefined;
   queryKey: number | string;
   onClickCb?: () => void | null;
+  containerClass?: string;
   setMobileFilters?: Dispatch<any>;
+};
+
+export type TripSegmentProps = {
+  icon: IconName;
+  title: string;
+  /** Selected value; the segment shows the title and a chevron while it is null. */
+  value: string | null;
+  onOpen: () => void;
+  onClear: () => void;
+};
+
+export type TripFilterPillProps = {
+  dateLabel: string | null;
+  guestLabel: string | null;
+  onDateClick: () => void;
+  onGuestClick: () => void;
+  onClearDate: () => void;
+  onClearGuests: () => void;
 };
 
 export type RemovableFilterChipProps = {
