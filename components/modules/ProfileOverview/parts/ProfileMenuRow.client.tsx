@@ -2,6 +2,7 @@
 
 import type { ProfileMenuRowProps } from "@/types/components/modules/profile";
 import { ContentImage } from "@elements/Image";
+import { Icon } from "@elements/Icon";
 import { usePathname } from "next/navigation";
 
 import Link from "next/link";
@@ -25,34 +26,30 @@ const ProfileMenuRow = ({ entry, compact }: ProfileMenuRowProps) => {
       href={entry?.route}
       title={entry?.title}
       className={`${
-        isSelected ? "text-link" : "text-ink"
-      } group flex w-full cursor-pointer items-center justify-between gap-2 border-b border-white/70 px-2 py-3 transition-colors last:border-b-0 hover:bg-surface/60 hover:text-link md:py-4 rounded-2xl`}
+        isSelected ? "text-link menu-row-line-active" : "text-ink"
+      } group flex w-full cursor-pointer items-center justify-between gap-2 menu-row-line px-2 py-3 transition-colors hover:bg-surface/60 hover:text-link md:py-4 rounded-2xl`}
     >
       <div className="flex items-center gap-3 md:gap-4 relative">
         <span className="menu-icon-chip">
           <ContentImage
             alt=""
-            width={24}
-            height={24}
+            width={20}
+            height={20}
             src={entry?.imgSrc}
-            className="w-6 h-6 aspect-square"
+            className="size-5 aspect-square"
           />
         </span>
-        <p className="nav-underline relative text-sm md:text-base font-medium">
-          {entry?.title}
-        </p>
+        <p className="text-sm md:text-base font-medium">{entry?.title}</p>
       </div>
       {compact ? (
         badge
       ) : (
         <div className="flex items-center gap-1">
           {badge}
-          <ContentImage
-            alt=""
-            width={16}
-            height={16}
-            className="rotate-90"
-            src="/assets/icons/shared/chevron.svg"
+          <Icon
+            name="chevron-down"
+            size={16}
+            className="rotate-90 text-ink-subtle ltr:-rotate-90"
           />
         </div>
       )}

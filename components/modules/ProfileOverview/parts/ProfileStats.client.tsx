@@ -60,7 +60,7 @@ const ProfileStats = ({ profile, isLogin }: ProfileStatsProps) => {
             route: "/profile/bookmarks",
             title: t("statLikes"),
             value: likes?.length ?? 0,
-            imgSrc: "/assets/icons/adds/filled_heart.svg",
+            imgSrc: "/assets/icons/adds/filled_heart_blue.svg",
           },
         ]),
   ];

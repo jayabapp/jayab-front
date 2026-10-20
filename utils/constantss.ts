@@ -318,7 +318,7 @@ export const profileItems = [
     id: 2531232,
     titleKey: "routes.contact-us",
     route: "/contact-us",
-    imgSrc: "/assets/icons/header/header_menu_call.svg",
+    imgSrc: "/assets/icons/header/profile_menu_call.svg",
     guard: false,
     isMobile: true,
   },

@@ -31,10 +31,10 @@ const ProfileQuickAccess = ({ entries, limit = 6 }: ProfileQuickAccessProps) => 
             <span className="menu-icon-chip">
               <ContentImage
                 alt=""
-                width={24}
-                height={24}
+                width={20}
+                height={20}
                 src={entry?.imgSrc}
-                className="aspect-square h-6 w-6"
+                className="aspect-square size-5"
               />
             </span>
             <p className="flex-1 text-sm font-medium text-ink">

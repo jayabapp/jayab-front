@@ -28,7 +28,7 @@ export const useProfileMenu = (
     if (isLogin) {
       roleEntries.push({
         id: "overview",
-        imgSrc: "/assets/icons/header/new-face/user.svg",
+        imgSrc: "/assets/icons/header/new-face/user_blue.svg",
         route: "/profile",
         title: t("header.profileOverview"),
       });
@@ -79,7 +79,7 @@ export const useProfileMenu = (
     if (testAccess?.enabled && testAccess.is_team_lead) {
       roleEntries.push({
         id: "test-access",
-        imgSrc: "/assets/icons/header/new-face/user.svg",
+        imgSrc: "/assets/icons/header/new-face/user_blue.svg",
         route: "/profile/test-access",
         title: t("routes.test-access"),
       });

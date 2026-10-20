@@ -384,6 +384,31 @@ ul {
   @apply bg-selected;
 }
 
+/* Row divider: a brand-tinted line in light, the bright hairline in dark.
+   On hover/selection it takes the link color instead of growing an
+   underline under the label. */
+.menu-row-line {
+  @apply border-b border-selected-line transition-colors;
+}
+
+.menu-row-line:hover,
+.menu-row-line.menu-row-line-active {
+  @apply border-link;
+}
+
+.menu-row-line:last-child {
+  @apply border-b-0;
+}
+
+html[data-theme="dark"] .menu-row-line {
+  @apply border-white/70;
+}
+
+html[data-theme="dark"] .menu-row-line:hover,
+html[data-theme="dark"] .menu-row-line.menu-row-line-active {
+  @apply border-link;
+}
+
 .glass-surface {
   @apply relative border border-surface/70 shadow-glass-sm;
 }
