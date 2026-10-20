@@ -21,7 +21,7 @@ const PropertyCardLikes = ({
       : "/assets/icons/adds/empty_heart.svg";
 
   return (
-    <div className="flex shrink-0 items-center gap-1 text-sm">
+    <div className="flex shrink-0 items-center gap-1">
       <ContentImage
         width={16}
         height={16}
@@ -30,7 +30,8 @@ const PropertyCardLikes = ({
         className="h-4 w-4 shrink-0"
       />
 
-      <p className="leading-none text-ink-muted">{likesCount}</p>
+      {/* Same size, weight and color as the capacity / rooms line next to it. */}
+      <p className="text-xs font-normal text-ink-subtle">{likesCount}</p>
     </div>
   );
 };
