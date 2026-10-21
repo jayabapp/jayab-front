@@ -576,7 +576,6 @@ export class PropertyService {
         province_id: dto.province_id,
         region_id: dto.region_id,
         title: dto.title,
-        translations: dto.translations,
         unit_per_floor: dto.unit_per_floor,
       });
       return result;

@@ -80,7 +80,7 @@ const SectionTabs = ({ tabs }: SectionTabsProps) => {
     <nav
       ref={navRef}
       aria-label={t("sectionsNav")}
-      className="sticky top-[3.75rem] z-10 -mx-3 border-b border-line bg-surface/95 px-3 backdrop-blur md:top-20 md:z-20 md:mx-0 md:px-0"
+      className="sticky top-[3.75rem] z-10 -mx-3 border-b border-line bg-surface px-3 before:pointer-events-none before:absolute before:inset-x-0 before:-top-2 before:h-2 before:bg-surface md:z-20 md:mx-0 md:px-0 xl:top-[4.6rem]"
     >
       <ul
         ref={listRef}

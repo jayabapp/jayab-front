@@ -1,32 +1,31 @@
-import type { HeaderBrandProps } from "@/types/components/modules/site-header";
+import { useTranslations } from "next-intl";
 import { ContentImage } from "@elements/Image";
+import { BrandTitle } from "@elements/BrandTitle";
+
+import type { HeaderBrandProps } from "@/types/components/modules/site-header";
 
 import Link from "next/link";
-import { useTranslations } from "next-intl";
 
 const HeaderBrand = ({
-  alwaysShowTitle,
-  isLight,
   asLink,
+  isLight,
+  alwaysShowTitle,
   markOnly = false,
 }: HeaderBrandProps) => {
   const t = useTranslations("common");
 
   const mark = (
     <div className="flex items-center shrink-0 gap-1 justify-center">
-      <ContentImage
-        alt=""
-        width={64}
-        height={25}
-        src="/assets/icons/logo/just_title_logo.svg"
-        className={`h-auto w-16 ${markOnly ? "hidden" : alwaysShowTitle ? "flex" : isLight ? "flex grayscale brightness-[500]" : "hidden xl:flex"}`}
+      <BrandTitle
+        tone={isLight ? "white" : "blue"}
+        className={`h-6 w-auto ${markOnly ? "hidden" : alwaysShowTitle || isLight ? "flex" : "hidden xl:flex"}`}
       />
       <ContentImage
         alt=""
         width={40}
         height={40}
+        src="/assets/icons/logo/mark.svg"
         className={`${markOnly ? "size-8" : "size-10"} aspect-square shrink-0`}
-        src="/assets/icons/logo/header_mobile_logo.svg"
       />
     </div>
   );

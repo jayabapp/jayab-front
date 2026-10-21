@@ -49,6 +49,7 @@ export type StayDayCellProps = {
   label: string;
   price?: string;
   isPeak?: boolean;
+  isToday?: boolean;
   tooltip?: string;
   disabled: boolean;
   isFriday?: boolean;

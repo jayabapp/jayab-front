@@ -47,6 +47,7 @@ const BookingPanel = ({
     property.stdCapacity,
   );
   const [datesOpen, setDatesOpen] = useState(false);
+  const [editingField, setEditingField] = useState<"checkIn" | "checkOut" | null>(null);
   const stepperId = `guest-stepper-${variant}`;
   const isCard = variant === "card";
 
@@ -67,7 +68,10 @@ const BookingPanel = ({
     [setStay, stepperId],
   );
 
-  const openDates = () => setDatesOpen(true);
+  const openDates = (field?: "checkIn" | "checkOut") => {
+    setEditingField(field ?? null);
+    setDatesOpen(true);
+  };
   const { quote } = booking;
 
   const header = () => {
@@ -129,7 +133,7 @@ const BookingPanel = ({
           </p>
           <button
             type="button"
-            onClick={openDates}
+            onClick={() => openDates()}
             className="h-12 w-full cursor-pointer rounded-10 bg-action text-base font-semibold text-on-action transition-colors hover:bg-action-hover"
           >
             {t("changeDates")}
@@ -210,7 +214,10 @@ const BookingPanel = ({
           propertyId={property.id}
           onConfirm={onConfirmDates}
           reserved={booking.reserved}
-          initial={{ end: stay?.end, start: stay?.start }}
+          initial={{
+            start: editingField === "checkIn" ? null : stay?.start,
+            end: editingField ? null : stay?.end,
+          }}
         />
       ) : null}
       {!isCard ? (
@@ -220,7 +227,10 @@ const BookingPanel = ({
           propertyId={property.id}
           onConfirm={onConfirmDates}
           reserved={booking.reserved}
-          initial={{ end: stay?.end, start: stay?.start }}
+          initial={{
+            start: editingField === "checkIn" ? null : stay?.start,
+            end: editingField ? null : stay?.end,
+          }}
         />
       ) : null}
     </div>

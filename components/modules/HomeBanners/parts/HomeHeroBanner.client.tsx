@@ -6,7 +6,7 @@ import { useTranslations } from "next-intl";
 import { getHomeImageUrl } from "@features/home/mappers/home-image.mapper";
 import { HomeHeroSearch } from "@modules/HomeHeroSearch";
 import { getImageProps } from "next/image";
-import { ContentImage } from "@elements/Image";
+import { BrandTitle } from "@elements/BrandTitle";
 import { useDir } from "@hooks/useDir";
 
 import type { CSSProperties, FocusEvent, PointerEvent } from "react";
@@ -246,13 +246,9 @@ const HomeBannerPart = ({ title, devices, banners }: HomeHeroBannerProps) => {
         }
       >
         <div className="home-hero-content flex max-w-2xl flex-col items-center gap-2 text-center md:gap-3">
-          <ContentImage
-            width={320}
-            height={166}
-            alt={t("homeTitle")}
-            sizes="(max-width: 1024px) 96px, 160px"
-            src="/assets/images/home/home_banner_logo.webp"
-            className={`h-auto !w-24 lg:!w-40 ${hasSlides ? "drop-shadow-md" : ""}`}
+          <BrandTitle
+            tone={hasSlides ? "white" : "blue"}
+            className={`h-auto !w-32 lg:!w-48 ${hasSlides ? "drop-shadow-md" : ""}`}
           />
           <h2
             className={`text-balance text-sm font-bold leading-snug md:text-xl ${

@@ -4,7 +4,7 @@ import type { ImageDto } from "@/api_services/auth/auth.interface";
 
 const PROPERTY_IMAGE_FALLBACK = "/assets/icons/shared/image_placeholder.svg";
 const PROPERTY_TYPE_IMAGE_FALLBACK =
-  "/assets/icons/logo/mobile_header_logo.svg";
+  "/assets/icons/logo/mark.svg";
 
 export const getPropertyImageUrl = (
   image?: ImageDto | null,

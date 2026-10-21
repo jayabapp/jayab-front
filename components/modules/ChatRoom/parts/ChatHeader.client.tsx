@@ -115,7 +115,7 @@ const ChatHeader = ({
                   src={
                     image
                       ? resolveChatImage(image)
-                      : "/assets/icons/logo/logo.svg"
+                      : "/assets/icons/logo/mark.svg"
                   }
                   alt={name || t("chat")}
                   width={56}

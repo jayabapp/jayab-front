@@ -91,7 +91,7 @@ const PropertyDiscovery = ({ devices }: PropertyDiscoveryProps) => {
 
       <div
         ref={barRef}
-        className="discovery-filter-bar sticky z-10 w-full py-2 xl:rounded-b-20"
+        className="discovery-filter-bar sticky z-10 w-full px-3 py-2 xl:rounded-b-20 xl:px-0"
       >
         <SelectedFiltersBar
           query={queries}
@@ -129,7 +129,9 @@ const PropertyDiscovery = ({ devices }: PropertyDiscoveryProps) => {
           </div>
 
           <div className="flex w-full flex-wrap items-center justify-between gap-3 px-3 py-2 xl:px-0">
-            <PropertySortMenu query={queries} />
+            <div className="flex w-full min-w-0 md:w-auto">
+              <PropertySortMenu query={queries} />
+            </div>
             <SpecialFilterButtons query={queries} />
           </div>
 

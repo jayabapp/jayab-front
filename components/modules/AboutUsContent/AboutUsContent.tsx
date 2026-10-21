@@ -2,6 +2,7 @@ import { getHomeImageUrl } from "@features/home/mappers/home-image.mapper";
 import { sanitizeCmsHtml } from "@/helpers/html.generator";
 import { useTranslations } from "next-intl";
 import { ContentImage } from "@elements/Image";
+import { BrandTitle } from "@elements/BrandTitle";
 
 import type { AboutUsContentProps } from "@/types/components/modules/content-pages";
 
@@ -19,13 +20,16 @@ const AboutUsContent = ({ content: aboutUs }: AboutUsContentProps) => {
       <Breadcrumbs />
 
       <div className="flex  flex-col items-center justify-center">
-        <ContentImage
-          alt=""
-          width={208}
-          height={64}
-          className="h-auto max-w-52"
-          src="/assets/icons/logo/header_logo.svg"
-        />
+        <div className="flex items-center gap-3">
+          <ContentImage
+            alt=""
+            width={64}
+            height={64}
+            className="size-16"
+            src="/assets/icons/logo/mark.svg"
+          />
+          <BrandTitle tone="blue" className="h-9 w-auto" />
+        </div>
         {!aboutUs ? (
           <p className="py-12 text-center text-sm text-ink-subtle">
             {t("error")}

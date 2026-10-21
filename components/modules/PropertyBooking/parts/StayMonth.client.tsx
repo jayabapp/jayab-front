@@ -172,6 +172,7 @@ const StayMonth = ({
               isReserved={isReserved}
               dateKey={toDayKey(date)}
               isPeak={!!entry?.is_peak}
+              isToday={moment(date).isSame(today, "day")}
               isLoading={isCalendarPending}
               onSelect={() => onSelectDay(date)}
               discounted={!!entry?.discounted_price}

@@ -6,6 +6,7 @@ import type { PropertyCardOwnerActionsProps } from "@/types/components/modules/p
 
 import PropertyAuthorizationStatus from "../PropertyAuthorizationStatus.client";
 import Button from "@elements/Button";
+import { Icon } from "@elements/Icon";
 import Link from "next/link";
 
 const PropertyCardOwnerActions = ({
@@ -17,10 +18,10 @@ const PropertyCardOwnerActions = ({
   return (
     <div className="w-full flex flex-col">
       <Divider moreClass="my-1" />
-      <div className="w-full flex py-2 border-line items-center justify-between">
-        <p className="text-xs">{t("listing.addDuration")} :</p>
-        <div className="flex items-center gap-2">
-          <div className="rounded-full text-sm text-link bg-selected flex items-center justify-center h-7 w-24">
+      <div className="w-full flex gap-2 py-2 border-line items-center justify-between">
+        <p className="shrink-0 text-xs">{t("listing.addDuration")} :</p>
+        <div className="flex min-w-0 flex-wrap items-center justify-end gap-2">
+          <div className="flex h-7 min-w-fit items-center justify-center whitespace-nowrap rounded-full bg-selected px-3 text-xs text-link">
             {data?.remaining_days
               ? `${t("listing.creditDays", { count: Number(data?.remaining_days) })}`
               : t("listing.noCredit")}
@@ -29,7 +30,7 @@ const PropertyCardOwnerActions = ({
             prefetch={false}
             title={t("common.extendSubs")}
             href={`/profile/owner/properties/${data?.id}/subscription`}
-            className="rounded-full !outline-none text-xs text-on-action bg-action flex items-center justify-center h-7 w-24"
+            className="flex h-7 min-w-fit items-center justify-center whitespace-nowrap rounded-full bg-action px-3 text-xs text-on-action !outline-none"
           >
             {t("common.extendSubs")}
           </Link>
@@ -45,12 +46,10 @@ const PropertyCardOwnerActions = ({
       >
         <p className="text-xs">{t("listing.upgradeAddDesc")}</p>
         <div className="flex items-center gap-2">
-          <ContentImage
-            alt=""
-            width={16}
-            height={16}
-            className="ltr:rotate-180"
-            src="/assets/icons/shared/chevron-left.svg"
+          <Icon
+            name="chevron-left"
+            size={16}
+            className="text-ink ltr:rotate-180"
           />
         </div>
       </Link>

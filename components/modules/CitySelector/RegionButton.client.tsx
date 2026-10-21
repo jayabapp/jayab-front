@@ -1,7 +1,7 @@
 "use client";
 
 import { useTranslations } from "next-intl";
-import { ContentImage } from "@elements/Image";
+import { Icon } from "@elements/Icon";
 
 import type { RegionButtonProps } from "@/types/components/modules/city-selector";
 
@@ -24,31 +24,26 @@ const RegionButton = ({
 
   return (
     <span
-      className={`${containerClass ?? ""} rounded-full shrink-0 !w-auto min-w-16 gap-2 py-1 h-6.5 px-1 items-center justify-center border transition-colors ${
-        hasRegions
-          ? "border-action bg-selected text-link"
-          : "border-control bg-neutral-400/5 text-ink-subtle"
-      } text-xs flex flex-row`}
+      className={`filter-chip ${hasRegions ? "filter-chip-active" : "filter-chip-idle"} ${containerClass ?? ""}`}
     >
       <button
         type="button"
-        className="flex shrink-0 items-center gap-1"
+        className="flex cursor-pointer items-center gap-1.5"
         onClick={(event) => {
           event.preventDefault();
           event.stopPropagation();
           setShowRegions(true);
         }}
       >
-        <span className="text-xs ps-1 shrink-0">
+        <Icon name="map-pin" size={20} className="text-link" />
+        <span>
           {!hasRegions
             ? t("search.selectLocal")
-            : singleTitle
-              ? singleTitle
-              : null}
+            : (singleTitle ?? `${regionsIds?.length} ${t("common.local")}`)}
         </span>
-        {hasRegions && !singleTitle ? (
-          <span className="shrink-0">{`${regionsIds?.length} ${t("common.local")}`}</span>
-        ) : null}
+        {hasRegions ? null : (
+          <Icon name="chevron-down" size={16} className="text-ink-subtle" />
+        )}
       </button>
 
       {hasRegions ? (
@@ -60,15 +55,9 @@ const RegionButton = ({
             event.stopPropagation();
             onClearRegions();
           }}
-          className="cursor-pointer w-4 h-4 aspect-square rounded-full border border-action flex items-center justify-center"
+          className="flex size-5 cursor-pointer items-center justify-center rounded-full border border-action"
         >
-          <ContentImage
-            alt=""
-            width={8}
-            height={8}
-            src="/assets/icons/adds/blue_plus.svg"
-            className="w-2 h-2 rotate-45 aspect-square"
-          />
+          <Icon name="x" size={16} />
         </button>
       ) : null}
     </span>

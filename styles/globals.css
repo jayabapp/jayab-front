@@ -1672,8 +1672,32 @@ html[data-theme="dark"] .property-card-shadow {
   @apply rounded-20 border border-surface-muted bg-surface;
 }
 
+/* The blue wordmark has too little contrast on dark surfaces: show it white there. */
+html[data-theme="dark"] .logo-adapt {
+  filter: brightness(0) invert(1);
+}
+
+/* Range sliders inside scrolling filter panels: rc-slider sets touch-action:none on the
+   whole bar, so a thumb resting on it could not scroll the panel. Only the handle keeps
+   that; the bar scrolls vertically, and the handle gets a larger invisible touch area. */
+.price-slider .rc-slider {
+  touch-action: pan-y;
+}
+
+.price-slider .rc-slider-handle {
+  touch-action: none;
+  opacity: 1;
+  box-shadow: 0 1px 4px rgb(11 21 36 / 0.3);
+}
+
+.price-slider .rc-slider-handle::after {
+  content: "";
+  position: absolute;
+  inset: -10px;
+}
+
 .filter-chip {
-  @apply flex h-10 w-auto shrink-0 cursor-pointer items-center justify-center gap-1.5 whitespace-nowrap rounded-full border px-3.5 text-sm font-medium transition-colors md:h-11;
+  @apply flex h-8 w-auto shrink-0 cursor-pointer items-center justify-center gap-1.5 whitespace-nowrap rounded-full border px-3 text-xs font-medium transition-colors md:h-11 md:px-3.5 md:text-sm;
 }
 
 .filter-chip-idle {
@@ -1687,6 +1711,21 @@ html[data-theme="dark"] .property-card-shadow {
 /* The one filled chip in the row ("more filters"); dark mode drops the glow. */
 .filter-chip-primary {
   @apply border-transparent bg-action font-semibold text-on-action shadow-glass-btn;
+}
+
+/* The horizontal discovery row stays compact without shrinking filter controls elsewhere. */
+.discovery-filter-chips .filter-chip {
+  @apply h-7 gap-1 px-2.5 text-[11px] md:h-9 md:px-3 md:text-xs;
+}
+
+.discovery-filter-chips .filter-chip svg {
+  width: 1rem;
+  height: 1rem;
+}
+
+.discovery-filter-chips .filter-chip .size-5 {
+  width: 1rem;
+  height: 1rem;
 }
 
 html[data-theme="dark"] .filter-chip-primary {

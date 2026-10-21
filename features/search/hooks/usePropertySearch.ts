@@ -2,6 +2,7 @@
 
 import { normalizePersianSearchText } from "@features/search/lib/normalize-persian-search-text";
 import { FILTER_ORDER_PARAM } from "@features/properties/lib/filter-order";
+import { mergeOrderedSearchFilters } from "@features/properties/lib/filter-order";
 import { buildLocationLabel } from "@features/cities/lib/location-label";
 import { CitiesSuggestTypes } from "@/enum/cities_suggest.enum";
 import { pickLocationQuery } from "@features/cities/lib/location-label";
@@ -59,6 +60,7 @@ export const usePropertySearch = (onNavigate?: () => void) => {
       const filterOrder = data.matched_order?.length
         ? data.matched_order.join(",")
         : undefined;
+      const mergedFilters = mergeOrderedSearchFilters(extra ?? {}, data.client_query);
       const remember = (path: string) =>
         useCitiesStore.setState({
           locationsData: {
@@ -72,8 +74,7 @@ export const usePropertySearch = (onNavigate?: () => void) => {
       if (data.landing_url) {
         const path = `/${data.landing_url.replace(/^\/+/, "")}`;
         const landingFilters: Record<string, unknown> = {
-          ...data.client_query,
-          ...extra,
+          ...mergedFilters,
           [FILTER_ORDER_PARAM]: filterOrder,
         };
         delete landingFilters.cities;
@@ -88,8 +89,7 @@ export const usePropertySearch = (onNavigate?: () => void) => {
       remember("/rooms");
       router.push(
         withQuery("/rooms", {
-          ...data.client_query,
-          ...extra,
+          ...mergedFilters,
           [FILTER_ORDER_PARAM]: filterOrder,
         }),
       );

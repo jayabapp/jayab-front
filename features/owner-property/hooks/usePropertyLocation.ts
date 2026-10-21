@@ -2,6 +2,10 @@
 
 import { usePropertyLocationOptions } from "./usePropertyLocationOptions";
 import { useMapAddressSearch } from "@features/map/hooks/useMapAddressSearch";
+import {
+  findAddressNearCity,
+  findCityLocation,
+} from "@features/map/lib/property-location-match";
 import { useCallback, useMemo, useState } from "react";
 
 import type { PropInitDto } from "@/types/features/owner-property";
@@ -33,27 +37,43 @@ export const usePropertyLocation = (draft?: PropInitDto) => {
       : null;
   }, [draft?.lat, draft?.lng]);
 
-  const { provinces, cities, isLoading: isLoadingPlaces } =
+  const { provinces, cities, regions, isLoading: isLoadingPlaces } =
     usePropertyLocationOptions(draft?.province_id, draft?.city_id);
   const province = provinces.find((item) => item.id == draft?.province_id);
   const city = cities.find((item) => item.id == draft?.city_id);
-  const search = [province?.title, city?.title]
-    .filter((part) => part && !address.includes(part))
-    .concat(address.trim() ? [address.trim()] : [])
-    .join(" ");
-  const { addresses, isFetching, isDebouncing } = useMapAddressSearch(
-    search,
+  const region = regions.find((item) => item.id == draft?.region_id);
+  const needsLookup = Boolean(draft?.id && !savedPoint && !selection.center);
+
+  // Resolve the city first. Street names may also exist near the old Tehran
+  // default center, so a result is accepted only inside the chosen city.
+  const locality = useMapAddressSearch(
+    [city?.title, province?.title].filter(Boolean).join(" "),
     DEFAULT_CENTER,
-    Boolean(draft?.id && address.trim() && !savedPoint && !selection.center) &&
-      !isLoadingPlaces,
+    needsLookup && !isLoadingPlaces && Boolean(city?.title),
   );
-  const match = addresses.find(
-    (item) =>
-      item.location?.y >= 24 &&
-      item.location.y <= 40 &&
-      item.location?.x >= 44 &&
-      item.location.x <= 64,
+  const cityMatch = findCityLocation(
+    locality.addresses,
+    city?.title ?? "",
+    province?.title ?? "",
   );
+  const cityCenter = cityMatch
+    ? [cityMatch.location.x, cityMatch.location.y]
+    : DEFAULT_CENTER;
+  const street = useMapAddressSearch(
+    [city?.title, region?.title, address.trim()].filter(Boolean).join(" "),
+    cityCenter,
+    needsLookup && Boolean(cityMatch) && Boolean(address.trim()),
+  );
+  const addressMatch = cityMatch
+    ? findAddressNearCity(
+        street.addresses,
+        cityMatch,
+        city?.title ?? "",
+        region?.title ?? "",
+        address,
+      )
+    : null;
+  const match = address.trim() ? addressMatch : cityMatch;
   const initialPoint = useMemo(
     () =>
       savedPoint ??
@@ -93,12 +113,18 @@ export const usePropertyLocation = (draft?: PropInitDto) => {
   return {
     address,
     center,
+    searchCenter: cityMatch ? cityCenter : center,
     setCenter,
     selectPoint,
-    // A late address response must not move a pin the host has already moved.
     jumpTo: selection.center ? selection.jumpTo : initialPoint,
     hasMoved: selection.center !== null,
-    isLocating: Boolean(address.trim()) && !savedPoint && !selection.center &&
-      (isLoadingPlaces || isFetching || isDebouncing),
+    hasLocation: Boolean(selection.center || initialPoint),
+    isLocating:
+      needsLookup &&
+      (isLoadingPlaces ||
+        locality.isFetching ||
+        locality.isDebouncing ||
+        street.isFetching ||
+        street.isDebouncing),
   };
 };

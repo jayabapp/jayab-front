@@ -221,6 +221,12 @@ const Day = memo(
       if (!setDateSpan || !dateInfo.jsDate) return;
       if (dateInfo.isForbidden && !dateInfo.isForbiddenSpanStart) return;
       setDateSpan((prev) => {
+        if (
+          prev.start &&
+          moment(prev.start).isSame(moment(dateInfo.jsDate), "day")
+        )
+          return { start: null, end: null };
+
         if (!prev.start) {
           if (dateInfo.isForbiddenSpanStart) return prev;
           return { start: dateInfo.jsDate, end: null };

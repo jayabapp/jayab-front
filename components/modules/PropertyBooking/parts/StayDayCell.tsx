@@ -18,6 +18,7 @@ const StayDayCell = ({
   price,
   column,
   isPeak,
+  isToday,
   tooltip,
   dateKey,
   onSelect,
@@ -66,7 +67,7 @@ const StayDayCell = ({
         aria-disabled={blocked}
         data-stay-date={dateKey}
         aria-pressed={isEdge || state === "middle"}
-        className={`${BASE} ${skin} ${blocked ? "cursor-not-allowed" : "cursor-pointer"}`}
+        className={`${BASE} ${skin} ${isToday && !isEdge ? "border border-line-strong bg-surface-hover" : ""} ${blocked ? "cursor-not-allowed" : "cursor-pointer"}`}
       >
         {isReserved && blocked ? (
           <span

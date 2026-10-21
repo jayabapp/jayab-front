@@ -55,6 +55,9 @@ export const selectDay = (
   const picked = startOfDay(day);
   if (picked < today) return { blocked: "past", range };
 
+  if (range.start && moment(picked).isSame(range.start, "day"))
+    return { range: { end: null, start: null } };
+
   const startsNewStay = !range.start || !!range.end || picked <= range.start;
   if (startsNewStay) {
     if (reserved.has(toDayKey(picked))) return { blocked: "reserved", range };

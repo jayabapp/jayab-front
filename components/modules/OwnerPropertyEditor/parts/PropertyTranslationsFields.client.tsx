@@ -7,25 +7,16 @@ import type { PropertyTranslations } from "@/types/features/owner-property";
 
 const PropertyTranslationsFields = ({
   value,
-  onChange,
-  isTitleLocked,
 }: {
   value: PropertyTranslations;
-  onChange: (value: PropertyTranslations) => void;
-  isTitleLocked: boolean;
 }) => {
   const t = useTranslations("owner");
   const id = useId();
-  const update = (
-    locale: "ar" | "en",
-    field: "title" | "address",
-    text: string,
-  ) => onChange({ ...value, [locale]: { ...value[locale], [field]: text } });
 
   return (
     <fieldset className="col-span-full space-y-4 rounded-xl border p-4">
       <legend className="px-2 font-medium">
-        {t("propertyTranslationsTitle")}
+        {t("propertyTranslationsTitle")} ({t("optional")})
       </legend>
       <p className="text-sm text-ink-muted">{t("propertyTranslationsHint")}</p>
       <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
@@ -41,11 +32,8 @@ const PropertyTranslationsFields = ({
                 dir={locale === "ar" ? "rtl" : "ltr"}
                 value={value[locale]?.title ?? ""}
                 maxLength={200}
-                disabled={isTitleLocked}
-                onChange={(event) =>
-                  update(locale, "title", event.target.value)
-                }
-                className="w-full rounded-10 border bg-surface px-3 py-2 text-ink disabled:opacity-50"
+                disabled
+                className="w-full rounded-10 border bg-surface px-3 py-2 text-ink disabled:cursor-not-allowed disabled:opacity-60"
               />
             </div>
             <div className="flex flex-col gap-2">
@@ -59,10 +47,8 @@ const PropertyTranslationsFields = ({
                 id={`${id}-${locale}-address`}
                 value={value[locale]?.address ?? ""}
                 dir={locale === "ar" ? "rtl" : "ltr"}
-                onChange={(event) =>
-                  update(locale, "address", event.target.value)
-                }
-                className="w-full rounded-10 border bg-surface px-3 py-2 text-ink"
+                disabled
+                className="w-full rounded-10 border bg-surface px-3 py-2 text-ink disabled:cursor-not-allowed disabled:opacity-60"
               />
             </div>
           </div>

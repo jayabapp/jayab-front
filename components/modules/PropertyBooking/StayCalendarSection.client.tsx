@@ -47,10 +47,10 @@ const StayCalendarSection = ({ propertyId }: StayCalendarSectionProps) => {
   const isDesktop = useIsDesktop();
   const visibleMonths = isDesktop ? 2 : 1;
   const [offset, setOffset] = useState(0);
-  const [arrival, setArrival] = useState<Date | null>(null);
+  const [draftRange, setDraftRange] = useState<StayRange | null>(null);
   const touchStart = useRef<number | null>(null);
 
-  const range: StayRange = arrival ? { start: arrival } : (stay ?? {});
+  const range: StayRange = draftRange ?? stay ?? {};
   const canPrev = offset > 0;
   const canNext = offset < STAY_MONTH_HORIZON - visibleMonths;
   const months = useMemo(
@@ -64,11 +64,11 @@ const StayCalendarSection = ({ propertyId }: StayCalendarSectionProps) => {
 
   const onChange = (next: StayRange) => {
     if (isCompleteRange(next)) {
-      setArrival(null);
+      setDraftRange(null);
       setStay(next);
       return;
     }
-    setArrival(next.start ?? null);
+    setDraftRange(next);
   };
 
   const onTouchEnd = (clientX: number) => {

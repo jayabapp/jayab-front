@@ -14,6 +14,13 @@ export type SelectedFiltersBarProps = {
   setFilterModalShow: Dispatch<SetStateAction<boolean>>;
 };
 
+export type OrderedFilterChip = {
+  id: string;
+  queryKeys: readonly string[];
+  active: boolean;
+  node: ReactNode;
+};
+
 export type SpecialFilterButtonsProps = {
   containerClass?: string;
   hiddenFilters?: string[];

@@ -27,12 +27,21 @@ const PropertyLocationStep = ({ propertyId }: OwnerPropertyRouteProps) => {
 
   const [showSearch, setShowSearch] = useState(false);
   const [centerAddress, setCenterAddress] = useState("");
-  const { address, center, setCenter, jumpTo, selectPoint, hasMoved, isLocating } =
-    usePropertyLocation(draft);
+  const {
+    address,
+    center,
+    searchCenter,
+    setCenter,
+    jumpTo,
+    selectPoint,
+    hasMoved,
+    hasLocation,
+    isLocating,
+  } = usePropertyLocation(draft);
   const displayedAddress = hasMoved ? centerAddress || address : address;
 
   const onSubmit = () => {
-    if (!draft?.id || isLocating) return;
+    if (!draft?.id || isLocating || !hasLocation) return;
     submit({ lat: center[1], lng: center[0], propertyId: draft?.id });
   };
 
@@ -41,7 +50,7 @@ const PropertyLocationStep = ({ propertyId }: OwnerPropertyRouteProps) => {
       step="location"
       skeleton="map"
       onSubmit={onSubmit}
-      isPending={isPending || isLocating}
+      isPending={isPending || isLocating || !hasLocation}
       isLoading={isLoading}
       propertyId={propertyId}
       submitTitle={t("submitMoveOn")}
@@ -64,18 +73,33 @@ const PropertyLocationStep = ({ propertyId }: OwnerPropertyRouteProps) => {
             placeholder={t("searchPlaceInput")}
           />
         </div>
-        <PropertyLocationMap
-          center={center}
-          jumpToState={jumpTo}
-          setCenter={setCenter}
-          containerClass="w-full"
-          setCenterAddress={setCenterAddress}
-        />
+        {hasLocation ? (
+          <PropertyLocationMap
+            center={center}
+            jumpToState={jumpTo}
+            setCenter={setCenter}
+            containerClass="w-full"
+            setCenterAddress={setCenterAddress}
+          />
+        ) : (
+          <div className="flex size-full flex-col items-center justify-center gap-4 rounded-20 bg-surface-muted px-6 text-center text-sm text-ink-muted">
+            <p>{isLocating ? t("locationSearching") : t("locationNoMatch")}</p>
+            {!isLocating ? (
+              <button
+                type="button"
+                onClick={() => setShowSearch(true)}
+                className="rounded-full bg-action px-5 py-2 font-medium text-on-action"
+              >
+                {t("searchPlaceInput")}
+              </button>
+            ) : null}
+          </div>
+        )}
       </div>
 
       <SearchPlaceModal
         key={showSearch ? "open" : "closed"}
-        center={center}
+        center={searchCenter}
         initialSearch={displayedAddress}
         show={showSearch}
         setJumpTo={selectPoint}

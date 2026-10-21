@@ -57,4 +57,16 @@ describe("reservation date selection", () => {
       today.getTime(),
     );
   });
+
+  it("clears the range when the selected check-in is clicked again", () => {
+    const range = {
+      start: date("2026-10-12"),
+      end: date("2026-10-15"),
+    };
+
+    assert.deepEqual(
+      selectDay(date("2026-10-12"), range, new Set(), today).range,
+      { start: null, end: null },
+    );
+  });
 });

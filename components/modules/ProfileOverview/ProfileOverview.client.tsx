@@ -47,7 +47,7 @@ const ProfileOverview = () => {
           width={160}
           height={80}
           className="w-1/5 h-auto"
-          src="/assets/icons/logo/logo.svg"
+          src="/assets/icons/logo/mark.svg"
         />
         <p className="text-sm font-medium">{t("plzSelectAPage")}</p>
       </div>

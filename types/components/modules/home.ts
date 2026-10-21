@@ -40,9 +40,14 @@ export type HomeMiddleBannersProps = {
 };
 
 export type HomeCitiesProps = {
-  data: HomeLandingDto[];
-  devices?: DeviceInfo;
   title: string;
+  devices?: DeviceInfo;
+  data: HomeLandingDto[];
+};
+
+export type TPropertyType = {
+  index?: number;
+  item: HomeLandingDto;
 };
 
 export type HomeHeroBannerProps = {

@@ -67,7 +67,7 @@ const Breadcrumbs = () => {
             {index < crumbs.length - 1 ? (
               <svg
                 width="8"
-                className="mx-2.5"
+                className="mx-2.5 ltr:rotate-180"
                 height="14"
                 viewBox="0 0 8 14"
                 fill="none"

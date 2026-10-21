@@ -1,17 +1,12 @@
 import { getHomeImageUrl } from "@features/home/mappers/home-image.mapper";
-import { type HomeLandingDto } from "@/types/components/modules/home";
+
+import type { TPropertyType } from "@/types/components/modules/home";
 
 import HomeTileCard from "./HomeTileCard";
 
-const PROPERTY_TYPE_FALLBACK_ICON = "/assets/icons/logo/mobile_header_logo.svg";
+const PROPERTY_TYPE_FALLBACK_ICON = "/assets/icons/logo/mark.svg";
 
-const PropertyTypeItem = ({
-  item,
-  index,
-}: {
-  index?: number;
-  item: HomeLandingDto;
-}) => (
+const PropertyTypeItem = ({ item, index }: TPropertyType) => (
   <HomeTileCard
     index={index}
     title={item?.title}

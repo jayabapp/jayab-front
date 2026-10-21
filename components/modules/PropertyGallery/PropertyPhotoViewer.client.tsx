@@ -206,7 +206,8 @@ const PropertyPhotoViewer = ({
         </div>
 
         <div className="shrink-0 pb-[calc(0.75rem+env(safe-area-inset-bottom))] pt-3">
-          <div className="flex gap-2 overflow-x-auto px-3 pb-1 [scrollbar-width:none] md:justify-center [&::-webkit-scrollbar]:hidden">
+          {/* py-1: overflow-x:auto also clips vertically, which cut the active thumbnail ring off at the top. */}
+          <div className="flex gap-2 overflow-x-auto px-3 py-1 [scrollbar-width:none] md:justify-center [&::-webkit-scrollbar]:hidden">
             {images.map((image, index) => (
               <button
                 type="button"

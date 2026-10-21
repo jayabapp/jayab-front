@@ -8,6 +8,7 @@ import { useTranslations } from "next-intl";
 import { HomeHeroSearch } from "@modules/HomeHeroSearch";
 import { useStoreParams } from "@/store";
 import { ContentImage } from "@elements/Image";
+import { Icon } from "@elements/Icon";
 import { useDir } from "@hooks/useDir";
 
 import HeaderSessionBadge from "./HeaderSessionBadge.client";
@@ -94,7 +95,7 @@ const HeaderMobileBar = ({
             withCitySelector
             inputClass="!bg-transparent  !border-none "
           />
-          <DisplayPreferences />
+          <DisplayPreferences compact />
         </div>
       </div>
     );
@@ -124,7 +125,7 @@ const HeaderMobileBar = ({
         </p>
 
         <div className="flex shrink-0 items-center gap-1">
-          <DisplayPreferences />
+          <DisplayPreferences compact />
           <div className="flex min-h-11 shrink-0 items-center justify-center">
             {pathname === "/advisors" ? (
               isAdvisor ? null : (
@@ -141,14 +142,9 @@ const HeaderMobileBar = ({
                 href="/"
                 title={t("common.home")}
                 onClick={() => useStoreParams.setState({ getBackHome: false })}
+                className="flex size-8 items-center justify-center text-ink-muted hover:text-ink"
               >
-                <ContentImage
-                  alt=""
-                  width={28}
-                  height={28}
-                  src="/assets/icons/navbar/home_nav.svg"
-                  className="transition-all grayscale opacity-50 hover:opacity-100 hover:grayscale-0"
-                />
+                <Icon name="home" size={24} />
               </Link>
             ) : (
               <div className="flex gap-2 items-center">
@@ -158,15 +154,9 @@ const HeaderMobileBar = ({
                   <Link
                     href="/"
                     title={t("common.home")}
-                    className="w-5 h-5 aspect-square"
+                    className="flex size-8 items-center justify-center text-ink-muted hover:text-ink"
                   >
-                    <ContentImage
-                      alt=""
-                      width={20}
-                      height={20}
-                      src="/assets/icons/navbar/home_nav_black.svg"
-                      className="transition-all grayscale opacity-60 hover:opacity-100 hover:grayscale-0"
-                    />
+                    <Icon name="home" size={24} />
                   </Link>
                 ) : (
                   <HeaderSearchField justIcon boxId={boxId} />

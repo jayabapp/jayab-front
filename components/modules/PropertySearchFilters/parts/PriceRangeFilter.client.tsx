@@ -36,7 +36,7 @@ const PriceRangeFilter = ({
   };
 
   return (
-    <div className="mx-2">
+    <div className="price-slider mx-3.5">
       <Slider
         range
         reverse={dir === "rtl"}
@@ -54,9 +54,9 @@ const PriceRangeFilter = ({
         handleStyle={{
           backgroundColor: colors.brand[500],
           borderWidth: 0,
-          width: 20,
-          height: 20,
-          bottom: -4,
+          width: 28,
+          height: 28,
+          bottom: -7,
         }}
         activeDotStyle={{
           backgroundColor: colors.brand[800],

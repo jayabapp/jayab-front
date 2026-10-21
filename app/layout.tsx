@@ -5,6 +5,7 @@ import { getLocale, getMessages } from "next-intl/server";
 import { NextIntlClientProvider } from "next-intl";
 import { mobileFooterBlackList } from "@/utils/constantss";
 import { footerHiddenBlackList } from "@/utils/constantss";
+import { ScrollToTopOnNavigate } from "@elements/ScrollToTop";
 import { getServerContentList } from "@features/home/server/home.server";
 import { themeBootstrapScript } from "@lib/theme/bootstrap";
 import { isNoIndexDeployment } from "@/helpers/indexingPolicy";
@@ -15,7 +16,6 @@ import { x_Iransans } from "./fonts/x_iran/x_Iransans";
 import { MainLayout } from "@layouts/MainLayout";
 import { SiteFooter } from "@modules/SiteFooter";
 import { SiteHeader } from "@modules/SiteHeader";
-import { ScrollToTopOnNavigate } from "@elements/ScrollToTop";
 import { REVALIDATE } from "@/helpers/revalidate";
 import { MobileNav } from "@modules/MobileNav";
 import { ReactNode } from "react";
@@ -156,7 +156,7 @@ const RootLayout = async ({
       <body className={x_Iransans.className} suppressHydrationWarning>
         <NavigationProgress />
         <ScrollToTopOnNavigate />
-        <SplashScreen />
+        <SplashScreen locale={locale} />
         <NextIntlClientProvider locale={locale} messages={rootMessages}>
           <LayoutProvider>
             <ImpersonationBanner />

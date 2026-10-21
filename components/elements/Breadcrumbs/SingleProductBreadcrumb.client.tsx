@@ -36,7 +36,7 @@ const SingleProductBreadCrumb = ({
             {index < arr?.length - 1 && (
               <svg
                 width="8"
-                className="  w-[6px] h-[12px] md:w-2 md:h-[14px]  mx-0.5 md:mx-2.5  "
+                className="w-[6px] h-[12px] md:w-2 md:h-[14px] mx-0.5 md:mx-2.5 ltr:rotate-180"
                 height="14"
                 viewBox="0 0 8 14"
                 fill="none"

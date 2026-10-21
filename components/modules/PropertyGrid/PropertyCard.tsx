@@ -23,6 +23,7 @@ const PropertyCard = ({
 }: PropertyCardProps) => {
   const t = useTranslations();
   const sep = useListSeparator();
+  const isExpiredStatus = data?.status?.id === 11;
 
   const staySearch = isOwner
     ? ""
@@ -99,7 +100,14 @@ const PropertyCard = ({
               </div>
 
               <div className="flex items-center w-full gap-2">
-                <StatusShower data={data?.status} />
+                <StatusShower
+                  data={{
+                    ...data?.status,
+                    title: isExpiredStatus
+                      ? t("listing.expiredListing")
+                      : data?.status?.title,
+                  }}
+                />
                 {data?.is_promoted ? (
                   <p className="font-bold text-link shrink-0 text-xs ps-1 border-s">
                     {t("common.laddered")}
@@ -164,8 +172,8 @@ const PropertyCard = ({
                 sizes="(min-width: 1280px) 30vw, (min-width: 768px) 46vw, 92vw"
               />
               {data?.advisor_commission || data?.advisor_commission === 0 ? (
-                <div className="w-16 gap-0.5 h-5 rounded-md transition-all py-[0.2rem] backdrop-blur-[6px] bg-neutral-900/30 text-white absolute z-1 end-2 flex-row top-2 aspect-square flex items-center justify-center">
-                  <p className="text-xxs">
+                <div className="min-w-16 h-5 rounded-md transition-all px-2 py-[0.2rem] backdrop-blur-[6px] bg-neutral-900/30 text-white absolute z-1 end-2 top-2 flex items-center justify-center">
+                  <p className="whitespace-nowrap text-xxs">
                     {t("listing.advisorCommissionShort")}:{" "}
                     {data.advisor_commission}%
                   </p>

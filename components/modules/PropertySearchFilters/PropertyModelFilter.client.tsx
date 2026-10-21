@@ -33,6 +33,8 @@ const PropertyModelFilter = ({
       delete body.specifications;
       delete body.categories;
     }
+    if (items === "" || (Array.isArray(items) && items.length === 0))
+      delete body[queryKey];
     if (current[queryKey] === items) delete body[queryKey];
     delete body.page;
     if (setMobileFilters) setMobileFilters(body);

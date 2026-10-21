@@ -70,11 +70,33 @@ const SelectiveFilterChip = ({
       {icon ? <Icon name={icon} size={20} className="text-link" /> : null}
       <span>{title}</span>
       {selectedCount ? (
-        <span className="flex h-5 min-w-5 items-center justify-center rounded-full bg-action px-1.5 text-xs font-bold text-on-action">
+        <span className="flex h-4 min-w-4 items-center justify-center rounded-full bg-action px-1 text-2xs font-bold text-on-action md:h-5 md:min-w-5 md:px-1.5 md:text-xs">
           {formatNumber(selectedCount)}
         </span>
       ) : null}
-      <Icon name="chevron-down" size={16} className="text-ink-subtle" />
+      {selectedCount ? (
+        <span
+          role="button"
+          tabIndex={0}
+          aria-label={`${t("common.removeFilters")} ${title}`}
+          onKeyDown={(event) => {
+            if (event.key !== "Enter" && event.key !== " ") return;
+            event.preventDefault();
+            event.stopPropagation();
+            removeFiltersKeys([queryKey]);
+          }}
+          onClick={(event) => {
+            event.preventDefault();
+            event.stopPropagation();
+            removeFiltersKeys([queryKey]);
+          }}
+          className="flex size-5 cursor-pointer items-center justify-center rounded-full border border-action"
+        >
+          <Icon name="x" size={16} />
+        </span>
+      ) : (
+        <Icon name="chevron-down" size={16} className="text-ink-subtle" />
+      )}
     </>
   );
 

@@ -16,12 +16,12 @@ const Segment = ({ icon, title, value, onOpen, onClear }: TripSegmentProps) => {
       <button
         type="button"
         onClick={onOpen}
-        className="flex h-full cursor-pointer items-center gap-1.5 ps-3.5 pe-2"
+        className="flex h-full cursor-pointer items-center gap-1 ps-2.5 pe-1.5 md:ps-3"
       >
-        <Icon name={icon} size={20} className="text-link" />
+        <Icon name={icon} size={16} className="text-link" />
         <span>{value ?? title}</span>
         {value ? null : (
-          <Icon name="chevron-down" size={16} className="text-ink-subtle" />
+          <Icon name="chevron-down" size={16} className="size-3.5 text-ink-subtle" />
         )}
       </button>
       {value ? (
@@ -29,12 +29,12 @@ const Segment = ({ icon, title, value, onOpen, onClear }: TripSegmentProps) => {
           type="button"
           onClick={onClear}
           aria-label={`${t("removeFilters")} ${title}`}
-          className="me-2 flex size-5 cursor-pointer items-center justify-center rounded-full border border-action"
+          className="me-1.5 flex size-4 cursor-pointer items-center justify-center rounded-full border border-action"
         >
-          <Icon name="x" size={16} />
+          <Icon name="x" size={16} className="size-3" />
         </button>
       ) : (
-        <span className="pe-1.5" />
+        <span className="pe-1" />
       )}
     </div>
   );
@@ -51,7 +51,7 @@ const TripFilterPill = ({
   const t = useTranslations();
 
   return (
-    <div className="flex h-10 shrink-0 items-stretch overflow-hidden rounded-full border border-line-strong bg-surface text-sm font-medium md:h-11">
+    <div className="flex h-7 shrink-0 items-stretch overflow-hidden rounded-full border border-line-strong bg-surface text-[11px] font-medium md:h-9 md:text-xs">
       <Segment
         icon="calendar"
         value={dateLabel}
@@ -59,7 +59,7 @@ const TripFilterPill = ({
         onClear={onClearDate}
         title={t("listing.tripDate")}
       />
-      <span aria-hidden="true" className="my-2.5 w-px bg-line" />
+      <span aria-hidden="true" className="my-1.5 w-px bg-line md:my-2" />
       <Segment
         icon="users"
         value={guestLabel}

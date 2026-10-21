@@ -25,14 +25,12 @@ export type PropertyTextLocales = Partial<
 export interface ProvienceTypesDto {
   id: number;
   title: string;
-  /** Persian title of an option; stays the same in every language. */
-  canonical_title?: string;
   image: ImageDto;
+  canonical_title?: string;
   child: { id: number; title: string }[];
 }
 
 export interface CreatePropertyStepOneDto {
-  translations?: PropertyTranslations;
   floor: number | string | null;
   title: number | string | null;
   floors: number | string | null;

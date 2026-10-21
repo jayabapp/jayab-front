@@ -49,7 +49,7 @@ const Day = ({
       <div
         key={data?.id}
         className={`text-center flex flex-col gap-0.5 ${data?.is_reserved ? "striped" : " "}   ${
-          isToday ? "  rounded-md bg-surface-hover border " : ""
+          isToday && !isSelected ? "rounded-md bg-surface-hover border border-line-strong" : ""
         }  relative  flex items-center ${!!data?.price ? "justify-start" : "justify-center"}  md:justify-center  aspect-square  ${
           !!data?.isActive ? "border-b-2  border-action" : ""
         }  ${isSelected ? "!bg-action  rounded-md text-on-action" : ""}`}
@@ -66,7 +66,7 @@ const Day = ({
           <></>
         )}
         {!!data?.is_peak ? (
-          <div className="absolute end-0 start-0 mx-auto  bottom-0.5   h-1  w-1/2  bg-danger-500 !rounded-full">
+          <div className="absolute start-1.5 top-1.5 size-1.5 rounded-full bg-warning-500">
             {" "}
           </div>
         ) : (

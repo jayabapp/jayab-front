@@ -107,6 +107,12 @@ const PATHS: Record<IconName, JSX.Element> = {
       <circle cx="9" cy="17" r="2" />
     </>
   ),
+  sort: (
+    <>
+      <path d="M7 4v16M3.5 7.5 7 4l3.5 3.5" />
+      <path d="M17 20V4M13.5 16.5 17 20l3.5-3.5" />
+    </>
+  ),
   expand: (
     <>
       <path d="M14.5 4.5h5v5" />

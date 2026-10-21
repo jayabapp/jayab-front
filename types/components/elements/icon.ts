@@ -43,6 +43,7 @@ export type IconName =
   | "share"
   | "shield"
   | "sms"
+  | "sort"
   | "sparkles"
   | "star"
   | "sun"

@@ -3,19 +3,19 @@
 import { SingleSelectPopUpSelect as SinglePopUpSelect } from "@elements/Form";
 import { usePropertyLocationOptions } from "@features/owner-property/hooks/usePropertyLocationOptions";
 import { FormInputWithExternalUnit } from "@elements/Form";
+import { titlePlaceholderExamples } from "@/utils/constantss";
 import { useOwnerPropertyOptions } from "@features/owner-property/hooks/useOwnerPropertyOptions";
+import { useEffect, useState } from "react";
 import { MultiLineFormInput } from "@elements/Form";
 import { useTranslations } from "next-intl";
-import { titlePlaceholderExamples } from "@/utils/constantss";
-import { useEffect, useState } from "react";
 import { useAuthStore } from "@/store";
 import { FormInput } from "@elements/Form";
 import { Checkbox } from "@elements/Form";
 
 import type { PropertyInitialsFieldsProps } from "@/types/components/modules/owner-property";
 
-import FieldCharacterCounter from "./FieldCharacterCounter";
 import PropertyTranslationsFields from "./PropertyTranslationsFields.client";
+import FieldCharacterCounter from "./FieldCharacterCounter";
 import isEmpty from "lodash/isEmpty";
 
 const TITLE_MAX_LENGTH = 55;
@@ -29,7 +29,6 @@ const PropertyInitialsFields = ({
 }: PropertyInitialsFieldsProps) => {
   const t = useTranslations();
 
-  // Random example title; the first one renders on the server and a random one replaces it after mount.
   const [exampleIndex, setExampleIndex] = useState(0);
   useEffect(() => {
     // eslint-disable-next-line react-hooks/set-state-in-effect -- random only after mount so server and client markup match
@@ -241,10 +240,6 @@ const PropertyInitialsFields = ({
 
       <PropertyTranslationsFields
         value={values.translations}
-        onChange={(translations) => onChange(translations, "translations")}
-        isTitleLocked={
-          TITLE_LOCKED_STATUSES.includes(Number(status)) && !isAdminSso
-        }
       />
       <div className="flex flex-col gap-5 col-span-full">
         <Checkbox
