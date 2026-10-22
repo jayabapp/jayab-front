@@ -156,7 +156,7 @@ const RootLayout = async ({
       <body className={x_Iransans.className} suppressHydrationWarning>
         <NavigationProgress />
         <ScrollToTopOnNavigate />
-        <SplashScreen locale={locale} />
+        <SplashScreen />
         <NextIntlClientProvider locale={locale} messages={rootMessages}>
           <LayoutProvider>
             <ImpersonationBanner />

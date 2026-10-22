@@ -9,8 +9,9 @@ const TITLE_SIZE = {
   fa: { width: 624, height: 244 },
 } as const;
 
-const BrandTitle = ({ tone, className = "" }: BrandTitleProps) => {
-  const script = resolveLocale(useLocale()) === "en" ? "en" : "fa";
+const BrandTitle = ({ tone, script: scriptProp, className = "" }: BrandTitleProps) => {
+  const localeScript = resolveLocale(useLocale()) === "en" ? "en" : "fa";
+  const script = scriptProp ?? localeScript;
 
   return (
     <ContentImage

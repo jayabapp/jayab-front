@@ -2,13 +2,12 @@
 
 import { useEffect, useRef } from "react";
 
-import type { SplashScreenProps } from "@/types/components/layouts/splash-screen";
-
 import splashStyles from "./splashStyles";
 
 const SPLASH_SESSION_KEY = "jayab:splash-seen";
 
-const SplashScreen = ({ locale }: SplashScreenProps) => {
+// The splash always shows the Persian wordmark with the mark, in every locale.
+const SplashScreen = () => {
   const splashRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
@@ -30,14 +29,25 @@ const SplashScreen = ({ locale }: SplashScreenProps) => {
         role="presentation"
         aria-hidden="true"
       >
-        {/* eslint-disable-next-line @next/next/no-img-element */}
-        <img
-          alt=""
-          width={782}
-          height={218}
-          className="splash-logo"
-          src={`/assets/icons/logo/title-${locale === "en" ? "en" : "fa"}-white.svg`}
-        />
+        <div className="splash-logo flex flex-col items-center gap-4">
+          {/* Plain <img>: both have to paint with the first HTML, before any image pipeline runs. */}
+          {/* eslint-disable-next-line @next/next/no-img-element */}
+          <img
+            alt=""
+            width={519}
+            height={519}
+            className="splash-mark"
+            src="/assets/icons/logo/mark-glyph.svg"
+          />
+          {/* eslint-disable-next-line @next/next/no-img-element */}
+          <img
+            alt=""
+            width={624}
+            height={244}
+            className="splash-title"
+            src="/assets/icons/logo/title-fa-white.svg"
+          />
+        </div>
       </div>
     </>
   );
