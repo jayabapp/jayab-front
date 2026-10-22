@@ -30,6 +30,7 @@ const HomeReserveCountdown = ({
 
   return (
     <ReservationCountdown
+      compact
       hintBelow
       minutes={countdown.minutes}
       seconds={countdown.seconds}
@@ -92,13 +93,13 @@ const HomeActiveReserve = ({ top }: HomeActiveReservationsProps) => {
               key={`reserved${data?.id}`}
               className="w-full bg-surface rounded-2xl justify-between flex flex-col shadow-md lg:shadow-surface p-2 gap-2"
             >
-              <div className="w-full grid grid-cols-8 gap-2">
+              <div className="flex w-full items-center gap-2">
                 {/* INFO */}
                 <Link
                   href={`${goToLink}`}
                   title={data?.property?.title}
                   onClick={removeredirectRoomToHome}
-                  className={`col-span-6 !outline-none order-1 justify-between flex flex-col gap-1`}
+                  className="order-1 flex min-w-0 flex-1 flex-col justify-between gap-1 self-stretch !outline-none"
                 >
                   {/* TITLE */}
                   <div className="flex items-start gap-2">
@@ -128,11 +129,19 @@ const HomeActiveReserve = ({ top }: HomeActiveReservationsProps) => {
                     </div>
                   </div>
                 </Link>
+
+                <div className="order-2 shrink-0">
+                  <HomeReserveCountdown
+                    fetchedAt={dataUpdatedAt}
+                    ttlSeconds={data?.ttl_seconds ?? 0}
+                  />
+                </div>
+
                 <Link
                   href={`${goToLink}`}
                   title={data?.property?.title}
                   onClick={removeredirectRoomToHome}
-                  className={`flex h-fit !outline-none items-start justify-start w-full col-span-2 order-2`}
+                  className="order-3 flex w-1/4 shrink-0 items-start justify-start !outline-none"
                 >
                   <div className="aspect-square w-full h-full relative">
                     <ContentImage
@@ -151,11 +160,6 @@ const HomeActiveReserve = ({ top }: HomeActiveReservationsProps) => {
                   </div>
                 </Link>
               </div>
-
-              <HomeReserveCountdown
-                fetchedAt={dataUpdatedAt}
-                ttlSeconds={data?.ttl_seconds ?? 0}
-              />
             </div>
           );
         })}

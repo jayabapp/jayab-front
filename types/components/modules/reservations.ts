@@ -21,6 +21,7 @@ export type ReservationCountdownProps = {
   seconds: string;
   hint?: string;
   hintBelow?: boolean;
+  compact?: boolean;
 };
 
 export type ReservationStatusBarProps = {
