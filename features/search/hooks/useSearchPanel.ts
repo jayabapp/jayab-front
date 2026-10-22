@@ -5,10 +5,10 @@ import { useSearchSuggestions } from "@features/search/hooks/useSearchSuggestion
 import { useListboxNavigation } from "@features/search/hooks/useListboxNavigation";
 import { useSearchOptionPick } from "@features/search/hooks/useSearchOptionPick";
 import { buildSearchOptions } from "@features/search/lib/build-search-options";
-import { useLocationWords } from "@features/cities/hooks/useLocationWords";
-import { useTranslations } from "next-intl";
 import { usePropertySearch } from "@features/search/hooks/usePropertySearch";
 import { useBodyScrollLock } from "@hooks/useBodyScrollLock";
+import { useLocationWords } from "@features/cities/hooks/useLocationWords";
+import { useTranslations } from "next-intl";
 
 import type { SearchOption } from "@/types/features/search";
 
@@ -86,9 +86,8 @@ export const useSearchPanel = ({
 
   const onSearchParam = useCallback(
     (param: string | null) => {
-      if (!param) return;
-      setTerm(param);
-      onSubmit?.(param);
+      setTerm(param ?? "");
+      if (param) onSubmit?.(param);
       onOpenChange(false);
     },
     [onOpenChange, onSubmit],
@@ -98,14 +97,14 @@ export const useSearchPanel = ({
     term,
     pick,
     close,
-    hasOpened,
+    isStale,
+    options,
+    listRef,
+    setTerm,
     inputRef,
     isLoading,
-    isStale,
+    hasOpened,
     isPending,
-    listRef,
-    options,
-    setTerm,
     onKeyDown,
     suggestions,
     activeIndex,

@@ -4,6 +4,7 @@ import { matchesCitySearch } from "@features/cities/lib/city-selection";
 import { useCitySelection } from "@features/cities/hooks/useCitySelection";
 import { hasMatchingChild } from "@features/cities/lib/city-selection";
 import { useTranslations } from "next-intl";
+import { useCitiesStore } from "@/store";
 import { useEffect } from "react";
 
 import type { CityModalProps } from "@/types/components/modules/city-selector";
@@ -35,9 +36,9 @@ const CityModal = ({
   const t = useTranslations();
 
   const {
+    title,
     cities,
     search,
-    title,
     submit,
     isLoading,
     setSearch,
@@ -48,9 +49,9 @@ const CityModal = ({
     removeProvince,
     selectedCities,
     selectedProvince,
+    visibleProvinces,
     setSelectedCities,
     setSelectedProvince,
-    visibleProvinces,
   } = useCitySelection({
     enabled: show,
     customValues: customeValues,
@@ -74,6 +75,9 @@ const CityModal = ({
 
   const onSubmitClick = () => {
     void submit();
+    useCitiesStore.setState((state) => ({
+      cityPickerRevision: state.cityPickerRevision + 1,
+    }));
     onSubmitExtendedCB?.();
     onHide();
   };

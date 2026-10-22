@@ -91,10 +91,12 @@ export const useStoreInit = create<InitStore>(() => ({
 
 export type LocationsStore = {
   locationsData: { [key: string]: any | null };
+  cityPickerRevision: number;
 };
 
 export const useCitiesStore = create<LocationsStore>(() => ({
   locationsData: {},
+  cityPickerRevision: 0,
 }));
 
 export type ThemeStore = {
