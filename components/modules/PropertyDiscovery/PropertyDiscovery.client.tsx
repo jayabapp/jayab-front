@@ -129,9 +129,7 @@ const PropertyDiscovery = ({ devices }: PropertyDiscoveryProps) => {
           </div>
 
           <div className="flex w-full flex-wrap items-center justify-between gap-3 px-3 py-2 xl:px-0">
-            <div className="flex w-full min-w-0 md:w-auto">
-              <PropertySortMenu query={queries} />
-            </div>
+            <PropertySortMenu query={queries} />
             <SpecialFilterButtons query={queries} />
           </div>
 
