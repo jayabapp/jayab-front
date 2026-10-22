@@ -3,11 +3,11 @@ import { Icon } from "@elements/Icon";
 import type { RuleItemProps } from "@/types/components/modules/property-details";
 
 const RuleItem = ({
+  label,
   allowed,
+  labelLang,
   description,
   descriptionLang,
-  label,
-  labelLang,
 }: RuleItemProps) => (
   <div className="flex items-start gap-2.5">
     <Icon
@@ -21,11 +21,10 @@ const RuleItem = ({
       </p>
       {description ? (
         <p
-          dir="auto"
           lang={descriptionLang}
-          className="whitespace-pre-wrap text-justify ui-caption text-ink-subtle"
+          className="whitespace-pre-wrap text-start ui-caption text-ink-subtle"
         >
-          <bdi>{description}</bdi>
+          {description}
         </p>
       ) : (
         <></>

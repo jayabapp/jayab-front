@@ -11,7 +11,7 @@ const PropertyDescription = ({ property }: PropertyDescriptionProps) => {
   return (
     <ClampText
       lines={4}
-      className="text-base leading-8"
+      className="text-sm leading-7"
       lang={property?.description_locales?.[field]}
     >
       {text}

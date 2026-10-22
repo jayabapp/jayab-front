@@ -1,16 +1,42 @@
 "use client";
 
 import { useAuthStore, useStoreParams } from "@/store";
+import { useReservationCountdown } from "@features/reservations/hooks/useReservationCountdown";
 import { PROPERTY_IMAGE_QUALITY } from "@features/properties/constants/image";
 import { useHomeActiveReserves } from "@features/home/hooks/useHomeActiveReserves";
+import { ReservationCountdown } from "@modules/ReservationDetails";
 import { getHomeImageUrl } from "@features/home/mappers/home-image.mapper";
 import { useTranslations } from "next-intl";
 import { ContentImage } from "@elements/Image";
+import { useState } from "react";
 
 import type { HomeActiveReservationsProps } from "@/types/components/modules/home";
 
 import isEmpty from "lodash/isEmpty";
 import Link from "next/link";
+
+const HomeReserveCountdown = ({
+  ttlSeconds,
+  fetchedAt,
+}: {
+  ttlSeconds: number;
+  fetchedAt: number;
+}) => {
+  const t = useTranslations("reserve");
+  const [secondsLeft] = useState(() =>
+    Math.max(ttlSeconds - Math.floor((Date.now() - fetchedAt) / 1000), 0),
+  );
+  const countdown = useReservationCountdown(secondsLeft, true);
+
+  return (
+    <ReservationCountdown
+      hintBelow
+      minutes={countdown.minutes}
+      seconds={countdown.seconds}
+      hint={t("reserveGuestTimeoutHint")}
+    />
+  );
+};
 
 const HomeActiveReserve = ({ top }: HomeActiveReservationsProps) => {
   const tr = useTranslations();
@@ -18,7 +44,7 @@ const HomeActiveReserve = ({ top }: HomeActiveReservationsProps) => {
   const t = useTranslations("reserve");
 
   const { isLogin } = useAuthStore((state) => state);
-  const { activeReserves } = useHomeActiveReserves(isLogin);
+  const { activeReserves, dataUpdatedAt } = useHomeActiveReserves(isLogin);
 
   const removeredirectRoomToHome = () =>
     useStoreParams.setState({ getBackHome: false });
@@ -125,6 +151,11 @@ const HomeActiveReserve = ({ top }: HomeActiveReservationsProps) => {
                   </div>
                 </Link>
               </div>
+
+              <HomeReserveCountdown
+                fetchedAt={dataUpdatedAt}
+                ttlSeconds={data?.ttl_seconds ?? 0}
+              />
             </div>
           );
         })}

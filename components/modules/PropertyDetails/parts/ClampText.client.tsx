@@ -39,14 +39,13 @@ const ClampText = ({
   return (
     <div className="flex flex-col items-start gap-2">
       <p
-        dir="auto"
         lang={lang}
         ref={textRef}
-        className={`whitespace-pre-wrap text-justify text-ink ${
+        className={`w-full whitespace-pre-wrap text-start text-ink ${
           expanded ? "" : (LINE_CLAMP[lines] ?? "line-clamp-4")
         } ${className}`}
       >
-        <bdi>{children}</bdi>
+        {children}
       </p>
       {isClamped || expanded ? (
         <button
