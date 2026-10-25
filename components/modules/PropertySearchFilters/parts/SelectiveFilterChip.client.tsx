@@ -1,23 +1,12 @@
 "use client";
 
-import { Popover, PopoverButton, PopoverPanel } from "@headlessui/react";
-import { ModalBottomSheet, ModalHeaderPart } from "@elements/Modal";
-import { usePathname, useRouter } from "next/navigation";
-import { useTranslations } from "next-intl";
-import { useModalVisible } from "@/hooks/modal.hook";
-import { useFormatNumber } from "@hooks/useFormatNumber";
-import { useIsDesktop } from "@features/map/hooks/useIsDesktop";
-import { parseIdList } from "@features/cities/lib/city-selection";
-import { useState } from "react";
-import { Icon } from "@elements/Icon";
+import { useDiscoveryQuery } from "@features/properties/context/DiscoveryContext";
 
 import type { SelectiveFilterChipProps } from "@/types/components/modules/property-search-filters";
 import type { IconName } from "@/types/components/elements/icon";
 
 import PropertyModelFilter from "../PropertyModelFilter.client";
-import queryBuilder from "@/helpers/queryBuilder";
-import useQueryGet from "@/helpers/queryGet";
-import Button from "@elements/Button";
+import FilterEditorChip from "./FilterEditorChip.client";
 
 const FILTER_ICONS: Record<string, IconName> = {
   property_type: "home",
@@ -34,143 +23,27 @@ const SelectiveFilterChip = ({
   list,
   title,
   queryKey,
-  removeFiltersKeys,
 }: SelectiveFilterChipProps) => {
-  const t = useTranslations();
-  const formatNumber = useFormatNumber();
-
-  const isDesktop = useIsDesktop();
-  const { _onHide, _onShow, isVisible } = useModalVisible();
-  const { replace } = useRouter();
-  const pathname = usePathname();
-  const queriesParams = useQueryGet<Record<string, string>>();
-  const [draft, setDraft] = useState<Record<string, any> | null>(null);
-  const selectedCount = parseIdList(queriesParams?.[queryKey]).length;
-
-  const startDraft = () => setDraft({ ...queriesParams });
-
-  const submit = (close: () => void) => {
-    const body = { ...(draft ?? queriesParams) };
-    delete body.categories;
-    delete body.page;
-    close();
-    replace(`${pathname}?${queryBuilder(body)}`);
-  };
-
-  const clear = (close: () => void) => {
-    close();
-    removeFiltersKeys([queryKey]);
-  };
-
-  const chipClass = `filter-chip ${selectedCount ? "filter-chip-active" : "filter-chip-idle"}`;
-  const icon = FILTER_ICONS[queryKey];
-
-  const label = (
-    <>
-      {icon ? <Icon name={icon} size={20} className="text-link" /> : null}
-      <span>{title}</span>
-      {selectedCount ? (
-        <span className="flex h-4 min-w-4 items-center justify-center rounded-full bg-action px-1 text-2xs font-bold text-on-action md:h-5 md:min-w-5 md:px-1.5 md:text-xs">
-          {formatNumber(selectedCount)}
-        </span>
-      ) : null}
-      {selectedCount ? (
-        <span
-          role="button"
-          tabIndex={0}
-          aria-label={`${t("common.removeFilters")} ${title}`}
-          onKeyDown={(event) => {
-            if (event.key !== "Enter" && event.key !== " ") return;
-            event.preventDefault();
-            event.stopPropagation();
-            removeFiltersKeys([queryKey]);
-          }}
-          onClick={(event) => {
-            event.preventDefault();
-            event.stopPropagation();
-            removeFiltersKeys([queryKey]);
-          }}
-          className="flex size-5 cursor-pointer items-center justify-center rounded-full border border-action"
-        >
-          <Icon name="x" size={16} />
-        </span>
-      ) : (
-        <Icon name="chevron-down" size={16} className="text-ink-subtle" />
-      )}
-    </>
-  );
-
-  const picker = (close: () => void) => (
-    <>
-      <PropertyModelFilter
-        isMulty
-        list={list}
-        queryKey={queryKey}
-        query={queriesParams}
-        setMobileFilters={setDraft}
-        mobileFilters={draft ?? queriesParams}
-        containerClass="grid w-full grid-cols-2 gap-x-3"
-      />
-      <div className="mt-3 flex items-center justify-between gap-3 border-t border-line pt-3">
-        <button
-          type="button"
-          disabled={!selectedCount}
-          onClick={() => clear(close)}
-          className="cursor-pointer text-sm font-semibold text-link disabled:cursor-default disabled:text-ink-subtle"
-        >
-          {t("listing.clearSelection")}
-        </button>
-        <Button
-          width="w-full"
-          containerClass="grow"
-          onClick={() => submit(close)}
-          title={t("listing.submitDo")}
-        />
-      </div>
-    </>
-  );
-
-  if (isDesktop)
-    return (
-      <Popover className="relative">
-        {({ close, open }) => (
-          <>
-            <PopoverButton
-              onClick={startDraft}
-              className={`${chipClass} ${open ? "!border-action" : ""}`}
-            >
-              {label}
-            </PopoverButton>
-            <PopoverPanel
-              anchor={{ to: "bottom start", gap: 8 }}
-              className="z-50 max-h-96 w-80 overflow-y-auto rounded-20 border border-line bg-surface p-4 shadow-elevated"
-            >
-              <p className="pb-1 text-base font-bold text-ink">{title}</p>
-              {picker(close)}
-            </PopoverPanel>
-          </>
-        )}
-      </Popover>
-    );
+  const query = useDiscoveryQuery();
 
   return (
-    <>
-      <button
-        type="button"
-        className={chipClass}
-        onClick={() => {
-          startDraft();
-          _onShow();
-        }}
-      >
-        {label}
-      </button>
-
-      <ModalBottomSheet show={isVisible} onHide={_onHide}>
-        <ModalHeaderPart showX title={title} onHide={_onHide} />
-        <div className="flex flex-col p-4 !pb-0">{picker(_onHide)}</div>
-      </ModalBottomSheet>
-    </>
+    <FilterEditorChip
+      showCount
+      title={title}
+      keys={[queryKey]}
+      icon={FILTER_ICONS[queryKey]}
+      renderEditor={(draft, setDraft) => (
+        <PropertyModelFilter
+          isMulty
+          list={list}
+          query={query}
+          queryKey={queryKey}
+          mobileFilters={draft}
+          setMobileFilters={setDraft}
+          containerClass="grid w-full grid-cols-2 gap-x-3"
+        />
+      )}
+    />
   );
 };
 

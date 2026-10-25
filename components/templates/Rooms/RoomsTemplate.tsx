@@ -1,8 +1,9 @@
-import type { RoomsTemplateProps } from "@/types/components/templates/rooms";
-import { PropertyDiscovery } from "@modules/PropertyDiscovery";
+import { DiscoveryExperience } from "@modules/PropertyDiscovery";
 
-const RoomsTemplate = ({ devices }: RoomsTemplateProps) => (
-  <PropertyDiscovery devices={devices} />
+import type { RoomsTemplateProps } from "@/types/components/templates/rooms";
+
+const RoomsTemplate = ({ devices, title }: RoomsTemplateProps) => (
+  <DiscoveryExperience mode="search" title={title} devices={devices} />
 );
 
 export default RoomsTemplate;

@@ -7,7 +7,7 @@ import type { TripFilterPillProps } from "@/types/components/modules/property-se
 import type { TripSegmentProps } from "@/types/components/modules/property-search-filters";
 
 const Segment = ({ icon, title, value, onOpen, onClear }: TripSegmentProps) => {
-  const t = useTranslations("common");
+  const t = useTranslations("listing");
 
   return (
     <div
@@ -28,7 +28,7 @@ const Segment = ({ icon, title, value, onOpen, onClear }: TripSegmentProps) => {
         <button
           type="button"
           onClick={onClear}
-          aria-label={`${t("removeFilters")} ${title}`}
+          aria-label={t("removeFilterNamed", { title })}
           className="me-1.5 flex size-4 cursor-pointer items-center justify-center rounded-full border border-action"
         >
           <Icon name="x" size={16} className="size-3" />

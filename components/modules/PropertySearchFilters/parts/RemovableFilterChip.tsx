@@ -8,7 +8,7 @@ const RemovableFilterChip = ({
   onRemove,
   onLabelClick,
 }: RemovableFilterChipProps) => {
-  const t = useTranslations("common");
+  const t = useTranslations("listing");
 
   return (
     <div className="filter-chip filter-chip-active gap-2 pe-2">
@@ -22,7 +22,7 @@ const RemovableFilterChip = ({
       <button
         type="button"
         onClick={onRemove}
-        aria-label={`${t("removeFilters")} ${label}`}
+        aria-label={t("removeFilterNamed", { title: label })}
         className="flex size-5 cursor-pointer items-center justify-center rounded-full border border-action"
       >
         <Icon name="x" size={16} />

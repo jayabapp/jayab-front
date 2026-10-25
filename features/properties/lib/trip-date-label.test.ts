@@ -20,3 +20,17 @@ test("cross-month trip dates display both months", () => {
     "30 مهر تا 1 آبان",
   );
 });
+
+test("a stay that crosses into the next year names both years", () => {
+  assert.equal(
+    tripDateLabel("2027-03-19", "2027-03-22", "تا", format),
+    "28 اسفند 1405 تا 2 فروردین 1406",
+  );
+});
+
+test("the same month in two different years is not treated as one month", () => {
+  assert.equal(
+    tripDateLabel("2026-10-22", "2027-10-23", "تا", format),
+    "30 مهر 1405 تا 1 آبان 1406",
+  );
+});

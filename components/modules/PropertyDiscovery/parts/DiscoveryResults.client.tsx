@@ -22,6 +22,7 @@ const MAX_INLINE_BANNERS = 2;
 const DiscoveryResults = ({
   query,
   devices,
+  clearLabel,
   onClearFilters,
 }: DiscoveryResultsProps) => {
   const t = useTranslations();
@@ -57,7 +58,8 @@ const DiscoveryResults = ({
     Math.min(maxBanners, MAX_INLINE_BANNERS),
   );
 
-  if (isPending && properties.length === 0) return <PropertyGridSkeleton />;
+  if (isPending && properties.length === 0)
+    return <PropertyGridSkeleton className={GRID_CLASS} />;
 
   if (isError && properties.length === 0) {
     return (
@@ -79,7 +81,11 @@ const DiscoveryResults = ({
           onAction={onClearFilters}
           title={t("listing.noResultTitle")}
           description={t("listing.noResultDescription")}
-          actionLabel={onClearFilters ? t("common.removeFilters") : undefined}
+          actionLabel={
+            onClearFilters
+              ? (clearLabel ?? t("listing.clearAllFilters"))
+              : undefined
+          }
         />
       </div>
     );

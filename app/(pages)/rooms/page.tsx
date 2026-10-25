@@ -3,6 +3,7 @@ import { getServerPropertyPage } from "@features/properties/server/property.serv
 import { searchParamsToFilters } from "@features/properties/lib/search-params";
 import { PropertyGridSkeleton } from "@modules/PropertyGrid";
 import { seedPropertyList } from "@features/properties/server/property.server";
+import { getTranslations } from "next-intl/server";
 import { Suspense } from "react";
 import { cookies } from "next/headers";
 
@@ -39,10 +40,11 @@ export const generateMetadata = async ({
 };
 
 const PropertiesPage = async ({ searchParams }: RoomsPageProps) => {
-  const [searchParamsData, devices, cookieStore] = await Promise.all([
+  const [searchParamsData, devices, cookieStore, t] = await Promise.all([
     searchParams,
     deviceTypeDetector(),
     cookies(),
+    getTranslations("listing"),
   ]);
 
   const filters = searchParamsToFilters(searchParamsData);
@@ -57,7 +59,7 @@ const PropertiesPage = async ({ searchParams }: RoomsPageProps) => {
     <IntlNamespaces namespaces={["content"]}>
       <HydrationBoundary state={dehydrate(queryClient)}>
         <Suspense fallback={<PropertyGridSkeleton />}>
-          <RoomsTemplate devices={devices} />
+          <RoomsTemplate devices={devices} title={t("roomsPageTitle")} />
         </Suspense>
       </HydrationBoundary>
     </IntlNamespaces>

@@ -16,7 +16,6 @@ export const filterOrderRank = (
   return index < 0 ? order.length : index;
 };
 
-/** Keep filters chosen before a search ahead of filters inferred by that search. */
 export const mergeOrderedSearchFilters = (
   selected: Record<string, unknown>,
   inferred: Record<string, unknown>,
@@ -28,14 +27,26 @@ export type FilterChipOrderEntry = {
   active: boolean;
 };
 
-/** Keep active chips in the order their query keys were added, then show idle chips. */
 export const orderFilterChips = <T extends FilterChipOrderEntry>(
   chips: readonly T[],
   query: Record<string, unknown>,
 ): T[] => {
-  const positions = new Map(Object.keys(query).map((key, index) => [key, index]));
+  const order = parseFilterOrder(
+    typeof query[FILTER_ORDER_PARAM] === "string"
+      ? (query[FILTER_ORDER_PARAM] as string)
+      : undefined,
+  );
+  const positions = new Map(
+    Object.keys(query).map((key, index) => [key, index]),
+  );
   const firstPosition = (chip: T) =>
     Math.min(...chip.queryKeys.map((key) => positions.get(key) ?? Infinity));
+  const rank = (chip: T) => {
+    const ranked = chip.queryKeys
+      .map((key) => order.indexOf(key))
+      .filter((index) => index >= 0);
+    return ranked.length ? Math.min(...ranked) : -1;
+  };
 
   return chips
     .map((chip, index) => ({ chip, index }))
@@ -43,6 +54,8 @@ export const orderFilterChips = <T extends FilterChipOrderEntry>(
       if (left.chip.active !== right.chip.active)
         return left.chip.active ? -1 : 1;
       if (left.chip.active) {
+        const rankDifference = rank(left.chip) - rank(right.chip);
+        if (rankDifference !== 0) return rankDifference;
         const difference = firstPosition(left.chip) - firstPosition(right.chip);
         if (Number.isFinite(difference) && difference !== 0) return difference;
       }

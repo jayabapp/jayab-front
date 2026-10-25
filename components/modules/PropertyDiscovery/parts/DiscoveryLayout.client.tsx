@@ -1,32 +1,41 @@
 "use client";
 
+import { useEffect, useMemo, useRef, useState } from "react";
 import { usePropertyDiscoveryFilters } from "@features/properties/hooks/usePropertyDiscoveryFilters";
-import { useEffect, useRef, useState } from "react";
 import { usePropertyOptionGroups } from "@features/properties/hooks/usePropertyOptionGroups";
 import { CityModal, RegionModal } from "@modules/CitySelector";
 import { useUrlCityWithRegions } from "@features/cities/hooks/useUrlCityWithRegions";
 import { SpecialFilterButtons } from "@modules/PropertySearchFilters";
-import { PropertyFilterForm } from "@modules/PropertySearchFilters";
 import { SelectedFiltersBar } from "@modules/PropertySearchFilters";
+import { isSameLocationPath } from "@features/cities/lib/location-label";
+import { pickLocationQuery } from "@features/cities/lib/location-label";
+import { hasLocationQuery } from "@features/cities/lib/location-label";
 import { PropertySortMenu } from "@modules/PropertySearchFilters";
 import { useTranslations } from "next-intl";
-import { FilterApplyBar } from "@modules/PropertySearchFilters";
+import { useCitiesStore } from "@/store";
+import { usePathname } from "next/navigation";
 
-import type { PropertyDiscoveryProps } from "@/types/components/modules/property-discovery";
+import type { DiscoveryExperienceProps } from "@/types/components/modules/property-discovery";
 import type { ChildCities } from "@/types/components/modules/property-discovery";
 
 import SingleProductBreadCrumb from "@elements/Breadcrumbs/SingleProductBreadcrumb.client";
-import PropertyCategoryStrip from "./parts/PropertyCategoryStrip.client";
-import DiscoveryFilterModal from "./parts/DiscoveryFilterModal.client";
-import DiscoveryResults from "./parts/DiscoveryResults.client";
+import DiscoveryFilterModal from "./DiscoveryFilterModal.client";
+import DiscoveryHeading from "./DiscoveryHeading.client";
+import DiscoveryResults from "./DiscoveryResults.client";
+import isEmpty from "lodash/isEmpty";
 
-const PropertyDiscovery = ({ devices }: PropertyDiscoveryProps) => {
+const HEADER_SELECTOR = ".header-content-container";
+const STICK_TOLERANCE_PX = 0.5;
+
+const DiscoveryLayout = ({
+  mode,
+  title,
+  devices,
+  content,
+}: Omit<DiscoveryExperienceProps, "baselineFilters">) => {
   const t = useTranslations();
+  const pathname = usePathname();
 
-  const BREAD_CRUMBS = [
-    { title: t("common.home"), link: "/" },
-    { title: t("header.listings"), link: "/rooms" },
-  ];
   const [modalCityWithRegions, setCityWithRegions] =
     useState<ChildCities | null>(null);
   const [filterModalShow, setFilterModalShow] = useState(false);
@@ -35,19 +44,38 @@ const PropertyDiscovery = ({ devices }: PropertyDiscoveryProps) => {
   const [cityTitle, setCityTitle] = useState("");
 
   const {
-    applyFilters,
-    clearExtraFilters,
-    hasExtraFilters,
     filters,
     queries,
+    baseline,
     resetDraft,
     setFilters,
+    applyFilters,
+    hasExtraFilters,
+    clearExtraFilters,
   } = usePropertyDiscoveryFilters();
   const { data: propertyTypes } = usePropertyOptionGroups();
   const urlCityWithRegions = useUrlCityWithRegions(queries);
   const cityWithRegions = modalCityWithRegions ?? urlCityWithRegions;
+  const hasBaseline = !isEmpty(baseline);
 
+  const rootRef = useRef<HTMLDivElement>(null);
   const barRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    const root = rootRef.current;
+    const header = document.querySelector<HTMLElement>(HEADER_SELECTOR);
+    if (!root || !header) return;
+    const sync = () =>
+      root.style.setProperty(
+        "--discovery-top",
+        `${header.getBoundingClientRect().height}px`,
+      );
+    sync();
+    const observer = new ResizeObserver(sync);
+    observer.observe(header);
+    return () => observer.disconnect();
+  }, []);
+
   useEffect(() => {
     const bar = barRef.current;
     if (!bar) return;
@@ -56,7 +84,7 @@ const PropertyDiscovery = ({ devices }: PropertyDiscoveryProps) => {
       frame = 0;
       const stuckAt = parseFloat(getComputedStyle(bar).top) || 0;
       bar.dataset.stuck = String(
-        bar.getBoundingClientRect().top <= stuckAt + 0.5,
+        bar.getBoundingClientRect().top <= stuckAt + STICK_TOLERANCE_PX,
       );
     };
     const onScroll = () => {
@@ -72,6 +100,38 @@ const PropertyDiscovery = ({ devices }: PropertyDiscoveryProps) => {
     };
   }, []);
 
+  useEffect(() => {
+    const location = pickLocationQuery({
+      cities: baseline.cities,
+      provinces: baseline.provinces ?? baseline.province_id,
+    });
+    if (!hasLocationQuery(location)) return;
+    useCitiesStore.setState((state) => {
+      const isSamePage = isSameLocationPath(
+        state.locationsData?.path,
+        pathname,
+      );
+      if (isSamePage && state.locationsData?.query) return state;
+      return {
+        locationsData: {
+          ...(isSamePage ? state.locationsData : {}),
+          path: pathname,
+          query: location,
+        },
+      };
+    });
+  }, [baseline.cities, baseline.province_id, baseline.provinces, pathname]);
+
+  const breadCrumbs = useMemo(
+    () => [
+      { title: t("common.home"), link: "/" },
+      mode === "landing"
+        ? { title, link: "" }
+        : { title: t("header.listings"), link: "/rooms" },
+    ],
+    [mode, t, title],
+  );
+
   const onApplyFilters = () => {
     applyFilters();
     setFilterModalShow(false);
@@ -83,11 +143,15 @@ const PropertyDiscovery = ({ devices }: PropertyDiscoveryProps) => {
   };
 
   return (
-    <div className="app-container !px-0 md:!px-10 2xl:px-[9%] !pt-14 xl:!pt-20 z-2 flex flex-col !gap-2">
+    <div
+      ref={rootRef}
+      className="app-container discovery-page !px-0 md:!px-10 2xl:px-[9%] z-2 flex flex-col !gap-2"
+    >
       <div className="hidden w-full items-center xl:flex">
-        <SingleProductBreadCrumb dataArray={BREAD_CRUMBS} />
-        <h1 className="sr-only">{t("listing.roomsPageTitle")}</h1>
+        <SingleProductBreadCrumb dataArray={breadCrumbs} />
       </div>
+
+      <DiscoveryHeading title={title} query={queries} />
 
       <div
         ref={barRef}
@@ -102,44 +166,25 @@ const PropertyDiscovery = ({ devices }: PropertyDiscoveryProps) => {
         />
       </div>
 
-      <div className="grid grid-cols-12 col-span-12">
-        <aside
-          aria-label={t("listing.filters")}
-          className="discovery-sidebar surface-panel col-span-3 hidden flex-col justify-between overflow-hidden lg:sticky lg:flex"
-        >
-          <div className="w-full grow overflow-y-auto">
-            <PropertyFilterForm
-              filters={filters}
-              queries={queries}
-              setFilters={setFilters}
-              onReset={clearExtraFilters}
-              propertyTypes={propertyTypes}
-            />
-          </div>
-          <FilterApplyBar draft={filters} onApply={onApplyFilters} />
-        </aside>
-
-        <div className="col-span-12 md:col-span-12 lg:col-span-9 px-0 xl:ps-4 xl:pe-0 xl:mt-0">
-          <div className="flex w-full px-3 pt-2 xl:hidden">
-            <PropertyCategoryStrip
-              query={queries}
-              propertyKey="property_type"
-              data={propertyTypes?.PROPERTY_TYPE}
-            />
-          </div>
-
-          <div className="flex w-full flex-wrap items-center justify-between gap-3 px-3 py-2 xl:px-0">
-            <PropertySortMenu query={queries} />
-            <SpecialFilterButtons query={queries} />
-          </div>
-
-          <DiscoveryResults
-            query={queries}
-            devices={devices}
-            onClearFilters={hasExtraFilters ? clearExtraFilters : undefined}
-          />
+      <div className="discovery-quick-row flex w-full items-center gap-2 px-3 py-2 md:gap-3 xl:px-0">
+        <div className="-my-1 min-w-0 flex-1 overflow-x-auto py-1">
+          <SpecialFilterButtons query={queries} />
         </div>
+        <PropertySortMenu query={queries} />
       </div>
+
+      <DiscoveryResults
+        query={queries}
+        devices={devices}
+        onClearFilters={hasExtraFilters ? clearExtraFilters : undefined}
+        clearLabel={
+          hasBaseline
+            ? t("listing.removeExtraFilters")
+            : t("listing.clearAllFilters")
+        }
+      />
+
+      {content ? <div className="px-3 xl:px-0">{content}</div> : null}
 
       <DiscoveryFilterModal
         filters={filters}
@@ -147,6 +192,7 @@ const PropertyDiscovery = ({ devices }: PropertyDiscoveryProps) => {
         cityTitle={cityTitle}
         setFilters={setFilters}
         onApply={onApplyFilters}
+        baselineFilters={baseline}
         onClose={onCloseFilterModal}
         propertyTypes={propertyTypes}
         setShowRegions={setShowRegions}
@@ -173,4 +219,4 @@ const PropertyDiscovery = ({ devices }: PropertyDiscoveryProps) => {
   );
 };
 
-export default PropertyDiscovery;
+export default DiscoveryLayout;

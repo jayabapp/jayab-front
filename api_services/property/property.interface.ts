@@ -632,6 +632,10 @@ export interface GetPropertiesPlusFilters {
   has_discount?: any;
   has_pool?: any;
   is_premium?: any;
+  has_blue_tick?: any;
+  is_authorized?: any;
+  /** Display-only order of the chips; stripped before any request is made. */
+  filter_order?: any;
   pattern?: any;
   max_price?: any;
   checkin?: any;

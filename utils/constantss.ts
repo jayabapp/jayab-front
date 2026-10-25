@@ -394,6 +394,7 @@ export const PROPERTY_GRID_COLS_CLASS =
 
 export const DEFAULT_GRID_CLASS = `grid gap-2 overflow-hidden px-1 pb-8 pt-4 md:gap-4 md:pt-2 ${PROPERTY_GRID_COLS_CLASS}`;
 
-export const GRID_CLASS = `grid pb-8 pt-4 md:pt-2 px-3 lg:px-1 !overflow-hidden gap-2 md:gap-4 ${PROPERTY_GRID_COLS_CLASS}`;
+// Discovery results: at most two columns, and never narrower than a card was designed for (see .discovery-results-grid).
+export const GRID_CLASS = `discovery-results-grid grid pb-8 pt-4 md:pt-2 px-3 lg:px-1 !overflow-hidden gap-2 md:gap-4`;
 
 export const DEFAULT_GRID_CLASS_PROPERTY = `grid gap-2 px-3 pt-4 md:gap-4 ${PROPERTY_GRID_COLS_CLASS}`;

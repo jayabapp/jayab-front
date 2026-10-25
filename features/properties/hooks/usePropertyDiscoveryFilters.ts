@@ -1,35 +1,25 @@
 "use client";
 
-import { useCallback, useMemo, useState } from "react";
-import { cancelPropertyDiscoveryQueries } from "@features/properties/api/property-discovery.cache";
-import { zero_filter_remove_keys } from "@/utils/constantss";
-import { usePathname, useRouter } from "next/navigation";
-import { useQueryClient } from "@tanstack/react-query";
+import { useDiscoveryQueryReplace } from "@features/properties/hooks/useDiscoveryQueryReplace";
 import { resetDiscoveryFilters } from "@features/properties/lib/discovery-filter-policy";
+import { useCallback, useState } from "react";
 import { extraDiscoveryFilters } from "@features/properties/lib/discovery-filter-policy";
+import { useDiscoveryBaseline } from "@features/properties/context/DiscoveryContext";
 import { countActiveFilters } from "@features/properties/lib/count-active-filters";
+import { useDiscoveryQuery } from "@features/properties/context/DiscoveryContext";
 
 import type { PropertyDiscoveryFilters } from "@/types/features/properties";
 
 import queryBuilder from "@/helpers/queryBuilder";
-import useQueryGet from "@/helpers/queryGet";
 
 export const usePropertyDiscoveryFilters = ({
-  defaults,
   hiddenFilters = [],
 }: {
-  defaults?: Record<string, string>;
   hiddenFilters?: string[];
 } = {}) => {
-  const router = useRouter();
-  const queryClient = useQueryClient();
-  const pathname = usePathname();
-  const urlQueries = useQueryGet<Record<string, string>>();
-
-  const queries = useMemo<PropertyDiscoveryFilters>(
-    () => ({ ...defaults, ...urlQueries }),
-    [defaults, urlQueries],
-  );
+  const baseline = useDiscoveryBaseline();
+  const replaceQuery = useDiscoveryQueryReplace();
+  const queries = useDiscoveryQuery() as PropertyDiscoveryFilters;
   const appliedKey = queryBuilder(queries);
 
   const [draft, setDraft] = useState<{
@@ -52,24 +42,12 @@ export const usePropertyDiscoveryFilters = ({
     [],
   );
 
-  const replaceWith = useCallback(
-    (body: Record<string, unknown>) => {
-      cancelPropertyDiscoveryQueries(queryClient);
-      router.replace(`${pathname}?${queryBuilder(body)}`);
-    },
-    [pathname, queryClient, router],
-  );
-
   const applyFilters = useCallback(() => {
     const body: Record<string, unknown> = { ...draft.filters };
     delete body.categories;
-    delete body.page;
     for (const key of hiddenFilters) delete body[key];
-    for (const key of zero_filter_remove_keys) {
-      if (body?.[key] === 0 || body?.[key] === "0") delete body[key];
-    }
-    replaceWith(body);
-  }, [draft.filters, hiddenFilters, replaceWith]);
+    replaceQuery(body);
+  }, [draft.filters, hiddenFilters, replaceQuery]);
 
   const resetDraft = useCallback(
     () => setDraft({ key: appliedKey, filters: queries }),
@@ -77,26 +55,24 @@ export const usePropertyDiscoveryFilters = ({
   );
 
   const clearExtraFilters = useCallback(() => {
-    const body = resetDiscoveryFilters(queries, defaults);
-    // Clear the draft too. When the ticked filters were never applied the URL
-    // does not change, the draft never re-syncs, and every box stayed ticked,
-    // so "remove all" looked like it did nothing.
+    const body = resetDiscoveryFilters(queries, baseline);
     setDraft((current) => ({
       ...current,
       filters: body as PropertyDiscoveryFilters,
     }));
-    replaceWith(body);
-  }, [defaults, queries, replaceWith]);
+    replaceQuery(body);
+  }, [baseline, queries, replaceQuery]);
 
   return {
     queries,
+    baseline,
     resetDraft,
     setFilters,
     applyFilters,
     clearExtraFilters,
     hasExtraFilters:
       countActiveFilters(
-        extraDiscoveryFilters(queries, defaults),
+        extraDiscoveryFilters(queries, baseline),
         hiddenFilters,
       ) > 0,
     filters: draft.filters,

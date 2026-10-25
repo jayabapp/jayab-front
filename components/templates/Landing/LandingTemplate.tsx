@@ -1,8 +1,20 @@
-import type { LandingTemplateProps } from "@/types/components/templates/rooms";
-import { LandingDiscovery } from "@modules/PropertyDiscovery";
+import { DiscoveryExperience } from "@modules/PropertyDiscovery";
+import { LandingContent } from "@modules/PropertyDiscovery";
 
-const LandingTemplate = ({ devices, landing }: LandingTemplateProps) => (
-  <LandingDiscovery devices={devices} landing={landing} />
+import type { LandingTemplateProps } from "@/types/components/templates/rooms";
+
+const LandingTemplate = ({
+  devices,
+  landing,
+  baselineFilters,
+}: LandingTemplateProps) => (
+  <DiscoveryExperience
+    mode="landing"
+    devices={devices}
+    baselineFilters={baselineFilters}
+    title={landing?.content?.title ?? ""}
+    content={<LandingContent data={landing} />}
+  />
 );
 
 export default LandingTemplate;

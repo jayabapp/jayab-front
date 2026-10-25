@@ -23,7 +23,7 @@ export const NON_FILTER_KEYS: ReadonlySet<string> = new Set([
 
 type Filters = Record<string, unknown>;
 
-const comparableValue = (value: unknown) =>
+export const comparableValue = (value: unknown) =>
   `${value ?? ""}`
     .split(",")
     .map((entry) => entry.trim())

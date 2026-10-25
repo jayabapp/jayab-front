@@ -28,7 +28,7 @@ const RegionButton = ({
     >
       <button
         type="button"
-        className="flex cursor-pointer items-center gap-1.5"
+        className="flex h-full cursor-pointer items-center gap-1.5"
         onClick={(event) => {
           event.preventDefault();
           event.stopPropagation();
@@ -49,7 +49,9 @@ const RegionButton = ({
       {hasRegions ? (
         <button
           type="button"
-          aria-label={`${t("common.removeFilters")} ${t("common.local")}`}
+          aria-label={t("listing.removeFilterNamed", {
+            title: t("common.local"),
+          })}
           onClick={(event) => {
             event.preventDefault();
             event.stopPropagation();

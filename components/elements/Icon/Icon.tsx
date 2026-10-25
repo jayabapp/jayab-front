@@ -320,6 +320,13 @@ const PATHS: Record<IconName, JSX.Element> = {
       <path d="M17.5 14.5c1.95.55 3.25 2.05 3.25 4.35" />
     </>
   ),
+  wallet: (
+    <>
+      <rect x="3.5" y="6" width="17" height="13" rx="2.5" />
+      <path d="M3.5 10h17" />
+      <circle cx="16.5" cy="14.5" r="1" />
+    </>
+  ),
   "washing-machine": (
     <>
       <rect x="4.5" y="3.5" width="15" height="17" rx="2" />

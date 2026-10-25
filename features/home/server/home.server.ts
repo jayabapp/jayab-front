@@ -67,6 +67,14 @@ export const getServerLanding = cache((slug: string) =>
   }),
 );
 
+// A landing that does not exist or is switched off must be a real 404, not an empty page.
+export const getServerLandingOr404 = cache((slug: string) =>
+  serverCall(baseUrl + apiRoutes.SINGLE_USER_LANDING_PAGE(slug), undefined, {
+    redirect404: true,
+    revalidate: REVALIDATE.LANDINGS,
+  }),
+);
+
 export const getServerPropertyList = cache(
   async (page: number, perPage: number) => {
     const locale = resolveLocale(await getLocale());

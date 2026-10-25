@@ -1,15 +1,19 @@
 "use client";
 
-import { usePathname, useRouter } from "next/navigation";
+import { useDiscoveryQueryReplace } from "@features/properties/hooks/useDiscoveryQueryReplace";
 import { useTranslations } from "next-intl";
 import { FiltersEnum } from "@/enum/filters.enum";
 
 import type { SpecialFilterButtonsProps } from "@/types/components/modules/property-search-filters";
 
 import SpecialFilterButton from "./parts/SpecialFilterButton";
-import queryBuilder from "@/helpers/queryBuilder";
 
 const SPECIAL_FILTERS = [
+  {
+    key: FiltersEnum.HAS_DISCOUNT,
+    img: "/assets/icons/property/discount_label.svg",
+    title: "listing.hasDiscount",
+  },
   {
     key: FiltersEnum.HAS_BLUE_TICK,
     img: "/assets/icons/adds/verified_hexy_badge.svg",
@@ -27,20 +31,20 @@ const SpecialFilterButtons = ({
   containerClass,
 }: SpecialFilterButtonsProps) => {
   const t = useTranslations();
-  const { replace } = useRouter();
-  const pathname = usePathname();
+  const replaceQuery = useDiscoveryQueryReplace();
 
   const toggle = (key: string, isActive: boolean) => {
     const body: Record<string, unknown> = { ...query };
     if (isActive) delete body[key];
     else body[key] = 1;
-    delete body.page;
-    replace(`${pathname}?${queryBuilder(body)}`);
+    replaceQuery(body);
   };
 
   return (
     <div
-      className={`flex items-center justify-start gap-2 ${containerClass ?? ""}`}
+      role="group"
+      aria-label={t("listing.quickFilters")}
+      className={`flex w-max items-center justify-start gap-2 ${containerClass ?? ""}`}
     >
       {SPECIAL_FILTERS.map((filter) => {
         const isChecked = query?.[filter.key] === "1";
@@ -48,8 +52,8 @@ const SpecialFilterButtons = ({
           <SpecialFilterButton
             key={filter.key}
             isChecked={isChecked}
+            cb={() => toggle(filter.key, isChecked)}
             item={{ img: filter.img, title: t(filter.title) }}
-            cb={() => toggle(filter.key, !!query?.[filter.key])}
           />
         );
       })}

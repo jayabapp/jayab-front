@@ -1713,6 +1713,17 @@ html[data-theme="dark"] .logo-adapt {
   @apply border-transparent bg-action font-semibold text-on-action shadow-glass-btn;
 }
 
+/* A chip made of several buttons shows keyboard focus around the whole pill instead of
+   as a box on one of its buttons. */
+.filter-chip > button:focus-visible {
+  outline: none;
+}
+
+.filter-chip:has(> button:focus-visible) {
+  outline: 2px solid rgb(var(--c-focus));
+  outline-offset: 2px;
+}
+
 /* The horizontal discovery row stays compact without shrinking filter controls elsewhere. */
 .discovery-filter-chips .filter-chip {
   @apply h-7 gap-1 px-2.5 text-[11px] md:h-9 md:px-3 md:text-xs;
@@ -1726,6 +1737,32 @@ html[data-theme="dark"] .logo-adapt {
 .discovery-filter-chips .filter-chip .size-5 {
   width: 1rem;
   height: 1rem;
+}
+
+/* On a phone the three quick filters and sort share one line. */
+.discovery-quick-row .filter-chip {
+  @apply max-md:gap-1 max-md:px-2.5;
+}
+
+/* Compact on a phone, but every control keeps a touch area of at least 44px: the chip
+   grows vertically, the small remove buttons grow in both directions. */
+@media (max-width: 767px) {
+  .discovery-filter-chips button,
+  .discovery-quick-row button {
+    position: relative;
+  }
+
+  .discovery-filter-chips button::after,
+  .discovery-quick-row button::after {
+    content: "";
+    position: absolute;
+    inset-inline: 0;
+    inset-block: -0.6rem;
+  }
+
+  .discovery-filter-chips button.size-5::after {
+    inset: -1rem;
+  }
 }
 
 html[data-theme="dark"] .filter-chip-primary {
@@ -1769,29 +1806,49 @@ html[data-theme="dark"] .filter-chip-primary {
   backdrop-filter: blur(12px);
 }
 
-.discovery-filter-bar {
-  top: 3.9rem;
+/* One offset for everything that sticks under the fixed site header. The header's
+   measured height replaces these first-paint estimates (see DiscoveryLayout), so the
+   bar sits flush under it and no content shows through a gap. */
+.discovery-page {
+  --discovery-top: 3.9rem;
+  padding-top: calc(var(--discovery-top) + 0.5rem);
 }
 
-.discovery-sidebar {
-  --discovery-sidebar-top: 7.95rem;
-  top: var(--discovery-sidebar-top);
-  height: calc(100dvh - var(--discovery-sidebar-top) - 1rem);
+.discovery-filter-bar {
+  top: var(--discovery-top);
 }
 
 @media (min-width: 768px) {
-  .discovery-filter-bar {
-    top: 3.65rem;
+  .discovery-page {
+    --discovery-top: 3.65rem;
   }
 }
 
 @media (min-width: 1280px) {
-  .discovery-filter-bar {
-    top: 4.6rem;
+  .discovery-page {
+    --discovery-top: 4.6rem;
   }
+}
 
-  .discovery-sidebar {
-    --discovery-sidebar-top: 8.9rem;
+/* Result cards: as many columns as fit at the card's minimum width, but never more than
+   two. Below two minimum widths the grid is a single column. */
+.discovery-results-grid {
+  grid-template-columns: repeat(
+    auto-fit,
+    minmax(max(21.25rem, calc((100% - 1rem) / 2)), 1fr)
+  );
+}
+
+/* The full filter form as a dialog: a fixed header and footer around a body that
+   scrolls. Full screen below xl, a centred card from xl up. */
+.discovery-filter-dialog {
+  @apply mx-auto my-0 flex h-full w-full flex-col overflow-hidden bg-surface;
+}
+
+@media (min-width: 1280px) {
+  .discovery-filter-dialog {
+    @apply my-10 max-w-xl rounded-28 border border-line shadow-elevated;
+    height: min(52rem, calc(100dvh - 5rem));
   }
 }
 

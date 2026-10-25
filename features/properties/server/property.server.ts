@@ -17,7 +17,12 @@ export const getServerPropertyPage = cache(async (filters: PropertyFilters) => {
   const locale = resolveLocale(await getLocale());
   return serverCall(
     baseUrl + apiRoutes.GET_PROPERTIES,
-    { page: 1, per_page: PAGE_SIZE, ...filters, locale },
+    {
+      page: 1,
+      per_page: PAGE_SIZE,
+      ...normalizePropertyFilters(filters),
+      locale,
+    },
     { revalidate: REVALIDATE.PROPERTY_LIST },
   );
 });
@@ -46,7 +51,7 @@ export const seedPropertyList = async (
     propertyKeys.list(normalizePropertyFilters({ ...filters, locale })),
     {
       pages: [page],
-      pageParams: [1],
+      pageParams: [Number(filters.page) || 1],
     },
   );
 };

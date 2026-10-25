@@ -5,6 +5,7 @@ import type { FilterPanelHeaderProps } from "@/types/components/modules/property
 
 const FilterPanelHeader = ({
   onReset,
+  resetLabel,
   activeCount,
 }: FilterPanelHeaderProps) => {
   const t = useTranslations();
@@ -31,7 +32,7 @@ const FilterPanelHeader = ({
           onClick={onReset}
           className="shrink-0 text-xs text-link transition-colors hover:text-on-selected"
         >
-          {t("common.removeFilters")}
+          {resetLabel ?? t("listing.clearAllFilters")}
         </button>
       ) : (
         <></>

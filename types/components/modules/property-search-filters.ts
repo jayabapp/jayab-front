@@ -1,8 +1,8 @@
 import type { Dispatch, ReactNode, SetStateAction } from "react";
-import type { IconName } from "@/types/components/elements/icon";
 export type { ProvienceTypesDto } from "@/api_services/property/property.interface";
 import type { ProvienceTypesDto } from "@/api_services/property/property.interface";
 import type { ChildCities } from "@/api_services/city/city.interface";
+import type { IconName } from "@/types/components/elements/icon";
 
 export type SelectedFiltersBarProps = {
   containerClass?: string;
@@ -16,9 +16,9 @@ export type SelectedFiltersBarProps = {
 
 export type OrderedFilterChip = {
   id: string;
-  queryKeys: readonly string[];
   active: boolean;
   node: ReactNode;
+  queryKeys: readonly string[];
 };
 
 export type SpecialFilterButtonsProps = {
@@ -37,7 +37,42 @@ export type SelectiveFilterChipProps = {
   title: string;
   queryKey: string;
   list: ProvienceTypesDto[];
-  removeFiltersKeys: (keys: string[]) => void;
+};
+
+export type FilterEditorChipProps = {
+  title: string;
+  icon?: IconName;
+  showCount?: boolean;
+  panelClass?: string;
+  label?: string | null;
+  keys: readonly string[];
+  renderEditor: (
+    draft: PropertyFilterDraft,
+    setDraft: Dispatch<SetStateAction<PropertyFilterDraft>>,
+  ) => ReactNode;
+};
+
+export type FilterEditorBodyProps = Pick<
+  FilterEditorChipProps,
+  "keys" | "renderEditor"
+> & { onDone: () => void };
+
+export type RulesFilterChipProps = {
+  propertyTypes?: Record<
+    string,
+    { id: string | number; title: string; canonical_title?: string }[]
+  >;
+};
+
+export type RangeFilterChipProps = {
+  unit: string;
+  title: string;
+  steps: number;
+  upLimit: number;
+  icon?: IconName;
+  lowerKey: string;
+  higherKey: string;
+  labelTitle?: string;
 };
 
 export type PropertyModelFilterProps = {
@@ -52,28 +87,25 @@ export type PropertyModelFilterProps = {
 };
 
 export type TripSegmentProps = {
-  icon: IconName;
   title: string;
-  /** Selected value; the segment shows the title and a chevron while it is null. */
-  value: string | null;
+  icon: IconName;
   onOpen: () => void;
   onClear: () => void;
+  value: string | null;
 };
 
 export type TripFilterPillProps = {
+  onDateClick: () => void;
+  onClearDate: () => void;
+  onGuestClick: () => void;
   dateLabel: string | null;
   guestLabel: string | null;
-  onDateClick: () => void;
-  onGuestClick: () => void;
-  onClearDate: () => void;
   onClearGuests: () => void;
 };
 
 export type RemovableFilterChipProps = {
   label: string;
   onRemove: () => void;
-  /** Opens the relevant editor for this filter. Omitted for chips that have
-   * no dedicated editor to reopen (e.g. price range, commission). */
   onLabelClick?: () => void;
 };
 
@@ -89,11 +121,12 @@ export type PropertyFilterDraft = Record<string, any>;
 export type FilterSectionProps = {
   title: string;
   count?: number;
-  defaultOpen?: boolean;
   children: ReactNode;
+  defaultOpen?: boolean;
 };
 
 export type FilterPanelHeaderProps = {
+  resetLabel?: string;
   activeCount: number;
   onReset: () => void;
 };
@@ -106,10 +139,10 @@ export type FilterApplyBarProps = {
 
 export type PropertyFilterFormProps = {
   onReset?: () => void;
-  baselineFilters?: PropertyFilterDraft;
   hiddenFilters?: string[];
   filters: PropertyFilterDraft;
   queries: Record<string, string>;
+  baselineFilters?: PropertyFilterDraft;
   setFilters: Dispatch<PropertyFilterDraft>;
   propertyTypes?: Record<string, ProvienceTypesDto[]>;
 };

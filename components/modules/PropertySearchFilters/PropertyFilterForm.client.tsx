@@ -1,5 +1,10 @@
 "use client";
 
+import {
+  AREA_RANGE,
+  COMMISSION_RANGE,
+  PRICE_RANGE,
+} from "@features/properties/constants/filter-ranges";
 import { extraDiscoveryFilters } from "@features/properties/lib/discovery-filter-policy";
 import { countActiveFilters } from "@features/properties/lib/count-active-filters";
 import { countFilterGroup } from "@features/properties/lib/count-active-filters";
@@ -18,10 +23,11 @@ import FilterCounter from "./parts/FilterCounter.client";
 import FilterSection from "./parts/FilterSection.client";
 import FilterCheck from "./parts/FilterCheck.client";
 import DateFilter from "./parts/DateFilter.client";
+import isEmpty from "lodash/isEmpty";
 
-const COMMISSION_MAX = 50;
-const PRICE_MAX = 40000000;
-const AREA_MAX = 1000;
+const COMMISSION_MAX = COMMISSION_RANGE.max;
+const PRICE_MAX = PRICE_RANGE.max;
+const AREA_MAX = AREA_RANGE.max;
 
 const PropertyFilterForm = ({
   filters,
@@ -46,7 +52,15 @@ const PropertyFilterForm = ({
     <div className="flex w-full flex-col px-3">
       {onReset ? (
         <div className="sticky top-0 z-1 bg-surface pt-3">
-          <FilterPanelHeader activeCount={activeCount} onReset={onReset} />
+          <FilterPanelHeader
+            activeCount={activeCount}
+            onReset={onReset}
+            resetLabel={
+              isEmpty(baselineFilters)
+                ? t("listing.clearAllFilters")
+                : t("listing.removeExtraFilters")
+            }
+          />
         </div>
       ) : (
         <div className="pt-3" />
@@ -67,6 +81,7 @@ const PropertyFilterForm = ({
             queryKey="property_type"
             setMobileFilters={setFilters}
             list={propertyTypes?.PROPERTY_TYPE || []}
+            containerClass="grid w-full grid-cols-2 gap-x-3"
           />
         </FilterSection>
       )}
@@ -84,12 +99,12 @@ const PropertyFilterForm = ({
           </p>
           <PriceRangeFilter
             lowLimit={0}
-            steps={500000}
             filters={filters}
             upLimit={PRICE_MAX}
             lowerKey="min_price"
             higherKey="max_price"
             setFilters={setFilters}
+            steps={PRICE_RANGE.step}
           />
         </div>
       </FilterSection>
@@ -133,7 +148,11 @@ const PropertyFilterForm = ({
       <FilterSection
         defaultOpen
         title={t("listing.quickFilters")}
-        count={countFilterGroup(countFilters, ["has_discount", "is_premium"])}
+        count={countFilterGroup(countFilters, [
+          "has_discount",
+          "has_blue_tick",
+          "is_authorized",
+        ])}
       >
         {isHidden("has_discount") ? (
           <></>
@@ -146,16 +165,27 @@ const PropertyFilterForm = ({
             title={t("listing.hasDiscount")}
           />
         )}
-        {isHidden("is_premium") ? (
+        {isHidden("has_blue_tick") ? (
           <></>
         ) : (
           <FilterCheck
             withBadge
             query={queries}
-            queryKey="is_premium"
+            mobileFilters={filters}
+            queryKey="has_blue_tick"
+            title={t("listing.premium")}
+            setMobileFilters={setFilters}
+          />
+        )}
+        {isHidden("is_authorized") ? (
+          <></>
+        ) : (
+          <FilterCheck
+            query={queries}
+            queryKey="is_authorized"
             mobileFilters={filters}
             setMobileFilters={setFilters}
-            title={t("listing.permiumProps")}
+            title={t("listing.verified")}
           />
         )}
       </FilterSection>
@@ -191,6 +221,7 @@ const PropertyFilterForm = ({
                 mobileFilters={filters}
                 setMobileFilters={setFilters}
                 list={propertyTypes?.POOL_TYPE || []}
+                containerClass="grid w-full grid-cols-2 gap-x-3"
               />
             </div>
           )}
@@ -211,6 +242,7 @@ const PropertyFilterForm = ({
             mobileFilters={filters}
             setMobileFilters={setFilters}
             list={propertyTypes?.WELFARE || []}
+            containerClass="grid w-full grid-cols-2 gap-x-3"
           />
         </FilterSection>
       )}
@@ -225,10 +257,11 @@ const PropertyFilterForm = ({
           <PropertyModelFilter
             isMulty
             query={queries}
-            queryKey="entertainment"
             mobileFilters={filters}
+            queryKey="entertainment"
             setMobileFilters={setFilters}
             list={propertyTypes?.ENTERTAINMENT || []}
+            containerClass="grid w-full grid-cols-2 gap-x-3"
           />
         </FilterSection>
       )}
@@ -247,6 +280,7 @@ const PropertyFilterForm = ({
             mobileFilters={filters}
             setMobileFilters={setFilters}
             list={propertyTypes?.KITCHEN || []}
+            containerClass="grid w-full grid-cols-2 gap-x-3"
           />
         </FilterSection>
       )}
@@ -265,6 +299,7 @@ const PropertyFilterForm = ({
             mobileFilters={filters}
             setMobileFilters={setFilters}
             list={propertyTypes?.COOL_HEAT || []}
+            containerClass="grid w-full grid-cols-2 gap-x-3"
           />
         </FilterSection>
       )}
@@ -283,6 +318,7 @@ const PropertyFilterForm = ({
             mobileFilters={filters}
             setMobileFilters={setFilters}
             list={propertyTypes?.PATTERN || []}
+            containerClass="grid w-full grid-cols-2 gap-x-3"
           />
         </FilterSection>
       )}
@@ -303,11 +339,11 @@ const PropertyFilterForm = ({
             {t("listing.squareMeter")}
           </p>
           <PriceRangeFilter
-            steps={50}
             lowLimit={0}
-            upLimit={AREA_MAX}
             filters={filters}
+            upLimit={AREA_MAX}
             setFilters={setFilters}
+            steps={AREA_RANGE.step}
             lowerKey="min_building_area"
             higherKey="max_building_area"
           />
@@ -315,10 +351,10 @@ const PropertyFilterForm = ({
       </FilterSection>
 
       <PropertyRulesFilter
-        countFilters={countFilters}
         filters={filters}
         queries={queries}
         setFilters={setFilters}
+        countFilters={countFilters}
         propertyTypes={propertyTypes}
         hiddenFilters={hiddenFilters}
       />
@@ -337,13 +373,13 @@ const PropertyFilterForm = ({
               {formatNumber(filters?.max_commission || COMMISSION_MAX)}%
             </p>
             <PriceRangeFilter
-              steps={5}
               lowLimit={0}
               filters={filters}
-              upLimit={COMMISSION_MAX}
               setFilters={setFilters}
+              upLimit={COMMISSION_MAX}
               lowerKey="min_commission"
               higherKey="max_commission"
+              steps={COMMISSION_RANGE.step}
             />
           </div>
         </FilterSection>

@@ -52,6 +52,7 @@ export type IconName =
   | "television"
   | "user-plus"
   | "users"
+  | "wallet"
   | "washing-machine"
   | "wifi"
   | "x";

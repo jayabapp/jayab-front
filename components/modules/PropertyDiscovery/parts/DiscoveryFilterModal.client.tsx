@@ -18,9 +18,9 @@ const DiscoveryFilterModal = ({
   cityTitle,
   setFilters,
   hiddenFilters,
-  baselineFilters,
   propertyTypes,
   setShowRegions,
+  baselineFilters,
   onShowCityModal,
   cityWithRegions,
   onClearExtraFilters,
@@ -28,14 +28,11 @@ const DiscoveryFilterModal = ({
   <Modal
     show={show}
     onHide={onClose}
-    options={{
-      containerClass:
-        "mx-auto my-0 xl:my-10 h-full w-full xl:w-1/3 2xl:w-1/4 rounded-0 bg-surface flex flex-col overflow-hidden",
-    }}
+    options={{ containerClass: "discovery-filter-dialog" }}
   >
     <ModalHeaderPart showX title="" onHide={onClose} />
 
-    <div className="w-full grow overflow-y-auto pb-4">
+    <div className="min-h-0 w-full grow overflow-y-auto overscroll-contain pb-4">
       <div className="mx-auto w-[92%] pb-2">
         <CitySelectorTitle
           hideCityPart

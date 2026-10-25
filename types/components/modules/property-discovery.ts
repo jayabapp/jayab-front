@@ -1,63 +1,50 @@
-export type { ChildCities } from "@/api_services/city/city.interface";
-export type {
-  ProvienceTypesDto,
-  Question,
-  RelatedLandings,
-  SingleLandingDto,
-} from "@/api_services/property/property.interface";
-
-import type {
-  ProvienceTypesDto,
-  RelatedLandings,
-  SingleLandingDto,
-} from "@/api_services/property/property.interface";
+import type { Dispatch, ReactNode, SetStateAction } from "react";
+export type { ProvienceTypesDto } from "@/api_services/property/property.interface";
+import type { ProvienceTypesDto } from "@/api_services/property/property.interface";
+export type { SingleLandingDto } from "@/api_services/property/property.interface";
+import type { SingleLandingDto } from "@/api_services/property/property.interface";
+export type { RelatedLandings } from "@/api_services/property/property.interface";
+import type { RelatedLandings } from "@/api_services/property/property.interface";
 import type { ChildCities } from "@/api_services/city/city.interface";
-import type { Dispatch, SetStateAction } from "react";
+export type { ChildCities } from "@/api_services/city/city.interface";
 import type { DeviceInfo } from "@/helpers/device.detector";
+export type { Question } from "@/api_services/property/property.interface";
 
-export type PropertyDiscoveryProps = {
+export type DiscoveryExperienceProps = {
+  title: string;
+  content?: ReactNode;
   devices?: DeviceInfo;
+  mode: "search" | "landing";
+  baselineFilters?: Record<string, string>;
 };
 
-export type LandingDiscoveryProps = {
-  devices?: DeviceInfo;
-  landing: SingleLandingDto;
+export type DiscoveryHeadingProps = {
+  title: string;
+  query: Record<string, any>;
 };
 
 export type DiscoveryResultsProps = {
+  clearLabel?: string;
   devices?: DeviceInfo;
   query: Record<string, any>;
-  /** Offered from the empty state so a dead-end result set is escapable. */
   onClearFilters?: () => void;
 };
 
-export type PropertyCategoryStripProps = {
-  data: ProvienceTypesDto[] | undefined;
-  propertyKey: string;
-  query: Record<string, any>;
-};
-
-export type PropertyCategoryItemProps = {
-  cb?: () => void | null;
-  isSelected?: boolean;
-  item: ProvienceTypesDto;
-};
-
 export type DiscoveryFilterModalProps = {
-  filters: Record<string, any>;
-  hiddenFilters?: string[];
-  baselineFilters?: Record<string, string>;
+  show: boolean;
+  cityTitle?: string;
   onApply: () => void;
   onClose: () => void;
-  onShowCityModal: () => void;
-  cityTitle?: string;
-  cityWithRegions: ChildCities | null;
-  onClearExtraFilters?: () => void;
-  propertyTypes?: Record<string, ProvienceTypesDto[]>;
-  queries: Record<string, any>;
+  hiddenFilters?: string[];
   setFilters: Dispatch<any>;
+  onShowCityModal: () => void;
+  queries: Record<string, any>;
+  filters: Record<string, any>;
+  onClearExtraFilters?: () => void;
+  cityWithRegions: ChildCities | null;
+  baselineFilters?: Record<string, string>;
   setShowRegions: Dispatch<SetStateAction<boolean>>;
-  show: boolean;
+  propertyTypes?: Record<string, ProvienceTypesDto[]>;
 };
 
 export type LandingContentProps = {

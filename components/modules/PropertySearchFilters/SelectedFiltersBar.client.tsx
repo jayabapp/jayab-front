@@ -2,24 +2,34 @@
 
 import { sortDynamicFiltersInOrder } from "@/utils/constantss";
 import { useDiscoveryQueryReplace } from "@features/properties/hooks/useDiscoveryQueryReplace";
-import { zero_filter_remove_keys } from "@/utils/constantss";
 import { useCallback, useState } from "react";
+import { extraDiscoveryFilters } from "@features/properties/lib/discovery-filter-policy";
+import { useDiscoveryBaseline } from "@features/properties/context/DiscoveryContext";
 import { countActiveFilters } from "@features/properties/lib/count-active-filters";
+import { countFilterGroup } from "@features/properties/lib/count-active-filters";
+import { orderFilterChips } from "@features/properties/lib/filter-order";
+import { filterOrderRank } from "@features/properties/lib/filter-order";
 import { useTranslations } from "next-intl";
 import { useJalaliFormat } from "@hooks/useJalaliFormat";
-import { filterOrderRank, orderFilterChips } from "@features/properties/lib/filter-order";
-import { tripDateLabel } from "@features/properties/lib/trip-date-label";
 import { useFormatNumber } from "@hooks/useFormatNumber";
+import { getRuleOptions } from "@features/properties/lib/rule-options";
+import { tripDateLabel } from "@features/properties/lib/trip-date-label";
 import { RegionButton } from "@modules/CitySelector";
 import { ContentImage } from "@elements/Image";
+import { PRICE_RANGE } from "@features/properties/constants/filter-ranges";
 import { parseIdList } from "@features/cities/lib/city-selection";
+import { AREA_RANGE } from "@features/properties/constants/filter-ranges";
 import { Icon } from "@elements/Icon";
 
 import type { SelectedFiltersBarProps } from "@/types/components/modules/property-search-filters";
 import type { OrderedFilterChip } from "@/types/components/modules/property-search-filters";
+import type { ReactNode } from "react";
 
 import SearchDateRangePicker from "./parts/DateRangePicker/SearchDateRangePicker.client";
 import SelectiveFilterChip from "./parts/SelectiveFilterChip.client";
+import FilterEditorChip from "./parts/FilterEditorChip.client";
+import RulesFilterChip from "./parts/RulesFilterChip.client";
+import RangeFilterChip from "./parts/RangeFilterChip.client";
 import RemovableFilterChip from "./parts/RemovableFilterChip";
 import updateDateRange from "./parts/DateRangePicker/updateDateRange";
 import TripFilterPill from "./parts/TripFilterPill.client";
@@ -32,24 +42,6 @@ import Modal from "@elements/Modal";
 
 const JALALI_INPUT_DATE_FORMAT = "jYYYY/jMM/jD";
 
-const rangeLabel = (
-  title: string,
-  lower: string | undefined,
-  higher: string | undefined,
-  unit: string,
-  words: { from: string; to: string },
-  format: (value: string) => string,
-) => {
-  const from = lower ? `${words.from} ${format(lower)}` : "";
-  const to = higher ? `${words.to} ${format(higher)}` : "";
-  return `${title} ${[from, to].filter(Boolean).join(" ")} ${unit}`.trim();
-};
-
-const RULE_FILTERS = [
-  { key: "party", title: "listing.party" },
-  { key: "pet", title: "listing.pet" },
-] as const;
-
 const DYNAMIC_FILTER_TITLES = {
   PROPERTY_TYPE: "common.propertyType",
   POOL_TYPE: "common.poolType",
@@ -61,26 +53,31 @@ const DYNAMIC_FILTER_TITLES = {
   OWNERSHIP: "listing.ownership",
 } as const;
 
+const TRIP_KEYS = ["checkin", "checkout", "total_guests"] as const;
+
 const SelectedFiltersBar = ({
   query,
   propertyTypes,
   containerClass,
-  cityWithRegions,
   setShowRegions,
+  cityWithRegions,
   setFilterModalShow,
 }: SelectedFiltersBarProps) => {
   const t = useTranslations();
   const jalali = useJalaliFormat();
   const formatNumber = useFormatNumber();
 
+  const baseline = useDiscoveryBaseline();
   const replaceQuery = useDiscoveryQueryReplace();
-  const regionsIds = parseIdList(query?.regions);
 
   const [dateEditorOpen, setDateEditorOpen] = useState(false);
   const [guestEditorOpen, setGuestEditorOpen] = useState(false);
 
+  const extra = extraDiscoveryFilters(query, baseline);
+  const regionsIds = parseIdList(extra.regions as string | undefined);
+
   const removeFiltersKeys = useCallback(
-    (keys: string[]) => {
+    (keys: readonly string[]) => {
       const body: Record<string, unknown> = { ...query };
       for (const key of keys) delete body[key];
       replaceQuery(body);
@@ -100,17 +97,14 @@ const SelectedFiltersBar = ({
       next:
         | Record<string, unknown>
         | ((current: Record<string, unknown>) => Record<string, unknown>),
-    ) => {
-      const body: Record<string, unknown> = {
-        ...(typeof next === "function" ? next(query ?? {}) : next),
-      };
-      for (const key of zero_filter_remove_keys) {
-        if (body?.[key] === 0 || body?.[key] === "0") delete body[key];
-      }
-      replaceQuery(body);
-    },
+    ) => replaceQuery(typeof next === "function" ? next(query ?? {}) : next),
     [query, replaceQuery],
   );
+
+  const isLocked = (keys: readonly string[]) =>
+    keys.some((key) => baseline[key] !== undefined);
+  const isActive = (keys: readonly string[]) =>
+    countFilterGroup(extra, keys) > 0;
 
   const dynamicKeys = Object.keys(propertyTypes)
     .filter((key) => !["PARTY", "PET"].includes(key))
@@ -125,259 +119,242 @@ const SelectedFiltersBar = ({
     .map((region) => region?.title)
     .filter((title): title is string => !!title);
 
-  const renderDynamicChip = (key: string) => (
-    <SwiperSlide className="!w-auto" key={`dynamic-${key}`}>
-      <SelectiveFilterChip
-        queryKey={key.toLowerCase()}
-        removeFiltersKeys={removeFiltersKeys}
-        list={propertyTypes?.[key.toUpperCase()]}
-        title={
-          Object.hasOwn(DYNAMIC_FILTER_TITLES, key.toUpperCase())
-            ? t(
-                DYNAMIC_FILTER_TITLES[
-                  key.toUpperCase() as keyof typeof DYNAMIC_FILTER_TITLES
-                ],
-              )
-            : ""
-        }
-      />
+  const slide = (id: string, node: ReactNode, className = "!w-auto") => (
+    <SwiperSlide key={id} className={className}>
+      {node}
     </SwiperSlide>
   );
 
-  // Filters set in the sidebar, sheet, or another page join the same ordered row.
-  const appliedChips: OrderedFilterChip[] = [];
-
-  if (query?.total_bedrooms)
-    appliedChips.push({
-      id: "bedrooms",
-      queryKeys: ["total_bedrooms"],
-      active: true,
-      node: (
-        <SwiperSlide key="selected-bedrooms" className="!w-auto">
-          <RemovableFilterChip
-            onRemove={() => removeFiltersKeys(["total_bedrooms"])}
-            label={`${t("listing.roomCount")} : ${query?.total_bedrooms}`}
-          />
-        </SwiperSlide>
-      ),
-    });
-
-  if (query?.max_commission || query?.min_commission)
-    appliedChips.push({
-      id: "commission",
-      queryKeys: ["min_commission", "max_commission"],
-      active: true,
-      node: (
-        <SwiperSlide key="selected-commission" className="!w-auto">
-          <RemovableFilterChip
-            onRemove={() =>
-              removeFiltersKeys(["max_commission", "min_commission"])
-            }
-            label={rangeLabel(
-              t("listing.commisJustPerc"),
-              query?.min_commission,
-              query?.max_commission,
-              "%",
-              { from: t("common.from"), to: t("common.to") },
-              formatNumber,
-            )}
-          />
-        </SwiperSlide>
-      ),
-    });
-
-  if (query?.max_price || query?.min_price)
-    appliedChips.push({
-      id: "price",
-      queryKeys: ["min_price", "max_price"],
-      active: true,
-      node: (
-        <SwiperSlide key="selected-price" className="!w-auto">
-          <RemovableFilterChip
-            onRemove={() => removeFiltersKeys(["max_price", "min_price"])}
-            label={rangeLabel(
-              t("common.price"),
-              query?.min_price,
-              query?.max_price,
-              t("common.toman"),
-              { from: t("common.from"), to: t("common.to") },
-              formatNumber,
-            )}
-          />
-        </SwiperSlide>
-      ),
-    });
-
-  if (query?.max_building_area || query?.min_building_area)
-    appliedChips.push({
-      id: "area",
-      queryKeys: ["min_building_area", "max_building_area"],
-      active: true,
-      node: (
-        <SwiperSlide key="selected-area" className="!w-auto">
-          <RemovableFilterChip
-            onRemove={() =>
-              removeFiltersKeys(["max_building_area", "min_building_area"])
-            }
-            label={rangeLabel(
-              t("listing.roomSize"),
-              query?.min_building_area,
-              query?.max_building_area,
-              t("common.meter"),
-              { from: t("common.from"), to: t("common.to") },
-              formatNumber,
-            )}
-          />
-        </SwiperSlide>
-      ),
-    });
-
-  if (query?.has_discount === "1")
-    appliedChips.push({
-      id: "discount",
-      queryKeys: ["has_discount"],
-      active: true,
-      node: (
-        <SwiperSlide key="selected-discount" className="!w-auto">
-          <RemovableFilterChip
-            label={t("listing.hasDiscount")}
-            onRemove={() => removeFiltersKeys(["has_discount"])}
-          />
-        </SwiperSlide>
-      ),
-    });
-
-  if (query?.is_premium === "1")
-    appliedChips.push({
-      id: "premium",
-      queryKeys: ["is_premium"],
-      active: true,
-      node: (
-        <SwiperSlide key="selected-premium" className="!w-auto">
-          <RemovableFilterChip
-            label={t("listing.permiumProps")}
-            onRemove={() => removeFiltersKeys(["is_premium"])}
-          />
-        </SwiperSlide>
-      ),
-    });
-
-  for (const rule of RULE_FILTERS.filter((entry) => query?.[entry.key]))
-    appliedChips.push({
-      id: rule.key,
-      queryKeys: [rule.key],
-      active: true,
-      node: (
-        <SwiperSlide key={`selected-${rule.key}`} className="!w-auto">
-          <RemovableFilterChip
-            label={t(rule.title)}
-            onRemove={() => removeFiltersKeys([rule.key])}
-          />
-        </SwiperSlide>
-      ),
-    });
-
-  const activeCount = countActiveFilters(query);
-  const orderedChips: OrderedFilterChip[] = [];
-  const hasPoolSelection =
-    query?.has_pool === "0" || query?.has_pool === "1";
-
-  if (!isEmpty(cityWithRegions?.child))
-    orderedChips.push({
-      id: "regions",
-      queryKeys: ["regions"],
-      active: regionsIds.length > 0,
-      node: (
-        <SwiperSlide key="selected-regions" className="!w-auto flex">
-          <RegionButton
-            regionsIds={regionsIds}
-            regionTitles={regionTitles}
-            setShowRegions={setShowRegions}
-            onClearRegions={() => removeFiltersKeys(["regions"])}
-          />
-        </SwiperSlide>
-      ),
-    });
-
-  for (const key of dynamicKeys)
-    orderedChips.push({
+  const dynamicChip = (key: string): OrderedFilterChip => {
+    const queryKey = key.toLowerCase();
+    return {
       id: key,
-      queryKeys: [key.toLowerCase()],
-      active: parseIdList(query?.[key.toLowerCase()]).length > 0,
-      node: renderDynamicChip(key),
-    });
-
-  const poolChip: OrderedFilterChip = {
-    id: "pool",
-    queryKeys: ["has_pool"],
-    active: hasPoolSelection,
-    node: (
-      <SwiperSlide key="selected-pool" className="!w-auto">
-        <button
-          type="button"
-          aria-pressed={hasPoolSelection}
-          onClick={() =>
-            hasPoolSelection
-              ? removeFiltersKeys(["has_pool"])
-              : setFilterValue("has_pool", 1)
+      queryKeys: [queryKey],
+      active: parseIdList(extra[queryKey] as string | undefined).length > 0,
+      node: slide(
+        `dynamic-${key}`,
+        <SelectiveFilterChip
+          queryKey={queryKey}
+          list={propertyTypes?.[key.toUpperCase()]}
+          title={
+            Object.hasOwn(DYNAMIC_FILTER_TITLES, key.toUpperCase())
+              ? t(
+                  DYNAMIC_FILTER_TITLES[
+                    key.toUpperCase() as keyof typeof DYNAMIC_FILTER_TITLES
+                  ],
+                )
+              : ""
           }
-          className={`filter-chip ${hasPoolSelection ? "filter-chip-active" : "filter-chip-idle"}`}
-        >
-          <Icon name="pool" size={20} className="text-link" />
-          <span>
-            {query?.has_pool === "0"
-              ? t("listing.noPool")
-              : t("listing.hasPool")}
-          </span>
-          {hasPoolSelection ? (
-            <span className="flex size-5 items-center justify-center rounded-full border border-action">
-              <Icon name="x" size={16} />
-            </span>
-          ) : null}
-        </button>
-      </SwiperSlide>
-    ),
+        />,
+      ),
+    };
   };
-  const propertyTypeIndex = orderedChips.findIndex(
-    (chip) => chip.id === "PROPERTY_TYPE",
-  );
-  orderedChips.splice(
-    propertyTypeIndex < 0 ? orderedChips.length : propertyTypeIndex + 1,
-    0,
-    poolChip,
-  );
 
-  orderedChips.push(...appliedChips);
-  orderedChips.push({
-    id: "trip",
-    queryKeys: ["checkin", "checkout", "total_guests"],
-    active: Boolean(query?.checkin || query?.checkout || query?.total_guests),
-    node: (
-      <SwiperSlide key="trip" className="!w-auto">
+  const hasPoolSelection = extra.has_pool === "0" || extra.has_pool === "1";
+  const hasRules =
+    getRuleOptions(propertyTypes, { party: "", pet: "" }).length > 0;
+
+  const chips: OrderedFilterChip[] = [
+    {
+      id: "trip",
+      queryKeys: TRIP_KEYS,
+      active: isActive(TRIP_KEYS),
+      node: slide(
+        "trip",
         <TripFilterPill
           dateLabel={
-            query?.checkin && query?.checkout
+            extra.checkin && extra.checkout
               ? tripDateLabel(
-                  query.checkin,
-                  query.checkout,
+                  String(extra.checkin),
+                  String(extra.checkout),
                   t("common.to"),
                   jalali,
                 )
               : null
           }
           guestLabel={
-            query?.total_guests
-              ? t("common.people", { count: Number(query.total_guests) })
+            extra.total_guests
+              ? t("common.people", { count: Number(extra.total_guests) })
               : null
           }
           onDateClick={() => setDateEditorOpen(true)}
           onGuestClick={() => setGuestEditorOpen(true)}
           onClearDate={() => removeFiltersKeys(["checkout", "checkin"])}
           onClearGuests={() => removeFiltersKeys(["total_guests"])}
-        />
-      </SwiperSlide>
-    ),
-  });
+        />,
+      ),
+    },
+  ];
+
+  if (!isEmpty(cityWithRegions?.child))
+    chips.push({
+      id: "regions",
+      queryKeys: ["regions"],
+      active: regionsIds.length > 0,
+      node: slide(
+        "regions",
+        <RegionButton
+          regionsIds={regionsIds}
+          regionTitles={regionTitles}
+          setShowRegions={setShowRegions}
+          onClearRegions={() => removeFiltersKeys(["regions"])}
+        />,
+        "!w-auto flex",
+      ),
+    });
+
+  const propertyTypeKey = dynamicKeys.find((key) => key === "PROPERTY_TYPE");
+  if (propertyTypeKey && !isLocked(["property_type"]))
+    chips.push(dynamicChip(propertyTypeKey));
+
+  const priceKeys = [PRICE_RANGE.lowerKey, PRICE_RANGE.higherKey];
+  if (!isLocked(priceKeys))
+    chips.push({
+      id: "price",
+      queryKeys: priceKeys,
+      active: isActive(priceKeys),
+      node: slide(
+        "price",
+        <RangeFilterChip
+          icon="wallet"
+          unit={t("common.toman")}
+          steps={PRICE_RANGE.step}
+          upLimit={PRICE_RANGE.max}
+          labelTitle={t("common.price")}
+          lowerKey={PRICE_RANGE.lowerKey}
+          title={t("listing.priceRange")}
+          higherKey={PRICE_RANGE.higherKey}
+        />,
+      ),
+    });
+
+  if (!isLocked(["total_bedrooms"]))
+    chips.push({
+      id: "bedrooms",
+      queryKeys: ["total_bedrooms"],
+      active: isActive(["total_bedrooms"]),
+      node: slide(
+        "bedrooms",
+        <FilterEditorChip
+          icon="bed"
+          panelClass="w-72"
+          keys={["total_bedrooms"]}
+          title={t("listing.roomCount")}
+          label={`${t("listing.roomCount")} : ${extra.total_bedrooms}`}
+          renderEditor={(draft, setDraft) => (
+            <FilterCounter
+              mobileFilters={draft}
+              queryKey="total_bedrooms"
+              setMobileFilters={setDraft}
+              title={t("listing.roomCount")}
+            />
+          )}
+        />,
+      ),
+    });
+
+  const areaKeys = [AREA_RANGE.lowerKey, AREA_RANGE.higherKey];
+  if (!isLocked(areaKeys))
+    chips.push({
+      id: "area",
+      queryKeys: areaKeys,
+      active: isActive(areaKeys),
+      node: slide(
+        "area",
+        <RangeFilterChip
+          icon="ruler"
+          steps={AREA_RANGE.step}
+          upLimit={AREA_RANGE.max}
+          unit={t("common.meter")}
+          title={t("listing.roomSize")}
+          lowerKey={AREA_RANGE.lowerKey}
+          higherKey={AREA_RANGE.higherKey}
+        />,
+      ),
+    });
+
+  if (!isLocked(["has_pool"]))
+    chips.push({
+      id: "pool",
+      queryKeys: ["has_pool"],
+      active: hasPoolSelection,
+      node: slide(
+        "pool",
+        <span
+          className={`filter-chip ${hasPoolSelection ? "filter-chip-active" : "filter-chip-idle"}`}
+        >
+          <button
+            type="button"
+            aria-pressed={hasPoolSelection}
+            className="flex h-full cursor-pointer items-center gap-1.5"
+            onClick={() =>
+              hasPoolSelection
+                ? removeFiltersKeys(["has_pool"])
+                : setFilterValue("has_pool", 1)
+            }
+          >
+            <Icon name="pool" size={20} className="text-link" />
+            <span>
+              {extra.has_pool === "0"
+                ? t("listing.noPool")
+                : t("listing.hasPool")}
+            </span>
+          </button>
+          {hasPoolSelection ? (
+            <button
+              type="button"
+              onClick={() => removeFiltersKeys(["has_pool"])}
+              aria-label={t("listing.removeFilterNamed", {
+                title: t("listing.hasPool"),
+              })}
+              className="flex size-5 cursor-pointer items-center justify-center rounded-full border border-action"
+            >
+              <Icon name="x" size={16} />
+            </button>
+          ) : null}
+        </span>,
+      ),
+    });
+
+  for (const key of dynamicKeys.filter((entry) => entry !== "PROPERTY_TYPE"))
+    if (!isLocked([key.toLowerCase()])) chips.push(dynamicChip(key));
+
+  if (hasRules && !isLocked(["party", "pet"]))
+    chips.push({
+      id: "rules",
+      queryKeys: ["party", "pet"],
+      active: isActive(["party", "pet"]),
+      node: slide("rules", <RulesFilterChip propertyTypes={propertyTypes} />),
+    });
+
+  if (extra.max_commission || extra.min_commission)
+    chips.push({
+      id: "commission",
+      queryKeys: ["min_commission", "max_commission"],
+      active: true,
+      node: slide(
+        "commission",
+        <RemovableFilterChip
+          onRemove={() =>
+            removeFiltersKeys(["max_commission", "min_commission"])
+          }
+          label={[
+            t("listing.commisJustPerc"),
+            extra.min_commission
+              ? `${t("common.from")} ${formatNumber(String(extra.min_commission))}`
+              : "",
+            extra.max_commission
+              ? `${t("common.to")} ${formatNumber(String(extra.max_commission))}`
+              : "",
+            "%",
+          ]
+            .filter(Boolean)
+            .join(" ")}
+        />,
+      ),
+    });
+
+  const activeCount = countActiveFilters(extra);
 
   return (
     <>
@@ -408,7 +385,7 @@ const SelectedFiltersBar = ({
           </button>
         </SwiperSlide>
 
-        {orderFilterChips(orderedChips, query).map(({ node }) => node)}
+        {orderFilterChips(chips, query).map(({ node }) => node)}
       </Swiper>
 
       <Modal show={dateEditorOpen} onHide={() => setDateEditorOpen(false)}>
@@ -422,11 +399,11 @@ const SelectedFiltersBar = ({
             })
           }
           selectedDates={{
-            endDate: query?.checkout
-              ? moment(query.checkout).format(JALALI_INPUT_DATE_FORMAT)
+            endDate: extra.checkout
+              ? moment(String(extra.checkout)).format(JALALI_INPUT_DATE_FORMAT)
               : null,
-            startDate: query?.checkin
-              ? moment(query.checkin).format(JALALI_INPUT_DATE_FORMAT)
+            startDate: extra.checkin
+              ? moment(String(extra.checkin)).format(JALALI_INPUT_DATE_FORMAT)
               : null,
           }}
         />

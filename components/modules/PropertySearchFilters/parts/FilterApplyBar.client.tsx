@@ -28,7 +28,7 @@ const FilterApplyBar = ({
       : t("showResults", { count, formatted: formatNumber(count) });
 
   return (
-    <div className="w-full border-t border-surface-muted bg-surface px-3 pb-3 pt-2.5">
+    <div className="w-full border-t border-surface-muted bg-surface px-3 pb-[calc(0.75rem+env(safe-area-inset-bottom))] pt-2.5">
       <Button
         width="w-full"
         title={label}
