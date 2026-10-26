@@ -19,6 +19,7 @@ import { ContentImage } from "@elements/Image";
 import { PRICE_RANGE } from "@features/properties/constants/filter-ranges";
 import { parseIdList } from "@features/cities/lib/city-selection";
 import { AREA_RANGE } from "@features/properties/constants/filter-ranges";
+import { useMapArea } from "@features/properties/hooks/useMapArea";
 import { Icon } from "@elements/Icon";
 
 import type { SelectedFiltersBarProps } from "@/types/components/modules/property-search-filters";
@@ -27,10 +28,10 @@ import type { ReactNode } from "react";
 
 import SearchDateRangePicker from "./parts/DateRangePicker/SearchDateRangePicker.client";
 import SelectiveFilterChip from "./parts/SelectiveFilterChip.client";
+import RemovableFilterChip from "./parts/RemovableFilterChip";
 import FilterEditorChip from "./parts/FilterEditorChip.client";
 import RulesFilterChip from "./parts/RulesFilterChip.client";
 import RangeFilterChip from "./parts/RangeFilterChip.client";
-import RemovableFilterChip from "./parts/RemovableFilterChip";
 import updateDateRange from "./parts/DateRangePicker/updateDateRange";
 import TripFilterPill from "./parts/TripFilterPill.client";
 import FilterCounter from "./parts/FilterCounter.client";
@@ -69,6 +70,7 @@ const SelectedFiltersBar = ({
 
   const baseline = useDiscoveryBaseline();
   const replaceQuery = useDiscoveryQueryReplace();
+  const { rawArea, clearArea } = useMapArea();
 
   const [dateEditorOpen, setDateEditorOpen] = useState(false);
   const [guestEditorOpen, setGuestEditorOpen] = useState(false);
@@ -185,6 +187,21 @@ const SelectedFiltersBar = ({
       ),
     },
   ];
+
+  // Where the search happens, taking the place of a named city.
+  if (rawArea)
+    chips.push({
+      id: "map-area",
+      queryKeys: ["bbox"],
+      active: true,
+      node: slide(
+        "map-area",
+        <RemovableFilterChip
+          onRemove={clearArea}
+          label={t("listing.mapArea")}
+        />,
+      ),
+    });
 
   if (!isEmpty(cityWithRegions?.child))
     chips.push({

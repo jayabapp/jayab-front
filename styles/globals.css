@@ -221,6 +221,44 @@ ul {
   transform: translate(-50%, 50%);
 }
 
+/* Results-map markers (components/elements/Map/createMapMarkers.ts). They are page DOM
+   rather than a map layer, so they wear the page's tokens in either theme, take keyboard
+   focus, and keep standing when the map swaps between its day and night style. Being
+   chosen changes size and border as well as colour. */
+.map-price-pin {
+  @apply relative flex h-7 cursor-pointer items-center justify-center whitespace-nowrap rounded-full border border-line-strong bg-surface px-2.5 text-xs font-bold text-ink shadow-elevated outline-none transition-transform duration-150;
+}
+.map-price-pin::after {
+  content: "";
+  @apply absolute inset-x-0 -bottom-1 mx-auto size-2 rotate-45 border-b border-e border-line-strong bg-surface;
+}
+.map-price-pin[data-approx="true"],
+.map-price-pin[data-approx="true"]::after {
+  @apply border-dashed;
+}
+.map-price-pin[data-state="hover"] {
+  @apply z-10 scale-110 border-2 border-action text-link;
+}
+.map-price-pin[data-state="selected"] {
+  @apply z-20 scale-110 border-2 border-action bg-action text-on-action ring-4 ring-action/30;
+}
+.map-price-pin[data-state="selected"]::after {
+  @apply border-action bg-action;
+}
+.map-cluster {
+  @apply flex size-10 cursor-pointer items-center justify-center rounded-full border-2 border-surface bg-action text-sm font-bold text-on-action shadow-elevated outline-none transition-transform duration-150 hover:scale-110;
+}
+.map-price-pin:focus-visible,
+.map-cluster:focus-visible {
+  @apply z-30 ring-2 ring-focus ring-offset-2 ring-offset-surface;
+}
+@media (prefers-reduced-motion: reduce) {
+  .map-price-pin,
+  .map-cluster {
+    transition: none;
+  }
+}
+
 .popover-enter {
   animation: popover-in 150ms ease-out;
 }
@@ -1837,6 +1875,27 @@ html[data-theme="dark"] .filter-chip-primary {
     auto-fit,
     minmax(max(21.25rem, calc((100% - 1rem) / 2)), 1fr)
   );
+}
+
+/* The list and, on wide screens, the results map beside it. The column is reserved from
+   the first paint; below 1024px the map is a full-screen sheet instead and the column
+   is not shown. It sticks under the header and the filter bar (measured in
+   DiscoveryLayout) and ends at the bottom of the viewport. */
+.discovery-map-column {
+  @apply hidden overflow-hidden rounded-20 border border-line bg-surface-muted;
+}
+
+@media (min-width: 1024px) {
+  .discovery-split[data-map="open"] {
+    @apply grid items-start gap-4;
+    grid-template-columns: minmax(0, 1fr) minmax(0, 42%);
+  }
+
+  .discovery-map-column {
+    @apply sticky block;
+    top: calc(var(--discovery-stack, var(--discovery-top)) + 0.5rem);
+    height: calc(100dvh - var(--discovery-stack, var(--discovery-top)) - 1.5rem);
+  }
 }
 
 /* The full filter form as a dialog: a fixed header and footer around a body that

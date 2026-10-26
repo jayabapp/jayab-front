@@ -33,6 +33,7 @@ export const useSelectedLocationFilters = (onNavigate?: () => void) => {
     const body: Record<string, unknown> = { ...queries, [key]: ids };
     if (isEmpty(ids)) delete body[key];
     delete body.page;
+    delete body.bbox;
     if (key !== "regions") {
       const keptRegions =
         key === "cities"

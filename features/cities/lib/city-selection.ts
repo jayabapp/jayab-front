@@ -91,6 +91,8 @@ export const buildCitySelectionQuery = (
 ): CitySelectionQuery => {
   const body: Record<string, unknown> = { ...baseQuery };
   delete body.province_id;
+  // A named destination replaces the map area; keeping both would hide a contradiction.
+  delete body.bbox;
   const provinceList = provinces ?? [];
   const isSelected = (city: { id: number }) =>
     selectedCities.some((selected) => selected?.id === city?.id);

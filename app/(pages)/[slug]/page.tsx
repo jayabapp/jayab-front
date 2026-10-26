@@ -7,6 +7,7 @@ import { getServerLandingOr404 } from "@features/home/server/home.server";
 import { landingQueryDefaults } from "@features/properties/lib/landing-filters";
 import { seedPropertyList } from "@features/properties/server/property.server";
 import { cookies, headers } from "next/headers";
+import { withMapArea } from "@features/properties/lib/discovery-filter-policy";
 import { redirect } from "next/navigation";
 
 import deviceTypeDetector from "@/helpers/device.detector";
@@ -63,7 +64,7 @@ const LandingPage = async ({ params, searchParams }: LandingPageProps) => {
 
   const plan = planDiscoveryNavigation({
     baseline: baselineFilters,
-    intended: filters,
+    intended: requested.bbox ? withMapArea(filters, requested.bbox) : filters,
     pathname: `/${paramData.slug}`,
   });
   if (plan.path !== `/${paramData.slug}`) {

@@ -11,6 +11,7 @@ import {
 import { normalizePropertyFilters } from "./normalize-property-filters";
 import { countActiveFilters } from "./count-active-filters";
 import { orderFilterChips } from "./filter-order";
+import { withMapArea } from "./discovery-filter-policy";
 
 test("the legacy premium alias becomes the single has_blue_tick condition", () => {
   assert.deepEqual(canonicalizeDiscoveryFilters({ is_premium: "1" }), {
@@ -269,4 +270,37 @@ test("an old URL carrying is_premium is rewritten with one key", () => {
     has_blue_tick: "1",
     filter_order: "has_blue_tick",
   });
+});
+
+test("searching a map area from a city landing leaves it for /rooms and keeps the non-spatial filters", () => {
+  const plan = planDiscoveryNavigation({
+    baseline: { cities: "5", has_pool: "1" },
+    intended: withMapArea({ cities: "5", has_pool: "1" }, "51.2,35.5,51.6,35.9"),
+    pathname: "/ramsar",
+  });
+  assert.equal(plan.path, "/rooms");
+  assert.deepEqual(plan.query, {
+    has_pool: "1",
+    bbox: "51.2,35.5,51.6,35.9",
+    filter_order: "has_pool",
+  });
+});
+
+test("moving the map on /rooms stays on /rooms and does not touch filter order", () => {
+  const plan = planDiscoveryNavigation({
+    baseline: {},
+    intended: { has_pool: "1", bbox: "51.2,35.5,51.6,35.9" },
+    pathname: "/rooms",
+    previousOrder: "has_pool",
+  });
+  assert.equal(plan.path, "/rooms");
+  assert.equal(plan.query.filter_order, "has_pool");
+  assert.equal(plan.query.bbox, "51.2,35.5,51.6,35.9");
+});
+
+test("the same box in any spelling shares one request key", () => {
+  const a = normalizePropertyFilters({ bbox: "51.23451,35.5,51.6,35.9" });
+  const b = normalizePropertyFilters({ bbox: "51.2345,35.5,51.6,35.9" });
+  assert.deepEqual(a, b);
+  assert.equal(normalizePropertyFilters({ bbox: "oops" }).bbox, "oops");
 });

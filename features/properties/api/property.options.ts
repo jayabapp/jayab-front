@@ -1,10 +1,13 @@
 import { keepPreviousData, queryOptions } from "@tanstack/react-query";
+import { canonicalBbox, clampMapZoom } from "@features/properties/lib/bbox";
 import { normalizePropertyFilters } from "@features/properties/lib/normalize-property-filters";
 import { infiniteQueryOptions } from "@tanstack/react-query";
 import { GC_TIME, STALE_TIME } from "@/helpers/queryCache";
 import { PropertyService } from "@/api_services/property/property.service";
+import { hasUsableBbox } from "@features/properties/lib/bbox";
 import { propertyKeys } from "./property.keys";
 
+import type { PropertyMapFilters } from "@/api_services/property/property.interface";
 import type { PropertyFilters } from "@features/properties/lib/normalize-property-filters";
 import type { Locale } from "@/i18n/config";
 
@@ -90,7 +93,6 @@ export const propertyCountOptions = (
           ...normalized,
           page: 1,
           per_page: COUNT_PAGE_SIZE,
-          // Asking "how many?" is not anyone viewing a card.
           count_only: 1,
         } as Required<Pick<PropertyFilters, "page" | "per_page">> &
           PropertyFilters,
@@ -99,11 +101,60 @@ export const propertyCountOptions = (
       );
       return result?.meta?.total ?? 0;
     },
-    enabled,
+    enabled: enabled && hasUsableBbox(normalized),
     placeholderData: keepPreviousData,
     staleTime: 30_000,
   });
 };
+
+export type PropertyMapView = { bbox: string; zoom: number };
+
+export const propertyMapOptions = (
+  filters: PropertyFilters,
+  view: PropertyMapView,
+  locale: Locale = "fa",
+  enabled = true,
+) => {
+  const normalized = normalizePropertyFilters({
+    ...filters,
+    locale,
+    bbox: undefined,
+    page: undefined,
+    per_page: undefined,
+    sort_type: undefined,
+  });
+  const bbox = canonicalBbox(view.bbox);
+  const zoom = clampMapZoom(view.zoom);
+  const scope = JSON.stringify(normalized);
+
+  return queryOptions({
+    queryKey: propertyKeys.map(normalized, { bbox: bbox ?? "", zoom }),
+    queryFn: ({ signal }) =>
+      PropertyService.GetPropertiesMap(
+        { ...normalized, bbox, zoom } as PropertyMapFilters,
+        signal,
+      ),
+    enabled: enabled && bbox !== null,
+    placeholderData: (previous, previousQuery) =>
+      JSON.stringify(previousQuery?.queryKey[2]) === scope
+        ? previous
+        : undefined,
+    staleTime: 30_000,
+  });
+};
+
+export const propertyMapPreviewOptions = (
+  id: number | string | null,
+  locale: Locale = "fa",
+  enabled = true,
+) =>
+  queryOptions({
+    queryKey: propertyKeys.mapPreview(id ?? "", locale),
+    queryFn: ({ signal }) =>
+      PropertyService.GetMapPreview(id as number | string, signal, locale),
+    enabled: enabled && id !== null,
+    staleTime: 60_000,
+  });
 
 export const propertyDetailOptions = (slug: string, locale: Locale = "fa") =>
   queryOptions({
@@ -124,7 +175,6 @@ export const similarPropertiesOptions = (
 ) =>
   queryOptions({
     queryKey: propertyKeys.similar(id, locale),
-    // The section hides itself on an empty list, so a missing payload is the same as none.
     queryFn: async ({ signal }) =>
       (await PropertyService.GetSimilarProperties(id, signal, locale)) ?? [],
     enabled: enabled && Boolean(id),

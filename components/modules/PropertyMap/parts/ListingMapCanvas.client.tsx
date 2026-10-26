@@ -28,8 +28,6 @@ const AREA_FILL_LAYER = `${AREA_SOURCE}-fill`;
 const AREA_LINE_LAYER = `${AREA_SOURCE}-line`;
 const AREA_FADE_MS = 400;
 
-// The map SDK pins its zoom buttons to the physical top-right corner in every
-// language, so this button sits on the physical left: `end` in RTL, `start` in LTR.
 const CONTROL_CLASS =
   "absolute top-3 z-10 ltr:start-3 rtl:end-3 flex size-10 cursor-pointer items-center justify-center rounded-full bg-surface text-ink shadow-elevated transition-colors hover:bg-surface-muted focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-focus";
 
@@ -45,7 +43,8 @@ const ListingMapCanvas = ({
   const isDesktop = useIsDesktop();
   const [map, setMap] = useState<NeshanMapInstance | null>(null);
   const [landing, setLanding] = useState<MapFlightLanding | null>(null);
-  const [isStyleReady, setIsStyleReady] = useState(false);
+  const [styleRevision, setStyleRevision] = useState(0);
+  const isStyleReady = styleRevision > 0;
   const [isFullscreen, setIsFullscreen] = useState(false);
   const containerRef = useRef<HTMLDivElement>(null);
   const closeRef = useRef<HTMLButtonElement>(null);
@@ -90,11 +89,11 @@ const ListingMapCanvas = ({
 
   useEffect(() => {
     if (!map) return;
-    const markReady = () => setIsStyleReady(true);
-    if (map.isStyleLoaded()) markReady();
-    else map.once("style.load", markReady);
+    const markLoaded = () => setStyleRevision((count) => count + 1);
+    if (map.isStyleLoaded()) markLoaded();
+    map.on("style.load", markLoaded);
     return () => {
-      map.off("style.load", markReady);
+      map.off("style.load", markLoaded);
     };
   }, [map]);
 
@@ -121,7 +120,7 @@ const ListingMapCanvas = ({
   }, [map, landing, mode, lat, lng]);
 
   useEffect(() => {
-    if (!map || !landing || mode !== "approx" || !isStyleReady) return;
+    if (!map || !landing || mode !== "approx" || styleRevision === 0) return;
     const fill = landing.animated ? 0 : APPROX_AREA_STYLE.fillOpacity;
     const line = landing.animated ? 0 : APPROX_AREA_STYLE.lineOpacity;
     map.addSource(AREA_SOURCE, {
@@ -179,7 +178,7 @@ const ListingMapCanvas = ({
         // The map was already torn down with the section.
       }
     };
-  }, [map, landing, mode, isStyleReady, lat, lng, radiusMeters, t]);
+  }, [map, landing, mode, styleRevision, lat, lng, radiusMeters, t]);
 
   useLayoutEffect(() => {
     if (!map || !isFullscreen) return;

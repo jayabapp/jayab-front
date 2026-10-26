@@ -2,7 +2,9 @@
 
 import { useEffect, useEffectEvent, useRef } from "react";
 import { useTranslations } from "next-intl";
+import { useTheme } from "@/hooks/useTheme";
 
+import type { MapStyleName } from "@/types/components/elements/map";
 import type { NeshanMapProps } from "@/types/components/elements/map";
 
 import "@neshan-maps-platform/maplibre-sdk/style.css";
@@ -10,10 +12,23 @@ import "@neshan-maps-platform/maplibre-sdk/style.css";
 import maplibregl from "@neshan-maps-platform/maplibre-sdk";
 
 const STYLE_BASE_URL = "https://static.neshan.org/sdk/maplibre/styles";
+const BOUNDS_PADDING_PX = 48;
+const TILE_ERROR_LIMIT = 4;
+
+const NIGHT_STYLE: Record<MapStyleName, string> = {
+  light: "dark",
+  monochrome_light: "monochrome_dark",
+};
+
+const styleUrl = (name: MapStyleName) => {
+  const isDark = document.documentElement.getAttribute("data-theme") === "dark";
+  return `${STYLE_BASE_URL}/${isDark ? NIGHT_STYLE[name] : name}.json`;
+};
 
 const NeshanMap = ({
   zoom,
   center,
+  bounds,
   onError,
   className,
   ariaLabel,
@@ -24,10 +39,14 @@ const NeshanMap = ({
   cooperativeGestures = false,
 }: NeshanMapProps) => {
   const t = useTranslations("common");
+  const { resolved: theme } = useTheme();
   const slotRef = useRef<HTMLDivElement>(null);
+  const mapRef = useRef<maplibregl.Map | null>(null);
+  const appliedStyleRef = useRef("");
   const initialRef = useRef({
     zoom,
     center,
+    bounds,
     ariaLabel,
     mapStyle,
     showNavigation,
@@ -41,7 +60,9 @@ const NeshanMap = ({
     "NavigationControl.ZoomOut": t("mapZoomOut"),
     "NavigationControl.ResetBearing": t("mapResetBearing"),
     "GeolocateControl.FindMyLocation": t("mapFindMyLocation"),
-    "CooperativeGesturesHandler.WindowsHelpText": t("mapCooperativeHintDesktop"),
+    "CooperativeGesturesHandler.WindowsHelpText": t(
+      "mapCooperativeHintDesktop",
+    ),
     "CooperativeGesturesHandler.MacHelpText": t("mapCooperativeHintMac"),
     "CooperativeGesturesHandler.MobileHelpText": t("mapCooperativeHintMobile"),
   }));
@@ -64,13 +85,18 @@ const NeshanMap = ({
       container.setAttribute("aria-label", initial.ariaLabel);
     }
     let map: maplibregl.Map;
+    appliedStyleRef.current = styleUrl(initial.mapStyle);
     try {
       map = new maplibregl.Map({
         container,
         apiKey,
-        style: `${STYLE_BASE_URL}/${initial.mapStyle}.json`,
-        center: initial.center,
-        zoom: initial.zoom,
+        style: appliedStyleRef.current,
+        ...(initial.bounds
+          ? {
+              bounds: initial.bounds,
+              fitBoundsOptions: { padding: BOUNDS_PADDING_PX, maxZoom: 15 },
+            }
+          : { center: initial.center, zoom: initial.zoom }),
         minZoom: 1.5,
         maxZoom: 19,
         cooperativeGestures: initial.cooperativeGestures,
@@ -94,12 +120,36 @@ const NeshanMap = ({
         }),
         "top-right",
       );
+    let hasStyle = false;
+    let hasTile = false;
+    let tileErrors = 0;
+    map.once("style.load", () => {
+      hasStyle = true;
+    });
+    map.on("data", (event) => {
+      if (event.dataType === "source" && "tile" in event) hasTile = true;
+    });
+    map.on("error", () => {
+      if (!hasStyle) fail();
+      else if (!hasTile && ++tileErrors >= TILE_ERROR_LIMIT) fail();
+    });
+    mapRef.current = map;
     ready(map);
     return () => {
+      mapRef.current = null;
       map.remove();
       container.remove();
     };
   }, []);
+
+  useEffect(() => {
+    const map = mapRef.current;
+    if (!map) return;
+    const next = styleUrl(mapStyle);
+    if (next === appliedStyleRef.current) return;
+    appliedStyleRef.current = next;
+    map.setStyle(next, { diff: false });
+  }, [mapStyle, theme]);
 
   return <div ref={slotRef} className={className ?? "size-full"} />;
 };

@@ -20,7 +20,10 @@ export const useDiscoveryQueryReplace = () => {
     useQueryGet<Record<string, string>>()[FILTER_ORDER_PARAM];
 
   return useCallback(
-    (body: Record<string, unknown>) => {
+    (
+      body: Record<string, unknown>,
+      options?: { push?: boolean; scroll?: boolean },
+    ) => {
       const plan = planDiscoveryNavigation({
         baseline,
         intended: body,
@@ -29,7 +32,10 @@ export const useDiscoveryQueryReplace = () => {
       });
       cancelPropertyDiscoveryQueries(queryClient);
       const query = queryBuilder(plan.query);
-      router.replace(query ? `${plan.path}?${query}` : plan.path);
+      const target = query ? `${plan.path}?${query}` : plan.path;
+      const navigation = { scroll: options?.scroll };
+      if (options?.push) router.push(target, navigation);
+      else router.replace(target, navigation);
     },
     [baseline, pathname, previousOrder, queryClient, router],
   );

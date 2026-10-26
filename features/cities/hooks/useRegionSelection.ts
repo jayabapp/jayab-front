@@ -73,6 +73,7 @@ export const useRegionSelection = ({
       regions: selectedRegions.map((region) => region?.id),
     };
     delete body.page;
+    delete body.bbox;
     cancelPropertyDiscoveryQueries(queryClient);
     if (navigateUrl) {
       router.push(`${navigateUrl}?${queryBuilder(body)}`);

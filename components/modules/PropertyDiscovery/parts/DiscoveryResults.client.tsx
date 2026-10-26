@@ -4,13 +4,17 @@ import { PropertyGridItems, PropertyGridSkeleton } from "@modules/PropertyGrid";
 import { useLoadMoreOnScroll } from "@hooks/useLoadMoreOnScroll";
 import { ServerSidePaginate } from "@elements/Pagination";
 import { useTranslations } from "next-intl";
+import { useDiscoveryMap } from "@features/properties/context/DiscoveryMapContext";
 import { useHomeBanners } from "@features/home/hooks/useHomeBanners";
 import { BannerPosition } from "@/enum/banners.enum";
 import { useProperties } from "@features/properties/hooks/useProperties";
+import { hasUsableBbox } from "@features/properties/lib/bbox";
 import { useCallback } from "react";
+import { useMapArea } from "@features/properties/hooks/useMapArea";
 import { BtnLoading } from "@elements/Button";
 import { GRID_CLASS } from "@/utils/constantss";
 
+import type { FocusEvent, PointerEvent } from "react";
 import type { DiscoveryResultsProps } from "@/types/components/modules/property-discovery";
 
 import EmptyState from "@elements/EmptyState";
@@ -18,6 +22,11 @@ import EmptyState from "@elements/EmptyState";
 const BANNER_POSITIONS = [BannerPosition.MAIN_2];
 const ITEMS_PER_BANNER = 6;
 const MAX_INLINE_BANNERS = 2;
+
+const hoveredCardId = (target: EventTarget | null) => {
+  const card = (target as Element | null)?.closest?.("[data-property-id]");
+  return card ? Number(card.getAttribute("data-property-id")) : null;
+};
 
 const DiscoveryResults = ({
   query,
@@ -28,6 +37,9 @@ const DiscoveryResults = ({
   const t = useTranslations();
 
   const hasPaginate = Boolean(query?.page);
+  const { isEnabled: hasMap, hover } = useDiscoveryMap();
+  const { clearArea } = useMapArea();
+  const isAreaBroken = !hasUsableBbox(query);
 
   const {
     meta,
@@ -58,6 +70,18 @@ const DiscoveryResults = ({
     Math.min(maxBanners, MAX_INLINE_BANNERS),
   );
 
+  if (isAreaBroken)
+    return (
+      <div className="col-span-full">
+        <EmptyState
+          onAction={clearArea}
+          title={t("common.error")}
+          description={t("listing.mapAreaInvalid")}
+          actionLabel={t("listing.removeMapArea")}
+        />
+      </div>
+    );
+
   if (isPending && properties.length === 0)
     return <PropertyGridSkeleton className={GRID_CLASS} />;
 
@@ -65,10 +89,10 @@ const DiscoveryResults = ({
     return (
       <div className="col-span-full">
         <EmptyState
-          onAction={() => void refetch()}
           title={t("common.error")}
-          description={t("listing.searchResultsLoadError")}
+          onAction={() => void refetch()}
           actionLabel={t("common.tryAgain")}
+          description={t("listing.searchResultsLoadError")}
         />
       </div>
     );
@@ -78,13 +102,15 @@ const DiscoveryResults = ({
     return (
       <div className="col-span-full">
         <EmptyState
-          onAction={onClearFilters}
+          onAction={onClearFilters ?? (query.bbox ? clearArea : undefined)}
           title={t("listing.noResultTitle")}
           description={t("listing.noResultDescription")}
           actionLabel={
             onClearFilters
               ? (clearLabel ?? t("listing.clearAllFilters"))
-              : undefined
+              : query.bbox
+                ? t("listing.removeMapArea")
+                : undefined
           }
         />
       </div>
@@ -114,7 +140,31 @@ const DiscoveryResults = ({
           isPlaceholderData && isFetching ? "opacity-60" : ""
         }`}
       >
-        <div className={GRID_CLASS}>
+        <div
+          className={GRID_CLASS}
+          onPointerLeave={hasMap ? () => hover.set(null) : undefined}
+          onFocus={
+            hasMap
+              ? (event: FocusEvent) => hover.set(hoveredCardId(event.target))
+              : undefined
+          }
+          onBlur={
+            hasMap
+              ? (event: FocusEvent<HTMLDivElement>) => {
+                  if (!event.currentTarget.contains(event.relatedTarget))
+                    hover.set(null);
+                }
+              : undefined
+          }
+          onPointerOver={
+            hasMap
+              ? (event: PointerEvent) => {
+                  if (event.pointerType !== "touch")
+                    hover.set(hoveredCardId(event.target));
+                }
+              : undefined
+          }
+        >
           <PropertyGridItems
             devices={devices}
             data={properties}

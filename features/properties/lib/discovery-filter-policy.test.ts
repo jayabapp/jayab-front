@@ -5,6 +5,8 @@ import { countActiveFilters, countFilterGroup } from "./count-active-filters";
 import {
   extraDiscoveryFilters,
   resetDiscoveryFilters,
+  withMapArea,
+  withoutMapArea,
 } from "./discovery-filter-policy";
 
 const destination = { cities: "1,2,3,4,5,6" };
@@ -124,5 +126,29 @@ test("ranges, stay dates and combined rules retain their existing counting seman
   assert.equal(
     countActiveFilters(filters, ["checkin", "checkout", "welfare"]),
     5,
+  );
+});
+
+test("a map area is search context: reset keeps it and it is never counted", () => {
+  const applied = { bbox: "51.2,35.5,51.6,35.9", has_pool: "1", page: "2" };
+  assert.equal(countActiveFilters({ bbox: applied.bbox }), 0);
+  assert.equal(countActiveFilters(applied), 1);
+  assert.deepEqual(resetDiscoveryFilters(applied), {
+    bbox: "51.2,35.5,51.6,35.9",
+  });
+});
+
+test("choosing a map area replaces the named destination and its neighbourhoods", () => {
+  const result = withMapArea(
+    { cities: "5", provinces: "2", province_id: "2", regions: "9", has_pool: "1", page: "3" },
+    "51.2,35.5,51.6,35.9",
+  );
+  assert.deepEqual(result, { has_pool: "1", bbox: "51.2,35.5,51.6,35.9" });
+});
+
+test("removing the map area keeps every other filter", () => {
+  assert.deepEqual(
+    withoutMapArea({ bbox: "51.2,35.5,51.6,35.9", has_pool: "1", q: "ویلا", page: "2" }),
+    { has_pool: "1", q: "ویلا" },
   );
 });

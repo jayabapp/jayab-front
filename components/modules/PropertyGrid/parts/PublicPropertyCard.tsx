@@ -32,7 +32,10 @@ const PublicPropertyCard = ({ data, goToLink }: PublicPropertyCardProps) => {
   ];
 
   return (
-    <div className="property-card-shadow relative w-full overflow-hidden rounded-20 bg-surface p-3">
+    <div
+      data-property-id={data.id}
+      className="property-card-shadow relative w-full overflow-hidden rounded-20 bg-surface p-3"
+    >
       <div className="grid w-full grid-cols-5 gap-3">
         {/* Right Side - Information */}
         <PropertyCardLink

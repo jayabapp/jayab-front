@@ -1,5 +1,6 @@
 import { canonicalizeDiscoveryFilters } from "@features/properties/lib/discovery-filters";
 import { normalizePersianSearchText } from "@features/search/lib/normalize-persian-search-text";
+import { BBOX_PARAM, canonicalBbox } from "@features/properties/lib/bbox";
 import { UI_ONLY_FILTER_PARAMS } from "@features/properties/lib/filter-order";
 
 import type { GetPropertiesPlusFilters } from "@/api_services/property/property.interface";
@@ -17,7 +18,7 @@ export const normalizePropertyFilters = (filters: PropertyFilters) => {
       if (query) result.q = query;
       return result;
     }
-    result[key] = value;
+    result[key] = key === BBOX_PARAM ? (canonicalBbox(value) ?? value) : value;
     return result;
   }, {});
 

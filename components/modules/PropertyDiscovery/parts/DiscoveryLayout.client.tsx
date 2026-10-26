@@ -11,8 +11,10 @@ import { isSameLocationPath } from "@features/cities/lib/location-label";
 import { pickLocationQuery } from "@features/cities/lib/location-label";
 import { hasLocationQuery } from "@features/cities/lib/location-label";
 import { PropertySortMenu } from "@modules/PropertySearchFilters";
+import { useDiscoveryMap } from "@features/properties/context/DiscoveryMapContext";
 import { useTranslations } from "next-intl";
 import { useCitiesStore } from "@/store";
+import { hasUsableBbox } from "@features/properties/lib/bbox";
 import { usePathname } from "next/navigation";
 
 import type { DiscoveryExperienceProps } from "@/types/components/modules/property-discovery";
@@ -20,8 +22,10 @@ import type { ChildCities } from "@/types/components/modules/property-discovery"
 
 import SingleProductBreadCrumb from "@elements/Breadcrumbs/SingleProductBreadcrumb.client";
 import DiscoveryFilterModal from "./DiscoveryFilterModal.client";
+import DiscoveryMapHost from "./map/DiscoveryMapHost.client";
 import DiscoveryHeading from "./DiscoveryHeading.client";
 import DiscoveryResults from "./DiscoveryResults.client";
+import MapToggleButton from "./map/MapToggleButton.client";
 import isEmpty from "lodash/isEmpty";
 
 const HEADER_SELECTOR = ".header-content-container";
@@ -53,6 +57,7 @@ const DiscoveryLayout = ({
     hasExtraFilters,
     clearExtraFilters,
   } = usePropertyDiscoveryFilters();
+  const { isEnabled: hasMap, isColumnOpen } = useDiscoveryMap();
   const { data: propertyTypes } = usePropertyOptionGroups();
   const urlCityWithRegions = useUrlCityWithRegions(queries);
   const cityWithRegions = modalCityWithRegions ?? urlCityWithRegions;
@@ -64,15 +69,20 @@ const DiscoveryLayout = ({
   useEffect(() => {
     const root = rootRef.current;
     const header = document.querySelector<HTMLElement>(HEADER_SELECTOR);
+    const bar = barRef.current;
     if (!root || !header) return;
-    const sync = () =>
+    const sync = () => {
+      const top = header.getBoundingClientRect().height;
+      root.style.setProperty("--discovery-top", `${top}px`);
       root.style.setProperty(
-        "--discovery-top",
-        `${header.getBoundingClientRect().height}px`,
+        "--discovery-stack",
+        `${top + (bar?.getBoundingClientRect().height ?? 0)}px`,
       );
+    };
     sync();
     const observer = new ResizeObserver(sync);
     observer.observe(header);
+    if (bar) observer.observe(bar);
     return () => observer.disconnect();
   }, []);
 
@@ -170,19 +180,37 @@ const DiscoveryLayout = ({
         <div className="-my-1 min-w-0 flex-1 overflow-x-auto py-1">
           <SpecialFilterButtons query={queries} />
         </div>
+        {hasUsableBbox(queries) ? <MapToggleButton /> : null}
         <PropertySortMenu query={queries} />
       </div>
 
-      <DiscoveryResults
-        query={queries}
-        devices={devices}
-        onClearFilters={hasExtraFilters ? clearExtraFilters : undefined}
-        clearLabel={
-          hasBaseline
-            ? t("listing.removeExtraFilters")
-            : t("listing.clearAllFilters")
+      <div
+        className="discovery-split w-full"
+        data-map={
+          hasMap && isColumnOpen && hasUsableBbox(queries) ? "open" : "closed"
         }
-      />
+      >
+        <div className="min-w-0">
+          <DiscoveryResults
+            query={queries}
+            devices={devices}
+            onClearFilters={hasExtraFilters ? clearExtraFilters : undefined}
+            clearLabel={
+              hasBaseline
+                ? t("listing.removeExtraFilters")
+                : t("listing.clearAllFilters")
+            }
+          />
+        </div>
+        {hasMap && hasUsableBbox(queries) ? (
+          <DiscoveryMapHost
+            query={queries}
+            isFilterOpen={filterModalShow}
+            onCloseFilters={onCloseFilterModal}
+            onOpenFilters={() => setFilterModalShow(true)}
+          />
+        ) : null}
+      </div>
 
       {content ? <div className="px-3 xl:px-0">{content}</div> : null}
 

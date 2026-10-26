@@ -1,4 +1,5 @@
 import { UI_ONLY_FILTER_PARAMS } from "./filter-order";
+import { BBOX_PARAM } from "./bbox";
 
 export const DESTINATION_FILTER_KEYS = [
   "cities",
@@ -8,6 +9,7 @@ export const DESTINATION_FILTER_KEYS = [
 
 const SEARCH_CONTEXT_KEYS = [
   ...DESTINATION_FILTER_KEYS,
+  BBOX_PARAM,
   "sort_type",
   "q",
 ] as const;
@@ -54,4 +56,23 @@ export const resetDiscoveryFilters = (
   delete body.per_page;
   for (const key of UI_ONLY_FILTER_PARAMS) delete body[key];
   return body;
+};
+
+const DESTINATION_ANSWER_KEYS = [
+  ...DESTINATION_FILTER_KEYS,
+  "regions",
+] as const;
+
+export const withMapArea = (filters: Filters, bbox: string): Filters => {
+  const next: Filters = { ...filters, [BBOX_PARAM]: bbox };
+  for (const key of DESTINATION_ANSWER_KEYS) delete next[key];
+  delete next.page;
+  return next;
+};
+
+export const withoutMapArea = (filters: Filters): Filters => {
+  const next = { ...filters };
+  delete next[BBOX_PARAM];
+  delete next.page;
+  return next;
 };

@@ -3,3 +3,8 @@ export { default as MapViewer } from "./MapViewer.client";
 export { default as NeshanMap } from "./NeshanMap.client";
 export { createPinElement, createAreaLabelElement } from "./createPinElement";
 export { MAP_COLORS, APPROX_AREA_STYLE } from "./map-colors";
+export {
+  createClusterElement,
+  createPricePinElement,
+  setMarkerState,
+} from "./createMapMarkers";

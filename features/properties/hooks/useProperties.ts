@@ -4,6 +4,7 @@ import { useDebouncedValue } from "@hooks/useDebouncedValue";
 import { propertiesOptions } from "@features/properties/api/property.options";
 import { useInfiniteQuery } from "@tanstack/react-query";
 import { resolveLocale } from "@/i18n/config";
+import { hasUsableBbox } from "@features/properties/lib/bbox";
 import { useLocale } from "next-intl";
 import { useMemo } from "react";
 
@@ -15,7 +16,7 @@ export const useProperties = (filters: PropertyFilters, enabled = true) => {
   const debouncedQuery = useDebouncedValue(filters.q, 400);
   const query = useInfiniteQuery({
     ...propertiesOptions({ ...filters, q: debouncedQuery }, locale),
-    enabled,
+    enabled: enabled && hasUsableBbox(filters),
   });
   const properties = useMemo(() => {
     const uniqueProperties = new Map<number, PropertyListDto>();

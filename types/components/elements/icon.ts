@@ -27,6 +27,8 @@ export type IconName =
   | "images"
   | "info"
   | "kitchen"
+  | "list"
+  | "map"
   | "map-pin"
   | "microwave"
   | "minus"

@@ -2,7 +2,12 @@ import type { QueryClient } from "@tanstack/react-query";
 
 import { propertyKeys } from "./property.keys";
 
-const DISCOVERY_QUERY_TYPES = new Set(["list", "count"]);
+const DISCOVERY_QUERY_TYPES = new Set([
+  "list",
+  "count",
+  "map",
+  "map-preview",
+]);
 
 export const cancelPropertyDiscoveryQueries = (client: QueryClient) => {
   void client.cancelQueries({

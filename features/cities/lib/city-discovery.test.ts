@@ -161,3 +161,13 @@ test("selecting every city in a province stores the province once and can presel
     [1, 2],
   );
 });
+
+test("choosing a named destination drops the map area instead of keeping both", () => {
+  const { body } = buildCitySelectionQuery(tree, [tree[0].child![0]], {
+    bbox: "51.2,35.5,51.6,35.9",
+    has_pool: "1",
+  });
+  assert.equal(body.bbox, undefined);
+  assert.equal(body.has_pool, "1");
+  assert.deepEqual(body.cities, [1]);
+});
