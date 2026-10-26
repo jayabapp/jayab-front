@@ -93,6 +93,10 @@ export const apiRoutes = {
 
   GET_PROPERTIES: "/user/properties",
 
+  GET_PROPERTIES_MAP: "/user/properties/map",
+
+  GET_PROPERTIES_PRICE_HISTOGRAM: "/user/properties/price-histogram",
+
   CONTENTS_QUESTIONS: `/content-questions`,
 
   CONTENTS_QUESTIONS_RATE: `/content-questions/rate`,
@@ -288,6 +292,9 @@ export const apiRoutes = {
 
   SIMILAR_PROPERTIES: (propertyId: string | number) =>
     `/user/properties/${propertyId}/similar`,
+
+  PROPERTY_MAP_PREVIEW: (propertyId: string | number) =>
+    `/user/properties/${propertyId}/map-preview`,
 
   GET_SINGLEPROPERTY_CALLENDER: (propertyId: string | number | null) =>
     `/user/properties/${propertyId}/month-calendar`,

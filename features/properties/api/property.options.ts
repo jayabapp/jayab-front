@@ -90,6 +90,8 @@ export const propertyCountOptions = (
           ...normalized,
           page: 1,
           per_page: COUNT_PAGE_SIZE,
+          // Asking "how many?" is not anyone viewing a card.
+          count_only: 1,
         } as Required<Pick<PropertyFilters, "page" | "per_page">> &
           PropertyFilters,
         signal,

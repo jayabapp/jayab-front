@@ -365,19 +365,13 @@ export interface DailyPrice {
   updated_at: Date;
 }
 
-/**
- * Flat amenity with its own icon, alongside the grouped `options` object the
- * spec sections read. `icon` is the image an admin uploaded for that option and
- * is null for options that never got one.
- */
 export interface PropertyOptionItemDto {
-  id?: number | null;
   group: string;
   title: string;
-  /** Persian title; stays the same in every language. */
-  canonical_title?: string;
+  id?: number | null;
   title_locale?: Locale;
   icon: ImageDto | null;
+  canonical_title?: string;
 }
 
 export interface Options {
@@ -450,7 +444,69 @@ export interface PropertyListDto {
   minimum_price: number | null;
   reserve_days: ReserveDaysDto[];
   has_active_subscription: boolean;
+  public_location?: PublicMapPoint | null;
 }
+
+export interface PublicMapPoint {
+  lat: number;
+  lng: number;
+  radius_m: number;
+  precision: "exact" | "approximate";
+}
+
+export type MapPropertyItem = {
+  id: number;
+  slug: string;
+  type: "property";
+  currency: "toman";
+  price: number | null;
+  location: PublicMapPoint;
+  price_basis: "today_nightly";
+};
+
+export type MapClusterItem = {
+  type: "cluster";
+  id: string;
+  lat: number;
+  lng: number;
+  count: number;
+  bounds: [number, number, number, number];
+};
+
+export type MapItem = MapPropertyItem | MapClusterItem;
+
+export interface PropertyMapResult {
+  items: MapItem[];
+  meta: {
+    zoom: number;
+    total: number;
+    currency: "toman";
+    is_truncated: false;
+    is_clustered: boolean;
+    returned_items: number;
+    price_basis: "today_nightly";
+    bbox: [number, number, number, number];
+  };
+}
+
+export interface PriceHistogramBin {
+  to: number;
+  from: number;
+  count: number;
+}
+
+export interface PriceHistogram {
+  bins: PriceHistogramBin[];
+  min: number | null;
+  max: number | null;
+  total_priced: number;
+  currency: "toman";
+}
+
+export type PropertyMapFilters = Omit<
+  Partial<GetPropertiesPlusFilters>,
+  "page" | "per_page" | "sort_type" | "bbox"
+> & { bbox: string; zoom: number };
 
 export interface ReserveDaysDto {
   day_number: number;
@@ -634,8 +690,9 @@ export interface GetPropertiesPlusFilters {
   is_premium?: any;
   has_blue_tick?: any;
   is_authorized?: any;
-  /** Display-only order of the chips; stripped before any request is made. */
   filter_order?: any;
+  bbox?: string;
+  count_only?: 0 | 1;
   pattern?: any;
   max_price?: any;
   checkin?: any;

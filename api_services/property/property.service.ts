@@ -28,6 +28,9 @@ import {
   PropertyContactIInfDto,
   CreatePropertyStepOneDto,
   GetPropertiesPlusFilters,
+  PropertyMapFilters,
+  PropertyMapResult,
+  PriceHistogram,
   OwnerSinglePropertyAuthdata,
 } from "./property.interface";
 
@@ -824,6 +827,43 @@ export class PropertyService {
     } catch (e) {
       throw e;
     }
+  }
+
+  static async GetPropertiesMap(
+    filters: PropertyMapFilters,
+    signal?: AbortSignal,
+  ) {
+    return apiCall<PropertyMapFilters, PropertyMapResult>(
+      "GET",
+      apiRoutes.GET_PROPERTIES_MAP,
+      filters,
+      { signal, showErrorNotification: false },
+    );
+  }
+
+  static async GetPriceHistogram(
+    filters: Partial<GetPropertiesPlusFilters>,
+    signal?: AbortSignal,
+  ) {
+    return apiCall<Partial<GetPropertiesPlusFilters>, PriceHistogram>(
+      "GET",
+      apiRoutes.GET_PROPERTIES_PRICE_HISTOGRAM,
+      filters,
+      { signal, showErrorNotification: false },
+    );
+  }
+
+  static async GetMapPreview(
+    propertyId: string | number,
+    signal?: AbortSignal,
+    locale: Locale = "fa",
+  ) {
+    return apiCall<unknown, PropertyListDto>(
+      "GET",
+      apiRoutes.PROPERTY_MAP_PREVIEW(propertyId),
+      { locale },
+      { signal, showErrorNotification: false },
+    );
   }
 
   static async GetSimilarProperties(
