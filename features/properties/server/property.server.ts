@@ -1,7 +1,8 @@
 import { normalizePropertyFilters } from "@features/properties/lib/normalize-property-filters";
 import { apiRoutes, baseUrl } from "@/utils/urls";
+import { hasUsableBbox } from "@features/properties/lib/bbox";
 import { resolveLocale } from "@/i18n/config";
-import { propertyKeys } from "@features/properties/api/property.keys";
+import { listQueryKey } from "@features/properties/lib/query-scope";
 import { REVALIDATE } from "@/helpers/revalidate";
 import { getLocale } from "next-intl/server";
 import { cache } from "react";
@@ -14,6 +15,7 @@ import serverCall from "@/helpers/serverCall";
 const PAGE_SIZE = 30;
 
 export const getServerPropertyPage = cache(async (filters: PropertyFilters) => {
+  if (!hasUsableBbox(filters)) return { data: null };
   const locale = resolveLocale(await getLocale());
   return serverCall(
     baseUrl + apiRoutes.GET_PROPERTIES,
@@ -47,11 +49,8 @@ export const seedPropertyList = async (
 ) => {
   if (!page) return;
   const locale = resolveLocale(await getLocale());
-  queryClient.setQueryData(
-    propertyKeys.list(normalizePropertyFilters({ ...filters, locale })),
-    {
-      pages: [page],
-      pageParams: [Number(filters.page) || 1],
-    },
-  );
+  queryClient.setQueryData(listQueryKey(filters, locale), {
+    pages: [page],
+    pageParams: [Number(filters.page) || 1],
+  });
 };

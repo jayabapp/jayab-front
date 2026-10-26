@@ -86,6 +86,11 @@ export const useMapMarkers = ({
       const existing = current.get(key);
       if (existing?.signature === signature) {
         existing.item = item;
+        existing.marker.setLngLat(
+          item.type === "cluster"
+            ? [item.lng, item.lat]
+            : [item.location.lng, item.location.lat],
+        );
         continue;
       }
       existing?.marker.remove();

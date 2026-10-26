@@ -1,5 +1,12 @@
 import { keepPreviousData, queryOptions } from "@tanstack/react-query";
-import { canonicalBbox, clampMapZoom } from "@features/properties/lib/bbox";
+import {
+  isSameMapSearch,
+  listQueryKey,
+} from "@features/properties/lib/query-scope";
+import {
+  mapQueryKey,
+  mapQueryScope,
+} from "@features/properties/lib/query-scope";
 import { normalizePropertyFilters } from "@features/properties/lib/normalize-property-filters";
 import { infiniteQueryOptions } from "@tanstack/react-query";
 import { GC_TIME, STALE_TIME } from "@/helpers/queryCache";
@@ -8,6 +15,7 @@ import { hasUsableBbox } from "@features/properties/lib/bbox";
 import { propertyKeys } from "./property.keys";
 
 import type { PropertyMapFilters } from "@/api_services/property/property.interface";
+import type { PropertyMapView } from "@features/properties/lib/query-scope";
 import type { PropertyFilters } from "@features/properties/lib/normalize-property-filters";
 import type { Locale } from "@/i18n/config";
 
@@ -48,7 +56,7 @@ export const propertiesOptions = (
   const requestedPage = normalized.page ? Number(normalized.page) : undefined;
 
   return infiniteQueryOptions({
-    queryKey: propertyKeys.list(normalized),
+    queryKey: listQueryKey(filters, locale),
     queryFn: ({ pageParam, signal }) =>
       PropertyService.GetProperties(
         {
@@ -107,36 +115,28 @@ export const propertyCountOptions = (
   });
 };
 
-export type PropertyMapView = { bbox: string; zoom: number };
-
 export const propertyMapOptions = (
   filters: PropertyFilters,
   view: PropertyMapView,
   locale: Locale = "fa",
   enabled = true,
 ) => {
-  const normalized = normalizePropertyFilters({
-    ...filters,
-    locale,
-    bbox: undefined,
-    page: undefined,
-    per_page: undefined,
-    sort_type: undefined,
-  });
-  const bbox = canonicalBbox(view.bbox);
-  const zoom = clampMapZoom(view.zoom);
-  const scope = JSON.stringify(normalized);
+  const scope = mapQueryScope(filters, view, locale);
 
   return queryOptions({
-    queryKey: propertyKeys.map(normalized, { bbox: bbox ?? "", zoom }),
+    queryKey: mapQueryKey(scope),
     queryFn: ({ signal }) =>
       PropertyService.GetPropertiesMap(
-        { ...normalized, bbox, zoom } as PropertyMapFilters,
+        {
+          ...scope.filters,
+          bbox: scope.bbox,
+          zoom: scope.zoom,
+        } as PropertyMapFilters,
         signal,
       ),
-    enabled: enabled && bbox !== null,
+    enabled: enabled && scope.bbox !== null,
     placeholderData: (previous, previousQuery) =>
-      JSON.stringify(previousQuery?.queryKey[2]) === scope
+      isSameMapSearch(previousQuery?.queryKey, scope.filters)
         ? previous
         : undefined,
     staleTime: 30_000,

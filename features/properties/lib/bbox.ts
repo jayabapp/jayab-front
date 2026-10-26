@@ -56,7 +56,6 @@ export const canonicalBbox = (raw: unknown): string | null => {
 
 export const hasUsableBbox = (filters: Record<string, unknown>): boolean =>
   filters[BBOX_PARAM] === undefined ||
-  filters[BBOX_PARAM] === "" ||
   parseBbox(filters[BBOX_PARAM]) !== null;
 
 export const clampMapZoom = (zoom: number): number =>

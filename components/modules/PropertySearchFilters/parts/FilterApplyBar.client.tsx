@@ -18,7 +18,7 @@ const FilterApplyBar = ({
 
   const { count, isStale } = usePropertyFilterCount(draft, enabled);
 
-  const hasCount = typeof count === "number";
+  const hasCount = !isStale && typeof count === "number";
   const isEmptyResult = hasCount && count === 0;
 
   const label = !hasCount

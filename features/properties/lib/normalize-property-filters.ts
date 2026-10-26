@@ -11,7 +11,12 @@ export const normalizePropertyFilters = (filters: PropertyFilters) => {
   const normalized = Object.entries(
     canonicalizeDiscoveryFilters(filters as Record<string, unknown>),
   ).reduce<Record<string, unknown>>((result, [key, value]) => {
-    if (value === undefined || value === null || value === "") return result;
+    if (
+      value === undefined ||
+      value === null ||
+      (value === "" && key !== BBOX_PARAM)
+    )
+      return result;
     if (UI_ONLY_FILTER_PARAMS.includes(key)) return result;
     if (key === "q") {
       const query = normalizePersianSearchText(String(value));

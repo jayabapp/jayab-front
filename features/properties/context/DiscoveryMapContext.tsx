@@ -4,6 +4,7 @@ import { createContext, useContext, useEffect } from "react";
 import { useMemo, useRef, useState } from "react";
 import { DISCOVERY_MAP_ENABLED } from "@features/map/constants/discovery-map";
 import { useSyncExternalStore } from "react";
+import { useCallback } from "react";
 
 import type { Dispatch, ReactNode, SetStateAction } from "react";
 
@@ -26,6 +27,7 @@ type ViewStore = {
 };
 
 type DiscoveryMapValue = {
+  searchScope: string;
   view: ViewStore;
   hover: HoverStore;
   isEnabled: boolean;
@@ -41,6 +43,7 @@ type DiscoveryMapValue = {
 
 const noop = () => {};
 const OFF: DiscoveryMapValue = {
+  searchScope: "",
   isEnabled: false,
   hover: { get: () => null, set: noop, subscribe: () => noop },
   view: { get: () => null, set: noop },
@@ -61,9 +64,11 @@ let carriedAutoSearch = false;
 export const DiscoveryMapProvider = ({
   children,
   hasMapArea,
+  searchScope,
 }: {
   children: ReactNode;
   hasMapArea: boolean;
+  searchScope: string;
 }) => {
   const [isColumnOpen, setIsColumnOpen] = useState(true);
   const [isSheetOpen, setIsSheetOpen] = useState(false);
@@ -73,7 +78,25 @@ export const DiscoveryMapProvider = ({
   useEffect(() => {
     carriedAutoSearch = autoSearch;
   }, [autoSearch]);
-  const [selectedId, setSelectedId] = useState<number | null>(null);
+  const [selection, setSelection] = useState<{
+    scope: string;
+    id: number | null;
+  }>({
+    scope: searchScope,
+    id: null,
+  });
+  const selectedId = selection.scope === searchScope ? selection.id : null;
+  const setSelectedId = useCallback<Dispatch<SetStateAction<number | null>>>(
+    (next) =>
+      setSelection((current) => ({
+        scope: searchScope,
+        id:
+          typeof next === "function"
+            ? next(current.scope === searchScope ? current.id : null)
+            : next,
+      })),
+    [searchScope],
+  );
   const [view] = useState<ViewStore>(() => {
     let current: MapView | null = null;
     return {
@@ -103,6 +126,7 @@ export const DiscoveryMapProvider = ({
   });
 
   const hadMapArea = useRef(hasMapArea);
+  useEffect(() => hover.set(null), [hover, searchScope]);
   useEffect(() => {
     if (hadMapArea.current && !hasMapArea) setAutoSearch(false);
     hadMapArea.current = hasMapArea;
@@ -110,6 +134,7 @@ export const DiscoveryMapProvider = ({
 
   const value = useMemo<DiscoveryMapValue>(
     () => ({
+      searchScope,
       view,
       hover,
       autoSearch,
@@ -122,7 +147,16 @@ export const DiscoveryMapProvider = ({
       setIsColumnOpen,
       isEnabled: DISCOVERY_MAP_ENABLED,
     }),
-    [autoSearch, hover, isColumnOpen, isSheetOpen, selectedId, view],
+    [
+      autoSearch,
+      hover,
+      isColumnOpen,
+      isSheetOpen,
+      selectedId,
+      setSelectedId,
+      searchScope,
+      view,
+    ],
   );
 
   return (

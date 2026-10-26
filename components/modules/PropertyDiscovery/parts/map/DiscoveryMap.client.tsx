@@ -1,21 +1,19 @@
 "use client";
 
 import { useCallback, useEffect, useEffectEvent } from "react";
-import {
-  DEFAULT_MAP_BOUNDS,
-  boundsOfPoints,
-} from "@features/map/lib/map-camera";
 import { destinationKey, pinPriceLabel } from "@features/map/lib/map-camera";
 import { formatBbox, isPointLikeBbox } from "@features/properties/lib/bbox";
 import { useTranslations, useLocale } from "next-intl";
 import { CLUSTER_MAX_FIT_ZOOM } from "@features/map/constants/discovery-map";
 import { MAP_MOVE_DEBOUNCE_MS } from "@features/map/constants/discovery-map";
 import { useHoveredPropertyId } from "@features/properties/context/DiscoveryMapContext";
+import { DEFAULT_MAP_BOUNDS } from "@features/map/lib/map-camera";
 import { padBbox, parseBbox } from "@features/properties/lib/bbox";
 import { useRef, useState } from "react";
 import { usePropertiesMap } from "@features/properties/hooks/usePropertiesMap";
 import { useListSeparator } from "@hooks/useListSeparator";
 import { useDiscoveryMap } from "@features/properties/context/DiscoveryMapContext";
+import { boundsOfPoints } from "@features/map/lib/map-camera";
 import { useMapMarkers } from "@features/map/hooks/useMapMarkers";
 import { useMapSupport } from "@features/map/hooks/useMapSupport";
 import { resolveLocale } from "@/i18n/config";
@@ -26,15 +24,13 @@ import { useMapArea } from "@features/properties/hooks/useMapArea";
 import { NeshanMap } from "@elements/Map";
 import { Icon } from "@elements/Icon";
 
-import type {
-  MapBounds,
-  NeshanMapInstance,
-} from "@/types/components/elements/map";
 import type { MapClusterItem, MapItem } from "@/types/features/map";
+import type { NeshanMapInstance } from "@/types/components/elements/map";
 import type { DiscoveryMapProps } from "@/types/components/modules/discovery-map";
 import type { MarkerDescription } from "@/types/features/map";
 import type { MapPropertyItem } from "@/types/features/map";
 import type { KeyboardEvent } from "react";
+import type { MapBounds } from "@/types/components/elements/map";
 import type { MapCamera } from "@features/properties/hooks/usePropertiesMap";
 import type { Bbox } from "@features/properties/lib/bbox";
 
@@ -85,15 +81,28 @@ const DiscoveryMap = ({
   const locale = resolveLocale(useLocale());
   const isSupported = useMapSupport();
 
-  const { autoSearch, setAutoSearch, selectedId, setSelectedId, view } =
-    useDiscoveryMap();
+  const {
+    view,
+    autoSearch,
+    selectedId,
+    searchScope,
+    setAutoSearch,
+    setSelectedId,
+  } = useDiscoveryMap();
   const hoveredId = useHoveredPropertyId();
   const { appliedBbox, applyArea, clearArea } = useMapArea();
   const destination = destinationKey(query);
 
   const [map, setMap] = useState<NeshanMapInstance | null>(null);
   const [camera, setCamera] = useState<MapCamera | null>(null);
-  const [stack, setStack] = useState<MapClusterItem | null>(null);
+  const [stackSelection, setStackSelection] = useState<{
+    scope: string;
+    item: MapClusterItem;
+  } | null>(null);
+  const stack =
+    stackSelection?.scope === searchScope ? stackSelection.item : null;
+  const setStack = (item: MapClusterItem | null) =>
+    setStackSelection(item ? { scope: searchScope, item } : null);
   const [failed, setFailed] = useState(false);
   const [attempt, setAttempt] = useState(0);
 
@@ -104,11 +113,17 @@ const DiscoveryMap = ({
       saved.destination === destination &&
       (!appliedBbox || saved.area === appliedBbox)
     )
-      return { center: saved.center, zoom: saved.zoom, bounds: null };
+      return {
+        center: saved.center,
+        zoom: saved.zoom,
+        bounds: null,
+        needsFit: false,
+      };
     const box = appliedBbox ? parseBbox(appliedBbox) : null;
     return {
       center: IRAN_CENTER,
       zoom: INITIAL_ZOOM,
+      needsFit: !box && !isListSettled,
       bounds: asMapBounds(
         box ?? boundsOfPoints(publicPoints(properties)) ?? DEFAULT_MAP_BOUNDS,
       ),
@@ -175,7 +190,9 @@ const DiscoveryMap = ({
     if (box) map.fitBounds(asMapBounds(box), { padding: 0 });
   }, [map, appliedBbox]);
 
-  const fittedFor = useRef(destination);
+  const fittedFor = useRef<string | null>(
+    initial.needsFit ? null : destination,
+  );
   useEffect(() => {
     if (!map || !isListSettled || appliedBbox) return;
     if (fittedFor.current === destination) return;
@@ -319,8 +336,8 @@ const DiscoveryMap = ({
   return (
     <div
       ref={rootRef}
-      onKeyDown={onKeyDown}
       aria-busy={isBusy}
+      onKeyDown={onKeyDown}
       className="discovery-map relative size-full overflow-hidden bg-surface-muted"
     >
       <NeshanMap
@@ -371,8 +388,8 @@ const DiscoveryMap = ({
           <button
             type="button"
             onClick={clearArea}
-            aria-label={t("listing.removeMapArea")}
             className={PILL_CLASS}
+            aria-label={t("listing.removeMapArea")}
           >
             {t("listing.mapArea")}
             <Icon name="x" size={16} />

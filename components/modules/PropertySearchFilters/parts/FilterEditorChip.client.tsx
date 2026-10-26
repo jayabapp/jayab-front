@@ -20,7 +20,12 @@ import type { PropertyFilterDraft } from "@/types/components/modules/property-se
 
 import Button from "@elements/Button";
 
-const EditorBody = ({ keys, renderEditor, onDone }: FilterEditorBodyProps) => {
+export const FilterEditorBody = ({
+  keys,
+  onDone,
+  isValid,
+  renderEditor,
+}: FilterEditorBodyProps) => {
   const t = useTranslations();
   const query = useDiscoveryQuery();
   const replaceQuery = useDiscoveryQueryReplace();
@@ -65,7 +70,11 @@ const EditorBody = ({ keys, renderEditor, onDone }: FilterEditorBodyProps) => {
           >
             {t("common.cancel")}
           </button>
-          <Button title={t("listing.submitDo")} onClick={() => commit(draft)} />
+          <Button
+            title={t("listing.submitDo")}
+            disabled={isValid ? !isValid(draft) : false}
+            onClick={() => commit(draft)}
+          />
         </div>
       </div>
     </>
@@ -144,7 +153,7 @@ const FilterEditorChip = ({
               className={`z-50 max-h-[28rem] overflow-y-auto rounded-20 border border-line bg-surface p-4 shadow-elevated ${panelClass}`}
             >
               <p className="pb-2 text-base font-bold text-ink">{title}</p>
-              <EditorBody
+              <FilterEditorBody
                 keys={keys}
                 onDone={close}
                 renderEditor={renderEditor}
@@ -175,7 +184,7 @@ const FilterEditorChip = ({
           onHide={() => setSheetOpen(false)}
         />
         <div className="flex flex-col p-4 !pb-0">
-          <EditorBody
+          <FilterEditorBody
             keys={keys}
             renderEditor={renderEditor}
             onDone={() => setSheetOpen(false)}

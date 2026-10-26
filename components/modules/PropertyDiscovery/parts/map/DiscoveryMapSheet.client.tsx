@@ -19,23 +19,24 @@ const DiscoveryMapSheet = ({
   onCloseFilters,
 }: DiscoveryMapSheetProps) => {
   const rootRef = useRef<HTMLDivElement>(null);
-  const filterOpenRef = useRef(isFilterOpen);
   const [openedAt] = useState(() => window.location.href);
   const [opener] = useState(() => document.activeElement as HTMLElement | null);
 
-  useEffect(() => {
-    filterOpenRef.current = isFilterOpen;
-  }, [isFilterOpen]);
-
   useBodyScrollLock(true);
   const requestClose = useOverlayBackButton(true, () => {
-    if (!filterOpenRef.current) return onClose();
+    if (!isFilterOpen) return onClose();
     onCloseFilters();
     return false;
   });
 
-  const close = () =>
-    window.location.href === openedAt ? requestClose() : onClose();
+  const close = () => {
+    if (isFilterOpen) {
+      onCloseFilters();
+      return;
+    }
+    if (window.location.href === openedAt) requestClose();
+    else onClose();
+  };
 
   useEffect(() => {
     rootRef.current?.focus();

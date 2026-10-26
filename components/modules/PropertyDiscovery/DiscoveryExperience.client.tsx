@@ -1,5 +1,6 @@
 "use client";
 
+import { normalizePropertyFilters } from "@features/properties/lib/normalize-property-filters";
 import { DiscoveryMapProvider } from "@features/properties/context/DiscoveryMapContext";
 import { useDiscoveryQuery } from "@features/properties/context/DiscoveryContext";
 import { DiscoveryProvider } from "@features/properties/context/DiscoveryContext";
@@ -9,11 +10,25 @@ import type { ReactNode } from "react";
 
 import DiscoveryLayout from "./parts/DiscoveryLayout.client";
 
-const MapScope = ({ children }: { children: ReactNode }) => (
-  <DiscoveryMapProvider hasMapArea={Boolean(useDiscoveryQuery().bbox)}>
-    {children}
-  </DiscoveryMapProvider>
-);
+const MapScope = ({ children }: { children: ReactNode }) => {
+  const query = useDiscoveryQuery();
+  const searchScope = JSON.stringify(
+    normalizePropertyFilters({
+      ...query,
+      page: undefined,
+      per_page: undefined,
+      sort_type: undefined,
+    }),
+  );
+  return (
+    <DiscoveryMapProvider
+      hasMapArea={Boolean(query.bbox)}
+      searchScope={searchScope}
+    >
+      {children}
+    </DiscoveryMapProvider>
+  );
+};
 
 const DiscoveryExperience = ({
   baselineFilters,

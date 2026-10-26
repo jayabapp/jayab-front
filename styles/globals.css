@@ -1873,7 +1873,7 @@ html[data-theme="dark"] .filter-chip-primary {
 .discovery-results-grid {
   grid-template-columns: repeat(
     auto-fit,
-    minmax(max(21.25rem, calc((100% - 1rem) / 2)), 1fr)
+    minmax(min(100%, max(21.25rem, calc((100% - 1rem) / 2))), 1fr)
   );
 }
 

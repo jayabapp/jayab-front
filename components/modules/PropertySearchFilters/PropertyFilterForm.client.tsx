@@ -1,20 +1,18 @@
 "use client";
 
-import {
-  AREA_RANGE,
-  COMMISSION_RANGE,
-  PRICE_RANGE,
-} from "@features/properties/constants/filter-ranges";
 import { extraDiscoveryFilters } from "@features/properties/lib/discovery-filter-policy";
 import { countActiveFilters } from "@features/properties/lib/count-active-filters";
+import { COMMISSION_RANGE } from "@features/properties/constants/filter-ranges";
 import { countFilterGroup } from "@features/properties/lib/count-active-filters";
 import { useFormatNumber } from "@hooks/useFormatNumber";
 import { useTranslations } from "next-intl";
 import { poolFilterTypes } from "@/utils/constantss";
 import { useStoreInit } from "@/store";
+import { AREA_RANGE } from "@features/properties/constants/filter-ranges";
 
 import type { PropertyFilterFormProps } from "@/types/components/modules/property-search-filters";
 
+import DiscoveryPriceFilter from "./parts/DiscoveryPriceFilter.client";
 import PropertyModelFilter from "./PropertyModelFilter.client";
 import PropertyRulesFilter from "./parts/PropertyRulesFilter";
 import FilterPanelHeader from "./parts/FilterPanelHeader";
@@ -26,7 +24,6 @@ import DateFilter from "./parts/DateFilter.client";
 import isEmpty from "lodash/isEmpty";
 
 const COMMISSION_MAX = COMMISSION_RANGE.max;
-const PRICE_MAX = PRICE_RANGE.max;
 const AREA_MAX = AREA_RANGE.max;
 
 const PropertyFilterForm = ({
@@ -91,22 +88,11 @@ const PropertyFilterForm = ({
         title={t("listing.priceRange")}
         count={countFilters.min_price || countFilters.max_price ? 1 : 0}
       >
-        <div className="flex w-full flex-col gap-4 pb-2 pt-1">
-          <p className="text-xs text-ink-muted">
-            {t("common.from")} {formatNumber(filters?.min_price || 0)}{" "}
-            {t("common.to")} {formatNumber(filters?.max_price || PRICE_MAX)}{" "}
-            {t("common.toman")}
-          </p>
-          <PriceRangeFilter
-            lowLimit={0}
-            filters={filters}
-            upLimit={PRICE_MAX}
-            lowerKey="min_price"
-            higherKey="max_price"
-            setFilters={setFilters}
-            steps={PRICE_RANGE.step}
-          />
-        </div>
+        <DiscoveryPriceFilter
+          filters={filters}
+          searchFilters={filters}
+          setFilters={setFilters}
+        />
       </FilterSection>
 
       <FilterSection

@@ -8,8 +8,9 @@ import { useTranslations } from "next-intl";
 
 import type { RangeFilterChipProps } from "@/types/components/modules/property-search-filters";
 
-import PriceRangeFilter from "./PriceRangeFilter.client";
+import DiscoveryPriceFilter from "./DiscoveryPriceFilter.client";
 import FilterEditorChip from "./FilterEditorChip.client";
+import PriceRangeFilter from "./PriceRangeFilter.client";
 
 const RangeFilterChip = ({
   icon,
@@ -44,23 +45,27 @@ const RangeFilterChip = ({
       panelClass="w-96"
       keys={[lowerKey, higherKey]}
       label={`${labelTitle ?? title} ${words.join(" ")} ${unit}`.trim()}
-      renderEditor={(draft, setDraft) => (
-        <div className="flex w-full flex-col gap-4 pb-2 pt-1">
-          <p className="text-xs text-ink-muted">
-            {t("from")} {formatNumber(draft[lowerKey] || 0)} {t("to")}{" "}
-            {formatNumber(draft[higherKey] || upLimit)} {unit}
-          </p>
-          <PriceRangeFilter
-            lowLimit={0}
-            steps={steps}
-            filters={draft}
-            upLimit={upLimit}
-            lowerKey={lowerKey}
-            higherKey={higherKey}
-            setFilters={setDraft}
-          />
-        </div>
-      )}
+      renderEditor={(draft, setDraft) =>
+        lowerKey === "min_price" ? (
+          <DiscoveryPriceFilter filters={draft} setFilters={setDraft} />
+        ) : (
+          <div className="flex w-full flex-col gap-4 pb-2 pt-1">
+            <p className="text-xs text-ink-muted">
+              {t("from")} {formatNumber(draft[lowerKey] || 0)} {t("to")}{" "}
+              {formatNumber(draft[higherKey] || upLimit)} {unit}
+            </p>
+            <PriceRangeFilter
+              lowLimit={0}
+              steps={steps}
+              filters={draft}
+              upLimit={upLimit}
+              lowerKey={lowerKey}
+              higherKey={higherKey}
+              setFilters={setDraft}
+            />
+          </div>
+        )
+      }
     />
   );
 };

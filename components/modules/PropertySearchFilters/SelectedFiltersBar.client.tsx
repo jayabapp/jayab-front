@@ -30,6 +30,7 @@ import SearchDateRangePicker from "./parts/DateRangePicker/SearchDateRangePicker
 import SelectiveFilterChip from "./parts/SelectiveFilterChip.client";
 import RemovableFilterChip from "./parts/RemovableFilterChip";
 import FilterEditorChip from "./parts/FilterEditorChip.client";
+import { FilterEditorBody } from "./parts/FilterEditorChip.client";
 import RulesFilterChip from "./parts/RulesFilterChip.client";
 import RangeFilterChip from "./parts/RangeFilterChip.client";
 import updateDateRange from "./parts/DateRangePicker/updateDateRange";
@@ -93,15 +94,6 @@ const SelectedFiltersBar = ({
     else delete body[key];
     replaceQuery(body);
   };
-
-  const setQueryFilters = useCallback(
-    (
-      next:
-        | Record<string, unknown>
-        | ((current: Record<string, unknown>) => Record<string, unknown>),
-    ) => replaceQuery(typeof next === "function" ? next(query ?? {}) : next),
-    [query, replaceQuery],
-  );
 
   const isLocked = (keys: readonly string[]) =>
     keys.some((key) => baseline[key] !== undefined);
@@ -406,42 +398,55 @@ const SelectedFiltersBar = ({
       </Swiper>
 
       <Modal show={dateEditorOpen} onHide={() => setDateEditorOpen(false)}>
-        <SearchDateRangePicker
-          setSelectedDay={(day) =>
-            updateDateRange({
-              date: day,
-              cb: () => setDateEditorOpen(false),
-              state: query,
-              setState: setQueryFilters,
-            })
-          }
-          selectedDates={{
-            endDate: extra.checkout
-              ? moment(String(extra.checkout)).format(JALALI_INPUT_DATE_FORMAT)
-              : null,
-            startDate: extra.checkin
-              ? moment(String(extra.checkin)).format(JALALI_INPUT_DATE_FORMAT)
-              : null,
-          }}
-        />
+        <div className="p-4">
+          <FilterEditorBody
+            keys={["checkin", "checkout"]}
+            isValid={(draft) =>
+              (!draft.checkin && !draft.checkout) ||
+              Boolean(draft.checkin && draft.checkout)
+            }
+            onDone={() => setDateEditorOpen(false)}
+            renderEditor={(draft, setDraft) => (
+              <SearchDateRangePicker
+                setSelectedDay={(day) =>
+                  updateDateRange({
+                    date: day,
+                    state: draft,
+                    setState: setDraft,
+                  })
+                }
+                selectedDates={{
+                  endDate: draft.checkout
+                    ? moment(String(draft.checkout)).format(
+                        JALALI_INPUT_DATE_FORMAT,
+                      )
+                    : null,
+                  startDate: draft.checkin
+                    ? moment(String(draft.checkin)).format(
+                        JALALI_INPUT_DATE_FORMAT,
+                      )
+                    : null,
+                }}
+              />
+            )}
+          />
+        </div>
       </Modal>
 
       <Modal show={guestEditorOpen} onHide={() => setGuestEditorOpen(false)}>
         <div className="flex w-full flex-col gap-3 p-4">
-          <FilterCounter
-            query={query}
-            mobileFilters={query}
-            queryKey="total_guests"
-            title={t("common.pplCount")}
-            setMobileFilters={setQueryFilters}
+          <FilterEditorBody
+            keys={["total_guests"]}
+            onDone={() => setGuestEditorOpen(false)}
+            renderEditor={(draft, setDraft) => (
+              <FilterCounter
+                mobileFilters={draft}
+                queryKey="total_guests"
+                title={t("common.pplCount")}
+                setMobileFilters={setDraft}
+              />
+            )}
           />
-          <button
-            type="button"
-            onClick={() => setGuestEditorOpen(false)}
-            className="filter-chip filter-chip-active w-full items-center justify-center"
-          >
-            {t("common.confirmGuests")}
-          </button>
         </div>
       </Modal>
     </>

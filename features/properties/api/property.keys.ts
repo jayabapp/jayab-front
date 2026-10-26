@@ -8,6 +8,8 @@ export const propertyKeys = {
     [...propertyKeys.lists(), filters] as const,
   count: (filters: PropertyFilters) =>
     [...propertyKeys.all, "count", filters] as const,
+  priceHistogram: (filters: PropertyFilters) =>
+    [...propertyKeys.all, "price-histogram", filters] as const,
   map: (filters: PropertyFilters, view: { bbox: string; zoom: number }) =>
     [...propertyKeys.all, "map", filters, view] as const,
   mapPreview: (id: number | string, locale: Locale = "fa") =>

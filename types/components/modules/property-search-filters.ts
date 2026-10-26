@@ -55,7 +55,10 @@ export type FilterEditorChipProps = {
 export type FilterEditorBodyProps = Pick<
   FilterEditorChipProps,
   "keys" | "renderEditor"
-> & { onDone: () => void };
+> & {
+  onDone: () => void;
+  isValid?: (draft: PropertyFilterDraft) => boolean;
+};
 
 export type RulesFilterChipProps = {
   propertyTypes?: Record<

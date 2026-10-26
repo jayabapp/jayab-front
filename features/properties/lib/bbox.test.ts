@@ -1,5 +1,6 @@
 import assert from "node:assert/strict";
 import test from "node:test";
+import { normalizePropertyFilters } from "./normalize-property-filters";
 
 import {
   canonicalBbox,
@@ -56,10 +57,16 @@ test("a camera that reports the whole world is held to the valid range", () => {
 
 test("a broken box blocks the request instead of widening it", () => {
   assert.equal(hasUsableBbox({}), true);
-  assert.equal(hasUsableBbox({ bbox: "" }), true);
+  assert.equal(hasUsableBbox({ bbox: "" }), false);
   assert.equal(hasUsableBbox({ bbox: "51,35,52,36" }), true);
   assert.equal(hasUsableBbox({ bbox: "oops" }), false);
   assert.equal(hasUsableBbox({ bbox: "52,35,51,36" }), false);
+});
+
+test("normalizing an empty area keeps it invalid instead of requesting all listings", () => {
+  const filters = normalizePropertyFilters({ bbox: "", has_pool: "1" });
+  assert.equal(filters.bbox, "");
+  assert.equal(hasUsableBbox(filters), false);
 });
 
 test("zoom is a whole number inside the range the server accepts", () => {

@@ -15,12 +15,12 @@ export const useOverlayBackButton = (
 
   useEffect(() => {
     if (!isOpen) return;
-    window.history.pushState({ overlay: true }, "");
+    window.history.pushState({ ...window.history.state, overlay: true }, "");
     hasPushedRef.current = true;
     const onPopState = () => {
       hasPushedRef.current = false;
       if (onCloseRef.current() !== false) return;
-      window.history.pushState({ overlay: true }, "");
+      window.history.pushState({ ...window.history.state, overlay: true }, "");
       hasPushedRef.current = true;
     };
 
@@ -29,9 +29,9 @@ export const useOverlayBackButton = (
   }, [isOpen]);
 
   return useCallback(() => {
-    onClose();
+    if (onCloseRef.current() === false) return;
     if (!hasPushedRef.current) return;
     hasPushedRef.current = false;
     window.history.back();
-  }, [onClose]);
+  }, []);
 };

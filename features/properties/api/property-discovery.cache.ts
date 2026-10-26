@@ -7,6 +7,7 @@ const DISCOVERY_QUERY_TYPES = new Set([
   "count",
   "map",
   "map-preview",
+  "price-histogram",
 ]);
 
 export const cancelPropertyDiscoveryQueries = (client: QueryClient) => {
