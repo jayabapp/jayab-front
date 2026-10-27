@@ -1868,15 +1868,6 @@ html[data-theme="dark"] .filter-chip-primary {
   }
 }
 
-/* Result cards: as many columns as fit at the card's minimum width, but never more than
-   two. Below two minimum widths the grid is a single column. */
-.discovery-results-grid {
-  grid-template-columns: repeat(
-    auto-fit,
-    minmax(min(100%, max(21.25rem, calc((100% - 1rem) / 2))), 1fr)
-  );
-}
-
 /* The list and, on wide screens, the results map beside it. The column is reserved from
    the first paint; below 1024px the map is a full-screen sheet instead and the column
    is not shown. It sticks under the header and the filter bar (measured in

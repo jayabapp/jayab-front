@@ -1,6 +1,6 @@
 "use client";
 
-import { PropertyGridItems, PropertyGridSkeleton } from "@modules/PropertyGrid";
+import { PropertyGrid, PropertyGridSkeleton } from "@modules/PropertyGrid";
 import { useLoadMoreOnScroll } from "@hooks/useLoadMoreOnScroll";
 import { ServerSidePaginate } from "@elements/Pagination";
 import { useTranslations } from "next-intl";
@@ -141,7 +141,6 @@ const DiscoveryResults = ({
         }`}
       >
         <div
-          className={GRID_CLASS}
           onPointerLeave={hasMap ? () => hover.set(null) : undefined}
           onFocus={
             hasMap
@@ -165,7 +164,8 @@ const DiscoveryResults = ({
               : undefined
           }
         >
-          <PropertyGridItems
+          <PropertyGrid
+            className={GRID_CLASS}
             devices={devices}
             data={properties}
             banners={visibleBanners}

@@ -155,7 +155,7 @@ const DiscoveryLayout = ({
   return (
     <div
       ref={rootRef}
-      className="app-container discovery-page !px-0 md:!px-10 2xl:px-[9%] z-2 flex flex-col !gap-2"
+      className="app-container discovery-page !px-0 md:!px-10 2xl:!px-[9%] z-2 flex flex-col !gap-2"
     >
       <div className="hidden w-full items-center xl:flex">
         <SingleProductBreadCrumb dataArray={breadCrumbs} />
