@@ -8,17 +8,17 @@ import {
   publicPoints,
 } from "./map-camera";
 
-const words = { million: "م", fallback: "مشاهده" };
+const words = { currency: "T", fallback: "مشاهده" };
 
-test("the pin shortens millions for display and says so in the unit", () => {
-  assert.equal(pinPriceLabel(4_500_000, "fa", words), "4.5 م");
-  assert.equal(pinPriceLabel(12_000_000, "fa", words), "12 م");
-  assert.equal(pinPriceLabel(4_500_000, "ar", words), "٤٫٥ م");
-  assert.equal(pinPriceLabel(4_500_000, "en", { ...words, million: "M" }), "4.5 M");
+test("the pin shows the whole nightly amount, grouped, with the currency mark", () => {
+  assert.equal(pinPriceLabel(1_500_000, "fa", words), "۱/۵۰۰/۰۰۰T");
+  assert.equal(pinPriceLabel(800_000, "fa", words), "۸۰۰/۰۰۰T");
+  assert.equal(pinPriceLabel(1_500_000, "ar", words), "١٬٥٠٠٬٠٠٠T");
+  assert.equal(pinPriceLabel(1_500_000, "en", words), "1,500,000T");
 });
 
-test("a price below a million is shown in full", () => {
-  assert.equal(pinPriceLabel(800_000, "fa", words), "800,000");
+test("the amount is never rounded to a shorter unit", () => {
+  assert.equal(pinPriceLabel(4_499_999, "en", words), "4,499,999T");
 });
 
 test("a missing, zero or broken price never becomes a number on the pin", () => {
@@ -49,6 +49,12 @@ test("only listings with a public point contribute points", () => {
 test("the destination key changes with the place and with nothing else", () => {
   assert.equal(destinationKey({ cities: "5", has_pool: "1" }), "5|||");
   assert.equal(destinationKey({ has_pool: "1" }), "|||");
-  assert.notEqual(destinationKey({ cities: "5" }), destinationKey({ cities: "6" }));
-  assert.notEqual(destinationKey({ cities: "5" }), destinationKey({ cities: "5", regions: "9" }));
+  assert.notEqual(
+    destinationKey({ cities: "5" }),
+    destinationKey({ cities: "6" }),
+  );
+  assert.notEqual(
+    destinationKey({ cities: "5" }),
+    destinationKey({ cities: "5", regions: "9" }),
+  );
 });

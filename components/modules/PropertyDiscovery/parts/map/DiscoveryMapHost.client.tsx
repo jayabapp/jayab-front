@@ -8,7 +8,6 @@ import { useMediaQuery } from "@features/map/hooks/useMediaQuery";
 
 import type { DiscoveryMapHostProps } from "@/types/components/modules/discovery-map";
 
-import DiscoveryMapSheet from "./DiscoveryMapSheet.client";
 import dynamic from "next/dynamic";
 
 const DiscoveryMap = dynamic(() => import("./DiscoveryMap.client"), {
@@ -23,63 +22,29 @@ const MapPlaceholder = () => (
   />
 );
 
-const DiscoveryMapHost = ({
-  query,
-  isFilterOpen,
-  onOpenFilters,
-  onCloseFilters,
-}: DiscoveryMapHostProps) => {
+const DiscoveryMapHost = ({ query }: DiscoveryMapHostProps) => {
   const t = useTranslations("listing");
   const isWide = useMediaQuery(DISCOVERY_MAP_COLUMN_QUERY);
-  const { isColumnOpen, isSheetOpen, setIsColumnOpen, setIsSheetOpen } =
-    useDiscoveryMap();
+  const { isColumnOpen, setIsColumnOpen } = useDiscoveryMap();
   const { properties, isPending, isFetching, isPlaceholderData } =
     useProperties(query);
 
-  const isListSettled = !isPlaceholderData && !isFetching;
-  const closeSheet = () => setIsSheetOpen(false);
+  if (!isColumnOpen) return null;
 
   return (
-    <>
-      {isColumnOpen ? (
-        <aside
-          aria-label={t("mapResultsAria")}
-          className="discovery-map-column"
-        >
-          {isWide && !isPending ? (
-            <DiscoveryMap
-              query={query}
-              variant="column"
-              properties={properties}
-              isListSettled={isListSettled}
-              onClose={() => setIsColumnOpen(false)}
-            />
-          ) : (
-            <MapPlaceholder />
-          )}
-        </aside>
-      ) : null}
-
-      {!isWide && isSheetOpen ? (
-        <DiscoveryMapSheet
-          onClose={closeSheet}
-          label={t("mapResultsAria")}
-          isFilterOpen={isFilterOpen}
-          onCloseFilters={onCloseFilters}
-        >
-          {(close) => (
-            <DiscoveryMap
-              query={query}
-              variant="sheet"
-              onClose={close}
-              properties={properties}
-              onOpenFilters={onOpenFilters}
-              isListSettled={isListSettled}
-            />
-          )}
-        </DiscoveryMapSheet>
-      ) : null}
-    </>
+    <aside aria-label={t("mapResultsAria")} className="discovery-map-column">
+      {isWide && !isPending ? (
+        <DiscoveryMap
+          query={query}
+          variant="column"
+          properties={properties}
+          isListSettled={!isPlaceholderData && !isFetching}
+          onClose={() => setIsColumnOpen(false)}
+        />
+      ) : (
+        <MapPlaceholder />
+      )}
+    </aside>
   );
 };
 

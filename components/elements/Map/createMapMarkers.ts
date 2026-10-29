@@ -19,6 +19,8 @@ export const createPricePinElement = ({
 }: PricePinOptions) => {
   const element = base("button", "map-price-pin", key);
   element.textContent = label;
+  // An amount reads left to right ("۱/۵۰۰/۰۰۰T"); the no-price text is Persian.
+  element.dir = "auto";
   element.title = title;
   element.setAttribute("aria-label", ariaLabel);
   element.dataset.approx = String(approximate);

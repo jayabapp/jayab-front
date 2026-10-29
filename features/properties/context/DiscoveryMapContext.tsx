@@ -32,11 +32,9 @@ type DiscoveryMapValue = {
   hover: HoverStore;
   isEnabled: boolean;
   autoSearch: boolean;
-  isSheetOpen: boolean;
   isColumnOpen: boolean;
   selectedId: number | null;
   setAutoSearch: Dispatch<SetStateAction<boolean>>;
-  setIsSheetOpen: Dispatch<SetStateAction<boolean>>;
   setIsColumnOpen: Dispatch<SetStateAction<boolean>>;
   setSelectedId: Dispatch<SetStateAction<number | null>>;
 };
@@ -48,11 +46,9 @@ const OFF: DiscoveryMapValue = {
   hover: { get: () => null, set: noop, subscribe: () => noop },
   view: { get: () => null, set: noop },
   isColumnOpen: false,
-  isSheetOpen: false,
   autoSearch: false,
   selectedId: null,
   setIsColumnOpen: noop,
-  setIsSheetOpen: noop,
   setAutoSearch: noop,
   setSelectedId: noop,
 };
@@ -71,7 +67,6 @@ export const DiscoveryMapProvider = ({
   searchScope: string;
 }) => {
   const [isColumnOpen, setIsColumnOpen] = useState(true);
-  const [isSheetOpen, setIsSheetOpen] = useState(false);
   const [autoSearch, setAutoSearch] = useState(
     () => hasMapArea && carriedAutoSearch,
   );
@@ -139,11 +134,9 @@ export const DiscoveryMapProvider = ({
       hover,
       autoSearch,
       selectedId,
-      isSheetOpen,
       isColumnOpen,
       setAutoSearch,
       setSelectedId,
-      setIsSheetOpen,
       setIsColumnOpen,
       isEnabled: DISCOVERY_MAP_ENABLED,
     }),
@@ -151,7 +144,6 @@ export const DiscoveryMapProvider = ({
       autoSearch,
       hover,
       isColumnOpen,
-      isSheetOpen,
       selectedId,
       setSelectedId,
       searchScope,

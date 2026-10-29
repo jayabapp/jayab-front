@@ -29,7 +29,7 @@ import type { NeshanMapInstance } from "@/types/components/elements/map";
 import type { DiscoveryMapProps } from "@/types/components/modules/discovery-map";
 import type { MarkerDescription } from "@/types/features/map";
 import type { MapPropertyItem } from "@/types/features/map";
-import type { KeyboardEvent } from "react";
+import type { CSSProperties, KeyboardEvent } from "react";
 import type { MapBounds } from "@/types/components/elements/map";
 import type { MapCamera } from "@features/properties/hooks/usePropertiesMap";
 import type { Bbox } from "@features/properties/lib/bbox";
@@ -46,7 +46,9 @@ const STACK_AREA_PAD_DEGREES = 0.0005;
 const PILL_CLASS =
   "pointer-events-auto flex h-11 items-center gap-2 rounded-full bg-surface px-4 text-sm font-medium text-ink shadow-elevated transition-colors hover:bg-surface-muted focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-focus";
 
-const CARD_SLOT_CLASS = "absolute inset-x-3 bottom-10 z-20 flex justify-center";
+const CARD_SLOT_CLASS = "absolute inset-x-3 z-20 flex justify-center";
+// Clear of the map's attribution line, above whatever covers the foot of the map.
+const FOOT_GAP_PX = 40;
 
 const asMapBounds = ([west, south, east, north]: Bbox): MapBounds => [
   west,
@@ -73,8 +75,8 @@ const DiscoveryMap = ({
   variant,
   onClose,
   properties,
-  onOpenFilters,
   isListSettled,
+  bottomInset = 0,
 }: DiscoveryMapProps) => {
   const t = useTranslations();
   const separator = useListSeparator();
@@ -190,6 +192,28 @@ const DiscoveryMap = ({
     if (box) map.fitBounds(asMapBounds(box), { padding: 0 });
   }, [map, appliedBbox]);
 
+  const fitPadding = {
+    top: FIT_PADDING_PX,
+    left: FIT_PADDING_PX,
+    right: FIT_PADDING_PX,
+    bottom: FIT_PADDING_PX + bottomInset,
+  };
+  const currentFitPadding = useEffectEvent(() => fitPadding);
+
+  // The first view was framed before anything covered the foot of the map. Once the
+  // sheet's share is known, frame it again so the opening pins sit in the part that shows.
+  const reframed = useRef(false);
+  useEffect(() => {
+    if (!map || reframed.current || !initial.bounds || bottomInset === 0)
+      return;
+    reframed.current = true;
+    map.fitBounds(initial.bounds, {
+      animate: false,
+      maxZoom: FIT_MAX_ZOOM,
+      padding: currentFitPadding(),
+    });
+  }, [map, bottomInset, initial.bounds]);
+
   const fittedFor = useRef<string | null>(
     initial.needsFit ? null : destination,
   );
@@ -200,12 +224,12 @@ const DiscoveryMap = ({
     const box = boundsOfPoints(publicPoints(properties));
     if (box)
       map.fitBounds(asMapBounds(box), {
-        padding: FIT_PADDING_PX,
+        padding: currentFitPadding(),
         maxZoom: FIT_MAX_ZOOM,
       });
   }, [map, isListSettled, appliedBbox, destination, properties]);
 
-  const million = t("listing.mapMillionUnit");
+  const currency = t("listing.mapCurrencyShort");
   const noPrice = t("listing.mapPinNoPrice");
   const describe = useCallback(
     (item: MapItem): MarkerDescription => {
@@ -232,12 +256,12 @@ const DiscoveryMap = ({
         ariaLabel: text,
         approximate,
         label: pinPriceLabel(item.price, locale, {
-          million,
+          currency,
           fallback: noPrice,
         }),
       };
     },
-    [locale, million, noPrice, separator, t],
+    [currency, locale, noPrice, separator, t],
   );
 
   const onProperty = (item: MapPropertyItem) => {
@@ -254,7 +278,7 @@ const DiscoveryMap = ({
     setStack(stuck ? item : null);
     if (!stuck)
       map.fitBounds(asMapBounds(item.bounds), {
-        padding: FIT_PADDING_PX,
+        padding: fitPadding,
         maxZoom: CLUSTER_MAX_FIT_ZOOM,
       });
   };
@@ -277,7 +301,8 @@ const DiscoveryMap = ({
       push: true,
     });
     setStack(null);
-    if (variant === "sheet") onClose();
+    // On a phone the list is a sheet over the map: open it to show them.
+    if (variant === "background") onClose();
   };
 
   const onToggleSearch = (checked: boolean) => {
@@ -332,12 +357,14 @@ const DiscoveryMap = ({
       ? t("listing.mapAreaCount", { formatted: formatNumber(total, locale) })
       : "";
   const stackCount = stack ? formatNumber(stack.count, locale) : "";
+  const footStyle = { bottom: bottomInset + FOOT_GAP_PX };
 
   return (
     <div
       ref={rootRef}
       aria-busy={isBusy}
       onKeyDown={onKeyDown}
+      style={{ "--map-foot": `${bottomInset}px` } as CSSProperties}
       className="discovery-map relative size-full overflow-hidden bg-surface-muted"
     >
       <NeshanMap
@@ -353,12 +380,7 @@ const DiscoveryMap = ({
       />
 
       <div className="pointer-events-none absolute top-3 z-10 flex flex-wrap items-center gap-2 ltr:start-3 ltr:end-14 rtl:end-3 rtl:start-14">
-        {variant === "sheet" ? (
-          <button type="button" onClick={onClose} className={PILL_CLASS}>
-            <Icon name="list" size={20} />
-            {t("listing.mapBackToList")}
-          </button>
-        ) : (
+        {variant === "column" ? (
           <button
             type="button"
             onClick={onClose}
@@ -367,12 +389,6 @@ const DiscoveryMap = ({
             className={`${PILL_CLASS} !px-3`}
           >
             <Icon name="x" size={20} />
-          </button>
-        )}
-        {variant === "sheet" && onOpenFilters ? (
-          <button type="button" onClick={onOpenFilters} className={PILL_CLASS}>
-            <Icon name="filter" size={20} />
-            {t("listing.otherFilters")}
           </button>
         ) : null}
         <label className={`${PILL_CLASS} cursor-pointer`}>
@@ -406,7 +422,7 @@ const DiscoveryMap = ({
       </div>
 
       {stack ? (
-        <div className={CARD_SLOT_CLASS}>
+        <div className={CARD_SLOT_CLASS} style={footStyle}>
           <div
             role="group"
             aria-label={t("listing.mapStackTitle", { formatted: stackCount })}
@@ -434,7 +450,7 @@ const DiscoveryMap = ({
           </div>
         </div>
       ) : selectedId !== null ? (
-        <div className={CARD_SLOT_CLASS}>
+        <div className={CARD_SLOT_CLASS} style={footStyle}>
           <DiscoveryMapPreview
             id={selectedId}
             properties={properties}
@@ -447,7 +463,10 @@ const DiscoveryMap = ({
           />
         </div>
       ) : (
-        <div className="pointer-events-none absolute bottom-10 z-10 flex flex-col items-start gap-2 ltr:start-3 rtl:end-3">
+        <div
+          style={footStyle}
+          className="pointer-events-none absolute z-10 flex flex-col items-start gap-2 ltr:start-3 rtl:end-3"
+        >
           {isError && !data ? (
             <div
               role="alert"

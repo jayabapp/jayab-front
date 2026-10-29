@@ -1,4 +1,4 @@
-import { localizeDigits } from "@/helpers/intl/digits";
+import { formatListingPriceFor } from "@/helpers/intl/number";
 import { formatNumber } from "@/helpers/intl/number";
 
 import type { PublicMapPoint } from "@/api_services/property/property.interface";
@@ -6,7 +6,13 @@ import type { DisplayLocale } from "@/helpers/intl/digits";
 import type { MapItem } from "@/api_services/property/property.interface";
 import type { Bbox } from "@features/properties/lib/bbox";
 
-const MILLION = 1_000_000;
+// How a pin groups thousands in each language: "۱/۵۰۰/۰۰۰" in fa (what the product
+// asked for), the Arabic separator in ar, a comma in en.
+const PIN_GROUP_SEPARATOR: Record<DisplayLocale, string> = {
+  fa: "/",
+  ar: "٬",
+  en: ",",
+};
 
 export const DEFAULT_MAP_BOUNDS: Bbox = [44.0, 25.0, 63.5, 39.8];
 
@@ -34,17 +40,20 @@ export const publicPoints = (properties: readonly Located[]) =>
     property.public_location ? [property.public_location] : [],
   );
 
+// The whole nightly amount in the language's own digits, grouped, with a short currency
+// mark ("۱/۵۰۰/۰۰۰T"). A display string only; nothing here is fed back into a query.
 export const pinPriceLabel = (
   price: number | null,
   locale: DisplayLocale,
-  words: { million: string; fallback: string },
+  words: { currency: string; fallback: string },
 ): string => {
   if (price === null || !Number.isFinite(price) || price <= 0)
     return words.fallback;
-  if (price < MILLION) return formatNumber(Math.round(price), locale);
-  const millions = Math.round((price / MILLION) * 10) / 10;
-  const text = String(millions).replace(".", locale === "ar" ? "٫" : ".");
-  return `${localizeDigits(text, locale)} ${words.million}`;
+  const grouped =
+    locale === "ar"
+      ? formatNumber(Math.round(price), locale)
+      : formatListingPriceFor(Math.round(price), locale);
+  return `${grouped.replace(/[,٬]/g, PIN_GROUP_SEPARATOR[locale])}${words.currency}`;
 };
 
 const DESTINATION_KEYS = ["cities", "provinces", "province_id", "regions"];

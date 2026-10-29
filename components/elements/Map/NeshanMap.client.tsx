@@ -4,8 +4,8 @@ import { useEffect, useEffectEvent, useRef } from "react";
 import { useTranslations } from "next-intl";
 import { useTheme } from "@/hooks/useTheme";
 
-import type { MapStyleName } from "@/types/components/elements/map";
 import type { NeshanMapProps } from "@/types/components/elements/map";
+import type { MapStyleName } from "@/types/components/elements/map";
 
 import "@neshan-maps-platform/maplibre-sdk/style.css";
 
@@ -23,6 +23,32 @@ const NIGHT_STYLE: Record<MapStyleName, string> = {
 const styleUrl = (name: MapStyleName) => {
   const isDark = document.documentElement.getAttribute("data-theme") === "dark";
   return `${STYLE_BASE_URL}/${isDark ? NIGHT_STYLE[name] : name}.json`;
+};
+
+const NIGHT_GROUND: Record<
+  string,
+  { property: "background-color" | "fill-color"; token: string }
+> = {
+  background: { property: "background-color", token: "--c-surface" },
+  water: { property: "fill-color", token: "--c-page" },
+};
+
+const tokenColor = (token: string) => {
+  const channels = getComputedStyle(document.documentElement)
+    .getPropertyValue(token)
+    .trim();
+  return channels ? `rgb(${channels.split(/s+/).join(", ")})` : null;
+};
+
+const paintNightGround = (map: maplibregl.Map) => {
+  for (const layer of map.getStyle()?.layers ?? []) {
+    const ground =
+      NIGHT_GROUND[layer.type === "background" ? "background" : layer.id];
+    if (!ground || (layer.type !== "background" && layer.type !== "fill"))
+      continue;
+    const color = tokenColor(ground.token);
+    if (color) map.setPaintProperty(layer.id, ground.property, color);
+  }
 };
 
 const NeshanMap = ({
@@ -123,6 +149,13 @@ const NeshanMap = ({
     let hasStyle = false;
     let hasTile = false;
     let tileErrors = 0;
+    map.on("style.load", () => {
+      if (
+        appliedStyleRef.current.includes("_dark") ||
+        appliedStyleRef.current.endsWith("/dark.json")
+      )
+        paintNightGround(map);
+    });
     map.once("style.load", () => {
       hasStyle = true;
     });

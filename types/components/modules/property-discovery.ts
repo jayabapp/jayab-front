@@ -20,6 +20,8 @@ export type DiscoveryExperienceProps = {
 
 export type DiscoveryHeadingProps = {
   title: string;
+  // One line for the results sheet's header on phones.
+  compact?: boolean;
   query: Record<string, any>;
 };
 

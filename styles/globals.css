@@ -1889,6 +1889,38 @@ html[data-theme="dark"] .filter-chip-primary {
   }
 }
 
+/* Phones and tablets: the results list as a sheet over the map (ResultsSheet). It follows
+   the finger with no transition and eases to rest when let go. */
+/* The map's logo and attribution stay above whatever covers its foot. */
+.discovery-map .maplibregl-ctrl-bottom-left,
+.discovery-map .maplibregl-ctrl-bottom-right {
+  bottom: var(--map-foot, 0px);
+  transition: bottom 320ms cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.results-sheet {
+  @apply absolute inset-x-0 top-0 z-20 flex h-full flex-col rounded-t-28 bg-surface shadow-elevated;
+  transition:
+    transform 320ms cubic-bezier(0.22, 1, 0.36, 1),
+    border-radius 320ms ease;
+  will-change: transform;
+}
+.results-sheet[data-snap="full"] {
+  @apply rounded-none;
+}
+.results-sheet[data-dragging="true"] {
+  transition: none;
+}
+.results-sheet-head {
+  @apply shrink-0 cursor-grab border-b border-line;
+  touch-action: none;
+}
+@media (prefers-reduced-motion: reduce) {
+  .results-sheet {
+    transition: none;
+  }
+}
+
 /* The full filter form as a dialog: a fixed header and footer around a body that
    scrolls. Full screen below xl, a centred card from xl up. */
 .discovery-filter-dialog {

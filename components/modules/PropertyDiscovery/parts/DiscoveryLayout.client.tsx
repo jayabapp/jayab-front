@@ -2,6 +2,7 @@
 
 import { useEffect, useMemo, useRef, useState } from "react";
 import { usePropertyDiscoveryFilters } from "@features/properties/hooks/usePropertyDiscoveryFilters";
+import { DISCOVERY_MAP_COLUMN_QUERY } from "@features/map/constants/discovery-map";
 import { usePropertyOptionGroups } from "@features/properties/hooks/usePropertyOptionGroups";
 import { CityModal, RegionModal } from "@modules/CitySelector";
 import { useUrlCityWithRegions } from "@features/cities/hooks/useUrlCityWithRegions";
@@ -15,6 +16,8 @@ import { useDiscoveryMap } from "@features/properties/context/DiscoveryMapContex
 import { useTranslations } from "next-intl";
 import { useCitiesStore } from "@/store";
 import { hasUsableBbox } from "@features/properties/lib/bbox";
+import { useMediaQuery } from "@features/map/hooks/useMediaQuery";
+import { useMapSupport } from "@features/map/hooks/useMapSupport";
 import { usePathname } from "next/navigation";
 
 import type { DiscoveryExperienceProps } from "@/types/components/modules/property-discovery";
@@ -22,6 +25,7 @@ import type { ChildCities } from "@/types/components/modules/property-discovery"
 
 import SingleProductBreadCrumb from "@elements/Breadcrumbs/SingleProductBreadcrumb.client";
 import DiscoveryFilterModal from "./DiscoveryFilterModal.client";
+import DiscoveryMobileMap from "./map/DiscoveryMobileMap.client";
 import DiscoveryMapHost from "./map/DiscoveryMapHost.client";
 import DiscoveryHeading from "./DiscoveryHeading.client";
 import DiscoveryResults from "./DiscoveryResults.client";
@@ -62,6 +66,12 @@ const DiscoveryLayout = ({
   const urlCityWithRegions = useUrlCityWithRegions(queries);
   const cityWithRegions = modalCityWithRegions ?? urlCityWithRegions;
   const hasBaseline = !isEmpty(baseline);
+  const isWide = useMediaQuery(DISCOVERY_MAP_COLUMN_QUERY);
+  const canDrawMap = useMapSupport() === true;
+  const hasArea = hasUsableBbox(queries);
+  // Phones and tablets that can draw the map get it behind a results sheet. Without
+  // WebGL the page stays a plain list.
+  const isMobileMap = hasMap && hasArea && !isWide && canDrawMap;
 
   const rootRef = useRef<HTMLDivElement>(null);
   const barRef = useRef<HTMLDivElement>(null);
@@ -152,6 +162,33 @@ const DiscoveryLayout = ({
     setFilterModalShow(false);
   };
 
+  const quickRow = (
+    <div className="discovery-quick-row flex w-full items-center gap-2 px-3 py-2 md:gap-3 xl:px-0">
+      <div className="-my-1 min-w-0 flex-1 overflow-x-auto py-1">
+        <SpecialFilterButtons query={queries} />
+      </div>
+      {hasArea ? <MapToggleButton /> : null}
+      <PropertySortMenu query={queries} />
+    </div>
+  );
+
+  const results = (
+    <DiscoveryResults
+      query={queries}
+      devices={devices}
+      onClearFilters={hasExtraFilters ? clearExtraFilters : undefined}
+      clearLabel={
+        hasBaseline
+          ? t("listing.removeExtraFilters")
+          : t("listing.clearAllFilters")
+      }
+    />
+  );
+
+  const landingContent = content ? (
+    <div className="px-3 xl:px-0">{content}</div>
+  ) : null;
+
   return (
     <div
       ref={rootRef}
@@ -161,7 +198,7 @@ const DiscoveryLayout = ({
         <SingleProductBreadCrumb dataArray={breadCrumbs} />
       </div>
 
-      <DiscoveryHeading title={title} query={queries} />
+      {isMobileMap ? null : <DiscoveryHeading title={title} query={queries} />}
 
       <div
         ref={barRef}
@@ -176,43 +213,28 @@ const DiscoveryLayout = ({
         />
       </div>
 
-      <div className="discovery-quick-row flex w-full items-center gap-2 px-3 py-2 md:gap-3 xl:px-0">
-        <div className="-my-1 min-w-0 flex-1 overflow-x-auto py-1">
-          <SpecialFilterButtons query={queries} />
-        </div>
-        {hasUsableBbox(queries) ? <MapToggleButton /> : null}
-        <PropertySortMenu query={queries} />
-      </div>
-
-      <div
-        className="discovery-split w-full"
-        data-map={
-          hasMap && isColumnOpen && hasUsableBbox(queries) ? "open" : "closed"
-        }
-      >
-        <div className="min-w-0">
-          <DiscoveryResults
-            query={queries}
-            devices={devices}
-            onClearFilters={hasExtraFilters ? clearExtraFilters : undefined}
-            clearLabel={
-              hasBaseline
-                ? t("listing.removeExtraFilters")
-                : t("listing.clearAllFilters")
-            }
-          />
-        </div>
-        {hasMap && hasUsableBbox(queries) ? (
-          <DiscoveryMapHost
-            query={queries}
-            isFilterOpen={filterModalShow}
-            onCloseFilters={onCloseFilterModal}
-            onOpenFilters={() => setFilterModalShow(true)}
-          />
-        ) : null}
-      </div>
-
-      {content ? <div className="px-3 xl:px-0">{content}</div> : null}
+      {isMobileMap ? (
+        <DiscoveryMobileMap
+          query={queries}
+          header={<DiscoveryHeading compact title={title} query={queries} />}
+        >
+          {quickRow}
+          {results}
+          {landingContent}
+        </DiscoveryMobileMap>
+      ) : (
+        <>
+          {quickRow}
+          <div
+            className="discovery-split w-full"
+            data-map={hasMap && isColumnOpen && hasArea ? "open" : "closed"}
+          >
+            <div className="min-w-0">{results}</div>
+            {hasMap && hasArea ? <DiscoveryMapHost query={queries} /> : null}
+          </div>
+          {landingContent}
+        </>
+      )}
 
       <DiscoveryFilterModal
         filters={filters}

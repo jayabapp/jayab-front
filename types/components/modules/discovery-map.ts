@@ -2,22 +2,52 @@ import type { PropertyCardSearchParams } from "@/types/components/modules/proper
 import type { PropertyListDto } from "@/api_services/property/property.interface";
 import type { ReactNode } from "react";
 
-export type DiscoveryMapVariant = "column" | "sheet";
+// "column": beside the list on wide screens. "background": behind the results sheet on
+// phones and tablets.
+export type DiscoveryMapVariant = "column" | "background";
+
+export type SheetSnap = "peek" | "half" | "full";
 
 type DiscoveryQuery = Record<string, any>;
 
 export type DiscoveryMapHostProps = {
   query: DiscoveryQuery;
-  isFilterOpen: boolean;
-  onOpenFilters: () => void;
-  onCloseFilters: () => void;
+};
+
+export type DiscoveryMobileMapProps = {
+  header: ReactNode;
+  children: ReactNode;
+  query: DiscoveryQuery;
+};
+
+// One finger or mouse drag on the results sheet, from press to release.
+export type SheetGesture = {
+  y: number;
+  x: number;
+  start: number;
+  lastY: number;
+  lastT: number;
+  velocity: number;
+  axis: "x" | "y" | null;
+  dragging: boolean;
+  fromHandle: boolean;
+};
+
+export type ResultsSheetProps = {
+  snap: SheetSnap;
+  header: ReactNode;
+  children: ReactNode;
+  onSnapChange: (snap: SheetSnap) => void;
+  onVisibleHeightChange?: (height: number) => void;
 };
 
 export type DiscoveryMapProps = {
   query: DiscoveryQuery;
   onClose: () => void;
   isListSettled: boolean;
-  onOpenFilters?: () => void;
+  // How much of the map's foot is covered (by the results sheet), so cards and fitted
+  // areas stay in the part that shows.
+  bottomInset?: number;
   variant: DiscoveryMapVariant;
   properties: PropertyListDto[];
 };
@@ -27,14 +57,6 @@ export type DiscoveryMapPreviewProps = {
   onClose: () => void;
   properties: PropertyListDto[];
   searchParams: PropertyCardSearchParams;
-};
-
-export type DiscoveryMapSheetProps = {
-  label: string;
-  onClose: () => void;
-  isFilterOpen: boolean;
-  onCloseFilters: () => void;
-  children: (close: () => void) => ReactNode;
 };
 
 export type MapToggleButtonProps = {
