@@ -1,14 +1,14 @@
 "use client";
 
-import { useEffect, useState } from "react";
-import { useBodyScrollLock } from "@hooks/useBodyScrollLock";
+import { useEffect, useRef, useState } from "react";
+import { prefersReducedMotion } from "@features/map/lib/map-support";
 import { useDiscoveryMap } from "@features/properties/context/DiscoveryMapContext";
+import { useTranslations } from "next-intl";
 import { useProperties } from "@features/properties/hooks/useProperties";
+import { Icon } from "@elements/Icon";
 
 import type { DiscoveryMobileMapProps } from "@/types/components/modules/discovery-map";
-import type { SheetSnap } from "@/types/components/modules/discovery-map";
 
-import ResultsSheet from "./ResultsSheet.client";
 import dynamic from "next/dynamic";
 
 const DiscoveryMap = dynamic(() => import("./DiscoveryMap.client"), {
@@ -21,72 +21,124 @@ const DiscoveryMap = dynamic(() => import("./DiscoveryMap.client"), {
   ),
 });
 
-const FILTER_BAR_SELECTOR = ".discovery-filter-bar";
-const MOBILE_NAV_SELECTOR = "[data-mobile-nav]";
+const MAP_PEEK_PX = 120;
+
+const scrollPageBy = (distance: number) =>
+  window.scrollTo({
+    top: Math.max(0, window.scrollY + distance),
+    behavior: prefersReducedMotion() ? "auto" : "smooth",
+  });
+
+const showMap = () => scrollPageBy(-window.scrollY);
+
+const stickTop = (stage: HTMLElement) =>
+  parseFloat(getComputedStyle(stage).top) || 0;
+
+const listCoversMap = (stage: HTMLElement, sheet: HTMLElement) =>
+  sheet.getBoundingClientRect().top < stickTop(stage) + MAP_PEEK_PX;
 
 const DiscoveryMobileMap = ({
   query,
   header,
   children,
 }: DiscoveryMobileMapProps) => {
+  const t = useTranslations("listing");
   const { selectedId } = useDiscoveryMap();
   const { properties, isFetching, isPlaceholderData } = useProperties(query);
-  const [snap, setSnap] = useState<SheetSnap>("half");
-  const [covered, setCovered] = useState(0);
-  const [frame, setFrame] = useState<{ top: number; bottom: number } | null>(
-    null,
-  );
-
-  useBodyScrollLock(true);
-
-  const [shownId, setShownId] = useState(selectedId);
-  if (shownId !== selectedId) {
-    setShownId(selectedId);
-    if (selectedId !== null) setSnap("peek");
-  }
+  const stageRef = useRef<HTMLDivElement>(null);
+  const sheetRef = useRef<HTMLElement>(null);
+  const [stageHeight, setStageHeight] = useState(0);
+  const [isListUp, setIsListUp] = useState(false);
 
   useEffect(() => {
-    window.scrollTo({ top: 0 });
-    const bar = document.querySelector<HTMLElement>(FILTER_BAR_SELECTOR);
-    const measure = () => {
-      const nav = document.querySelector<HTMLElement>(MOBILE_NAV_SELECTOR);
-      setFrame({
-        top: bar ? Math.round(bar.getBoundingClientRect().bottom) : 0,
-        bottom: nav?.offsetHeight ?? 0,
-      });
+    const stage = stageRef.current;
+    const sheet = sheetRef.current;
+    if (!stage || !sheet) return;
+    let frame = 0;
+    const update = () => {
+      frame = 0;
+      setStageHeight(stage.clientHeight);
+      setIsListUp(listCoversMap(stage, sheet));
     };
-    measure();
-    const observer = new ResizeObserver(measure);
-    if (bar) observer.observe(bar);
-    observer.observe(document.documentElement);
-    return () => observer.disconnect();
+    const schedule = () => {
+      if (!frame) frame = window.requestAnimationFrame(update);
+    };
+    update();
+    const observer = new ResizeObserver(schedule);
+    observer.observe(stage);
+    window.addEventListener("scroll", schedule, { passive: true });
+    return () => {
+      observer.disconnect();
+      window.removeEventListener("scroll", schedule);
+      if (frame) window.cancelAnimationFrame(frame);
+    };
   }, []);
 
+  const showList = () => {
+    const stage = stageRef.current;
+    const sheet = sheetRef.current;
+    if (stage && sheet)
+      scrollPageBy(sheet.getBoundingClientRect().top - stickTop(stage));
+  };
+
+  const toggle = () => {
+    const stage = stageRef.current;
+    const sheet = sheetRef.current;
+    if (stage && sheet && listCoversMap(stage, sheet)) showMap();
+    else showList();
+  };
+
+  useEffect(() => {
+    if (selectedId !== null) showMap();
+  }, [selectedId]);
+
   return (
-    <div
-      className="fixed inset-x-0 z-[5] overflow-hidden bg-surface-muted"
-      style={{
-        top: frame?.top ?? 0,
-        bottom: frame?.bottom ?? 0,
-        visibility: frame ? undefined : "hidden",
-      }}
-    >
-      <DiscoveryMap
-        query={query}
-        variant="background"
-        properties={properties}
-        onClose={() => setSnap("full")}
-        bottomInset={snap === "full" ? 0 : covered}
-        isListSettled={!isPlaceholderData && !isFetching}
-      />
-      <ResultsSheet
-        snap={snap}
-        header={header}
-        onSnapChange={setSnap}
-        onVisibleHeightChange={setCovered}
+    <div className="discovery-mobile-map">
+      <div ref={stageRef} className="discovery-mobile-stage">
+        <DiscoveryMap
+          query={query}
+          onClose={showList}
+          variant="background"
+          properties={properties}
+          bottomInset={Math.round(stageHeight / 2)}
+          isListSettled={!isPlaceholderData && !isFetching}
+        />
+      </div>
+
+      <section
+        ref={sheetRef}
+        className="results-sheet"
+        aria-label={t("mapSheetLabel")}
       >
+        <div className="results-sheet-head">
+          <button
+            type="button"
+            onClick={toggle}
+            aria-expanded={isListUp}
+            aria-label={isListUp ? t("mapShow") : t("mapExpandList")}
+            className="flex h-6 w-full cursor-pointer items-center justify-center focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-inset focus-visible:ring-focus"
+          >
+            <span
+              aria-hidden="true"
+              className="h-1 w-10 rounded-full bg-line-strong"
+            />
+          </button>
+          <div className="flex items-center">
+            <div className="min-w-0 flex-1">{header}</div>
+            {isListUp ? (
+              <button
+                type="button"
+                onClick={showMap}
+                className="results-sheet-map-button"
+              >
+                <Icon name="map" size={16} />
+                {t("mapShow")}
+              </button>
+            ) : null}
+          </div>
+        </div>
         {children}
-      </ResultsSheet>
+      </section>
     </div>
   );
 };

@@ -110,7 +110,6 @@ const MobileNav = () => {
         <motion.div
           dir="rtl"
           key="mobile-nav"
-          data-mobile-nav=""
           exit={{ y: 140, opacity: 0 }}
           animate={{ y: 0, opacity: 1 }}
           initial={{ y: 120, opacity: 0 }}

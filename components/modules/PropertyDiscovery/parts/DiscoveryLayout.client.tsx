@@ -67,11 +67,13 @@ const DiscoveryLayout = ({
   const cityWithRegions = modalCityWithRegions ?? urlCityWithRegions;
   const hasBaseline = !isEmpty(baseline);
   const isWide = useMediaQuery(DISCOVERY_MAP_COLUMN_QUERY);
-  const canDrawMap = useMapSupport() === true;
+  const mapSupport = useMapSupport();
   const hasArea = hasUsableBbox(queries);
-  // Phones and tablets that can draw the map get it behind a results sheet. Without
-  // WebGL the page stays a plain list.
-  const isMobileMap = hasMap && hasArea && !isWide && canDrawMap;
+  const isMobileMap =
+    hasMap &&
+    hasArea &&
+    !isWide &&
+    (mapSupport === null ? Boolean(devices?.isMobile) : mapSupport);
 
   const rootRef = useRef<HTMLDivElement>(null);
   const barRef = useRef<HTMLDivElement>(null);
