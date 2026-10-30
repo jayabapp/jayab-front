@@ -1,9 +1,9 @@
 "use client";
 
 import { createContext, useContext, useEffect } from "react";
-import { useMemo, useRef, useState } from "react";
 import { DISCOVERY_MAP_ENABLED } from "@features/map/constants/discovery-map";
 import { useSyncExternalStore } from "react";
+import { useMemo, useState } from "react";
 import { useCallback } from "react";
 
 import type { Dispatch, ReactNode, SetStateAction } from "react";
@@ -31,10 +31,8 @@ type DiscoveryMapValue = {
   view: ViewStore;
   hover: HoverStore;
   isEnabled: boolean;
-  autoSearch: boolean;
   isColumnOpen: boolean;
   selectedId: number | null;
-  setAutoSearch: Dispatch<SetStateAction<boolean>>;
   setIsColumnOpen: Dispatch<SetStateAction<boolean>>;
   setSelectedId: Dispatch<SetStateAction<number | null>>;
 };
@@ -46,33 +44,21 @@ const OFF: DiscoveryMapValue = {
   hover: { get: () => null, set: noop, subscribe: () => noop },
   view: { get: () => null, set: noop },
   isColumnOpen: false,
-  autoSearch: false,
   selectedId: null,
   setIsColumnOpen: noop,
-  setAutoSearch: noop,
   setSelectedId: noop,
 };
 
 const DiscoveryMapContext = createContext<DiscoveryMapValue>(OFF);
 
-let carriedAutoSearch = false;
-
 export const DiscoveryMapProvider = ({
   children,
-  hasMapArea,
   searchScope,
 }: {
   children: ReactNode;
-  hasMapArea: boolean;
   searchScope: string;
 }) => {
   const [isColumnOpen, setIsColumnOpen] = useState(true);
-  const [autoSearch, setAutoSearch] = useState(
-    () => hasMapArea && carriedAutoSearch,
-  );
-  useEffect(() => {
-    carriedAutoSearch = autoSearch;
-  }, [autoSearch]);
   const [selection, setSelection] = useState<{
     scope: string;
     id: number | null;
@@ -120,35 +106,20 @@ export const DiscoveryMapProvider = ({
     };
   });
 
-  const hadMapArea = useRef(hasMapArea);
   useEffect(() => hover.set(null), [hover, searchScope]);
-  useEffect(() => {
-    if (hadMapArea.current && !hasMapArea) setAutoSearch(false);
-    hadMapArea.current = hasMapArea;
-  }, [hasMapArea]);
 
   const value = useMemo<DiscoveryMapValue>(
     () => ({
       searchScope,
       view,
       hover,
-      autoSearch,
       selectedId,
       isColumnOpen,
-      setAutoSearch,
       setSelectedId,
       setIsColumnOpen,
       isEnabled: DISCOVERY_MAP_ENABLED,
     }),
-    [
-      autoSearch,
-      hover,
-      isColumnOpen,
-      selectedId,
-      setSelectedId,
-      searchScope,
-      view,
-    ],
+    [hover, isColumnOpen, selectedId, setSelectedId, searchScope, view],
   );
 
   return (

@@ -27,6 +27,7 @@ export type ApproxLocation = {
 // accessible name always carry the whole fact.
 export type MarkerDescription = {
   label: string;
+  hearts: string | null;
   title: string;
   ariaLabel: string;
   approximate: boolean;

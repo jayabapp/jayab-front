@@ -64,6 +64,7 @@ export type MapMarkerState = "idle" | "hover" | "selected";
 export type PricePinOptions = {
   key: string;
   label: string;
+  hearts: string | null;
   title: string;
   ariaLabel: string;
   approximate: boolean;

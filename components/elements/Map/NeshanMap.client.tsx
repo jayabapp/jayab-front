@@ -2,6 +2,7 @@
 
 import { useEffect, useEffectEvent, useRef } from "react";
 import { useTranslations } from "next-intl";
+import { mapColors } from "@/theme/colors";
 import { useTheme } from "@/hooks/useTheme";
 
 import type { NeshanMapProps } from "@/types/components/elements/map";
@@ -40,6 +41,53 @@ const tokenColor = (token: string) => {
   return channels ? `rgb(${channels.split(/s+/).join(", ")})` : null;
 };
 
+const URBAN_FILL = "rgba(255, 255, 255, 0.4)";
+const PARK_TYPES = [
+  "park",
+  "heath",
+  "scrub",
+  "orchard",
+  "national_park",
+  "grass",
+  "wood",
+];
+const STREET_FILL = /^(residential|tertiary|secondary|primary)/;
+const ROAD_CASING =
+  /(residential|tertiary|secondary|primary|trunk|motorway|highway).* border$/;
+const MAJOR_ROAD = /highway|trunk|motorway/;
+
+const dayLineColor = (id: string) => {
+  if (ROAD_CASING.test(id))
+    return MAJOR_ROAD.test(id)
+      ? mapColors.highwayCasing
+      : mapColors.streetCasing;
+  if (id.startsWith("highway")) return mapColors.highway;
+  if (STREET_FILL.test(id)) return mapColors.street;
+  return null;
+};
+
+const paintDayGround = (map: maplibregl.Map) => {
+  for (const layer of map.getStyle()?.layers ?? []) {
+    if (layer.type === "background")
+      map.setPaintProperty(layer.id, "background-color", mapColors.land);
+    else if (layer.type === "fill" && layer.id === "water")
+      map.setPaintProperty(layer.id, "fill-color", mapColors.water);
+    else if (layer.type === "fill" && layer.id === "residential")
+      map.setPaintProperty(layer.id, "fill-color", URBAN_FILL);
+    else if (layer.type === "fill" && layer.id === "landuse")
+      map.setPaintProperty(layer.id, "fill-color", [
+        "case",
+        ["in", ["get", "type"], ["literal", PARK_TYPES]],
+        mapColors.park,
+        (layer.paint as Record<string, unknown>)["fill-color"],
+      ]);
+    else if (layer.type === "line") {
+      const color = dayLineColor(layer.id);
+      if (color) map.setPaintProperty(layer.id, "line-color", color);
+    }
+  }
+};
+
 const paintNightGround = (map: maplibregl.Map) => {
   for (const layer of map.getStyle()?.layers ?? []) {
     const ground =
@@ -60,8 +108,8 @@ const NeshanMap = ({
   ariaLabel,
   onMapReady,
   mapStyle = "light",
-  showNavigation = true,
   showGeolocate = false,
+  showNavigation = true,
   cooperativeGestures = false,
 }: NeshanMapProps) => {
   const t = useTranslations("common");
@@ -150,11 +198,10 @@ const NeshanMap = ({
     let hasTile = false;
     let tileErrors = 0;
     map.on("style.load", () => {
-      if (
-        appliedStyleRef.current.includes("_dark") ||
-        appliedStyleRef.current.endsWith("/dark.json")
-      )
+      const style = appliedStyleRef.current;
+      if (style.includes("_dark") || style.endsWith("/dark.json"))
         paintNightGround(map);
+      else if (style.includes("monochrome_light")) paintDayGround(map);
     });
     map.once("style.load", () => {
       hasStyle = true;

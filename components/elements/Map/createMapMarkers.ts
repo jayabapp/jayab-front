@@ -13,14 +13,22 @@ const base = (tag: "button", className: string, key: string) => {
 export const createPricePinElement = ({
   key,
   label,
+  hearts,
   title,
   ariaLabel,
   approximate,
 }: PricePinOptions) => {
   const element = base("button", "map-price-pin", key);
-  element.textContent = label;
-  // An amount reads left to right ("۱/۵۰۰/۰۰۰T"); the no-price text is Persian.
-  element.dir = "auto";
+  if (hearts) {
+    const count = document.createElement("span");
+    count.className = "map-pin-hearts";
+    count.textContent = `♥${hearts}`;
+    element.append(count);
+  }
+  const price = document.createElement("span");
+  price.dir = "auto";
+  price.textContent = label;
+  element.append(price);
   element.title = title;
   element.setAttribute("aria-label", ariaLabel);
   element.dataset.approx = String(approximate);

@@ -460,6 +460,7 @@ export type MapPropertyItem = {
   type: "property";
   currency: "toman";
   price: number | null;
+  favorite_count?: number;
   location: PublicMapPoint;
   price_basis: "today_nightly";
 };

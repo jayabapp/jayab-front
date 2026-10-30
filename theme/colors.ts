@@ -28,4 +28,14 @@ export const colors = {
   danger: { 50: "#FEF2F2", 500: "#DC2626", 600: "#C11F1F" },
 } as const;
 
+export const mapColors = {
+  land: "#DCE5F0",
+  water: "#A9CDEE",
+  park: "#CDE4C9",
+  street: "#FFFFFF",
+  streetCasing: "#C3CFDD",
+  highway: "#FDE3AC",
+  highwayCasing: "#DCB36A",
+} as const;
+
 export type ColorPalette = typeof colors;

@@ -11,8 +11,8 @@ import {
 const words = { currency: "T", fallback: "مشاهده" };
 
 test("the pin shows the whole nightly amount, grouped, with the currency mark", () => {
-  assert.equal(pinPriceLabel(1_500_000, "fa", words), "۱/۵۰۰/۰۰۰T");
-  assert.equal(pinPriceLabel(800_000, "fa", words), "۸۰۰/۰۰۰T");
+  assert.equal(pinPriceLabel(1_500_000, "fa", words), "۱,۵۰۰,۰۰۰T");
+  assert.equal(pinPriceLabel(800_000, "fa", words), "۸۰۰,۰۰۰T");
   assert.equal(pinPriceLabel(1_500_000, "ar", words), "١٬٥٠٠٬٠٠٠T");
   assert.equal(pinPriceLabel(1_500_000, "en", words), "1,500,000T");
 });

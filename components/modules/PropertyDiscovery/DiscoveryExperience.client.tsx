@@ -21,10 +21,7 @@ const MapScope = ({ children }: { children: ReactNode }) => {
     }),
   );
   return (
-    <DiscoveryMapProvider
-      hasMapArea={Boolean(query.bbox)}
-      searchScope={searchScope}
-    >
+    <DiscoveryMapProvider searchScope={searchScope}>
       {children}
     </DiscoveryMapProvider>
   );

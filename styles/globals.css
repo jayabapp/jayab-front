@@ -221,11 +221,17 @@ ul {
 }
 
 .map-price-pin {
-  @apply relative flex h-7 cursor-pointer items-center justify-center whitespace-nowrap rounded-full border border-line-strong bg-surface px-2.5 text-xs font-bold text-ink shadow-elevated outline-none transition-transform duration-150;
+  @apply relative flex h-7 cursor-pointer items-center justify-center gap-1.5 whitespace-nowrap rounded-full border border-line-strong bg-surface px-2.5 text-xs font-bold text-ink shadow-elevated outline-none transition-transform duration-150;
 }
 .map-price-pin::after {
   content: "";
   @apply absolute inset-x-0 -bottom-1 mx-auto size-2 rotate-45 border-b border-e border-line-strong bg-surface;
+}
+.map-pin-hearts {
+  @apply text-status-danger;
+}
+.map-price-pin[data-state="selected"] .map-pin-hearts {
+  @apply text-on-action;
 }
 .map-price-pin[data-approx="true"],
 .map-price-pin[data-approx="true"]::after {

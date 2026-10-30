@@ -4,6 +4,7 @@ import { useCallback, useEffect, useEffectEvent } from "react";
 import { destinationKey, pinPriceLabel } from "@features/map/lib/map-camera";
 import { formatBbox, isPointLikeBbox } from "@features/properties/lib/bbox";
 import { useTranslations, useLocale } from "next-intl";
+import { formatListingPriceFor } from "@/helpers/intl/number";
 import { CLUSTER_MAX_FIT_ZOOM } from "@features/map/constants/discovery-map";
 import { MAP_MOVE_DEBOUNCE_MS } from "@features/map/constants/discovery-map";
 import { useHoveredPropertyId } from "@features/properties/context/DiscoveryMapContext";
@@ -18,18 +19,17 @@ import { useMapMarkers } from "@features/map/hooks/useMapMarkers";
 import { useMapSupport } from "@features/map/hooks/useMapSupport";
 import { resolveLocale } from "@/i18n/config";
 import { publicPoints } from "@features/map/lib/map-camera";
-import { formatNumber } from "@/helpers/intl/number";
 import { IRAN_CENTER } from "@features/map/constants/flight";
 import { useMapArea } from "@features/properties/hooks/useMapArea";
 import { NeshanMap } from "@elements/Map";
 import { Icon } from "@elements/Icon";
 
+import type { CSSProperties, KeyboardEvent } from "react";
 import type { MapClusterItem, MapItem } from "@/types/features/map";
 import type { NeshanMapInstance } from "@/types/components/elements/map";
 import type { DiscoveryMapProps } from "@/types/components/modules/discovery-map";
 import type { MarkerDescription } from "@/types/features/map";
 import type { MapPropertyItem } from "@/types/features/map";
-import type { CSSProperties, KeyboardEvent } from "react";
 import type { MapBounds } from "@/types/components/elements/map";
 import type { MapCamera } from "@features/properties/hooks/usePropertiesMap";
 import type { Bbox } from "@features/properties/lib/bbox";
@@ -47,7 +47,6 @@ const PILL_CLASS =
   "pointer-events-auto flex h-11 items-center gap-2 rounded-full bg-surface px-4 text-sm font-medium text-ink shadow-elevated transition-colors hover:bg-surface-muted focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-focus";
 
 const CARD_SLOT_CLASS = "absolute inset-x-3 z-20 flex justify-center";
-// Clear of the map's attribution line, above whatever covers the foot of the map.
 const FOOT_GAP_PX = 40;
 
 const asMapBounds = ([west, south, east, north]: Bbox): MapBounds => [
@@ -56,6 +55,12 @@ const asMapBounds = ([west, south, east, north]: Bbox): MapBounds => [
   east,
   north,
 ];
+
+const fitTo = (
+  map: NeshanMapInstance,
+  bounds: MapBounds,
+  options: Parameters<NeshanMapInstance["fitBounds"]>[1],
+) => map.fitBounds(bounds, options, { programmatic: true });
 
 const readCamera = (map: NeshanMapInstance): MapCamera => {
   const bounds = map.getBounds();
@@ -83,16 +88,9 @@ const DiscoveryMap = ({
   const locale = resolveLocale(useLocale());
   const isSupported = useMapSupport();
 
-  const {
-    view,
-    autoSearch,
-    selectedId,
-    searchScope,
-    setAutoSearch,
-    setSelectedId,
-  } = useDiscoveryMap();
+  const { view, selectedId, searchScope, setSelectedId } = useDiscoveryMap();
   const hoveredId = useHoveredPropertyId();
-  const { appliedBbox, applyArea, clearArea } = useMapArea();
+  const { appliedBbox, applyArea } = useMapArea();
   const destination = destinationKey(query);
 
   const [map, setMap] = useState<NeshanMapInstance | null>(null);
@@ -142,20 +140,16 @@ const DiscoveryMap = ({
   const items = data?.items ?? NO_ITEMS;
 
   const searchedRef = useRef<string | null>(appliedBbox);
-  const searchNow = (bbox: string, push: boolean) => {
+  const searchAfterMove = useEffectEvent((bbox: string) => {
     if (bbox === appliedBbox) return;
     searchedRef.current = bbox;
-    applyArea(bbox, { push });
-  };
-  const searchAfterMove = useEffectEvent((bbox: string) =>
-    searchNow(bbox, false),
-  );
-  const isAutoSearch = useEffectEvent(() => autoSearch);
+    applyArea(bbox, { push: false });
+  });
 
   useEffect(() => {
     if (!map) return;
     let timer = 0;
-    const onMoveEnd = (event: { originalEvent?: unknown }) => {
+    const onMoveEnd = (event: { programmatic?: boolean }) => {
       const next = readCamera(map);
       setCamera((current) =>
         current?.bbox === next.bbox && current.zoom === next.zoom
@@ -169,14 +163,14 @@ const DiscoveryMap = ({
         zoom: map.getZoom(),
         center: [center.lng, center.lat],
       });
-      if (!event.originalEvent || !isAutoSearch()) return;
+      if (event.programmatic) return;
       window.clearTimeout(timer);
       timer = window.setTimeout(
         () => searchAfterMove(next.bbox),
         MAP_MOVE_DEBOUNCE_MS,
       );
     };
-    onMoveEnd({});
+    onMoveEnd({ programmatic: true });
     map.on("moveend", onMoveEnd);
     return () => {
       window.clearTimeout(timer);
@@ -189,7 +183,7 @@ const DiscoveryMap = ({
     if (!map || !appliedBbox || appliedBbox === searchedRef.current) return;
     searchedRef.current = appliedBbox;
     const box = parseBbox(appliedBbox);
-    if (box) map.fitBounds(asMapBounds(box), { padding: 0 });
+    if (box) fitTo(map, asMapBounds(box), { padding: 0 });
   }, [map, appliedBbox]);
 
   const fitPadding = {
@@ -200,14 +194,12 @@ const DiscoveryMap = ({
   };
   const currentFitPadding = useEffectEvent(() => fitPadding);
 
-  // The first view was framed before anything covered the foot of the map. Once the
-  // sheet's share is known, frame it again so the opening pins sit in the part that shows.
   const reframed = useRef(false);
   useEffect(() => {
     if (!map || reframed.current || !initial.bounds || bottomInset === 0)
       return;
     reframed.current = true;
-    map.fitBounds(initial.bounds, {
+    fitTo(map, initial.bounds, {
       animate: false,
       maxZoom: FIT_MAX_ZOOM,
       padding: currentFitPadding(),
@@ -223,7 +215,7 @@ const DiscoveryMap = ({
     fittedFor.current = destination;
     const box = boundsOfPoints(publicPoints(properties));
     if (box)
-      map.fitBounds(asMapBounds(box), {
+      fitTo(map, asMapBounds(box), {
         padding: currentFitPadding(),
         maxZoom: FIT_MAX_ZOOM,
       });
@@ -234,24 +226,38 @@ const DiscoveryMap = ({
   const describe = useCallback(
     (item: MapItem): MarkerDescription => {
       if (item.type === "cluster") {
-        const label = formatNumber(item.count, locale);
+        const label = formatListingPriceFor(item.count, locale);
         const text = t(
           isPointLikeBbox(item.bounds)
             ? "listing.mapStackTitle"
             : "listing.mapCluster",
           { formatted: label },
         );
-        return { label, title: text, ariaLabel: text, approximate: false };
+        return {
+          label,
+          hearts: null,
+          title: text,
+          ariaLabel: text,
+          approximate: false,
+        };
       }
       const approximate = item.location.precision === "approximate";
       const hasPrice = item.price !== null && item.price > 0;
       const base = hasPrice
-        ? t("listing.mapPinPrice", { price: formatNumber(item.price, locale) })
+        ? t("listing.mapPinPrice", {
+            price: formatListingPriceFor(item.price, locale),
+          })
         : noPrice;
-      const text = approximate
-        ? `${base}${separator}${t("listing.mapApproximate")}`
-        : base;
+      const favorites = item.favorite_count ?? 0;
+      const hearts =
+        favorites > 0 ? formatListingPriceFor(favorites, locale) : null;
+      const parts = [base];
+      if (hearts)
+        parts.push(t("listing.mapPinFavorites", { formatted: hearts }));
+      if (approximate) parts.push(t("listing.mapApproximate"));
+      const text = parts.join(separator);
       return {
+        hearts,
         title: text,
         ariaLabel: text,
         approximate,
@@ -277,7 +283,7 @@ const DiscoveryMap = ({
     setSelectedId(null);
     setStack(stuck ? item : null);
     if (!stuck)
-      map.fitBounds(asMapBounds(item.bounds), {
+      fitTo(map, asMapBounds(item.bounds), {
         padding: fitPadding,
         maxZoom: CLUSTER_MAX_FIT_ZOOM,
       });
@@ -295,7 +301,6 @@ const DiscoveryMap = ({
 
   const showStackInList = () => {
     if (!stack) return;
-    setAutoSearch(false);
     searchedRef.current = null;
     applyArea(formatBbox(padBbox(stack.bounds, STACK_AREA_PAD_DEGREES)), {
       push: true,
@@ -303,12 +308,6 @@ const DiscoveryMap = ({
     setStack(null);
     // On a phone the list is a sheet over the map: open it to show them.
     if (variant === "background") onClose();
-  };
-
-  const onToggleSearch = (checked: boolean) => {
-    setAutoSearch(checked);
-    if (!checked || !map) return;
-    searchNow(readCamera(map).bbox, !appliedBbox);
   };
 
   const rootRef = useRef<HTMLDivElement>(null);
@@ -354,9 +353,11 @@ const DiscoveryMap = ({
   const statusText = isBusy
     ? t("listing.mapUpdating")
     : typeof total === "number"
-      ? t("listing.mapAreaCount", { formatted: formatNumber(total, locale) })
+      ? t("listing.mapAreaCount", {
+          formatted: formatListingPriceFor(total, locale),
+        })
       : "";
-  const stackCount = stack ? formatNumber(stack.count, locale) : "";
+  const stackCount = stack ? formatListingPriceFor(stack.count, locale) : "";
   const footStyle = { bottom: bottomInset + FOOT_GAP_PX };
 
   return (
@@ -391,31 +392,8 @@ const DiscoveryMap = ({
             <Icon name="x" size={20} />
           </button>
         ) : null}
-        <label className={`${PILL_CLASS} cursor-pointer`}>
-          <input
-            type="checkbox"
-            checked={autoSearch}
-            className="size-4 cursor-pointer accent-action"
-            onChange={(event) => onToggleSearch(event.target.checked)}
-          />
-          {t("listing.mapSearchOnMove")}
-        </label>
-        {appliedBbox ? (
-          <button
-            type="button"
-            onClick={clearArea}
-            className={PILL_CLASS}
-            aria-label={t("listing.removeMapArea")}
-          >
-            {t("listing.mapArea")}
-            <Icon name="x" size={16} />
-          </button>
-        ) : null}
         {statusText ? (
-          <p
-            role="status"
-            className="pointer-events-auto rounded-full bg-surface px-3 py-2 text-xs font-medium text-ink shadow-elevated"
-          >
+          <p role="status" className={PILL_CLASS}>
             {statusText}
           </p>
         ) : null}
@@ -462,33 +440,26 @@ const DiscoveryMap = ({
             }}
           />
         </div>
-      ) : (
+      ) : isError && !data ? (
         <div
           style={footStyle}
-          className="pointer-events-none absolute z-10 flex flex-col items-start gap-2 ltr:start-3 rtl:end-3"
+          className="pointer-events-none absolute z-10 ltr:start-3 rtl:end-3"
         >
-          {isError && !data ? (
-            <div
-              role="alert"
-              className="pointer-events-auto flex items-center gap-3 rounded-full bg-status-danger-bg px-4 py-2 text-xs text-status-danger shadow-elevated"
+          <div
+            role="alert"
+            className="pointer-events-auto flex items-center gap-3 rounded-full bg-status-danger-bg px-4 py-2 text-xs text-status-danger shadow-elevated"
+          >
+            <span>{t("listing.mapLoadError")}</span>
+            <button
+              type="button"
+              onClick={() => void refetchPins()}
+              className="cursor-pointer font-bold underline underline-offset-4"
             >
-              <span>{t("listing.mapLoadError")}</span>
-              <button
-                type="button"
-                onClick={() => void refetchPins()}
-                className="cursor-pointer font-bold underline underline-offset-4"
-              >
-                {t("common.tryAgain")}
-              </button>
-            </div>
-          ) : null}
-          <p className="rounded-full bg-surface/90 px-3 py-1 text-2xs text-ink-subtle shadow-elevated">
-            {t("listing.mapLegend")}
-            {separator}
-            {t("listing.mapApproximate")}
-          </p>
+              {t("common.tryAgain")}
+            </button>
+          </div>
         </div>
-      )}
+      ) : null}
     </div>
   );
 };
