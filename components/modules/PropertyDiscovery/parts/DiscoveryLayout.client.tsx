@@ -171,7 +171,7 @@ const DiscoveryLayout = ({
 
   const quickRow = (
     <div className="discovery-quick-row flex w-full items-center gap-2 px-3 py-2 md:gap-3 xl:px-0">
-      <div className="-my-1 min-w-0 flex-1 overflow-x-auto py-1">
+      <div className="-my-1 min-w-0 flex-1 overflow-x-auto overflow-y-hidden py-1">
         <SpecialFilterButtons query={queries} />
       </div>
       {hasArea ? <MapToggleButton /> : null}

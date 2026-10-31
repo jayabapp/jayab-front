@@ -1796,6 +1796,11 @@ html[data-theme="dark"] .logo-adapt {
   .discovery-filter-chips button.size-5::after {
     inset: -1rem;
   }
+
+  /* The tag row scrolls sideways, so a hit area taller than the row would make it scroll up and down too. */
+  .discovery-quick-row [role="group"] button::after {
+    inset-block: -0.25rem;
+  }
 }
 
 html[data-theme="dark"] .filter-chip-primary {
@@ -1903,7 +1908,7 @@ html[data-theme="dark"] .filter-chip-primary {
 }
 .results-sheet {
   @apply relative z-[1] overflow-clip rounded-t-28 bg-surface pb-6 shadow-elevated;
-  margin-top: calc(var(--sheet-peek, 7.5rem) * -1);
+  margin-top: calc(var(--sheet-peek, 15.5rem) * -1);
   min-height: var(--stage-h);
 }
 .results-sheet-head {
