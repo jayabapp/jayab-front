@@ -126,7 +126,7 @@ const PublicPropertyCard = ({ data, goToLink }: PublicPropertyCardProps) => {
         <PropertyCardLink
           href={goToLink}
           title={data.title}
-          className="relative order-2 col-span-2 flex w-full !outline-none"
+          className="relative order-2 col-span-2 flex w-full self-start !outline-none"
         >
           {data.has_active_subscription ? (
             <CallBadge
