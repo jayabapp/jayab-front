@@ -24,7 +24,7 @@ const DiscoveryMap = dynamic(() => import("./DiscoveryMap.client"), {
 
 const MAP_PEEK_PX = 120;
 // The bottom tab bar covers the foot of the screen on load, so the tags have to sit above it.
-const MOBILE_NAV_PX = 108;
+const MOBILE_NAV_PX = 96;
 
 const scrollPageBy = (distance: number) =>
   window.scrollTo({
@@ -61,8 +61,23 @@ const DiscoveryMobileMap = ({
     const head = sheet.querySelector<HTMLElement>(".results-sheet-head");
     const quickRow = sheet.querySelector<HTMLElement>(".discovery-quick-row");
     let frame = 0;
+    let hasOpened = false;
+    // On arrival the sheet is raised once so the first card shows; scrolling back to the top
+    // drops it to the tags-only state. A restored scroll position is left alone.
+    const openToFirstCard = () => {
+      const card = sheet.querySelector<HTMLElement>("[data-property-id]");
+      if (hasOpened || !card) return;
+      hasOpened = true;
+      if (window.scrollY > 0) return;
+      const hidden =
+        card.getBoundingClientRect().bottom -
+        (window.innerHeight - MOBILE_NAV_PX);
+      if (hidden > 0)
+        window.scrollTo({ top: Math.ceil(hidden), behavior: "instant" });
+    };
     const update = () => {
       frame = 0;
+      openToFirstCard();
       setPeek((head?.offsetHeight ?? 0) + (quickRow?.offsetHeight ?? 0));
       setIsListUp(listCoversMap(stage, sheet));
     };
@@ -71,7 +86,7 @@ const DiscoveryMobileMap = ({
     };
     update();
     const observer = new ResizeObserver(schedule);
-    for (const element of [stage, head, quickRow])
+    for (const element of [stage, sheet, head, quickRow])
       if (element) observer.observe(element);
     window.addEventListener("scroll", schedule, { passive: true });
     return () => {

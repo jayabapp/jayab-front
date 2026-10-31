@@ -28,26 +28,21 @@ const PropertySortMenu = ({ query }: PropertySortMenuProps) => {
     icon,
   }));
 
-  const activeId = query?.sort_type ?? DEFAULT_SORT;
+  // Until a sort is picked the button says "Sort"; after that it names the choice instead.
+  const activeId = query?.sort_type;
   const activeTitle = sortTypes.find((entry) => entry.id === activeId)?.title;
 
-  const setSort = (id: string) => {
-    const body: Record<string, unknown> = { ...query };
-    if (id === DEFAULT_SORT) delete body.sort_type;
-    else body.sort_type = id;
-    replaceQuery(body);
-  };
+  const setSort = (id: string) => replaceQuery({ ...query, sort_type: id });
 
   return (
     <Menu as="div" className="relative inline-block shrink-0 text-end">
       <MenuButton className="flex h-9 shrink-0 cursor-pointer items-center gap-1 rounded-full md:gap-1.5 border border-line bg-surface px-2.5 text-xs font-semibold text-ink md:h-11 md:px-4 md:text-sm">
         <Icon name="sort" size={16} className="text-link" />
-        <span>{t("sortBy")}</span>
-        {activeTitle ? (
-          <span className="hidden font-bold text-on-selected md:inline">
-            {activeTitle}
-          </span>
-        ) : null}
+        <span
+          className={`max-w-28 truncate ${activeTitle ? "font-bold text-on-selected" : ""}`}
+        >
+          {activeTitle ?? t("sortBy")}
+        </span>
         <Icon
           size={16}
           name="chevron-down"
@@ -70,7 +65,7 @@ const PropertySortMenu = ({ query }: PropertySortMenuProps) => {
                 onClick={() => setSort(entry.id)}
                 className="relative flex min-h-11 w-full cursor-pointer items-center gap-2 border-t border-line py-2 pe-8"
               >
-                {entry.id === activeId ? (
+                {entry.id === (activeId ?? DEFAULT_SORT) ? (
                   <Icon
                     name="check"
                     size={16}
