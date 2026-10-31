@@ -1,4 +1,5 @@
 import { ContentImage } from "@/components/elements/Image";
+import { Icon } from "@elements/Icon";
 
 import type { FullscreenImageProps } from "@/types/components/elements/upload";
 
@@ -15,14 +16,14 @@ const FullscreenImage = ({
     <Modal show={show} onHide={() => setShow(false)}>
       <div className="h-full w-full flex flex-col p-2 gap-2 justify-center items-center bg-surface">
         <div className="w-full h-8 flex items-center justify-between">
-          <ContentImage
-            alt=""
-            width={16}
-            height={16}
+          <button
+            type="button"
+            aria-label="close"
             onClick={() => setShow(false)}
-            className="cursor-pointer w-4 m-2"
-            src="/assets/icons/adds/x_mark.svg"
-          />
+            className="m-2 cursor-pointer"
+          >
+            <Icon name="x" size={20} />
+          </button>
 
           {onDelete ? (
             <div className="me-2">

@@ -1,8 +1,7 @@
 import { useTranslations } from "next-intl";
+import { Icon } from "@elements/Icon";
 
 import type { ModalHeaderPartProps } from "@/types/components/elements/modal";
-
-import ContentImage from "@elements/Image/ContentImage";
 
 const ModalHeaderPart = ({
   title,
@@ -27,13 +26,7 @@ const ModalHeaderPart = ({
           aria-label={t("back")}
           className="absolute top-3 start-2 md:hidden"
         >
-          <ContentImage
-            alt=""
-            width={16}
-            height={16}
-            className="h-4 w-4 -rotate-90"
-            src="/assets/icons/shared/chevron.svg"
-          />
+          <Icon name="chevron-start" size={16} />
         </button>
       )}
       <div className="flex flex-row gap-2">
@@ -47,13 +40,7 @@ const ModalHeaderPart = ({
         aria-label={t("close")}
         className={showX ? "block" : "hidden md:block"}
       >
-        <ContentImage
-          alt=""
-          width={12}
-          height={12}
-          className="h-3 w-3"
-          src="/assets/icons/adds/x_mark.svg"
-        />
+        <Icon name="x" size={16} />
       </button>
       {children}
     </div>

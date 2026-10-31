@@ -1,5 +1,5 @@
 import { useTranslations } from "next-intl";
-import { ContentImage } from "@elements/Image";
+import { Icon } from "@elements/Icon";
 import { FormInput } from "@elements/Form";
 
 import type { CitySearchInputProps } from "@/types/components/modules/city-selector";
@@ -32,13 +32,7 @@ const CitySearchInput = ({
           value ? "opacity-75" : "opacity-0 pointer-events-none"
         } transition-all`}
       >
-        <ContentImage
-          alt=""
-          width={12}
-          height={12}
-          className="w-3 h-3"
-          src="/assets/icons/adds/x_mark.svg"
-        />
+        <Icon name="x" size={16} />
       </button>
     </div>
   );

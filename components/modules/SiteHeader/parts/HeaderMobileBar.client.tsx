@@ -7,7 +7,6 @@ import { DisplayPreferences } from "@modules/DisplayPreferences";
 import { useTranslations } from "next-intl";
 import { HomeHeroSearch } from "@modules/HomeHeroSearch";
 import { useStoreParams } from "@/store";
-import { ContentImage } from "@elements/Image";
 import { Icon } from "@elements/Icon";
 import { useDir } from "@hooks/useDir";
 
@@ -109,12 +108,7 @@ const HeaderMobileBar = ({
           title={t("common.back")}
           className="flex size-11 items-center justify-start"
         >
-          <ContentImage
-            alt=""
-            width={16}
-            height={16}
-            src="/assets/icons/shared/chevron-right.svg"
-          />
+          <Icon name="chevron-start" size={16} />
         </button>
 
         <p

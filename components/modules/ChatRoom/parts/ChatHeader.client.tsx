@@ -1,6 +1,7 @@
 "use client";
 
 import { useLayoutEffect, useRef, useState } from "react";
+import { Icon } from "@elements/Icon";
 import { resolveChatImage } from "@features/chat/presentation/chat.presenter";
 import { useBlockChatUser } from "@features/chat/hooks/useBlockChatUser";
 import { useTranslations } from "next-intl";
@@ -93,18 +94,18 @@ const ChatHeader = ({
     >
       <div className="flex min-h-[4.25rem] items-center justify-between gap-2 px-2 pb-3 pt-4">
         <div className="flex w-full items-center gap-2">
-          <Image
-            src="/assets/icons/shared/chevron.svg"
-            alt={tr("common.back")}
-            width={16}
-            height={16}
+          <button
+            type="button"
+            aria-label={tr("common.back")}
             onClick={(e) => {
               e.preventDefault();
               e.stopPropagation();
               handleBackClick();
             }}
-            className="h-4 aspect-square w-4 -rotate-90 justify-start"
-          />
+            className="flex shrink-0"
+          >
+            <Icon name="chevron-start" size={16} />
+          </button>
           <div className="flex items-center w-full gap-2">
             {image ? (
               <div className="w-10 shrink-0 relative flex items-center aspect-square">

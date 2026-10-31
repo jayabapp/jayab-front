@@ -1,4 +1,5 @@
 import { ContentImage } from "@elements/Image";
+import { Icon } from "@elements/Icon";
 
 import type { OwnerActionRowProps } from "@/types/components/modules/owner-property";
 
@@ -38,13 +39,7 @@ const OwnerActionRow = ({
           src="/assets/icons/uploader/red_trash_icon.svg"
         />
       ) : (
-        <ContentImage
-          alt=""
-          width={16}
-          height={16}
-          className="rotate-90"
-          src="/assets/icons/shared/chevron.svg"
-        />
+        <Icon name="chevron-end" size={16} />
       )}
     </>
   );

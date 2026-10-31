@@ -1,11 +1,11 @@
 import { ModalBottomSheet, ModalHeaderPart } from "@elements/Modal";
+import { Icon } from "@elements/Icon";
 import { useTranslations } from "next-intl";
 import { useState } from "react";
 import { p2e } from "@/helpers/NumberConverter";
 
 import type { SingleSelectProps } from "@/types/components/elements/form";
 
-import ContentImage from "@elements/Image/ContentImage";
 import Selecti from "./SingleSelectSelecti";
 import isEmpty from "lodash/isEmpty";
 
@@ -60,12 +60,10 @@ const SinglePopUpSelect = ({
                 }`
               : item?.placeholder || item?.title}
           </div>
-          <ContentImage
-            alt=""
-            width={24}
-            height={24}
-            src="/assets/icons/shared/chevron.svg"
-            className={`h-4 w-4 transition-all ${show ? "rotate-180" : ""}`}
+          <Icon
+            name="chevron-down"
+            size={16}
+            className={`transition-all ${show ? "rotate-180" : ""}`}
           />
         </button>
       </div>

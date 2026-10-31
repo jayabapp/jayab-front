@@ -1,9 +1,8 @@
 import { resolveChatImage } from "@features/chat/presentation/chat.presenter";
+import { Icon } from "@elements/Icon";
 import { ContentImage } from "@/components/elements/Image";
 
 import type { ChatReplyProps } from "@/types/components/modules/chat";
-
-import Image from "next/image";
 
 const ChatReply = ({ data, cancleButton }: ChatReplyProps) => {
   return (
@@ -26,14 +25,13 @@ const ChatReply = ({ data, cancleButton }: ChatReplyProps) => {
         </p>
         <p className="text-xs">{data?.text}</p>
       </div>
-      <Image
-        alt=""
-        width={12}
-        height={12}
-        src="/assets/icons/shared/close.svg"
-        className="absolute end-4 top-4 opacity-75 w-3 cursor-pointer aspect-square"
+      <button
+        type="button"
         onClick={() => (cancleButton ? cancleButton() : null)}
-      />
+        className="absolute end-4 top-4 opacity-75"
+      >
+        <Icon name="x" size={16} />
+      </button>
     </div>
   );
 };

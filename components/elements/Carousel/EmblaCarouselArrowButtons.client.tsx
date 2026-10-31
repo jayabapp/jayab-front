@@ -1,7 +1,6 @@
 "use client";
 
 import { useCallback, useEffect, useState } from "react";
-import { ContentImage } from "@elements/Image";
 import { Icon } from "@elements/Icon";
 
 import type { CarouselNavigationState } from "@/types/components/elements/carousel";
@@ -91,12 +90,10 @@ export const PrevButton: React.FC<CarouselButtonProps> = (props) => {
       type="button"
       {...restProps}
     >
-      <ContentImage
-        width={18}
-        height={18}
-        alt="chvronSwiper"
-        src="/assets/icons/shared/chevron.svg"
-        className="w-[1.125rem] h-[1.125rem] rotate-90 select-none group-hover:invert"
+      <Icon
+        name="chevron-left"
+        size={20}
+        className="select-none text-ink group-hover:text-on-action"
       />
     </button>
   );
@@ -111,12 +108,10 @@ export const NextButton: React.FC<CarouselButtonProps> = (props) => {
       type="button"
       {...restProps}
     >
-      <ContentImage
-        width={18}
-        height={18}
-        alt="chvronSwiper"
-        src="/assets/icons/shared/chevron.svg"
-        className="w-[1.125rem] h-[1.125rem]  -rotate-90   select-none group-hover:invert"
+      <Icon
+        name="chevron-left"
+        size={20}
+        className="rotate-180 select-none text-ink group-hover:text-on-action"
       />
     </button>
   );

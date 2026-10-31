@@ -1,5 +1,5 @@
 import { useTranslations } from "next-intl";
-import { ContentImage } from "@elements/Image";
+import { Icon } from "@elements/Icon";
 
 import type { ReservationMonthPickerProps } from "@/types/components/modules/reservation-date-picker";
 
@@ -35,14 +35,14 @@ const YearMonthPicker = ({
     >
       {!!setDate ? (
         <div className="flex items-center gap-2">
-          <ContentImage
-            alt="`"
-            width={24}
-            height={24}
-            className="cursor-pointer ltr:rotate-180"
+          <button
+            type="button"
+            aria-label={t("lastMonth")}
             onClick={() => lastMonth()}
-            src={"/assets/icons/property/arrow_right_callendar.svg"}
-          />
+            className="cursor-pointer text-ink"
+          >
+            <Icon name="arrow-start" size={24} />
+          </button>
           <p className="text-xs text-neutral-50">{t("lastMonth")}</p>
         </div>
       ) : (
@@ -57,14 +57,14 @@ const YearMonthPicker = ({
       {!!setDate ? (
         <div className="flex items-center gap-2">
           <p className="text-xs text-neutral-50 ">{t("nextMonth")}</p>
-          <ContentImage
-            alt="`"
-            width={24}
-            height={24}
+          <button
+            type="button"
+            aria-label={t("nextMonth")}
             onClick={() => nextMonth()}
-            className="cursor-pointer  -rotate-180 ltr:rotate-0"
-            src={"/assets/icons/property/arrow_right_callendar.svg"}
-          />
+            className="cursor-pointer text-ink"
+          >
+            <Icon name="arrow-end" size={24} />
+          </button>
         </div>
       ) : (
         <div> </div>

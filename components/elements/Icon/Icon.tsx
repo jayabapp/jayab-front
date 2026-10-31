@@ -76,6 +76,11 @@ const PATHS: Record<IconName, JSX.Element> = {
   check: <path d="m5.5 12.5 4.5 4.5 8.5-9" />,
   "chevron-down": <path d="m6 9.5 6 6 6-6" />,
   "chevron-left": <path d="M14.5 5.5 8 12l6.5 6.5" />,
+  "chevron-start": <path d="M14.5 5.5 8 12l6.5 6.5" />,
+  "chevron-end": <path d="M9.5 5.5 16 12l-6.5 6.5" />,
+  "arrow-start": <path d="M19.5 12h-15M10.5 6l-6 6 6 6" />,
+  "arrow-end": <path d="M4.5 12h15M13.5 6l6 6-6 6" />,
+  "arrow-up-end": <path d="M7 17 17 7M8.5 7H17v8.5" />,
   "chevrons-up": <path d="m6 12.5 6-6 6 6M6 18.5l6-6 6 6" />,
   cigarette: (
     <>
@@ -184,7 +189,9 @@ const PATHS: Record<IconName, JSX.Element> = {
       <path d="M9 3.75v5.5M12 3.75v5.5M15 3.75v5.5" />
     </>
   ),
-  list: <path d="M9 6.5h10.5M9 12h10.5M9 17.5h10.5M4.5 6.5h.01M4.5 12h.01M4.5 17.5h.01" />,
+  list: (
+    <path d="M9 6.5h10.5M9 12h10.5M9 17.5h10.5M4.5 6.5h.01M4.5 12h.01M4.5 17.5h.01" />
+  ),
   map: (
     <>
       <path d="m3.5 6.5 5.5-2.25 6 2.25 5.5-2.25v13.25L15 19.75l-6-2.25-5.5 2.25z" />
@@ -355,6 +362,15 @@ const PATHS: Record<IconName, JSX.Element> = {
   ),
 };
 
+// Glyphs with a reading direction: drawn for LTR, mirrored by CSS where the text runs RTL.
+const BIDI = new Set<IconName>([
+  "chevron-start",
+  "chevron-end",
+  "arrow-start",
+  "arrow-end",
+  "arrow-up-end",
+]);
+
 const Icon = ({ className = "", name, size = 20 }: IconProps) => (
   <svg
     width={size}
@@ -367,7 +383,7 @@ const Icon = ({ className = "", name, size = 20 }: IconProps) => (
     strokeLinejoin="round"
     aria-hidden="true"
     focusable="false"
-    className={`shrink-0 ${className}`}
+    className={`shrink-0 ${BIDI.has(name) ? "icon-bidi " : ""}${className}`}
   >
     {PATHS[name]}
   </svg>

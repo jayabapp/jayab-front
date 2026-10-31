@@ -1,6 +1,7 @@
 "use client";
 
 import { useJalaliFormat } from "@hooks/useJalaliFormat";
+import { Icon } from "@elements/Icon";
 import { useTranslations } from "next-intl";
 import { ContentImage } from "@elements/Image";
 import { useState } from "react";
@@ -79,13 +80,7 @@ const DateFilter = ({ filters, setFilters }: DateFilterProps) => {
             />
           </span>
         ) : (
-          <ContentImage
-            alt=""
-            width={16}
-            height={16}
-            src="/assets/icons/shared/chevron.svg"
-            className="object-contain transition-all w-4 aspect-square"
-          />
+          <Icon name="chevron-down" size={16} />
         )}
       </button>
 

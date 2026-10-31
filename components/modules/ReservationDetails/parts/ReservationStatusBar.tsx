@@ -1,4 +1,5 @@
 import { useTranslations } from "next-intl";
+import { Icon } from "@elements/Icon";
 import { ContentImage } from "@elements/Image";
 
 import type { ReservationStatusBarProps } from "@/types/components/modules/reservations";
@@ -61,13 +62,7 @@ const ReservationStatusBar = ({
             className="cursor-pointer bg-surface-muted border w-fit flex items-center gap-2 px-3 py-2 rounded-xl text-2xs md:text-sm font-medium"
           >
             {t("cancelReserve")}
-            <ContentImage
-              alt=""
-              width={8}
-              height={8}
-              src="/assets/icons/adds/x_mark.svg"
-              className="w-2 h-2 md:w-2 cursor-pointer opacity-60 md:h-2"
-            />
+            <Icon name="x" size={16} className="size-3 opacity-60" />
           </button>
         ) : isOwner && reservation?.status?.id != ANSWERED_STATUS_ID ? (
           <Button

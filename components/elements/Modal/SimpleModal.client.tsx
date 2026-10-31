@@ -1,7 +1,7 @@
 "use client";
 
 import type { SimpleModalProps } from "@/types/components/elements/modal-variants";
-import { ContentImage } from "@elements/Image";
+import { Icon } from "@elements/Icon";
 
 import Image from "next/image";
 
@@ -17,18 +17,11 @@ const SimpleModal = ({
       <div className="flex items-start justify-between p-6">
         <div className="flex flex-col flex-items-start gap-2">
           {image && <Image alt="" src={image} width={34} height={34} />}
-          {subtitle && (
-            <span className="text-sm text-link">{subtitle}</span>
-          )}
+          {subtitle && <span className="text-sm text-link">{subtitle}</span>}
         </div>
         {title && <span>{title}</span>}
         <button onClick={onClick}>
-          <ContentImage
-            alt=""
-            width={24}
-            height={24}
-            src="/assets/icons/close.svg"
-          />
+          <Icon name="x" size={24} />
         </button>
       </div>
       {children}

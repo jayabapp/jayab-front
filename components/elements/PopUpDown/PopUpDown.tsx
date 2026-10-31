@@ -1,9 +1,8 @@
 import { useTranslations } from "next-intl";
+import { Icon } from "@elements/Icon";
 import { Sheet } from "react-modal-sheet";
 
 import type { PopUpDownProps } from "@/types/components/elements/popup-down";
-
-import ContentImage from "@elements/Image/ContentImage";
 
 const PopUpDown = ({
   item,
@@ -42,12 +41,7 @@ const PopUpDown = ({
                   onClick={() => setVisible(false)}
                   className="absolute top-6 h-4 w-4 cursor-pointer opacity-60"
                 >
-                  <ContentImage
-                    alt=""
-                    width={16}
-                    height={16}
-                    src="/assets/icons/adds/x_mark.svg"
-                  />
+                  <Icon name="x" size={16} />
                 </button>
               </>
             ) : (

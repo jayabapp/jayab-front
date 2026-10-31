@@ -3,8 +3,8 @@
 /* eslint-disable react-hooks/set-state-in-effect -- Modal open/default-date transitions initialize a bounded month window. */
 
 import { useCallback, useEffect, useState } from "react";
+import { Icon } from "@elements/Icon";
 import { useTranslations } from "next-intl";
-import { ContentImage } from "@elements/Image";
 import { BtnLoading } from "@elements/Button";
 
 import type { TReservationDateProps } from "@/types/components/modules/reservation-date-picker";
@@ -34,12 +34,12 @@ const ReservationDateModal = ({
   }>({ start: null, end: null });
 
   useEffect(() => {
-    if (defaultSpanDates?.start || defaultSpanDates?.end) setDateSpan({
+    if (defaultSpanDates?.start || defaultSpanDates?.end)
+      setDateSpan({
         end: defaultSpanDates?.end || null,
         start: defaultSpanDates?.start || null,
       });
-     else setDateSpan({ end: null, start: null });
-    
+    else setDateSpan({ end: null, start: null });
   }, [defaultSpanDates]);
 
   const initializeMonths = useCallback(() => {
@@ -89,14 +89,14 @@ const ReservationDateModal = ({
       onHide={onHide}
       show={!!show}
     >
-      <ContentImage
-        alt=""
-        width={24}
-        height={24}
+      <button
+        type="button"
+        aria-label="close"
         onClick={onHide}
-        src="/assets/icons/adds/x_mark.svg"
-        className="absolute top-4 start-4  z-20 cursor-pointer text-ink-subtle hover:text-ink-muted"
-      />
+        className="absolute top-4 start-4 z-20 cursor-pointer text-ink-subtle hover:text-ink-muted"
+      >
+        <Icon name="x" size={24} />
+      </button>
 
       <div
         id="modal-content"
@@ -144,7 +144,7 @@ const ReservationDateModal = ({
 
       {!!onConfirm ? (
         <Button
-        width="w-full"
+          width="w-full"
           onClick={() => onConfirm(dateSpan)}
           disabled={!dateSpan?.start || !dateSpan?.end}
           title={!!dateSpan?.end ? t("selectDateSpan") : t("selectDate")}

@@ -1,5 +1,5 @@
 import { useTranslations } from "next-intl";
-import { ContentImage } from "@elements/Image";
+import { Icon } from "@elements/Icon";
 
 import type { SearchLocationChipProps } from "@/types/components/modules/search";
 
@@ -22,13 +22,7 @@ const SearchLocationChip = ({
         {title}
       </span>
       <span className="w-4 h-4 aspect-square rounded-full border border-action/30 flex items-center justify-center">
-        <ContentImage
-          alt=""
-          width={10}
-          height={10}
-          src="/assets/icons/adds/x_mark.svg"
-          className="w-2.5 h-2.5 opacity-30 p-0.5 text-ink aspect-square"
-        />
+        <Icon name="x" size={16} className="size-3 text-ink-muted" />
       </span>
     </button>
   );

@@ -1424,7 +1424,7 @@ html[data-theme="dark"] .property-card-shadow {
 
 .lift-card:hover .lift-card-arrow,
 .lift-card:focus-within .lift-card-arrow {
-  transform: translateX(-0.25rem);
+  transform: translateX(0.25rem);
 }
 
 .lift-card-scrim {
@@ -1712,6 +1712,16 @@ html[data-theme="dark"] .property-card-shadow {
 
 .surface-card {
   @apply rounded-20 border border-surface-muted bg-surface;
+}
+
+/* Arrows and chevrons that mean "back" / "forward" are drawn for LTR and mirrored in an RTL
+   locale (:dir() is rewritten to :lang() by the CSS build, so the html dir is used). */
+html[dir="rtl"] .icon-bidi {
+  scale: -1 1;
+}
+
+html[dir="rtl"] .ltr .icon-bidi {
+  scale: none;
 }
 
 html[data-theme="dark"] .logo-adapt {

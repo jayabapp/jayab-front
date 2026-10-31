@@ -1,8 +1,8 @@
 "use client";
 
 import { useSearchHistory } from "@features/search/hooks/useSearchHistory";
+import { Icon } from "@elements/Icon";
 import { useTranslations } from "next-intl";
-import { ContentImage } from "@elements/Image";
 
 import type { SearchHistoryChipsProps } from "@/types/components/modules/search";
 
@@ -17,7 +17,9 @@ const SearchHistoryChips = ({ onSelect }: SearchHistoryChipsProps) => {
     <div className="flex w-full flex-col px-4 pt-4">
       {isEmpty(entries) ? null : (
         <div className="w-full flex items-center gap-2 mb-2">
-          <p className="text-sm md:text-base md:font-medium">{t("search.urSearchHistory")}</p>
+          <p className="text-sm md:text-base md:font-medium">
+            {t("search.urSearchHistory")}
+          </p>
         </div>
       )}
       <div className="w-full flex flex-wrap gap-2">
@@ -39,13 +41,7 @@ const SearchHistoryChips = ({ onSelect }: SearchHistoryChipsProps) => {
               aria-label={`${t("common.removeFilters")} ${entry.title}`}
               className="cursor-pointer w-4 h-4 aspect-square rounded-full border border-action/30 flex items-center justify-center"
             >
-              <ContentImage
-                alt=""
-                width={10}
-                height={10}
-                src="/assets/icons/adds/x_mark.svg"
-                className="w-2.5 h-2.5 opacity-30 p-0.5 text-ink aspect-square"
-              />
+              <Icon name="x" size={16} className="size-3 text-ink-muted" />
             </button>
           </div>
         ))}

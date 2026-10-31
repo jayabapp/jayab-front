@@ -78,11 +78,11 @@ const BlogCard = ({ item, index }: BlogCardProps) => {
                 fill="none"
                 aria-hidden="true"
                 viewBox="0 0 8 12"
-                className="lift-card-arrow h-2.5 w-2"
+                className="icon-bidi lift-card-arrow h-2.5 w-2"
               >
                 <path
                   strokeWidth="1.6"
-                  d="M6.5 1 1.5 6l5 5"
+                  d="M1.5 1l5 5-5 5"
                   stroke="currentColor"
                   strokeLinecap="round"
                   strokeLinejoin="round"

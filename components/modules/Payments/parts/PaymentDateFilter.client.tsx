@@ -1,7 +1,7 @@
 import { useRouter, usePathname, useSearchParams } from "next/navigation";
+import { Icon } from "@elements/Icon";
 import { JalaliDatePicker } from "@elements/JalaliCalendar";
 import { useTranslations } from "next-intl";
-import { ContentImage } from "@elements/Image";
 import { useState } from "react";
 
 import type { TPaymentDate } from "@/types/components/modules/profile";
@@ -10,11 +10,7 @@ import queryBuilder from "@/helpers/queryBuilder";
 import moment from "moment-jalaali";
 import Modal from "@elements/Modal";
 
-const PaymentDateFilter = ({
-  query,
-  queryKey,
-  placeholder,
-}:TPaymentDate) => {
+const PaymentDateFilter = ({ query, queryKey, placeholder }: TPaymentDate) => {
   const t = useTranslations("common");
 
   const searchParams = useSearchParams();
@@ -24,7 +20,6 @@ const PaymentDateFilter = ({
   const pathname = usePathname();
   const [show, setShow] = useState(false);
   const onHide = () => setShow(false);
-  
 
   const setDate = (selectedDate: string | number | null) => {
     let temp = { ...query };
@@ -47,7 +42,7 @@ const PaymentDateFilter = ({
   };
 
   const showModal = () => setShow(true);
-  
+
   return (
     <div className="w-fit flex lg:flex-row  gap-3 items-center justify-between rounded-10  ">
       <div
@@ -67,18 +62,16 @@ const PaymentDateFilter = ({
               {!!date ? date : placeholder || t("pickDay")}
             </p>
             {!!date ? (
-              <ContentImage
-                alt=""
-                width={12}
-                height={12}
-                src="/assets/icons/adds/x_mark.svg"
+              <span
                 onClick={(e) => {
                   e.preventDefault();
                   e.stopPropagation();
                   setDate("");
                 }}
-                className="  w-3 h-3 aspect-square  text-status-danger"
-              />
+                className="cursor-pointer text-status-danger"
+              >
+                <Icon name="x" size={16} className="size-3.5" />
+              </span>
             ) : (
               <></>
             )}

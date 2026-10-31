@@ -206,7 +206,7 @@ const ChatFooter = ({
                 tabIndex={1}
                 alt={tr("common.send")}
                 src="/assets/icons/chat/chat_arrow_head.svg"
-                className={`transition-all w-4 aspect-square duration-200 ease-in-out text-lightBlue-100`}
+                className={`icon-bidi transition-all w-4 aspect-square duration-200 ease-in-out text-lightBlue-100`}
               />
             </div>
           )}

@@ -1,6 +1,7 @@
 "use client";
 
 import { Suspense, useState } from "react";
+import { Icon } from "@elements/Icon";
 import { useTranslations } from "next-intl";
 import { ContentImage } from "@elements/Image";
 import { CityModal } from "@modules/CitySelector";
@@ -39,12 +40,10 @@ const SeachBoxCitySelector = ({ options, onSubmitCB }: TSearchBoxProps) => {
           <p className="text-2xs ">{t("cityListHint")}</p>
         </div>
 
-        <ContentImage
-          alt=""
-          width={12}
-          height={12}
-          src="/assets/icons/shared/chevron-left.svg"
-          className="size-3 absolute end-0 ltr:rotate-180"
+        <Icon
+          name="chevron-end"
+          size={16}
+          className="absolute end-0 size-3 text-ink"
         />
       </div>
       <Suspense>

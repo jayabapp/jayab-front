@@ -1,6 +1,7 @@
 "use client";
 
 import { useCallback, useEffect, useMemo, useState } from "react";
+import { Icon } from "@elements/Icon";
 import { SearchDateRangePicker } from "@modules/PropertySearchFilters";
 import { CLEARED_DRAFT_TARGET } from "@features/search/lib/search-option-draft";
 import { useOverlayBackButton } from "@hooks/useOverlayBackButton";
@@ -11,7 +12,6 @@ import { useJalaliFormat } from "@hooks/useJalaliFormat";
 import { updateDateRange } from "@modules/PropertySearchFilters";
 import { useTranslations } from "next-intl";
 import { createPortal } from "react-dom";
-import { ContentImage } from "@elements/Image";
 import { BtnLoading } from "@elements/Button";
 import { motion } from "framer-motion";
 
@@ -114,13 +114,7 @@ const HeroSearchSheet = ({
           aria-label={t("common.close")}
           className="flex size-9 items-center justify-center rounded-full border border-line"
         >
-          <ContentImage
-            alt=""
-            width={14}
-            height={14}
-            className="size-3.5"
-            src="/assets/icons/adds/x_mark.svg"
-          />
+          <Icon name="x" size={16} />
         </button>
 
         <p className="text-sm font-bold">{t("search.heroSheetTitle")}</p>

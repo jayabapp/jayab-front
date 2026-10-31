@@ -1,6 +1,6 @@
 import { createPropertySteps } from "@/utils/constantss";
+import { Icon } from "@elements/Icon";
 import { useTranslations } from "next-intl";
-import { ContentImage } from "@elements/Image";
 
 import type { OwnerPropertyRouteProps } from "@/types/components/modules/owner-property";
 
@@ -19,13 +19,7 @@ const OwnerPropertyEditHub = ({ propertyId }: OwnerPropertyRouteProps) => {
           className="w-full border-line flex items-center justify-between h-fit px-4 py-3 rounded-10 border"
         >
           <p className="text-sm font-bold">{step?.full_title}</p>
-          <ContentImage
-            alt=""
-            width={16}
-            height={16}
-            className="rotate-90"
-            src="/assets/icons/shared/chevron.svg"
-          />
+          <Icon name="chevron-end" size={16} />
         </Link>
       ))}
     </div>

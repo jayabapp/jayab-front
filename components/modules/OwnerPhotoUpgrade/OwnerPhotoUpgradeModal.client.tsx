@@ -1,6 +1,7 @@
 "use client";
 
 import { memo, useCallback, useMemo, useState } from "react";
+import { Icon } from "@elements/Icon";
 import { usePhotoUpgradeCheckout } from "@features/photo-upgrade/hooks/usePhotoUpgradeCheckout";
 import { PROPERTY_IMAGE_QUALITY } from "@features/properties/constants/image";
 import { getUploadedImageUrl } from "@features/upload/mappers/upload-image.mapper";
@@ -157,13 +158,7 @@ const OwnerPhotoUpgradeModal = ({
             onClick={onHide}
             className="flex h-9 absolute end-0  top-2  w-9 shrink-0 items-center justify-center rounded-full bg-surface-muted"
           >
-            <Image
-              width={16}
-              height={16}
-              className="h-4 w-4"
-              alt={t("common.close")}
-              src="/assets/icons/shared/close.svg"
-            />
+            <Icon name="x" size={16} />
           </button>
         </div>
         {!!contentLoading ? (

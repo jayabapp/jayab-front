@@ -1,12 +1,11 @@
 "use client";
 
 import { useTranslations } from "next-intl";
+import { Icon } from "@elements/Icon";
 import { HTMLGenerator } from "@/helpers/html.generator";
-import { ContentImage } from "@elements/Image";
 import { useState } from "react";
 
 import { type Content } from "@/types/components/modules/home";
-
 
 const LandingsContentSection = ({
   data,
@@ -54,12 +53,10 @@ const LandingsContentSection = ({
           <p className="text-sm font-medium">
             {isOpen ? t("seeLess") : t("watchAll")}
           </p>
-          <ContentImage
-            alt=""
-            width={16}
-            height={16}
-            src={"/assets/icons/shared/chevron-left.svg"}
-            className={`  w-4 h-4 ${isOpen ? `rotate-[90deg]` : "-rotate-[90deg]"} transition-all `}
+          <Icon
+            name="chevron-down"
+            size={16}
+            className={`transition-all ${isOpen ? "rotate-180" : ""}`}
           />
         </div>
       </div>

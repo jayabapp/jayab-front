@@ -1,5 +1,5 @@
 import { useTranslations } from "next-intl";
-import { ContentImage } from "@elements/Image";
+import { Icon } from "@elements/Icon";
 
 import type { CityModalHeaderProps } from "@/types/components/modules/city-selector";
 
@@ -17,14 +17,9 @@ const CityModalHeader = ({
         onClick={onBack}
         disabled={!selectedProvince}
         aria-label={t("common.back")}
-        className={`-rotate-90 transition-all ${selectedProvince ? "" : "opacity-0"}`}
+        className={`transition-all ${selectedProvince ? "" : "opacity-0"}`}
       >
-        <ContentImage
-          alt=""
-          width={16}
-          height={16}
-          src="/assets/icons/shared/chevron.svg"
-        />
+        <Icon name="chevron-start" size={16} />
       </button>
       <p className="text-base font-semibold">
         {selectedProvince
@@ -32,13 +27,7 @@ const CityModalHeader = ({
           : t("search.selectProveCity")}
       </p>
       <button type="button" onClick={onHide} aria-label={t("common.close")}>
-        <ContentImage
-          alt=""
-          width={12}
-          height={12}
-          className="w-3 h-3"
-          src="/assets/icons/adds/x_mark.svg"
-        />
+        <Icon name="x" size={16} />
       </button>
     </div>
   );

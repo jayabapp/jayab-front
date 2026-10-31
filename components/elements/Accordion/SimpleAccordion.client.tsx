@@ -1,7 +1,7 @@
 "use client";
 
 import { useTranslations } from "next-intl";
-import { ContentImage } from "@elements/Image";
+import { Icon } from "@elements/Icon";
 import { useState } from "react";
 
 import type { SimpleAccordionProps } from "@/types/components/elements/accordion";
@@ -50,14 +50,10 @@ const SimpleAccordion = ({
           ) : (
             <></>
           )}{" "}
-          <ContentImage
-            alt=""
-            width={16}
-            height={16}
-            src="/assets/icons/shared/chevron.svg"
-            className={` object-contain transition-all   w-4 aspect-square ${isOpen ? "rotate-180" : ""} ${
-              item?.invertIconDark ? "" : ""
-            }`}
+          <Icon
+            name="chevron-down"
+            size={16}
+            className={`transition-all ${isOpen ? "rotate-180" : ""}`}
           />
         </div>
       </div>
