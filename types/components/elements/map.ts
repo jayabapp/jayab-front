@@ -24,6 +24,8 @@ export type NeshanMapProps = {
   // Opens framed on this box instead of `center` and `zoom`.
   bounds?: MapBounds | null;
   mapStyle?: MapStyleName;
+  // The credit collapses to a small ⓘ button that still opens the full text.
+  compactAttribution?: boolean;
   showGeolocate?: boolean;
   showNavigation?: boolean;
   cooperativeGestures?: boolean;

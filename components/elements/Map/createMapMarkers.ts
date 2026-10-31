@@ -10,6 +10,8 @@ const base = (tag: "button", className: string, key: string) => {
   return element;
 };
 
+const HEART_SRC = "/assets/icons/adds/filled_heart.svg";
+
 export const createPricePinElement = ({
   key,
   label,
@@ -19,16 +21,22 @@ export const createPricePinElement = ({
   approximate,
 }: PricePinOptions) => {
   const element = base("button", "map-price-pin", key);
-  if (hearts) {
-    const count = document.createElement("span");
-    count.className = "map-pin-hearts";
-    count.textContent = `♥${hearts}`;
-    element.append(count);
-  }
   const price = document.createElement("span");
   price.dir = "auto";
   price.textContent = label;
   element.append(price);
+  if (hearts) {
+    // The same filled heart and size the listing cards carry; it sits at the end.
+    const icon = document.createElement("img");
+    icon.alt = "";
+    icon.width = 16;
+    icon.height = 16;
+    icon.src = HEART_SRC;
+    const count = document.createElement("span");
+    count.className = "map-pin-hearts";
+    count.append(icon, hearts);
+    element.append(count);
+  }
   element.title = title;
   element.setAttribute("aria-label", ariaLabel);
   element.dataset.approx = String(approximate);

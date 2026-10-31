@@ -4,26 +4,46 @@ import test from "node:test";
 import {
   boundsOfPoints,
   destinationKey,
-  pinPriceLabel,
+  pinPrice,
   publicPoints,
 } from "./map-camera";
 
-const words = { currency: "T", fallback: "مشاهده" };
-
-test("the pin shows the whole nightly amount, grouped, with the currency mark", () => {
-  assert.equal(pinPriceLabel(1_500_000, "fa", words), "۱,۵۰۰,۰۰۰T");
-  assert.equal(pinPriceLabel(800_000, "fa", words), "۸۰۰,۰۰۰T");
-  assert.equal(pinPriceLabel(1_500_000, "ar", words), "١٬٥٠٠٬٠٠٠T");
-  assert.equal(pinPriceLabel(1_500_000, "en", words), "1,500,000T");
+test("the pin shortens the nightly amount to millions, two decimals at most", () => {
+  assert.deepEqual(pinPrice(1_590_000, "fa"), {
+    unit: "million",
+    value: "۱٫۵۹",
+  });
+  assert.deepEqual(pinPrice(1_500_000, "fa"), {
+    unit: "million",
+    value: "۱٫۵",
+  });
+  assert.deepEqual(pinPrice(4_000_000, "fa"), { unit: "million", value: "۴" });
+  assert.deepEqual(pinPrice(1_050_000, "en"), {
+    unit: "million",
+    value: "1.05",
+  });
+  assert.deepEqual(pinPrice(1_500_000, "ar"), {
+    unit: "million",
+    value: "١٫٥",
+  });
 });
 
-test("the amount is never rounded to a shorter unit", () => {
-  assert.equal(pinPriceLabel(4_499_999, "en", words), "4,499,999T");
+test("small and very large amounts pick their own unit", () => {
+  assert.deepEqual(pinPrice(800_000, "fa"), { unit: "thousand", value: "۸۰۰" });
+  assert.deepEqual(pinPrice(2_500_000_000, "en"), {
+    unit: "billion",
+    value: "2.5",
+  });
+  assert.deepEqual(pinPrice(950, "fa"), { unit: "toman", value: "۹۵۰" });
 });
 
-test("a missing, zero or broken price never becomes a number on the pin", () => {
+test("rounding never leaves a unit with a value of a thousand", () => {
+  assert.deepEqual(pinPrice(999_999, "en"), { unit: "million", value: "1" });
+});
+
+test("a missing, zero or broken price has no short amount", () => {
   for (const price of [null, 0, -5, Number.NaN])
-    assert.equal(pinPriceLabel(price, "fa", words), "مشاهده");
+    assert.equal(pinPrice(price, "fa"), null);
 });
 
 test("bounds cover every point, and nothing yields no bounds", () => {

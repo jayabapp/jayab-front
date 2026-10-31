@@ -31,14 +31,43 @@ export const publicPoints = (properties: readonly Located[]) =>
     property.public_location ? [property.public_location] : [],
   );
 
-export const pinPriceLabel = (
+export type PinPriceUnit = "toman" | "thousand" | "million" | "billion";
+
+const PRICE_SCALES: readonly [number, PinPriceUnit][] = [
+  [1e9, "billion"],
+  [1e6, "million"],
+  [1e3, "thousand"],
+];
+const DECIMAL_MARK: Record<DisplayLocale, string> = {
+  fa: "٫",
+  ar: "٫",
+  en: ".",
+};
+
+// A short amount for the pin: "۱٫۵۹" of a unit, two decimals at most. The caller words the
+// unit ("میلیون ت"). A display string only; the full price stays in the pin's title.
+export const pinPrice = (
   price: number | null,
   locale: DisplayLocale,
-  words: { currency: string; fallback: string },
-): string => {
-  if (price === null || !Number.isFinite(price) || price <= 0)
-    return words.fallback;
-  return `${formatListingPriceFor(Math.round(price), locale)}${words.currency}`;
+): { unit: PinPriceUnit; value: string } | null => {
+  if (price === null || !Number.isFinite(price) || price <= 0) return null;
+  let unit: PinPriceUnit = "toman";
+  let scaled = Math.round(price);
+  for (const [size, name] of PRICE_SCALES) {
+    const candidate = Math.round((price / size) * 100) / 100;
+    if (candidate < 1) continue;
+    unit = name;
+    scaled = candidate;
+    break;
+  }
+  const [whole, fraction] = String(scaled).split(".");
+  const value = formatListingPriceFor(Number(whole), locale);
+  return {
+    unit,
+    value: fraction
+      ? `${value}${DECIMAL_MARK[locale]}${formatListingPriceFor(fraction, locale)}`
+      : value,
+  };
 };
 
 const DESTINATION_KEYS = ["cities", "provinces", "province_id", "regions"];

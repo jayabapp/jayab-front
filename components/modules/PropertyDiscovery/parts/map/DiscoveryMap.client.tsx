@@ -1,7 +1,7 @@
 "use client";
 
 import { useCallback, useEffect, useEffectEvent } from "react";
-import { destinationKey, pinPriceLabel } from "@features/map/lib/map-camera";
+import { destinationKey, pinPrice } from "@features/map/lib/map-camera";
 import { formatBbox, isPointLikeBbox } from "@features/properties/lib/bbox";
 import { useTranslations, useLocale } from "next-intl";
 import { formatListingPriceFor } from "@/helpers/intl/number";
@@ -149,6 +149,11 @@ const DiscoveryMap = ({
   useEffect(() => {
     if (!map) return;
     let timer = 0;
+    // A resize (layout settling, rotating the phone) ends with a moveend of its own.
+    let resized = false;
+    const onResize = () => {
+      resized = true;
+    };
     const onMoveEnd = (event: { programmatic?: boolean }) => {
       const next = readCamera(map);
       setCamera((current) =>
@@ -163,7 +168,9 @@ const DiscoveryMap = ({
         zoom: map.getZoom(),
         center: [center.lng, center.lat],
       });
-      if (event.programmatic) return;
+      const wasResize = resized;
+      resized = false;
+      if (event.programmatic || wasResize) return;
       window.clearTimeout(timer);
       timer = window.setTimeout(
         () => searchAfterMove(next.bbox),
@@ -171,9 +178,11 @@ const DiscoveryMap = ({
       );
     };
     onMoveEnd({ programmatic: true });
+    map.on("resize", onResize);
     map.on("moveend", onMoveEnd);
     return () => {
       window.clearTimeout(timer);
+      map.off("resize", onResize);
       map.off("moveend", onMoveEnd);
     };
   }, [map, view, destination, appliedBbox]);
@@ -221,7 +230,6 @@ const DiscoveryMap = ({
       });
   }, [map, isListSettled, appliedBbox, destination, properties]);
 
-  const currency = t("listing.mapCurrencyShort");
   const noPrice = t("listing.mapPinNoPrice");
   const describe = useCallback(
     (item: MapItem): MarkerDescription => {
@@ -249,6 +257,7 @@ const DiscoveryMap = ({
           })
         : noPrice;
       const favorites = item.favorite_count ?? 0;
+      const shortPrice = pinPrice(item.price, locale);
       const hearts =
         favorites > 0 ? formatListingPriceFor(favorites, locale) : null;
       const parts = [base];
@@ -261,13 +270,14 @@ const DiscoveryMap = ({
         title: text,
         ariaLabel: text,
         approximate,
-        label: pinPriceLabel(item.price, locale, {
-          currency,
-          fallback: noPrice,
-        }),
+        label: shortPrice
+          ? t(`listing.mapPrice_${shortPrice.unit}`, {
+              value: shortPrice.value,
+            })
+          : noPrice,
       };
     },
-    [currency, locale, noPrice, separator, t],
+    [locale, noPrice, separator, t],
   );
 
   const onProperty = (item: MapPropertyItem) => {
@@ -349,14 +359,6 @@ const DiscoveryMap = ({
     );
 
   const isBusy = isSettling || isFetching;
-  const total = data?.meta.total;
-  const statusText = isBusy
-    ? t("listing.mapUpdating")
-    : typeof total === "number"
-      ? t("listing.mapAreaCount", {
-          formatted: formatListingPriceFor(total, locale),
-        })
-      : "";
   const stackCount = stack ? formatListingPriceFor(stack.count, locale) : "";
   const footStyle = { bottom: bottomInset + FOOT_GAP_PX };
 
@@ -377,6 +379,7 @@ const DiscoveryMap = ({
         bounds={initial.bounds}
         mapStyle="monochrome_light"
         onError={() => setFailed(true)}
+        compactAttribution
         ariaLabel={t("listing.mapResultsAria")}
       />
 
@@ -391,11 +394,6 @@ const DiscoveryMap = ({
           >
             <Icon name="x" size={20} />
           </button>
-        ) : null}
-        {statusText ? (
-          <p role="status" className={PILL_CLASS}>
-            {statusText}
-          </p>
         ) : null}
       </div>
 

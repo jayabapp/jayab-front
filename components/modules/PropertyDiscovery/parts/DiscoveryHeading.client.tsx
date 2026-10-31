@@ -1,6 +1,9 @@
 "use client";
 
+import { DISCOVERY_MAP_COLUMN_QUERY } from "@features/map/constants/discovery-map";
+import { useDiscoveryMap } from "@features/properties/context/DiscoveryMapContext";
 import { useFormatNumber } from "@hooks/useFormatNumber";
+import { useMediaQuery } from "@features/map/hooks/useMediaQuery";
 import { useTranslations } from "next-intl";
 import { useProperties } from "@features/properties/hooks/useProperties";
 
@@ -14,12 +17,16 @@ const DiscoveryHeading = ({
   const t = useTranslations("listing");
   const formatNumber = useFormatNumber();
   const { meta } = useProperties(query);
+  const { isEnabled, isColumnOpen } = useDiscoveryMap();
+  const isWide = useMediaQuery(DISCOVERY_MAP_COLUMN_QUERY);
+  // The list is the map's area whenever a map sits beside or under it.
+  const isInArea = compact || (isEnabled && isWide && isColumnOpen);
 
   return (
     <div
       className={
         compact
-          ? "flex min-w-0 items-baseline gap-x-3 px-4 pb-3"
+          ? "flex min-w-0 flex-col gap-0.5 px-4 pb-3"
           : "flex flex-wrap items-baseline gap-x-3 gap-y-1 px-3 xl:px-0"
       }
     >
@@ -33,8 +40,12 @@ const DiscoveryHeading = ({
         {title}
       </h1>
       {typeof meta?.total === "number" ? (
-        <p className="shrink-0 text-sm text-ink-subtle">
-          {t("propertyCount", { formatted: formatNumber(meta.total) })}
+        <p
+          className={`shrink-0 text-ink-subtle ${compact ? "text-xs" : "text-sm"}`}
+        >
+          {t(isInArea ? "mapAreaCount" : "propertyCount", {
+            formatted: formatNumber(meta.total),
+          })}
         </p>
       ) : null}
     </div>

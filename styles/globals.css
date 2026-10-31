@@ -220,6 +220,10 @@ ul {
   transform: translate(-50%, 50%);
 }
 
+.map-price-pin,
+.map-cluster {
+  font-family: var(--font-fa), sans-serif;
+}
 .map-price-pin {
   @apply relative flex h-7 cursor-pointer items-center justify-center gap-1.5 whitespace-nowrap rounded-full border border-line-strong bg-surface px-2.5 text-xs font-bold text-ink shadow-elevated outline-none transition-transform duration-150;
 }
@@ -228,7 +232,10 @@ ul {
   @apply absolute inset-x-0 -bottom-1 mx-auto size-2 rotate-45 border-b border-e border-line-strong bg-surface;
 }
 .map-pin-hearts {
-  @apply text-status-danger;
+  @apply flex items-center gap-1 text-ink;
+}
+.map-pin-hearts img {
+  @apply size-4 shrink-0;
 }
 .map-price-pin[data-state="selected"] .map-pin-hearts {
   @apply text-on-action;
@@ -1868,6 +1875,10 @@ html[data-theme="dark"] .filter-chip-primary {
   }
 }
 
+/* The Neshan wordmark is left off the results map; the OpenStreetMap credit stays as the ⓘ button. */
+.discovery-map .neshan-brand-logo {
+  display: none;
+}
 .discovery-map .maplibregl-ctrl-bottom-left,
 .discovery-map .maplibregl-ctrl-bottom-right {
   bottom: var(--map-foot, 0px);
@@ -1884,12 +1895,12 @@ html[data-theme="dark"] .filter-chip-primary {
   height: var(--stage-h);
 }
 .results-sheet {
-  @apply relative z-[1] rounded-t-28 bg-surface pb-6 shadow-elevated;
+  @apply relative z-[1] overflow-clip rounded-t-28 bg-surface pb-6 shadow-elevated;
   margin-top: calc(var(--stage-h) / -2);
   min-height: var(--stage-h);
 }
 .results-sheet-head {
-  @apply sticky z-[2] rounded-t-28 border-b border-line bg-surface;
+  @apply sticky z-20 border-b border-line bg-surface;
   top: var(--discovery-stack, 7rem);
 }
 .results-sheet-map-button {

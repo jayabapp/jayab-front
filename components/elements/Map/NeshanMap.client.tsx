@@ -108,6 +108,7 @@ const NeshanMap = ({
   ariaLabel,
   onMapReady,
   mapStyle = "light",
+  compactAttribution = false,
   showGeolocate = false,
   showNavigation = true,
   cooperativeGestures = false,
@@ -123,6 +124,7 @@ const NeshanMap = ({
     bounds,
     ariaLabel,
     mapStyle,
+    compactAttribution,
     showNavigation,
     showGeolocate,
     cooperativeGestures,
@@ -206,6 +208,14 @@ const NeshanMap = ({
     map.once("style.load", () => {
       hasStyle = true;
     });
+    // The SDK only folds the credit into its ⓘ button on a narrow map, so fold it ourselves
+    // once its text is in; the button still opens the full credit.
+    if (initial.compactAttribution)
+      map.once("idle", () => {
+        const credit = container.querySelector(".maplibregl-ctrl-attrib");
+        credit?.classList.add("maplibregl-compact");
+        credit?.removeAttribute("open");
+      });
     map.on("data", (event) => {
       if (event.dataType === "source" && "tile" in event) hasTile = true;
     });
