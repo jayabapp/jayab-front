@@ -7,6 +7,7 @@ import { useTranslations } from "next-intl";
 import { useProperties } from "@features/properties/hooks/useProperties";
 import { Icon } from "@elements/Icon";
 
+import type { CSSProperties } from "react";
 import type { DiscoveryMobileMapProps } from "@/types/components/modules/discovery-map";
 
 import dynamic from "next/dynamic";
@@ -22,6 +23,8 @@ const DiscoveryMap = dynamic(() => import("./DiscoveryMap.client"), {
 });
 
 const MAP_PEEK_PX = 120;
+// The bottom tab bar covers the foot of the screen on load, so the tags have to sit above it.
+const MOBILE_NAV_PX = 108;
 
 const scrollPageBy = (distance: number) =>
   window.scrollTo({
@@ -47,17 +50,20 @@ const DiscoveryMobileMap = ({
   const { properties, isFetching, isPlaceholderData } = useProperties(query);
   const stageRef = useRef<HTMLDivElement>(null);
   const sheetRef = useRef<HTMLElement>(null);
-  const [stageHeight, setStageHeight] = useState(0);
+  const [peek, setPeek] = useState(0);
   const [isListUp, setIsListUp] = useState(false);
+  const lift = peek ? peek + MOBILE_NAV_PX : 0;
 
   useEffect(() => {
     const stage = stageRef.current;
     const sheet = sheetRef.current;
     if (!stage || !sheet) return;
+    const head = sheet.querySelector<HTMLElement>(".results-sheet-head");
+    const quickRow = sheet.querySelector<HTMLElement>(".discovery-quick-row");
     let frame = 0;
     const update = () => {
       frame = 0;
-      setStageHeight(stage.clientHeight);
+      setPeek((head?.offsetHeight ?? 0) + (quickRow?.offsetHeight ?? 0));
       setIsListUp(listCoversMap(stage, sheet));
     };
     const schedule = () => {
@@ -65,7 +71,8 @@ const DiscoveryMobileMap = ({
     };
     update();
     const observer = new ResizeObserver(schedule);
-    observer.observe(stage);
+    for (const element of [stage, head, quickRow])
+      if (element) observer.observe(element);
     window.addEventListener("scroll", schedule, { passive: true });
     return () => {
       observer.disconnect();
@@ -93,14 +100,19 @@ const DiscoveryMobileMap = ({
   }, [selectedId]);
 
   return (
-    <div className="discovery-mobile-map">
+    <div
+      className="discovery-mobile-map"
+      style={
+        lift ? ({ "--sheet-peek": `${lift}px` } as CSSProperties) : undefined
+      }
+    >
       <div ref={stageRef} className="discovery-mobile-stage">
         <DiscoveryMap
           query={query}
           onClose={showList}
           variant="background"
           properties={properties}
-          bottomInset={Math.round(stageHeight / 2)}
+          bottomInset={lift}
           isListSettled={!isPlaceholderData && !isFetching}
         />
       </div>

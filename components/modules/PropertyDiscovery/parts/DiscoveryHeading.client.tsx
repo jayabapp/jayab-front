@@ -22,6 +22,14 @@ const DiscoveryHeading = ({
   // The list is the map's area whenever a map sits beside or under it.
   const isInArea = compact || (isEnabled && isWide && isColumnOpen);
 
+  // The compact line keeps its height while the count loads, so the sheet below does not jump.
+  const count =
+    typeof meta?.total === "number"
+      ? t(isInArea ? "mapAreaCount" : "propertyCount", {
+          formatted: formatNumber(meta.total),
+        })
+      : null;
+
   return (
     <div
       className={
@@ -39,13 +47,11 @@ const DiscoveryHeading = ({
       >
         {title}
       </h1>
-      {typeof meta?.total === "number" ? (
+      {count || compact ? (
         <p
-          className={`shrink-0 text-ink-subtle ${compact ? "text-xs" : "text-sm"}`}
+          className={`shrink-0 text-ink-subtle ${compact ? "min-h-4 text-xs" : "text-sm"}`}
         >
-          {t(isInArea ? "mapAreaCount" : "propertyCount", {
-            formatted: formatNumber(meta.total),
-          })}
+          {count}
         </p>
       ) : null}
     </div>

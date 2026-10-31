@@ -43,8 +43,8 @@ const PublicPropertyCard = ({ data, goToLink }: PublicPropertyCardProps) => {
           title={data.title}
           className="order-1 col-span-3 flex min-h-0 flex-col justify-between !outline-none"
         >
-          {/* Title */}
-          <div className="flex items-start gap-2">
+          {/* Title: two lines are always reserved so every card keeps the same height */}
+          <div className="flex min-h-10 items-start gap-2">
             {data.has_blue_tick ? (
               <ContentImage
                 width={24}
@@ -83,9 +83,9 @@ const PublicPropertyCard = ({ data, goToLink }: PublicPropertyCardProps) => {
               ) : null}
             </div>
 
-            <div className="flex w-full items-center justify-between gap-2">
+            <div className="flex w-full items-start justify-between gap-2">
               <div className="min-w-0 overflow-hidden">
-                <ul className="-ms-4 flex list-none flex-wrap gap-y-1 text-xs text-ink-subtle">
+                <ul className="-ms-4 flex min-h-9 list-none flex-wrap content-start gap-y-1 text-xs text-ink-subtle">
                   {facts.map((fact) => (
                     <li
                       key={fact}

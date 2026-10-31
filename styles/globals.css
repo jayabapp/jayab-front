@@ -1829,10 +1829,17 @@ html[data-theme="dark"] .filter-chip-primary {
 }
 
 .discovery-filter-bar[data-stuck="true"] {
-  background-color: rgb(var(--c-page) / 0.92);
+  background-color: rgb(var(--c-page));
   @apply shadow-glass-sm;
-  -webkit-backdrop-filter: blur(12px);
-  backdrop-filter: blur(12px);
+}
+
+/* Blurring what scrolls under the bar is too heavy on a phone (a live map canvas sits there). */
+@media (min-width: 768px) {
+  .discovery-filter-bar[data-stuck="true"] {
+    background-color: rgb(var(--c-page) / 0.92);
+    -webkit-backdrop-filter: blur(12px);
+    backdrop-filter: blur(12px);
+  }
 }
 
 .discovery-page {
@@ -1896,7 +1903,7 @@ html[data-theme="dark"] .filter-chip-primary {
 }
 .results-sheet {
   @apply relative z-[1] overflow-clip rounded-t-28 bg-surface pb-6 shadow-elevated;
-  margin-top: calc(var(--stage-h) / -2);
+  margin-top: calc(var(--sheet-peek, 7.5rem) * -1);
   min-height: var(--stage-h);
 }
 .results-sheet-head {

@@ -19,6 +19,7 @@ import { hasUsableBbox } from "@features/properties/lib/bbox";
 import { useMediaQuery } from "@features/map/hooks/useMediaQuery";
 import { useMapSupport } from "@features/map/hooks/useMapSupport";
 import { usePathname } from "next/navigation";
+import { preconnect } from "react-dom";
 
 import type { DiscoveryExperienceProps } from "@/types/components/modules/property-discovery";
 import type { ChildCities } from "@/types/components/modules/property-discovery";
@@ -34,6 +35,8 @@ import isEmpty from "lodash/isEmpty";
 
 const HEADER_SELECTOR = ".header-content-container";
 const STICK_TOLERANCE_PX = 0.5;
+// Where the map style, sprites and fonts come from; the connection opens while the SDK downloads.
+const MAP_ASSET_ORIGIN = "https://static.neshan.org";
 
 const DiscoveryLayout = ({
   mode,
@@ -74,6 +77,8 @@ const DiscoveryLayout = ({
     hasArea &&
     !isWide &&
     (mapSupport === null ? Boolean(devices?.isMobile) : mapSupport);
+
+  if (hasMap && hasArea) preconnect(MAP_ASSET_ORIGIN);
 
   const rootRef = useRef<HTMLDivElement>(null);
   const barRef = useRef<HTMLDivElement>(null);

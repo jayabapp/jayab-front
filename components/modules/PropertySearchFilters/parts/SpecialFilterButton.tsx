@@ -22,7 +22,9 @@ const SpecialFilterButton = ({
       className="size-4 shrink-0 md:size-5"
     />
     <span>{item?.title}</span>
-    {isChecked ? <Icon name="check" size={16} className="text-link" /> : null}
+    {isChecked ? (
+      <Icon name="check" size={16} className="text-link max-md:hidden" />
+    ) : null}
   </button>
 );
 

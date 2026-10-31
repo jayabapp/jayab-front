@@ -35,6 +35,8 @@ const SiteHeader = ({ phone, variant = "page" }: SiteHeaderProps) => {
   const isHome = pathname === "/";
   const isLight = isHome && topHeaderVisible;
   const isModal = variant === "modal";
+  const hasHeaderBorder =
+    headerWithFullSeach.includes(pathname) || !!params?.slug;
   const headerId = isModal ? "headerContainerModal" : "headerContainer";
 
   const handleScroll = useMemo(
@@ -106,8 +108,8 @@ const SiteHeader = ({ phone, variant = "page" }: SiteHeaderProps) => {
             isLight
               ? " bg-transparent "
               : topHeaderVisible
-                ? " bg-surface "
-                : ` bg-surface ${headerWithFullSeach.includes(pathname) || !!params?.slug ? " border-b xl:border-b-0 xl:shadow-glass-sm" : "shadow-glass-sm"} `
+                ? ` bg-surface ${hasHeaderBorder ? "border-b border-transparent xl:border-b-0" : ""} `
+                : ` bg-surface ${hasHeaderBorder ? " border-b xl:border-b-0 xl:shadow-glass-sm" : "shadow-glass-sm"} `
           }`}
         >
           <HeaderMobileBar
