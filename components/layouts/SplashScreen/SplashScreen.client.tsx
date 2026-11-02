@@ -34,8 +34,8 @@ const SplashScreen = () => {
           {/* eslint-disable-next-line @next/next/no-img-element */}
           <img
             alt=""
-            width={519}
-            height={519}
+            width={807}
+            height={667}
             className="splash-mark"
             src="/assets/icons/logo/mark-glyph.svg"
           />

@@ -132,6 +132,17 @@ const nextConfig: NextConfig = {
         ],
       },
       {
+        // The brand marks and wordmarks are replaced in place on a rebrand, so
+        // they revalidate daily instead of sitting 30 days in every browser.
+        source: "/assets/icons/logo/:path*",
+        headers: [
+          {
+            key: "Cache-Control",
+            value: "public, max-age=86400, stale-while-revalidate=604800",
+          },
+        ],
+      },
+      {
         // Favicons and PWA icons at the root of public/. Same reasoning.
         source: "/:file(favicon.ico|favicon.svg|favicon-96x96.png|apple-touch-icon.png|web-app-manifest-192x192.png|web-app-manifest-512x512.png)",
         headers: [
