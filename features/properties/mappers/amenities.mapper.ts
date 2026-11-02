@@ -1,19 +1,19 @@
-import type { SinglePropDto } from "@/api_services/property/property.interface";
-import type { ImageDto } from "@/api_services/auth/auth.interface";
-import type { Locale } from "@/i18n/config";
-import type { IconName } from "@/types/components/elements/icon";
-
+import { optionStaticIcon } from "@features/properties/lib/static-icons";
 import { AMENITY_PRIORITY } from "@features/properties/constants/amenities";
 import { AMENITY_GROUPS } from "@features/properties/constants/amenities";
+
+import type { SinglePropDto } from "@/api_services/property/property.interface";
+import type { StaticIconRef } from "@/types/components/elements/static-icon";
+import type { IconName } from "@/types/components/elements/icon";
+import type { Locale } from "@/i18n/config";
 
 export type AmenityItem = {
   group: string;
   title: string;
   titleLang?: Locale;
-  /** Persian title; icon and ordering key off it, not off the shown language. */
-  canonicalTitle?: string;
-  icon: ImageDto | null;
   fallbackIcon: IconName;
+  canonicalTitle?: string;
+  staticIcon: StaticIconRef | null;
 };
 
 const amenityIcon = (title: string, group: string): IconName => {
@@ -59,7 +59,10 @@ export const toAmenityItems = (property?: SinglePropDto): AmenityItem[] => {
       title: item.title,
       titleLang: item.title_locale,
       canonicalTitle: item.canonical_title ?? item.title,
-      icon: item.icon ?? null,
+      staticIcon: optionStaticIcon(
+        item.canonical_title ?? item.title,
+        item.group,
+      ),
       fallbackIcon: amenityIcon(item.canonical_title ?? item.title, item.group),
     }));
 
@@ -74,14 +77,12 @@ export const toAmenityItems = (property?: SinglePropDto): AmenityItem[] => {
           : value
             ? [String(value)]
             : [];
-        return titles
-          .filter(Boolean)
-          .map((title) => ({
-            group,
-            title,
-            icon: null as ImageDto | null,
-            fallbackIcon: amenityIcon(title, group),
-          }));
+        return titles.filter(Boolean).map((title) => ({
+          group,
+          title,
+          staticIcon: optionStaticIcon(title, group),
+          fallbackIcon: amenityIcon(title, group),
+        }));
       });
 
   return [...items].sort(

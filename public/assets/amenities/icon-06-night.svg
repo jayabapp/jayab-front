@@ -1,0 +1,10 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="533 269 24 24" fill="none"><defs><mask id="mask3_40000192_14555" style="mask-type:luminance" maskUnits="userSpaceOnUse" x="533" y="269" width="24" height="24">
+<path d="M533.5 292.5H556.5V269.5H533.5V292.5Z" fill="white" stroke="white" />
+</mask>
+</defs><g mask="url(#mask3_40000192_14555)">
+<path d="M554.627 291H535.373C535.274 291 535.179 290.961 535.109 290.891C535.039 290.821 535 290.726 535 290.627V271.374C535 271.275 535.039 271.18 535.109 271.11C535.179 271.04 535.274 271 535.373 271H554.627C554.726 271 554.821 271.04 554.891 271.11C554.961 271.18 555 271.275 555 271.374V290.627C555 290.726 554.961 290.821 554.891 290.891C554.821 290.961 554.726 291 554.627 291Z" stroke-width="1.2" stroke-miterlimit="10" stroke-linecap="round" stroke-linejoin="round" stroke="white" />
+<path d="M543 275L542 273L541 275" stroke-width="1.2" stroke-miterlimit="10" stroke-linecap="round" stroke-linejoin="round" stroke="white" />
+<path d="M547 273L548 275L549 273" stroke-width="1.2" stroke-miterlimit="10" stroke-linecap="round" stroke-linejoin="round" stroke="white" />
+<path d="M545 291H552V277H545M545 291V277M545 291H538V277H545" stroke-width="1.2" stroke-miterlimit="10" stroke-linecap="round" stroke-linejoin="round" stroke="white" />
+</g>
+</svg>

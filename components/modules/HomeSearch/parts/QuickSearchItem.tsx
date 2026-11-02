@@ -1,5 +1,5 @@
-import { getHomeImageUrl } from "@features/home/mappers/home-image.mapper";
 import { type HomeLandingDto } from "@/types/components/modules/home";
+import { landingStaticIcon } from "@features/properties/lib/static-icons";
 
 import HomeTileCard from "./HomeTileCard";
 
@@ -16,9 +16,8 @@ const QuickSearchItem = ({
     index={index}
     href={item?.url}
     title={item?.title}
-    imageSrc={
-      item?.image ? getHomeImageUrl(item?.image) : QUICK_SEARCH_FALLBACK_ICON
-    }
+    imageSrc={QUICK_SEARCH_FALLBACK_ICON}
+    icon={landingStaticIcon(item?.url ?? "")}
   />
 );
 

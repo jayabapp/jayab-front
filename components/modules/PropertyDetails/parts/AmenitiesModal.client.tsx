@@ -1,7 +1,6 @@
 "use client";
 
 import { ModalBottomSheet, ModalHeaderPart } from "@elements/Modal";
-import { getPropertyImageUrl } from "@features/properties/mappers/property-image.mapper";
 import { useTranslations } from "next-intl";
 
 import type { AmenitiesModalProps } from "@/types/components/modules/property-details";
@@ -50,10 +49,10 @@ const AmenitiesModal = ({ amenities, onHide, show }: AmenitiesModalProps) => {
               {items.map((item) => (
                 <IconListItem
                   label={item.title}
-                  labelLang={item.titleLang}
                   icon={item.fallbackIcon}
+                  labelLang={item.titleLang}
+                  staticIcon={item.staticIcon}
                   key={`${group}-${item.title}`}
-                  image={item.icon ? getPropertyImageUrl(item.icon) : null}
                 />
               ))}
             </div>

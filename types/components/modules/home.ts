@@ -5,6 +5,7 @@ import type { ContentByKeyDto } from "@/api_services/home/home.interface";
 export type { HomeLandingDto } from "@/api_services/home/home.interface";
 import type { HomeLandingDto } from "@/api_services/home/home.interface";
 export type { HomeBannerDto } from "@/types/components/templates/home";
+import type { StaticIconRef } from "@/types/components/elements/static-icon";
 import type { HomeBannerDto } from "@/types/components/templates/home";
 export type { ContentDto } from "@/api_services/home/home.interface";
 import type { ContentDto } from "@/api_services/home/home.interface";
@@ -14,7 +15,6 @@ import type { ReactNode } from "react";
 export type { Content } from "@/api_services/property/property.interface";
 
 export type HomeActiveReservationsProps = {
-  /** Rendered at the top of the orange block (the phone search pill), or alone when there are no requests. */
   top?: ReactNode;
 };
 
@@ -77,6 +77,7 @@ export type HomeTileCardProps = {
   title?: string;
   index?: number;
   imageSrc?: string;
+  icon?: StaticIconRef | null;
 };
 
 export type HomeQuickSearchProps = {

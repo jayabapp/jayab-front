@@ -1,5 +1,6 @@
 import type { PropertyDetailsView } from "@/types/features/properties";
 import type { SinglePropDto } from "@/api_services/property/property.interface";
+import type { StaticIconRef } from "@/types/components/elements/static-icon";
 export type { SinglePropDto } from "@/api_services/property/property.interface";
 import type { AmenityItem } from "@features/properties/mappers/amenities.mapper";
 import type { DeviceInfo } from "@/helpers/device.detector";
@@ -17,18 +18,24 @@ export type ListingSectionProps = {
 
 export type IconListItemProps = {
   label: string;
+  icon?: IconName;
   labelLang?: Locale;
   state?: "on" | "off";
-  image?: string | null;
-  icon?: IconName;
+  staticIcon?: StaticIconRef | null;
 };
 
 export type RuleItemProps = {
   label: string;
   allowed: boolean;
   labelLang?: Locale;
-  description?: string | null;
   descriptionLang?: Locale;
+  description?: string | null;
+};
+
+export type ListingGlyphProps = {
+  size: 20 | 24;
+  name: IconName;
+  className?: string;
 };
 
 export type MiniInfoCardProps = {
@@ -52,8 +59,8 @@ export type ClampTextProps = {
 };
 
 export type ListingHeaderProps = {
-  breadcrumbs: Array<{ link: string; title: string }>;
   property: PropertyDetailsView;
+  breadcrumbs: Array<{ link: string; title: string }>;
 };
 
 export type TrustBadgesProps = {
@@ -114,8 +121,8 @@ export type LocationNavigateLinkProps = {
 export type HostCardProps = {
   name?: string;
   nameLang?: Locale;
-  isAuthorized?: boolean;
   isOnline?: boolean;
+  isAuthorized?: boolean;
   avatar?: PropertyDetailsView["ownerAvatar"];
   since?: PropertyDetailsView["ownerSince"];
 };
@@ -197,7 +204,6 @@ export type PropertyDescriptionProps = {
 export type TSimilarPropertiesProps = {
   city?: string;
   propertyId: number;
-  /** Rendered under the cards (the link to the city's full list). */
   children?: ReactNode;
 };
 
@@ -232,7 +238,6 @@ export type TSurrounding = {
 
 export type TKeyFact = {
   icon: IconName;
-  /** Card heading, e.g. the property type or "Capacity". */
   title: string;
   note?: string;
 };

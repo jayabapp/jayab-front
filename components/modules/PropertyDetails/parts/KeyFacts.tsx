@@ -2,10 +2,11 @@ import { useLocale, useTranslations } from "next-intl";
 import { formatListingPriceFor } from "@/helpers/intl/number";
 import { localizeDigits } from "@/helpers/intl/digits";
 import { resolveLocale } from "@/i18n/config";
-import { Icon } from "@elements/Icon";
 
 import type { PropertySpecsSectionProps } from "@/types/components/modules/property-details";
 import type { TKeyFact } from "@/types/components/modules/property-details";
+
+import ListingGlyph from "./ListingGlyph";
 
 const COLUMN_CLASS: Record<number, string> = {
   1: "lg:grid-cols-1",
@@ -119,7 +120,7 @@ const KeyFacts = ({ property }: PropertySpecsSectionProps) => {
           key={fact.icon}
           className="flex flex-col gap-1 bg-surface p-4 odd:last:col-span-2 lg:p-5 lg:odd:last:col-span-1"
         >
-          <Icon name={fact.icon} size={24} className="text-ink-muted" />
+          <ListingGlyph name={fact.icon} size={24} />
           {/* Same two styles in every card: heading, then its description. */}
           <p className="pt-1 text-base font-bold text-ink">{fact.title}</p>
           {fact.note ? (

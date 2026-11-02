@@ -1,10 +1,11 @@
 import { useLocalizeDigits } from "@hooks/useLocalizeDigits";
 import { useTranslations } from "next-intl";
 import { useFormatToman } from "@hooks/useFormatToman";
-import { Icon } from "@elements/Icon";
 
 import type { PropertySpecsSectionProps } from "@/types/components/modules/property-details";
 import type { TExtraCost } from "@/types/components/modules/property-details";
+
+import ListingGlyph from "./ListingGlyph";
 
 const ExtraCosts = ({ property }: PropertySpecsSectionProps) => {
   const formatToman = useFormatToman();
@@ -44,7 +45,7 @@ const ExtraCosts = ({ property }: PropertySpecsSectionProps) => {
             className="flex items-center justify-between gap-4 py-3 last:pb-0"
           >
             <span className="flex min-w-0 items-center gap-3 text-sm text-ink-muted">
-              <Icon name={cost.icon} size={20} />
+              <ListingGlyph name={cost.icon} size={20} />
               {cost.label}
             </span>
             <span className="shrink-0 text-sm font-bold text-ink">

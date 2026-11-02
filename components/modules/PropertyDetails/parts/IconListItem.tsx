@@ -1,14 +1,13 @@
-
-import { ContentImage } from "@elements/Image";
+import { StaticIcon } from "@elements/StaticIcon";
 import { Icon } from "@elements/Icon";
 
 import type { IconListItemProps } from "@/types/components/modules/property-details";
 
 const IconListItem = ({
-  image,
   label,
   labelLang,
   state = "on",
+  staticIcon,
   icon = "sparkles",
 }: IconListItemProps) => (
   <div
@@ -16,14 +15,8 @@ const IconListItem = ({
       state === "off" ? "text-ink-subtle line-through" : "text-ink"
     }`}
   >
-    {image ? (
-      <ContentImage
-        alt=""
-        width={20}
-        height={20}
-        src={image}
-        className="size-5 shrink-0 object-contain"
-      />
+    {staticIcon ? (
+      <StaticIcon icon={staticIcon} size={20} />
     ) : (
       <Icon name={icon} size={20} className="text-ink-muted" />
     )}

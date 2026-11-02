@@ -1,4 +1,4 @@
-import { getHomeImageUrl } from "@features/home/mappers/home-image.mapper";
+import { propertyTypeStaticIcon } from "@features/properties/lib/static-icons";
 
 import type { TPropertyType } from "@/types/components/modules/home";
 
@@ -11,9 +11,8 @@ const PropertyTypeItem = ({ item, index }: TPropertyType) => (
     index={index}
     title={item?.title}
     href={`/rooms?property_type=${item?.id}`}
-    imageSrc={
-      item?.image ? getHomeImageUrl(item?.image) : PROPERTY_TYPE_FALLBACK_ICON
-    }
+    icon={propertyTypeStaticIcon(item?.id, item?.title ?? "")}
+    imageSrc={PROPERTY_TYPE_FALLBACK_ICON}
   />
 );
 

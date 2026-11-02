@@ -1,7 +1,6 @@
 "use client";
 
 import { AMENITY_PREVIEW_COUNT } from "@features/properties/constants/amenities";
-import { getPropertyImageUrl } from "@features/properties/mappers/property-image.mapper";
 import { useMemo, useState } from "react";
 import { useLocalizeDigits } from "@hooks/useLocalizeDigits";
 import { useTranslations } from "next-intl";
@@ -35,7 +34,7 @@ const Amenities = ({ property }: PropertySpecsSectionProps) => {
             labelLang={item.titleLang}
             icon={item.fallbackIcon}
             key={`${item.group}-${item.title}`}
-            image={item.icon ? getPropertyImageUrl(item.icon) : null}
+            staticIcon={item.staticIcon}
           />
         ))}
       </div>
