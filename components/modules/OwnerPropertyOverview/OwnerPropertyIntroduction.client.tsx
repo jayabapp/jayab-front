@@ -2,6 +2,7 @@
 
 import { PropertyAuthorizationStatus } from "@modules/PropertyGrid";
 import { useVerifyPropertyPrompt } from "@features/owner-property/hooks/useVerifyPropertyPrompt";
+import { propertyStatusKey } from "@features/properties/constants/property-status";
 import { PropertyPriceTag } from "@modules/PropertyDetails";
 import { useTranslations } from "next-intl";
 import { ContentImage } from "@elements/Image";
@@ -16,6 +17,7 @@ import Link from "next/link";
 
 const OwnerPropertyIntroduction = ({ property }: OwnerPropertyViewProps) => {
   const t = useTranslations();
+  const statusKey = propertyStatusKey(property?.status?.id);
 
   const router = useRouter();
   const prompt = useVerifyPropertyPrompt(property?.id, property?.is_authorized);
@@ -110,7 +112,12 @@ const OwnerPropertyIntroduction = ({ property }: OwnerPropertyViewProps) => {
         </div>
       </div>
 
-      <StatusShower data={property?.status} />
+      <StatusShower
+        data={{
+          ...property?.status,
+          title: statusKey ? t(statusKey) : property?.status?.title,
+        }}
+      />
 
       <OwnerVerifyPromptModal
         show={prompt.isOpen}

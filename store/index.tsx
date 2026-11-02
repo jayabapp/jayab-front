@@ -92,11 +92,13 @@ export const useStoreInit = create<InitStore>(() => ({
 export type LocationsStore = {
   locationsData: { [key: string]: any | null };
   cityPickerRevision: number;
+  categoryLanding: { path: string; title: string } | null;
 };
 
 export const useCitiesStore = create<LocationsStore>(() => ({
   locationsData: {},
   cityPickerRevision: 0,
+  categoryLanding: null,
 }));
 
 export type ThemeStore = {
@@ -155,12 +157,12 @@ export type ChatStore = {
   isTyping: any;
   chatReply: any;
   chatDelete: any;
-  chatDraft: { chatId: string; text: string } | null;
   chatProduct: any;
   usersStatus: any;
   chatsPageData: any;
   deletedMessage: any;
   chatNotification: any;
+  chatDraft: { chatId: string; text: string } | null;
 };
 
 export const useChatStore = create<ChatStore>(() => ({

@@ -1,5 +1,5 @@
-import { sanitizeCmsHtml } from "@/helpers/html.generator";
 import { useLocale, useTranslations } from "next-intl";
+import { sanitizeCmsHtml } from "@/helpers/html.generator";
 import { dirOf } from "@/i18n/config";
 
 import type { TermsContentProps } from "@/types/components/modules/content-pages";
@@ -33,7 +33,7 @@ const TermsContent = ({ content: aboutUsWebsite }: TermsContentProps) => {
               <div
                 lang={contentLocale}
                 dir={dirOf(contentLocale)}
-                className=" font-light !text-base text-justify  content mt-2 leading-8"
+                className="content mt-4 px-3 text-justify text-sm md:text-base"
                 dangerouslySetInnerHTML={{
                   __html: sanitizeCmsHtml(
                     aboutUsWebsite?.html || aboutUsWebsite?.full_text || "",

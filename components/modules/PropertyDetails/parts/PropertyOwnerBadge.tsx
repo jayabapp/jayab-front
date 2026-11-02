@@ -27,16 +27,16 @@ const PropertyOwnerBadge = ({
           src={avatar ? getPropertyImageUrl(avatar) : OWNER_AVATAR_FALLBACK}
           className="size-12 aspect-square rounded-full object-cover md:size-14"
         />
-        {isOnline ? (
-          <CallBadge
-            size="sm"
-            label={t("listing.activeSubscription")}
-            className="absolute -end-0.5 -top-0.5"
-          />
-        ) : null}
       </div>
       <div className="flex min-w-0 flex-1 flex-col items-start gap-0.5">
-        <p className="text-xs text-ink-subtle">
+        <p className="flex items-center gap-1.5 text-xs text-ink-subtle">
+          {isOnline ? (
+            <CallBadge
+              size="sm"
+              className="border-0 shadow-none"
+              label={t("listing.activeSubscription")}
+            />
+          ) : null}
           {t("common.host")}
           {isOnline ? (
             <>

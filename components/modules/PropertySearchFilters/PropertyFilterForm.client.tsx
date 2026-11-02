@@ -20,6 +20,7 @@ import PriceRangeFilter from "./parts/PriceRangeFilter.client";
 import FilterCounter from "./parts/FilterCounter.client";
 import FilterSection from "./parts/FilterSection.client";
 import FilterCheck from "./parts/FilterCheck.client";
+import RegionFilter from "./parts/RegionFilter.client";
 import DateFilter from "./parts/DateFilter.client";
 import isEmpty from "lodash/isEmpty";
 
@@ -29,6 +30,7 @@ const AREA_MAX = AREA_RANGE.max;
 const PropertyFilterForm = ({
   filters,
   onReset,
+  regions,
   queries,
   setFilters,
   propertyTypes,
@@ -61,6 +63,22 @@ const PropertyFilterForm = ({
         </div>
       ) : (
         <div className="pt-3" />
+      )}
+
+      {isEmpty(regions) || isHidden("regions") ? (
+        <></>
+      ) : (
+        <FilterSection
+          defaultOpen
+          title={t("common.local")}
+          count={countFilterGroup(countFilters, ["regions"])}
+        >
+          <RegionFilter
+            filters={filters}
+            setFilters={setFilters}
+            regions={regions ?? []}
+          />
+        </FilterSection>
       )}
 
       {isHidden("property_type") ? (

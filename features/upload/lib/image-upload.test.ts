@@ -6,6 +6,7 @@ import {
   ImageUploadValidationError,
   imageUploadMaxDimension,
   prepareImageUpload,
+  uploadScale,
 } from "./image-upload";
 import { uploadErrorKey } from "./upload-error";
 
@@ -112,5 +113,13 @@ describe("actionable upload errors", () => {
     assert.equal(uploadErrorKey(timeout), "imageUploadTimeout");
     assert.equal(uploadErrorKey({ __CANCEL__: true }), null);
     assert.equal(uploadErrorKey(new Error("unexpected")), "imageUploadFailed");
+  });
+});
+
+describe("pre-upload resize", () => {
+  it("keeps the shorter side at the server's longest side and never enlarges", () => {
+    assert.equal(uploadScale(4000, 3000, 1600), 1600 / 3000);
+    assert.equal(uploadScale(3000, 4000, 1600), 1600 / 3000);
+    assert.equal(uploadScale(1200, 900, 1600), 1);
   });
 });

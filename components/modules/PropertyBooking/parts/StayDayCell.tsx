@@ -1,7 +1,7 @@
 import type { StayDayCellProps } from "@/types/components/modules/property-booking";
 
 const BASE =
-  "relative flex h-[3.25rem] w-full flex-col items-center justify-center gap-0.5 text-sm transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-focus";
+  "relative flex h-14 w-full flex-col items-center justify-center gap-0.5 text-sm transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-focus";
 
 const STATE_CLASS = {
   end: "rounded-10 bg-action text-on-action",
@@ -16,6 +16,7 @@ const StayDayCell = ({
   label,
   state,
   price,
+  alert,
   column,
   isPeak,
   isToday,
@@ -28,10 +29,11 @@ const StayDayCell = ({
   onKeyDown,
   discounted,
   isReserved,
+  originalPrice,
 }: StayDayCellProps) => {
   const isEdge = state === "start" || state === "end";
   const blocked = disabled && !isEdge;
-  const isPlainFriday = isFriday && !isEdge && !blocked;
+  const isHoliday = (isFriday || isPeak) && !isEdge && !blocked;
   const skin = isEdge
     ? STATE_CLASS[state]
     : isReserved && blocked
@@ -47,10 +49,23 @@ const StayDayCell = ({
       : column === 6
         ? "end-0"
         : "left-1/2 -translate-x-1/2";
+  const alertSide =
+    column === undefined || column === 3
+      ? "left-1/2 -translate-x-1/2"
+      : column < 3
+        ? "start-0"
+        : "end-0";
 
   return (
     <div className="relative">
-      {tooltip ? (
+      {alert ? (
+        <span
+          role="alert"
+          className={`pointer-events-none absolute z-20 w-max max-w-56 rounded-10 bg-status-danger px-3 py-1.5 text-center text-xs font-medium leading-5 text-white shadow-elevated ${verticalClass} ${alertSide}`}
+        >
+          {alert}
+        </span>
+      ) : tooltip ? (
         <span
           role="status"
           className={`pointer-events-none absolute z-10 whitespace-nowrap rounded-full bg-neutral-900 px-3 py-1 text-xs text-white shadow-elevated ${verticalClass} ${horizontalClass}`}
@@ -76,7 +91,7 @@ const StayDayCell = ({
           />
         ) : null}
         <span
-          className={`${isEdge ? "font-bold" : ""} ${isPlainFriday ? "text-status-danger" : ""}`}
+          className={`leading-5 ${isEdge ? "font-bold" : ""} ${isHoliday ? "text-status-danger" : ""}`}
         >
           {day}
         </span>
@@ -86,23 +101,28 @@ const StayDayCell = ({
             className="h-2.5 w-7 animate-pulse rounded bg-surface-muted motion-reduce:animate-none"
           />
         ) : price && !blocked ? (
-          <span
-            className={`text-xs ${
-              isEdge
-                ? "text-on-action/80"
-                : discounted
-                  ? "text-status-success"
-                  : "text-ink-muted"
-            }`}
-          >
-            {price}
+          <span className="flex flex-col items-center leading-none">
+            <span
+              className={`text-xs ${
+                isEdge
+                  ? "text-on-action/80"
+                  : isHoliday
+                    ? "text-status-danger"
+                    : discounted
+                      ? "text-status-success"
+                      : "text-ink-muted"
+              }`}
+            >
+              {price}
+            </span>
+            {discounted && originalPrice ? (
+              <s
+                className={`mt-0.5 text-2xs ${isEdge ? "text-on-action/60" : "text-ink-subtle"}`}
+              >
+                {originalPrice}
+              </s>
+            ) : null}
           </span>
-        ) : null}
-        {isPeak && !isEdge ? (
-          <span
-            aria-hidden="true"
-            className="absolute start-1.5 top-1.5 size-1 rounded-full bg-warning-500"
-          />
         ) : null}
       </button>
     </div>

@@ -6,6 +6,7 @@ import { useCallback, useState } from "react";
 import { extraDiscoveryFilters } from "@features/properties/lib/discovery-filter-policy";
 import { useDiscoveryBaseline } from "@features/properties/context/DiscoveryContext";
 import { countActiveFilters } from "@features/properties/lib/count-active-filters";
+import { pickLocationQuery } from "@features/cities/lib/location-label";
 import { countFilterGroup } from "@features/properties/lib/count-active-filters";
 import { orderFilterChips } from "@features/properties/lib/filter-order";
 import { FilterEditorBody } from "./parts/FilterEditorChip.client";
@@ -18,8 +19,10 @@ import { tripDateLabel } from "@features/properties/lib/trip-date-label";
 import { RegionButton } from "@modules/CitySelector";
 import { ContentImage } from "@elements/Image";
 import { PRICE_RANGE } from "@features/properties/constants/filter-ranges";
+import { SEARCH_PATH } from "@features/properties/lib/discovery-filters";
 import { parseIdList } from "@features/cities/lib/city-selection";
 import { AREA_RANGE } from "@features/properties/constants/filter-ranges";
+import { useRouter } from "next/navigation";
 import { Icon } from "@elements/Icon";
 
 import type { SelectedFiltersBarProps } from "@/types/components/modules/property-search-filters";
@@ -36,6 +39,7 @@ import updateDateRange from "./parts/DateRangePicker/updateDateRange";
 import TripFilterPill from "./parts/TripFilterPill.client";
 import FilterCounter from "./parts/FilterCounter.client";
 import SwiperSlide from "@elements/Carousel/SwiperSlide";
+import queryBuilder from "@/helpers/queryBuilder";
 import isEmpty from "lodash/isEmpty";
 import Swiper from "@elements/Carousel/Swiper.client";
 import moment from "moment-jalaali";
@@ -58,6 +62,7 @@ const TRIP_KEYS = ["checkin", "checkout", "total_guests"] as const;
 
 const SelectedFiltersBar = ({
   query,
+  categoryTitle,
   propertyTypes,
   containerClass,
   setShowRegions,
@@ -68,6 +73,7 @@ const SelectedFiltersBar = ({
   const jalali = useJalaliFormat();
   const formatNumber = useFormatNumber();
 
+  const router = useRouter();
   const baseline = useDiscoveryBaseline();
   const replaceQuery = useDiscoveryQueryReplace();
 
@@ -210,7 +216,7 @@ const SelectedFiltersBar = ({
         <RangeFilterChip
           icon="wallet"
           unit={t("common.toman")}
-          steps={PRICE_RANGE.step}
+          steps={PRICE_RANGE.fineStep}
           upLimit={PRICE_RANGE.max}
           labelTitle={t("common.price")}
           lowerKey={PRICE_RANGE.lowerKey}
@@ -376,6 +382,24 @@ const SelectedFiltersBar = ({
             ) : null}
           </button>
         </SwiperSlide>
+
+        {categoryTitle ? (
+          <SwiperSlide className="flex !w-auto">
+            <RemovableFilterChip
+              label={categoryTitle}
+              onRemove={() => {
+                // Leaving the category keeps the place and the filters added on top of it.
+                const location = Object.fromEntries(
+                  Object.entries(pickLocationQuery(baseline)).filter(
+                    ([, value]) => value,
+                  ),
+                );
+                const rest = queryBuilder({ ...location, ...extra });
+                router.push(rest ? `${SEARCH_PATH}?${rest}` : SEARCH_PATH);
+              }}
+            />
+          </SwiperSlide>
+        ) : null}
 
         {orderFilterChips(chips, query).map(({ node }) => node)}
       </Swiper>

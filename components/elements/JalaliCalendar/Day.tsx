@@ -31,7 +31,7 @@ const Day = ({
 
   return (
     <div
-      className={`aspect-square   ${!!data?.year && (!isBefore || !!isToday) ? "bg-surface-muted" : " opacity-50 "} ${
+      className={`aspect-square   ${!!data?.year && (!isBefore || !!isToday) ? "" : " opacity-50 "} ${
         onSelect && !disableClick ? "cursor-pointer" : ""
       } `}
       onClick={() => {
@@ -49,7 +49,9 @@ const Day = ({
       <div
         key={data?.id}
         className={`text-center flex flex-col gap-0.5 ${data?.is_reserved ? "striped" : " "}   ${
-          isToday && !isSelected ? "rounded-md bg-surface-hover border border-line-strong" : ""
+          isToday && !isSelected
+            ? "rounded-md bg-surface-hover border border-line-strong"
+            : ""
         }  relative  flex items-center ${!!data?.price ? "justify-start" : "justify-center"}  md:justify-center  aspect-square  ${
           !!data?.isActive ? "border-b-2  border-action" : ""
         }  ${isSelected ? "!bg-action  rounded-md text-on-action" : ""}`}
@@ -65,16 +67,8 @@ const Day = ({
         ) : (
           <></>
         )}
-        {!!data?.is_peak ? (
-          <div className="absolute start-1.5 top-1.5 size-1.5 rounded-full bg-warning-500">
-            {" "}
-          </div>
-        ) : (
-          <></>
-        )}
-
         <p
-          className={`z-1 ${smallerDateFonts ? "font-medium" : "font-bold"}  ${!!isFriday ? "text-status-danger" : ""} `}
+          className={`z-1 ${smallerDateFonts ? "font-medium" : "font-bold"}  ${(isFriday || !!data?.is_peak) && !isSelected ? "text-status-danger" : ""} `}
         >
           {" "}
           {data?.id}

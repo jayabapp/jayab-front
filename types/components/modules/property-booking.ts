@@ -1,9 +1,9 @@
+import type { KeyboardEventHandler, ReactNode } from "react";
 import type { PropertyDetailsView } from "@/types/features/properties";
 import type { PropertyQuoteDto } from "@/api_services/property/property.interface";
 import type { SinglePropDto } from "@/api_services/property/property.interface";
 import type { DayRangeState } from "@features/reservations/lib/stay-range";
 import type { StayRange } from "@features/reservations/lib/stay-range";
-import type { KeyboardEventHandler, ReactNode } from "react";
 
 export type StayMonthRef = { month: number; year: number };
 export type StayCompleteRange = { end: Date; start: Date };
@@ -43,23 +43,25 @@ export type BookingEditSheetProps = {
 };
 
 export type StayDayCellProps = {
-  day: number | string;
   row?: number;
-  column?: number;
   label: string;
   price?: string;
+  alert?: string;
+  column?: number;
+  dateKey: string;
   isPeak?: boolean;
-  isToday?: boolean;
   tooltip?: string;
+  isToday?: boolean;
   disabled: boolean;
   isFriday?: boolean;
   isReserved: boolean;
-  discounted?: boolean;
   isLoading?: boolean;
-  dateKey: string;
-  onKeyDown?: KeyboardEventHandler<HTMLButtonElement>;
+  day: number | string;
   onSelect: () => void;
+  discounted?: boolean;
   state: DayRangeState;
+  originalPrice?: string;
+  onKeyDown?: KeyboardEventHandler<HTMLButtonElement>;
 };
 
 export type StayCalendarGridProps = {
@@ -79,6 +81,7 @@ export type StayMonthProps = {
   propertyId: number;
   reserved: ReadonlySet<string>;
   onSelectDay: (date: Date) => void;
+  alert?: { dateKey: string; text: string } | null;
 } & StayMonthRef;
 
 export type StayDatePickerProps = {

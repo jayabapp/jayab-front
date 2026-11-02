@@ -1,7 +1,10 @@
+import { IMAGE_UPLOAD_TIMEOUT_MS } from "@features/upload/lib/image-upload";
+import { imageUploadMaxDimension } from "@features/upload/lib/image-upload";
+import { shrinkImageForUpload } from "@features/upload/lib/image-upload";
+import { prepareImageUpload } from "@features/upload/lib/image-upload";
 import { YupValidator } from "@/utils/YupValidator";
 import { apiRoutes } from "@/utils/urls";
 import { apiCall } from "../common/apicall.helper";
-import { IMAGE_UPLOAD_TIMEOUT_MS, prepareImageUpload } from "@features/upload/lib/image-upload";
 import {
   ConfirmForgetOtpDto,
   GetProfileDto,
@@ -211,7 +214,13 @@ export class AuthService {
     try {
       const file = dto.formData.get("file");
       if (file instanceof File && /^\/attachments(?:\?|$)/.test(dto.link))
-        dto.formData.set("file", prepareImageUpload(file));
+        dto.formData.set(
+          "file",
+          await shrinkImageForUpload(
+            prepareImageUpload(file),
+            imageUploadMaxDimension(dto.link),
+          ),
+        );
       const result = await apiCall<FormData, SetPasswordResponse>(
         "POST",
         dto.link,
@@ -237,9 +246,14 @@ export class AuthService {
     });
   }
   static async getOwnerProfile(dto: { signal?: AbortSignal } = {}) {
-    return apiCall<unknown, OwnerProfileDto>("GET", apiRoutes.GET_OWNER_PROFILE, undefined, {
-      signal: dto.signal,
-    });
+    return apiCall<unknown, OwnerProfileDto>(
+      "GET",
+      apiRoutes.GET_OWNER_PROFILE,
+      undefined,
+      {
+        signal: dto.signal,
+      },
+    );
   }
 
   static async updateProfile(dto: UpdateProfileDto) {

@@ -1,8 +1,9 @@
-export type { CitySuggestDto, SearchSuggDto } from "@/api_services/home/home.interface";
-
-import type { CitySuggestDto } from "@/api_services/home/home.interface";
-import type { SearchOption } from "@/types/features/search";
 import type { Dispatch, ReactNode, SetStateAction } from "react";
+export type { CitySuggestDto } from "@/api_services/home/home.interface";
+import type { CitySuggestDto } from "@/api_services/home/home.interface";
+export type { SearchSuggDto } from "@/api_services/home/home.interface";
+import type { SearchOption } from "@/types/features/search";
+import type { CityListPick } from "@/types/features/search";
 
 export type SearchBoxAppearance = {
   bg?: string;
@@ -10,109 +11,110 @@ export type SearchBoxAppearance = {
 };
 
 export type SearchInputProps = {
-  autofocus?: boolean;
   boxId?: string;
+  initValue?: string;
   cancelText?: string;
+  autofocus?: boolean;
+  passedText?: string;
+  placeholder?: string;
   children?: ReactNode;
+  passedQuerykey?: string;
   containerClass?: string;
   disableTypeing?: boolean;
-  initValue?: string;
   item?: SearchBoxAppearance;
   onClear: () => void | null;
   onSubmit: (value: string | null) => void | null;
-  passedQuerykey?: string;
-  passedText?: string;
-  placeholder?: string;
 };
 
 export type SearchPanelInputProps = {
-  activeIndex: number;
+  value: string;
   boxId?: string;
-  hasOptions: boolean;
-  inputRef?: React.RefObject<HTMLInputElement | null>;
+  listId: string;
   isOpen: boolean;
   isPending: boolean;
-  listId: string;
-  onChange: (value: string) => void;
-  onKeyDown: (event: React.KeyboardEvent) => void;
+  activeIndex: number;
+  hasOptions: boolean;
   onSubmit: () => void;
   placeholder?: string;
   submitButtonClass?: string;
-  value: string;
+  onChange: (value: string) => void;
+  onKeyDown: (event: React.KeyboardEvent) => void;
+  inputRef?: React.RefObject<HTMLInputElement | null>;
 };
 
 export type SearchOverlayProps = {
-  activeIndex: number;
-  boxId?: string;
-  hasOpened: boolean;
-  inputRef?: React.RefObject<HTMLInputElement | null>;
-  isLoading: boolean;
-  isOpen: boolean;
-  isPending: boolean;
-  isStale?: boolean;
-  listRef: React.RefObject<HTMLDivElement | null>;
-  onClose: () => void;
-  onHover: (index: number) => void;
-  onKeyDown: (event: React.KeyboardEvent) => void;
-  onPick: (option: SearchOption) => void;
-  onSubmit: () => void;
-  onTermChange: (value: string) => void;
-  options: SearchOption[];
-  panelClass: string;
-  placeholder?: string;
-  submitButtonClass?: string;
   term: string;
+  boxId?: string;
+  isOpen: boolean;
+  isStale?: boolean;
+  hasOpened: boolean;
+  isLoading: boolean;
+  isPending: boolean;
+  panelClass: string;
+  activeIndex: number;
+  onClose: () => void;
+  onSubmit: () => void;
+  placeholder?: string;
+  options: SearchOption[];
+  submitButtonClass?: string;
+  onHover: (index: number) => void;
+  onTermChange: (value: string) => void;
+  onPick: (option: SearchOption) => void;
+  listRef: React.RefObject<HTMLDivElement | null>;
+  onKeyDown: (event: React.KeyboardEvent) => void;
+  inputRef?: React.RefObject<HTMLInputElement | null>;
 };
 
 export type SearchPanelBodyProps = {
-  activeIndex: number;
-  hideCityList?: boolean;
-  isLoading: boolean;
-  isStale?: boolean;
-  listId: string;
-  listRef: React.RefObject<HTMLDivElement | null>;
-  onClose: () => void;
-  onHover: (index: number) => void;
-  onPick: (option: SearchOption) => void;
-  onTermChange: (value: string) => void;
-  options: SearchOption[];
   term: string;
+  listId: string;
+  isStale?: boolean;
+  isLoading: boolean;
+  activeIndex: number;
+  onClose: () => void;
+  hideCityList?: boolean;
+  options: SearchOption[];
+  onHover: (index: number) => void;
+  onTermChange: (value: string) => void;
+  onPick: (option: SearchOption) => void;
+  onPickCities?: (pick: CityListPick) => void;
+  listRef: React.RefObject<HTMLDivElement | null>;
 };
 
 export type PopSearchBoxProps = {
   boxId?: string;
-  containerClass?: string;
-  initValue?: string;
-  item?: SearchBoxAppearance;
   justIcon?: boolean;
+  initValue?: string;
+  placeholder?: string;
+  containerClass?: string;
+  item?: SearchBoxAppearance;
   onClear?: () => void | null;
   onSubmit?: (value: string | null) => void | null;
-  placeholder?: string;
 };
 
 export type HomePopSearchProps = PopSearchBoxProps & {
-  setShowPop: Dispatch<SetStateAction<boolean>>;
   showPop: boolean;
+  setShowPop: Dispatch<SetStateAction<boolean>>;
 };
 
 export type SearchBoxDropDownProps = {
   boxId?: string;
-  containerClass?: string;
   initValue?: string;
-  item?: SearchBoxAppearance;
   placeholder?: string;
+  containerClass?: string;
+  item?: SearchBoxAppearance;
 };
 
 export type SearchSuggestionsProps = {
-  activeIndex: number;
-  isLoading: boolean;
-  isStale?: boolean;
   listId: string;
-  listRef: React.RefObject<HTMLDivElement | null>;
+  isStale?: boolean;
+  isLoading: boolean;
+  activeIndex: number;
+  searchedText: string;
+  options: SearchOption[];
   onHover: (index: number) => void;
   onPick: (option: SearchOption) => void;
-  options: SearchOption[];
-  searchedText: string;
+  listRef: React.RefObject<HTMLDivElement | null>;
 };
 
 export type SearchSuggestionCityProps = {
@@ -132,8 +134,8 @@ export type SearchSelectedLocationsProps = {
 };
 
 export type SearchLocationChipProps = {
-  onRemove: () => void;
   title?: string;
+  onRemove: () => void;
   isProvince?: boolean;
 };
 
@@ -144,24 +146,17 @@ export type SearchQueryParamSyncProps = {
 
 export type SearchInlinePanelProps = {
   boxId?: string;
-  /** True while this is the step on screen: gates the request and the autofocus. */
   isActive: boolean;
   placeholder?: string;
-  onPickPlace?: (option: SearchOption) => void;
   onTermChange?: (term: string) => void;
-  /**
-   * Replaces the default "run the search and leave for /rooms" submit. The hero
-   * sheet takes the typed term as its destination and moves to the next step
-   * instead, so Enter cannot skip the dates and guests the flow is there to ask.
-   */
   onSubmitTerm?: (term: string) => void;
+  onPickCities?: (pick: CityListPick) => void;
+  onPickPlace?: (option: SearchOption) => void;
 };
 
 export type HeroDestinationSearchProps = {
-  boxId?: string;
-  /** The small persistent caption above the value. */
   label: string;
-  /** What the closed field shows: a chosen place's title, or the typed text. */
+  boxId?: string;
   value?: string;
   onTermChange?: (term: string) => void;
   onPickPlace?: (option: SearchOption) => void;

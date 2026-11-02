@@ -32,6 +32,7 @@ const StayMonth = ({
   range,
   today,
   reserved,
+  alert,
   propertyId,
   onSelectDay,
 }: StayMonthProps) => {
@@ -172,12 +173,18 @@ const StayMonth = ({
               isReserved={isReserved}
               dateKey={toDayKey(date)}
               isPeak={!!entry?.is_peak}
-              isToday={moment(date).isSame(today, "day")}
               isLoading={isCalendarPending}
               onSelect={() => onSelectDay(date)}
               discounted={!!entry?.discounted_price}
               day={localizeDigits(String(day), locale)}
+              isToday={moment(date).isSame(today, "day")}
               price={formatCalendarCellPrice(price, locale)}
+              originalPrice={
+                entry?.discounted_price
+                  ? formatCalendarCellPrice(entry.price, locale)
+                  : undefined
+              }
+              alert={alert?.dateKey === toDayKey(date) ? alert.text : undefined}
               onKeyDown={(event) => onDayKeyDown(event, date)}
               label={`${formatJalaliWeekdayDay(date, jalali)}${priceLabel}${sep}${availability}`}
               tooltip={

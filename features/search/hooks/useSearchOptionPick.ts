@@ -8,6 +8,8 @@ import { useCitiesStore } from "@/store";
 import { useCallback } from "react";
 import { useRouter } from "next/navigation";
 
+import queryBuilder from "@/helpers/queryBuilder";
+
 import type { SearchOption } from "@/types/features/search";
 
 export const useSearchOptionPick = (term: string, close: () => void) => {
@@ -34,7 +36,25 @@ export const useSearchOptionPick = (term: string, close: () => void) => {
         });
       }
       close();
-      router.push(option.href);
+      const { categoryLanding } = useCitiesStore.getState();
+      const ids = (list?: { id?: number | null }[]) =>
+        list
+          ?.map((entry) => entry.id)
+          .filter(Boolean)
+          .join(",") || undefined;
+      const place =
+        option.kind === "place"
+          ? queryBuilder({
+              cities: ids(option.locations?.cities),
+              provinces: ids(option.locations?.provinces),
+              regions: ids(option.locations?.regions),
+            })
+          : "";
+      router.push(
+        categoryLanding && place
+          ? `${categoryLanding.path}?${place}`
+          : option.href,
+      );
     },
     [close, remember, router, term, words],
   );

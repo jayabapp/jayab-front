@@ -1,3 +1,5 @@
+import type { CityListPick } from "@/types/features/search";
+
 export type TLineardataProps = {
   title: string;
   value: string;
@@ -31,4 +33,5 @@ export type TStepShowerProps = {
 export type TSearchBoxProps = {
   onSubmitCB: () => void | null;
   options?: { cotainerClass?: string };
+  onPickCities?: (pick: CityListPick) => void;
 };

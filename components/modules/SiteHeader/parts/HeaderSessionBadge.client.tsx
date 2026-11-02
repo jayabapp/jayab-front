@@ -77,7 +77,7 @@ const HeaderSessionBadge = ({
             width={24}
             height={24}
             src={avatar || "/assets/icons/header/new-face/user.svg"}
-            className={`${isLogin && !avatar ? "xl:brightness-0" : !isLogin && !isLight ? "brightness-0" : ""} ${isLight ? "border-white" : "border-control"} border shrink-0 size-6 rounded-full transform-gpu transition-all`}
+            className={`${isLogin && !avatar ? "xl:brightness-0 logo-adapt" : !isLogin && !isLight ? "brightness-0 logo-adapt" : ""} ${isLight ? "border-white" : "border-control"} border shrink-0 size-6 rounded-full transform-gpu transition-all`}
           />
 
           {isLogin ? (

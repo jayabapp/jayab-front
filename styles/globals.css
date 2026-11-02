@@ -118,6 +118,12 @@ ul {
   background-image: var(--aurora-mesh);
 }
 
+/* Light pages are plain white like the landing pages; the blue wash stays only in dark mode. */
+html:not([data-theme="dark"]) .app-background::before,
+html:not([data-theme="dark"]) .aurora-layer {
+  display: none;
+}
+
 .app-text {
   @apply text-ink font-normal;
 }
@@ -1023,6 +1029,14 @@ p {
   text-align: inherit;
 }
 
+/* Long descriptions read as justified blocks in all three languages; the last line stays at
+   the start edge, and Latin text may hyphenate instead of opening wide gaps. */
+.prose-text {
+  text-align: justify;
+  text-justify: inter-word;
+  hyphens: auto;
+}
+
 select {
   appearance: none;
   -moz-appearance: none;
@@ -1714,6 +1728,16 @@ html[data-theme="dark"] .property-card-shadow {
   @apply rounded-20 border border-surface-muted bg-surface;
 }
 
+/* Static glyph files: only the file for the current theme is requested. */
+.static-icon {
+  display: inline-block;
+  background: var(--icon-light) center / contain no-repeat;
+}
+
+html[data-theme="dark"] .static-icon {
+  background-image: var(--icon-dark);
+}
+
 /* Arrows and chevrons that mean "back" / "forward" are drawn for LTR and mirrored in an RTL
    locale (:dir() is rewritten to :lang() by the CSS build, so the html dir is used). */
 html[dir="rtl"] .icon-bidi {
@@ -1726,6 +1750,17 @@ html[dir="rtl"] .ltr .icon-bidi {
 
 html[data-theme="dark"] .logo-adapt {
   filter: brightness(0) invert(1);
+}
+
+/* Glyph files drawn in a fixed near-black (search, location, map, pool) would vanish on the
+   dark surface; inverting lightness and turning the hue back keeps any blue accent blue. */
+html[data-theme="dark"] img:is(
+    [src$="/edit/magnifier.svg"],
+    [src$="/home/home_location.svg"],
+    [src$="/home/literly_map.svg"],
+    [src$="/adds/prop_card_pool.svg"]
+  ) {
+  filter: invert(1) hue-rotate(180deg);
 }
 
 .price-slider .rc-slider {
@@ -1927,6 +1962,17 @@ html[data-theme="dark"] .filter-chip-primary {
 }
 .results-sheet-map-button {
   @apply mb-3 me-4 flex h-9 shrink-0 cursor-pointer items-center gap-1.5 rounded-full bg-action px-3.5 text-xs font-bold text-on-action focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-focus focus-visible:ring-offset-2;
+}
+
+/* The phone booking bar grows once dates and guests are set; the page keeps clear of it. */
+.listing-page {
+  padding-bottom: calc(var(--booking-bar-h, 6rem) + 1rem) !important;
+}
+
+@media (min-width: 768px) {
+  .listing-page {
+    padding-bottom: 9rem !important;
+  }
 }
 
 .discovery-filter-dialog {

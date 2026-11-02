@@ -13,6 +13,7 @@ import SearchPanelBody from "./parts/SearchPanelBody.client";
 const SearchInlinePanel = ({
   isActive,
   onPickPlace,
+  onPickCities,
   onSubmitTerm,
   onTermChange,
   boxId = "HERO_SHEET_SEARCH",
@@ -86,7 +87,6 @@ const SearchInlinePanel = ({
 
       <SearchPanelBody
         term={term}
-        hideCityList
         onPick={pick}
         onClose={close}
         listId={listId}
@@ -96,7 +96,9 @@ const SearchInlinePanel = ({
         isLoading={isLoading}
         onHover={setActiveIndex}
         activeIndex={activeIndex}
+        onPickCities={onPickCities}
         onTermChange={onChangeTerm}
+        hideCityList={!onPickCities}
       />
     </div>
   );

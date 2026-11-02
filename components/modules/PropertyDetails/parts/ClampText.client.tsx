@@ -41,7 +41,7 @@ const ClampText = ({
       <p
         lang={lang}
         ref={textRef}
-        className={`w-full whitespace-pre-wrap text-start text-ink ${
+        className={`prose-text w-full whitespace-pre-wrap text-ink ${
           expanded ? "" : (LINE_CLAMP[lines] ?? "line-clamp-4")
         } ${className}`}
       >

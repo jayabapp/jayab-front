@@ -1,7 +1,6 @@
 "use client";
 
 import { PropertyFilterForm } from "@modules/PropertySearchFilters";
-import { CitySelectorTitle } from "@modules/CitySelector";
 import { ModalHeaderPart } from "@elements/Modal";
 import { FilterApplyBar } from "@modules/PropertySearchFilters";
 
@@ -15,13 +14,10 @@ const DiscoveryFilterModal = ({
   onApply,
   onClose,
   queries,
-  cityTitle,
   setFilters,
   hiddenFilters,
   propertyTypes,
-  setShowRegions,
   baselineFilters,
-  onShowCityModal,
   cityWithRegions,
   onClearExtraFilters,
 }: DiscoveryFilterModalProps) => (
@@ -33,16 +29,6 @@ const DiscoveryFilterModal = ({
     <ModalHeaderPart showX title="" onHide={onClose} />
 
     <div className="min-h-0 w-full grow overflow-y-auto overscroll-contain pb-4">
-      <div className="mx-auto w-[92%] pb-2">
-        <CitySelectorTitle
-          hideCityPart
-          queries={queries}
-          title={cityTitle}
-          cb={onShowCityModal}
-          setShowRegions={setShowRegions}
-          cityWithRegions={cityWithRegions}
-        />
-      </div>
       <PropertyFilterForm
         filters={filters}
         queries={queries}
@@ -50,6 +36,7 @@ const DiscoveryFilterModal = ({
         onReset={onClearExtraFilters}
         propertyTypes={propertyTypes}
         hiddenFilters={hiddenFilters}
+        regions={cityWithRegions?.child}
         baselineFilters={baselineFilters}
       />
     </div>

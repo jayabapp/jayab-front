@@ -39,13 +39,17 @@ describe("reservation date selection", () => {
       selectDay(date("2026-12-21"), range, reserved, today).blocked,
       "reserved",
     );
+    assert.equal(
+      selectDay(date("2027-01-01"), range, reserved, today).blocked,
+      "full",
+    );
   });
 
   it("still rejects reserved arrivals and past dates and lets users restart a range", () => {
     const reserved = new Set(["2026-10-10"]);
     assert.equal(
       selectDay(date("2026-10-10"), {}, reserved, today).blocked,
-      "reserved",
+      "full",
     );
     assert.equal(
       selectDay(date("2026-10-05"), {}, reserved, today).blocked,

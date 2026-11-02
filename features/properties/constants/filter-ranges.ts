@@ -1,7 +1,7 @@
-/** Slider bounds shared by the full filter form and the quick editors in the bar. */
 export const PRICE_RANGE = {
   max: 40_000_000,
   step: 500_000,
+  fineStep: 100_000,
   lowerKey: "min_price",
   higherKey: "max_price",
 } as const;

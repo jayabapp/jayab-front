@@ -5,6 +5,7 @@ import type { ChildCities } from "@/api_services/city/city.interface";
 import type { IconName } from "@/types/components/elements/icon";
 
 export type SelectedFiltersBarProps = {
+  categoryTitle?: string;
   containerClass?: string;
   hiddenFilters?: string[];
   query: Record<string, string>;
@@ -83,9 +84,9 @@ export type PropertyModelFilterProps = {
   isMulty?: boolean;
   mobileFilters?: any;
   list: any[] | undefined;
+  containerClass?: string;
   queryKey: number | string;
   onClickCb?: () => void | null;
-  containerClass?: string;
   setMobileFilters?: Dispatch<any>;
 };
 
@@ -140,12 +141,19 @@ export type FilterApplyBarProps = {
   draft: PropertyFilterDraft;
 };
 
+export type RegionFilterProps = {
+  filters: PropertyFilterDraft;
+  regions: { id: number; title: string }[];
+  setFilters: Dispatch<PropertyFilterDraft>;
+};
+
 export type PropertyFilterFormProps = {
   onReset?: () => void;
   hiddenFilters?: string[];
   filters: PropertyFilterDraft;
   queries: Record<string, string>;
   baselineFilters?: PropertyFilterDraft;
+  regions?: { id: number; title: string }[];
   setFilters: Dispatch<PropertyFilterDraft>;
   propertyTypes?: Record<string, ProvienceTypesDto[]>;
 };
@@ -196,4 +204,11 @@ export type PropertyRulesFilterProps = {
     string,
     { id: string | number; title: string; canonical_title?: string }[]
   >;
+};
+
+export type TPriceField = {
+  label: string;
+  value?: number;
+  placeholder: string;
+  onCommit: (value?: number) => void;
 };

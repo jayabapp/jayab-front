@@ -14,6 +14,7 @@ import { hasLocationQuery } from "@features/cities/lib/location-label";
 import { PropertySortMenu } from "@modules/PropertySearchFilters";
 import { useDiscoveryMap } from "@features/properties/context/DiscoveryMapContext";
 import { useTranslations } from "next-intl";
+import { NON_FILTER_KEYS } from "@features/properties/lib/discovery-filter-policy";
 import { useCitiesStore } from "@/store";
 import { hasUsableBbox } from "@features/properties/lib/bbox";
 import { useMediaQuery } from "@features/map/hooks/useMediaQuery";
@@ -35,7 +36,6 @@ import isEmpty from "lodash/isEmpty";
 
 const HEADER_SELECTOR = ".header-content-container";
 const STICK_TOLERANCE_PX = 0.5;
-// Where the map style, sprites and fonts come from; the connection opens while the SDK downloads.
 const MAP_ASSET_ORIGIN = "https://static.neshan.org";
 
 const DiscoveryLayout = ({
@@ -52,7 +52,6 @@ const DiscoveryLayout = ({
   const [filterModalShow, setFilterModalShow] = useState(false);
   const [showCityModal, setShowCityModal] = useState(false);
   const [showRegions, setShowRegions] = useState(false);
-  const [cityTitle, setCityTitle] = useState("");
 
   const {
     filters,
@@ -79,6 +78,22 @@ const DiscoveryLayout = ({
     (mapSupport === null ? Boolean(devices?.isMobile) : mapSupport);
 
   if (hasMap && hasArea) preconnect(MAP_ASSET_ORIGIN);
+
+  const categoryTitle =
+    mode === "landing" &&
+    Object.keys(baseline).some(
+      (key) => key !== "regions" && !NON_FILTER_KEYS.has(key),
+    )
+      ? title
+      : undefined;
+
+  useEffect(() => {
+    if (!categoryTitle) return;
+    useCitiesStore.setState({
+      categoryLanding: { path: pathname, title: categoryTitle },
+    });
+    return () => useCitiesStore.setState({ categoryLanding: null });
+  }, [categoryTitle, pathname]);
 
   const rootRef = useRef<HTMLDivElement>(null);
   const barRef = useRef<HTMLDivElement>(null);
@@ -213,6 +228,7 @@ const DiscoveryLayout = ({
       >
         <SelectedFiltersBar
           query={queries}
+          categoryTitle={categoryTitle}
           setShowRegions={setShowRegions}
           cityWithRegions={cityWithRegions}
           propertyTypes={propertyTypes || {}}
@@ -246,22 +262,18 @@ const DiscoveryLayout = ({
       <DiscoveryFilterModal
         filters={filters}
         queries={queries}
-        cityTitle={cityTitle}
         setFilters={setFilters}
         onApply={onApplyFilters}
         baselineFilters={baseline}
         onClose={onCloseFilterModal}
         propertyTypes={propertyTypes}
-        setShowRegions={setShowRegions}
         cityWithRegions={cityWithRegions}
         onClearExtraFilters={clearExtraFilters}
         show={filterModalShow && !showCityModal}
-        onShowCityModal={() => setShowCityModal(true)}
       />
 
       <CityModal
         show={showCityModal}
-        setTitle={setCityTitle}
         setRegionsCb={setCityWithRegions}
         onHide={() => setShowCityModal(false)}
         customeValues={filterModalShow ? filters : undefined}

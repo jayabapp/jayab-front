@@ -1,7 +1,6 @@
 "use client";
 
 import { useCallback, useEffect, useMemo, useState } from "react";
-import { Icon } from "@elements/Icon";
 import { SearchDateRangePicker } from "@modules/PropertySearchFilters";
 import { CLEARED_DRAFT_TARGET } from "@features/search/lib/search-option-draft";
 import { useOverlayBackButton } from "@hooks/useOverlayBackButton";
@@ -14,6 +13,7 @@ import { useTranslations } from "next-intl";
 import { createPortal } from "react-dom";
 import { BtnLoading } from "@elements/Button";
 import { motion } from "framer-motion";
+import { Icon } from "@elements/Icon";
 
 import type { HeroSearchSheetProps } from "@/types/components/modules/home-hero-search";
 import type { HeroSearchStep } from "@/types/components/modules/home-hero-search";
@@ -133,8 +133,8 @@ const HeroSearchSheet = ({
           <HeroStepCard
             icon={STEP_ICON.where}
             isActive={step === "where"}
-            title={t("header.searchPlaceholder")}
             onOpen={() => openStep("where")}
+            title={t("header.searchPlaceholder")}
             hasBeenOpened={visited.includes("where")}
             summary={draft.cityTitle || draft.q || ""}
           >
@@ -149,6 +149,16 @@ const HeroSearchSheet = ({
               }
               onPickPlace={(option) => {
                 onPatch(searchOptionToDraft(option));
+                openStep("dates");
+              }}
+              onPickCities={(pick) => {
+                onPatch({
+                  ...CLEARED_DRAFT_TARGET,
+                  q: pick.title,
+                  cityTitle: pick.title,
+                  cities: pick.cities,
+                  provinces: pick.provinces,
+                });
                 openStep("dates");
               }}
               onSubmitTerm={() => openStep("dates")}

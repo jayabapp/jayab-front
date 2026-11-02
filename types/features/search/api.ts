@@ -18,15 +18,20 @@ export type PropertySearchInput = {
 export type HeroSearchDraft = {
   q?: string;
   cities?: string;
-  provinces?: string;
   regions?: string;
   checkin?: string;
   checkout?: string;
   cityTitle?: string;
+  provinces?: string;
   landingUrl?: string;
-  /** A picked listing: submitting opens it with the staged stay instead of searching. */
   propertyHref?: string;
   total_guests?: number;
+};
+
+export type CityListPick = {
+  title: string;
+  cities?: string;
+  provinces?: string;
 };
 
 export type SearchOptionKind = "place" | "property" | "guide";
@@ -41,13 +46,11 @@ export type SearchOption = {
   id: string;
   href: string;
   label: string;
-  hint?: string;
-  /** Overrides the kind's badge word, so a place can say province/city/region. */
-  badge?: string;
-  kind: SearchOptionKind;
-  /** A listing's public code. */
   code?: string;
+  hint?: string;
+  badge?: string;
   city?: CitySuggestDto;
+  kind: SearchOptionKind;
   locations?: SearchOptionLocations;
 };
 

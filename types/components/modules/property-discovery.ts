@@ -1,4 +1,4 @@
-import type { Dispatch, ReactNode, SetStateAction } from "react";
+import type { Dispatch, ReactNode } from "react";
 export type { ProvienceTypesDto } from "@/api_services/property/property.interface";
 import type { ProvienceTypesDto } from "@/api_services/property/property.interface";
 export type { SingleLandingDto } from "@/api_services/property/property.interface";
@@ -20,7 +20,6 @@ export type DiscoveryExperienceProps = {
 
 export type DiscoveryHeadingProps = {
   title: string;
-  // One line for the results sheet's header on phones.
   compact?: boolean;
   query: Record<string, any>;
 };
@@ -34,18 +33,15 @@ export type DiscoveryResultsProps = {
 
 export type DiscoveryFilterModalProps = {
   show: boolean;
-  cityTitle?: string;
   onApply: () => void;
   onClose: () => void;
   hiddenFilters?: string[];
   setFilters: Dispatch<any>;
-  onShowCityModal: () => void;
   queries: Record<string, any>;
   filters: Record<string, any>;
   onClearExtraFilters?: () => void;
   cityWithRegions: ChildCities | null;
   baselineFilters?: Record<string, string>;
-  setShowRegions: Dispatch<SetStateAction<boolean>>;
   propertyTypes?: Record<string, ProvienceTypesDto[]>;
 };
 

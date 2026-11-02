@@ -38,8 +38,9 @@ const AuthHeader = ({
             width="18"
             height="24"
             fill="none"
-            viewBox="0 0 18 24"
             aria-hidden="true"
+            viewBox="0 0 18 24"
+            className="icon-bidi -scale-x-100"
             xmlns="http://www.w3.org/2000/svg"
           >
             <path

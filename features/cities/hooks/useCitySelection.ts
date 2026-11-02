@@ -149,6 +149,12 @@ export const useCitySelection = ({
 
     cancelPropertyDiscoveryQueries(queryClient);
 
+    const { categoryLanding } = useCitiesStore.getState();
+    if (categoryLanding) {
+      router.push(`${categoryLanding.path}?${queryBuilder(body)}`);
+      return;
+    }
+
     const cityIds = Array.isArray(body.cities)
       ? body.cities.map(Number).filter(Boolean)
       : body.cities
@@ -210,22 +216,22 @@ export const useCitySelection = ({
   };
 
   return {
+    title,
     cities,
+    submit,
     search,
     isLoading,
     provinces,
     regionCity,
+    toggleCity,
     clearSelected,
     removeProvince,
     selectedCities,
     selectedProvince,
+    visibleProvinces,
     setSelectedCities,
     setSearch: (value: string) => patchDraft({ search: value }),
     setSelectedProvince: (province: NewCitiesListDto | null) =>
       patchDraft({ province }),
-    submit,
-    title,
-    toggleCity,
-    visibleProvinces,
   };
 };

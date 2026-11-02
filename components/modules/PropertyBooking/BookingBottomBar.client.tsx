@@ -1,6 +1,6 @@
 "use client";
 
-import { useCallback, useState } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 import { trackListingEvent } from "@/helpers/listingAnalytics";
 import { useJalaliFormat } from "@hooks/useJalaliFormat";
 import { formatJalaliDay } from "@features/reservations/mappers/reservation-dates";
@@ -49,6 +49,21 @@ const BookingBottomBar = ({
   const [editOpen, setEditOpen] = useState(false);
 
   const { setStay, stay, guests, quote } = booking;
+  const barRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    const bar = barRef.current;
+    if (!bar) return;
+    const root = document.documentElement;
+    const observer = new ResizeObserver(() =>
+      root.style.setProperty("--booking-bar-h", `${bar.offsetHeight}px`),
+    );
+    observer.observe(bar);
+    return () => {
+      observer.disconnect();
+      root.style.removeProperty("--booking-bar-h");
+    };
+  }, []);
   const closeDates = useCallback(() => setDatesOpen(false), []);
 
   const onConfirmDates = useCallback(
@@ -146,6 +161,8 @@ const BookingBottomBar = ({
           </button>
         </div>
 
+        <div aria-hidden="true" className="-mx-4 h-2 bg-surface-muted" />
+
         {quote && !quote.is_available ? (
           <div className="flex flex-col gap-2">
             <p className="text-xs text-status-danger">
@@ -176,7 +193,10 @@ const BookingBottomBar = ({
 
   return (
     <>
-      <div className="fixed inset-x-0 bottom-0 z-[11] border-t border-line bg-surface px-4 pt-3 pb-[calc(0.75rem+env(safe-area-inset-bottom))] md:hidden">
+      <div
+        ref={barRef}
+        className="fixed inset-x-0 bottom-0 z-[11] border-t border-line bg-surface px-4 pt-3 pb-[calc(0.75rem+env(safe-area-inset-bottom))] shadow-elevated md:hidden"
+      >
         {content()}
       </div>
 

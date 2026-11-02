@@ -1,5 +1,6 @@
 import { PROPERTY_IMAGE_QUALITY } from "@features/properties/constants/image";
 import { getPropertyImageUrl } from "@features/properties/mappers/property-image.mapper";
+import { propertyStatusKey } from "@features/properties/constants/property-status";
 import { useListSeparator } from "@hooks/useListSeparator";
 import { useTranslations } from "next-intl";
 import { ContentImage } from "@elements/Image";
@@ -23,7 +24,7 @@ const PropertyCard = ({
 }: PropertyCardProps) => {
   const t = useTranslations();
   const sep = useListSeparator();
-  const isExpiredStatus = data?.status?.id === 11;
+  const statusKey = propertyStatusKey(data?.status?.id);
 
   const staySearch = isOwner
     ? ""
@@ -103,9 +104,7 @@ const PropertyCard = ({
                 <StatusShower
                   data={{
                     ...data?.status,
-                    title: isExpiredStatus
-                      ? t("listing.expiredListing")
-                      : data?.status?.title,
+                    title: statusKey ? t(statusKey) : data?.status?.title,
                   }}
                 />
                 {data?.is_promoted ? (

@@ -3,7 +3,8 @@ import moment from "moment-jalaali";
 const API_DATE = "YYYY-MM-DD";
 
 export type StayRange = { end?: Date | null; start?: Date | null };
-export type StayBlockReason = "past" | "reserved";
+// "full": the tapped day itself is booked; "reserved": the stay would cross a booked night.
+export type StayBlockReason = "past" | "full" | "reserved";
 export type DayRangeState = "start" | "end" | "middle" | "idle";
 
 export const toDayKey = (value: Date | string) =>
@@ -60,12 +61,16 @@ export const selectDay = (
 
   const startsNewStay = !range.start || !!range.end || picked <= range.start;
   if (startsNewStay) {
-    if (reserved.has(toDayKey(picked))) return { blocked: "reserved", range };
+    if (reserved.has(toDayKey(picked))) return { blocked: "full", range };
     return { range: { end: null, start: picked } };
   }
 
   const checkout = lastSelectableCheckout(range.start as Date, reserved);
-  if (checkout && picked > checkout) return { blocked: "reserved", range };
+  if (checkout && picked > checkout)
+    return {
+      blocked: reserved.has(toDayKey(picked)) ? "full" : "reserved",
+      range,
+    };
 
   return { range: { end: picked, start: range.start } };
 };
