@@ -49,9 +49,12 @@ const StayDateSheetBody = ({
   useEffect(() => {
     if (!initial.start) return;
     const key = `${moment(initial.start).jYear()}-${moment(initial.start).jMonth() + 1}`;
-    document
-      .querySelector(`[data-stay-month="${key}"]`)
-      ?.scrollIntoView({ block: "start" });
+    const month = document.querySelector(`[data-stay-month="${key}"]`);
+    const list = month?.closest<HTMLElement>(".overflow-y-auto");
+    // Scroll the sheet's own list; Element.scrollIntoView would also move the page behind it.
+    if (month && list)
+      list.scrollTop +=
+        month.getBoundingClientRect().top - list.getBoundingClientRect().top;
   }, [initial.start]);
 
   const complete = isCompleteRange(draft) ? draft : null;

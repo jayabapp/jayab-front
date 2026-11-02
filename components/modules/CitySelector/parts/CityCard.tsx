@@ -14,16 +14,18 @@ const CityCard = ({ callback, isChecked, item }: CityCardProps) => (
         isChecked ? "border-transparent bg-action" : "border-line-strong"
       }`}
     >
-      <svg
-        aria-hidden="true"
-        fill="none"
-        height="10"
-        viewBox="0 0 12 10"
-        width="12"
-        xmlns="http://www.w3.org/2000/svg"
-      >
-        <path d="M4 9.4L0 5.4L1.4 4L4 6.6L10.6 0L12 1.4L4 9.4Z" fill="white" />
-      </svg>
+      {isChecked ? (
+        <svg
+          aria-hidden="true"
+          fill="none"
+          height="10"
+          viewBox="0 0 12 10"
+          width="12"
+          xmlns="http://www.w3.org/2000/svg"
+        >
+          <path d="M4 9.4L0 5.4L1.4 4L4 6.6L10.6 0L12 1.4L4 9.4Z" fill="white" />
+        </svg>
+      ) : null}
     </span>
   </button>
 );

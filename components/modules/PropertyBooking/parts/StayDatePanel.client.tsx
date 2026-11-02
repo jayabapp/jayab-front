@@ -47,7 +47,7 @@ const StayDatePanel = ({
   });
 
   useEffect(() => {
-    ref.current?.focus();
+    ref.current?.focus({ preventScroll: true });
     const startY = window.scrollY;
     const onPointerDown = (event: PointerEvent) => {
       if (ref.current && !ref.current.contains(event.target as Node))
