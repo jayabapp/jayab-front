@@ -16,10 +16,10 @@ const HeaderBrand = ({
 
   const mark = (
     <div className="flex items-center shrink-0 gap-1 justify-center">
-      {/* The header wordmark is always the Latin "Jayab" in brand blue, the same in all three locales. */}
+      {/* The header wordmark is always the Latin "Jayab", the same in all three locales: white over the home hero, brand blue on the surface. */}
       <BrandTitle
         script="en"
-        tone="blue"
+        tone={isLight ? "white" : "blue"}
         className={`h-6 w-auto ${markOnly ? "hidden" : alwaysShowTitle || isLight ? "flex" : "hidden xl:flex"}`}
       />
       <ContentImage

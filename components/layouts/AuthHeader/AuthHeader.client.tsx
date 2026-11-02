@@ -19,7 +19,7 @@ const AuthHeader = ({
 
   return (
     <div
-      dir="rtl"
+      dir={dirOf(locale)}
       className="glass-header fixed end-0 top-0 z-10 flex h-16 w-full items-center justify-between px-5 py-4 transition-all"
     >
       {disableBack ? (
