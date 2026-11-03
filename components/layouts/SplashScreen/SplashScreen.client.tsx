@@ -45,7 +45,7 @@ const SplashScreen = () => {
             width={624}
             height={244}
             className="splash-title"
-            src="/assets/icons/logo/title-fa-white.svg"
+            src="/assets/icons/logo/title-fa-white1.svg"
           />
         </div>
       </div>
