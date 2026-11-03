@@ -80,6 +80,7 @@ const RegionModal = ({
           width="w-full"
           onClick={onSubmitClick}
           title={t("common.submit")}
+          btnClass="!bg-brand-700 !text-white hover:!bg-brand-800"
           containerClass="flex w-full items-center justify-center"
         />
       </div>
