@@ -25,10 +25,10 @@ const MultyPopUpSelect = ({
         <div
           className={` ${item?.disableHover ? "" : "hover:border-line focus:border-line "} w-full ${
             item?.disable ? "opacity-70" : ""
-          }  !bg-neutral-400 flex flex-col items-start gap-2 placeholder:!opacity-50  placeholder:!text-ink border-transparent text-start px-2 py-3 rounded-xl `}
+          } flex flex-col items-start gap-2 rounded-xl border border-line bg-surface-muted px-3 py-3 text-start text-ink`}
         >
           <div className="flex items-center gap-2">
-            <p>{title}</p>
+            <p className="font-medium text-ink">{title}</p>
             <button
               aria-label={t("increase")}
               onClick={() => {
@@ -55,7 +55,7 @@ const MultyPopUpSelect = ({
               ? value.map((val) => (
                   <div
                     key={`selectedItems${val?.id || val}`}
-                    className="rounded-full gap-4 py-1 px-1 flex items-center justify-center border border-action  bg-action/5 text-link  text-xs "
+                    className="flex items-center justify-center gap-4 rounded-full border border-selected-line bg-selected px-1 py-1 text-xs text-on-selected"
                   >
                     <p className="text-xs ps-2">
                       {item?.list?.find((e) => e?.id == val)?.title ||

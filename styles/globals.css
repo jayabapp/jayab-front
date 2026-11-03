@@ -133,6 +133,23 @@ html:not([data-theme="dark"]) .aurora-layer {
   transition: transform 240ms ease;
 }
 
+.mobile-bottom-nav {
+  filter: drop-shadow(0 -4px 30px rgb(11 21 36 / 0.15));
+}
+
+@media (max-width: 1279px) {
+  html[data-theme="dark"] .site-header-surface {
+    border-bottom: 1px solid rgb(var(--c-line-strong) / 0.75);
+    box-shadow: 0 8px 24px -8px rgb(0 0 0 / 0.7);
+  }
+}
+
+html[data-theme="dark"] .mobile-bottom-nav {
+  border-top: 1px solid rgb(var(--c-line-strong) / 0.75);
+  box-shadow: 0 -8px 24px -8px rgb(0 0 0 / 0.7);
+  filter: none;
+}
+
 .header-content-container[data-autohide="hidden"] {
   transform: translate3d(0, -100%, 0);
 }

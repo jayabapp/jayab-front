@@ -1,10 +1,11 @@
 "use client";
 
-import { useOwnerProperties } from "@features/owner-property/hooks/useOwnerProperties";
 import { PropertyCard, PropertyCardSkeleton } from "@modules/PropertyGrid";
 import { OwnerPhotoUpgradeModal } from "@modules/OwnerPhotoUpgrade";
-import type { PropertyListDto } from "@/types/features/properties";
+import { useOwnerProperties } from "@features/owner-property/hooks/useOwnerProperties";
 import { useState } from "react";
+
+import type { PropertyListDto } from "@/types/features/properties";
 
 import EmptyState from "@elements/EmptyState";
 import isEmpty from "lodash/isEmpty";
@@ -21,7 +22,7 @@ const OwnerPropertyList = () => {
       {isLoading ? (
         <div className="grid w-full grid-cols-1 gap-4 p-2 md:grid-cols-2">
           {Array.from({ length: SKELETON_COUNT }, (_, index) => (
-            <PropertyCardSkeleton key={index} />
+            <PropertyCardSkeleton owner key={index} />
           ))}
         </div>
       ) : isEmpty(properties) ? (

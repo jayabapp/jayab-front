@@ -80,7 +80,7 @@ export type StayMonthProps = {
   range: StayRange;
   propertyId: number;
   reserved: ReadonlySet<string>;
-  onSelectDay: (date: Date) => void;
+  onSelectDay: (date: Date, isReserved: boolean) => void;
   alert?: { dateKey: string; text: string } | null;
 } & StayMonthRef;
 

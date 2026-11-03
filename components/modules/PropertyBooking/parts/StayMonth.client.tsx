@@ -152,8 +152,11 @@ const StayMonth = ({
           const isReserved =
             date >= today &&
             (reserved.has(toDayKey(date)) || !!entry?.is_reserved);
+          const bookedDates = isReserved
+            ? new Set([...reserved, toDayKey(date)])
+            : reserved;
           const price = entry?.discounted_price || entry?.price;
-          const isDisabled = isDayDisabled(date, range, reserved, today);
+          const isDisabled = isDayDisabled(date, range, bookedDates, today);
           const isFriday = moment(date).day() === 5;
           const availability = isReserved
             ? t("dayReserved")
@@ -174,7 +177,7 @@ const StayMonth = ({
               dateKey={toDayKey(date)}
               isPeak={!!entry?.is_peak}
               isLoading={isCalendarPending}
-              onSelect={() => onSelectDay(date)}
+              onSelect={() => onSelectDay(date, isReserved)}
               discounted={!!entry?.discounted_price}
               day={localizeDigits(String(day), locale)}
               isToday={moment(date).isSame(today, "day")}

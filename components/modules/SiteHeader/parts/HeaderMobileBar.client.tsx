@@ -7,8 +7,9 @@ import { DisplayPreferences } from "@modules/DisplayPreferences";
 import { useTranslations } from "next-intl";
 import { HomeHeroSearch } from "@modules/HomeHeroSearch";
 import { useStoreParams } from "@/store";
-import { Icon } from "@elements/Icon";
+import { ContentImage } from "@elements/Image";
 import { useDir } from "@hooks/useDir";
+import { Icon } from "@elements/Icon";
 
 import HeaderSessionBadge from "./HeaderSessionBadge.client";
 import HeaderSearchField from "./HeaderSearchField.client";
@@ -127,8 +128,8 @@ const HeaderMobileBar = ({
                   onClick={onRegisterAdvisor}
                   roundedClass="rounded-full"
                   title={t("header.registerAdvisor")}
-                  width=" !px-3  !text-sm !py-1 w-fit "
-                  containerClass="w-fit !px-0.5  items-center justify-center"
+                  width="!px-3 !text-sm !py-1 w-fit"
+                  containerClass="w-fit !px-0.5 items-center justify-center"
                 />
               )
             ) : pathname.includes("/profile") ? (
@@ -138,7 +139,13 @@ const HeaderMobileBar = ({
                 onClick={() => useStoreParams.setState({ getBackHome: false })}
                 className="flex size-8 items-center justify-center text-ink-muted hover:text-ink"
               >
-                <Icon name="home" size={24} />
+                <ContentImage
+                  alt=""
+                  width={28}
+                  height={28}
+                  className="size-7"
+                  src="/assets/icons/navbar/home_nav.svg"
+                />
               </Link>
             ) : (
               <div className="flex gap-2 items-center">
@@ -150,7 +157,13 @@ const HeaderMobileBar = ({
                     title={t("common.home")}
                     className="flex size-8 items-center justify-center text-ink-muted hover:text-ink"
                   >
-                    <Icon name="home" size={24} />
+                    <ContentImage
+                      alt=""
+                      width={28}
+                      height={28}
+                      className="size-7"
+                      src="/assets/icons/navbar/home_nav.svg"
+                    />
                   </Link>
                 ) : (
                   <HeaderSearchField justIcon boxId={boxId} />

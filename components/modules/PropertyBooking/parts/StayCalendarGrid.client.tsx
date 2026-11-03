@@ -36,8 +36,11 @@ const StayCalendarGrid = ({
 
   useEffect(() => () => clearTimeout(timer.current), []);
 
-  const onSelectDay = (date: Date) => {
-    const result = selectDay(date, range, reserved, today);
+  const onSelectDay = (date: Date, isReserved: boolean) => {
+    const bookedDates = isReserved
+      ? new Set([...reserved, toDayKey(date)])
+      : reserved;
+    const result = selectDay(date, range, bookedDates, today);
     clearTimeout(timer.current);
     if (result.blocked) {
       setHint({ dateKey: toDayKey(date), text: t(HINT_TEXT[result.blocked]) });

@@ -9,7 +9,6 @@ import { useUnreadChatCount } from "@features/chat/hooks/useUnreadChatCount";
 import { subscriptionStatus } from "@/helpers/subscriptionStatus";
 import { useAdvisorProfile } from "@features/advisors/hooks/useAdvisorProfile";
 import { useTranslations } from "next-intl";
-import { colors } from "@/theme/colors";
 import { isIOS } from "react-device-detect";
 
 import MobileNavCreateButton from "./parts/MobileNavCreateButton.client";
@@ -114,10 +113,7 @@ const MobileNav = () => {
           animate={{ y: 0, opacity: 1 }}
           initial={{ y: 120, opacity: 0 }}
           transition={{ duration: 0.28, ease: "easeInOut" }}
-          style={{
-            filter: `drop-shadow(0px -4px 30px ${colors.neutral[900]}25)`,
-          }}
-          className={`z-10 max-w-[800px] ${isIOS && isStandalone() ? "pb-8" : "pb-3"} flex lg:hidden pt-3 justify-between !touch-none md:rounded-md end-0 start-0 mx-auto items-center fixed bottom-0 w-full bg-surface`}
+          className={`mobile-bottom-nav z-10 max-w-[800px] ${isIOS && isStandalone() ? "pb-8" : "pb-3"} flex lg:hidden pt-3 justify-between !touch-none md:rounded-md end-0 start-0 mx-auto items-center fixed bottom-0 w-full bg-surface`}
         >
           <div className="flex w-full items-center justify-around px-3">
             {RIGHT_ITEMS.map((entry) => (

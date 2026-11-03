@@ -23,7 +23,10 @@ const HomeTileCard = ({
   >
     <span className="home-tile-well shrink-0">
       {icon ? (
-        <StaticIcon icon={icon} className="home-tile-icon size-7 md:size-16" />
+        <StaticIcon
+          icon={icon}
+          className={`home-tile-icon ${icon.set === "card-icons" && icon.n === "02" ? "h-7 w-14 md:h-16 md:w-24" : "size-7 md:size-16"}`}
+        />
       ) : (
         <ContentImage
           width={64}

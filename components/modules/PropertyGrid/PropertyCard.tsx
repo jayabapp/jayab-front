@@ -44,117 +44,7 @@ const PropertyCard = ({
     <div className="surface-card property-card-shadow flex w-full flex-col justify-between gap-2 p-3">
       {/* Owner card: photo on top, details below. */}
       <div className="flex w-full flex-col gap-3">
-        <PropertyCardLink
-          href={goToLink}
-          title={data.title}
-          className="order-2 flex flex-col gap-1.5 !outline-none"
-        >
-          <div className="flex items-start gap-2">
-            {data?.has_blue_tick ? (
-              <ContentImage
-                width={24}
-                height={24}
-                className="w-6 h-6"
-                alt="verified_badge"
-                src="/assets/icons/adds/verified_hexy_badge.svg"
-              />
-            ) : null}
-            <p className="line-clamp-2 h-10 text-start text-sm font-bold">
-              {data.title}
-            </p>
-          </div>
-
-          {isOwner ? (
-            <>
-              <div className="w-full flex flex-row items-start gap-2 justify-start">
-                <p className="text-sm shrink-0">{t("common.todayStatus")} :</p>
-                <p
-                  className={`text-sm font-bold ${data?.is_today_reserved ? "text-status-danger" : "text-link"}`}
-                >
-                  {data?.is_today_reserved
-                    ? t("listing.isReserved")
-                    : t("common.emptySlot")}
-                </p>
-              </div>
-
-              <div className="flex items-center gap-2">
-                <div className="bg-surface-hover font-normal rounded-full text-xs text-ink px-2 h-5 leading-4 flex items-center justify-center">
-                  {t("common.code")} {data.code}
-                </div>
-                <PropertyCardLikes
-                  propertyId={data?.id}
-                  favoriteCount={data?.favorite_count}
-                />
-              </div>
-
-              <div className="w-full min-h-10 flex flex-row items-end justify-between gap-2">
-                <p className="text-xs 2xl:text-xs shrink-0">
-                  {t("common.todaysPrice")}
-                </p>
-                <PropertyPrice
-                  data={{
-                    discounted_price: data?.today_price?.discounted_price,
-                    price: data?.today_price?.price,
-                    discount_percentage: data.today_price?.discount_percentage,
-                  }}
-                />
-              </div>
-
-              <div className="flex items-center w-full gap-2">
-                <StatusShower
-                  data={{
-                    ...data?.status,
-                    title: statusKey ? t(statusKey) : data?.status?.title,
-                  }}
-                />
-                {data?.is_promoted ? (
-                  <p className="font-bold text-link shrink-0 text-xs ps-1 border-s">
-                    {t("common.laddered")}
-                  </p>
-                ) : null}
-              </div>
-            </>
-          ) : (
-            <div className="flex flex-1 flex-col gap-1.5">
-              <div className="flex w-full items-center gap-1">
-                {data?.is_promoted ? (
-                  <p className="font-bold text-link shrink-0 text-xs pe-1 border-e">
-                    {t("common.laddered")}
-                  </p>
-                ) : null}
-                <p className="text-xs line-clamp-1 text-ink-subtle">
-                  {data?.city}
-                  {sep}
-                  <span className="text-xs">
-                    {data?.province || data?.region
-                      ? `${data?.region || data?.province}`
-                      : ``}
-                  </span>
-                </p>
-              </div>
-
-              <div className="flex w-full items-center justify-between gap-2">
-                <p className="line-clamp-1 text-xs text-ink-subtle">
-                  {data?.total_bedrooms
-                    ? `${t("listing.roomsCount", { count: Number(data.total_bedrooms) })}${sep}`
-                    : ""}
-                  {t("listing.upTo")}{" "}
-                  {t("common.people", { count: Number(data?.max_capacity) })}
-                </p>
-                <PropertyCardLikes
-                  propertyId={data?.id}
-                  favoriteCount={data?.favorite_count}
-                />
-              </div>
-
-              <p className="mt-auto text-xs text-ink-subtle">
-                {t("common.todaysPrice")}
-              </p>
-            </div>
-          )}
-        </PropertyCardLink>
-
-        <div className="order-1 flex w-full flex-col gap-1.5">
+        <div className="flex w-full flex-col gap-1.5">
           <PropertyCardLink
             title={data.title}
             href={goToLink}
@@ -224,6 +114,116 @@ const PropertyCard = ({
             </PropertyCardLink>
           )}
         </div>
+
+        <PropertyCardLink
+          href={goToLink}
+          title={data.title}
+          className="flex flex-col gap-2 rounded-xl border border-line bg-surface-muted px-3 py-3 text-ink !outline-none sm:border-0 sm:bg-transparent sm:px-1 sm:py-1"
+        >
+          <div className="flex items-start gap-2">
+            {data?.has_blue_tick ? (
+              <ContentImage
+                width={24}
+                height={24}
+                className="w-6 h-6"
+                alt="verified_badge"
+                src="/assets/icons/adds/verified_hexy_badge.svg"
+              />
+            ) : null}
+            <p className="line-clamp-2 h-10 text-start text-sm font-bold">
+              {data.title}
+            </p>
+          </div>
+
+          {isOwner ? (
+            <>
+              <div className="w-full flex flex-row items-start gap-2 justify-start">
+                <p className="text-sm shrink-0">{t("common.todayStatus")} :</p>
+                <p
+                  className={`text-sm font-bold ${data?.is_today_reserved ? "text-status-danger" : "text-link"}`}
+                >
+                  {data?.is_today_reserved
+                    ? t("listing.isReserved")
+                    : t("common.emptySlot")}
+                </p>
+              </div>
+
+              <div className="flex items-center gap-2">
+                <div className="bg-surface-hover font-normal rounded-full text-xs text-ink px-2 h-5 leading-4 flex items-center justify-center">
+                  {t("common.code")} {data.code}
+                </div>
+                <PropertyCardLikes
+                  propertyId={data?.id}
+                  favoriteCount={data?.favorite_count}
+                />
+              </div>
+
+              <div className="flex min-h-10 w-full items-end justify-between gap-2 border-t border-line pt-2">
+                <p className="text-xs 2xl:text-xs shrink-0">
+                  {t("common.todaysPrice")}
+                </p>
+                <PropertyPrice
+                  data={{
+                    discounted_price: data?.today_price?.discounted_price,
+                    price: data?.today_price?.price,
+                    discount_percentage: data.today_price?.discount_percentage,
+                  }}
+                />
+              </div>
+
+              <div className="flex items-center w-full gap-2">
+                <StatusShower
+                  data={{
+                    ...data?.status,
+                    title: statusKey ? t(statusKey) : data?.status?.title,
+                  }}
+                />
+                {data?.is_promoted ? (
+                  <p className="font-bold text-link shrink-0 text-xs ps-1 border-s">
+                    {t("common.laddered")}
+                  </p>
+                ) : null}
+              </div>
+            </>
+          ) : (
+            <div className="flex flex-1 flex-col gap-1.5">
+              <div className="flex w-full items-center gap-1">
+                {data?.is_promoted ? (
+                  <p className="font-bold text-link shrink-0 text-xs pe-1 border-e">
+                    {t("common.laddered")}
+                  </p>
+                ) : null}
+                <p className="text-xs line-clamp-1 text-ink-subtle">
+                  {data?.city}
+                  {sep}
+                  <span className="text-xs">
+                    {data?.province || data?.region
+                      ? `${data?.region || data?.province}`
+                      : ``}
+                  </span>
+                </p>
+              </div>
+
+              <div className="flex w-full items-center justify-between gap-2">
+                <p className="line-clamp-1 text-xs text-ink-subtle">
+                  {data?.total_bedrooms
+                    ? `${t("listing.roomsCount", { count: Number(data.total_bedrooms) })}${sep}`
+                    : ""}
+                  {t("listing.upTo")}{" "}
+                  {t("common.people", { count: Number(data?.max_capacity) })}
+                </p>
+                <PropertyCardLikes
+                  propertyId={data?.id}
+                  favoriteCount={data?.favorite_count}
+                />
+              </div>
+
+              <p className="mt-auto text-xs text-ink-subtle">
+                {t("common.todaysPrice")}
+              </p>
+            </div>
+          )}
+        </PropertyCardLink>
       </div>
 
       {isOwner ? (
