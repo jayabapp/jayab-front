@@ -243,12 +243,12 @@ const HomeBannerPart = ({ title, devices, banners }: HomeHeroBannerProps) => {
             : "relative z-10 flex w-full flex-col items-center justify-center gap-4 px-4 py-8 md:gap-6"
         }
       >
-        <div className="home-hero-content flex max-w-2xl flex-col items-end gap-2 text-end md:items-center md:gap-3 md:text-center">
+        <div className="home-hero-content flex max-w-2xl flex-col items-start gap-2 text-end md:items-center md:gap-3 md:text-center">
           {/* The landing hero always shows the Persian wordmark in white, regardless of locale or slides. */}
           <BrandTitle
             script="fa"
             tone="white"
-            className="h-auto !w-32 drop-shadow-md lg:!w-48"
+            className="h-auto !w-25 drop-shadow-md lg:!w-48"
           />
           <h2
             className={`text-balance text-sm font-bold leading-snug md:text-xl ${
