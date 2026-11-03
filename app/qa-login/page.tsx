@@ -24,7 +24,7 @@ const QaLoginPage = async ({
           width={40}
           height={40}
           className="mb-6 size-10"
-          src="/assets/icons/logo/mark.svg"
+          src="/assets/icons/logo/jayab_logo_shadow_corrected.webp"
         />
         <QaLoginForm next={next} />
       </div>

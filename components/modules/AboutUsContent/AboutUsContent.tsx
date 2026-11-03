@@ -26,7 +26,7 @@ const AboutUsContent = ({ content: aboutUs }: AboutUsContentProps) => {
             width={64}
             height={64}
             className="size-16"
-            src="/assets/icons/logo/mark.svg"
+            src="/assets/icons/logo/jayab_logo_shadow_corrected.webp"
           />
           <BrandTitle tone="blue" className="h-9 w-auto" />
         </div>

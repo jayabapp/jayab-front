@@ -34,10 +34,10 @@ const SplashScreen = () => {
           {/* eslint-disable-next-line @next/next/no-img-element */}
           <img
             alt=""
-            width={807}
-            height={667}
+            width={512}
+            height={512}
             className="splash-mark"
-            src="/assets/icons/logo/mark-glyph.svg"
+            src="/assets/icons/logo/jayab_logo_shadow_corrected.webp"
           />
           {/* eslint-disable-next-line @next/next/no-img-element */}
           <img

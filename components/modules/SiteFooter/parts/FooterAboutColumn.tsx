@@ -25,7 +25,7 @@ const FooterAboutColumn = ({ about, socials }: FooterAboutColumnProps) => {
           width={40}
           height={40}
           className="size-10"
-          src="/assets/icons/logo/mark.svg"
+          src="/assets/icons/logo/jayab_logo_shadow_corrected.webp"
         />
         <BrandTitle tone="white" className="h-6 w-auto" />
       </Link>

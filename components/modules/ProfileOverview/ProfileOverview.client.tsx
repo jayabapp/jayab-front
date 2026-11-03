@@ -44,10 +44,10 @@ const ProfileOverview = () => {
       <div className="w-full flex gap-4 items-center justify-center flex-col pt-8 opacity-40">
         <ContentImage
           alt=""
-          width={160}
+          width={80}
           height={80}
           className="w-1/5 h-auto"
-          src="/assets/icons/logo/mark.svg"
+          src="/assets/icons/logo/jayab_logo_shadow_corrected.webp"
         />
         <p className="text-sm font-medium">{t("plzSelectAPage")}</p>
       </div>

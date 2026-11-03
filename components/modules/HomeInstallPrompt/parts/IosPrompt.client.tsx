@@ -35,7 +35,7 @@ const IosPrompt = ({ callBack }: { callBack: () => void | null }) => {
               width={128}
               height={128}
               className="w-32 aspect-square"
-              src="/assets/icons/logo/mark.svg"
+              src="/assets/icons/logo/jayab_logo_shadow_corrected.webp"
             />
           </div>
           <div className="py-8 px-4 border-t font-light  flex flex-col gap-5">

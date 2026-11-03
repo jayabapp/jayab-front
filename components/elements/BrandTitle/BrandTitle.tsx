@@ -5,7 +5,7 @@ import { useLocale } from "next-intl";
 import type { BrandTitleProps } from "@/types/components/elements/brand-title";
 
 const TITLE_SIZE = {
-  en: { width: 520, height: 207 },
+  en: { width: 600, height: 207 },
   fa: { width: 604, height: 236 },
 } as const;
 

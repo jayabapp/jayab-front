@@ -116,7 +116,7 @@ const ChatHeader = ({
                   src={
                     image
                       ? resolveChatImage(image)
-                      : "/assets/icons/logo/mark.svg"
+                      : "/assets/icons/logo/jayab_logo_shadow_corrected.webp"
                   }
                   alt={name || t("chat")}
                   width={56}

@@ -26,7 +26,7 @@ const HeaderBrand = ({
         alt=""
         width={40}
         height={40}
-        src="/assets/icons/logo/mark.svg"
+        src="/assets/icons/logo/jayab_logo_shadow_corrected.webp"
         className={`${markOnly ? "size-8" : "size-10"} aspect-square shrink-0`}
       />
     </div>

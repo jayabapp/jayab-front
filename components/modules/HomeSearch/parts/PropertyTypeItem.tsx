@@ -4,7 +4,8 @@ import type { TPropertyType } from "@/types/components/modules/home";
 
 import HomeTileCard from "./HomeTileCard";
 
-const PROPERTY_TYPE_FALLBACK_ICON = "/assets/icons/logo/mark.svg";
+const PROPERTY_TYPE_FALLBACK_ICON =
+  "/assets/icons/logo/jayab_logo_shadow_corrected.webp";
 
 const PropertyTypeItem = ({ item, index }: TPropertyType) => (
   <HomeTileCard
