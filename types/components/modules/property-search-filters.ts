@@ -127,6 +127,7 @@ export type FilterSectionProps = {
   count?: number;
   children: ReactNode;
   defaultOpen?: boolean;
+  startClosed?: boolean;
 };
 
 export type FilterPanelHeaderProps = {

@@ -28,7 +28,7 @@ const OwnerPropertyIntroduction = ({ property }: OwnerPropertyViewProps) => {
   };
 
   return (
-    <div className="flex w-full flex-col relative gap-2">
+    <div className="relative order-2 flex w-full flex-col gap-2 md:order-0">
       <div className="w-full flex items-start md:items-center justify-between gap-2">
         <p className="font-medium text-lg w-3/5 md:w-full md:text-2xl">
           {property?.title}

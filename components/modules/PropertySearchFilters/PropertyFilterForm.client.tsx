@@ -8,6 +8,7 @@ import { useFormatNumber } from "@hooks/useFormatNumber";
 import { useTranslations } from "next-intl";
 import { poolFilterTypes } from "@/utils/constantss";
 import { useStoreInit } from "@/store";
+import { parseIdList } from "@features/cities/lib/city-selection";
 import { AREA_RANGE } from "@features/properties/constants/filter-ranges";
 
 import type { PropertyFilterFormProps } from "@/types/components/modules/property-search-filters";
@@ -69,9 +70,9 @@ const PropertyFilterForm = ({
         <></>
       ) : (
         <FilterSection
-          defaultOpen
+          startClosed
           title={t("common.local")}
-          count={countFilterGroup(countFilters, ["regions"])}
+          count={parseIdList(filters?.regions).length}
         >
           <RegionFilter
             filters={filters}

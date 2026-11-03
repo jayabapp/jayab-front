@@ -176,6 +176,7 @@ const CityModal = ({
           width="w-full"
           title={submitTitle}
           onClick={onSubmitClick}
+          btnClass="!bg-brand-700 !text-white hover:!bg-brand-800"
           containerClass="flex w-full items-center justify-center"
         />
       </div>

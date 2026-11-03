@@ -10,8 +10,11 @@ const FilterSection = ({
   children,
   count = 0,
   defaultOpen,
+  startClosed,
 }: FilterSectionProps) => {
-  const [isOpen, setIsOpen] = useState(!!defaultOpen || count > 0);
+  const [isOpen, setIsOpen] = useState(
+    !startClosed && (!!defaultOpen || count > 0),
+  );
   const panelId = useId();
 
   return (
