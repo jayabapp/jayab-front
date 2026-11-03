@@ -1,0 +1,61 @@
+"use client";
+
+import { getHomeImageUrl } from "@features/home/mappers/home-image.mapper";
+import { useCitiesStore } from "@/store";
+import { ContentImage } from "@elements/Image";
+
+import { type HomeLandingDto } from "@/types/components/modules/home";
+
+import Link from "next/link";
+
+const HomeCityItem = ({ item }: { item: HomeLandingDto }) => {
+  const onClickCB = () => {
+    useCitiesStore.setState({
+      locationsData: {
+        label: item?.title,
+        path: `/${`${item?.url ?? ""}`.replace(/^\/+/, "")}`,
+      },
+    });
+  };
+
+  return (
+    <Link
+      href={item?.url}
+      prefetch={false}
+      id={`home-city-${item?.url}`}
+      onClick={onClickCB}
+      title={item?.title}
+      className="flex flex-col overflow-clip  rounded-10  aspect-square relative items-center  w-full group  select-none transition-all duration-500 "
+    >
+      <div
+        id={`home-city-image-${item?.url}`}
+        className="w-full  col-span-2  relative rounded-10  aspect-square "
+      >
+        {" "}
+        <ContentImage
+          fill
+          sizes="(min-width: 1024px) 12vw, 21vw"
+          src={
+            item?.image
+              ? getHomeImageUrl(item?.image)
+              : "/assets/icons/shared/image_placeholder.svg"
+          }
+          alt={item?.title || ""}
+          className={`rounded-10 w-full transition-all duration-500 aspect-square !object-cover`}
+        />
+      </div>
+
+      <div className="absolute end-0 bottom-0 flex items-center  justify-start  py-1.5  ps-1.5  lg:ps-2.5 w-full ">
+        <h2
+          lang={item?.title_locale ?? "fa"}
+          dir="auto"
+          className={`col-span-3 !text-white w-fit text-start text-xs  md:text-base`}
+        >
+          {item?.title}
+        </h2>
+      </div>
+    </Link>
+  );
+};
+
+export default HomeCityItem;

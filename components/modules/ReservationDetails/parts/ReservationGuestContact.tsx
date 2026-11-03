@@ -1,0 +1,93 @@
+import { useTranslations } from "next-intl";
+import { ContentImage } from "@elements/Image";
+import { Divider } from "@elements/Divider";
+
+import type { ReservationGuestContactProps } from "@/types/components/modules/reservations";
+
+import Button from "@elements/Button";
+
+const ACTION_WIDTH =
+  "w-full h-12 !border-none !text-ink !font-normal !py-2 !bg-surface-muted !text-sm";
+
+const ReservationGuestContact = ({
+  isExpired,
+  onStartChat,
+  isChatPending,
+  onContactRequest,
+  isChatEnabled = true,
+}: ReservationGuestContactProps) => {
+  const t = useTranslations();
+
+  const disabledStyle = isExpired ? " !text-ink-subtle" : "";
+  const disabledIcon = isExpired ? " opacity-50 grayscale" : "";
+
+  return (
+    <>
+      <Divider moreClass=" " />
+      <div className="w-full flex flex-col items-center justify-center gap-2">
+        {isExpired ? null : (
+          <>
+            <Button
+              variant="outline"
+              title={t("common.call")}
+              roundedClass=" rounded-xl"
+              containerClass="w-full lg:w-1/2 "
+              width={`${ACTION_WIDTH}${disabledStyle}`}
+              onClick={() => onContactRequest?.("call")}
+              icon={
+                <ContentImage
+                  alt=""
+                  width={16}
+                  height={16}
+                  src="/assets/icons/advisor/blue_phone.svg"
+                  className={`w-4 h-4 absolute start-3 top-0 bottom-0 my-auto aspect-square${disabledIcon}`}
+                />
+              }
+            />
+            <Button
+              variant="outline"
+              title={t("common.sms")}
+              roundedClass=" rounded-xl"
+              containerClass="w-full lg:w-1/2 "
+              width={`${ACTION_WIDTH}${disabledStyle}`}
+              onClick={() => onContactRequest?.("sms")}
+              icon={
+                <ContentImage
+                  alt=""
+                  width={16}
+                  height={16}
+                  src="/assets/icons/advisor/blue_sms.svg"
+                  className={`w-4 h-4 absolute start-3 top-0 bottom-0 my-auto me-1 aspect-square${disabledIcon}`}
+                />
+              }
+            />
+          </>
+        )}
+
+        {isChatEnabled ? (
+          <Button
+            variant="outline"
+            width={ACTION_WIDTH}
+            onClick={onStartChat}
+            loading={isChatPending}
+            disabled={isChatPending}
+            roundedClass=" rounded-xl"
+            containerClass="w-full lg:w-1/2 "
+            title={t("reserve.chatInJayab")}
+            icon={
+              <ContentImage
+                alt=""
+                width={16}
+                height={16}
+                className="w-4 h-4 absolute start-3 top-0 bottom-0 my-auto me-1 aspect-square"
+                src="/assets/icons/reserve/blue_chat_reserve.svg"
+              />
+            }
+          />
+        ) : null}
+      </div>
+    </>
+  );
+};
+
+export default ReservationGuestContact;

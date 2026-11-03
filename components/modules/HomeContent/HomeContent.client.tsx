@@ -1,0 +1,67 @@
+"use client";
+
+import { useTranslations } from "next-intl";
+import { Icon } from "@elements/Icon";
+import { HTMLGenerator } from "@/helpers/html.generator";
+import { useState } from "react";
+
+import type { THomeContentSection } from "@/types/components/modules/home";
+
+const HomeContentSection = ({ data, options }: THomeContentSection) => {
+  const t = useTranslations("content");
+
+  const [isOpen, setIsOpen] = useState(false);
+
+  const { html } = HTMLGenerator(data?.html || "", {
+    hasHeading: true,
+    hasCount: true,
+  });
+
+  if (!data?.small_text?.trim() && !html.trim()) return null;
+
+  const onOpenClick = () => {
+    if (isOpen) {
+      document
+        .getElementById(`content${data?.id}`)
+        ?.scrollIntoView({ behavior: "smooth", block: "start" });
+    }
+    setIsOpen((e) => !e);
+  };
+
+  return (
+    <div
+      id={`content${data?.id}`}
+      className={`flex w-full scroll-mt-40  ${options?.parentPadding ?? "pt-12   padding-x  md:px-[15%]  2xl:px-[20%] "}  items-center justify-center flex-col gap-4`}
+    >
+      <h1 className="">{data?.small_text}</h1>
+      {!!html.trim() && (
+        <div
+          className={`  ${isOpen ? "is-opend    " : " "} accardion-class   rounded-b-md transition-all `}
+        >
+          <div
+            className={`   ${isOpen ? "  min-h-[3.65rem] " : " h-[3.65rem] "}  transition-all  content leading-7   blogBody category_table   text-[0.8125rem] opacity-85  !text-justify `}
+            dangerouslySetInnerHTML={{ __html: `${html}` }}
+          />
+        </div>
+      )}
+
+      {!!html.trim() && (
+        <div
+          onClick={onOpenClick}
+          className={` cursor-pointer flex items-center gap-2 transition-all`}
+        >
+          <p className="text-sm font-medium">
+            {isOpen ? t("seeLess") : t("watchAll")}
+          </p>
+          <Icon
+            name="chevron-down"
+            size={16}
+            className={`transition-all ${isOpen ? "rotate-180" : ""}`}
+          />
+        </div>
+      )}
+    </div>
+  );
+};
+
+export default HomeContentSection;

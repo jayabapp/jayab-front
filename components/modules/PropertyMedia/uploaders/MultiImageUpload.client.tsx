@@ -1,0 +1,329 @@
+"use client";
+
+import { useEffect, useRef, useState } from "react";
+import { IMAGE_UPLOAD_ACCEPT } from "@features/upload/lib/image-upload";
+import { useAttachmentUpload } from "@features/upload/hooks/useAttachmentUpload";
+import { prepareImageUpload } from "@features/upload/lib/image-upload";
+import { UploadPreviewImage } from "@/components/elements/Image";
+import { FullscreenImage } from "@elements/Upload";
+import { useTranslations } from "next-intl";
+import { uploadErrorKey } from "@features/upload/lib/upload-error";
+import { ContentImage } from "@/components/elements/Image";
+import { BtnLoading } from "@elements/Button";
+
+import type { MultiImageUploadProps } from "@/types/components/modules/property-media";
+import type { ReactEventHandler } from "react";
+
+import Notify from "@elements/Toast";
+import ImageUploadHint from "../parts/ImageUploadHint";
+
+import "react-advanced-cropper/dist/style.css";
+
+const MAX_TOTAL_IMAGES = 20;
+
+const NewMultUploader = ({
+  item,
+  link,
+  title,
+  images,
+  loading,
+  onDelete,
+  disabled,
+  setImages,
+  setLoading,
+  activeFull,
+  innerClasses,
+  containerClass,
+  type = "image",
+  imagesLoadings,
+  setimagesLoadings,
+}: MultiImageUploadProps) => {
+  const t = useTranslations("common");
+
+  const imagePickerRef = useRef<HTMLInputElement>(null);
+  const blobUrlsRef = useRef(new Set<string>());
+  const uploadControllersRef = useRef(
+    new Map<string | number, AbortController>(),
+  );
+  const [show, setShow] = useState(false);
+  const [showImage, setShowImage] = useState<any>("");
+  const { mutateAsync, isPending } = useAttachmentUpload({
+    mutationKey: [setImages],
+    gcTime: 0,
+
+    onSuccess: (data) => {
+      setImages((current) => {
+        const uploadedImage = current.find((image) => image?.id === data?.id);
+        if (uploadedImage?.url?.startsWith("blob:")) {
+          URL.revokeObjectURL(uploadedImage.url);
+          blobUrlsRef.current.delete(uploadedImage.url);
+        }
+        return current.some((image) => image?.id === data?.id)
+          ? current.map((image) =>
+              image?.id === data?.id
+                ? { ...image, data: data.result, url: undefined }
+                : image,
+            )
+          : current;
+      });
+    },
+  });
+
+  useEffect(() => {
+    if (!!imagesLoadings && !isPending)
+      if (Object.keys(imagesLoadings).every((e) => imagesLoadings?.[e] == 1))
+        setLoading(false);
+  }, [imagesLoadings, isPending, setLoading]);
+
+  useEffect(() => {
+    const controllers = uploadControllersRef.current;
+    const blobUrls = blobUrlsRef.current;
+    return () => {
+      controllers.forEach((controller) => controller.abort());
+      blobUrls.forEach((url) => URL.revokeObjectURL(url));
+      blobUrls.clear();
+    };
+  }, []);
+
+  const uploadTemp = async (file: File, id: number | string) => {
+    try {
+      const formData = new FormData();
+      formData.append("file", file);
+      const controller = new AbortController();
+      uploadControllersRef.current.set(id, controller);
+      await mutateAsync({
+        id,
+        formData,
+        link,
+        signal: controller.signal,
+        onProgressCallBack: (p) => {
+          setimagesLoadings((e) => ({
+            ...e,
+            [id]: p?.progress,
+          }));
+        },
+      });
+    } catch (error) {
+      const key = uploadErrorKey(error);
+      if (key)
+        Notify({
+          type: "error",
+          body: t(key),
+        });
+      setimagesLoadings((e) => ({ ...e, [id]: 1 }));
+      setImages((current) =>
+        current.filter((image) => {
+          if (image.id !== id) return true;
+          if (image.url?.startsWith("blob:")) {
+            URL.revokeObjectURL(image.url);
+            blobUrlsRef.current.delete(image.url);
+          }
+          return false;
+        }),
+      );
+    } finally {
+      uploadControllersRef.current.delete(id);
+      file = null as any;
+    }
+  };
+
+  const pick: ReactEventHandler = async (e) => {
+    const target = e.target as HTMLInputElement;
+    const files = target?.files ? target?.files : null;
+    if (!files) return;
+    if (images.length + files.length > MAX_TOTAL_IMAGES) {
+      return Notify({
+        type: "error",
+        body: t("maxImagesAllowed", { count: MAX_TOTAL_IMAGES }),
+      });
+    }
+
+    if (files.length > 10) {
+      return Notify({
+        type: "error",
+        body: t("maxPhotosPerTry"),
+      });
+    }
+
+    const loadingsObj: { [key: string | number]: any } = {};
+    setLoading(true);
+    let filesUploding = [];
+    for (let i = 0; i < files.length; i++) {
+      let file = files[i];
+      const id = `id_${file.lastModified}_${Math.random().toString(36).slice(2)}`;
+      try {
+        if (type === "image") file = prepareImageUpload(file);
+      } catch (error) {
+        const key = uploadErrorKey(error);
+        if (key) Notify({ type: "error", body: t(key) });
+        continue;
+      }
+      loadingsObj[id] = 0;
+      filesUploding.push({ id, file });
+      const objectUrl = URL.createObjectURL(file);
+      blobUrlsRef.current.add(objectUrl);
+      setImages((prev) => [...prev, { url: objectUrl, id }]);
+    }
+    if (!filesUploding.length) {
+      setLoading(false);
+      return;
+    }
+    setimagesLoadings(loadingsObj);
+    for (let i = 0; i < filesUploding.length; i++) {
+      let file = filesUploding?.[i];
+      await uploadTemp(file?.file, file?.id).finally(() => {
+        file = null as any;
+      });
+    }
+  };
+  return (
+    <div
+      className={`flex w-fit flex-col gap-2 ${containerClass}`}
+      style={{ zIndex: 4 }}
+    >
+      <div
+        className={`flex w-fit flex-col items-center justify-start rounded-20 ${innerClasses?.secontParentClass}`}
+      >
+        <input
+          multiple
+          className="hidden"
+          type="file"
+          accept={IMAGE_UPLOAD_ACCEPT}
+          id={`formFile-${type}`}
+          ref={imagePickerRef}
+          onChange={pick}
+          onClick={(e) => {
+            const target = e.target as HTMLInputElement;
+            target.value = "";
+          }}
+        />
+
+        {typeof setImages == "function" && item == null && (
+          <div
+            onClick={() => {
+              !disabled && !loading && !isPending
+                ? imagePickerRef?.current?.click()
+                : void null;
+            }}
+            className={`cursor-pointer flex flex-col items-center gap-1 border bg-surface relative transition-all duration-150 ease-in-out hover:border-neutral-600 justify-center rounded-20 aspect-square ${
+              innerClasses?.sizeClass || "h-24 w-24"
+            }`}
+          >
+            <ContentImage
+              width={40}
+              height={40}
+              sizes="40px"
+              alt=""
+              src="/assets/images/uploader/uploader_placeholder.png"
+              className="w-10 h-10 opacity-80 text-link"
+            />
+            {title && <p className="text-xs opacity-70">{title}</p>}
+            {loading && (
+              <div className="w-full h-full absolute top-0 end-0 rounded-20 flex items-center justify-center backdrop-blur-md">
+                <BtnLoading />
+              </div>
+            )}
+          </div>
+        )}
+
+        {!item ? (
+          <></>
+        ) : (
+          <div
+            className={`${
+              innerClasses?.sizeClass || "h-24 w-24"
+            } rounded-20 overflow-hidden flex flex-col items-center relative`}
+          >
+            <div
+              onClick={() => {
+                if (activeFull) {
+                  setShow(true);
+                  setShowImage(
+                    typeof item == "string"
+                      ? "imageUrl" + item
+                      : item?.file_location
+                        ? "imageUrl" + item?.file_location
+                        : item?.name
+                          ? `https://${item?.bucket}.${item?.end_point}/${item?.path}/${item?.name}`
+                          : item,
+                  );
+                }
+              }}
+              className={`cursor-pointer border bg-whiteGray-100  rounded-20 aspect-square relative ${
+                innerClasses?.sizeClass || "h-24 w-24"
+              }`}
+            >
+              {typeof item === "string" || item?.file_location || item?.name ? (
+                <ContentImage
+                  width={384}
+                  height={384}
+                  sizes="96px"
+                  alt="img"
+                  src={
+                    typeof item == "string"
+                      ? "imageUrl" + item
+                      : item.file_location
+                        ? "imageUrl" + item.file_location
+                        : item.name
+                          ? `https://${item?.bucket}.${item?.end_point}/${item?.path}/${item?.name}`
+                          : item
+                  }
+                  className="object-cover w-full rounded-20 aspect-square max-w-max"
+                />
+              ) : item?.url ? (
+                <UploadPreviewImage
+                  alt=""
+                  width={384}
+                  height={384}
+                  sizes="96px"
+                  src={item.url}
+                  className="object-cover w-full rounded-20 aspect-square max-w-max"
+                />
+              ) : null}
+            </div>
+            {!!onDelete && (
+              <div
+                className="bg-transparent cursor-pointer absolute top-2 end-2"
+                onClick={() => {
+                  if (item?.url?.startsWith("blob:")) {
+                    URL.revokeObjectURL(item.url);
+                    blobUrlsRef.current.delete(item.url);
+                  }
+                  uploadControllersRef.current.get(item?.id)?.abort();
+                  onDelete();
+                }}
+              >
+                <ContentImage
+                  alt=""
+                  width={20}
+                  height={20}
+                  src="/assets/icons/uploader/faded_x_circle.svg"
+                />
+              </div>
+            )}
+          </div>
+        )}
+      </div>
+
+      {type === "image" && !item ? <ImageUploadHint link={link} /> : null}
+
+      {show && (
+        <FullscreenImage
+          setShow={setShow}
+          show={show}
+          src={showImage}
+          onDelete={
+            !!onDelete
+              ? () => {
+                  onDelete();
+                  setShow(false);
+                }
+              : undefined
+          }
+        />
+      )}
+    </div>
+  );
+};
+
+export default NewMultUploader;

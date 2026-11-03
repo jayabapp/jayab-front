@@ -8,12 +8,34 @@
     "build:prod": "NODE_ENV=production next build",
     "build:brotli": "BROTLI_COMPRESS=true next build",
     "start": "next start",
-    "lint": "eslint ."
+    "lint": "eslint .",
+    "api:schema": "node scripts/fetch-openapi.mjs",
+    "api:generate": "orval --config orval.config.mjs",
+    "api:check": "node scripts/check-generated.mjs",
+    "architecture:check": "node scripts/check-layer-contracts.mjs",
+    "theme:check": "node scripts/check-theme-contract.mjs",
+    "i18n:check": "node scripts/i18n/check.mjs",
+    "i18n:namespaces": "node scripts/i18n/namespaces.mjs",
+    "direction:check": "node scripts/direction/check.mjs",
+    "ui:check": "node scripts/check-ui-migration.mjs",
+    "test:intl": "node --import ./scripts/test/ts-resolve.mjs --test \"helpers/intl/*.test.ts\" \"features/reservations/mappers/*.test.ts\"",
+    "test:reservations": "node --import ./scripts/test/ts-resolve.mjs --test \"features/reservations/lib/*.test.ts\"",
+    "test:upload": "node --import ./scripts/test/ts-resolve.mjs --test \"features/upload/lib/*.test.ts\"",
+    "test:discovery": "node --import ./scripts/test/ts-resolve.mjs --test \"features/properties/lib/*.test.ts\" \"features/cities/lib/*.test.ts\" \"features/map/lib/*.test.ts\"",
+    "architecture:cycles": "node scripts/check-import-cycles.mjs",
+    "architecture:report": "node scripts/report-client-boundaries.mjs",
+    "architecture:migration": "node scripts/report-component-migration.mjs",
+    "architecture:review": "node scripts/report-migration-review.mjs",
+    "migration:guardrails": "node scripts/check-migration-guardrails.mjs",
+    "migration:fix": "eslint components/elements components/modules components/templates features/support \"app/(profile)/profile/support\" --fix",
+    "migration:verify": "node scripts/verify-migration.mjs",
+    "migration:verify:build": "node scripts/verify-migration.mjs --build",
+    "module:scaffold": "node scripts/scaffold-module.mjs"
   },
   "dependencies": {
     "@headlessui/react": "^2.2.0",
     "@metrixorg/websdk": "^2.7.3",
-    "@neshan-maps-platform/mapbox-gl": "^1.1.3",
+    "@neshan-maps-platform/maplibre-sdk": "5.24.4",
     "@number-flow/react": "^0.4.4",
     "@tanstack/react-query": "^5.62.11",
     "axios": "^1.7.9",
@@ -34,6 +56,7 @@
     "moment-jalaali": "^0.10.4",
     "motion": "^11.15.0",
     "next": "16.2.10",
+    "next-intl": "4.14.6",
     "node-html-parser": "^7.0.1",
     "rc-slider": "^11.1.7",
     "react": "19.2.7",
@@ -59,6 +82,7 @@
   },
   "devDependencies": {
     "@eslint/eslintrc": "^3",
+    "@formatjs/icu-messageformat-parser": "3.5.19",
     "@types/lodash": "^4.17.13",
     "@types/moment-jalaali": "^0.7.9",
     "@types/node": "^20",
@@ -69,8 +93,9 @@
     "compression-webpack-plugin": "^11.1.0",
     "critters": "^0.0.25",
     "cssnano": "^7.1.2",
-    "eslint": "10.7.0",
+    "eslint": "^9.39.5",
     "eslint-config-next": "16.2.10",
+    "orval": "^8.26.0",
     "postcss": "^8",
     "tailwindcss": "^3.4.1",
     "typescript": "^5"
@@ -78,5 +103,12 @@
   "resolutions": {
     "@types/react": "19.2.17",
     "@types/react-dom": "19.2.3"
-  }
+  },
+  "browserslist": [
+    "chrome >= 111",
+    "edge >= 111",
+    "firefox >= 111",
+    "safari >= 15",
+    "ios_saf >= 15"
+  ]
 }

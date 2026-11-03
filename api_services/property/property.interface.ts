@@ -1,32 +1,56 @@
 import { ImageDto } from "../auth/auth.interface";
+import type { Locale } from "@/i18n/config";
+
+export type PropertyTranslations = Partial<
+  Record<"ar" | "en", { title?: string; address?: string }>
+>;
+export type PropertyDescriptionField =
+  | "property_dscr"
+  | "ad_dscr"
+  | "facility_dscr"
+  | "pattern_dscr"
+  | "distance_dscr"
+  | "guest_dscr"
+  | "pet_dscr"
+  | "party_dscr"
+  | "doc_dscr"
+  | "other_dscr";
+export type PropertyDescriptionLocales = Partial<
+  Record<PropertyDescriptionField, Locale>
+>;
+export type PropertyTextLocales = Partial<
+  Record<"title" | "city" | "province" | "region" | "address", Locale>
+>;
 
 export interface ProvienceTypesDto {
   id: number;
   title: string;
   image: ImageDto;
+  canonical_title?: string;
   child: { id: number; title: string }[];
 }
 
 export interface CreatePropertyStepOneDto {
-  property_type: number | string | null;
-  title: number | string | null;
-  land_area: number | string | null;
-  building_area: number | string | null;
-  floors: number | string | null;
   floor: number | string | null;
+  title: number | string | null;
+  floors: number | string | null;
+  address: number | string | null;
+  is_chat_enabled: boolean | null;
+  city_id: number | string | null;
+  region_id: number | string | null;
+  ownership: number | string | null;
+  land_area: number | string | null;
+  is_location_visible: boolean | null;
+  province_id: number | string | null;
+  property_type: number | string | null;
+  building_area: number | string | null;
   unit_per_floor: number | string | null;
   construction_year: number | string | null;
   building_direction: number | string | null;
-  ownership: number | string | null;
-  province_id: number | string | null;
-  city_id: number | string | null;
-  region_id: number | string | null;
-  address: number | string | null;
-  is_chat_enabled: boolean | null;
-  is_location_visible: boolean | null;
 }
 
 export interface PropInitDto {
+  translations?: PropertyTranslations;
   id: number | null;
   code: string;
   owner_id: number;
@@ -73,32 +97,32 @@ export interface PropInitDto {
 }
 
 export interface AssistantsDto {
+  is_owner: boolean;
+  owner_mobile_number: null;
   assistant_full_name: string;
   assistant_mobile_number: string;
-  owner_mobile_number: null;
-  is_owner: boolean;
 }
 
 export interface DayliPriceDto {
   id: number;
-  property_id: number;
-  normal: number;
-  wednesday: number;
-  thursday: number;
-  friday: number;
   peak: number;
+  normal: number;
+  friday: number;
+  thursday: number;
   cleaning: number;
-  additional_person: number;
-  today_offer: null;
-  created_at: Date;
   updated_at: Date;
+  created_at: Date;
+  today_offer: null;
+  wednesday: number;
+  property_id: number;
+  additional_person: number;
 }
 
 export interface PropertyOptionsDto {
-  property_id: number;
-  option_id: number;
-  assigned_at: Date;
   option: Option;
+  assigned_at: Date;
+  option_id: number;
+  property_id: number;
 }
 
 export interface Option {
@@ -246,6 +270,8 @@ export interface PayPropertySubSendDto {
 }
 
 export interface SinglePropDto {
+  text_locales?: PropertyTextLocales;
+  description_locales?: PropertyDescriptionLocales;
   id: number;
   code: string;
   rent_type: "DAILY";
@@ -267,26 +293,36 @@ export interface SinglePropDto {
   has_pool: boolean;
   has_blue_tick: boolean;
   is_authorized: boolean;
+  has_active_subscription: boolean;
   is_promoted: boolean;
   is_chat_enabled: boolean;
   province: string;
   city: string;
   advisor_commission: number;
   today_price: TodayPrice;
+  minimum_price: number | null;
   status: Status;
   daily_price: DailyPrice;
   latitude: number;
   longitude: number;
+  approx_location?: { lat: number; lng: number; radius_m: number } | null;
   land_area: number;
   building_area: number;
   floors: number;
   unit_per_floor: number;
   floor: number;
   construction_year: number;
-  address: string;
+  address: string | null;
   options: Options;
+  option_items: PropertyOptionItemDto[];
   canceling_type: CancelationType;
-  owner_info: { avatar: ImageDto; full_name: string };
+  owner_info: {
+    avatar: ImageDto;
+    full_name: string;
+    full_name_locale?: Locale;
+    since?: string | Date | null;
+  };
+  seo_links?: { villa?: string | null; pool?: string | null };
   owner: { id: string | number };
 }
 
@@ -327,6 +363,15 @@ export interface DailyPrice {
   today_offer: null;
   created_at: Date;
   updated_at: Date;
+}
+
+export interface PropertyOptionItemDto {
+  group: string;
+  title: string;
+  id?: number | null;
+  title_locale?: Locale;
+  icon: ImageDto | null;
+  canonical_title?: string;
 }
 
 export interface Options {
@@ -370,33 +415,99 @@ export interface PropertyDescriptionsDto {
 }
 
 export interface PropertyListDto {
+  text_locales?: PropertyTextLocales;
   id: number;
-  favorite_count: number;
   code: string;
-  title: string;
   slug: string;
-  feature_image: ImageDto;
-  attachments_count: number;
+  city: string;
+  title: string;
   images: any[];
+  region: string;
+  status: Status;
+  province: string;
+  has_pool: boolean;
+  bedrooms: Bedrooms;
   std_capacity: number;
   max_capacity: number;
-  total_bedrooms: number;
-  bedrooms: Bedrooms;
-  has_pool: boolean;
   is_promoted: boolean;
-  province: string;
-  region: string;
-  city: string;
-  advisor_commission: number;
-  today_price: TodayPrice;
-  is_today_reserved: boolean;
-  is_authorized: boolean;
-  has_blue_tick: boolean;
-  status: Status;
-  remaining_days: null;
   is_chat_enabled: null;
+  remaining_days: number;
+  total_bedrooms: number;
+  favorite_count: number;
+  has_blue_tick: boolean;
+  is_authorized: boolean;
+  feature_image: ImageDto;
+  today_price: TodayPrice;
+  attachments_count: number;
+  is_today_reserved: boolean;
+  advisor_commission: number;
+  minimum_price: number | null;
   reserve_days: ReserveDaysDto[];
+  has_active_subscription: boolean;
+  public_location?: PublicMapPoint | null;
 }
+
+export interface PublicMapPoint {
+  lat: number;
+  lng: number;
+  radius_m: number;
+  precision: "exact" | "approximate";
+}
+
+export type MapPropertyItem = {
+  id: number;
+  slug: string;
+  type: "property";
+  currency: "toman";
+  price: number | null;
+  favorite_count?: number;
+  location: PublicMapPoint;
+  price_basis: "today_nightly";
+};
+
+export type MapClusterItem = {
+  type: "cluster";
+  id: string;
+  lat: number;
+  lng: number;
+  count: number;
+  bounds: [number, number, number, number];
+};
+
+export type MapItem = MapPropertyItem | MapClusterItem;
+
+export interface PropertyMapResult {
+  items: MapItem[];
+  meta: {
+    zoom: number;
+    total: number;
+    currency: "toman";
+    is_truncated: false;
+    is_clustered: boolean;
+    returned_items: number;
+    price_basis: "today_nightly";
+    bbox: [number, number, number, number];
+  };
+}
+
+export interface PriceHistogramBin {
+  to: number;
+  from: number;
+  count: number;
+}
+
+export interface PriceHistogram {
+  bins: PriceHistogramBin[];
+  min: number | null;
+  max: number | null;
+  total_priced: number;
+  currency: "toman";
+}
+
+export type PropertyMapFilters = Omit<
+  Partial<GetPropertiesPlusFilters>,
+  "page" | "per_page" | "sort_type" | "bbox"
+> & { bbox: string; zoom: number };
 
 export interface ReserveDaysDto {
   day_number: number;
@@ -493,6 +604,37 @@ export interface OwnerCallendarItemDto {
   is_peak: boolean;
 }
 
+export interface PropertyQuoteNightDto {
+  date: string;
+  day_column: "normal" | "wednesday" | "thursday" | "friday" | "peak";
+  base_price: number;
+  final_price: number;
+  is_discounted: boolean;
+  is_peak: boolean;
+}
+
+export interface PropertyQuoteDto {
+  property_id: number;
+  check_in: string;
+  check_out: string;
+  nights: number;
+  guests: number;
+  is_available: boolean;
+  unavailable_dates: string[];
+  nights_breakdown: PropertyQuoteNightDto[];
+  rent_total: number;
+  discount_total: number;
+  std_capacity: number;
+  max_capacity: number;
+  extra_guests: number;
+  extra_guest_fee_per_night: number;
+  extra_guest_total: number;
+  cleaning_fee: number;
+  stay_total: number;
+  total: number;
+  canceling_type: { id: string; title: string } | null;
+}
+
 export interface GetPropBadgeDto {
   id: number;
   property_id: number;
@@ -535,6 +677,7 @@ export interface Statistic {
 }
 
 export interface GetPropertiesPlusFilters {
+  locale?: Locale;
   cities?: any;
   regions?: any;
   sort_type?: any;
@@ -546,6 +689,11 @@ export interface GetPropertiesPlusFilters {
   has_discount?: any;
   has_pool?: any;
   is_premium?: any;
+  has_blue_tick?: any;
+  is_authorized?: any;
+  filter_order?: any;
+  bbox?: string;
+  count_only?: 0 | 1;
   pattern?: any;
   max_price?: any;
   checkin?: any;
@@ -573,6 +721,7 @@ export interface SingleLandingDto {
   content: Content;
   related_landings: RelatedLandings[];
   cities: City[];
+  location?: (City & { level: "city" | "province" }) | null;
 }
 
 export interface City {
@@ -608,8 +757,9 @@ export interface Content {
 export interface Fields {}
 
 export interface Question {
+  id: number;
   question: string;
-  answer: string;
+  answer: string | null;
   updated_at: Date;
 }
 
@@ -638,10 +788,17 @@ export interface PropertyContactIInfDto {
   is_owner: boolean;
 }
 
+export interface JalaaliDayDto {
+  day: number;
+  month: number;
+  year: number;
+}
+
 export interface OwnerPropsRangeDto {
   max_price: number;
   min_price: number;
   step: number;
+  base_price: number;
 }
 export interface PageMetaDto {
   total: number;

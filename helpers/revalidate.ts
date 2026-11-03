@@ -1,0 +1,18 @@
+export const REVALIDATE = {
+  BLOG: 600,
+  BANNERS: 120,
+  DEFAULT: 300,
+  CMS_PAGE: 600,
+  LANDINGS: 300,
+  SEO_FILE: 3600,
+  REDIRECTS: 300,
+  PROPERTY_LIST: 60,
+  CONTENT_RATE: 300,
+  APP_SETTINGS: 3600,
+  PROPERTY_DETAIL: 60,
+  PROPERTY_OPTIONS: 3600,
+} as const;
+
+export type RevalidateSeconds = (typeof REVALIDATE)[keyof typeof REVALIDATE];
+
+export default REVALIDATE;

@@ -1,40 +1,51 @@
-import { BannerPosition } from "@/enum/banners.enum";
+import { ContentDto, QuestionDto, SearchSuggDto } from "./home.interface";
+import { CitySuggestDto, ContentByKeyDto } from "./home.interface";
+import { CMS_CONTENT_CACHE_KEY } from "./cms-content";
 import { LandingsPlacements } from "@/enum/landings.enum";
+import { MostVisitedPlaces } from "./home.interface";
+import { BannerPosition } from "@/enum/banners.enum";
 import { apiRoutes } from "@/utils/urls";
-import { Meta } from "../chat/chat.interface";
 import { apiCall } from "../common/apicall.helper";
-import {
-  CitySuggestDto,
-  ContentByKeyDto,
-  ContentDto,
-  MostVisitedPlaces,
-  QuestionDto,
-  SearchSuggDto,
-} from "./home.interface";
+import { Meta } from "../chat/chat.interface";
+import type { Locale } from "@/i18n/config";
 
 export class HomeService {
-  // static FORGOT_PASSWORD_LIST_CACHEKEY = "FORGOT_PASSWORD_LIST";
   static BANNERS_RANDOM_CACHEKEY = "BANNERS_RANDOM";
   static CONTENTS_CACHEKEY = "CONTENTS";
-  // static SETTINGS_CACHEKEY = "SETTINGS";
-  // static GET_SINGLE_CONTENT_CACHEKEY = "GET_SINGLE_CONTENT";
-  // static GET_BRANDS_CACHEKEY = "GET_BRANDS";
-  static CONTENT_BY_KEY_CACHEKEY = "CONTENT_BY_KEY";
+  static CONTENT_BY_KEY_CACHEKEY = CMS_CONTENT_CACHE_KEY;
   static SEARCH_SUGGS_CACHEKEY = "SEARCH_SUGGS";
   static CONTENT_QUESTIONS_KEY = "CONTENTQUESTIONSKEY";
   static SEARCH_KEY = "SEARCH";
   static USER_LANDING_PAGES_KEY = "USER_LANDING_PAGES";
+
+  static async ResolveLocationLanding(
+    dto: { city_id?: number; province_id?: number },
+    signal?: AbortSignal,
+  ) {
+    return apiCall<typeof dto, { url: string } | null>(
+      "GET",
+      apiRoutes.RESOLVE_LOCATION_LANDING,
+      dto,
+      { signal, showErrorNotification: false },
+    );
+  }
   static SETTING_KEY = "SETTING";
 
-  static async GetBanners(dto: { positions: BannerPosition[] }) {
+  static async GetBanners(
+    dto: { positions: BannerPosition[] },
+    signal?: AbortSignal,
+  ) {
     try {
-      const result = await apiCall<{ positions: BannerPosition[] }, { [key: string]: any[] }>(
+      const result = await apiCall<
+        { positions: BannerPosition[] },
+        { [key: string]: any[] }
+      >(
         "GET",
         apiRoutes.BANNERS,
         {
           positions: dto?.positions,
         },
-        { version: "v2" },
+        { version: "v2", signal },
       );
       return result;
     } catch (e) {
@@ -56,13 +67,52 @@ export class HomeService {
     }
   }
 
-  //////////////////////////////
-  static async getLandings(dto?: { placement?: LandingsPlacements }) {
+  static async getLandings(
+    dto?: { placement?: LandingsPlacements; locale?: Locale },
+    signal?: AbortSignal,
+  ) {
     try {
-      const result = await apiCall<{ placement?: LandingsPlacements }, MostVisitedPlaces>(
+      const result = await apiCall<
+        { placement?: LandingsPlacements; locale?: Locale },
+        MostVisitedPlaces
+      >("GET", apiRoutes.USER_LANDING_PAGES, dto, { signal });
+      return result;
+    } catch (e) {
+      throw e;
+    }
+  }
+
+  static async GetContent(
+    dto: {
+      key: string;
+      page: number;
+      per_page?: number;
+      summary?: boolean;
+      locale?: Locale;
+    },
+    signal?: AbortSignal,
+  ) {
+    try {
+      const result = await apiCall<
+        {
+          key: string;
+          page: number;
+          per_page?: number;
+          summary?: boolean;
+          locale?: Locale;
+        },
+        { data: ContentDto[]; meta: Meta }
+      >(
         "GET",
-        apiRoutes.USER_LANDING_PAGES,
-        dto,
+        apiRoutes.CONTENTS,
+        {
+          key: dto?.key,
+          page: dto?.page,
+          per_page: dto?.per_page,
+          summary: dto?.summary,
+          locale: dto?.locale,
+        },
+        { signal },
       );
       return result;
     } catch (e) {
@@ -70,56 +120,24 @@ export class HomeService {
     }
   }
 
-  // static async GetHomeSettings() {
-  //   try {
-  //     const result = await apiCall<unknown, HomeSttingsDto[]>("GET", apiRoutes.SETTINGS);
-  //     return result;
-  //   } catch (e) {
-  //     throw e;
-  //   }
-  // }
-
-  static async GetContent(dto: { key: string; page: number; per_page?: number }) {
+  static async GetContentByKey(
+    dto: { key: string; locale?: Locale },
+    signal?: AbortSignal,
+  ) {
     try {
-      const result = await apiCall<
-        { key: string; page: number; per_page?: number },
-        { data: ContentDto[]; meta: Meta }
-      >("GET", apiRoutes.CONTENTS, {
-        key: dto?.key,
-        page: dto?.page,
-        per_page: dto?.per_page,
-      });
+      const result = await apiCall<unknown, ContentByKeyDto>(
+        "GET",
+        apiRoutes.CONTENT_BY_KEY(dto?.key),
+        dto.locale ? { locale: dto.locale } : undefined,
+        { signal },
+      );
       return result;
     } catch (e) {
       throw e;
     }
   }
 
-  static async GetContentByKey(dto: { key: string }) {
-    try {
-      const result = await apiCall<unknown, ContentByKeyDto>("GET", apiRoutes.CONTENT_BY_KEY(dto?.key));
-      return result;
-    } catch (e) {
-      throw e;
-    }
-  }
-
-  // static async GetBrands() {
-  //   try {
-  //     const result = await apiCall<unknown, { data: { id: number; title: string; image: Image }[] }>(
-  //       "GET",
-  //       apiRoutes.GET_BRANDS,
-  //       {
-  //         cursor: 0,
-  //       }
-  //     );
-  //     return result;
-  //   } catch (e) {
-  //     throw e;
-  //   }
-  // }
-
-  static async GetSearchSuggs(dto: { q?: string }) {
+  static async GetSearchSuggs(dto: { q?: string }, signal?: AbortSignal) {
     try {
       const result = await apiCall<{ q?: string }, SearchSuggDto>(
         "GET",
@@ -127,7 +145,7 @@ export class HomeService {
         {
           q: dto?.q,
         },
-        { version: "v2" },
+        { version: "v2", signal },
       );
       return result;
     } catch (e) {
@@ -135,41 +153,56 @@ export class HomeService {
     }
   }
 
-  static async Search(dto: { q?: string }) {
+  static async Search(dto: { q?: string }, signal?: AbortSignal) {
     try {
       const result = await apiCall<
         { q?: string },
-        { client_query: { [key: string]: any }; cities_list: CitySuggestDto[] }
-      >("GET", apiRoutes.SEARCH, {
-        q: dto?.q,
-      });
+        {
+          client_query: { [key: string]: any };
+          cities_list: CitySuggestDto[];
+          landing_url?: string | null;
+          matched_order?: string[];
+          property?: {
+            id: number;
+            title: string | null;
+            slug: string | null;
+            code: string;
+          } | null;
+          ignored_terms?: string[];
+        }
+      >(
+        "GET",
+        apiRoutes.SEARCH,
+        {
+          q: dto?.q,
+        },
+        { signal },
+      );
       return result;
     } catch (e) {
       throw e;
     }
   }
 
-  // static async GetSingleContent(dto: { contentId: string | number }) {
-  //   try {
-  //     const result = await apiCall<unknown, SingleContentDto>("GET", apiRoutes.GET_SINGLE_CONTENT(dto?.contentId));
-  //     return result;
-  //   } catch (e) {
-  //     throw e;
-  //   }
-  // }
-
   static async FindAllComments(
-    dto: { page: number; per_page: number; content_id?: number | string; product_id?: number | string },
-    callback?: (a?: { data: QuestionDto[]; meta: Meta } | null) => void,
+    dto: {
+      page: number;
+      per_page: number;
+      content_id?: number | string;
+      product_id?: number | string;
+    },
+    signal?: AbortSignal,
   ) {
     try {
       const result = await apiCall<
-        { page: number; per_page: number; content_id?: number | string; product_id?: number | string },
+        {
+          page: number;
+          per_page: number;
+          content_id?: number | string;
+          product_id?: number | string;
+        },
         { data: QuestionDto[]; meta: Meta } | null
-      >("GET", apiRoutes.CONTENTS_QUESTIONS, dto);
-      if (!!callback) {
-        callback(result);
-      }
+      >("GET", apiRoutes.CONTENTS_QUESTIONS, dto, { signal });
       return result || null;
     } catch (e) {
       throw e;
@@ -178,7 +211,6 @@ export class HomeService {
 
   static async SendQuestion(body: {
     content_id?: number | string;
-
     rate?: number;
     author_name: string;
     mobile_number: string;
@@ -203,13 +235,12 @@ export class HomeService {
     }
   }
 
-  /* -------------------------------------------------------------------------- */
-  /*                                  SETTINGS                                  */
-  /* -------------------------------------------------------------------------- */
-
   static async getSettings() {
     try {
-      const result = await apiCall<unknown, { photo_upgrade_price: string }>("GET", apiRoutes.SETTING);
+      const result = await apiCall<unknown, { photo_upgrade_price: string }>(
+        "GET",
+        apiRoutes.SETTING,
+      );
       return result;
     } catch (e) {
       throw e;

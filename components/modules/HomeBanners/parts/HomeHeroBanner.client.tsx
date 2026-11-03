@@ -1,0 +1,324 @@
+"use client";
+
+import { useState, useSyncExternalStore } from "react";
+import { useEffect, useMemo, useRef } from "react";
+import { useTranslations } from "next-intl";
+import { getHomeImageUrl } from "@features/home/mappers/home-image.mapper";
+import { HomeHeroSearch } from "@modules/HomeHeroSearch";
+import { getImageProps } from "next/image";
+import { BrandTitle } from "@elements/BrandTitle";
+import { useDir } from "@hooks/useDir";
+
+import type { CSSProperties, FocusEvent, PointerEvent } from "react";
+import type { HomeHeroBannerProps } from "@/types/components/modules/home";
+import type { HeroSlideImageProps } from "@/types/components/modules/home";
+import type { HomeBannerDto } from "@/types/components/templates/home";
+import type { HeroSlide } from "@/types/components/modules/home";
+
+import Editable from "@elements/Editable";
+
+const SWIPE_THRESHOLD_PX = 40;
+const MOBILE_ART_QUERY = "(max-width: 1023px)";
+const REDUCED_MOTION = "(prefers-reduced-motion: reduce)";
+const AUTOPLAY_MS = 6500;
+const HERO_QUALITY = 85;
+const COVERED_AT = 0.55;
+
+const subscribeReducedMotion = (onChange: () => void) => {
+  const query = window.matchMedia(REDUCED_MOTION);
+  query.addEventListener("change", onChange);
+  return () => query.removeEventListener("change", onChange);
+};
+const readReducedMotion = () => window.matchMedia(REDUCED_MOTION).matches;
+
+const onIdle = (callback: () => void) => {
+  if (typeof window.requestIdleCallback === "function") {
+    const id = window.requestIdleCallback(callback, { timeout: 2500 });
+    return () => window.cancelIdleCallback(id);
+  }
+  const id = window.setTimeout(callback, 1200);
+  return () => window.clearTimeout(id);
+};
+
+const withIndex = (set: ReadonlySet<number>, index: number) =>
+  set.has(index) ? set : new Set(set).add(index);
+
+const cmsSlides = (banner: HomeBannerDto): HeroSlide[] => {
+  const alt = banner?.title || "";
+  const desktopSrc = getHomeImageUrl(banner?.image);
+
+  const primary: HeroSlide = {
+    key: `cms-${banner?.id}`,
+    alt: banner?.image?.alt || alt,
+    desktopSrc,
+    mobileSrc: banner?.image_sm ? getHomeImageUrl(banner.image_sm) : desktopSrc,
+    contentId: banner?.id,
+    imageClasses: banner?.imageClasses,
+  };
+
+  const extraSlides: HeroSlide[] = (banner?.attachments ?? []).map(
+    (entry, index) => {
+      const src = getHomeImageUrl(entry?.attachment);
+      return {
+        key: `cms-${banner?.id}-${index}`,
+        alt: entry?.attachment?.alt || alt,
+        desktopSrc: src,
+        mobileSrc: src,
+        contentId: banner?.id,
+        imageClasses: banner?.imageClasses,
+      };
+    },
+  );
+
+  return [primary, ...extraSlides];
+};
+
+const HeroSlideImage = ({ slide, isFirst, onLoad }: HeroSlideImageProps) => {
+  const shared = {
+    alt: slide.alt,
+    fill: true,
+    sizes: "100vw",
+    quality: HERO_QUALITY,
+    loading: "eager" as const,
+    fetchPriority: isFirst ? ("high" as const) : ("low" as const),
+    unoptimized: slide.desktopSrc.endsWith(".svg"),
+  };
+  const { props: desktopImage } = getImageProps({
+    ...shared,
+    src: slide.desktopSrc,
+  });
+  const {
+    props: { srcSet: mobileSrcSet },
+  } = getImageProps({ ...shared, src: slide.mobileSrc });
+  const photoStyle = {
+    ...desktopImage.style,
+    "--hero-focus": slide.focus ?? "50% 50%",
+  } as CSSProperties;
+
+  return (
+    <picture>
+      <source sizes="100vw" srcSet={mobileSrcSet} media={MOBILE_ART_QUERY} />
+      <img
+        {...desktopImage}
+        alt={slide.alt}
+        style={photoStyle}
+        onLoad={onLoad}
+        ref={(element) => {
+          if (element?.complete && element.naturalWidth) onLoad();
+        }}
+        className={`hero-slide-photo object-cover [object-position:var(--hero-focus)] ${slide.imageClasses ?? ""}`}
+      />
+    </picture>
+  );
+};
+
+const HomeBannerPart = ({ title, devices, banners }: HomeHeroBannerProps) => {
+  const t = useTranslations("content");
+  const rtl = useDir() === "rtl";
+
+  const isPhone = !!devices?.isMobile;
+
+  const slides = useMemo(
+    () => (banners ?? []).filter((banner) => banner?.image).flatMap(cmsSlides),
+    [banners],
+  );
+  const count = slides.length;
+
+  const [index, setIndex] = useState(0);
+  const [mounted, setMounted] = useState<ReadonlySet<number>>(
+    () => new Set([0]),
+  );
+  const [loaded, setLoaded] = useState<ReadonlySet<number>>(() => new Set());
+  const [hovered, setHovered] = useState(false);
+  const [focused, setFocused] = useState(false);
+  const [onScreen, setOnScreen] = useState(true);
+  const reducedMotion = useSyncExternalStore(
+    subscribeReducedMotion,
+    readReducedMotion,
+    () => false,
+  );
+
+  const rootRef = useRef<HTMLDivElement>(null);
+  const swipeStart = useRef<{ x: number; y: number } | null>(null);
+  const advanceWhenLoaded = useRef(false);
+
+  const nextIndex = count ? (index + 1) % count : 0;
+  const firstReady = loaded.has(0);
+  const playing =
+    count > 1 && !hovered && !focused && onScreen && !reducedMotion;
+
+  const goTo = (target: number) => {
+    advanceWhenLoaded.current = false;
+    setMounted((current) => withIndex(current, target));
+    setIndex(target);
+  };
+
+  const markLoaded = (slideIndex: number) => {
+    setLoaded((current) => withIndex(current, slideIndex));
+    if (advanceWhenLoaded.current && slideIndex === nextIndex) goTo(slideIndex);
+  };
+
+  const onProgressEnd = () => {
+    if (loaded.has(nextIndex)) goTo(nextIndex);
+    else advanceWhenLoaded.current = true;
+  };
+
+  useEffect(() => {
+    if (!firstReady || count < 2) return;
+    return onIdle(() => setMounted((current) => withIndex(current, nextIndex)));
+  }, [firstReady, nextIndex, count]);
+
+  useEffect(() => {
+    const root = rootRef.current;
+    if (!root) return;
+    let frame = 0;
+    const measure = () => {
+      frame = 0;
+      const visible =
+        document.visibilityState === "visible" &&
+        window.scrollY < root.offsetHeight * COVERED_AT;
+      setOnScreen((current) => (current === visible ? current : visible));
+    };
+    const schedule = () => {
+      if (!frame) frame = window.requestAnimationFrame(measure);
+    };
+    schedule();
+    window.addEventListener("scroll", schedule, { passive: true });
+    document.addEventListener("visibilitychange", schedule);
+    return () => {
+      window.removeEventListener("scroll", schedule);
+      document.removeEventListener("visibilitychange", schedule);
+      if (frame) window.cancelAnimationFrame(frame);
+    };
+  }, []);
+
+  const onPointerDown = (event: PointerEvent<HTMLDivElement>) => {
+    swipeStart.current = { x: event.clientX, y: event.clientY };
+  };
+
+  const onPointerUp = (event: PointerEvent<HTMLDivElement>) => {
+    const start = swipeStart.current;
+    swipeStart.current = null;
+    if (!start || count < 2) return;
+    const dx = event.clientX - start.x;
+    const dy = event.clientY - start.y;
+    if (Math.abs(dx) < SWIPE_THRESHOLD_PX || Math.abs(dx) < Math.abs(dy))
+      return;
+    const toNext = rtl ? dx > 0 : dx < 0;
+    goTo(toNext ? nextIndex : (index - 1 + count) % count);
+  };
+
+  const onBlur = (event: FocusEvent<HTMLDivElement>) => {
+    if (!event.currentTarget.contains(event.relatedTarget as Node | null))
+      setFocused(false);
+  };
+
+  const editable = slides.find((slide) => slide.contentId !== undefined);
+  const hasSlides = count > 0;
+
+  return (
+    <div
+      ref={rootRef}
+      role="region"
+      onBlur={onBlur}
+      data-paused={!playing}
+      aria-label={t("heroSlider")}
+      aria-roledescription="carousel"
+      onFocus={() => setFocused(true)}
+      style={{ "--hero-interval": `${AUTOPLAY_MS}ms` } as CSSProperties}
+      className="hero-slider relative w-full h-full px-0"
+      onPointerEnter={(event) =>
+        event.pointerType === "mouse" && setHovered(true)
+      }
+      onPointerLeave={(event) =>
+        event.pointerType === "mouse" && setHovered(false)
+      }
+    >
+      <div
+        className={
+          hasSlides
+            ? `absolute inset-x-0 bottom-0 z-10 flex flex-col items-center justify-end gap-4 px-4 md:gap-6 ${
+                isPhone ? "pb-20" : "pb-12 md:pb-14"
+              }`
+            : "relative z-10 flex w-full flex-col items-center justify-center gap-4 px-4 py-8 md:gap-6"
+        }
+      >
+        <div className="home-hero-content flex max-w-2xl flex-col items-start gap-2 text-end md:items-center md:gap-3 md:text-center">
+          {/* The landing hero always shows the Persian wordmark in white, regardless of locale or slides. */}
+          <BrandTitle
+            script="fa"
+            tone="white"
+            className="h-auto !w-25 drop-shadow-md lg:!w-48"
+          />
+          <h2
+            className={`text-balance text-sm font-bold leading-snug md:text-xl ${
+              hasSlides ? "text-white drop-shadow-md" : "text-ink"
+            }`}
+          >
+            {title || t("homeTitle")}
+          </h2>
+        </div>
+
+        {isPhone ? (
+          <></>
+        ) : (
+          <div className="w-full max-w-sm">
+            <HomeHeroSearch isPhone={false} />
+          </div>
+        )}
+      </div>
+
+      {hasSlides ? (
+        <>
+          {count > 1 ? (
+            <span
+              key={index}
+              aria-hidden="true"
+              onAnimationEnd={onProgressEnd}
+              className="hero-clock pointer-events-none absolute size-px opacity-0"
+            />
+          ) : (
+            <></>
+          )}
+
+          <Editable
+            isBanner
+            onPointerUp={onPointerUp}
+            onPointerDown={onPointerDown}
+            contentId={editable?.contentId}
+            editIconClass="!top-auto !bottom-0"
+            onPointerCancel={() => (swipeStart.current = null)}
+            className="hero-backdrop relative aspect-[3/2] w-full touch-pan-y overflow-hidden px-0 focus:outline-none sm:aspect-[2/1] lg:aspect-[3.029] lg:min-h-[23rem]"
+          >
+            {slides.map((slide, slideIndex) => (
+              <div
+                key={slide.key}
+                data-active={slideIndex === index}
+                aria-hidden={slideIndex !== index}
+                className="hero-slide absolute inset-0"
+              >
+                {mounted.has(slideIndex) ? (
+                  <HeroSlideImage
+                    slide={slide}
+                    isFirst={slideIndex === 0}
+                    onLoad={() => markLoaded(slideIndex)}
+                  />
+                ) : (
+                  <></>
+                )}
+              </div>
+            ))}
+            <div
+              aria-hidden="true"
+              className="pointer-events-none absolute inset-0 bg-gradient-to-t from-black/55 via-black/10 to-transparent"
+            />
+          </Editable>
+        </>
+      ) : (
+        <></>
+      )}
+    </div>
+  );
+};
+
+export default HomeBannerPart;

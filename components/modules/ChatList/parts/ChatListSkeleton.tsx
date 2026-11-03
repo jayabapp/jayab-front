@@ -1,0 +1,25 @@
+import { useTranslations } from "next-intl";
+
+const ChatListSkeleton = () => {
+  const t = useTranslations("chat");
+
+  return (
+    <div className="flex w-full flex-col gap-4" aria-label={t("loadingChats")}>
+      {Array.from({ length: 6 }).map((_, index) => (
+        <div
+          className="flex animate-pulse gap-3 border-b pb-4 motion-reduce:animate-none"
+          key={index}
+        >
+          <div className="size-12 shrink-0 rounded-md bg-surface-hover" />
+          <div className="flex flex-1 flex-col gap-3">
+            <div className="h-4 w-2/5 rounded bg-surface-hover" />
+            <div className="h-3 w-3/5 rounded bg-surface-hover" />
+            <div className="h-3 w-full rounded bg-surface-muted" />
+          </div>
+        </div>
+      ))}
+    </div>
+  );
+};
+
+export default ChatListSkeleton;

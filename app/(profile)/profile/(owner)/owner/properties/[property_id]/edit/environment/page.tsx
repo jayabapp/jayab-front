@@ -1,110 +1,21 @@
-"use client";
-import { PropertyService } from "@/api_services/property/property.service";
-import CreateEditProperty, { CreateProperyStepOne } from "@/components/properties/CreateEditProperty";
-import CreateEditPropertyEnvInfo, { CreateProperyStepThree } from "@/components/properties/CreateEditPropertyEnvInfo";
-import PageHeaders from "@/components/headers/PageHeader";
-import Button from "@/components/shared/Button/Button";
-import FixedBottomContainer from "@/components/shared/FixedBottomContainer";
-import StepShower from "@/components/shared/StepShower";
-import { p2e } from "@/helpers/NumberConverter";
-import { useStoreInit } from "@/store";
-import { createPropertySteps } from "@/utils/constantss";
-import _STRINGS from "@/utils/LocalStrings";
-import { useMutation, useQuery } from "@tanstack/react-query";
+import { OwnerPropertyStepTemplate } from "@templates/OwnerPropertyEdit";
+import { PropertyEnvironmentStep } from "@modules/OwnerPropertyEditor";
 
-import { useParams, usePathname, useRouter, useSearchParams } from "next/navigation";
-import React, { useEffect, useState } from "react";
-import LottieLoading from "@/components/shared/Lotties/LottieLoading";
+import type { OwnerPropertyPageProps } from "@/types/components/templates/owner-property";
+import IntlNamespaces from "@/i18n/IntlNamespaces";
 
-const CreateProperty = () => {
-  const router = useRouter();
-  const pathname = usePathname();
-  const { userInfo } = useStoreInit((data) => data);
-  const searchParams = useSearchParams();
-  const edit_mode = searchParams.get("edit_mode");
-  const params = useParams();
-  const { property_id } = params;
-  /* -------------------------------------------------------------------------- */
-  /*                             INIT PROP CREATION                             */
-  /* -------------------------------------------------------------------------- */
-  const { data: initPropData, isLoading } = useQuery({
-    queryKey: [PropertyService.OWNER_PROP_INIT_CACHEKEY, property_id],
-    queryFn: () => {
-      if (!!property_id) {
-        return PropertyService.InitProperty({ property_id: `${property_id}` });
-      } else return null;
-    },
-    gcTime: 0,
-    staleTime: 0,
-  });
-
-  const [values, setValues] = useState<CreateProperyStepThree>({
-    access: "",
-    distance_dscr: "",
-    neighborhood: "",
-    pattern: "",
-    pattern_dscr: "",
-  });
-
-  useEffect(() => {
-    if (!!initPropData) {
-      setValues({
-        access: initPropData?.property_options?.find((e) => e?.option?.group == "ACCESS")?.option_id || null,
-        neighborhood:
-          initPropData?.property_options?.find((e) => e?.option?.group == "NEIGHBORHOOD")?.option_id || null,
-        pattern: initPropData?.property_options?.find((e) => e?.option?.group == "PATTERN")?.option_id || null,
-        distance_dscr: initPropData?.description?.distance_dscr,
-        pattern_dscr: initPropData?.description?.pattern_dscr,
-      });
-    }
-  }, [initPropData]);
-
-  const onChange = (value: string | number | null | boolean, key: string) => {
-    setValues((e) => ({ ...e, [key]: value }));
-  };
-
-  const { mutate, isPending } = useMutation({
-    mutationFn: PropertyService.CreatePropertySetEnv,
-    onSuccess: () => {
-      if (!!edit_mode) {
-        router.replace(`/profile/owner/properties/${property_id}/edit`);
-      } else {
-        router.push(`/profile/owner/properties/${property_id}/edit/bedroom`);
-      }
-    },
-  });
-  const onSubmit = () => {
-    if (!!initPropData?.id) {
-      mutate({ ...values, propertyId: initPropData?.id });
-    }
-  };
+const PropertyEnvironmentStepPage = async ({
+  params,
+}: OwnerPropertyPageProps) => {
+  const { property_id } = await params;
 
   return (
-    <div
-      id="homeParent"
-      className="profile-container  items-center  !bg-transparent transition-all duration-500 ease-in-out flex flex-col gap-6 "
-    >
-      <div className="w-full pb-4 px-4 pt-8">
-        {" "}
-        <StepShower steps={createPropertySteps(initPropData?.id)} value={4} />
-      </div>
-
-      {isLoading ? <LottieLoading /> : <CreateEditPropertyEnvInfo onChange={onChange} values={values} />}
-
-      <FixedBottomContainer>
-        <Button
-          onClick={() => {
-            onSubmit();
-          }}
-          loading={isPending}
-          containerClass="w-full flex items-center justify-center"
-          roundedClass="rounded-full"
-          width=" w-[90%] md:w-1/2"
-          title={_STRINGS.SUBMIT_MOVE_ON}
-        />
-      </FixedBottomContainer>
-    </div>
+    <IntlNamespaces namespaces={["owner"]}>
+      <OwnerPropertyStepTemplate>
+        <PropertyEnvironmentStep propertyId={property_id} />
+      </OwnerPropertyStepTemplate>
+    </IntlNamespaces>
   );
 };
 
-export default CreateProperty;
+export default PropertyEnvironmentStepPage;

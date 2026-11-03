@@ -1,32 +1,10 @@
-"use client";
+import { ChatListTemplate } from "@templates/ChatList";
+import IntlNamespaces from "@/i18n/IntlNamespaces";
 
-import { ChatService } from "@/api_services/chat/chat.service";
-import ChatListItem from "@/components/chat/ChatListItem";
-import LottieLoading from "@/components/shared/Lotties/LottieLoading";
-import { useQuery } from "@tanstack/react-query";
-import React from "react";
-
-const ChatListPage = () => {
-  const { data: chats, isLoading } = useQuery({
-    queryKey: [ChatService.CHAT_CACHEKEY],
-    queryFn: ChatService.GetChatList,
-  });
-  return (
-    <div
-      id="homeParent"
-      className="  profile-container  flex flex-col  w-full  gap-4  transition-all duration-500 ease-in-out "
-    >
-      {isLoading ? (
-        <LottieLoading />
-      ) : (
-        <>
-          {chats?.map((e) => (
-            <ChatListItem item={e} />
-          ))}
-        </>
-      )}
-    </div>
-  );
-};
+const ChatListPage = () => (
+  <IntlNamespaces namespaces={["chat"]}>
+    <ChatListTemplate profile />
+  </IntlNamespaces>
+);
 
 export default ChatListPage;

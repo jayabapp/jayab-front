@@ -1,33 +1,38 @@
-import { p2e } from "@/helpers/NumberConverter";
-import { apiRoutes } from "@/utils/urls";
 import { YupValidator } from "@/utils/YupValidator";
+import { apiRoutes } from "@/utils/urls";
 import { ImageDto } from "../auth/auth.interface";
 import { apiCall } from "../common/apicall.helper";
+import { p2e } from "@/helpers/NumberConverter";
+import type { Locale } from "@/i18n/config";
 import {
-  AssistantSendDto,
-  CreatePropertyStepOneDto,
-  FacilitiesValuesDto,
-  GetPropBadgeDto,
-  GetPropertiesPlusFilters,
-  OwnerCallendarItemDto,
-  OwnerPropsRangeDto,
-  OwnerSinglePropertyAuthdata,
   PageMetaDto,
+  PropInitDto,
+  RoomInfosDto,
+  SinglePropDto,
+  JalaaliDayDto,
+  GetPropBadgeDto,
+  PropertyListDto,
+  PropertySubsDto,
+  PropertyQuoteDto,
+  PropertyStatsDto,
+  AssistantSendDto,
+  ProvienceTypesDto,
+  OwnerPropsRangeDto,
+  FacilitiesValuesDto,
+  PropertyOptionGroup,
+  PropertyTermsSendDto,
+  OwnerCallendarItemDto,
   PayPropertySubSendDto,
   PricingPropertySendDto,
-  PropertyContactIInfDto,
-  PropertyListDto,
-  PropertyOptionGroup,
-  PropertyStatsDto,
-  PropertySubsDto,
-  PropertyTermsSendDto,
-  PropInitDto,
-  ProvienceTypesDto,
-  RoomInfosDto,
   SingleOwnerPropertyDto,
-  SinglePropDto,
+  PropertyContactIInfDto,
+  CreatePropertyStepOneDto,
+  GetPropertiesPlusFilters,
+  PropertyMapFilters,
+  PropertyMapResult,
+  PriceHistogram,
+  OwnerSinglePropertyAuthdata,
 } from "./property.interface";
-import { sendMediaSchema } from "./property.schema";
 
 export class PropertyService {
   static USER_PROP_OPTIONS_CACHEKEY = "USER_PROP_OPTIONS";
@@ -51,25 +56,29 @@ export class PropertyService {
   static OWNER_PROPERTIES_PRICE_RANGE_UPDATE_CACHEKEY =
     "OWNER_PROPERTIES_PRICE_RANGE_UPDATE";
 
-  static async GetUserPropertyGroup(dto: {
-    group: (keyof typeof PropertyOptionGroup)[];
-  }) {
+  static async GetUserPropertyGroup(
+    dto: {
+      group: (keyof typeof PropertyOptionGroup)[];
+    },
+    signal?: AbortSignal,
+  ) {
     try {
       const result = await apiCall<
         { group: string[] },
         { [key: string]: ProvienceTypesDto[] }
-      >("GET", apiRoutes.USER_PROP_OPTIONS, {
-        group: dto.group,
-      });
+      >(
+        "GET",
+        apiRoutes.USER_PROP_OPTIONS,
+        {
+          group: dto.group,
+        },
+        { signal },
+      );
       return result;
     } catch (e) {
       throw e;
     }
   }
-
-  /* -------------------------------------------------------------------------- */
-  /*                            PROPERTY CONTACT INFO                           */
-  /* -------------------------------------------------------------------------- */
 
   static async getSinglePropertyContactInfo(dto: {
     propertySlug: string | number | null;
@@ -108,22 +117,26 @@ export class PropertyService {
     }
   }
 
-  /* -------------------------------------------------------------------------- */
-  /*                              SUBSCRIPTION PART                             */
-  /* -------------------------------------------------------------------------- */
-
-  static async GetPropertySubscriptionPlans(dto?: {
-    type?: "ADVISOR" | "PROPERTY";
-    property_id?: string | number;
-  }) {
+  static async GetPropertySubscriptionPlans(
+    dto?: {
+      type?: "ADVISOR" | "PROPERTY";
+      property_id?: string | number;
+    },
+    signal?: AbortSignal,
+  ) {
     try {
       const result = await apiCall<
         { type?: "ADVISOR" | "PROPERTY"; property_id?: string | number },
         { list: PropertySubsDto[]; can_promote: boolean }
-      >("GET", apiRoutes.USER_SUBSCRIPTION_PLANS, {
-        type: dto?.type,
-        property_id: dto?.property_id,
-      });
+      >(
+        "GET",
+        apiRoutes.USER_SUBSCRIPTION_PLANS,
+        {
+          type: dto?.type,
+          property_id: dto?.property_id,
+        },
+        { signal },
+      );
       return result;
     } catch (e) {
       throw e;
@@ -153,17 +166,18 @@ export class PropertyService {
     }
   }
 
-  /* -------------------------------------------------------------------------- */
-  /*                          GET OWNER SINGLE PROPERTY                         */
-  /* -------------------------------------------------------------------------- */
-
-  static async GetSingleOwnerProperty(dto: {
-    property_id: string | number | null;
-  }) {
+  static async GetSingleOwnerProperty(
+    dto: {
+      property_id: string | number | null;
+    },
+    signal?: AbortSignal,
+  ) {
     try {
       const result = await apiCall<unknown, SingleOwnerPropertyDto>(
         "GET",
         apiRoutes.OWNER_PROPERTIES(dto?.property_id),
+        undefined,
+        { signal },
       );
       return result;
     } catch (e) {
@@ -171,28 +185,32 @@ export class PropertyService {
     }
   }
 
-  static async GetSingleOwnerPropertyCallendar(dto: {
-    property_id: string | number | null;
-    year: string | number | null;
-    month: string | number | null;
-  }) {
+  static async GetSingleOwnerPropertyCallendar(
+    dto: {
+      property_id: string | number | null;
+      year: string | number | null;
+      month: string | number | null;
+    },
+    signal?: AbortSignal,
+  ) {
     try {
       const result = await apiCall<
         { year: string | number | null; month: string | number | null },
         OwnerCallendarItemDto[]
-      >("GET", apiRoutes.OWNER_PROPERTIES_SINGLE_CALLENDAR(dto?.property_id), {
-        month: dto.month,
-        year: dto.year,
-      });
+      >(
+        "GET",
+        apiRoutes.OWNER_PROPERTIES_SINGLE_CALLENDAR(dto?.property_id),
+        {
+          month: dto.month,
+          year: dto.year,
+        },
+        { signal },
+      );
       return result;
     } catch (e) {
       throw e;
     }
   }
-
-  /* -------------------------------------------------------------------------- */
-  /*                        OWNER PROPERTY UPDATE STATUSES                        */
-  /* -------------------------------------------------------------------------- */
 
   static async UpdatePropertyStatus(dto: {
     property_id: string | number | null;
@@ -219,12 +237,38 @@ export class PropertyService {
     }
   }
 
-  static async ownerPropertyPriceRangeLimits(dto: {
+  static async updatePropertyStatusOfManyDays(dto: {
     property_id: string | number | null;
-    year: string | number | null;
-    month: string | number | null;
-    day: string | number | null;
+    days: JalaaliDayDto[];
+    is_reserved: boolean;
   }) {
+    try {
+      const result = await apiCall<
+        { days: JalaaliDayDto[]; is_reserved: boolean },
+        OwnerCallendarItemDto[]
+      >(
+        "POST",
+        apiRoutes.OWNER_PROPERTIES_BULK_STATUS_UPDATE(dto?.property_id),
+        {
+          days: dto.days,
+          is_reserved: dto.is_reserved,
+        },
+      );
+      return result;
+    } catch (e) {
+      throw e;
+    }
+  }
+
+  static async ownerPropertyPriceRangeLimits(
+    dto: {
+      property_id: string | number | null;
+      year: string | number | null;
+      month: string | number | null;
+      day: string | number | null;
+    },
+    signal?: AbortSignal,
+  ) {
     try {
       const result = await apiCall<
         {
@@ -241,6 +285,7 @@ export class PropertyService {
           month: dto.month,
           day: dto.day,
         },
+        { signal },
       );
       return result;
     } catch (e) {
@@ -273,6 +318,35 @@ export class PropertyService {
         discounted_price: dto.discounted_price,
         price: dto.price,
       });
+      return result;
+    } catch (e) {
+      throw e;
+    }
+  }
+
+  static async updatePropertyPriceOfManyDays(dto: {
+    property_id: string | number | null;
+    days: JalaaliDayDto[];
+    price: string | number | null;
+    discounted_price?: string | number | null;
+  }) {
+    try {
+      const result = await apiCall<
+        {
+          days: JalaaliDayDto[];
+          price: string | number | null;
+          discounted_price?: string | number | null;
+        },
+        OwnerCallendarItemDto[]
+      >(
+        "POST",
+        apiRoutes.OWNER_PROPERTIES_BULK_PRICE_UPDATE(dto?.property_id),
+        {
+          days: dto.days,
+          discounted_price: dto.discounted_price,
+          price: dto.price,
+        },
+      );
       return result;
     } catch (e) {
       throw e;
@@ -367,17 +441,18 @@ export class PropertyService {
     }
   }
 
-  /* -------------------------------------------------------------------------- */
-  /*                            OWNER PROPERTY BADGE                            */
-  /* -------------------------------------------------------------------------- */
-
-  static async GetSingleOwnerPropertyBadgeStatus(dto: {
-    property_id: string | number | null;
-  }) {
+  static async GetSingleOwnerPropertyBadgeStatus(
+    dto: {
+      property_id: string | number | null;
+    },
+    signal?: AbortSignal,
+  ) {
     try {
       const result = await apiCall<unknown, GetPropBadgeDto>(
         "GET",
         apiRoutes.OWNER_PROPERTIES_SINGLE_BADGE(dto?.property_id),
+        undefined,
+        { signal },
       );
       return result;
     } catch (e) {
@@ -398,17 +473,19 @@ export class PropertyService {
       throw e;
     }
   }
-  /* -------------------------------------------------------------------------- */
-  /*                            OWNER PROPERTY AUTHORIZATION                              */
-  /* -------------------------------------------------------------------------- */
 
-  static async GetSingleOwnerPropertyAuthStatus(dto: {
-    property_id: string | number | null;
-  }) {
+  static async GetSingleOwnerPropertyAuthStatus(
+    dto: {
+      property_id: string | number | null;
+    },
+    signal?: AbortSignal,
+  ) {
     try {
       const result = await apiCall<unknown, OwnerSinglePropertyAuthdata>(
         "GET",
         apiRoutes.OWNER_PROPERTIES_SINGLE_AUTH(dto?.property_id),
+        undefined,
+        { signal },
       );
       return result;
     } catch (e) {
@@ -462,15 +539,16 @@ export class PropertyService {
     }
   }
 
-  /* -------------------------------------------------------------------------- */
-  /*                            CREATE AND EDIT PROP                            */
-  /* -------------------------------------------------------------------------- */
-
-  static async InitProperty(dto: { property_id?: string | number | null }) {
+  static async InitProperty(
+    dto: { property_id?: string | number | null },
+    signal?: AbortSignal,
+  ) {
     try {
       const result = await apiCall<unknown, PropInitDto>(
         "GET",
         apiRoutes.OWNER_PROP_INIT(dto?.property_id),
+        undefined,
+        { signal },
       );
       return result;
     } catch (e) {
@@ -534,6 +612,7 @@ export class PropertyService {
     feature_image_id: string | number | null;
   }) {
     try {
+      const { sendMediaSchema } = await import("./property.schema");
       await YupValidator<{
         images: (string | number | null)[];
         feature_image_id: string | number | null;
@@ -718,27 +797,31 @@ export class PropertyService {
     }
   }
 
-  /* -------------------------------------------------------------------------- */
-  /*                             GET PROPERTIES PART                            */
-  /* -------------------------------------------------------------------------- */
-
-  static async GetProperties(dto: GetPropertiesPlusFilters) {
-    try {
-      const result = await apiCall<
-        GetPropertiesPlusFilters,
-        { data: PropertyListDto[]; meta: PageMetaDto }
-      >("GET", apiRoutes.GET_PROPERTIES, dto);
-      return result;
-    } catch (e) {
-      throw e;
-    }
+  static async GetProperties(
+    dto: GetPropertiesPlusFilters,
+    signal?: AbortSignal,
+    silent?: boolean,
+  ) {
+    const result = await apiCall<
+      GetPropertiesPlusFilters,
+      { data: PropertyListDto[]; meta: PageMetaDto }
+    >("GET", apiRoutes.GET_PROPERTIES, dto, {
+      signal,
+      showErrorNotification: !silent,
+    });
+    return result;
   }
 
-  static async GetSinglePropertyWithSlug(dto: { Property_slug: string }) {
+  static async GetSinglePropertyWithSlug(
+    dto: { Property_slug: string; locale?: Locale },
+    signal?: AbortSignal,
+  ) {
     try {
       const result = await apiCall<unknown, SinglePropDto>(
         "GET",
         apiRoutes.GET_SINGLEPROPERTY_SlUG(dto.Property_slug),
+        { locale: dto.locale },
+        { signal },
       );
       return result;
     } catch (e) {
@@ -746,25 +829,69 @@ export class PropertyService {
     }
   }
 
-  /* -------------------------------------------------------------------------- */
-  /*                            GET OWNER PORPERTIES                            */
-  /* -------------------------------------------------------------------------- */
+  static async GetPropertiesMap(
+    filters: PropertyMapFilters,
+    signal?: AbortSignal,
+  ) {
+    return apiCall<PropertyMapFilters, PropertyMapResult>(
+      "GET",
+      apiRoutes.GET_PROPERTIES_MAP,
+      filters,
+      { signal, showErrorNotification: false },
+    );
+  }
 
-  static async GetOwnerPropertiesList() {
+  static async GetPriceHistogram(
+    filters: Partial<GetPropertiesPlusFilters>,
+    signal?: AbortSignal,
+  ) {
+    return apiCall<Partial<GetPropertiesPlusFilters>, PriceHistogram>(
+      "GET",
+      apiRoutes.GET_PROPERTIES_PRICE_HISTOGRAM,
+      filters,
+      { signal, showErrorNotification: false },
+    );
+  }
+
+  static async GetMapPreview(
+    propertyId: string | number,
+    signal?: AbortSignal,
+    locale: Locale = "fa",
+  ) {
+    return apiCall<unknown, PropertyListDto>(
+      "GET",
+      apiRoutes.PROPERTY_MAP_PREVIEW(propertyId),
+      { locale },
+      { signal, showErrorNotification: false },
+    );
+  }
+
+  static async GetSimilarProperties(
+    propertyId: string | number,
+    signal?: AbortSignal,
+    locale: Locale = "fa",
+  ) {
+    return apiCall<unknown, PropertyListDto[]>(
+      "GET",
+      apiRoutes.SIMILAR_PROPERTIES(propertyId),
+      { locale },
+      { signal, showErrorNotification: false },
+    );
+  }
+
+  static async GetOwnerPropertiesList(signal?: AbortSignal) {
     try {
       const result = await apiCall<unknown, PropertyListDto[]>(
         "GET",
         apiRoutes.OWNER_PROPERTIES_LIST,
+        undefined,
+        { signal },
       );
       return result;
     } catch (e) {
       throw e;
     }
   }
-
-  /* -------------------------------------------------------------------------- */
-  /*                             SAVE LIKE PROPERTY                             */
-  /* -------------------------------------------------------------------------- */
 
   static async LikeProperty(dto: { property_id: string | number | null }) {
     try {
@@ -782,11 +909,13 @@ export class PropertyService {
     }
   }
 
-  static async getBookMarks() {
+  static async getBookMarks(signal?: AbortSignal, locale: Locale = "fa") {
     try {
       const result = await apiCall<unknown, PropertyListDto[]>(
         "GET",
         apiRoutes.BOOKMARKS,
+        { locale },
+        { signal },
       );
       return result;
     } catch (e) {
@@ -810,9 +939,6 @@ export class PropertyService {
     }
   }
 
-  /* -------------------------------------------------------------------------- */
-  /*                               DELETE PROPERTY                              */
-  /* -------------------------------------------------------------------------- */
   static async deleteProperty(dto: { propertyId: string | number | null }) {
     try {
       const result = await apiCall<
@@ -825,17 +951,18 @@ export class PropertyService {
     }
   }
 
-  /* -------------------------------------------------------------------------- */
-  /*                               GET PROPERTY STATISTICS                               */
-  /* -------------------------------------------------------------------------- */
-
-  static async getPropertyStatistics(dto: {
-    propertyId: string | number | null;
-  }) {
+  static async getPropertyStatistics(
+    dto: {
+      propertyId: string | number | null;
+    },
+    signal?: AbortSignal,
+  ) {
     try {
       const result = await apiCall<unknown, PropertyStatsDto>(
         "GET",
         apiRoutes.SINGLE_OWNER_PROPERTY_STATS(dto.propertyId),
+        undefined,
+        { signal },
       );
       return result;
     } catch (e) {
@@ -860,19 +987,27 @@ export class PropertyService {
     }
   }
 
-  static async GetSingleUserPropertyCallendar(dto: {
-    property_id: string | number | null;
-    year: string | number | null;
-    month: string | number | null;
-  }) {
+  static async GetSingleUserPropertyCallendar(
+    dto: {
+      property_id: string | number | null;
+      year: string | number | null;
+      month: string | number | null;
+    },
+    signal?: AbortSignal,
+  ) {
     try {
       const result = await apiCall<
         { year: string | number | null; month: string | number | null },
         OwnerCallendarItemDto[]
-      >("GET", apiRoutes.GET_SINGLEPROPERTY_CALLENDER(dto?.property_id), {
-        month: dto.month,
-        year: dto.year,
-      });
+      >(
+        "GET",
+        apiRoutes.GET_SINGLEPROPERTY_CALLENDER(dto?.property_id),
+        {
+          month: dto.month,
+          year: dto.year,
+        },
+        { signal },
+      );
       return result;
     } catch (e) {
       throw e;
@@ -909,15 +1044,40 @@ export class PropertyService {
   /*                             PROPERTY rESERVEDDATES                               */
   /* -------------------------------------------------------------------------- */
 
-  static async propertyReservedDates(dto: { post_id: string | number }) {
+  static async propertyReservedDates(
+    dto: { post_id: string | number },
+    signal?: AbortSignal,
+  ) {
     try {
       const result = await apiCall<unknown, Date[]>(
         "GET",
         apiRoutes.PROPERTY_RESERVED_DATES(dto.post_id),
+        undefined,
+        { signal },
       );
       return result;
     } catch (e) {
       throw e;
     }
+  }
+
+  static async getPropertyQuote(
+    dto: {
+      property_id: string | number;
+      check_in: string;
+      check_out: string;
+      guests: number;
+    },
+    signal?: AbortSignal,
+  ) {
+    return apiCall<
+      { check_in: string; check_out: string; guests: number },
+      PropertyQuoteDto
+    >(
+      "GET",
+      apiRoutes.PROPERTY_QUOTE(dto.property_id),
+      { check_in: dto.check_in, check_out: dto.check_out, guests: dto.guests },
+      { signal, showErrorNotification: false },
+    );
   }
 }

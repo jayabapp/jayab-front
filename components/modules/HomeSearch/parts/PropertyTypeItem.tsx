@@ -1,0 +1,20 @@
+import { propertyTypeStaticIcon } from "@features/properties/lib/static-icons";
+
+import type { TPropertyType } from "@/types/components/modules/home";
+
+import HomeTileCard from "./HomeTileCard";
+
+const PROPERTY_TYPE_FALLBACK_ICON =
+  "/assets/icons/logo/jayab_logo_shadow_corrected.webp";
+
+const PropertyTypeItem = ({ item, index }: TPropertyType) => (
+  <HomeTileCard
+    index={index}
+    title={item?.title}
+    href={`/rooms?property_type=${item?.id}`}
+    icon={propertyTypeStaticIcon(item?.id, item?.title ?? "")}
+    imageSrc={PROPERTY_TYPE_FALLBACK_ICON}
+  />
+);
+
+export default PropertyTypeItem;

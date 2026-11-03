@@ -1,0 +1,60 @@
+import { useTranslations } from "next-intl";
+import { Icon } from "@elements/Icon";
+import { Sheet } from "react-modal-sheet";
+
+import type { PopUpDownProps } from "@/types/components/elements/popup-down";
+
+const PopUpDown = ({
+  item,
+  visible,
+  children,
+  setVisible,
+  containerClass,
+}: PopUpDownProps) => {
+  const t = useTranslations("common");
+
+  return (
+    <div className={item?.containerClass + "   "}>
+      <Sheet
+        isOpen={visible}
+        onClose={() => setVisible(false)}
+        detent={item?.popHieghtType || "content-height"}
+        className={`${containerClass}  !fixed bg-transparent bottom-0 `}
+      >
+        <Sheet.Backdrop
+          onTap={() => {
+            setVisible(false);
+          }}
+        ></Sheet.Backdrop>
+        <Sheet.Container className=" pop-container !fixed bg-transparent bottom-0 ">
+          <Sheet.Header className="pb-0 px-4 pt-6 relative">
+            <div className=" w-8 h-1 absolute end-0 mx-auto top-2 start-0 rounded-full bg-line-strong "></div>
+            {item?.title ? (
+              <>
+                <div className="w-full text-center text-link font-bold">
+                  {item?.title}
+                </div>
+
+                <button
+                  type="button"
+                  aria-label={t("close")}
+                  onClick={() => setVisible(false)}
+                  className="absolute top-6 h-4 w-4 cursor-pointer opacity-60"
+                >
+                  <Icon name="x" size={16} />
+                </button>
+              </>
+            ) : (
+              <></>
+            )}
+          </Sheet.Header>
+          <Sheet.Content className=" overflow-y-scroll bottom-0">
+            <div className="h-full overflow-y-scroll">{children}</div>
+          </Sheet.Content>
+        </Sheet.Container>
+      </Sheet>
+    </div>
+  );
+};
+
+export default PopUpDown;

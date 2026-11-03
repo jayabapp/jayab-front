@@ -1,0 +1,47 @@
+"use client";
+
+import { useUpdateProfileImage } from "@features/user/hooks/useUpdateProfileImage";
+import { useTranslations } from "next-intl";
+
+import type { ProfileIdentityProps } from "@/types/components/modules/profile";
+
+import dynamic from "next/dynamic";
+
+const UploadField = dynamic(() =>
+  import("@modules/PropertyMedia").then((module) => module.UploadField),
+);
+
+const AVATAR_CLASSES = {
+  imageClass: " !rounded-full !h-20 !w-20 !max-w-none object-cover ",
+  secontParentClass: "!rounded-full   !aspect-auto ",
+  sizeClass:
+    " !rounded-full !w-20 !h-20 !border-0 !bg-transparent !shadow-sm",
+};
+
+const ProfileIdentity = ({ profile }: ProfileIdentityProps) => {
+  const t = useTranslations("common");
+
+  const { mutate } = useUpdateProfileImage();
+
+  return (
+    <div className="flex items-center gap-2">
+      <UploadField
+        withCrop
+        showCamera
+        title={t("image")}
+        key="profile-avatar"
+        innerClasses={AVATAR_CLASSES}
+        item={profile?.profile_image}
+        link="/attachments?type=PROFILE"
+        containerClass="my-3 w-fit flex items-start justify-start"
+        onSelect={(file) => mutate({ profile_image_id: file?.id })}
+      />
+      <div className="flex flex-col gap-3">
+        <p className="font-bold">{profile?.full_name}</p>
+        <p className="text-sm">{profile?.mobile_number}</p>
+      </div>
+    </div>
+  );
+};
+
+export default ProfileIdentity;

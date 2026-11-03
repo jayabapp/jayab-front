@@ -1,0 +1,87 @@
+"use client";
+
+import { usePathname, useRouter } from "next/navigation";
+import { Checkbox } from "@elements/Form";
+
+import type { PropertyModelFilterProps } from "@/types/components/modules/property-search-filters";
+
+import queryBuilder from "@/helpers/queryBuilder";
+import isArray from "lodash/isArray";
+
+const PropertyModelFilter = ({
+  list,
+  query,
+  isMulty,
+  queryKey,
+  onClickCb,
+  mobileFilters,
+  setMobileFilters,
+  containerClass = "w-full my-2",
+}: PropertyModelFilterProps) => {
+  const router = useRouter();
+  const pathname = usePathname();
+
+  const source = mobileFilters ?? query;
+  const selectedValues = source?.[queryKey]
+    ? `${source[queryKey]}`.split(",")
+    : "";
+
+  const queryMaker = (items: string | string[]) => {
+    const current = mobileFilters ? { ...mobileFilters } : { ...query };
+    const body: Record<string, any> = { ...current, [queryKey]: items };
+    if (queryKey === "parent_category") {
+      delete body.specifications;
+      delete body.categories;
+    }
+    if (items === "" || (Array.isArray(items) && items.length === 0))
+      delete body[queryKey];
+    if (current[queryKey] === items) delete body[queryKey];
+    delete body.page;
+    if (setMobileFilters) setMobileFilters(body);
+    else router.replace(`${pathname}?${queryBuilder(body)}`);
+  };
+
+  const isSelected = (item: any) => {
+    if (isMulty && selectedValues)
+      return selectedValues.some((value: string) => value === `${item?.id}`);
+    const current = mobileFilters ? mobileFilters[queryKey] : query?.[queryKey];
+    if (current === undefined || current === null || current === "")
+      return false;
+    return `${current}` === `${item?.id}`;
+  };
+
+  return (
+    <div className={containerClass}>
+      {list?.map((item) => (
+        <div key={`model-${item?.id}`} className="flex items-center my-2 gap-2">
+          <Checkbox
+            containerClass="w-fit"
+            isChecked={isSelected(item)}
+            title={<span className="text-sm">{item?.title}</span>}
+            rounded={isMulty ? "rounded-md" : "rounded-full"}
+            onSelect={() => {
+              let next: string | string[] = selectedValues;
+              if (isArray(selectedValues) && isMulty) {
+                next = selectedValues.some(
+                  (value: string) => value === `${item?.id}`,
+                )
+                  ? selectedValues.filter(
+                      (value: string) => value !== `${item?.id}`,
+                    )
+                  : [...selectedValues, `${item?.id}`];
+              } else if (selectedValues && isMulty) {
+                next = [selectedValues as unknown as string, `${item?.id}`];
+              } else {
+                next = `${item?.id}`;
+              }
+              queryMaker(next);
+              onClickCb?.();
+            }}
+          />
+        </div>
+      ))}
+    </div>
+  );
+};
+
+export default PropertyModelFilter;

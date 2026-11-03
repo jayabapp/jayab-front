@@ -1,0 +1,150 @@
+"use client";
+
+import { useCallback, useEffect, useMemo, useState } from "react";
+import { NextButton, PrevButton } from "./EmblaCarouselArrowButtons.client";
+import { usePrevNextButtons } from "./EmblaCarouselArrowButtons.client";
+import { NEW_IMAGE_URL } from "@/utils/urls";
+import { useMediaQuery } from "react-responsive";
+import { ContentImage } from "@/components/elements/Image";
+import { arrowSides } from "./EmblaCarouselArrowButtons.client";
+import { useDir } from "@hooks/useDir";
+
+import type { ThumbnailCarouselProps } from "@/types/components/elements/carousel";
+
+import useEmblaCarousel from "embla-carousel-react";
+import Autoplay from "embla-carousel-autoplay";
+
+const SwiperWithThumbnails: React.FC<ThumbnailCarouselProps> = (props) => {
+  const [selectedIndex, setSelectedIndex] = useState(0);
+  const isDesktopOrLaptop = useMediaQuery({
+    query: "(min-width: 768px)",
+  });
+  const {
+    slides,
+    spacing,
+    children,
+    slidesWidth,
+    dir: dirProp,
+    LoadingSkeleton,
+    autoplay = false,
+    defaultSelectedIndex,
+    options = { align: "start" },
+  } = props;
+
+  const extraOptions = useMemo(
+    () => (autoplay ? [Autoplay({ playOnInit: true, delay: 3000 })] : []),
+    [autoplay],
+  );
+
+  const localeDir = useDir();
+  const dir = dirProp ?? localeDir;
+
+  const [emblaRef, emblaMainApi] = useEmblaCarousel(
+    { ...options, direction: dir },
+    [...extraOptions],
+  );
+  const [emblaThumbsRef, emblaThumbsApi] = useEmblaCarousel({
+    containScroll: "keepSnaps",
+    dragFree: false,
+    align: "center",
+    direction: dir,
+  });
+
+  const slideWidth = isDesktopOrLaptop
+    ? slidesWidth?.md || "24%"
+    : slidesWidth?.def || "35%";
+
+  const sizeStyle: any = {
+    "--slide-spacing": spacing || "1rem",
+    "--slide-size": slideWidth,
+  };
+
+  useEffect(() => {
+    if (!emblaMainApi || !emblaThumbsApi || !defaultSelectedIndex) return;
+    emblaMainApi.scrollTo(defaultSelectedIndex);
+  }, [defaultSelectedIndex, emblaThumbsApi, emblaMainApi]);
+
+  const onThumbClick = useCallback(
+    (index: number) => {
+      if (!emblaMainApi || !emblaThumbsApi) return;
+      emblaMainApi.scrollTo(index);
+    },
+    [emblaMainApi, emblaThumbsApi],
+  );
+
+  const onSelect = useCallback(() => {
+    if (!emblaMainApi || !emblaThumbsApi) return;
+    setSelectedIndex(emblaMainApi.selectedScrollSnap());
+    emblaThumbsApi.scrollTo(emblaMainApi.selectedScrollSnap());
+  }, [emblaMainApi, emblaThumbsApi, setSelectedIndex]);
+
+  useEffect(() => {
+    if (!emblaMainApi) return;
+    emblaMainApi.on("select", onSelect).on("reInit", onSelect);
+    const frame = requestAnimationFrame(onSelect);
+    return () => {
+      cancelAnimationFrame(frame);
+      emblaMainApi.off("select", onSelect).off("reInit", onSelect);
+    };
+  }, [emblaMainApi, onSelect]);
+
+  const nav = usePrevNextButtons(emblaMainApi);
+  const { showLeft, showRight, onLeft, onRight } = arrowSides(nav, dir);
+  return (
+    <section
+      style={{
+        ...sizeStyle,
+      }}
+      className="embla relative"
+      dir={dir}
+    >
+      <div className="embla__viewport relative flex" ref={emblaRef}>
+        <div className="embla__container">
+          {emblaMainApi ? (
+            children
+          ) : !!LoadingSkeleton ? (
+            LoadingSkeleton
+          ) : (
+            <></>
+          )}
+        </div>
+        <div className="  embla__buttons">
+          {showLeft ? <PrevButton onClick={onLeft} /> : <></>}
+          {showRight ? <NextButton onClick={onRight} /> : <></>}
+        </div>
+      </div>
+
+      <div className="embla-thumbs">
+        <div className="embla-thumbs__viewport" ref={emblaThumbsRef}>
+          <div className="embla-thumbs__container">
+            {slides.map((i, index) => (
+              <div key={i?.id || index} className="w-full embla-thumbs__slide ">
+                <div
+                  onClick={() => onThumbClick(index)}
+                  className={`       w-full h-full  overflow-clip rounded-10 border cursor-pointer transition-all ease-in-out duration-300   ${
+                    index === selectedIndex
+                      ? "border-action   "
+                      : "border-line-strong opacity-60 "
+                  } `}
+                >
+                  <ContentImage
+                    src={NEW_IMAGE_URL(i, "thumbnail")}
+                    width={256}
+                    height={256}
+                    sizes="(min-width: 768px) 12vw, 25vw"
+                    alt={i?.alt || ""}
+                    className={`  ${
+                      i?.type != 1 ? " blur-sm" : ""
+                    }  aspect-square  object-cover p-1 w-full rounded-10 h-full  `}
+                  />{" "}
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+      </div>
+    </section>
+  );
+};
+
+export default SwiperWithThumbnails;

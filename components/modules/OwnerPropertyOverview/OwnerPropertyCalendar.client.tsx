@@ -1,0 +1,85 @@
+"use client";
+
+import { PropertyCalendarLegend } from "@modules/PropertyAvailability";
+import { useOwnerCalendarBoard } from "@features/owner-property/hooks/useOwnerCalendarBoard";
+import { AvailabilityCalendar } from "@elements/JalaliCalendar";
+import { useTranslations } from "next-intl";
+import { useEffect } from "react";
+
+import type { OwnerPropertyViewProps } from "@/types/components/modules/owner-property";
+
+import OwnerDayCommissionAction from "./parts/OwnerDayCommissionAction.client";
+import OwnerDayStatusAction from "./parts/OwnerDayStatusAction.client";
+import OwnerDayPriceAction from "./parts/OwnerDayPriceAction.client";
+import OwnerDayNoteAction from "./parts/OwnerDayNoteAction.client";
+import Button from "@elements/Button";
+
+const CALENDAR_ANCHOR = "owner-calendar";
+
+const OwnerPropertyCalendar = ({ property }: OwnerPropertyViewProps) => {
+  const t = useTranslations("owner");
+
+  const board = useOwnerCalendarBoard(property?.id ?? "");
+
+  useEffect(() => {
+    if (window.location.hash !== `#${CALENDAR_ANCHOR}`) return;
+    const frame = window.requestAnimationFrame(() => {
+      document
+        .getElementById(CALENDAR_ANCHOR)
+        ?.scrollIntoView({ behavior: "smooth", block: "start" });
+    });
+    return () => window.cancelAnimationFrame(frame);
+  }, []);
+
+  const selection = {
+    property,
+    selectedDates: board.selectedDates,
+    selectedDaysData: board.selectedDaysData,
+  };
+  const singleDay = {
+    day: board.lastSelectedDayData,
+    isDisabled: board.selectedDates.length > 1,
+    property,
+  };
+
+  return (
+    <div
+      id={CALENDAR_ANCHOR}
+      className="order-3 scroll-mt-24 md:order-4 flex flex-col gap-4"
+    >
+      <AvailabilityCalendar
+        multiSelect
+        active_days={[]}
+        callenderData={board.days}
+        onToggleDay={board.toggleDay}
+        selectedDays={board.selectedDates}
+        setChosenDateState={board.setSpan}
+        selectedDate={board.lastSelectedDate}
+      />
+
+      <PropertyCalendarLegend />
+
+      <div className="w-full flex items-center justify-between gap-2">
+        <p className="text-xs">{t("selectDaysToGoOn")}</p>
+        {board.selectedDates.length > 0 ? (
+          <Button
+            variant="outline"
+            width="!py-1 !px-3"
+            roundedClass="rounded-full"
+            onClick={board.clearSelection}
+            title={`${t("clearSelection")} (${board.selectedDates.length})`}
+          />
+        ) : null}
+      </div>
+
+      <div className="w-full grid gap-2 grid-cols-2">
+        <OwnerDayStatusAction {...selection} />
+        <OwnerDayPriceAction {...selection} />
+        <OwnerDayCommissionAction {...singleDay} />
+        <OwnerDayNoteAction {...singleDay} />
+      </div>
+    </div>
+  );
+};
+
+export default OwnerPropertyCalendar;

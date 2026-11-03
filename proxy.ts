@@ -1,31 +1,102 @@
-import { md5 } from "js-md5";
-import { cookies } from "next/headers";
+import { guardedDirectoriesExceptions } from "./utils/constantss";
 import { NextRequest, NextResponse } from "next/server";
-import serverCall from "./helpers/serverCall";
-import { guardedDirectories, guardedDirectoriesExceptions } from "./utils/constantss";
+import { setAccessTokenCookie } from "./utils/sessionCookie";
+import { guardedDirectories } from "./utils/constantss";
 import { apiRoutes, baseUrl } from "./utils/urls";
+import { safeInternalPath } from "./helpers/safeRedirect";
+import { isNoIndexRequest } from "./helpers/indexingPolicy";
+import { enforceBasicAuthGate } from "./helpers/basicAuthGate";
+import { REVALIDATE } from "./helpers/revalidate";
+import { cookies } from "next/headers";
+import { md5 } from "js-md5";
+
+import serverCall from "./helpers/serverCall";
+
+const LOGIN_COOKIE_MAX_AGE = 60 * 24 * 60 * 60;
+const MAIN_SITE_URL =
+  process.env.NEXT_PUBLIC_MAIN_SITE_URL || "https://jayab.app";
+
+// Before this gate was added, the matcher below excluded these paths so the
+// SSO/redirect-check/indexing logic never ran on them. The gate itself now
+// runs on every path (see `config.matcher`), but everything past the gate
+// must keep behaving exactly as before for these — they're framework
+// internals, static assets and API routes that handle their own concerns.
+const ROUTING_LOGIC_EXCLUDED_PATH =
+  /^\/(api|_next\/static|static|_next\/image|assets\/|favicon\.ico|sitemap\.xml|robots\.txt|\.well-known|sw\.js|workbox)/;
+
+const applyIndexingPolicy = (
+  response: NextResponse,
+  indexingDisabled: boolean,
+) => {
+  if (indexingDisabled)
+    response.headers.set("X-Robots-Tag", "noindex, nofollow");
+  return response;
+};
+
+function consumeSsoToken(request: NextRequest) {
+  const ssoToken = request.nextUrl.searchParams.get("sso_token");
+  if (!ssoToken) return null;
+  const target = request.nextUrl.clone();
+  target.searchParams.delete("sso_token");
+  const nextParam = target.searchParams.get("__next");
+  if (nextParam) {
+    target.searchParams.delete("__next");
+    const destination = safeInternalPath(nextParam.replaceAll("|", "/"));
+    if (destination) {
+      const resolved = new URL(destination, request.url);
+      target.pathname = resolved.pathname;
+      resolved.searchParams.forEach((value, key) =>
+        target.searchParams.set(key, value),
+      );
+      target.hash = resolved.hash;
+    }
+  }
+
+  const response = NextResponse.redirect(target, 307);
+  setAccessTokenCookie(response, ssoToken);
+  response.cookies.set("isLogin", "true", {
+    path: "/",
+    maxAge: LOGIN_COOKIE_MAX_AGE,
+    sameSite: "lax",
+  });
+  response.cookies.set("is_admin_sso", "true", {
+    path: "/",
+    maxAge: LOGIN_COOKIE_MAX_AGE,
+    sameSite: "lax",
+  });
+  response.headers.set("Cache-Control", "no-store");
+  response.headers.set("Referrer-Policy", "no-referrer");
+  return response;
+}
+
 export async function proxy(request: NextRequest) {
+  const gateResponse = await enforceBasicAuthGate(request);
+  if (gateResponse) return gateResponse;
+
+  if (ROUTING_LOGIC_EXCLUDED_PATH.test(request.nextUrl.pathname)) {
+    return NextResponse.next();
+  }
+
+  const indexingDisabled = isNoIndexRequest(request);
   const headers = new Headers(request.headers);
   const PATH_NAME = request.nextUrl.pathname;
   const queryParams = request.nextUrl.searchParams;
   const queriesArray = Array.from(queryParams?.entries());
   const cookiesState = await cookies();
   const isLogin = cookiesState.get("isLogin")?.value;
-
-  /* -------------------------------------------------------------------------- */
-  /*                       REDIRECT GUARDED ROUTES TO AUTH                      */
-  /* -------------------------------------------------------------------------- */
-
+  const ssoRedirect = consumeSsoToken(request);
+  if (ssoRedirect) return applyIndexingPolicy(ssoRedirect, indexingDisabled);
   if (
     !isLogin &&
     !!guardedDirectories?.find((e) => PATH_NAME.includes(e)) &&
     !guardedDirectoriesExceptions.includes(PATH_NAME)
   ) {
-    const response = NextResponse.redirect(new URL(`/auth?redirect_url=${PATH_NAME}`, request.url), 307);
-    return response;
+    const response = NextResponse.redirect(
+      new URL(`/auth?redirect_url=${PATH_NAME}`, request.url),
+      307,
+    );
+    return applyIndexingPolicy(response, indexingDisabled);
   }
-
-  ////////////////////////////////
 
   const HREF = `${process.env.NEXT_PUBLIC_WEB_SITE}${PATH_NAME}${
     queriesArray?.length > 0
@@ -37,7 +108,10 @@ export async function proxy(request: NextRequest) {
       : ""
   }`;
   headers.set("x-pathname", HREF);
-  headers.set("x-canonical", `${process.env.NEXT_PUBLIC_WEB_SITE}${PATH_NAME}`);
+  headers.set(
+    "x-canonical",
+    `${indexingDisabled ? MAIN_SITE_URL : process.env.NEXT_PUBLIC_WEB_SITE}${PATH_NAME}`,
+  );
 
   if (
     !headers.get("referer")?.includes("localhost") &&
@@ -45,25 +119,34 @@ export async function proxy(request: NextRequest) {
   ) {
     if (PATH_NAME != "/") {
       const HASHED = md5(decodeURI(HREF));
-
-      const { data } = await serverCall(baseUrl + apiRoutes.REDIRECT_CHECK(HASHED) + `?href=${HREF}`);
+      const { data } = await serverCall(
+        baseUrl + apiRoutes.REDIRECT_CHECK(HASHED) + `?href=${HREF}`,
+        undefined,
+        {
+          revalidate: REVALIDATE.REDIRECTS,
+        },
+      );
       if (!!data) {
-        const response = NextResponse.redirect(new URL(data?.destination, request.url), data?.permanent ? 308 : 307);
+        const response = NextResponse.redirect(
+          new URL(data?.destination, request.url),
+          data?.permanent ? 308 : 307,
+        );
 
         response.headers.set("x-canonical", encodeURI(data?.destination));
-        return response;
+        return applyIndexingPolicy(response, indexingDisabled);
       }
     }
-    // headers.set("is-refresh", "1");
-  } else {
-    // headers.set("is-refresh", "0");
   }
-
-  return NextResponse.next({ headers });
+  return applyIndexingPolicy(
+    NextResponse.next({ request: { headers } }),
+    indexingDisabled,
+  );
 }
 
 export const config = {
-  matcher: [
-    "/((?!api|_next/static|static|_next/image|assets/|favicon.ico|sitemap.xml|robots.txt|.well-known|sw.js|workbox*).*)",
-  ],
+  // Was scoped to page routes only, excluding api/static/assets. The Basic
+  // Auth gate must see every path — including those — so nothing on a gated
+  // host is reachable before authentication; see `ROUTING_LOGIC_EXCLUDED_PATH`
+  // above for how the previously-excluded paths keep their old behavior.
+  matcher: ["/(.*)"],
 };

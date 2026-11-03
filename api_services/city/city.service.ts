@@ -1,7 +1,7 @@
-import { apiRoutes } from "@/utils/urls";
-import { apiCall } from "../common/apicall.helper";
 import { ProvienceTypesDto } from "../property/property.interface";
 import { NewCitiesListDto } from "./city.interface";
+import { apiRoutes } from "@/utils/urls";
+import { apiCall } from "../common/apicall.helper";
 
 export class CityService {
   static CITIES_CACHEKEY = "CITIES";
@@ -9,7 +9,10 @@ export class CityService {
   static CITIES_CHILDEREN_CACHEKEY = "CITIES_CHILDEREN";
   static async GetProvince() {
     try {
-      const result = await apiCall<unknown, ProvienceTypesDto[]>("GET", apiRoutes.CITIES);
+      const result = await apiCall<unknown, ProvienceTypesDto[]>(
+        "GET",
+        apiRoutes.CITIES,
+      );
       return result;
     } catch (e) {
       throw e;
@@ -18,19 +21,25 @@ export class CityService {
 
   static async GetCities(dto: { parentId: string | number }) {
     try {
-      const result = await apiCall<unknown, ProvienceTypesDto[]>("GET", apiRoutes.CITIES_CHILDEREN(dto.parentId));
+      const result = await apiCall<unknown, ProvienceTypesDto[]>(
+        "GET",
+        apiRoutes.CITIES_CHILDEREN(dto.parentId),
+      );
       return result;
     } catch (e) {
       throw e;
     }
   }
 
-  static async GetAllCities(dto?: {
-    cities?: string | null | number;
-    depth?: string | null | number;
-    is_parent?: string | null | number;
-    q?: string | null | number;
-  }) {
+  static async GetAllCities(
+    dto?: {
+      cities?: string | null | number;
+      depth?: string | null | number;
+      is_parent?: string | null | number;
+      q?: string | null | number;
+    },
+    signal?: AbortSignal,
+  ) {
     try {
       const result = await apiCall<
         {
@@ -40,7 +49,7 @@ export class CityService {
           q?: string | null | number;
         },
         NewCitiesListDto[]
-      >("GET", apiRoutes.CITIES, dto);
+      >("GET", apiRoutes.CITIES, dto, { signal });
       return result;
     } catch (e) {
       throw e;

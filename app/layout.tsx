@@ -1,32 +1,78 @@
-// app/layout.tsx
-import "swiper/css";
-import "swiper/css/pagination";
+import { AppOverlays, AppShell, ImpersonationBanner } from "@modules/AppShell";
+import { dirOf, localeMeta, resolveLocale } from "@/i18n/config";
+import { mobileNavHiddenBlackList } from "@/utils/constantss";
+import { getLocale, getMessages } from "next-intl/server";
+import { NextIntlClientProvider } from "next-intl";
+import { mobileFooterBlackList } from "@/utils/constantss";
+import { footerHiddenBlackList } from "@/utils/constantss";
+import { ScrollToTopOnNavigate } from "@elements/ScrollToTop";
+import { getServerContentList } from "@features/home/server/home.server";
+import { themeBootstrapScript } from "@lib/theme/bootstrap";
+import { isNoIndexDeployment } from "@/helpers/indexingPolicy";
+import { Metadata, Viewport } from "next";
+import { apiRoutes, baseUrl } from "@/utils/urls";
+import { headerBlackList } from "@/utils/constantss";
+import { x_Iransans } from "./fonts/x_iran/x_Iransans";
+import { MainLayout } from "@layouts/MainLayout";
+import { SiteFooter } from "@modules/SiteFooter";
+import { SiteHeader } from "@modules/SiteHeader";
+import { REVALIDATE } from "@/helpers/revalidate";
+import { MobileNav } from "@modules/MobileNav";
+import { ReactNode } from "react";
+
+import type { InnitSettingsDto } from "@/api_services/home/home.interface";
+import type { ContentDto } from "@/api_services/home/home.interface";
+
+import NavigationProgress from "@elements/NavigationProgress";
+import LayoutProvider from "./layout-provider.client";
+import SplashScreen from "@layouts/SplashScreen";
+import serverCall from "@/helpers/serverCall";
+import Script from "next/script";
+
 import "../styles/globals.css";
 
-import type { Metadata, Viewport } from "next";
-import Script from "next/script";
-import type { ReactNode } from "react";
+const ROOT_NAMESPACES = [
+  "auth",
+  "calendar",
+  "common",
+  "errors",
+  "header",
+  "language",
+  "listing",
+  "routes",
+  "search",
+  "theme",
+] as const;
 
-import { InnitSettingsDto } from "@/api_services/home/home.interface";
-import serverCall from "@/helpers/serverCall";
-import { apiRoutes, baseUrl } from "@/utils/urls";
-import { x_Iransans } from "./fonts/x_iran/x_Iransans";
-import LayoutProvider from "./layout-provider";
+const CHROME_HIDDEN_ROUTES = [
+  ...mobileFooterBlackList,
+  ...footerHiddenBlackList,
+];
+const CONTACT_PER_PAGE = 100;
+
+const indexingDisabled = isNoIndexDeployment();
 
 export const metadata: Metadata = {
-  metadataBase: new URL(process.env.NEXT_PUBLIC_SITE_URL || "https://jayaab.com"),
-
+  metadataBase: new URL(
+    process.env.NEXT_PUBLIC_SITE_URL || "https://jayaab.com",
+  ),
   title: {
     default: "جایاب",
     template: "%s | جایاب",
   },
-
   description: "جایاب",
-
   keywords: ["جایاب"],
-
   applicationName: "جایاب",
-
+  robots: indexingDisabled
+    ? {
+        index: false,
+        follow: false,
+        googleBot: {
+          index: false,
+          follow: false,
+        },
+      }
+    : undefined,
   openGraph: {
     title: "جایاب",
     description: "جایاب",
@@ -48,9 +94,7 @@ export const metadata: Metadata = {
     ],
     apple: "/apple-touch-icon.png",
   },
-
   manifest: "/manifest.json",
-
   appleWebApp: {
     capable: true,
     statusBarStyle: "black-translucent",
@@ -73,15 +117,68 @@ const RootLayout = async ({
   children: ReactNode;
   modal: ReactNode;
 }>) => {
-  const { data: appSetting }: { data: InnitSettingsDto } = await serverCall(baseUrl + apiRoutes.APP_SETTINGS);
+  const [locale, messages, appSettingsResponse, contactsResponse] =
+    await Promise.all([
+      getLocale().then(resolveLocale),
+      getMessages(),
+      serverCall(baseUrl + apiRoutes.APP_SETTINGS, undefined, {
+        revalidate: REVALIDATE.APP_SETTINGS,
+      }),
+      getServerContentList("contactUs", 1, CONTACT_PER_PAGE),
+    ]);
+
+  const rootMessages = Object.fromEntries(
+    ROOT_NAMESPACES.map((name) => [name, messages[name]]),
+  );
+
+  const appSetting = appSettingsResponse?.data as InnitSettingsDto;
+  const contacts: ContentDto[] = contactsResponse?.data?.data ?? [];
+  const phone = contacts.find(
+    (entry) => entry?.fields?.key === "tel" || entry?.key === "tel",
+  );
 
   const gtmId = appSetting?.googleTagManagerId?.toString() || "";
 
   return (
-    <html lang="fa" dir="rtl">
+    <html
+      lang={localeMeta[locale].lang}
+      dir={dirOf(locale)}
+      className={x_Iransans.variable}
+      suppressHydrationWarning
+    >
+      {themeBootstrapScript ? (
+        <head>
+          <script dangerouslySetInnerHTML={{ __html: themeBootstrapScript }} />
+        </head>
+      ) : (
+        <></>
+      )}
       <body className={x_Iransans.className} suppressHydrationWarning>
-        <LayoutProvider modal={modal}>{children}</LayoutProvider>
-
+        <NavigationProgress />
+        <ScrollToTopOnNavigate />
+        <SplashScreen />
+        <NextIntlClientProvider locale={locale} messages={rootMessages}>
+          <LayoutProvider>
+            <ImpersonationBanner />
+            <AppShell>
+              <MainLayout
+                header={<SiteHeader phone={phone} />}
+                footer={<SiteFooter />}
+                overlays={<AppOverlays />}
+                mobileFooter={<MobileNav />}
+                headerHiddenOn={headerBlackList}
+                footerHiddenOn={CHROME_HIDDEN_ROUTES}
+                mobileFooterHiddenOn={[
+                  ...CHROME_HIDDEN_ROUTES,
+                  ...mobileNavHiddenBlackList,
+                ]}
+              >
+                {children}
+                {modal}
+              </MainLayout>
+            </AppShell>
+          </LayoutProvider>
+        </NextIntlClientProvider>
         <footer>
           <Script
             id="gtm"
@@ -106,7 +203,7 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
 
           <Script
             id="yekta"
-            strategy="afterInteractive"
+            strategy="lazyOnload"
             dangerouslySetInnerHTML={{
               __html: `!function (t, e, n) {
 t.yektanetAnalyticsObject = n, t[n] = t[n] || function () {

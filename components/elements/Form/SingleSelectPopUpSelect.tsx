@@ -1,0 +1,126 @@
+import { ModalBottomSheet, ModalHeaderPart } from "@elements/Modal";
+import { Icon } from "@elements/Icon";
+import { useTranslations } from "next-intl";
+import { useState } from "react";
+import { p2e } from "@/helpers/NumberConverter";
+
+import type { SingleSelectProps } from "@/types/components/elements/form";
+
+import Selecti from "./SingleSelectSelecti";
+import isEmpty from "lodash/isEmpty";
+
+const SinglePopUpSelect = ({
+  item,
+  value,
+  onSelect,
+  velueString,
+  closeOnSelect,
+}: SingleSelectProps) => {
+  const t = useTranslations("common");
+
+  const [show, setShow] = useState(false);
+
+  const [search, setSearch] = useState("");
+  return (
+    <div
+      className={`relative  inline-block w-full ${item?.containerClass} ${item?.disable ? "opacity-60" : ""} `}
+    >
+      <div className="flex flex-col">
+        {item?.title ? (
+          <p
+            className={`text-sm opacity-90 ps-2 pb-3 ${item?.isMandatory && "after:content-['*'] after:ms-1 "}  `}
+          >
+            {item?.title}
+          </p>
+        ) : (
+          <></>
+        )}
+
+        <button
+          aria-expanded={show}
+          aria-haspopup="dialog"
+          className={` ${item?.disableHover ? "" : " "} w-full  ${
+            item?.inputClass
+          }   bg-surface/80   border  flex items-center placeholder:!opacity-50  placeholder:!text-sm placeholder:!text-ink  text-start px-2 py-3 rounded-10 `}
+          onClick={() => {
+            if (!item?.disable) setShow(true);
+          }}
+          disabled={item?.disable}
+          type="button"
+        >
+          <div
+            className={`${value ? "opacity-100" : "opacity-50"} w-full truncate`}
+          >
+            {value
+              ? `${
+                  item?.list?.find((e) => {
+                    if (velueString) return e?.[velueString] == value;
+                    else return e?.id == value;
+                  })?.title
+                }`
+              : item?.placeholder || item?.title}
+          </div>
+          <Icon
+            name="chevron-down"
+            size={16}
+            className={`transition-all ${show ? "rotate-180" : ""}`}
+          />
+        </button>
+      </div>
+      <ModalBottomSheet
+        options={{
+          containerClass: `  ${
+            item?.searcheable ? " min-h-[90dvh]" : ""
+          } !h-[90dvh] max-h-[90dvh] w-full overflow-y-scroll rounded-t-20 bg-surface pb-[1.5rem] md:!h-auto md:w-[32rem] md:max-w-[calc(100vw-2rem)] md:rounded-20 md:pb-10 `,
+        }}
+        onHide={() => setShow(false)}
+        show={show}
+      >
+        <ModalHeaderPart
+          showX
+          hideArrow
+          titleClass="text-link"
+          onHide={() => setShow(false)}
+          title={item?.title || item?.placeholder || ""}
+        />
+        <div className="flex flex-col   px-6 py-4">
+          {item?.searcheable ? (
+            <div className="form-control !py-1.5 mb-2 !text-sm top-14  transition-all sticky z-2  rounded-10   !bg-surface-muted ">
+              <input
+                value={search}
+                placeholder={`${t("searchOf")} ${item?.title}`}
+                onChange={(e) => setSearch(e.target.value)}
+                className={` !text-base !bg-surface-muted   w-5/6 focus:border-action py-1 `}
+              />
+            </div>
+          ) : (
+            <></>
+          )}
+          {isEmpty(item?.list) ? (
+            <p className="w-full text-center mt-4"> {t("nodataList")}</p>
+          ) : (
+            item?.list
+              ?.filter((item) =>
+                item?.title
+                  ?.toLocaleLowerCase()
+                  .includes(p2e(search).toLowerCase()),
+              )
+              ?.map((item) => (
+                <Selecti
+                  item={item}
+                  value={value}
+                  key={item?.id}
+                  setShow={setShow}
+                  onSelect={onSelect}
+                  velueString={velueString}
+                  closeOnSelect={closeOnSelect}
+                />
+              ))
+          )}
+        </div>
+      </ModalBottomSheet>
+    </div>
+  );
+};
+
+export default SinglePopUpSelect;

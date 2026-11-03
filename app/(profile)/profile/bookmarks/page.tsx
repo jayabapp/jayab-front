@@ -1,36 +1,14 @@
-"use client";
-import { PropertyService } from "@/api_services/property/property.service";
-import PropertyCard from "@/components/properties/PropertyCard";
-import EmptyList from "@/components/shared/Lotties/EmptyList";
-import LottieLoading from "@/components/shared/Lotties/LottieLoading";
-import { useQuery } from "@tanstack/react-query";
-import isEmpty from "lodash/isEmpty";
+import { BookmarkList } from "@modules/Bookmarks";
 
-const BookMarks = () => {
-  const { data: properties, isLoading } = useQuery({
-    queryKey: [PropertyService.BOOKMARKS_CACHEKEY],
+import ProfilePageTemplate from "@templates/ProfilePage";
+import IntlNamespaces from "@/i18n/IntlNamespaces";
 
-    queryFn: () => {
-      return PropertyService.getBookMarks();
-    },
-  });
+const BookmarksPage = () => (
+  <IntlNamespaces namespaces={["content", "profile"]}>
+    <ProfilePageTemplate>
+      <BookmarkList />
+    </ProfilePageTemplate>
+  </IntlNamespaces>
+);
 
-  return (
-    <div className=" profile-container    ">
-      {isLoading ? (
-        <LottieLoading />
-      ) : isEmpty(properties) ? (
-        <EmptyList />
-      ) : (
-        <div className="w-full p-2  !grid  gap-4 grid-cols-1 md:grid-cols-2 ">
-          {" "}
-          {properties?.map((e) => (
-            <PropertyCard data={e} key={`propertyCard${e?.id}`} />
-          ))}{" "}
-        </div>
-      )}
-    </div>
-  );
-};
-
-export default BookMarks;
+export default BookmarksPage;

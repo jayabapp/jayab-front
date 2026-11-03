@@ -1,8 +1,11 @@
+import createNextIntlPlugin from "next-intl/plugin";
 import type { NextConfig } from "next";
+
+const withNextIntl = createNextIntlPlugin("./i18n/request.ts");
 
 const nextConfig: NextConfig = {
   images: {
-    qualities: [75, 100],
+    qualities: [75, 85, 90, 100],
     remotePatterns: [
       {
         protocol: "https",
@@ -21,10 +24,41 @@ const nextConfig: NextConfig = {
         hostname: "jayab-s3.hot.ir-central1.arvanstorage.ir",
       },
     ],
-    formats: ["image/avif", "image/webp"],
-    deviceSizes: [640, 750, 828, 1080, 1200, 1920, 2048, 3840],
+    // WebP only. Every source in this app is already stored as WebP (the backend
+    // re-encodes on upload), so emitting AVIF as well doubled the number of
+    // on-disk cache entries per (url, width, quality) triple for a payload that
+    // is only marginally smaller. One format, one entry.
+    formats: ["image/webp"],
+
+    // Sources are capped at upload time by `resizeWidth`: 1600 for property,
+    // 1024 for content / chat / profiles, 2560 for documents, 256 for categories and
+    // 2048-2880 for banners. `optimizeImage` uses `withoutEnlargement`, so Next
+    // never upscales. Keeping a compact width ladder prevents duplicate cache
+    // entries for sources that are smaller than the requested output.
+    //
+    // 1024 remains the content-image ceiling and an efficient property variant;
+    // the 1200 and 1920 steps cover high-DPR property displays without adding a
+    // dense set of cache keys.
+    //
+    // 1200 covers high-DPR mobile property views without falling through to
+    // 1920; the latter remains necessary for large property and banner views.
+    // 2560 is the hero's step: it is a full-bleed 100vw image, so a 1280-1440px
+    // viewport at DPR 2 asks for 2560-2880px and anything smaller is upscaled.
+    // Production (which kept Next's default ladder) serves it from 3840; that
+    // width is omitted here because no source is wider than 2880.
+    deviceSizes: [640, 750, 828, 1024, 1200, 1920, 2560],
     imageSizes: [16, 32, 48, 64, 96, 128, 256, 384],
-    minimumCacheTTL: 60 * 60 * 24,
+    // Uploaded object keys are immutable (UUID/timestamp based), so retaining
+    // optimized variants avoids repeatedly fetching the same source from S3.
+    // The bounded disk cache below still controls total storage usage.
+    minimumCacheTTL: 60 * 60 * 24 * 30,
+
+    // Without this Next falls back to `statfs(cacheDir).bavail * bsize / 2`, i.e.
+    // HALF THE FREE DISK, so the LRU never evicts in practice and
+    // `.next/cache/images` grows unbounded (360MB in 8h in production). The cost
+    // is not only disk: `initCacheEntries` reads every entry's full buffer at
+    // boot to size the LRU, so a large cache also inflates RSS on every restart.
+    maximumDiskCacheSize: 200 * 1024 * 1024,
     contentSecurityPolicy: "default-src 'self'; script-src 'none'; sandbox;",
   },
   compiler: {
@@ -34,10 +68,97 @@ const nextConfig: NextConfig = {
   productionBrowserSourceMaps: false,
 
   experimental: {
-    optimizeCss: true,
+    // Multer accepts a 30 MiB image; allow multipart overhead without Proxy
+    // truncating the upload at its default 10 MiB boundary.
+    proxyClientMaxBodySize: "32mb",
+    // Client Router Cache lifetimes, in seconds. Next 15+ ships `dynamic: 0`,
+    // which means a dynamic page is thrown away the moment you leave it: going
+    // Back re-runs the whole server render and the remote API round trips with
+    // it, so returning to a list felt exactly as slow as opening it. 30s covers
+    // the read-an-article-then-go-back loop without letting a listing go stale
+    // enough to show a removed property. `static` must be >= 30 per Next.
+    staleTimes: {
+      dynamic: 30,
+      static: 180,
+    },
+
+    // `viewTransition` is deliberately NOT enabled. It needs React's
+    // <ViewTransition>, which only exists on the experimental React channel --
+    // the installed react@19.2.7 does not export it, and Next only swaps in its
+    // vendored experimental build for `taint`, `transitionIndicator` or
+    // `gestureTransition`, not for this flag. Turning it on would therefore do
+    // nothing except invite someone to install react@experimental in a
+    // production app. Route enter animation is done in CSS instead; see
+    // `.route-enter` in styles/globals.css.
+
+    // `optimizeCss` (critters) was measured on this app and inlined no critical
+    // CSS at all: same two render-blocking <link rel="stylesheet"> tags, same
+    // CSS bytes, same HTML size with it on and off. critters is also deprecated
+    // and unmaintained, so it was removed rather than kept as a no-op on the
+    // build's critical path. `critters` can come out of devDependencies too.
+    //
+    // Rewrites barrel imports (`import { motion } from "framer-motion"`) into
+    // deep imports so unused exports are dropped. Next already does this for a
+    // built-in list that covers @headlessui/react and recharts; these are the
+    // barrel packages this app uses that are not on it.
+    optimizePackageImports: [
+      "lodash",
+      "framer-motion",
+      "motion",
+      "react-device-detect",
+      "react-tooltip",
+      "sonner",
+    ],
   },
 
   compress: true,
+
+  async headers() {
+    return [
+      {
+        // Everything under public/assets (icons, images, lotties). These
+        // filenames are NOT content-hashed — a designer can overwrite
+        // `logo.svg` in place — so `immutable` would strand clients on the old
+        // file for a year. 30 days of hard caching plus a week of
+        // stale-while-revalidate gets the PageSpeed win while still letting a
+        // replaced asset propagate. Switch to `immutable, max-age=31536000`
+        // only once these filenames carry a content hash.
+        source: "/assets/:path*",
+        headers: [
+          {
+            key: "Cache-Control",
+            value: "public, max-age=2592000, stale-while-revalidate=604800",
+          },
+        ],
+      },
+      {
+        // The brand marks and wordmarks are replaced in place on a rebrand, so
+        // they revalidate daily instead of sitting 30 days in every browser.
+        source: "/assets/icons/logo/:path*",
+        headers: [
+          {
+            key: "Cache-Control",
+            value: "public, max-age=86400, stale-while-revalidate=604800",
+          },
+        ],
+      },
+      {
+        // Favicons and PWA icons at the root of public/. Same reasoning.
+        source: "/:file(favicon.ico|favicon.svg|favicon-96x96.png|apple-touch-icon.png|web-app-manifest-192x192.png|web-app-manifest-512x512.png)",
+        headers: [
+          {
+            key: "Cache-Control",
+            value: "public, max-age=2592000, stale-while-revalidate=604800",
+          },
+        ],
+      },
+      {
+        // A service worker must stay revalidated or clients pin an old build.
+        source: "/firebase-messaging-sw.js",
+        headers: [{ key: "Cache-Control", value: "public, max-age=0, must-revalidate" }],
+      },
+    ];
+  },
 
   async rewrites() {
     return [
@@ -57,4 +178,4 @@ const nextConfig: NextConfig = {
   },
 };
 
-export default nextConfig;
+export default withNextIntl(nextConfig);

@@ -1,0 +1,15 @@
+import { NEW_IMAGE_URL } from "@/utils/urls";
+
+import type { ImageDto } from "@/api_services/auth/auth.interface";
+
+const PROPERTY_IMAGE_FALLBACK = "/assets/icons/shared/image_placeholder.svg";
+const PROPERTY_TYPE_IMAGE_FALLBACK =
+  "/assets/icons/logo/jayab_logo_shadow_corrected.webp";
+
+export const getPropertyImageUrl = (
+  image?: ImageDto | null,
+  size?: "medium" | "name" | "thumbnail",
+) => (image ? NEW_IMAGE_URL(image, size) : PROPERTY_IMAGE_FALLBACK);
+
+export const getPropertyTypeImageUrl = (image?: ImageDto | null) =>
+  image ? NEW_IMAGE_URL(image) : PROPERTY_TYPE_IMAGE_FALLBACK;

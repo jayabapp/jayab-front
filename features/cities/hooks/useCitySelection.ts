@@ -1,0 +1,237 @@
+"use client";
+
+import {
+  buildCitySelectionQuery,
+  buildCitySelectionTitle,
+  matchesCitySearch,
+  resolveQueryCities,
+  resolveQueryProvinceCities,
+  resolveQueryProvinces,
+} from "@features/cities/lib/city-selection";
+import { cancelPropertyDiscoveryQueries } from "@features/properties/api/property-discovery.cache";
+import { useCurrentLocationQuery } from "@features/cities/hooks/useCurrentLocationQuery";
+import { usePathname, useRouter } from "next/navigation";
+import { buildLocationLabel } from "@features/cities/lib/location-label";
+import { pickLocationQuery } from "@features/cities/lib/location-label";
+import { useMemo, useState } from "react";
+import { useLocationWords } from "@features/cities/hooks/useLocationWords";
+import { useQueryClient } from "@tanstack/react-query";
+import { useCitiesStore } from "@/store";
+import { HomeService } from "@/api_services/home/home.service";
+import { useCityTree } from "@features/cities/hooks/useCityTree";
+
+import type { CitySelectionState } from "@/types/features/cities";
+import type { CitySelectionInput } from "@/types/features/cities";
+import type { NewCitiesListDto } from "@/api_services/city/city.interface";
+import type { ChildCities } from "@/api_services/city/city.interface";
+
+import queryBuilder from "@/helpers/queryBuilder";
+import useQueryGet from "@/helpers/queryGet";
+import isEmpty from "lodash/isEmpty";
+
+export const useCitySelection = ({
+  enabled,
+  navigateUrl,
+  customValues,
+  skipEmptyNavigation,
+  onSubmitCustomValues,
+}: CitySelectionInput): CitySelectionState => {
+  const router = useRouter();
+  const words = useLocationWords();
+  const queryClient = useQueryClient();
+  const pathname = usePathname();
+  const urlQueries = useQueryGet<Record<string, string>>();
+  const location = useCurrentLocationQuery();
+  const queries = customValues ?? { ...urlQueries, ...location };
+  const citiesQuery = queries?.cities;
+  const provincesQuery = queries?.provinces;
+
+  const { data: provinces, isLoading } = useCityTree(enabled);
+
+  const queryCities = useMemo(
+    () => resolveQueryCities(provinces, citiesQuery),
+    [provinces, citiesQuery],
+  );
+  const queryProvinces = useMemo(
+    () => resolveQueryProvinces(provinces, provincesQuery),
+    [provinces, provincesQuery],
+  );
+  const queryProvinceCities = useMemo(
+    () => resolveQueryProvinceCities(provinces, provincesQuery),
+    [provinces, provincesQuery],
+  );
+
+  const committedSelection = useMemo(
+    () => [...queryCities, ...queryProvinceCities],
+    [queryCities, queryProvinceCities],
+  );
+
+  const selectionKey = `${enabled}|${citiesQuery ?? ""}|${provincesQuery ?? ""}`;
+  const [draft, setDraft] = useState<{
+    key: string;
+    cities: ChildCities[] | null;
+    province: NewCitiesListDto | null;
+    search: string;
+  }>({ key: selectionKey, cities: null, province: null, search: "" });
+
+  if (draft.key !== selectionKey) {
+    setDraft({ key: selectionKey, cities: null, province: null, search: "" });
+  }
+
+  const selectedCities = draft.cities ?? committedSelection;
+  const selectedProvince = draft.province;
+  const search = draft.search;
+
+  const patchDraft = (
+    patch: Partial<Omit<typeof draft, "key">> & {
+      cities?: ChildCities[] | null;
+    },
+  ) => setDraft((current) => ({ ...current, key: selectionKey, ...patch }));
+
+  const setSelectedCities = (cities: ChildCities[]) => patchDraft({ cities });
+
+  const toggleCity = (city: ChildCities) =>
+    setSelectedCities(
+      selectedCities.some((entry) => entry?.id === city?.id)
+        ? selectedCities.filter((entry) => entry?.id !== city?.id)
+        : [...selectedCities, city],
+    );
+
+  const removeProvince = (province: NewCitiesListDto) =>
+    setSelectedCities(
+      selectedCities.filter(
+        (entry) => !province?.child?.some((city) => city?.id === entry?.id),
+      ),
+    );
+
+  const clearSelected = () => patchDraft({ cities: [], province: null });
+
+  const cities = selectedProvince?.child ?? [];
+  const visibleProvinces = useMemo(
+    () =>
+      (provinces ?? []).filter((province) =>
+        matchesCitySearch(province, search),
+      ),
+    [provinces, search],
+  );
+
+  const title = useMemo(
+    () => buildCitySelectionTitle(queryProvinces, queryCities, words),
+    [queryProvinces, queryCities, words],
+  );
+
+  const regionCity = useMemo(
+    () =>
+      committedSelection.length === 1 && !isEmpty(committedSelection[0]?.child)
+        ? committedSelection[0]
+        : null,
+    [committedSelection],
+  );
+
+  const submit = async () => {
+    if (onSubmitCustomValues) {
+      onSubmitCustomValues(
+        (current: any) =>
+          buildCitySelectionQuery(provinces, selectedCities, current).body,
+      );
+      return;
+    }
+
+    const { body, storedCities, storedProvinces } = buildCitySelectionQuery(
+      provinces,
+      selectedCities,
+      queries,
+    );
+
+    useCitiesStore.setState({
+      locationsData: { cities: storedCities, provinces: storedProvinces },
+    });
+
+    cancelPropertyDiscoveryQueries(queryClient);
+
+    const { categoryLanding } = useCitiesStore.getState();
+    if (categoryLanding) {
+      router.push(`${categoryLanding.path}?${queryBuilder(body)}`);
+      return;
+    }
+
+    const cityIds = Array.isArray(body.cities)
+      ? body.cities.map(Number).filter(Boolean)
+      : body.cities
+        ? [Number(body.cities)].filter(Boolean)
+        : [];
+    const provinceIds = Array.isArray(body.provinces)
+      ? body.provinces.map(Number).filter(Boolean)
+      : body.provinces
+        ? [Number(body.provinces)].filter(Boolean)
+        : [];
+
+    const isSinglePlace =
+      (cityIds.length === 1 && provinceIds.length === 0) ||
+      (provinceIds.length === 1 && cityIds.length === 0);
+
+    if (isSinglePlace && isEmpty(body.regions)) {
+      try {
+        const landing = await HomeService.ResolveLocationLanding({
+          city_id: cityIds[0],
+          province_id: provinceIds[0],
+        });
+        if (landing?.url) {
+          const landingQuery = { ...body };
+          delete landingQuery.cities;
+          delete landingQuery.provinces;
+          delete landingQuery.regions;
+          const path = `/${landing.url.replace(/^\/+/, "")}`;
+          useCitiesStore.setState({
+            locationsData: {
+              cities: storedCities,
+              provinces: storedProvinces,
+              label: buildLocationLabel(
+                { cities: storedCities, provinces: storedProvinces },
+                words,
+              ),
+              path,
+              query: pickLocationQuery({
+                cities: cityIds,
+                provinces: provinceIds,
+              }),
+            },
+          });
+          router.push(`${path}?${queryBuilder(landingQuery)}`);
+          return;
+        }
+      } catch {
+        // Resolving a CMS destination is an enhancement; filtered discovery is
+        // the safe fallback when the resolver is temporarily unavailable.
+      }
+    }
+
+    if (navigateUrl) {
+      const isEmptySelection = !body.provinces && isEmpty(body.cities);
+      if (skipEmptyNavigation && isEmptySelection) return;
+      router.push(`${navigateUrl}?${queryBuilder(body)}`);
+      return;
+    }
+    router.replace(`${pathname}?${queryBuilder(body)}`);
+  };
+
+  return {
+    title,
+    cities,
+    submit,
+    search,
+    isLoading,
+    provinces,
+    regionCity,
+    toggleCity,
+    clearSelected,
+    removeProvince,
+    selectedCities,
+    selectedProvince,
+    visibleProvinces,
+    setSelectedCities,
+    setSearch: (value: string) => patchDraft({ search: value }),
+    setSelectedProvince: (province: NewCitiesListDto | null) =>
+      patchDraft({ province }),
+  };
+};

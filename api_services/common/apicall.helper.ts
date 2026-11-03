@@ -1,53 +1,65 @@
-import Notify from "@/components/shared/Toast";
+import { AxiosRequestConfig, AxiosRequestHeaders } from "axios";
+import { readServerAccessToken } from "./server-token";
 import { baseUrl, baseUrlV } from "@/utils/urls";
-import axios, { AxiosRequestConfig, AxiosRequestHeaders } from "axios";
-import { deleteCookie } from "cookies-next";
+import { translateMessage } from "@lib/i18n/browser-translator";
+import { endSession } from "@/helpers/session";
+import { notify } from "@elements/Toast";
+
+import axios from "axios";
 
 type Methods = "POST" | "PUT" | "DELETE" | "PATCH" | "GET";
 
+export type ApiCallOptions = {
+  version?: string;
+  passedToken?: string;
+  localRoute?: boolean;
+  signal?: AbortSignal;
+  serverAuth?: boolean;
+  showErrorNotification?: boolean;
+  timeoutMs?: number;
+  headers?: Record<string, string>;
+  progressCallBack?: (e: unknown) => void | null;
+};
+
 interface SuccessResponse<K> {
+  data: K;
   status: "successful" | "failed";
   messages: { fa: string | undefined };
-  data: K;
 }
 
-// x-language en-US
-/**
- * call route with axios and return data\
- * **T** is `body` type\
- * **K** is `return` type
- * @param method
- * @param url
- * @param body
- * @returns
- */
-
-// Helper to detect if we're in a browser environment
 const isBrowser = typeof window !== "undefined";
+const API_TIMEOUT_MS = 20_000;
+let unauthorizedRedirectStarted = false;
 
 export async function apiCall<T, K>(
   method: Methods,
   url: string,
   body?: T,
-  options?: {
-    progressCallBack?: (e: any) => void | null;
-    isSocketToken?: boolean;
-    passedToken?: string;
-    version?: string;
-  },
+  options?: ApiCallOptions,
 ): Promise<K | undefined> {
   try {
-    /**
-     * create axios config
-     */
     const IS_FORM_DATA = !!body && body instanceof FormData;
-
+    const token =
+      options?.passedToken ??
+      (isBrowser || options?.serverAuth === false
+        ? undefined
+        : await readServerAccessToken());
     const config: AxiosRequestConfig = {
       method,
-      url: !!options?.version ? baseUrlV(options?.version) + url : baseUrl + url,
-      headers: headerItems(IS_FORM_DATA ? "file" : undefined, options?.isSocketToken, options?.passedToken),
+      url: options?.localRoute
+        ? url
+        : isBrowser
+          ? `/api/backend/${options?.version || "v1"}${url}`
+          : !!options?.version
+            ? baseUrlV(options.version) + url
+            : baseUrl + url,
+      headers: {
+        ...headerItems(IS_FORM_DATA ? "file" : undefined, token),
+        ...options?.headers,
+      },
       data: body,
-
+      signal: options?.signal,
+      timeout: options?.timeoutMs ?? API_TIMEOUT_MS,
       onUploadProgress: options?.progressCallBack,
     };
     if (method == "GET") {
@@ -55,116 +67,98 @@ export async function apiCall<T, K>(
     }
     const response = await axios(config);
 
-    /**
-     * return data if status is success
-     */
-
     if (response.data?.meta) {
-      const res: K & { status: "successful" | "failed"; messages: { fa: string | undefined } } = response.data;
-
+      const res: K & {
+        status: "successful" | "failed";
+        messages: { fa: string | undefined };
+      } = response.data;
       if (res?.status == "successful") {
         const message = res?.messages?.fa;
-        if (message) {
-          Notify({ type: "success", title: "", body: message });
-        }
+        if (message) void notify({ type: "success", title: "", body: message });
         return res;
       }
       return undefined;
     } else {
       const res: SuccessResponse<K> = response.data;
-
       if (res.status == "successful") {
         const message = res?.messages?.fa;
-        if (message) {
-          Notify({ type: "success", title: "", body: message });
-        }
+        if (message) void notify({ type: "success", title: "", body: message });
         return res.data;
       }
     }
     return undefined;
   } catch (error: any) {
-    /**
-     * Notify error
-     * throw function
-     * check auth
-     */
-    handleError(error, true);
-    if (error?.response?.status == 401) {
-      localStorage?.removeItem("access_token");
-      localStorage.removeItem("socket_token");
-      localStorage?.removeItem("isLogin");
-      deleteCookie("isLogin");
+    if (axios.isCancel(error)) throw error;
+    handleError(error, options?.showErrorNotification !== false);
+    if (
+      error?.response?.status == 401 &&
+      isBrowser &&
+      !unauthorizedRedirectStarted
+    ) {
+      unauthorizedRedirectStarted = true;
+      await endSession();
       window?.location?.replace("/");
     }
     if (error?.response?.status == 410) {
       window?.location?.replace("/");
       return;
     }
-    throw error?.response?.data || "Failed";
+    const responseData = error?.response?.data;
+    if (responseData && typeof responseData === "object") {
+      Object.defineProperty(responseData, "httpStatus", {
+        configurable: true,
+        enumerable: false,
+        value: error.response.status,
+      });
+      throw responseData;
+    }
+    throw error;
   }
 }
 
-/**
- * Create header items
- * @returns
- */
-const headerItems = (type?: "file", isSocketToken?: boolean, passedToken?: string) => {
-  const token: string = localStorage.getItem("access_token") || "";
-  const socketToken: string = localStorage.getItem("socket_token") || "";
+const headerItems = (type?: "file", passedToken?: string) => {
   let headers = {
     Accept: `application/json`,
     "Content-Type": `application/json`,
-    // "x-language": language == "de" ? "de-lu" : "en-Us",
   } as AxiosRequestHeaders | { authorization?: string };
-  if (type == "file") {
-    headers = {};
-  }
-  if (!!isSocketToken && !!socketToken) {
-    headers.authorization = `Bearer ${socketToken}`;
-  } else if (token || passedToken) headers.authorization = `Bearer ${token || passedToken}`;
-
+  if (type == "file") headers = {};
+  if (passedToken) headers.authorization = `Bearer ${passedToken}`;
   return headers;
 };
 
-/**
- * find error message and notify
- * @param error
- */
-async function handleError(error: any, showNotifications: boolean, shouldRedirect?: boolean) {
-  // Determine error type and message
+async function handleError(
+  error: any,
+  showNotifications: boolean,
+  shouldRedirect?: boolean,
+) {
   let message = "";
-  let title = "خطا";
-
-  // Network error (no response)
-  if (!error.response && (error.message === "Network Error" || error.code === "ECONNABORTED")) {
-    message = "خطا در ارتباط با سرور. لطفا اتصال اینترنت خود را بررسی کنید.";
-  }
-  // HTTP errors with status
+  let title = translateMessage("errors.title");
+  if (
+    !error.response &&
+    (error.message === "Network Error" || error.code === "ECONNABORTED")
+  )
+    message = translateMessage("errors.network");
   else if (error.response) {
     const status = error.response.status;
-
     if (status === 401) {
-      message = "نشست شما منقضی شده است. لطفا دوباره وارد شوید.";
-      title = "نشست منقضی";
+      message = translateMessage("errors.sessionExpired");
+      title = translateMessage("errors.sessionTitle");
     } else if (status === 500) {
-      message = "خطای داخلی سرور. لطفا بعدا دوباره تلاش کنید.";
-      title = "خطای سرور";
+      message = translateMessage("errors.server");
+      title = translateMessage("errors.serverTitle");
     } else {
-      // Try to get message from response - handle both string and array
       const responseData = error?.response?.data;
       const errorMessage = responseData?.messages?.fa || responseData?.message;
-
-      if (Array.isArray(errorMessage)) {
-        message = errorMessage.join("، ");
-      } else {
-        message = errorMessage || error?.message || "خطایی رخ داده است";
-      }
+      if (Array.isArray(errorMessage))
+        message = errorMessage.join(translateMessage("common.separator"));
+      else
+        message =
+          errorMessage || error?.message || translateMessage("errors.generic");
     }
   } else {
-    message = error?.message || "خطایی رخ داده است";
+    message = error?.message || translateMessage("errors.generic");
   }
 
-  // Handle redirect for 404/500 errors in SSR
   if (shouldRedirect && !isBrowser) {
     const status = error?.response?.status;
     if (status === 404 || status === 500) {
@@ -173,10 +167,8 @@ async function handleError(error: any, showNotifications: boolean, shouldRedirec
     }
   }
 
-  // Only show notifications in browser and if enabled
   if (showNotifications && isBrowser) {
-    const { default: Notify } = await import("@/components/shared/Toast");
-    Notify({
+    await notify({
       type: "error",
       title: title,
       body: message,

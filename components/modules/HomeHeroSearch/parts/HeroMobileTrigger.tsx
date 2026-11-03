@@ -1,0 +1,60 @@
+import { useTranslations } from "next-intl";
+import { ContentImage } from "@elements/Image";
+
+import type { HeroMobileTriggerProps } from "@/types/components/modules/home-hero-search";
+
+const HeroMobileTrigger = ({
+  onOpen,
+  summary,
+  onPreload,
+  variant = "hero",
+}: HeroMobileTriggerProps) => {
+  const t = useTranslations("header");
+
+  return (
+    <button
+      type="button"
+      onClick={onOpen}
+      onPointerDown={onPreload}
+      data-test="hero-mobile-trigger"
+      className={`surface-panel flex w-full items-center !rounded-full text-start ${
+        variant === "header"
+          ? "h-10 min-w-0 gap-1.5 !border-line bg-surface p-1 !shadow-none"
+          : "gap-2 !border-line/80 p-1 !shadow-[0_6px_16px_-8px_rgb(15_23_42/0.2),0_1px_3px_-1px_rgb(15_23_42/0.06)]"
+      }`}
+    >
+      <span
+        className={`flex min-w-0 flex-1 flex-col items-start ${
+          variant === "header" ? "ps-1.5" : "gap-0.5 ps-2"
+        }`}
+      >
+        <span
+          className={`w-full truncate text-sm leading-tight ${
+            summary.title
+              ? "font-medium text-ink"
+              : "font-normal text-ink-subtle"
+          }`}
+        >
+          {summary.title || t("searchPlaceholder")}
+        </span>
+        {variant === "hero" && summary.detail ? (
+          <span className="w-full truncate text-2xs leading-tight text-ink-subtle">
+            {summary.detail}
+          </span>
+        ) : null}
+      </span>
+
+      <span className="btn-primary flex size-8 shrink-0 items-center justify-center rounded-full bg-action">
+        <ContentImage
+          alt=""
+          width={18}
+          height={18}
+          src="/assets/icons/edit/magnifier.svg"
+          className="size-[1.125rem] shrink-0 brightness-0 invert"
+        />
+      </span>
+    </button>
+  );
+};
+
+export default HeroMobileTrigger;

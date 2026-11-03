@@ -1,0 +1,23 @@
+import Skeleton from "@elements/Skeleton/Skeleton";
+
+const ReservationCardSkeleton = () => (
+  <div
+    aria-hidden="true"
+    className="w-full space-y-4 rounded-2xl bg-surface p-3 shadow-surface"
+  >
+    <div className="flex gap-3">
+      <Skeleton className="size-24 rounded-xl" />
+      <div className="flex-1 space-y-3">
+        <Skeleton className="h-4 w-3/4 rounded" />
+        <Skeleton className="h-3 w-1/2 rounded" />
+      </div>
+    </div>
+    <Skeleton className="h-px" />
+    {Array.from({ length: 3 }, (_, index) => (
+      <Skeleton key={index} className="h-3 w-full rounded" />
+    ))}
+    <Skeleton className="h-10 w-full rounded-xl" />
+  </div>
+);
+
+export default ReservationCardSkeleton;

@@ -1,27 +1,14 @@
-"use client";
+import { ProfileSidebar } from "@modules/ProfileOverview";
+import { ProfileLayout } from "@layouts/ProfileLayout";
 
-import Profile from "@/components/profile/Profile";
+import type { ProfileTemplateProps } from "@/types/components/templates/profile";
 
-import React, { ReactNode, Suspense } from "react";
+import IntlNamespaces from "@/i18n/IntlNamespaces";
 
-interface layOut {
-  children: ReactNode;
-}
-const layout = ({ children }: layOut) => {
-  return (
-    <div className=" profile-grid-part grid-cols-12 w-full  px-3 md:px-3 lg:px-4 2xl:px-[10%] mx-auto gap-3 h-full    ">
-      <div className="hidden   lg:flex col-span-3  overflow-scroll  rounded-10 text-center h-full profile-py-28 ">
-        <Profile />
-      </div>
+const ProfileRouteLayout = ({ children }: ProfileTemplateProps) => (
+  <IntlNamespaces namespaces={["owner", "profile"]}>
+    <ProfileLayout sidebar={<ProfileSidebar />}>{children}</ProfileLayout>
+  </IntlNamespaces>
+);
 
-      <div
-        className={`col-span-9 w-full  mx-auto h-full   mb-16 profile-py-28-md `}
-        style={{ gridColumn: "span 9 / span 9" }}
-      >
-        <Suspense> {children}</Suspense>
-      </div>
-    </div>
-  );
-};
-
-export default layout;
+export default ProfileRouteLayout;

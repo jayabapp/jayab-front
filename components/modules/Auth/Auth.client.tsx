@@ -1,0 +1,168 @@
+"use client";
+
+import { useTranslations } from "next-intl";
+import { useAuthForm } from "@features/auth/hooks/useAuthForm";
+import { AuthOtpCard } from "@modules/AuthOtp";
+import { HeaderBrand } from "@modules/SiteHeader";
+import { AuthHeader } from "@layouts/AuthHeader";
+import { FormInput } from "@elements/Form";
+import { useState } from "react";
+
+import useCmsContent from "@/hooks/useCmsContent";
+import DotLoading from "@elements/Button/DotLoading";
+import Button from "@elements/Button";
+import Terms from "./parts/Terms.client";
+
+const AuthPageComponent = () => {
+  const t = useTranslations();
+
+  const {
+    step,
+    submit,
+    mobile,
+    challenge,
+    setMobile,
+    isSubmitting,
+    backToPhone,
+    visibleTermsModal,
+    setVisibleTermsModal,
+  } = useAuthForm();
+
+  const { content: terms, isLoading: termsLoading } = useCmsContent("terms", {
+    enabled: visibleTermsModal,
+  });
+  const isOtpStep = step === "otp";
+
+  const [rotatingBack, setRotatingBack] = useState(false);
+  const otpVisible = isOtpStep || rotatingBack;
+
+  const flipBack = () => {
+    setRotatingBack(true);
+    backToPhone();
+  };
+
+  return (
+    <div className="auth-container">
+      <AuthHeader
+        title={isOtpStep ? t("auth.confirmCode") : t("common.enter")}
+        onBack={isOtpStep ? flipBack : undefined}
+      />
+
+      <div className="flip-scene auth-card-enter w-full max-w-md">
+        <div
+          className={`flip-card ${isOtpStep ? "is-flipped" : ""}`}
+          onTransitionEnd={(event) => {
+            if (event.propertyName === "transform") setRotatingBack(false);
+          }}
+        >
+          {/* PHONE */}
+          <div
+            inert={isOtpStep}
+            className="flip-face glass-panel px-6 pb-8 pt-10 md:px-9"
+          >
+            {/* Keep the brand at the physical left in every language. */}
+            <div dir="rtl" className="flex justify-end">
+              <HeaderBrand asLink alwaysShowTitle />
+            </div>
+
+            <div className="mt-6 flex flex-col items-center gap-3">
+              <span className="h-1 w-10 rounded-full bg-brand-500/80" />
+              <h1 className="text-xl font-bold tracking-tight text-ink">
+                {t("auth.authWelcomeTitle")}
+              </h1>
+              <p className="max-w-72 text-center text-sm leading-6 text-ink-muted">
+                {t("auth.enterTourMobileNumber")}
+              </p>
+            </div>
+
+            <div className="mt-8 flex w-full flex-col gap-5">
+              <FormInput
+                value={mobile}
+                item={{
+                  id: "auth-mobile",
+                  maxLength: 11,
+                  direction: "ltr",
+                  keyboard: "number",
+                  autoFocus: false,
+                  containerClass: "relative w-full",
+                  placeholder: t("auth.mobilePlaceholder"),
+                  inputClass:
+                    "glass-field !h-14 !rounded-20 !py-3 !text-lg text-latin-code tracking-[0.25em] !text-center placeholder:!text-center placeholder:!text-base placeholder:tracking-[0.25em]",
+                }}
+                onChangeText={(v: number) => {
+                  setMobile(v);
+                }}
+              />
+
+              <div className="flex flex-wrap items-center justify-center gap-1 text-xs text-ink-muted">
+                <p>{t("auth.uAccepted")}</p>
+                <button
+                  type="button"
+                  onClick={() => setVisibleTermsModal(true)}
+                  className="font-medium text-link underline underline-offset-4"
+                >
+                  {t("common.terms")}
+                </button>
+                <p>{t("auth.authTermsSuffix")}</p>
+              </div>
+
+              <Button
+                width="w-full"
+                onClick={submit}
+                loading={isSubmitting}
+                containerClass="w-full"
+                disabled={isSubmitting}
+                roundedClass="rounded-20"
+                preserveStyleWhileLoading
+                loadingIndicator={<DotLoading />}
+                title={t("common.enterAndMoveOn")}
+                btnClass="auth-primary-button !py-4"
+              />
+
+              <div className="flex items-center justify-center gap-1.5 text-xs text-ink-subtle">
+                <svg
+                  fill="none"
+                  width="14"
+                  height="14"
+                  viewBox="0 0 24 24"
+                  aria-hidden="true"
+                  xmlns="http://www.w3.org/2000/svg"
+                >
+                  <path
+                    strokeWidth="2"
+                    stroke="currentColor"
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    d="M6 10V8a6 6 0 1 1 12 0v2m-13 0h14a1 1 0 0 1 1 1v9a1 1 0 0 1-1 1H5a1 1 0 0 1-1-1v-9a1 1 0 0 1 1-1Z"
+                  />
+                </svg>
+                <span>{t("auth.authSecureNote")}</span>
+              </div>
+            </div>
+          </div>
+
+          {/* CODE */}
+          <div
+            inert={!isOtpStep}
+            className="flip-face flip-face-back glass-panel px-6 pb-8 pt-10 md:px-9"
+          >
+            {otpVisible ? (
+              <AuthOtpCard challenge={challenge} onEditNumber={flipBack} />
+            ) : (
+              <></>
+            )}
+          </div>
+        </div>
+      </div>
+
+      <Terms
+        termsLoading={termsLoading}
+        visibleTermsModal={visibleTermsModal}
+        setvisibleTermsModal={setVisibleTermsModal}
+        termsContent={terms ?? null}
+      />
+    </div>
+  );
+};
+
+export default AuthPageComponent;

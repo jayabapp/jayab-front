@@ -1,0 +1,147 @@
+"use client";
+
+import { isIOS, isMacOs, isWindows } from "react-device-detect";
+import { getPropertyImageUrl } from "@features/properties/mappers/property-image.mapper";
+import { usePropertyContact } from "@features/properties/hooks/usePropertyContact";
+import { trackListingEvent } from "@/helpers/listingAnalytics";
+import { useTranslations } from "next-intl";
+import { buildSmsHref } from "@features/reservations/lib/contact-prefill";
+import { ContentImage } from "@elements/Image";
+import { useState } from "react";
+import { Icon } from "@elements/Icon";
+
+import type { PropertyContactRowProps } from "@/types/components/modules/property-contact";
+
+import maskPhoneNumber from "@/helpers/maskPhoneNumber";
+import Notify from "@elements/Toast";
+
+const OWNER_AVATAR_FALLBACK = "/assets/images/add/wall_e_lover.png";
+const DIAL_DELAY_MS = 500;
+const ACTION_CLASS =
+  "flex h-10 shrink-0 cursor-pointer items-center justify-center gap-2 rounded-10 px-4 text-sm font-medium transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-focus focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-60";
+
+const PropertyContactRow = ({
+  data,
+  type,
+  image,
+  onHide,
+  smsBody,
+  propertySlug,
+  isPropertyExpired,
+}: PropertyContactRowProps) => {
+  const t = useTranslations();
+
+  const [showNumber, setShowNumber] = useState(false);
+  const { mutate } = usePropertyContact();
+  const number = data?.assistant_mobile_number;
+
+  const trackAction = () =>
+    mutate({ propertySlug: propertySlug || "", action: type });
+
+  const onContactClick = (action: "call" | "sms") => {
+    onHide();
+    trackAction();
+    trackListingEvent("host_contact_number_revealed", { action });
+    const href =
+      action === "call"
+        ? `tel:${number}`
+        : smsBody
+          ? buildSmsHref(number, smsBody, isIOS)
+          : `sms:${number}`;
+    const timeout = window.setTimeout(() => {
+      window.open(href, "_blank", "noopener,noreferrer");
+      window.clearTimeout(timeout);
+    }, DIAL_DELAY_MS);
+  };
+
+  const copyNumber = async () => {
+    if (!navigator?.clipboard) return;
+    await navigator.clipboard.writeText(number);
+    Notify({ type: "success", body: t("reserve.numberCopied") });
+  };
+
+  const hasOwnerAvatar = !!image && !!data?.is_owner;
+  const isDesktop = isWindows || isMacOs;
+
+  const action = () => {
+    if (isDesktop)
+      return showNumber ? (
+        <button
+          type="button"
+          onClick={() => void copyNumber()}
+          aria-label={`${t("reserve.copyNumber")} ${number}`}
+          className="flex h-10 cursor-pointer items-center gap-2 px-2 text-base font-semibold tracking-wider text-link"
+        >
+          {number}
+          <Icon name="copy" size={20} />
+        </button>
+      ) : (
+        <button
+          type="button"
+          onClick={() => {
+            trackAction();
+            trackListingEvent("host_contact_number_revealed", { action: type });
+            setShowNumber(true);
+          }}
+          className={`${ACTION_CLASS} border border-line bg-surface text-ink hover:bg-surface-muted`}
+        >
+          {t("reserve.showFullNumber")}
+        </button>
+      );
+
+    if (type === "sms")
+      return (
+        <button
+          type="button"
+          disabled={!!isPropertyExpired}
+          onClick={() => onContactClick("sms")}
+          className={`${ACTION_CLASS} border border-line bg-surface text-ink hover:bg-surface-muted`}
+        >
+          <Icon name="sms" size={20} />
+          {t("common.sms")}
+        </button>
+      );
+
+    return (
+      <button
+        type="button"
+        onClick={() => onContactClick("call")}
+        className={`${ACTION_CLASS} bg-action text-on-action hover:bg-action-hover`}
+      >
+        <Icon name="phone" size={20} />
+        {t("common.call")}
+      </button>
+    );
+  };
+
+  return (
+    <div className="flex w-full flex-row items-center justify-between gap-3 border-t border-line py-3 first:border-t-0">
+      <div className="flex min-w-0 flex-row items-center gap-3">
+        <ContentImage
+          width={56}
+          height={56}
+          sizes="(min-width: 768px) 56px, 40px"
+          alt={data?.assistant_full_name || ""}
+          src={
+            hasOwnerAvatar ? getPropertyImageUrl(image) : OWNER_AVATAR_FALLBACK
+          }
+          className={`aspect-square size-10 shrink-0 rounded-full md:size-14 ${
+            hasOwnerAvatar ? "border border-action" : ""
+          }`}
+        />
+        <div className="flex min-w-0 flex-col items-start gap-1">
+          <p className="break-words text-sm text-ink">
+            {data?.is_owner ? t("common.host") : t("reserve.ownerAssist")}
+            {". "}
+            <bdi>{data?.assistant_full_name}</bdi>
+          </p>
+          <p className="text-sm text-ink-subtle">{maskPhoneNumber(number)}</p>
+        </div>
+      </div>
+
+      {action()}
+    </div>
+  );
+};
+
+export default PropertyContactRow;

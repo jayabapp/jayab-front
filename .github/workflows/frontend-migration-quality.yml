@@ -1,0 +1,31 @@
+name: Frontend migration quality
+
+on:
+  pull_request:
+    branches: [main]
+  push:
+    branches: [feat/new-app]
+
+concurrency:
+  group: frontend-migration-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  verify:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    env:
+      MIGRATION_BASE_SHA: ${{ github.event.pull_request.base.sha || github.event.before }}
+      NEXT_TELEMETRY_DISABLED: "1"
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: yarn
+      - run: corepack enable
+      - run: yarn install --frozen-lockfile
+      - run: yarn migration:verify:build
+

@@ -1,0 +1,68 @@
+import { useDir } from "@hooks/useDir";
+import { colors } from "@/theme/colors";
+
+import type { RangeWithTitleProps } from "@/types/components/elements/slider";
+
+import Slider from "rc-slider";
+
+import "rc-slider/assets/index.css";
+
+const RangeWithTitle = ({
+  max,
+  min,
+  step,
+  marks,
+  value,
+  setValue,
+  showMark,
+  className,
+  item = { pathColor: "rgb(var(--c-line))", visibleDot: false },
+}: RangeWithTitleProps) => {
+  const dir = useDir();
+  return (
+    <Slider
+      reverse={!!item?.reverse && dir === "rtl"}
+      marks={showMark ? marks : {}}
+      startPoint={min || 0}
+      max={max}
+      value={value}
+      min={min}
+      step={step || 1}
+      onChange={(v: number | number[]) => {
+        if (typeof v == "number") setValue(v);
+      }}
+      defaultValue={0}
+      className={className}
+      handleStyle={{
+        backgroundColor: colors.brand[500],
+        borderWidth: 0,
+        width: 20,
+        height: 20,
+        bottom: -4,
+      }}
+      activeDotStyle={{
+        backgroundColor: item?.pathColor,
+        borderColor: item?.pathColor,
+        borderWidth: 1,
+        width: 7,
+        height: 7,
+        aspectRatio: 2,
+        bottom: -20,
+      }}
+      dotStyle={{
+        backgroundColor: item?.pathColor,
+        borderColor: item?.pathColor,
+        borderWidth: 1,
+        width: 7,
+        height: 7,
+        aspectRatio: 2,
+        bottom: -20,
+        visibility: item?.visibleDot ? "visible" : "hidden",
+      }}
+      trackStyle={{ backgroundColor: colors.brand[500], height: 6.5 }}
+      railStyle={{ backgroundColor: item?.pathColor, height: 6.5 }}
+    />
+  );
+};
+
+export default RangeWithTitle;

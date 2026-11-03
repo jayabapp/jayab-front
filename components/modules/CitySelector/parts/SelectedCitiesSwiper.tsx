@@ -1,0 +1,100 @@
+import { useTranslations } from "next-intl";
+import { ContentImage } from "@elements/Image";
+import { useMemo } from "react";
+
+import type { SelectedCitiesSwiperProps } from "@/types/components/modules/city-selector";
+
+import LocationChip from "./LocationChip";
+import SwiperSlide from "@elements/Carousel/SwiperSlide";
+import isEmpty from "lodash/isEmpty";
+import Swiper from "@elements/Carousel/Swiper.client";
+
+const SelectedCitiesSwiper = ({
+  provinces,
+  onCityClick,
+  clearSelected,
+  selectedCities,
+  onProvCancelClick,
+}: SelectedCitiesSwiperProps) => {
+  const t = useTranslations();
+
+  const touchedProvinces = useMemo(
+    () =>
+      (provinces ?? [])
+        .filter((province) =>
+          province?.child?.some((city) =>
+            selectedCities?.some((selected) => selected?.id === city?.id),
+          ),
+        )
+        .map((province) => ({
+          ...province,
+          child: (province?.child ?? []).filter((city) =>
+            selectedCities?.some((selected) => selected?.id === city?.id),
+          ),
+        })),
+    [provinces, selectedCities],
+  );
+
+  return (
+    <div className="flex flex-col gap-2">
+      <div
+        className={`${
+          isEmpty(touchedProvinces) ? "h-0 opacity-0" : "h-fit opacity-100"
+        } flex flex-row items-center justify-between transition-all`}
+      >
+        <p>
+          {`${t("search.selectedCities")} ${
+            isEmpty(selectedCities)
+              ? ""
+              : `(${selectedCities?.length} ${t("common.city")})`
+          }`}
+        </p>
+        <button
+          type="button"
+          onClick={clearSelected}
+          className="cursor-pointer flex items-center gap-1"
+        >
+          <ContentImage
+            alt=""
+            width={16}
+            height={16}
+            className="size-4 opacity-40"
+            src="/assets/icons/uploader/TrashIcon.svg"
+          />
+          <span className="text-sm text-ink-subtle">
+            {t("search.removeAll")}
+          </span>
+        </button>
+      </div>
+
+      <Swiper autoFit>
+        {touchedProvinces.flatMap((province) => {
+          const source = (provinces ?? []).find(
+            (entry) => entry?.id === province?.id,
+          );
+          if (source?.child?.length === province?.child?.length) {
+            return [
+              <SwiperSlide key={`selected-province-${province?.id}`}>
+                <LocationChip
+                  title={province?.title}
+                  prefix={t("common.province")}
+                  onRemove={() => onProvCancelClick(province)}
+                />
+              </SwiperSlide>,
+            ];
+          }
+          return (province?.child ?? []).map((city) => (
+            <SwiperSlide key={`selected-city-${city?.id}`}>
+              <LocationChip
+                title={city?.title}
+                onRemove={() => onCityClick(city)}
+              />
+            </SwiperSlide>
+          ));
+        })}
+      </Swiper>
+    </div>
+  );
+};
+
+export default SelectedCitiesSwiper;

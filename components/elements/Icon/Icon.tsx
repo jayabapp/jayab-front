@@ -1,0 +1,392 @@
+import type { IconName, IconProps } from "@/types/components/elements/icon";
+import type { JSX } from "react";
+
+const PATHS: Record<IconName, JSX.Element> = {
+  globe: (
+    <>
+      <circle cx="12" cy="12" r="9" />
+      <ellipse cx="12" cy="12" rx="4" ry="9" />
+      <path d="M3 12h18" />
+    </>
+  ),
+  monitor: (
+    <>
+      <rect x="3" y="4" width="18" height="13" rx="2" />
+      <path d="M12 17v4M8 21h8" />
+    </>
+  ),
+  moon: <path d="M20.5 13a8.5 8.5 0 0 1-9.5-9.5A8.5 8.5 0 1 0 20.5 13Z" />,
+  sun: (
+    <>
+      <circle cx="12" cy="12" r="4" />
+      <path d="M12 2v2M12 20v2M2 12h2M20 12h2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M4.9 19.1l1.4-1.4M17.7 6.3l1.4-1.4" />
+    </>
+  ),
+  "air-conditioner": (
+    <>
+      <rect x="3.5" y="7" width="17" height="10" rx="2.5" />
+      <path d="M6.5 11h11M9 20c0-1 .7-1.5 1.5-2 .8-.5 1.5-1 1.5-2M15 20c0-1-.7-1.5-1.5-2-.8-.5-1.5-1-1.5-2" />
+    </>
+  ),
+  bath: (
+    <>
+      <path d="M3 12.25h18" />
+      <path d="M5 12.25v3.25a3.5 3.5 0 0 0 3.5 3.5h7a3.5 3.5 0 0 0 3.5-3.5v-3.25" />
+      <path d="M7.5 12.25V6.5a2 2 0 0 1 4 0" />
+      <path d="M7 19v1.5" />
+      <path d="M17 19v1.5" />
+    </>
+  ),
+  bed: (
+    <>
+      <path d="M3 18.5V6.5" />
+      <path d="M3 12h13.5a4.5 4.5 0 0 1 4.5 4.5v2" />
+      <path d="M7 12V9.5h4.5V12" />
+      <path d="M3 15.75h18" />
+    </>
+  ),
+  billiard: (
+    <>
+      <circle cx="12" cy="12" r="7.75" />
+      <circle cx="9.25" cy="9.25" r=".9" fill="currentColor" stroke="none" />
+      <circle cx="14.75" cy="9.25" r=".9" fill="currentColor" stroke="none" />
+      <circle cx="12" cy="14.5" r=".9" fill="currentColor" stroke="none" />
+    </>
+  ),
+  bookmark: <path d="M6.5 3.75h11v16.5L12 16.3l-5.5 3.95z" />,
+  broom: (
+    <>
+      <path d="m4 20 4.5-4.5" />
+      <path d="m10.5 12.5 4-4 5 5-4 4z" />
+      <path d="M9 14.5 12 20" />
+      <path d="m12.5 11 3.5 6.5" />
+    </>
+  ),
+  calendar: (
+    <>
+      <rect x="3.75" y="5.75" width="16.5" height="14.5" rx="2.5" />
+      <path d="M8 3.5v4.5" />
+      <path d="M16 3.5v4.5" />
+      <path d="M3.75 10.75h16.5" />
+    </>
+  ),
+  chat: (
+    <path d="M4.5 7a2.5 2.5 0 0 1 2.5-2.5h10A2.5 2.5 0 0 1 19.5 7v6.5a2.5 2.5 0 0 1-2.5 2.5h-7L5.5 19.5V16H7a2.5 2.5 0 0 1-2.5-2.5z" />
+  ),
+  check: <path d="m5.5 12.5 4.5 4.5 8.5-9" />,
+  "chevron-down": <path d="m6 9.5 6 6 6-6" />,
+  "chevron-left": <path d="M14.5 5.5 8 12l6.5 6.5" />,
+  "chevron-start": <path d="M14.5 5.5 8 12l6.5 6.5" />,
+  "chevron-end": <path d="M9.5 5.5 16 12l-6.5 6.5" />,
+  "arrow-start": <path d="M19.5 12h-15M10.5 6l-6 6 6 6" />,
+  "arrow-end": <path d="M4.5 12h15M13.5 6l6 6-6 6" />,
+  "arrow-up-end": <path d="M7 17 17 7M8.5 7H17v8.5" />,
+  "chevrons-up": <path d="m6 12.5 6-6 6 6M6 18.5l6-6 6 6" />,
+  cigarette: (
+    <>
+      <rect x="3.75" y="13" width="13.5" height="3.75" rx="1" />
+      <path d="M14 13v3.75" />
+      <path d="M17.25 13v3.75" />
+      <path d="M19.75 13.6c.85.5.85 2.05 0 2.55" />
+      <path d="M9.5 10c1.3-.6 1.3-2.65 0-4.25" />
+      <path d="M13 10.5c1.1-.75 1.1-2.85 0-4.5" />
+    </>
+  ),
+  clock: (
+    <>
+      <circle cx="12" cy="12" r="8.5" />
+      <path d="M12 7.25V12l3.25 2" />
+    </>
+  ),
+  copy: (
+    <>
+      <rect x="8.75" y="8.75" width="11.5" height="11.5" rx="2.5" />
+      <path d="M15.25 8.75V6.5a2.75 2.75 0 0 0-2.75-2.75H6.5A2.75 2.75 0 0 0 3.75 6.5v6A2.75 2.75 0 0 0 6.5 15.25h2.25" />
+    </>
+  ),
+  filter: (
+    <>
+      <path d="M4 7h9M17 7h3" />
+      <path d="M4 17h3M11 17h9" />
+      <circle cx="15" cy="7" r="2" />
+      <circle cx="9" cy="17" r="2" />
+    </>
+  ),
+  sort: (
+    <>
+      <path d="M7 4v16M3.5 7.5 7 4l3.5 3.5" />
+      <path d="M17 20V4M13.5 16.5 17 20l3.5-3.5" />
+    </>
+  ),
+  expand: (
+    <>
+      <path d="M14.5 4.5h5v5" />
+      <path d="m19.5 4.5-6 6" />
+      <path d="M9.5 19.5h-5v-5" />
+      <path d="m4.5 19.5 6-6" />
+    </>
+  ),
+  eye: (
+    <>
+      <path d="M2.5 12S6 5.5 12 5.5 21.5 12 21.5 12 18 18.5 12 18.5 2.5 12 2.5 12Z" />
+      <circle cx="12" cy="12" r="2.75" />
+    </>
+  ),
+  "eye-off": (
+    <>
+      <path d="M9.75 6.1A10.6 10.6 0 0 1 12 5.5c6 0 9.5 6.5 9.5 6.5a15.8 15.8 0 0 1-3.02 3.9M6.6 7.15C4.08 8.86 2.5 12 2.5 12S6 18.5 12 18.5a10.3 10.3 0 0 0 3.05-.45" />
+      <path d="M9.9 9.9a2.75 2.75 0 0 0 3.9 3.9" />
+      <path d="M4 4l16 16" />
+    </>
+  ),
+  foosball: (
+    <>
+      <path d="M5 4.5v15M19 4.5v15M3.5 7.5h17M3.5 16.5h17" />
+      <circle cx="9" cy="10" r="1" />
+      <circle cx="15" cy="14" r="1" />
+    </>
+  ),
+  gazebo: (
+    <>
+      <path d="m3.5 10 8.5-6.25L20.5 10z" />
+      <path d="M6.5 10v9.5M17.5 10v9.5M4.5 19.5h15" />
+    </>
+  ),
+  grill: (
+    <>
+      <path d="M5 9.5h14l-1.25 6.25a4.1 4.1 0 0 1-4 3.25h-3.5a4.1 4.1 0 0 1-4-3.25z" />
+      <path d="M8 5.25v4.25M12 5.25v4.25M16 5.25v4.25M9 19l-1 2M15 19l1 2" />
+    </>
+  ),
+  heart: (
+    <path d="M12 20.25S4.5 15.4 4.5 10.2A4.2 4.2 0 0 1 12 7.4a4.2 4.2 0 0 1 7.5 2.8c0 5.2-7.5 10.05-7.5 10.05Z" />
+  ),
+  home: (
+    <>
+      <path d="M3.25 10.75 12 3.5l8.75 7.25" />
+      <path d="M5.5 9.5v10.75h13V9.5" />
+      <path d="M10 20.25V14.5h4v5.75" />
+    </>
+  ),
+  images: (
+    <>
+      <rect x="8" y="3.75" width="12.25" height="12.25" rx="2.5" />
+      <path d="M16 16v1.75a2.5 2.5 0 0 1-2.5 2.5H6.25a2.5 2.5 0 0 1-2.5-2.5V10.5A2.5 2.5 0 0 1 6.25 8H8" />
+      <path d="m10.5 12.75 2.5-2.5 3.25 3.25" />
+      <path d="M17.25 7.75h.01" />
+    </>
+  ),
+  info: (
+    <>
+      <circle cx="12" cy="12" r="8.5" />
+      <path d="M12 11v5.5" />
+      <path d="M12 7.75h.01" />
+    </>
+  ),
+  kitchen: (
+    <>
+      <path d="M5 3.75v16.5M19 3.75v16.5M5 12h14" />
+      <path d="M9 3.75v5.5M12 3.75v5.5M15 3.75v5.5" />
+    </>
+  ),
+  list: (
+    <path d="M9 6.5h10.5M9 12h10.5M9 17.5h10.5M4.5 6.5h.01M4.5 12h.01M4.5 17.5h.01" />
+  ),
+  map: (
+    <>
+      <path d="m3.5 6.5 5.5-2.25 6 2.25 5.5-2.25v13.25L15 19.75l-6-2.25-5.5 2.25z" />
+      <path d="M9 4.25V17.5M15 6.5v13.25" />
+    </>
+  ),
+  "map-pin": (
+    <>
+      <path d="M12 20.75s6.75-5.55 6.75-10.75a6.75 6.75 0 1 0-13.5 0C5.25 15.2 12 20.75 12 20.75Z" />
+      <circle cx="12" cy="10" r="2.5" />
+    </>
+  ),
+  microwave: (
+    <>
+      <rect x="3.5" y="5.5" width="17" height="13" rx="2" />
+      <rect x="6.5" y="8" width="8" height="8" rx="1" />
+      <circle cx="17.5" cy="10" r=".75" fill="currentColor" stroke="none" />
+      <path d="M17.5 13h.01" />
+    </>
+  ),
+  minus: <path d="M5.5 12h13" />,
+  party: (
+    <>
+      <path d="M5 19.25 12.5 9l4 4-7.5 6.25z" />
+      <path d="M12.5 9c0-2.6 1.7-4.75 4-4.75" />
+      <circle cx="18.5" cy="4.75" r="1" />
+      <circle cx="20.25" cy="8" r=".9" />
+    </>
+  ),
+  parking: (
+    <>
+      <rect x="4" y="3.5" width="16" height="17" rx="3" />
+      <path d="M9 17V7h3.25a2.75 2.75 0 0 1 0 5.5H9" />
+    </>
+  ),
+  paw: (
+    <>
+      <circle cx="8" cy="7.5" r="1.6" />
+      <circle cx="12" cy="6" r="1.6" />
+      <circle cx="16" cy="7.5" r="1.6" />
+      <circle cx="17.75" cy="11.5" r="1.6" />
+      <path d="M12 12.25c-2.9 0-5.5 2.05-5.5 4.6 0 1.5 1.25 2.65 2.85 2.65.95 0 1.5-.4 2.65-.4s1.7.4 2.65.4c1.6 0 2.85-1.15 2.85-2.65 0-2.55-2.6-4.6-5.5-4.6z" />
+    </>
+  ),
+  phone: (
+    <path d="M7.4 3.9 9.9 8.3 8 10.2a12.2 12.2 0 0 0 5.8 5.8l1.9-1.9 4.4 2.5-1.2 3.1c-.4 1-1.4 1.6-2.4 1.4C10 19.9 4.1 14 2.9 6.5c-.2-1 .4-2 1.4-2.4z" />
+  ),
+  plus: (
+    <>
+      <path d="M12 5.5v13" />
+      <path d="M5.5 12h13" />
+    </>
+  ),
+  pool: (
+    <>
+      <path d="M2.75 17.5c1.6 0 1.6 1.45 3.2 1.45s1.6-1.45 3.2-1.45 1.6 1.45 3.2 1.45 1.6-1.45 3.2-1.45 1.6 1.45 3.2 1.45" />
+      <path d="M7.5 16V6.25a2.25 2.25 0 0 1 4.5 0" />
+      <path d="M14.5 16V6.25a2.25 2.25 0 0 1 4.5 0" />
+      <path d="M7.5 10.5H12" />
+      <path d="M14.5 10.5H19" />
+    </>
+  ),
+  refrigerator: (
+    <>
+      <rect x="6.5" y="3.5" width="11" height="17" rx="1.75" />
+      <path d="M6.5 11.5h11M14.75 7.25v1.5M14.75 14.5V16" />
+    </>
+  ),
+  ruler: (
+    <>
+      <path d="M3.9 15.15 15.15 3.9a1.5 1.5 0 0 1 2.12 0l2.83 2.83a1.5 1.5 0 0 1 0 2.12L8.85 20.1a1.5 1.5 0 0 1-2.12 0L3.9 17.27a1.5 1.5 0 0 1 0-2.12Z" />
+      <path d="m8 11 1.75 1.75" />
+      <path d="m11 8 1.75 1.75" />
+      <path d="m14 5 1.75 1.75" />
+    </>
+  ),
+  share: (
+    <>
+      <circle cx="17.5" cy="6" r="2.75" />
+      <circle cx="6.5" cy="12" r="2.75" />
+      <circle cx="17.5" cy="18" r="2.75" />
+      <path d="m9 10.65 6-3.2" />
+      <path d="m9 13.35 6 3.2" />
+    </>
+  ),
+  shield: (
+    <>
+      <path d="M12 3.25 5 6v6c0 4.2 3 7.25 7 8.75 4-1.5 7-4.55 7-8.75V6z" />
+      <path d="m9.25 11.75 2 2 3.5-3.5" />
+    </>
+  ),
+  sms: (
+    <>
+      <rect x="3.75" y="5.75" width="16.5" height="12.5" rx="2.5" />
+      <path d="m4.5 7.5 7.5 5.5 7.5-5.5" />
+    </>
+  ),
+  sparkles: (
+    <>
+      <path d="M12 4.25 13.7 9l4.75 1.7L13.7 12.4 12 17.15 10.3 12.4 5.55 10.7 10.3 9z" />
+      <path d="M18.5 4v2.5" />
+      <path d="M17.25 5.25h2.5" />
+    </>
+  ),
+  star: (
+    <path d="m12 4.25 2.5 5.06 5.6.82-4.05 3.94.96 5.58L12 17.02l-5.01 2.63.96-5.58L3.9 10.13l5.6-.82z" />
+  ),
+  toilet: (
+    <>
+      <path d="M6.5 3.75h9v6.5a4.5 4.5 0 0 1-9 0z" />
+      <path d="M11 14.75v5.5" />
+      <path d="M7.5 20.25h7" />
+    </>
+  ),
+  terrace: (
+    <>
+      <path d="M4 19.5h16M6 19.5v-7M10 19.5v-7M14 19.5v-7M18 19.5v-7M4 12.5h16" />
+      <path d="M8 8.5c1.3-1.5 2.9-1.5 4.1 0 1.3-1.5 2.9-1.5 4.1 0" />
+    </>
+  ),
+  television: (
+    <>
+      <rect x="3.5" y="5.5" width="17" height="12" rx="2" />
+      <path d="m9 20.5 1.5-3M15 20.5l-1.5-3M9 3.5l3 2 3-2" />
+    </>
+  ),
+  "user-plus": (
+    <>
+      <circle cx="10" cy="8" r="3.25" />
+      <path d="M3.75 19.5c0-3.2 2.8-5.25 6.25-5.25s6.25 2.05 6.25 5.25" />
+      <path d="M18.5 7v5" />
+      <path d="M16 9.5h5" />
+    </>
+  ),
+  users: (
+    <>
+      <circle cx="9.5" cy="8" r="3.25" />
+      <path d="M3.25 19.5c0-3.2 2.8-5.25 6.25-5.25s6.25 2.05 6.25 5.25" />
+      <path d="M16.25 5.15a3.25 3.25 0 0 1 0 5.7" />
+      <path d="M17.5 14.5c1.95.55 3.25 2.05 3.25 4.35" />
+    </>
+  ),
+  wallet: (
+    <>
+      <rect x="3.5" y="6" width="17" height="13" rx="2.5" />
+      <path d="M3.5 10h17" />
+      <circle cx="16.5" cy="14.5" r="1" />
+    </>
+  ),
+  "washing-machine": (
+    <>
+      <rect x="4.5" y="3.5" width="15" height="17" rx="2" />
+      <circle cx="12" cy="14" r="3.5" />
+      <path d="M7.5 7.25h.01M10 7.25h.01M4.5 10h15" />
+    </>
+  ),
+  wifi: (
+    <>
+      <path d="M4.5 9a11 11 0 0 1 15 0M7.5 12a6.5 6.5 0 0 1 9 0M10.25 15a2.5 2.5 0 0 1 3.5 0" />
+      <circle cx="12" cy="18.5" r=".75" fill="currentColor" stroke="none" />
+    </>
+  ),
+  x: (
+    <>
+      <path d="m6 6 12 12" />
+      <path d="M18 6 6 18" />
+    </>
+  ),
+};
+
+// Glyphs with a reading direction: drawn for LTR, mirrored by CSS where the text runs RTL.
+const BIDI = new Set<IconName>([
+  "chevron-start",
+  "chevron-end",
+  "arrow-start",
+  "arrow-end",
+  "arrow-up-end",
+]);
+
+const Icon = ({ className = "", name, size = 20 }: IconProps) => (
+  <svg
+    width={size}
+    height={size}
+    viewBox="0 0 24 24"
+    fill="none"
+    stroke="currentColor"
+    strokeWidth={1.5}
+    strokeLinecap="round"
+    strokeLinejoin="round"
+    aria-hidden="true"
+    focusable="false"
+    className={`shrink-0 ${BIDI.has(name) ? "icon-bidi " : ""}${className}`}
+  >
+    {PATHS[name]}
+  </svg>
+);
+
+export default Icon;

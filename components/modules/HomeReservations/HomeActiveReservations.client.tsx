@@ -1,0 +1,171 @@
+"use client";
+
+import { useAuthStore, useStoreParams } from "@/store";
+import { useReservationCountdown } from "@features/reservations/hooks/useReservationCountdown";
+import { PROPERTY_IMAGE_QUALITY } from "@features/properties/constants/image";
+import { useHomeActiveReserves } from "@features/home/hooks/useHomeActiveReserves";
+import { ReservationCountdown } from "@modules/ReservationDetails";
+import { getHomeImageUrl } from "@features/home/mappers/home-image.mapper";
+import { useTranslations } from "next-intl";
+import { ContentImage } from "@elements/Image";
+import { useState } from "react";
+
+import type { HomeActiveReservationsProps } from "@/types/components/modules/home";
+
+import isEmpty from "lodash/isEmpty";
+import Link from "next/link";
+
+const HomeReserveCountdown = ({
+  ttlSeconds,
+  fetchedAt,
+}: {
+  ttlSeconds: number;
+  fetchedAt: number;
+}) => {
+  const t = useTranslations("reserve");
+  const [secondsLeft] = useState(() =>
+    Math.max(ttlSeconds - Math.floor((Date.now() - fetchedAt) / 1000), 0),
+  );
+  const countdown = useReservationCountdown(secondsLeft, true);
+
+  return (
+    <ReservationCountdown
+      compact
+      hintBelow
+      minutes={countdown.minutes}
+      seconds={countdown.seconds}
+      hint={t("reserveGuestTimeoutHint")}
+    />
+  );
+};
+
+const HomeActiveReserve = ({ top }: HomeActiveReservationsProps) => {
+  const tr = useTranslations();
+
+  const t = useTranslations("reserve");
+
+  const { isLogin } = useAuthStore((state) => state);
+  const { activeReserves, dataUpdatedAt } = useHomeActiveReserves(isLogin);
+
+  const removeredirectRoomToHome = () =>
+    useStoreParams.setState({ getBackHome: false });
+
+  if (isEmpty(activeReserves)) return <>{top}</>;
+
+  return (
+    <div
+      data-home-active-reserves
+      className="w-full rounded-t-20 bg-gradient-to-t from-surface from-[10%] to-orange-600 lg:rounded-t-none lg:to-surface"
+    >
+      {top}
+      <div className="grid w-full gap-2 p-4 padding-x lg:grid-cols-3 lg:gap-3">
+        <div className="col-span-full w-full flex items-center justify-between">
+          <div className="flex  items-center gap-1">
+            <p className=" font-semibold !text-sm  lg:text-ink text-white lg:!text-base ">
+              {tr("reserve.activeRequests", {
+                count: activeReserves?.length ?? 0,
+              })}
+            </p>
+            <div className=" size-2 mb-3  rounded-full bg-red-700 animate-pulse  duration-700" />
+          </div>
+          <Link
+            title={t("watch")}
+            href="/profile/reserves"
+            className="flex items-center gap-1.5"
+          >
+            <p className="text-white lg:text-ink !text-sm  lg:!text-base">
+              {t("watch")} {tr("common.allWord")}
+            </p>
+            <ContentImage
+              alt=""
+              width={16}
+              height={16}
+              className="w-4  lg:brightness-0 ltr:rotate-180"
+              src="/assets/icons/property/white_arrow_left.svg"
+            />
+          </Link>
+        </div>
+
+        {activeReserves?.map((data) => {
+          const goToLink = "/profile/reserves";
+          return (
+            <div
+              key={`reserved${data?.id}`}
+              className="w-full bg-surface rounded-2xl justify-between flex flex-col shadow-md lg:shadow-surface p-2 gap-2"
+            >
+              <div className="flex w-full items-center gap-2">
+                {/* INFO */}
+                <Link
+                  href={`${goToLink}`}
+                  title={data?.property?.title}
+                  onClick={removeredirectRoomToHome}
+                  className="order-1 flex min-w-0 flex-1 flex-col justify-between gap-1 self-stretch !outline-none"
+                >
+                  {/* TITLE */}
+                  <div className="flex items-start gap-2">
+                    <p className="text-sm line-clamp-1  text-start font-medium ">
+                      {data?.property?.title}
+                    </p>
+                  </div>
+
+                  {/* CODE  - LIKES */}
+                  <div className="flex items-center justify-between gap-4">
+                    <div className="bg-black/10 font-normal rounded-md text-xs   px-2 py-1  leading-4  flex items-center justify-center">
+                      {tr("common.code")} {data?.property?.code}
+                    </div>
+                  </div>
+
+                  <div className="w-full flex  flex-col  gap-2">
+                    <div className="flex w-full  items-center gap-1">
+                      <p className="text-xs line-clamp-1 text-center ">
+                        {data?.property?.city?.title}{" "}
+                        <span className="text-xs ">
+                          {data?.property?.province?.title ||
+                          data?.property?.region?.title
+                            ? `(${data?.property?.region?.title || data?.property?.province?.title})`
+                            : ``}
+                        </span>
+                      </p>
+                    </div>
+                  </div>
+                </Link>
+
+                <div className="order-2 shrink-0">
+                  <HomeReserveCountdown
+                    fetchedAt={dataUpdatedAt}
+                    ttlSeconds={data?.ttl_seconds ?? 0}
+                  />
+                </div>
+
+                <Link
+                  href={`${goToLink}`}
+                  title={data?.property?.title}
+                  onClick={removeredirectRoomToHome}
+                  className="order-3 flex w-1/4 shrink-0 items-start justify-start !outline-none"
+                >
+                  <div className="aspect-square w-full h-full relative">
+                    <ContentImage
+                      fill
+                      loading="lazy"
+                      sizes="(min-width: 1024px) 8vw, 23vw"
+                      quality={PROPERTY_IMAGE_QUALITY}
+                      alt={data?.property?.feature_image?.alt || ""}
+                      src={
+                        !!data?.property?.feature_image
+                          ? getHomeImageUrl(data?.property?.feature_image)
+                          : "/assets/icons/shared/image_placeholder.svg"
+                      }
+                      className=" w-full rounded-10  h-full  object-cover aspect-square"
+                    />
+                  </div>
+                </Link>
+              </div>
+            </div>
+          );
+        })}
+      </div>
+    </div>
+  );
+};
+
+export default HomeActiveReserve;

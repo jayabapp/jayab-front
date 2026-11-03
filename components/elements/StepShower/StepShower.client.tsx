@@ -1,0 +1,74 @@
+"use client";
+
+import type { TStepShowerProps } from "@/types/components/elements/LinearData";
+import { useRouter, useSearchParams } from "next/navigation";
+
+const StepShower = ({ value, steps }: TStepShowerProps) => {
+  const router = useRouter();
+  const searchParams = useSearchParams();
+
+  const edit_mode = searchParams.get("edit_mode");
+
+  const onClick = (step: {
+    title: string;
+    description?: string;
+    id: number | string;
+    link?: string;
+  }) => {
+    if (!!edit_mode && !!step?.link) router.replace(step?.link);
+  };
+
+  return (
+    <div className="flex items-center w-full    relative justify-between">
+      {steps?.map((e, index) => {
+        const isSelected = e?.id <= value;
+        return (
+          <div
+            className="flex relative  w-full flex-col items-center justify-center gap-2"
+            key={`steps${e?.id}`}
+          >
+            <div className="w-full relative flex items-center justify-center">
+              <div
+                className={` ${index == 0 ? "opacity-0" : ""} flex ${
+                  !!isSelected ? "bg-action" : ""
+                }   bg-line-strong h-[5px] w-full`}
+              >
+                {" "}
+              </div>
+              <div
+                onClick={() => onClick(e)}
+                className={`${
+                  !!isSelected ? "bg-action" : "bg-line-strong"
+                }  w-4 h-4 !shrink-0 aspect-square cursor-pointer rounded-full`}
+              >
+                {" "}
+              </div>
+              <div
+                className={` ${!!isSelected && e?.id < value ? "bg-action " : "bg-line-strong "} ${
+                  index == steps?.length - 1 ? "opacity-0" : ""
+                }  flex  h-[5px] w-full`}
+              >
+                {" "}
+              </div>
+            </div>
+            <div
+              className={`flex absolute flex-col ${
+                (index + 1) % 2 == 0 ? "top-6" : " bottom-6"
+              } items-center justify-center gap-2`}
+            >
+              <p
+                className={`${
+                  !!isSelected ? "text-link" : "  text-neutral-300 "
+                }   text-center  text-2xs md:text-xs truncate`}
+              >
+                {e?.title}
+              </p>
+            </div>
+          </div>
+        );
+      })}
+    </div>
+  );
+};
+
+export default StepShower;

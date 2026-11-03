@@ -1,0 +1,108 @@
+"use client";
+
+import { useTranslations } from "next-intl";
+import { HeaderBrand } from "@modules/SiteHeader";
+import { useOtpFlow } from "@features/auth/hooks/useOtpFlow";
+
+import type { AuthOtpCardProps } from "@/types/components/modules/auth";
+
+import OtpInput from "./parts/OtpInput.client";
+import Button from "@elements/Button";
+import Image from "next/image";
+
+const AuthOtpCard = ({ challenge, onEditNumber }: AuthOtpCardProps) => {
+  const t = useTranslations();
+
+  const {
+    setOtp,
+    submit,
+    resetKey,
+    countdown,
+    editNumber,
+    resendCode,
+    isResending,
+    isSubmitting,
+    challenge: activeChallenge,
+  } = useOtpFlow({ challenge, onEditNumber });
+
+  const hasExpired = countdown.seconds === "00" && countdown.minutes === "00";
+
+  return (
+    <>
+      {/* BRAND */}
+      <div dir="rtl" className="flex justify-end">
+        <HeaderBrand asLink alwaysShowTitle />
+      </div>
+
+      <div className="mt-6 flex flex-col items-center gap-3">
+        <span className="h-1 w-10 rounded-full bg-brand-500/80" />
+        <p className="text-sm text-ink-muted">{t("auth.authCodeSentTo")}</p>
+        <button
+          type="button"
+          onClick={() => void editNumber()}
+          className="glass-chip text-sm font-medium text-ink"
+        >
+          <bdi dir="ltr" className="inline-block tracking-widest">
+            {activeChallenge?.masked_mobile}
+          </bdi>
+        </button>
+      </div>
+
+      {/* CODE */}
+      <div className="mt-8 flex w-full flex-col gap-5">
+        <p className="text-center text-xs text-ink-muted">
+          {t("auth.enterFourDigits")}
+        </p>
+
+        <OtpInput setValue={setOtp} key={resetKey} />
+
+        <div className="flex items-center justify-between">
+          <button
+            type="button"
+            onClick={() => void editNumber()}
+            className="flex cursor-pointer items-center gap-1 text-sm text-link"
+          >
+            <Image
+              width={16}
+              height={16}
+              alt={t("auth.editNumber")}
+              src="/assets/icons/edit/blue_edit_pen.svg"
+            />
+            <span>{t("auth.editNumber")}</span>
+          </button>
+
+          {hasExpired ? (
+            <button
+              type="button"
+              disabled={isResending}
+              onClick={resendCode}
+              className="glass-chip cursor-pointer text-sm font-medium text-link disabled:opacity-50"
+            >
+              {t("auth.sendAgain")}
+            </button>
+          ) : (
+            <div className="glass-chip flex items-center gap-2 text-xs text-ink-muted">
+              <span>{t("auth.codeExpiTime")}</span>
+              <bdi dir="ltr" className="font-medium text-ink">
+                {countdown.minutes}:{countdown.seconds}
+              </bdi>
+            </div>
+          )}
+        </div>
+
+        <Button
+          width="w-full"
+          onClick={submit}
+          loading={isSubmitting}
+          disabled={isSubmitting}
+          containerClass="mt-2 w-full"
+          roundedClass="rounded-20"
+          btnClass="auth-primary-button !py-4"
+          title={t("common.enterAndMoveOn")}
+        />
+      </div>
+    </>
+  );
+};
+
+export default AuthOtpCard;

@@ -1,0 +1,126 @@
+"use client";
+
+import { useMemo, useRef, useState, useSyncExternalStore } from "react";
+import { reservedKeysFromDates } from "@features/reservations/lib/stay-range";
+import { useStaySearchParams } from "@features/reservations/hooks/useStaySearchParams";
+import { STAY_MONTH_HORIZON } from "@features/reservations/lib/stay-months";
+import { useReservedDates } from "@features/properties/hooks/useReservedDates";
+import { isCompleteRange } from "@features/reservations/lib/stay-range";
+import { useTranslations } from "next-intl";
+import { stayMonths } from "@features/reservations/lib/stay-months";
+import { Icon } from "@elements/Icon";
+
+import type { StayRange } from "@features/reservations/lib/stay-range";
+import type { StayCalendarSectionProps } from "@/types/components/modules/property-booking";
+
+import StayCalendarGrid from "./parts/StayCalendarGrid.client";
+import StayCalendarLegend from "./parts/StayCalendarLegend";
+
+const SWIPE_PX = 50;
+const DESKTOP_QUERY = "(min-width: 768px)";
+
+const subscribeToDesktop = (notify: () => void) => {
+  const query = window.matchMedia(DESKTOP_QUERY);
+  query.addEventListener("change", notify);
+  return () => query.removeEventListener("change", notify);
+};
+
+const useIsDesktop = () =>
+  useSyncExternalStore(
+    subscribeToDesktop,
+    () => window.matchMedia(DESKTOP_QUERY).matches,
+    () => false,
+  );
+const NAV_BUTTON_CLASS =
+  "absolute top-0 z-1 flex size-11 cursor-pointer items-center justify-center rounded-full border border-line-strong bg-surface transition-colors hover:bg-surface-muted focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-focus disabled:cursor-not-allowed disabled:opacity-40";
+
+const StayCalendarSection = ({ propertyId }: StayCalendarSectionProps) => {
+  const t = useTranslations("common");
+
+  const { setStay, stay } = useStaySearchParams();
+  const { data: reservedDates } = useReservedDates(propertyId);
+  const reserved = useMemo(
+    () => reservedKeysFromDates(reservedDates),
+    [reservedDates],
+  );
+
+  const isDesktop = useIsDesktop();
+  const visibleMonths = isDesktop ? 2 : 1;
+  const [offset, setOffset] = useState(0);
+  const [draftRange, setDraftRange] = useState<StayRange | null>(null);
+  const touchStart = useRef<number | null>(null);
+
+  const range: StayRange = draftRange ?? stay ?? {};
+  const canPrev = offset > 0;
+  const canNext = offset < STAY_MONTH_HORIZON - visibleMonths;
+  const months = useMemo(
+    () =>
+      stayMonths(
+        Math.min(offset, STAY_MONTH_HORIZON - visibleMonths),
+        visibleMonths,
+      ),
+    [offset, visibleMonths],
+  );
+
+  const onChange = (next: StayRange) => {
+    if (isCompleteRange(next)) {
+      setDraftRange(null);
+      setStay(next);
+      return;
+    }
+    setDraftRange(next);
+  };
+
+  const onTouchEnd = (clientX: number) => {
+    if (touchStart.current === null) return;
+    const delta = clientX - touchStart.current;
+    touchStart.current = null;
+    if (delta < -SWIPE_PX && canNext) setOffset((value) => value + 1);
+    if (delta > SWIPE_PX && canPrev) setOffset((value) => value - 1);
+  };
+
+  return (
+    <div className="flex flex-col gap-4">
+      {/* The arrows share the month-title row instead of floating above the grid. */}
+      <div
+        className="relative"
+        onTouchStart={(event) => {
+          touchStart.current = event.touches[0]?.clientX ?? null;
+        }}
+        onTouchEnd={(event) =>
+          onTouchEnd(event.changedTouches[0]?.clientX ?? 0)
+        }
+      >
+        <button
+          type="button"
+          disabled={!canPrev}
+          className={`${NAV_BUTTON_CLASS} start-0`}
+          aria-label={t("lastMonth")}
+          onClick={() => setOffset((value) => value - 1)}
+        >
+          <Icon name="chevron-down" size={16} className="-rotate-90 ltr:rotate-90" />
+        </button>
+        <button
+          type="button"
+          disabled={!canNext}
+          className={`${NAV_BUTTON_CLASS} end-0`}
+          aria-label={t("nextMonth")}
+          onClick={() => setOffset((value) => value + 1)}
+        >
+          <Icon name="chevron-down" size={16} className="rotate-90 ltr:-rotate-90" />
+        </button>
+        <StayCalendarGrid
+          range={range}
+          months={months}
+          reserved={reserved}
+          onChange={onChange}
+          propertyId={propertyId}
+          columns={isDesktop ? 2 : 1}
+        />
+      </div>
+      <StayCalendarLegend />
+    </div>
+  );
+};
+
+export default StayCalendarSection;

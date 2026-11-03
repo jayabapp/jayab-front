@@ -1,0 +1,219 @@
+"use client";
+
+import { useEffect, useRef, useState } from "react";
+import { getUploadedImageUrl } from "@features/upload/mappers/upload-image.mapper";
+import { useAttachmentUpload } from "@features/upload/hooks/useAttachmentUpload";
+import {
+  IMAGE_UPLOAD_ACCEPT,
+  imageUploadMaxDimension,
+  prepareImageUpload,
+} from "@features/upload/lib/image-upload";
+import { useTranslations } from "next-intl";
+import { ImageCropModal } from "@elements/Upload";
+import { uploadErrorKey } from "@features/upload/lib/upload-error";
+import { BtnLoading } from "@elements/Button";
+import { toast } from "sonner";
+
+import type { AuthUploadFieldProps } from "@/types/components/modules/property-media";
+import type { ReactEventHandler } from "react";
+
+import ProfileImageModal from "@features/auth/components/ProfileImageModal";
+import Image from "next/image";
+import ImageUploadHint from "../parts/ImageUploadHint";
+
+import "react-advanced-cropper/dist/style.css";
+
+const resolveProfileImage = (item: any, derivative?: "thumbnail") => {
+  if (typeof item === "string") return item;
+  if (item?.file_location) return item.file_location;
+  return getUploadedImageUrl(item, derivative);
+};
+
+const AuthUploader = ({
+  item,
+  link,
+  title,
+  disabled,
+  onSelect,
+  onDelete,
+  cropRatio,
+  containerClass,
+  type = "image",
+}: AuthUploadFieldProps) => {
+  const t = useTranslations("common");
+
+  const imagePickerRef = useRef<HTMLInputElement>(null);
+  const [loading, setLoading] = useState(false);
+  const [show, setShow] = useState(false);
+  const [showImage, setShowImage] = useState("");
+  const [selectedFile, setselectedFile] = useState<string | null>(null);
+  const uploadControllerRef = useRef<AbortController | null>(null);
+
+  const { mutate } = useAttachmentUpload();
+
+  useEffect(
+    () => () => {
+      uploadControllerRef.current?.abort();
+      if (selectedFile) URL.revokeObjectURL(selectedFile);
+    },
+    [selectedFile],
+  );
+
+  const uploadTemp = async (file: Blob) => {
+    setLoading(true);
+    uploadControllerRef.current?.abort();
+    const controller = new AbortController();
+    uploadControllerRef.current = controller;
+    try {
+      if (!!file) {
+        var formData = new FormData();
+        formData.append("file", file);
+        mutate(
+          { formData: formData, link: link, signal: controller.signal },
+          {
+            onSuccess: (e) => {
+              if (controller.signal.aborted) return;
+              setLoading(false);
+              onSelect(e?.result);
+              if (selectedFile) URL.revokeObjectURL(selectedFile);
+              setselectedFile(null);
+            },
+            onError: (error) => {
+              if (controller.signal.aborted) return;
+              setLoading(false);
+              const key = uploadErrorKey(error);
+              if (key) toast.error(t(key));
+            },
+          },
+        );
+      }
+    } finally {
+      file = null as any;
+    }
+  };
+
+  const pick: ReactEventHandler = async (e) => {
+    const target = e.target as HTMLInputElement;
+    const file = target?.files ? target?.files[0] : null;
+    if (!file) return;
+    try {
+      const uploadable = type === "image" ? prepareImageUpload(file) : file;
+      if (selectedFile) URL.revokeObjectURL(selectedFile);
+      setselectedFile(URL.createObjectURL(uploadable));
+    } catch (error) {
+      const key = uploadErrorKey(error);
+      if (key) toast.error(t(key));
+    }
+  };
+
+  const onHide = () => {
+    uploadControllerRef.current?.abort();
+    if (selectedFile) URL.revokeObjectURL(selectedFile);
+    setselectedFile(null);
+  };
+
+  return (
+    <div
+      className={`flex w-fit flex-col gap-2 ${containerClass}`}
+      style={{ zIndex: "4 !important" }}
+    >
+      <div className="flex w-fit flex-col relative items-center justify-start rounded-20 ">
+        <input
+          className="  hidden "
+          type="file"
+          accept={type === "image" ? IMAGE_UPLOAD_ACCEPT : undefined}
+          id={`formFile-${type}`}
+          ref={imagePickerRef}
+          onChange={pick}
+          onClick={(e) => {
+            const target = e.target as HTMLInputElement;
+            target.value = "";
+          }}
+        />
+        {typeof onSelect == "function" && item == null && (
+          <div
+            onClick={() => {
+              !disabled ? imagePickerRef?.current?.click() : void null;
+            }}
+            className="cursor-pointer bg-surface-muted flex flex-col items-center  gap-1      relative transition-all duration-150 ease-in-out  hover:border-action  justify-center rounded-10  aspect-square  h-24 w-24"
+          >
+            <Image
+              width={32}
+              height={32}
+              alt={t("chooseImage")}
+              className="w-8 opacity-70"
+              src="/assets/images/uploader/uploader_placeholder.png"
+            />
+
+            {title && <p className=" text-sm  opacity-70 ">{title}</p>}
+            {loading ? (
+              <div className="w-full h-full absolute top-0 end-0 rounded-20  flex items-center justify-center   backdrop-blur-md">
+                <BtnLoading />{" "}
+              </div>
+            ) : (
+              <></>
+            )}
+          </div>
+        )}
+        {!item ? (
+          <></>
+        ) : (
+          <div className="  rounded-20   overflow-hidden  flex flex-col items-center relative ">
+            <div
+              onClick={() => {
+                setShow(true);
+                setShowImage(resolveProfileImage(item));
+              }}
+              className="cursor-pointer border   bg-whiteGray-100    rounded-20  aspect-square relative   h-24 w-24 "
+            >
+              <Image
+                width={96}
+                height={96}
+                alt={title || t("profilePhoto")}
+                src={resolveProfileImage(item, "thumbnail")}
+                className="object-cover  w-full bg-gradient-to-b rounded-20  aspect-square max-w-max  "
+              />
+            </div>
+            <div
+              className=" p-1 bg-surface    rounded-lg cursor-pointer absolute bottom-4 end-4 "
+              onClick={onDelete}
+            >
+              <Image
+                width={16}
+                height={16}
+                alt={t("removeImage")}
+                src="/assets/icons/uploader/TrashIcon.svg"
+              />
+            </div>
+          </div>
+        )}
+      </div>
+      {type === "image" ? <ImageUploadHint link={link} /> : null}
+      {show && (
+        <ProfileImageModal
+          src={showImage}
+          onClose={() => setShow(false)}
+          onDelete={() => {
+            onDelete();
+            setShow(false);
+          }}
+        />
+      )}
+
+      {!!selectedFile ? (
+        <ImageCropModal
+          onHide={onHide}
+          cropRatio={cropRatio}
+          maxDimension={imageUploadMaxDimension(link)}
+          isUploading={loading}
+          onComplete={uploadTemp}
+          imageUrl={selectedFile || ""}
+        />
+      ) : (
+        <></>
+      )}
+    </div>
+  );
+};
+
+export default AuthUploader;

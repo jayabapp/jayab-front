@@ -1,0 +1,249 @@
+import type { PropertyDetailsView } from "@/types/features/properties";
+import type { SinglePropDto } from "@/api_services/property/property.interface";
+import type { StaticIconRef } from "@/types/components/elements/static-icon";
+export type { SinglePropDto } from "@/api_services/property/property.interface";
+import type { AmenityItem } from "@features/properties/mappers/amenities.mapper";
+import type { DeviceInfo } from "@/helpers/device.detector";
+import type { ReactNode } from "react";
+import type { IconName } from "@/types/components/elements/icon";
+import type { Locale } from "@/i18n/config";
+
+export type ListingSectionProps = {
+  id: string;
+  title: string;
+  divider?: boolean;
+  action?: ReactNode;
+  children: ReactNode;
+};
+
+export type IconListItemProps = {
+  label: string;
+  icon?: IconName;
+  labelLang?: Locale;
+  state?: "on" | "off";
+  staticIcon?: StaticIconRef | null;
+};
+
+export type RuleItemProps = {
+  label: string;
+  allowed: boolean;
+  labelLang?: Locale;
+  descriptionLang?: Locale;
+  description?: string | null;
+};
+
+export type ListingGlyphProps = {
+  size: 20 | 24;
+  name: IconName;
+  className?: string;
+};
+
+export type MiniInfoCardProps = {
+  title: string;
+  icon: IconName;
+  className?: string;
+  note?: string | null;
+  value?: string | number | null;
+};
+
+export type ShowAllButtonProps = {
+  label: string;
+  onClick: () => void;
+};
+
+export type ClampTextProps = {
+  lang?: Locale;
+  className?: string;
+  children: ReactNode;
+  lines?: 2 | 3 | 4 | 5 | 6;
+};
+
+export type ListingHeaderProps = {
+  property: PropertyDetailsView;
+  breadcrumbs: Array<{ link: string; title: string }>;
+};
+
+export type TrustBadgesProps = {
+  className?: string;
+  property: PropertyDetailsView;
+};
+
+export type TrustBadge = {
+  icon: IconName;
+  label: string;
+  iconClass: string;
+};
+
+export type ListingActionButtonProps = {
+  className?: string;
+  children?: ReactNode;
+};
+
+export type ListingActionsProps = {
+  code: string;
+  slug: string;
+  propertyId: number;
+  favoriteCount: number;
+};
+
+export type SectionTab = {
+  id: string;
+  label: string;
+};
+
+export type SectionTabsProps = {
+  tabs: ReadonlyArray<SectionTab>;
+};
+
+export type AmenitiesModalProps = {
+  show: boolean;
+  onHide: () => void;
+  amenities: AmenityItem[];
+};
+
+export type CancellationSummaryProps = {
+  cancelingType?: SinglePropDto["canceling_type"];
+};
+
+export type LocationSectionProps = {
+  place: string;
+  latitude?: number;
+  longitude?: number;
+  approxLocation?: SinglePropDto["approx_location"];
+};
+
+export type LocationNavigateLinkProps = {
+  latitude: number;
+  longitude: number;
+  className?: string;
+};
+
+export type HostCardProps = {
+  name?: string;
+  nameLang?: Locale;
+  isOnline?: boolean;
+  isAuthorized?: boolean;
+  avatar?: PropertyDetailsView["ownerAvatar"];
+  since?: PropertyDetailsView["ownerSince"];
+};
+
+export type PropertyDetailsContentProps = {
+  devices?: DeviceInfo;
+  property: SinglePropDto;
+};
+
+export type PropertySpecsProps = {
+  devices?: DeviceInfo;
+  property: SinglePropDto;
+};
+
+export type PropertySpecsSectionProps = {
+  devices?: DeviceInfo;
+  property: SinglePropDto;
+};
+
+export type SpecOptionProps = {
+  title: string;
+};
+
+export type PropertyTermsBodyProps = {
+  enabled?: boolean;
+  className?: string;
+  prologueClass?: string;
+  property: SinglePropDto;
+};
+
+export type PropertyReportRowProps = {
+  propertyId: number;
+};
+
+export type PropertyReportModalProps = {
+  show: boolean;
+  onHide: () => void;
+  propertyId: number;
+};
+
+export type PropertyBookmarkButtonProps = ListingActionButtonProps & {
+  propertyId: number;
+};
+
+export type PropertyLikeButtonProps = ListingActionButtonProps & {
+  propertyId: number;
+  onCountChange: (delta: number) => void;
+};
+
+export type PropertyOwnerBadgeProps = {
+  name?: string;
+  nameLang?: Locale;
+  isOnline?: boolean;
+  avatar?: PropertyDetailsView["ownerAvatar"];
+};
+
+export type PropertyPriceTagProps = {
+  price: PropertyDetailsView["todayPrice"];
+  sizeClass?: string;
+};
+
+export type PropertyDetailsSkeletonProps = {
+  children?: ReactNode;
+};
+
+export type TOptionGroup = {
+  title: string;
+  options?: string[];
+};
+
+export type PropertySummaryCardProps = {
+  property: PropertyDetailsView;
+};
+
+export type PropertyDescriptionProps = {
+  property: SinglePropDto;
+};
+
+export type TSimilarPropertiesProps = {
+  city?: string;
+  propertyId: number;
+  children?: ReactNode;
+};
+
+export type RelatedLandingLinksProps = {
+  city?: string;
+  seoLinks?: { villa?: string | null; pool?: string | null };
+};
+
+export type TTimelineColor = "success" | "warning" | "danger";
+
+export type TTimelineStep = {
+  title: string;
+  description?: string;
+  color: TTimelineColor;
+};
+
+export type TParsedPolicy = {
+  description?: string;
+  steps: TTimelineStep[];
+};
+
+export type TStepMarkerProps = {
+  index: number;
+  color: TTimelineColor;
+};
+
+export type TSurrounding = {
+  label: string;
+  value: string;
+  valueLang?: Locale;
+};
+
+export type TKeyFact = {
+  icon: IconName;
+  title: string;
+  note?: string;
+};
+
+export type TExtraCost = {
+  icon: IconName;
+  label: string;
+  amount: number;
+};

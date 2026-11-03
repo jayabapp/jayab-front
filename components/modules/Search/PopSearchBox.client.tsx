@@ -1,0 +1,110 @@
+"use client";
+
+import { Suspense, useState } from "react";
+import { useSearchPanel } from "@features/search/hooks/useSearchPanel";
+import { ContentImage } from "@elements/Image";
+
+import type { PopSearchBoxProps } from "@/types/components/modules/search";
+
+import SearchQueryParamSync from "./parts/SearchQueryParamSync.client";
+import SearchOverlay from "./parts/SearchOverlay.client";
+
+const OPEN_PANEL_CLASS =
+  "w-full top-0 min-h-[25dvh] max-h-[90dvh] lg:max-h-[50dvh] xl:h-auto xl:absolute opacity-100 min-w-[25dvw] lg:min-h-[25dvh]";
+const CLOSED_PANEL_CLASS =
+  "top-[-200dvh] xl:top-0 -z-50 xl:hidden h-0 xl:opacity-0";
+
+const PopSearchBox = ({
+  item,
+  onSubmit,
+  initValue,
+  justIcon = false,
+  boxId = "SEARCH_BOX",
+  placeholder = "search...",
+  containerClass = " w-full md:w-[80%] mx-auto",
+}: PopSearchBoxProps) => {
+  const [showPop, setShowPop] = useState(false);
+  const {
+    activeIndex,
+    close,
+    hasOpened,
+    inputRef,
+    isLoading,
+    isPending,
+    isStale,
+    listRef,
+    onKeyDown,
+    onSearchParam,
+    open,
+    options,
+    pick,
+    setActiveIndex,
+    setTerm,
+    submit,
+    term,
+  } = useSearchPanel({
+    initValue,
+    isOpen: showPop,
+    onOpenChange: setShowPop,
+    onSubmit,
+  });
+
+  return (
+    <div className={`${containerClass} relative`}>
+      <Suspense>
+        <SearchQueryParamSync onSearchParam={onSearchParam} />
+      </Suspense>
+
+      {justIcon ? (
+        <button type="button" onClick={open} aria-label={placeholder}>
+          <ContentImage
+            alt=""
+            width={20}
+            height={20}
+            src="/assets/icons/edit/magnifier.svg"
+          />
+        </button>
+      ) : (
+        <button
+          id={boxId}
+          type="button"
+          onClick={open}
+          className={`bg-transparent border rounded-20 px-4 py-1.5 w-full overflow-hidden flex justify-between items-center ${item?.bg ?? ""}`}
+        >
+          <span className="flex items-center gap-1 w-full">
+            <span
+              className={`bg-transparent text-base lg:text-sm line-clamp-1 py-1 pe-3 ps-0.5 w-full text-start ${term ? "" : "opacity-50"}`}
+            >
+              {term || placeholder}
+            </span>
+          </span>
+          <span className="inline-flex w-1/5 justify-end" />
+        </button>
+      )}
+
+      <SearchOverlay
+        term={term}
+        boxId={boxId}
+        onPick={pick}
+        onClose={close}
+        isOpen={showPop}
+        onSubmit={submit}
+        options={options}
+        listRef={listRef}
+        inputRef={inputRef}
+        isStale={isStale}
+        isLoading={isLoading}
+        isPending={isPending}
+        onKeyDown={onKeyDown}
+        hasOpened={hasOpened}
+        onTermChange={setTerm}
+        onHover={setActiveIndex}
+        activeIndex={activeIndex}
+        placeholder={placeholder}
+        panelClass={showPop ? OPEN_PANEL_CLASS : CLOSED_PANEL_CLASS}
+      />
+    </div>
+  );
+};
+
+export default PopSearchBox;

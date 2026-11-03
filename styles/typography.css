@@ -1,0 +1,68 @@
+
+:where(:lang(fa)) {
+  font-feature-settings: "ss01";
+}
+
+:where(:lang(ar), :lang(en)) {
+  font-feature-settings: normal;
+}
+
+body:lang(en),
+[lang]:lang(en) {
+  font-family:
+    ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial,
+    var(--font-fa), sans-serif;
+}
+
+/* Persian block inside a page of another language keeps the Persian family. */
+[lang]:lang(fa):not(html) {
+  font-family: var(--font-fa), sans-serif;
+}
+
+:where(:lang(fa)) {
+  --ui-body-size: 0.875rem;
+  --ui-body-leading: 1.25rem;
+  --ui-caption-size: 0.75rem;
+  --ui-caption-leading: 1rem;
+  --ui-heading-size: 1.125rem;
+  --ui-heading-leading: 1.75rem;
+}
+
+:where(:lang(ar)) {
+  --ui-body-size: 0.875rem;
+  --ui-body-leading: 1.75;
+  --ui-caption-size: 0.75rem;
+  --ui-caption-leading: 1.6;
+  --ui-heading-size: 1.125rem;
+  --ui-heading-leading: 1.6;
+}
+
+:where(:lang(en)) {
+  --ui-body-size: 0.875rem;
+  --ui-body-leading: 1.5;
+  --ui-caption-size: 0.75rem;
+  --ui-caption-leading: 1.4;
+  --ui-heading-size: 1.125rem;
+  --ui-heading-leading: 1.4;
+}
+
+.ui-body {
+  font-size: var(--ui-body-size);
+  line-height: var(--ui-body-leading);
+}
+
+.ui-caption {
+  font-size: var(--ui-caption-size);
+  line-height: var(--ui-caption-leading);
+}
+
+.ui-heading {
+  font-size: var(--ui-heading-size);
+  line-height: var(--ui-heading-leading);
+}
+
+.text-latin-code {
+  direction: ltr;
+  unicode-bidi: isolate;
+  font-variant-numeric: tabular-nums;
+}

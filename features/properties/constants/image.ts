@@ -1,0 +1,2 @@
+export const PROPERTY_IMAGE_QUALITY = 85;
+export const PROPERTY_DETAIL_IMAGE_QUALITY = 90;

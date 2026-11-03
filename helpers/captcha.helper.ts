@@ -1,6 +1,8 @@
-import { useRef } from "react";
+import { useCallback, useRef } from "react";
 
-export const recaptchaGenerator: (
+const CAPTCHA_CHARACTERS = "A,B,C,D,E,F,G,H,I,J,K,L,M,N,O,P,Q,R,S,T,U,V,W,X,Y,Z,0,1,2,3,4,5,6,7,8,9".split(",");
+
+export const useRecaptchaGenerator: (
   captchaLength?: number,
   linesCount?: number,
   dotCount?: number,
@@ -13,12 +15,10 @@ export const recaptchaGenerator: (
 ) => {
   const captchaArray = useRef<string[]>([]);
 
-  const LETTERS = "A,B,C,D,E,F,G,H,I,J,K,L,M,N,O,P,Q,R,S,T,U,V,W,X,Y,Z,0,1,2,3,4,5,6,7,8,9";
-  const SPLIT_LETTERS = LETTERS.split(",");
-  const SPLIT_LETTERS_LENGTH = SPLIT_LETTERS.length;
+  const charactersLength = CAPTCHA_CHARACTERS.length;
   const canvasWidth = 40 * captchaLength;
   const canvasHeight = 50;
-  function regenerate() {
+  const regenerate = useCallback(() => {
     const canvas = <HTMLCanvasElement>document?.getElementById(canvasId);
     if (!canvas) return;
     const context = canvas.getContext("2d");
@@ -28,9 +28,9 @@ export const recaptchaGenerator: (
 
     captchaArray.current = [];
     for (let i = 0; i < captchaLength; i++) {
-      let sIndex = Math.floor(Math.random() * SPLIT_LETTERS_LENGTH);
+      let sIndex = Math.floor(Math.random() * charactersLength);
       let sDeg = (Math.random() * 30 * Math.PI) / 180;
-      let cTxt = SPLIT_LETTERS[sIndex];
+      let cTxt = CAPTCHA_CHARACTERS[sIndex];
       captchaArray.current.push(cTxt?.toLowerCase());
       let x = 20 + i * (canvasWidth / captchaLength);
       let y = canvasHeight / 2 + Math.random() * 8;
@@ -58,10 +58,10 @@ export const recaptchaGenerator: (
       context.lineTo(x + 1, y + 1);
       context.stroke();
     }
-  }
-  const validateCaptcha = (text: string) => {
+  }, [canvasHeight, canvasId, canvasWidth, captchaLength, charactersLength, dotCount, linesCount]);
+  const validateCaptcha = useCallback((text: string) => {
     return text?.toLowerCase() == captchaArray?.current?.toString()?.replace(/\,/g, "");
-  };
+  }, []);
   return { regenerate, validateCaptcha };
 };
 

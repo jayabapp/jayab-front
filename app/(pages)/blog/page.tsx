@@ -1,0 +1,36 @@
+import { dehydrate, HydrationBoundary } from "@tanstack/react-query";
+import { getServerContentCategory } from "@features/home/server/home.server";
+import { getServerContentList } from "@features/home/server/home.server";
+import { blogListOptions } from "@features/home/api/home.options";
+import { Metadata } from "next";
+
+import MehaHeaderHelper from "@/helpers/MetaHeaderHelper";
+import BlogListTemplate from "@templates/BlogList";
+import getQueryClient from "@lib/query/query-client";
+import IntlNamespaces from "@/i18n/IntlNamespaces";
+
+export async function generateMetadata(): Promise<Metadata> {
+  const { data: blogContent } = await getServerContentCategory("blog");
+  return MehaHeaderHelper(blogContent);
+}
+
+const BlogsPage = async () => {
+  const { data: blogs } = await getServerContentList("blog", 1, 18, true);
+  const queryClient = getQueryClient();
+  if (blogs?.data) {
+    queryClient.setQueryData(blogListOptions(18).queryKey, {
+      pages: [blogs],
+      pageParams: [1],
+    });
+  }
+
+  return (
+    <IntlNamespaces namespaces={["content"]}>
+      <HydrationBoundary state={dehydrate(queryClient)}>
+        <BlogListTemplate />
+      </HydrationBoundary>
+    </IntlNamespaces>
+  );
+};
+
+export default BlogsPage;

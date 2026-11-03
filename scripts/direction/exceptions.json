@@ -1,0 +1,11 @@
+{
+  "components/elements/Carousel/EmblaCarouselArrowButtons.client.tsx": "carousel arrows sit on the physical side they point to; arrowSides() maps the action to the reading direction",
+  "components/elements/Carousel/SwiperWithNavigation.client.tsx": "same as above, for the Swiper-library strip",
+  "components/elements/Carousel/Swiper.client.tsx": "arrow offsets override the physical arrow buttons",
+  "components/elements/Pagination/ServerSidePaginate.tsx": "page numbers are always LTR (container has the ltr class)",
+  "components/elements/Toast/Toast.tsx": "sonner places the toast with physical left/right; chosen from document.dir",
+  "components/modules/AdvisorSubscription/parts/AdvisorSpecialFields.client.tsx": "LTR data fields (links, handles) are left-aligned on purpose",
+  "components/modules/TestAccessManager/TestAccessManager.client.tsx": "LTR code input",
+  "components/modules/PropertyGallery/PropertyPhotoViewer.client.tsx": "arrows are physical and swapped by the rtl flag",
+  "components/modules/PropertyGrid/PropertyPrice.tsx": "diagonal corner ribbon is rotated physically (-rotate-45)"
+}

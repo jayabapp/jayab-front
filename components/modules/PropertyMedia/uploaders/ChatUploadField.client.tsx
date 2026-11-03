@@ -1,0 +1,266 @@
+"use client";
+
+import { useEffect, useRef, useState } from "react";
+import { useAttachmentUpload } from "@features/upload/hooks/useAttachmentUpload";
+import { uploadErrorKey } from "@features/upload/lib/upload-error";
+import { useTranslations } from "next-intl";
+import { BtnLoading } from "@elements/Button";
+import { FormInput } from "@elements/Form";
+import { toast } from "sonner";
+
+import type { ChatUploadFieldProps } from "@/types/components/modules/property-media";
+import type { ReactEventHandler } from "react";
+
+import Modal from "@elements/Modal";
+import Image from "next/image";
+
+const ChatUploader = ({
+  link,
+  item,
+  chatId,
+  onSelect,
+  disabled,
+  sendMessage,
+  type = "image",
+  containerClass,
+}: ChatUploadFieldProps) => {
+  const t = useTranslations("common");
+
+  const imagePickerRef = useRef<HTMLInputElement>(null);
+  const [loading, setLoading] = useState(false);
+  const [subLoading, setSubLoading] = useState(false);
+  const [, setNewCrop] = useState<any>();
+  const [selectedFile, setselectedFile] = useState<File | null>(null);
+  const [isCropping, setisCropping] = useState(false);
+  const imgRef = useRef<HTMLImageElement>(null);
+  const [caption, setCaption] = useState<string>("");
+  const [previewUrl, setPreviewUrl] = useState("");
+  const uploadControllerRef = useRef<AbortController | null>(null);
+  const { mutate } = useAttachmentUpload();
+
+  useEffect(
+    () => () => {
+      uploadControllerRef.current?.abort();
+      if (previewUrl) URL.revokeObjectURL(previewUrl);
+    },
+    [previewUrl],
+  );
+
+  const submit = (image: any) => {
+    if (chatId) {
+      const body: {
+        id: string | number;
+        text: string;
+        media_id?: number;
+        optimisticMedia?: any;
+      } = {
+        id: chatId,
+        text: caption,
+      };
+      if (!!image) {
+        body.media_id = Number(image?.id);
+        body.optimisticMedia = image;
+      }
+
+      sendMessage(body, {
+        onSuccess: () => {
+          setLoading(false);
+          setSubLoading(false);
+          if (previewUrl) URL.revokeObjectURL(previewUrl);
+          setPreviewUrl("");
+          setselectedFile(null);
+          setNewCrop(null);
+          setCaption("");
+        },
+        onError: () => {
+          setLoading(false);
+          setSubLoading(false);
+          setNewCrop(null);
+        },
+      });
+    }
+  };
+
+  const uploadTemp = async (file: Blob) => {
+    setLoading(true);
+    uploadControllerRef.current?.abort();
+    const controller = new AbortController();
+    uploadControllerRef.current = controller;
+    var formData = new FormData();
+    formData.append("file", file);
+    mutate(
+      { formData: formData, link: link, signal: controller.signal },
+      {
+        onSuccess: (e) => {
+          if (controller.signal.aborted) return;
+          submit(e?.result);
+        },
+        onError: (error) => {
+          if (controller.signal.aborted) return;
+          setLoading(false);
+          const key = uploadErrorKey(error);
+          if (key) toast.error(t(key));
+        },
+      },
+    );
+  };
+
+  const pick: ReactEventHandler = async (e) => {
+    const target = e.target as HTMLInputElement;
+    const file = target?.files ? target?.files[0] : null;
+    if (!file) return;
+    if (type == "image" && !file.type?.includes("image/"))
+      return toast.error(t("useImageFile"));
+    if (type == "image" && file.name.split(".")[1] == "jfif")
+      return toast.error(t("useValidImageFile"));
+    else {
+      if (previewUrl) URL.revokeObjectURL(previewUrl);
+      setPreviewUrl(URL.createObjectURL(file));
+      setselectedFile(file);
+    }
+  };
+  async function uploadImage() {
+    setSubLoading(true);
+    if (!!selectedFile) uploadTemp(selectedFile);
+    else setSubLoading(false);
+  }
+
+  const onHide = () => {
+    uploadControllerRef.current?.abort();
+    if (previewUrl) URL.revokeObjectURL(previewUrl);
+    setPreviewUrl("");
+    setselectedFile(null);
+    setisCropping(false);
+  };
+
+  return (
+    <div
+      className={`flex w-fit  ${containerClass}`}
+      style={{ zIndex: "4 !important" }}
+    >
+      <div className="flex w-fit flex-col items-center justify-start rounded-20">
+        <input
+          className="  hidden "
+          type="file"
+          id={`formFile-${type}`}
+          ref={imagePickerRef}
+          onChange={pick}
+          onClick={(e) => {
+            const target = e.target as HTMLInputElement;
+            target.value = "";
+          }}
+        />
+        {typeof onSelect == "function" &&
+          item == null &&
+          (loading ? (
+            <div className="w-full h-full absolute top-0 end-0 rounded-20 flex items-center justify-center backdrop-blur-md">
+              <BtnLoading />{" "}
+            </div>
+          ) : (
+            <div className="aspect-square shrink-0 md:w-6 items-center justify-center flex text-ink-subtle h-5 w-5 md:h-6">
+              {" "}
+              <Image
+                alt="PaperClipIcon"
+                src="/assets/icons/chat/chat_clip.svg"
+                className="  aspect-square shrink-0 md:w-6 text-ink-subtle h-5 w-5 md:h-6"
+                onClick={() => {
+                  !disabled ? imagePickerRef?.current?.click() : void null;
+                }}
+                width={24}
+                height={24}
+              />
+            </div>
+          ))}
+      </div>
+
+      <Modal
+        show={!!selectedFile ? true : false}
+        options={{
+          containerClass:
+            "mx-auto my-0  bg-neutral-800  !h-fit  w-11/12 md:w-1/2 xl:w-1/3 2xl:w-1/4 rounded-2xl overflow-y-scroll  ",
+        }}
+        onHide={onHide}
+      >
+        <div
+          className="flex items-center justify-center min-h-[60dvh]"
+          style={{
+            position: "relative",
+            width: "100%",
+          }}
+        >
+          {!!selectedFile && (
+            <>
+              <Image
+                ref={imgRef}
+                unoptimized
+                width={1024}
+                height={1024}
+                src={previewUrl}
+                alt={t("imagePreview")}
+                sizes="(min-width: 1280px) 25vw, (min-width: 768px) 50vw, 92vw"
+                className="max-h-[60dvh] bg-neutral-800 object-contain xl:max-h-[70dvh]"
+              />
+            </>
+          )}
+        </div>
+        <FormInput
+          value={caption}
+          onChangeText={(e) => setCaption(e)}
+          item={{
+            inputClass: " !bg-neutral-800 !text-white",
+            containerClass: " !bg-neutral-800 px-4",
+            placeholder: t("messageText"),
+          }}
+        />
+        <div className="w-full grid overflow-clip p-2 gap-2 items-center  bg-neutral-800 justify-center grid-cols-2 ">
+          <div
+            onClick={() => {
+              if (!subLoading) uploadImage();
+            }}
+            className={`transition-all w-full cursor-pointer flex py-1.5 border rounded-xl border-status-success  gap-3 items-center  border-e justify-center`}
+          >
+            {subLoading ? (
+              <div className=" flex items-center justify-center w-full min-h-[1.7rem]">
+                <BtnLoading />
+              </div>
+            ) : (
+              <>
+                <Image
+                  width={20}
+                  height={20}
+                  alt="CheckIcon"
+                  src="/assets/icons/shared/green_check_icon.svg"
+                  className=" items-center justify-center text-center text-status-success border-status-success w-5 "
+                />
+                <p className="text-status-success border-status-success  text-lg font-medium ">
+                  {t("submit")}
+                </p>
+              </>
+            )}
+          </div>
+          <div
+            onClick={() => {
+              if (!isCropping) onHide();
+            }}
+            className="w-full py-1.5 cursor-pointer gap-3  border rounded-xl border-status-danger  flex items-center justify-center"
+          >
+            <Image
+              width={20}
+              height={20}
+              alt="XCircleIcon"
+              className="  text-status-danger w-5 "
+              src="/assets/icons/adds/red_x_mark.svg"
+            />
+            <p className="text-status-danger  text-lg font-medium ">
+              {t("close")}
+            </p>
+          </div>
+        </div>
+
+        <div></div>
+      </Modal>
+    </div>
+  );
+};
+
+export default ChatUploader;

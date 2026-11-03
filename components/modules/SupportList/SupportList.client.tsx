@@ -1,0 +1,88 @@
+"use client";
+
+import { useSupportTickets } from "@features/support/hooks/useSupportTickets";
+import { useTranslations } from "next-intl";
+import { useAuthStore } from "@/store";
+import { useRouter } from "next/navigation";
+
+import SupportCardSkeleton from "./parts/SupportCardSkeleton";
+import SupportListSkeleton from "./parts/SupportListSkeleton";
+import InfiniteScroll from "react-infinite-scroll-component";
+import SupportCard from "./parts/SupportCard";
+import EmptyState from "@elements/EmptyState";
+import Button from "@elements/Button";
+
+const SupportList = () => {
+  const t = useTranslations();
+
+  const { isLogin } = useAuthStore();
+  const router = useRouter();
+  const {
+    fetchNextPage,
+    hasNextPage,
+    isFetchingNextPage,
+    isPending,
+    isError,
+    tickets,
+  } = useSupportTickets("TICKET", Boolean(isLogin));
+
+  const goToLogin = () => router.push("/auth?redirect_url=/profile/support");
+
+  return (
+    <div className="flex flex-col gap-4">
+      {isLogin ? (
+        <>
+          {isPending ? (
+            <SupportListSkeleton />
+          ) : isError ? (
+            <div
+              role="alert"
+              className="rounded-lg bg-status-danger-bg p-4 text-sm text-status-danger"
+            >
+              {t("profile.supportListError")}
+            </div>
+          ) : tickets.length === 0 ? (
+            <EmptyState
+              title={t("profile.emptySupportTitle")}
+              actionRoute="/profile/support/new-ticket"
+              description={t("profile.emptySupportDesc")}
+              actionLabel={t("profile.sendNewTicket")}
+            />
+          ) : (
+            <InfiniteScroll
+              dataLength={tickets.length}
+              hasMore={Boolean(hasNextPage)}
+              next={() => void fetchNextPage()}
+              className="grid grid-cols-1 gap-4 p-4 md:grid-cols-2"
+              loader={isFetchingNextPage ? <SupportCardSkeleton /> : null}
+            >
+              {tickets.map((ticket) => (
+                <SupportCard item={ticket} key={`${ticket.id}tickets`} />
+              ))}
+            </InfiniteScroll>
+          )}
+          <Button
+            variant="outline"
+            width="!font-bold !bg-surface"
+            title={t("profile.sendNewTicket")}
+            onClick={() => router.push("/profile/support/new-ticket")}
+            containerClass="flex items-center justify-center 2xl:justify-start"
+          />
+        </>
+      ) : (
+        <div className="flex w-full flex-col items-center justify-center gap-4">
+          <h2 className="text-link">{t("profile.hi")}!</h2>
+          <p className="text-sm">{t("profile.forSupportLogin")}</p>
+          <Button
+            width="w-full"
+            onClick={goToLogin}
+            containerClass="mt-8 w-full"
+            title={t("common.loginToUrAccount")}
+          />
+        </div>
+      )}
+    </div>
+  );
+};
+
+export default SupportList;

@@ -1,0 +1,58 @@
+"use client";
+
+import { BreadCrumbSchema } from "@elements/StructuredData";
+
+const SingleProductBreadCrumb = ({
+  dataArray,
+}: {
+  dataArray: { title: string; link: string }[];
+}) => {
+  return (
+    <div id="BREADCRUMB" className={`ps-0 md:ps-0 z-5  w-[90vw]   `}>
+      <BreadCrumbSchema breadcrumbs={dataArray} />
+      <div className="flex w-11/12 gap-1 md:gap-2 flex-wrap">
+        {dataArray?.map((e, index, arr) => (
+          <a
+            title={e?.title}
+            key={e?.link}
+            className="flex flex-row items-center  gap-1 md:gap-2 "
+            href={e?.link}
+          >
+            {" "}
+            <div
+              className="justify-center  cursor-pointer gap-2 flex  rounded-md"
+            >
+              {e?.link == "/" ? <></> : <></>}{" "}
+              <p
+                className={`text-xs md:text-sm transition-colors ${
+                  index == arr?.length - 1
+                    ? "text-ink"
+                    : "text-ink-subtle hover:text-ink"
+                }`}
+              >
+                {e.title}
+              </p>{" "}
+            </div>
+            {index < arr?.length - 1 && (
+              <svg
+                width="8"
+                className="w-[6px] h-[12px] md:w-2 md:h-[14px] mx-0.5 md:mx-2.5 ltr:rotate-180"
+                height="14"
+                viewBox="0 0 8 14"
+                fill="none"
+                xmlns="http://www.w3.org/2000/svg"
+              >
+                <path
+                  d="M7.13395 1.58023L6.07295 0.520235L0.29395 6.29723C0.200796 6.3898 0.126867 6.49988 0.0764193 6.62113C0.0259713 6.74238 0 6.87241 0 7.00373C0 7.13506 0.0259713 7.26509 0.0764193 7.38634C0.126867 7.50759 0.200796 7.61767 0.29395 7.71023L6.07295 13.4902L7.13295 12.4302L1.70895 7.00523L7.13395 1.58023Z"
+                  fill="rgb(var(--c-line-strong))"
+                />
+              </svg>
+            )}
+          </a>
+        ))}
+      </div>
+    </div>
+  );
+};
+
+export default SingleProductBreadCrumb;
