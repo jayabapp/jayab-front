@@ -12,6 +12,8 @@ const TITLE_SIZE = {
 const TITLE_ASSETS = {
   "en-blue": "/assets/icons/logo/title-en-blue-97cb18d05ed5.svg",
   "en-white": "/assets/icons/logo/title-en-white-d5709be66d95.svg",
+  "fa-blue": "/assets/icons/logo/title-fa-blue.svg",
+  "fa-white": "/assets/icons/logo/title-fa-white1.svg",
 } as const;
 
 const BrandTitle = ({
