@@ -3,6 +3,8 @@ import { NewCitiesListDto } from "./city.interface";
 import { apiRoutes } from "@/utils/urls";
 import { apiCall } from "../common/apicall.helper";
 
+import type { Locale } from "@/i18n/config";
+
 export class CityService {
   static CITIES_CACHEKEY = "CITIES";
   static GET_ALL_CITIES_CACHEKEY = "GET_ALL_CITIES";
@@ -19,11 +21,12 @@ export class CityService {
     }
   }
 
-  static async GetCities(dto: { parentId: string | number }) {
+  static async GetCities(dto: { parentId: string | number; locale?: Locale }) {
     try {
-      const result = await apiCall<unknown, ProvienceTypesDto[]>(
+      const result = await apiCall<{ locale?: Locale }, ProvienceTypesDto[]>(
         "GET",
         apiRoutes.CITIES_CHILDEREN(dto.parentId),
+        { locale: dto.locale },
       );
       return result;
     } catch (e) {
@@ -37,6 +40,7 @@ export class CityService {
       depth?: string | null | number;
       is_parent?: string | null | number;
       q?: string | null | number;
+      locale?: Locale;
     },
     signal?: AbortSignal,
   ) {
@@ -47,6 +51,7 @@ export class CityService {
           depth?: string | null | number;
           is_parent?: string | null | number;
           q?: string | null | number;
+          locale?: Locale;
         },
         NewCitiesListDto[]
       >("GET", apiRoutes.CITIES, dto, { signal });

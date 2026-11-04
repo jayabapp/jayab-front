@@ -10,6 +10,8 @@ import { useCurrentLocationQuery } from "@features/cities/hooks/useCurrentLocati
 import { useLocationWords } from "@features/cities/hooks/useLocationWords";
 import { useCitiesStore } from "@/store";
 import { useCityTree } from "@features/cities/hooks/useCityTree";
+import { resolveLocale } from "@/i18n/config";
+import { useLocale } from "next-intl";
 
 export const useLocationLabel = (): string => {
   const words = useLocationWords();
@@ -20,11 +22,15 @@ export const useLocationLabel = (): string => {
   const storedLabel = storedEntries
     ? buildLocationLabel(storedEntries, words)
     : "";
-  const needsTree = hasLocationQuery(location) && !storedLabel;
+  // Stored names are in whatever language the place was picked in, so outside
+  // Persian the translated tree wins once it has loaded.
+  const isPersian = resolveLocale(useLocale()) === "fa";
+  const needsTree =
+    hasLocationQuery(location) && (!storedLabel || !isPersian);
 
   const { data: tree } = useCityTree(needsTree);
 
-  if (storedLabel) return storedLabel;
+  if (storedLabel && (isPersian || !tree)) return storedLabel;
   if (!hasLocationQuery(location)) return "";
   return buildLocationLabel(resolveLocationFromTree(tree, location), words);
 };
