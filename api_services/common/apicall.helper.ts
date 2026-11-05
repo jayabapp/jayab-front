@@ -1,4 +1,5 @@
 import { AxiosRequestConfig, AxiosRequestHeaders } from "axios";
+import { LOCALE_COOKIE, resolveLocale } from "@/i18n/config";
 import { readServerAccessToken } from "./server-token";
 import { baseUrl, baseUrlV } from "@/utils/urls";
 import { translateMessage } from "@lib/i18n/browser-translator";
@@ -11,12 +12,12 @@ type Methods = "POST" | "PUT" | "DELETE" | "PATCH" | "GET";
 
 export type ApiCallOptions = {
   version?: string;
+  timeoutMs?: number;
   passedToken?: string;
   localRoute?: boolean;
   signal?: AbortSignal;
   serverAuth?: boolean;
   showErrorNotification?: boolean;
-  timeoutMs?: number;
   headers?: Record<string, string>;
   progressCallBack?: (e: unknown) => void | null;
 };
@@ -28,6 +29,18 @@ interface SuccessResponse<K> {
 }
 
 const isBrowser = typeof window !== "undefined";
+
+const LOCALE_COOKIE_PATTERN = new RegExp(`(?:^|;\\s*)${LOCALE_COOKIE}=([^;]*)`);
+
+const withReaderLocale = (params: unknown) => {
+  if (!isBrowser) return params;
+  if (params != null && typeof params !== "object") return params;
+  if (params && "locale" in params && params.locale != null) return params;
+  const locale = resolveLocale(
+    document.cookie.match(LOCALE_COOKIE_PATTERN)?.[1],
+  );
+  return locale === "fa" ? params : { ...(params ?? {}), locale };
+};
 const API_TIMEOUT_MS = 20_000;
 let unauthorizedRedirectStarted = false;
 
@@ -63,7 +76,7 @@ export async function apiCall<T, K>(
       onUploadProgress: options?.progressCallBack,
     };
     if (method == "GET") {
-      config.params = body;
+      config.params = options?.localRoute ? body : withReaderLocale(body);
     }
     const response = await axios(config);
 

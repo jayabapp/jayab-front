@@ -1,12 +1,10 @@
 "use client";
 
+import { useCallback, useMemo, useState } from "react";
 import { usePropertyLocationOptions } from "./usePropertyLocationOptions";
 import { useMapAddressSearch } from "@features/map/hooks/useMapAddressSearch";
-import {
-  findAddressNearCity,
-  findCityLocation,
-} from "@features/map/lib/property-location-match";
-import { useCallback, useMemo, useState } from "react";
+import { findAddressNearCity } from "@features/map/lib/property-location-match";
+import { findCityLocation } from "@features/map/lib/property-location-match";
 
 import type { PropInitDto } from "@/types/features/owner-property";
 
@@ -37,15 +35,17 @@ export const usePropertyLocation = (draft?: PropInitDto) => {
       : null;
   }, [draft?.lat, draft?.lng]);
 
-  const { provinces, cities, regions, isLoading: isLoadingPlaces } =
-    usePropertyLocationOptions(draft?.province_id, draft?.city_id);
+  const {
+    provinces,
+    cities,
+    regions,
+    isLoading: isLoadingPlaces,
+  } = usePropertyLocationOptions(draft?.province_id, draft?.city_id, "fa");
   const province = provinces.find((item) => item.id == draft?.province_id);
   const city = cities.find((item) => item.id == draft?.city_id);
   const region = regions.find((item) => item.id == draft?.region_id);
   const needsLookup = Boolean(draft?.id && !savedPoint && !selection.center);
 
-  // Resolve the city first. Street names may also exist near the old Tehran
-  // default center, so a result is accepted only inside the chosen city.
   const locality = useMapAddressSearch(
     [city?.title, province?.title].filter(Boolean).join(" "),
     DEFAULT_CENTER,
@@ -91,12 +91,11 @@ export const usePropertyLocation = (draft?: PropInitDto) => {
 
   const setCenter = useCallback(
     (next: number[]) => {
-      // Initial camera placement also emits moveend; keep the typed address until
-      // the host actually moves the pin or chooses a search result.
       if (
         Math.abs(next[0] - center[0]) < 0.000001 &&
         Math.abs(next[1] - center[1]) < 0.000001
-      ) return;
+      )
+        return;
       setSelection((current) => ({ ...current, center: next }));
     },
     [center],
