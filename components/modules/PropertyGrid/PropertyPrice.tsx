@@ -22,7 +22,7 @@ const PropertyPrice = ({
             background: ribbon?.ribbon_bg_color,
             color: ribbon?.ribbon_title_color,
           }}
-          className="absolute left-[-70px] top-4 z-10 w-[200px] -rotate-45 py-0.5 text-xs flex items-center justify-center text-center font-medium shadow-md"
+          className="absolute end-[-70px] top-4 z-10 w-[200px] -rotate-45 ltr:rotate-45 py-0.5 text-xs flex items-center justify-center text-center font-medium shadow-md"
         >
           {ribbon?.ribbon_title}
         </div>
