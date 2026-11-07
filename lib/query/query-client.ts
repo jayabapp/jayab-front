@@ -11,7 +11,9 @@ const shouldRetryQuery = (failureCount: number, error: unknown) => {
     httpStatus?: number;
     response?: { status?: number };
   };
+
   const status = candidate?.httpStatus ?? candidate?.response?.status;
+
   const isNetworkFailure = [
     "ECONNABORTED",
     "ERR_NETWORK",
@@ -21,17 +23,23 @@ const shouldRetryQuery = (failureCount: number, error: unknown) => {
   return isNetworkFailure || Boolean(status && status >= 500);
 };
 
-export const makeQueryClient = () =>
-  new QueryClient({
+export const makeQueryClient = () => {
+  const isServer = typeof window === "undefined";
+
+  return new QueryClient({
     defaultOptions: {
       queries: {
-        gcTime: GC_TIME.DEFAULT,
+        gcTime: isServer ? Infinity : GC_TIME.DEFAULT,
         staleTime: STALE_TIME.DEFAULT,
         refetchOnWindowFocus: true,
         refetchOnReconnect: true,
         retry: shouldRetryQuery,
       },
-      mutations: { retry: false },
+
+      mutations: {
+        retry: false,
+      },
+
       dehydrate: {
         shouldDehydrateQuery: (query) =>
           defaultShouldDehydrateQuery(query) ||
@@ -39,6 +47,7 @@ export const makeQueryClient = () =>
       },
     },
   });
+};
 
 const getQueryClient = cache(makeQueryClient);
 
