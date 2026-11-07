@@ -1,16 +1,19 @@
+import { getServerContentList } from "@features/home/server/home.server";
 import { LocalBusinessSchema } from "@features/seo/components/Schemas";
-import { apiRoutes, baseUrl } from "@/utils/urls";
-import { REVALIDATE } from "@/helpers/revalidate";
+import { resolveLocale } from "@/i18n/config";
+import { getLocale } from "next-intl/server";
 
 import ContactUsTemplate from "@templates/ContactUs";
 import ContactInfo from "@modules/ContactInfo";
-import serverCall from "@/helpers/serverCall";
 
 const ContactUsPage = async () => {
-  const { data } = await serverCall(
-    baseUrl + apiRoutes.CONTENTS + "?key=contactUs&per_page=20&page=1",
-    undefined,
-    { revalidate: REVALIDATE.CMS_PAGE },
+  const locale = resolveLocale(await getLocale());
+  const { data } = await getServerContentList(
+    "contactUs",
+    1,
+    20,
+    false,
+    locale,
   );
   return (
     <ContactUsTemplate schema={<LocalBusinessSchema />}>
