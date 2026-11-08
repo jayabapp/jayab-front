@@ -39,7 +39,14 @@ const BlogDetails = ({
         className={`enter-from-right col-span-1 w-full md:col-span-2 ${PANEL_CLASS}`}
       >
         <div className="content mx-auto max-w-[68ch] break-words text-justify leading-8">
-          {convertHtmlToReact(html, BLOG_IMAGE_QUALITY)}
+          {/* TEMPORARY memory diagnostic: DIAG_BYPASS_BLOG_CONVERTER=1 skips the
+              whole converter (this is a server component, so server-only).
+              Never enable it in normal production. Remove after the experiment. */}
+          {process.env.DIAG_BYPASS_BLOG_CONVERTER === "1" ? (
+            <div>Blog content diagnostic placeholder</div>
+          ) : (
+            convertHtmlToReact(html, BLOG_IMAGE_QUALITY)
+          )}
         </div>
         <ContentQuestions
           contentId={data?.id}
