@@ -190,7 +190,13 @@ const StandaloneLinkCard = ({
 export function convertHtmlToReact(htmlString: string, imageQuality = 75) {
   if (!htmlString) return [];
 
-  const sanitizedHtml = sanitize(htmlString);
+  // TEMPORARY memory diagnostic: DIAG_BYPASS_BLOG_DOMPURIFY=1 skips only this
+  // full-document DOMPurify/JSDOM pass on the server, to A/B heap retention.
+  // Never enable it in normal production. Remove after the experiment.
+  const bypassDomPurify =
+    typeof window === "undefined" &&
+    process.env.DIAG_BYPASS_BLOG_DOMPURIFY === "1";
+  const sanitizedHtml = bypassDomPurify ? htmlString : sanitize(htmlString);
   const root = HTMLParser.parse(sanitizedHtml);
   const children = root.childNodes;
 
