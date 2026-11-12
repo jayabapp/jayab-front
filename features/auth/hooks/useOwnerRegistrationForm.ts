@@ -1,13 +1,14 @@
 import { useRouter, useSearchParams } from "next/navigation";
+import { useQuery, useQueryClient } from "@tanstack/react-query";
+import { ownerProfileOptions } from "../api/auth.options";
 import { safeInternalPath } from "@/helpers/safeRedirect";
+import { useRef, useState } from "react";
 import { useRegisterOwner } from "./useRegisterOwner";
 import { PropertyService } from "@/api_services/property/property.service";
-import { useQuery } from "@tanstack/react-query";
-import { useState } from "react";
 import { p2e } from "@/helpers/NumberConverter";
 
-import type { GetProfileDto } from "@/api_services/auth/auth.interface";
 import type { OwnerProfileDto } from "@/api_services/auth/auth.interface";
+import type { GetProfileDto } from "@/api_services/auth/auth.interface";
 
 export const useOwnerRegistrationForm = (
   profile?: GetProfileDto,
@@ -20,7 +21,9 @@ export const useOwnerRegistrationForm = (
   });
   const router = useRouter();
   const searchParams = useSearchParams();
+  const queryClient = useQueryClient();
   const registerOwner = useRegisterOwner();
+  const submitting = useRef(false);
   const propertyDraft = useQuery({
     queryKey: [PropertyService.OWNER_PROP_INIT_CACHEKEY, "owner-registration"],
     queryFn: () => PropertyService.InitProperty({ property_id: undefined }),
@@ -31,31 +34,44 @@ export const useOwnerRegistrationForm = (
     setValues((current) => ({ ...current, [key]: value }));
   };
 
-  const submit = () => {
+  const continueRegistration = async () => {
+    const redirect = safeInternalPath(searchParams.get("redirect_url"));
+    if (redirect) return router.push(redirect);
+    const draft = await propertyDraft.refetch();
+    if (draft.data)
+      router.push(`/profile/owner/properties/${draft.data.id}/edit/initials`);
+  };
+
+  const submit = async () => {
     if (
       !values.name.trim() ||
       !/^\d{10}$/.test(p2e(values.national_code)) ||
-      !values.image?.id
+      !values.image?.id ||
+      submitting.current
     )
       return;
-    registerOwner.mutate(
-      {
+    submitting.current = true;
+    const nationalCode = p2e(values.national_code);
+    try {
+      await registerOwner.mutateAsync({
         full_name: values.name.trim(),
-        national_code: p2e(values.national_code),
+        national_code: nationalCode,
         selfie_image_id: Number(values.image.id),
-      },
-      {
-        onSuccess: async () => {
-          const redirect = safeInternalPath(searchParams.get("redirect_url"));
-          if (redirect) return router.push(redirect);
-          const draft = await propertyDraft.refetch();
-          if (draft.data)
-            router.push(
-              `/profile/owner/properties/${draft.data.id}/edit/initials`,
-            );
-        },
-      },
-    );
+      });
+      await continueRegistration();
+    } catch {
+      const saved = await queryClient
+        .fetchQuery({ ...ownerProfileOptions(), staleTime: 0 })
+        .catch(() => undefined);
+      if (saved?.national_code === nationalCode) {
+        await queryClient.invalidateQueries({
+          queryKey: ownerProfileOptions().queryKey,
+        });
+        await continueRegistration();
+      }
+    } finally {
+      submitting.current = false;
+    }
   };
 
   return {

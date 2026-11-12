@@ -26,7 +26,6 @@ import {
   UpdateProfileDto,
 } from "./auth.interface";
 
-/** This app's own auth routes, as opposed to backend paths in `apiRoutes`. */
 const LOCAL_AUTH_ROUTES = {
   OTP: "/api/auth/otp",
   OTP_VERIFY: "/api/auth/otp/verify",
@@ -78,7 +77,6 @@ export class AuthService {
     }
   }
 
-  /** Masked state of the in-flight OTP challenge; `undefined` when there is none. */
   static async getOtpChallenge(dto: { signal?: AbortSignal } = {}) {
     try {
       return await apiCall<unknown, OtpChallengeDto>(
@@ -91,7 +89,6 @@ export class AuthService {
         },
       );
     } catch {
-      // A 404 here just means "no challenge in flight" — the caller redirects.
       return undefined;
     }
   }
@@ -281,6 +278,7 @@ export class AuthService {
           national_code: dto.national_code,
           selfie_image_id: dto.selfie_image_id,
         },
+        { timeoutMs: 60_000 },
       );
       return result;
     } catch (e) {
