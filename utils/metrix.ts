@@ -29,8 +29,8 @@ export const initMetrix = (): Promise<MetrixSdk | null> => {
       const sdk = await import("@metrixorg/websdk");
       sdk.init(appId, appKey);
       return sdk;
-    } catch (error) {
-      console.error("Metrix SDK initialization error:", error);
+    } catch {
+      console.error("Metrix SDK initialization failed");
       return null;
     }
   })();
@@ -43,7 +43,7 @@ export const withMetrix = async (fn: (sdk: MetrixSdk) => void) => {
   if (!sdk) return;
   try {
     fn(sdk);
-  } catch (error) {
-    console.error("Metrix SDK call failed:", error);
+  } catch {
+    console.error("Metrix SDK call failed");
   }
 };

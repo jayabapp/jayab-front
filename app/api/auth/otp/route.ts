@@ -1,16 +1,10 @@
+import { OTP_CHALLENGE_COOKIE, OTP_CODE_TTL_MS } from "@/utils/otpChallenge";
+import { clearOtpChallenge, isValidMobile } from "@/utils/otpChallenge";
+import { maskMobile, setOtpChallenge } from "@/utils/otpChallenge";
 import { NextRequest, NextResponse } from "next/server";
 import { callBackend, envelope } from "@/utils/backendFetch";
 import { isSameOriginRequest } from "@/utils/sessionCookie";
-
-import {
-  OTP_CHALLENGE_COOKIE,
-  OTP_CODE_TTL_MS,
-  clearOtpChallenge,
-  isValidMobile,
-  maskMobile,
-  readOtpChallenge,
-  setOtpChallenge,
-} from "@/utils/otpChallenge";
+import { readOtpChallenge } from "@/utils/otpChallenge";
 
 export const dynamic = "force-dynamic";
 
@@ -39,6 +33,7 @@ export async function POST(request: NextRequest) {
 
   const { status, raw } = await callBackend("/auth/otp", {
     method: "POST",
+    signal: request.signal,
     body: { mobile_number: mobile },
   });
 
@@ -55,7 +50,6 @@ export async function POST(request: NextRequest) {
     const backendResponse = JSON.parse(raw);
     messageFa = backendResponse?.messages?.fa ?? null;
 
-    // TransformInterceptor بکند کد را مستقیم داخل data میگذارد (data = result)
     const backendOtpCode = backendResponse?.data?.code ?? backendResponse?.data;
     const normalizedOtpCode = `${backendOtpCode ?? ""}`;
     if (
@@ -70,11 +64,15 @@ export async function POST(request: NextRequest) {
 
   const expiresAt = Date.now() + OTP_CODE_TTL_MS;
   const response = NextResponse.json(
-    envelope("successful", sandboxOtpCode ? null : typeof messageFa === "string" ? messageFa : null, {
-      masked_mobile: maskMobile(mobile),
-      expires_at: new Date(expiresAt).toISOString(),
-      ...(sandboxOtpCode ? { sandbox_otp_code: sandboxOtpCode } : {}),
-    }),
+    envelope(
+      "successful",
+      sandboxOtpCode ? null : typeof messageFa === "string" ? messageFa : null,
+      {
+        masked_mobile: maskMobile(mobile),
+        expires_at: new Date(expiresAt).toISOString(),
+        ...(sandboxOtpCode ? { sandbox_otp_code: sandboxOtpCode } : {}),
+      },
+    ),
   );
   setOtpChallenge(response, { mobile, expiresAt });
   return response;

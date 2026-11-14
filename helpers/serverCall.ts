@@ -1,10 +1,10 @@
+import { createBackendRequest } from "@/utils/backendRequest";
 import { notFound, redirect } from "next/navigation";
 import { isRedirectError } from "next/dist/client/components/redirect-error";
+import { readBackendText } from "@/utils/backendResponse";
 import { REVALIDATE } from "./revalidate";
 
 import queryBuilder from "./queryBuilder";
-
-const SERVER_REQUEST_TIMEOUT_MS = 15_000;
 
 async function serverCall(
   url: string,
@@ -13,8 +13,17 @@ async function serverCall(
     revalidate?: number;
     redirect404?: boolean;
     redirect410?: boolean;
+    cache?: "no-store";
+    signal?: AbortSignal;
+    category?: "server" | "lookup";
   },
 ) {
+  const scope = createBackendRequest(
+    options?.category || "server",
+    "GET",
+    options?.signal,
+  );
+  let status: number | undefined;
   try {
     const origin = process.env.NEXT_PUBLIC_WEB_SITE;
     if (!origin) throw new Error("NEXT_PUBLIC_WEB_SITE is not configured");
@@ -30,24 +39,28 @@ async function serverCall(
       {
         method: "GET",
         headers,
-        signal: AbortSignal.timeout(SERVER_REQUEST_TIMEOUT_MS),
-        next: {
-          revalidate: options?.revalidate ?? REVALIDATE.DEFAULT,
-        },
+        signal: scope.signal,
+        ...(options?.cache === "no-store"
+          ? { cache: "no-store" as const }
+          : {
+              next: {
+                revalidate: options?.revalidate ?? REVALIDATE.DEFAULT,
+              },
+            }),
       },
     );
 
+    status = response.status;
+    scope.headersReceived();
     if (!response.ok) {
-      if (
-        options?.redirect404 &&
-        (response.status === 404 || response.status === 500)
-      )
-        notFound();
+      scope.log(status);
+      await response.body?.cancel();
+      if (options?.redirect404 && response.status === 404) notFound();
       if (options?.redirect410 && response.status === 410) redirect("/");
       throw new Error("Failed to fetch server data");
     }
 
-    const data = await response.json();
+    const data = JSON.parse(await readBackendText(response, scope));
     return data || null;
   } catch (error: any) {
     if (
@@ -55,8 +68,10 @@ async function serverCall(
       isRedirectError(error)
     )
       throw error;
-    console.log(error);
+    scope.log(status, error instanceof SyntaxError ? "malformed" : "network");
     return { data: null };
+  } finally {
+    scope.close();
   }
 }
 

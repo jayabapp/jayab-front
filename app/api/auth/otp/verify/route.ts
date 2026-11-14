@@ -37,6 +37,7 @@ export async function POST(request: NextRequest) {
     );
   const { status, raw } = await callBackend("/auth/otp/verify", {
     method: "POST",
+    signal: request.signal,
     body: {
       mobile_number: challenge.mobile,
       code,
@@ -48,7 +49,7 @@ export async function POST(request: NextRequest) {
       status,
       headers: { "Content-Type": "application/json" },
     });
-  const { body: safeBody, socketToken, token } = captureToken(raw);
+  const { body: safeBody, socketToken, token } = captureToken(raw, true);
   const response = new NextResponse(safeBody, {
     status,
     headers: { "Content-Type": "application/json" },

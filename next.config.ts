@@ -62,7 +62,7 @@ const nextConfig: NextConfig = {
     contentSecurityPolicy: "default-src 'self'; script-src 'none'; sandbox;",
   },
   compiler: {
-    removeConsole: process.env.NODE_ENV === "production",
+    removeConsole: process.env.NODE_ENV === "production" ? { exclude: ["error", "warn"] } : false,
     reactRemoveProperties: process.env.NODE_ENV === "production" ? { properties: ["^data-test"] } : false,
   },
   productionBrowserSourceMaps: false,

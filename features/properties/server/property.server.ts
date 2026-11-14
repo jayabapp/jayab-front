@@ -25,7 +25,9 @@ export const getServerPropertyPage = cache(async (filters: PropertyFilters) => {
       ...normalizePropertyFilters(filters),
       locale,
     },
-    { revalidate: REVALIDATE.PROPERTY_LIST },
+    filters.bbox !== undefined
+      ? { cache: "no-store" }
+      : { revalidate: REVALIDATE.PROPERTY_LIST },
   );
 });
 

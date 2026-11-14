@@ -1,12 +1,11 @@
 import { guardedDirectoriesExceptions } from "./utils/constantss";
 import { NextRequest, NextResponse } from "next/server";
 import { setAccessTokenCookie } from "./utils/sessionCookie";
+import { enforceBasicAuthGate } from "./helpers/basicAuthGate";
 import { guardedDirectories } from "./utils/constantss";
 import { apiRoutes, baseUrl } from "./utils/urls";
 import { safeInternalPath } from "./helpers/safeRedirect";
 import { isNoIndexRequest } from "./helpers/indexingPolicy";
-import { enforceBasicAuthGate } from "./helpers/basicAuthGate";
-import { REVALIDATE } from "./helpers/revalidate";
 import { cookies } from "next/headers";
 import { md5 } from "js-md5";
 
@@ -16,11 +15,6 @@ const LOGIN_COOKIE_MAX_AGE = 60 * 24 * 60 * 60;
 const MAIN_SITE_URL =
   process.env.NEXT_PUBLIC_MAIN_SITE_URL || "https://jayab.app";
 
-// Before this gate was added, the matcher below excluded these paths so the
-// SSO/redirect-check/indexing logic never ran on them. The gate itself now
-// runs on every path (see `config.matcher`), but everything past the gate
-// must keep behaving exactly as before for these — they're framework
-// internals, static assets and API routes that handle their own concerns.
 const ROUTING_LOGIC_EXCLUDED_PATH =
   /^\/(api|_next\/static|static|_next\/image|assets\/|favicon\.ico|sitemap\.xml|robots\.txt|\.well-known|sw\.js|workbox)/;
 
@@ -123,7 +117,9 @@ export async function proxy(request: NextRequest) {
         baseUrl + apiRoutes.REDIRECT_CHECK(HASHED) + `?href=${HREF}`,
         undefined,
         {
-          revalidate: REVALIDATE.REDIRECTS,
+          cache: "no-store",
+          category: "lookup",
+          signal: request.signal,
         },
       );
       if (!!data) {
@@ -144,9 +140,5 @@ export async function proxy(request: NextRequest) {
 }
 
 export const config = {
-  // Was scoped to page routes only, excluding api/static/assets. The Basic
-  // Auth gate must see every path — including those — so nothing on a gated
-  // host is reachable before authentication; see `ROUTING_LOGIC_EXCLUDED_PATH`
-  // above for how the previously-excluded paths keep their old behavior.
   matcher: ["/(.*)"],
 };

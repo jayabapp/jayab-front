@@ -1,5 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
+import { createBackendRequest } from "@/utils/backendRequest";
 import { apiRoutes, baseUrl } from "@/utils/urls";
+import { readBackendText } from "@/utils/backendResponse";
 import { revalidatePath } from "next/cache";
 
 export const dynamic = "force-dynamic";
@@ -62,6 +64,8 @@ async function handler(request: NextRequest) {
     );
   }
 
+  const scope = createBackendRequest("validation", "GET", request.signal);
+  let upstreamStatus: number | undefined;
   try {
     const response = await fetch(`${baseUrl}${apiRoutes.ADMIN_EDIT_VALIDATE}`, {
       method: "GET",
@@ -71,13 +75,29 @@ async function handler(request: NextRequest) {
         Authorization: `Bearer ${token}`,
       },
       cache: "no-store",
+      signal: scope.signal,
     });
+    upstreamStatus = response.status;
+    scope.headersReceived();
 
-    if (response.status == 401)
+    if (response.status == 401) {
+      scope.log(upstreamStatus);
+      await response.body?.cancel();
       return harden(
         NextResponse.json({ data: { revalidate: false } }, { status: 401 }),
       );
-    const json = await response.json();
+    }
+    if (!response.ok) {
+      scope.log(upstreamStatus);
+      await response.body?.cancel();
+      return harden(
+        NextResponse.json(
+          { data: { revalidate: false } },
+          { status: response.status },
+        ),
+      );
+    }
+    const json = JSON.parse(await readBackendText(response, scope));
     const data = json.data;
     if (!!data?.can_edit) {
       revalidatePath("/", "layout");
@@ -89,14 +109,24 @@ async function handler(request: NextRequest) {
       NextResponse.json({ data: { revalidate: false } }, { status: 401 }),
     );
   } catch (error) {
-    // Log the failure, not the request — the URL may still carry a token.
-    console.log(
-      "[revalidate-ssr] validation failed",
-      error instanceof Error ? error.message : error,
+    scope.log(
+      upstreamStatus,
+      error instanceof SyntaxError ? "malformed" : "network",
     );
     return harden(
-      NextResponse.json({ error: "revalidation failed" }, { status: 500 }),
+      NextResponse.json(
+        { error: "revalidation failed" },
+        {
+          status: scope.signal.aborted
+            ? scope.status()
+            : upstreamStatus
+              ? 502
+              : scope.status(),
+        },
+      ),
     );
+  } finally {
+    scope.close();
   }
 }
 

@@ -32,7 +32,7 @@ export async function POST(request: NextRequest) {
 
   if (!userMatches || !passwordMatches) {
     recordFailedLoginAttempt(clientIp);
-    console.warn(`[qa-login] rejected ip=${clientIp}`);
+    console.warn("[qa-login] credentials rejected");
     return NextResponse.json({ ok: false, message: "INVALID_CREDENTIALS" }, { status: 401 });
   }
 
