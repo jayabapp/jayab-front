@@ -129,6 +129,7 @@ const SwiperWithThumbnails: React.FC<ThumbnailCarouselProps> = (props) => {
                 >
                   <ContentImage
                     src={NEW_IMAGE_URL(i, "thumbnail")}
+                    originalSrc={NEW_IMAGE_URL(i, "name")}
                     width={256}
                     height={256}
                     sizes="(min-width: 768px) 12vw, 25vw"

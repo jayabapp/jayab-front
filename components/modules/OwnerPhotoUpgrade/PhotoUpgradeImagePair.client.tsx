@@ -2,6 +2,7 @@
 
 import { getUploadedImageUrl } from "@features/upload/mappers/upload-image.mapper";
 import { useTranslations } from "next-intl";
+import { ContentImage } from "@elements/Image";
 import { useState } from "react";
 import { colors } from "@/theme/colors";
 
@@ -12,7 +13,6 @@ import type { PhotoUpgradeItem } from "@/types/components/modules/photo-upgrade"
 
 import RemoteImageModal from "@features/photo-upgrade/components/RemoteImageModal";
 import StatusShower from "@elements/StatusShower";
-import Image from "next/image";
 import Link from "next/link";
 
 const getOldImage = (item: PhotoUpgradeItem): PhotoUpgradeImage | null =>
@@ -37,13 +37,14 @@ const ImageBox = ({
     <div onClick={cb} className="flex min-w-0 cursor-pointer flex-col gap-2">
       {image ? (
         <div className="relative overflow-hidden rounded-10 border border-surface-muted bg-surface-muted">
-          <Image
+          <ContentImage
             width={640}
             height={480}
             alt={image?.alt || title}
             sizes="(max-width: 1024px) 50vw, 320px"
             src={getUploadedImageUrl(image, "medium")}
             className="aspect-[4/3] w-full object-cover"
+            originalSrc={getUploadedImageUrl(image, "name")}
           />
           <span className="absolute start-2 top-2 rounded-10 bg-black/55 px-2 py-1 text-2xs font-medium text-white backdrop-blur">
             {title}
@@ -53,7 +54,7 @@ const ImageBox = ({
             onClick={(e) => {
               e.stopPropagation();
             }}
-            href={getUploadedImageUrl(image, "medium") || ""}
+            href={getUploadedImageUrl(image, "name")}
             className="absolute end-2 bottom-2  bg-action/50 rounded-md   px-2 py-1 text-2xs font-medium text-white backdrop-blur "
           >
             {t("listing.download")}

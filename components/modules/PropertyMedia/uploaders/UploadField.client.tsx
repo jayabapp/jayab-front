@@ -9,11 +9,12 @@ import { prepareImageUpload } from "@features/upload/lib/image-upload";
 import { useTranslations } from "next-intl";
 import { uploadErrorKey } from "@features/upload/lib/upload-error";
 import { ImageCropModal } from "@elements/Upload";
+import { ContentImage } from "@elements/Image";
 import { BtnLoading } from "@elements/Button";
 import { toast } from "sonner";
 
-import type { UploadFieldProps } from "@/types/components/modules/property-media";
 import type { ReactEventHandler } from "react";
+import type { UploadFieldProps } from "@/types/components/modules/property-media";
 
 import ProfileImageModal from "@features/auth/components/ProfileImageModal";
 import ImageUploadHint from "../parts/ImageUploadHint";
@@ -195,8 +196,9 @@ const MainUploader = ({
                   : "h-24 w-24"
               } `}
             >
-              <Image
+              <ContentImage
                 alt={title || t("profilePhoto")}
+                originalSrc={getUploadedImageUrl(item, "name")}
                 src={
                   typeof item === "string"
                     ? item

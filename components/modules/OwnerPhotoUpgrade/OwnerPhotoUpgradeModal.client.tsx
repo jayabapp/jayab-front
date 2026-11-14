@@ -1,7 +1,6 @@
 "use client";
 
 import { memo, useCallback, useMemo, useState } from "react";
-import { Icon } from "@elements/Icon";
 import { usePhotoUpgradeCheckout } from "@features/photo-upgrade/hooks/usePhotoUpgradeCheckout";
 import { PROPERTY_IMAGE_QUALITY } from "@features/properties/constants/image";
 import { getUploadedImageUrl } from "@features/upload/mappers/upload-image.mapper";
@@ -9,16 +8,18 @@ import { ModalBottomSheet } from "@elements/Modal";
 import { getHomeImageUrl } from "@features/home/mappers/home-image.mapper";
 import { useTranslations } from "next-intl";
 import { useFormatToman } from "@hooks/useFormatToman";
+import { ContentImage } from "@elements/Image";
+import { Icon } from "@elements/Icon";
 
 import type { SelectablePhotoUpgradeImageProps } from "@/types/components/modules/photo-upgrade";
 import type { OwnerPhotoUpgradeModalProps } from "@/types/components/modules/photo-upgrade";
 
 import useCmsContent from "@/hooks/useCmsContent";
 import SwiperSlide from "@elements/Carousel/SwiperSlide";
-import Swiper from "@elements/Carousel/Swiper.client";
 import CmsText from "@elements/CmsText";
 import isEmpty from "lodash/isEmpty";
 import Button from "@elements/Button";
+import Swiper from "@elements/Carousel/Swiper.client";
 import Notify from "@elements/Toast";
 import chunk from "lodash/chunk";
 import Image from "next/image";
@@ -34,8 +35,9 @@ const SelectableImageItem = memo(
           isSelected ? "border-action ring-2 ring-action/30" : "border-line"
         }`}
       >
-        <Image
+        <ContentImage
           fill
+          originalSrc={getUploadedImageUrl(image, "name")}
           src={
             getUploadedImageUrl(image, "medium") ||
             "/assets/icons/shared/image_placeholder.svg"

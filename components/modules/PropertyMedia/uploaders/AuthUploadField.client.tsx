@@ -1,16 +1,15 @@
 "use client";
 
 import { useEffect, useRef, useState } from "react";
+import { imageUploadMaxDimension } from "@features/upload/lib/image-upload";
 import { getUploadedImageUrl } from "@features/upload/mappers/upload-image.mapper";
 import { useAttachmentUpload } from "@features/upload/hooks/useAttachmentUpload";
-import {
-  IMAGE_UPLOAD_ACCEPT,
-  imageUploadMaxDimension,
-  prepareImageUpload,
-} from "@features/upload/lib/image-upload";
+import { IMAGE_UPLOAD_ACCEPT } from "@features/upload/lib/image-upload";
+import { prepareImageUpload } from "@features/upload/lib/image-upload";
 import { useTranslations } from "next-intl";
 import { ImageCropModal } from "@elements/Upload";
 import { uploadErrorKey } from "@features/upload/lib/upload-error";
+import { ContentImage } from "@elements/Image";
 import { BtnLoading } from "@elements/Button";
 import { toast } from "sonner";
 
@@ -18,8 +17,8 @@ import type { AuthUploadFieldProps } from "@/types/components/modules/property-m
 import type { ReactEventHandler } from "react";
 
 import ProfileImageModal from "@features/auth/components/ProfileImageModal";
-import Image from "next/image";
 import ImageUploadHint from "../parts/ImageUploadHint";
+import Image from "next/image";
 
 import "react-advanced-cropper/dist/style.css";
 
@@ -166,10 +165,11 @@ const AuthUploader = ({
               }}
               className="cursor-pointer border   bg-whiteGray-100    rounded-20  aspect-square relative   h-24 w-24 "
             >
-              <Image
+              <ContentImage
                 width={96}
                 height={96}
                 alt={title || t("profilePhoto")}
+                originalSrc={resolveProfileImage(item)}
                 src={resolveProfileImage(item, "thumbnail")}
                 className="object-cover  w-full bg-gradient-to-b rounded-20  aspect-square max-w-max  "
               />

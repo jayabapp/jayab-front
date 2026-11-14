@@ -122,6 +122,7 @@ const PropertyContactRow = ({
           height={56}
           sizes="(min-width: 768px) 56px, 40px"
           alt={data?.assistant_full_name || ""}
+          fallbackSrc={OWNER_AVATAR_FALLBACK}
           src={
             hasOwnerAvatar ? getPropertyImageUrl(image) : OWNER_AVATAR_FALLBACK
           }

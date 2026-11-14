@@ -21,16 +21,30 @@ const shouldSkipOptimizer = (src: ContentImageProps["src"]): boolean => {
 const ContentImage = ({
   src,
   alt,
+  originalSrc,
   fallbackSrc = DEFAULT_FALLBACK,
   onError,
   unoptimized,
   ...props
 }: ContentImageProps) => {
-  const [failedSource, setFailedSource] =
-    useState<ContentImageProps["src"]>(null);
-  const requestedSource = src || fallbackSrc;
-  const source =
-    failedSource === requestedSource ? fallbackSrc : requestedSource;
+  const [failure, setFailure] = useState<{
+    requestedSource: ContentImageProps["src"];
+    originalSrc: ContentImageProps["originalSrc"];
+    fallbackSrc: ContentImageProps["fallbackSrc"];
+    index: number;
+  } | null>(null);
+  const requestedSource = src || originalSrc || fallbackSrc;
+  const sources = [
+    ...new Set([requestedSource, originalSrc, fallbackSrc].filter(Boolean)),
+  ];
+  const isCurrentFailure =
+    failure?.requestedSource === requestedSource &&
+    failure.originalSrc === originalSrc &&
+    failure.fallbackSrc === fallbackSrc;
+  // Forget failures when the attachment or fallback changes, including A -> B -> A.
+  if (failure && !isCurrentFailure) setFailure(null);
+  const index = isCurrentFailure ? failure.index : 0;
+  const source = sources[index] || fallbackSrc;
 
   return (
     <Image
@@ -40,7 +54,13 @@ const ContentImage = ({
       unoptimized={unoptimized || shouldSkipOptimizer(source)}
       onError={(event) => {
         onError?.(event);
-        if (source !== fallbackSrc) setFailedSource(requestedSource);
+        if (index < sources.length - 1)
+          setFailure({
+            requestedSource,
+            originalSrc,
+            fallbackSrc,
+            index: index + 1,
+          });
       }}
     />
   );

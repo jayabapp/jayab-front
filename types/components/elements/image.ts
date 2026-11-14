@@ -2,6 +2,7 @@ import type { ImageProps } from "next/image";
 
 export type ContentImageProps = Omit<ImageProps, "src"> & {
   src?: ImageProps["src"] | null;
+  originalSrc?: ImageProps["src"];
   alt: string;
   fallbackSrc?: ImageProps["src"];
 };

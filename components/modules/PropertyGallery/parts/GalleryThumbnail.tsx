@@ -1,6 +1,7 @@
-import type { GalleryThumbnailProps } from "@/types/components/modules/property-gallery";
 import { getPropertyImageUrl } from "@features/properties/mappers/property-image.mapper";
 import { ContentImage } from "@elements/Image";
+
+import type { GalleryThumbnailProps } from "@/types/components/modules/property-gallery";
 
 const INTRINSIC_SIZE = 320;
 
@@ -23,7 +24,7 @@ const GalleryThumbnail = ({
     height={INTRINSIC_SIZE}
     id={id ? `${id}` : undefined}
     src={getPropertyImageUrl(item, imageSize)}
-    fallbackSrc={
+    originalSrc={
       imageSize && imageSize !== "name"
         ? getPropertyImageUrl(item, "name")
         : undefined
