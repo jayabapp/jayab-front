@@ -103,6 +103,8 @@ test("upstream timeout returns 504, caller abort returns 499, with redacted logs
   const h = harness(pendingFetch, "10");
   assert.equal((await h.invoke()).status, 504);
   assert.equal(h.logs[0][1].kind, "timeout");
+  assert.equal(h.logs[0][1].category, "proxy");
+  assert.equal(h.logs[0][1].method, "GET");
   const caller = new AbortController();
   caller.abort();
   assert.equal((await h.invoke(undefined, { signal: caller.signal })).status, 499);

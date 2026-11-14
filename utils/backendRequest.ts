@@ -50,8 +50,8 @@ export const backendCategory = (
 };
 
 export const createBackendRequest = (
-  method: string,
   category: RequestCategory,
+  method: string,
   caller?: AbortSignal | null,
   timeoutMs = backendTimeout(category),
 ) => {
